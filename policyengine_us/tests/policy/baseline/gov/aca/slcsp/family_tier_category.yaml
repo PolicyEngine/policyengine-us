@@ -4,6 +4,7 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true   
     tax_units:
       tax_unit:
         members: [person1]
@@ -21,8 +22,10 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
       person2:
         age: 32
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -40,10 +43,13 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
       person2:
         age: 32
+        is_aca_ptc_eligible: true
       person3:
         age: 35
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -61,8 +67,10 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
       person2:
         age: 5
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -80,10 +88,13 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
       person2:
         age: 32
+        is_aca_ptc_eligible: true
       person3:
         age: 5
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -101,6 +112,7 @@
     people:
       person1:
         age: 15
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -118,6 +130,7 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -135,10 +148,13 @@
     people:
       person1:
         age: 30
+        is_aca_ptc_eligible: true
       person2:
         age: 32
+        is_aca_ptc_eligible: true
       person3:
         age: 5
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]

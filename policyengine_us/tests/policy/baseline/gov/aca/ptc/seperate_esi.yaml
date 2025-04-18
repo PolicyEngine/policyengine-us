@@ -1,0 +1,65 @@
+- name: 2025 aca_ptc_los_angeles - one adult esi
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 40_000
+        is_aca_eshi_eligible: true
+      person2:
+        age: 45
+        employment_income: 35_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 15
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # CA
+        county: LOS_ANGELES_COUNTY_CA  # Direct county specification
+        three_digit_zip_code: 911  # e.g., Pasadena (91105)
+  output:
+    tax_unit_medicaid_income_level: 2.813507 # greater than 2.62 CA CHIP limit (checked for 2025)
+    is_medicaid_eligible: [false, false, false]
+    is_aca_ptc_eligible: [false, true, true]
+    slcsp_age_curve_amount_person: [0, 5_526, 3_188]
+    slcsp: 8_715.192 
+    aca_magi_fraction: 2.90
+    aca_ptc_phase_out_rate: 0.056
+    aca_ptc: 4_515.19
+
+- name: 2025 VT  - one adult esi
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 50_000
+        is_aca_eshi_eligible: true
+      person2:
+        age: 45
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 15
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 50  # VT state code 
+        slcsp_rating_area: 1 #vt is only one rating area, use 05403 for example
+  output:
+    is_medicaid_eligible: [false, false, false]
+    is_aca_ptc_eligible: [false, true, true]
+    slcsp: 29_575.32  
+    aca_ptc_phase_out_rate: 0.0721
+    aca_ptc: 23_086.32
