@@ -1,7 +1,8 @@
 description: The government counts these sources as benefits paid by state agencies.
 values:
   2023-01-01:
-    - state_supplement
+    # Massachusetts benefits
+    - ma_state_supplement
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -22,7 +23,8 @@ values:
     - ma_eaedc
     - ma_tafdc
   2024-01-01:
-    - state_supplement
+    # Massachusetts benefits
+    - ma_state_supplement
     # Colorado benefits
     - co_state_supplement
     - co_oap
