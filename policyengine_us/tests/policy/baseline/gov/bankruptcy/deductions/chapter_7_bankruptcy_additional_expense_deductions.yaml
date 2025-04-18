@@ -1,0 +1,12 @@
+- name: Case 1, have housing cost and vehile mortgage expense. 
+  period: 2024-01
+  input:
+    health_insurance_premiums: 120
+    health_savings_account_payroll_contributions: 120
+    care_expenses: 0
+    k12_tuition_and_fees: 2_400
+    is_child_dependent: true
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 0
+  output:
+    chapter_7_bankruptcy_additional_expense_deductions: 209.58
