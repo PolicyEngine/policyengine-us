@@ -1,0 +1,15 @@
+description: Illinois disregards this amount of assets under the Aid to the Aged, Blind or Disabled program, based on household size. 
+metadata:
+  unit: currency-USD
+  breakdown:
+    - range(1,3)
+  period: month
+  label: Illinois AABD asset disregard base amount
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.142 - Asset Disregard
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.142
+
+1: 
+  1989-01-01: 2_000
+2: 
+  1989-01-01: 3_000

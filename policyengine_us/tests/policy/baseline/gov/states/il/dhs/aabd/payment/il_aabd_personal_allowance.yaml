@@ -1,0 +1,26 @@
+- name: Case 1, size 1, active.   
+  period: 2022-01
+  input:
+    spm_unit_size: 1 
+    il_aabd_is_bedfast: false
+    state_code: IL
+  output:
+    il_aabd_personal_allowance: 62.43
+  
+- name: Case 2, size 6, bedfast.   
+  period: 2022-01
+  input:
+    spm_unit_size: 6 
+    il_aabd_is_bedfast: true
+    state_code: IL
+  output:
+    il_aabd_personal_allowance: 40.67
+
+- name: Case 3, size 16, bedfast.   
+  period: 2022-01
+  input:
+    spm_unit_size: 16 
+    il_aabd_is_bedfast: true
+    state_code: IL
+  output:
+    il_aabd_personal_allowance: 39.96
