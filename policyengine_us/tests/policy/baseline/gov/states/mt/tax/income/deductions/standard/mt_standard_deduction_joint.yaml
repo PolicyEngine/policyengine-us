@@ -98,6 +98,6 @@
   input:
     state_code: MT
     mt_agi: 12_950
-    state_filing_status_if_married_filing_separately_on_same_return: JOINT
+    filing_status: JOINT
   output:
-    mt_standard_deduction_indiv: 29_200
+    mt_standard_deduction_joint: 29_200
