@@ -51,14 +51,24 @@ class slcsp_family_tier_category(Variable):
         eligible_child_count = eligible_people - eligible_adult_count
 
         # Common conditions for both states
-        one_adult_no_children = (eligible_adult_count == 1) & (eligible_child_count == 0)
-        two_plus_adults_no_children = (eligible_adult_count >= 2) & (eligible_child_count == 0)
-        one_adult_with_children = (eligible_adult_count == 1) & (eligible_child_count > 0)
-        two_plus_adults_with_children = (eligible_adult_count >= 2) & (eligible_child_count > 0)
+        one_adult_no_children = (eligible_adult_count == 1) & (
+            eligible_child_count == 0
+        )
+        two_plus_adults_no_children = (eligible_adult_count >= 2) & (
+            eligible_child_count == 0
+        )
+        one_adult_with_children = (eligible_adult_count == 1) & (
+            eligible_child_count > 0
+        )
+        two_plus_adults_with_children = (eligible_adult_count >= 2) & (
+            eligible_child_count > 0
+        )
 
         # NY-specific condition (child-only households)
         ny_child_only = (
-            (state_code == "NY") & (eligible_adult_count == 0) & (eligible_child_count > 0)
+            (state_code == "NY")
+            & (eligible_adult_count == 0)
+            & (eligible_child_count > 0)
         )
 
         return select(

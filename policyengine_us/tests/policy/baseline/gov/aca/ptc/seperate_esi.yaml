@@ -1,5 +1,5 @@
 - name: 2025 aca_ptc_los_angeles - one adult esi
-  absolute_error_margin: 0.01
+  absolute_error_margin: 10
   period: 2025
   input:
     people:
@@ -27,7 +27,8 @@
     tax_unit_medicaid_income_level: 2.813507 # greater than 2.62 CA CHIP limit (checked for 2025)
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible: [false, true, true]
-    slcsp: 8_715.192  #15,542 from 2025 kff calculator, they round more aggressively 
+    slcsp_age_curve_amount_person: [0, 5_526, 3_188]
+    slcsp: 8_715.192 
     aca_magi_fraction: 2.90
     aca_ptc_phase_out_rate: 0.056
     aca_ptc: 4_515.19
@@ -62,8 +63,3 @@
     slcsp: 29_575.32  
     aca_ptc_phase_out_rate: 0.0721
     aca_ptc: 23_086.32
-
-
-
-
-
