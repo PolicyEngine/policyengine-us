@@ -1,0 +1,17 @@
+- name: Income over threshold, joint
+  period: 2024
+  input:
+    adjusted_gross_income: 150_000
+    pr_gross_income: 7_000
+    ctc_phase_out_threshold: 150_000
+  output:
+    pr_ctc_phase_out: 350
+
+- name: Income under threshold, single
+  period: 2024
+  input:
+    adjusted_gross_income: 74_000
+    pr_gross_income: 1_000
+    ctc_phase_out_threshold: 75_000
+  output:
+    pr_ctc_phase_out: 0
