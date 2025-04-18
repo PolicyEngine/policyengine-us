@@ -1,0 +1,19 @@
+- name: Case 1, agi below first threshold. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 5_000
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_applies: false
+
+- name: Case 2, agi in first reduction condition. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 475_000
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_applies: true
