@@ -16,12 +16,11 @@ class il_aabd_shelter_allowance(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.payment.shelter_allowance
-        rent_expense = person("rent", period) * MONTHS_IN_YEAR
-        is_rent = rent_expense > 0
+        rent_expense = person("rent", period)
+        renter = rent_expense > 0
         rent_allowance = min_(rent_expense, p.rent)
         homestead_property_cost = (
-            person.spm_unit("housing_cost", period) * MONTHS_IN_YEAR
-            - rent_expense
+            person.spm_unit("housing_cost", period) - rent_expense
         )
 
         filing_status = person.tax_unit("filing_status", period)
@@ -34,4 +33,4 @@ class il_aabd_shelter_allowance(Variable):
             applicable_homestead_property_cost, p.homestead
         )
 
-        return where(is_rent, rent_allowance, homestead_property_allowance)
+        return where(renter, rent_allowance, homestead_property_allowance)

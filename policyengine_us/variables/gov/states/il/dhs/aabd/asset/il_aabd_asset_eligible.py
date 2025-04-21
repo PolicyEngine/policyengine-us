@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_aabd_asset_eligible(Variable):
+class il_aabd_asset_value_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = MONTH
@@ -14,7 +14,7 @@ class il_aabd_asset_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.asset.disregard
         size = spm_unit("spm_unit_size", period)
-        countable_asset = spm_unit("il_aabd_countable_asset", period)
+        countable_asset = spm_unit("il_aabd_countable_assets", period)
         capped_size = min_(size, 2)
         reduced_unit_size = max_(size - 2, 0)
         p1 = p.base[capped_size]

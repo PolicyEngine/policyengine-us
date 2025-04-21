@@ -23,14 +23,12 @@ class il_aabd_countable_vehicles_value(Variable):
         avg_vehicle_value[mask] = (
             total_vehicle_value[mask] / vehicle_count[mask]
         )
-        has_essential_vehicle = spm_unit(
-            "il_aabd_has_essential_use_vehicle", period
-        )
+        vehicle_is_essential = spm_unit("il_aabd_vehicle_is_essential", period)
         # Household can exclude one vehicle completely regardless of value if it has an essential vehicle.
         full_exemption = avg_vehicle_value
         # If household does not meet essential vehicle requirements, exempt one vehicle up to $4500 in household
         partial_exemption = min_(avg_vehicle_value, p.amount)
         vehicle_exemption = where(
-            has_essential_vehicle, full_exemption, partial_exemption
+            vehicle_is_essential, full_exemption, partial_exemption
         )
         return max_(total_vehicle_value - vehicle_exemption, 0)

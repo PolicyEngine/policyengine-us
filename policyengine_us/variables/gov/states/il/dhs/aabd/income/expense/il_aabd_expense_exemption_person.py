@@ -12,10 +12,4 @@ class il_aabd_expense_exemption_person(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.125",
     )
 
-    # def formula(person, period, parameters):
-    #     withholding taxes,
-    #     social security tax,
-    #     transportation,
-    #     child care expense,
-    #     rental expense,
-    #
+    adds = "gov.states.il.dhs.aabd.income.exemption.sources"

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_aabd_has_essential_use_vehicle(Variable):
+class il_aabd_vehicle_is_essential(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = MONTH

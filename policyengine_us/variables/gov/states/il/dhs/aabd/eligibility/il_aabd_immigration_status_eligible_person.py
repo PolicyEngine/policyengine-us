@@ -10,9 +10,14 @@ class il_aabd_immigration_status_eligible_person(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
+        p = parameters(period).gov.states.il.dhs.aabd
         immigration_status = person("immigration_status", period)
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
         )
-        return qualified_noncitizen | is_citizen
+        immigration_status_str = immigration_status.decode_to_str()
+        has_qualifying_status = np.isin(
+            immigration_status_str,
+            p.qualified_noncitizen_status,
+        )
+        return has_qualifying_status | is_citizen

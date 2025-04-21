@@ -17,11 +17,17 @@ class il_aabd_earned_income_after_exemption_person(Variable):
         expense_exemption = person("il_aabd_expense_exemption_person", period)
         adjust_income = max_(gross_earned_income, expense_exemption)
         # Determine demographic status
-        elderly = person("is_ssi_aged", period)
+        p_age = parameters(period).gov.states.il.dhs.aabd
+        elderly = p_age.aged_age_threshold
         blind = person("is_blind", period)
         disabled = person("is_ssi_disabled", period)
         elderly_or_disabled = elderly | disabled
-        income_after_flat_exemption = max_(adjust_income - p.flat, 0)
+        flat_exemption_excess = person(
+            "il_aabd_flat_exemption_excess_over_unearned_income", period
+        )
+        income_after_flat_exemption = max_(
+            adjust_income - flat_exemption_excess, 0
+        )
         blind_income_after_exemption = (
             income_after_flat_exemption
             - p.blind.calc(income_after_flat_exemption)
