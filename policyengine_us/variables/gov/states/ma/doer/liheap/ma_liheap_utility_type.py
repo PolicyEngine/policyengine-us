@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class UtilityType(Enum):
+class MassachusettsLIHEAPUtilityType(Enum):
     DELIVERABLE_FUEL = "Deliverable Fuel"
     UTILITY_AND_HEAT_IN_RENT = "Utility and Heat in Rent"
     HEC = "HEC"
@@ -15,7 +15,8 @@ class UtilityType(Enum):
 class ma_liheap_utility_type(Variable):
     value_type = Enum
     entity = SPMUnit
-    possible_values = UtilityType
-    default_value = UtilityType.ELECTRICITY
+    possible_values = MassachusettsLIHEAPUtilityType
+    default_value = MassachusettsLIHEAPUtilityType.ELECTRICITY
     definition_period = YEAR
-    label = "Household Utility type"
+    defined_for = StateCode.MA
+    label = "Massachusetts LIHEAP Household Utility type"
