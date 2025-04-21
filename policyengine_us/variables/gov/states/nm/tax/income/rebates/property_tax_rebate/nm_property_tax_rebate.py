@@ -21,7 +21,7 @@ class nm_property_tax_rebate(Variable):
         rent_and_ptax = ptax_owner + rent_percent
         # Get the maximum property tax liability
         agi = tax_unit("nm_modified_gross_income", period)
-        max_liability = p.max_property_tax_liability.calc(agi)
+        max_liability = p.max_property_tax_liability.calc(agi, right=True)
         rebate = max_(0, rent_and_ptax - max_liability)
         # Maximum amount is based on filing status
         filing_status = tax_unit("filing_status", period)
