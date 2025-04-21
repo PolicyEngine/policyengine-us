@@ -1,0 +1,20 @@
+description: Kansas provides this additional exemption amount for head of household filers.
+values:
+  2024-01-01: 2_320
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Kansas head of household personal exemption additional amount
+  reference:
+    - title: 2024 Form K-40 
+      href: https://www.ksrevenue.gov/pdf/k-4024.pdf#page=1
+    - title: 2024 Form K-40 instructions EXEMPTIONS AND DEPENDENTS
+      href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=6 
+    # The legal code does not specify an additional exemption amount, however, the tax form 
+    # allows for an additional exemption amount for head of household filers 
+    - title: Kan. Stat. § 79-32,121 (a) 
+      href: https://casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual
+    # Bill 2231 was introduced into the house but has not passed yet
+    - title: K.S.A. 2024 HB 2231 § 79-32,121 (b)(1)
+      href: https://kslegislature.gov/li/b2025_26/measures/documents/hb2231_01_0000.pdf?#page=1

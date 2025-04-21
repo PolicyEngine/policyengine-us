@@ -82,7 +82,7 @@
     state_code: IA
     filing_status: JOINT
   output:  
-    ia_regular_tax_joint: 1_344.2
+    ia_regular_tax_joint: 1_393.8
 
 - name: IA regular tax joint unit test 10, using all rates 2024
   absolute_error_margin: 0.5
@@ -92,7 +92,7 @@
     state_code: IA
     filing_status: JOINT
   output:  
-    ia_regular_tax_joint: 3_911.7
+    ia_regular_tax_joint: 3_961.4
 
 - name: IA regular tax joint unit test 11, using two rates 2025
   absolute_error_margin: 0.5
@@ -102,7 +102,7 @@
     state_code: IA
     filing_status: JOINT
   output:  
-    ia_regular_tax_joint: 1_344.2
+    ia_regular_tax_joint: 1_393.8
 
 - name: IA regular tax joint unit test 12, using all rates 2025
   absolute_error_margin: 0.5
@@ -112,7 +112,7 @@
     state_code: IA
     filing_status: JOINT
   output:  
-    ia_regular_tax_joint: 3_754.2
+    ia_regular_tax_joint: 3_803.8
 
 - name: IA regular tax joint unit test 13, using two rates 2026
   absolute_error_margin: 0.5

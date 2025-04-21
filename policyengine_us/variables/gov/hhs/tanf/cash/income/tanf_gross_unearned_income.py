@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf_gross_unearned_income(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "TANF gross earned income"
     documentation = "Gross unearned income for calculating Temporary Assistance for Needy Families benefit."
     unit = USD
