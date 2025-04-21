@@ -11,10 +11,12 @@ class ma_liheap_subsidized_housing_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
-        rent = spm_unit.members("rent", period).sum()
+        person = spm_unit.members
+        rent_person = person("rent", period)
+        total_rent = spm_unit.sum(rent_person)
         housing_assistance = spm_unit("housing_assistance", period)
         p = parameters(period).gov.states["ma"].doer.liheap.threshold
 
         rent_threshold = income * p.rent_rate
 
-        return (rent >= rent_threshold) & (housing_assistance > 0)
+        return (total_rent >= rent_threshold) & (housing_assistance > 0)
