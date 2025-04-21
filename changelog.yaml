@@ -9661,3 +9661,28 @@
     added:
     - Added CHIP as a program seperate from Medicaid.
   date: 2025-04-16 23:27:50
+- bump: minor
+  changes:
+    added:
+    - New York itemized deductions reduction formula.
+  date: 2025-04-18 13:28:01
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the Massachusetts state supplement program.
+  date: 2025-04-18 13:42:07
+- bump: minor
+  changes:
+    added:
+    - 2024 New Mexico State Income Tax Updates.
+  date: 2025-04-18 23:44:14
+- bump: patch
+  changes:
+    fixes:
+    - Fix tests including state_supplement parameters.
+  date: 2025-04-19 11:11:45
+- bump: minor
+  changes:
+    added:
+    - Limit itemized deductions to taxable income.
+  date: 2025-04-19 16:18:12

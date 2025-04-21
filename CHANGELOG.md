@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.254.0] - 2025-04-19 16:18:12
+
+### Added
+
+- Limit itemized deductions to taxable income.
+
+## [1.253.1] - 2025-04-19 11:11:45
+
+## [1.253.0] - 2025-04-18 23:44:14
+
+### Added
+
+- 2024 New Mexico State Income Tax Updates.
+
+## [1.252.1] - 2025-04-18 13:42:07
+
+### Fixed
+
+- Refactor the Massachusetts state supplement program.
+
+## [1.252.0] - 2025-04-18 13:28:01
+
+### Added
+
+- New York itemized deductions reduction formula.
+
 ## [1.251.1] - 2025-04-16 23:27:50
 
 ### Added
@@ -11394,6 +11420,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.254.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.1...1.254.0
+[1.253.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.0...1.253.1
+[1.253.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.252.1...1.253.0
+[1.252.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.252.0...1.252.1
+[1.252.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.251.1...1.252.0
 [1.251.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.251.0...1.251.1
 [1.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.250.0...1.251.0
 [1.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.249.0...1.250.0

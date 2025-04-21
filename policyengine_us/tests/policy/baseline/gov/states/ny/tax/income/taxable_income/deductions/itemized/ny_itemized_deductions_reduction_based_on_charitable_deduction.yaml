@@ -1,0 +1,35 @@
+- name: Case 1, agi not qualify. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 475_000
+    ny_itemized_deductions_max: 100
+    charitable_deduction: 0
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: false
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction: 0
+
+- name: Case 2, high income filer. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 1_500_000
+    charitable_deduction: 200
+    ny_itemized_deductions_max: 300
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: true
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction: 200 # 300 - 200*0.5 - 200
+
+- name: Case 3, higher income filer. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 10_500_000
+    ny_itemized_deductions_max: 300
+    charitable_deduction: 200
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: true
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction: 250 # 300 - 200*0.25 = 250 

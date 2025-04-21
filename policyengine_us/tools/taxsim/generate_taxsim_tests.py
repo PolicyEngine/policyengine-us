@@ -104,7 +104,6 @@ class TaxSim35:
     NEUTRALIZED_VARIABLES = [
         "snap",
         "ssi",
-        "state_supplement",
         "tanf",
         "wic",
     ]
