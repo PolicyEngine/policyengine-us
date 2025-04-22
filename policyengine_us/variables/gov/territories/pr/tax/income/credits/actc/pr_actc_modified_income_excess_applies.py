@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class pr_agi_greater_than_threshold(Variable):
+class pr_actc_modified_income_excess_applies(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Puerto Rico condition if modified adjusted gross income greater than threshold"
@@ -10,7 +10,7 @@ class pr_agi_greater_than_threshold(Variable):
 
     def formula(tax_unit, period, parameters):
         # line 5
-        p = parameters(period).gov.territories.pr.tax.income.credits.actc
+        p = parameters(period).gov.territories.pr.tax.income.credits.actc.income_limit
         modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
 
@@ -20,8 +20,8 @@ class pr_agi_greater_than_threshold(Variable):
                 filing_status != filing_status.possible_values.JOINT,
             ],
             [
-                p.income_limit_joint,
-                p.income_limit_all_other,
+                p.joint,
+                p.other,
             ],
         )
 

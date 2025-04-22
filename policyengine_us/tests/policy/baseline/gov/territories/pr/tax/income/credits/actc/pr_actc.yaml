@@ -2,7 +2,7 @@
   period: 2024
   input:
     ctc_qualifying_children: 2
-    pr_actc_modified_income_calculation: 200
+    pr_actc_modified_income_fraction: 200
     pr_ctc: 3_000
     pr_actc_sum_taxes_paid: 3_000
     pr_additional_medicare_tax_withheld: 100
@@ -14,7 +14,7 @@
   period: 2024
   input:
     ctc_qualifying_children: 1
-    pr_actc_modified_income_calculation: 0
+    pr_actc_modified_income_fraction: 0
     pr_ctc: 2_000
     pr_actc_sum_taxes_paid: 3_000
     pr_additional_medicare_tax_withheld: 100
@@ -26,7 +26,7 @@
   period: 2024
   input:
     ctc_qualifying_children: 4
-    pr_actc_modified_income_calculation: 0
+    pr_actc_modified_income_fraction: 0
     pr_ctc: 8_500
     pr_actc_sum_taxes_paid: 1_000
     pr_additional_medicare_tax_withheld: 100

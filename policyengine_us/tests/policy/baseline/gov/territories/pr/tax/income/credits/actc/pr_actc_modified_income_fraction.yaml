@@ -4,7 +4,7 @@
     pr_modified_agi: 10_000
     filing_status: JOINT
   output:
-    pr_actc_modified_income_calculation: 0
+    pr_actc_modified_income_fraction: 0
 
 - name: Income over threshold, married filing separately
   period: 2024
@@ -12,7 +12,7 @@
     pr_modified_agi: 253_020
     filing_status: SEPARATE
   output:
-    pr_actc_modified_income_calculation: 2700
+    pr_actc_modified_income_fraction: 2700
 
 - name: Income over threshold, single
   period: 2024
@@ -20,4 +20,4 @@
     pr_modified_agi: 201_000
     filing_status: SINGLE
   output:
-    pr_actc_modified_income_calculation: 50
+    pr_actc_modified_income_fraction: 50

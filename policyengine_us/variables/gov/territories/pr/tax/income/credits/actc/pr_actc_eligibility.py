@@ -19,7 +19,7 @@ class pr_actc_eligibility(Variable):
         # must not have too high of an income, line 10
         # if modified agi < threshold, modified income calculation = 0, therefore this will be true
         income_eligible = (
-            tax_unit("pr_actc_modified_income_calculation", period)
+            tax_unit("pr_actc_modified_income_fraction", period)
             < ctc_amount
         )
         # taxes paid must be greater than excess social security tax withheld, line 18
