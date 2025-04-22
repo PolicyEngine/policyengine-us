@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.255.0] - 2025-04-22 20:32:13
+
+### Added
+
+- 2024 Arkansas State Income Tax Updates.
+
 ## [1.254.0] - 2025-04-19 16:18:12
 
 ### Added
@@ -11420,6 +11426,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.255.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.254.0...1.255.0
 [1.254.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.1...1.254.0
 [1.253.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.0...1.253.1
 [1.253.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.252.1...1.253.0
