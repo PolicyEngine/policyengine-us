@@ -13,7 +13,6 @@ class mt_standard_deduction_joint(Variable):
 
     def formula(person, period, parameters):
         # Get the current year
-        year = period.start.year
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
         # Get filing status
         filing_status = person.tax_unit("filing_status", period)

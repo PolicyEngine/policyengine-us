@@ -31,7 +31,7 @@ class mt_standard_deduction_indiv(Variable):
             deduction_amount = max_(capped_amount, floor)
         else:
             # 2024 and after: Use federal standard deduction
-            std = parameters(period).gov.irs.deductions.standard
+            p_irs = parameters(period).gov.irs.deductions.standard
             deduction_amount = std.amount[filing_status]
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
