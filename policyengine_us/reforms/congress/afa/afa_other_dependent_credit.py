@@ -173,8 +173,8 @@ def create_afa_other_dependent_credit() -> Reform:
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
-            maximum_amount = tax_unit(
-                "ctc_child_individual_maximum_arpa", period
+            maximum_amount = add(tax_unit, period,
+                ["ctc_child_individual_maximum_arpa"]
             )
             reduction = tax_unit("ctc_lower_phase_out", period)
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
