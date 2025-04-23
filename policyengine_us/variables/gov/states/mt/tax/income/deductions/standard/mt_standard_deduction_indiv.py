@@ -23,17 +23,16 @@ class mt_standard_deduction_indiv(Variable):
 
         if p.applies:
             # ── Pre-2024 MT-specific calculation ────────────────────────────────
-            agi   = person("mt_agi", period)
+            agi = person("mt_agi", period)
             floor = p.floor[filing_status]
-            cap   = p.cap[filing_status]
+            cap = p.cap[filing_status]
             uncapped = p.rate * agi
             deduction_amount = max_(min_(uncapped, cap), floor)
 
         else:
             # ── 2024-onward: mirror the *federal* standard-deduction variable ──
-          
-            deduction_amount = person.tax_unit("standard_deduction", period)
 
+            deduction_amount = person.tax_unit("standard_deduction", period)
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return is_head_or_spouse * deduction_amount

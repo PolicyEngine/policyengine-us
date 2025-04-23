@@ -1,9 +1,12 @@
 from policyengine_us.model_api import *
 
+
 class mt_standard_deduction_joint(Variable):
     value_type = float
     entity = Person
-    label = "Montana standard deduction when married couples are filing jointly"
+    label = (
+        "Montana standard deduction when married couples are filing jointly"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
@@ -17,10 +20,10 @@ class mt_standard_deduction_joint(Variable):
 
         if p.applies:
             # ── Pre-2024 MT-specific calculation ───────────────────────────────
-            agi   = add(person.tax_unit, period, ["mt_agi"])
+            agi = add(person.tax_unit, period, ["mt_agi"])
             floor = p.floor[filing_status]
-            cap   = p.cap[filing_status]
-            uncapped   = p.rate * agi
+            cap = p.cap[filing_status]
+            uncapped = p.rate * agi
             deduction_amount = max_(min_(uncapped, cap), floor)
 
         else:
