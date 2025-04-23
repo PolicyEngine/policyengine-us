@@ -12,27 +12,28 @@ class mt_standard_deduction_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
+        # ▸ MT legacy parameter table (only relevant pre-2024)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
-        # Get filing status
+
+        # ▸ Filing status used by MT’s “married-filing-separately-on-one-return” rule
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,
         )
 
         if p.applies:
-            # Pre-2024: MT specific standard deduction calculation
-            agi = person("mt_agi", period)
-            # standard deduction is a percentage of AGI that
-            # is bounded by a min/max by filing status.
+            # ── Pre-2024 MT-specific calculation ────────────────────────────────
+            agi   = person("mt_agi", period)
             floor = p.floor[filing_status]
-            cap = p.cap[filing_status]
-            uncapped_amount = p.rate * agi
-            capped_amount = min_(uncapped_amount, cap)
-            deduction_amount = max_(capped_amount, floor)
+            cap   = p.cap[filing_status]
+            uncapped = p.rate * agi
+            deduction_amount = max_(min_(uncapped, cap), floor)
+
         else:
-            # 2024 and after: Use federal standard deduction
-            std = parameters(period).gov.irs.deductions.standard
-            deduction_amount = std.amount[filing_status]
+            # ── 2024-onward: mirror the *federal* standard-deduction variable ──
+          
+            deduction_amount = person.tax_unit("standard_deduction", period)
+
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return is_head_or_spouse * deduction_amount
