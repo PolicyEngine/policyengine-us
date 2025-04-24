@@ -22,11 +22,11 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         assets = tax_unit.sum(personal_assets)
 
         #  state info
-        is_joint = person.tax_unit("tax_unit_is_joint", period)
+        is_joint = tax_unit("tax_unit_is_joint", period)
         state = person.household("state_code_str", period)
 
         #  Parameters
-        ma = parameters(
+        p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 

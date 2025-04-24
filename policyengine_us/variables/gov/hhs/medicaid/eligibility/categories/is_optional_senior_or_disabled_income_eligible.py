@@ -28,12 +28,12 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         state = person.household("state_code_str", period)
 
         #  Parameters ─
-        ma = parameters(
+        p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
         #  Income disregard (params are monthly → convert to annual)
-        income_disregard = where(
+        monthly_income_disregard = where(
             is_joint,
             ma.income.disregard.couple[state] * MONTHS_IN_YEAR,
             ma.income.disregard.individual[state] * MONTHS_IN_YEAR,
