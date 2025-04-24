@@ -13,7 +13,7 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
     def formula(person, period, parameters):
-        # ── Gather income & assets ───────────────────────────────────────────────
+        # Statutes point to SSI income and asset determinations.
         personal_income = person("ssi_countable_income", period)  # annual $
         personal_assets = person("ssi_countable_resources", period)  # $ stock
         tax_unit = person.tax_unit
@@ -22,21 +22,21 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         )  # annual $ (individual or couple)
         assets = tax_unit.sum(personal_assets)
 
-        # ── Flags & state info ──────────────────────────────────────────────────
+        # Flags & state info 
         is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
-        is_joint = person.tax_unit("tax_unit_is_joint", period)  # bool
+        is_joint = person.tax_unit("tax_unit_is_joint", period)  
         state = person.household("state_code_str", period)
         state_group = person.household(
             "state_group_str", period
         )  # CONTIGUOUS_US / AK / HI
 
-        # --- Parameters -----------------------------------------------------------
+        # Parameters 
         ma = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
-        fpg = parameters(period).gov.hhs.fpg  # this is the node you showed
+        fpg = parameters(period).gov.hhs.fpg  
 
-        # 1️⃣ Income disregard  (stored monthly → convert to annual)
+        #  Income disregard  (stored monthly → convert to annual)
         income_disregard = where(
             is_joint,
             ma.income.disregard.couple[state] * MONTHS_IN_YEAR,
@@ -62,9 +62,8 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         fpg_annual = where(is_joint, fpg_2, fpg_1)
         income_limit = limit_pct * fpg_annual
 
-        income_limit = limit_pct * fpg_annual  # annual $ cap
 
-        # 3️⃣ Asset limit (unchanged, still a fixed $ stock)
+        #  Asset limit
         asset_limit = where(
             is_joint,
             ma.assets.limit.couple[state],
@@ -76,7 +75,4 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         income_eligible = countable_income < income_limit
         asset_eligible = assets < asset_limit
         return is_senior_or_disabled & income_eligible * asset_eligible
-        under_limits = (income - income_disregard < income_limit) & (
-            assets < asset_limit
-        )
-        return is_senior_or_disabled & under_limits
+        
