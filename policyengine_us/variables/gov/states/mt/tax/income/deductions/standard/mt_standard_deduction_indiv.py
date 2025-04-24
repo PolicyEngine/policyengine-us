@@ -15,7 +15,6 @@ class mt_standard_deduction_indiv(Variable):
         # ▸ MT legacy parameter table (only relevant pre-2024)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
 
-        # ▸ Filing status used by MT’s “married-filing-separately-on-one-return” rule
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,
@@ -30,7 +29,7 @@ class mt_standard_deduction_indiv(Variable):
             deduction_amount = max_(min_(uncapped, cap), floor)
 
         else:
-            # ── 2024-onward: mirror the *federal* standard-deduction variable ──
+            # ── 2024-onward: apply the *federal* standard-deduction variable ──
 
             deduction_amount = person.tax_unit("standard_deduction", period)
 

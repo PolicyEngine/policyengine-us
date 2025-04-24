@@ -14,9 +14,8 @@ class mt_interest_exemption(Variable):
         p = parameters(period).gov.states.mt.tax.income.exemptions
 
         if p.applies:
-            interest_p = p.interest
             filing_status = tax_unit("filing_status", period)
-            cap = interest_p.cap[filing_status]
+            cap = p.interest.cap[filing_status]
             person = tax_unit.members
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
             interest_income = (

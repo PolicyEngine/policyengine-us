@@ -15,7 +15,6 @@ class mt_standard_deduction_joint(Variable):
         # Montana’s legacy parameter block (only applies through TY-2023)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
 
-        # The couple’s filing status on their *state* return
         filing_status = person.tax_unit("filing_status", period)
 
         if p.applies:
@@ -30,9 +29,6 @@ class mt_standard_deduction_joint(Variable):
             # ── 2024-onward: just reuse the federal standard-deduction variable
             #     (That variable is defined on the TaxUnit entity.)
             deduction_amount = person.tax_unit("standard_deduction", period)
-            # ⇡  If the actual name in your codebase is different
-            #    (e.g. "irs_standard_deduction"), swap it in.
-
         # Only the tax-unit head records this joint amount
         is_head = person("is_tax_unit_head", period)
         return is_head * deduction_amount
