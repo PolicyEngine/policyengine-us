@@ -71,7 +71,11 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
             ma.assets.limit.individual[state],
         )
 
-        # ── Eligibility test ───────────────────────────────────────────────────
+        # Determine eligibility.
+        countable_income = income - income_disregard
+        income_eligible = countable_income < income_limit
+        asset_eligible = assets < asset_limit
+        return is_senior_or_disabled & income_eligible * asset_eligible
         under_limits = (income - income_disregard < income_limit) & (
             assets < asset_limit
         )
