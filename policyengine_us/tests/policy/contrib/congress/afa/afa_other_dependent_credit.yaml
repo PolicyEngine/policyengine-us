@@ -147,7 +147,7 @@
         is_tax_unit_dependent: false
         employment_income: 300_000
       person2:
-        age: 16
+        age: 17
         is_tax_unit_dependent: true
       person3:
         age: 12
@@ -156,11 +156,12 @@
       tax_unit:
         members: [head, person2, person3]
   output:
+    ctc: 4_000
+    ctc_refundable_maximum: 7_200
     refundable_ctc: 4_000
     ctc_higher_phase_out: 0
     ctc_lower_phase_out: 9_400
-    ctc_refundable_maximum: 7_200
-    ctc: 4_000
+
 
 - name: Integration test - CTC fully phased out
   period: 2025

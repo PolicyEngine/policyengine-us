@@ -140,7 +140,11 @@ def create_afa_other_dependent_credit() -> Reform:
             if ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_lower_phase_out", period)
                 p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-                capped_credit = min_(p.lower_floor, maximum_amount)
+                qualifying_children = tax_unit(
+                    "ctc_qualifying_children", period
+                )
+                lower_floor = p.lower_floor * qualifying_children
+                capped_credit = min_(lower_floor, maximum_amount)
                 reduced_max_amount_lower = max_(
                     capped_credit, maximum_amount - reduction
                 )
@@ -178,8 +182,10 @@ def create_afa_other_dependent_credit() -> Reform:
             )
             reduction = tax_unit("ctc_lower_phase_out", period)
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
+            qualifying_children = tax_unit("ctc_qualifying_children", period)
+            lower_floor = p.lower_floor * qualifying_children
             reduced_max_amount_lower = max_(
-                p.lower_floor, maximum_amount - reduction
+                lower_floor, maximum_amount - reduction
             )
             higher_reduction = tax_unit("ctc_higher_phase_out", period)
             return max_(0, reduced_max_amount_lower - higher_reduction)
@@ -230,6 +236,11 @@ def create_afa_other_dependent_credit() -> Reform:
             stop=instant("2039-12-31"),
             value=True,
         )
+        parameters.gov.irs.credits.ctc.amount.base[1].threshold.update(
+            start=instant("2025-01-01"),
+            stop=instant("2039-12-31"),
+            value=18,
+        )
         parameters.gov.irs.credits.ctc.amount.adult_dependent.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),
@@ -262,7 +273,7 @@ def create_afa_other_dependent_credit_reform(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(10):
         if p.in_effect(current_period):
             reform_active = True
             break
