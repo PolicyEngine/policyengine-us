@@ -9722,3 +9722,9 @@
     - Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter
       brackets
   date: 2025-04-25 19:32:44
+- bump: patch
+  changes:
+    fixed:
+    - Default the MA EAEDC living arrangement to "A".
+    - Fix the MA EAEDC non-financial eligibility formula.
+  date: 2025-04-25 22:07:31
