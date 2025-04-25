@@ -7,7 +7,9 @@ class il_cta_student_reduced_fare_eligible(Variable):
     label = "Eligible for the Illinois Chicago Transit Authority student reduced fare"
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = "https://www.transitchicago.com/reduced-fare-programs/#students"
+    reference = (
+        "https://www.transitchicago.com/reduced-fare-programs/#students"
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.rta.age_threshold
