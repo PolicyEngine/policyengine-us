@@ -17,5 +17,6 @@ class ma_tafdc_eligible(Variable):
             "ma_tafdc_non_financial_eligible", period
         )
         financial_eligible = spm_unit("ma_tafdc_financial_eligible", period)
-
+        print(non_financial_eligible)
+        print(financial_eligible)
         return non_financial_eligible & financial_eligible
