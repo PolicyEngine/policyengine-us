@@ -33,7 +33,7 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
         #  Income disregard (params are monthly → convert to annual)
-        monthly_income_disregard = where(
+        income_disregard = where(
             is_joint,
             p.income.disregard.couple[state] * MONTHS_IN_YEAR,
             p.income.disregard.individual[state] * MONTHS_IN_YEAR,
@@ -42,8 +42,8 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         #  Poverty-guideline-based income limit
         limit_pct = where(
             is_joint,
-            ma.income.limit.couple[state],
-            ma.income.limit.individual[state],
+            p.income.limit.couple[state],
+            p.income.limit.individual[state],
         )
         fpg_annual = person.tax_unit("tax_unit_fpg", period)
         income_limit = limit_pct * fpg_annual
