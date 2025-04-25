@@ -33,8 +33,8 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
         #  Asset limit
         asset_limit = where(
             is_joint,
-            ma.assets.limit.couple[state],
-            ma.assets.limit.individual[state],
+            p.assets.limit.couple[state],
+            p.assets.limit.individual[state],
         )
 
         return assets < asset_limit
