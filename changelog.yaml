@@ -9716,3 +9716,9 @@
     fixed:
     - AFA reform maximum CTC amount adjustment.
   date: 2025-04-25 18:05:47
+- bump: patch
+  changes:
+    fixed:
+    - Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter
+      brackets
+  date: 2025-04-25 19:32:44
