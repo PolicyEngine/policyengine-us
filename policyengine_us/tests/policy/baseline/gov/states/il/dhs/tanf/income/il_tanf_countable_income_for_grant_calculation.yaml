@@ -1,0 +1,29 @@
+- name: Case 1, household size of 1 with $10000 earned income.
+  period: 2023
+  input:
+    il_tanf_countable_gross_earned_income: 10_100
+    il_tanf_childcare_deduction: 100 
+    spm_unit_size: 1 
+    spm_unit_fpg: 14_580
+    il_tanf_countable_unearned_income: 100 
+    state_code: IL
+  output:
+    il_tanf_countable_income_for_grant_calculation: 2_600
+    # 10_100 - 100 = 10_000
+    # earned_income_deduction = 0.75* 10_000 = 7_500
+    # 10_000 - 7_500 + 100 = 2_600
+
+- name: Case 2, household size of 2 with $5000 earned income. 
+  period: 2023
+  input:
+    il_tanf_countable_gross_earned_income: 5_100
+    il_tanf_childcare_deduction: 100 
+    spm_unit_size: 2 
+    spm_unit_fpg: 19_720
+    il_tanf_countable_unearned_income: 100 
+    state_code: IL
+  output:
+    il_tanf_countable_income_for_grant_calculation: 1_350
+    # 5_100 - 100 = 5_000
+    # earned_income_deduction = 0.75* 5_000 = 3_750
+    # 5_000 - 3_750 + 100 = 1_350

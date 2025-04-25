@@ -13,6 +13,6 @@ class il_tanf(Variable):
     def formula(spm_unit, period, parameters):
         payment_level = spm_unit("il_tanf_payment_level", period)
         countable_income = spm_unit(
-            "il_tanf_countable_income_at_recipient", period
+            "il_tanf_countable_income_for_grant_calculation", period
         )
         return max_(payment_level - countable_income, 0)

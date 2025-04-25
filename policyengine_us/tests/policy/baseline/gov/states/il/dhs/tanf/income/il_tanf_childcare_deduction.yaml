@@ -1,0 +1,54 @@
+- name: Case 1, no childcare expense, 0
+  period: 2023-01
+  input:
+    state_code: IL
+    is_tax_unit_dependent: true
+    is_child: true
+    monthly_age: 1 
+    childcare_expenses: 0 
+  output:
+    il_tanf_childcare_deduction: 0
+
+- name: Case 2, some childcare expense.
+  period: 2023
+  input:
+    state_code: IL
+    is_tax_unit_dependent: true
+    is_child: true
+    monthly_age: 1 
+    childcare_expenses: 250*12
+  output:
+    il_tanf_childcare_deduction: 200*12
+
+- name: Case 3, some childcare expense, child age at 2.
+  period: 2023-01
+  input:
+    state_code: IL
+    is_tax_unit_dependent: true
+    is_child: true
+    monthly_age: 2
+    childcare_expenses: 250*12
+  output:
+    il_tanf_childcare_deduction: 175
+
+- name: Case 4, some childcare expense, but not a dependent.
+  period: 2023-01
+  input:
+    state_code: IL
+    is_tax_unit_dependent: false
+    is_child: true
+    monthly_age: 15 
+    childcare_expenses: 250*12 
+  output:
+    il_tanf_childcare_deduction: 0
+
+- name: Case 5, some childcare expense, but not a child.
+  period: 2023-01
+  input:
+    state_code: IL
+    is_tax_unit_dependent: true
+    is_child: false
+    monthly_age: 18
+    childcare_expenses: 250*12 
+  output:
+    il_tanf_childcare_deduction: 0

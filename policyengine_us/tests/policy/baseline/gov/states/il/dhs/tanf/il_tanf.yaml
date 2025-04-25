@@ -1,0 +1,29 @@
+- name: Eligible for TANF, payment level higher than income.
+  period: 2023
+  input:
+    il_tanf_payment_level: 100 
+    il_tanf_countable_income_for_grant_calculation: 80
+    il_tanf_eligible: true
+    state_code: IL
+  output:
+    il_tanf: 20
+
+- name: Eligible for TANF, payment level lower than income.
+  period: 2023
+  input:
+    il_tanf_payment_level: 80
+    il_tanf_countable_income_for_grant_calculation: 100
+    il_tanf_eligible: true
+    state_code: IL
+  output:
+    il_tanf: 0
+
+- name: Ineligible for TANF.
+  period: 2023
+  input:
+    il_tanf_payment_level: 100 
+    il_tanf_countable_income_for_grant_calculation: 80
+    il_tanf_eligible: false
+    state_code: IL
+  output:
+    il_tanf: 0

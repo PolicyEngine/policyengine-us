@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ol_tanf_income_eligible(Variable):
+class il_tanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Illinois Temporary Assistance for Needy Families (TANF) due to income"
