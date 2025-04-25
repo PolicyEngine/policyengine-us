@@ -12,4 +12,4 @@ class il_cta_children_reduced_fare_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.rta.age_threshold
         age = person("age", period)
-        return p.calc(age)
+        return p.child.calc(age)

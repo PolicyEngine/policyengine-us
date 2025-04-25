@@ -14,12 +14,18 @@ class il_cta_free_ride_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.rta.age_threshold
         age = person("age", period)
+        young_child = age <= p.young_child
         senior = age >= p.senior
-        disabled = person("disabled", period)
+        disabled = person("is_disabled", period)
         is_in_dabap = person("il_dabap_eligible", period)
         eligible_senior = senior & is_in_dabap
         eligible_disabled = disabled & is_in_dabap
         eligible_military_status = person(
             "il_cta_military_service_pass_eligible", period
         )
-        return eligible_senior | eligible_disabled | eligible_military_status
+        return (
+            young_child
+            | eligible_senior
+            | eligible_disabled
+            | eligible_military_status
+        )

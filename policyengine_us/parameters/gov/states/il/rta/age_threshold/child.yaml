@@ -4,7 +4,7 @@ metadata:
   amount_unit: bool
   period: year
   type: single_amount
-  label: Illinois CTA Children ages 7-11 reduced fare program categorical eligibility age threshold
+  label: Illinois CTA Children ages 7-11 reduced fare program child age threshold
   reference:
     - title: Chicago Transit Authority (CTA) Reduced Fare & Free Ride Programs
       href: https://www.transitchicago.com/reduced-fare-programs/#kids
@@ -12,7 +12,7 @@ brackets:
   - threshold:
       2021-01-01: 0
     amount: 
-      2021-01-01: true
+      2021-01-01: false
   - threshold: 
       2021-01-01: 7
     amount: 

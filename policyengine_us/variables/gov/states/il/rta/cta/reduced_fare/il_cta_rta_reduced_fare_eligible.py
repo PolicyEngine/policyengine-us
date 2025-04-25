@@ -17,6 +17,6 @@ class il_cta_rta_reduced_fare_eligible(Variable):
         p = parameters(period).gov.states.il.rta.age_threshold
         age = person("age", period)
         senior = age >= p.senior
-        disabled = person("disabled", period)
+        disabled = person("is_disabled", period)
         medicare_cardholder = person("is_medicare_eligible", period)
         return senior | disabled | medicare_cardholder
