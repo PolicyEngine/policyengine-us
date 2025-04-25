@@ -9696,3 +9696,23 @@
     changed:
     - Corrected infant allowance file name in Massachusetts TAFDC program.
   date: 2025-04-23 19:49:38
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the SLCSP computation to reflect person-level eligibility.
+  date: 2025-04-25 14:31:40
+- bump: minor
+  changes:
+    added:
+    - Updated Delaware state tax code for 2024.
+  date: 2025-04-25 15:43:41
+- bump: minor
+  changes:
+    added:
+    - Updated Montana's Tax Code for 2024.
+  date: 2025-04-25 17:47:11
+- bump: patch
+  changes:
+    fixed:
+    - AFA reform maximum CTC amount adjustment.
+  date: 2025-04-25 18:05:47
