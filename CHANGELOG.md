@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.258.0] - 2025-04-25 17:47:11
+
+### Added
+
+- Updated Montana's Tax Code for 2024.
+
 ## [1.257.0] - 2025-04-25 15:43:41
 
 ### Added
@@ -11444,6 +11450,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.257.0...1.258.0
 [1.257.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.256.1...1.257.0
 [1.256.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.256.0...1.256.1
 [1.256.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.255.0...1.256.0
