@@ -10,7 +10,9 @@ class ctc_value(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return min_(
-            tax_unit("ctc", period),
-            tax_unit("ctc_phase_in", period),
-        )
+        ctc = tax_unit("ctc", period)
+        phase_in = tax_unit("ctc_phase_in", period)
+        p = parameters(period).gov.irs.credits.ctc.refundable
+        if p.fully_refundable:
+            return ctc
+        return min_(ctc, phase_in)
