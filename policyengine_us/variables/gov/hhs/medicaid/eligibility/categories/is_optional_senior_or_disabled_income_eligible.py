@@ -35,8 +35,8 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         #  Income disregard (params are monthly → convert to annual)
         monthly_income_disregard = where(
             is_joint,
-            ma.income.disregard.couple[state] * MONTHS_IN_YEAR,
-            ma.income.disregard.individual[state] * MONTHS_IN_YEAR,
+            p.income.disregard.couple[state] * MONTHS_IN_YEAR,
+            p.income.disregard.individual[state] * MONTHS_IN_YEAR,
         )
 
         #  Poverty-guideline-based income limit
