@@ -16,7 +16,7 @@ class ma_liheap_benefit_level(Variable):
         fpg = spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.ma.doer.liheap
 
-        level_one = fpg 
+        level_one = fpg
         level_two = fpg * p.benefit_level_multiplier * 5
         level_three = fpg * p.benefit_level_multiplier * 6
         level_four = fpg * p.benefit_level_multiplier * 7
@@ -41,4 +41,3 @@ class ma_liheap_benefit_level(Variable):
             ],
             default=6,
         )
-    

@@ -16,9 +16,12 @@ class ma_liheap_eligibile(Variable):
         income = add(spm_unit, period, ["irs_gross_income"])
         threshold = spm_unit("ma_liheap_income_threshold", period)
         heat_in_rent = spm_unit("heat_in_rent", period)
-        is_subsidized = spm_unit("ma_liheap_subsidized_housing_eligible", period)
+        is_subsidized = spm_unit(
+            "ma_liheap_subsidized_housing_eligible", period
+        )
 
         return (income <= threshold) & (
             (~is_subsidized) | (is_subsidized & ~heat_in_rent)
         )
-       # If income less than threshold, is subisidized, but heat include in rent, then ineligible?
+
+    # If income less than threshold, is subisidized, but heat include in rent, then ineligible?

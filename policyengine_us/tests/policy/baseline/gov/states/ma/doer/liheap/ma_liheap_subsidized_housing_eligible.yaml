@@ -23,12 +23,10 @@
 - name: Ineligible two-person household in 2023 has sufficient rent but no housing assistance in Massachusetts.
   period: 2023
   input:
+    spm_unit_size: 2
     state_code: MA
     irs_gross_income: 70_000
     housing_assistance: 0
-    spm_unit:
-      members:
-        - rent: 11_000
-        - rent: 11_000
+    rent: 22_000
   output:
     ma_liheap_subsidized_housing_eligible: false

@@ -13,6 +13,6 @@ class ma_liheap_hecs_threshold(Variable):
         last_year_cost = spm_unit("ma_liheap_last_year_energy_cost", period)
 
         p = parameters(period).gov.states.ma.doer.liheap.threshold
-        threshold = p.ma_liheap_hecs_thresholds[utility_type]
+        threshold = p.hecs_thresholds[utility_type]
 
         return last_year_cost > threshold
