@@ -1,0 +1,28 @@
+description: The District of Columbia deducts up to this amount of dependent care expenses per child from countable income under the Temporary Assistance for Needy Families program, depending on child age.  
+
+metadata:
+  period: month
+  label: DC TANF monthly earned income childcare deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    # Statute allows an age-based deduction while deferring the amount to mayoral rulemaking.
+    - title: Code of the District of Columbia § 4-205.11 (a)(2)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11#(a)(2)
+    - title: DC TANF State Plan 2021 | Section 4 (4)(a) 
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=22
+    - title: DC TANF State Plan 2024 | Section 4 (4)(a) 
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=22
+
+
+# Use a scale parameter with two brackets:
+brackets:
+  - threshold:
+      2020-10-01: 0 # Age zero until the next bracket threshold.
+    amount:
+      2020-10-01: 200 # Age zero until the next bracket threshold.
+  - threshold:
+      2020-10-01: 2
+    amount:
+      2020-10-01: 175

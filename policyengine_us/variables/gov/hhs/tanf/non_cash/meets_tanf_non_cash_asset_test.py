@@ -6,7 +6,7 @@ class meets_tanf_non_cash_asset_test(Variable):
     entity = SPMUnit
     label = "Meets asset test for TANF non-cash benefit"
     documentation = "Asset eligibility for TANF non-cash benefit for SNAP BBCE"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         assets = spm_unit("snap_assets", period)

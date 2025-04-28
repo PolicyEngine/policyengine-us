@@ -1,0 +1,26 @@
+- name: Eligible person. 
+  period: 2025
+  input:
+    is_disabled: true
+    is_medicare_eligible: 10
+    state_code: MA
+  output:
+    ma_mbta_tap_charlie_card_eligible: true
+
+- name: Not disabled but receives medicaid, eligible. 
+  period: 2025
+  input:
+    is_disabled: false
+    is_medicare_eligible: 10
+    state_code: MA
+  output:
+    ma_mbta_tap_charlie_card_eligible: true
+
+- name: Disabled and not medicaid eligible, ineligible.
+  period: 2025
+  input:
+    is_disabled: false
+    is_medicare_eligible: 0
+    state_code: MA
+  output:
+    ma_mbta_tap_charlie_card_eligible: false
