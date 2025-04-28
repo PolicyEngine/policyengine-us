@@ -16,3 +16,14 @@
     ny_household_credit: 10
   output:
     ny_eitc: 20
+
+- name: Household credit does not apply when tax is 0
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    eitc: 100
+    ny_household_credit: 10
+    nj_main_income_tax: 0
+  output:
+    ny_eitc: 30
