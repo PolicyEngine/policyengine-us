@@ -5,7 +5,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: false
     ma_eaedc_eligible_disabled_dependent_present: false
     ma_eaedc_eligible_caretaker_family: false
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: true
@@ -17,7 +17,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: true
     ma_eaedc_eligible_disabled_dependent_present: false
     ma_eaedc_eligible_caretaker_family: false
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: true
@@ -29,7 +29,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: false
     ma_eaedc_eligible_disabled_dependent_present: true
     ma_eaedc_eligible_caretaker_family: false
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: true
@@ -41,7 +41,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: false
     ma_eaedc_eligible_disabled_dependent_present: false
     ma_eaedc_eligible_caretaker_family: true
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: true
@@ -53,7 +53,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: true
     ma_eaedc_eligible_disabled_dependent_present: false
     ma_eaedc_eligible_caretaker_family: false
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: true
@@ -65,7 +65,7 @@
     ma_eaedc_eligible_disabled_head_or_spouse: false
     ma_eaedc_eligible_disabled_dependent_present: false
     ma_eaedc_eligible_caretaker_family: false
-    ma_eaedc_immigration_status_eligible: false
+    ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
     ma_eaedc_non_financial_eligible: false
@@ -76,7 +76,7 @@
     ma_eaedc_eligible_elderly_present: false
     ma_eaedc_eligible_disabled_head_or_spouse: false
     ma_eaedc_eligible_disabled_dependent_present: false
-    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_eligible_caretaker_family: true
     ma_eaedc_immigration_status_eligible: true
     state_code: MA
   output:
