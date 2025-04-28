@@ -11,3 +11,4 @@ class is_infant_for_medicaid_nfc(Variable):
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
         age = person("age", period)
         return ma.age_range.calc(age)
+    
