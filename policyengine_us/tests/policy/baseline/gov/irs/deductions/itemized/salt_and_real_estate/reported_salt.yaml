@@ -1,0 +1,53 @@
+- name: SALT capped at taxable income
+  period: 2023
+  input:
+    salt: 100_000
+    adjusted_gross_income: 100_000
+    exemptions: 2_000
+  output:
+    reported_salt: 98_000
+
+- name: SALT below cap
+  period: 2023
+  input:
+    salt: 23_000
+    adjusted_gross_income: 100_000
+    exemptions: 2_000
+  output:
+    reported_salt: 23_000
+
+- name: SALT uncapped
+  period: 2023
+  input:
+    gov.simulation.limit_itemized_deductions_to_taxable_income: False
+    salt: 100_000
+    adjusted_gross_income: 100_000
+    exemptions: 2_000
+  output:
+    reported_salt: 100_000
+
+- name: Integration test with amt, limit is applied
+  period: 2026
+  input:
+    gov.simulation.limit_itemized_deductions_to_taxable_income: True
+    salt: 45_000
+    employment_income: 40_000
+  output:
+    adjusted_gross_income: 40_000
+    exemptions: 5_300
+    reported_salt: 34_700
+    amt_income: 40_000
+    taxable_income: 0
+
+- name: Integration test with amt, limit is not applied
+  period: 2026
+  input:
+    gov.simulation.limit_itemized_deductions_to_taxable_income: False
+    salt: 45_000
+    employment_income: 40_000
+  output:
+    adjusted_gross_income: 40_000
+    exemptions: 5_300
+    reported_salt: 45_000
+    amt_income: 50_300
+    taxable_income: 0

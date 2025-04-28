@@ -9696,3 +9696,63 @@
     changed:
     - Corrected infant allowance file name in Massachusetts TAFDC program.
   date: 2025-04-23 19:49:38
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the SLCSP computation to reflect person-level eligibility.
+  date: 2025-04-25 14:31:40
+- bump: minor
+  changes:
+    added:
+    - Updated Delaware state tax code for 2024.
+  date: 2025-04-25 15:43:41
+- bump: minor
+  changes:
+    added:
+    - Updated Montana's Tax Code for 2024.
+  date: 2025-04-25 17:47:11
+- bump: patch
+  changes:
+    fixed:
+    - AFA reform maximum CTC amount adjustment.
+  date: 2025-04-25 18:05:47
+- bump: patch
+  changes:
+    fixed:
+    - Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter
+      brackets
+  date: 2025-04-25 19:32:44
+- bump: patch
+  changes:
+    fixed:
+    - Default the MA EAEDC living arrangement to "A".
+    - Fix the MA EAEDC non-financial eligibility formula.
+  date: 2025-04-25 22:07:31
+- bump: patch
+  changes:
+    added:
+    - 2025 Annual Update of the HHS Poverty Guidelines.
+  date: 2025-04-26 02:00:39
+- bump: minor
+  changes:
+    added:
+    - Include taxable IRA distributions in market income.
+  date: 2025-04-28 16:19:52
+- bump: minor
+  changes:
+    added:
+    - Adjust ctc_value when activating fully refundable CTC.
+  date: 2025-04-28 16:42:01
+- bump: minor
+  changes:
+    added:
+    - Limit reported SALT to the amount that would zero out regular tax liability.
+    - Create SALT and reported SALT variables.
+    fixes:
+    - Remove itemized deductions limitation at taxable income.
+  date: 2025-04-28 17:09:00
+- bump: minor
+  changes:
+    added:
+    - 2026-2027 Montana Income Tax Changes.
+  date: 2025-04-28 20:12:23
