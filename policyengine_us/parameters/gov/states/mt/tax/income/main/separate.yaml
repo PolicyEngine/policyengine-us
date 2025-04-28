@@ -34,6 +34,12 @@ brackets:
       2024-01-01: 20_500
       2026-01-01: 47_500
       2027-01-01: 65_000
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 100
     rate:
       2021-01-01: 0.02
       2024-01-01: 0.059
