@@ -1,0 +1,15 @@
+- name: TAFDC larger than EAEDC.
+  period: 2023
+  input: 
+    ma_tafdc_if_eaedc_ineligible: 100
+    ma_eaedc_if_tafdc_ineligible: 80
+  output:
+    ma_tafdc_larger_than_eaedc: true
+
+- name: TAFDC lower than EAEDC.
+  period: 2023
+  input: 
+    ma_tafdc_if_eaedc_ineligible: 100
+    ma_eaedc_if_tafdc_ineligible: 180
+  output:
+    ma_tafdc_larger_than_eaedc: false

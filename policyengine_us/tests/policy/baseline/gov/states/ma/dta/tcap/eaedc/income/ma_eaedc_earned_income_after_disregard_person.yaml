@@ -43,3 +43,23 @@
     state_code: MA
   output:
     ma_eaedc_earned_income_after_disregard_person: 0
+
+- name: Case 5, earned income is monthly $800.
+  period: 2025
+  input:
+    ma_tcap_gross_earned_income: 9_600
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 6087.6
+    # 800 - 200 = 600
+    # Percentage disregard = (600 - 30)*0.33*4 = 752.4
+    # Flat disregard = 30*12 = 360
+    # 600*12 - 752.4 - 360 = 6087.6
+
+- name: Case 6, earned income is monthly $800.
+  period: 2025-01
+  input:
+    ma_tcap_gross_earned_income: 800
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 381.9
