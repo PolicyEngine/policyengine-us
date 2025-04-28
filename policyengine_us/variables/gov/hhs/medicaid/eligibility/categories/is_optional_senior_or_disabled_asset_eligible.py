@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class is_optional_senior_or_disabled_asset_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Asset-eligibility for State’s optional Medicaid pathway for seniors or people with disabilities"
-    )
+    label = "Asset-eligibility for State’s optional Medicaid pathway for seniors or people with disabilities"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 

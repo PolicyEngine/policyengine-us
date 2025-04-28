@@ -4,15 +4,13 @@ from policyengine_us.model_api import *
 class is_optional_senior_or_disabled_income_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Income-eligibility for State’s optional Medicaid pathway for seniors or people with disabilities"
-    )
+    label = "Income-eligibility for State’s optional Medicaid pathway for seniors or people with disabilities"
     documentation = (
         "True if the tax unit’s countable income—after the state-specific "
         "income disregard—is below the income limit that the state sets for its "
         "optional pathway for aged, blind, or disabled individuals who are not "
         "otherwise SSI-eligible."
-)
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
