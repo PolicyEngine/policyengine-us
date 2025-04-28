@@ -16,5 +16,7 @@ class ny_eitc(Variable):
         tentative_nys_eitc = federal_eitc * p.eitc.match
         income_tax_before_credits = tax_unit("nj_main_income_tax", period)
         household_credit = tax_unit("ny_household_credit", period)
-        capped_household_credit = min_(income_tax_before_credits, household_credit)
+        capped_household_credit = min_(
+            income_tax_before_credits, household_credit
+        )
         return max_(0, tentative_nys_eitc - capped_household_credit)
