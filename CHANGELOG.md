@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.259.0] - 2025-04-28 16:19:52
+
+### Added
+
+- Include taxable IRA distributions in market income.
+
 ## [1.258.4] - 2025-04-26 02:00:39
 
 ### Added
@@ -11475,6 +11481,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.259.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.4...1.259.0
 [1.258.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.3...1.258.4
 [1.258.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.2...1.258.3
 [1.258.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.1...1.258.2
