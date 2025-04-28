@@ -3,6 +3,7 @@
   input: 
     ma_tafdc_if_eaedc_ineligible: 100
     ma_eaedc_if_tafdc_ineligible: 80
+    state_code: MA
   output:
     ma_tafdc_larger_than_eaedc: true
 
@@ -11,5 +12,6 @@
   input: 
     ma_tafdc_if_eaedc_ineligible: 100
     ma_eaedc_if_tafdc_ineligible: 180
+    state_code: MA
   output:
     ma_tafdc_larger_than_eaedc: false

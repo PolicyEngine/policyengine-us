@@ -207,7 +207,7 @@
     ma_tafdc_payment_standard: 688
     ma_tafdc_eligible_dependent: [False, True]
     ma_tafdc_dependent_care_deduction: 0
-    ma_tafdc: 580
+    ma_tafdc: 580      # In 2025-05: 688 - 300 + 41.7 = 429.7
     ma_eaedc_eligible: true
     ma_eaedc_immigration_status_eligible: true
     ma_eaedc_financial_eligible: true
@@ -216,4 +216,4 @@
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_standard_assistance: 522
     ma_eaedc_net_income: 381.9
-    ma_eaedc: 0
+    ma_eaedc: 0  # 140.1   

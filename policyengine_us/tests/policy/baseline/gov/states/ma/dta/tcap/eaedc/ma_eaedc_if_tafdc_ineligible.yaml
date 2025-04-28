@@ -5,13 +5,13 @@
     ma_eaedc_net_income: 80
     ma_eaedc_eligible: true
   output:
-    ma_eaedc_if_tafdc_ineligible: true
+    ma_eaedc_if_tafdc_ineligible: 20
 
 - name: Standard assistance lower than income.  
   period: 2023
   input:
     ma_eaedc_standard_assistance: 100
-    ma_eaedc_net_income: 120
+    ma_eaedc_net_income: 100
     ma_eaedc_eligible: true
   output:
-    ma_eaedc_if_tafdc_ineligible: false
+    ma_eaedc_if_tafdc_ineligible: 0
