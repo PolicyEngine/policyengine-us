@@ -5,9 +5,9 @@ from numpy import ceil
 class pr_actc_modified_income_fraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico ACTC modified income threshold"
+    label = "Puerto Rico ACTC modified income fraction"
     definition_period = YEAR
-    reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2" # line 6
+    reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"  # line 6
     documentation = "The Puerto Rico ACTC is limited to the smaller of the actual credit amount and this value derived from the modified AGI."
     defined_for = "pr_actc_modified_income_excess_applies"
 
@@ -28,11 +28,11 @@ class pr_actc_modified_income_fraction(Variable):
             ],
         )
 
-        # calculate credit based on income earned over the threshold, lines 5 & 6
+        # calculate credit based on income earned over the threshold, lines 5-6
         modified_inc = modified_agi - threshold
         # turn it into a multiple of 1000 if not already
-        income_fraction = (
-            int(ceil(modified_inc / p.income_multiple) * p.income_multiple)
+        income_fraction = int(
+            ceil(modified_inc / p.income_multiple) * p.income_multiple
         )
 
         return income_fraction * p.income_rate

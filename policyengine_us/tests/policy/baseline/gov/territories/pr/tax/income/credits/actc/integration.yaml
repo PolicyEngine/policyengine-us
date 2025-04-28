@@ -1,0 +1,29 @@
+- name: integration test 1, a single parent with 2 dependents
+  period: 2024
+  input:
+    people:
+      person1: 
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        self_employment_tax: 100
+      person2:
+        age: 16
+        is_tax_unit_spouse: false
+      person3:
+        age: 5
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+        pr_modified_agi: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PR
+  output: 
+    pr_actc_eligibility: true
+    pr_actc_modified_income_excess_applies: false
+    pr_actc_modified_income_fraction: 0
+    pr_actc_sum_taxes_paid: 50
+    pr_actc: 50

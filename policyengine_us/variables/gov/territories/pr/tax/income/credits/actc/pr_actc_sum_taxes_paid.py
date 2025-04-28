@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pr_actc_sum_taxes_paid(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico additional child tax credit taxes paid"
+    label = "Puerto Rico ACTC taxes paid"
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
 

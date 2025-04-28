@@ -1,10 +1,10 @@
-description: Puerto Rico computes a modified version of income by rounding income to a multiple of this number. 
+description: Puerto Rico computes a fraction of the income by rounding income to a multiple of this number.
 values:
   2023-01-01: 1_000
 metadata:
   unit: currency-USD
   period: year
-  label: Puerto Rico additional child tax credit income multiple
+  label: Puerto Rico ACTC income multiple
   reference:
     - title: 2024 Form 1040-SS
       href: https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2

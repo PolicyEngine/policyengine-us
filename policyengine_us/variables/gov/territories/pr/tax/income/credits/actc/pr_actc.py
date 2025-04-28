@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pr_actc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico additional child tax credit amount"
+    label = "Puerto Rico ACTC amount"
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
     defined_for = "pr_actc_eligibility"
@@ -16,20 +16,18 @@ class pr_actc(Variable):
         # line 2
         base_actc_amount = num_children * p.amount
         # line 6
-        modified_inc = tax_unit(
-            "pr_actc_modified_income_fraction", period
-        )
+        inc_fraction = tax_unit("pr_actc_modified_income_fraction", period)
         # CTC + ODC amount, line 9
-        ctc_amount = tax_unit("pr_ctc", period)  
+        ctc_amount = tax_unit("pr_ctc", period)
 
         # earned income method to calculate credit amount
         # if modified agi > threshold -> minimum of the two amounts, lines 10 and 11 (credit_amt_alt)
         # if modified agi < threshold -> original credit amount, line 5 (credit_amt)
-        credit_amt_alt = min(base_actc_amount, ctc_amount - modified_inc)
+        credit_amt_alt = min(base_actc_amount, ctc_amount - inc_fraction)
         earned_inc_credit_amt = select(
             [
-                modified_inc == 0,
-                modified_inc != 0,
+                inc_fraction == 0,
+                inc_fraction != 0,
             ],
             [
                 base_actc_amount,
@@ -37,13 +35,13 @@ class pr_actc(Variable):
             ],
         )
 
-        # another calculation of the credit through taxes 
+        # another calculation of the credit through taxes
         # lines 12a-14
-        taxes_paid = tax_unit("pr_actc_sum_taxes_paid", period)  
+        taxes_paid = tax_unit("pr_actc_sum_taxes_paid", period)
         # like a credit
         taxes_paid = taxes_paid - tax_unit(
             "pr_additional_medicare_tax_withheld", period
-        )  # like a credit
+        )
 
         # line 15
         excess_ss_tax = tax_unit("pr_excess_social_security_withheld", period)
