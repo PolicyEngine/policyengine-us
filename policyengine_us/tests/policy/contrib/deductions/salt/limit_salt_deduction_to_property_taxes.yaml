@@ -5,6 +5,7 @@
     gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: true
     real_estate_taxes: 5_000
     state_and_local_sales_or_income_tax: 6_000
+    adjusted_gross_income: 100_000
     filing_status: JOINT
   output:
     salt_deduction: 5_000
@@ -15,6 +16,7 @@
     gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: false
     real_estate_taxes: 5_000
     state_and_local_sales_or_income_tax: 6_000
+    adjusted_gross_income: 100_000
     filing_status: JOINT
   output:
     salt_deduction: 10_000
@@ -26,6 +28,7 @@
     gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: true
     real_estate_taxes: 5_000
     state_and_local_sales_or_income_tax: 6_000
+    adjusted_gross_income: 100_000
     filing_status: JOINT
   output:
     salt_deduction: 5_000
@@ -36,6 +39,7 @@
     gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: false
     real_estate_taxes: 5_000
     state_and_local_sales_or_income_tax: 6_000
+    adjusted_gross_income: 100_000
     filing_status: JOINT
   output:
     salt_deduction: 11_000
