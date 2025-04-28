@@ -7,9 +7,6 @@ class is_optional_senior_or_disabled_asset_eligible(Variable):
     label = (
         "Asset-eligibility for State’s optional Medicaid pathway for seniors or people with disabilities"
     )
-    documentation = (
-        "True if the tax unit’s countable assets are below the state asset "
-        "threshold for the optional aged/disabled Medicaid category.")
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
