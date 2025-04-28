@@ -14,10 +14,10 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
 
     def formula(person, period, parameters):
         is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
-        income_ok = person(
+        income_eligible = person(
             "is_optional_senior_or_disabled_income_eligible", period
         )
-        asset_ok = person(
+        asset_eligible = person(
             "is_optional_senior_or_disabled_asset_eligible", period
         )
         return is_senior_or_disabled & income_ok & asset_ok
