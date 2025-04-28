@@ -1,0 +1,12 @@
+description: If there is a deficit of $9.99 or less, the assistance unit will be ineligible for a money payment.
+
+values:
+  2020-07-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA TANF minimum payment
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=85
