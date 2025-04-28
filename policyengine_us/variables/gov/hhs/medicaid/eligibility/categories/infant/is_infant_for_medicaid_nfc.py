@@ -8,13 +8,14 @@ class is_infant_for_medicaid_nfc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
+        p = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
         age = person("age", period)
         state_code = person.household("state_code_str", period)
 
         # Use vectorized selection (similar to the example) to choose which calculation to use
+        p = parameters(period).gov.hhs.medicaid.eligibility.categories.infant.age_range
         return select(
             [state_code == "CA", state_code == "MN"],
-            [ma.age_range.in_ca.calc(age), ma.age_range.in_mn.calc(age)],
-            default=ma.age_range.other.calc(age),
+            [p.in_ca.calc(age), p.in_mn.calc(age)],
+            default=p.other.calc(age),
         )

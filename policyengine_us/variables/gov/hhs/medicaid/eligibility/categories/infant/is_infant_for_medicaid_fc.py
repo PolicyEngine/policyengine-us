@@ -19,4 +19,4 @@ class is_infant_for_medicaid_fc(Variable):
         income_limit = ma.income_limit[state_code]
 
         # allow exactly at the threshold
-        return income < income_limit
+        return income <= income_limit
