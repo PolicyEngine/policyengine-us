@@ -31,5 +31,4 @@ class ma_eaedc_non_financial_eligible(Variable):
             | disabled_head_or_spouse_present
             | disabled_dependent_present
             | caretaker_family_eligible
-            | immigration_status_eligible
-        )
+        ) & immigration_status_eligible

@@ -4,6 +4,7 @@
   input:
     state_code: NY
     filing_status: SINGLE
+    income_tax_before_credits: 2_000
   output:
     me_refundable_child_care_credit: 0
 
@@ -13,6 +14,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
+    income_tax_before_credits: 2_000
     cdcc: 0
   output:
     me_refundable_child_care_credit: 0
@@ -25,6 +27,7 @@
     filing_status: SINGLE
     cdcc: 1_000
     me_step_4_share_of_child_care_expenses: 0 
+    income_tax_before_credits: 2_000
   output:
     me_child_care_credit: 250
     me_refundable_child_care_credit: 250
@@ -38,6 +41,7 @@
     filing_status: SINGLE
     tax_unit_childcare_expenses: 4_000
     me_step_4_share_of_child_care_expenses: 1 
+    income_tax_before_credits: 5_000
     cdcc: 4_000
   output:
     me_child_care_credit: 2_000
@@ -52,8 +56,46 @@
     filing_status: SINGLE
     tax_unit_childcare_expenses: 2_000
     me_step_4_share_of_child_care_expenses: 0.5 
+    income_tax_before_credits: 2_000
     cdcc: 2_000
   output:
     me_child_care_credit: 750
     me_refundable_child_care_credit: 500
     me_non_refundable_child_care_credit: 250
+
+- name: Taxsim integration test
+  absolute_error_margin: 2
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_002
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 4
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 23
+  output:
+    me_child_care_credit: 0
+    me_income_tax: -1_199

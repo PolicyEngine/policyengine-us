@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.262.0] - 2025-04-28 20:12:23
+
+### Added
+
+- 2026-2027 Montana Income Tax Changes.
+
+## [1.261.0] - 2025-04-28 17:09:00
+
+### Added
+
+- Limit reported SALT to the amount that would zero out regular tax liability.
+- Create SALT and reported SALT variables.
+
+## [1.260.0] - 2025-04-28 16:42:01
+
+### Added
+
+- Adjust ctc_value when activating fully refundable CTC.
+
+## [1.259.0] - 2025-04-28 16:19:52
+
+### Added
+
+- Include taxable IRA distributions in market income.
+
+## [1.258.4] - 2025-04-26 02:00:39
+
+### Added
+
+- 2025 Annual Update of the HHS Poverty Guidelines.
+
+## [1.258.3] - 2025-04-25 22:07:31
+
+### Fixed
+
+- Default the MA EAEDC living arrangement to "A".
+- Fix the MA EAEDC non-financial eligibility formula.
+
+## [1.258.2] - 2025-04-25 19:32:44
+
+### Fixed
+
+- Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter brackets
+
 ## [1.258.1] - 2025-04-25 18:05:47
 
 ### Fixed
@@ -11456,6 +11500,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.262.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.261.0...1.262.0
+[1.261.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.260.0...1.261.0
+[1.260.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.259.0...1.260.0
+[1.259.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.4...1.259.0
+[1.258.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.3...1.258.4
+[1.258.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.2...1.258.3
+[1.258.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.1...1.258.2
 [1.258.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.0...1.258.1
 [1.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.257.0...1.258.0
 [1.257.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.256.1...1.257.0
