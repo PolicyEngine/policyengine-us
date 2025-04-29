@@ -15,6 +15,7 @@
     tax_unit_itemizes: true
     ne_agi: 90_000
     ne_standard_deduction: 13_000
+    standard_deduction: 15_000
     ne_itemized_deductions: 12_000
     state_code: NE
   output:
@@ -53,4 +54,4 @@
     ne_itemized_deductions: 15_000
     state_code: NE
   output:
-    ne_taxable_income: 74_000
+    ne_taxable_income: 77_000
