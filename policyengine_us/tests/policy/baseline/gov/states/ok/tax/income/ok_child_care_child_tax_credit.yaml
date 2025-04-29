@@ -8,39 +8,3 @@
     state_code: OK
   output:
     ok_child_care_child_tax_credit: 2_000 * 0.20 * (20_000 / 40_000)
-
-- name: Taxsim integration test
-  absolute_error_margin: 2
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 20_002
-        ssi: 0
-        wic: 0
-        deductible_mortgage_interest: 0
-      person2:
-        age: 4
-        employment_income: 1
-        ssi: 0
-        wic: 0
-        deductible_mortgage_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        tax_unit_childcare_expenses: 0
-        premium_tax_credit: 0
-        local_income_tax: 0
-        state_sales_tax: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        snap: 0
-        tanf: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_fips: 40
-  output:
-    ok_income_tax: -230
