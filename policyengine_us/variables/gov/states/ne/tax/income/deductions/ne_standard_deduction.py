@@ -17,6 +17,7 @@ class ne_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ne.tax.income.deductions.standard
         base_ded_amount = p.base_amount[filing_status]
-        extra_ded_amount = p.extra_amount[filing_status]
+        p_irs = parameters(period).gov.irs.deductions.standard.aged_or_blind
+        extra_ded_amount = p_irs.amount[filing_status]
         extras = tax_unit("aged_blind_count", period)
         return base_ded_amount + extras * extra_ded_amount

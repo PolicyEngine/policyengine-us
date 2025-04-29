@@ -23,7 +23,7 @@
     aged_blind_count: 1
     state_code: NE
   output:
-    ne_standard_deduction: 12_450
+    ne_standard_deduction: 12_500
 
 - name: Elderly married with children and one blind adult
   period: 2022
@@ -33,3 +33,12 @@
     state_code: NE
   output:
     ne_standard_deduction: 18_900
+
+- name: Deduction switches to federal amount in 2026
+  period: 2026
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    state_code: NE
+  output:
+    ne_standard_deduction: 8_300

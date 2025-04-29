@@ -24,7 +24,9 @@ class ne_taxable_income(Variable):
         #   deductions, minus state and local income taxes claimed on
         #   Federal Schedule A.
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
-        std_ded = tax_unit("ne_standard_deduction", period)
+        ne_std_ded = tax_unit("ne_standard_deduction", period)
+        fed_std_ded = tax_unit("standard_deduction", period)
+        std_ded = min_(ne_std_ded, fed_std_ded)
         itm_ded = tax_unit("ne_itemized_deductions", period)
         deduction = where(federal_itemizer, max_(itm_ded, std_ded), std_ded)
         return max_(0, agi - deduction)
