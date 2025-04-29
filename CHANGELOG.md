@@ -5,6 +5,144 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.262.0] - 2025-04-28 20:12:23
+
+### Added
+
+- 2026-2027 Montana Income Tax Changes.
+
+## [1.261.0] - 2025-04-28 17:09:00
+
+### Added
+
+- Limit reported SALT to the amount that would zero out regular tax liability.
+- Create SALT and reported SALT variables.
+
+## [1.260.0] - 2025-04-28 16:42:01
+
+### Added
+
+- Adjust ctc_value when activating fully refundable CTC.
+
+## [1.259.0] - 2025-04-28 16:19:52
+
+### Added
+
+- Include taxable IRA distributions in market income.
+
+## [1.258.4] - 2025-04-26 02:00:39
+
+### Added
+
+- 2025 Annual Update of the HHS Poverty Guidelines.
+
+## [1.258.3] - 2025-04-25 22:07:31
+
+### Fixed
+
+- Default the MA EAEDC living arrangement to "A".
+- Fix the MA EAEDC non-financial eligibility formula.
+
+## [1.258.2] - 2025-04-25 19:32:44
+
+### Fixed
+
+- Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter brackets
+
+## [1.258.1] - 2025-04-25 18:05:47
+
+### Fixed
+
+- AFA reform maximum CTC amount adjustment.
+
+## [1.258.0] - 2025-04-25 17:47:11
+
+### Added
+
+- Updated Montana's Tax Code for 2024.
+
+## [1.257.0] - 2025-04-25 15:43:41
+
+### Added
+
+- Updated Delaware state tax code for 2024.
+
+## [1.256.1] - 2025-04-25 14:31:40
+
+### Fixed
+
+- Adjust the SLCSP computation to reflect person-level eligibility.
+
+## [1.256.0] - 2025-04-23 19:49:38
+
+### Changed
+
+- Corrected infant allowance file name in Massachusetts TAFDC program.
+
+## [1.255.0] - 2025-04-22 20:32:13
+
+### Added
+
+- 2024 Arkansas State Income Tax Updates.
+
+## [1.254.0] - 2025-04-19 16:18:12
+
+### Added
+
+- Limit itemized deductions to taxable income.
+
+## [1.253.1] - 2025-04-19 11:11:45
+
+## [1.253.0] - 2025-04-18 23:44:14
+
+### Added
+
+- 2024 New Mexico State Income Tax Updates.
+
+## [1.252.1] - 2025-04-18 13:42:07
+
+### Fixed
+
+- Refactor the Massachusetts state supplement program.
+
+## [1.252.0] - 2025-04-18 13:28:01
+
+### Added
+
+- New York itemized deductions reduction formula.
+
+## [1.251.1] - 2025-04-16 23:27:50
+
+### Added
+
+- Added CHIP as a program seperate from Medicaid.
+
+## [1.251.0] - 2025-04-15 18:10:28
+
+### Added
+
+- AFA 2025 reform.
+
+## [1.250.0] - 2025-04-14 01:13:24
+
+### Added
+
+- Remove the pregnancy condition from LA infant supplement eligibility.
+
+## [1.249.0] - 2025-04-10 21:23:06
+
+### Added
+
+- Remove the speedtest.
+
+## [1.248.2] - 2025-04-10 07:14:19
+
+## [1.248.1] - 2025-04-08 18:07:28
+
+### Fixed
+
+- Create a separate Hawaii itemized deductions reduction threshold to align with the tax forms.
+
 ## [1.248.0] - 2025-04-08 14:53:45
 
 ### Added
@@ -11362,6 +11500,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.262.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.261.0...1.262.0
+[1.261.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.260.0...1.261.0
+[1.260.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.259.0...1.260.0
+[1.259.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.4...1.259.0
+[1.258.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.3...1.258.4
+[1.258.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.2...1.258.3
+[1.258.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.1...1.258.2
+[1.258.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.258.0...1.258.1
+[1.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.257.0...1.258.0
+[1.257.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.256.1...1.257.0
+[1.256.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.256.0...1.256.1
+[1.256.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.255.0...1.256.0
+[1.255.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.254.0...1.255.0
+[1.254.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.1...1.254.0
+[1.253.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.253.0...1.253.1
+[1.253.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.252.1...1.253.0
+[1.252.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.252.0...1.252.1
+[1.252.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.251.1...1.252.0
+[1.251.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.251.0...1.251.1
+[1.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.250.0...1.251.0
+[1.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.249.0...1.250.0
+[1.249.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.2...1.249.0
+[1.248.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.1...1.248.2
+[1.248.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.0...1.248.1
 [1.248.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.1...1.248.0
 [1.247.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.0...1.247.1
 [1.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.246.0...1.247.0

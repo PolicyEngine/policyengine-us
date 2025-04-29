@@ -42,8 +42,6 @@ jobs:
           python-version: 3.12
       - name: Install package
         run: make install
-      - name: Check model speed
-        run: make compare-speed
       - name: Run non-structural YAML tests
         run: make test-yaml-no-structural
         env:

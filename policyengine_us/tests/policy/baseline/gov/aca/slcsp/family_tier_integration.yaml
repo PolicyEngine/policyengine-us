@@ -5,6 +5,7 @@
       person1:
         age: 30
         monthly_age: 30
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -27,12 +28,15 @@
       person1:
         age: 35
         monthly_age: 35
+        is_aca_ptc_eligible: true 
       person2:
         age: 32
         monthly_age: 32
+        is_aca_ptc_eligible: true
       person3:
         age: 5
         monthly_age: 5
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -55,6 +59,7 @@
       person1:
         age: 30
         monthly_age: 30
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -77,12 +82,15 @@
       person1:
         age: 40
         monthly_age: 40
+        is_aca_ptc_eligible: true
       person2:
         age: 10
         monthly_age: 10
+        is_aca_ptc_eligible: true
       person3:
         age: 8
         monthly_age: 8
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -105,9 +113,11 @@
       person1:
         age: 17
         monthly_age: 17
+        is_aca_ptc_eligible: true
       person2:
         age: 15
         monthly_age: 15
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
