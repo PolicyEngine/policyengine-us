@@ -8,7 +8,6 @@ class is_infant_for_medicaid_nfc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
         age = person("age", period)
         state_code = person.household("state_code_str", period)
 

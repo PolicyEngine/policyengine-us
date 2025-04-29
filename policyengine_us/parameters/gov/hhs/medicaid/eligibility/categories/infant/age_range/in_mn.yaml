@@ -1,4 +1,4 @@
-description: Minnisota defines the age range for infants eligible for Medicaid.
+description: Minnesota defines the age range for infants eligible for Medicaid at this age.
 brackets:
   - threshold:
       2015-01-01: 0
@@ -12,7 +12,7 @@ metadata:
   type: single_amount
   rate_unit: bool
   threshold_unit: year
-  label: "Medicaid infant age range in Minnesota"
+  label: Medicaid infant age range in Minnesota
   reference:
     - title: Medicaid, Children's Health Insurance Program, & Basic Health Program Eligibility Levels | CMS
       href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels#footnote10
