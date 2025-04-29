@@ -22,10 +22,12 @@ class me_child_care_credit(Variable):
         )
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
         cdcc = tax_unit("cdcc", period)
+        income_tax_before_credits = tax_unit("income_tax_before_credits", period)
+        capped_cdcc = min_(cdcc, income_tax_before_credits)
         # Line 2a: Column A
-        cdcc_regular_portion = cdcc * (1 - step_4_share_of_expenses)
+        cdcc_regular_portion = capped_cdcc * (1 - step_4_share_of_expenses)
         # Line 2a, Column B
-        cdcc_step_4_portion = cdcc * step_4_share_of_expenses
+        cdcc_step_4_portion = capped_cdcc * step_4_share_of_expenses
         # Line 3, Column A
         regular_child_care_credit = (
             p.share_of_federal_credit.non_step_4 * cdcc_regular_portion
