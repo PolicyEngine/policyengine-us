@@ -20,11 +20,11 @@ class il_aabd_utility_allowance(Variable):
         capped_size = clip(size, 1, 19)
         area = person.household("il_aabd_area", period)
         expense_types = p.utility.utility_types
+        # Households may have more than one applicable utility allowance type
         sum_of_allowances = sum(
             [
                 p.utility[expense.replace("_expense", "")][area][capped_size]
                 for expense in expense_types
             ]
-        )  # a household may not have all of the expenses, at this point, I summed all of them
-
+        )
         return sum_of_allowances

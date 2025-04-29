@@ -15,7 +15,7 @@ class il_aabd_aged_blind_disabled_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd
-        age = person("age", period)
+        age = person("monthly_age", period)
         is_aged = age >= p.aged_age_threshold
         is_blind = person("is_blind", period)
         is_disabled = person("is_ssi_disabled", period)

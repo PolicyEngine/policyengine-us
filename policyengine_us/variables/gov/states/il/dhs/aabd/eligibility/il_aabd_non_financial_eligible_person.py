@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_aabd_non_financial_eligible(Variable):
+class il_aabd_non_financial_eligible_person(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH

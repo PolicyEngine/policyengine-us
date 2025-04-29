@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_aabd_countable_unearned_income(Variable):
+class il_aabd_gross_unearned_income(Variable):
     value_type = float
     unit = USD
     entity = Person

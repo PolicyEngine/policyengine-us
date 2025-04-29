@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_aabd_countable_vehicles_value(Variable):
+class il_aabd_countable_vehicle_value(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = MONTH

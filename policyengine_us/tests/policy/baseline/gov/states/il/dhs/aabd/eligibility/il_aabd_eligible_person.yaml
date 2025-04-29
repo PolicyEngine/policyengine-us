@@ -1,54 +1,35 @@
-- name: Case 1, eligible in all checks.
+- name: Both financial and non-financial eligible person. 
   period: 2023
   input:
-    il_aabd_asset_eligible: true
-    is_ssi_aged_blind_disabled: true
-    is_tax_unit_head_or_spouse: true
-    il_aabd_immigration_status_eligible_person: true
+    il_aabd_financial_eligible_person: true
+    il_aabd_non_financial_eligible_person: true
     state_code: IL
-  output:
+  output: 
     il_aabd_eligible_person: true
 
-- name: Case 2, ineligible due to asset.
+- name: Non-financial eligible but financial ineligible. 
   period: 2023
   input:
-    il_aabd_asset_eligible: false
-    is_ssi_aged_blind_disabled: true
-    is_tax_unit_head_or_spouse: true
-    il_aabd_immigration_status_eligible_person: true
+    il_aabd_financial_eligible_person: false
+    il_aabd_non_financial_eligible_person: true
     state_code: IL
-  output:
+  output: 
     il_aabd_eligible_person: false
 
-- name: Case 3, ineligible due to aged, blind, disabled.
+- name: Financial eligible but non-financial ineligible. 
   period: 2023
   input:
-    il_aabd_asset_eligible: true
-    is_ssi_aged_blind_disabled: false
-    is_tax_unit_head_or_spouse: true
-    il_aabd_immigration_status_eligible_person: true
+    il_aabd_financial_eligible_person: true
+    il_aabd_non_financial_eligible_person: false
     state_code: IL
-  output:
-    il_aabd_eligible_person: false 
-
-- name: Case 4, ineligible due to head or spouse.
-  period: 2023
-  input:
-    il_aabd_asset_eligible: true
-    is_ssi_aged_blind_disabled: false
-    is_tax_unit_head_or_spouse: true
-    il_aabd_immigration_status_eligible_person: true
-    state_code: IL
-  output:
+  output: 
     il_aabd_eligible_person: false
 
-- name: Case 5, ineligible due to immigration status.
+- name: Neither financial nor non-financial eligible person.
   period: 2023
   input:
-    il_aabd_asset_eligible: true
-    is_ssi_aged_blind_disabled: false
-    is_tax_unit_head_or_spouse: true
-    il_aabd_immigration_status_eligible_person: true
+    il_aabd_financial_eligible_person: false
+    il_aabd_non_financial_eligible_person: false
     state_code: IL
-  output:
+  output: 
     il_aabd_eligible_person: false

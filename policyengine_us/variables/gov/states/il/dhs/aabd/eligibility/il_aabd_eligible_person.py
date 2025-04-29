@@ -13,6 +13,6 @@ class il_aabd_eligible_person(Variable):
             "il_aabd_financial_eligible_person", period
         )
         non_financial_eligible = person(
-            "il_aabd_non_financial_eligible", period
+            "il_aabd_non_financial_eligible_person", period
         )
         return financial_eligible & non_financial_eligible
