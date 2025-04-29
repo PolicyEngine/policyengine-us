@@ -9756,3 +9756,9 @@
     added:
     - 2026-2027 Montana Income Tax Changes.
   date: 2025-04-28 20:12:23
+- bump: patch
+  changes:
+    fixes:
+    - Cap the NY household credit amount which reduces the NY EITC at state tax before
+      credits.
+  date: 2025-04-29 20:07:23
