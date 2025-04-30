@@ -15,9 +15,10 @@ class pr_earned_income_credit(Variable):
             period
         ).gov.territories.pr.tax.income.credits.earned_income
 
-        child_count = tax_unit("pr_earned_income_child_count", period)
+        child_count = tax_unit("eitc_child_count", period)
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
+        # only sum up gross income of tax unit head or spouses
         gross_income = tax_unit.sum(
             person("pr_gross_income_person", period)
             * (person("is_tax_unit_head_or_spouse", period))
