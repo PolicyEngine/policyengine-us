@@ -1,0 +1,15 @@
+- name: Investment income eligible in 2022.
+  period: 2022
+  input:
+    eitc_relevant_investment_income: 3_500
+    state_code: OK
+  output:
+    ok_federal_eitc_investment_income_eligible: true
+
+- name: Investment income ineligible in 2023.
+  period: 2023
+  input:
+    eitc_relevant_investment_income: 11_000
+    state_code: OK
+  output:
+    ok_federal_eitc_investment_income_eligible: false

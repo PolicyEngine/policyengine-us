@@ -44,10 +44,10 @@ class hi_reduced_itemized_deductions(Variable):
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         # Hawaii applies an federal AGI limit as of 2009.
-        p_2009 = parameters(
-            f"2009-01-01"
-        ).gov.irs.deductions.itemized.reduction
-        agi_threshold = p_2009.agi_threshold[filing_status]
+        p_hi = parameters(
+            period
+        ).gov.states.hi.tax.income.deductions.itemized.threshold
+        agi_threshold = p_hi.reduction[filing_status]
         agi_over_threshold = agi_threshold < hi_agi
         # If the AGI is over a threshold, the AGI amount is reduced by the threshold and multiplied
         # by a rate

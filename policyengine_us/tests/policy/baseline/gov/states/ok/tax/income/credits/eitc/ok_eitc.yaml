@@ -1,0 +1,46 @@
+- name: OK eitc unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 40_000
+    ok_agi: 30_000
+    ok_federal_eitc: 2_000
+    state_code: OK
+  output:
+    ok_eitc: 2_000 * 0.05 * (30_000 / 40_000)
+
+- name: Integration test
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 10
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 40
+  output:
+    ok_eitc: 174
+    ok_income_tax: -239.7

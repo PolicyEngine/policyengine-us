@@ -14,3 +14,7 @@ from .tax_employer_social_security_tax import (
 from .tax_employer_medicare_tax import (
     create_tax_employer_medicare_tax_reform,
 )
+
+from .tax_employer_payroll_tax import (
+    create_tax_employer_payroll_tax_reform,
+)

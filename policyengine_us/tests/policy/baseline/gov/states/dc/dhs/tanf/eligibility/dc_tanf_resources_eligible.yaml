@@ -1,0 +1,37 @@
+- name: Households including a person who is monthly_age 60 or older and having resources not exceeding $3,000 are eligible.
+  period: 2021-01
+  input:
+    state_code: DC
+    monthly_age: 60
+    dc_tanf_countable_resources: 3_000
+  output:
+    dc_tanf_resources_eligible: true
+
+
+- name: Households including a person who is monthly_age 60 or older and having resources exceeding $3,000 are ineligible.
+  period: 2021-01
+  input:
+    state_code: DC
+    monthly_age: 60
+    dc_tanf_countable_resources: 3_001
+  output:
+    dc_tanf_resources_eligible: false
+
+
+- name: Households including a person who is under monthly_age 60 and having resources not exceeding $2,000 are eligible.
+  period: 2021-01
+  input:
+    state_code: DC
+    monthly_age: 59
+    dc_tanf_countable_resources: 2_000
+  output:
+    dc_tanf_resources_eligible: true
+
+- name: Households including a person who is under monthly_age 60 and having resources exceeding $2,000 are ineligible.
+  period: 2021-01
+  input:
+    state_code: DC
+    monthly_age: 59
+    dc_tanf_countable_resources: 2_001
+  output:
+    dc_tanf_resources_eligible: false

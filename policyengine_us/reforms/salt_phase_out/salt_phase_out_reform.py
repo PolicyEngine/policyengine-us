@@ -16,11 +16,7 @@ def create_salt_phase_out() -> Reform:
             p = parameters(
                 period
             ).gov.irs.deductions.itemized.salt_and_real_estate
-            salt_amount = add(
-                tax_unit,
-                period,
-                p.sources,
-            )
+            salt_amount = tax_unit("reported_salt", period)
             filing_status = tax_unit("filing_status", period)
             cap = p.cap[filing_status]
             p_ref = parameters(period).gov.contrib.salt_phase_out
