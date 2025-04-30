@@ -13,11 +13,10 @@ class il_aabd_child_care_expense_exemption(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
-        dependent = person("is_tax_unit_dependent", period)
         childcare_expenses = person.spm_unit("childcare_expenses", period)
         have_childcare_expenses = childcare_expenses > 0
-        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period)
-        child_count = person.spm_unit.sum(dependent)
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period)* MONTHS_IN_YEAR
+        child_count = person.tax_unit("tax_unit_dependents",period)
         childcare_exemption = (
             p.child_care.calc(weekly_hours_worked)
             * child_count
@@ -27,10 +26,12 @@ class il_aabd_child_care_expense_exemption(Variable):
             childcare_expenses, childcare_exemption
         )
         filing_status = person.tax_unit("filing_status", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         joint = filing_status == filing_status.possible_values.JOINT
         # Attributing the dependent care deduction equally to each spouse if filing jointly
-        return where(
+        expense_amount = where(
             joint,
             child_care_expense_exemption / 2,
             child_care_expense_exemption,
         )
+        return is_head_or_spouse * expense_amount
