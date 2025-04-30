@@ -1,0 +1,23 @@
+description: Massachusetts Bay Transportation Authority (MBTA) provides the income-eligible reduced fare program to applicants who are within these age brackets.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: Massachusetts Bay Transportation Authority (MBTA) reduced fare program categorical eligibility age threshold
+  reference:
+    - title: Massachusetts BayTransportation Authority Income-Eligible Reduced Fare Program
+      href: https://www.mbta.com/fares/reduced/income-eligible
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount: 
+      2024-01-01: false
+  - threshold: 
+      2024-01-01: 18
+    amount: 
+      2024-01-01: true
+  - threshold: 
+      2024-01-01: 65
+    amount: 
+      2024-01-01: false

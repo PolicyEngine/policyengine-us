@@ -1,0 +1,53 @@
+- name: Single person with high income
+  absolute_error_margin: 5
+  period: '2023'
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_001.0
+        ssi: 0
+        ma_state_supplement: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_childcare_expenses: 0
+        aca_ptc: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        il_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 17
+  output:
+    income_tax: 325207.5
+    il_income_tax: 49500.0
+    taxsim_tfica: 31632.400390625
+    adjusted_gross_income: 1000000.0
+    tax_unit_taxable_unemployment_compensation: 0.0
+    tax_unit_taxable_social_security: 0.0
+    standard_deduction: 13850.0
+    exemptions: 0.0
+    taxable_income_deductions_if_itemizing: 10000.0
+    taxable_income: 986150.0
+    income_tax_main_rates: 325207.5
+    ctc: 0.0
+    refundable_ctc: 0.0
+    cdcc: 0.0
+    eitc: 0.0
+    amt_income: 1000000.0
+    alternative_minimum_tax: 0.0
+    qualified_business_income_deduction: 0.0
+    il_taxable_income: 1000000.0
+    il_property_tax_credit: 0.0
+    il_eitc: 0.0
+    il_ctc: 0.0
+    net_investment_income_tax: 0.0
+    recovery_rebate_credit: 0.0

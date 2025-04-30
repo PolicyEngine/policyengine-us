@@ -6,6 +6,7 @@ metadata:
   label: End Child Poverty Act filer credit amount
   unit: currency-USD
   period: year
+  propagate_metadata_to_children: true
   uprating: gov.irs.uprating
   breakdown:
     - filing_status

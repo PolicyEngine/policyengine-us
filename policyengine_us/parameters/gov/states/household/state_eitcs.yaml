@@ -1,0 +1,40 @@
+description: All state Earned Income Tax Credits.
+values:
+  0000-01-01:
+    - ca_eitc  # California
+    - co_eitc  # Colorado
+    - ct_eitc  # Connecticut
+    - dc_eitc  # District of Columbia
+    - de_eitc  # Delaware
+    - hi_eitc  # Hawaii
+    - il_eitc  # Illinois
+    - in_eitc  # Indiana
+    - ia_eitc  # Iowa
+    - ks_total_eitc  # Kansas - combined nonrefundable and refundable components
+    - la_eitc  # Louisiana
+    - ma_eitc  # Massachusetts
+    - md_eitc  # Maryland
+    - me_eitc  # Maine
+    - mi_eitc  # Michigan
+    - mn_wfc  # Minnesota (called "Working Family Credit") repealed in 2023
+    - mn_child_and_working_families_credits
+    - mo_wftc  # Missouri (called "Working Families Tax Credit")
+    - mt_eitc  # Montana
+    - ne_eitc  # Nebraska
+    - nj_eitc  # New Jersey
+    - nm_eitc  # New Mexico
+    - ny_eitc  # New York
+    - oh_eitc  # Ohio
+    - ok_eitc  # Oklahoma
+    - or_eitc  # Oregon
+    - ri_eitc  # Rhode Island
+    - sc_eitc  # South Carolina
+    - vt_eitc  # Vermont
+    - va_eitc  # Virginia
+    - wa_working_families_tax_credit  # Washington
+    - wi_earned_income_credit  # Wisconsin
+
+metadata:
+  unit: list
+  period: year
+  label: State EITCs

@@ -9,3 +9,4 @@ class health_savings_account_payroll_contributions(Variable):
     label = "Health Savings Account payroll contributions"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

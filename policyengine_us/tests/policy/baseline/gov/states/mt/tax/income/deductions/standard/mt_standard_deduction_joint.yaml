@@ -7,7 +7,7 @@
   output:
     mt_standard_deduction_joint: 2_590
 
-- name: $8,000 for widow. #0.2*8000=1600 (lower than min)
+- name: $8,000 for surviving spouse. #0.2*8000=1600 (lower than min)
   period: 2021
   input:
     state_code: MT
@@ -92,3 +92,12 @@
         state_code: MT
   output:
     mt_standard_deduction_joint: [6_000, 0, 0]
+
+- name: 2024 uses federal standard deduction
+  period: 2024
+  input:
+    state_code: MT
+    mt_agi: 12_950
+    filing_status: JOINT
+  output:
+    mt_standard_deduction_joint: 29_200

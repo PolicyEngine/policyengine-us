@@ -1,4 +1,4 @@
-- name: base test
+- name: base test, separate filers
   period: 2022
   input:
     people:
@@ -8,7 +8,7 @@
         investment_interest_expense: 100
     tax_units:
       tax_unit:
-        filing_status: JOINT
+        filing_status: SEPARATE
         hi_medical_expense_deduction: 300
         hi_casualty_loss_deduction: 400
         hi_agi: 200_000
@@ -19,7 +19,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deductions: 9_004
+    hi_reduced_itemized_deductions: 6_502
 
 
 - name: AGI limit not met

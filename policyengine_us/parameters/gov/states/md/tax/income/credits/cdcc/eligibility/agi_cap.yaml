@@ -1,64 +1,39 @@
-description: Maryland limits its Child and Dependent Care Credit to filers with adjusted gross income below these thresholds.
+description: Maryland limits its Child and Dependent Care Credit to filers whose adjusted gross income does not exceed these thresholds.
 JOINT:
-  values:
-    2019-01-01: 143_000
-    2020-01-01: 144_450
-    2021-01-01: 149_050
-    2022-01-01: 159_500
-    2023-01-01: 161_100
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 143_000
+  2020-01-01: 144_450
+  2021-01-01: 149_050
+  2022-01-01: 159_500
+  2023-01-01: 161_100
+  2024-01-01: 169_900
 SINGLE:
-  values:
-    2019-01-01: 92_000
-    2020-01-01: 92_950
-    2021-01-01: 95_900
-    2022-01-01: 102_600
-    2023-01-01: 103_650
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+  2022-01-01: 102_600
+  2023-01-01: 103_650
+  2024-01-01: 109_300
 SEPARATE:
-  values:
-    2019-01-01: 92_000
-    2020-01-01: 92_950
-    2021-01-01: 95_900
-    2022-01-01: 102_600
-    2023-01-01: 103_650
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+  2022-01-01: 102_600
+  2023-01-01: 103_650
+  2024-01-01: 109_300
 HEAD_OF_HOUSEHOLD:
-  values:
-    2019-01-01: 92_000
-    2020-01-01: 92_950
-    2021-01-01: 95_900
-    2022-01-01: 102_600
-    2023-01-01: 103_650
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+  2022-01-01: 102_600
+  2023-01-01: 103_650
+  2024-01-01: 109_300
 SURVIVING_SPOUSE:
-  values:
-    2019-01-01: 92_000
-    2020-01-01: 92_950
-    2021-01-01: 95_900
-    2022-01-01: 102_600
-    2023-01-01: 103_650
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+  2022-01-01: 102_600
+  2023-01-01: 103_650
+  2024-01-01: 109_300
 metadata:
   breakdown:
     - filing_status
@@ -73,6 +48,14 @@ metadata:
       href: https://marylandtaxes.gov/forms/22_forms/502CR.pdf#page=6
     - title: Maryland 2023 Form 502 CR Instructions
       href: https://marylandtaxes.gov/forms/23_forms/502CR.pdf#page=6
+    - title: Maryland 2024 Form 502 CR Instructions
+      href: https://marylandtaxes.gov/forms/24-forms/502CR.pdf#page=7
   unit: currency-USD
   period: year
   label: Maryland CDCC AGI cap
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

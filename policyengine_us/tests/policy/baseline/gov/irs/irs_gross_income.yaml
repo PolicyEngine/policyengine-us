@@ -20,7 +20,7 @@
         age: 70
         tax_exempt_pension_income: 36000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -30,7 +30,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]

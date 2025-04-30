@@ -130,7 +130,7 @@
   output:
     co_ctc: 0
 
-- name: In 2022,  widow(er) filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
+- name: In 2022,  surviving spouse filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
@@ -141,7 +141,7 @@
   output:
     co_ctc: 600
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
@@ -152,7 +152,7 @@
   output:
     co_ctc: 600
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
   period: 2022
   input:
     state_code: CO
@@ -163,7 +163,7 @@
   output:
     co_ctc: 200
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
   period: 2022
   input:
     state_code: CO
@@ -281,7 +281,7 @@
   output: 
     co_ctc: 200
 
-- name: In 2024, widow filer, 2 children - flat amount
+- name: In 2024, surviving spouse filer, 2 children - flat amount
   period: 2024
   input:
     people:
@@ -322,3 +322,40 @@
         state_code: CO
   output: 
     co_ctc: 0
+
+- name: Integration test, 1 child in 2022
+  absolute_error_margin: 2
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 4
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 8
+  output:
+    co_ctc: 900
+    co_income_tax: -1_803.2

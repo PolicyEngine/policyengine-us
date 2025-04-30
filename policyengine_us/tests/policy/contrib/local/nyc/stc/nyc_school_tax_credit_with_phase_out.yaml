@@ -1,0 +1,49 @@
+- name: Joint, with AGI below phase out threshold
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.phase_out.nyc_school_tax_credit_with_phase_out.nyc_school_tax_credit_with_phase_out
+  input:
+    gov.contrib.local.nyc.stc.phase_out.in_effect: true
+    in_nyc: True
+    ny_agi: 150_000
+    filing_status: JOINT
+  output:
+    nyc_school_tax_credit_phase_out: 0
+
+- name: Single, with AGI above phase out threshold
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.phase_out.nyc_school_tax_credit_with_phase_out.nyc_school_tax_credit_with_phase_out
+  input:
+    gov.contrib.local.nyc.stc.phase_out.in_effect: true
+    in_nyc: True
+    ny_agi: 150_000
+    filing_status: SINGLE
+  output:
+    nyc_school_tax_credit_phase_out: 3_750
+
+- name: Single, with AGI above phase out threshold, with credit amount, fully reduced
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.phase_out.nyc_school_tax_credit_with_phase_out.nyc_school_tax_credit_with_phase_out
+  input:
+    gov.contrib.local.nyc.stc.phase_out.in_effect: true
+    in_nyc: True
+    ny_agi: 150_000
+    filing_status: SINGLE
+    nyc_school_tax_credit_fixed_amount: 1_000
+    nyc_school_tax_credit_rate_reduction_amount: 500
+  output:
+    nyc_school_tax_credit_phase_out: 3_750
+    nyc_school_tax_credit: 0
+
+- name: Single, with AGI above phase out threshold, with credit amount, partially reduced
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.phase_out.nyc_school_tax_credit_with_phase_out.nyc_school_tax_credit_with_phase_out
+  input:
+    gov.contrib.local.nyc.stc.phase_out.in_effect: true
+    in_nyc: True
+    ny_agi: 160_000
+    filing_status: SURVIVING_SPOUSE
+    nyc_school_tax_credit_fixed_amount: 1_000
+    nyc_school_tax_credit_rate_reduction_amount: 600
+  output:
+    nyc_school_tax_credit_phase_out: 500
+    nyc_school_tax_credit: 1_100

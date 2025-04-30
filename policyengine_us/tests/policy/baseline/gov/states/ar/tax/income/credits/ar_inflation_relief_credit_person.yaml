@@ -103,9 +103,9 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_inflation_relief_credit_person: 280
+    ar_inflation_relief_credit_person: [140, 140]
 
-- name: Widow household with $80,000 taxable income
+- name: Surviving spouse household with $80,000 taxable income
   period: 2022
   input:
     people:

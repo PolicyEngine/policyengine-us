@@ -9,19 +9,19 @@
         employment_income: 160_010
         taxable_interest_income: 11_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
         state_sales_tax: 0  # not in TAXSIM35
         ca_use_tax: 0  # not in TAXSIM35
@@ -56,7 +56,7 @@
         employment_income: 77010
         taxable_interest_income: 5505.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
@@ -64,13 +64,13 @@
         employment_income: 20010
         taxable_interest_income: 5505.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
         state_sales_tax: 0  # not in TAXSIM35
         ca_use_tax: 0  # not in TAXSIM35
@@ -133,3 +133,24 @@
     ar_non_refundable_credits: 261
     ar_refundable_credits: 0
     # ar_income_tax: 687.03 expected value from TAXSIM35
+
+- name: Head of household with one dependent, high wages
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 5
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 144_000
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output: 
+    ar_taxable_income_indiv: [141_660, 0]
+    ar_income_tax_before_non_refundable_credits_indiv: [6_502, 0]
+    ar_files_separately: false
+    ar_income_tax: 6_415

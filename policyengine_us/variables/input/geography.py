@@ -95,15 +95,6 @@ class medicaid_rating_area(Variable):
     hidden_input = True
 
     def formula(household, period, parameters):
-        simulation: Simulation = household.simulation
-        if (
-            simulation.get_holder("reported_slspc").get_array(period)
-            is not None
-        ):
-            # If the user has provided a value for the second-lowest silver plan
-            # cost, skip.
-            return 0
-
         three_digit_zip_code = household("three_digit_zip_code", period)
         county = household("county_str", period)
         # Try a lookup on zip code, fill missing values with a lookup on county, fill missing with zero.
@@ -136,17 +127,8 @@ class medicaid_rating_area(Variable):
         return df_matched["rating_area"].fillna(1)
 
 
-class reported_slspc(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "reported second lowest silver plan cost"
-    unit = USD
-    definition_period = YEAR
-    hidden_input = True
-
-
 class county_fips(Variable):
-    value_type = int
+    value_type = str
     label = "County FIPS code"
     entity = Household
     definition_period = YEAR

@@ -1,0 +1,19 @@
+description: New York multiplies base marketplace plan premiums by these age-specific factors to determine age-specific premiums.
+metadata:
+  type: single_amount
+  period: year
+  amount_unit: /1
+  threshold_unit: year
+  label: ACA premium age curve factors - NY
+  reference:
+  - title: CMS Market Rating Reforms State Specific Age Curve Variations
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating
+brackets:
+- threshold:
+    2018-01-01: 0
+  amount:
+    2018-01-01: 0.412
+- threshold:
+    2018-01-01: 21
+  amount:
+    2018-01-01: 1.0

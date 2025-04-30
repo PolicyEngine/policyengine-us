@@ -9,7 +9,11 @@ class dwks10(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        dwks10_if_gains = add(tax_unit, period, ["dwks06", "dwks09"])
+        dwks10_if_gains = add(
+            tax_unit,
+            period,
+            ["dividend_income_reduced_by_investment_income", "dwks09"],
+        )
         dwks10_if_no_gains = max_(
             0,
             min_(

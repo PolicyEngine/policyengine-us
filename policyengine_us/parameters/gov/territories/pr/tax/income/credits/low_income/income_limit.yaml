@@ -1,0 +1,20 @@
+description: Puerto Rico limits the low income tax credit to filers below this income limit, based on the number of eligible people.
+brackets:
+  - threshold:
+      2011-01-01: 0
+    amount:
+      2011-01-01: 15_000 
+  - threshold:
+      2011-01-01: 2
+    amount:
+      2011-01-01: 30_000 
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  label: Puerto Rico low income tax credit income limit 
+  reference:
+    - title: P.R. Laws tit. 13, § 30212 (a)
+      href: https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30212-credit-for-low-income-individuals-older-than-sixty-five-65-years-of-age
+    - title: Gov. of Puerto Rico Form 481.10 2023 
+      href: https://hacienda.pr.gov/sites/default/files/documentos/481.10_2023_informative.pdf#page=4

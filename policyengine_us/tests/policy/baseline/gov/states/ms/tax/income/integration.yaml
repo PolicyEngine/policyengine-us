@@ -49,7 +49,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -60,7 +60,7 @@
         members: [person1, person2]
         state_fips: 28  # MS
   output:  # expected results from patched TAXSIM35 2024-02-19 version
-    ms_income_tax: 2_286
+    ms_income_tax: 1_686
 
 - name: Tax unit with taxsimid 86116 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01
@@ -80,7 +80,7 @@
         business_is_sstb: false
         w2_wages_from_qualified_business: 100e6
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
@@ -91,37 +91,37 @@
         short_term_capital_gains: 505.0
         long_term_capital_gains: 505.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person4:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person5:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person6:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
         state_sales_tax: 0  # not in TAXSIM35
         ca_use_tax: 0  # not in TAXSIM35

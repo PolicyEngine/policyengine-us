@@ -1,0 +1,17 @@
+description: The US considers these statuses as qualified noncitizens for Supplemental Security Income.
+values:
+  1975-01-01:
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+metadata:
+  label: SSI qualified noncitizen statuses
+  period: year
+  unit: list
+  reference:
+    - title: SI 00502.100 - Basic SSI Noncitizen Eligibility Requirements
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500502100

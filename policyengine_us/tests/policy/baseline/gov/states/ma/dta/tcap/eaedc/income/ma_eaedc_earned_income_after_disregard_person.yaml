@@ -1,0 +1,45 @@
+- name: Case 1, earned income is $12000. 
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ma_tcap_gross_earned_income: 12_000 # $1000 per month
+    # ma_tafdc_work_related_expense_deduction: 2_400 # 200 per month
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 8_223.6
+    # 1000-200 = 800
+    # Pre-disregard yearly income = 9_600
+    # Percentage disregard = (800-30)*0.33*4 = 1_016.4
+    # Flat disregard 30*12 = 360
+    # Total disregard = 1_376.4 
+    # 9_600 - 1_376.4 = 8_223.6
+
+- name: Case 2, earned income is 0.
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 0
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 0
+
+- name: Case 3, earned income is only $3000.
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ma_tcap_gross_earned_income: 3_000 # $250 per month
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 213.6 
+    # 250 - 200 = 50
+    # Percentage disregard = 20 * 0.33 * 4 = 26.4
+    # Flat disregard = 360
+    # 600 - 360 - 26.4
+
+- name: Case 4, earned income is only $1200.
+  period: 2023
+  absolute_error_margin: 2
+  input:
+    ma_tcap_gross_earned_income: 1_200 # 100 monthly
+    state_code: MA
+  output:
+    ma_eaedc_earned_income_after_disregard_person: 0

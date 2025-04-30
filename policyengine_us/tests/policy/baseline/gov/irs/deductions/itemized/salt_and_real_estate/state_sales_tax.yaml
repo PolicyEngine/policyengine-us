@@ -1,0 +1,35 @@
+- name: Alabama, 1 person, 1st income bracket
+  period: 2023
+  input:
+    state_code: AL
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 365
+
+- name: DC, 4 people, 19th income bracket
+  period: 2023
+  input:
+    state_code: DC
+    tax_unit_size: 4
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 2_215
+
+- name: Wyoming, 6 people, 19th income bracket
+  period: 2023
+  input:
+    state_code: WY
+    tax_unit_size: 6
+    state_sales_tax_income_bracket: 19
+  output:
+    state_sales_tax: 1_773
+
+- name: Integration test, 0 income bracket
+  period: 2026
+  input:
+    state_code: DE
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 0
+  output:
+    state_sales_tax: 0

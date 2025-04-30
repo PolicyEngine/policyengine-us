@@ -1,0 +1,23 @@
+- name: Ineligible child 
+  period: 2022
+  input:
+    in_la: true
+    age: 2
+  output:
+   ca_la_infant_supplement_eligible_infant: false
+
+- name: Eligible child 
+  period: 2022
+  input:
+    in_la: true
+    age: 1
+  output:
+   ca_la_infant_supplement_eligible_infant: true
+
+- name: Eligible newborn 
+  period: 2022
+  input:
+    in_la: true
+    age: 0
+  output:
+   ca_la_infant_supplement_eligible_infant: true

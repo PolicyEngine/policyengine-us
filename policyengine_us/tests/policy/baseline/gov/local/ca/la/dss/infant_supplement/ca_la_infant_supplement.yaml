@@ -1,0 +1,84 @@
+- name: Eligible household with one infant, not in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: false
+      person2:
+        ca_la_infant_supplement_eligible_infant: true
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 10_800
+
+- name: Eligible household with one infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: true
+      person2:
+        ca_la_infant_supplement_eligible_infant: true
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 16_548
+
+
+- name: Eligible household with no infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: true
+      person2:
+        ca_la_infant_supplement_eligible_infant: false
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 0
+
+- name: Ineligible household with no infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: false
+        is_in_foster_care_group_home: true
+      person2:
+        ca_la_infant_supplement_eligible_infant: true
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 0
+
+- name: Integration test, eligible caretaker 
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        was_in_foster_care: true
+        employment_income: 11_111
+        medical_out_of_pocket_expenses: 1_332
+        rent: 1_332
+        is_in_foster_care: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 10_800

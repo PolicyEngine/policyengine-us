@@ -2,6 +2,12 @@ description: Delaware refundable tax credits.
 values:
   2019-01-01:
     - de_refundable_eitc
+  2022-01-01:
+    - de_refundable_eitc
+    - de_relief_rebate
+  2023-01-01:
+    - de_refundable_eitc
 metadata:
   unit: list
+  period: year
   label: Delaware refundable tax credits

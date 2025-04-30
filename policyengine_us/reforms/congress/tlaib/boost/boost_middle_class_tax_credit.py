@@ -94,7 +94,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
             BENEFITS = [
                 "social_security",
                 "ssi",
-                "state_supplement",
+                "ma_state_supplement",  # Massachusetts benefits
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
@@ -116,7 +116,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "ny_drive_clean_rebate",
             ]
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-                BENEFITS.append("premium_tax_credit")
+                BENEFITS.append("aca_ptc")
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
             p = parameters(

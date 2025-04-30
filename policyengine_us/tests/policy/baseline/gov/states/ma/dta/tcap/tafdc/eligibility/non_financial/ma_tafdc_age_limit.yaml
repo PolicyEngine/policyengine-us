@@ -1,0 +1,17 @@
+- name: Student dependent 
+  period: 2023
+  input:
+    is_in_secondary_school: true
+    is_pregnant: false
+    state_code: MA
+  output:
+    ma_tafdc_age_limit: 19
+
+- name: Pregnant
+  period: 2023
+  input:
+    is_in_secondary_school: true
+    is_pregnant: true
+    state_code: MA
+  output:
+    ma_tafdc_age_limit: 20

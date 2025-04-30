@@ -1,0 +1,26 @@
+- name: Case 1, both financial and non-financial eligible. 
+  period: 2023
+  input:
+    ma_tafdc_financial_eligible: true
+    ma_tafdc_non_financial_eligible: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible: true
+
+- name: Case 2, neither financial nor non-financial eligible. 
+  period: 2023
+  input:
+    ma_tafdc_financial_eligible: false
+    ma_tafdc_non_financial_eligible: false
+    state_code: MA
+  output:
+    ma_tafdc_eligible: false
+
+- name: Case 3, financial eligible but non_financial ineligible. 
+  period: 2023
+  input:
+    ma_tafdc_financial_eligible: true
+    ma_tafdc_non_financial_eligible: false
+    state_code: MA
+  output:
+    ma_tafdc_eligible: false

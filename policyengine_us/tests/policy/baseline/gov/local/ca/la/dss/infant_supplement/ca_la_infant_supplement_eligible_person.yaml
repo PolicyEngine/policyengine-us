@@ -1,0 +1,23 @@
+- name: Eligible person, 
+  period: 2022
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: true
+  output:
+    ca_la_infant_supplement_eligible_person: true
+
+- name: Not in LA
+  period: 2023
+  input:
+    in_la: False
+    ca_foster_care_minor_dependent: true
+  output:
+    ca_la_infant_supplement_eligible_person: false
+
+- name: Not in foster care
+  period: 2024
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: false
+  output:
+    ca_la_infant_supplement_eligible_person: false

@@ -1,0 +1,63 @@
+- name: 2025 aca_ptc_los_angeles 
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 45
+        employment_income: 35_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 15
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # CA
+        county: LOS_ANGELES_COUNTY_CA  # Direct county specification
+        three_digit_zip_code: 911  # e.g., Pasadena (91105)
+  output:
+    tax_unit_medicaid_income_level: 2.813507 # greater than 2.62 CA CHIP limit (checked for 2025)
+    is_medicaid_eligible: [false, false, false]
+    is_aca_ptc_eligible: [true, true, true]
+    slcsp: 15_550.90  #15,542 from 2025 kff calculator, they round more aggressively 
+    aca_magi_fraction: 2.90
+    aca_ptc_phase_out_rate: 0.056
+    aca_ptc: 11_350.90  #$11,327 from 2025 kff calculator
+  #Final PTC:
+#    - KFF’s result:  $15,542 – $4,215 = $11,327 subsidy (annual).
+#      => They say user’s share is $4,215 (or 5.62% of $75k).
+#    - Ours might be: $15,550.90 – ($75,000 × 0.0560) = ~$11,350.90,
+#      i.e. $4,200 difference from unsubsidized. The $14 difference
+#      is a bit more than $1/month.
+- name: 2025 aca_ptc_los_angeles_single
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # CA
+        county: LOS_ANGELES_COUNTY_CA
+        three_digit_zip_code: 902  # 90210 → rating area 16 in CA
+  output:
+    is_medicaid_eligible: [false]
+    is_aca_ptc_eligible: [true]
+    slcsp: 4_911.564 #kff says 4,916 
+    aca_magi_fraction: 1.99  # 30k / 15,060 (approx. prior-year FPL reference)
+    aca_ptc: 4_323.56

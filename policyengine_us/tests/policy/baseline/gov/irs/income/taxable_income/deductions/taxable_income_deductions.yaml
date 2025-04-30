@@ -1,0 +1,23 @@
+- name: Unit itemizes, no sim
+  period: 2024
+  input:
+    gov.simulation.limit_itemized_deductions_to_taxable_income: false
+    tax_unit_itemizes: true
+    taxable_income_deductions_if_itemizing: 11_000
+    taxable_income_deductions_if_not_itemizing: 10_000
+    adjusted_gross_income: 1_000
+    exemptions: 12_000
+  output:
+    taxable_income_deductions: 11_000
+
+- name: Unit does not itemize, no sim
+  period: 2024
+  input:
+    gov.simulation.limit_itemized_deductions_to_taxable_income: false
+    tax_unit_itemizes: false
+    taxable_income_deductions_if_itemizing: 11_000
+    taxable_income_deductions_if_not_itemizing: 10_000
+    adjusted_gross_income: 1_000
+    exemptions: 12_000
+  output:
+    taxable_income_deductions: 10_000

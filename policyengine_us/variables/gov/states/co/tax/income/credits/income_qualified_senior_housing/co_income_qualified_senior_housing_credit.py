@@ -24,6 +24,6 @@ class co_income_qualified_senior_housing_credit(Variable):
         increment = p.reduction.increment
         reduction_amount = p.reduction.amount[filing_status]
         excess = max_(agi - reduction_start, 0)
-        increments = np.ceil(excess / increment)
+        increments = np.where(increment > 0, np.ceil(excess / increment), 0)
         total_reduction_amount = increments * reduction_amount
         return max_(max_amount - total_reduction_amount, 0)

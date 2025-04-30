@@ -1,0 +1,19 @@
+- name: Taxable income with subtractions
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    taxable_income: 1_000
+    ia_taxable_income_modifications_consolidated: -3_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_taxable_income_consolidated: 0
+
+- name: Taxable income with additions
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    taxable_income: 1_000
+    ia_taxable_income_modifications_consolidated: 100
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_taxable_income_consolidated: 1_100
