@@ -4,6 +4,7 @@
     adjusted_gross_income: 150_000
     pr_gross_income: 7_000
     ctc_phase_out_threshold: 150_000
+    filing_status: JOINT
   output:
     pr_ctc_phase_out: 350
 
@@ -13,5 +14,16 @@
     adjusted_gross_income: 74_000
     pr_gross_income: 1_000
     ctc_phase_out_threshold: 75_000
+    filing_status: SINGLE
   output:
     pr_ctc_phase_out: 0
+
+- name: Income over threshold, other filing statuses
+  period: 2024
+  input:
+    adjusted_gross_income: 74_000
+    pr_gross_income: 2_000
+    ctc_phase_out_threshold: 75_000
+    filing_status: SEPARATE
+  output:
+    pr_ctc_phase_out: 50
