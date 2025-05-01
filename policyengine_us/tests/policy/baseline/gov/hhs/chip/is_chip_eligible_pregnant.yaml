@@ -1,0 +1,39 @@
+- name: Pregnant woman eligible for CHIP through standard pathway
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: False
+  output:
+    is_chip_eligible_pregnant: True
+
+- name: Pregnant woman eligible for CHIP through FCEP pathway
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: True
+  output:
+    is_chip_eligible_pregnant: True
+
+- name: Pregnant woman eligible for CHIP through both pathways
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: True
+  output:
+    is_chip_eligible_pregnant: True
+
+- name: Not eligible for CHIP through either pathway
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: False
+  output:
+    is_chip_eligible_pregnant: False

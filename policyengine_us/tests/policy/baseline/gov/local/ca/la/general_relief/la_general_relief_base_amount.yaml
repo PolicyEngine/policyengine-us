@@ -8,16 +8,6 @@
   output:
     la_general_relief_base_amount: 221
 
-- name: Married amount
-  period: 2022-01
-  input:
-    is_married: true
-    la_general_relief_eligible: true
-    la_general_relief_net_income: 200
-    la_general_relief_recipient: false
-  output:
-    la_general_relief_base_amount: 375
-
 - name: Single amount phased out
   period: 2022-01
   absolute_error_margin: 0.01
@@ -38,5 +28,102 @@
     la_general_relief_eligible: true
     la_general_relief_net_income: 20_000
     la_general_relief_recipient: true
+  output:
+    la_general_relief_base_amount: 0
+
+- name: Married, one person eligible based on immigration status
+  period: 2022-01
+  input:
+    people:
+      person1:
+        la_general_relief_immigration_status_eligible_person: true
+      person2:
+        la_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_general_relief_net_income: 200
+    families:
+      family:
+        members: [person1, person2]
+  output:
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 221
+
+- name: Married, two people eligible based on immigration status
+  period: 2022-01
+  input:
+    people:
+      person1:
+        la_general_relief_immigration_status_eligible_person: true
+      person2:
+        la_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_general_relief_net_income: 200
+    families:
+      family:
+        members: [person1, person2]
+  output:
+    la_general_relief_base_amount: 375
+
+- name: Single person, eligible
+  period: 2022-01
+  input:
+    people:
+      person1:
+        la_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_la: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_general_relief_net_income: 200
+    families:
+      family:
+        members: [person1]
+  output:
+    la_general_relief_base_amount: 221
+
+- name: Single person, ineligible
+  period: 2022-01
+  input:
+    people:
+      person1:
+        la_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1]
+        in_la: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_general_relief_net_income: 200
+    families:
+      family:
+        members: [person1]
   output:
     la_general_relief_base_amount: 0

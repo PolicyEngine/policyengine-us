@@ -1,0 +1,74 @@
+- name: Countable income over payment standard, clothing allowance is added.
+  period: 2021
+  input:
+    ma_tafdc_payment_standard: 2_100
+    ma_tafdc_clothing_allowance: 400
+    ma_tafdc_eligible: true
+    ma_tafdc_applicable_income_grant_amount: 2_200
+  output:
+  # This case will be neglected in integration tests due to income eligibility.
+    ma_tafdc: 400
+
+- name: Countable income under payment standard
+  period: 2021
+  input:
+    ma_tafdc_payment_standard: 2_100
+    ma_tafdc_clothing_allowance: 400
+    ma_tafdc_eligible: true
+    ma_tafdc_applicable_income_grant_amount: 1_000
+  output:
+    ma_tafdc: 1_500
+
+- name: Not eligible for TAFDC
+  period: 2021
+  input:
+    ma_tafdc_payment_standard: 2_100
+    ma_tafdc_clothing_allowance: 400
+    ma_tafdc_eligible: false
+    ma_tafdc_applicable_income_grant_amount: 2_500
+  output:
+    ma_tafdc: 0
+
+- name: Integration test, pregnant single parent with rent
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 19
+        is_pregnant: true
+        employment_income: 9_600
+        rent: 1_200
+        weekly_hours_worked_before_lsr: 13.3
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_living_arrangement: A
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        #is_in_public_housing: true
+  output:
+    ma_tcap_gross_earned_income: [9600, 0] # 800 per month
+    ma_tafdc_countable_earned_income: [1800, 0]
+    ma_tafdc_applicable_income_grant_amount: 1800
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 8_256 #688*12
+    ma_tafdc_eligible_dependent: [False, True]
+    ma_tafdc_dependent_care_deduction: 0
+    ma_tafdc: 6956 # 6959/12 = 580
+    ma_eaedc_eligible: false
+    ma_eaedc_immigration_status_eligible: true
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: false
+    ma_eaedc_income_eligible: false
+    ma_eaedc_assets_limit_eligible: true
+    ma_eaedc_standard_assistance: 6_264
+    ma_eaedc_net_income: 6_087.6
+    # ma_eaedc_living_arrangement: E
+    ma_eaedc: 0

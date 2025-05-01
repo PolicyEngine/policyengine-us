@@ -15,6 +15,7 @@ metadata:
       # Montana uses the difference between the higher and lower federal social security parameters in the 
       # computation while adjusting the separate values as half of the joint amount. This is not docuemnted
       # in the Montana legal code. 
+      # Starting in 2024 all Social Security is taxable, this is relfected in mt_agi.py
 SINGLE:
   2021-01-01: 34_000
 HEAD_OF_HOUSEHOLD:
