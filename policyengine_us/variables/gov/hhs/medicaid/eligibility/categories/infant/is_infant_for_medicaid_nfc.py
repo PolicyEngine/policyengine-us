@@ -11,7 +11,6 @@ class is_infant_for_medicaid_nfc(Variable):
         age = person("age", period)
         state_code = person.household("state_code_str", period)
 
-        # Use vectorized selection (similar to the example) to choose which calculation to use
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.infant.age_range

@@ -1,17 +1,8 @@
-description: California defines the age range for infants eligible for Medicaid at this age.
-brackets:
-  - threshold:
-      2015-01-01: 0
-    amount:
-      2015-01-01: true
-  - threshold:
-      2015-01-01: 2
-    amount:
-      2015-01-01: false
+description: California defines the age limit for infants eligible for Medicaid at this age.
+values:
+    2015-01-01: 2
 metadata:
-  type: single_amount
-  amount_unit: bool
-  threshold_unit: year
+  unit: year
   label: Medicaid infant age range in California
   reference:
     - title: Medicaid, Children's Health Insurance Program, & Basic Health Program Eligibility Levels | CMS
