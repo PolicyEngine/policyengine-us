@@ -8,14 +8,16 @@ class is_infant_for_medicaid_nfc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        age = person("age", period)
-        state_code = person.household("state_code_str", period)
+        age = person("age", period)                           # person’s age in years
+        state = person.household("state_code_str", period)
 
-        p = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.infant.age_range
-        return select(
-            [state_code == "CA", state_code == "MN"],
-            [p.in_ca.calc(age), p.in_mn.calc(age)],
-            default=p.other.calc(age),
+        p = parameters(period).gov.hhs.medicaid.eligibility.categories.infant.age_range
+
+        # Pick the right upper-bound age for this state
+        upper_bound = select(
+            [state == "CA", state == "MN"],
+            [p.in_ca,        p.in_mn],                        #
+            default=p.other,
         )
+
+        return age < upper_bound                              
