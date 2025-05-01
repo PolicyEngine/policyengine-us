@@ -1,7 +1,7 @@
 - name: Not eligible person, 2024
   period: 2024
   input:
-    pr_earned_income_child_count: 2
+    eitc_child_count: 2
     filing_status: SINGLE
     pr_gross_income_person: 10_000
     pr_earned_income_credit_eligible: false
@@ -11,7 +11,7 @@
 - name: Eligible person, 0 children with max credit
   period: 2024
   input:
-    pr_earned_income_child_count: 0
+    eitc_child_count: 0
     filing_status: SINGLE
     pr_gross_income_person: 17_660
     pr_earned_income_credit_eligible: true
@@ -21,7 +21,7 @@
 - name: Eligible person, 1 child and higher bracket
   period: 2024
   input:
-    pr_earned_income_child_count: 1
+    eitc_child_count: 1
     filing_status: SINGLE
     pr_gross_income_person: 25_000
     pr_earned_income_credit_eligible: true
@@ -31,7 +31,7 @@
 - name: Eligible person, 0 child and filing jointly
   period: 2024
   input:
-    pr_earned_income_child_count: 0
+    eitc_child_count: 0
     filing_status: JOINT
     pr_gross_income_person: 19_870
     pr_earned_income_credit_eligible: true
@@ -41,7 +41,7 @@
 - name: Eligible person, 1 child, filing jointly, higher bracket
   period: 2024
   input:
-    pr_earned_income_child_count: 1
+    eitc_child_count: 1
     filing_status: JOINT
     pr_gross_income_person: 25_000
     pr_earned_income_credit_eligible: true
@@ -51,7 +51,7 @@
 - name: Eligible person, 5 child, single, higher bracket
   period: 2024
   input:
-    pr_earned_income_child_count: 5
+    eitc_child_count: 5
     filing_status: SINGLE
     pr_gross_income_person: 50_000
     pr_earned_income_credit_eligible: true
