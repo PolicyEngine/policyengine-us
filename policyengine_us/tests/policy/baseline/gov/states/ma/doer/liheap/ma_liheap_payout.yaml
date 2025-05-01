@@ -1,0 +1,58 @@
+- name: Massachusetts LIHEAP payout for natural gas (2021, SPM unit size 2)
+  period: 2022
+  input: 
+    state_code: MA
+    spm_unit_size: 2
+    irs_gross_income: 30_000
+    ma_liheap_utility_type: UTILITY_AND_HEAT_IN_RENT
+    ma_liheap_subsidized_housing_eligible: false
+  output: 
+    ma_liheap_payout: 658
+
+
+- name: Massachusetts LIHEAP payout for Deliverable Fuel (2023, SPM unit size 3)
+  period: 2023
+  input:
+    state_code: MA
+    spm_unit_size: 3
+    irs_gross_income: 35_000
+    ma_liheap_utility_type: DELIVERABLE_FUEL
+    ma_liheap_subsidized_housing_eligible: true
+  output:
+    ma_liheap_payout: 763
+
+
+- name: Massachusetts LIHEAP payout for HECS (HECS threshold met) (2024, SPM unit size 4)
+  period: 2024
+  input:
+    state_code: MA
+    spm_unit_size: 4
+    irs_gross_income: 80_000
+    ma_liheap_hecs_threshold: true
+    ma_liheap_utility_type: HEC
+    ma_liheap_subsidized_housing_eligible: true
+  output:
+    ma_liheap_payout: 120
+
+- name: No payout for rent utilities without subsidized housing (2023, SPM unit size 2)
+  period: 2023
+  input:
+    state_code: MA
+    spm_unit_size: 2
+    irs_gross_income: 25_000
+    ma_liheap_utility_type: UTILITY_AND_HEAT_IN_RENT
+    ma_liheap_subsidized_housing_eligible: false
+  output:
+    ma_liheap_payout: 0
+
+- name: No HECS payout if HECS threshold not met (2024, SPM unit size 4)
+  period: 2024
+  input:
+    state_code: MA
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    ma_liheap_hecs_threshold: false
+    ma_liheap_utility_type: HEC
+    ma_liheap_subsidized_housing_eligible: true
+  output:
+    ma_liheap_payout: 0
