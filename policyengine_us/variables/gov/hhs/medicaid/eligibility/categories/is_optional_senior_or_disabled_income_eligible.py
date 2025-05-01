@@ -21,7 +21,7 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         income = tax_unit.sum(personal_income)
 
         #  Flags & state info
-        is_joint = person.tax_unit("tax_unit_is_joint", period)
+        is_joint = tax_unit("tax_unit_is_joint", period)
         state = person.household("state_code_str", period)
 
         #  Parameters ─
