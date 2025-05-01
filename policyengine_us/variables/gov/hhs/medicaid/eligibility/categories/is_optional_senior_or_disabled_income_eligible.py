@@ -45,7 +45,7 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
             p.income.limit.couple[state],
             p.income.limit.individual[state],
         )
-        fpg_annual = person.tax_unit("tax_unit_fpg", period)
+        fpg_annual = tax_unit("tax_unit_fpg", period)
         income_limit = limit_pct * fpg_annual
 
         #  Income test
