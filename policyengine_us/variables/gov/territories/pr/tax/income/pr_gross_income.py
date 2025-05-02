@@ -7,4 +7,6 @@ class pr_gross_income(Variable):
     label = "Puerto Rico gross income"
     unit = USD
     definition_period = YEAR
-    reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1005-computation-of-taxable-income/subchapter-a-determination-of-net-income-general-concepts/30101-gross-income"
+    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-a/30101/"
+
+    adds = "gov.territories.pr.tax.income.gross_income.sources"

@@ -9751,3 +9751,37 @@
     fixes:
     - Remove itemized deductions limitation at taxable income.
   date: 2025-04-28 17:09:00
+- bump: minor
+  changes:
+    added:
+    - 2026-2027 Montana Income Tax Changes.
+  date: 2025-04-28 20:12:23
+- bump: patch
+  changes:
+    fixes:
+    - Cap the NY household credit amount which reduces the NY EITC at state tax before
+      credits.
+  date: 2025-04-29 20:07:23
+- bump: minor
+  changes:
+    added:
+    - SNAP SUA for 2025
+    - SNAP LUA for 2025
+  date: 2025-04-30 20:00:26
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico gross income.
+  date: 2025-04-30 20:06:54
+- bump: patch
+  changes:
+    changed:
+    - Fix 2024 SNAP parameters.
+    - Update 2025 SNAP parameters.
+  date: 2025-05-01 16:15:34
+- bump: minor
+  changes:
+    added:
+    - Updated senior Medicaid parameters and adjusted variable to use percent of federal
+      poverty.
+  date: 2025-05-01 16:22:31
