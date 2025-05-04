@@ -78,6 +78,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         if reform:
             self.apply_reform_set(reform)
         self.parameters = set_irs_uprating_parameter(self.parameters)
+        print(f"DEBUG: Is 'county' in self.variables before homogenization? {'county' in self.variables}") # TEMPORARY DEBUG
         self.parameters = homogenize_parameter_structures(
             self.parameters, self.variables
         )
