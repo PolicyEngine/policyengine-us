@@ -3,7 +3,7 @@
   input:
     eitc_child_count: 2
     filing_status: SINGLE
-    pr_gross_income_person: 10_000
+    pr_gross_income: 10_000
     pr_earned_income_credit_eligible: false
   output:
     pr_earned_income_credit: 0
@@ -13,7 +13,7 @@
   input:
     eitc_child_count: 0
     filing_status: SINGLE
-    pr_gross_income_person: 17_660
+    pr_gross_income: 17_660
     pr_earned_income_credit_eligible: true
   output:
     pr_earned_income_credit: 1_656
@@ -23,7 +23,7 @@
   input:
     eitc_child_count: 1
     filing_status: SINGLE
-    pr_gross_income_person: 25_000
+    pr_gross_income: 25_000
     pr_earned_income_credit_eligible: true
   output:
     pr_earned_income_credit: 2_483.004
@@ -33,7 +33,7 @@
   input:
     eitc_child_count: 0
     filing_status: JOINT
-    pr_gross_income_person: 19_870
+    pr_gross_income: 19_870
     pr_earned_income_credit_eligible: true
   output:
     pr_earned_income_credit: 1_656
@@ -43,7 +43,7 @@
   input:
     eitc_child_count: 1
     filing_status: JOINT
-    pr_gross_income_person: 25_000
+    pr_gross_income: 25_000
     pr_earned_income_credit_eligible: true
   output:
     pr_earned_income_credit: 3_670.176
@@ -53,7 +53,7 @@
   input:
     eitc_child_count: 5
     filing_status: SINGLE
-    pr_gross_income_person: 50_000
+    pr_gross_income: 50_000
     pr_earned_income_credit_eligible: true
   output:
     pr_earned_income_credit: 0

@@ -3,18 +3,18 @@
   input:
     people:
       person1: 
-        pr_gross_income_person: 15_000
+        pr_gross_income: 15_000
         age: 40
         is_tax_unit_head_or_spouse: true
       person2:
-        pr_gross_income_person: 10_000
+        pr_gross_income: 10_000
         age: 44
         is_tax_unit_head_or_spouse: true
       person3:
-        pr_gross_income_person: 0
+        pr_gross_income: 0
         age: 5
       person4:
-        pr_gross_income_person: 1_000
+        pr_gross_income: 1_000
         age: 15
     tax_units:
       tax_unit:
@@ -33,20 +33,20 @@
   input:
     people:
       person1: 
-        pr_gross_income_person: 30_000
+        pr_gross_income: 30_000
         age: 35
         is_tax_unit_head_or_spouse: true
       person2:
-        pr_gross_income_person: 500
+        pr_gross_income: 500
         age: 5
       person3:
-        pr_gross_income_person: 0
+        pr_gross_income: 0
         age: 15
       person4:
-        pr_gross_income_person: 0
+        pr_gross_income: 0
         age: 2
       person5:
-        pr_gross_income_person: 0
+        pr_gross_income: 0
         age: 11
     tax_units:
       tax_unit:

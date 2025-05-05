@@ -20,7 +20,7 @@ class pr_earned_income_credit(Variable):
         person = tax_unit.members
         # only sum up gross income of tax unit head or spouses
         gross_income = tax_unit.sum(
-            person("pr_gross_income_person", period)
+            person("pr_gross_income", period)
             * (person("is_tax_unit_head_or_spouse", period))
         )
 
