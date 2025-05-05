@@ -9337,3 +9337,451 @@
     - Changed reform to tax employer payroll taxes from a parametric to a structural
       reform to avoid double-counting.
   date: 2025-03-14 00:28:04
+- bump: minor
+  changes:
+    added:
+    - Move branch_to_determine_itemization to gov/simulation folder.
+  date: 2025-03-17 09:50:22
+- bump: minor
+  changes:
+    added:
+    - 2024 Mississippi State Income Tax Updates.
+  date: 2025-03-17 21:18:41
+- bump: minor
+  changes:
+    added:
+    - New York and Vermont ACA family tier ratings.
+  date: 2025-03-17 21:43:27
+- bump: minor
+  changes:
+    added:
+    - Virginia state tax code 2024 updates.
+    - Replace inactive statutory links in the Virginia tax code.
+    - Update description of Virginia itemized deduction limits.
+  date: 2025-03-17 21:48:20
+- bump: patch
+  changes:
+    fixed:
+    - Idaho 2024 income tax rate.
+  date: 2025-03-18 07:50:27
+- bump: minor
+  changes:
+    added:
+    - Missouri state tax code 2024 updates.
+  date: 2025-03-19 07:54:52
+- bump: minor
+  changes:
+    fixed:
+    - Fixed Texas and Maine rating areas and corresponding SLCSP.
+  date: 2025-03-19 09:20:57
+- bump: patch
+  changes:
+    fixed:
+    - Rename capital_gains_before_response to long_term_capital_gains_before_response
+      as it is unclear whether it might include/allocate short term.
+  date: 2025-03-19 09:32:35
+- bump: patch
+  changes:
+    fixed:
+    - Remove SSI from unearned income sources for NC TANF.
+  date: 2025-03-19 20:55:15
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 state income tax updates.
+  date: 2025-03-19 21:49:56
+- bump: patch
+  changes:
+    fixed:
+    - Remove the mistakenly added tax-dependent limit from the NC SCCA program as
+      it is not required.
+  date: 2025-03-20 12:19:03
+- bump: patch
+  changes:
+    added:
+    - Added Maryland Tax Code Updates for 2024.
+  date: 2025-03-20 12:28:46
+- bump: patch
+  changes:
+    fixed:
+    - "Fixed SSI spousal deeming logic by adding the FBR differential threshold check\
+      \ required by \xA7416.1163(d)(1). Now the ineligible spouse's income is only\
+      \ deemed if it exceeds the difference between couple and individual FBRs."
+    - Corrected a multi-argument `max_()` usage in the State Supplement code to use
+      `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive
+      the correct (non-zero) supplement amount.
+    - Updated `ssi_category` so that disabled individuals are categorized properly
+      (no longer `'NONE'`), fixing a scenario where the category check returned zero
+      for disabled recipients.
+    - Revised the Massachusetts FULL_COST integration test to align with our current
+      offset logic for large leftover incomes (previously returned an unexpected zero).
+  date: 2025-03-20 13:20:44
+- bump: patch
+  changes:
+    fixed:
+    - Refactor New Mexico itemized deductions.
+  date: 2025-03-20 14:53:50
+- bump: minor
+  changes:
+    added:
+    - 2024 North Dakota State Income Tax Updates.
+  date: 2025-03-20 15:35:49
+- bump: minor
+  changes:
+    added:
+    - 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+  date: 2025-03-20 21:06:04
+- bump: minor
+  changes:
+    added:
+    - Illinois 2024 income tax updates.
+    fixed:
+    - Illinois child tax credit logic.
+  date: 2025-03-20 23:52:06
+- bump: minor
+  changes:
+    added:
+    - 2024 Wisconsin State Income Tax Updates.
+  date: 2025-03-24 11:01:52
+- bump: minor
+  changes:
+    added:
+    - Oklahoma State Tax Code 2024 Updates.
+  date: 2025-03-24 11:38:01
+- bump: minor
+  changes:
+    added:
+    - Include California State Supplement eligibility rules and include in the net
+      income tree .
+  date: 2025-03-24 14:07:04
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota working family credit phase-in threshold.
+  date: 2025-03-24 20:55:29
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Transitional Aid to Families with Dependent Children.
+  date: 2025-03-24 21:11:24
+- bump: patch
+  changes:
+    added:
+    - Updated State Spending on Medicaid.
+  date: 2025-03-25 09:56:10
+- bump: minor
+  changes:
+    added:
+    - Arizona 2024 income tax updates.
+  date: 2025-03-25 16:34:13
+- bump: minor
+  changes:
+    added:
+    - 2025 Idaho Grocery Credit.
+  date: 2025-03-25 20:17:19
+- bump: minor
+  changes:
+    added:
+    - Kansas head of household additional exemption.
+  date: 2025-03-25 20:22:29
+- bump: minor
+  changes:
+    added:
+    - 2024 South Carolina State Income Tax Updates.
+  date: 2025-03-26 17:10:58
+- bump: minor
+  changes:
+    added:
+    - 2024 Indiana Income Tax Updates.
+  date: 2025-03-28 12:23:21
+- bump: minor
+  changes:
+    added:
+    - Convert TANF variables to monthly.
+  date: 2025-03-28 17:49:52
+- bump: minor
+  changes:
+    added:
+    - 2024 Hawaii State Income Tax Updates.
+  date: 2025-03-28 18:57:33
+- bump: minor
+  changes:
+    added:
+    - 2024 Washington State Income Tax Updates.
+  date: 2025-03-31 15:42:14
+- bump: minor
+  changes:
+    added:
+    - 2024 Louisiana State Income Tax Updates.
+  date: 2025-04-01 12:10:52
+- bump: minor
+  changes:
+    added:
+    - 2025 Utah Income Tax Changes.
+  date: 2025-04-01 13:33:21
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Emergency Aid to the Elderly, Disabled and Children (EAEDC).
+  date: 2025-04-01 13:44:29
+- bump: minor
+  changes:
+    added:
+    - 2024 Iowa State Income Tax Updates.
+  date: 2025-04-01 16:24:37
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Bay Transportation Authority Income-Eligible Reduced Fare Program
+      eligibility.
+    - Massachusetts Bay Transportation Authority Senior Charlie Card Program eligibility.
+    - Massachusetts Bay Transportation Authority Transportation Access Pass (TAP)
+      Charlie Card Program eligibility.
+  date: 2025-04-01 18:13:56
+- bump: patch
+  changes:
+    added:
+    - Conversion of county FIPS codes to county enum items
+    - Helper function to convert string county names to enum keys
+    - Function to download and parse county FIPS dataset from Hugging Face
+    changed:
+    - Modified county variable to depend on FIPS input, then on ZIP code
+    - Modified county variable to use helper function for conversion from county names
+      to enum keys
+  date: 2025-04-01 18:27:47
+- bump: patch
+  changes:
+    fixed:
+    - Consolidated the different Medicaid parameters.
+  date: 2025-04-02 16:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Convert meets_snap_categorical_eligibility to monthly.
+  date: 2025-04-03 08:25:20
+- bump: patch
+  changes:
+    fixed:
+    - Account for the case where only one person is of the eligible immigration status
+      under the LA GR program.
+  date: 2025-04-03 11:58:58
+- bump: patch
+  changes:
+    added:
+    - Fix 2025 Utah Income Tax Rate.
+  date: 2025-04-03 16:03:51
+- bump: minor
+  changes:
+    added:
+    - Mississippi Income Tax Cut (2027-2030).
+  date: 2025-04-04 09:27:04
+- bump: minor
+  changes:
+    added:
+    - 2024 Maine State Income Tax Updates.
+  date: 2025-04-04 11:06:12
+- bump: patch
+  changes:
+    added:
+    - Added 2021-2023 Medicaid spending and enrollment data.
+  date: 2025-04-04 14:06:57
+- bump: minor
+  changes:
+    added:
+    - Include Massachusetts EAEDC and TAFDC in the net income tree.
+  date: 2025-04-04 17:04:17
+- bump: minor
+  changes:
+    added:
+    - Revert unwanted changes to MA EAEDC and TAFDC.
+  date: 2025-04-04 19:32:12
+- bump: patch
+  changes:
+    fixed:
+    - Enable MA EAEDC and TAFDC.
+  date: 2025-04-06 13:33:02
+- bump: minor
+  changes:
+    changed:
+    - DC Temporary Assistance for Needy Families (TANF) program.
+  date: 2025-04-06 13:44:41
+- bump: patch
+  changes:
+    added:
+    - Fix End Child Poverty Act uprating.
+  date: 2025-04-07 17:03:32
+- bump: minor
+  changes:
+    added:
+    - 2024 New Hampshire State Income Tax Updates.
+  date: 2025-04-07 17:11:50
+- bump: minor
+  changes:
+    added:
+    - Mississippi retirement income exemption.
+  date: 2025-04-07 20:54:03
+- bump: patch
+  changes:
+    fixed:
+    - Fix the Colorado refundable CTC formula.
+  date: 2025-04-08 11:51:57
+- bump: minor
+  changes:
+    added:
+    - 2024 Oregon State Income Tax Updates.
+  date: 2025-04-08 14:53:45
+- bump: patch
+  changes:
+    fixed:
+    - Create a separate Hawaii itemized deductions reduction threshold to align with
+      the tax forms.
+  date: 2025-04-08 18:07:28
+- bump: patch
+  changes:
+    fixes:
+    - Apply the 2020 tax rules to the Oklahoma EITC computation.
+  date: 2025-04-10 07:14:19
+- bump: minor
+  changes:
+    added:
+    - Remove the speedtest.
+  date: 2025-04-10 21:23:06
+- bump: minor
+  changes:
+    added:
+    - Remove the pregnancy condition from LA infant supplement eligibility.
+  date: 2025-04-14 01:13:24
+- bump: minor
+  changes:
+    added:
+    - AFA 2025 reform.
+  date: 2025-04-15 18:10:28
+- bump: patch
+  changes:
+    added:
+    - Added CHIP as a program seperate from Medicaid.
+  date: 2025-04-16 23:27:50
+- bump: minor
+  changes:
+    added:
+    - New York itemized deductions reduction formula.
+  date: 2025-04-18 13:28:01
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the Massachusetts state supplement program.
+  date: 2025-04-18 13:42:07
+- bump: minor
+  changes:
+    added:
+    - 2024 New Mexico State Income Tax Updates.
+  date: 2025-04-18 23:44:14
+- bump: patch
+  changes:
+    fixes:
+    - Fix tests including state_supplement parameters.
+  date: 2025-04-19 11:11:45
+- bump: minor
+  changes:
+    added:
+    - Limit itemized deductions to taxable income.
+  date: 2025-04-19 16:18:12
+- bump: minor
+  changes:
+    added:
+    - 2024 Arkansas State Income Tax Updates.
+  date: 2025-04-22 20:32:13
+- bump: minor
+  changes:
+    changed:
+    - Corrected infant allowance file name in Massachusetts TAFDC program.
+  date: 2025-04-23 19:49:38
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the SLCSP computation to reflect person-level eligibility.
+  date: 2025-04-25 14:31:40
+- bump: minor
+  changes:
+    added:
+    - Updated Delaware state tax code for 2024.
+  date: 2025-04-25 15:43:41
+- bump: minor
+  changes:
+    added:
+    - Updated Montana's Tax Code for 2024.
+  date: 2025-04-25 17:47:11
+- bump: patch
+  changes:
+    fixed:
+    - AFA reform maximum CTC amount adjustment.
+  date: 2025-04-25 18:05:47
+- bump: patch
+  changes:
+    fixed:
+    - Fixed ACA PTC phase-out rate calculation to properly handle null values in parameter
+      brackets
+  date: 2025-04-25 19:32:44
+- bump: patch
+  changes:
+    fixed:
+    - Default the MA EAEDC living arrangement to "A".
+    - Fix the MA EAEDC non-financial eligibility formula.
+  date: 2025-04-25 22:07:31
+- bump: patch
+  changes:
+    added:
+    - 2025 Annual Update of the HHS Poverty Guidelines.
+  date: 2025-04-26 02:00:39
+- bump: minor
+  changes:
+    added:
+    - Include taxable IRA distributions in market income.
+  date: 2025-04-28 16:19:52
+- bump: minor
+  changes:
+    added:
+    - Adjust ctc_value when activating fully refundable CTC.
+  date: 2025-04-28 16:42:01
+- bump: minor
+  changes:
+    added:
+    - Limit reported SALT to the amount that would zero out regular tax liability.
+    - Create SALT and reported SALT variables.
+    fixes:
+    - Remove itemized deductions limitation at taxable income.
+  date: 2025-04-28 17:09:00
+- bump: minor
+  changes:
+    added:
+    - 2026-2027 Montana Income Tax Changes.
+  date: 2025-04-28 20:12:23
+- bump: patch
+  changes:
+    fixes:
+    - Cap the NY household credit amount which reduces the NY EITC at state tax before
+      credits.
+  date: 2025-04-29 20:07:23
+- bump: minor
+  changes:
+    added:
+    - SNAP SUA for 2025
+    - SNAP LUA for 2025
+  date: 2025-04-30 20:00:26
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico gross income.
+  date: 2025-04-30 20:06:54
+- bump: patch
+  changes:
+    changed:
+    - Fix 2024 SNAP parameters.
+    - Update 2025 SNAP parameters.
+  date: 2025-05-01 16:15:34
+- bump: minor
+  changes:
+    added:
+    - Updated senior Medicaid parameters and adjusted variable to use percent of federal
+      poverty.
+  date: 2025-05-01 16:22:31

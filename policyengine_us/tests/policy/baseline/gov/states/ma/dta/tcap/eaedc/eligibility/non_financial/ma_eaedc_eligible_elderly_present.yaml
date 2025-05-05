@@ -1,0 +1,26 @@
+- name: Case 1, above age threshold, eligible.
+  period: 2022
+  input:
+    age: 65
+    is_ssi_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible_elderly_present: true
+
+- name: Case 2, below age threshold, not eligible.
+  period: 2022
+  input:
+    age: 64
+    is_ssi_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible_elderly_present: false
+
+- name: Case 3, above age threshold, but ssi eligible, then not eligible.
+  period: 2022
+  input:
+    age: 66
+    is_ssi_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_eligible_elderly_present: false

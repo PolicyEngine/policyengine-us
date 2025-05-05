@@ -2,12 +2,12 @@ description: Asset limit (of SSI countable assets) for an individual to qualify 
 metadata:
   unit: currency-USD
   period: month
-  label: "Medicaid senior or disabled asset limit (individual)"
+  label: Medicaid senior or disabled asset limit (individual)
   breakdown:
   - state_code
   reference:
-    - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
-      href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+    - title: "Medicaid Eligibility and Enrollment Policies for Seniors and People with Disabilities (Non-MAGI) During the Unwinding | KFF (June 2024)"
+      href: https://www.kff.org/report-section/medicaid-eligibility-and-enrollment-policies-for-seniors-and-people-with-disabilities-non-magi-during-the-unwinding-appendix/
 
 AL:
   2015-01-01: 2_000
@@ -17,16 +17,20 @@ AZ:
   2015-01-01: .inf
 AR:
   2015-01-01: 7_560
+  2024-01-01: 9_430
 CA:
   2015-01-01: 2_000
+  2024-01-01: .inf
 CO:
   2015-01-01: 2_000
 CT:
   2015-01-01: 1_600
 DC:
   2015-01-01: 2_000
+  2024-01-01: 4_000
 DE:
   2015-01-01: 4_000
+  2024-01-01: 2_000
 FL:
   2015-01-01: 5_000
 GA:
@@ -37,6 +41,7 @@ ID:
   2015-01-01: 2_000
 IL:
   2015-01-01: 2_000
+  2024-01-01: 17_500
 IN:
   2015-01-01: 2_000
 IA:
@@ -61,6 +66,7 @@ MS:
   2015-01-01: 2_000
 MO:
   2015-01-01: 3_000
+  2024-01-01: 5_726
 MT:
   2015-01-01: 2_000
 NE:
@@ -75,6 +81,7 @@ NM:
   2015-01-01: 2_000
 NY:
   2015-01-01: 2_000
+  2024-01-01: 31_175
 NC:
   2015-01-01: 2_000
 ND:
@@ -83,6 +90,7 @@ OH:
   2015-01-01: 2_000
 OK:
   2015-01-01: 2_000
+  2024-01-01: 9_430
 OR:
   2015-01-01: 2_000
 PA:
@@ -91,6 +99,7 @@ RI:
   2015-01-01: 4_000
 SC:
   2015-01-01: 7_560
+  2024-01-01: 9_430
 SD:
   2015-01-01: 2_000
 TN:

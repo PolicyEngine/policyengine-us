@@ -11,9 +11,20 @@ class la_general_relief_base_amount(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
-        married = add(spm_unit, period, ["is_married"])
+        # Is married is defined for the family,
+        # the `> 0` is necessary for the np.where statement
+        married = add(spm_unit, period, ["is_married"]) > 0
+        people_eligible_based_on_immigration_status = add(
+            spm_unit,
+            period,
+            ["la_general_relief_immigration_status_eligible_person"],
+        )
         p = parameters(period).gov.local.ca.la.general_relief
-        base_amount = where(married, p.amount.married, p.amount.single)
+        base_amount = where(
+            married & (people_eligible_based_on_immigration_status == 2),
+            p.amount.married,
+            p.amount.single,
+        )
         # The base amount phases out for recipients
         net_income = spm_unit("la_general_relief_net_income", period)
         excess_net_income = max_(net_income - p.phase_out.start, 0)

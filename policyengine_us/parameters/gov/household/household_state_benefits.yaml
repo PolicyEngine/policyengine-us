@@ -1,7 +1,8 @@
 description: The government counts these sources as benefits paid by state agencies.
 values:
   2023-01-01:
-    - state_supplement
+    # Massachusetts benefits
+    - ma_state_supplement
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -15,10 +16,15 @@ values:
     - ca_la_infant_supplement
     - ca_la_expectant_parent_payment
     - ca_capi
+    - ca_state_supplement
     # Nebraska benefits
     - ne_child_care_subsidies
+    # Massachusetts benefits
+    - ma_eaedc
+    - ma_tafdc
   2024-01-01:
-    - state_supplement
+    # Massachusetts benefits
+    - ma_state_supplement
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -32,10 +38,14 @@ values:
     - ca_la_infant_supplement
     - ca_la_expectant_parent_payment
     - ca_capi
+    - ca_state_supplement
     # Nebraska benefits
     - ne_child_care_subsidies
     # North Carolina benefits
     - nc_scca
+    # Massachusetts benefits
+    - ma_eaedc
+    - ma_tafdc
 metadata:
   unit: list
   period: year

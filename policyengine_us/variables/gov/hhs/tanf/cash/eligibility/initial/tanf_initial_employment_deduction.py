@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf_initial_employment_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "TANF IED (Initial Employment Deduction)"
     documentation = "The amount deducted from the countable earnings of a TANF application when calculating initial eligibility."
     unit = USD
@@ -19,4 +19,4 @@ class tanf_initial_employment_deduction(Variable):
         per_household = ied.household[state][family_size]
         earners = spm_unit.members("market_income", period) > 0
         earner_count = spm_unit.sum(earners)
-        return (per_household + (per_earner * earner_count)) * MONTHS_IN_YEAR
+        return per_household + (per_earner * earner_count)

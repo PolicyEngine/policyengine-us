@@ -53,6 +53,7 @@ LA:
   2022-07-01: 2
 ME:
   2020-07-01: 1.85
+  2024-07-01: 2 
 MD:
   2020-07-01: 2
 MA:
@@ -62,6 +63,9 @@ MI:
 MN:
   2020-07-01: 1.65
   2022-09-01: 2
+MO:
+  2020-07-01: -.inf
+  2024-07-01: -.inf  # Non-BBCE.
 MS:
   2020-07-01: -.inf # Non-BBCE.
 MT:
@@ -105,6 +109,9 @@ SC:
   2020-07-01: 1.3
 TX:
   2020-07-01: 1.65
+TN:
+  2020-07-01: -.inf
+  2023-07-01: -.inf # Non-BBCE.
 UT:
   2020-07-01: -.inf # Non-BBCE.
 VT:
@@ -126,8 +133,7 @@ WY:
 metadata:
   unit: /1
   reference:
-    - title: "USDA: Broad-based Categorical Eligibility"
-      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/BBCE%20States%20Chart%20(July%202020).pdf
-      date: 2020-07-01
+    - title: USDA Broad-Based Categorical Eligibility (BBCE)
+      href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
   breakdown:
   - state_code

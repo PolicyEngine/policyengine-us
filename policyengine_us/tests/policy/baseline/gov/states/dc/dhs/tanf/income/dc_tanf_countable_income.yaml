@@ -1,0 +1,29 @@
+- name: Both are 0.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_countable_earned_income: 0
+    dc_tanf_countable_unearned_income: 0
+    dc_tanf_childcare_deduction: 0
+  output:
+    dc_tanf_countable_income: 0
+
+- name: Earned income after disregard higher than childcare deduction. 
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_countable_earned_income: 4_020
+    dc_tanf_countable_unearned_income: 0
+    dc_tanf_childcare_deduction: 1_000
+  output:
+    dc_tanf_countable_income: 3_020
+
+- name: Earned income after disregard lower than childcare deduction. 
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_countable_earned_income: 500
+    dc_tanf_countable_unearned_income: 0
+    dc_tanf_childcare_deduction: 1_000
+  output:
+    dc_tanf_countable_income: 0

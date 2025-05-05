@@ -1,0 +1,29 @@
+- name: Eligible unit 
+  period: 2023
+  input:
+    ma_tafdc_dependent_criteria_eligible: true
+    state_code: MA
+    ma_tafdc_immigration_status_eligible: true
+    ma_eaedc_eligible: false
+  output:
+    ma_tafdc_non_financial_eligible: true
+
+- name: EAEDC eligible
+  period: 2023
+  input:
+    ma_tafdc_dependent_criteria_eligible: true
+    state_code: MA
+    ma_tafdc_immigration_status_eligible: true
+    ma_eaedc_eligible: true
+  output:
+    ma_tafdc_non_financial_eligible: false
+
+- name: No dependent
+  period: 2023
+  input:
+    ma_tafdc_dependent_criteria_eligible: false
+    state_code: MA
+    ma_tafdc_immigration_status_eligible: true
+    ma_eaedc_eligible: false
+  output:
+    ma_tafdc_non_financial_eligible: false

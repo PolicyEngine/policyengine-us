@@ -82,7 +82,7 @@
     state_code: IA
     filing_status: SINGLE
   output:  
-    ia_regular_tax_indiv: 1_395.08
+    ia_regular_tax_indiv: 1_419.9 #6_210*0.044+23_790*0.0482=1420.8
 
 - name: IA regular tax indiv unit test 10, using all rates 2024
   absolute_error_margin: 0.5
@@ -92,7 +92,7 @@
     state_code: IA
     filing_status: SINGLE
   output:  
-    ia_regular_tax_indiv: 4_235.83
+    ia_regular_tax_indiv: 4_260.7
 
 - name: IA regular tax indiv unit test 11, using two rates 2025
   absolute_error_margin: 0.5
@@ -102,7 +102,7 @@
     state_code: IA
     filing_status: SEPARATE
   output:  
-    ia_regular_tax_indiv: 1_395.08
+    ia_regular_tax_indiv: 1_419.9
 
 - name: IA regular tax indiv unit test 12, using all rates 2025
   absolute_error_margin: 0.5
@@ -112,7 +112,7 @@
     state_code: IA
     filing_status: SEPARATE
   output:  
-    ia_regular_tax_indiv: 3_805.08
+    ia_regular_tax_indiv: 3_829.9
 
 - name: IA regular tax indiv unit test 13, using two rates 2026
   absolute_error_margin: 0.5

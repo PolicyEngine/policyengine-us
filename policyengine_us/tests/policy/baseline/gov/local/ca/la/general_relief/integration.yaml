@@ -1,0 +1,41 @@
+- name: Couple with one ineligible person due to immigration status should still receive GR
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      you:
+        age: 44
+        immigration_status_str: CITIZEN
+        medical_out_of_pocket_expenses: 600
+        is_aca_eshi_eligible: false
+        is_pregnant: false
+        ca_calworks_child_care_time_category: MONTHLY
+      member1:
+        age: 55
+        immigration_status_str: UNDOCUMENTED
+        is_aca_eshi_eligible: false
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: [you, member1]
+        zip_code: 90034
+        household_vehicles_owned: 1
+        household_vehicles_value: 5000
+        is_homeless: true
+        state_code_str: CA
+        ca_tanf_region1: true
+        in_la: true
+    tax_units:
+      tax_unit:
+        members: [you, member1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [you, member1]
+    spm_units:
+      spm_unit:
+        members: [you, member1]
+  output:
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 2_652 # 221 monthly
+    la_general_relief: 2_652
