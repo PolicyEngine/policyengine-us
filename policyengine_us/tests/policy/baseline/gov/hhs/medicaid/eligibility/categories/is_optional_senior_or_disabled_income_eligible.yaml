@@ -1,0 +1,34 @@
+- name: low income, eligible for Medicaid
+  period: 2022
+  input:
+    ssi_countable_income: 600
+    state_code: CT
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+
+- name: high income, ineligible for Medicaid
+  period: 2022
+  input:
+    ssi_countable_income: 1_000_000
+    state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: false
+    
+
+- name: Joint, above limit
+  period: 2022
+  input:
+    ssi_countable_income: 13_400
+    tax_unit_is_joint: true
+    state_code: CT
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+
+- name: Joint, below limit
+  period: 2022
+  input:
+    ssi_countable_income: 13_300
+    tax_unit_is_joint: true
+    state_code: CT
+  output:
+    is_optional_senior_or_disabled_income_eligible: true

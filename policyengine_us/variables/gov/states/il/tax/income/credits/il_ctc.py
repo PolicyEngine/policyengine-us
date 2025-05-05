@@ -11,17 +11,12 @@ class il_ctc(Variable):
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
-        earned_income = tax_unit("tax_unit_earned_income", period)
-        agi = tax_unit("adjusted_gross_income", period)
-        larger_income = max_(earned_income, agi)
         p = parameters(period).gov.states.il.tax.income.credits.ctc
-        children = tax_unit("ctc_qualifying_children", period)
-        base_amount = p.amount * children
-        filing_status = tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
-        phase_out = where(
-            joint,
-            p.reduction.joint.calc(larger_income),
-            p.reduction.other.calc(larger_income),
-        )
-        return max_(base_amount - phase_out, 0)
+        person = tax_unit.members
+        age = person("age", period)
+        age_eligible_child = age < p.age_limit
+        federal_ctc_eligible_child = person("ctc_qualifying_child", period)
+        eligible_child = age_eligible_child & federal_ctc_eligible_child
+        eligible_child_present = tax_unit.any(eligible_child)
+        state_eitc = tax_unit("il_eitc", period)
+        return eligible_child_present * state_eitc * p.rate

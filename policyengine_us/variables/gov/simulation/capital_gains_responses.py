@@ -19,9 +19,9 @@ class relative_capital_gains_mtr_change(Variable):
             "capital_gains_behavioral_response"
         )
         baseline_branch.set_input(
-            "capital_gains_before_response",
+            "long_term_capital_gains_before_response",
             period,
-            person("capital_gains_before_response", period),
+            person("long_term_capital_gains_before_response", period),
         )
         baseline_mtr = baseline_person(
             "marginal_tax_rate_on_capital_gains", period
@@ -37,9 +37,9 @@ class relative_capital_gains_mtr_change(Variable):
             "capital_gains_behavioral_response"
         )
         measurement_branch.set_input(
-            "capital_gains_before_response",
+            "long_term_capital_gains_before_response",
             period,
-            person("capital_gains_before_response", period),
+            person("long_term_capital_gains_before_response", period),
         )
         measurement_person = measurement_branch.populations["person"]
         reform_mtr = measurement_person(
@@ -88,7 +88,9 @@ class capital_gains_behavioral_response(Variable):
         ):
             return 0
 
-        capital_gains = person("capital_gains_before_response", period)
+        capital_gains = person(
+            "long_term_capital_gains_before_response", period
+        )
         tax_rate_change = person("relative_capital_gains_mtr_change", period)
         elasticity = person("capital_gains_elasticity", period)
 
@@ -99,7 +101,7 @@ class capital_gains_behavioral_response(Variable):
         return response
 
 
-class capital_gains_before_response(Variable):
+class long_term_capital_gains_before_response(Variable):
     label = "capital gains before responses"
     entity = Person
     definition_period = YEAR
@@ -118,7 +120,7 @@ class adult_index_cg(Variable):
         return (
             person.get_rank(
                 person.household,
-                -person("capital_gains_before_response", period),
+                -person("long_term_capital_gains_before_response", period),
                 condition=person("is_adult", period),
             )
             + 1
