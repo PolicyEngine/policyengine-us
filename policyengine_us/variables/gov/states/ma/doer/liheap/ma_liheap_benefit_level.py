@@ -12,7 +12,7 @@ class ma_liheap_benefit_level(Variable):
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
-        threshold = spm_unit("ma_liheap_income_threshold", period)
+        threshold = spm_unit("ma_liheap_state_median_income_threshold", period)
         fpg = spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.ma.doer.liheap
 
@@ -39,5 +39,5 @@ class ma_liheap_benefit_level(Variable):
                 5,
                 6,
             ],
-            default=6,
+            default=0,
         )

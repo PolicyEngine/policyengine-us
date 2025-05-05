@@ -1,6 +1,12 @@
 description: Massachusetts determines Low Income Home Energy Assistance Program payouts for subsidized housing tenants based on income, household size, and utility type. 
 # payout values for the year 2021 not available
 
+0:  
+   DELIVERABLE_FUEL:  
+      2021-01-01: 0  
+   UTILITY_AND_HEAT_IN_RENT:  
+      2021-01-01: 0  
+
 1:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_605
@@ -108,7 +114,7 @@ metadata:
   unit: currency-USD
   label: Massachusetts LIHEAP subsidized housing payout
   breakdown: 
-    - range(1,7) # benefitlevel
+    - range(1,6) # benefitlevel
     - ma_liheap_utility_type
 
   reference:

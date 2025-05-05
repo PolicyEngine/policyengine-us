@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_liheap_income_threshold(Variable):
+class ma_liheap_state_median_income_threshold(Variable):
     value_type = float
     entity = SPMUnit
     label = "Income threshold for Massachusetts LIHEAP eligibility"

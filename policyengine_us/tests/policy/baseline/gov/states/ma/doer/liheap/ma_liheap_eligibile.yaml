@@ -6,7 +6,7 @@
     irs_gross_income: 80_000
     housing_assistance: 0
     rent: 30_000
-    heat_in_rent: true
+    heat_costs_included_in_rent: true
   output:
     ma_liheap_eligibile: true  
 
@@ -18,7 +18,7 @@
     irs_gross_income: 90_000
     housing_assistance: 5_000  
     rent: 25_000
-    heat_in_rent: true
+    heat_costs_included_in_rent: true
   output:
     ma_liheap_eligibile: false  
 
@@ -30,7 +30,7 @@
     irs_gross_income: 150_000
     housing_assistance: 0  
     rent: 50_000
-    heat_in_rent: false
+    heat_costs_included_in_rent: false
   output:
     ma_liheap_eligibile: false
 
@@ -42,6 +42,6 @@
     irs_gross_income: 100_000
     housing_assistance: 10_000  
     rent: 50_000
-    heat_in_rent: true
+    heat_costs_included_in_rent: true
   output:
     ma_liheap_eligibile: false

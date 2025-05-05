@@ -14,8 +14,8 @@ class ma_liheap_eligibile(Variable):
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
-        threshold = spm_unit("ma_liheap_income_threshold", period)
-        heat_in_rent = spm_unit("heat_in_rent", period)
+        threshold = spm_unit("ma_liheap_state_median_income_threshold", period)
+        heat_in_rent = spm_unit("heat_costs_included_in_rent", period)
         is_subsidized = spm_unit(
             "ma_liheap_subsidized_housing_eligible", period
         )
