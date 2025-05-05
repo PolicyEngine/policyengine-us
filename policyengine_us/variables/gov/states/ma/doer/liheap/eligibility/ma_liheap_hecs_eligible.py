@@ -1,12 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class ma_liheap_hecs_threshold(Variable):
+class ma_liheap_hecs_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
     defined_for = StateCode.MA
-    label = "Massachusetts HECS Eligibility"
+    label = (
+        "Eligible for Massachusetts LIHEAP High Energy Cost Supplement (HECS)"
+    )
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-and-benefit-chart-january-2025/download"
 
     def formula(spm_unit, period, parameters):
         utility_type = spm_unit("ma_liheap_utility_type", period)

@@ -1,58 +1,62 @@
-- name: MA LIHEAP payout — HECS with threshold met and subsidized housing (2024)
+- name: Case 1 — HECS with threshold met and subsidized housing (2024)
   period: 2024
   input:
     state_code: MA
     spm_unit_size: 4
     irs_gross_income: 80_000
-    ma_liheap_HECSs_threshold: true
+    ma_liheap_income_eligible: true
+    ma_liheap_hecs_eligible: true
     ma_liheap_utility_type: HECS
-    ma_liheap_subsidized_housing_eligible: true
+    receives_housing_assistance: true
   output:
-
     ma_liheap_payout: 120
 
-- name: MA LIHEAP payout — HECS with threshold met and NOT subsidized (2024)
+- name: Case 2— HECS with threshold met and NOT subsidized (2024)
   period: 2024
   input:
     state_code: MA
     spm_unit_size: 4
     irs_gross_income: 80_000
-    ma_liheap_HECSs_threshold: true
+    ma_liheap_income_eligible: true
+    ma_liheap_hecs_eligible: true
     ma_liheap_utility_type: HECS
-    ma_liheap_subsidized_housing_eligible: false
+    receives_housing_assistance: false
   output:
-    ma_liheap_payout: 90
+    ma_liheap_payout: 120
 
-- name: MA LIHEAP payout — HECS with threshold NOT met (2024)
+- name: Case 3 — HECS with threshold NOT met (2024)
   period: 2024
   input:
     state_code: MA
     spm_unit_size: 4
     irs_gross_income: 80_000
-    ma_liheap_HECSs_threshold: false
+    ma_liheap_income_eligible: false
+    ma_liheap_hecs_eligible: false
     ma_liheap_utility_type: HECS
-    ma_liheap_subsidized_housing_eligible: true
+    receives_housing_assistance: true
   output:
     ma_liheap_payout: 0
 
-- name: MA LIHEAP payout — Deliverable Fuel and subsidized (2023)
+- name: Case 4 — Deliverable Fuel and subsidized (2023)
   period: 2023
   input:
     state_code: MA
     spm_unit_size: 3
     irs_gross_income: 35_000
+    ma_liheap_income_eligible: true
     ma_liheap_utility_type: DELIVERABLE_FUEL
-    ma_liheap_subsidized_housing_eligible: true
+    receives_housing_assistance: true
   output:
     ma_liheap_payout: 763
 
-- name: MA LIHEAP payout — Utility and heat in rent, NOT subsidized (2022)
+- name: Case 5 — Utility and heat in rent, NOT subsidized (2022)
   period: 2022
   input: 
     state_code: MA
     spm_unit_size: 2
     irs_gross_income: 30_000
+    ma_liheap_income_eligible: true
     ma_liheap_utility_type: UTILITY_AND_HEAT_IN_RENT
-    ma_liheap_subsidized_housing_eligible: false
+    receives_housing_assistance: false
   output: 
-    ma_liheap_payout: 658
+    ma_liheap_payout: 1039

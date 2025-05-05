@@ -24,3 +24,12 @@
     irs_gross_income: 67_000
   output:
     ma_liheap_benefit_level: 3
+
+- name: Household size of 3 with $35000 income. 
+  period: 2023
+  input:
+    spm_unit_size: 3
+    state_code: MA
+    irs_gross_income: 35_000
+  output: 
+    ma_liheap_benefit_level: 4

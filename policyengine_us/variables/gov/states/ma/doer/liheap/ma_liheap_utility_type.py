@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class MassachusettsLIHEAPUtilityType(Enum):
     DELIVERABLE_FUEL = "Deliverable Fuel"
     UTILITY_AND_HEAT_IN_RENT = "Utility and Heat in Rent"
-    HECS = "HECS"
+    HECS = "High Energy Cost Supplement"
     HEATING_OIL_AND_PROPANE = "Heating oil and Propane"
     NATURAL_GAS = "Natural Gas"
     OTHER = "Other"
