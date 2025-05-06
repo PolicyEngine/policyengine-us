@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class is_infant_for_medicaid_fc(Variable):
@@ -14,9 +15,6 @@ class is_infant_for_medicaid_fc(Variable):
         state_code = person.household(
             "state_code_str", period
         )  # e.g. "CA", "NY"
-
-        # **directly index** the income_limit map by the state-code vector
         income_limit = p.income_limit[state_code]
-
         # allow exactly at the threshold
-        return income <= income_limit
+        return np.isclose(income, income_limit) | (income <= income_limit)

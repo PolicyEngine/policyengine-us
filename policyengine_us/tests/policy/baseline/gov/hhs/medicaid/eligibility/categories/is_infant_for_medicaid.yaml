@@ -12,7 +12,7 @@
   input:
     state_code: CA
     age: 0
-    medicaid_income_level: 2.66
+    medicaid_income_level: 2.67
   output:
     is_infant_for_medicaid: false
 
@@ -41,3 +41,23 @@
     medicaid_income_level: 3.23
   output:
     is_infant_for_medicaid: false
+
+- name: Child under 1 and exactly at FPL limit, eligible in MD
+  period: 2021
+  absolute_error_margin: .01
+  input:
+    state_code: MD
+    age: 0
+    medicaid_income_level: 3.22
+  output:
+    is_infant_for_medicaid: true
+
+- name: Child under 1 and exactly at FPL limit, eligible in VT
+  period: 2021
+  input:
+    state_code: VT
+    age: 0
+    medicaid_income_level: 3.17
+  output:
+    is_infant_for_medicaid_fc: true
+    is_infant_for_medicaid: true
