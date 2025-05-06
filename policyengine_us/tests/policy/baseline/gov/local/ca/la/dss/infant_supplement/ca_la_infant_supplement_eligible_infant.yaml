@@ -1,23 +1,26 @@
-- name: Ineligible child 
+- name: Ineligible non-dependent 
   period: 2022
   input:
     in_la: true
-    age: 2
+    is_tax_unit_head_or_spouse: false
+    is_tax_unit_dependent: false
   output:
    ca_la_infant_supplement_eligible_infant: false
 
-- name: Eligible child 
+- name: Ineligible dependent 
   period: 2022
   input:
     in_la: true
-    age: 1
+    is_tax_unit_head_or_spouse: false
+    is_tax_unit_dependent: true
   output:
-   ca_la_infant_supplement_eligible_infant: true
+   ca_la_infant_supplement_eligible_infant: false
 
-- name: Eligible newborn 
+- name: Ineligible head or spouse 
   period: 2022
   input:
     in_la: true
-    age: 0
+    is_tax_unit_head_or_spouse: true
+    is_tax_unit_dependent: false
   output:
-   ca_la_infant_supplement_eligible_infant: true
+   ca_la_infant_supplement_eligible_infant: false
