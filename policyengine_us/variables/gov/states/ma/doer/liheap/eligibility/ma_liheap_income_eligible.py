@@ -12,7 +12,8 @@ class ma_liheap_income_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.hhs.liheap
         income = add(spm_unit, period, ["irs_gross_income"])
-        income_threshold = spm_unit("ma_liheap_state_median_income_threshold", period)
+        income_threshold = spm_unit(
+            "ma_liheap_state_median_income_threshold", period
+        )
         return income <= income_threshold

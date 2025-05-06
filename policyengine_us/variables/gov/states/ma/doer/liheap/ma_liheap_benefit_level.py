@@ -22,7 +22,6 @@ class ma_liheap_benefit_level(Variable):
         level_four = fpg * p.benefit_level_multiplier * 7
         level_five = fpg * p.benefit_level_multiplier * 8
         level_six = threshold
-        print(level_three)
         return select(
             [
                 income <= level_one,

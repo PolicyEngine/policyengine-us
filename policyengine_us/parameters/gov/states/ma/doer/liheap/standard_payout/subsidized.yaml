@@ -5,110 +5,73 @@ description: Massachusetts determines Low Income Home Energy Assistance Program 
     2022-01-01: 0  
   UTILITY_AND_HEAT_IN_RENT:  
     2022-01-01: 0  
-  HECS: 
-    2022-01-01: 0 
-
 1:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_605
     2023-01-01: 1_120
     2024-01-01: 420
-    2025-01-01: 1_050
-      
+    2025-01-01: 1_050  
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 1_068
     2023-01-01: 770
     2024-01-01: 350
     2025-01-01: 595
-
-  HECS: 
-    2022-01-01: 250
-    2023-01-01: 200
-
 2:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_466
     2023-01-01: 986
     2024-01-01: 385
-    2025-01-01: 924
-      
+    2025-01-01: 924  
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 939
     2023-01-01: 678
     2024-01-01: 325
     2025-01-01: 524
-
-  HECS: 
-    2022-01-01: 230
-    2023-01-01: 180
-
 3:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_344
     2023-01-01: 867
     2024-01-01: 355
-    2025-01-01: 813
-      
+    2025-01-01: 813  
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 827
     2023-01-01: 596
     2024-01-01: 300
     2025-01-01: 461
-
-  HECS: 
-    2022-01-01: 210
-    2023-01-01: 160
-
 4:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_237
     2023-01-01: 763
     2024-01-01: 325
-    2025-01-01: 716
-      
+    2025-01-01: 716     
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 727
     2023-01-01: 525
     2024-01-01: 275
     2025-01-01: 405
-
-  HECS: 
-    2022-01-01: 190
-    2023-01-01: 140
-
 5:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_237
     2023-01-01: 763
     2024-01-01: 325
-    2025-01-01: 716
-      
+    2025-01-01: 716   
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 727
     2023-01-01: 525
     2024-01-01: 275
     2025-01-01: 405
-
-  HECS: 
-    2022-01-01: 190
-    2023-01-01: 140
-
 6:
   DELIVERABLE_FUEL: 
     2022-01-01: 1_143
     2023-01-01: 672
     2024-01-01: 300
-    2025-01-01: 630
-      
+    2025-01-01: 630 
   UTILITY_AND_HEAT_IN_RENT: 
     2022-01-01: 640
     2023-01-01: 462
     2024-01-01: 250
     2025-01-01: 357
     
-  HECS: 
-    2022-01-01: 170
-    2023-01-01: 120
 
 metadata:
   period: year
@@ -116,7 +79,7 @@ metadata:
   label: Massachusetts LIHEAP subsidized housing payout
   breakdown: 
     - range(1,6) # benefit level
-    - ma_liheap_utility_type
+    - ma_liheap_utility_category
 
   reference:
     - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
