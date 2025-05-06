@@ -74,11 +74,14 @@
         medical_out_of_pocket_expenses: 1_332
         rent: 1_332
         is_in_foster_care: true
+        is_tax_unit_head_or_spouse: true
       person2:
-        age: 1
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     households:
       household:
         members: [person1, person2]
         in_la: true
   output:
-    ca_la_infant_supplement: 10_800
+    ca_la_infant_supplement: 0
