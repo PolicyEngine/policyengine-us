@@ -18,7 +18,8 @@ class il_bap_eligible(Variable):
         household_income = person.spm_unit.sum(income)
         size = person.spm_unit("spm_unit_size", period)
         capped_size = min_(size, 3)
-        income_eligible = household_income <= p.income_limit[capped_size]
+        income_limit = p.income_limit[capped_size] 
+        income_eligible = household_income <= income_limit
         eligible_senior = senior & income_eligible
 
         disabled = person("is_permanently_and_totally_disabled", period)
