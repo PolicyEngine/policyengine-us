@@ -63,7 +63,7 @@
   output:
     ca_la_infant_supplement: 0
 
-- name: Integration test, eligible caretaker 
+- name: Integration test, eligible caretaker but no eligible infant
   period: 2024
   input:
     people:
@@ -76,12 +76,31 @@
         is_in_foster_care: true
         is_tax_unit_head_or_spouse: true
       person2:
-        is_tax_unit_head_or_spouse: false
-        is_tax_unit_dependent: true
-        is_tax_unit_spouse: false
+        ca_la_infant_supplement_eligible_infant: false
     households:
       household:
         members: [person1, person2]
         in_la: true
   output:
     ca_la_infant_supplement: 0
+
+- name: Integration test, eligible caretaker but no eligible infant
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        was_in_foster_care: true
+        employment_income: 11_111
+        medical_out_of_pocket_expenses: 1_332
+        rent: 1_332
+        is_in_foster_care: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        ca_la_infant_supplement_eligible_infant: true
+    households:
+      household:
+        members: [person1, person2]
+        in_la: true
+  output:
+    ca_la_infant_supplement: 10_800
