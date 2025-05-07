@@ -6,7 +6,7 @@
         ca_la_infant_supplement_eligible_person: true
         is_in_foster_care_group_home: false
       person2:
-        ca_la_infant_supplement_eligible_infant: true
+        is_child: true
     households:
       household:
         members: [person1, person2]
@@ -22,7 +22,7 @@
         ca_la_infant_supplement_eligible_person: true
         is_in_foster_care_group_home: true
       person2:
-        ca_la_infant_supplement_eligible_infant: true
+        is_child: true
     households:
       household:
         members: [person1, person2]
@@ -39,7 +39,7 @@
         ca_la_infant_supplement_eligible_person: true
         is_in_foster_care_group_home: true
       person2:
-        ca_la_infant_supplement_eligible_infant: false
+        is_child: false
     households:
       household:
         members: [person1, person2]
@@ -55,7 +55,7 @@
         ca_la_infant_supplement_eligible_person: false
         is_in_foster_care_group_home: true
       person2:
-        ca_la_infant_supplement_eligible_infant: true
+        is_child: true
     households:
       household:
         members: [person1, person2]
@@ -76,7 +76,7 @@
         is_in_foster_care: true
         is_tax_unit_head_or_spouse: true
       person2:
-        ca_la_infant_supplement_eligible_infant: false
+        is_child: false
     households:
       household:
         members: [person1, person2]
@@ -97,7 +97,7 @@
         is_in_foster_care: true
         is_tax_unit_head_or_spouse: true
       person2:
-        ca_la_infant_supplement_eligible_infant: true
+        is_child: true
     households:
       household:
         members: [person1, person2]
