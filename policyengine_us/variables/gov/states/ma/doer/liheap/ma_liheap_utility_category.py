@@ -2,8 +2,8 @@ from policyengine_us.model_api import *
 
 
 class MassachusettsLIHEAPUtilityCategory(Enum):
+    UTILITY_AND_HEAT_IN_RENT = "Utility and Heat in Rent"
     DELIVERABLE_FUEL = "Deliverable Fuel"
-    UTILITY_AND_HEAT_IN_RENT = "Utility and Heat in Rent" 
 
 
 class ma_liheap_utility_category(Variable):
@@ -11,25 +11,36 @@ class ma_liheap_utility_category(Variable):
     entity = SPMUnit
     possible_values = MassachusettsLIHEAPUtilityCategory
     default_value = MassachusettsLIHEAPUtilityCategory.DELIVERABLE_FUEL
+    label = "Massachusetts LIHEAP household's utility category"
     definition_period = YEAR
     defined_for = StateCode.MA
-    label = "Massachusetts LIHEAP Household Utility type"
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-november-2024/download"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.doer.liheap
+        heat_in_rent = spm_unit("heat_costs_included_in_rent", period)
         heating_type = spm_unit("ma_liheap_heating_type", period)
-        deliverable_fuel = np.isin(heating_type, p.deliverable_fuel)
-        utility_and_heat_in_rent = np.isin(
-            heating_type, p.utility_and_heat_in_rent
+        heating_types = heating_type.possible_values
+
+        electricity = heating_type == heating_types.ELECTRICITY
+        natural_gas = heating_type == heating_types.NATURAL_GAS
+        heating_and_oil_propane = (
+            heating_type == heating_types.HEATING_OIL_AND_PROPANE
         )
+        kerosene = heating_type == heating_types.KEROSENE
+        other = heating_type == heating_types.OTHER
+
+        utility = electricity | natural_gas
+        utility_and_heat_in_rent = utility | heat_in_rent
+
+        deliverable_fuel = heating_and_oil_propane | kerosene | other
 
         conditions = [
-            deliverable_fuel,
             utility_and_heat_in_rent,
+            deliverable_fuel,
         ]
         results = [
-            MassachusettsLIHEAPUtilityCategory.DELIVERABLE_FUEL,
             MassachusettsLIHEAPUtilityCategory.UTILITY_AND_HEAT_IN_RENT,
+            MassachusettsLIHEAPUtilityCategory.DELIVERABLE_FUEL,
         ]
 
         return select(

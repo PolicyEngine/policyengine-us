@@ -1,35 +1,35 @@
-description: Massachusetts determines threshold for High Energy Cost Supplement utility payout for the Low Income Home Energy Assistance Program.
+description: Massachusetts determines threshold for High Energy Cost Supplement payment under the Low Income Home Energy Assistance Program.
 # threshold values for 2024 not available 
 
 HEATING_OIL_AND_PROPANE: 
-  2022-01-01: 1_279
-  2023-01-01: 1_856
-  2025-01-01: 1_865
+  2021-10-01: 1_279
+  2022-10-01: 1_856
+  2024-10-01: 1_865
 
 NATURAL_GAS: 
-  2022-01-01: 974
-  2023-01-01: 1_190
-  2025-01-01: 1_144
+  2021-10-01: 974
+  2022-10-01: 1_190
+  2024-10-01: 1_144
 
 OTHER: 
-  2022-01-01: 1_058
-  2023-01-01: 1_635
-  2025-01-01: 1_501
+  2021-10-01: 1_058
+  2022-10-01: 1_635
+  2024-10-01: 1_501
 
 KEROSENE: 
-  2022-01-01: 1_076
-  2023-01-01: 1_487
-  2025-01-01: 1_631
+  2021-10-01: 1_076
+  2022-10-01: 1_487
+  2024-10-01: 1_631
 
 ELECTRICITY: 
-  2022-01-01: 1_592
-  2023-01-01: 1_709
-  2025-01-01: 1_927
+  2021-10-01: 1_592
+  2022-10-01: 1_709
+  2024-10-01: 1_927
 
 metadata:
   period: year
   unit: currency-USD
-  label: Massachusetts threshold for HECS LIHEAP payout
+  label: Massachusetts LIHEAP HECS payment threshold
   breakdown: 
     - ma_liheap_heating_type
 

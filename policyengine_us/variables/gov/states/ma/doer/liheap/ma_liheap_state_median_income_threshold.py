@@ -2,13 +2,12 @@ from policyengine_us.model_api import *
 
 
 class ma_liheap_state_median_income_threshold(Variable):
-    value_type = int
+    value_type = float
     entity = SPMUnit
     label = "Massachusetts LIHEAP state median income threshold"
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
-
     defined_for = StateCode.MA
+    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.hhs.liheap

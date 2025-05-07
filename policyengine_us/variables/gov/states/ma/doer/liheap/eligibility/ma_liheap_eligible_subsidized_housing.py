@@ -4,9 +4,9 @@ from policyengine_us.model_api import *
 class ma_liheap_eligible_subsidized_housing(Variable):
     value_type = bool
     entity = SPMUnit
+    label = "Massachusetts LIHEAP eligible subsidized housing"
     definition_period = YEAR
     defined_for = StateCode.MA
-    label = "Massachusetts LIHEAP eligible subsidized housing"
     reference = "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#MA"
 
     def formula(spm_unit, period, parameters):

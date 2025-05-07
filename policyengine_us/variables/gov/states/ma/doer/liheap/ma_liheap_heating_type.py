@@ -11,9 +11,10 @@ class MassachusettsLIHEAPHeatingType(Enum):
 
 class ma_liheap_heating_type(Variable):
     value_type = Enum
-    entity = Household
+    entity = SPMUnit
     possible_values = MassachusettsLIHEAPHeatingType
     default_value = MassachusettsLIHEAPHeatingType.ELECTRICITY
+    label = "Massachusetts LIHEAP household's heating type"
     definition_period = YEAR
     defined_for = StateCode.MA
-    label = "Massachusetts LIHEAP Household Heating type"
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-november-2024/download"

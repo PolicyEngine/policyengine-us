@@ -3,7 +3,7 @@
   input:
     state_code: MA
     ma_liheap_last_year_energy_cost: 1300  
-    ma_liheap_utility_type: HEATING_OIL_AND_PROPANE  
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE  
   output:
     ma_liheap_hecs_eligible: true
 
@@ -12,6 +12,6 @@
   input:
     state_code: MA
     ma_liheap_last_year_energy_cost: 900  
-    ma_liheap_utility_type: NATURAL_GAS  
+    ma_liheap_heating_type: NATURAL_GAS  
   output:
     ma_liheap_hecs_eligible: false

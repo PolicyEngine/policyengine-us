@@ -5,11 +5,9 @@ class ma_liheap_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Massachusetts LIHEAP due to income"
-    unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
-
     defined_for = StateCode.MA
+    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
