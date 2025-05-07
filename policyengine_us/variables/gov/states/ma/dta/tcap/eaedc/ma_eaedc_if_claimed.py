@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_if_claimed(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Massachusetts EAEDC"
+    label = "Massachusetts EAEDC benefit amount if claimed"
     unit = USD
     definition_period = MONTH
     defined_for = "ma_eaedc_eligible"

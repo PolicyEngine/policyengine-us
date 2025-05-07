@@ -5,7 +5,7 @@ class ma_tafdc_if_claimed(Variable):
     value_type = float
     unit = USD
     entity = SPMUnit
-    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC)"
+    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) benefit amount if claimed"
     definition_period = MONTH
     reference = "https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc"
     defined_for = "ma_tafdc_eligible"
