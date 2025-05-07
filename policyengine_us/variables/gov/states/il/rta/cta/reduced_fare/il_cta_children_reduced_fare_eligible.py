@@ -10,6 +10,8 @@ class il_cta_children_reduced_fare_eligible(Variable):
     reference = "https://www.transitchicago.com/reduced-fare-programs/#kids"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.rta.cta.reduced_fare_program.age_threshold
+        p = parameters(
+            period
+        ).gov.states.il.rta.cta.reduced_fare_program.age_threshold
         age = person("age", period)
         return p.child.calc(age)

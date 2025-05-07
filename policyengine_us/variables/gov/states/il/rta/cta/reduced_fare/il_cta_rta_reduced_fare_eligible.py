@@ -14,7 +14,9 @@ class il_cta_rta_reduced_fare_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.rta.cta.reduced_fare_program.age_threshold
+        p = parameters(
+            period
+        ).gov.states.il.rta.cta.reduced_fare_program.age_threshold
         age = person("age", period)
         senior = age >= p.senior
         disabled = person("is_disabled", period)

@@ -12,7 +12,9 @@ class il_cta_free_ride_eligible(Variable):
     reference = "https://www.transitchicago.com/reduced-fare-programs/#free"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.rta.cta.free_ride_program.age_threshold
+        p = parameters(
+            period
+        ).gov.states.il.rta.cta.free_ride_program.age_threshold
         age = person("age", period)
         young_child = age <= p.young_child
         bap_eligible = person("il_bap_eligible", period)
