@@ -1,11 +1,12 @@
 description: Asset limit (of SSI countable assets) for a couple to qualify for Medicaid under the optional senior or disabled pathway.
 metadata:
   unit: currency-USD
-  label: "Medicaid senior or disabled asset limit (couple)"
+  label: Medicaid senior or disabled asset limit (couple)
+  period: year
   breakdown:
   - state_code
   reference:
-    - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
+    - title: "Medicaid Eligibility and Enrollment Policies for Seniors and People with Disabilities (Non-MAGI) During the Unwinding | KFF (June 2024)"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
 
 AL:
@@ -16,16 +17,20 @@ AZ:
   2015-01-01: .inf
 AR:
   2015-01-01: 11_340
+  2024-01-01: 14_130
 CA:
   2015-01-01: 3_000
+  2024-01-01: .inf
 CO:
   2015-01-01: 3_000
 CT:
   2015-01-01: 2_400
 DC:
   2015-01-01: 3_000
+  2024-01-01: 6_000
 DE:
   2015-01-01: 6_000
+  2024-01-01: 3_000
 FL:
   2015-01-01: 6_000
 GA:
@@ -36,6 +41,7 @@ ID:
   2015-01-01: 3_000
 IL:
   2015-01-01: 3_000
+  2024-01-01: 17_500
 IN:
   2015-01-01: 3_000
 IA:
@@ -60,6 +66,7 @@ MS:
   2015-01-01: 3_000
 MO:
   2015-01-01: 6_000
+  2024-01-01: 11_452
 MT:
   2015-01-01: 3_000
 NE:
@@ -74,6 +81,7 @@ NM:
   2015-01-01: 3_000
 NY:
   2015-01-01: 3_000
+  2024-01-01: 42_312
 NC:
   2015-01-01: 3_000
 ND:
@@ -82,6 +90,7 @@ OH:
   2015-01-01: 3_000
 OK:
   2015-01-01: 3_000
+  2024-01-01: 14_130
 OR:
   2015-01-01: 3_000
 PA:
@@ -90,6 +99,7 @@ RI:
   2015-01-01: 6_000
 SC:
   2015-01-01: 11_340
+  2024-01-01: 14_130
 SD:
   2015-01-01: 3_000
 TN:
