@@ -23,7 +23,7 @@
         members: [person1, person2]
         state_code: MA
   output:
-    ma_eaedc_dependent_care_deduction_person: [0,2100]
+    ma_eaedc_dependent_care_deduction_person: [0,2_100]
 
 - name: Case 2, older dependent, 10 hours/week.
   period: 2023-01

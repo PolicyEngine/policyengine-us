@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_if_tafdc_ineligible(Variable):
+class ma_eaedc_if_claimed(Variable):
     value_type = float
     entity = SPMUnit
     label = "Massachusetts EAEDC"
