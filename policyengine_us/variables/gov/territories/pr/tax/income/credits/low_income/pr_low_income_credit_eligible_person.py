@@ -14,5 +14,4 @@ class pr_low_income_credit_eligible_person(Variable):
         p = parameters(period).gov.territories.pr.tax.income.credits.low_income
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age_eligible = age >= p.age_threshold
-        print(age_eligible)
         return head_or_spouse & age_eligible
