@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_liheap_benefit_level(Variable):
     value_type = int
     entity = SPMUnit
-    label = "Benefit Levels for Massachusetts LIHEAP payment"
+    label = "Benefit Level for Massachusetts LIHEAP payment"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-and-benefit-chart-january-2025/download"
@@ -13,13 +13,13 @@ class ma_liheap_benefit_level(Variable):
         income = add(spm_unit, period, ["irs_gross_income"])
         threshold = spm_unit("ma_liheap_state_median_income_threshold", period)
         fpg = spm_unit("ma_liheap_fpg", period)
-        p = parameters(period).gov.states.ma.doer.liheap
+        p = parameters(period).gov.states.ma.doer.liheap.fpg_rate
 
-        level_one = fpg * p.benefit_level_multiplier
-        level_two = fpg * p.benefit_level_multiplier * 1.25
-        level_three = fpg * p.benefit_level_multiplier * 1.5
-        level_four = fpg * p.benefit_level_multiplier * 1.75
-        level_five = fpg * p.benefit_level_multiplier * 2
+        level_one = fpg * p.benefit_level_one
+        level_two = fpg * p.benefit_level_two
+        level_three = fpg * p.benefit_level_three
+        level_four = fpg * p.benefit_level_four
+        level_five = fpg * p.benefit_level_five
         level_six = threshold
         return select(
             [

@@ -1,4 +1,4 @@
-description: Massachusetts Low Income Home Energy Assistance Program determines high energy cost supplement payment for subsidized housing applicants based on income, household size, and utility type. 
+description: Massachusetts provides the following High Energy Cost Supplement payment for subsidized housing applicants based on benefit level under the Low Income Home Energy Assistance Program.
 
 0:  
   2021-10-01: 0 
@@ -24,7 +24,7 @@ description: Massachusetts Low Income Home Energy Assistance Program determines 
 metadata:
   period: year
   unit: currency-USD
-  label: Massachusetts LIHEAP high energy cost supplement payment for subsidized housing applicant 
+  label: Massachusetts LIHEAP High Energy Cost Supplement payment for subsidized housing applicant 
   breakdown: 
     - range(0,7) # benefit level
 

@@ -1,4 +1,4 @@
-description: Massachusetts determines Low Income Home Energy Assistance Program payouts for subsidized housing tenants based on income, household size, and utility type. 
+description: Massachusetts provides the following Low Income Home Energy Assistance Program payment amount for subsidized housing applicants based on benefit level and utility category. 
 
 0:  
   DELIVERABLE_FUEL:  
@@ -76,7 +76,7 @@ description: Massachusetts determines Low Income Home Energy Assistance Program 
 metadata:
   period: year
   unit: currency-USD
-  label: Massachusetts LIHEAP subsidized housing payment
+  label: Massachusetts LIHEAP subsidized housing payment amount 
   breakdown: 
     - range(1,6) # benefit level
     - ma_liheap_utility_category
