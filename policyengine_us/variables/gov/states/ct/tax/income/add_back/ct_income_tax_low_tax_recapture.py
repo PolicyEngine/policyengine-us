@@ -12,12 +12,14 @@ class ct_income_tax_low_tax_recapture(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("ct_agi", period)
         p = parameters(period).gov.states.ct.tax.income.recapture.low
-        filing_status = tax_unit("filing_status", period)
-        reduction_start = p.start[filing_status]
-        max_amount = p.max_amount[filing_status]
-        increment = p.increment[filing_status]
-        reduction_per_increment = p.amount[filing_status]
-        excess = max_(income - reduction_start, 0)
-        increments = np.ceil(excess / increment)
-        amount = increments * reduction_per_increment
-        return min_(max_amount, amount)
+        if p.in_effect:
+            filing_status = tax_unit("filing_status", period)
+            reduction_start = p.start[filing_status]
+            max_amount = p.max_amount[filing_status]
+            increment = p.increment[filing_status]
+            reduction_per_increment = p.amount[filing_status]
+            excess = max_(income - reduction_start, 0)
+            increments = np.ceil(excess / increment)
+            amount = increments * reduction_per_increment
+            return min_(max_amount, amount)
+        return 0
