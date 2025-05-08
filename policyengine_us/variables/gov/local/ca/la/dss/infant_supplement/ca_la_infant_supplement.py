@@ -17,11 +17,9 @@ class ca_la_infant_supplement(Variable):
         base_amount = where(
             is_in_group_home, p.amount.group_home, p.amount.base
         )
-        eligible_infants = add(
-            household, period, ["ca_la_infant_supplement_eligible_infant"]
-        )
+        children = add(household, period, ["is_child"])
         eligible_person = person(
             "ca_la_infant_supplement_eligible_person", period
         )
-        eligible = household.any(eligible_person)
-        return base_amount * eligible_infants * eligible
+        eligible_person_present = household.any(eligible_person)
+        return base_amount * children * eligible_person_present
