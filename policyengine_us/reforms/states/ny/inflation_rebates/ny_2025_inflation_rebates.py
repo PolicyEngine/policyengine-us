@@ -19,7 +19,7 @@ def create_ny_2025_inflation_rebates() -> Reform:
             filing_status = tax_unit("filing_status", period)
             filing_statuses = filing_status.possible_values
             if p.incremental_phase_out.applies:
-                select(
+                return select(
                     [
                         filing_status == filing_statuses.SINGLE,
                         filing_status == filing_statuses.JOINT,
