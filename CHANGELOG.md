@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.268.0] - 2025-05-08 18:28:51
+
+### Added
+
+- Illinois Chicago Transit Authority Reduced Fare and Free Ride Programs.
+
 ## [1.267.0] - 2025-05-08 18:22:05
 
 ### Added
@@ -11558,6 +11564,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.268.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.267.0...1.268.0
 [1.267.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.266.0...1.267.0
 [1.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.3...1.266.0
 [1.265.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.2...1.265.3
