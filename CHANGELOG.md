@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.266.0] - 2025-05-07 20:46:30
+
+### Added
+
+- Create independent checks for the EAEDC and TAFDC values.
+
+## [1.265.3] - 2025-05-07 14:14:46
+
+### Changed
+
+- Extended IRS uprating to 2035, inclusive.
+
 ## [1.265.2] - 2025-05-06 21:05:56
 
 ### Fixed
@@ -11540,6 +11552,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.3...1.266.0
+[1.265.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.2...1.265.3
 [1.265.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.1...1.265.2
 [1.265.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.0...1.265.1
 [1.265.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.264.1...1.265.0
