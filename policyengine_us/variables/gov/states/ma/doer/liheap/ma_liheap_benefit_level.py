@@ -6,37 +6,15 @@ class ma_liheap_benefit_level(Variable):
     entity = SPMUnit
     label = "Benefit Level for Massachusetts LIHEAP payment"
     definition_period = YEAR
-    defined_for = StateCode.MA
+    defined_for = "ma_liheap_income_eligible"
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-and-benefit-chart-january-2025/download"
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
-        threshold = spm_unit("ma_liheap_state_median_income_threshold", period)
         fpg = spm_unit("ma_liheap_fpg", period)
-        p = parameters(period).gov.states.ma.doer.liheap.fpg_rate
-
-        level_one = fpg * p.benefit_level_one
-        level_two = fpg * p.benefit_level_two
-        level_three = fpg * p.benefit_level_three
-        level_four = fpg * p.benefit_level_four
-        level_five = fpg * p.benefit_level_five
-        level_six = threshold
-        return select(
-            [
-                income <= level_one,
-                income <= level_two,
-                income <= level_three,
-                income <= level_four,
-                income <= level_five,
-                income <= level_six,
-            ],
-            [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-            ],
-            default=0,
-        )
+        p = parameters(period).gov.states.ma.doer.liheap.benefit_level
+        fpg_ratio = income / fpg
+        # Determines benefit level (1-6) by applying income/FPG ratio to the brackets
+        # defined in `p.benefit_level` (ratios >= 200% FPL yield level 6).
+        # Execution is conditional on the SPM unit meeting `ma_liheap_income_eligible`.
+        return p.calc(fpg_ratio)
