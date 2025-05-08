@@ -1,0 +1,47 @@
+- name: Eligible child under standard threshold
+  period: 2023
+  input:
+    age: 17
+    is_tax_unit_dependent: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible_dependent: true
+
+- name: Over standard age but not a dependent
+  period: 2023
+  input:
+    age: 17
+    is_tax_unit_dependent: false
+    state_code: MA
+  output:
+    ma_tafdc_eligible_dependent: false
+
+- name: Over standard age and not in school
+  period: 2023
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: MA
+  output:
+    ma_tafdc_eligible_dependent: false
+
+- name: Student still in high school (18 years old)
+  period: 2023
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible_dependent: true
+
+- name: Student still in high school but too old (19+ years old)
+  period: 2023
+  input:
+    age: 19
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible_dependent: false

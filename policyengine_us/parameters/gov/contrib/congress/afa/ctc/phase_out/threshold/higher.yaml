@@ -1,0 +1,20 @@
+description: Senator Michael Bennet proposed an other dependent credit which phases out fully for filers with AGI above these thresholds, based on filing status.
+SINGLE:
+  2025-01-01: 300_000
+JOINT:
+  2025-01-01: 400_000
+SEPARATE:
+  2025-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 300_000
+SURVIVING_SPOUSE:
+  2025-01-01: 400_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: AFA CTC phase-out higher threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: American Family Act of 2025
+      href: https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf#page=5

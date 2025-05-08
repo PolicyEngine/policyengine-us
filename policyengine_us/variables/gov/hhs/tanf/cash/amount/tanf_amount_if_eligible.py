@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf_amount_if_eligible(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "TANF amount if family is eligible"
     documentation = "How much a family would receive if they were eligible for Temporary Assistance for Needy Families benefit."
     unit = USD

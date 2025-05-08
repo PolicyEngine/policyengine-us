@@ -12,7 +12,7 @@ class ca_capi(Variable):
 
     def formula(spm_unit, period, parameters):
         state_supplement_payment_standard = spm_unit(
-            "ca_state_supplement_payment_standard", period
+            "ca_state_supplement", period
         )
         person = spm_unit.members
         ssi_amount_if_eligible = person("ssi_amount_if_eligible", period)

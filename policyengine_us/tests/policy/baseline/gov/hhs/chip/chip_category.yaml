@@ -1,0 +1,87 @@
+- name: Child CHIP category
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: True
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: False
+  output:
+    chip_category: CHILD
+
+- name: Standard pregnant CHIP category
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: False
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: False
+  output:
+    chip_category: PREGNANT_STANDARD
+
+- name: FCEP pregnant CHIP category
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: False
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: True
+  output:
+    chip_category: PREGNANT_FCEP
+
+- name: Child and Standard pregnant prioritizes child
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: True
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: False
+  output:
+    chip_category: CHILD
+
+- name: Child and FCEP pregnant prioritizes child
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: True
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: True
+  output:
+    chip_category: CHILD
+
+- name: Standard pregnant and FCEP pregnant prioritizes standard
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: False
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: True
+  output:
+    chip_category: PREGNANT_STANDARD
+
+- name: All categories prioritizes child
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: True
+        is_chip_eligible_standard_pregnant_person: True
+        is_chip_fcep_eligible_person: True
+  output:
+    chip_category: CHILD
+
+- name: No eligibility
+  period: 2023
+  input:
+    people:
+      head:
+        is_chip_eligible_child: False
+        is_chip_eligible_standard_pregnant_person: False
+        is_chip_fcep_eligible_person: False
+  output:
+    chip_category: NONE

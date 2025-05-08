@@ -1,0 +1,62 @@
+- name: Case 1, eligible non teen parent.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 20
+    current_pregnancy_month: 6
+  output:
+    ma_tafdc_pregnancy_eligible: true
+
+- name: Case 2, ineligible non teen parent.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 20
+    current_pregnancy_month: 4
+  output:
+    ma_tafdc_pregnancy_eligible: false
+
+- name: Case 3, eligible teen parent.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 19
+    current_pregnancy_month: 1
+    is_in_secondary_school: true
+  output:
+    ma_tafdc_pregnancy_eligible: true
+
+- name: Case 4, not pregnant.
+  period: 2023
+  input:
+    is_pregnant: false
+    state_code: MA
+    age: 22
+    current_pregnancy_month: 0
+  output:
+    ma_tafdc_pregnancy_eligible: false
+
+- name: Case 5, teen parent but not meet school attendance requirement.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 19
+    current_pregnancy_month: 1
+    is_in_secondary_school: false
+  output:
+    ma_tafdc_pregnancy_eligible: false
+
+- name: Case 3, eligible teen parent.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 19
+    current_pregnancy_month: 1
+    is_in_secondary_school: true
+  output:
+    ma_tafdc_pregnancy_eligible: true
