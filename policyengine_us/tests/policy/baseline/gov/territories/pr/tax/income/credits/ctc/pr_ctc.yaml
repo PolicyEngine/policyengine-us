@@ -1,0 +1,15 @@
+- name: Max minus reduction is negative
+  period: 2024
+  input:
+    ctc_maximum_with_arpa_addition: 100
+    pr_ctc_phase_out: 200
+  output:
+    pr_ctc: 0
+
+- name: Max minus reduction is positive
+  period: 2024
+  input:
+    ctc_maximum_with_arpa_addition: 200
+    pr_ctc_phase_out: 100
+  output:
+    pr_ctc: 100
