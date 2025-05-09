@@ -1,0 +1,11 @@
+description: West Virginia exempts a fraction of Social Security benefits for households above the income limits if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: 
+  reference:
+    - title: West Virginia Personal Income Tax Forms And Instructions 2024
+      href: https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=5
+values:
+  2021-01-01: false
+  2024-01-01: true
