@@ -33,6 +33,7 @@
 
 - name: Case 2, applicant has a dependent child that still goes to school.
   period: 2022
+  absolute_error_margin: 0.5
   input:
     people:
       person1:

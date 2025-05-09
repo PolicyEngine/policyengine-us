@@ -1,0 +1,26 @@
+- name: Eligible, level 3
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    ne_school_readiness_credit_child_care_worker_rating: 3
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 2_900
+
+- name: Not eligible
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: false
+    ne_school_readiness_credit_child_care_worker_rating: 0
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
+
+- name: Eligible, unit size capped at 5
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    ne_school_readiness_credit_child_care_worker_rating: 6
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 3_500

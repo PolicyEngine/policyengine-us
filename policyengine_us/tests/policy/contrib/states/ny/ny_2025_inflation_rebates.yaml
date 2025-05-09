@@ -104,3 +104,27 @@
         state_code: NY
   output:
     ny_2025_inflation_rebates: 300
+
+- name: Incremental phase out applies to joint filers
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    gov.contrib.states.ny.inflation_rebates.incremental_phase_out.applies: true
+    state_code: NY
+    ny_agi: 200_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 300
+
+- name: Incremental phase out applies to single filers
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    gov.contrib.states.ny.inflation_rebates.incremental_phase_out.applies: true
+    state_code: NY
+    ny_agi: 125_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 150

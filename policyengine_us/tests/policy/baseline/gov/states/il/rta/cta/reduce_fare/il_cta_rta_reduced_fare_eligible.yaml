@@ -1,0 +1,39 @@
+- name: Case 1, eligible senior.   
+  period: 2022
+  input:
+    age: 65
+    is_disabled: false
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_rta_reduced_fare_eligible: true
+
+- name: Case 2, eligible disabled.   
+  period: 2022
+  input:
+    age: 30
+    is_disabled: true
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_rta_reduced_fare_eligible: true
+
+- name: Case 3, eligible medicare cardholder.   
+  period: 2022
+  input:
+    age: 30
+    is_disabled: false
+    is_medicare_eligible: true
+    state_code: IL
+  output:
+    il_cta_rta_reduced_fare_eligible: true
+
+- name: Case 4, neither or those, ineligible.   
+  period: 2022
+  input:
+    age: 30
+    is_disabled: false
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_rta_reduced_fare_eligible: false

@@ -3,13 +3,15 @@ values:
   2021-01-01:
     - mt_child_dependent_care_expense_deduction  
     - casualty_loss_deduction  
-
+  2024-01-01: []
     
 metadata:
   unit: list
   label: Montana miscellaneous deductions 
   period: year
   reference:
+    - title: Montana Individual Income Tax Return (Form 2) 2024
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf#page=8
     - title: Montana Individual Income Tax Return (Form 2) 2022
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=7
     - title: Montana Individual Income Tax Return (Form 2) 2021
