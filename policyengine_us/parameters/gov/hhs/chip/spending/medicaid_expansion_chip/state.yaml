@@ -1,6 +1,7 @@
-description: State share of CHIP spending for Medicaid-expansion populations in FY 2023 (millions of dollars)
+description: State share of CHIP spending for Medicaid-expansion populations (millions of dollars)
 metadata:
-  unit: /1
+  unit: currency-USD
+  period: year
   label: State share of CHIP spending for Medicaid-expansion populations
   breakdown:
   - state_code
@@ -20,7 +21,7 @@ CA:
 CO:
   2023-01-01: 59_300_000
 CT:
-  2023-01-01: null
+  2023-01-01: 0
 DE:
   2023-01-01: 2_700_000
 DC:
