@@ -15,6 +15,8 @@ metadata:
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf#page=1
   - title: Rhode Island 2023 Modification for Taxable social security income worksheet
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/Social%20Security%20Worksheet_w.pdf#page=1
+  - title: Rhode Island 2024 Modification for Taxable social security income worksheet
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-09/Social%20Security%20Worksheet_bd.pdf#page=1
   - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i)&(ii)
     href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
 
@@ -24,6 +26,7 @@ JOINT:
     2021-01-01: 111_200
     2022-01-01: 119_750
     2023-01-01: 126_250
+    2024-01-01: 130_250
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -34,6 +37,8 @@ HEAD_OF_HOUSEHOLD:
     2016-01-01: 80_000
     2021-01-01: 88_950
     2022-01-01: 95_800
+    2023-01-01: 101_000
+    2024-01-01: 104_200
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -45,6 +50,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 111_200
     2022-01-01: 119_750
     2023-01-01: 126_250
+    2024-01-01: 130_250
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -56,6 +62,7 @@ SINGLE:
     2021-01-01: 88_950
     2022-01-01: 95_800
     2023-01-01: 101_000
+    2024-01-01: 104_200
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -67,6 +74,7 @@ SEPARATE:
     2021-01-01: 88_975
     2022-01-01: 95_800
     2023-01-01: 101_025
+    2024-01-01: 104_225
   uprating:
     parameter: gov.irs.uprating
     rounding:
