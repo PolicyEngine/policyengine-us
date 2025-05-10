@@ -1,0 +1,17 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Detroit area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Detroit area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - LAPEER_COUNTY_MI
+    - LIVINGSTON_COUNTY_MI
+    - MACOMB_COUNTY_MI
+    - OAKLAND_COUNTY_MI
+    - ST_CLAIR_COUNTY_MI
+    - WAYNE_COUNTY_MI

@@ -1,0 +1,27 @@
+- name: Case 1, size 1. 
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+  output:
+    chapter_7_bankruptcy_food_clothing_and_others_deduction: 808
+
+- name: Case 2, size 4.
+  period: 2024-01
+  input:
+    spm_unit_size: 4
+  output:
+    chapter_7_bankruptcy_food_clothing_and_others_deduction: 2_027
+
+- name: Case 3, size 5. 
+  period: 2024-01
+  input:
+    spm_unit_size: 5
+  output:
+    chapter_7_bankruptcy_food_clothing_and_others_deduction: 2_413
+
+- name: Case 4, size 7. 
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+  output:
+    chapter_7_bankruptcy_food_clothing_and_others_deduction: 3_185
