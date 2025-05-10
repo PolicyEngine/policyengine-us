@@ -17,6 +17,6 @@ class wv_social_security_benefits_subtraction(Variable):
         # Code of West Virginia §11-21-12 (c)(8)(A) - (c)(8)(C)
         "https://code.wvlegislature.gov/11-21-12/",
     )
-    defined_for = "wv_social_security_benefits_subtraction_eligible"
+    defined_for = StateCode.WV
 
     adds = ["wv_social_security_benefits_subtraction_person"]

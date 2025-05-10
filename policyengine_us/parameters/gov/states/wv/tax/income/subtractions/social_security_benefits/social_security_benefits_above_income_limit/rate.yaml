@@ -1,0 +1,12 @@
+description: West Virginia subtracts this fraction of taxable social security benefits from adjusted gross income for households above the income limit.
+metadata:
+  period: year
+  unit: /1
+  label: West Virginia social security benefits subtraction rate above income limit
+  reference:
+  - title: West Virginia Personal Income Tax Forms And Instructions 2024
+    href: https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=5
+values:
+  2024-01-01: 0.35
+  2025-01-01: 0.65
+  2026-01-01: 1

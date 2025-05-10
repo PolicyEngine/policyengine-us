@@ -19,7 +19,7 @@ class wv_social_security_benefits_subtraction_person(Variable):
         # Code of West Virginia §11-21-12 (c)(8)(A) - (c)(8)(C)
         "https://code.wvlegislature.gov/11-21-12/",
     )
-    defined_for = "wv_social_security_benefits_subtraction_eligible"
+    defined_for = StateCode.WV
 
     def formula(person, period, parameters):
         p = parameters(
@@ -31,4 +31,15 @@ class wv_social_security_benefits_subtraction_person(Variable):
         # Survivors and Disability Insurance Benefits
         taxable_ss = person("taxable_social_security", period)
         amount_if_eligible = taxable_ss * p.rate
-        return amount_if_eligible * head_or_spouse
+        base_amount = amount_if_eligible * head_or_spouse
+        eligible = person.tax_unit(
+            "wv_social_security_benefits_subtraction_eligible", period
+        )
+        if p.social_security_benefits_above_income_limit.applies:
+            return where(
+                eligible,
+                base_amount,
+                base_amount
+                * p.social_security_benefits_above_income_limit.rate,
+            )
+        return base_amount * eligible
