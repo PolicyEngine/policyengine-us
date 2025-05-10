@@ -7,17 +7,39 @@ class ct_pension_annuity_subtraction(Variable):
     label = "Connecticut pension and annuity subtraction"
     unit = USD
     definition_period = YEAR
-    defined_for = "ct_pension_annuity_subtraction_eligible"
+    defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        filing_status = tax_unit("filing_status", period)
+        status = filing_status.possible_values
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        rate = parameters(
+        agi = tax_unit("adjusted_gross_income", period)
+
+        p = parameters(
             period
-        ).gov.states.ct.tax.income.subtractions.pensions_or_annuity.rate
+        ).gov.states.ct.tax.income.subtractions.pensions_or_annuity
+
+        # Get the rate based on AGI and filing status
+        is_joint = (filing_status == status.JOINT) | (
+            filing_status == status.SURVIVING_SPOUSE
+        )
+        is_non_joint = (
+            (filing_status == status.SINGLE)
+            | (filing_status == status.SEPARATE)
+            | (filing_status == status.HEAD_OF_HOUSEHOLD)
+        )
+
+        joint_rate = p.joint.calc(agi)
+        non_joint_rate = p.non_joint.calc(agi)
+
+        rate = select([is_joint, is_non_joint], [joint_rate, non_joint_rate])
+
+        # Apply the rate to eligible pension income
         head_or_spouse = head | spouse
         pension_income = person("taxable_pension_income", period)
         eligible_pension = pension_income * head_or_spouse
         total_pension = tax_unit.sum(eligible_pension)
+
         return total_pension * rate
