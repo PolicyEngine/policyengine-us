@@ -1,0 +1,54 @@
+- name: Case 1, has essential use vehicle.
+  period: 2022-01
+  input:
+    il_aabd_vehicle_is_essential: true
+    household_vehicles_owned: 1
+    household_vehicles_value: 8_000 
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_countable_vehicle_value: 0
+
+- name: Case 2, don't have essential use vehicle.
+  period: 2022-01
+  input:
+    il_aabd_vehicle_is_essential: false
+    household_vehicles_owned: 1
+    household_vehicles_value: 8_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_countable_vehicle_value: 3_500
+
+- name: Case 3, don't have vehicle.
+  period: 2022-01
+  input:
+    il_aabd_vehicle_is_essential: false
+    household_vehicles_owned: 0
+    household_vehicles_value: 0
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_countable_vehicle_value: 0
+
+- name: Case 4, don't have essential use vehicle.
+  period: 2022-01
+  input:
+    il_aabd_vehicle_is_essential: false
+    household_vehicles_owned: 2
+    household_vehicles_value: 8_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_countable_vehicle_value: 4_000
+
+- name: Case 5, has essential use vehicle.
+  period: 2022
+  input:
+    il_aabd_vehicle_is_essential: true
+    household_vehicles_owned: 2
+    household_vehicles_value: 8_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_countable_vehicle_value: 4_000*12

@@ -1,0 +1,21 @@
+description: Illinois considers these statuses as qualified noncitizens under the Aid to the Aged, Blind or Disabled program.
+values:
+  1975-01-01:
+    - HONORABLY_DISCHARGED_VETERAN
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - LEGAL_PERMANENT_RESIDENT
+    - PAROLED_ONE_YEAR
+    - VICTIMS_OF_TRAFFICKING
+    
+metadata:
+  label: Illinois AABD qualified noncitizen statuses
+  period: year
+  unit: list
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.10 - Citizenship
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.10
+    - title: Ill. Admin. Code tit. 89, § 112.10 - Citizenship (TANF)
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.10
