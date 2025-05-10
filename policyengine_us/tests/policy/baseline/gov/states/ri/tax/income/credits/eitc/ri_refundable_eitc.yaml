@@ -1,0 +1,37 @@
+- name: 2014 Refundable EITC
+  period: 2014
+  input:
+    state_code: RI
+    ri_eitc: 500
+    ri_income_tax_before_refundable_credits: 600
+  output:
+    ri_refundable_eitc: 0 # 500 < 600
+
+- name: 2014 Refundable EITC 2
+  period: 2014
+  input:
+    state_code: RI
+    ri_eitc: 600
+    ri_income_tax_before_refundable_credits: 500
+  output:
+    ri_refundable_eitc: 15 #((600 - 500) * 0.15)
+
+- name: 2015 Refundable EITC
+  period: 2015
+  input:
+    state_code: RI
+    ri_eitc: 500
+    ri_income_tax_before_refundable_credits: 600
+  output:
+    ri_refundable_eitc: 0 # 500 < 600
+
+- name: 2015 Refundable EITC 2
+  period: 2015
+  input:
+    state_code: RI
+    ri_eitc: 600
+    ri_income_tax_before_refundable_credits: 500
+  output:
+    ri_refundable_eitc: 100 #((600 - 500) * 1)
+
+
