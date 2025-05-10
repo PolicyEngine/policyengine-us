@@ -1,0 +1,39 @@
+- name: Ineligible due to no eligible person. 
+  period: 2023
+  input:
+    il_tanf_demographic_eligible_person: false
+    il_tanf_income_eligible: true
+    il_tanf_immigration_status_eligible_person: true
+    state_code: IL
+  output:
+    il_tanf_eligible: false
+
+- name: Ineligible due to income. 
+  period: 2023
+  input:
+    il_tanf_demographic_eligible_person: true
+    il_tanf_income_eligible: false
+    il_tanf_immigration_status_eligible_person: true
+    state_code: IL
+  output:
+    il_tanf_eligible: false
+
+- name: Ineligible due to immigration status. 
+  period: 2023
+  input:
+    il_tanf_demographic_eligible_person: true
+    il_tanf_income_eligible: true
+    il_tanf_immigration_status_eligible_person: false
+    state_code: IL
+  output:
+    il_tanf_eligible: false
+
+- name: Meet all requirements, eligible. 
+  period: 2023
+  input:
+    il_tanf_demographic_eligible_person: true
+    il_tanf_income_eligible: true
+    il_tanf_immigration_status_eligible_person: true
+    state_code: IL
+  output:
+    il_tanf_eligible: true

@@ -1,0 +1,17 @@
+- name: Case 1, qualify income.
+  period: 2023
+  input:
+    il_tanf_gross_unearned_income: 100
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_tanf_countable_unearned_income: 100
+
+- name: Case 2, unqualified income.
+  period: 2023
+  input:
+    il_tanf_gross_unearned_income: 100
+    is_tax_unit_head_or_spouse: false
+    state_code: IL
+  output:
+    il_tanf_countable_unearned_income: 0
