@@ -41,7 +41,7 @@ values:
   1989-01-01: 20_099.55
   1990-01-01: 21_027.98
   1991-01-01: 21_811.60
-  1992-01-01: 22_935.42
+  1992-01-01: 22_935.42 # NB: 1992 is the current base year for the benefit and contribution base.
   1993-01-01: 23_132.67
   1994-01-01: 23_753.53
   1995-01-01: 24_705.66
@@ -70,9 +70,45 @@ values:
   2018-01-01: 52_145.80
   2019-01-01: 54_099.99
   2020-01-01: 55_628.60
-  2021-01-01: 60_575.07
-  2022-01-01: 63_795.13
-  2023-01-01: 66_621.80
+  2021-01-01: 60_575.07 # NAWI(Y-2) for CBB(2023)
+  2022-01-01: 63_795.13 # NAWI(Y-2) for CBB(2024)
+  2023-01-01: 66_621.80 # NAWI(Y-2) for CBB(2025)
+  # Back out NAWI from CBO's forecast of the payroll tax cap, in
+  # parameters/gov/irs/payroll/social_security/cap.yaml
+  # Back out NAWI from CBO's forecast of the payroll tax cap.
+  # The formula to derive NAWI(Y-2) from CBB(Y) is:
+  # NAWI(Y-2) approx = CBB(Y) * (NAWI_1992 / CBB_1994)
+  # where NAWI_1992 = 22_935.42 and CBB_1994 = 60_600.
+  # CBB(Y) is the Contribution and Benefit Base (payroll tax cap) for year Y.
+  # NAWI(Y-2) is the National Average Wage Index for year Y-2.
+
+  # For 2024 NAWI, derived from CBO CBB(2026) = 186_000: 186_000 * (22_935.42 / 60_600)
+  2024-01-01: 70_395.85
+  # For 2025 NAWI, derived from CBO CBB(2027) = 192_600: 192_600 * (22_935.42 / 60_600)
+  2025-01-01: 72_891.30
+  # For 2026 NAWI, derived from CBO CBB(2028) = 198_600: 198_600 * (22_935.42 / 60_600)
+  2026-01-01: 75_168.61
+  # For 2027 NAWI, derived from CBO CBB(2029) = 206_400: 206_400 * (22_935.42 / 60_600)
+  2027-01-01: 78_124.71
+  # For 2028 NAWI, derived from CBO CBB(2030) = 214_200: 214_200 * (22_935.42 / 60_600)
+  2028-01-01: 81_080.80
+  # For 2029 NAWI, derived from CBO CBB(2031) = 222_300: 222_300 * (22_935.42 / 60_600)
+  2029-01-01: 84_149.34
+  # For 2030 NAWI, derived from CBO CBB(2032) = 230_100: 230_100 * (22_935.42 / 60_600)
+  2030-01-01: 87_090.55
+  # For 2031 NAWI, derived from CBO CBB(2033) = 237_900: 237_900 * (22_935.42 / 60_600)
+  2031-01-01: 90_031.76
+  # For 2032 NAWI, derived from CBO CBB(2034) = 246_000: 246_000 * (22_935.42 / 60_600)
+  2032-01-01: 93_088.94
+  # For 2033 NAWI, derived from CBO CBB(2035) = 254_400: 254_400 * (22_935.42 / 60_600)
+  2033-01-01: 96_258.56
+  # For 2034 NAWI, projected using the growth rate from NAWI(2032) to NAWI(2033).
+  # Growth Multiplier = NAWI(2033) / NAWI(2032) = 96_258.56 / 93_088.94.
+  # NAWI(2034) = NAWI(2033) * Growth Multiplier.
+  2034-01-01: 99_536.06
+  # For 2035 NAWI, projected using the growth rate from NAWI(2032) to NAWI(2033).
+  # NAWI(2035) = NAWI(2034) * Growth Multiplier.
+  2035-01-01: 102_920.73
 metadata:
   unit: currency-USD
   label: National Average Wage Index
