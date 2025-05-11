@@ -9,9 +9,11 @@ class social_security_taxable_self_employment_income(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        ss_cap = parameters(period).gov.irs.payroll.social_security.cap
+        p = parameters(period).gov.irs.payroll.social_security.cap
+        cap_minus_earnings = p.cap - person(
+            "taxable_earnings_for_social_security", period
+        )
         # Deduct SS payroll taxable wages and salaries.
         return min_(
-            person("taxable_self_employment_income", period),
-            ss_cap - person("taxable_earnings_for_social_security", period),
+            person("taxable_self_employment_income", period), cap_minus_earnings
         )
