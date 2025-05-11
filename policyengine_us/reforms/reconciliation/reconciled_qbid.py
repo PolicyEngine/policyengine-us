@@ -18,9 +18,9 @@ def create_reconciled_qbid() -> Reform:
         def formula(person, period, parameters):
             p = parameters(period).gov.irs.deductions
 
-            # 1. Compute the new maximum QBID 
+            # 1. Compute the new maximum QBID
             qbi = person("qualified_business_income", period)
-            qbid_max = p.qbi.max.rate * qbi 
+            qbid_max = p.qbi.max.rate * qbi
 
             # 2. Compute the wage/property cap (unchanged)
             w2_wages = person("w2_wages_from_qualified_business", period)
