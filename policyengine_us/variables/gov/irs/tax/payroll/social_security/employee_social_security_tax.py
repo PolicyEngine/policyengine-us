@@ -11,4 +11,6 @@ class employee_social_security_tax(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.payroll.social_security.rate
-        return p.employee * person("taxable_earnings_for_social_security", period)
+        return p.employee * person(
+            "taxable_earnings_for_social_security", period
+        )

@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class qbid_amount(Variable):
     value_type = float
     entity = Person
-    label = "Per-cap qualified business income deduction amount for each person"
+    label = (
+        "Per-cap qualified business income deduction amount for each person"
+    )
     unit = USD
     definition_period = YEAR
     reference = (

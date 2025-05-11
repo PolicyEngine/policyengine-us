@@ -18,5 +18,6 @@ class social_security_taxable_self_employment_income(Variable):
         )
         # Deduct SS payroll taxable wages and salaries.
         return min_(
-            person("taxable_self_employment_income", period), cap_minus_earnings
+            person("taxable_self_employment_income", period),
+            cap_minus_earnings,
         )

@@ -18,7 +18,8 @@ class taxable_self_employment_income(Variable):
         gross_sei = add(person, period, SEI_SOURCES)
         p = parameters(period).gov.irs
         combined_rate = (
-            p.self_employment.rate.social_security + p.self_employment.rate.medicare
+            p.self_employment.rate.social_security
+            + p.self_employment.rate.medicare
         )
         deduction_rate = p.ald.misc.employer_share * combined_rate
         net_sei = gross_sei * (1 - deduction_rate)
