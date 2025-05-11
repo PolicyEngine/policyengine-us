@@ -10,7 +10,7 @@ class casualty_loss_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         loss = add(tax_unit, period, ["casualty_loss"])
-        deduction = parameters(period).gov.irs.deductions.itemized.casualty
+        p = parameters(period).gov.irs.deductions.itemized.casualty
         positive_agi = tax_unit("positive_agi", period)
-        amount_over_floor = max_(0, loss - positive_agi * deduction.floor)
-        return deduction.active * amount_over_floor
+        amount_over_floor = max_(0, loss - positive_agi * p.floor)
+        return p.active * amount_over_floor

@@ -9,10 +9,10 @@ class self_employment_tax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        if parameters(
-            period
-        ).gov.contrib.ubi_center.flat_tax.abolish_self_emp_tax:
+        if parameters(period).gov.contrib.ubi_center.flat_tax.abolish_self_emp_tax:
             return 0
-        return person("self_employment_social_security_tax", period) + person(
-            "self_employment_medicare_tax", period
+        return add(
+            person,
+            period,
+            ["self_employment_social_security_tax", "self_employment_medicare_tax"],
         )
