@@ -24,4 +24,6 @@ class taxable_self_employment_income(Variable):
         deduction_rate = p.ald.misc.employer_share * combined_rate
         net_sei = gross_sei * (1 - deduction_rate)
         # exclude net self-employment income below the reporting threshold.
-        return where(net_sei < p.net_earnings_exemption, 0, net_sei)
+        return where(
+            net_sei < p.self_employment.net_earnings_exemption, 0, net_sei
+        )
