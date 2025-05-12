@@ -58,7 +58,7 @@ def create_ctc_ssn_reform(parameters, period, bypass: bool = False):
             reform_active = True
             break
         current_period = current_period.offset(1, "year")
-        
+
     if reform_active:
         return create_ctc_ssn()
     else:
