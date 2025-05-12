@@ -14,7 +14,19 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.reconciliation.tip_income_exempt
             if p.in_effect:
-                return add(tax_unit, period, ["tip_income"])
+                person = tax_unit.members
+                ssn_card_type = person("ssn_card_type", period)
+                ssn_card_types = ssn_card_type.possible_values
+                citizen = ssn_card_type == ssn_card_types.CITIZEN
+                non_citizen_valid_ead = (
+                    ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
+                )
+                eligible_ssn_card_type = citizen | non_citizen_valid_ead
+                head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+                eligible_ssn_card_holder = eligible_ssn_card_type & head_or_spouse
+                tip_income = person("tip_income", period)
+                return tax_unit.sum(tip_income * eligible_ssn_card_holder)
+            
             return 0
 
     class overtime_income_ald(Variable):
@@ -29,7 +41,18 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                 period
             ).gov.contrib.reconciliation.overtime_income_exempt
             if p.in_effect:
-                return add(tax_unit, period, ["overtime_income"])
+                person = tax_unit.members
+                ssn_card_type = person("ssn_card_type", period)
+                ssn_card_types = ssn_card_type.possible_values
+                citizen = ssn_card_type == ssn_card_types.CITIZEN
+                non_citizen_valid_ead = (
+                    ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
+                )
+                eligible_ssn_card_type = citizen | non_citizen_valid_ead
+                head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+                eligible_ssn_card_holder = eligible_ssn_card_type & head_or_spouse
+                overtime_income = person("overtime_income", period)
+                return tax_unit.sum(overtime_income * eligible_ssn_card_holder)
             return 0
 
     class taxable_income_deductions_if_itemizing(Variable):
