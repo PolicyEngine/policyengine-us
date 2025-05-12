@@ -1,14 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class il_tanf_demographic_eligible_person(Variable):
+class il_tanf_eligible_child(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH
-    label = "Eligible person for Illinois Temporary Assistance for Needy Families (TANF) based on demographics"
-    reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.60",
-    )
+    label = "Eligible child for Illinois Temporary Assistance for Needy Families (TANF)"
+    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.30"
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
@@ -18,11 +16,15 @@ class il_tanf_demographic_eligible_person(Variable):
         minor_child = age < p.minor_child
         eligible_minor_child = minor_child & dependent
 
-        student_dependent = age < p.student_dependent
+        student_dependent = age <= p.student_dependent
         secondary_school_student = person("is_in_secondary_school", period)
         eligible_student_dependent = (
             secondary_school_student & student_dependent & dependent
         )
+        immigration_status_eligible = person(
+            "il_tanf_immigration_status_eligible_person", period
+        )
 
-        pregnant = person("is_pregnant", period)
-        return eligible_minor_child | eligible_student_dependent | pregnant
+        return immigration_status_eligible & (
+            eligible_minor_child | eligible_student_dependent
+        )

@@ -1,14 +1,14 @@
 description: Illinois considers these statuses as qualified noncitizens under the Aid to the Aged, Blind or Disabled program.
 values:
   1975-01-01:
-    - HONORABLY_DISCHARGED_VETERAN
+    # - HONORABLY_DISCHARGED_VETERAN
     - REFUGEE
     - ASYLEE
     - DEPORTATION_WITHHELD
     - CONDITIONAL_ENTRANT
     - LEGAL_PERMANENT_RESIDENT
     - PAROLED_ONE_YEAR
-    - VICTIMS_OF_TRAFFICKING
+    # - VICTIMS_OF_TRAFFICKING
 
 metadata:
   label: Illinois TANF qualified noncitizen statuses
