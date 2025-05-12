@@ -103,6 +103,7 @@ from .congress.afa import (
 
 from .reconciliation import (
     create_reconciled_qbid_reform,
+    create_reconciled_pease_reform,
 )
 
 from policyengine_core.reforms import Reform
@@ -222,7 +223,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     reconciled_qbid = create_reconciled_qbid_reform(parameters, period)
-
+    reconciled_pease = create_reconciled_pease_reform(parameters, period)
     reforms = [
         afa_reform,
         winship_reform,
@@ -267,6 +268,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
         reconciled_qbid,
+        reconciled_pease,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
