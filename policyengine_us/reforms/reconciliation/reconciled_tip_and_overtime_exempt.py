@@ -33,26 +33,30 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             return 0
 
     def modify_parameters(parameters):
-        parameters.gov.irs.ald.deductions.update(
+        parameters.gov.irs.deductions.deductions_if_itemizing.update(
             start=instant("2026-01-01"),
             stop=instant("2035-12-31"),
             value=[
                 "tip_income_ald",
                 "overtime_income_ald",
-                "student_loan_interest_ald",
-                "loss_ald",
-                "early_withdrawal_penalty",
-                "alimony_expense",
-                "self_employment_tax_ald",
-                "educator_expense",
-                "health_savings_account_ald",
-                "self_employed_health_insurance_ald",
-                "self_employed_pension_contribution_ald",
-                "traditional_ira_contributions",
-                "qualified_adoption_assistance_expense",
-                "us_bonds_for_higher_ed",
-                "specified_possession_income",
-                "puerto_rico_income",
+                "charitable_deduction",
+                "interest_deduction",
+                "salt_deduction",
+                "medical_expense_deduction",
+                "casualty_loss_deduction",
+                "qualified_business_income_deduction",
+                "wagering_losses_deduction",
+                "misc_deduction",
+            ],
+        )
+        parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
+            start=instant("2026-01-01"),
+            stop=instant("2035-12-31"),
+            value=[
+                "tip_income_ald",
+                "overtime_income_ald",
+                "standard_deduction",
+                "qualified_business_income_deduction",
             ],
         )
         return parameters

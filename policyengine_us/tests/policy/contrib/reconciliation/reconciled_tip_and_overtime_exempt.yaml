@@ -6,8 +6,17 @@
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
     tip_income: 200
     overtime_income: 300
+    standard_deduction: 0
+    qualified_business_income_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
   output:
-    above_the_line_deductions: 200
+    taxable_income_deductions_if_itemizing: 200
+    taxable_income_deductions_if_not_itemizing: 200
 
 - name: Baseline test - no ALD 
   period: 2026
@@ -16,8 +25,17 @@
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
     tip_income: 200
     overtime_income: 300
+    standard_deduction: 0
+    qualified_business_income_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
   output:
-    above_the_line_deductions: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
 
 - name: Tip income is not exempt but overtime income is
   period: 2026
@@ -27,8 +45,17 @@
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
     tip_income: 200
     overtime_income: 300
+    standard_deduction: 0
+    qualified_business_income_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
   output:
-    above_the_line_deductions: 300
+    taxable_income_deductions_if_itemizing: 300
+    taxable_income_deductions_if_not_itemizing: 300
 
 - name: Tip and overtime income are exempt
   period: 2026
@@ -38,5 +65,14 @@
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
     tip_income: 200
     overtime_income: 300
+    standard_deduction: 0
+    qualified_business_income_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
   output:
-    above_the_line_deductions: 500
+    taxable_income_deductions_if_itemizing: 500
+    taxable_income_deductions_if_not_itemizing: 500
