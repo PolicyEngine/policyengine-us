@@ -50,7 +50,16 @@ def create_ctc_ssn_reform(parameters, period, bypass: bool = False):
 
     p = parameters.gov.contrib.reconciliation.ctc_ssn
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+        
+    if reform_active:
         return create_ctc_ssn()
     else:
         return None
