@@ -8,7 +8,7 @@ class wv_cdcc(Variable):
     unit = USD
     defined_for = StateCode.WV
     definition_period = YEAR
-    reference = "https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=7"
+    reference = "https://code.wvlegislature.gov/11-21-26/"
 
     def formula(tax_unit, period, parameters):
         cdcc = tax_unit("cdcc", period)
