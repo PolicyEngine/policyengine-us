@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.272.1] - 2025-05-12 23:17:00
+
+### Fixed
+
+- Account for pease in the taxable_income_deductions_if_itemizing variable.
+
 ## [1.272.0] - 2025-05-12 20:41:49
 
 ### Added
@@ -11619,6 +11625,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.272.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.0...1.272.1
 [1.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.271.0...1.272.0
 [1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
 [1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3

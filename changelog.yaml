@@ -9863,3 +9863,8 @@
     added:
     - Reconciliation limitation on tax benefit of itemized deductions reform.
   date: 2025-05-12 20:41:49
+- bump: patch
+  changes:
+    fixed:
+    - Account for pease in the taxable_income_deductions_if_itemizing variable.
+  date: 2025-05-12 23:17:00
