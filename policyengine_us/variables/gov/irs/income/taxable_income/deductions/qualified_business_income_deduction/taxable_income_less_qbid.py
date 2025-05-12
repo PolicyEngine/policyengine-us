@@ -25,5 +25,10 @@ class taxable_income_less_qbid(Variable):
         ded_value_if_not_itemizing = add(
             tax_unit, period, ded_if_not_itemizing
         )
-        ded_value = max_(ded_value_if_itemizing, ded_value_if_not_itemizing)
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        ded_value = where(
+            itemizes,
+            ded_value_if_itemizing,
+            ded_value_if_not_itemizing,
+        )
         return max_(0, agi - ded_value)

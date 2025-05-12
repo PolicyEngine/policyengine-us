@@ -1,7 +1,4 @@
 - bump: patch
   changes:
-    added:
-      - Statutory sources to some federal tax variables.
-      - Historical Social Security earnings cap values.
-    changed:
-      - Index SGA by NAWI instead of COLA.
+    fixed:
+      - Add itemization choice to taxable income before QBID.
