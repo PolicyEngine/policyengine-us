@@ -4,11 +4,13 @@ from policyengine_us.model_api import *
 class pr_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico refundable CTC"
+    label = "Puerto Rico refundable Child Tax Credit"
     unit = USD
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf"
 
+    # This provision is part of the federal CTC legal code
+    # will will merge the logic with the federal CTC once the puerto income tax structure is completed
     def formula(tax_unit, period, parameters):
         # line 24
         # uncapped_ssi can be below 0
