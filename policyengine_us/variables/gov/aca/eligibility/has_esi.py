@@ -7,4 +7,3 @@ class has_esi(Variable):
     label = "Person currently has ESI"
     definition_period = YEAR
     default_value = False
-

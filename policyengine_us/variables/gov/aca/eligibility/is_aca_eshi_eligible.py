@@ -5,13 +5,13 @@ class is_aca_eshi_eligible(Variable):
     value_type = bool
     entity = Person
     label = (
-        "Person is eligible for employer-sponsored health insurance " 
-        "under ACA rules" #if this is true, person is ineligible for ACA PTC
+        "Person is eligible for employer-sponsored health insurance "
+        "under ACA rules"  # if this is true, person is ineligible for ACA PTC
     )
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        
+
         has = person.has_esi(period)
         disqual = person.offered_aca_disqualifying_esi(period)
         return has & ~disqual
