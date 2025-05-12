@@ -28,6 +28,10 @@ def create_salt_phase_out() -> Reform:
                 p_ref.rate.other.calc(income),
             )
             capped_salt = min_(cap, salt_amount)
+            if p_ref.floor.applies:
+                return max_(
+                    p_ref.floor.amount[filing_status], capped_salt - phase_out
+                )
             return max_(0, capped_salt - phase_out)
 
     class reform(Reform):
