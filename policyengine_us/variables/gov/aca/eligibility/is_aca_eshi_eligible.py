@@ -12,6 +12,6 @@ class is_aca_eshi_eligible(Variable):
 
     def formula(person, period, parameters):
 
-        has = person.has_esi(period)
-        disqual = person.offered_aca_disqualifying_esi(period)
+        has = person("has_esi", period)
+        disqual = person("offered_aca_disqualifying_esi", period)
         return has & ~disqual
