@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.270.2] - 2025-05-12 13:17:51
+
+### Fixed
+
+- Add itemization choice to taxable income before QBID.
+
+## [1.270.1] - 2025-05-12 11:00:51
+
+### Added
+
+- Statutory sources to some federal tax variables.
+- Historical Social Security earnings cap values.
+
+### Changed
+
+- Index SGA by NAWI instead of COLA.
+
+## [1.270.0] - 2025-05-11 20:08:13
+
+### Added
+
+- 2026 Budget reconciliation QBID reform.
+
+## [1.269.2] - 2025-05-10 00:18:36
+
+### Fixed
+
+- Add defined_for = "PR" to Puerto Rico variables.
+
+## [1.269.1] - 2025-05-08 20:04:34
+
+## [1.269.0] - 2025-05-08 18:34:30
+
+### Added
+
+- 2024 Nebraska State Income Tax Updates.
+
+## [1.268.0] - 2025-05-08 18:28:51
+
+### Added
+
+- Illinois Chicago Transit Authority Reduced Fare and Free Ride Programs.
+
+## [1.267.0] - 2025-05-08 18:22:05
+
+### Added
+
+- New York 2025 Inflation Rebates incremental phase out.
+
+## [1.266.0] - 2025-05-07 20:46:30
+
+### Added
+
+- Create independent checks for the EAEDC and TAFDC values.
+
+## [1.265.3] - 2025-05-07 14:14:46
+
+### Changed
+
+- Extended IRS uprating to 2035, inclusive.
+
+## [1.265.2] - 2025-05-06 21:05:56
+
+### Fixed
+
+- Montana income tax uprating.
+
+## [1.265.1] - 2025-05-06 19:13:10
+
+### Added
+
+- Added infant Medicaid ages and income Limits
+
 ## [1.265.0] - 2025-05-01 16:22:31
 
 ### Added
@@ -11528,6 +11601,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.270.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.1...1.270.2
+[1.270.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.0...1.270.1
+[1.270.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.2...1.270.0
+[1.269.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.1...1.269.2
+[1.269.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.0...1.269.1
+[1.269.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.268.0...1.269.0
+[1.268.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.267.0...1.268.0
+[1.267.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.266.0...1.267.0
+[1.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.3...1.266.0
+[1.265.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.2...1.265.3
+[1.265.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.1...1.265.2
+[1.265.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.265.0...1.265.1
 [1.265.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.264.1...1.265.0
 [1.264.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.264.0...1.264.1
 [1.264.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.263.0...1.264.0
