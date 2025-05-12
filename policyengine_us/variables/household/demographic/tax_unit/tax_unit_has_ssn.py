@@ -1,0 +1,15 @@
+from policyengine_us.model_api import *
+
+
+class tax_unit_has_ssn(Variable):
+    value_type = bool
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Tax unit head or spouse has ITIN"
+
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        # In PolicyEngine, has itin represent has itin or ssn
+        has_ssn = person("has_itin", period)
+        # All members need to have ssn, including child
+        return tax_unit.all(has_ssn)

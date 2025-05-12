@@ -14,8 +14,13 @@ class eitc_eligible(Variable):
             "eitc_investment_income_eligible", period
         )
         demographic_eligible = tax_unit("eitc_demographic_eligible", period)
+        # All members need to have ssn
+        taxpayer_has_ssn = tax_unit("tax_unit_has_ssn", period)
         # Define eligibility before considering separate filer limitation.
-        eligible = demographic_eligible & investment_income_eligible
+        eligible = (
+            demographic_eligible
+            & investment_income_eligible * taxpayer_has_ssn
+        )
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible
