@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.270.1] - 2025-05-12 11:00:51
+
+### Added
+
+- Statutory sources to some federal tax variables.
+- Historical Social Security earnings cap values.
+
+### Changed
+
+- Index SGA by NAWI instead of COLA.
+
 ## [1.270.0] - 2025-05-11 20:08:13
 
 ### Added
@@ -11584,6 +11595,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.270.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.0...1.270.1
 [1.270.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.2...1.270.0
 [1.269.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.1...1.269.2
 [1.269.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.0...1.269.1
