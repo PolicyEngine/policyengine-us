@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.271.0] - 2025-05-12 19:49:10
+
+### Added
+
+- Option to apply a floor to the phased-out SALT deduction reform.
+
 ## [1.270.3] - 2025-05-12 18:42:29
 
 ### Fixed
@@ -11607,6 +11613,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
 [1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3
 [1.270.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.1...1.270.2
 [1.270.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.0...1.270.1
