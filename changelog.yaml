@@ -9848,3 +9848,18 @@
     fixed:
     - Add itemization choice to taxable income before QBID.
   date: 2025-05-12 13:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Update CBO projected Exemption parameters for Jan 2025 forecast.
+  date: 2025-05-12 18:42:29
+- bump: minor
+  changes:
+    added:
+    - Option to apply a floor to the phased-out SALT deduction reform.
+  date: 2025-05-12 19:49:10
+- bump: minor
+  changes:
+    added:
+    - Reconciliation limitation on tax benefit of itemized deductions reform.
+  date: 2025-05-12 20:41:49
