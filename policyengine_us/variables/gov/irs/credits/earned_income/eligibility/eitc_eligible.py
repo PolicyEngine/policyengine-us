@@ -19,7 +19,7 @@ class eitc_eligible(Variable):
         # Define eligibility before considering separate filer limitation.
         eligible = (
             demographic_eligible
-            & investment_income_eligible * taxpayer_has_ssn
+            & investment_income_eligible & taxpayer_has_ssn
         )
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
