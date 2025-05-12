@@ -224,6 +224,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     reconciled_qbid = create_reconciled_qbid_reform(parameters, period)
+    reconciled_pease = create_reconciled_pease_reform(parameters, period)
     ctc_ssn = create_ctc_ssn_reform(parameters, period)
 
     reforms = [
@@ -270,6 +271,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
         reconciled_qbid,
+        reconciled_pease,
         ctc_ssn,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
