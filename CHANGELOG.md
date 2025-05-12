@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.270.3] - 2025-05-12 18:42:29
+
+### Fixed
+
+- Update CBO projected Exemption parameters for Jan 2025 forecast.
+
 ## [1.270.2] - 2025-05-12 13:17:51
 
 ### Fixed
@@ -11601,6 +11607,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3
 [1.270.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.1...1.270.2
 [1.270.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.0...1.270.1
 [1.270.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.2...1.270.0
