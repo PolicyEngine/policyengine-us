@@ -9,7 +9,6 @@ class tax_unit_has_ssn(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        # In PolicyEngine, has itin represent has itin or ssn
-        has_ssn = person("has_itin", period)
+        has_ssn = person("has_ssn", period)
         # All members need to have ssn, including child
         return tax_unit.all(has_ssn)
