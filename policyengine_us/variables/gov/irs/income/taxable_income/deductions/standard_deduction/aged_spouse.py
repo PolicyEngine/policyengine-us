@@ -10,7 +10,5 @@ class aged_spouse(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.irs.deductions.standard.aged_or_blind.age_threshold
+        p = parameters(period).gov.irs.deductions.standard.aged_or_blind
         return tax_unit("age_spouse", period) >= p.age_threshold
