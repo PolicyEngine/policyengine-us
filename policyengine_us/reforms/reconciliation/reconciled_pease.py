@@ -15,17 +15,23 @@ def create_reconciled_pease() -> Reform:
             p = parameters(period).gov.contrib.reconciliation.pease
             if p.in_effect:
                 filing_status = tax_unit("filing_status", period)
-                top_rate_threshold = parameters(period).gov.irs.income.bracket.thresholds["6"][filing_status]
+                top_rate_threshold = parameters(
+                    period
+                ).gov.irs.income.bracket.thresholds["6"][filing_status]
                 agi = tax_unit("adjusted_gross_income", period)
                 exemptions = tax_unit("exemptions", period)
                 taxable_income = max_(0, agi - exemptions)
-                taxable_income_excess = max_(0,taxable_income - top_rate_threshold)
-                total_itemized_deductions = tax_unit("total_itemized_taxable_income_deductions", period)
-                lesser_of_deductions_or_excess = min_(total_itemized_deductions, taxable_income_excess)
-                print(lesser_of_deductions_or_excess)
+                taxable_income_excess = max_(
+                    0, taxable_income - top_rate_threshold
+                )
+                total_itemized_deductions = tax_unit(
+                    "total_itemized_taxable_income_deductions", period
+                )
+                lesser_of_deductions_or_excess = min_(
+                    total_itemized_deductions, taxable_income_excess
+                )
                 return p.rate * lesser_of_deductions_or_excess
             return 0
-
 
     class reform(Reform):
         def apply(self):
