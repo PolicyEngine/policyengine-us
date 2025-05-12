@@ -1,9 +1,9 @@
-- name: Default is citizen, which is eligible ssn card type for eitc.
+- name: Default is citizen, which is an eligible SSN card type for EITC.
   period: 2023
   output:
     tax_unit_has_valid_ssn_card_type_for_eitc: true
 
-- name: Both are eligible ssn card type.
+- name: Both are eligible SSN card type.
   period: 2023
   input:
     people:
@@ -17,7 +17,7 @@
   output:
     tax_unit_has_valid_ssn_card_type_for_eitc: true
 
-- name: One person with an ineligible ssn card type.
+- name: One person with an ineligible SSN card type.
   period: 2023
   input:
     people:

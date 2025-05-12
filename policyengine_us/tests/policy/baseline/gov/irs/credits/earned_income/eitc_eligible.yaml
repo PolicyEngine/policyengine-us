@@ -8,7 +8,7 @@
   output:
     eitc_eligible: false
 
-- name: Ineligible due to no itin nor ssn.
+- name: Ineligible due to no ITIN nor SSN.
   period: 2022
   input:
     eitc_investment_income_eligible: true
