@@ -10,15 +10,15 @@ class taxable_income_less_qbid(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        deductions = parameters(period).gov.irs.deductions
+        p = parameters(period).gov.irs.deductions
         ded_if_itemizing = [
             deduction
-            for deduction in deductions.deductions_if_itemizing
+            for deduction in p.deductions_if_itemizing
             if deduction != "qualified_business_income_deduction"
         ]
         ded_if_not_itemizing = [
             deduction
-            for deduction in deductions.deductions_if_not_itemizing
+            for deduction in p.deductions_if_not_itemizing
             if deduction != "qualified_business_income_deduction"
         ]
         ded_value_if_itemizing = add(tax_unit, period, ded_if_itemizing)
@@ -26,7 +26,4 @@ class taxable_income_less_qbid(Variable):
             tax_unit, period, ded_if_not_itemizing
         )
         ded_value = max_(ded_value_if_itemizing, ded_value_if_not_itemizing)
-        return max_(
-            0,
-            agi - ded_value,
-        )
+        return max_(0, agi - ded_value)
