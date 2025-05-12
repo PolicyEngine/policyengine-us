@@ -5,7 +5,7 @@ from numpy import ceil
 class pr_ctc_phase_out(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico CTC reduction from income"
+    label = "Puerto Rico Child Tax Credit phase-out"
     unit = USD
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf#page=1"
