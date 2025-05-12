@@ -5,7 +5,7 @@ class tax_unit_has_ssn(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
-    label = "All members in the tax unit have ssn or itin"
+    label = "All members in the tax unit have ssn"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
