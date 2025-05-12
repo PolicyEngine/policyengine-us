@@ -1,0 +1,42 @@
+- name: Tip income is exempt but overtime income is not
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_tip_and_overtime_exempt.reconciled_tip_and_overtime_exempt
+  input:
+    gov.contrib.reconciliation.tip_income_exempt.in_effect: true
+    gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
+    tip_income: 200
+    overtime_income: 300
+  output:
+    above_the_line_deductions: 200
+
+- name: Baseline test - no ALD 
+  period: 2026
+  input:
+    gov.contrib.reconciliation.tip_income_exempt.in_effect: false
+    gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
+    tip_income: 200
+    overtime_income: 300
+  output:
+    above_the_line_deductions: 0
+
+- name: Tip income is not exempt but overtime income is
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_tip_and_overtime_exempt.reconciled_tip_and_overtime_exempt
+  input:
+    gov.contrib.reconciliation.tip_income_exempt.in_effect: false
+    gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
+    tip_income: 200
+    overtime_income: 300
+  output:
+    above_the_line_deductions: 300
+
+- name: Tip and overtime income are exempt
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_tip_and_overtime_exempt.reconciled_tip_and_overtime_exempt
+  input:
+    gov.contrib.reconciliation.tip_income_exempt.in_effect: true
+    gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
+    tip_income: 200
+    overtime_income: 300
+  output:
+    above_the_line_deductions: 500
