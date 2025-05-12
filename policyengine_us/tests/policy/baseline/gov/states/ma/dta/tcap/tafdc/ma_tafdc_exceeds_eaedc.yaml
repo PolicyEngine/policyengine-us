@@ -1,0 +1,17 @@
+- name: TAFDC larger than EAEDC.
+  period: 2023
+  input: 
+    ma_tafdc_if_claimed: 100
+    ma_eaedc_if_claimed: 80
+    state_code: MA
+  output:
+    ma_tafdc_exceeds_eaedc: true
+
+- name: TAFDC lower than EAEDC.
+  period: 2023
+  input: 
+    ma_tafdc_if_claimed: 100
+    ma_eaedc_if_claimed: 180
+    state_code: MA
+  output:
+    ma_tafdc_exceeds_eaedc: false

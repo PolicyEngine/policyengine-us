@@ -9,5 +9,5 @@ class taxable_earnings_for_social_security(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        cap = parameters(period).gov.irs.payroll.social_security.cap
-        return min_(cap, person("payroll_tax_gross_wages", period))
+        p = parameters(period).gov.irs.payroll.social_security
+        return min_(p.cap, person("payroll_tax_gross_wages", period))
