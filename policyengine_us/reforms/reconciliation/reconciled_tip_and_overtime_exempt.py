@@ -23,10 +23,12 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                 )
                 eligible_ssn_card_type = citizen | non_citizen_valid_ead
                 head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-                eligible_ssn_card_holder = eligible_ssn_card_type & head_or_spouse
+                eligible_ssn_card_holder = (
+                    eligible_ssn_card_type & head_or_spouse
+                )
                 tip_income = person("tip_income", period)
                 return tax_unit.sum(tip_income * eligible_ssn_card_holder)
-            
+
             return 0
 
     class overtime_income_ald(Variable):
@@ -50,7 +52,9 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                 )
                 eligible_ssn_card_type = citizen | non_citizen_valid_ead
                 head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-                eligible_ssn_card_holder = eligible_ssn_card_type & head_or_spouse
+                eligible_ssn_card_holder = (
+                    eligible_ssn_card_type & head_or_spouse
+                )
                 overtime_income = person("overtime_income", period)
                 return tax_unit.sum(overtime_income * eligible_ssn_card_holder)
             return 0
