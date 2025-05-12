@@ -32,23 +32,23 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                 return add(tax_unit, period, ["overtime_income"])
             return 0
 
+    class taxable_income_deductions_if_itemizing(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Deductions if itemizing"
+        unit = USD
+        reference = "https://www.law.cornell.edu/uscode/text/26/63"
+        definition_period = YEAR
+
+        adds = [
+            "itemized_taxable_income_deductions",
+            "qualified_business_income_deduction",
+            "wagering_losses_deduction",
+            "tip_income_ald",
+            "overtime_income_ald",
+        ]
+
     def modify_parameters(parameters):
-        parameters.gov.irs.deductions.deductions_if_itemizing.update(
-            start=instant("2026-01-01"),
-            stop=instant("2035-12-31"),
-            value=[
-                "tip_income_ald",
-                "overtime_income_ald",
-                "charitable_deduction",
-                "interest_deduction",
-                "salt_deduction",
-                "medical_expense_deduction",
-                "casualty_loss_deduction",
-                "qualified_business_income_deduction",
-                "wagering_losses_deduction",
-                "misc_deduction",
-            ],
-        )
         parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
             start=instant("2026-01-01"),
             stop=instant("2035-12-31"),
@@ -66,6 +66,7 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             self.update_variable(tip_income_ald)
             self.update_variable(overtime_income_ald)
             self.modify_parameters(modify_parameters)
+            self.update_variable(taxable_income_deductions_if_itemizing)
 
     return reform
 
