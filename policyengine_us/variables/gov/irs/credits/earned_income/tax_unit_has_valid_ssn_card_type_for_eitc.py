@@ -11,5 +11,9 @@ class tax_unit_has_valid_ssn_card_type_for_eitc(Variable):
     def formula(tax_unit, period, parameters):
         ssn_card_type = tax_unit.members("ssn_card_type", period)
         ssn_card_types = ssn_card_type.possible_values
-        other_non_citizen = ssn_card_type == ssn_card_types.OTHER_NON_CITIZEN
-        return tax_unit.all(~other_non_citizen)
+        citizen = ssn_card_type == ssn_card_types.CITIZEN
+        non_citizen_valid_ead = (
+            ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
+        )
+        eligible_ssn_card_type = citizen | non_citizen_valid_ead
+        return tax_unit.all(eligible_ssn_card_type)
