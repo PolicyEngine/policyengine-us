@@ -4,10 +4,10 @@ from policyengine_core.periods import instant
 
 
 def create_reconciled_tip_and_overtime_exempt() -> Reform:
-    class tip_income_ald(Variable):
+    class tip_income_deduction(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Itemized taxable income deductions reduction"
+        label = "Tip income deduction"
         unit = USD
         definition_period = YEAR
 
@@ -31,10 +31,10 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
 
             return 0
 
-    class overtime_income_ald(Variable):
+    class overtime_income_deduction(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Overtime income ALD"
+        label = "Overtime income deduction"
         unit = USD
         definition_period = YEAR
 
@@ -71,8 +71,8 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             "itemized_taxable_income_deductions",
             "qualified_business_income_deduction",
             "wagering_losses_deduction",
-            "tip_income_ald",
-            "overtime_income_ald",
+            "tip_income_deduction",
+            "overtime_income_deduction",
         ]
 
     def modify_parameters(parameters):
@@ -80,8 +80,8 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             start=instant("2026-01-01"),
             stop=instant("2035-12-31"),
             value=[
-                "tip_income_ald",
-                "overtime_income_ald",
+                "tip_income_deduction",
+                "overtime_income_deduction",
                 "standard_deduction",
                 "qualified_business_income_deduction",
             ],
@@ -90,8 +90,8 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(tip_income_ald)
-            self.update_variable(overtime_income_ald)
+            self.update_variable(tip_income_deduction)
+            self.update_variable(overtime_income_deduction)
             self.modify_parameters(modify_parameters)
             self.update_variable(taxable_income_deductions_if_itemizing)
 
