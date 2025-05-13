@@ -9868,3 +9868,8 @@
     fixed:
     - Account for pease in the taxable_income_deductions_if_itemizing variable.
   date: 2025-05-12 23:17:00
+- bump: minor
+  changes:
+    added:
+    - Add reform to exempt overtime and tip income as deductions.
+  date: 2025-05-13 00:26:34
