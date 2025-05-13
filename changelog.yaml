@@ -9919,3 +9919,10 @@
     added:
     - Auto loan balance variable.
   date: 2025-05-13 18:10:36
+- bump: patch
+  changes:
+    added:
+    - Change SALT phase-out start to a smart-indexed from scale parameter.
+    fixed:
+    - Apply SALT phase-out to the cap.
+  date: 2025-05-13 18:27:42
