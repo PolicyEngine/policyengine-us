@@ -17,12 +17,12 @@ def create_salt_phase_out() -> Reform:
             p = parameters(
                 period
             ).gov.irs.deductions.itemized.salt_and_real_estate
-            cap = p.cap[filing_status]
+            max_cap = p.cap[filing_status]
             p_ref = parameters(period).gov.contrib.salt_phase_out
             agi = tax_unit("adjusted_gross_income", period)
             agi_excess = max_(0, agi - p_ref.threshold[filing_status])
             phase_out = p_ref.rate * agi_excess
-            phased_out_cap = max_(0, cap - phase_out)
+            phased_out_cap = max_(0, max_cap - phase_out)
             if p_ref.floor.applies:
                 return max_(phased_out_cap, p_ref.floor.amount[filing_status])
             return phased_out_cap
