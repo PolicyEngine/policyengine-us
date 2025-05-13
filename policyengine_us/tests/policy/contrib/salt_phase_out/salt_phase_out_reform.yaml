@@ -16,7 +16,7 @@
   output:
     salt_deduction: 10_000
 
-- name: Single filer with income above reduction amount
+- name: Separate filer with income above reduction amount
   period: 2024
   reforms: policyengine_us.reforms.salt_phase_out.salt_phase_out_reform.salt_phase_out_reform
   input:
@@ -29,10 +29,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        filing_status: SINGLE
+        filing_status: SEPARATE
         adjusted_gross_income: 120_000
   output:
-    salt_deduction: 8_000
+    salt_deduction: 3_000
 
 - name: Fully phased out
   period: 2024
@@ -47,7 +47,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        filing_status: SINGLE
+        filing_status: SEPARATE
         adjusted_gross_income: 500_000
   output:
     salt_deduction: 0
