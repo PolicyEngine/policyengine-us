@@ -35,7 +35,7 @@
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 300
   output: # min(min(200, 1000 * 0.3) + (500 - 300), 1000 * 0.6)
-    charitable_deduction: 400
+    charitable_deduction: 600
 
 - name: 2021 filer 2
   period: 2021
@@ -45,7 +45,7 @@
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 600
   output: # min(min(200, 1000 * 0.3) + min(500 - 600, 0), 1000 * 0.6)
-    charitable_deduction: 200
+    charitable_deduction: 600
 
 - name: 2026 filer
   period: 2026

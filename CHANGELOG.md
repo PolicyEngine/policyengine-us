@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.274.1] - 2025-05-13 00:55:26
+
+### Fixed
+
+- Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+
+## [1.274.0] - 2025-05-13 00:39:59
+
+### Added
+
+- When not branching, compare itemized deductions with pease to all non-itemized deductions.
+
+## [1.273.0] - 2025-05-13 00:26:34
+
+### Added
+
+- Add reform to exempt overtime and tip income as deductions.
+
+## [1.272.1] - 2025-05-12 23:17:00
+
+### Fixed
+
+- Account for pease in the taxable_income_deductions_if_itemizing variable.
+
+## [1.272.0] - 2025-05-12 20:41:49
+
+### Added
+
+- Reconciliation limitation on tax benefit of itemized deductions reform.
+
 ## [1.271.0] - 2025-05-12 19:49:10
 
 ### Added
@@ -11613,6 +11643,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.274.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.274.0...1.274.1
+[1.274.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.273.0...1.274.0
+[1.273.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.1...1.273.0
+[1.272.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.0...1.272.1
+[1.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.271.0...1.272.0
 [1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
 [1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3
 [1.270.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.1...1.270.2
