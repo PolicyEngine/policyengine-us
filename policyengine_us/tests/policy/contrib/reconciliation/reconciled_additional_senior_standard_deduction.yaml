@@ -149,9 +149,10 @@
   period: 2026
   reforms: [policyengine_us.reforms.reconciliation.reconciled_additional_senior_standard_deduction.reconciled_additional_senior_standard_deduction, policyengine_us.reforms.reconciliation.reconciled_tip_and_overtime_exempt.reconciled_tip_and_overtime_exempt]
   input:
-    gov.contrib.reconciliation.additional_senior_standard_deduction.in_effect: true
     gov.contrib.reconciliation.tip_income_exempt.in_effect: true
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
+    gov.contrib.reconciliation.additional_senior_standard_deduction.in_effect: true
+
     people: 
       person1:
         age: 65
