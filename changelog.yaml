@@ -9825,3 +9825,62 @@
     fixes:
     - Remove infant age limit from Los Angeles County's Infant Supplement.
   date: 2025-05-08 20:04:34
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for = "PR" to Puerto Rico variables.
+  date: 2025-05-10 00:18:36
+- bump: minor
+  changes:
+    added:
+    - 2026 Budget reconciliation QBID reform.
+  date: 2025-05-11 20:08:13
+- bump: patch
+  changes:
+    added:
+    - Statutory sources to some federal tax variables.
+    - Historical Social Security earnings cap values.
+    changed:
+    - Index SGA by NAWI instead of COLA.
+  date: 2025-05-12 11:00:51
+- bump: patch
+  changes:
+    fixed:
+    - Add itemization choice to taxable income before QBID.
+  date: 2025-05-12 13:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Update CBO projected Exemption parameters for Jan 2025 forecast.
+  date: 2025-05-12 18:42:29
+- bump: minor
+  changes:
+    added:
+    - Option to apply a floor to the phased-out SALT deduction reform.
+  date: 2025-05-12 19:49:10
+- bump: minor
+  changes:
+    added:
+    - Reconciliation limitation on tax benefit of itemized deductions reform.
+  date: 2025-05-12 20:41:49
+- bump: patch
+  changes:
+    fixed:
+    - Account for pease in the taxable_income_deductions_if_itemizing variable.
+  date: 2025-05-12 23:17:00
+- bump: minor
+  changes:
+    added:
+    - Add reform to exempt overtime and tip income as deductions.
+  date: 2025-05-13 00:26:34
+- bump: minor
+  changes:
+    added:
+    - When not branching, compare itemized deductions with pease to all non-itemized
+      deductions.
+  date: 2025-05-13 00:39:59
+- bump: patch
+  changes:
+    fixed:
+    - Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+  date: 2025-05-13 00:55:26

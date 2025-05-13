@@ -7,5 +7,6 @@ class pr_refundable_credits(Variable):
     label = "Puerto Rico refundable credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.PR
 
     adds = "gov.territories.pr.tax.income.credits.refundable"
