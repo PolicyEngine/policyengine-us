@@ -36,6 +36,8 @@ class wv_social_security_benefits_subtraction_person(Variable):
             "wv_social_security_benefits_subtraction_eligible", period
         )
         if p.social_security_benefits_above_income_limit.applies:
-            multiplier = where(eligible, 1, p.social_security_benefits_above_income_limit.rate)
+            multiplier = where(
+                eligible, 1, p.social_security_benefits_above_income_limit.rate
+            )
             return base_amount * multiplier
         return base_amount * eligible
