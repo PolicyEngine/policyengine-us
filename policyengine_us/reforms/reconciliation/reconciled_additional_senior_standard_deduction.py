@@ -17,17 +17,12 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(
                 period
-            ).gov.contrib.reconciliation.additional_sd_reduction
-            aged_count = add(
-                tax_unit,
-                period,
-                ["aged_head", "aged_spouse"],
-            )
+            ).gov.contrib.reconciliation.additional_senior_standard_deduction
+            aged_head = tax_unit("aged_head", period).astype(int)
+            aged_spouse = tax_unit("aged_spouse", period).astype(int)
+            aged_count = aged_spouse + aged_head
             base_deduction = p.amount * aged_count
             agi = tax_unit("adjusted_gross_income", period)
-            p = parameters(
-                period
-            ).gov.contrib.reconciliation.additional_sd_reduction
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             phase_out_amount = where(
@@ -41,7 +36,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
         value_type = bool
         entity = TaxUnit
         definition_period = YEAR
-        label = "Filer meets CTC identification requirements"
+        label = "Filer meets additional senior standard deduction identification requirements"
 
         def formula(tax_unit, period, parameters):
             # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
@@ -74,23 +69,22 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             )
             return citizen | non_citizen_valid_ead
 
+    class taxable_income_deductions_if_itemizing(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Deductions if itemizing"
+        unit = USD
+        reference = "https://www.law.cornell.edu/uscode/text/26/63"
+        definition_period = YEAR
+
+        adds = [
+            "itemized_taxable_income_deductions",
+            "qualified_business_income_deduction",
+            "wagering_losses_deduction",
+            "additional_senior_standard_deduction",
+        ]
+
     def modify_parameters(parameters):
-        parameters.gov.irs.deductions.deductions_if_itemizing.update(
-            start=instant("2025-01-01"),
-            stop=instant("2029-12-31"),
-            value=[
-                "charitable_deduction",
-                "interest_deduction",
-                "salt_deduction",
-                "medical_expense_deduction",
-                "casualty_loss_deduction",
-                "qualified_business_income_deduction",
-                "wagering_losses_deduction",
-                "tuition_and_fees_deduction",
-                "misc_deduction",
-                "additional_senior_standard_deduction",
-            ],
-        )
         parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
             start=instant("2025-01-01"),
             stop=instant("2029-12-31"),
@@ -113,6 +107,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             )
             self.update_variable(additional_senior_standard_deduction)
             self.modify_parameters(modify_parameters)
+            self.update_variable(taxable_income_deductions_if_itemizing)
 
     return reform
 
@@ -123,7 +118,9 @@ def create_reconciled_additional_senior_standard_deduction_reform(
     if bypass:
         return create_reconciled_additional_senior_standard_deduction()
 
-    p = parameters.gov.contrib.reconciliation.additional_sd_reduction
+    p = (
+        parameters.gov.contrib.reconciliation.additional_senior_standard_deduction
+    )
 
     reform_active = False
     current_period = period_(period)
