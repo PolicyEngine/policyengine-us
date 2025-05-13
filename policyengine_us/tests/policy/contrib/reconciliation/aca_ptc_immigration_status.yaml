@@ -6,7 +6,7 @@
     gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
     immigration_status: CITIZEN
   output:
-    is_aca_ptc_immigration_status_eligible.: true
+    is_aca_ptc_immigration_status_eligible: true
 
 - name: Case 2, in 2027, asylee is ineligible.
   period: 2027
@@ -16,7 +16,7 @@
     gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
     immigration_status: ASYLEE
   output:
-    is_aca_ptc_immigration_status_eligible.: false
+    is_aca_ptc_immigration_status_eligible: false
 
 - name: Case 3, in 2026, asylee is eligible.
   period: 2026 
@@ -26,7 +26,7 @@
     gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
     immigration_status: ASYLEE
   output:
-    is_aca_ptc_immigration_status_eligible.: true
+    is_aca_ptc_immigration_status_eligible: true
 
 - name: Case 4, household of 3, 2 are eligible.
   period: 2027
@@ -42,4 +42,4 @@
       person3:
         immigration_status: CUBAN_HAITIAN_ENTRANT
   output:
-    is_aca_ptc_immigration_status_eligible.: [false, true, true]
+    is_aca_ptc_immigration_status_eligible: [false, true, true]
