@@ -5,7 +5,7 @@ class meets_eitc_identification_requirements(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "Person meets eitc identification requirements"
+    label = "Person meets EITC identification requirements"
     reference = (
         # IRC 32(c)(1)(E) specifies filer and spouse needs a taxpayer identification number.
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_E",

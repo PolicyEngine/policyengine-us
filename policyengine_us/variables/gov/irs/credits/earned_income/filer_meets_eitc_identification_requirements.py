@@ -18,11 +18,5 @@ class filer_meets_eitc_identification_requirements(Variable):
         eligible_ssn_card_type = person(
             "meets_eitc_identification_requirements", period
         )
-
-        head_or_spouse_count = add(
-            tax_unit, period, ["is_tax_unit_head_or_spouse"]
-        )
-        eligible_head_or_spouse_count = tax_unit.sum(
-            is_head_or_spouse & eligible_ssn_card_type
-        )
-        return head_or_spouse_count == eligible_head_or_spouse_count
+        ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
+        return tax_unit.sum(ineligible_head_or_spouse) == 0
