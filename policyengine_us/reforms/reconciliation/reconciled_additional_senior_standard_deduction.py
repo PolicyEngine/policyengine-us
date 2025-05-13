@@ -52,41 +52,6 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             )
             return aged & head_or_spouse & meets_identification_requirements
 
-    class tax_unit_itemizes(Variable):
-        value_type = bool
-        entity = TaxUnit
-        label = "Itemizes tax deductions"
-        unit = USD
-        documentation = "Whether tax unit elects to itemize deductions rather than claim the standard deduction."
-        definition_period = YEAR
-
-        def formula(tax_unit, period, parameters):
-            if parameters(
-                period
-            ).gov.simulation.branch_to_determine_itemization:
-                # determine federal itemization behavior by comparing tax liability
-                tax_liability_if_itemizing = tax_unit(
-                    "tax_liability_if_itemizing", period
-                )
-                tax_liability_if_not_itemizing = tax_unit(
-                    "tax_liability_if_not_itemizing", period
-                )
-                return (
-                    tax_liability_if_itemizing < tax_liability_if_not_itemizing
-                )
-            else:
-                # determine federal itemization behavior by comparing deductions
-                standard_deduction = tax_unit("standard_deduction", period)
-                p = parameters(period).gov.irs.deductions
-                itemized_deductions = tax_unit(
-                    "itemized_taxable_income_deductions", period
-                )
-                additional_aged_sd = tax_unit(
-                    "additional_senior_standard_deduction", period
-                )
-                total_itm_deduction = itemized_deductions + additional_aged_sd
-                return total_itm_deduction > standard_deduction
-
     class meets_additional_sd_identification_requirements(Variable):
         value_type = bool
         entity = Person
@@ -117,6 +82,16 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
                 "wagering_losses_deduction",
                 "tuition_and_fees_deduction",
                 "misc_deduction",
+                "additional_senior_standard_deduction",
+            ],
+        )
+        parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
+            start=instant("2026-01-01"),
+            stop=instant("2035-12-31"),
+            value=[
+                "charitable_deduction_for_non_itemizers",
+                "standard_deduction",
+                "qualified_business_income_deduction",
                 "additional_senior_standard_deduction",
             ],
         )
