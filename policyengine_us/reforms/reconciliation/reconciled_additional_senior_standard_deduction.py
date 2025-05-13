@@ -11,6 +11,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
         label = "Additional senior standard deduction"
         unit = USD
         definition_period = YEAR
+        defined_for = "filer_meets_additional_senior_standard_deduction_identification_requirements"
         reference = "https://punchbowl.news/smitmo_017_xml/"  # page 35
 
         def formula(tax_unit, period, parameters):
@@ -20,9 +21,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             aged_count = add(
                 tax_unit,
                 period,
-                [
-                    "meets_additional_senior_standard_deduction_identification_requirements"
-                ],
+                ["aged_head", "aged_spouse"],
             )
             base_deduction = p.amount * aged_count
             agi = tax_unit("adjusted_gross_income", period)
@@ -36,23 +35,26 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             )
             return max_(base_deduction - phase_out_amount, 0)
 
-    class eligible_senior_for_additional_senior_standard_deduction(Variable):
+    class filer_meets_additional_senior_standard_deduction_identification_requirements(
+        Variable
+    ):
         value_type = bool
-        entity = Person
-        label = "Eligible senior for additional senior standard deduction"
-        unit = USD
+        entity = TaxUnit
         definition_period = YEAR
-        reference = "https://punchbowl.news/smitmo_017_xml/"  # page 35
+        label = "Filer meets CTC identification requirements"
 
-        def formula(person, period, parameters):
-            p = parameters(period).gov.irs.deductions.standard.aged_or_blind
-            age = person("age", period)
-            aged = age >= p.age_threshold
-            head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            meets_identification_requirements = person(
-                "meets_additional_sd_identification_requirements", period
+        def formula(tax_unit, period, parameters):
+            # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
+            person = tax_unit.members
+            is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            eligible_ssn_card_type = person(
+                "meets_additional_senior_standard_deduction_identification_requirements",
+                period,
             )
-            return aged & head_or_spouse & meets_identification_requirements
+            ineligible_head_or_spouse = (
+                is_head_or_spouse & ~eligible_ssn_card_type
+            )
+            return tax_unit.sum(ineligible_head_or_spouse) == 0
 
     class meets_additional_senior_standard_deduction_identification_requirements(
         Variable
@@ -74,8 +76,8 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
 
     def modify_parameters(parameters):
         parameters.gov.irs.deductions.deductions_if_itemizing.update(
-            start=instant("2026-01-01"),
-            stop=instant("2035-12-31"),
+            start=instant("2025-01-01"),
+            stop=instant("2029-12-31"),
             value=[
                 "charitable_deduction",
                 "interest_deduction",
@@ -90,8 +92,8 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             ],
         )
         parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
-            start=instant("2026-01-01"),
-            stop=instant("2035-12-31"),
+            start=instant("2025-01-01"),
+            stop=instant("2029-12-31"),
             value=[
                 "charitable_deduction_for_non_itemizers",
                 "standard_deduction",
@@ -107,7 +109,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
                 meets_additional_senior_standard_deduction_identification_requirements
             )
             self.update_variable(
-                eligible_senior_for_additional_senior_standard_deduction
+                filer_meets_additional_senior_standard_deduction_identification_requirements
             )
             self.update_variable(additional_senior_standard_deduction)
             self.modify_parameters(modify_parameters)
