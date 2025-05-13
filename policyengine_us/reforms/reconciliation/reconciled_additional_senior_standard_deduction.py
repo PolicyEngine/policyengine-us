@@ -77,25 +77,32 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/63"
         definition_period = YEAR
 
-        adds = [
-            "itemized_taxable_income_deductions",
-            "qualified_business_income_deduction",
-            "wagering_losses_deduction",
-            "additional_senior_standard_deduction",
-        ]
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.irs.deductions
+            existing_deductions = add(
+                tax_unit, period, p.deductions_if_itemizing
+            )
+            additional_deduction = tax_unit(
+                "additional_senior_standard_deduction", period
+            )
+            return existing_deductions + additional_deduction
 
-    def modify_parameters(parameters):
-        parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
-            start=instant("2025-01-01"),
-            stop=instant("2029-12-31"),
-            value=[
-                "charitable_deduction_for_non_itemizers",
-                "standard_deduction",
-                "qualified_business_income_deduction",
-                "additional_senior_standard_deduction",
-            ],
-        )
-        return parameters
+    class taxable_income_deductions_if_not_itemizing(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Deductions if not itemizing"
+        unit = USD
+        definition_period = YEAR
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.irs.deductions
+            existing_deductions = add(
+                tax_unit, period, p.deductions_if_not_itemizing
+            )
+            additional_deduction = tax_unit(
+                "additional_senior_standard_deduction", period
+            )
+            return existing_deductions + additional_deduction
 
     class reform(Reform):
         def apply(self):
@@ -106,7 +113,7 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
                 filer_meets_additional_senior_standard_deduction_identification_requirements
             )
             self.update_variable(additional_senior_standard_deduction)
-            self.modify_parameters(modify_parameters)
+            self.update_variable(taxable_income_deductions_if_not_itemizing)
             self.update_variable(taxable_income_deductions_if_itemizing)
 
     return reform
