@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.280.0] - 2025-05-13 18:10:36
+
+### Added
+
+- Auto loan balance variable.
+
+## [1.279.1] - 2025-05-13 17:47:38
+
+### Fixed
+
+- Apply SALT phase-out to each filing status separately.
+
 ## [1.279.0] - 2025-05-13 15:09:35
 
 ### Added
@@ -11673,6 +11685,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.279.1...1.280.0
+[1.279.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.279.0...1.279.1
 [1.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.278.0...1.279.0
 [1.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.277.0...1.278.0
 [1.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.276.0...1.277.0
