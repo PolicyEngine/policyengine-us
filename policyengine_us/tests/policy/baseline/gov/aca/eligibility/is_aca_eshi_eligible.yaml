@@ -9,8 +9,8 @@
 - name: is_aca_eshi_eligible unit test 2
   period: 2025
   input:
-    has_esi: true
-    offered_aca_disqualifying_esi: true
+    has_esi: false
+    offered_aca_disqualifying_esi: false #no esi, can get aca
   output:
     is_aca_eshi_eligible: false
 
