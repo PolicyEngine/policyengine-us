@@ -110,6 +110,10 @@ from .reconciliation import (
     create_reconciled_additional_senior_standard_deduction_reform,
 )
 
+from .aca import (
+    create_aca_ptc_add_immigration_requirement_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -240,8 +244,7 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
-
-    ctc_ssn = create_ctc_ssn_reform(parameters, period)
+    aca_ptc_add_immigration_requirement = create_aca_ptc_add_immigration_requirement_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -292,6 +295,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_auto_loan_interest_ald,
         ctc_ssn,
         reconciled_additional_senior_standard_deduction,
+        aca_ptc_add_immigration_requirement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
