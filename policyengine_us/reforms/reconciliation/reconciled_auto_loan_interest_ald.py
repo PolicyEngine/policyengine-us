@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
+import numpy as np
 
 
 def create_reconciled_auto_loan_interest_ald() -> Reform:
@@ -29,7 +30,7 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
             excess = max_(agi - phaseout_start, 0)
-            increments = ceil(excess / p.phase_out.increment)
+            increments = np.ceil(excess / p.phase_out.increment)
 
             # Calculate the excess part phase out amount (line 7).
             phase_out_amount = increments * p.phase_out.step
