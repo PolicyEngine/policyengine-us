@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixed:
+    - Apply SALT phase-out to the cap.
+    added:
+    - Change SALT phase-out start to a smart-indexed from scale parameter.
