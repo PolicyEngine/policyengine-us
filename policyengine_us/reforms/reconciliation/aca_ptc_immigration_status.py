@@ -31,7 +31,7 @@ def create_aca_ptc_immigration_status_reform(
     if bypass:
         return create_aca_ptc_immigration_status()
 
-    p = parameters.gov.contrib.reconciliation.aca_immigration_status
+    p = parameters.gov.contrib.reconciliation.aca_ptc_immigration_status
 
     reform_active = False
     current_period = period_(period)
