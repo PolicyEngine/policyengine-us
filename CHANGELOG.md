@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.276.0] - 2025-05-13 01:46:15
+
+### Added
+
+- 2024 Rhode Island Income Tax Updates.
+
+## [1.275.0] - 2025-05-13 01:41:44
+
+### Added
+
+- Auto loan interest ALD reform.
+
+## [1.274.1] - 2025-05-13 00:55:26
+
+### Fixed
+
+- Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+
+## [1.274.0] - 2025-05-13 00:39:59
+
+### Added
+
+- When not branching, compare itemized deductions with pease to all non-itemized deductions.
+
+## [1.273.0] - 2025-05-13 00:26:34
+
+### Added
+
+- Add reform to exempt overtime and tip income as deductions.
+
+## [1.272.1] - 2025-05-12 23:17:00
+
+### Fixed
+
+- Account for pease in the taxable_income_deductions_if_itemizing variable.
+
 ## [1.272.0] - 2025-05-12 20:41:49
 
 ### Added
@@ -11619,6 +11655,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.276.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.275.0...1.276.0
+[1.275.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.274.1...1.275.0
+[1.274.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.274.0...1.274.1
+[1.274.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.273.0...1.274.0
+[1.273.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.1...1.273.0
+[1.272.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.0...1.272.1
 [1.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.271.0...1.272.0
 [1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
 [1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3

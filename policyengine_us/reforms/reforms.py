@@ -104,6 +104,8 @@ from .congress.afa import (
 from .reconciliation import (
     create_reconciled_qbid_reform,
     create_reconciled_pease_reform,
+    create_reconciled_tip_and_overtime_exempt_reform,
+    create_reconciled_auto_loan_interest_ald_reform,
     create_ctc_ssn_reform,
 )
 
@@ -225,6 +227,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     reconciled_qbid = create_reconciled_qbid_reform(parameters, period)
     reconciled_pease = create_reconciled_pease_reform(parameters, period)
+    reconciled_tip_and_overtime_exempt = (
+        create_reconciled_tip_and_overtime_exempt_reform(parameters, period)
+    )
+    reconciled_auto_loan_interest_ald = (
+        create_reconciled_auto_loan_interest_ald_reform(parameters, period)
+    )
+
     ctc_ssn = create_ctc_ssn_reform(parameters, period)
 
     reforms = [
@@ -272,6 +281,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         afa_other_dependent_credit,
         reconciled_qbid,
         reconciled_pease,
+        reconciled_tip_and_overtime_exempt,
+        reconciled_auto_loan_interest_ald,
         ctc_ssn,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
