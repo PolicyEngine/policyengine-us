@@ -38,7 +38,7 @@ def create_ctc_ssn() -> Reform:
             eligible_child = (
                 ctc_qualifying_child & meets_ctc_identification_requirements
             )
-            # Only child who meets CTC identification requirements can claim benefit
+            # Only children who meet CTC identification requirements can claim benefit
             return tax_unit.sum(eligible_child)
 
     class filer_meets_ctc_identification_requirements(Variable):
