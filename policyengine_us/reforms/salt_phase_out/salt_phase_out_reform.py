@@ -24,7 +24,8 @@ def create_salt_phase_out() -> Reform:
             phase_out = p_ref.rate * agi_excess
             phased_out_cap = max_(0, max_cap - phase_out)
             if p_ref.floor.applies:
-                return max_(phased_out_cap, p_ref.floor.amount[filing_status])
+                floor = p_ref.floor.amount[filing_status]
+                return max_(phased_out_cap, floor)
             return phased_out_cap
 
     class reform(Reform):
