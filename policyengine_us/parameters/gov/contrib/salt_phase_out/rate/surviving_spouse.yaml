@@ -1,4 +1,4 @@
-description: The SALT deduction is phased out at this rate for non-joint filers, based on adjusted gross income.
+description: The SALT deduction is phased out at this rate for surviving spouses, based on adjusted gross income.
 
 brackets:
   - threshold:
@@ -11,7 +11,7 @@ brackets:
       0000-01-01: 0
 
 metadata:
-  label: SALT deduction non-joint phase out rate 
+  label: SALT deduction surviving spouse phase out rate 
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1

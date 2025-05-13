@@ -22,10 +22,20 @@ def create_salt_phase_out() -> Reform:
             p_ref = parameters(period).gov.contrib.salt_phase_out
             income = tax_unit("adjusted_gross_income", period)
             separate = filing_status == filing_status.possible_values.SEPARATE
-            phase_out = where(
-                separate,
-                p_ref.rate.other.calc(income),
+            phase_out = select([
+                filing_status == filing_status.possible_values.SEPARATE,
+                filing_status == filing_status.possible_values.JOINT,
+                filing_status == filing_status.possible_values.HEAD_OF_HOUSEHOLD,
+                filing_status == filing_status.possible_values.SURVIVING_SPOUSE,
+                filing_status == filing_status.possible_values.SINGLE,
+            ],
+            [
+                p_ref.rate.separate.calc(income),
                 p_ref.rate.joint.calc(income),
+                p_ref.rate.head_of_household.calc(income),
+                p_ref.rate.surviving_spouse.calc(income),
+                p_ref.rate.single.calc(income),
+            ],
             )
             capped_salt = min_(cap, salt_amount)
             if p_ref.floor.applies:
