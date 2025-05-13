@@ -20,7 +20,9 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             aged_count = add(
                 tax_unit,
                 period,
-                ["eligible_senior_for_additional_senior_standard_deduction"],
+                [
+                    "meets_additional_senior_standard_deduction_identification_requirements"
+                ],
             )
             base_deduction = p.amount * aged_count
             agi = tax_unit("adjusted_gross_income", period)
@@ -52,7 +54,9 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
             )
             return aged & head_or_spouse & meets_identification_requirements
 
-    class meets_additional_sd_identification_requirements(Variable):
+    class meets_additional_senior_standard_deduction_identification_requirements(
+        Variable
+    ):
         value_type = bool
         entity = Person
         definition_period = YEAR
@@ -100,13 +104,12 @@ def create_reconciled_additional_senior_standard_deduction() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(
-                meets_additional_sd_identification_requirements
+                meets_additional_senior_standard_deduction_identification_requirements
             )
             self.update_variable(
                 eligible_senior_for_additional_senior_standard_deduction
             )
             self.update_variable(additional_senior_standard_deduction)
-            self.update_variable(tax_unit_itemizes)
             self.modify_parameters(modify_parameters)
 
     return reform
