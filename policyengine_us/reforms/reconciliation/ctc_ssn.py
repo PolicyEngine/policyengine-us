@@ -54,7 +54,9 @@ def create_ctc_ssn() -> Reform:
             eligible_ssn_card_type = person(
                 "meets_ctc_identification_requirements", period
             )
-            ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
+            ineligible_head_or_spouse = (
+                is_head_or_spouse & ~eligible_ssn_card_type
+            )
             return tax_unit.sum(ineligible_head_or_spouse) == 0
 
     class meets_ctc_identification_requirements(Variable):
