@@ -1,0 +1,15 @@
+- name: No federal CDCC
+  period: 2024
+  input:
+    state_code: WV
+    cdcc: 0
+  output:
+    wv_cdcc: 0
+
+- name: 50% match in 2024
+  period: 2024
+  input:
+    state_code: WV
+    cdcc: 1_000
+  output:
+    wv_cdcc: 500
