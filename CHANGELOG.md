@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.273.0] - 2025-05-13 00:26:34
+
+### Added
+
+- Add reform to exempt overtime and tip income as deductions.
+
 ## [1.272.1] - 2025-05-12 23:17:00
 
 ### Fixed
@@ -11625,6 +11631,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.273.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.1...1.273.0
 [1.272.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.0...1.272.1
 [1.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.271.0...1.272.0
 [1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
