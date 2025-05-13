@@ -12,7 +12,7 @@ def create_ctc_ssn() -> Reform:
         documentation = "Total value of the non-refundable and refundable portions of the Child Tax Credit."
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
-        defined_for = "filer_meets_CTC_identification_requirements"
+        defined_for = "filer_meets_ctc_identification_requirements"
 
         def formula(tax_unit, period, parameters):
             maximum_amount = tax_unit("ctc_maximum_with_arpa_addition", period)
