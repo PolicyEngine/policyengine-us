@@ -5,6 +5,9 @@ import numpy as np
 
 
 def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
+    # Amend the variables themselves, as the *_eligible flags indicate
+    # the ability of individuals to count their educational expenses.
+    # These reforms set identification requirements at the filer level.
     class lifetime_learning_credit(Variable):
         value_type = float
         entity = TaxUnit
