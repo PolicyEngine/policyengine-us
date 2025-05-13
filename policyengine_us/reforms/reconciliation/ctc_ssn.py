@@ -41,7 +41,7 @@ def create_ctc_ssn() -> Reform:
             # Only child who meets CTC identification requirements can claim benefit
             return tax_unit.sum(eligible_child)
 
-    class filer_meets_CTC_identification_requirements(Variable):
+    class filer_meets_ctc_identification_requirements(Variable):
         value_type = bool
         entity = TaxUnit
         definition_period = YEAR
@@ -54,13 +54,8 @@ def create_ctc_ssn() -> Reform:
             eligible_ssn_card_type = person(
                 "meets_ctc_identification_requirements", period
             )
-            head_or_spouse_count = add(
-                tax_unit, period, ["is_tax_unit_head_or_spouse"]
-            )
-            eligible_head_or_spouse_count = tax_unit.sum(
-                is_head_or_spouse & eligible_ssn_card_type
-            )
-            return head_or_spouse_count == eligible_head_or_spouse_count
+            ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
+            return tax_unit.sum(ineligible_head_or_spouse) == 0
 
     class meets_ctc_identification_requirements(Variable):
         value_type = bool
@@ -82,7 +77,7 @@ def create_ctc_ssn() -> Reform:
         def apply(self):
             self.update_variable(ctc)
             self.update_variable(ctc_qualifying_children)
-            self.update_variable(filer_meets_CTC_identification_requirements)
+            self.update_variable(filer_meets_ctc_identification_requirements)
             self.update_variable(meets_ctc_identification_requirements)
 
     return reform
