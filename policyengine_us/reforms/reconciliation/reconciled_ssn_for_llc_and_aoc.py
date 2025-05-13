@@ -59,7 +59,6 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
                 return 0
             return max_(0, maximum_amount * (1 - phase_out))
 
-
     class filer_meets_llc_and_aoc_identification_requirements(Variable):
         value_type = bool
         entity = TaxUnit
@@ -94,12 +93,13 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             )
             return citizen | non_citizen_valid_ead
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(lifetime_learning_credit)
             self.update_variable(american_opportunity_credit)
-            self.update_variable(filer_meets_llc_and_aoc_identification_requirements)
+            self.update_variable(
+                filer_meets_llc_and_aoc_identification_requirements
+            )
             self.update_variable(meets_llc_and_aoc_identification_requirements)
 
     return reform
@@ -128,6 +128,6 @@ def create_reconciled_ssn_for_llc_and_aoc_reform(
         return None
 
 
-reconciled_ssn_for_llc_and_aoc = (
-    create_reconciled_ssn_for_llc_and_aoc_reform(None, None, bypass=True)
+reconciled_ssn_for_llc_and_aoc = create_reconciled_ssn_for_llc_and_aoc_reform(
+    None, None, bypass=True
 )
