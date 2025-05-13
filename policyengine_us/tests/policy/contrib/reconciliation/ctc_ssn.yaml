@@ -6,7 +6,7 @@
     gov.contrib.reconciliation.pease.in_effect: true
     ctc_maximum_with_arpa_addition: 100
     ctc_phase_out: 80
-    tax_unit_has_valid_ssn_card_type_for_ctc: true
+    filer_meets_CTC_identification_requirements: true
   output:
     ctc: 20
 
@@ -18,7 +18,7 @@
     gov.contrib.reconciliation.pease.in_effect: true
     ctc_maximum_with_arpa_addition: 80
     ctc_phase_out: 100
-    tax_unit_has_valid_ssn_card_type_for_ctc: true
+    filer_meets_CTC_identification_requirements: true
   output:
     ctc: 0
 
@@ -30,6 +30,6 @@
     gov.contrib.reconciliation.pease.in_effect: true
     ctc_maximum_with_arpa_addition: 100
     ctc_phase_out: 80
-    tax_unit_has_valid_ssn_card_type_for_ctc: false
+    filer_meets_CTC_identification_requirements: false
   output:
     ctc: 0

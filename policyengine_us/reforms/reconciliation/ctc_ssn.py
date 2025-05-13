@@ -12,34 +12,78 @@ def create_ctc_ssn() -> Reform:
         documentation = "Total value of the non-refundable and refundable portions of the Child Tax Credit."
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
-        defined_for = "tax_unit_has_valid_ssn_card_type_for_ctc"
+        defined_for = "filer_meets_CTC_identification_requirements"
 
         def formula(tax_unit, period, parameters):
             maximum_amount = tax_unit("ctc_maximum_with_arpa_addition", period)
             reduction = tax_unit("ctc_phase_out", period)
             return max_(0, maximum_amount - reduction)
 
-    class tax_unit_has_valid_ssn_card_type_for_ctc(Variable):
+    
+    class ctc_qualifying_children(Variable):
+        value_type = int
+        entity = TaxUnit
+        label = "CTC-qualifying children"
+        documentation = "Count of children that qualify for the Child Tax Credit"
+        definition_period = YEAR
+        reference = "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=4"
+    
+        def formula(tax_unit, period, parameters):
+            person = tax_unit.members
+            ctc_qualifying_child = person("ctc_qualifying_child", period)
+            meets_ctc_identification_requirements = person(
+                "meets_ctc_identification_requirements", period
+            )
+            eligible_child = ctc_qualifying_child & meets_ctc_identification_requirements
+            # Only child who meets CTC identification requirements can claim benefit
+            return tax_unit.sum(eligible_child)
+    
+    class filer_meets_CTC_identification_requirements(Variable):
         value_type = bool
         entity = TaxUnit
         definition_period = YEAR
-        label = "All members in the tax unit have valid SSN card type to be eligible for the CTC"
-        reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_E"
+        label = "Filer meets CTC identification requirements"
 
         def formula(tax_unit, period, parameters):
-            ssn_card_type = tax_unit.members("ssn_card_type", period)
+            # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
+            person = tax_unit.members
+            is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            eligible_ssn_card_type = person(
+                "meets_ctc_identification_requirements", period
+            )
+            head_or_spouse_count = add(
+                tax_unit, period, ["is_tax_unit_head_or_spouse"]
+            )
+            eligible_head_or_spouse_count = tax_unit.sum(
+                is_head_or_spouse & eligible_ssn_card_type
+            )
+            return head_or_spouse_count == eligible_head_or_spouse_count
+    
+    class meets_ctc_identification_requirements(Variable):
+        value_type = bool
+        entity = Person
+        definition_period = YEAR
+        label = "Person meets CTC identification requirements"
+        reference = "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=4"
+
+        def formula(person, period, parameters):
+            ssn_card_type = person("ssn_card_type", period)
             ssn_card_types = ssn_card_type.possible_values
             citizen = ssn_card_type == ssn_card_types.CITIZEN
             non_citizen_valid_ead = (
-                ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
+            ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
             )
-            eligible_ssn_card_type = citizen | non_citizen_valid_ead
-            return tax_unit.all(eligible_ssn_card_type)
-
+            return citizen | non_citizen_valid_ead
+    
+    
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc)
-            self.update_variable(tax_unit_has_valid_ssn_card_type_for_ctc)
+            self.update_variable(ctc_qualifying_children)
+            self.update_variable(filer_meets_CTC_identification_requirements)
+            self.update_variable(meets_ctc_identification_requirements)
+            
+            
 
     return reform
 
@@ -48,7 +92,7 @@ def create_ctc_ssn_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_ssn()
 
-    p = parameters.gov.contrib.reconciliation.ctc_ssn
+    p = parameters.gov.contrib.reconciliation.ctc
 
     reform_active = False
     current_period = period_(period)
