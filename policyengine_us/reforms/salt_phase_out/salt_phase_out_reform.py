@@ -21,7 +21,6 @@ def create_salt_phase_out() -> Reform:
             cap = p.cap[filing_status]
             p_ref = parameters(period).gov.contrib.salt_phase_out
             income = tax_unit("adjusted_gross_income", period)
-            separate = filing_status == filing_status.possible_values.SEPARATE
             phase_out = select([
                 filing_status == filing_status.possible_values.SEPARATE,
                 filing_status == filing_status.possible_values.JOINT,
