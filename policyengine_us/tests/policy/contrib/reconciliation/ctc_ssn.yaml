@@ -1,6 +1,6 @@
 - name: Case 1, CTC higher than 0.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.9
   reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
   input:
     gov.contrib.reconciliation.pease.in_effect: true
@@ -12,7 +12,7 @@
 
 - name: Case 2, CTC capped at 0.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.9
   reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
   input:
     gov.contrib.reconciliation.pease.in_effect: true
@@ -24,8 +24,8 @@
 
 - name: Case 3, don't have valid SSN card type, CTC is 0. 
   period: 2026
-  absolute_error_margin: 1
-  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
   input:
     gov.contrib.reconciliation.pease.in_effect: true
     ctc_maximum_with_arpa_addition: 100
