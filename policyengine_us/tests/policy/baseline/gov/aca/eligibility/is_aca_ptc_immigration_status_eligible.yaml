@@ -12,10 +12,10 @@
   output:
     is_aca_ptc_immigration_status_eligible: true
 
-- name: In 2027, aslyee is ineligible. 
-  period: 2027
+- name: In 2022, aslyee is eligible. 
+  period: 2022
   input:
-    immigration_status: ASYLEE
+    immigration_status: DACA_TPS
   output:
     is_aca_ptc_immigration_status_eligible: false
 
