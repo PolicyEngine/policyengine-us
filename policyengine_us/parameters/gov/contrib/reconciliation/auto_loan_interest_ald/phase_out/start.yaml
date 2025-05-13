@@ -1,0 +1,21 @@
+description: The Committee on Ways and Means proposed an auto loan above the line deduction, which is reduced for filers with adjusted gross income above this threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Reconciled auto loan above the line deduction reduction start
+  breakdown:
+    - filing_status
+  reference:
+    - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
+      href: https://punchbowl.news/smitmo_017_xml/ #page 38
+
+SINGLE:
+  2026-01-01: 100_000
+SEPARATE:
+  2026-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 100_000
+JOINT:
+  2026-01-01: 200_000
+SURVIVING_SPOUSE:
+  2026-01-01: 200_000
