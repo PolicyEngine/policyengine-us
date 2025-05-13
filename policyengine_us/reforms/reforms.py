@@ -108,6 +108,7 @@ from .reconciliation import (
     create_reconciled_auto_loan_interest_ald_reform,
     create_ctc_ssn_reform,
     create_reconciled_additional_senior_standard_deduction_reform,
+    create_reconciled_ssn_for_llc_and_aoc_reform,
 )
 
 from policyengine_core.reforms import Reform
@@ -242,6 +243,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
 
     ctc_ssn = create_ctc_ssn_reform(parameters, period)
+    reconciled_ssn_for_llc_and_aoc = (
+        create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,
@@ -292,6 +296,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_auto_loan_interest_ald,
         ctc_ssn,
         reconciled_additional_senior_standard_deduction,
+        reconciled_ssn_for_llc_and_aoc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
