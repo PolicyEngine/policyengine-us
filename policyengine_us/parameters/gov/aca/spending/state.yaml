@@ -3,6 +3,8 @@ metadata:
   unit: currency-USD
   period: year
   label: Federal ACA spending by state
+  breakdown:
+    - state_code
   reference:
   - title: Estimated Total Premium Tax Credits Received by Marketplace Enrollees | KFF 
     href: https://www.kff.org/affordable-care-act/state-indicator/average-monthly-advance-premium-tax-credit-aptc
