@@ -16,5 +16,4 @@ class is_aca_eshi_eligible(Variable):
         offered = person(
             "offered_aca_disqualifying_esi", period
         )  # being offered disqualifying ESI
-        # return True if either condition is met:
         return has | offered
