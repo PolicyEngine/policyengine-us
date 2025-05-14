@@ -4,6 +4,9 @@ metadata:
   period: year
   unit: currency-USD
   uprating: gov.irs.uprating
+  rounding:
+    type: downwards
+    interval: 50
   reference:
     - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
       href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=10
