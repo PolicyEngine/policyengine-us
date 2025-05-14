@@ -1,5 +1,6 @@
-bump: minor
-changes:
-  added:
-  - Add new immigration rules to ACA reform.
-  - Adjust immigration formula on current ACA file.
+- bump: patch
+  changes:
+    fixed:
+    - Adjust immigration formula on current ACA file.
+    added:
+    - Add new immigration rules to ACA reform.
