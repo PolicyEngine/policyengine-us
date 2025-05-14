@@ -10,3 +10,18 @@
         is_medicaid_eligible: true
   output: 
     medicaid_per_capita_cost: 3_564.1
+
+- name: IA disabled
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    household:
+      state_code: IA
+    people:
+      person:
+        is_optional_senior_or_disabled_for_medicaid: true
+        is_medicaid_eligible: true
+  output: 
+    medicaid_per_capita_cost: 24_257.3
+
+
