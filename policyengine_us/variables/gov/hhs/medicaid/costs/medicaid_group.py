@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.medicaid.costs.MedicaidGroup import MedicaidGroup
+from policyengine_us.variables.gov.hhs.medicaid.costs.MedicaidGroup import (
+    MedicaidGroup,
+)
+
 
 class medicaid_group(Variable):
     """Maps fine‑grained Medicaid eligibility categories to broader spending groups.

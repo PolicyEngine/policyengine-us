@@ -16,30 +16,34 @@ class medicaid_per_capita_cost(Variable):
         group = person("medicaid_group", period)
 
         p = parameters(period).calibration.gov.hhs.medicaid
-        
+
         # Handle each group type separately
         is_aged_disabled = group == MedicaidGroup.AGED_DISABLED
         is_child = group == MedicaidGroup.CHILD
         is_expansion_adult = group == MedicaidGroup.EXPANSION_ADULT
         is_non_expansion_adult = group == MedicaidGroup.NON_EXPANSION_ADULT
-        
+
         # Calculate spend and enrollment for each group
         aged_spend = p.spending.by_eligibility_group.aged[state]
         disabled_spend = p.spending.by_eligibility_group.disabled[state]
         child_spend = p.spending.by_eligibility_group.child[state]
-        expansion_adult_spend = p.spending.by_eligibility_group.expansion_adults[state]
-        non_expansion_adult_spend = p.spending.by_eligibility_group.non_expansion_adults[state]
-        
+        expansion_adult_spend = (
+            p.spending.by_eligibility_group.expansion_adults[state]
+        )
+        non_expansion_adult_spend = (
+            p.spending.by_eligibility_group.non_expansion_adults[state]
+        )
+
         aged_enroll = p.enrollment.aged[state]
         disabled_enroll = p.enrollment.disabled[state]
         child_enroll = p.enrollment.child[state]
         expansion_adult_enroll = p.enrollment.expansion_adults[state]
         non_expansion_adult_enroll = p.enrollment.non_expansion_adults[state]
-        
+
         # Combine aged and disabled for AGED_DISABLED group
         aged_disabled_spend = aged_spend + disabled_spend
         aged_disabled_enroll = aged_enroll + disabled_enroll
-        
+
         # Select the right values based on group
         spend = select(
             [
@@ -56,7 +60,7 @@ class medicaid_per_capita_cost(Variable):
             ],
             default=0.0,
         )
-        
+
         enroll = select(
             [
                 is_aged_disabled,
