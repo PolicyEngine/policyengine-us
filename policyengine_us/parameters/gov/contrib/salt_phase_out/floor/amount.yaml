@@ -1,0 +1,21 @@
+description: The SALT deduction is floored at this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: SALT deduction floor amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
+      href: https://punchbowl.news/smitmo_017_xml/ #page 255
+
+SINGLE:
+  2015-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 10_000
+JOINT:
+  0000-01-01: 10_000
+SURVIVING_SPOUSE:
+  0000-01-01: 10_000
+SEPARATE:
+  0000-01-01: 5_000 

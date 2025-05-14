@@ -11,11 +11,6 @@ class salt_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/164"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate
-        salt_amount = add(
-            tax_unit,
-            period,
-            p.sources,
-        )
-        cap = p.cap[tax_unit("filing_status", period)]
-        return min_(cap, salt_amount)
+        reported_salt = tax_unit("reported_salt", period)
+        cap = tax_unit("salt_cap", period)
+        return min_(cap, reported_salt)
