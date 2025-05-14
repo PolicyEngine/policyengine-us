@@ -6,4 +6,3 @@ class offered_aca_disqualifying_esi(Variable):
     entity = Person
     label = "Person is offered ACA disqualifying esi"
     definition_period = YEAR
-    default_value = False
