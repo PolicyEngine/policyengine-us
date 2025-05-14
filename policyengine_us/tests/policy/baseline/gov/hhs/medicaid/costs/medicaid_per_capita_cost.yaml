@@ -1,0 +1,12 @@
+- name: AZ child
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    household:
+      state_code: AZ
+    people:
+      person:
+        is_infant_for_medicaid: true
+        is_medicaid_eligible: true
+  output: 
+    medicaid_per_capita_cost: 3_564.1

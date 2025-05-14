@@ -12,7 +12,7 @@ class per_capita_chip(Variable):
 
     def formula(person, period, parameters):
         state_code = person.household("state_code", period)
-        p = parameters(period).gov.hhs.chip
+        p = parameters(period).calibration.gov.hhs.chip
 
         # spending lives in spending/total/total.yaml → .spending.total.total
         spending = p.spending.total.total[state_code]
