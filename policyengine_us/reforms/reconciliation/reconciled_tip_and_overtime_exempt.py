@@ -66,8 +66,9 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             value=[
                 "tip_income_deduction",
                 "overtime_income_deduction",
-                "standard_deduction",
+                "itemized_taxable_income_deductions",
                 "qualified_business_income_deduction",
+                "wagering_losses_deduction",
             ],
         )
         parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
@@ -76,9 +77,9 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
             value=[
                 "tip_income_deduction",
                 "overtime_income_deduction",
-                "wagering_losses_deduction",
+                "charitable_deduction_for_non_itemizers",
+                "standard_deduction",
                 "qualified_business_income_deduction",
-                "itemized_taxable_income_deductions",
             ],
         )
         return parameters
