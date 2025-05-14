@@ -27,9 +27,12 @@ class medicaid_group(Variable):
         cat = person("medicaid_category", period)
 
         # --- Highest‑precedence: disabled / SSI / medically‑needy ---
-        disabled = (cat == cat.possible_values.SSI_RECIPIENT) | person(
-            "is_optional_senior_or_disabled_for_medicaid", period
+        disabled = (
+            (cat == cat.possible_values.SSI_RECIPIENT)
+            | person("is_ssi_recipient_for_medicaid", period)
+            | person("is_optional_senior_or_disabled_for_medicaid", period)
         )
+
         # TODO: add `is_medically_needy_for_medicaid` when that variable exists
 
         pregnant = cat == cat.possible_values.PREGNANT
