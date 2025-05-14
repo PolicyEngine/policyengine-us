@@ -1,4 +1,3 @@
-
 from policyengine_us.model_api import *
 
 
@@ -12,15 +11,12 @@ class per_capita_chip(Variable):
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
 
     def formula(person, period, parameters):
-        state = person.household("state_code_str", period)
-        # Get total spending for Medicaid expansion CHIP
-        spending = parameters(period).gov.hhs.chip.spending.medicaid_expansion_chip.total[state]
-        # Get total enrollment
-        enrollment = parameters(period).gov.hhs.chip.enrollment.total[state]
-        # Avoid division by zero
-        return np.divide(
-            spending, 
-            enrollment, 
-            out=np.zeros_like(spending), 
-            where=enrollment > 0
-        )
+        state_code = person.household("state_code", period)
+        p = parameters(period).gov.hhs.chip
+
+        # spending lives in spending/total/total.yaml → .spending.total.total
+        spending = p.spending.total.total[state_code]
+        # enrollment lives in enrollment/total.yaml → .enrollment.total
+        enrollment = p.enrollment.total[state_code]
+
+        return (spending / enrollment) if enrollment > 0 else 0
