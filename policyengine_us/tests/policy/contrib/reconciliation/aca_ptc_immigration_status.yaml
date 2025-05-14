@@ -43,3 +43,13 @@
         immigration_status: CUBAN_HAITIAN_ENTRANT
   output:
     is_aca_ptc_immigration_status_eligible: [false, true, true]
+
+- name: Case 5, in 2028, asylee is ineligible.
+  period: 2028
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: false
