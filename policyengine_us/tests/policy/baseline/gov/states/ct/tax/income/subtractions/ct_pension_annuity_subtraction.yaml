@@ -1,32 +1,109 @@
-- name: Single household with $25,000 pension income in 2022
+- name: Single household with $74,000 AGI in 2022
   period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
-    taxable_pension_income: 25_000
+    adjusted_gross_income: 74_000
+    taxable_pension_income: 10_000
   output:
-    ct_pension_annuity_subtraction: 25_000
+    ct_pension_annuity_subtraction: 10_000
 
-- name: Single household with $25,000 pension income in 2021
-  period: 2021
+- name: Single household with $75,000 AGI in 2022
+  period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
-    taxable_pension_income: 25_000
+    adjusted_gross_income: 75_000
+    taxable_pension_income: 10_000
   output:
-    ct_pension_annuity_subtraction: 10_500
-- name: JOINT household with $25,000 pension income in 2019
-  period: 2019
+    ct_pension_annuity_subtraction: 0
+
+- name: Joint household with $99,000 AGI in 2022
+  period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
-    taxable_pension_income: 25_000
+    adjusted_gross_income: 99_000
+    taxable_pension_income: 10_000
   output:
-    ct_pension_annuity_subtraction: 3_500
+    ct_pension_annuity_subtraction: 10_000
 
+- name: Joint household with $100,000 AGI in 2022
+  period: 2022
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 100_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 0
+
+- name: Single household with $74,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 74_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 10_000
+
+- name: Single household with $85,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 85_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 2_500
+
+- name: Single household with $100,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 0
+
+- name: Joint household with $99,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 99_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 10_000
+
+- name: Joint household with $120,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 120_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 2_500
+
+- name: Joint household with $150,000 AGI in 2024
+  period: 2024
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 0
