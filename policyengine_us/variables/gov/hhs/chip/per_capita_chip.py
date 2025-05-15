@@ -17,4 +17,7 @@ class per_capita_chip(Variable):
         spending = p.spending.total.total[state_code]
         enrollment = p.enrollment.total[state_code]
 
-        return (spending / enrollment) if enrollment > 0 else 0
+        per_capita = np.zeros_like(enrollment, dtype=float)
+        mask = enrollment > 0
+        per_capita[mask] = spending[mask] / enrollment[mask]
+        return per_capita

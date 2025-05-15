@@ -74,8 +74,13 @@ class medicaid_per_capita_cost(Variable):
                 expansion_adult_enroll,
                 non_expansion_adult_enroll,
             ],
-            default=1.0,  # Prevents divide by zero for NONE group
+            default=0.0,  
         )
 
         # Avoid divide‑by‑zero in non‑expansion states, etc.
-        return where(enroll == 0, 0.0, spend / enroll)
+        per_capita = np.zeros_like(enroll, dtype=float)
+        mask = enroll > 0
+        per_capita[mask] = spend[mask] / enroll[mask]
+
+       
+        return per_capita
