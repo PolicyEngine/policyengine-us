@@ -1,8 +1,8 @@
-description: Number of hours receiving regular salary rate pay in a work week.
+description: The US requires employers to pay qualified employees overtime for hours worked in excess of this value.
 metadata:
-  unit: year # do we have a better unit? or should we add a new one?
+  unit: hour
   period: year
-  label: Normal hours in a work week
+  label: Overtime weekly hours threshold
   reference:
     - title: 29 U.S. Code § 207
       href: https://www.law.cornell.edu/uscode/text/29/207

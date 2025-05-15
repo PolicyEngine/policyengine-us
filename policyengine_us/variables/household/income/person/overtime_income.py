@@ -11,23 +11,14 @@ class overtime_income(Variable):
     # This variable only exists for the purpose of the tax_exempt_reform
 
     def formula(person, period, parameters):
-        """Overtime income estimated on a weekly basis"""
         p = parameters(period).gov.irs.income.exemption.overtime
         worked_hours = person("weekly_hours_worked", period)
-        weekly_pay = person("weekly_pay", period)
 
-        non_overtime_hourly_rate = max(
-            weekly_pay
-            / (
-                p.normal_hours
-                + (worked_hours - p.normal_hours) * p.extra_salary_rate
-            ),
-            0,
+        weekly_overtime_hours = max_(worked_hours - p.hours_threshold, 0)
+        annual_overtime_hours = weekly_overtime_hours * WEEKS_IN_YEAR
+
+        return (
+            person("employment_income_last_year")
+            * annual_overtime_hours
+            * (p.rate_multiplier - 1)
         )
-        overtime_pay = (
-            (worked_hours - p.normal_hours)
-            * non_overtime_hourly_rate
-            * p.extra_salary_rate
-        )  # weekly
-
-        return overtime_pay * p.weeks_worked
