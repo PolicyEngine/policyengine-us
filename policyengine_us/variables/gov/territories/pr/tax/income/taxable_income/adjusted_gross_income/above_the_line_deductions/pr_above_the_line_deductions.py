@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class above_the_line_deductions(Variable):
+class pr_above_the_line_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Puerto Rico Above-the-line deductions"

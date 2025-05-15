@@ -1,0 +1,7 @@
+- name: Eligible for veteran exemption
+  period: 2024
+  input:
+    state_code: PR
+    is_veteran: true
+  output:
+    pr_veteran_exemption: 1_500

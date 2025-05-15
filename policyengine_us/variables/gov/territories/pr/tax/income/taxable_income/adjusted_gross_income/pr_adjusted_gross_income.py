@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class adjusted_gross_income(Variable):
+class pr_adjusted_gross_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Puerto Rico Adjusted gross income"
