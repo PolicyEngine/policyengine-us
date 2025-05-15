@@ -1,0 +1,18 @@
+description: Puerto Rico amount for personal exemption
+JOINT:
+  2023-01-01: 7_000
+SINGLE:
+  2023-01-01: 3_500
+SEPARATE:
+  2023-01-01: 3_500
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Puerto Rico personal exemption amount
+  reference:
+    - title: Gov. of Puerto Rico Form 482.0 2024 
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf
+    - title: P.R. Laws tit. 13, § 30138 (a)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30138/
