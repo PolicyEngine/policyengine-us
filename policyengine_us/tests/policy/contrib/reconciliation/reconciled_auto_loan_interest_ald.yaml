@@ -1,0 +1,36 @@
+- name: AGI below threshold, loans capped
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 10_000
+    above_the_line_deductions: 10_000
+
+- name: AGI above threshold, loans capped, fully phased out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 0
+    above_the_line_deductions: 0
+
+
+- name: AGI above threshold, loans capped, partially phased out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 6_000
+    above_the_line_deductions: 6_000

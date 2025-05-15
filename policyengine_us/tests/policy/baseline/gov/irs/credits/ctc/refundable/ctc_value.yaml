@@ -59,3 +59,26 @@
     refundable_ctc: 1_410
     non_refundable_ctc: 2_590
     ctc_value: 4_000
+
+- name: Fully refundable CTC
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: true
+    people:
+      person1:
+        age:
+        employment_income: 1_000
+      person2:
+        age: 10
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    ctc: 4_000
+    ctc_limiting_tax_liability: 0
+    ctc_phase_in: 0
+    refundable_ctc: 4_000
+    non_refundable_ctc: 0
+    ctc_value: 4_000

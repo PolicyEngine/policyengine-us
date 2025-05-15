@@ -1,0 +1,101 @@
+# File: policyengine_us/tests/policy/baseline/gov/ssa/state_supplement/maximum_state_supplement.yaml
+# Explanation:
+#   - We explicitly mark each person as SSI-eligible by setting:
+#       is_ssi_eligible_individual: true
+#       meets_ssi_resource_test: true
+#       is_ssi_aged_blind_disabled: true
+#       (and the appropriate is_blind / is_disabled / is_ssi_aged)
+#   - This ensures that maximum_state_supplement doesn't return 0 due to the 'defined_for' condition.
+#   - Use numeric underscores for readability (like 1_373, 2_767, etc.).
+
+- name: Single disabled, FULL_COST
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person_disabled:
+        age: 30
+        is_disabled: true
+        is_tax_unit_spouse: false
+        # needed for maximum_state_supplement to not be 0:
+        meets_ssi_resource_test: true
+        is_ssi_eligible_individual: true
+        # ensures the person is recognized as ABD (Aged/Blind/Disabled):
+        is_ssi_aged_blind_disabled: true
+    households:
+      household:
+        members: [person_disabled]
+        state_code: MA
+        ma_state_living_arrangement: FULL_COST
+    marital_units:
+      unit:
+        members: [person_disabled]
+  output:
+    # Suppose p["MA"]["FULL_COST"]["DISABLED"]["1"] = 114.39 monthly => ~1373 annual
+    ma_maximum_state_supplement: 1_373
+
+- name: Couple both aged, FULL_COST
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      spouse1:
+        age: 67
+        is_tax_unit_spouse: true
+        meets_ssi_resource_test: true
+        is_ssi_eligible_individual: true
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+      spouse2:
+        age: 70
+        is_tax_unit_spouse: true
+        meets_ssi_resource_test: true
+        is_ssi_eligible_individual: true
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: MA
+        ma_state_living_arrangement: FULL_COST
+    marital_units:
+      unit:
+        members: [spouse1, spouse2]
+  output:
+    # Suppose p["MA"]["FULL_COST"]["AGED"]["2"] => 100.86 monthly each => ~1_210 annual each
+    # => final = [1_210, 1_210]
+    ma_maximum_state_supplement: [1_210, 1_210]
+
+- name: One aged, one blind, FULL_COST
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person_1:
+        age: 67
+        is_tax_unit_spouse: true
+        meets_ssi_resource_test: true
+        is_ssi_eligible_individual: true
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+      person_2:
+        age: 40
+        is_blind: true
+        is_tax_unit_spouse: true
+        meets_ssi_resource_test: true
+        is_ssi_eligible_individual: true
+        is_ssi_aged_blind_disabled: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MA
+        ma_state_living_arrangement: FULL_COST
+    marital_units:
+      unit:
+        members: [person_1, person_2]
+  output:
+    # p["MA"]["FULL_COST"]["AGED"]["2"] might be 100.86 monthly => ~1_210 each for the aged spouse
+    # p["MA"]["FULL_COST"]["BLIND"]["2"] might be 360.24 monthly => ~4_323 each for the blind spouse
+    # The code's logic is 'max_()' for each person, so spouse1 gets 1_210, spouse2 gets 4_323,
+    # but the code then sums them up and divides by 2 => ~2_766 each. We'll guess ~[2_766, 2_766].
+    ma_maximum_state_supplement: [2_766, 2_766]

@@ -1,0 +1,55 @@
+- name: Case 1, citizen is eligible.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    immigration_status: CITIZEN
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
+- name: Case 2, in 2027, asylee is ineligible.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: Case 3, in 2026, asylee is eligible.
+  period: 2026 
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
+- name: Case 4, household of 3, 2 are eligible.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    people:
+      person1:
+        immigration_status: ASYLEE
+      person2:
+        immigration_status: CITIZEN
+      person3:
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+  output:
+    is_aca_ptc_immigration_status_eligible: [false, true, true]
+
+- name: Case 5, in 2028, asylee is ineligible.
+  period: 2028
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.aca_ptc_immigration_status.aca_ptc_immigration_status
+  input:
+    gov.contrib.reconciliation.aca_ptc_immigration_status.in_effect: true
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: false

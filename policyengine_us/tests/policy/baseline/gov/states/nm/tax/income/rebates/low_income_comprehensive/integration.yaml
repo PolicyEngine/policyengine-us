@@ -8,13 +8,13 @@
         age: 66
         employment_income: 1_010
         ssi: 0
-        state_supplement: 0
+        ma_state_supplement: 0
       person2:
         is_tax_unit_spouse: true
         age: 66
         employment_income: 8_010
         ssi: 0
-        state_supplement: 0
+        ma_state_supplement: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
