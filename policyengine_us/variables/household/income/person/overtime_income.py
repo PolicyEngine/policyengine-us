@@ -14,6 +14,7 @@ class overtime_income(Variable):
         p = parameters(period).gov.irs.income.exemption.overtime
         worked_hours = person("weekly_hours_worked", period)
         weekly_pay = person("employment_income", period) / WEEKS_IN_YEAR
+        eligible = person("is_eligible_for_fsla_overtime_protection", period)
 
         non_overtime_hourly_rate = weekly_pay / (
             p.hours_threshold
@@ -25,4 +26,5 @@ class overtime_income(Variable):
             * p.rate_multiplier
         )
 
-        return overtime_income * WEEKS_IN_YEAR
+        if eligible:
+            return overtime_income * WEEKS_IN_YEAR

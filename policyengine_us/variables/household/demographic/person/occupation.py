@@ -2,18 +2,18 @@ from policyengine_us.model_api import *
 
 
 class Occupation(Enum):
-    OTHER = 0
-    MANAGEMENT_BUSINESS_FINANCIAL = 1
-    PROFESSIONAL_RELATED = 2
-    SERVICE = 3
-    SALES = 4
-    OFFICE_ADMINISTRATIVE = 5
-    FARMING_FISHING_FORESTRY = 6
-    CONSTRUCTION_EXTRACTION = 7
-    INSTALLATION_MAINTENANCE_REPAIR = 8
-    PRODUCTION = 9
-    TRANSPORTATION_MATERIAL_MOVING = 10
-    MILITARY_SPECIFIC = 11
+    OTHER = "other"
+    MANAGEMENT_BUSINESS_FINANCIAL = "management, business and financial"
+    PROFESSIONAL_RELATED = "professional and related"
+    SERVICE = "service"
+    SALES = "sales and related"
+    OFFICE_ADMINISTRATIVE = "office and administrative support"
+    FARMING_FISHING_FORESTRY = "farming, fishing and forestry"
+    CONSTRUCTION_EXTRACTION = "construction and extraction"
+    INSTALLATION_MAINTENANCE_REPAIR = "installation, maintenance and repair"
+    PRODUCTION = "production"
+    TRANSPORTATION_MATERIAL_MOVING = "transportation and material moving"
+    MILITARY_SPECIFIC = "military"
 
 
 class occupation(Variable):
@@ -21,5 +21,39 @@ class occupation(Variable):
     possible_values = Occupation
     default_value = Occupation.OTHER
     entity = Person
-    label = "Occupation"
+    label = "occupation"
     definition_period = YEAR
+
+    def formula(person, period, parameters):
+        occupation_code = person("occupation_code", period)
+        return select(
+            [
+                occupation_code == 0,
+                occupation_code == 1,
+                occupation_code == 2,
+                occupation_code == 3,
+                occupation_code == 4,
+                occupation_code == 5,
+                occupation_code == 6,
+                occupation_code == 7,
+                occupation_code == 8,
+                occupation_code == 9,
+                occupation_code == 10,
+                occupation_code == 11,
+            ],
+            [
+                Occupation.OTHER,
+                Occupation.MANAGEMENT_BUSINESS_FINANCIAL,
+                Occupation.PROFESSIONAL_RELATED,
+                Occupation.SERVICE,
+                Occupation.SALES,
+                Occupation.OFFICE_ADMINISTRATIVE,
+                Occupation.FARMING_FISHING_FORESTRY,
+                Occupation.CONSTRUCTION_EXTRACTION,
+                Occupation.INSTALLATION_MAINTENANCE_REPAIR,
+                Occupation.PRODUCTION,
+                Occupation.TRANSPORTATION_MATERIAL_MOVING,
+                Occupation.MILITARY_SPECIFIC,
+            ],
+            default=Occupation.OTHER,
+        )
