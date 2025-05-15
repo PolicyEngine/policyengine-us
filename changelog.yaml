@@ -9848,3 +9848,109 @@
     fixed:
     - Add itemization choice to taxable income before QBID.
   date: 2025-05-12 13:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Update CBO projected Exemption parameters for Jan 2025 forecast.
+  date: 2025-05-12 18:42:29
+- bump: minor
+  changes:
+    added:
+    - Option to apply a floor to the phased-out SALT deduction reform.
+  date: 2025-05-12 19:49:10
+- bump: minor
+  changes:
+    added:
+    - Reconciliation limitation on tax benefit of itemized deductions reform.
+  date: 2025-05-12 20:41:49
+- bump: patch
+  changes:
+    fixed:
+    - Account for pease in the taxable_income_deductions_if_itemizing variable.
+  date: 2025-05-12 23:17:00
+- bump: minor
+  changes:
+    added:
+    - Add reform to exempt overtime and tip income as deductions.
+  date: 2025-05-13 00:26:34
+- bump: minor
+  changes:
+    added:
+    - When not branching, compare itemized deductions with pease to all non-itemized
+      deductions.
+  date: 2025-05-13 00:39:59
+- bump: patch
+  changes:
+    fixed:
+    - Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+  date: 2025-05-13 00:55:26
+- bump: minor
+  changes:
+    added:
+    - Auto loan interest ALD reform.
+  date: 2025-05-13 01:41:44
+- bump: minor
+  changes:
+    added:
+    - 2024 Rhode Island Income Tax Updates.
+  date: 2025-05-13 01:46:15
+- bump: minor
+  changes:
+    added:
+    - 2024 West Virginia Income Tax Changes.
+  date: 2025-05-13 13:15:11
+- bump: minor
+  changes:
+    added:
+    - Add SSN requirement to current EITC formula.
+  date: 2025-05-13 14:13:35
+- bump: minor
+  changes:
+    added:
+    - Add SSN requirement to reconciliation CTC reform.
+  date: 2025-05-13 15:09:35
+- bump: patch
+  changes:
+    fixed:
+    - Apply SALT phase-out to each filing status separately.
+  date: 2025-05-13 17:47:38
+- bump: minor
+  changes:
+    added:
+    - Auto loan balance variable.
+  date: 2025-05-13 18:10:36
+- bump: patch
+  changes:
+    added:
+    - Change SALT phase-out start to a smart-indexed from scale parameter.
+    fixed:
+    - Apply SALT phase-out to the cap.
+  date: 2025-05-13 18:27:42
+- bump: minor
+  changes:
+    added:
+    - Senior additional standard deduction phase-out reform.
+  date: 2025-05-13 19:50:35
+- bump: minor
+  changes:
+    added:
+    - Reform to require SSN for Lifetime Learning Credit and American Opportunity
+      Credit.
+  date: 2025-05-13 21:17:19
+- bump: patch
+  changes:
+    fixed:
+    - Deductions in the tip and overtime income exempt reform.
+  date: 2025-05-14 09:24:49
+- bump: patch
+  changes:
+    added:
+    - Add new immigration rules to ACA reform.
+    fixed:
+    - Adjust immigration formula on current ACA file.
+  date: 2025-05-14 19:02:37
+- bump: minor
+  changes:
+    added:
+    - Update 2024 Vermont Income Tax Parameters.
+  date: 2025-05-14 22:19:43
