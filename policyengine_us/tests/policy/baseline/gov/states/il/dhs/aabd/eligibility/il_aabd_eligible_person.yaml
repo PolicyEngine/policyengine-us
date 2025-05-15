@@ -1,0 +1,35 @@
+- name: Both financial and non-financial eligible person. 
+  period: 2023
+  input:
+    il_aabd_financial_eligible_person: true
+    il_aabd_non_financial_eligible_person: true
+    state_code: IL
+  output: 
+    il_aabd_eligible_person: true
+
+- name: Non-financial eligible but financial ineligible. 
+  period: 2023
+  input:
+    il_aabd_financial_eligible_person: false
+    il_aabd_non_financial_eligible_person: true
+    state_code: IL
+  output: 
+    il_aabd_eligible_person: false
+
+- name: Financial eligible but non-financial ineligible. 
+  period: 2023
+  input:
+    il_aabd_financial_eligible_person: true
+    il_aabd_non_financial_eligible_person: false
+    state_code: IL
+  output: 
+    il_aabd_eligible_person: false
+
+- name: Neither financial nor non-financial eligible person.
+  period: 2023
+  input:
+    il_aabd_financial_eligible_person: false
+    il_aabd_non_financial_eligible_person: false
+    state_code: IL
+  output: 
+    il_aabd_eligible_person: false
