@@ -14,9 +14,7 @@ class per_capita_chip(Variable):
         state_code = person.household("state_code", period)
         p = parameters(period).calibration.gov.hhs.cms.chip
 
-        # spending lives in spending/total/total.yaml → .spending.total.total
         spending = p.spending.total.total[state_code]
-        # enrollment lives in enrollment/total.yaml → .enrollment.total
         enrollment = p.enrollment.total[state_code]
 
         return (spending / enrollment) if enrollment > 0 else 0
