@@ -74,7 +74,7 @@ class medicaid_per_capita_cost(Variable):
                 expansion_adult_enroll,
                 non_expansion_adult_enroll,
             ],
-            default=0.0,  
+            default=0.0,
         )
 
         # Avoid divide‑by‑zero in non‑expansion states, etc.
@@ -82,5 +82,4 @@ class medicaid_per_capita_cost(Variable):
         mask = enroll > 0
         per_capita[mask] = spend[mask] / enroll[mask]
 
-       
         return per_capita

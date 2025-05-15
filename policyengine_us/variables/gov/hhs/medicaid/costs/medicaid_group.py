@@ -60,7 +60,6 @@ class medicaid_group(Variable):
                 young_adult,
                 expansion_adult,
                 child,
-                
             ],
             [
                 MedicaidGroup.AGED_DISABLED,
@@ -69,7 +68,6 @@ class medicaid_group(Variable):
                 MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.EXPANSION_ADULT,
                 MedicaidGroup.CHILD,
-               
             ],
             default=MedicaidGroup.NONE,
         )
