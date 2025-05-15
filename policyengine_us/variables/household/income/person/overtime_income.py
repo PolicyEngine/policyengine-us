@@ -12,25 +12,22 @@ class overtime_income(Variable):
 
     def formula(person, period, parameters):
         """Overtime income estimated on a weekly basis"""
-        normal_hours = 40
-        extra_salary_rate = 1.5
+        p = parameters(period).gov.irs.income.exemption.overtime
         worked_hours = person("weekly_hours_worked", period)
         weekly_pay = person("weekly_pay", period)
-        # we need some assumption about the number of weeks worked in a year
-        weeks_worked = 49  # or 52?
 
         non_overtime_hourly_rate = max(
             weekly_pay
             / (
-                normal_hours
-                + (worked_hours - normal_hours) * extra_salary_rate
+                p.normal_hours
+                + (worked_hours - p.normal_hours) * p.extra_salary_rate
             ),
             0,
         )
         overtime_pay = (
-            (worked_hours - normal_hours)
+            (worked_hours - p.normal_hours)
             * non_overtime_hourly_rate
-            * extra_salary_rate
+            * p.extra_salary_rate
         )  # weekly
 
-        return overtime_pay * weeks_worked
+        return overtime_pay * p.weeks_worked
