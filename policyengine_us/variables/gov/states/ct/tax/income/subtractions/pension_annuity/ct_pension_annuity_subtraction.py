@@ -13,8 +13,7 @@ class ct_pension_annuity_subtraction(Variable):
         person = tax_unit.members
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         agi = tax_unit("adjusted_gross_income", period)
 
         p = parameters(
@@ -37,7 +36,6 @@ class ct_pension_annuity_subtraction(Variable):
         rate = select([is_joint, is_non_joint], [joint_rate, non_joint_rate])
 
         # Apply the rate to eligible pension income
-        head_or_spouse = head | spouse
         pension_income = person("taxable_pension_income", period)
         eligible_pension = pension_income * head_or_spouse
         total_pension = tax_unit.sum(eligible_pension)
