@@ -13,12 +13,16 @@ class overtime_income(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
         worked_hours = person("weekly_hours_worked", period)
+        weekly_pay = person("employment_income", period) / WEEKS_IN_YEAR
 
-        weekly_overtime_hours = max_(worked_hours - p.hours_threshold, 0)
-        annual_overtime_hours = weekly_overtime_hours * WEEKS_IN_YEAR
-
-        return (
-            person("employment_income_last_year")
-            * annual_overtime_hours
-            * (p.rate_multiplier - 1)
+        non_overtime_hourly_rate = weekly_pay / (
+            p.hours_threshold
+            + max_((worked_hours - p.hours_threshold), 0) * p.rate_multiplier
         )
+        overtime_income = (
+            max_((worked_hours - p.hours_threshold), 0)
+            * non_overtime_hourly_rate
+            * p.rate_multiplier
+        )
+
+        return overtime_income * WEEKS_IN_YEAR

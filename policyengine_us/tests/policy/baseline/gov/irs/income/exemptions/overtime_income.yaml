@@ -1,0 +1,7 @@
+- name: Overtime income calculation
+  period: 2024
+  input:
+    weekly_hours_worked: 50
+    employment_income: 30000
+  output:
+    overtime_income: 8181.818
