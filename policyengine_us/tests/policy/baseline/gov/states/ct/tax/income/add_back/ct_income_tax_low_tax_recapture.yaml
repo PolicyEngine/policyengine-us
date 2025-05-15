@@ -1,6 +1,3 @@
-# Test whether the recapture amount is zero is 2023 (it always should be)
-# Test (2024) * (below min, above min, and above cap) * (single or joint)
-
 - name: There is no recapture for this set of brackets in 2023 (single)
   period: 2023
   input:

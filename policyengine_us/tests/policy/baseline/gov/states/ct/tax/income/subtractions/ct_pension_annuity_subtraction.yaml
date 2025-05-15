@@ -1,11 +1,8 @@
-# Test (at least two AGI thresholds, where one is zero) * (filer type) * (2022 and 2024)
-
 - name: Single household with $74,000 AGI in 2022
   period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
     adjusted_gross_income: 74_000
     taxable_pension_income: 10_000
@@ -16,8 +13,7 @@
   period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
     adjusted_gross_income: 75_000
     taxable_pension_income: 10_000
@@ -28,8 +24,7 @@
   period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
     adjusted_gross_income: 99_000
     taxable_pension_income: 10_000
@@ -40,8 +35,7 @@
   period: 2022
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
     adjusted_gross_income: 100_000
     taxable_pension_income: 10_000
@@ -52,8 +46,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
     adjusted_gross_income: 74_000
     taxable_pension_income: 10_000
@@ -64,8 +57,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
     adjusted_gross_income: 85_000
     taxable_pension_income: 10_000
@@ -76,8 +68,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     filing_status: SINGLE
     adjusted_gross_income: 100_000
     taxable_pension_income: 10_000
@@ -88,8 +79,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
     adjusted_gross_income: 99_000
     taxable_pension_income: 10_000
@@ -100,8 +90,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
     adjusted_gross_income: 120_000
     taxable_pension_income: 10_000
@@ -112,8 +101,7 @@
   period: 2024
   input:
     state_code: CT
-    is_tax_unit_head: true
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     filing_status: JOINT
     adjusted_gross_income: 150_000
     taxable_pension_income: 10_000
