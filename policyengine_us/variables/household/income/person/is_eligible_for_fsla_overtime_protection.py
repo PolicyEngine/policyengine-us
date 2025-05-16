@@ -29,25 +29,20 @@ class is_eligible_for_fsla_overtime_protection(Variable):
         # Return True if eligible for overtime protection, False if exempt
         return select(
             [
-                (employment_income >= p.hce_salary_threshold) 
+                (employment_income >= p.hce_salary_threshold)
                 & (not is_paid_hourly),
-
-                (occupation == Occupation.MANAGEMENT_BUSINESS_FINANCIAL) 
+                (occupation == Occupation.MANAGEMENT_BUSINESS_FINANCIAL)
                 & (not is_paid_hourly)
                 & (weekly_employment_income > p.salary_basis_threshold),
-
-                (occupation == Occupation.PROFESSIONAL_RELATED) 
-                & (not is_paid_hourly) 
+                (occupation == Occupation.PROFESSIONAL_RELATED)
+                & (not is_paid_hourly)
                 & (weekly_employment_income > p.salary_basis_threshold),
-                
-                (occupation == Occupation.OFFICE_ADMINISTRATIVE) 
-                & (not is_paid_hourly) 
+                (occupation == Occupation.OFFICE_ADMINISTRATIVE)
+                & (not is_paid_hourly)
                 & (weekly_employment_income > p.salary_basis_threshold),
-                
-                (occupation == Occupation.FARMING_FISHING_FORESTRY) 
-                & (not is_paid_hourly) 
+                (occupation == Occupation.FARMING_FISHING_FORESTRY)
+                & (not is_paid_hourly)
                 & (weekly_employment_income > p.salary_basis_threshold),
-                
                 (occupation == Occupation.MILITARY),
             ],
             [
