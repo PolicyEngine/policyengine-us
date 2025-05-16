@@ -1,8 +1,19 @@
-- name: Overtime income premium calculation
+- name: Overtime income premium calculation (is eligible)
   period: 2024
   input:
     weekly_hours_worked: 50
     employment_income: 30000
-    occupation: other
+    major_occupation_recode: 0
+    is_paid_hourly: false
   output:
     fsla_overtime_premium: 2727.2727
+
+- name: Overtime income premium calculation (is exempt)
+  period: 2024
+  input:
+    weekly_hours_worked: 50
+    employment_income: 100000
+    major_occupation_recode: 5
+    is_paid_hourly: false
+  output:
+    fsla_overtime_premium: 0

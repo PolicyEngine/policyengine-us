@@ -25,7 +25,7 @@ class occupation(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        occupation_code = person("occupation_code", period)
+        occupation_code = person("major_occupation_recode", period)
         return select(
             [
                 occupation_code == 0,
