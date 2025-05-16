@@ -31,21 +31,130 @@ class is_eligible_for_fsla_overtime_protection(Variable):
             [
                 (employment_income >= p.hce_salary_threshold)
                 & (not is_paid_hourly),
+                (occupation == Occupation.COMPUTER_SCIENCE)
+                & (not is_paid_hourly)
+                & (
+                    weekly_employment_income / p.hours_threshold
+                    >= p.computer_salary_threshold
+                ),
                 (occupation == Occupation.MANAGEMENT_BUSINESS_FINANCIAL)
                 & (not is_paid_hourly)
-                & (weekly_employment_income > p.salary_basis_threshold),
-                (occupation == Occupation.PROFESSIONAL_RELATED)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.MANAGEMENT_INFRASTRUCTURE)
                 & (not is_paid_hourly)
-                & (weekly_employment_income > p.salary_basis_threshold),
-                (occupation == Occupation.OFFICE_ADMINISTRATIVE)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.OTHER_MANAGERS)
                 & (not is_paid_hourly)
-                & (weekly_employment_income > p.salary_basis_threshold),
-                (occupation == Occupation.FARMING_FISHING_FORESTRY)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.BUSINESS_OPERATIONS)
                 & (not is_paid_hourly)
-                & (weekly_employment_income > p.salary_basis_threshold),
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.ACCOUNTING)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.FINANCE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.MATH_SCIENCE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.ARCHITECTURE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.SURVEYING)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.ENGINEERING_TECH)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.EARTH_SCIENCE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.ECONOMICS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.SOCIAL_SCIENCE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.HEALTH_SAFETY)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.LEGAL_PRACTICE)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.LEGAL_SUPPORT)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.NURSING_THERAPY)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.VETERINARY)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.HEALTH_TECHNICIANS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.HEALTHCARE_SUPPORT)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.PROTECTIVE_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.HOUSEKEEPING_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.PERSONAL_CARE_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.SALES_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.SALES)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.ADMIN_SUPPORT)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.FARMING_FORESTRY)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.CONSTRUCTION_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
+                (occupation == Occupation.TRANSPORT_SUPERVISORS)
+                & (not is_paid_hourly)
+                & (weekly_employment_income >= p.salary_basis_threshold),
                 (occupation == Occupation.MILITARY),
+                (occupation == Occupation.NEVER_WORKED),
             ],
             [
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
+                False,
                 False,
                 False,
                 False,

@@ -3,7 +3,7 @@
   input:
     weekly_hours_worked: 50
     employment_income: 30000
-    major_occupation_recode: 0
+    detailed_occupation_recode: 0
     is_paid_hourly: false
   output:
     fsla_overtime_premium: 2727.2727
@@ -13,7 +13,17 @@
   input:
     weekly_hours_worked: 50
     employment_income: 100000
-    major_occupation_recode: 5
+    detailed_occupation_recode: 1
     is_paid_hourly: false
   output:
     fsla_overtime_premium: 0
+
+- name: Overtime income premium calculation (computer scientist)
+  period: 2024
+  input:
+    weekly_hours_worked: 50
+    employment_income: 56160 # above basis salary but below cs salary
+    detailed_occupation_recode: 8
+    is_paid_hourly: false
+  output:
+    fsla_overtime_premium: 5105.4545
