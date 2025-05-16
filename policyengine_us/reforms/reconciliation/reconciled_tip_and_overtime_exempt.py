@@ -55,7 +55,7 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                 eligible_ssn_card_holder = (
                     eligible_ssn_card_type & head_or_spouse
                 )
-                overtime_income = person("overtime_income", period)
+                overtime_income = person("fsla_overtime_premium", period)
                 return tax_unit.sum(overtime_income * eligible_ssn_card_holder)
             return 0
 
