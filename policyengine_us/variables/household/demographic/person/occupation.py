@@ -13,7 +13,7 @@ class Occupation(Enum):
     INSTALLATION_MAINTENANCE_REPAIR = "installation, maintenance and repair"
     PRODUCTION = "production"
     TRANSPORTATION_MATERIAL_MOVING = "transportation and material moving"
-    MILITARY_SPECIFIC = "military"
+    MILITARY = "military"
 
 
 class occupation(Variable):
@@ -53,7 +53,7 @@ class occupation(Variable):
                 Occupation.INSTALLATION_MAINTENANCE_REPAIR,
                 Occupation.PRODUCTION,
                 Occupation.TRANSPORTATION_MATERIAL_MOVING,
-                Occupation.MILITARY_SPECIFIC,
+                Occupation.MILITARY,
             ],
             default=Occupation.OTHER,
         )

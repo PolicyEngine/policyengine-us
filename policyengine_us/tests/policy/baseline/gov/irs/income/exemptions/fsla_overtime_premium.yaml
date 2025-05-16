@@ -1,0 +1,8 @@
+- name: Overtime income premium calculation
+  period: 2024
+  input:
+    weekly_hours_worked: 50
+    employment_income: 30000
+    occupation: other
+  output:
+    fsla_overtime_premium: 2727.2727
