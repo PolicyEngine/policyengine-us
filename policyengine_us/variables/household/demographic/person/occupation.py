@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class Occupation(Enum):
     OTHER = "Other"
-    MANAGEMENT_BUSINESS_FINANCIAL = "Chief executives, and managers"
+    MANAGEMENT_BUSINESS_FINANCIAL = "Chief executives and managers"
     MANAGEMENT_INFRASTRUCTURE = (
         "Compensation, human resources, and infrastructure managers"
     )
