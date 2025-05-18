@@ -12,7 +12,5 @@ class il_cta_reduced_fare_benefit(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.rta.cta.monthly_pass_cost
-        full_fare_cost = p.full_fare
-        reduced_fare_cost = p.reduced_fare
         # Student's regular fare is 1/4 of the full fare, the price for student monthly pass is unavailable
-        return full_fare_cost - reduced_fare_cost
+        return p.full_fare - p.reduced_fare

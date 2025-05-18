@@ -14,6 +14,4 @@ class il_cta_benefit(Variable):
         free_ride_benefit = person("il_cta_free_ride_benefit", period)
         reduced_fare_benefit = person("il_cta_reduced_fare_benefit", period)
 
-        return where(
-            free_ride_benefit > 0, free_ride_benefit, reduced_fare_benefit
-        )
+        return max_(free_ride_benefit, reduced_fare_benefit)

@@ -38,3 +38,13 @@
     state_code: IL
   output:
     il_cta_benefit: 40
+
+- name: Case 5, integration test, the user is not eligible for any benefit.    
+  period: 2023-01
+  input:
+    age: 30
+    is_disabled: false
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_benefit: 0
