@@ -6,6 +6,10 @@ class ct_pension_annuity_subtraction(Variable):
     entity = TaxUnit
     label = "Connecticut pension and annuity subtraction"
     unit = USD
+    reference = (
+        "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701",  # Sec. 12-701 (20)(B)(xxi)&(xxii)
+        "https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=28",
+    )
     definition_period = YEAR
     defined_for = StateCode.CT
 
@@ -24,16 +28,8 @@ class ct_pension_annuity_subtraction(Variable):
         is_joint = (filing_status == status.JOINT) | (
             filing_status == status.SURVIVING_SPOUSE
         )
-        is_non_joint = (
-            (filing_status == status.SINGLE)
-            | (filing_status == status.SEPARATE)
-            | (filing_status == status.HEAD_OF_HOUSEHOLD)
-        )
 
-        joint_rate = p.joint.calc(agi)
-        non_joint_rate = p.non_joint.calc(agi)
-
-        rate = select([is_joint, is_non_joint], [joint_rate, non_joint_rate])
+        rate = where(is_joint, p.joint.calc(agi), p.non_joint.calc(agi))
 
         # Apply the rate to eligible pension income
         pension_income = person("taxable_pension_income", period)
