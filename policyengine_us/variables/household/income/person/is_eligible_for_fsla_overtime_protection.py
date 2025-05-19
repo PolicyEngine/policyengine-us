@@ -8,7 +8,7 @@ class is_eligible_for_fsla_overtime_protection(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/29/541.600 ; https://www.law.cornell.edu/uscode/text/29/213"
     definition_period = YEAR
 
-    def formula_2023(person, period, parameters):
+    def formula_2014(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
         is_paid_hourly = person("is_paid_hourly", period)
         employment_income = person("employment_income", period)

@@ -9,7 +9,7 @@ class fsla_overtime_premium(Variable):
     definition_period = YEAR
     defined_for = "is_eligible_for_fsla_overtime_protection"
 
-    def formula_2023(person, period, parameters):
+    def formula_2014(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
         worked_hours = person("weekly_hours_worked", period)
 
