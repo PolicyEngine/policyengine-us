@@ -8,8 +8,5 @@ class chip(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
-
-    def formula(person, period, parameters):
-        eligible = person("is_chip_eligible", period)
-        benefit = person("per_capita_chip", period)
-        return eligible * benefit
+    defined_for = "is_chip_eligible"
+    adds = ["per_capita_chip"]

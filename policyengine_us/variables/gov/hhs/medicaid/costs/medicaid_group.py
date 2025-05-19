@@ -31,8 +31,7 @@ class medicaid_group(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        if not person("is_medicaid_eligible", period):
-            return MedicaidGroup.NONE
+        eligible = person("is_medicaid_eligible", period)
 
         cat = person("medicaid_category", period)
 
@@ -55,22 +54,18 @@ class medicaid_group(Variable):
             | (cat == cat.possible_values.OLDER_CHILD)
         )
 
-        return select(
-            [
-                disabled,
-                pregnant,
-                parent,
-                young_adult,
-                expansion_adult,
-                child,
-            ],
-            [
-                MedicaidGroup.AGED_DISABLED,
-                MedicaidGroup.NON_EXPANSION_ADULT,
-                MedicaidGroup.NON_EXPANSION_ADULT,
-                MedicaidGroup.NON_EXPANSION_ADULT,
-                MedicaidGroup.EXPANSION_ADULT,
-                MedicaidGroup.CHILD,
-            ],
-            default=MedicaidGroup.NONE,
-        )
+        group_raw = select(
+        [disabled, pregnant, parent, young_adult, expansion_adult, child],
+        [
+            MedicaidGroup.AGED_DISABLED,
+            MedicaidGroup.NON_EXPANSION_ADULT,
+            MedicaidGroup.NON_EXPANSION_ADULT,
+            MedicaidGroup.NON_EXPANSION_ADULT,
+            MedicaidGroup.EXPANSION_ADULT,
+            MedicaidGroup.CHILD,
+        ],
+        default=MedicaidGroup.NONE,
+    )
+
+        # Vectorised overwrite for ineligible people
+        return select([~eligible], [MedicaidGroup.NONE], default=group_raw)
