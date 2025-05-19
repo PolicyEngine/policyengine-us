@@ -1,10 +1,11 @@
 from policyengine_us.model_api import *
 
 class healthcare_benefit_value(Variable):
+    value_type = float
     label = "cash equivalent of health coverage"
-    entity = TaxUnit        # or Household, depending on your data model
+    entity = Household       
     definition_period = YEAR
-    value_type = USD
+    unit = USD
 
     def formula(hh, period, parameters):
         # sum over all household members’ benefit variables
