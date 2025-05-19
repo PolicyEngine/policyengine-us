@@ -36,3 +36,16 @@
         is_medicaid_eligible: true
   output: 
     medicaid_per_capita_cost: 24_257.3
+
+- name: texas ineligible 
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    household:
+      state_code: TX
+    people:
+      person:
+        is_ssi_recipient_for_medicaid: false
+        is_medicaid_eligible: false
+  output: 
+    medicaid_per_capita_cost: 0
