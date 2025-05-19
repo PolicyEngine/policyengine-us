@@ -5,10 +5,10 @@ class is_eligible_for_fsla_overtime_protection(Variable):
     value_type = bool
     entity = Person
     label = "is eligible for overtime pay"
-    reference = "https://www.law.cornell.edu/cfr/text/29/541.600"
+    reference = "https://www.law.cornell.edu/cfr/text/29/541.600 ; https://www.law.cornell.edu/uscode/text/29/213"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula_2023(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
         is_paid_hourly = person("is_paid_hourly", period)
         employment_income = person("employment_income", period)
@@ -29,9 +29,9 @@ class is_eligible_for_fsla_overtime_protection(Variable):
             not is_paid_hourly
         )
 
-        # Xxempt occupations regardless of salary or payment method
+        # Exempt occupations regardless of salary or payment method
         is_always_exempt = person("is_military", period) | person(
-            "is_never_worked", period
+            "has_never_worked", period
         )
 
         # Exempt occupations with basis salary test
