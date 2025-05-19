@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_eligible_for_fsla_overtime_requirement(Variable):
+class is_eligible_for_fsla_overtime(Variable):
     value_type = bool
     entity = Person
     label = "is eligible for overtime pay"

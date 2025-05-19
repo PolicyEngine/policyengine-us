@@ -7,7 +7,7 @@ class fsla_overtime_premium(Variable):
     label = "premium income from overtime hours worked"
     unit = USD
     definition_period = YEAR
-    defined_for = "is_eligible_for_fsla_overtime_requirement"
+    defined_for = "is_eligible_for_fsla_overtime"
 
     def formula_2014(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
