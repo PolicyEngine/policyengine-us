@@ -58,9 +58,10 @@ class medicaid_group(Variable):
         )
 
         # Core mapping, in precedence order:
-        group_raw = select(
-            [disabled, non_expansion_adult, expansion_adult, child],
+        return select(
+            [~eligible, disabled, non_expansion_adult, expansion_adult, child],
             [
+                MedicaidGroup.NONE,
                 MedicaidGroup.AGED_DISABLED,
                 MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.EXPANSION_ADULT,
@@ -68,6 +69,3 @@ class medicaid_group(Variable):
             ],
             default=MedicaidGroup.NONE,
         )
-
-        # Mask out the ineligible all at once:
-        return where(eligible, group_raw, MedicaidGroup.NONE)
