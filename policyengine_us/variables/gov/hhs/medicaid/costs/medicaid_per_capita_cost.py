@@ -58,7 +58,7 @@ class medicaid_per_capita_cost(Variable):
                 expansion_adult_spend,
                 non_expansion_adult_spend,
             ],
-            default=0.0,
+            default=0,
         )
 
         enroll = select(
@@ -74,7 +74,7 @@ class medicaid_per_capita_cost(Variable):
                 expansion_adult_enroll,
                 non_expansion_adult_enroll,
             ],
-            default=0.0,
+            default=0,
         )
 
         # Avoid divide‑by‑zero in non‑expansion states, etc.
