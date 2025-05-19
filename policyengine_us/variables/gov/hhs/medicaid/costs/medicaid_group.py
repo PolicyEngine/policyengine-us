@@ -2,11 +2,11 @@ from policyengine_us.model_api import *
 
 
 class MedicaidGroup(Enum):
-    CHILD = "CHILD"
-    NON_EXPANSION_ADULT = "NON_EXPANSION_ADULT"
-    EXPANSION_ADULT = "EXPANSION_ADULT"
-    AGED_DISABLED = "AGED_DISABLED"
-    NONE = "NONE"
+    CHILD = "Child"
+    NON_EXPANSION_ADULT = "Non-Expansion Adult"
+    EXPANSION_ADULT = "Expansion Adult"
+    AGED_DISABLED = "Aged/Disabled"
+    NONE = "None"
 
 
 class medicaid_group(Variable):

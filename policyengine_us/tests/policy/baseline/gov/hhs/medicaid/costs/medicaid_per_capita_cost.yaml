@@ -2,8 +2,10 @@
   period: 2023
   absolute_error_margin: 0.1
   input:
-    household:
-      state_code: AZ
+    households:
+      household:
+        state_code: AZ
+        members: [person]
     people:
       person:
         is_infant_for_medicaid: true
@@ -15,8 +17,10 @@
   period: 2023
   absolute_error_margin: 0.1
   input:
-    household:
-      state_code: IA
+    households:
+      household:
+        state_code: IA
+        members: [person]
     people:
       person:
         is_optional_senior_or_disabled_for_medicaid: true
@@ -28,8 +32,10 @@
   period: 2023
   absolute_error_margin: 0.1
   input:
-    household:
-      state_code: IA
+    households:
+      household:
+        state_code: IA
+        members: [person]
     people:
       person:
         is_ssi_recipient_for_medicaid: true
@@ -41,8 +47,10 @@
   period: 2023
   absolute_error_margin: 0.1
   input:
-    household:
-      state_code: TX
+    households:
+      household:
+        state_code: TX
+        members: [person]
     people:
       person:
         is_ssi_recipient_for_medicaid: false
