@@ -33,7 +33,7 @@ class medicaid_group(Variable):
     def formula(person, period, parameters):
         if not person("is_medicaid_eligible", period):
             return MedicaidGroup.NONE
-        
+
         cat = person("medicaid_category", period)
 
         # --- Highest‑precedence: disabled / SSI / medically‑needy ---

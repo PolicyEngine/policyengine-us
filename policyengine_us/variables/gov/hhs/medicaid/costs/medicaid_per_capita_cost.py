@@ -12,10 +12,10 @@ class medicaid_per_capita_cost(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        #if ineligible return 0
+        # if ineligible return 0
         eligible = person("is_medicaid_eligible", period)
         zero = np.zeros_like(eligible, dtype=float)
-        if not eligible.any():            # population-wide short-circuit
+        if not eligible.any():  # population-wide short-circuit
             return zero
 
         state = person.household("state_code", period)
