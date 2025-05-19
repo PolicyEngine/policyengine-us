@@ -55,17 +55,17 @@ class medicaid_group(Variable):
         )
 
         group_raw = select(
-        [disabled, pregnant, parent, young_adult, expansion_adult, child],
-        [
-            MedicaidGroup.AGED_DISABLED,
-            MedicaidGroup.NON_EXPANSION_ADULT,
-            MedicaidGroup.NON_EXPANSION_ADULT,
-            MedicaidGroup.NON_EXPANSION_ADULT,
-            MedicaidGroup.EXPANSION_ADULT,
-            MedicaidGroup.CHILD,
-        ],
-        default=MedicaidGroup.NONE,
-    )
+            [disabled, pregnant, parent, young_adult, expansion_adult, child],
+            [
+                MedicaidGroup.AGED_DISABLED,
+                MedicaidGroup.NON_EXPANSION_ADULT,
+                MedicaidGroup.NON_EXPANSION_ADULT,
+                MedicaidGroup.NON_EXPANSION_ADULT,
+                MedicaidGroup.EXPANSION_ADULT,
+                MedicaidGroup.CHILD,
+            ],
+            default=MedicaidGroup.NONE,
+        )
 
         # Vectorised overwrite for ineligible people
         return select([~eligible], [MedicaidGroup.NONE], default=group_raw)
