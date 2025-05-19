@@ -2,26 +2,15 @@ from policyengine_us.model_api import *
 
 
 class MedicaidGroup(Enum):
-    """High‑level eligibility groups for per‑capita cost analysis."""
-
     CHILD = "CHILD"
     NON_EXPANSION_ADULT = "NON_EXPANSION_ADULT"
     EXPANSION_ADULT = "EXPANSION_ADULT"
     AGED_DISABLED = "AGED_DISABLED"
-    NONE = "NONE"  # fallback for ineligible or uncategorised persons
+    NONE = "NONE"
 
 
 class medicaid_group(Variable):
-    """Maps fine‑grained Medicaid eligibility categories to broader spending groups.
-
-    Precedence order (highest → lowest):
-      1. Disabled / SSI / medically‑needy → AGED_DISABLED
-      2. Pregnant                       → NON_EXPANSION_ADULT
-      3. Parent                         → NON_EXPANSION_ADULT
-      4. Young adult (19–20)            → NON_EXPANSION_ADULT
-      5. Expansion adult                → EXPANSION_ADULT
-      6. Any child category             → CHILD
-    """
+    """Maps fine-grained Medicaid categories to broader spending groups."""
 
     value_type = Enum
     possible_values = MedicaidGroup
@@ -34,32 +23,37 @@ class medicaid_group(Variable):
         eligible = person("is_medicaid_eligible", period)
 
         cat = person("medicaid_category", period)
+        cats = cat.possible_values
 
-        # --- Highest‑precedence: disabled / SSI / medically‑needy ---
+        # Disabled / SSI / medically-needy → AGED_DISABLED
         disabled = (
-            (cat == cat.possible_values.SSI_RECIPIENT)
+            (cat == cats.SSI_RECIPIENT)
             | person("is_ssi_recipient_for_medicaid", period)
             | person("is_optional_senior_or_disabled_for_medicaid", period)
         )
 
-        # TODO: add `is_medically_needy_for_medicaid` when that variable exists
-
-        pregnant = cat == cat.possible_values.PREGNANT
-        parent = cat == cat.possible_values.PARENT
-        young_adult = cat == cat.possible_values.YOUNG_ADULT
-        expansion_adult = cat == cat.possible_values.ADULT
-        child = (
-            (cat == cat.possible_values.INFANT)
-            | (cat == cat.possible_values.YOUNG_CHILD)
-            | (cat == cat.possible_values.OLDER_CHILD)
+        # Pregnant OR Parent OR Young adult (19–20) → NON_EXPANSION_ADULT
+        non_expansion_adult = (
+            (cat == cats.PREGNANT)
+            | (cat == cats.PARENT)
+            | (cat == cats.YOUNG_ADULT)
         )
 
+        # Expansion adult → EXPANSION_ADULT
+        expansion_adult = cat == cats.ADULT
+
+        # Any child category → CHILD
+        child = (
+            (cat == cats.INFANT)
+            | (cat == cats.YOUNG_CHILD)
+            | (cat == cats.OLDER_CHILD)
+        )
+
+        # Core mapping, in precedence order:
         group_raw = select(
-            [disabled, pregnant, parent, young_adult, expansion_adult, child],
+            [disabled, non_expansion_adult, expansion_adult, child],
             [
                 MedicaidGroup.AGED_DISABLED,
-                MedicaidGroup.NON_EXPANSION_ADULT,
-                MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.EXPANSION_ADULT,
                 MedicaidGroup.CHILD,
@@ -67,5 +61,5 @@ class medicaid_group(Variable):
             default=MedicaidGroup.NONE,
         )
 
-        # Vectorised overwrite for ineligible people
-        return select([~eligible], [MedicaidGroup.NONE], default=group_raw)
+        # Mask out the ineligible all at once:
+        return where(eligible, group_raw, MedicaidGroup.NONE)
