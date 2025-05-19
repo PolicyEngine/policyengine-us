@@ -11,14 +11,14 @@ class MedicaidGroup(Enum):
 
 class medicaid_group(Variable):
     """Maps fine-grained Medicaid categories to broader spending groups
-      Precedence order (highest → lowest):
-      1. Disabled / SSI / medically‑needy → AGED_DISABLED
-      2. Pregnant                       → NON_EXPANSION_ADULT
-      3. Parent                         → NON_EXPANSION_ADULT
-      4. Young adult (19–20)            → NON_EXPANSION_ADULT
-      5. Expansion adult                → EXPANSION_ADULT
-      6. Any child category             → CHILD
-      """
+    Precedence order (highest → lowest):
+    1. Disabled / SSI / medically‑needy → AGED_DISABLED
+    2. Pregnant                       → NON_EXPANSION_ADULT
+    3. Parent                         → NON_EXPANSION_ADULT
+    4. Young adult (19–20)            → NON_EXPANSION_ADULT
+    5. Expansion adult                → EXPANSION_ADULT
+    6. Any child category             → CHILD
+    """
 
     value_type = Enum
     possible_values = MedicaidGroup
