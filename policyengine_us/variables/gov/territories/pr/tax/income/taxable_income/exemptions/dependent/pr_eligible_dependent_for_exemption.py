@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class pr_eligible_dependent_for_exemption(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Puerto Rico eligible dependent for dependent exemption"
     reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"

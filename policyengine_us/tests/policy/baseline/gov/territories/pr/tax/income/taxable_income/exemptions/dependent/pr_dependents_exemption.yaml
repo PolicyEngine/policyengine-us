@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        is_eligible_dependent: false
+        pr_eligible_dependent_for_exemption: false
       person2:
-        is_eligible_dependent: false
+        pr_eligible_dependent_for_exemption: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,9 +22,9 @@
   input:
     people:
       person1:
-        is_eligible_dependent: true
+        pr_eligible_dependent_for_exemption: true
       person2:
-        is_eligible_dependent: false
+        pr_eligible_dependent_for_exemption: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -41,13 +41,13 @@
   input:
     people:
       person1:
-        is_eligible_dependent: true
+        pr_eligible_dependent_for_exemption: true
       person2:
-        is_eligible_dependent: false
+        pr_eligible_dependent_for_exemption: false
       person3: 
-        is_eligible_dependent: true
+        pr_eligible_dependent_for_exemption: true
       person4:
-        is_eligible_dependent: false
+        pr_eligible_dependent_for_exemption: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
