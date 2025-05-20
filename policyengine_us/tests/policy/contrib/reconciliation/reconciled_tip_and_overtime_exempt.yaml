@@ -5,7 +5,7 @@
     gov.contrib.reconciliation.tip_income_exempt.in_effect: true
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
     tip_income: 200
-    overtime_income: 300
+    fsla_overtime_premium: 300
     standard_deduction: 0
     qualified_business_income_deduction: 0
     charitable_deduction: 0
@@ -24,7 +24,7 @@
     gov.contrib.reconciliation.tip_income_exempt.in_effect: false
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: false
     tip_income: 200
-    overtime_income: 300
+    fsla_overtime_premium: 300
     standard_deduction: 0
     qualified_business_income_deduction: 0
     charitable_deduction: 0
@@ -44,7 +44,7 @@
     gov.contrib.reconciliation.tip_income_exempt.in_effect: false
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
     tip_income: 200
-    overtime_income: 300
+    fsla_overtime_premium: 300
     standard_deduction: 0
     qualified_business_income_deduction: 0
     charitable_deduction: 0
@@ -64,7 +64,7 @@
     gov.contrib.reconciliation.tip_income_exempt.in_effect: true
     gov.contrib.reconciliation.overtime_income_exempt.in_effect: true
     tip_income: 200
-    overtime_income: 300
+    fsla_overtime_premium: 300
     standard_deduction: 0
     qualified_business_income_deduction: 0
     charitable_deduction: 0
@@ -87,11 +87,11 @@
       person1:
         ssn_card_type: CITIZEN
         tip_income: 200
-        overtime_income: 300
+        fsla_overtime_premium: 300
       person2:
         ssn_card_type: OTHER_NON_CITIZEN
         tip_income: 600
-        overtime_income: 900
+        fsla_overtime_premium: 900
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -117,11 +117,11 @@
       person1:
         ssn_card_type: NONE
         tip_income: 200
-        overtime_income: 300
+        fsla_overtime_premium: 300
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 600
-        overtime_income: 900
+        fsla_overtime_premium: 900
     tax_units:
       tax_unit:
         members: [person1, person2]

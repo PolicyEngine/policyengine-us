@@ -1,0 +1,8 @@
+- name: Alabama
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    is_chip_eligible: true
+  output:
+    per_capita_chip: 2_228.77
