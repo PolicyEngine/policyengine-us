@@ -1,0 +1,15 @@
+- name: Married household
+  period: 2024
+  input:
+    state_code: PR
+    filing_status: JOINT
+  output:
+    pr_personal_exemption: 7_000
+
+- name: Single person
+  period: 2024
+  input:
+    state_code: PR
+    filing_status: SINGLE
+  output:
+    pr_personal_exemption: 3_500
