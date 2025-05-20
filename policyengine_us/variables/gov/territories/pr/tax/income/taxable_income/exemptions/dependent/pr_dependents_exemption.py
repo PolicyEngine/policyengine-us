@@ -12,7 +12,9 @@ class pr_dependents_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # line 8
-        dependents = adds(tax_unit, period, ["is_eligible_dependent"])
+        dependents = add(tax_unit, period, ["is_eligible_dependent"])
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
-        return dependents * p.amount.calc(filing_status)
+        p = parameters(
+            period
+        ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
+        return dependents * p.amount[filing_status]

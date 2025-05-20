@@ -11,10 +11,6 @@ class is_eligible_dependent(Variable):
     defined_for = StateCode.PR
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_student = person("is_full_time_student", period)
-        gross_income = person("pr_gross_income", period)
-        student_eligibility = is_student & (gross_income < p.student_income_threshold)
-        non_student_eligibility = not is_student & (gross_income < p.amount)
-        return is_dependent & (student_eligibility | non_student_eligibility)
+        student_eligible = person("pr_is_eligible_student", period)
+        non_student_eligible = person("pr_is_eligible_nonstudent", period)
+        return student_eligible | non_student_eligible

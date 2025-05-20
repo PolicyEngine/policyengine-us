@@ -12,6 +12,8 @@ class pr_personal_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # line 7
-        p = parameters(period).gov.territories.pr.tax.income.taxable_income.exemptions
+        p = parameters(
+            period
+        ).gov.territories.pr.tax.income.taxable_income.exemptions
         filing_status = tax_unit("filing_status", period)
-        return p.personal.calc(filing_status)
+        return p.personal[filing_status]

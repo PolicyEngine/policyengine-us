@@ -13,5 +13,5 @@ class pr_adjusted_gross_income(Variable):
         gross_income = add(tax_unit, period, ["pr_gross_income"])
         exemptions = tax_unit("exemptions", period)
         above_line_deductions = tax_unit("above_the_line_deductions", period)
-        
-        return max_(0, gross_income - exemptions - above_line_deductions) 
+
+        return max_(0, gross_income - exemptions - above_line_deductions)

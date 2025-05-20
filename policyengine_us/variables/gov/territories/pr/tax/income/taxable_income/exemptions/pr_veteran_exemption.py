@@ -12,6 +12,8 @@ class pr_veteran_exemption(Variable):
 
     def formula(person, period, parameters):
         # line 9
-        p = parameters(period).gov.territories.pr.tax.income.taxable_income.exemptions
+        p = parameters(
+            period
+        ).gov.territories.pr.tax.income.taxable_income.exemptions
         vet_status = person("is_veteran", period)
-        return vet_status * p.veteran 
+        return vet_status * p.veteran
