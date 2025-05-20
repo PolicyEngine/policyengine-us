@@ -15,3 +15,12 @@
     employment_income: 400_000
   output:
     per_capita_chip: 0
+
+- name: Alabama - ineligible filer
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    is_chip_eligible: false
+  output:
+    per_capita_chip: 0
