@@ -8,10 +8,6 @@ class healthcare_benefit_value(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(hh, period, parameters):
+    def formula(household, period, parameters):
         # sum over all household members’ benefit variables
-        return add(
-            hh,
-            period,
-            ["medicaid_per_capita_cost", "per_capita_chip", "aca_ptc"],
-        )
+        return add(household, period, ["medicaid_per_capita_cost", "per_capita_chip", "aca_ptc"])
