@@ -17,5 +17,5 @@ class pr_is_eligible_nonstudent(Variable):
         ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
         is_dependent = person("is_tax_unit_dependent", period)
         gross_income = person("pr_gross_income", period)
-        income_eligibility = gross_income < p.non_student_threshold
+        income_eligibility = gross_income < p.nonstudent_threshold
         return is_dependent & income_eligibility

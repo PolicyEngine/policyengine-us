@@ -18,5 +18,7 @@ class pr_is_eligible_student(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         is_student = person("is_full_time_student", period)
         gross_income = person("pr_gross_income", period)
+        age = person("age", period)
+        age_eligibility = age < p.age_threshold
         income_eligibility = gross_income < p.student_threshold
-        return is_dependent & is_student & income_eligibility
+        return is_dependent & is_student & income_eligibility & age_eligibility

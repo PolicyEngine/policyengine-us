@@ -5,7 +5,7 @@
     pr_is_eligible_nonstudent: false 
     state_code: PR
   output:
-    is_eligible_dependent: true
+    pr_eligible_dependent_for_exemption: true
 
 - name: Eligible nonstudent dependent
   period: 2024
@@ -14,7 +14,7 @@
     pr_is_eligible_nonstudent: true 
     state_code: PR
   output:
-    is_eligible_dependent: true
+    pr_eligible_dependent_for_exemption: true
 
 - name: Noneligible person
   period: 2024
@@ -23,4 +23,4 @@
     pr_is_eligible_nonstudent: false 
     state_code: PR
   output:
-    is_eligible_dependent: false
+    pr_eligible_dependent_for_exemption: false

@@ -1,12 +1,12 @@
-description: Puerto Rico dependent exemption income threshold for non-students.
+description: Puerto Rico dependent exemption age threshold for students.
 values: 
-  2023-01-01: 2_500
+  2023-01-01: 26
 metadata:
-  unit: currency-USD
+  unit: year
   period: year
-  label: Puerto Rico dependent exemption income threshold for non-students
+  label: Puerto Rico dependent exemption age threshold for students
   reference:
     - title: Gov. of Puerto Rico Individual Income Tax Return Instructions 2023
       href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28
-    - title: P.R. Laws tit. 13, § 30138 (b)(1)(i)
+    - title: P.R. Laws tit. 13, § 30138 (c)(1)(b)
       href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30138/

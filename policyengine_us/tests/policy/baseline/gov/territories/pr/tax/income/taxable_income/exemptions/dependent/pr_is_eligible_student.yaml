@@ -4,16 +4,29 @@
     is_tax_unit_dependent: true
     is_full_time_student: true 
     pr_gross_income: 7_499
+    age: 25
     state_code: PR
   output:
     pr_is_eligible_student: true
 
-- name: Noneligible student dependent
+- name: Noneligible student dependent, too high income
   period: 2024
   input:
     is_tax_unit_dependent: true
     is_full_time_student: true 
     pr_gross_income: 7_501
+    age: 20
+    state_code: PR
+  output:
+    pr_is_eligible_student: false
+
+- name: Noneligible student dependent, too high income
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    is_full_time_student: true 
+    pr_gross_income: 7_499
+    age: 26
     state_code: PR
   output:
     pr_is_eligible_student: false
@@ -24,6 +37,7 @@
     is_tax_unit_dependent: true
     is_full_time_student: false 
     pr_gross_income: 5_000
+    age: 18
     state_code: PR
   output:
     pr_is_eligible_student: false
@@ -34,6 +48,7 @@
     is_tax_unit_dependent: false
     is_full_time_student: false 
     pr_gross_income: 5_000
+    age: 30
     state_code: PR
   output:
     pr_is_eligible_student: false
