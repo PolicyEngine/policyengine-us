@@ -12,20 +12,7 @@ class il_tanf_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        demographic_eligible = (
-            add(spm_unit, period, ["il_tanf_demographic_eligible_person"]) > 0
-        )
+        non_financial_eligible = spm_unit("il_tanf_non_financial_eligible", period)
         income_eligible = spm_unit("il_tanf_income_eligible", period)
-        immigration_status_eligible = (
-            add(
-                spm_unit,
-                period,
-                ["il_tanf_immigration_status_eligible_person"],
-            )
-            > 0
-        )
-        return (
-            demographic_eligible
-            & income_eligible
-            & immigration_status_eligible
-        )
+        
+        return non_financial_eligible & income_eligible

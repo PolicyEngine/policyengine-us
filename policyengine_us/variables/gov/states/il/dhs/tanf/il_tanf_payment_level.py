@@ -16,8 +16,4 @@ class il_tanf_payment_level(Variable):
         p = parameters(period).gov.states.il.dhs.tanf.payment_level
         fpg = spm_unit("spm_unit_fpg", period)
 
-        # Regular family, 0.3 * fpg
-        # Child only family, 0.3 * 0.75 * fpg, when adult receives SSI
-        # Adult only family, 0.3 * 0.25 * fpg, when child receives SSI
-
         return p.rate * fpg
