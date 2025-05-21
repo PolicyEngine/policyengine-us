@@ -7,4 +7,4 @@ class household_net_income_including_health_benefits(Variable):
     label = "net income including health benefits"
     definition_period = YEAR
     unit = USD
-    adds = ["household_net_income", "heathcare_benefit_value"]
+    adds = ["household_net_income", "healthcare_benefit_value"]

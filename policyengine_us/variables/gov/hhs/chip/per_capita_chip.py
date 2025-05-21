@@ -9,6 +9,7 @@ class per_capita_chip(Variable):
     documentation = "Per-capita CHIP payment for this person's State."
     definition_period = YEAR
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
+    defined_for = "is_chip_eligible"
 
     def formula(person, period, parameters):
         state_code = person.household("state_code", period)
