@@ -5,6 +5,193 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.287.1] - 2025-05-20 23:30:36
+
+### Fixed
+
+- Add CHIP eligibility to per capita CHIP variable.
+
+## [1.287.0] - 2025-05-20 08:25:19
+
+### Added
+
+- Overtime variables.
+
+## [1.286.0] - 2025-05-20 01:13:06
+
+### Added
+
+- Add enrollment and costs of CHIP, Medicaid and the ACA.
+
+## [1.285.0] - 2025-05-18 22:44:09
+
+### Added
+
+- 2024 Connecticut State Income Tax Updates.
+
+## [1.284.0] - 2025-05-15 17:00:19
+
+### Added
+
+- Populate is_aca_eshi_eligible formula from ASEC inputs.
+
+## [1.283.0] - 2025-05-14 22:19:43
+
+### Added
+
+- Update 2024 Vermont Income Tax Parameters.
+
+## [1.282.2] - 2025-05-14 19:02:37
+
+### Added
+
+- Add new immigration rules to ACA reform.
+
+### Fixed
+
+- Adjust immigration formula on current ACA file.
+
+## [1.282.1] - 2025-05-14 09:24:49
+
+### Fixed
+
+- Deductions in the tip and overtime income exempt reform.
+
+## [1.282.0] - 2025-05-13 21:17:19
+
+### Added
+
+- Reform to require SSN for Lifetime Learning Credit and American Opportunity Credit.
+
+## [1.281.0] - 2025-05-13 19:50:35
+
+### Added
+
+- Senior additional standard deduction phase-out reform.
+
+## [1.280.1] - 2025-05-13 18:27:42
+
+### Added
+
+- Change SALT phase-out start to a smart-indexed from scale parameter.
+
+### Fixed
+
+- Apply SALT phase-out to the cap.
+
+## [1.280.0] - 2025-05-13 18:10:36
+
+### Added
+
+- Auto loan balance variable.
+
+## [1.279.1] - 2025-05-13 17:47:38
+
+### Fixed
+
+- Apply SALT phase-out to each filing status separately.
+
+## [1.279.0] - 2025-05-13 15:09:35
+
+### Added
+
+- Add SSN requirement to reconciliation CTC reform.
+
+## [1.278.0] - 2025-05-13 14:13:35
+
+### Added
+
+- Add SSN requirement to current EITC formula.
+
+## [1.277.0] - 2025-05-13 13:15:11
+
+### Added
+
+- 2024 West Virginia Income Tax Changes.
+
+## [1.276.0] - 2025-05-13 01:46:15
+
+### Added
+
+- 2024 Rhode Island Income Tax Updates.
+
+## [1.275.0] - 2025-05-13 01:41:44
+
+### Added
+
+- Auto loan interest ALD reform.
+
+## [1.274.1] - 2025-05-13 00:55:26
+
+### Fixed
+
+- Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+
+## [1.274.0] - 2025-05-13 00:39:59
+
+### Added
+
+- When not branching, compare itemized deductions with pease to all non-itemized deductions.
+
+## [1.273.0] - 2025-05-13 00:26:34
+
+### Added
+
+- Add reform to exempt overtime and tip income as deductions.
+
+## [1.272.1] - 2025-05-12 23:17:00
+
+### Fixed
+
+- Account for pease in the taxable_income_deductions_if_itemizing variable.
+
+## [1.272.0] - 2025-05-12 20:41:49
+
+### Added
+
+- Reconciliation limitation on tax benefit of itemized deductions reform.
+
+## [1.271.0] - 2025-05-12 19:49:10
+
+### Added
+
+- Option to apply a floor to the phased-out SALT deduction reform.
+
+## [1.270.3] - 2025-05-12 18:42:29
+
+### Fixed
+
+- Update CBO projected Exemption parameters for Jan 2025 forecast.
+
+## [1.270.2] - 2025-05-12 13:17:51
+
+### Fixed
+
+- Add itemization choice to taxable income before QBID.
+
+## [1.270.1] - 2025-05-12 11:00:51
+
+### Added
+
+- Statutory sources to some federal tax variables.
+- Historical Social Security earnings cap values.
+
+### Changed
+
+- Index SGA by NAWI instead of COLA.
+
+## [1.270.0] - 2025-05-11 20:08:13
+
+### Added
+
+- 2026 Budget reconciliation QBID reform.
+
+## [1.269.2] - 2025-05-10 00:18:36
+
+### Fixed
+
+- Add defined_for = "PR" to Puerto Rico variables.
+
 ## [1.269.1] - 2025-05-08 20:04:34
 
 ## [1.269.0] - 2025-05-08 18:34:30
@@ -11572,6 +11759,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.287.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.0...1.287.1
+[1.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.286.0...1.287.0
+[1.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.285.0...1.286.0
+[1.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.284.0...1.285.0
+[1.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.283.0...1.284.0
+[1.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.282.2...1.283.0
+[1.282.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.282.1...1.282.2
+[1.282.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.282.0...1.282.1
+[1.282.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.281.0...1.282.0
+[1.281.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.280.1...1.281.0
+[1.280.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.280.0...1.280.1
+[1.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.279.1...1.280.0
+[1.279.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.279.0...1.279.1
+[1.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.278.0...1.279.0
+[1.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.277.0...1.278.0
+[1.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.276.0...1.277.0
+[1.276.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.275.0...1.276.0
+[1.275.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.274.1...1.275.0
+[1.274.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.274.0...1.274.1
+[1.274.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.273.0...1.274.0
+[1.273.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.1...1.273.0
+[1.272.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.272.0...1.272.1
+[1.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.271.0...1.272.0
+[1.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.3...1.271.0
+[1.270.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.2...1.270.3
+[1.270.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.1...1.270.2
+[1.270.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.270.0...1.270.1
+[1.270.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.2...1.270.0
+[1.269.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.1...1.269.2
 [1.269.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.269.0...1.269.1
 [1.269.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.268.0...1.269.0
 [1.268.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.267.0...1.268.0
