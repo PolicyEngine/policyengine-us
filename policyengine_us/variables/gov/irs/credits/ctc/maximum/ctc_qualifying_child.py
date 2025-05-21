@@ -19,8 +19,4 @@ class ctc_qualifying_child(Variable):
         meets_identification_requirements = person(
             "meets_ctc_child_identification_requirements", period
         )
-        return (
-            age_eligible
-            & is_dependent
-            & meets_identification_requirements
-        )
+        return age_eligible & is_dependent & meets_identification_requirements
