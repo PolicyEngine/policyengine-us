@@ -23,5 +23,4 @@ class ctc_qualifying_child(Variable):
             age_eligible
             & is_dependent
             & meets_identification_requirements
-            & meets_identification_requirements
         )
