@@ -9,6 +9,7 @@ class MassachusettsLIHEAPHeatingType(Enum):
     OTHER = "Other"
     NONE = "None"
 
+
 class ma_liheap_heating_type(Variable):
     value_type = Enum
     entity = SPMUnit
