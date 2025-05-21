@@ -9756,3 +9756,231 @@
     added:
     - 2026-2027 Montana Income Tax Changes.
   date: 2025-04-28 20:12:23
+- bump: patch
+  changes:
+    fixes:
+    - Cap the NY household credit amount which reduces the NY EITC at state tax before
+      credits.
+  date: 2025-04-29 20:07:23
+- bump: minor
+  changes:
+    added:
+    - SNAP SUA for 2025
+    - SNAP LUA for 2025
+  date: 2025-04-30 20:00:26
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico gross income.
+  date: 2025-04-30 20:06:54
+- bump: patch
+  changes:
+    changed:
+    - Fix 2024 SNAP parameters.
+    - Update 2025 SNAP parameters.
+  date: 2025-05-01 16:15:34
+- bump: minor
+  changes:
+    added:
+    - Updated senior Medicaid parameters and adjusted variable to use percent of federal
+      poverty.
+  date: 2025-05-01 16:22:31
+- bump: patch
+  changes:
+    added:
+    - Added infant Medicaid ages and income Limits
+  date: 2025-05-06 19:13:10
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax uprating.
+  date: 2025-05-06 21:05:56
+- bump: patch
+  changes:
+    changed:
+    - Extended IRS uprating to 2035, inclusive.
+  date: 2025-05-07 14:14:46
+- bump: minor
+  changes:
+    added:
+    - Create independent checks for the EAEDC and TAFDC values.
+  date: 2025-05-07 20:46:30
+- bump: minor
+  changes:
+    added:
+    - New York 2025 Inflation Rebates incremental phase out.
+  date: 2025-05-08 18:22:05
+- bump: minor
+  changes:
+    added:
+    - Illinois Chicago Transit Authority Reduced Fare and Free Ride Programs.
+  date: 2025-05-08 18:28:51
+- bump: minor
+  changes:
+    added:
+    - 2024 Nebraska State Income Tax Updates.
+  date: 2025-05-08 18:34:30
+- bump: patch
+  changes:
+    fixes:
+    - Remove infant age limit from Los Angeles County's Infant Supplement.
+  date: 2025-05-08 20:04:34
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for = "PR" to Puerto Rico variables.
+  date: 2025-05-10 00:18:36
+- bump: minor
+  changes:
+    added:
+    - 2026 Budget reconciliation QBID reform.
+  date: 2025-05-11 20:08:13
+- bump: patch
+  changes:
+    added:
+    - Statutory sources to some federal tax variables.
+    - Historical Social Security earnings cap values.
+    changed:
+    - Index SGA by NAWI instead of COLA.
+  date: 2025-05-12 11:00:51
+- bump: patch
+  changes:
+    fixed:
+    - Add itemization choice to taxable income before QBID.
+  date: 2025-05-12 13:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Update CBO projected Exemption parameters for Jan 2025 forecast.
+  date: 2025-05-12 18:42:29
+- bump: minor
+  changes:
+    added:
+    - Option to apply a floor to the phased-out SALT deduction reform.
+  date: 2025-05-12 19:49:10
+- bump: minor
+  changes:
+    added:
+    - Reconciliation limitation on tax benefit of itemized deductions reform.
+  date: 2025-05-12 20:41:49
+- bump: patch
+  changes:
+    fixed:
+    - Account for pease in the taxable_income_deductions_if_itemizing variable.
+  date: 2025-05-12 23:17:00
+- bump: minor
+  changes:
+    added:
+    - Add reform to exempt overtime and tip income as deductions.
+  date: 2025-05-13 00:26:34
+- bump: minor
+  changes:
+    added:
+    - When not branching, compare itemized deductions with pease to all non-itemized
+      deductions.
+  date: 2025-05-13 00:39:59
+- bump: patch
+  changes:
+    fixed:
+    - Change charitable deduction for non-itemizers into an always-on zeroed-out deduction.
+  date: 2025-05-13 00:55:26
+- bump: minor
+  changes:
+    added:
+    - Auto loan interest ALD reform.
+  date: 2025-05-13 01:41:44
+- bump: minor
+  changes:
+    added:
+    - 2024 Rhode Island Income Tax Updates.
+  date: 2025-05-13 01:46:15
+- bump: minor
+  changes:
+    added:
+    - 2024 West Virginia Income Tax Changes.
+  date: 2025-05-13 13:15:11
+- bump: minor
+  changes:
+    added:
+    - Add SSN requirement to current EITC formula.
+  date: 2025-05-13 14:13:35
+- bump: minor
+  changes:
+    added:
+    - Add SSN requirement to reconciliation CTC reform.
+  date: 2025-05-13 15:09:35
+- bump: patch
+  changes:
+    fixed:
+    - Apply SALT phase-out to each filing status separately.
+  date: 2025-05-13 17:47:38
+- bump: minor
+  changes:
+    added:
+    - Auto loan balance variable.
+  date: 2025-05-13 18:10:36
+- bump: patch
+  changes:
+    added:
+    - Change SALT phase-out start to a smart-indexed from scale parameter.
+    fixed:
+    - Apply SALT phase-out to the cap.
+  date: 2025-05-13 18:27:42
+- bump: minor
+  changes:
+    added:
+    - Senior additional standard deduction phase-out reform.
+  date: 2025-05-13 19:50:35
+- bump: minor
+  changes:
+    added:
+    - Reform to require SSN for Lifetime Learning Credit and American Opportunity
+      Credit.
+  date: 2025-05-13 21:17:19
+- bump: patch
+  changes:
+    fixed:
+    - Deductions in the tip and overtime income exempt reform.
+  date: 2025-05-14 09:24:49
+- bump: patch
+  changes:
+    added:
+    - Add new immigration rules to ACA reform.
+    fixed:
+    - Adjust immigration formula on current ACA file.
+  date: 2025-05-14 19:02:37
+- bump: minor
+  changes:
+    added:
+    - Update 2024 Vermont Income Tax Parameters.
+  date: 2025-05-14 22:19:43
+- bump: minor
+  changes:
+    added:
+    - Populate is_aca_eshi_eligible formula from ASEC inputs.
+  date: 2025-05-15 17:00:19
+- bump: minor
+  changes:
+    added:
+    - 2024 Connecticut State Income Tax Updates.
+  date: 2025-05-18 22:44:09
+- bump: minor
+  changes:
+    added:
+    - Add enrollment and costs of CHIP, Medicaid and the ACA.
+  date: 2025-05-20 01:13:06
+- bump: minor
+  changes:
+    added:
+    - Overtime variables.
+  date: 2025-05-20 08:25:19
+- bump: patch
+  changes:
+    fixed:
+    - Add CHIP eligibility to per capita CHIP variable.
+  date: 2025-05-20 23:30:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove special characters causing imports to fail on Windows.
+  date: 2025-05-21 13:57:33

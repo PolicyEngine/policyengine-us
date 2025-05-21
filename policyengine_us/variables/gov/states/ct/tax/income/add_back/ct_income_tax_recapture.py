@@ -10,6 +10,7 @@ class ct_income_tax_recapture(Variable):
     defined_for = StateCode.CT
 
     adds = [
-        "ct_income_tax_lower_tax_recapture",
-        "ct_income_tax_higher_tax_recapture",
+        "ct_income_tax_low_tax_recapture",
+        "ct_income_tax_middle_tax_recapture",
+        "ct_income_tax_high_tax_recapture",
     ]

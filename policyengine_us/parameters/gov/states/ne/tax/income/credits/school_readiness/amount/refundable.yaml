@@ -1,0 +1,25 @@
+description: Nebraska provides the following refundable School Readiness credit amounts, based on the Nebraska Early Childhood Professional (ECP) Record System level.
+
+1:
+  2024-01-01: 2_300
+2:
+  2024-01-01: 2_600
+3:
+  2024-10-01: 2_900
+4:
+  2024-10-01: 3_200
+5:
+  2024-10-01: 3_500
+
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nebraska School Readiness credit refundable amount
+  breakdown:
+    - range(1, 6)
+  reference:
+    - title: Nebraska Revised Statute 77-3605
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-3605
+    - title: 2024 Nebraska Individual Income Tax Booklet
+      href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=2

@@ -1,0 +1,21 @@
+description: The SALT deduction is phased out for filers with income above this threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: SALT deduction phase out threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
+      href: https://punchbowl.news/smitmo_017_xml/ #page 255
+
+SINGLE:
+  0000-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+JOINT:
+  0000-01-01: 0
+SURVIVING_SPOUSE:
+  0000-01-01: 0
+SEPARATE:
+  0000-01-01: 0 
