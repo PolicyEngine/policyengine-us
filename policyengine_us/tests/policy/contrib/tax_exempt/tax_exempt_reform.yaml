@@ -7,7 +7,7 @@
     gov.contrib.tax_exempt.overtime.income_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
-    overtime_income: 10_000
+    fsla_overtime_premium: 10_000
     tip_income: 10_000
     irs_employment_income: 30_000
   output:
@@ -22,7 +22,7 @@
     gov.contrib.tax_exempt.overtime.income_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
-    # overtime_income: 10_000
+    # fsla_overtime_premium: 10_000
     # tip_income: 10_000
     irs_employment_income: 30_000
   output:
@@ -38,7 +38,7 @@
     gov.contrib.tax_exempt.overtime.income_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: false
     gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
-    overtime_income: 10_000
+    fsla_overtime_premium: 10_000
     tip_income: 10_000
     irs_employment_income: 30_000
   output:
@@ -54,7 +54,7 @@
     gov.contrib.tax_exempt.overtime.income_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
     gov.contrib.tax_exempt.tip_income.income_tax_exempt: false
-    overtime_income: 12_000
+    fsla_overtime_premium: 12_000
     tip_income: 11_000
     irs_employment_income: 30_000
   output:

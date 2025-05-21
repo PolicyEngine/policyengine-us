@@ -7,9 +7,6 @@ class chip(Variable):
     label = "CHIP"
     unit = USD
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        eligible = person("is_chip_eligible", period)
-        # Use Medicaid value for now.
-        benefit = person("medicaid_benefit_value", period)
-        return eligible * benefit
+    reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
+    defined_for = "is_chip_eligible"
+    adds = ["per_capita_chip"]
