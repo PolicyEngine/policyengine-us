@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wic_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Federal poverty guideline for WIC, with family size incremented by one for pregnant women"
     label = "Pregnancy-adjusted poverty line for WIC"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_D"
@@ -17,4 +17,4 @@ class wic_fpg(Variable):
         additional = parameters(period).gov.hhs.fpg.additional_person[
             state_group
         ]
-        return normal_fpg + additional * pregnant
+        return normal_fpg + additional * pregnant / MONTHS_IN_YEAR

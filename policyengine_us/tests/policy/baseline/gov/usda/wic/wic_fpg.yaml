@@ -1,14 +1,24 @@
-- name: If not pregnant, wic_fpg == spm_unit_fpg.
+- name: Case 1, if not pregnant, wic_fpg == spm_unit_fpg.
   period: 2021
   input:
     spm_unit_fpg: 1
   output:
     wic_fpg: 1
 
-- name: If pregnant, increment by the amount. In this case, test a one-person SPM unit in 2021 in contiguous US.
+- name: Case 2, if pregnant, increment by the amount. In this case, test a one-person SPM unit in 2021 in contiguous US.
   period: 2021
+  absolute_error_margin: 0.1
   input:
     spm_unit_size: 1
     is_pregnant: true
   output:
     wic_fpg: 12_880 + 4_540
+
+- name: Case 3, same as case 2 but in a month.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 1
+    is_pregnant: true
+  output:
+    wic_fpg: 1_451.7
