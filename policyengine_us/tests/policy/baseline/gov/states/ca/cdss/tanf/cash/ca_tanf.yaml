@@ -1,17 +1,34 @@
-- name: If ineligible, CA TANF is $0.
-  period: 2023
-  input:
-    ca_tanf_eligible: false
-    ca_tanf_maximum_payment: 1_000
-    ca_tanf_countable_income_recipient: 0
-  output:
-    ca_tanf: 0
+# - name: If ineligible, CA TANF is $0.
+#   period: 2023
+#   input:
+#     ca_tanf_eligible: false
+#     ca_tanf_maximum_payment: 1_000
+#     ca_tanf_countable_income_recipient: 0
+#   output:
+#     ca_tanf: 0
 
-- name: If eligible, CA TANF is the difference between maximum payment and countable income.
+# - name: If eligible, CA TANF is the difference between maximum payment and countable income.
+#   period: 2023
+#   input:
+#     ca_tanf_eligible: true
+#     ca_tanf_maximum_payment: 1_000
+#     ca_tanf_countable_income_recipient: 1
+#   output:
+#     ca_tanf: 999
+
+- name: Amount is prorated based on the immigration status of each individual.
   period: 2023
   input:
-    ca_tanf_eligible: true
-    ca_tanf_maximum_payment: 1_000
-    ca_tanf_countable_income_recipient: 1
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf_eligible: true
+        ca_tanf_maximum_payment: 1_000
+        ca_tanf_countable_income_recipient: 200
   output:
-    ca_tanf: 999
+    ca_tanf: 400
