@@ -7,4 +7,4 @@
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:  # as expected from above two test results; also same as TAXSIM35
-    health_marginal_tax_rate: 0.4345  # that is, 43.45%
+    marginal_tax_rate_including_health_benefits: 0.4345  # that is, 43.45%
