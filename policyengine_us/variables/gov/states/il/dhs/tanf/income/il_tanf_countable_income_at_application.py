@@ -24,7 +24,19 @@ class il_tanf_countable_income_at_application(Variable):
         )
         fpg = spm_unit("spm_unit_fpg", period)
         payment_level = spm_unit("il_tanf_payment_level", period)
-        initial_employment_deduction = p.rate * fpg - payment_level
+        # Create a new variable for IED
+        initial_employment_deduction_person = p.rate * fpg - payment_level
+        is_employed = (
+            spm_unit.members("il_tanf_gross_earned_income", period) > 0
+        )
+        is_head_or_spouse = spm_unit.members(
+            "is_tax_unit_head_or_spouse", period
+        )
+        ied_eligible_person = is_employed & is_head_or_spouse
+        initial_employment_deduction = (
+            ied_eligible_person * initial_employment_deduction_person
+        )
+
         earned_income_deduction = min_(
             adjusted_earned_income, initial_employment_deduction
         )
