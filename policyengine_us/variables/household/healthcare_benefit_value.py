@@ -8,4 +8,3 @@ class healthcare_benefit_value(Variable):
     definition_period = YEAR
     unit = USD
     adds = ["medicaid_per_capita_cost", "per_capita_chip", "aca_ptc"]
-   
