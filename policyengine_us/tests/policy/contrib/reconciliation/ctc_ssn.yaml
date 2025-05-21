@@ -77,10 +77,10 @@
         ctc_qualifying_child: true
         ssn_card_type: NON_CITIZEN_VALID_EAD
       person3:
-        ctc_qualifying_child: true
+        age: 5
         ssn_card_type: NONE
       person4:
-        ctc_qualifying_child: false
+        age: 5
         ssn_card_type: CITIZEN
   output:
     ctc_qualifying_children: 1
