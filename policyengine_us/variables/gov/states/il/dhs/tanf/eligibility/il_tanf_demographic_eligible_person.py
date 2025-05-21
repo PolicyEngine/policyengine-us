@@ -18,7 +18,7 @@ class il_tanf_demographic_eligible_person(Variable):
         minor_child = age < p.minor_child
         eligible_minor_child = minor_child & dependent
 
-        student_dependent = age < p.student_dependent
+        student_dependent = age <= p.student_dependent
         secondary_school_student = person("is_in_secondary_school", period)
         eligible_student_dependent = (
             secondary_school_student & student_dependent & dependent

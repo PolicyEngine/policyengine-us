@@ -20,7 +20,7 @@ class il_tanf_countable_earned_income_for_grant_calculation(Variable):
         adjusted_earned_income = max_(
             countable_gross_earned_income - childcare_deduction, 0
         )
-        adjusted_earned_income_fraction = p.rate * adjusted_earned_income
-        return min_(
-            adjusted_earned_income - adjusted_earned_income_fraction, 0
+        adjusted_earned_income_disregard = p.rate * adjusted_earned_income
+        return max_(
+            adjusted_earned_income - adjusted_earned_income_disregard, 0
         )

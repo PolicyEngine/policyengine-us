@@ -1,43 +1,39 @@
-- name: Eligible for TANF, payment level higher than income.
+- name: Case 1, household size of 1 with $10000 earned income.
   period: 2023
+  absolute_error_margin: 0.5
   input:
-    il_tanf_payment_level: 100 
-    il_tanf_countable_income_for_grant_calculation: 80
-    il_tanf_eligible: true
+    il_tanf_countable_gross_earned_income: 10_100
+    il_tanf_childcare_deduction: 100 
+    il_tanf_initial_employment_deduction_person: 2_916
     state_code: IL
   output:
-    il_tanf: 20
+    il_tanf_countable_earned_income_at_application: 7_084
+    # 10_100 - 100 = 10_000
+    # initial_employment_deduction = 0.5* fpg - 4_374 = 2_916
+    # 10_000 - 2_916 = 7_084
 
-- name: Eligible for TANF, payment level lower than income.
+- name: Case 2, household size of 2 with $5000 earned income. 
   period: 2023
+  absolute_error_margin: 0.5
   input:
-    il_tanf_payment_level: 80
-    il_tanf_countable_income_for_grant_calculation: 100
-    il_tanf_eligible: true
+    il_tanf_countable_gross_earned_income: 5_100
+    il_tanf_childcare_deduction: 100 
+    il_tanf_initial_employment_deduction_person: 3_944
     state_code: IL
   output:
-    il_tanf: 0
+    il_tanf_countable_earned_income_at_application: 1_056
+    # 5_100 - 100 = 5_000
+    # initial_employment_deduction = 0.5* fpg - 5_916 = 3_944
+    # 5_000 - 3_944 = 1_056
 
-- name: Ineligible for TANF.
-  period: 2023
-  input:
-    il_tanf_payment_level: 100 
-    il_tanf_countable_income_for_grant_calculation: 80
-    il_tanf_eligible: false
-    state_code: IL
-  output:
-    il_tanf: 0
-
-- name: Integration test.
+- name: Case 3, integration test.
   period: 2023-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
-        age: 30
         employment_income: 9_600 # $800 per month
         is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN 
       person2:
         age: 3
         employment_income: 0
@@ -64,6 +60,3 @@
     il_tanf_payment_level: 621.5 # 7_458/12
     il_tanf_initial_employment_deduction_person: [414.4, 0, 0]  # 2071.7*0.5 - 621.5
     il_tanf_countable_earned_income_at_application: 10.6 # 800 - 375 - 414.4 
-    il_tanf_eligible: true
-    il_tanf_countable_income_for_grant_calculation: 106.25
-    il_tanf: 515.25 # 621.5 - 106.25

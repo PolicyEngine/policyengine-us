@@ -9,5 +9,8 @@ class il_tanf_countable_income_at_application(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.155"
     defined_for = StateCode.IL
-    
-    adds = ["il_tanf_countable_earned_income_at_application", "il_tanf_countable_unearned_income"]
+
+    adds = [
+        "il_tanf_countable_earned_income_at_application",
+        "il_tanf_countable_unearned_income",
+    ]
