@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class health_marginal_tax_rate(Variable):
+class marginal_tax_rate_including_health_benefits(Variable):
     """
     Fraction of marginal earnings that do **not** raise net household
     resources once cash + health benefits are taken into account.
