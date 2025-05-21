@@ -16,4 +16,12 @@ class ctc_qualifying_child(Variable):
             period
         ).gov.irs.credits.ctc.amount.base.thresholds[-1]
         age_eligible = age < age_limit
-        return age_eligible & is_dependent
+        meets_identification_requirements = person(
+            "meets_ctc_child_identification_requirements", period
+        )
+        return (
+            age_eligible
+            & is_dependent
+            & meets_identification_requirements
+            & meets_identification_requirements
+        )
