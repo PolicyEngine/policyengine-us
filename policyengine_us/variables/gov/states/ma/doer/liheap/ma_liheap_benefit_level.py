@@ -7,7 +7,7 @@ class ma_liheap_benefit_level(Variable):
     label = "Benefit Level for Massachusetts LIHEAP payment"
     definition_period = YEAR
     defined_for = "ma_liheap_income_eligible"
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-and-benefit-chart-january-2025/download"
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-november-2024/download"
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])

@@ -7,7 +7,7 @@ class MassachusettsLIHEAPHeatingType(Enum):
     KEROSENE = "Kerosene"
     ELECTRICITY = "Electricity"
     OTHER = "Other"
-
+    NONE = "None"
 
 class ma_liheap_heating_type(Variable):
     value_type = Enum

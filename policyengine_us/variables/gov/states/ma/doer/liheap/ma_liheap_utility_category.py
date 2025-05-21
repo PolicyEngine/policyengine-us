@@ -2,15 +2,20 @@ from policyengine_us.model_api import *
 
 
 class MassachusettsLIHEAPUtilityCategory(Enum):
-    UTILITY_AND_HEAT_IN_RENT = "Utility and Heat in Rent"
-    DELIVERABLE_FUEL = "Deliverable Fuel"
+    UTILITY_AND_HEAT_IN_RENT = (
+        "Utility and Heat in Rent"  # Electric, Natural Gas, Heat in Rent
+    )
+    DELIVERABLE_FUEL = (
+        "Deliverable Fuel"  # Kerosene, Heating Oil, Propane, Other
+    )
+    NONE = "None"
 
 
 class ma_liheap_utility_category(Variable):
     value_type = Enum
     entity = SPMUnit
     possible_values = MassachusettsLIHEAPUtilityCategory
-    default_value = MassachusettsLIHEAPUtilityCategory.DELIVERABLE_FUEL
+    default_value = MassachusettsLIHEAPUtilityCategory.NONE
     label = "Massachusetts LIHEAP household's utility category"
     definition_period = YEAR
     defined_for = StateCode.MA
@@ -48,5 +53,5 @@ class ma_liheap_utility_category(Variable):
         return select(
             conditions,
             results,
-            default=MassachusettsLIHEAPUtilityCategory.DELIVERABLE_FUEL,
+            default=MassachusettsLIHEAPUtilityCategory.NONE,
         )
