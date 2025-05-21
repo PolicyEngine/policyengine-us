@@ -8,4 +8,4 @@ class ma_liheap_last_year_energy_cost(Variable):
     label = "Massachusetts LIHEAP household's last year's energy cost"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-november-2024/download"
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"

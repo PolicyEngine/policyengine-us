@@ -8,8 +8,8 @@ class ma_liheap_eligible(Variable):
     definition_period = YEAR
     defined_for = "ma_liheap_income_eligible"
     reference = (
-        "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap "
-        "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#MA"
+        "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap",
+        "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#MA",
     )
 
     def formula(spm_unit, period, parameters):

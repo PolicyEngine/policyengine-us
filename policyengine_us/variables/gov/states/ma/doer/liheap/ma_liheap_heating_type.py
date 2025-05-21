@@ -18,4 +18,4 @@ class ma_liheap_heating_type(Variable):
     label = "Massachusetts LIHEAP household's heating type"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-november-2024/download"
+    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
