@@ -21,5 +21,5 @@ class wic_fpg(Variable):
         ]
         annual_pregnant_addition = additional * pregnant
         # The additional amount is based on a yearly parameter, so we need to manually divide it by 12.
-        monthly_pregnant_addition = annual_pregnant_addition / MONTHS_IN_YEAR 
+        monthly_pregnant_addition = annual_pregnant_addition / MONTHS_IN_YEAR
         return normal_fpg + monthly_pregnant_addition
