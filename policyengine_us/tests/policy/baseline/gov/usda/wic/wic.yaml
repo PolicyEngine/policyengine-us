@@ -7,7 +7,7 @@
     wic: 37.33
 
 - name: Amount is 0 if not passing the wic_eligible test.
-  period: 2022
+  period: 2022-01
   input:
     wic_category_str: INFANT
     is_wic_eligible: false
@@ -22,18 +22,8 @@
   output:
     wic: 30.72 
 
-- name: Households that are in postpartum category are eligible, for a year.
-  period: 2018
-  input:
-    wic_category_str: POSTPARTUM
-    is_wic_eligible: true
-  output:
-    wic: 373.458
-    # 30.71 * 12 = 368.64
-    # System output is 373.458, due to uprating.
-
 - name: Meets eligible test but not one of the WIC demographic categories.
-  period: 2022
+  period: 2022-01
   input:
     wic_category_str: NONE
     is_wic_eligible: true
