@@ -30,6 +30,27 @@ def create_reconciled_pease() -> Reform:
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
+                if p.amended_structure.in_effect:
+                    salt_deduction = tax_unit("salt_deduction", period)
+                    lesser_of_salt_or_excess = min_(
+                        salt_deduction, taxable_income_excess
+                    )
+                    salt_deduction_reduction = (
+                        p.amended_structure.salt_rate
+                        * lesser_of_salt_or_excess
+                    )
+                    remaining_deductions = max_(
+                        total_itemized_deductions - salt_deduction, 0
+                    )
+                    lesser_of_remaining_or_excess = min_(
+                        remaining_deductions, taxable_income_excess
+                    )
+                    other_deductions_reduction = (
+                        p.rate * lesser_of_remaining_or_excess
+                    )
+                    return (
+                        salt_deduction_reduction + other_deductions_reduction
+                    )
                 return p.rate * lesser_of_deductions_or_excess
             return 0
 
