@@ -8,3 +8,25 @@
     state_fips: 48  # TX
   output:  # as expected from above two test results; also same as TAXSIM35
     marginal_tax_rate_including_health_benefits: 0.4345  # that is, 43.45%
+
+- name: west virgina adult no healthcare benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 54
+    employment_income: 30_000
+    healthcare_benefit_value: 0
+  output:  
+    marginal_tax_rate_including_health_benefits: 0.442  # that is, 44.2%
+
+- name: west virgina adult yes healthcare benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 54
+    employment_income: 30_000
+    healthcare_benefit_value: 9_133
+  output:  
+    marginal_tax_rate_including_health_benefits: 0.442  # that is, 44.2%

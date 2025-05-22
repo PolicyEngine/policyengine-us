@@ -10,7 +10,9 @@ class marginal_tax_rate_including_health_benefits(Variable):
     unit = "/1"
 
     def formula(person, period, parameters):
-        netinc_base = person.household("household_net_income_including_health_benefits", period)
+        netinc_base = person.household(
+            "household_net_income_including_health_benefits", period
+        )
         delta = parameters(period).simulation.marginal_tax_rate_delta
         adult_count = parameters(period).simulation.marginal_tax_rate_adults
         sim = person.simulation
@@ -48,7 +50,9 @@ class marginal_tax_rate_including_health_benefits(Variable):
                 + mask * delta * (1 - emp_self_emp_ratio),
             )
             alt_person = alt_sim.person
-            netinc_alt = alt_person.household("household_net_income_including_health_benefits", period)
+            netinc_alt = alt_person.household(
+                "household_net_income_including_health_benefits", period
+            )
             increase = netinc_alt - netinc_base
             mtr_values += where(mask, 1 - increase / delta, 0)
             del sim.branches[f"mtr_for_adult_{adult_index}"]
