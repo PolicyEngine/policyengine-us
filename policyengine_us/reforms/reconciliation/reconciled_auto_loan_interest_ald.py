@@ -24,7 +24,9 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
 
             # Get the phaseout start amount based on filing status (line 4).
             phaseout_start = p.phase_out.start[filing_status]
-            agi_pre_ald = tax_unit("adjusted_gross_income_pre_auto_loan_interest_ald", period)
+            agi_pre_ald = tax_unit(
+                "adjusted_gross_income_pre_auto_loan_interest_ald", period
+            )
             # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
             excess = max_(agi_pre_ald - phaseout_start, 0)
             increments = np.ceil(excess / p.phase_out.increment)
