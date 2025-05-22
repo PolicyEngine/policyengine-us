@@ -8,13 +8,10 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
     class auto_loan_interest_ald(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Per‑cap qualified business income deduction amount for each person"
+        label = "Auto loan interest ALD"
         unit = USD
         definition_period = YEAR
-        reference = (
-            "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
-            "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
-        )
+        reference = "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=765"
 
         def formula(tax_unit, period, parameters):
             auto_loan_interest = add(tax_unit, period, ["auto_loan_interest"])
@@ -27,43 +24,61 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
 
             # Get the phaseout start amount based on filing status (line 4).
             phaseout_start = p.phase_out.start[filing_status]
-            agi = tax_unit("adjusted_gross_income", period)
+            agi_pre_ald = tax_unit("adjusted_gross_income_pre_auto_loan_interest_ald", period)
             # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
-            excess = max_(agi - phaseout_start, 0)
+            excess = max_(agi_pre_ald - phaseout_start, 0)
             increments = np.ceil(excess / p.phase_out.increment)
 
             # Calculate the excess part phase out amount (line 7).
             phase_out_amount = increments * p.phase_out.step
             return max_(capped_interest - phase_out_amount, 0)
 
-    def modify_parameters(parameters):
-        parameters.gov.irs.ald.deductions.update(
-            start=instant("2026-01-01"),
-            stop=instant("2035-12-31"),
-            value=[
-                "auto_loan_interest_ald",
-                "student_loan_interest_ald",
-                "loss_ald",
-                "early_withdrawal_penalty",
-                "alimony_expense",
-                "self_employment_tax_ald",
-                "educator_expense",
-                "health_savings_account_ald",
-                "self_employed_health_insurance_ald",
-                "self_employed_pension_contribution_ald",
-                "traditional_ira_contributions",
-                "qualified_adoption_assistance_expense",
-                "us_bonds_for_higher_ed",
-                "specified_possession_income",
-                "puerto_rico_income",
-            ],
-        )
-        return parameters
+    class adjusted_gross_income_pre_auto_loan_interest_ald(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Adjusted gross income before the Auto Loan Interest ALD"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=765"
+
+        def formula(tax_unit, period, parameters):
+            gross_income = add(tax_unit, period, ["irs_gross_income"])
+            above_the_line_deductions = tax_unit(
+                "above_the_line_deductions", period
+            )
+            agi = gross_income - above_the_line_deductions
+            if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
+                agi += add(tax_unit, period, ["basic_income"])
+            return agi
+
+    class adjusted_gross_income(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Adjusted gross income"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/62"
+
+        def formula(tax_unit, period, parameters):
+            gross_income = add(tax_unit, period, ["irs_gross_income"])
+            above_the_line_deductions = tax_unit(
+                "above_the_line_deductions", period
+            )
+            auto_loan_interest_ald = tax_unit("auto_loan_interest_ald", period)
+            agi = gross_income - (
+                above_the_line_deductions + auto_loan_interest_ald
+            )
+            if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
+                agi += add(tax_unit, period, ["basic_income"])
+            return agi
 
     class reform(Reform):
         def apply(self):
             self.update_variable(auto_loan_interest_ald)
-            self.modify_parameters(modify_parameters)
+            self.update_variable(adjusted_gross_income)
+            self.update_variable(
+                adjusted_gross_income_pre_auto_loan_interest_ald
+            )
 
     return reform
 
