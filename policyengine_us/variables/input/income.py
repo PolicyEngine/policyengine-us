@@ -77,71 +77,21 @@ class farm_income(Variable):
     uprating = "calibration.gov.irs.soi.farm_income"
 
 
-class farm_operations_income(Variable):
+class qualified_reit_and_ptp_income(Variable):
     value_type = float
     entity = Person
-    label = "farm income"
+    label = "REIT and PTP Income"
     unit = USD
-    documentation = "Income from active farming operations. Schedule F. Do not include this income in self-employment income."
-    definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.farm_income"  # TODO: update
-
-
-class farm_rental_income(Variable):
-    value_type = float
-    entity = Person
-    label = "farm income"
-    unit = USD
-    documentation = "Schedule E farm rental income."
-    definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.farm_income"  # TODO: update
-
-
-class s_corp_income(Variable):
-    value_type = float
-    entity = Person
-    label = "S Corp Income"
-    unit = USD
-    documentation = "S Corporation active passthrough income. Schedule E. Do not include this income in self-employment income."
+    documentation = "REIT and Publically Traded Partnership Income. Part of the QBID calclulation."
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.self_employment_income"  # TODO: Update
 
 
-class partnership_income(Variable):
+class qualified_bdc_income(Variable):
     value_type = float
     entity = Person
-    label = "Partnership Income"
+    label = "Business Development Company dividend income"
     unit = USD
-    documentation = "S Corporation active passthrough income. Schedule E. Do not include this income in self-employment income."
-    definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.self_employment_income"  # TODO: Update
-
-
-class reit_dividend_income(Variable):
-    value_type = float
-    entity = Person
-    label = "REIT Dividend Income"
-    unit = USD
-    documentation = "REIT Dividend Income. Included in QBID."
-    definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.self_employment_income"  # TODO: Update
-
-
-class ptp_income(Variable):
-    value_type = float
-    entity = Person
-    label = "Publically Traded Partnership Income"
-    unit = USD
-    documentation = "Publically Traded Partnership Income. Included in QBID."
-    definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.self_employment_income"  # TODO: Update
-
-
-class bdc_dividend_income(Variable):
-    value_type = float
-    entity = Person
-    label = "Business Development Company Dividend Income"
-    unit = USD
-    documentation = " Business Development Company Dividend Income. Included in QBID."
+    documentation = "Business Development Company Dividend Income. Part of the QBID calculation."
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.self_employment_income"  # TODO: Update
