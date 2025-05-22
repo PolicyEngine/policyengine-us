@@ -43,6 +43,10 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
         definition_period = YEAR
         reference = "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=765"
 
+        # OBBBA phases out the auto loan interest ALD with respect to AGI.
+        # This creates a circular reference, since it also reduces AGI.
+        # To get around this drafting error, we phase out the auto loan interest ALD
+        # with respect to a version of AGI that excludes the auto loan interest ALD.
         def formula(tax_unit, period, parameters):
             gross_income = add(tax_unit, period, ["irs_gross_income"])
             above_the_line_deductions = tax_unit(
