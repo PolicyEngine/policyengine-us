@@ -17,4 +17,7 @@ class wic_fpg(Variable):
         additional = parameters(period).gov.hhs.fpg.additional_person[
             state_group
         ]
+        # The system divides annual variables by 12 automatically when bringing them down to a month.
+        # The normal FPG is an annual variable, so the system divides it by 12 by default. 
+        # But the additional amount is based on a yearly parameter, so we need to manually divide it by 12.
         return normal_fpg + additional * pregnant / MONTHS_IN_YEAR
