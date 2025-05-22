@@ -22,3 +22,30 @@
     is_pregnant: true
   output:
     wic_fpg: 1_451.7
+
+- name: Case 4, not pregnant, household size of 1.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 1
+    is_pregnant: false
+  output:
+    wic_fpg: 1_073.33 # 12_880/12
+
+- name: Case 5, not pregnant, household size of 2.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 2
+    is_pregnant: false
+  output:
+    wic_fpg: 1_451.67 # (12_880 + 4_540)/12 
+
+- name: Case 6, not pregnant, household size of 1.
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 1
+    is_pregnant: false
+  output:
+    wic_fpg: 12_880
