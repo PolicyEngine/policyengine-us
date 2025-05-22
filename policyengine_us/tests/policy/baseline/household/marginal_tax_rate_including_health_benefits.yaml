@@ -18,7 +18,7 @@
     employment_income: 30_000
     healthcare_benefit_value: 0
   output:  
-    marginal_tax_rate_including_health_benefits: 0.442  # that is, 44.2%
+    marginal_tax_rate_including_health_benefits: 0.442  # 44.2%
 
 - name: west virgina adult yes healthcare benefits
   absolute_error_margin: 0.01
@@ -27,6 +27,6 @@
     age: 30
     state_fips: 54
     employment_income: 30_000
-    healthcare_benefit_value: 9_133
+    is_aca_ptc_eligible: true
   output:  
-    marginal_tax_rate_including_health_benefits: 0.442  # that is, 44.2%
+    marginal_tax_rate_including_health_benefits: 0.536  # 53.6
