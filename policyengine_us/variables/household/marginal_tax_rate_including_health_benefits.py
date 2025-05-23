@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class marginal_tax_rate_including_health_benefits(Variable):
-    label = "marginal tax rate"
+    label = "Marginal tax rate including health benefits"
     documentation = "Fraction of marginal income gains that do not increase household net income."
     entity = Person
     definition_period = YEAR
