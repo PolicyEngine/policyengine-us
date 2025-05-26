@@ -11,7 +11,9 @@ class il_tanf_payment_eligible_parent(Variable):
 
     def formula(person, period, parameters):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        immigration_status_eligible = person("il_tanf_immigration_status_eligible_person", period)
+        immigration_status_eligible = person(
+            "il_tanf_immigration_status_eligible_person", period
+        )
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
 

@@ -11,8 +11,10 @@ class il_tanf_payment_eligible_child(Variable):
 
     def formula(person, period, parameters):
         eligible_child = person("il_tanf_eligible_child", period)
-        immigration_status_eligible = person("il_tanf_immigration_status_eligible_person", period)
+        immigration_status_eligible = person(
+            "il_tanf_immigration_status_eligible_person", period
+        )
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
-        
+
         return ~receives_ssi & eligible_child & immigration_status_eligible
