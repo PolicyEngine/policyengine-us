@@ -15,88 +15,61 @@ class qbid_amount(Variable):
     )
 
     def formula(person, period, parameters):
+
         p = parameters(period).gov.irs.deductions.qbi
-        
-        # Basic inputs
+
+        # 1. Core inputs ---------------------------------------------------------
         qbi = person("qualified_business_income", period)
-        is_sstb = person("business_is_sstb", period)
-        
-        # REIT, PTP income (not subject to W-2/property limitations or SSTB phase-out)
-        reit_ptp_income = person("qualified_reit_and_ptp_income", period)
-        reit_ptp_deduction = p.max.rate * reit_ptp_income  # Always 20% with no limitations
-        
-        # Income and threshold determination
-        taxinc_less_qbid = person.tax_unit("taxable_income_less_qbid", period)
-        filing_status = person.tax_unit("filing_status", period)
-        po_start = p.phase_out.start[filing_status]
-        po_length = p.phase_out.length[filing_status]
-        
-        # Check if we're in the phase-out range or above
-        above_threshold = taxinc_less_qbid > po_start
-        in_phase_out_range = (taxinc_less_qbid > po_start) & (taxinc_less_qbid <= (po_start + po_length))
-        fully_phased_out = taxinc_less_qbid > (po_start + po_length)
-        
-        # BELOW THRESHOLD: Simple 20% calculation, no limitations
-        below_threshold_deduction = p.max.rate * qbi
-        
-        # ABOVE THRESHOLD: Apply W-2/property limitations and SSTB phase-out
-        
-        # W-2 wage and property limitations
         w2_wages = person("w2_wages_from_qualified_business", period)
-        b_property = person("unadjusted_basis_qualified_property", period)
-        
-        wage_cap = w2_wages * p.max.w2_wages.rate  # 50% of W-2 wages
-        alt_cap = (
-            w2_wages * p.max.w2_wages.alt_rate  # 25% of W-2 wages
-            + b_property * p.max.business_property.rate  # 2.5% of property
+        ubia_property = person("unadjusted_basis_qualified_property", period)
+        is_sstb = person("business_is_sstb", period)
+        reit_ptp_income = person("qualified_reit_and_ptp_income", period)
+
+        taxable_income = person.tax_unit("taxable_income_less_qbid", period)
+        filing_status = person.tax_unit("filing_status", period)
+
+        threshold = p.phase_out.start[filing_status]
+        phase_in_range = p.phase_out.length[filing_status]
+
+        # 2. 20 % of QBI ---------------------------------------------------------
+        qbi_twenty = p.max.rate * qbi
+
+        # 3. Wage / UBIA limitation ---------------------------------------------
+        wage_limit = p.max.w2_wages.rate * w2_wages  # 50 % of W‑2 wages
+        alt_limit = (
+            p.max.w2_wages.alt_rate * w2_wages  # 25 % of W‑2 wages
+            + p.max.business_property.rate * ubia_property  # 2.5 % of UBIA
         )
-        wage_property_cap = max_(wage_cap, alt_cap)
-        
-        # SSTB phase-out calculation
-        # For SSTBs: QBI and wage/property caps are gradually reduced to zero
-        # For non-SSTBs: QBI is subject to wage/property caps but no phase-out
-        
-        phase_out_percentage = where(
-            in_phase_out_range,
-            (taxinc_less_qbid - po_start) / po_length,
-            where(fully_phased_out, 1.0, 0.0)
+        wage_ubia_cap = max_(wage_limit, alt_limit)
+
+        # 4. Phase‑in percentage (§199A(b)(3)(B)) -------------------------------
+        over_threshold = max_(0, taxable_income - threshold)
+        phase_in_pct = min_(1, over_threshold / phase_in_range)
+
+        # 5. Applicable percentage for SSTBs ------------------------------------
+        applicable_pct = where(is_sstb, 1 - phase_in_pct, 1)
+
+        adj_qbi_twenty = qbi_twenty * applicable_pct
+        adj_cap = wage_ubia_cap * applicable_pct
+
+        limited_deduction = min_(adj_qbi_twenty, adj_cap)
+        excess = max_(0, adj_qbi_twenty - adj_cap)
+        phased_deduction = max_(0, adj_qbi_twenty - phase_in_pct * excess)
+
+        deduction_pre_cap = where(
+            phase_in_pct == 0,
+            adj_qbi_twenty,  # Below threshold: wage/UBIA limit does not apply.
+            where(
+                phase_in_pct < 1,
+                max_(limited_deduction, phased_deduction),  # Inside phase‑in band.
+                limited_deduction,  # Over the band: limitation fully applies.
+            ),
         )
-        
-        # SSTB adjustments: reduce QBI and caps by phase-out percentage
-        sstb_qbi_reduction = where(is_sstb, phase_out_percentage, 0.0)
-        adjusted_qbi = qbi * (1 - sstb_qbi_reduction)
-        adjusted_wage_property_cap = wage_property_cap * (1 - sstb_qbi_reduction)
-        
-        # Calculate 20% of adjusted QBI
-        qbi_20_percent = p.max.rate * adjusted_qbi
-        
-        # Apply wage/property limitation
-        above_threshold_deduction = min_(qbi_20_percent, adjusted_wage_property_cap)
-        
-        # For taxpayers in phase-out range, there's also a second calculation
-        # that phases out the excess of QBI over the wage/property cap
-        excess_qbi_over_cap = max_(0, qbi_20_percent - adjusted_wage_property_cap)
-        phase_out_reduction = phase_out_percentage * excess_qbi_over_cap
-        alternative_calculation = max_(0, qbi_20_percent - phase_out_reduction)
-        
-        # Take the greater of the two calculations when in phase-out range
-        above_threshold_deduction = where(
-            in_phase_out_range,
-            max_(above_threshold_deduction, alternative_calculation),
-            above_threshold_deduction
-        )
-        
-        # Select appropriate calculation based on income level
-        qbi_deduction = where(
-            above_threshold,
-            above_threshold_deduction,
-            below_threshold_deduction
-        )
-        
-        # Add REIT/PTP deduction (never limited)
-        total_deduction = qbi_deduction + reit_ptp_deduction
-        
-        # Final limitation: cannot exceed 20% of taxable income before QBI deduction
-        taxable_income_cap = p.max.rate * taxinc_less_qbid
-        
-        return min_(total_deduction, taxable_income_cap)
+
+        # 6. REIT / PTP component (always 20 %) ---------------------------------
+        reit_ptp_deduction = p.max.rate * reit_ptp_income
+        total_before_income_cap = deduction_pre_cap + reit_ptp_deduction
+
+        # 7. Overall 20 % taxable‑income ceiling (§199A(a)(2)) ------------------
+        income_cap = p.max.rate * taxable_income
+        return min_(total_before_income_cap, income_cap)
