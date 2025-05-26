@@ -14,4 +14,5 @@ class il_ccap_eligible(Variable):
         has_eligible_child = (
             add(spm_unit, period, ["il_ccap_eligible_child"]) > 0
         )
+        # Add employment requirement 
         return income_eligible & has_eligible_child
