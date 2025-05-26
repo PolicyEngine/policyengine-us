@@ -19,28 +19,6 @@ def create_ctc_ssn() -> Reform:
             reduction = tax_unit("ctc_phase_out", period)
             return max_(0, maximum_amount - reduction)
 
-    class ctc_qualifying_children(Variable):
-        value_type = int
-        entity = TaxUnit
-        label = "CTC-qualifying children"
-        documentation = (
-            "Count of children that qualify for the Child Tax Credit"
-        )
-        definition_period = YEAR
-        reference = "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=4"
-
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            ctc_qualifying_child = person("ctc_qualifying_child", period)
-            meets_ctc_identification_requirements = person(
-                "meets_ctc_identification_requirements", period
-            )
-            eligible_child = (
-                ctc_qualifying_child & meets_ctc_identification_requirements
-            )
-            # Only children who meet CTC identification requirements can claim benefit
-            return tax_unit.sum(eligible_child)
-
     class filer_meets_ctc_identification_requirements(Variable):
         value_type = bool
         entity = TaxUnit
@@ -78,7 +56,6 @@ def create_ctc_ssn() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc)
-            self.update_variable(ctc_qualifying_children)
             self.update_variable(filer_meets_ctc_identification_requirements)
             self.update_variable(meets_ctc_identification_requirements)
 

@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.292.0] - 2025-05-25 23:40:18
+
+### Added
+
+- Update WIC values.
+
+## [1.291.0] - 2025-05-23 17:18:54
+
+### Added
+
+- Hours worked last week variable.
+
+## [1.290.0] - 2025-05-23 16:51:32
+
+### Added
+
+- Created a new MTR and Post-transfer income that includes healthcare programs.
+
+## [1.289.1] - 2025-05-22 20:54:55
+
+### Fixed
+
+- Auto Loan ALD formula.
+
+## [1.289.0] - 2025-05-22 17:17:58
+
+### Added
+
+- Amended itemized deduction reform structure.
+
+## [1.288.0] - 2025-05-22 00:32:21
+
+### Added
+
+- Apply identification requirement to CTC under current law for children.
+
+## [1.287.2] - 2025-05-21 13:57:33
+
+### Fixed
+
+- Remove special characters causing imports to fail on Windows.
+
 ## [1.287.1] - 2025-05-20 23:30:36
 
 ### Fixed
@@ -11759,6 +11801,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.291.0...1.292.0
+[1.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.290.0...1.291.0
+[1.290.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.289.1...1.290.0
+[1.289.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.289.0...1.289.1
+[1.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.288.0...1.289.0
+[1.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.2...1.288.0
+[1.287.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.1...1.287.2
 [1.287.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.0...1.287.1
 [1.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.286.0...1.287.0
 [1.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.285.0...1.286.0
