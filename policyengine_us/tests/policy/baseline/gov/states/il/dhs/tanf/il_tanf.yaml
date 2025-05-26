@@ -1,7 +1,7 @@
 - name: Eligible for TANF, payment level higher than income.
   period: 2023
   input:
-    il_tanf_payment_level: 100 
+    il_tanf_payment_level_for_grant_calculation: 100 
     il_tanf_countable_income_for_grant_calculation: 80
     il_tanf_eligible: true
     state_code: IL
@@ -11,7 +11,7 @@
 - name: Eligible for TANF, payment level lower than income.
   period: 2023
   input:
-    il_tanf_payment_level: 80
+    il_tanf_payment_level_for_grant_calculation: 80
     il_tanf_countable_income_for_grant_calculation: 100
     il_tanf_eligible: true
     state_code: IL
@@ -21,7 +21,7 @@
 - name: Ineligible for TANF.
   period: 2023
   input:
-    il_tanf_payment_level: 100 
+    il_tanf_payment_level_for_grant_calculation: 100 
     il_tanf_countable_income_for_grant_calculation: 80
     il_tanf_eligible: false
     state_code: IL
@@ -38,14 +38,19 @@
         employment_income: 9_600 # $800 per month
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN 
+        ssi: 0
       person2:
         age: 3
         employment_income: 0
         is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
       person3: 
         age: 1
         employment_income: 0
         is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -61,9 +66,10 @@
   output:
     il_tanf_childcare_deduction: 375
     spm_unit_fpg: 2_071.7 # 24_680/12
-    il_tanf_payment_level: 621.5 # 7_458/12
+    il_tanf_payment_level_at_application: 621.5 # 7_458/12
     il_tanf_initial_employment_deduction_person: [414.4, 0, 0]  # 2071.7*0.5 - 621.5
     il_tanf_countable_earned_income_at_application: 10.6 # 800 - 375 - 414.4 
     il_tanf_eligible: true
+    il_tanf_assistance_unit_fpg: 2_071.7 # 24_680/12
     il_tanf_countable_income_for_grant_calculation: 106.25
     il_tanf: 515.25 # 621.5 - 106.25

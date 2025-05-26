@@ -13,5 +13,7 @@ class il_tanf_income_eligible(Variable):
         countable_income = spm_unit(
             "il_tanf_countable_income_at_application", period
         )
-        payment_level = spm_unit("il_tanf_payment_level", period)
+        payment_level = spm_unit(
+            "il_tanf_payment_level_at_application", period
+        )
         return countable_income <= payment_level

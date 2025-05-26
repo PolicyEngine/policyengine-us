@@ -1,0 +1,39 @@
+- name: Case 1, eligible child for payment. 
+  period: 2022-01
+  input:
+    il_tanf_eligible_child: true
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_child: true
+
+- name: Case 2, ineligible child for payment due to child status. 
+  period: 2022-01
+  input:
+    il_tanf_eligible_child: false
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_child: false
+
+- name: Case 3, ineligible child for payment due to immigration status. 
+  period: 2022-01
+  input:
+    il_tanf_eligible_child: true
+    il_tanf_immigration_status_eligible_person: false
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_child: false
+
+- name: Case 4, ineligible child for payment due to receive ssi. 
+  period: 2022-01
+  input:
+    il_tanf_eligible_child: true
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 100
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_child: false

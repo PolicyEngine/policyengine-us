@@ -11,7 +11,9 @@ class il_tanf(Variable):
     defined_for = "il_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        payment_level = spm_unit("il_tanf_payment_level", period)
+        payment_level = spm_unit(
+            "il_tanf_payment_level_for_grant_calculation", period
+        )
         countable_income = spm_unit(
             "il_tanf_countable_income_for_grant_calculation", period
         )

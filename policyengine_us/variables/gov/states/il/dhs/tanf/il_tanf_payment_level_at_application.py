@@ -1,12 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class il_tanf_payment_level(Variable):
+class il_tanf_payment_level_at_application(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "Illinois Temporary Assistance for Needy Families (TANF) payment level"
-    )
+    label = "Illinois Temporary Assistance for Needy Families (TANF) payment level at application"
     unit = USD
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.251"

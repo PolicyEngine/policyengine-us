@@ -2,7 +2,7 @@
   period: 2023
   input:
     il_tanf_countable_income_at_application: 100
-    il_tanf_payment_level: 120
+    il_tanf_payment_level_at_application: 120
     state_code: IL
   output:
     il_tanf_income_eligible: true
@@ -11,7 +11,7 @@
   period: 2023
   input:
     il_tanf_countable_income_at_application: 100
-    il_tanf_payment_level: 80
+    il_tanf_payment_level_at_application: 80
     state_code: IL
   output:
     il_tanf_income_eligible: false
