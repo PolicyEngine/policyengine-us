@@ -1,0 +1,26 @@
+- name: Eligible special needs child.
+  period: 2024
+  input:
+    age: 18
+    is_disabled: true
+    state_code: IL 
+  output: 
+    il_ccap_special_needs_child: true
+
+- name: Ineligible special needs child due to age.
+  period: 2024
+  input:
+    age: 19
+    is_disabled: true
+    state_code: IL 
+  output: 
+    il_ccap_special_needs_child: false
+
+- name: Ineligible special needs child due to not being disabled. 
+  period: 2024
+  input:
+    age: 18
+    is_disabled: false
+    state_code: IL 
+  output: 
+    il_ccap_special_needs_child: false

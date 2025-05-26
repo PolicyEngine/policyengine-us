@@ -10,4 +10,4 @@ class il_ccap_countable_income(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-50.235"
     defined_for = StateCode.IL
 
-    adds = "gov.states.il.dhs.ccap.countable_income.sources"
+    adds = "gov.states.il.dhs.ccap.income.countable_income.sources"

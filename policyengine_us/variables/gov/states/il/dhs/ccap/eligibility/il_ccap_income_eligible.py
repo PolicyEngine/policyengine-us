@@ -10,7 +10,7 @@ class il_ccap_income_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.il.dhs.ccap.income_limit
+        p = parameters(period).gov.states.il.dhs.ccap.income.income_limit
         countable_income = spm_unit("il_ccap_countable_income", period)
         # 225% fpg
         fpg = spm_unit("spm_unit_fpg", period)

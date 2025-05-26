@@ -13,5 +13,10 @@ class il_ccap_eligible_child(Variable):
         p = parameters(period).gov.states.il.dhs.ccap.age_threshold
         age = person("monthly_age", period)
         is_child = age < p.child
+        is_dependent = person("is_tax_unit_dependent", period)
         is_special_needs_child = person("il_ccap_special_needs_child", period)
-        return is_child | is_special_needs_child
+        immigration_status_eligible = person(
+            "il_ccap_immigration_status_eligible_person", period
+        )
+        eligible_child = is_child | is_special_needs_child
+        return immigration_status_eligible & eligible_child & is_dependent

@@ -1,0 +1,39 @@
+- name: Eligible family for the program.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: true
+    employment_income: 10_000
+    state_code: IL
+  output:
+    il_ccap_eligible: true
+
+- name: Ineligible family due to income.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: false
+    employment_income: 50_000
+    state_code: IL
+  output:
+    il_ccap_eligible: false
+
+- name: Ineligible family due to not working.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: true
+    employment_income: 0
+    state_code: IL
+  output:
+    il_ccap_eligible: false
+
+- name: Ineligible family due to no eligible child.
+  period: 2023
+  input:
+    il_ccap_eligible_child: false
+    il_ccap_income_eligible: true
+    employment_income: 10_000
+    state_code: IL
+  output:
+    il_ccap_eligible: false

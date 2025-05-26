@@ -17,27 +17,27 @@ class il_ccap_county_group(Variable):
     label = "Illinois Child Care Assistance Program (CCAP) county group"
     reference = "https://www.dhs.state.il.us/page.aspx?item=163817"
 
-    def formula(household, period, parameters):
-        county = household("county_str", period)
+    # def formula(household, period, parameters):
+    #     county = household("county_str", period)
 
-        p = parameters(period).gov.states.il.dhs.ccap.county_group
-        county_1a = np.isin(county, p.county_1a)
-        county_1b = np.isin(county, p.county_1b)
-        county_2 = np.isin(county, p.county_2)
+    #     p = parameters(period).gov.states.il.dhs.ccap.county_group
+    #     county_1a = np.isin(county, p.county_1a)
+    #     county_1b = np.isin(county, p.county_1b)
+    #     county_2 = np.isin(county, p.county_2)
 
-        conditions = [
-            county_1a,
-            county_1b,
-            county_2,
-        ]
-        results = [
-            IllinoisCCAPCountyGroup.COUNTY_1A,
-            IllinoisCCAPCountyGroup.COUNTY_1B,
-            IllinoisCCAPCountyGroup.COUNTY_2,
-        ]
+    #     conditions = [
+    #         county_1a,
+    #         county_1b,
+    #         county_2,
+    #     ]
+    #     results = [
+    #         IllinoisCCAPCountyGroup.COUNTY_1A,
+    #         IllinoisCCAPCountyGroup.COUNTY_1B,
+    #         IllinoisCCAPCountyGroup.COUNTY_2,
+    #     ]
 
-        return select(
-            conditions,
-            results,
-            default=IllinoisCCAPCountyGroup.COUNTY_1A,
-        )
+    #     return select(
+    #         conditions,
+    #         results,
+    #         default=IllinoisCCAPCountyGroup.COUNTY_1A,
+    #     )

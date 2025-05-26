@@ -1,0 +1,21 @@
+- name: Household size of 2 with $20_000 income.
+  period: 2023
+  input:
+    il_ccap_countable_income: 20_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: true
+    # income threshold: 19_720 * 2.25 = 44_370
+
+- name: Household size of 2 with $45_000 income.
+  period: 2023
+  input:
+    il_ccap_countable_income: 45_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: false
+    # income threshold: 19_720 * 2.25 = 44_370
