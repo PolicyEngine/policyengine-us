@@ -7,17 +7,16 @@ class ma_liheap_eligible_subsidized_housing(Variable):
     label = "Massachusetts LIHEAP eligible subsidized housing"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#MA"
+    reference = "https://liheapch.acf.gov/tables/subsidize.htm#MA"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.doer.liheap.threshold
         income = add(spm_unit, period, ["irs_gross_income"])
         rent_threshold = income * p.rent_rate
-        person = spm_unit.members
-        rent_person = person("rent", period)
-        total_rent = spm_unit.sum(rent_person)
-        is_subsidized = spm_unit("receives_housing_assistance", period)
+        total_rent = add(spm_unit, period, ["rent"])
+        # Eligible if monthly rent is more than 30% of income
         rent_eligible = total_rent > rent_threshold
+        is_subsidized = spm_unit("receives_housing_assistance", period)
         heat_in_rent = spm_unit("heat_costs_included_in_rent", period)
 
         return (is_subsidized & heat_in_rent & rent_eligible) | (

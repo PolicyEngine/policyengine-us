@@ -15,9 +15,6 @@ class ma_liheap(Variable):
             period,
             ["ma_liheap_standard_payment", "ma_liheap_hecs_payment"],
         )
-
-        # This should be heating_oil_and_propane_expense, natural_gas_expense, kerosene_expense, electricity_expense, other_expense,
-        # to avoid creating new variables for each heating type, use the existing ones
         actual_expense = add(
             spm_unit,
             period,
