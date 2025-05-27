@@ -16,7 +16,7 @@ class ca_calworks_child_care_eligible(Variable):
             "ca_calworks_child_care_meets_work_requirement", period
         )
         person = spm_unit.members
-        immigration_eligible = spm_unit.any(
+        immigration_eligible = spm_unit.all(
             person(
                 "ca_calworks_child_care_immigration_status_eligible_person",
                 period,

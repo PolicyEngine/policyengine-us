@@ -11,9 +11,7 @@ class ca_tanf_immigration_status_eligible_person(Variable):
 
     def formula(person, period, parameters):
         immigration_status = person("immigration_status", period)
-        p = parameters(
-            period
-        ).gov.states.ca.cdss.tanf.cash.immigration_status
+        p = parameters(period).gov.states.ca.cdss.tanf.cash.immigration_status
 
         immigration_status_str = immigration_status.decode_to_str()
 
