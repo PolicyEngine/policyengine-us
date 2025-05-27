@@ -20,23 +20,32 @@ def create_reconciled_qbid() -> Reform:
             p_ref = parameters(period).gov.contrib.reconciliation.qbid
             
             # 1. Core inputs ----------------------------------------------------
+            # Form 8995, line 1 (qualified business income)
             qbi = person("qualified_business_income", period)
+            # Specified service trade or business check box on Form 8995/8995-A
             is_sstb = person("business_is_sstb", period)
             
+            # Form 8995, line 6 (REIT/PTP income)
             reit_ptp_income = person("qualified_reit_and_ptp_income", period)
+            # Income from business development companies (not on current forms)
             bdc_income = person("qualified_bdc_income", period)
             
+            # Form 1040, line 15 (taxable income) before QBID
             taxable_income = person.tax_unit("taxable_income_less_qbid", period)
+            # Form 1040, filing status check box
             filing_status = person.tax_unit("filing_status", period)
             
             threshold = p.phase_out.start[filing_status]          # §199A(e)(2)
             phase_in_rate = p_ref.phase_out_rate                  # 75 % "phase-in" rate
             
             # 2. 23 % of total QBI ---------------------------------------------
-            qbi_twenty_three = p.max.rate * qbi
+            qbid_max = p.max.rate * qbi
             
             # 3. Wage / UBIA limitation (non-SSTB only) ------------------------
+            # W-2 wages for the trade or business (Form 8995-A, Part I)
             w2_wages = person("w2_wages_from_qualified_business", period)
+            # Unadjusted basis immediately after acquisition (UBIA)
+            # (Form 8995-A, Part I)
             ubia_property = person("unadjusted_basis_qualified_property", period)
             
             qbi_non_sstb = where(is_sstb, 0, qbi)
@@ -57,7 +66,7 @@ def create_reconciled_qbid() -> Reform:
             excess_income = max_(0, taxable_income - threshold)
             phase_in_amount = phase_in_rate * excess_income
             
-            step2_deduction = max_(0, qbi_twenty_three - phase_in_amount)
+            step2_deduction = max_(0, qbid_max - phase_in_amount)
             
             # 5. QBI component: greater of Step 1 or Step 2 --------------------
             qbi_component = max_(step1_deduction, step2_deduction)
