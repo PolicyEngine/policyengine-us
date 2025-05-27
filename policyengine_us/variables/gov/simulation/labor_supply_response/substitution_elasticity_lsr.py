@@ -10,7 +10,6 @@ class substitution_elasticity_lsr(Variable):
     requires_computation_after = "labor_supply_behavioral_response"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.simulation.labor_supply_responses
         raw_earnings = add(
             person,
             period,
