@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.simulation.labor_supply_response.helpers import pos
 
 
 class income_elasticity_lsr(Variable):
@@ -16,6 +15,6 @@ class income_elasticity_lsr(Variable):
         self_employment_income = person(
             "self_employment_income_before_lsr", period
         )
-        earnings = pos(employment_income + self_employment_income)
+        earnings = max_(employment_income + self_employment_income, 0)
         income_change = person("relative_income_change", period)
         return earnings * income_change * person("income_elasticity", period)

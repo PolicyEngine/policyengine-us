@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.simulation.labor_supply_response.helpers import pos, safe_share
 
 
 class employment_income_behavioral_response(Variable):
@@ -15,6 +14,8 @@ class employment_income_behavioral_response(Variable):
         self_employment_income = person(
             "self_employment_income_before_lsr", period
         )
-        earnings = pos(employment_income + self_employment_income)
-        emp_share = safe_share(employment_income, earnings)
+        earnings = max_(employment_income + self_employment_income, 0)
+        emp_share = np.ones_like(earnings)
+        mask = earnings > 0
+        emp_share[mask] = employment_income[mask] / earnings[mask]
         return lsr * emp_share

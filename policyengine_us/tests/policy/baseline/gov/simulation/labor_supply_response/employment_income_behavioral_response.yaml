@@ -32,7 +32,7 @@
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: -10_000
   output:
-    employment_income_behavioral_response: 1_250  # pos(earnings) = 40_000, safe_share(50_000, 40_000) = 1.25
+    employment_income_behavioral_response: 1_250  # max_(earnings, 0) = 40_000, emp_share = 50_000/40_000 = 1.25
 
 - name: Zero total earnings
   period: 2023
@@ -41,4 +41,4 @@
     employment_income_before_lsr: 0
     self_employment_income_before_lsr: 0
   output:
-    employment_income_behavioral_response: 0  # safe_share(0, 0) = 0
+    employment_income_behavioral_response: 500  # mask approach defaults emp_share = 1 when earnings = 0
