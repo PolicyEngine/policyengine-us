@@ -18,6 +18,27 @@ def create_ny_2025_inflation_rebates() -> Reform:
             agi = tax_unit("ny_agi", period)
             filing_status = tax_unit("filing_status", period)
             filing_statuses = filing_status.possible_values
+            if p.incremental_phase_out.applies:
+                return select(
+                    [
+                        filing_status == filing_statuses.SINGLE,
+                        filing_status == filing_statuses.JOINT,
+                        filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
+                        filing_status == filing_statuses.SEPARATE,
+                        filing_status == filing_statuses.SURVIVING_SPOUSE,
+                    ],
+                    [
+                        p.incremental_phase_out.single.calc(agi, right=True),
+                        p.incremental_phase_out.joint.calc(agi, right=True),
+                        p.incremental_phase_out.head_of_household.calc(
+                            agi, right=True
+                        ),
+                        p.incremental_phase_out.separate.calc(agi, right=True),
+                        p.incremental_phase_out.surviving_spouse.calc(
+                            agi, right=True
+                        ),
+                    ],
+                )
             return select(
                 [
                     filing_status == filing_statuses.SINGLE,

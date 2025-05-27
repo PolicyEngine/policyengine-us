@@ -1,0 +1,75 @@
+- name: Unit test, eligible for AOC filer
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    qualified_tuition_expenses: 1_000
+    filer_meets_llc_and_aoc_identification_requirements: true
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    american_opportunity_credit: 1_000
+    lifetime_learning_credit: 0
+
+- name: Unit test, not eligible for AOC filer
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    qualified_tuition_expenses: 1_000
+    filer_meets_llc_and_aoc_identification_requirements: true
+    is_eligible_for_american_opportunity_credit: false
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 200
+
+- name: Unit test, ineligible filer
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    qualified_tuition_expenses: 1_000
+    filer_meets_llc_and_aoc_identification_requirements: false
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 0
+
+- name: One ineligible member, no credits
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_eligible_for_american_opportunity_credit: true
+      person2:
+        ssn_card_type: NONE
+        qualified_tuition_expenses: 1_000
+        is_eligible_for_american_opportunity_credit: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    american_opportunity_credit: 0
+    lifetime_learning_credit: 0
+
+- name: Both eligible members, no credits
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_ssn_for_llc_and_aoc.reconciled_ssn_for_llc_and_aoc
+  input:
+    gov.contrib.reconciliation.ssn_for_llc_and_aoc.in_effect: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_eligible_for_american_opportunity_credit: true
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        qualified_tuition_expenses: 1_000
+        is_eligible_for_american_opportunity_credit: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    american_opportunity_credit: 1_000
+    lifetime_learning_credit: 0

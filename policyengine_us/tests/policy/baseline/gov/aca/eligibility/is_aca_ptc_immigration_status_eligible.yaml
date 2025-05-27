@@ -1,0 +1,33 @@
+- name: In 2022, citizen is eligible. 
+  period: 2022
+  input:
+    immigration_status: CITIZEN
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
+- name: In 2022, aslyee is eligible. 
+  period: 2022
+  input:
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
+- name: In 2022, Deferred Action for Childhood Arrivals or Temporary Protected Status is ineligible. 
+  period: 2022
+  input:
+    immigration_status: DACA_TPS
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2022, undocumented is ineligible.
+  period: 2022
+  input: 
+    immigration_status: UNDOCUMENTED
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: Default to true. 
+  period: 2022
+  input:
+  output:
+    is_aca_ptc_immigration_status_eligible: true

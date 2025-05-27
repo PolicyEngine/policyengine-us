@@ -1,0 +1,20 @@
+description: The Committee on Ways and Means proposed to phase out the additional standard deduction for seniors at this rate for non-joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Reconciled additional standard deduction other filers reduction rate
+  reference:
+  - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
+    href: https://punchbowl.news/smitmo_017_xml/ #page 35
+
+brackets:
+  - threshold:
+      2025-01-01: 0
+    rate:
+      2025-01-01: 0
+  - threshold:
+      2025-01-01: 75_000
+    rate:
+      2025-01-01: 0.04
