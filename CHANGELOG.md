@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.297.0] - 2025-05-27 22:24:56
+
+### Added
+
+- CalWorks TANF and Child Care immigration status eligibility.
+
 ## [1.296.0] - 2025-05-27 21:44:24
 
 ### Added
@@ -11831,6 +11837,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.296.0...1.297.0
 [1.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.1...1.296.0
 [1.295.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.0...1.295.1
 [1.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.294.0...1.295.0
