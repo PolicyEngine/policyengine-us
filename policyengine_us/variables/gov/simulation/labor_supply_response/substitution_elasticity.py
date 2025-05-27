@@ -44,25 +44,31 @@ class substitution_elasticity(Variable):
         )
 
         tax_unit = person.tax_unit
-        tax_unit_earnings = tax_unit.sum(earnings)
         # Primary earner == highest earner in tax unit
-        is_primary_earner = tax_unit_earnings == tax_unit.max(earnings)
+        max_earnings_in_unit = tax_unit.max(earnings)
+        is_primary_earner = earnings == max_earnings_in_unit
 
         elasticities = np.zeros_like(earnings)
 
-        # First assign primary earner elasticities by decile
-        decile_elasticities = [
-            p.by_position_and_decile.primary._children[str(i + 1)]
-            for i in range(10)
-        ]
-        for i in range(10):
-            elasticities[earnings_decile == i + 1] = decile_elasticities[i]
-
-        # Then override with secondary earner elasticity where applicable
-        elasticities[~is_primary_earner] = p.by_position_and_decile.secondary
-
-        # Zero out elasticity for zero earnings only (override assignments for zero earnings)
+        # Handle zero earnings first
         zero_earnings = earnings == 0
         elasticities[zero_earnings] = 0
+
+        # For non-zero earnings, assign elasticities
+        non_zero_earnings = earnings > 0
+        
+        if np.any(non_zero_earnings):
+            # First assign primary earner elasticities by decile
+            decile_elasticities = [
+                p.by_position_and_decile.primary._children[str(i + 1)]
+                for i in range(10)
+            ]
+            for i in range(10):
+                mask = non_zero_earnings & (earnings_decile == i + 1) & is_primary_earner
+                elasticities[mask] = decile_elasticities[i]
+
+            # Then assign secondary earner elasticity where applicable
+            secondary_mask = non_zero_earnings & ~is_primary_earner
+            elasticities[secondary_mask] = p.by_position_and_decile.secondary
 
         return elasticities
