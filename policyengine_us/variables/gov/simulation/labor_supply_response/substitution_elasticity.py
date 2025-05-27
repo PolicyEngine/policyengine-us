@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.simulation.labor_supply_response.helpers import pos
 
 
 class substitution_elasticity(Variable):
@@ -30,9 +31,9 @@ class substitution_elasticity(Variable):
             1_726e3,
         ]
 
-        earnings = person("employment_income_before_lsr", period) + person(
+        earnings = pos(person("employment_income_before_lsr", period) + person(
             "self_employment_income_before_lsr", period
-        )
+        ))
         earnings_decile = (
             np.searchsorted(earnings_decile_markers, earnings) + 1
         )
@@ -43,12 +44,21 @@ class substitution_elasticity(Variable):
 
         elasticities = np.zeros_like(earnings)
 
-        p = elasticities_p.by_position_and_decile
-        elasticities[~is_primary_earner] = p.secondary
-        decile_elasticities = [
-            p.primary._children[str(i + 1)] for i in range(10)
-        ]
-        for i in range(10):
-            elasticities[earnings_decile == i + 1] = decile_elasticities[i]
+        # If earnings are zero, return zero elasticity
+        zero_earnings_mask = earnings == 0
+        if np.any(zero_earnings_mask):
+            elasticities[zero_earnings_mask] = 0
+
+        # Only process non-zero earnings
+        non_zero_mask = earnings > 0
+        if np.any(non_zero_mask):
+            p = elasticities_p.by_position_and_decile
+            elasticities[non_zero_mask & ~is_primary_earner] = p.secondary
+            decile_elasticities = [
+                p.primary._children[str(i + 1)] for i in range(10)
+            ]
+            for i in range(10):
+                mask = non_zero_mask & (earnings_decile == i + 1) & is_primary_earner
+                elasticities[mask] = decile_elasticities[i]
 
         return elasticities

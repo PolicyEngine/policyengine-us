@@ -1,0 +1,21 @@
+- name: Substitution elasticity with negative total earnings
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -60_000  # Net negative earnings
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.2
+  output:
+    # With pos() clipping, total earnings = 0, so elasticity = 0 regardless of decile
+    substitution_elasticity: 0
+
+- name: Substitution elasticity with positive net earnings after loss
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -5_000  # Net positive earnings = 45_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15  # 45k falls in decile 5
+  output:
+    # With pos() clipping, total earnings = 45_000, decile 5
+    substitution_elasticity: 0.15
