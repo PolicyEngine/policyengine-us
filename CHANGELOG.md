@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.294.0] - 2025-05-27 13:30:38
+
+### Added
+
+- Add uprating for auto loan balance and interest variables.
+
 ## [1.293.0] - 2025-05-26 17:53:02
 
 ### Added
@@ -11807,6 +11813,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.293.0...1.294.0
 [1.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.292.0...1.293.0
 [1.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.291.0...1.292.0
 [1.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.290.0...1.291.0
