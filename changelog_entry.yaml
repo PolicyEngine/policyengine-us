@@ -1,4 +1,11 @@
-- bump: patch
+- bump: minor
   changes:
+    added:
+      - estate_income_would_be_qualified
+      - farm_operations_income_would_be_qualified
+      - farm_rent_income_would_be_qualified
+      - partnership_s_corp_income_would_be_qualified
+      - rental_income_would_be_qualified
+      - self_employment_income_would_be_qualified
     changed:
-      - Add detailed tax code references with subsection anchors for qualified business income deduction parameters
+      - qualified_business_income
