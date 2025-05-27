@@ -42,3 +42,12 @@
     self_employment_income_before_lsr: 0
   output:
     employment_income_behavioral_response: 500  # mask approach defaults emp_share = 1 when earnings = 0
+
+- name: Negative total earnings clipped to zero
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: -40_000  # Net negative earnings
+  output:
+    employment_income_behavioral_response: 1_000  # max_(earnings, 0) = 0, defaults emp_share = 1

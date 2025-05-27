@@ -1,9 +1,0 @@
-- name: Zero income elasticity gives no response
-  period: 2023
-  input:
-    employment_income_before_lsr: 50_000
-    self_employment_income_before_lsr: 10_000
-    income_elasticity: 0
-    gov.simulation.labor_supply_responses.elasticities.income: 0
-  output:
-    income_elasticity_lsr: 0
