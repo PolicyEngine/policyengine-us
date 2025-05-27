@@ -17,7 +17,7 @@ class ma_liheap_eligible_subsidized_housing(Variable):
         # Eligible if monthly rent is more than 30% of income
         rent_eligible = total_rent > rent_threshold
         is_subsidized = spm_unit("receives_housing_assistance", period)
-        heat_in_rent = spm_unit("heat_costs_included_in_rent", period)
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
 
         return (is_subsidized & heat_in_rent & rent_eligible) | (
             is_subsidized & ~heat_in_rent

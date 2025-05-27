@@ -22,7 +22,7 @@ class ma_liheap_utility_category(Variable):
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
-        heat_in_rent = spm_unit("heat_costs_included_in_rent", period)
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         heating_type = spm_unit("ma_liheap_heating_type", period)
         heating_types = heating_type.possible_values
 
