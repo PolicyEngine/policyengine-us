@@ -10,11 +10,11 @@ class income_elasticity_lsr(Variable):
     requires_computation_after = "labor_supply_behavioral_response"
 
     def formula(person, period, parameters):
-        lsr = parameters(period).gov.simulation.labor_supply_responses
-        employment_income = person("employment_income_before_lsr", period)
-        self_employment_income = person(
-            "self_employment_income_before_lsr", period
+        raw_earnings = add(
+            person,
+            period,
+            ["employment_income_before_lsr", "self_employment_income_before_lsr"],
         )
-        earnings = max_(employment_income + self_employment_income, 0)
+        earnings = max_(raw_earnings, 0)
         income_change = person("relative_income_change", period)
         return earnings * income_change * person("income_elasticity", period)

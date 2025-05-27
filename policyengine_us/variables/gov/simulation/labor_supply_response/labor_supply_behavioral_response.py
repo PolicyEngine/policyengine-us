@@ -9,14 +9,13 @@ class labor_supply_behavioral_response(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        gov = parameters(period).gov
-        lsr = gov.simulation.labor_supply_responses
+        p = parameters(period).gov.simulation.labor_supply_responses
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
         if (
-            lsr.elasticities.income == 0
-            and lsr.elasticities.substitution.all == 0
+            p.elasticities.income == 0
+            and p.elasticities.substitution.all == 0
         ):
             return 0
 
