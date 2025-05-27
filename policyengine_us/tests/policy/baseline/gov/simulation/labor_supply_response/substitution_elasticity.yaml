@@ -1,0 +1,28 @@
+- name: Default substitution elasticity is zero
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+  output:
+    substitution_elasticity: 0
+
+- name: Global substitution elasticity override
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0.25
+  output:
+    substitution_elasticity: 0.25
+
+- name: Primary earner in decile 1 with default parameters
+  period: 2023
+  input:
+    employment_income_before_lsr: 10_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.1
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.2
+  output:
+    substitution_elasticity: 0.1

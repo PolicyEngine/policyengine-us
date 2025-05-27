@@ -1,0 +1,6 @@
+- name: Default bounds parameter
+  period: 2023
+  input:
+    gov.simulation.labor_supply_responses.bounds.effective_wage_rate_change: 1.0
+  output:
+    relative_wage_change: 0
