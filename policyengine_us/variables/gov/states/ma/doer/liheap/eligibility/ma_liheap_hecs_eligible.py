@@ -13,11 +13,11 @@ class ma_liheap_hecs_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("ma_liheap_heating_type", period)
-        last_year_energy_cost = spm_unit(
-            "ma_liheap_last_year_energy_cost", period
+        heating_expense_last_year = spm_unit(
+            "heating_expense_last_year", period
         )
 
-        p = parameters(period).gov.states.ma.doer.liheap.threshold
-        threshold = p.hecs_thresholds[heating_type]
+        p = parameters(period).gov.states.ma.doer.liheap.hecs.eligibility
+        threshold = p.prior_year_cost_threshold[heating_type]
 
-        return last_year_energy_cost > threshold
+        return heating_expense_last_year > threshold

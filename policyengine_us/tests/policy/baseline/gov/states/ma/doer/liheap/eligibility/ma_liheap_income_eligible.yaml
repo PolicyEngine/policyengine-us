@@ -3,7 +3,7 @@
   input:
     spm_unit_size: 1 
     state_code: MA
-    irs_gross_income: 42_000
+    ma_liheap_income: 42_000
   output:
     ma_liheap_income_eligible: true
     # hhs_smi: 42_411
@@ -13,7 +13,7 @@
   input:
     spm_unit_size: 4 
     state_code: MA
-    irs_gross_income: 82_000
+    ma_liheap_income: 82_000
   output:
     ma_liheap_income_eligible: false
     # hhs_smi: 81_561
@@ -23,7 +23,7 @@
   input:
     spm_unit_size: 11 
     state_code: MA
-    irs_gross_income: 119_895
+    ma_liheap_income: 119_895
   output:
     ma_liheap_income_eligible: true
     # hhs_smi: 119_895

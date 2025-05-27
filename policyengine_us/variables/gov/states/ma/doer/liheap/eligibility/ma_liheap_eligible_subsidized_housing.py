@@ -10,9 +10,9 @@ class ma_liheap_eligible_subsidized_housing(Variable):
     reference = "https://liheapch.acf.gov/tables/subsidize.htm#MA"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.doer.liheap.threshold
-        income = add(spm_unit, period, ["irs_gross_income"])
-        rent_threshold = income * p.rent_rate
+        p = parameters(period).gov.states.ma.doer.liheap.eligibility
+        income = spm_unit("ma_liheap_income", period)
+        rent_threshold = income * p.rent_threshold_subsidized_housing
         total_rent = add(spm_unit, period, ["rent"])
         # Eligible if monthly rent is more than 30% of income
         rent_eligible = total_rent > rent_threshold

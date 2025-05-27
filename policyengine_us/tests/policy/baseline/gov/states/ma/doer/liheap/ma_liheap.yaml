@@ -8,7 +8,7 @@
     electricity_expense: 1_300
     heat_costs_included_in_rent: false
     receives_housing_assistance: false
-    ma_liheap_last_year_energy_cost: 1_800
+    heating_expense_last_year: 1_800
     state_code: MA 
   output:
     ma_liheap_income_eligible: true
@@ -28,7 +28,7 @@
     electricity_expense: 500
     heat_costs_included_in_rent: false
     receives_housing_assistance: false
-    ma_liheap_last_year_energy_cost: 1_800
+    heating_expense_last_year: 1_800
     state_code: MA 
   output:
     ma_liheap_income_eligible: true
@@ -48,7 +48,7 @@
     heating_cooling_expense: 500
     heat_costs_included_in_rent: true
     receives_housing_assistance: true
-    ma_liheap_last_year_energy_cost: 0
+    heating_expense_last_year: 0
     state_code: MA 
   output:
     ma_liheap_income_eligible: true
@@ -68,7 +68,7 @@
     heating_cooling_expense: 800
     heat_costs_included_in_rent: false
     receives_housing_assistance: true
-    ma_liheap_last_year_energy_cost: 1_800
+    heating_expense_last_year: 1_800
     state_code: MA 
   output:
     ma_liheap_income_eligible: true

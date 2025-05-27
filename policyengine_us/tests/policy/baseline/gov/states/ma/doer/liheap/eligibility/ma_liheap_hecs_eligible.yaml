@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: MA
-    ma_liheap_last_year_energy_cost: 1_300  
+    heating_expense_last_year: 1_300  
     ma_liheap_heating_type: HEATING_OIL_AND_PROPANE  
   output:
     ma_liheap_hecs_eligible: true
@@ -11,7 +11,7 @@
   period: 2025
   input:
     state_code: MA
-    ma_liheap_last_year_energy_cost: 900  
+    heating_expense_last_year: 900  
     ma_liheap_heating_type: NATURAL_GAS  
   output:
     ma_liheap_hecs_eligible: false

@@ -3,7 +3,7 @@
   input:
     spm_unit_size: 2
     state_code: MA
-    irs_gross_income: 70_000
+    ma_liheap_income: 70_000
     receives_housing_assistance: true
     rent: 22_000
     heat_costs_included_in_rent: true
@@ -15,7 +15,7 @@
   input:
     spm_unit_size: 4
     state_code: MA
-    irs_gross_income: 100_000
+    ma_liheap_income: 100_000
     receives_housing_assistance: true
     rent: 29_000
     heat_costs_included_in_rent: true
@@ -27,7 +27,7 @@
   input:
     spm_unit_size: 2
     state_code: MA
-    irs_gross_income: 70_000
+    ma_liheap_income: 70_000
     receives_housing_assistance: false
     rent: 22_000
   output:

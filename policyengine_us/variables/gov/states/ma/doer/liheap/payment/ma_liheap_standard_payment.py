@@ -10,7 +10,7 @@ class ma_liheap_standard_payment(Variable):
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.doer.liheap.payment.standard
+        p = parameters(period).gov.states.ma.doer.liheap.standard.amount
         utility_category = spm_unit("ma_liheap_utility_category", period)
         benefit_level = spm_unit("ma_liheap_benefit_level", period)
         is_subsidized = spm_unit("receives_housing_assistance", period)

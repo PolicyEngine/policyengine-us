@@ -3,7 +3,7 @@
   input:
     spm_unit_size: 1
     state_code: MA
-    irs_gross_income: 12_879
+    ma_liheap_income: 12_879
   output:
     ma_liheap_benefit_level: 1
 
@@ -12,7 +12,7 @@
   input:
     spm_unit_size: 4
     state_code: MA
-    irs_gross_income: 41_624
+    ma_liheap_income: 41_624
   output:
     ma_liheap_benefit_level: 3
 
@@ -21,7 +21,7 @@
   input:
     spm_unit_size: 4
     state_code: MA
-    irs_gross_income: 41_626
+    ma_liheap_income: 41_626
   output:
     ma_liheap_benefit_level: 4
 
@@ -30,7 +30,7 @@
   input:
     spm_unit_size: 4
     state_code: MA
-    irs_gross_income: 81_560
+    ma_liheap_income: 81_560
   output:
     ma_liheap_benefit_level: 6
 
@@ -39,6 +39,6 @@
   input:
     spm_unit_size: 4
     state_code: MA
-    irs_gross_income: 81_562
+    ma_liheap_income: 81_562
   output:
-    ma_liheap_benefit_level: 0
+    ma_liheap_benefit_level: 6

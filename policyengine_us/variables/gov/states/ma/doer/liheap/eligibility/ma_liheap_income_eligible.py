@@ -10,7 +10,7 @@ class ma_liheap_income_eligible(Variable):
     reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
 
     def formula(spm_unit, period, parameters):
-        income = add(spm_unit, period, ["irs_gross_income"])
+        income = spm_unit("ma_liheap_income", period)
         income_threshold = spm_unit(
             "ma_liheap_state_median_income_threshold", period
         )
