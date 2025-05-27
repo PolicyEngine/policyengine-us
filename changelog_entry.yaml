@@ -1,0 +1,12 @@
+- bump: minor
+  changes:
+    fixed:
+      - Fixed negative self-employment income causing counterintuitive labor supply response sign flips
+      - Labor supply responses now properly handle negative total earnings by clipping to zero
+    added:
+      - Comprehensive unit tests for all labor supply response variables
+      - Regression tests for negative earnings scenarios
+    changed:
+      - Refactored labor supply response module into individual variable files for better organization
+      - Applied consistent code style patterns across all labor supply response variables
+      - Improved parameter access patterns and income combination methods
