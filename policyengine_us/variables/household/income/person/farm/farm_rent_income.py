@@ -17,7 +17,5 @@ class farm_operations_income(Variable):
     unit = USD
     documentation = "Income from active farming operations. Schedule F. Do not include this income in self-employment income."
     definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.farm_income"  # TODO: update
-
-
-
+    # Uprate farm operations income using SOI farm income series.
+    uprating = "calibration.gov.irs.soi.farm_income"
