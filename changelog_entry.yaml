@@ -9,3 +9,9 @@
       - self_employment_income_would_be_qualified
     changed:
       - qualified_business_income
+
+- bump: patch
+  changes:
+    fixed:
+      - corrected uprating for QBI dividend income variables
+      - documented uprating for farm_operations_income
