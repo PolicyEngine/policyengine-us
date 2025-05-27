@@ -27,5 +27,5 @@
   output:
     pr_eligible_dependent_for_exemption: [true, false, false]
     pr_dependents_exemption: 1_250
-    pr_is_eligible_nonstudent: [false, false, false]
-    pr_is_eligible_student: [true, false, false]
+    pr_exemptions_is_eligible_nonstudent: [false, false, false]
+    pr_exemptions_is_eligible_student: [true, false, false]

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pr_is_eligible_nonstudent(Variable):
+class pr_exemptions_is_eligible_student(Variable):
     value_type = bool
     entity = Person
-    label = "Puerto Rico dependent exemption eligible nonstudent"
+    label = "Puerto Rico dependent exemption eligible student"
     reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
     unit = USD
     definition_period = YEAR
@@ -16,6 +16,9 @@ class pr_is_eligible_nonstudent(Variable):
             period
         ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
         is_dependent = person("is_tax_unit_dependent", period)
+        is_student = person("is_full_time_student", period)
         gross_income = person("pr_gross_income", period)
-        income_eligibility = gross_income < p.nonstudent_threshold
-        return is_dependent & income_eligibility
+        age = person("age", period)
+        age_eligibility = age < p.age_threshold
+        income_eligibility = gross_income < p.student_threshold
+        return is_dependent & is_student & income_eligibility & age_eligibility

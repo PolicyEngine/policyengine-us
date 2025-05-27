@@ -5,7 +5,7 @@
     pr_gross_income: 2_499 
     state_code: PR
   output:
-    pr_is_eligible_nonstudent: true
+    pr_exemptions_is_eligible_nonstudent: true
 
 - name: Noneligible dependent
   period: 2024
@@ -14,7 +14,7 @@
     pr_gross_income: 2_501
     state_code: PR
   output:
-    pr_is_eligible_nonstudent: false
+    pr_exemptions_is_eligible_nonstudent: false
 
 - name: Noneligible person
   period: 2024
@@ -23,4 +23,4 @@
     pr_gross_income: 2_000
     state_code: PR
   output:
-    pr_is_eligible_nonstudent: false
+    pr_exemptions_is_eligible_nonstudent: false

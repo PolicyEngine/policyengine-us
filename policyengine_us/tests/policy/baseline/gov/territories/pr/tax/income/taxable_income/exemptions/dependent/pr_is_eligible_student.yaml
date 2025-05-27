@@ -7,7 +7,7 @@
     age: 25
     state_code: PR
   output:
-    pr_is_eligible_student: true
+    pr_exemptions_is_eligible_student: true
 
 - name: Noneligible student dependent, too high income
   period: 2024
@@ -18,7 +18,7 @@
     age: 20
     state_code: PR
   output:
-    pr_is_eligible_student: false
+    pr_exemptions_is_eligible_student: false
 
 - name: Noneligible student dependent, too high income
   period: 2024
@@ -29,7 +29,7 @@
     age: 26
     state_code: PR
   output:
-    pr_is_eligible_student: false
+    pr_exemptions_is_eligible_student: false
 
 - name: Noneligible, not a student dependent
   period: 2024
@@ -40,7 +40,7 @@
     age: 18
     state_code: PR
   output:
-    pr_is_eligible_student: false
+    pr_exemptions_is_eligible_student: false
 
 - name: Noneligible, not a student, not a dependent
   period: 2024
@@ -51,4 +51,4 @@
     age: 30
     state_code: PR
   output:
-    pr_is_eligible_student: false
+    pr_exemptions_is_eligible_student: false

@@ -11,6 +11,8 @@ class pr_eligible_dependent_for_exemption(Variable):
     defined_for = StateCode.PR
 
     def formula(person, period, parameters):
-        student_eligible = person("pr_is_eligible_student", period)
-        non_student_eligible = person("pr_is_eligible_nonstudent", period)
+        student_eligible = person("pr_exemptions_is_eligible_student", period)
+        non_student_eligible = person(
+            "pr_exemptions_is_eligible_nonstudent", period
+        )
         return student_eligible | non_student_eligible
