@@ -13,10 +13,7 @@ class labor_supply_behavioral_response(Variable):
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
-        if (
-            p.elasticities.income == 0
-            and p.elasticities.substitution.all == 0
-        ):
+        if p.elasticities.income == 0 and p.elasticities.substitution.all == 0:
             return 0
 
         measurement_branch = simulation.get_branch(

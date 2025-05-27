@@ -26,4 +26,8 @@ class relative_wage_change(Variable):
         wage_rate_c = np.where(wage_rate == 0, 0.01, wage_rate)
         relative_change = (wage_rate_c - baseline_wage_c) / baseline_wage_c
         p = parameters(period).gov.simulation.labor_supply_responses
-        return np.clip(relative_change, -p.bounds.effective_wage_rate_change, p.bounds.effective_wage_rate_change)
+        return np.clip(
+            relative_change,
+            -p.bounds.effective_wage_rate_change,
+            p.bounds.effective_wage_rate_change,
+        )

@@ -33,10 +33,15 @@ class substitution_elasticity(Variable):
         raw_earnings = add(
             person,
             period,
-            ["employment_income_before_lsr", "self_employment_income_before_lsr"],
+            [
+                "employment_income_before_lsr",
+                "self_employment_income_before_lsr",
+            ],
         )
         earnings = max_(raw_earnings, 0)
-        earnings_decile = np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
+        earnings_decile = (
+            np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
+        )
 
         tax_unit = person.tax_unit
         tax_unit_earnings = tax_unit.sum(earnings)
@@ -47,7 +52,8 @@ class substitution_elasticity(Variable):
 
         # First assign primary earner elasticities by decile
         decile_elasticities = [
-            p.by_position_and_decile.primary._children[str(i + 1)] for i in range(10)
+            p.by_position_and_decile.primary._children[str(i + 1)]
+            for i in range(10)
         ]
         for i in range(10):
             elasticities[earnings_decile == i + 1] = decile_elasticities[i]

@@ -14,7 +14,10 @@ class substitution_elasticity_lsr(Variable):
         raw_earnings = add(
             person,
             period,
-            ["employment_income_before_lsr", "self_employment_income_before_lsr"],
+            [
+                "employment_income_before_lsr",
+                "self_employment_income_before_lsr",
+            ],
         )
         earnings = max_(raw_earnings, 0)
         wage_change = person("relative_wage_change", period)
