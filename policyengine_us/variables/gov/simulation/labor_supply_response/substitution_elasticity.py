@@ -56,7 +56,7 @@ class substitution_elasticity(Variable):
 
         # For non-zero earnings, assign elasticities
         non_zero_earnings = earnings > 0
-        
+
         if np.any(non_zero_earnings):
             # First assign primary earner elasticities by decile
             decile_elasticities = [
@@ -64,7 +64,11 @@ class substitution_elasticity(Variable):
                 for i in range(10)
             ]
             for i in range(10):
-                mask = non_zero_earnings & (earnings_decile == i + 1) & is_primary_earner
+                mask = (
+                    non_zero_earnings
+                    & (earnings_decile == i + 1)
+                    & is_primary_earner
+                )
                 elasticities[mask] = decile_elasticities[i]
 
             # Then assign secondary earner elasticity where applicable

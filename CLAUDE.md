@@ -38,7 +38,7 @@ make documentation
 - View PR list: `gh pr list` 
 - View PR details: `gh pr view [PR-NUMBER]`
 - Contributing to PRs:
-  - After making code changes, run `make format` to ensure code meets style guidelines
+  - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
@@ -65,6 +65,7 @@ make documentation
 - Every PR needs a changelog entry in changelog_entry.yaml
 
 ## Common Patterns and Gotchas
+- **ALWAYS run `make format` before every commit** - this is mandatory and ensures consistent code style
 - Unit tests with scalar values can pass while vectorized microsimulation fails
 - When implementing a previously empty variable, be sure to check for dependent formulas
 - When using `defined_for`, ensure it's tested in microsimulation context
