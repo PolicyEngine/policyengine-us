@@ -7,8 +7,8 @@ national per capita spending averages and Vermont's enrollment data.
 Data Sources:
 - EXHIBIT 21. Medicaid Spending by State, Eligibility Group, and Dually Eligible Status | MACPAC
   https://www.macpac.gov/publication/medicaid-spending-by-state-category-and-source-of-funds/
-  
-- Spending by enrollment category was created by multiplying total Medicaid spending 
+
+- Spending by enrollment category was created by multiplying total Medicaid spending
   by state by the percent of spending on aged enrollees.
 """
 
