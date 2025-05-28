@@ -7,6 +7,7 @@ class emp_self_emp_ratio(Variable):
     label = "Share of earnings from wages and salaries"
     unit = "/1"
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/1402"
 
     def formula(person, period, parameters):
         employment_income = person("employment_income", period)

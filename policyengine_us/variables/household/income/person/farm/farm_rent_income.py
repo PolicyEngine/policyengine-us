@@ -7,15 +7,5 @@ class farm_rent_income(Variable):
     label = "farm rental income"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/1402" 
     uprating = "calibration.gov.irs.soi.farm_rent_income"
-
-
-class farm_operations_income(Variable):
-    value_type = float
-    entity = Person
-    label = "farm income"
-    unit = USD
-    documentation = "Income from active farming operations. Schedule F. Do not include this income in self-employment income."
-    definition_period = YEAR
-    # Uprate farm operations income using SOI farm income series.
-    uprating = "calibration.gov.irs.soi.farm_income"

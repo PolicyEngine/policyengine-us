@@ -10,6 +10,7 @@ class employment_income_before_lsr(Variable):
     label = "employment income before labor supply responses"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/3401#a"
     uprating = "calibration.gov.irs.soi.employment_income"
 
 
@@ -19,6 +20,7 @@ class self_employment_income_before_lsr(Variable):
     label = "self-employment income before labor supply responses"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/1402#a"
     uprating = "calibration.gov.irs.soi.self_employment_income"
 
 
@@ -33,6 +35,7 @@ class employment_income(Variable):
         "employment_income_before_lsr",
         "employment_income_behavioral_response",
     ]
+    reference = "https://www.law.cornell.edu/uscode/text/26/3401#a"
     uprating = "calibration.gov.irs.soi.employment_income"
 
 
@@ -47,4 +50,5 @@ class self_employment_income(Variable):
         "self_employment_income_before_lsr",
         "self_employment_income_behavioral_response",
     ]
+    reference = "https://www.law.cornell.edu/uscode/text/26/1402#a"
     uprating = "calibration.gov.irs.soi.self_employment_income"
