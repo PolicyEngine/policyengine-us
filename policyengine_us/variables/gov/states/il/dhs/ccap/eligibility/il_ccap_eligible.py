@@ -14,12 +14,11 @@ class il_ccap_eligible(Variable):
         has_eligible_child = (
             add(spm_unit, period, ["il_ccap_eligible_child"]) > 0
         )
-        is_working = (
-            add(
-                spm_unit,
-                period,
-                ["employment_income", "self_employment_income"],
-            )
-            > 0
+        parent_meets_working_requirements = spm_unit(
+            "il_ccap_parent_meets_working_requirements", period
         )
-        return income_eligible & has_eligible_child & is_working
+        return (
+            income_eligible
+            & has_eligible_child
+            & parent_meets_working_requirements
+        )

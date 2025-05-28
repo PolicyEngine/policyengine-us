@@ -2,7 +2,6 @@
   period: 2023
   input:
     immigration_status: REFUGEE
-    is_ssi_qualified_noncitizen: true
     state_code: IL
   output:
     il_ccap_immigration_status_eligible_person: true
@@ -11,7 +10,6 @@
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
-    is_ssi_qualified_noncitizen: false
     state_code: IL
   output:
     il_ccap_immigration_status_eligible_person: false
@@ -19,8 +17,7 @@
 - name: Eligible refugee 
   period: 2023
   input:
-    immigration_status: REFUGEE
-    is_ssi_qualified_noncitizen: true
+    immigration_status: ASYLEE
     state_code: IL
   output:
     il_ccap_immigration_status_eligible_person: true
@@ -29,7 +26,6 @@
   period: 2023
   input:
     immigration_status: CITIZEN
-    is_ssi_qualified_noncitizen: false
     state_code: IL
   output:
     il_ccap_immigration_status_eligible_person: true
