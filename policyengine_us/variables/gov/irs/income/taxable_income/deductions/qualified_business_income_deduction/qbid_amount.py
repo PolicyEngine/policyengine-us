@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class qbid_amount(Variable):
     value_type = float
     entity = Person
-    label = "Per-cap qualified business income deduction amount for each person"
+    label = (
+        "Per-cap qualified business income deduction amount for each person"
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -74,7 +76,9 @@ class qbid_amount(Variable):
             adj_qbid_max,  # Below threshold: wage/UBIA limit does not apply.
             where(
                 phase_in_pct < 1,
-                max_(limited_deduction, phased_deduction),  # Inside phase‑in band.
+                max_(
+                    limited_deduction, phased_deduction
+                ),  # Inside phase‑in band.
                 limited_deduction,  # Over the band: limitation fully applies.
             ),
         )
