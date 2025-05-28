@@ -32,21 +32,3 @@
   output:
     ca_calworks_child_care_child_age_eligible: false
 
-
-- name: Ineligible if child is undokumented
-  period: 2023
-  input:
-    age: 18
-    is_disabled: true
-    immigration_status: UNDOCUMENTED
-  output:
-    ca_calworks_child_care_child_age_eligible: false
-
-- name: Ineligible if child is TPS
-  period: 2023
-  input:
-    age: 18
-    is_disabled: true
-    immigration_status: DACA_TPS
-  output:
-    ca_calworks_child_care_child_age_eligible: false
