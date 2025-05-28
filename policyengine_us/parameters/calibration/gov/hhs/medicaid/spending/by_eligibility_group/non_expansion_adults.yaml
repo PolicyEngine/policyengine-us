@@ -8,6 +8,7 @@ metadata:
   reference:
   - title: EXHIBIT 21. Medicaid Spending by State, Eligibility Group, and Dually Eligible Status | MACPAC 
     href: https://www.macpac.gov/publication/medicaid-spending-by-state-category-and-source-of-funds/
+  # Spending by enrollment category was created by multiplying total Medicaid spending by state by the percent of spending on non-expansion adults.
 AK:
   2022-01-01: 393_000_000
 AL:
@@ -99,7 +100,7 @@ UT:
 VA:
   2022-01-01: 1_233_000_000
 VT:
-  2022-01-01: 18_943_000_000
+  2022-01-01: 73_160_000 # Values generated in calculate_vermont_spending_breakdown.py
 WA:
   2022-01-01: 1_739_000_000
 WI:
