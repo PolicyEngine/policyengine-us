@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class auto_loan_interest(Variable):
+class networth(Variable):
     value_type = float
     entity = Household
-    label = "auto loan interest expense"
+    label = "net worth (imputed with statistical matching)"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
+    uprating = "parameters.gov.bls.cpi.cpi_u"
