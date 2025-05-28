@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class networth(Variable):
+class net_worth(Variable):
     value_type = float
     entity = Household
     label = "net worth"
