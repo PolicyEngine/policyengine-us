@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.297.2] - 2025-05-28 01:47:22
+
+### Fixed
+
+- auto loan variables uprating path
+
 ## [1.297.1] - 2025-05-27 23:07:51
 
 ### Changed
@@ -11843,6 +11849,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.297.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.1...1.297.2
 [1.297.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.0...1.297.1
 [1.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.296.0...1.297.0
 [1.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.1...1.296.0
