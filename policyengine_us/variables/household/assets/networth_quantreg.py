@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class networth(Variable):
+class networth_quantreg(Variable):
     value_type = float
     entity = Household
     label = "net worth (imputed with quantile regression)"
