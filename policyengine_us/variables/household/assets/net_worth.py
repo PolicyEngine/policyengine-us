@@ -7,4 +7,4 @@ class net_worth(Variable):
     label = "net worth"
     unit = USD
     definition_period = YEAR
-    uprating = "parameters.gov.bls.cpi.cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"
