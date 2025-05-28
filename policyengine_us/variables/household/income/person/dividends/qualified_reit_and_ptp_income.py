@@ -8,5 +8,5 @@ class qualified_reit_and_ptp_income(Variable):
     unit = USD
     documentation = "REIT and Publically Traded Partnership Income. Part of the QBID calclulation."
     definition_period = YEAR
-    # Uprate using the same series as other dividend income.
+    reference = "https://www.law.cornell.edu/uscode/text/26/1#h_11"
     uprating = "calibration.gov.irs.soi.qualified_dividend_income"

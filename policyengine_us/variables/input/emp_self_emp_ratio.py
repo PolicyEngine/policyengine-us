@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class emp_self_emp_ratio(Variable):
     value_type = float
     entity = Person
-    label = "employment-to-self-employment income ratio"
+    label = "Share of earnings from wages and salaries"
     unit = "/1"
     definition_period = YEAR
 
