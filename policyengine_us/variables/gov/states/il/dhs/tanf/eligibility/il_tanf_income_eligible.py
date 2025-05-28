@@ -11,9 +11,9 @@ class il_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         countable_income = spm_unit(
-            "il_tanf_countable_income_at_application", period
+            "il_tanf_countable_income_for_initial_eligibility", period
         )
         payment_level = spm_unit(
-            "il_tanf_payment_level_at_application", period
+            "il_tanf_payment_level_for_initial_eligibility", period
         )
         return countable_income <= payment_level

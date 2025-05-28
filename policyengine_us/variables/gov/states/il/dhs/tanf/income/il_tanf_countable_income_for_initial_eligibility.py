@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_tanf_countable_income_at_application(Variable):
+class il_tanf_countable_income_for_initial_eligibility(Variable):
     value_type = float
     entity = SPMUnit
     label = "Illinois Temporary Assistance for Needy Families (TANF) countable income at application"
@@ -11,6 +11,6 @@ class il_tanf_countable_income_at_application(Variable):
     defined_for = StateCode.IL
 
     adds = [
-        "il_tanf_countable_earned_income_at_application",
+        "il_tanf_countable_earned_income_for_initial_eligibility",
         "il_tanf_countable_unearned_income",
     ]

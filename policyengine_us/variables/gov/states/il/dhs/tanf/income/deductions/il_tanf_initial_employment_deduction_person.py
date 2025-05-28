@@ -18,7 +18,7 @@ class il_tanf_initial_employment_deduction_person(Variable):
         gross_earned_income = person("il_tanf_gross_earned_income", period)
         fpg = person.spm_unit("spm_unit_fpg", period)
         payment_level = person.spm_unit(
-            "il_tanf_payment_level_at_application", period
+            "il_tanf_payment_level_for_initial_eligibility", period
         )
 
         initial_employment_deduction = p.rate * fpg - payment_level

@@ -6,15 +6,12 @@ class il_tanf_payment_eligible_child(Variable):
     entity = Person
     definition_period = MONTH
     label = "Eligible child for Illinois Temporary Assistance for Needy Families (TANF) payment"
-    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.60"
+    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.300"
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
         eligible_child = person("il_tanf_eligible_child", period)
-        immigration_status_eligible = person(
-            "il_tanf_immigration_status_eligible_person", period
+        eligible_requirements = person(
+            "il_tanf_payment_eligible_requirements", period
         )
-        ssi = person("ssi", period)
-        receives_ssi = ssi > 0
-
-        return ~receives_ssi & eligible_child & immigration_status_eligible
+        return eligible_child & eligible_requirements

@@ -15,13 +15,11 @@ class il_tanf_eligible_child(Variable):
         p = parameters(period).gov.states.il.dhs.tanf.age_threshold
         age = person("monthly_age", period)
         dependent = person("is_tax_unit_dependent", period)
-        minor_child = age < p.minor_child
-        eligible_minor_child = minor_child & dependent
-
-        student_dependent = age <= p.student_dependent
         secondary_school_student = person("is_in_secondary_school", period)
-        eligible_student_dependent = (
-            secondary_school_student & student_dependent & dependent
+        age_eligible = where(
+            secondary_school_student,
+            age <= p.student_dependent,
+            age < p.minor_child,
         )
 
-        return eligible_minor_child | eligible_student_dependent
+        return age_eligible & dependent

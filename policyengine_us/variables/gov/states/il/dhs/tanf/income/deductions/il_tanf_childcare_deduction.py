@@ -16,14 +16,9 @@ class il_tanf_childcare_deduction(Variable):
         ).gov.states.il.dhs.tanf.income.child_care_deduction
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        child = person("is_child", period)
-        qualify_child = dependent & child
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        have_childcare_expenses = childcare_expenses > 0
-        childcare_deduction_person = (
-            p.calc(age) * qualify_child * have_childcare_expenses
-        )
+        childcare_deduction_person = p.calc(age) * dependent
         total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
 
         return min_(childcare_expenses, total_childcare_deduction)

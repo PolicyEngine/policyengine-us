@@ -24,16 +24,16 @@ class il_tanf_payment_level_for_grant_calculation(Variable):
         # The payment levels can vary by ssi eligibility:
         # If only the parent is receiving SSI, the payment level is 75%
         # if only the child is receiving SSI, the payment level is 25%
-        parent_only_payment = p.parent_only_rate * p.rate * fpg
-        child_only_payment = p.child_only_rate * p.rate * fpg
-        parent_and_child_present_payment = p.rate * fpg
+        base_payment = p.rate * fpg
+        parent_only_payment = p.parent_only_rate * base_payment
+        child_only_payment = p.child_only_rate * base_payment
 
         return select(
             [parent_only, child_only, parent_and_child_present],
             [
                 parent_only_payment,
                 child_only_payment,
-                parent_and_child_present_payment,
+                base_payment,
             ],
             default=0,
         )

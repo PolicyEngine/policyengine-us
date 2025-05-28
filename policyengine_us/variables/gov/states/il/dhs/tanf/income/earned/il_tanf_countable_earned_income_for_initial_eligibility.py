@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class il_tanf_countable_earned_income_at_application(Variable):
+class il_tanf_countable_earned_income_for_initial_eligibility(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Illinois Temporary Assistance for Needy Families (TANF) countable earned income at application"
+    label = "Illinois Temporary Assistance for Needy Families (TANF) countable earned income for initial eligibility"
     unit = USD
     definition_period = MONTH
     reference = "https://www.dhs.state.il.us/page.aspx?item=15864"
