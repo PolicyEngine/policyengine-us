@@ -15,9 +15,9 @@ class ma_liheap(Variable):
             period,
             ["ma_liheap_standard_payment", "ma_liheap_hecs_payment"],
         )
-        actual_expense = add(
+        actual_expense_amount = add(
             spm_unit,
             period,
             ["heating_cooling_expense", "gas_expense", "electricity_expense"],
         )
-        return min_(actual_expense, payment_amount)
+        return min_(actual_expense_amount, payment_amount)

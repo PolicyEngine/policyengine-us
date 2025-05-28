@@ -34,10 +34,8 @@ class ma_liheap_utility_category(Variable):
         kerosene = heating_type == heating_types.KEROSENE
         other = heating_type == heating_types.OTHER
 
-        # MA LIHEAP groups households paying for utility heat (electric/gas)
-        # or having heat included in their rent into a single category for benefit determination.
-        utility = electricity | natural_gas
-        utility_and_heat_in_rent = utility | heat_in_rent
+        gas_or_electric_heating = electricity | natural_gas
+        utility_and_heat_in_rent = gas_or_electric_heating | heat_in_rent
 
         deliverable_fuel = heating_and_oil_propane | kerosene | other
 

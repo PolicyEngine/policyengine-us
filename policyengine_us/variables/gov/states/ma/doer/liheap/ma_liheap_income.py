@@ -9,5 +9,5 @@ class ma_liheap_income(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
 
-    # No clear guidance, assume they follow IRS.
+    # The income concept is not clearly defined, assuming IRS gross income
     adds = ["irs_gross_income"]
