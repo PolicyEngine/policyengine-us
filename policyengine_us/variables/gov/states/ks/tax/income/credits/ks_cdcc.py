@@ -15,4 +15,12 @@ class ks_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.credits
-        return p.cdcc_fraction * tax_unit("cdcc", period)
+        # The credit match is limited to the amount of CDCC claimed
+        # we will represent this by capping the CDCC at federal income tax
+        # before non-refundable credits
+        cdcc = tax_unit("cdcc", period)
+        income_tax_before_credits = tax_unit(
+            "income_tax_before_credits", period
+        )
+        capped_cdcc = min_(cdcc, income_tax_before_credits)
+        return p.cdcc_fraction * capped_cdcc
