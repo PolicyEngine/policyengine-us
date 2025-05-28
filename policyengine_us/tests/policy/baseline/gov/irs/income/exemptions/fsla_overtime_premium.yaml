@@ -1,7 +1,7 @@
 - name: Overtime income premium calculation (is eligible)
   period: 2024
   input:
-    weekly_hours_worked: 50
+    hours_worked_last_week: 50
     employment_income: 30000
     is_paid_hourly: false
     has_never_worked: false
@@ -15,7 +15,7 @@
 - name: Overtime income premium calculation (is exempt)
   period: 2024
   input:
-    weekly_hours_worked: 50
+    hours_worked_last_week: 50
     employment_income: 100000
     is_paid_hourly: false
     has_never_worked: false
@@ -29,7 +29,7 @@
 - name: Overtime income premium calculation (computer scientist)
   period: 2024
   input:
-    weekly_hours_worked: 50
+    hours_worked_last_week: 50
     employment_income: 56160 # above basis salary but below cs salary
     is_paid_hourly: false
     has_never_worked: false
