@@ -7,4 +7,4 @@ class auto_loan_balance(Variable):
     label = "Auto loan total balance"
     unit = USD
     definition_period = YEAR
-    uprating = "parameters.gov.bls.cpi.cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"

@@ -7,4 +7,4 @@ class auto_loan_interest(Variable):
     label = "Auto loan interest expense"
     unit = USD
     definition_period = YEAR
-    uprating = "parameters.gov.bls.cpi.cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"
