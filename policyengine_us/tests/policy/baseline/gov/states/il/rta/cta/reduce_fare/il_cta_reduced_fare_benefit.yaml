@@ -1,0 +1,13 @@
+- name: Case 1, eligible for Reduced Fare Program.    
+  period: 2023-01
+  input:
+    il_cta_reduced_fare_eligible: true
+  output:
+    il_cta_reduced_fare_benefit: 40
+
+- name: Case 2, ineligible for Reduced Fare Program.    
+  period: 2023-01
+  input:
+    il_cta_reduced_fare_eligible: false
+  output:
+    il_cta_reduced_fare_benefit: 0

@@ -10,7 +10,7 @@
         members : [person1]
         state_code: CA
   output:
-    ca_calworks_child_care_immigration_status_eligible: true
+    ca_calworks_child_care_immigration_status_eligible_person: true
 
 - name: Ineligible head
   period: 2023
@@ -27,9 +27,9 @@
         members : [person1, person2]
         state_code: CA
   output:
-    ca_calworks_child_care_immigration_status_eligible: false
+    ca_calworks_child_care_immigration_status_eligible_person: [false, true]
 
-- name: Ineligible head
+- name: Both eligible
   period: 2023
   input:
     people:
@@ -44,9 +44,9 @@
         members : [person1, person2]
         state_code: CA
   output:
-    ca_calworks_child_care_immigration_status_eligible: true
+    ca_calworks_child_care_immigration_status_eligible_person: [true, true]
 
-- name: Ineligible head and spouse
+- name: Ineligible head but not spouse
   period: 2023
   input:
     people:
@@ -55,10 +55,10 @@
         immigration_status: UNDOCUMENTED
       person2: 
         is_tax_unit_head: false
-        immigration_status: DACA_TPS
+        immigration_status: PAROLED_ONE_YEAR
     households:
       household1:
         members : [person1, person2]
         state_code: CA
   output:
-    ca_calworks_child_care_immigration_status_eligible: false
+    ca_calworks_child_care_immigration_status_eligible_person: [false, true]

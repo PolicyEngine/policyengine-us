@@ -11,7 +11,7 @@ class fsla_overtime_premium(Variable):
 
     def formula_2014(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
-        worked_hours = person("weekly_hours_worked", period)
+        worked_hours = person("hours_worked_last_week", period)
 
         weekly_overtime_hours = max_(worked_hours - p.hours_threshold, 0)
         # Straight-time–equivalent hours in the year
