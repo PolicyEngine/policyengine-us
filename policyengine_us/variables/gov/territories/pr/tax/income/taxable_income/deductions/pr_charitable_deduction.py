@@ -9,9 +9,11 @@ class pr_charitable_deduction(Variable):
     definition_period = YEAR
     reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=5"
     defined_for = StateCode.PR
-    
+
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.territories.pr.tax.income.taxable_income.deductions.charity
+        p = parameters(
+            period
+        ).gov.territories.pr.tax.income.taxable_income.deductions.charity
         # sum up charitable contributions - line 1, column B
         cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
         non_cash_donations = add(
@@ -23,5 +25,3 @@ class pr_charitable_deduction(Variable):
         charity_floor = p.floor * tax_unit("pr_agi", period)
         # line 5
         return min_(charitable_sum, charity_floor)
-        
-        
