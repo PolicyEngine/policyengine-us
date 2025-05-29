@@ -25,12 +25,12 @@ class pr_is_tax_unit_dependent(Variable):
         )
 
         # OR a university student <26 years old that attended at least 1 years of an accredited uni
-        student_eligible = (person("is_full_time_student", period)) and (
+        student_eligible = (person("is_full_time_student", period)) & (
             age < p.student_age_limit
         )
         return (
             student_eligible
-            or parent_eligible
-            or incapable_of_self_support_eligible
-            or age_eligible
+            | parent_eligible
+            | incapable_of_self_support_eligible
+            | age_eligible
         )

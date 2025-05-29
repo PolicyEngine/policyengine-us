@@ -15,10 +15,10 @@ class pr_exemptions_is_eligible_student(Variable):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
-        is_dependent = person("is_tax_unit_dependent", period)
+        is_dependent = person("pr_is_tax_unit_dependent", period)
         is_student = person("is_full_time_student", period)
         gross_income = person("pr_gross_income", period)
         age = person("age", period)
-        age_eligibility = age < p.age_threshold
-        income_eligibility = gross_income < p.student_threshold
+        age_eligibility = age < p.age_limit
+        income_eligibility = gross_income < p.student_limit
         return is_dependent & is_student & income_eligibility & age_eligibility

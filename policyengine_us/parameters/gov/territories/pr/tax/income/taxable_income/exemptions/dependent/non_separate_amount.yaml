@@ -1,14 +1,10 @@
-description: Puerto Rico provides the following dependent exemption amount, based on filing status.
-JOINT:
+description: Puerto Rico provides the following dependent exemption amount for non-separate filers.
+values: 
   2023-01-01: 2_500
-SEPARATE:
-  2023-01-01: 1_250
 metadata:
   unit: currency-USD
   period: year
-  breakdown:
-    - filing_status
-  label: Puerto Rico dependent exemption amount
+  label: Puerto Rico dependent exemption non-separate filers amount
   reference:
     - title: Gov. of Puerto Rico Form 482.0 2024 
       href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2
