@@ -19,12 +19,22 @@ class il_aabd_utility_allowance(Variable):
         size = person.spm_unit("spm_unit_size", period)
         capped_size = clip(size, 1, 19)
         area = person.household("il_aabd_area", period)
-        expense_types = p.utility.utility_types
         # Households may have more than one applicable utility allowance type
-        sum_of_allowances = sum(
+        total_allowance = sum(
             [
-                p.utility[expense.replace("_expense", "")][area][capped_size]
-                for expense in expense_types
+                where(
+                    person.spm_unit(expense, period) > 0,
+                    min(
+                        person.spm_unit(expense, period),
+                        p.utility[expense.replace("_expense", "")][area][
+                            capped_size
+                        ],
+                    ),
+                    0,
+                )
+                for expense in p.utility.utility_types
             ]
         )
-        return sum_of_allowances
+        # Prorate the total utility allowance across all household members
+        size = person.spm_unit("spm_unit_size", period)
+        return total_allowance / size

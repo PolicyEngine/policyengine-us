@@ -14,14 +14,7 @@
   output:
     il_aabd_area: AREA_2
 
-# - name: Case 3, default in area 1.  
-#   period: 2022
-#   input:
-#     state_code: IL
-#   output:
-#     il_aabd_area: AREA_1 # AREA_6 why? 
-
-- name: Case 4, default in area 1.  
+- name: Case 3, default in area 1.  
   period: 2022
   input:
     county_str: ORANGE_COUNTY_CA

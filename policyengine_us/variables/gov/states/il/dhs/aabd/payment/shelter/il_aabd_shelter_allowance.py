@@ -19,18 +19,16 @@ class il_aabd_shelter_allowance(Variable):
         rent_expense = person("rent", period)
         renter = rent_expense > 0
         rent_allowance = min_(rent_expense, p.rent)
+        # Housing cost = rent + property tax + homeowners insurance + HOA fees.
         homestead_property_cost = (
             person.spm_unit("housing_cost", period) - rent_expense
         )
-
-        filing_status = person.tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
-        # Attributing the housing cost equally to each spouse if filing jointly
-        applicable_homestead_property_cost = where(
-            joint, homestead_property_cost / 2, homestead_property_cost
-        )
         homestead_property_allowance = min_(
-            applicable_homestead_property_cost, p.homestead
+            homestead_property_cost, p.homestead
         )
 
-        return where(renter, rent_allowance, homestead_property_allowance)
+        total_allowance = where(renter, rent_allowance, homestead_property_allowance)
+        # Prorate the total shelter_allowance across all household members
+        size = person.spm_unit("spm_unit_size", period)
+        return total_allowance / size 
+ 

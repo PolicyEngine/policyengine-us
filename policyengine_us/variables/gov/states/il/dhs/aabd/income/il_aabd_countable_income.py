@@ -9,7 +9,7 @@ class il_aabd_countable_income(Variable):
     )
     unit = USD
     definition_period = MONTH
-    defined_for = "il_aabd_non_financial_eligible"
+    defined_for = "il_aabd_non_financial_eligible_person"
 
     adds = [
         "il_aabd_earned_income_after_exemption_person",

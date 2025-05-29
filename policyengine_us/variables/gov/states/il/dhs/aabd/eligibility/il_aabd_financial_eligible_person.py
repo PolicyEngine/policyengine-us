@@ -5,7 +5,6 @@ class il_aabd_financial_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Illinois Aid to the Aged, Blind or Disabled (AABD) eligible person due to financial criteria"
-    unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
 
@@ -15,5 +14,5 @@ class il_aabd_financial_eligible_person(Variable):
         )
         total_needs = person("il_aabd_need_standard_person", period)
         countable_income = person("il_aabd_countable_income", period)
-        income_eligible = total_needs >= countable_income
+        income_eligible = countable_income <= total_needs
         return income_eligible & asset_eligible

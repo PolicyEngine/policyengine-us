@@ -10,10 +10,8 @@ class il_aabd_personal_allowance(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
-    reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.247",
-    )
-
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15913"
+    
     def formula(person, period, parameters):
         p = parameters(
             period

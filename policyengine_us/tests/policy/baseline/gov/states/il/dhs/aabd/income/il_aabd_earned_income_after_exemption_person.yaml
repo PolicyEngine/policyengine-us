@@ -55,7 +55,7 @@
     state_code: IL
   output:
     il_aabd_earned_income_after_exemption_person: 7.75 
-    # 125 - 25 - 85 = 15  0.5*15 = 7.75  15-7.75= 7.75
+    # 125 - 25 - 85 = 15  0.5*15 = 7.75 
 
 - name: Case 4, blind, some income, and 1 expense exemption.  
   absolute_error_margin: 0.5
@@ -70,4 +70,4 @@
     state_code: IL
   output:
     il_aabd_earned_income_after_exemption_person: 7
-    # 125 - 1 - 25 - 85 = 14  0.5*14 = 7  14-7= 7
+    # 125 - 1 - 25 - 85 = 14  0.5*14 = 7 
