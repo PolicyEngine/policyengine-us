@@ -1,0 +1,25 @@
+description: New York provides the following 2025 Inflation Rebate amount with an incremental phase out for separate filers, based on state adjusted gross income.
+
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 200
+  - threshold:
+      2025-01-01: 75_000
+    amount:
+      2025-01-01: 150
+  - threshold:
+      2025-01-01: 150_000
+    amount:
+      2025-01-01: 0
+
+metadata:
+  type: single_amount
+  amount_unit: currency-USD
+  threshold_unit: currency-USD
+  label: New York 2025 Inflaton Rebate separate incremental phase out amount
+  reference:
+    # Bill text not available
+    - title: Governor Hochul Celebrates Huge Budget Win to Put Nearly $5,000 Back in Pockets of Working Families
+      href: https://www.governor.ny.gov/news/we-got-it-done-governor-hochul-celebrates-huge-budget-win-put-nearly-5000-back-pockets-working

@@ -1,0 +1,53 @@
+- name: One child meets EITC identification requirements.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        meets_eitc_identification_requirements: true
+      person2:
+        is_child_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    eitc_child_count: 1
+
+- name: Both children meets EITC identification requirements.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        meets_eitc_identification_requirements: true
+      person2:
+        is_child_dependent: true
+        meets_eitc_identification_requirements: true
+      person3:
+        is_child_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    eitc_child_count: 2
+
+- name: Two children, one of them meet EITC identification requirements.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        meets_eitc_identification_requirements: true
+      person2:
+        is_child_dependent: true
+        meets_eitc_identification_requirements: true
+      person3:
+        is_child_dependent: true
+        meets_eitc_identification_requirements: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    eitc_child_count: 1

@@ -19,15 +19,16 @@ brackets:
       2024-01-01: 0
     amount: 
       2024-01-01: 0.03
-  - threshold: 
-      2024-01-01: 30_750
-      2026-01-01: 71_250
-      2027-01-01: 97_500
-    metadata:
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 100
+  - threshold:
+      values:
+        2024-01-01: 30_750
+        2026-01-01: 71_250
+        2027-01-01: 97_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
     amount: 
       2024-01-01: 0.041

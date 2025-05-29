@@ -1,15 +1,17 @@
-- name: Over 65, no income or assets, eligible for Medicaid
+- name: Over 65, eligible for Medicaid
   period: 2022
   input:
     age: 65
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_optional_senior_or_disabled_for_medicaid: true
 
-- name: Over 65, well over income and asset limits, ineligible for Medicaid
+- name: Over 65, ineligible for Medicaid
   period: 2022
   input:
     age: 65
-    ssi_countable_income: 1_000_000
-    ssi_countable_resources: 1_000_000
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: false
   output:
     is_optional_senior_or_disabled_for_medicaid: false
