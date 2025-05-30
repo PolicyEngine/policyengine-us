@@ -41,8 +41,8 @@ class lifeline(Variable):
             )
 
         max_monthly_amount = (
-            base_amount,
-            is_rural_tribal * p.fcc.lifeline.amount.rural_tribal_supplement,
+            base_amount
+            + is_rural_tribal * p.fcc.lifeline.amount.rural_tribal_supplement
         )
         max_amount = max_monthly_amount * MONTHS_IN_YEAR
         phone_broadband_cost = add(
