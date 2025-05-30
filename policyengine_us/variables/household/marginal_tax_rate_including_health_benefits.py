@@ -20,7 +20,7 @@ class marginal_tax_rate_including_health_benefits(Variable):
         adult_indexes = person("adult_earnings_index", period)
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
-        emp_self_emp_ratio = person("emp_self_emp_ratio", period) 
+        emp_self_emp_ratio = person("emp_self_emp_ratio", period)
 
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
