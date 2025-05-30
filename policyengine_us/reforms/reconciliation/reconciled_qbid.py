@@ -52,9 +52,9 @@ def create_reconciled_qbid() -> Reform:
                 "unadjusted_basis_qualified_property", period
             )
 
-            qbi_non_sstb = where(is_sstb, 0, qbi)
-            w2_wages_non_sstb = where(is_sstb, 0, w2_wages)
-            ubia_property_non_sstb = where(is_sstb, 0, ubia_property)
+            qbi_non_sstb = (1 - is_sstb) * qbi
+            w2_wages_non_sstb = (1 - is_sstb) * w2_wages
+            ubia_property_non_sstb = (1 - is_sstb) * ubia_property
 
             wage_limit = p.max.w2_wages.rate * w2_wages_non_sstb  # 50 % wages
             alt_limit = (
