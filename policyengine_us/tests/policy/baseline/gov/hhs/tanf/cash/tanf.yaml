@@ -14,27 +14,34 @@
   output:
     tanf: 0
 
-- name: Has TANF reported
+- name: Has TANF reported when eligible
   period: 2022
   input:
+    is_tanf_eligible: true
     tanf_reported: 1
   output:
     tanf: 1
 
-- name: Has CO TANF
+- name: Has CO TANF when eligible
   period: 2023
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
-    co_tanf: 100
+    is_tanf_eligible: true
+    tanf_amount_if_eligible: 0
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 100
+    co_tanf_countable_earned_income_grant_standard: 0
+    co_tanf_countable_gross_unearned_income: 0
   output:
     tanf: 100
 
-- name: Has NY TANF
+- name: Has NY TANF when eligible
   period: 2023
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
-    ny_tanf: 100
+    is_tanf_eligible: true
+    tanf_amount_if_eligible: 0
+    ny_tanf_eligible: true
+    ny_tanf_grant_standard: 100
+    ny_tanf_countable_earned_income: 0
+    ny_tanf_countable_gross_unearned_income: 0
   output:
     tanf: 100

@@ -2,5 +2,7 @@
   changes:
     changed:
       - Use defined_for and p = parameters(...) more consistently.
+    fixed:
+      - TANF tests to correctly require eligibility for receiving benefits.
     removed:
       - vehicles_owned variable as it was an unused imputation.
