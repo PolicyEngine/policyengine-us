@@ -8,6 +8,8 @@
       - TANF tests to correctly require eligibility for receiving benefits.
       - Lifeline benefit calculation by changing tuple assignment to addition.
       - Demographic TANF eligibility to use period.this_year for age calculation.
+      - Pell Grant enum comparisons to use the Enum class directly instead of instance.possible_values.
+      - Illinois TANF eligibility to handle household sizes outside parameter range.
     removed:
       - vehicles_owned variable as it was an unused imputation.
       - Federal TANF calculation variables and parameters except for core components (tanf, tanf_reported, is_demographic_tanf_eligible, is_tanf_enrolled, age limits, and abolish_tanf).
