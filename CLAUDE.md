@@ -46,7 +46,7 @@ make documentation
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
 - **Formatting**: Line length 79 characters; use Black for formatting
 - **Types**: Use type hints; import ArrayLike from numpy.typing
-- **Variable Naming**: Use snake_case for variable names and function names
+- **Variable Naming**: Use snake_case for variable names and function names; use UPPER_CASE for constants
 - **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
 - **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
 
