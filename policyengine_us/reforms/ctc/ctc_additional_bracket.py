@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
 
 
 def create_ctc_additional_bracket() -> Reform:
@@ -50,9 +52,18 @@ def create_ctc_additional_bracket_reform(
     if bypass:
         return create_ctc_additional_bracket()
 
-    p = parameters(period).gov.contrib.ctc.additional_bracket
+    p = parameters.gov.contrib.ctc.additional_bracket
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_ctc_additional_bracket()
     else:
         return None
