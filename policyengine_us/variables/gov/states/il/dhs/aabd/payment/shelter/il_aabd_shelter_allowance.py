@@ -27,8 +27,9 @@ class il_aabd_shelter_allowance(Variable):
             homestead_property_cost, p.homestead
         )
 
-        total_allowance = where(renter, rent_allowance, homestead_property_allowance)
+        total_allowance = where(
+            renter, rent_allowance, homestead_property_allowance
+        )
         # Prorate the total shelter_allowance across all household members
         size = person.spm_unit("spm_unit_size", period)
-        return total_allowance / size 
- 
+        return total_allowance / size

@@ -22,7 +22,7 @@ class il_aabd_earned_income_after_exemption_person(Variable):
         income_after_flat_exemption = max_(
             adjusted_income - flat_exemption_excess, 0
         )
-        
+
         blind = person("is_blind", period)
         exemption = where(
             blind,

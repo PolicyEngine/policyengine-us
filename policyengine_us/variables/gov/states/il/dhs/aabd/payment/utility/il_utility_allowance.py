@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class il_aabd_utility_allowance(Variable):
     value_type = float
-    entity = Person
+    entity = SPMUnit
     label = (
         "Illinois Aid to the Aged, Blind or Disabled (AABD) utility allowance"
     )
@@ -14,18 +14,18 @@ class il_aabd_utility_allowance(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.259",
     )
 
-    def formula(person, period, parameters):
+    def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.payment
-        size = person.spm_unit("spm_unit_size", period)
+        size = spm_unit("spm_unit_size", period)
         capped_size = clip(size, 1, 19)
-        area = person.household("il_aabd_area", period)
+        area = spm_unit.household("il_aabd_area", period)
         # Households may have more than one applicable utility allowance type
         total_allowance = sum(
             [
                 where(
-                    person.spm_unit(expense, period) > 0,
+                    spm_unit(expense, period) > 0,
                     min(
-                        person.spm_unit(expense, period),
+                        spm_unit(expense, period),
                         p.utility[expense.replace("_expense", "")][area][
                             capped_size
                         ],
@@ -35,6 +35,4 @@ class il_aabd_utility_allowance(Variable):
                 for expense in p.utility.utility_types
             ]
         )
-        # Prorate the total utility allowance across all household members
-        size = person.spm_unit("spm_unit_size", period)
-        return total_allowance / size
+        return total_allowance

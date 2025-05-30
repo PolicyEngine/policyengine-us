@@ -11,7 +11,7 @@ class il_aabd_personal_allowance(Variable):
     definition_period = MONTH
     defined_for = StateCode.IL
     reference = "https://www.dhs.state.il.us/page.aspx?item=15913"
-    
+
     def formula(person, period, parameters):
         p = parameters(
             period

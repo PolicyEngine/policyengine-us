@@ -12,7 +12,7 @@ class il_aabd_need_standard_person(Variable):
 
     adds = [
         "il_aabd_grant_amount",
-        #"il_aabd_utility_allowance",
+        "il_aabd_utility_allowance_person",
         "il_aabd_personal_allowance",
-        #"il_aabd_shelter_allowance",
+        "il_aabd_shelter_allowance",
     ]
