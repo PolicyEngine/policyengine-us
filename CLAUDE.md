@@ -82,6 +82,16 @@ make documentation
 - Program takeup is assigned during microdata construction, not simulation time
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
+- When accessing yearly variables from month-level formulas, use `period.this_year`
+  - Example: `age = person("age", period.this_year)` to get the actual age, not age/12
+  - This is critical for variables like age that are defined per YEAR
+- When refactoring federal programs to state-specific implementations:
+  - Keep shared federal components (eligibility rules, age limits, etc.) if they're from federal regulations (CFR/USC)
+  - Check all dependencies before removing variables - use grep to find references
+  - Create integration tests to verify the refactoring works correctly
+- State programs should be self-contained with their own income calculations and eligibility rules
+  - Use state-specific variable names (e.g., `il_tanf_countable_income` not `tanf_countable_income`)
+  - This allows states to have different rules without affecting each other
 
 ## Testing Best Practices
 - **Unit Tests**: 
