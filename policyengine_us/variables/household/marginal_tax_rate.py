@@ -18,14 +18,7 @@ class marginal_tax_rate(Variable):
         adult_indexes = person("adult_earnings_index", period)
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
-        total_earnings = employment_income + self_employment_income
-
-        emp_self_emp_ratio = np.divide(
-            employment_income,
-            total_earnings,
-            out=np.ones_like(total_earnings, dtype=np.float32),
-            where=total_earnings > 0,
-        )
+        emp_self_emp_ratio = person("emp_self_emp_ratio", period)
 
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
