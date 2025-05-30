@@ -28,5 +28,5 @@ class vehicles_owned(Variable):
             should_add_vehicle = ~maximum_reached & (
                 adult_rank == selected_adult
             )
-            vehicles += where(should_add_vehicle, 1, 0)
+            vehicles += should_add_vehicle
         return vehicles

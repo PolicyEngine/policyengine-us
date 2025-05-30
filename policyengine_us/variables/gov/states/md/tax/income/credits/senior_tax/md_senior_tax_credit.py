@@ -38,4 +38,4 @@ class md_senior_tax_credit(Variable):
                 p.amount.separate,
             ],
         )
-        return where(eligible_count > 0, credit_amount, 0)
+        return (eligible_count > 0) * credit_amount
