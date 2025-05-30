@@ -1,0 +1,26 @@
+- name: Taxable income over QBI in 2024
+  period: 2024
+  input:
+    qbid_amount: 10_000
+    taxable_income_less_qbid: 30_000
+    adjusted_net_capital_gain: 2_000
+  output:
+    qualified_business_income_deduction: 5_600
+
+- name: Taxable income under QBI in 2024
+  period: 2024
+  input:
+    qbid_amount: 3_000
+    taxable_income_less_qbid: 30_000
+    adjusted_net_capital_gain: 2_000
+  output:
+    qualified_business_income_deduction: 3_000
+
+- name: Taxable reduced to 0
+  period: 2024
+  input:
+    qbid_amount: 10_000
+    taxable_income_less_qbid: 30_000
+    adjusted_net_capital_gain: 32_000
+  output:
+    qualified_business_income_deduction: 0
