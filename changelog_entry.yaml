@@ -2,3 +2,5 @@
   changes:
     changed:
       - Use defined_for and p = parameters(...) more consistently.
+    removed:
+      - vehicles_owned variable as it was an unused imputation.
