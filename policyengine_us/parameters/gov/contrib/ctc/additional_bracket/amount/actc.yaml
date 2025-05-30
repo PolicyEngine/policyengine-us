@@ -1,4 +1,4 @@
-description: The IRS provides a maximum Child Tax Credit of this amount with an additional bracket, depending on the child's age.
+description: The IRS provides a maximum ACTC of this amount with an additional bracket, depending on the child's age.
 
 brackets:
   - threshold:
@@ -18,4 +18,4 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   amount_period: year
-  label: Child Tax Credit amount
+  label: ACTC amount
