@@ -8,6 +8,6 @@
       - Parameter for sources of QBI deductions (deduction_definition.yaml)
       - QBID reconciliation parameters (in_effect, phase_out_rate, use_bdc_income)
       - Marginal tax rate including health benefits variable
+      - Tax code references to income variables where they were missing
     changed:
       - marginal_tax_rate and marginal_tax_rate_including_health_benefits now use emp_self_emp_ratio with no logic change
-      - Added tax code references to income variables where they were missing
