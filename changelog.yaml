@@ -10054,3 +10054,30 @@
     fixed:
     - auto loan variables uprating path
   date: 2025-05-28 01:47:22
+- bump: minor
+  changes:
+    added:
+    - Additional CTC bracket reform.
+  date: 2025-05-30 06:47:16
+- bump: minor
+  changes:
+    added:
+    - Qualified BDC dividend income variable
+    - Qualified REIT and PTP income variable
+    - Farm operations income variable
+    - Variables showing whether income types would be qualified business income (estate,
+      farm operations, farm rent, partnership/S corp, rental, self employment)
+    - Parameter for sources of QBI deductions (deduction_definition.yaml)
+    - QBID reconciliation parameters (in_effect, phase_out_rate, use_bdc_income)
+    - Marginal tax rate including health benefits variable
+    - Tax code references to income variables where they were missing
+    changed:
+    - marginal_tax_rate and marginal_tax_rate_including_health_benefits now use emp_self_emp_ratio
+      with no logic change
+  date: 2025-05-30 14:18:59
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the ACTC additional bracket parameter label / description, and add support
+      for multiple periods.
+  date: 2025-05-30 16:31:37

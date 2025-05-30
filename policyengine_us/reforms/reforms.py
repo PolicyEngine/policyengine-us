@@ -61,6 +61,7 @@ from .state_dependent_exemptions import (
 )
 from .ctc import (
     create_ctc_older_child_supplement_reform,
+    create_ctc_additional_bracket_reform,
 )
 from .second_earner import (
     create_second_earner_tax_reform,
@@ -251,6 +252,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
         parameters, period
     )
+    ctc_additional_bracket = create_ctc_additional_bracket_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -303,6 +307,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_additional_senior_standard_deduction,
         reconciled_ssn_for_llc_and_aoc,
         aca_ptc_immigration_status,
+        ctc_additional_bracket,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
