@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
+
 def create_ctc_additional_bracket() -> Reform:
     class ctc_child_individual_maximum(Variable):
         value_type = float
