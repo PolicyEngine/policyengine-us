@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.sai.eligibility_type.pell_grant_eligibility_type import (
-    PellGrantEligibilityType,
-)
 
 
 class pell_grant(Variable):
@@ -28,9 +25,9 @@ class pell_grant(Variable):
         )
         uncapped_sai_pell = select(
             [
-                eligibility == PellGrantEligibilityType.INELIGIBLE,
-                eligibility == PellGrantEligibilityType.MAXIMUM,
-                eligibility == PellGrantEligibilityType.MINIMUM,
+                eligibility == eligibility.possible_values.INELIGIBLE,
+                eligibility == eligibility.possible_values.MAXIMUM,
+                eligibility == eligibility.possible_values.MINIMUM,
             ],
             [0, p.amount.max, amount],
         )
