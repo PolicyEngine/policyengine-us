@@ -1,32 +1,29 @@
-- name: TANF eligible and has benefit
+- name: Has TANF reported
   period: 2022
   input:
-    is_tanf_eligible: true
-    tanf_amount_if_eligible: 200
+    tanf_reported: 200
   output:
     tanf: 200
 
-- name: TANF ineligible and does not receive benefit
+- name: No TANF when not reported and not in TANF state
   period: 2022
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
+    state_code_str: FL  # State without TANF implementation
   output:
     tanf: 0
 
-- name: Has TANF reported when eligible
+- name: Has TANF reported regardless of state
   period: 2022
   input:
-    is_tanf_eligible: true
-    tanf_reported: 1
+    tanf_reported: 100
+    state_code_str: FL
   output:
-    tanf: 1
+    tanf: 100
 
 - name: Has CO TANF when eligible
   period: 2023
   input:
-    is_tanf_eligible: true
-    tanf_amount_if_eligible: 0
+    state_code_str: CO
     co_tanf_eligible: true
     co_tanf_grant_standard: 100
     co_tanf_countable_earned_income_grant_standard: 0
@@ -37,8 +34,7 @@
 - name: Has NY TANF when eligible
   period: 2023
   input:
-    is_tanf_eligible: true
-    tanf_amount_if_eligible: 0
+    state_code_str: NY
     ny_tanf_eligible: true
     ny_tanf_grant_standard: 100
     ny_tanf_countable_earned_income: 0
