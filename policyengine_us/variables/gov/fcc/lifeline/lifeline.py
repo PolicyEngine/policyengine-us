@@ -19,7 +19,9 @@ class lifeline(Variable):
         # we conditionally overwrite it with state-specific logic later.
         base_amount = p.fcc.lifeline.amount.standard
         household = spm_unit.household
-        is_rural_tribal = and_(household, period, ["is_rural", "is_on_tribal_land"])
+        is_rural_tribal = and_(
+            household, period, ["is_rural", "is_on_tribal_land"]
+        )
         # CA and OR provide separate maximum lifeline benefit amount
         state_code = household("state_code_str", period)
 
@@ -43,5 +45,7 @@ class lifeline(Variable):
             is_rural_tribal * p.amount.rural_tribal_supplement,
         )
         max_amount = max_monthly_amount * MONTHS_IN_YEAR
-        phone_broadband_cost = add(spm_unit, period, ["phone_cost", "broadband_cost"])
+        phone_broadband_cost = add(
+            spm_unit, period, ["phone_cost", "broadband_cost"]
+        )
         return min_(phone_broadband_cost, max_amount)
