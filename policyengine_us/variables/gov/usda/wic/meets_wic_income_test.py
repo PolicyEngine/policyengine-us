@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class meets_wic_income_test(Variable):
     value_type = bool
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Meets income test for the Special Supplemental Nutrition Program for Women, Infants and Children (WIC)"
     label = "Meets WIC income test"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_i"
