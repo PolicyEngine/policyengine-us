@@ -16,9 +16,9 @@ class is_person_demographic_tanf_eligible(Variable):
         p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
         # A person is eligible if they are under the age limit
         # Different age limits for students vs non-students
-        age_limit = where(
-            person("is_full_time_student", period), p.student, p.non_student
-        )
+        # For TANF, "student" means secondary school student per 45 CFR § 260.30
+        is_student = person("is_in_secondary_school", period)
+        age_limit = where(is_student, p.student, p.non_student)
         age_eligible = age < age_limit
 
         # Also eligible if pregnant
