@@ -1,0 +1,21 @@
+description: Illinois considers these statuses as qualified alien under the Child Care Assistance Program.
+values:
+  1975-01-01:
+    - LEGAL_PERMANENT_RESIDENT
+    - ASYLEE
+    - REFUGEE
+    - PAROLED_ONE_YEAR
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - CUBAN_HAITIAN_ENTRANT
+    # battered aliens
+    # alien victims of a severe form of trafficking
+
+
+metadata:
+  label: Illinois CCAP qualified alien statuses
+  period: year
+  unit: list
+  reference:
+    - title: 01.01.03 - Citizenship Status of the Child
+      href: https://www.dhs.state.il.us/page.aspx?item=46885
