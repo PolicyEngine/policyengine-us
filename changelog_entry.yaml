@@ -14,5 +14,6 @@
       - Federal TANF cash calculation variables and parameters except for core components (tanf, tanf_reported, is_demographic_tanf_eligible, is_tanf_enrolled, age limits, abolish_tanf) and TANF non-cash eligibility for SNAP BBCE.
     added:
       - Illinois TANF implementation with il_tanf, il_tanf_eligible, and il_tanf_countable_income.
+      - Illinois TANF parameters including earnings deduction rate and household deduction.
       - Integration tests for TANF to verify state implementations work correctly.
       - Documentation in CLAUDE.md about period handling and state program refactoring.

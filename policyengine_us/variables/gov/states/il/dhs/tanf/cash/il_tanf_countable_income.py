@@ -10,9 +10,12 @@ class il_tanf_countable_income(Variable):
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        # For now, use a simplified calculation
-        # This should be enhanced with IL-specific income disregards
+        p = parameters(period).gov.states.il.dhs.tanf.cash
+        
+        # Calculate gross earned income
         gross_earned = add(spm_unit, period, ["employment_income"])
+        
+        # Calculate gross unearned income
         gross_unearned = add(
             spm_unit,
             period,
@@ -25,7 +28,9 @@ class il_tanf_countable_income(Variable):
                 "dividend_income",
             ],
         )
-        # Apply a simple 20% earned income disregard
-        # This is a placeholder - actual IL rules may differ
-        countable_earned = gross_earned * 0.8
+        
+        # Apply Illinois earned income deduction (75% of earned income is disregarded)
+        earned_income_deduction_rate = p.amount.deductions.earnings.percent
+        countable_earned = gross_earned * (1 - earned_income_deduction_rate)
+        
         return countable_earned + gross_unearned
