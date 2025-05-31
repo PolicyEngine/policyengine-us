@@ -95,3 +95,46 @@
   output:
     is_person_demographic_tanf_eligible: [true, false, true]  # Child yes, adult no, student yes
     is_demographic_tanf_eligible: true  # Has eligible children
+
+- name: NY family with no income receives TANF
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code_str: NY
+  output:
+    # NY TANF for family of 2 with no income
+    tanf: 3024
+
+- name: TANF abolition test with full household
+  period: 2023
+  input:
+    gov.hhs.tanf.abolish_tanf: true
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 33
+      child:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code_str: CA
+  output:
+    tanf: 0  # Abolished despite being in CA
