@@ -1,0 +1,73 @@
+- name: Case 1, no income.  
+  absolute_error_margin: 0.5
+  period: 2022-01
+  input:
+    il_aabd_gross_earned_income: 0 
+    il_aabd_expense_exemption_person: 0 
+    il_aabd_gross_unearned_income: 0 
+    age: 65
+    is_blind: false
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_earned_income_after_exemption_person: 0 
+
+- name: Case 2, elderly, some income. 
+  absolute_error_margin: 0.5 
+  period: 2022-01
+  input:
+    il_aabd_gross_earned_income: 125 
+    il_aabd_expense_exemption_person: 0 
+    il_aabd_gross_unearned_income: 0 
+    age: 65
+    is_blind: false
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_earned_income_after_exemption_person: 50 
+    # 125 - 25 - 20 = 80  0.5*60 = 30 80-30 = 50 
+
+- name: Case 3, disabled, some income. 
+  absolute_error_margin: 0.5 
+  period: 2022-01
+  input:
+    il_aabd_gross_earned_income: 95
+    il_aabd_expense_exemption_person: 0 
+    il_aabd_gross_unearned_income: 0 
+    age: 60
+    is_blind: false
+    is_ssi_disabled: true
+    state_code: IL
+  output:
+    il_aabd_earned_income_after_exemption_person: 25
+    # 95 - 25 - 20 = 50  0.5*50 = 25  50-25 = 25
+
+- name: Case 4, blind, some income.  
+  absolute_error_margin: 0.5
+  period: 2022-01
+  input:
+    il_aabd_gross_earned_income: 125 
+    il_aabd_expense_exemption_person: 0 
+    il_aabd_gross_unearned_income: 0 
+    age: 50
+    is_blind: true
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_earned_income_after_exemption_person: 7.75 
+    # 125 - 25 - 85 = 15  0.5*15 = 7.75 
+
+- name: Case 4, blind, some income, and 1 expense exemption.  
+  absolute_error_margin: 0.5
+  period: 2022-01
+  input:
+    il_aabd_gross_earned_income: 125 
+    il_aabd_expense_exemption_person: 1 
+    il_aabd_gross_unearned_income: 0 
+    age: 50
+    is_blind: true
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_earned_income_after_exemption_person: 7
+    # 125 - 1 - 25 - 85 = 14  0.5*14 = 7 

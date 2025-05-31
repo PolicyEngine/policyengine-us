@@ -1,0 +1,31 @@
+- name: Case 1, size 1, area 1, water expense higher than water allowance.   
+  period: 2022-01
+  input:
+    spm_unit_size: 1 
+    county_str: COOK_COUNTY_IL
+    water_expense: 5 * 12
+    state_code: IL
+  output:
+    il_aabd_utility_allowance_person: 3.8 
+
+- name: Case 2, size 6, area 6, coal expense lower than coal allowance.   
+  period: 2022-01
+  input:
+    spm_unit_size: 6 
+    county_str: BOND_COUNTY_IL
+    coal_expense: 12 * 12
+    state_code: IL
+  output:
+    il_aabd_utility_allowance_person: 12 / 6
+
+- name: Case 3, size 25, area 1, electricity and cooking fuel.   
+  period: 2022-01
+  absolute_error_margin: 0.2
+  input:
+    spm_unit_size: 25 
+    county_str: COOK_COUNTY_IL
+    electricity_expense: 10 *12
+    cooking_fuel_expense: 9 *12
+    state_code: IL
+  output:
+    il_aabd_utility_allowance_person: 18.45 / 25  # 9.45 + 9

@@ -1,0 +1,29 @@
+- name: Case 1, total needs higher than countable income.   
+  period: 2022-01
+  input:
+    il_aabd_need_standard_person: 100
+    il_aabd_countable_income: 0 
+    il_aabd_eligible_person: true
+    state_code: IL
+  output:
+    il_aabd_person: 100
+
+- name: Case 2, total needs less than countable income.   
+  period: 2022-01
+  input:
+    il_aabd_need_standard_person: 50
+    il_aabd_countable_income: 100 
+    il_aabd_eligible_person: true
+    state_code: IL
+  output:
+    il_aabd_person: 0
+
+- name: Case 3, ineligible for the program.   
+  period: 2022-01
+  input:
+    il_aabd_need_standard_person: 100
+    il_aabd_countable_income: 0 
+    il_aabd_eligible_person: false
+    state_code: IL
+  output:
+    il_aabd_person: 0

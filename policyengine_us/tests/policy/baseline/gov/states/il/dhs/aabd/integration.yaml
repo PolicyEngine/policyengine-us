@@ -1,0 +1,251 @@
+- name: Integration, an eligible head with a child, $800 monthly income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 9_600 # $800 monthly 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    state_withheld_income_tax: 28.15 # computed by PE US
+    employee_social_security_tax: [49.6, 0] # computed by PE US
+    il_aabd_child_care_expense_exemption: [0, 0]
+    il_aabd_expense_exemption_person: [77.75, 28.15] # 28.15 + 49.6 
+    il_aabd_gross_earned_income: [800, 0]
+    il_aabd_countable_unearned_income: [1032.5,0] # computed by PE US (ssi)
+    il_aabd_earned_income_after_exemption_person: [318.625, 0] 
+    # 800 - 77.75 - 85 = 637.25, 637.25*0.5 = 318.625
+    il_aabd_personal_allowance: [57.25, 57.25]
+    il_aabd_grant_amount: [764.9, 764.9]
+    il_aabd_need_standard_person: [822.15, 0] # 764.9 + 57.25
+    il_aabd_countable_income: [1351.125, 0] # 318.625 + 1032.5 
+    il_aabd_non_financial_eligible_person: [true, false]
+    il_aabd_financial_eligible_person: [false, true] # unearned income too high 
+    il_aabd_eligible_person: [false, false]
+    il_aabd_person: [0, 0]
+    il_aabd: 0
+
+- name: Integration 2, an eligible head with an eligible child. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 9_600 # $800 monthly 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 5
+        is_blind: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    state_withheld_income_tax: 28.15 # computed by PE US
+    employee_social_security_tax: [49.6, 0] # computed by PE US
+    il_aabd_child_care_expense_exemption: [0, 0]
+    il_aabd_expense_exemption_person: [77.75, 28.15] # 28.15 + 49.6 
+    il_aabd_gross_earned_income: [800, 0]
+    social_security: [0, 0]
+    ssi: [1_057.5, 1_057.5] # computed by PE US
+    il_aabd_countable_unearned_income: [1032.5, 1032.5] # 1_057.5 - 25
+    il_aabd_earned_income_after_exemption_person: [318.625, 0] 
+    # 800 - 77.75 - 85 = 637.25, 637.25*0.5 = 318.625
+    il_aabd_personal_allowance: [57.25, 57.25]
+    il_aabd_grant_amount: [764.9, 764.9]
+    il_aabd_need_standard_person: [822.15, 822.15] # 764.9 + 57.25
+    il_aabd_countable_income: [1_351.125, 1_032.5] # 318.625 + 1_032.5 
+    il_aabd_non_financial_eligible_person: [true, true]
+    il_aabd_financial_eligible_person: [false, false] # unearned income too high 
+    il_aabd_eligible_person: [false, false]
+    il_aabd_person: [0, 0]
+    il_aabd: 0
+
+- name: Integration 3, an eligible person with a child, $100 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 1_200 # $100 monthly 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_aabd_child_care_expense_exemption: [0, 0]
+    il_aabd_gross_earned_income: [100, 0]
+    ssi: [1_407.5, 0] # computed by PE US
+    il_aabd_countable_unearned_income: [1_382.5, 0] # 1_407.5 - 25
+    il_aabd_earned_income_after_exemption_person: [4.4, 0] 
+    il_aabd_personal_allowance: [57.25, 57.25]
+    il_aabd_grant_amount: [764.9, 764.9]
+    il_aabd_need_standard_person: [822.15, 0] # 764.9 + 57.25
+    il_aabd_countable_income: [1_386.9, 0] # 1_382.5 + 4.4 
+    il_aabd_non_financial_eligible_person: [true, false]
+    il_aabd_financial_eligible_person: [false, true] # unearned income too high 
+    il_aabd_eligible_person: [false, false]
+    il_aabd_person: [0, 0]
+    il_aabd: 0
+
+- name: Integration 4, an eligible person, $100 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 1_200 # $100 monthly 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_aabd_child_care_expense_exemption: 0
+    il_aabd_gross_earned_income: 100
+    ssi: 935.5 # computed by PE US
+    il_aabd_countable_unearned_income: 910.5 # 935.5 - 25
+    il_aabd_earned_income_after_exemption_person: 4.4 
+    il_aabd_personal_allowance: 62.43
+    il_aabd_grant_amount: 764.9
+    il_aabd_need_standard_person: 827.33 # 764.9 + 62.43
+    il_aabd_countable_income: 914.9 # 910.5 + 4.4 
+    il_aabd_non_financial_eligible_person: true
+    il_aabd_financial_eligible_person: false 
+    il_aabd_eligible_person: false
+    il_aabd_person: 0
+    il_aabd: 0
+
+- name: Integration 5, an eligible person, $2000 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 24_000 # $2_000 monthly 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_aabd_child_care_expense_exemption: 0
+    il_aabd_gross_earned_income: 2_000
+    ssi: 0 # computed by PE US
+    il_aabd_countable_unearned_income: 0 
+    il_aabd_earned_income_after_exemption_person: 839.22
+    il_aabd_personal_allowance: 62.43
+    il_aabd_grant_amount: 764.9
+    il_aabd_need_standard_person: 827.33 # 764.9 + 62.43
+    il_aabd_countable_income: 839.22
+    il_aabd_non_financial_eligible_person: true
+    il_aabd_financial_eligible_person: false 
+    il_aabd_eligible_person: false
+    il_aabd_person: 0
+    il_aabd: 0
+
+- name: Integration 5, an eligible person, $800 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 9_600 # $800 monthly 
+        ssi: 0 
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_aabd_countable_assets: 0 
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_aabd_child_care_expense_exemption: 0
+    il_aabd_gross_earned_income: 800
+    il_aabd_countable_unearned_income: 0 
+    il_aabd_earned_income_after_exemption_person: 306.12
+    il_aabd_personal_allowance: 62.43
+    il_aabd_grant_amount: 764.9
+    il_aabd_need_standard_person: 827.33 # 764.9 + 62.43
+    il_aabd_countable_income: 306.12
+    il_aabd_non_financial_eligible_person: true
+    il_aabd_financial_eligible_person: true 
+    il_aabd_eligible_person: true
+    il_aabd_person: 521.21
+    il_aabd: 521.21
