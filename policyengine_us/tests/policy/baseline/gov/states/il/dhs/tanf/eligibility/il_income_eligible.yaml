@@ -1,0 +1,17 @@
+- name: Income lower than payment level, eligible.
+  period: 2023
+  input:
+    il_tanf_countable_income_for_initial_eligibility: 100
+    il_tanf_payment_level_for_initial_eligibility: 120
+    state_code: IL
+  output:
+    il_tanf_income_eligible: true
+
+- name: Income higher than payment level, ineligible.
+  period: 2023
+  input:
+    il_tanf_countable_income_for_initial_eligibility: 100
+    il_tanf_payment_level_for_initial_eligibility: 80
+    state_code: IL
+  output:
+    il_tanf_income_eligible: false

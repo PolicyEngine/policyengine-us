@@ -1,0 +1,55 @@
+- name: Case 1, household size of 1 with $10000 earned income.
+  period: 2023
+  input:
+    il_tanf_countable_gross_earned_income: 10_100
+    il_tanf_childcare_deduction: 100 
+    state_code: IL
+  output:
+    il_tanf_countable_earned_income_for_grant_calculation: 2_500
+    # 10_100 - 100 = 10_000
+    # earned_income_deduction = 0.75* 10_000 = 7_500
+    # 10_000 - 7_500 = 2_500
+
+- name: Case 2, household size of 2 with $5000 earned income. 
+  period: 2023
+  input:
+    il_tanf_countable_gross_earned_income: 5_100
+    il_tanf_childcare_deduction: 100  
+    state_code: IL
+  output:
+    il_tanf_countable_earned_income_for_grant_calculation: 1_250
+    # 5_100 - 100 = 5_000
+    # earned_income_deduction = 0.75* 5_000 = 3_750
+    # 5_000 - 3_750 = 1_250
+
+- name: Case 3, integration test.
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 9_600 # $800 per month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        employment_income: 0
+        is_tax_unit_dependent: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        childcare_expenses: 4_800 # $400 per month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_childcare_deduction: 375
+    il_tanf_countable_earned_income_for_grant_calculation: 106.25 # (800 - 375)*0.25 
