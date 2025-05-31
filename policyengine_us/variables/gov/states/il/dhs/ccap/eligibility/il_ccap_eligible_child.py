@@ -10,7 +10,7 @@ class il_ccap_eligible_child(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=104995"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.dhs.ccap.age_threshold
+        p = parameters(period).gov.states.il.dhs.ccap.age_limit
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period)
         age_limit = where(is_disabled, p.special_needs_child, p.child)

@@ -14,9 +14,10 @@ class il_ccap_income_eligible(Variable):
         countable_income = spm_unit("il_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         enrolled_in_ccap = spm_unit("il_ccap_enrolled", period)
-        income_limit = where(
+        fpg_limit = where(
             enrolled_in_ccap,
-            fpg * p.redetermination_rate,
-            fpg * p.new_applicants_rate,
+            p.redetermination_rate,
+            p.new_applicants_rate,
         )
+        income_limit = fpg_limit * fpg
         return countable_income <= income_limit
