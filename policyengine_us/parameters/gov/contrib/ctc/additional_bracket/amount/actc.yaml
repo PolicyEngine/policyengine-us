@@ -1,0 +1,21 @@
+description: The IRS provides a maximum ACTC of this amount with an additional bracket, depending on the child's age.
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 6
+    amount:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 17
+    amount:
+      0000-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  amount_period: year
+  label: ACTC amount
