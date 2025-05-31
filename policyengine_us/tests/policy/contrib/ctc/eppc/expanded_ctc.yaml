@@ -34,6 +34,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: FL  # Florida has no state programs that affect CTC
   output:
     non_refundable_ctc: 540
     refundable_ctc: 1_460

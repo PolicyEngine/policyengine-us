@@ -47,9 +47,7 @@ def create_expanded_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             ref_credits = parameters(period).gov.irs.credits.refundable
             credits = [
-                credit
-                for credit in ref_credits
-                if credit not in ["refundable_ctc"]
+                credit for credit in ref_credits if credit not in ["refundable_ctc"]
             ]
             return add(tax_unit, period, credits)
 
@@ -114,9 +112,7 @@ def create_expanded_ctc() -> Reform:
             is_joint = filing_status == filing_status.possible_values.JOINT
             non_ref_ctc = tax_unit("non_refundable_ctc", period)
             ref_ctc = tax_unit("refundable_ctc", period)
-            base_tax = where(
-                is_joint, min_(pre_ctc_tax, indiv_tax), pre_ctc_tax
-            )
+            base_tax = where(is_joint, min_(pre_ctc_tax, indiv_tax), pre_ctc_tax)
             return max_(base_tax - non_ref_ctc, 0) - ref_ctc
 
     class maximum_benefits(Variable):
@@ -128,13 +124,9 @@ def create_expanded_ctc() -> Reform:
         # Currently only includes SNAP, free school meals, and TANF
 
         def formula(tax_unit, period, parameters):
-            snap_max_allotment = tax_unit.spm_unit(
-                "snap_max_allotment", period
-            )
+            snap_max_allotment = tax_unit.spm_unit("snap_max_allotment", period)
             # get maximum free school meal allotment
-            state_group = tax_unit.spm_unit.household(
-                "state_group_str", period
-            )
+            state_group = tax_unit.spm_unit.household("state_group_str", period)
             tier = "FREE"
             p_amount = parameters(period).gov.usda.school_meals.amount
             nslp_per_child = p_amount.nslp[state_group][tier]
@@ -149,21 +141,16 @@ def create_expanded_ctc() -> Reform:
             p_school_meals = parameters(period).gov.usda.school_meals
             children = add(tax_unit, period, ["is_in_k12_school"])
             school_meal_max_value = (
-                net_daily_subsidy_per_child
-                * children
-                * p_school_meals.school_days
+                net_daily_subsidy_per_child * children * p_school_meals.school_days
             )
             # Get TANF grant standards (maximum amounts)
-            max_federal_tanf = tax_unit.spm_unit("tanf_max_amount", period)
             max_ny_tanf = tax_unit.spm_unit("ny_tanf_grant_standard", period)
             tanf_dem_eligible = tax_unit.spm_unit(
                 "is_demographic_tanf_eligible", period
             )
             max_dc_tanf = tax_unit.spm_unit("dc_tanf_standard_payment", period)
             max_co_tanf = tax_unit.spm_unit("co_tanf_grant_standard", period)
-            max_tanf = (
-                max_co_tanf + max_dc_tanf + max_federal_tanf + max_ny_tanf
-            ) * tanf_dem_eligible
+            max_tanf = (max_co_tanf + max_dc_tanf + max_ny_tanf) * tanf_dem_eligible
             return snap_max_allotment + school_meal_max_value + max_tanf
 
     # At the core of the reform, we want to coampre the tax liability of two individuals
@@ -179,12 +166,8 @@ def create_expanded_ctc() -> Reform:
 
         def formula(person, period, parameters):
             std = parameters(period).gov.irs.deductions.standard
-            separate_filer_itemizes = person.tax_unit(
-                "separate_filer_itemizes", period
-            )
-            dependent_elsewhere = person.tax_unit(
-                "head_is_dependent_elsewhere", period
-            )
+            separate_filer_itemizes = person.tax_unit("separate_filer_itemizes", period)
+            dependent_elsewhere = person.tax_unit("head_is_dependent_elsewhere", period)
 
             # Calculate secondary earner deduction using single filing status
             deduction_amount = std.amount["SINGLE"]
@@ -229,13 +212,9 @@ def create_expanded_ctc() -> Reform:
                 deductions_if_itemizing_amount / 2,
                 deductions_if_itemizing_amount,
             )
-            standard_deduction = person(
-                "basic_standard_deduction_indiv", period
-            )
+            standard_deduction = person("basic_standard_deduction_indiv", period)
             qbid = person("qualified_business_income_deduction_person", period)
-            return where(
-                itemizes, deductions_if_itemizing, standard_deduction + qbid
-            )
+            return where(itemizes, deductions_if_itemizing, standard_deduction + qbid)
 
     class taxable_income_indiv(Variable):
         value_type = float
@@ -248,9 +227,7 @@ def create_expanded_ctc() -> Reform:
             agi = person("adjusted_gross_income_person", period)
             exemption_amount = person.tax_unit("exemptions", period)
             is_joint = person.tax_unit("tax_unit_is_joint", period)
-            exemptions = where(
-                is_joint, exemption_amount / 2, exemption_amount
-            )
+            exemptions = where(is_joint, exemption_amount / 2, exemption_amount)
             deductions = person("taxable_income_deductions_person", period)
             return max_(0, agi - exemptions - deductions)
 
@@ -267,8 +244,7 @@ def create_expanded_ctc() -> Reform:
             person = tax_unit.members
             full_taxable_income = person("taxable_income_indiv", period)
             cg_exclusion = (
-                tax_unit("capital_gains_excluded_from_taxable_income", period)
-                / 2
+                tax_unit("capital_gains_excluded_from_taxable_income", period) / 2
             )
             taxinc = max_(0, full_taxable_income - cg_exclusion)
             # compute tax using bracket rates and thresholds
@@ -293,9 +269,7 @@ def create_expanded_ctc() -> Reform:
         definition_period = YEAR
         label = "income tax before credits"
         unit = USD
-        documentation = (
-            "Total (regular + AMT) income tax liability before credits"
-        )
+        documentation = "Total (regular + AMT) income tax liability before credits"
 
         adds = [
             "income_tax_main_rates_indiv",
@@ -398,9 +372,7 @@ def create_expanded_ctc() -> Reform:
             self.update_variable(maximum_benefits)
             self.update_variable(income_tax_before_refundable_credits_indiv)
             self.update_variable(income_tax_before_credits_indiv)
-            self.update_variable(
-                income_tax_capped_non_refundable_credits_indiv
-            )
+            self.update_variable(income_tax_capped_non_refundable_credits_indiv)
             self.update_variable(income_tax_main_rates_indiv)
             self.update_variable(taxable_income_indiv)
             self.update_variable(taxable_income_deductions_person)
