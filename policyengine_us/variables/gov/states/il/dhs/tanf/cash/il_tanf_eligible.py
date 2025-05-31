@@ -6,13 +6,12 @@ class il_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Illinois TANF eligible"
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
         # Illinois-specific TANF eligibility
         # This is a simplified version - should be enhanced with IL-specific rules
-        household = spm_unit.household
-        in_il = household("state_code_str", period) == "IL"
-
+        
         # Basic demographic eligibility - has children
         has_child = spm_unit.sum(spm_unit.members("is_child", period)) > 0
 
@@ -33,4 +32,4 @@ class il_tanf_eligible(Variable):
                     countable_income[mask] <= max_amount * 2
                 )  # Simplified test
 
-        return in_il & has_child & income_eligible
+        return has_child & income_eligible
