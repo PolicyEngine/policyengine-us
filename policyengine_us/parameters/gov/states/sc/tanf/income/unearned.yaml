@@ -1,0 +1,29 @@
+description: South Carolina counts these income sources as unearned income under the TANF program.
+values:
+  2021-01-01:
+    - partnership_s_corp_income
+    - farm_income
+    - farm_rent_income
+    - capital_gains
+    - taxable_interest_income
+    - rental_income
+    # Royalties included in rental income
+    - dividend_income
+    - taxable_pension_income 
+    # Pension income includes annuities and endowment contracts
+    - debt_relief
+    # Decedent income
+    # Estate interest income
+    - taxable_unemployment_compensation
+    - taxable_social_security
+    - illicit_income
+    - taxable_retirement_distributions
+    - miscellaneous_income
+metadata:
+  unit: list
+  period: year 
+  label: South Carolina TANF unearned income 
+  reference:
+    - title: The South Carolina Department of Social Services TANF Policy Manual 
+      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=100
+ 
