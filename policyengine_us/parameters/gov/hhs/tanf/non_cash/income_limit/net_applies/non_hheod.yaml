@@ -1,0 +1,99 @@
+description: Whether the SNAP net income limit applies to non-elderly/disabled households seeking BBCE.
+# Non-BBCE states skipped.
+AL:
+  2020-07-01: false
+AZ:
+  2020-07-01: false
+CA:
+  2020-07-01: true
+CO:
+  2020-07-01: true
+  2024-07-01: false
+CT:
+  2020-07-01: false
+DC:
+  2020-07-01: false
+DE:
+  2020-07-01: false
+FL:
+  2020-07-01: false
+GA:
+  2020-07-01: false
+GU:
+  2020-07-01: false
+HI:
+  2020-07-01: false
+  2022-07-01: true
+IA:
+  2020-07-01: false
+ID:
+  2020-07-01: false
+IL:
+  2020-07-01: false
+IN:
+  2020-07-01: true
+KY:
+  2020-07-01: false
+LA:
+  2020-07-01: true
+MA:
+  2020-07-01: false
+MD:
+  2020-07-01: false
+ME:
+  2020-07-01: false
+MI:
+  2020-07-01: false
+MN:
+  2020-07-01: false
+MT:
+  2020-07-01: false
+NC:
+  2020-07-01: false
+ND:
+  2020-07-01: true
+NE:
+  2020-07-01: false
+NH:
+  2020-07-01: false
+NJ:
+  2020-07-01: false
+NM:
+  2020-07-01: false
+NV:
+  2020-07-01: false
+NY:
+  2020-07-01: false
+OH:
+  2020-07-01: false
+OK:
+  2020-07-01: false
+OR:
+  2020-07-01: false
+PA:
+  2020-07-01: false
+RI:
+  2020-07-01: true
+SC:
+  2020-07-01: false
+TX:
+  2020-07-01: false
+VA:
+  2020-07-01: false
+VI:
+  2020-07-01: false
+VT:
+  2020-07-01: false
+WA:
+  2020-07-01: false
+WI:
+  2020-07-01: false
+WV:
+  2020-07-01: false
+
+metadata:
+  reference:
+    - title: SNAP Screener SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
+  breakdown:
+  - state_code
