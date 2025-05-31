@@ -1,0 +1,48 @@
+description: The IRS limits the midwestern region operating costs to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
+
+MIDWEST_DEFAULT:
+  1:
+    2024-01-01: 239
+  2:
+    2024-01-01: 478
+CHICAGO:
+  1:
+    2024-01-01: 266
+  2:
+    2024-01-01: 532
+CLEVELAND:
+  1: 
+    2024-01-01: 239
+  2:
+    2024-01-01: 478
+DETROIT:
+  1:
+    2024-01-01: 299
+  2:
+    2024-01-01: 598
+MINNEAPOLIS_ST_PAUL:
+  1: 
+    2024-01-01: 243
+  2:
+    2024-01-01: 486
+ST_LOUIS:
+  1:
+    2024-01-01: 220
+  2:
+    2024-01-01: 440
+NONE:
+  1:
+    2024-01-01: 0
+  2:
+    2024-01-01: 0
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Chapter 7 Bankruptcy midwestern region operating costs limit
+  breakdown:
+  - midwestern_county
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation

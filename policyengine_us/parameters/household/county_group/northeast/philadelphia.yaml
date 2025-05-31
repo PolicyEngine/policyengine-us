@@ -1,0 +1,22 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Philadelphia area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Philadelphia area counties 
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - BUCKS_COUNTY_PA
+    - CHESTER_COUNTY_PA
+    - DELAWARE_COUNTY_PA
+    - MONTGOMERY_COUNTY_PA
+    - PHILADELPHIA_COUNTY_PA
+    - BURLINGTON_COUNTY_NJ
+    - CAMDEN_COUNTY_NJ
+    - GLOUCESTER_COUNTY_NJ
+    - SALEM_COUNTY_NJ
+    - NEW_CASTLE_COUNTY_DE
+    - CECIL_COUNTY_MD
