@@ -1,0 +1,34 @@
+- name: Eligible two-person household in 2023 meets rent threshold and receives housing assistance in Massachusetts.
+  period: 2023
+  input:
+    spm_unit_size: 2
+    state_code: MA
+    ma_liheap_income: 70_000
+    receives_housing_assistance: true
+    rent: 22_000
+    heat_expense_included_in_rent: true
+  output:
+    ma_liheap_eligible_subsidized_housing: true  
+
+- name: Ineligible four-person household in 2022 does not meet rent threshold despite receiving housing assistance in Massachusetts.
+  period: 2022
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 100_000
+    receives_housing_assistance: true
+    rent: 29_000
+    heat_expense_included_in_rent: true
+  output:
+    ma_liheap_eligible_subsidized_housing: false  
+
+- name: Ineligible two-person household in 2023 has sufficient rent but no housing assistance in Massachusetts.
+  period: 2023
+  input:
+    spm_unit_size: 2
+    state_code: MA
+    ma_liheap_income: 70_000
+    receives_housing_assistance: false
+    rent: 22_000
+  output:
+    ma_liheap_eligible_subsidized_housing: false

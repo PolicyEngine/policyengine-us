@@ -1,0 +1,17 @@
+- name: Massachusetts HECS LIHEAP eligibility 2021 - Eligible
+  period: 2022
+  input:
+    state_code: MA
+    heating_expense_last_year: 1_300  
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE  
+  output:
+    ma_liheap_hecs_eligible: true
+
+- name: Massachusetts HECS LIHEAP eligibility 2021 - Not Eligible
+  period: 2025
+  input:
+    state_code: MA
+    heating_expense_last_year: 900  
+    ma_liheap_heating_type: NATURAL_GAS  
+  output:
+    ma_liheap_hecs_eligible: false

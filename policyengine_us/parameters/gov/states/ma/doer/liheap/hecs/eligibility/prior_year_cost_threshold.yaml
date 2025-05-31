@@ -1,0 +1,48 @@
+description: Massachusetts limits High Energy Cost Supplement payments to applicants whose prior-year heating costs, by type, exceed these amounts under the Low Income Home Energy Assistance Program.
+
+HEATING_OIL_AND_PROPANE: 
+  2021-10-01: 1_279
+  2022-10-01: 1_856
+  2023-10-01: 2_217
+  2024-10-01: 1_865
+
+NATURAL_GAS: 
+  2021-10-01: 974
+  2022-10-01: 1_190
+  2023-10-01: 1_366
+  2024-10-01: 1_144
+
+OTHER: 
+  2021-10-01: 1_058
+  2022-10-01: 1_635
+  2023-10-01: 1_840
+  2024-10-01: 1_501
+
+KEROSENE: 
+  2021-10-01: 1_076
+  2022-10-01: 1_487
+  2023-10-01: 1_974
+  2024-10-01: 1_631
+
+ELECTRICITY: 
+  2021-10-01: 1_592
+  2022-10-01: 1_709
+  2023-10-01: 2_007
+  2024-10-01: 1_927
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Massachusetts LIHEAP HECS payment threshold
+  breakdown: 
+    - ma_liheap_heating_type
+
+reference:
+  - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+    href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf 
+  - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+    href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download 
+  - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+    href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
+  - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+    href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download

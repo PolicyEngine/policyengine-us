@@ -1,0 +1,44 @@
+- name: Case 1, fiscal year 2022, household size of 1.
+  period: 2022
+  input:
+    spm_unit_size: 1
+    state_code: MA
+    ma_liheap_income: 12_879
+  output:
+    ma_liheap_benefit_level: 1
+
+- name: Case 2, fiscal year 2023, household size of 4.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 41_624
+  output:
+    ma_liheap_benefit_level: 3
+
+- name: Case 3, fiscal year 2023, household size of 4.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 41_626
+  output:
+    ma_liheap_benefit_level: 4
+
+- name: Case 4, fiscal year 2023, household size of 4.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 81_560
+  output:
+    ma_liheap_benefit_level: 6
+
+- name: Case 5, fiscal year 2023, household size of 4.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 81_562
+  output:
+    ma_liheap_benefit_level: 6

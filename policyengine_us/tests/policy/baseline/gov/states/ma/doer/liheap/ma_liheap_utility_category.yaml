@@ -1,0 +1,44 @@
+- name: Case 1, heating oil and propane.
+  period: 2021
+  input:
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    heat_expense_included_in_rent: false
+    state_code: MA
+  output:
+    ma_liheap_utility_category: DELIVERABLE_FUEL
+
+- name: Case 2, other heating type.
+  period: 2021
+  input:
+    ma_liheap_heating_type: OTHER
+    heat_expense_included_in_rent: false
+    state_code: MA
+  output:
+    ma_liheap_utility_category: DELIVERABLE_FUEL
+
+- name: Case 3, electricity.
+  period: 2021
+  input:
+    ma_liheap_heating_type: ELECTRICITY
+    heat_expense_included_in_rent: false
+    state_code: MA
+  output:
+    ma_liheap_utility_category: UTILITY_AND_HEAT_IN_RENT
+
+- name: Case 4, heating include in rent.
+  period: 2021
+  input:
+    ma_liheap_heating_type: OTHER
+    heat_expense_included_in_rent: true
+    state_code: MA
+  output:
+    ma_liheap_utility_category: UTILITY_AND_HEAT_IN_RENT
+
+- name: Case 5, none.
+  period: 2021
+  input:
+    ma_liheap_heating_type: NONE
+    heat_expense_included_in_rent: false
+    state_code: MA
+  output:
+    ma_liheap_utility_category: NONE
