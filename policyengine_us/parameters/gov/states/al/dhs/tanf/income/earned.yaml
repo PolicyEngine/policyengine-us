@@ -1,0 +1,13 @@
+description: Alabama counts these income sources as earned income under the TANF program.
+values:
+  2022-01-01: 
+    - employment_income
+    - self_employment_income
+    - eitc
+metadata:
+  unit: list
+  period: year
+  label: Alabama TANF earned income sources  
+  reference:
+    title: Alabama Department of Human Resources | TANF Policy Manual | § 3210.C. Earned Income
+    href: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=27
