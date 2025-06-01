@@ -8,4 +8,4 @@ class heating_expenses(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["heating_expense_person"]
+    adds = ["heating_expense"]
