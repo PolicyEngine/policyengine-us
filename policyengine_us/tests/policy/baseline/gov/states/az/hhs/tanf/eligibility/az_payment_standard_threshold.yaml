@@ -1,0 +1,41 @@
+- name: The family of 3 do not spend shelter cost (under the latest standard)
+  period: 2024-01
+  absolute_error_margin: 5
+  #have rounding errors with the 23% when calculating payment standard
+  input:
+    az_fpg_baseline: 11_570
+    housing_cost: 0
+    state_code: AZ
+  output:
+    az_payment_standard_threshold: 218
+
+- name: The family of 3 do not spend shelter cost (under the previous standard)
+  period: 2023-01
+  absolute_error_margin: 5  
+  #have rounding errors with the 23% when calculating payment standard
+  input:
+    az_fpg_baseline: 11_570
+    housing_cost: 0
+    state_code: AZ
+  output:
+    az_payment_standard_threshold: 175
+
+- name: The family of 3 spend shelter cost (under the latest standard)
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    az_fpg_baseline: 11_570
+    housing_cost: 100
+    state_code: AZ
+  output:
+    az_payment_standard_threshold: 347
+
+- name: The family of 3 spend shelter cost (under the previous standard)
+  period: 2023-01
+  absolute_error_margin: 1
+  input:
+    az_fpg_baseline: 11_570
+    housing_cost: 100
+    state_code: AZ
+  output:
+    az_payment_standard_threshold: 278
