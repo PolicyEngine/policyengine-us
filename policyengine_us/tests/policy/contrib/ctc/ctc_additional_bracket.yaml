@@ -1,0 +1,114 @@
+- name: Joint filers with two kids, different bracket amounts
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_additional_bracket.ctc_additional_bracket
+  input:
+    gov.contrib.ctc.additional_bracket.amount.base[0].amount: 3_000
+    gov.contrib.ctc.additional_bracket.amount.base[1].amount: 2_500
+    gov.contrib.ctc.additional_bracket.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 2_500, 3_000]
+
+- name: Joint filers with two kids, different bracket amounts - counterfactual, no reform
+  period: 2025
+  input:
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 2_000, 2_000]
+
+- name: Joint filers with two kids, different refundable amounts
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_additional_bracket.ctc_additional_bracket
+  input:
+    gov.contrib.ctc.additional_bracket.amount.base[0].amount: 3_000
+    gov.contrib.ctc.additional_bracket.amount.base[1].amount: 2_500
+    gov.contrib.ctc.additional_bracket.amount.actc[0].amount: 2_500
+    gov.contrib.ctc.additional_bracket.amount.actc[1].amount: 2_200
+    gov.contrib.ctc.additional_bracket.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 2_500, 3_000]
+    ctc_refundable_maximum: 4_700
+
+- name: Refundable maximum does not apply
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_additional_bracket.ctc_additional_bracket
+  input:
+    gov.contrib.ctc.additional_bracket.amount.base[0].amount: 3_000
+    gov.contrib.ctc.additional_bracket.amount.base[1].amount: 2_500
+    gov.contrib.ctc.additional_bracket.amount.actc[0].amount: 0
+    gov.contrib.ctc.additional_bracket.amount.actc[1].amount: 0
+    gov.contrib.ctc.additional_bracket.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 2_500, 3_000]
+    ctc_refundable_maximum: 0
+
+- name: One child is over 16
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_additional_bracket.ctc_additional_bracket
+  input:
+    gov.contrib.ctc.additional_bracket.amount.base[0].amount: 3_000
+    gov.contrib.ctc.additional_bracket.amount.base[1].amount: 2_500
+    gov.contrib.ctc.additional_bracket.amount.actc[0].amount: 2_500
+    gov.contrib.ctc.additional_bracket.amount.actc[1].amount: 2_200
+    gov.contrib.ctc.additional_bracket.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 0, 3_000]
+    ctc_refundable_maximum: 2_500
