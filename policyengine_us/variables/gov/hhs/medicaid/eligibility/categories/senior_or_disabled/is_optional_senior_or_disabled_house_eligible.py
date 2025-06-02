@@ -21,8 +21,6 @@ class is_optional_senior_or_disabled_house_eligible(Variable):
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
         #  Asset limit
-        asset_limit = where(
-            p.assets.limit.home_value[state],
-        )
+        asset_limit = p.assets.limit.home_value[state]
 
         return home_equity < asset_limit

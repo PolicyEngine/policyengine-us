@@ -1,5 +1,5 @@
 - name: low assets, eligible for Medicaid
-  period: 2022
+  period: 2025
   input:
     home_equity: 1_000
     state_code: TX
@@ -7,7 +7,7 @@
     is_optional_senior_or_disabled_house_eligible: true
 
 - name: high assets, ineligible for Medicaid
-  period: 2022
+  period: 2025
   input:
     home_equity: 2_000_000
     state_code: TX
@@ -16,7 +16,7 @@
 
 
 - name: high assets, eligible for Medicaid in CA
-  period: 2024
+  period: 2025
   input:
     home_equity: 1_000_000
     state_code: CA
