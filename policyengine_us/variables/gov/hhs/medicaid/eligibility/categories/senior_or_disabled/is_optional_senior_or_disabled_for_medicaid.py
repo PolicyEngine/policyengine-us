@@ -17,4 +17,7 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
         asset_eligible = person(
             "is_optional_senior_or_disabled_asset_eligible", period
         )
-        return is_senior_or_disabled & income_eligible & asset_eligible
+        home_value_eligible = person(
+            "is_optional_senior_or_disabled_house_eligible", period
+        )
+        return is_senior_or_disabled & income_eligible & asset_eligible & home_value_eligible
