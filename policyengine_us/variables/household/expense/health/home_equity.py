@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class home_equity(Variable):
     value_type = float
     entity = Household
