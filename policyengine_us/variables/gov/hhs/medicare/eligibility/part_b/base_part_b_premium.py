@@ -35,8 +35,10 @@ class base_part_b_premium(Variable):
                 brackets.single.calc(0),
                 brackets.joint.calc(0),
                 brackets.head_of_household.calc(0),  # HOH uses single brackets
-                brackets.surviving_spouce.calc(0),  # Surviving spouse uses single brackets
-                brackets.separate.calc(0),  
+                brackets.surviving_spouce.calc(
+                    0
+                ),  # Surviving spouse uses single brackets
+                brackets.separate.calc(0),
             ],
         )
 
