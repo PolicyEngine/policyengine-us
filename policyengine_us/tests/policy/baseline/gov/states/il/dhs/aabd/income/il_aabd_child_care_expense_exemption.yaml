@@ -3,7 +3,7 @@
   input:
     tax_unit_dependents: 1 
     childcare_expenses: 100 * 12
-    monthly_hours_worked: 99
+    monthly_hours_worked: 99 * 12
     is_married: false
     is_tax_unit_head_or_spouse: true
     state_code: IL
@@ -15,7 +15,7 @@
   input:
     tax_unit_dependents: 1 
     childcare_expenses: 130 * 12
-    monthly_hours_worked: 99
+    monthly_hours_worked: 99 * 12
     is_married: false
     is_tax_unit_head_or_spouse: true
     state_code: IL
@@ -27,7 +27,7 @@
   input:
     tax_unit_dependents: 1 
     childcare_expenses: 100 * 12
-    monthly_hours_worked: 99
+    monthly_hours_worked: 99 * 12
     is_married: true
     is_tax_unit_head_or_spouse: true
     state_code: IL
@@ -39,7 +39,7 @@
   input:
     tax_unit_dependents: 2 
     childcare_expenses: 330 * 12
-    monthly_hours_worked: 100
+    monthly_hours_worked: 100 * 12
     is_married: false
     is_tax_unit_head_or_spouse: true
     state_code: IL
@@ -51,7 +51,7 @@
   input:
     tax_unit_dependents: 2 
     childcare_expenses: 330 * 12
-    monthly_hours_worked: 100
+    monthly_hours_worked: 100 * 12
     is_married: true
     is_tax_unit_head_or_spouse: true
     state_code: IL
@@ -63,7 +63,7 @@
   input:
     tax_unit_dependents: 1 
     childcare_expenses: 100 * 12
-    monthly_hours_worked: 100
+    monthly_hours_worked: 100 * 12
     is_married: false
     is_tax_unit_head_or_spouse: false
     state_code: IL
@@ -75,7 +75,7 @@
   input:
     tax_unit_dependents: 0
     childcare_expenses: 100 * 12
-    monthly_hours_worked: 100
+    monthly_hours_worked: 100 * 12
     is_married: false
     is_tax_unit_head_or_spouse: true
     state_code: IL

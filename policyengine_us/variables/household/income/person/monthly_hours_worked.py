@@ -6,4 +6,4 @@ class monthly_hours_worked(Variable):
     entity = Person
     label = "Average monthly hours worked"
     unit = "hour"
-    definition_period = MONTH
+    definition_period = YEAR
