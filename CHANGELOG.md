@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.302.0] - 2025-06-03 13:33:39
+
+### Added
+
+- Net worth variables (to compare imputation method impacts on policy results).
+
 ## [1.301.0] - 2025-06-01 08:18:11
 
 ### Added
@@ -11890,6 +11896,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.301.0...1.302.0
 [1.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.300.0...1.301.0
 [1.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.1...1.300.0
 [1.299.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.0...1.299.1
