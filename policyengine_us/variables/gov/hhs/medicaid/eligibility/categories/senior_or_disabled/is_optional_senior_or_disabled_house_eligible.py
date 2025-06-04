@@ -15,7 +15,7 @@ class is_optional_senior_or_disabled_house_eligible(Variable):
         #  state info
         state = person.household("state_code_str", period)
 
-        #  Parameters
+        #  Parameter path
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
