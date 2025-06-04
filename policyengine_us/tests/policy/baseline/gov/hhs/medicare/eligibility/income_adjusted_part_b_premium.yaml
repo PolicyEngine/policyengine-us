@@ -1,0 +1,9 @@
+- name: unit test 1 -  single, no extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: surviving_spouse
+    employment_income: 80_000
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 185
