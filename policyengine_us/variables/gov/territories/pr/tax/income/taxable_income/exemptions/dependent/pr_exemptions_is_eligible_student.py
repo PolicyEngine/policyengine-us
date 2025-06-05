@@ -11,7 +11,7 @@ class pr_exemptions_is_eligible_student(Variable):
     defined_for = StateCode.PR
 
     def formula(person, period, parameters):
-        # if dependent is a student, can earn gross income up to 7500 to be eligible for exemption
+        # Gross income limit is $7500 for a student dependent
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent

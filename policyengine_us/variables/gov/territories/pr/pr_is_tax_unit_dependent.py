@@ -6,6 +6,7 @@ class pr_is_tax_unit_dependent(Variable):
     entity = Person
     label = "Puerto Rico tax unit dependent"
     definition_period = YEAR
+    defined_for = StateCode.PR
     reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
 
     def formula(person, period, parameters):
@@ -24,13 +25,16 @@ class pr_is_tax_unit_dependent(Variable):
             "is_incapable_of_self_care", period
         )
 
+        is_blind = person("is_blind", period)
+
         # OR a university student <26 years old that attended at least 1 years of an accredited uni
-        student_eligible = (person("is_full_time_student", period)) & (
+        student_eligible = (person("is_full_time_college_student", period)) & (
             age < p.student_age_limit
         )
         return (
             student_eligible
             | parent_eligible
             | incapable_of_self_support_eligible
+            | is_blind
             | age_eligible
         )
