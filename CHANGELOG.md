@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.305.0] - 2025-06-05 15:55:00
+
+### Added
+
+- Illinois Temporary Assistance for Needy Families (TANF).
+
 ## [1.304.0] - 2025-06-05 13:44:56
 
 ### Added
@@ -11908,6 +11914,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.304.0...1.305.0
 [1.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.303.0...1.304.0
 [1.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.302.0...1.303.0
 [1.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.301.0...1.302.0
