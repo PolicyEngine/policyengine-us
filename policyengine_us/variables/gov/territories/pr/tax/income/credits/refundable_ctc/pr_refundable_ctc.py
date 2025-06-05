@@ -7,7 +7,10 @@ class pr_refundable_ctc(Variable):
     label = "Puerto Rico refundable Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf"
+    reference = (
+        "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf"
+        "https://www.law.cornell.edu/uscode/text/26/24#h_4_A"
+    )
 
     # This provision is part of the federal CTC legal code
     # will will merge the logic with the federal CTC once the puerto income tax structure is completed
