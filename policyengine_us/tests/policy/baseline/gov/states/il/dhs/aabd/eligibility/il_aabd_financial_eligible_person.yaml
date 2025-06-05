@@ -1,0 +1,29 @@
+- name: Case 1, asset eligible and income eligible.
+  period: 2023
+  input:
+    il_aabd_asset_value_eligible: true
+    il_aabd_need_standard_person: 100
+    il_aabd_countable_income: 99
+    state_code: IL
+  output:
+    il_aabd_financial_eligible_person: true
+
+- name: Case 2, asset eligible but income ineligible.
+  period: 2023
+  input:
+    il_aabd_asset_value_eligible: true
+    il_aabd_need_standard_person: 100
+    il_aabd_countable_income: 101
+    state_code: IL
+  output:
+    il_aabd_financial_eligible_person: false
+
+- name: Case 3, asset ineligible.
+  period: 2023
+  input:
+    il_aabd_asset_value_eligible: false
+    il_aabd_need_standard_person: 100
+    il_aabd_countable_income: 99
+    state_code: IL
+  output:
+    il_aabd_financial_eligible_person: false
