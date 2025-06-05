@@ -13,7 +13,9 @@ class pr_ctc_phase_out(Variable):
     def formula(tax_unit, period, parameters):
         # line 2a: add PR income that was excluded
         income = add(
-            tax_unit, period, ["adjusted_gross_income", "pr_gross_income"]
+            tax_unit,
+            period,
+            ["adjusted_gross_income", "pr_gross_income_person"],
         )
         p = parameters(period).gov.irs.credits.ctc.phase_out
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)

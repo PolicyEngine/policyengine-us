@@ -4,9 +4,9 @@
     people:
       person1:
         # threshold should be 400_000
-        pr_gross_income: 25_000
+        pr_gross_income_person: 25_000
       person2:
-        pr_gross_income: 25_001
+        pr_gross_income_person: 25_001
     tax_units:
       tax_unit:
         adjusted_gross_income: 350_000
@@ -21,9 +21,9 @@
     people:
       person1:
         # threshold should be 400_000
-        pr_gross_income: 69_999
+        pr_gross_income_person: 69_999
       person2:
-        pr_gross_income: 30_000
+        pr_gross_income_person: 30_000
     tax_units:
       tax_unit:
         adjusted_gross_income: 300_000
@@ -38,7 +38,7 @@
     people:
       person1:
         # threshold should be 200_000
-        pr_gross_income: 1_000
+        pr_gross_income_person: 1_000
     tax_units:
       tax_unit:
         adjusted_gross_income: 199_000
@@ -53,7 +53,7 @@
     people:
       person1:
         # threshold should be 200_000
-        pr_gross_income: 2_000
+        pr_gross_income_person: 2_000
     tax_units:
       tax_unit:
         adjusted_gross_income: 200_000
