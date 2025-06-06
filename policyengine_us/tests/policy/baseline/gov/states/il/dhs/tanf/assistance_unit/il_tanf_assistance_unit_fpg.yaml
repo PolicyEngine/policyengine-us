@@ -1,0 +1,35 @@
+- name: Case 1, assistance unit size 1 in 2023.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    il_tanf_assistance_unit_size: 1
+    state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 14_580
+
+- name: Case 2, assistance unit size 3 in 2023.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    il_tanf_assistance_unit_size: 3
+    state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 14_580 + 2 * 5_140
+
+- name: Case 3, assistance unit size 1 in 2023-01.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    il_tanf_assistance_unit_size: 1
+    state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 1_215 # 14_580/12
+
+- name: Case 4, assistance unit size 3 in 2023-01.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    il_tanf_assistance_unit_size: 3
+    state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 2_071.67 # (14_580 + 2 * 5_140)/12
