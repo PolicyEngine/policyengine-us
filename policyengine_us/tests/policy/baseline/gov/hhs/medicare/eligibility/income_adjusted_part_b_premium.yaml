@@ -2,7 +2,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: surviving_spouse
+    filing_status: SURVIVING_SPOUSE
     employment_income: 80_000
     is_medicare_eligible: true
   output:
@@ -12,7 +12,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: joint
+    filing_status: JOINT
     employment_income: 266_001
     is_medicare_eligible: true
   output:
@@ -22,7 +22,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: single
+    filing_status: SINGLE
     employment_income: 500_000
     is_medicare_eligible: true
   output:
@@ -32,7 +32,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: surviving_spouse
+    filing_status: SURVIVING_SPOUSE
     employment_income: 106_002
     is_medicare_eligible: true
   output:
@@ -42,7 +42,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: joint
+    filing_status: JOINT
     employment_income: 200_000
     is_medicare_eligible: true
   output:
@@ -52,7 +52,7 @@
   period: 2025
   input:
     age: 65
-    filing_status: joint
+    filing_status: JOINT
     employment_income: 1_000_000
     is_medicare_eligible: true
   output:

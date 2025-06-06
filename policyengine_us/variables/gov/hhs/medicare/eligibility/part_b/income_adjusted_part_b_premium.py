@@ -7,10 +7,9 @@ class income_adjusted_part_b_premium(Variable):
     label = "Medicare Part B premium (income-adjusted)"
     unit = USD
     definition_period = YEAR
+    defined_for = "is_medicare_eligible"
 
     def formula(person, period, parameters):
-        # Gate: only Medicare-eligible people pay anything
-        is_eligible = person("is_medicare_eligible", period)
 
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
@@ -41,4 +40,4 @@ class income_adjusted_part_b_premium(Variable):
             ],
         )
 
-        return is_eligible * (base + irmaa_amount)
+        return base + irmaa_amount
