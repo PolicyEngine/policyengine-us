@@ -1,4 +1,4 @@
-- name: unit test 1 -  single, no extra premium
+- name: unit test 1 - surviving spouse, no extra premium
   period: 2025
   input:
     age: 65
@@ -7,3 +7,53 @@
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 185
+
+- name: unit test 2 -  married, extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: joint
+    employment_income: 266_001
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 370
+
+- name: unit test 3 -  single, extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: single
+    employment_income: 500_000
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 628.9
+
+- name: unit test 4 - HOH,  extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: surviving_spouse
+    employment_income: 106_002
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 259
+
+- name: unit test 5 -  married, no extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: joint
+    employment_income: 200_000
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 185
+
+- name: unit test 6 -  married, extra premium, rich
+  period: 2025
+  input:
+    age: 65
+    filing_status: joint
+    employment_income: 1_000_000
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 628.9

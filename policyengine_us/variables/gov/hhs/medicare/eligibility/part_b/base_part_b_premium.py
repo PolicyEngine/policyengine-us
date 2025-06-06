@@ -13,4 +13,3 @@ class base_part_b_premium(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicare.part_b
         return p.base_premium
- 
