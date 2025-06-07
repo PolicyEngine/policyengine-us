@@ -10121,3 +10121,9 @@
     fixed:
     - Fix DC TANF child care deduction formula.
   date: 2025-06-06 20:46:21
+- bump: patch
+  changes:
+    changed:
+    - In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based
+      counties in all cases, including when FIPS is defined.
+  date: 2025-06-07 13:10:54

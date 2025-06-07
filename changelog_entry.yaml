@@ -1,4 +1,0 @@
-- bump: patch
-  changes:
-    changed:
-    - In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based counties in all cases, including when FIPS is defined.
