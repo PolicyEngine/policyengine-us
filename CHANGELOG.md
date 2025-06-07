@@ -5,6 +5,125 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.308.0] - 2025-06-07 20:44:11
+
+### Added
+
+- Massachusetts Low-Income Home Energy Assistance Program (LIHEAP).
+
+## [1.307.1] - 2025-06-07 13:10:54
+
+### Changed
+
+- In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based counties in all cases, including when FIPS is defined.
+
+## [1.307.0] - 2025-06-06 20:46:21
+
+### Fixed
+
+- Fix DC TANF child care deduction formula.
+
+## [1.306.0] - 2025-06-06 17:42:13
+
+### Added
+
+- Illinois Aid to the Aged, Blind or Disabled (AABD).
+
+## [1.305.0] - 2025-06-05 15:55:00
+
+### Added
+
+- Illinois Temporary Assistance for Needy Families (TANF).
+
+## [1.304.0] - 2025-06-05 13:44:56
+
+### Added
+
+- Update the California State Supplement 2025 values.
+
+## [1.303.0] - 2025-06-05 13:19:06
+
+### Added
+
+- Add default value of 40 to ssi_qualifying_quarters_earnings.
+
+## [1.302.0] - 2025-06-03 13:33:39
+
+### Added
+
+- Net worth variables (to compare imputation method impacts on policy results).
+
+## [1.301.0] - 2025-06-01 08:18:11
+
+### Added
+
+- Illinois Child Care Assistance Program (CCAP).
+
+## [1.300.0] - 2025-05-30 21:36:49
+
+### Added
+
+- Refugee status to the CA TANF and ChildCare eligibility criteria.
+
+## [1.299.1] - 2025-05-30 16:31:37
+
+### Fixed
+
+- Adjust the ACTC additional bracket parameter label / description, and add support for multiple periods.
+
+## [1.299.0] - 2025-05-30 14:18:59
+
+### Added
+
+- Qualified BDC dividend income variable
+- Qualified REIT and PTP income variable
+- Farm operations income variable
+- Variables showing whether income types would be qualified business income (estate, farm operations, farm rent, partnership/S corp, rental, self employment)
+- Parameter for sources of QBI deductions (deduction_definition.yaml)
+- QBID reconciliation parameters (in_effect, phase_out_rate, use_bdc_income)
+- Marginal tax rate including health benefits variable
+- Tax code references to income variables where they were missing
+
+### Changed
+
+- marginal_tax_rate and marginal_tax_rate_including_health_benefits now use emp_self_emp_ratio with no logic change
+
+## [1.298.0] - 2025-05-30 06:47:16
+
+### Added
+
+- Additional CTC bracket reform.
+
+## [1.297.2] - 2025-05-28 01:47:22
+
+### Fixed
+
+- auto loan variables uprating path
+
+## [1.297.1] - 2025-05-27 23:07:51
+
+### Changed
+
+- Add uprating for base ACA premiums.
+
+## [1.297.0] - 2025-05-27 22:24:56
+
+### Added
+
+- CalWorks TANF and Child Care immigration status eligibility.
+
+## [1.296.0] - 2025-05-27 21:44:24
+
+### Added
+
+- New York 2026 budget agreement income tax provisions.
+
+## [1.295.1] - 2025-05-27 21:39:46
+
+### Fixed
+
+- Corrected Vermont's per capita Medicaid spending.
+
 ## [1.295.0] - 2025-05-27 14:19:05
 
 ### Added
@@ -11819,6 +11938,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.1...1.308.0
+[1.307.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.0...1.307.1
+[1.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.306.0...1.307.0
+[1.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.305.0...1.306.0
+[1.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.304.0...1.305.0
+[1.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.303.0...1.304.0
+[1.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.302.0...1.303.0
+[1.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.301.0...1.302.0
+[1.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.300.0...1.301.0
+[1.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.1...1.300.0
+[1.299.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.0...1.299.1
+[1.299.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.298.0...1.299.0
+[1.298.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.2...1.298.0
+[1.297.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.1...1.297.2
+[1.297.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.0...1.297.1
+[1.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.296.0...1.297.0
+[1.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.1...1.296.0
+[1.295.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.0...1.295.1
 [1.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.294.0...1.295.0
 [1.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.293.0...1.294.0
 [1.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.292.0...1.293.0
