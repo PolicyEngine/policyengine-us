@@ -1,0 +1,26 @@
+- name: Eligible student dependent
+  period: 2024
+  input:
+    pr_exemptions_is_eligible_student: true
+    pr_exemptions_is_eligible_nonstudent: false 
+    state_code: PR
+  output:
+    pr_eligible_dependent_for_exemption: true
+
+- name: Eligible nonstudent dependent
+  period: 2024
+  input:
+    pr_exemptions_is_eligible_student: false
+    pr_exemptions_is_eligible_nonstudent: true 
+    state_code: PR
+  output:
+    pr_eligible_dependent_for_exemption: true
+
+- name: Noneligible person
+  period: 2024
+  input:
+    pr_exemptions_is_eligible_student: false
+    pr_exemptions_is_eligible_nonstudent: false 
+    state_code: PR
+  output:
+    pr_eligible_dependent_for_exemption: false
