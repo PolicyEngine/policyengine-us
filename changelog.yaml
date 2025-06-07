@@ -10111,3 +10111,19 @@
     added:
     - Illinois Temporary Assistance for Needy Families (TANF).
   date: 2025-06-05 15:55:00
+- bump: minor
+  changes:
+    added:
+    - Illinois Aid to the Aged, Blind or Disabled (AABD).
+  date: 2025-06-06 17:42:13
+- bump: minor
+  changes:
+    fixed:
+    - Fix DC TANF child care deduction formula.
+  date: 2025-06-06 20:46:21
+- bump: patch
+  changes:
+    changed:
+    - In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based
+      counties in all cases, including when FIPS is defined.
+  date: 2025-06-07 13:10:54
