@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wic(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Benefit value for the Special Supplemental Nutrition Program for Women, Infants and Children (WIC)"
     label = "WIC"
     reference = (
@@ -23,4 +23,4 @@ class wic(Variable):
         would_takeup = person("would_claim_wic", period)
         if p.abolish_wic:
             return 0
-        return would_takeup * value_if_eligible * MONTHS_IN_YEAR
+        return would_takeup * value_if_eligible
