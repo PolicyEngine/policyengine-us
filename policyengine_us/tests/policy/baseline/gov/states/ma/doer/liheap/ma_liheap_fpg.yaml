@@ -1,0 +1,23 @@
+- name: Case 1, fiscal year 2023, household size of 4. 
+  period: 2023
+  input:
+    spm_unit_size: 4 
+    state_code: MA
+  output:
+    ma_liheap_fpg: 27_750
+
+- name: Case 2, fiscal year 2023, household size of 1. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    state_code: MA
+  output:
+    ma_liheap_fpg: 13_590
+
+- name: Case 3, fiscal year 2024, household size of 4. 
+  period: 2024
+  input:
+    spm_unit_size: 4 
+    state_code: MA
+  output:
+    ma_liheap_fpg: 30_000
