@@ -192,7 +192,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     second_earner_tax_reform = create_second_earner_tax_reform(
         parameters, period
     )
-    expanded_ctc = create_expanded_ctc_reform(parameters, period)
     abolish_snap_deductions = create_abolish_snap_deductions_reform(
         parameters, period
     )
