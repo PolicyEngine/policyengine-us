@@ -20,7 +20,7 @@
         state_code_str: CO
   output:
     # CO TANF will be calculated - just check it's positive
-    tanf: 6540  # Actual CO TANF for family of 4 with low income
+    tanf: 6_540  # Actual CO TANF for family of 4 with low income
 
 - name: Illinois family with reported TANF
   period: 2023
@@ -76,7 +76,7 @@
         members: [parent, child]
         state_code_str: DC
   output:
-    tanf: 6585  # Actual DC TANF for family of 2 with no income
+    tanf: 6_585  # Actual DC TANF for family of 2 with no income
 
 - name: Test demographic eligibility
   period: 2023-01  # Use month period for demographic test
@@ -115,7 +115,7 @@
         state_code_str: NY
   output:
     # NY TANF for family of 2 with no income
-    tanf: 3024
+    tanf: 3_024
 
 - name: TANF abolition test with full household
   period: 2023
