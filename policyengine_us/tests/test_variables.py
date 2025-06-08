@@ -13,7 +13,6 @@ EXEMPTIONS = (
     "household_income_decile",  # because DEFAULT_SITUATION has no weights
     "spm_unit_income_decile",  # because DEFAULT_SITUATION has no weights
     "income_decile",  # because DEFAULT_SITUATION has no weights
-    # "tanf",
 )
 
 
@@ -27,9 +26,7 @@ simulation = Simulation(
 
 @pytest.mark.parametrize("variable", system.variables)
 def test_variable(variable: str) -> None:
-    requires_computation_after = system.variables[
-        variable
-    ].requires_computation_after
+    requires_computation_after = system.variables[variable].requires_computation_after
     if requires_computation_after:
         simulation.calculate(requires_computation_after, 2022)
     elif variable not in EXEMPTIONS:
