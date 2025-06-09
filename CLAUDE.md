@@ -38,7 +38,7 @@ make documentation
 - View PR list: `gh pr list` 
 - View PR details: `gh pr view [PR-NUMBER]`
 - Contributing to PRs:
-  - After making code changes, run `make format` to ensure code meets style guidelines
+  - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
@@ -49,6 +49,10 @@ make documentation
 - **Variable Naming**: Use snake_case for variable names and function names; use UPPER_CASE for constants
 - **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
 - **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
+- **Parameter Access**: Always use `p = parameters(period).gov.<program>` pattern and call parameters as `p.*` to make parameter tree origin clear
+- **Constants**: Use UPPERCASE only for constants defined in code, not for parameters from the parameter tree
+- **Income Combination**: Use `add(person, period, ["income1", "income2"])` instead of manual addition for combining income sources
+- **Negative Values**: Use `max_(value, 0)` to clip negative values to zero (prevents counterintuitive behavior in economic models)
 
 ## Additional Guidelines
 - Python >= 3.10, < 3.13
@@ -61,6 +65,7 @@ make documentation
 - Every PR needs a changelog entry in changelog_entry.yaml
 
 ## Common Patterns and Gotchas
+- **ALWAYS run `make format` before every commit** - this is mandatory and ensures consistent code style
 - Unit tests with scalar values can pass while vectorized microsimulation fails
 - When implementing a previously empty variable, be sure to check for dependent formulas
 - When using `defined_for`, ensure it's tested in microsimulation context
@@ -92,6 +97,8 @@ make documentation
 - State programs should be self-contained with their own income calculations and eligibility rules
   - Use state-specific variable names (e.g., `il_tanf_countable_income` not `tanf_countable_income`)
   - This allows states to have different rules without affecting each other
+- **Labor Supply Response & Negative Earnings**: When dealing with income sources that can be negative (especially self-employment), use `max_(earnings, 0)` to prevent sign flips in economic responses. Negative total earnings should result in zero labor supply responses, not negative responses.
+- **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
 ## Testing Best Practices
 - **Unit Tests**: 
