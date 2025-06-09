@@ -5,7 +5,7 @@ class dc_gac_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = (
-        "Eligible for DC General Assistance to Children (GAC) due to income"
+        "Eligible for DC General Assistance for Children (GAC) due to income"
     )
     definition_period = MONTH
     reference = (

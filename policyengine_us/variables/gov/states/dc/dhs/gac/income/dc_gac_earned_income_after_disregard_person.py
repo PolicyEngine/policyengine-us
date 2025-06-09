@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_gac_earned_income_after_disregard_person(Variable):
     value_type = float
     entity = Person
-    label = "DC General Assistance to Children (GAC) earned income after disregard per person"
+    label = "DC General Assistance for Children (GAC) earned income after disregard per person"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -17,5 +17,6 @@ class dc_gac_earned_income_after_disregard_person(Variable):
         gross_earnings = person("dc_tanf_gross_earned_income", period)
         adjusted_income = max_(gross_earnings - p.amount, 0)
         full_time_student = person("is_full_time_student", period)
+        work_full_time = person("is_working_full_time", period)
 
-        return where(full_time_student, 0, adjusted_income)
+        return where(work_full_time & ~full_time_student, adjusted_income, 0)

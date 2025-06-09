@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_gac_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for DC General Assistance to Children (GAC)"
+    label = "Eligible for DC General Assistance for Children (GAC)"
     definition_period = MONTH
     reference = "https://dhs.dc.gov/service/tanf-district-families"
     defined_for = StateCode.DC

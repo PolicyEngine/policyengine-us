@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_gac(Variable):
     value_type = float
     entity = SPMUnit
-    label = "DC General Assistance to Children (GAC)"
+    label = "DC General Assistance for Children (GAC)"
     unit = USD
     definition_period = MONTH
     reference = (
