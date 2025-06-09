@@ -40,6 +40,7 @@
         aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
         state_sales_tax: 0  # not in TAXSIM35
+        out_of_state_purchase_value: 10_000
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -49,6 +50,9 @@
       household:
         members: [person1, person2, person3]
         state_fips: 45  # SC
+        county_str: CHARLESTON_COUNTY_SC
   output:  # expected results from patched TAXSIM35 2024-01-11 version
     sc_two_wage_earner_credit: 136.68
-    sc_income_tax: 8_042.25
+    sc_income_tax: 8_942.25
+    sc_use_tax: 900
+    adjusted_gross_income: 158585.69
