@@ -15,6 +15,6 @@ class dc_gac_countable_unearned_income_person(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        unearned_income = person("dc_tanf_unearned_income", period)
+        unearned_income = person("dc_tanf_gross_unearned_income", period)
         eligible_child = person("dc_gac_eligible_child", period)
         return unearned_income * eligible_child

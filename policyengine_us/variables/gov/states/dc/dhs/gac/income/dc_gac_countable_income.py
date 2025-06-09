@@ -13,6 +13,6 @@ class dc_gac_countable_income(Variable):
     defined_for = StateCode.DC
 
     adds = [
-        "dc_gac_earned_income_after_disregard",
-        "dc_gac_countable_unearned_income",
+        "dc_gac_earned_income_after_disregard_person",
+        "dc_gac_countable_unearned_income_person",
     ]

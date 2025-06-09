@@ -1,0 +1,17 @@
+- name: Only GAC eligible child income counts. 
+  period: 2023
+  input:
+    dc_tanf_gross_unearned_income: 100
+    dc_gac_eligible_child: true
+    state_code: DC
+  output:
+    dc_gac_countable_unearned_income_person: 100
+
+- name: Ineligible GAC child, income does not count. 
+  period: 2023
+  input:
+    dc_tanf_gross_unearned_income: 100
+    dc_gac_eligible_child: false
+    state_code: DC
+  output:
+    dc_gac_countable_unearned_income_person: 0

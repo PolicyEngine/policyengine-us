@@ -2,25 +2,25 @@
   period: 2023
   input:
     state_code: DC
-    dc_tanf_standard_payment: 1
-    dc_tanf_countable_income: 0
+    dc_gac_standard_payment: 1
+    dc_gac_countable_income: 0
   output:
-    dc_tanf_income_eligible: true
+    dc_gac_income_eligible: true
 
 - name: Household with income equals need standard is eligible.
   period: 2023
   input:
     state_code: DC
-    dc_tanf_standard_payment: 1
-    dc_tanf_countable_income: 1
+    dc_gac_standard_payment: 1
+    dc_gac_countable_income: 1
   output:
-    dc_tanf_income_eligible: true
+    dc_gac_income_eligible: true
 
 - name: Household with income exceeding need standard is ineligible.
   period: 2023
   input:
     state_code: DC
-    dc_tanf_standard_payment: 1
-    dc_tanf_countable_income: 2
+    dc_gac_standard_payment: 1
+    dc_gac_countable_income: 2
   output:
-    dc_tanf_income_eligible: false
+    dc_gac_income_eligible: false
