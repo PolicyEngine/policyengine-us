@@ -16,7 +16,7 @@ class pr_exemptions_is_eligible_student(Variable):
             period
         ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
         is_dependent = person("pr_is_tax_unit_dependent", period)
-        is_student = person("is_full_time_student", period)
+        is_student = person("is_full_time_college_student", period)
         gross_income = person("pr_gross_income", period)
         age = person("age", period)
         age_eligibility = age < p.age_limit

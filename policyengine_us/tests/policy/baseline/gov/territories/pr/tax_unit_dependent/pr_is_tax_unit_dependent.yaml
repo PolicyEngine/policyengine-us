@@ -5,7 +5,7 @@
     age: 25
     is_parent_of_filer_or_spouse: false
     is_incapable_of_self_care: false
-    is_full_time_student: true
+    is_full_time_college_student: true
   output:
     pr_is_tax_unit_dependent: true
 
@@ -16,7 +16,7 @@
     age: 26
     is_parent_of_filer_or_spouse: false
     is_incapable_of_self_care: true
-    is_full_time_student: false
+    is_full_time_college_student: false
   output:
     pr_is_tax_unit_dependent: true
 
@@ -27,7 +27,7 @@
     age: 55
     is_parent_of_filer_or_spouse: true
     is_incapable_of_self_care: false
-    is_full_time_student: false
+    is_full_time_college_student: false
   output:
     pr_is_tax_unit_dependent: true
 
@@ -38,7 +38,7 @@
     age: 20
     is_parent_of_filer_or_spouse: false
     is_incapable_of_self_care: false
-    is_full_time_student: false
+    is_full_time_college_student: false
   output:
     pr_is_tax_unit_dependent: true
 
@@ -49,7 +49,7 @@
     age: 65
     is_parent_of_filer_or_spouse: false
     is_incapable_of_self_care: false
-    is_full_time_student: false
+    is_full_time_college_student: false
   output:
     pr_is_tax_unit_dependent: true
 
@@ -60,6 +60,6 @@
     age: 21
     is_parent_of_filer_or_spouse: false
     is_incapable_of_self_care: false
-    is_full_time_student: false
+    is_full_time_college_student: false
   output:
     pr_is_tax_unit_dependent: false
