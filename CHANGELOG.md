@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.309.1] - 2025-06-10 13:31:01
+
+### Fixed
+
+- Connecticut period in the head of household tax rate.
+
 ## [1.309.0] - 2025-06-09 10:36:28
 
 ### Added
@@ -11957,6 +11963,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.309.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.309.0...1.309.1
 [1.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.308.0...1.309.0
 [1.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.1...1.308.0
 [1.307.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.0...1.307.1
