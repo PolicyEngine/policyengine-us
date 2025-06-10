@@ -7,7 +7,7 @@ class dc_pap_eligible_child(Variable):
     definition_period = MONTH
     label = "Eligible child for DC Public Assistance Programs based on demographics"
     reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18"
     )
     defined_for = StateCode.DC
 

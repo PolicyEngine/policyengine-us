@@ -6,7 +6,9 @@ class dc_gac_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for DC General Assistance for Children (GAC)"
     definition_period = MONTH
-    reference = "https://dhs.dc.gov/service/tanf-district-families"
+    reference = (
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a#(c)"
+    )
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
