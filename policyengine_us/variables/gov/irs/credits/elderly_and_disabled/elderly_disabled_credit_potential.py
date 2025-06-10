@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class elderly_disabled_credit(Variable):
+class elderly_disabled_credit_potential(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Elderly or disabled credit"
+    label = "Potential value of the Elderly or disabled credit"
     documentation = "Schedule R credit for the elderly and the disabled"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
