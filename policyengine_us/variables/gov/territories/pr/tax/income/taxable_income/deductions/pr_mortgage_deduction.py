@@ -1,0 +1,34 @@
+from policyengine_us.model_api import *
+
+
+class pr_mortgage_deduction(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Puerto Rico home mortgage deduction"
+    unit = USD
+    definition_period = YEAR
+    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"  # (1)(C)
+    defined_for = StateCode.PR
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.territories.pr.tax.income.taxable_income.deductions.mortgage
+
+        agi = tax_unit("pr_agi", period)
+        limit = agi * p.floor # plus any income excluded from AGI
+
+        mortgage_interest = tax_unit("deductible_mortgage_interest", period)
+        head_age = tax_unit("age_head", period)
+        spouse_age = tax_unit("age_spouse", period)
+    
+        return select(
+            [
+                head_age >= p.age_threshold | spouse_age >= p.age_threshold,
+                head_age < p.age_threshold & spouse_age < p.age_threshold,
+            ],
+            [
+                min_(mortgage_interest, p.max),
+                min_(mortgage_interest, min_(limit, p.max)),
+            ],
+        )
