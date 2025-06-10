@@ -15,81 +15,104 @@ def create_reconciled_qbid() -> Reform:
             "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
         )
 
-        def formula(person, period, parameters):
-            p = parameters(period).gov.irs.deductions.qbi
-            p_ref = parameters(period).gov.contrib.reconciliation.qbid
-
-            # 1. Core inputs ----------------------------------------------------
-            # Form 8995, line 1 (qualified business income)
-            qbi = person("qualified_business_income", period)
-            # Specified service trade or business check box on Form 8995/8995-A
-            is_sstb = person("business_is_sstb", period)
-
-            # Form 8995, line 6 (REIT/PTP income)
-            reit_ptp_income = person("qualified_reit_and_ptp_income", period)
-            # Income from business development companies (not on current forms)
-            bdc_income = person("qualified_bdc_income", period)
-
-            # Form 1040, line 15 (taxable income) before QBID
-            taxable_income = person.tax_unit(
-                "taxable_income_less_qbid", period
+    def formula(person, period, parameters):
+        # --------------------------------------------------------------
+        # Section 199A Qualified Business Income Deduction (QBID)
+        # IRS Form 8995 / 8995-A
+        # --------------------------------------------------------------
+        p = parameters(period).gov.irs.deductions.qbi
+    
+        # --- Core inputs ---------------------------------------------
+        # Form 8995 line 1 – Qualified business income (QBI)
+        qbi = person("qualified_business_income", period)
+    
+        # SSTB check box (Form 8995 / 8995-A)
+        is_sstb = person("business_is_sstb", period)
+    
+        # Form 8995 line 6 – Qualified REIT dividends and PTP income
+        reit_ptp_income = person("qualified_reit_and_ptp_income", period)
+    
+        # Optional: business-development-company dividends
+        bdc_income = person("qualified_bdc_income", period)
+    
+        # Form 1040 line 15 – Taxable income before QBID
+        taxable_income = person.tax_unit("taxable_income_less_qbid", period)
+    
+        # Reg. 1.199A-1(b)(3) – Net capital gain
+        net_cap_gain = person.tax_unit("net_capital_gain", period)
+    
+        # Form 1040 filing-status check box
+        filing_status = person.tax_unit("filing_status", period)
+    
+        # §199A(e)(2) thresholds
+        threshold       = p.phase_out.start[filing_status]
+        phase_in_range  = p.phase_out.length[filing_status]
+    
+        # --------------------------------------------------------------
+        # 1. 20 % of QBI (§199A(a)(1))
+        # --------------------------------------------------------------
+        qbid_base = 0.20 * qbi
+    
+        # --------------------------------------------------------------
+        # 2. Wage / UBIA limitation (§199A(b)(2))
+        # --------------------------------------------------------------
+        w2_wages      = person("w2_wages_from_qualified_business", period)
+        ubia_property = person("unadjusted_basis_qualified_property", period)
+    
+        wage_limit  = 0.50 * w2_wages
+        alt_limit   = 0.25 * w2_wages + 0.025 * ubia_property
+        wage_ubia_cap = max_(wage_limit, alt_limit)
+    
+        # --------------------------------------------------------------
+        # 3. Phase-in percentage (§199A(b)(3)(B))
+        # --------------------------------------------------------------
+        over_threshold = max_(0, taxable_income - threshold)
+        phase_in_pct   = min_(1, over_threshold / phase_in_range)
+    
+        # --------------------------------------------------------------
+        # 4. SSTB applicable percentage (Reg. 1.199A-5)
+        # --------------------------------------------------------------
+        applicable_pct = where(is_sstb, 1 - phase_in_pct, 1)
+    
+        adj_qbid_base = qbid_base        * applicable_pct
+        adj_cap       = wage_ubia_cap    * applicable_pct
+    
+        # --------------------------------------------------------------
+        # 5. Apply wage/UBIA cap and phase-in reduction
+        # --------------------------------------------------------------
+        limited_deduction = min_(adj_qbid_base, adj_cap)
+        excess_amount     = max_(0, adj_qbid_base - adj_cap)
+        phased_deduction  = max_(0, adj_qbid_base - phase_in_pct * excess_amount)
+    
+        qbi_component = where(
+            phase_in_pct == 0,
+            adj_qbid_base,                      # below threshold
+            where(
+                is_sstb,
+                limited_deduction,              # SSTB above threshold
+                where(
+                    phase_in_pct < 1,
+                    phased_deduction,           # non-SSTB in phase-in band
+                    limited_deduction           # fully phased-in
+                )
             )
-            # Form 1040, filing status check box
-            filing_status = person.tax_unit("filing_status", period)
-
-            threshold = p.phase_out.start[filing_status]  # §199A(e)(2)
-            phase_in_rate = p_ref.phase_out_rate  # 75 % "phase-in" rate
-
-            # 2. 23 % of total QBI ---------------------------------------------
-            qbid_max = p.max.rate * qbi
-
-            # 3. Wage / UBIA limitation (non-SSTB only) ------------------------
-            # W-2 wages for the trade or business (Form 8995-A, Part I)
-            w2_wages = person("w2_wages_from_qualified_business", period)
-            # Unadjusted basis immediately after acquisition (UBIA)
-            # (Form 8995-A, Part I)
-            ubia_property = person(
-                "unadjusted_basis_qualified_property", period
-            )
-
-            qbi_non_sstb = (1 - is_sstb) * qbi
-            w2_wages_non_sstb = (1 - is_sstb) * w2_wages
-            ubia_property_non_sstb = (1 - is_sstb) * ubia_property
-
-            wage_limit = p.max.w2_wages.rate * w2_wages_non_sstb  # 50 % wages
-            alt_limit = (
-                p.max.w2_wages.alt_rate * w2_wages_non_sstb  # 25 % wages
-                + p.max.business_property.rate
-                * ubia_property_non_sstb  # 2.5 % UBIA
-            )
-            wage_ubia_cap = max_(wage_limit, alt_limit)
-
-            step1_uncapped = p.max.rate * qbi_non_sstb
-            step1_deduction = min_(step1_uncapped, wage_ubia_cap)
-
-            # 4. Limitation phase-in amount (75 % × excess) --------------------
-            excess_income = max_(0, taxable_income - threshold)
-            phase_in_amount = phase_in_rate * excess_income
-
-            step2_deduction = max_(0, qbid_max - phase_in_amount)
-
-            # 5. QBI component: greater of Step 1 or Step 2 --------------------
-            qbi_component = max_(step1_deduction, step2_deduction)
-
-            # 6. REIT, PTP, and optional BDC component (always 23 %) -----------
-            reit_ptp_bdc_base = reit_ptp_income + where(
-                p_ref.use_bdc_income,
-                bdc_income,
-                0,
-            )
-            reit_ptp_bdc_deduction = p.max.rate * reit_ptp_bdc_base
-
-            total_before_income_cap = qbi_component + reit_ptp_bdc_deduction
-
-            # 7. Overall 23 % taxable-income ceiling (§199A(a)(2)) -------------
-            income_cap = p.max.rate * taxable_income
-
-            return min_(total_before_income_cap, income_cap)
+        )
+    
+        # --------------------------------------------------------------
+        # 6. REIT / PTP (and optional BDC) component – always 20 %
+        # --------------------------------------------------------------
+        reit_ptp_bdc_base = reit_ptp_income + where(p.use_bdc_income, bdc_income, 0)
+        reit_ptp_bdc_ded  = 0.20 * reit_ptp_bdc_base
+    
+        total_before_cap = qbi_component + reit_ptp_bdc_ded
+    
+        # --------------------------------------------------------------
+        # 7. Overall income cap (§199A(a)(2))
+        #     20 % * (taxable income – net capital gain)
+        # --------------------------------------------------------------
+        income_cap = 0.20 * max_(0, taxable_income - net_cap_gain)
+    
+        return min_(total_before_cap, income_cap)
 
     class reform(Reform):
         def apply(self):
