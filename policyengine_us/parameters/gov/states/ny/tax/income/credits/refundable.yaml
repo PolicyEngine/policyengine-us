@@ -42,6 +42,15 @@ values:
     - ny_real_property_tax_credit
     - ny_college_tuition_credit
 
+  2025-01-01:
+    - ny_eitc
+    - ny_supplemental_eitc
+    - ny_ctc
+    - ny_cdcc
+    - ny_real_property_tax_credit
+    - ny_college_tuition_credit
+    - ny_2025_inflation_rebates
+
 metadata:
   unit: list
   period: year

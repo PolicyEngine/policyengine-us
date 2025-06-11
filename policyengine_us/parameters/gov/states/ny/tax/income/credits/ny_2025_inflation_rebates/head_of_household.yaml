@@ -1,0 +1,23 @@
+description: New York 2025 inflation rebates for head of household filers
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: New York 2025 inflation rebates for head of household filers
+  reference:
+    - title: "Money in Your Pockets: Governor Hochul Proposes Sending 8.6 Million New Yorkers an Inflation Refund"
+      href: "https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-proposes-sending-86-million-new-yorkers-inflation-refund"
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 200
+  - threshold:
+      2025-01-01: 75_000
+    amount:
+      2025-01-01: 150
+  - threshold:
+      2025-01-01: 150_000
+    amount:
+      2025-01-01: 0

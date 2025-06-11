@@ -1,0 +1,99 @@
+- name: NY 2025 inflation rebates - joint filer under $150k gets $400
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 100_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 400
+
+- name: NY 2025 inflation rebates - joint filer between $150k-$300k gets $300
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 200_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 300
+
+- name: NY 2025 inflation rebates - joint filer over $300k gets $0
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 350_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 0
+
+- name: NY 2025 inflation rebates - surviving spouse under $150k gets $400
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 100_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ny_2025_inflation_rebates: 400
+
+- name: NY 2025 inflation rebates - single filer under $75k gets $200
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 50_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 200
+
+- name: NY 2025 inflation rebates - single filer between $75k-$150k gets $150
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 100_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 150
+
+- name: NY 2025 inflation rebates - single filer over $150k gets $0
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 175_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 0
+
+- name: NY 2025 inflation rebates - head of household under $75k gets $200
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 60_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ny_2025_inflation_rebates: 200
+
+- name: NY 2025 inflation rebates - married filing separate between $75k-$150k gets $150
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 100_000
+    filing_status: SEPARATE
+  output:
+    ny_2025_inflation_rebates: 150
+
+- name: NY 2025 inflation rebates - not available in NY
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: CA
+    ny_agi: 50_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 0
