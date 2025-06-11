@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ny_2025_inflation_rebates(Variable):
+class ny_inflation_rebates(Variable):
     value_type = float
     entity = TaxUnit
     label = "New York 2025 inflation rebates"
@@ -13,7 +13,7 @@ class ny_2025_inflation_rebates(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ny.tax.income.credits.ny_2025_inflation_rebates
+        ).gov.states.ny.tax.income.credits.ny_inflation_rebates
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
