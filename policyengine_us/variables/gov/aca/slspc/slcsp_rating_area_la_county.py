@@ -17,4 +17,4 @@ class slcsp_rating_area_la_county(Variable):
         result = np.empty(zip3.shape, dtype=int)
         result[is_in_la] = p.la_county_rating_area[zip3[is_in_la]]
         result[~is_in_la] = 0
-        return p.la_county_rating_area[zip3]
+        return result
