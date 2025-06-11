@@ -15,4 +15,7 @@ class aca_ptc(Variable):
         income = tax_unit("aca_magi", period)
         applicable_figure = tax_unit("aca_ptc_phase_out_rate", period)
         takes_up_aca_if_eligible = tax_unit("takes_up_aca_if_eligible", period)
-        return max_(0, plan_cost - income * applicable_figure) * takes_up_aca_if_eligible
+        return (
+            max_(0, plan_cost - income * applicable_figure)
+            * takes_up_aca_if_eligible
+        )
