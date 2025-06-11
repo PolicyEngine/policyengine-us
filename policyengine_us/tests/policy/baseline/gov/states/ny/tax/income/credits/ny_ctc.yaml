@@ -290,3 +290,58 @@
     age: 8  # Must be 4+ to be eligible
   output:
     ny_ctc: 330  # Back to 33% of federal CTC
+
+# Test disabled switch - should use original rules
+- name: 2025 - Updated CTC disabled, falls back to original rules (33% of federal)
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    gov.states.ny.tax.income.credits.ctc.pre_tcja: false
+    ctc: 1_000
+    ctc_qualifying_child: true
+    state_code: NY
+    age: 8  # Must be 4+ to be eligible
+  output:
+    ny_ctc: 330  # Original rule: 33% of federal CTC
+
+- name: 2025 - Updated CTC disabled, minimum credit for low income
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 10_000  # Low income
+        ctc: 0  # No federal CTC
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100  # Original rule: $100 minimum per child
+
+- name: 2025 - Updated CTC disabled vs enabled comparison (young child)
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2  # Young child
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        ctc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100  # Original rule: $100 minimum (not $1,000 from updated rules)

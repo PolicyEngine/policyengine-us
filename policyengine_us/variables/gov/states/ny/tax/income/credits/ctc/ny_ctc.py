@@ -19,16 +19,8 @@ class ny_ctc(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
 
-        # Check if updated CTC rules apply (2025-2027)
-        try:
-            updated_ctc_applies = (p.updated.young_child_amount > 0) or (
-                p.updated.older_child_amount > 0
-            )
-        except:
-            # If updated parameters don't exist, use original logic
-            updated_ctc_applies = False
-
-        if updated_ctc_applies:
+        # Check if updated CTC rules are in effect
+        if p.ctc_ny_in_effect:
             # Updated CTC rules for 2025-2027
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
             qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
