@@ -6,4 +6,8 @@ class takes_up_aca_if_eligible(Variable):
     entity = TaxUnit
     label = "Whether a random eligible SPM unit does not claim ACA Premium Tax Credit"
     definition_period = YEAR
-    default_value = True
+
+    def formula(tax_unit, period, parameters):
+        seed = tax_unit("aca_take_up_seed", period)
+        takeup_rate = parameters(period).gov.aca.takeup_rate
+        return seed < takeup_rate

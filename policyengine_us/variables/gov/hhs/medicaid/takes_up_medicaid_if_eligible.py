@@ -6,4 +6,8 @@ class takes_up_medicaid_if_eligible(Variable):
     entity = Person
     label = "Whether a random eligible person unit does not enroll in Medicaid"
     definition_period = YEAR
-    default_value = True
+
+    def formula(person, period, parameters):
+        seed = person("medicaid_take_up_seed", period)
+        takeup_rate = parameters(period).gov.hhs.medicaid.takeup_rate
+        return seed < takeup_rate
