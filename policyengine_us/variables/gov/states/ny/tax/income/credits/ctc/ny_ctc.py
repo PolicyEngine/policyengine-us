@@ -75,7 +75,7 @@ class ny_ctc(Variable):
                     "ctc_qualifying_child", period
                 )
             else:
-                # Initialise pre-TCJA CTC branch and parameters.
+                # Initialize pre-TCJA CTC branch and parameters.
                 simulation = tax_unit.simulation
                 pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
                 pre_tcja_ctc.tax_benefit_system = (
