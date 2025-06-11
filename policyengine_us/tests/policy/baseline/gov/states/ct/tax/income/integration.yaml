@@ -54,3 +54,52 @@
         state_fips: 9  # CT
   output:  # expected results from patched TAXSIM35 2024-03-17 version
     ct_income_tax: -2_052.04
+
+- name: 167301-CT.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 68551
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 4
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person3:
+        age: 8
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person4:
+        age: 15
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 9
+  output:
+    income_tax: -733
+    ct_income_tax: 2_415
