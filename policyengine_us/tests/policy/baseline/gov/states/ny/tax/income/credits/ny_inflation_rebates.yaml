@@ -130,6 +130,26 @@
   output:
     ny_inflation_rebates: 0
 
+- name: NY 2026 inflation rebates - not available after 2025
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 50_000
+    filing_status: SINGLE
+  output:
+    ny_inflation_rebates: 0
+
+- name: NY 2025 inflation rebates - single filer with zero AGI should get credit
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_agi: 0
+    filing_status: SINGLE
+  output:
+    ny_inflation_rebates: 200
+
 - name: NY 2025 refundable credits - disabled when inflation rebates in_effect is false
   period: 2025
   absolute_error_margin: 0
