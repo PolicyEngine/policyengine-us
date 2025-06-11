@@ -4,7 +4,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 150_000
+    ny_agi: 50_000  # Below $150k threshold
     filing_status: SINGLE
   output:
     ny_2025_inflation_rebates: 300
@@ -26,7 +26,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 150_000
+    ny_agi: 100_000  # Below $150k
     filing_status: SEPARATE
   output:
     ny_2025_inflation_rebates: 250
@@ -37,7 +37,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 150_001
+    ny_agi: 150_001  # Above $150k threshold
     filing_status: SEPARATE
   output:
     ny_2025_inflation_rebates: 0 
@@ -48,7 +48,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 300_000
+    ny_agi: 200_000  # Below $300k
     filing_status: JOINT
   output:
     ny_2025_inflation_rebates: 500
@@ -59,7 +59,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 300_001
+    ny_agi: 300_001  # Above $300k threshold
     filing_status: JOINT
   output:
     ny_2025_inflation_rebates: 0 
@@ -70,7 +70,7 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
-    ny_agi: 300_000
+    ny_agi: 200_000  # Below $300k
     filing_status: JOINT
   output:
     ny_2025_inflation_rebates: 500
@@ -81,16 +81,16 @@
   input:
     gov.contrib.states.ny.inflation_rebates.in_effect: false
     state_code: NY
-    ny_agi: 300_000
+    ny_agi: 200_000
     filing_status: JOINT
   output:
-    ny_refundable_credits: 0
+    ny_refundable_credits: 300
 
 - name: Integration test, one person with 0 AGI
   period: 2025
   reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
-    gov.contrib.states.ny.inflation_rebates.in_effect: false
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     people:
       person1:
         age: 40

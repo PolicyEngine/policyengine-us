@@ -14,6 +14,11 @@ class ny_inflation_rebates(Variable):
         p = parameters(
             period
         ).gov.states.ny.tax.income.credits.ny_inflation_rebates
+
+        # Check if inflation rebates are in effect
+        if not p.in_effect:
+            return 0
+
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
