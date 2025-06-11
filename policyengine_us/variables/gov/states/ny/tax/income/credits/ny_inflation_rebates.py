@@ -7,7 +7,7 @@ class ny_inflation_rebates(Variable):
     label = "New York 2025 inflation rebates"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-proposes-sending-86-million-new-yorkers-inflation-refund"
+    reference = "https://assembly.state.ny.us/leg/?Text=Y&bn=S3009&default_fld=&leg_video=&term=2025"
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
