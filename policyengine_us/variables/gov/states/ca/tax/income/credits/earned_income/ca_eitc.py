@@ -7,12 +7,10 @@ class ca_eitc(Variable):
     label = "CalEITC"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.CA
+    defined_for = "ca_eitc_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.earned_income
-
-        eligible = tax_unit("ca_eitc_eligible", period)
 
         earned_income = tax_unit("filer_adjusted_earnings", period)
         child_count = tax_unit("eitc_child_count", period)
@@ -58,7 +56,7 @@ class ca_eitc(Variable):
             / (second_phase_out_end - second_phase_out_start),
             1,
         )
-        return eligible * where(
+        return where(
             earned_income > second_phase_out_start,
             amount_after_first_phase_out
             * (1 - percentage_along_second_phase_out),
