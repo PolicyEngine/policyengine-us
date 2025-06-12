@@ -1,22 +1,25 @@
-description: New York 2025 inflation rebates for single filers
+description: New York provides the following inflation rebate amount for single filers, based on adjusted gross income.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: year
-  label: New York 2025 inflation rebates for single filers
+  label: New York 2025 inflation rebates single amount
   reference:
     - title: "New York Senate Bill S.3009-C, Part A, Section 1, Tax Law Section 606(qqq)(3)(b)"
       href: "https://assembly.state.ny.us/leg/?Text=Y&bn=S3009&default_fld=&leg_video=&term=2025"
 brackets:
   - threshold:
-      2025-01-01: -.inf
+      2000-01-01: -.inf
     amount:
+      2000-01-01: 0
       2025-01-01: 200
+      2026-01-01: 0
   - threshold:
       2025-01-01: 75_000
     amount:
       2025-01-01: 150
+      2026-01-01: 0
   - threshold:
       2025-01-01: 150_000
     amount:

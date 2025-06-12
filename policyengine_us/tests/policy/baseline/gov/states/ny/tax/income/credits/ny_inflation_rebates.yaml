@@ -98,27 +98,6 @@
   output:
     ny_inflation_rebates: 0
 
-- name: NY 2025 inflation rebates - disabled when in_effect is false
-  period: 2025
-  absolute_error_margin: 0
-  input:
-    gov.states.ny.tax.income.credits.ny_inflation_rebates.in_effect: false
-    state_code: NY
-    ny_agi: 50_000
-    filing_status: SINGLE
-  output:
-    ny_inflation_rebates: 0
-
-- name: NY 2025 inflation rebates - joint filer disabled when in_effect is false
-  period: 2025
-  absolute_error_margin: 0
-  input:
-    gov.states.ny.tax.income.credits.ny_inflation_rebates.in_effect: false
-    state_code: NY
-    ny_agi: 100_000
-    filing_status: JOINT
-  output:
-    ny_inflation_rebates: 0
 
 - name: NY 2024 inflation rebates - not available before 2025
   period: 2024
@@ -150,16 +129,3 @@
   output:
     ny_inflation_rebates: 200
 
-- name: NY 2025 refundable credits - disabled when inflation rebates in_effect is false
-  period: 2025
-  absolute_error_margin: 0
-  input:
-    gov.states.ny.tax.income.credits.ny_inflation_rebates.in_effect: false
-    state_code: NY
-    ny_agi: 50_000
-    filing_status: SINGLE
-    # Add some other credits to test
-    ny_eitc: 100
-  output:
-    ny_inflation_rebates: 0
-    ny_refundable_credits: 100  # Only EITC, no inflation rebates
