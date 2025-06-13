@@ -23,9 +23,13 @@ class dc_tanf_eligible(Variable):
             )
             > 0
         )
+        meets_work_requirements = spm_unit(
+            "dc_tanf_meets_work_requirements", period
+        )
         return (
             demographic_eligible
             & income_eligible
             & resources_eligible
             & immigration_status_eligible
+            & meets_work_requirements
         )

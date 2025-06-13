@@ -3,7 +3,7 @@
   input:
     dc_tanf_gross_earned_income: 100
     is_full_time_student: true
-    is_working_full_time: true
+    monthly_hours_worked: 120 * 12
     dc_gac_eligible_child: true
     state_code: DC
   output:
@@ -14,7 +14,7 @@
   input:
     dc_tanf_gross_earned_income: 100
     is_full_time_student: false
-    is_working_full_time: true
+    monthly_hours_worked: 120 *12
     dc_gac_eligible_child: false
     state_code: DC
   output:
@@ -25,7 +25,7 @@
   input:
     dc_tanf_gross_earned_income: 100
     is_full_time_student: false
-    is_working_full_time: true
+    monthly_hours_worked: 120 * 12
     dc_gac_eligible_child: true
     state_code: DC
   output:

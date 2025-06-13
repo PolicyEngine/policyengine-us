@@ -13,10 +13,10 @@ class dc_tanf_demographic_eligible_person(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        eligible_child = person("dc_pap_eligible_child", period)
+        pap_eligible_child = person("dc_pap_eligible_child", period)
         related_to_head_or_spouse = person(
             "is_dc_tanf_related_to_head_or_spouse", period
         )
 
         pregnant = person("is_pregnant", period)
-        return (eligible_child & related_to_head_or_spouse) | pregnant
+        return (pap_eligible_child & related_to_head_or_spouse) | pregnant

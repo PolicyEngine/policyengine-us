@@ -1,0 +1,101 @@
+- name: Case 1, all members either working or work exempted. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        dc_tanf_is_working_person: true
+        dc_tanf_work_exempted: false
+      person2:
+        dc_tanf_is_working_person: true
+        dc_tanf_work_exempted: false
+      person3: 
+        dc_tanf_is_working_person: false
+        dc_tanf_work_exempted: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: true
+
+- name: Case 2, one member is not working and is not work exempted. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        dc_tanf_is_working_person: false
+        dc_tanf_work_exempted: false
+      person2:
+        dc_tanf_is_working_person: true
+        dc_tanf_work_exempted: false
+      person3: 
+        dc_tanf_is_working_person: false
+        dc_tanf_work_exempted: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: false
+
+- name: Case 3, integration test, both people are exempted from working. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 61
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: true
+
+- name: Case 4, integration test. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        monthly_hours_worked: 119 * 12
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: false
