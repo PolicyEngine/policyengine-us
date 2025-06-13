@@ -11,6 +11,10 @@ class ny_inflation_rebates(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
+        # NY inflation rebates are only available in 2025
+        if period.start.year != 2025:
+            return 0
+
         p = parameters(
             period
         ).gov.states.ny.tax.income.credits.ny_inflation_rebates
