@@ -1,23 +1,23 @@
 from policyengine_us.model_api import *
 
 
-class ny_inflation_rebates(Variable):
+class ny_inflation_refund_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New York 2025 inflation rebates"
+    label = "New York 2025 inflation refund credits"
     unit = USD
     definition_period = YEAR
-    reference = "https://assembly.state.ny.us/leg/?Text=Y&bn=S3009&default_fld=&leg_video=&term=2025"
+    reference = "https://www.nysenate.gov/legislation/laws/TAX/606#QQQ"
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        # NY inflation rebates are only available in 2025
+        # NY inflation refund credits are only available in 2025
         if period.start.year != 2025:
             return 0
 
         p = parameters(
             period
-        ).gov.states.ny.tax.income.credits.ny_inflation_rebates
+        ).gov.states.ny.tax.income.credits.inflation_refund_credits
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
