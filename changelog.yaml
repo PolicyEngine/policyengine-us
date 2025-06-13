@@ -10150,3 +10150,59 @@
     - Labor supply responses now properly handle negative total earnings by clipping
       to zero
   date: 2025-06-09 10:36:28
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut period in the head of household tax rate.
+  date: 2025-06-10 13:31:01
+- bump: minor
+  changes:
+    added:
+    - SNAP take-up seed variable.
+  date: 2025-06-11 19:06:16
+- bump: minor
+  changes:
+    fixed:
+    - Fix slcsp_rating_area_la_county parameter.
+  date: 2025-06-11 19:21:56
+- bump: minor
+  changes:
+    added:
+    - Add take-up flags for Medicaid, CHIP and ACA PTC.
+  date: 2025-06-11 19:46:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug in ACA calculations.
+  date: 2025-06-11 22:17:44
+- bump: patch
+  changes:
+    fixed:
+    - Another ACA issue.
+  date: 2025-06-11 22:42:29
+- bump: patch
+  changes:
+    added:
+    - Integration tests for TANF to verify state implementations work correctly.
+    - Documentation in CLAUDE.md about period handling and state program refactoring.
+    changed:
+    - Use defined_for and p = parameters(...) more consistently.
+    - Refactored TANF to sum only state-specific implementations, removing federal
+      calculation.
+    fixed:
+    - TANF tests to correctly require eligibility for receiving benefits.
+    - Lifeline benefit calculation by changing tuple assignment to addition.
+    - Demographic TANF eligibility to use period.this_year for age calculation.
+    - Demographic TANF eligibility to check is_in_secondary_school instead of is_full_time_student
+      for student age limits.
+    removed:
+    - vehicles_owned variable as it was an unused imputation.
+    - Federal TANF cash calculation variables and parameters except for core components
+      (tanf, tanf_reported, tanf_person, is_demographic_tanf_eligible, is_tanf_enrolled,
+      age limits, abolish_tanf) and TANF non-cash eligibility for SNAP BBCE.
+  date: 2025-06-12 13:16:09
+- bump: minor
+  changes:
+    added:
+    - New York supplemental income tax changes.
+  date: 2025-06-12 15:51:05

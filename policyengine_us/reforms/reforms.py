@@ -66,9 +66,6 @@ from .ctc import (
 from .second_earner import (
     create_second_earner_tax_reform,
 )
-from .ctc.eppc import (
-    create_expanded_ctc_reform,
-)
 from .snap import (
     create_abolish_snap_deductions_reform,
     create_abolish_snap_net_income_test_reform,
@@ -195,7 +192,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     second_earner_tax_reform = create_second_earner_tax_reform(
         parameters, period
     )
-    expanded_ctc = create_expanded_ctc_reform(parameters, period)
     abolish_snap_deductions = create_abolish_snap_deductions_reform(
         parameters, period
     )
@@ -286,7 +282,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
         second_earner_tax_reform,
-        expanded_ctc,
         abolish_snap_deductions,
         abolish_snap_net_income_test,
         dc_property_tax_credit,

@@ -46,7 +46,7 @@ make documentation
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
 - **Formatting**: Line length 79 characters; use Black for formatting
 - **Types**: Use type hints; import ArrayLike from numpy.typing
-- **Variable Naming**: Use snake_case for variable names and function names
+- **Variable Naming**: Use snake_case for variable names and function names; use UPPER_CASE for constants
 - **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
 - **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
 - **Parameter Access**: Always use `p = parameters(period).gov.<program>` pattern and call parameters as `p.*` to make parameter tree origin clear
@@ -87,6 +87,16 @@ make documentation
 - Program takeup is assigned during microdata construction, not simulation time
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
+- When accessing yearly variables from month-level formulas, use `period.this_year`
+  - Example: `age = person("age", period.this_year)` to get the actual age, not age/12
+  - This is critical for variables like age that are defined per YEAR
+- When refactoring federal programs to state-specific implementations:
+  - Keep shared federal components (eligibility rules, age limits, etc.) if they're from federal regulations (CFR/USC)
+  - Check all dependencies before removing variables - use grep to find references
+  - Create integration tests to verify the refactoring works correctly
+- State programs should be self-contained with their own income calculations and eligibility rules
+  - Use state-specific variable names (e.g., `il_tanf_countable_income` not `tanf_countable_income`)
+  - This allows states to have different rules without affecting each other
 - **Labor Supply Response & Negative Earnings**: When dealing with income sources that can be negative (especially self-employment), use `max_(earnings, 0)` to prevent sign flips in economic responses. Negative total earnings should result in zero labor supply responses, not negative responses.
 - **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
