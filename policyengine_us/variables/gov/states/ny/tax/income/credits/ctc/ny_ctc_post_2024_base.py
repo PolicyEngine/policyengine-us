@@ -13,8 +13,6 @@ class ny_ctc_post_2024_base(Variable):
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("ny_ctc_post_2024_eligible", period)
-        if not eligible:
-            return 0
 
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
@@ -40,4 +38,5 @@ class ny_ctc_post_2024_base(Variable):
         older_child_credit = (
             tax_unit.sum(older_children) * p.post_2024.older_child_amount
         )
-        return young_child_credit + older_child_credit
+        base_amount = young_child_credit + older_child_credit
+        return where(eligible, base_amount, 0)

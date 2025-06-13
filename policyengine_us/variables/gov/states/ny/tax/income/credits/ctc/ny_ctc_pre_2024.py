@@ -14,8 +14,6 @@ class ny_ctc_pre_2024(Variable):
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("ny_ctc_pre_2024_eligible", period)
-        if not eligible:
-            return 0
 
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
@@ -79,4 +77,5 @@ class ny_ctc_pre_2024(Variable):
         ]
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
-        return max_(applicable_minimum, federal_match)
+        base_amount = max_(applicable_minimum, federal_match)
+        return where(eligible, base_amount, 0)
