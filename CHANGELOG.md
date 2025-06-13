@@ -5,6 +5,283 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.313.0] - 2025-06-12 15:51:05
+
+### Added
+
+- New York supplemental income tax changes.
+
+## [1.312.3] - 2025-06-12 13:16:09
+
+### Added
+
+- Integration tests for TANF to verify state implementations work correctly.
+- Documentation in CLAUDE.md about period handling and state program refactoring.
+
+### Changed
+
+- Use defined_for and p = parameters(...) more consistently.
+- Refactored TANF to sum only state-specific implementations, removing federal calculation.
+
+### Fixed
+
+- TANF tests to correctly require eligibility for receiving benefits.
+- Lifeline benefit calculation by changing tuple assignment to addition.
+- Demographic TANF eligibility to use period.this_year for age calculation.
+- Demographic TANF eligibility to check is_in_secondary_school instead of is_full_time_student for student age limits.
+
+## [1.312.2] - 2025-06-11 22:42:29
+
+### Fixed
+
+- Another ACA issue.
+
+## [1.312.1] - 2025-06-11 22:17:44
+
+### Fixed
+
+- Bug in ACA calculations.
+
+## [1.312.0] - 2025-06-11 19:46:07
+
+### Added
+
+- Add take-up flags for Medicaid, CHIP and ACA PTC.
+
+## [1.311.0] - 2025-06-11 19:21:56
+
+### Fixed
+
+- Fix slcsp_rating_area_la_county parameter.
+
+## [1.310.0] - 2025-06-11 19:06:16
+
+### Added
+
+- SNAP take-up seed variable.
+
+## [1.309.1] - 2025-06-10 13:31:01
+
+### Fixed
+
+- Connecticut period in the head of household tax rate.
+
+## [1.309.0] - 2025-06-09 10:36:28
+
+### Added
+
+- Unit tests for labor supply response variables focusing on negative earnings scenarios
+- Tests for substitution elasticity with negative total earnings
+- Tests for employment income allocation with negative earnings
+
+### Changed
+
+- Refactored labor supply response module into individual variable files for better organization
+- Applied consistent code style patterns across all labor supply response variables
+- Improved parameter access patterns and income combination methods
+
+### Fixed
+
+- Fixed negative self-employment income causing counterintuitive labor supply response sign flips
+- Labor supply responses now properly handle negative total earnings by clipping to zero
+
+## [1.308.0] - 2025-06-07 20:44:11
+
+### Added
+
+- Massachusetts Low-Income Home Energy Assistance Program (LIHEAP).
+
+## [1.307.1] - 2025-06-07 13:10:54
+
+### Changed
+
+- In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based counties in all cases, including when FIPS is defined.
+
+## [1.307.0] - 2025-06-06 20:46:21
+
+### Fixed
+
+- Fix DC TANF child care deduction formula.
+
+## [1.306.0] - 2025-06-06 17:42:13
+
+### Added
+
+- Illinois Aid to the Aged, Blind or Disabled (AABD).
+
+## [1.305.0] - 2025-06-05 15:55:00
+
+### Added
+
+- Illinois Temporary Assistance for Needy Families (TANF).
+
+## [1.304.0] - 2025-06-05 13:44:56
+
+### Added
+
+- Update the California State Supplement 2025 values.
+
+## [1.303.0] - 2025-06-05 13:19:06
+
+### Added
+
+- Add default value of 40 to ssi_qualifying_quarters_earnings.
+
+## [1.302.0] - 2025-06-03 13:33:39
+
+### Added
+
+- Net worth variables (to compare imputation method impacts on policy results).
+
+## [1.301.0] - 2025-06-01 08:18:11
+
+### Added
+
+- Illinois Child Care Assistance Program (CCAP).
+
+## [1.300.0] - 2025-05-30 21:36:49
+
+### Added
+
+- Refugee status to the CA TANF and ChildCare eligibility criteria.
+
+## [1.299.1] - 2025-05-30 16:31:37
+
+### Fixed
+
+- Adjust the ACTC additional bracket parameter label / description, and add support for multiple periods.
+
+## [1.299.0] - 2025-05-30 14:18:59
+
+### Added
+
+- Qualified BDC dividend income variable
+- Qualified REIT and PTP income variable
+- Farm operations income variable
+- Variables showing whether income types would be qualified business income (estate, farm operations, farm rent, partnership/S corp, rental, self employment)
+- Parameter for sources of QBI deductions (deduction_definition.yaml)
+- QBID reconciliation parameters (in_effect, phase_out_rate, use_bdc_income)
+- Marginal tax rate including health benefits variable
+- Tax code references to income variables where they were missing
+
+### Changed
+
+- marginal_tax_rate and marginal_tax_rate_including_health_benefits now use emp_self_emp_ratio with no logic change
+
+## [1.298.0] - 2025-05-30 06:47:16
+
+### Added
+
+- Additional CTC bracket reform.
+
+## [1.297.2] - 2025-05-28 01:47:22
+
+### Fixed
+
+- auto loan variables uprating path
+
+## [1.297.1] - 2025-05-27 23:07:51
+
+### Changed
+
+- Add uprating for base ACA premiums.
+
+## [1.297.0] - 2025-05-27 22:24:56
+
+### Added
+
+- CalWorks TANF and Child Care immigration status eligibility.
+
+## [1.296.0] - 2025-05-27 21:44:24
+
+### Added
+
+- New York 2026 budget agreement income tax provisions.
+
+## [1.295.1] - 2025-05-27 21:39:46
+
+### Fixed
+
+- Corrected Vermont's per capita Medicaid spending.
+
+## [1.295.0] - 2025-05-27 14:19:05
+
+### Added
+
+- Hours worked last week variable.
+
+## [1.294.0] - 2025-05-27 13:30:38
+
+### Added
+
+- Add uprating for auto loan balance and interest variables.
+
+## [1.293.0] - 2025-05-26 17:53:02
+
+### Added
+
+- Illinois Chicago Transit Authority Programs benefit amount.
+
+## [1.292.0] - 2025-05-25 23:40:18
+
+### Added
+
+- Update WIC values.
+
+## [1.291.0] - 2025-05-23 17:18:54
+
+### Added
+
+- Hours worked last week variable.
+
+## [1.290.0] - 2025-05-23 16:51:32
+
+### Added
+
+- Created a new MTR and Post-transfer income that includes healthcare programs.
+
+## [1.289.1] - 2025-05-22 20:54:55
+
+### Fixed
+
+- Auto Loan ALD formula.
+
+## [1.289.0] - 2025-05-22 17:17:58
+
+### Added
+
+- Amended itemized deduction reform structure.
+
+## [1.288.0] - 2025-05-22 00:32:21
+
+### Added
+
+- Apply identification requirement to CTC under current law for children.
+
+## [1.287.2] - 2025-05-21 13:57:33
+
+### Fixed
+
+- Remove special characters causing imports to fail on Windows.
+
+## [1.287.1] - 2025-05-20 23:30:36
+
+### Fixed
+
+- Add CHIP eligibility to per capita CHIP variable.
+
+## [1.287.0] - 2025-05-20 08:25:19
+
+### Added
+
+- Overtime variables.
+
+## [1.286.0] - 2025-05-20 01:13:06
+
+### Added
+
+- Add enrollment and costs of CHIP, Medicaid and the ACA.
+
 ## [1.285.0] - 2025-05-18 22:44:09
 
 ### Added
@@ -11741,6 +12018,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.313.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.3...1.313.0
+[1.312.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.2...1.312.3
+[1.312.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.1...1.312.2
+[1.312.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.0...1.312.1
+[1.312.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.311.0...1.312.0
+[1.311.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.310.0...1.311.0
+[1.310.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.309.1...1.310.0
+[1.309.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.309.0...1.309.1
+[1.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.308.0...1.309.0
+[1.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.1...1.308.0
+[1.307.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.0...1.307.1
+[1.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.306.0...1.307.0
+[1.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.305.0...1.306.0
+[1.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.304.0...1.305.0
+[1.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.303.0...1.304.0
+[1.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.302.0...1.303.0
+[1.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.301.0...1.302.0
+[1.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.300.0...1.301.0
+[1.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.1...1.300.0
+[1.299.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.0...1.299.1
+[1.299.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.298.0...1.299.0
+[1.298.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.2...1.298.0
+[1.297.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.1...1.297.2
+[1.297.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.297.0...1.297.1
+[1.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.296.0...1.297.0
+[1.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.1...1.296.0
+[1.295.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.295.0...1.295.1
+[1.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.294.0...1.295.0
+[1.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.293.0...1.294.0
+[1.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.292.0...1.293.0
+[1.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.291.0...1.292.0
+[1.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.290.0...1.291.0
+[1.290.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.289.1...1.290.0
+[1.289.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.289.0...1.289.1
+[1.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.288.0...1.289.0
+[1.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.2...1.288.0
+[1.287.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.1...1.287.2
+[1.287.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.287.0...1.287.1
+[1.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.286.0...1.287.0
+[1.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.285.0...1.286.0
 [1.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.284.0...1.285.0
 [1.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.283.0...1.284.0
 [1.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.282.2...1.283.0

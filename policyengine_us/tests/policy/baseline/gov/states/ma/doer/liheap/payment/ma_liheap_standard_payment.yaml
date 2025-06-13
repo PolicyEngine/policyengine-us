@@ -1,0 +1,39 @@
+- name: Case 1, eligible for standard payment, benefit level 1, deliverable fuel, homeowners. 
+  period: 2024
+  input:
+    ma_liheap_eligible: true
+    ma_liheap_utility_category: DELIVERABLE_FUEL
+    ma_liheap_benefit_level: 1
+    receives_housing_assistance: false
+  output:
+    ma_liheap_standard_payment: 1_950
+
+- name: Case 2, eligible for standard payment, benefit level 6, deliverable fuel, subsidized housing. 
+  period: 2024
+  input:
+    ma_liheap_eligible: true
+    ma_liheap_utility_category: DELIVERABLE_FUEL
+    ma_liheap_benefit_level: 6
+    receives_housing_assistance: true
+  output:
+    ma_liheap_standard_payment: 819
+
+- name: Case 3, not eligible for standard payment. 
+  period: 2024
+  input:
+    ma_liheap_eligible: false
+    ma_liheap_utility_category: DELIVERABLE_FUEL
+    ma_liheap_benefit_level: 1
+    receives_housing_assistance: false
+  output:
+    ma_liheap_standard_payment: 0
+
+- name: Case 4, eligible for standard payment, benefit level 1, pay utility, homeowners. 
+  period: 2024
+  input:
+    ma_liheap_eligible: true
+    ma_liheap_utility_category: UTILITY_AND_HEAT_IN_RENT
+    ma_liheap_benefit_level: 1
+    receives_housing_assistance: false
+  output:
+    ma_liheap_standard_payment: 1_450

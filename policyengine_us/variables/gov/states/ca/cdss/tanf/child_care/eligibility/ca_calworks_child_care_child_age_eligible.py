@@ -18,13 +18,4 @@ class ca_calworks_child_care_child_age_eligible(Variable):
         age_limit = where(
             is_disabled, p.disabled_age_threshold, p.age_threshold
         )
-        # Only children of citizens and legal permanent residents are eligible
-        immigration_status = person("immigration_status", period)
-        status = immigration_status.possible_values
-        citizen = immigration_status == status.CITIZEN
-        legal_permanent_resident = (
-            immigration_status == status.LEGAL_PERMANENT_RESIDENT
-        )
-        eligible_status = citizen | legal_permanent_resident
-        age_eligible = age <= age_limit
-        return age_eligible & eligible_status
+        return age <= age_limit

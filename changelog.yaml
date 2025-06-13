@@ -9964,3 +9964,245 @@
     added:
     - 2024 Connecticut State Income Tax Updates.
   date: 2025-05-18 22:44:09
+- bump: minor
+  changes:
+    added:
+    - Add enrollment and costs of CHIP, Medicaid and the ACA.
+  date: 2025-05-20 01:13:06
+- bump: minor
+  changes:
+    added:
+    - Overtime variables.
+  date: 2025-05-20 08:25:19
+- bump: patch
+  changes:
+    fixed:
+    - Add CHIP eligibility to per capita CHIP variable.
+  date: 2025-05-20 23:30:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove special characters causing imports to fail on Windows.
+  date: 2025-05-21 13:57:33
+- bump: minor
+  changes:
+    added:
+    - Apply identification requirement to CTC under current law for children.
+  date: 2025-05-22 00:32:21
+- bump: minor
+  changes:
+    added:
+    - Amended itemized deduction reform structure.
+  date: 2025-05-22 17:17:58
+- bump: patch
+  changes:
+    fixed:
+    - Auto Loan ALD formula.
+  date: 2025-05-22 20:54:55
+- bump: minor
+  changes:
+    added:
+    - Created a new MTR and Post-transfer income that includes healthcare programs.
+  date: 2025-05-23 16:51:32
+- bump: minor
+  changes:
+    added:
+    - Hours worked last week variable.
+  date: 2025-05-23 17:18:54
+- bump: minor
+  changes:
+    added:
+    - Update WIC values.
+  date: 2025-05-25 23:40:18
+- bump: minor
+  changes:
+    added:
+    - Illinois Chicago Transit Authority Programs benefit amount.
+  date: 2025-05-26 17:53:02
+- bump: minor
+  changes:
+    added:
+    - Add uprating for auto loan balance and interest variables.
+  date: 2025-05-27 13:30:38
+- bump: minor
+  changes:
+    added:
+    - Hours worked last week variable.
+  date: 2025-05-27 14:19:05
+- bump: patch
+  changes:
+    fixed:
+    - Corrected Vermont's per capita Medicaid spending.
+  date: 2025-05-27 21:39:46
+- bump: minor
+  changes:
+    added:
+    - New York 2026 budget agreement income tax provisions.
+  date: 2025-05-27 21:44:24
+- bump: minor
+  changes:
+    added:
+    - CalWorks TANF and Child Care immigration status eligibility.
+  date: 2025-05-27 22:24:56
+- bump: patch
+  changes:
+    changed:
+    - Add uprating for base ACA premiums.
+  date: 2025-05-27 23:07:51
+- bump: patch
+  changes:
+    fixed:
+    - auto loan variables uprating path
+  date: 2025-05-28 01:47:22
+- bump: minor
+  changes:
+    added:
+    - Additional CTC bracket reform.
+  date: 2025-05-30 06:47:16
+- bump: minor
+  changes:
+    added:
+    - Qualified BDC dividend income variable
+    - Qualified REIT and PTP income variable
+    - Farm operations income variable
+    - Variables showing whether income types would be qualified business income (estate,
+      farm operations, farm rent, partnership/S corp, rental, self employment)
+    - Parameter for sources of QBI deductions (deduction_definition.yaml)
+    - QBID reconciliation parameters (in_effect, phase_out_rate, use_bdc_income)
+    - Marginal tax rate including health benefits variable
+    - Tax code references to income variables where they were missing
+    changed:
+    - marginal_tax_rate and marginal_tax_rate_including_health_benefits now use emp_self_emp_ratio
+      with no logic change
+  date: 2025-05-30 14:18:59
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the ACTC additional bracket parameter label / description, and add support
+      for multiple periods.
+  date: 2025-05-30 16:31:37
+- bump: minor
+  changes:
+    added:
+    - Refugee status to the CA TANF and ChildCare eligibility criteria.
+  date: 2025-05-30 21:36:49
+- bump: minor
+  changes:
+    added:
+    - Illinois Child Care Assistance Program (CCAP).
+  date: 2025-06-01 08:18:11
+- bump: minor
+  changes:
+    added:
+    - Net worth variables (to compare imputation method impacts on policy results).
+  date: 2025-06-03 13:33:39
+- bump: minor
+  changes:
+    added:
+    - Add default value of 40 to ssi_qualifying_quarters_earnings.
+  date: 2025-06-05 13:19:06
+- bump: minor
+  changes:
+    added:
+    - Update the California State Supplement 2025 values.
+  date: 2025-06-05 13:44:56
+- bump: minor
+  changes:
+    added:
+    - Illinois Temporary Assistance for Needy Families (TANF).
+  date: 2025-06-05 15:55:00
+- bump: minor
+  changes:
+    added:
+    - Illinois Aid to the Aged, Blind or Disabled (AABD).
+  date: 2025-06-06 17:42:13
+- bump: minor
+  changes:
+    fixed:
+    - Fix DC TANF child care deduction formula.
+  date: 2025-06-06 20:46:21
+- bump: patch
+  changes:
+    changed:
+    - In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based
+      counties in all cases, including when FIPS is defined.
+  date: 2025-06-07 13:10:54
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-06-07 20:44:11
+- bump: minor
+  changes:
+    added:
+    - Unit tests for labor supply response variables focusing on negative earnings
+      scenarios
+    - Tests for substitution elasticity with negative total earnings
+    - Tests for employment income allocation with negative earnings
+    changed:
+    - Refactored labor supply response module into individual variable files for better
+      organization
+    - Applied consistent code style patterns across all labor supply response variables
+    - Improved parameter access patterns and income combination methods
+    fixed:
+    - Fixed negative self-employment income causing counterintuitive labor supply
+      response sign flips
+    - Labor supply responses now properly handle negative total earnings by clipping
+      to zero
+  date: 2025-06-09 10:36:28
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut period in the head of household tax rate.
+  date: 2025-06-10 13:31:01
+- bump: minor
+  changes:
+    added:
+    - SNAP take-up seed variable.
+  date: 2025-06-11 19:06:16
+- bump: minor
+  changes:
+    fixed:
+    - Fix slcsp_rating_area_la_county parameter.
+  date: 2025-06-11 19:21:56
+- bump: minor
+  changes:
+    added:
+    - Add take-up flags for Medicaid, CHIP and ACA PTC.
+  date: 2025-06-11 19:46:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug in ACA calculations.
+  date: 2025-06-11 22:17:44
+- bump: patch
+  changes:
+    fixed:
+    - Another ACA issue.
+  date: 2025-06-11 22:42:29
+- bump: patch
+  changes:
+    added:
+    - Integration tests for TANF to verify state implementations work correctly.
+    - Documentation in CLAUDE.md about period handling and state program refactoring.
+    changed:
+    - Use defined_for and p = parameters(...) more consistently.
+    - Refactored TANF to sum only state-specific implementations, removing federal
+      calculation.
+    fixed:
+    - TANF tests to correctly require eligibility for receiving benefits.
+    - Lifeline benefit calculation by changing tuple assignment to addition.
+    - Demographic TANF eligibility to use period.this_year for age calculation.
+    - Demographic TANF eligibility to check is_in_secondary_school instead of is_full_time_student
+      for student age limits.
+    removed:
+    - vehicles_owned variable as it was an unused imputation.
+    - Federal TANF cash calculation variables and parameters except for core components
+      (tanf, tanf_reported, tanf_person, is_demographic_tanf_eligible, is_tanf_enrolled,
+      age limits, abolish_tanf) and TANF non-cash eligibility for SNAP BBCE.
+  date: 2025-06-12 13:16:09
+- bump: minor
+  changes:
+    added:
+    - New York supplemental income tax changes.
+  date: 2025-06-12 15:51:05
