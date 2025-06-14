@@ -88,4 +88,16 @@ class medicaid_per_capita_cost(Variable):
         mask = enroll > 0
         per_capita[mask] = spend[mask] / enroll[mask]
 
+        national = p.totals.per_capita                      # folder: …/totals/per_capita/*
+        default_per_capita = select(
+            [is_aged_disabled,          is_child,            is_expansion_adult,          is_non_expansion_adult],
+            [
+                national.aged_disabled, national.child,      national.expansion_adults,    national.non_expansion_adults,
+            ],
+            default=0,
+        )
+
+        need_default = (per_capita == 0) & eligible
+        per_capita[need_default] = default_per_capita[need_default]
+
         return per_capita

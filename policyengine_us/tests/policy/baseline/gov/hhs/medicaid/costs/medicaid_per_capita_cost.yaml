@@ -57,3 +57,18 @@
         is_medicaid_eligible: false
   output: 
     medicaid_per_capita_cost: 0
+
+- name: North Carolina Expansion adult (defaults to national average)
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: NC
+        members: [person]
+    people:
+      person:
+        is_ssi_recipient_for_medicaid: false
+        is_medicaid_eligible: true
+  output: 
+    medicaid_per_capita_cost: 7_054
