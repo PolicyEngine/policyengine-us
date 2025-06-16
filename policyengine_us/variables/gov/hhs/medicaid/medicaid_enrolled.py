@@ -9,4 +9,4 @@ class medicaid_enrolled(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a"
     defined_for = "is_medicaid_eligible"
-    adds = "takes_up_medicaid_if_eligible"
+    adds = ["takes_up_medicaid_if_eligible"]
