@@ -20,7 +20,7 @@ class or_liheap_payout(Variable):
         # Applies multiplier to the payout when electricity is used for both heating and cooling (not an official policy parameter).
         electricity_multiplier = where(
             (utility_type == utility_type.possible_values.ELECTRICITY)
-            & (electricity_type == electricity_type.possible_values.BOTH),
+            & (electricity_type == electricity_type.possible_values.HEATING_AND_COOLING),
             2,
             1,
         )
