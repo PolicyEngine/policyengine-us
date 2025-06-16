@@ -1,8 +1,14 @@
 description: Oregon provides a standard deduction of this amount.
 metadata:
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
   label: Oregon standard deduction
   period: year
   unit: currency-USD
+  propagate_metadata_to_children: true 
   breakdown:
     - filing_status
   reference:
@@ -16,77 +22,54 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2022.pdf#page=15
     - title: 2023 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=15
+    - title: 2024 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=15
 JOINT:
-  values:
-    2003-01-01: 3_280
-    # Rose with inflation, not all dates documented.
-    2018-01-01: 4_435
-    2019-01-01: 4_545
-    2020-01-01: 4_630
-    2021-01-01: 4_700
-    2022-01-01: 4_840
-    2023-01-01: 5_210
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
+  2003-01-01: 3_280
+  # Rose with inflation, not all dates documented.
+  2018-01-01: 4_435
+  2019-01-01: 4_545
+  2020-01-01: 4_630
+  2021-01-01: 4_700
+  2022-01-01: 4_840
+  2023-01-01: 5_210
+  2024-01-01: 5_495
 HEAD_OF_HOUSEHOLD:
-  values:
-    2003-01-01: 2_640
-    # Rose with inflation, not all dates documented.
-    2018-01-01: 3_570
-    2019-01-01: 3_655
-    2020-01-01: 3_725
-    2021-01-01: 3_780
-    2022-01-01: 3_895
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
+  2003-01-01: 2_640
+  # Rose with inflation, not all dates documented.
+  2018-01-01: 3_570
+  2019-01-01: 3_655
+  2020-01-01: 3_725
+  2021-01-01: 3_780
+  2022-01-01: 3_895
+  2024-01-01: 4_420
 SURVIVING_SPOUSE:
-  values:
-    2003-01-01: 3_280
-    # Rose with inflation, not all dates documented.
-    2018-01-01: 4_435
-    2019-01-01: 4_545
-    2020-01-01: 4_630
-    2021-01-01: 4_700
-    2022-01-01: 4_840
-    2023-01-01: 5_210
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
+  2003-01-01: 3_280
+  # Rose with inflation, not all dates documented.
+  2018-01-01: 4_435
+  2019-01-01: 4_545
+  2020-01-01: 4_630
+  2021-01-01: 4_700
+  2022-01-01: 4_840
+  2023-01-01: 5_210
+  2024-01-01: 5_495
 SINGLE:
-  values:
-    2003-01-01: 1_640
-    # Rose with inflation, not all dates documented.
-    2018-01-01: 2_215
-    2019-01-01: 2_270
-    2020-01-01: 2_315
-    2021-01-01: 2_350
-    2022-01-01: 2_420
-    2023-01-01: 2_605
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
+  2003-01-01: 1_640
+  # Rose with inflation, not all dates documented.
+  2018-01-01: 2_215
+  2019-01-01: 2_270
+  2020-01-01: 2_315
+  2021-01-01: 2_350
+  2022-01-01: 2_420
+  2023-01-01: 2_605
+  2024-01-01: 2_745
 SEPARATE:
-  values:
-    2003-01-01: 1_640
-    # Rose with inflation, not all dates documented.
-    2018-01-01: 2_215
-    2019-01-01: 2_270
-    2020-01-01: 2_315
-    2021-01-01: 2_350
-    2022-01-01: 2_420
-    2023-01-01: 2_605
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
+  2003-01-01: 1_640
+  # Rose with inflation, not all dates documented.
+  2018-01-01: 2_215
+  2019-01-01: 2_270
+  2020-01-01: 2_315
+  2021-01-01: 2_350
+  2022-01-01: 2_420
+  2023-01-01: 2_605
+  2024-01-01: 2_745

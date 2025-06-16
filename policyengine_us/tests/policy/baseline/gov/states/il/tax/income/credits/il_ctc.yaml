@@ -1,4 +1,4 @@
-- name: Single parent with one eligible child and no income
+- name: Single parent with one eligible child
   period: 2024
   input:
     people:
@@ -6,6 +6,7 @@
         age: 30
       dependent:
         age: 1
+        ctc_qualifying_child: true
     households:
       household:
         members: [head, dependent]
@@ -13,21 +14,19 @@
     tax_units:
       tax_unit: 
         members: [head, dependent]
-        adjusted_gross_income: 0
-        ctc_qualifying_children: 1
-        filing_status: HEAD_OF_HOUSEHOLD
-        tax_unit_earned_income: 0
+        il_eitc: 100
   output:
-    il_ctc: 300
+    il_ctc: 20
 
-- name: Single parent with one eligible child and 60,000 of income
+- name: Single parent with no eligible children
   period: 2024
   input:
     people:
       head:
         age: 30
       dependent:
-        age: 1
+        age: 12
+        ctc_qualifying_child: true
     households:
       household:
         members: [head, dependent]
@@ -35,61 +34,32 @@
     tax_units:
       tax_unit: 
         members: [head, dependent]
-        adjusted_gross_income: 60_000
-        ctc_qualifying_children: 1
-        filing_status: SINGLE
-        tax_unit_earned_income: 40_000
-  output:
-    il_ctc: 100
-
-- name: Married couple with two eligible children and 60,000 of income
-  period: 2024
-  input:
-    people:
-      head:
-        age: 30
-      spouse:
-        age: 30
-      dependent:
-        age: 1
-      dependent2:
-        age: 1
-    households:
-      household:
-        members: [head, spouse, dependent, dependent2]
-        state_code: IL
-    tax_units:
-      tax_unit: 
-        members: [head, spouse, dependent, dependent2]
-        adjusted_gross_income: 60_000
-        tax_unit_earned_income: 50_000
-        ctc_qualifying_children: 2
-        filing_status: JOINT
-  output:
-    il_ctc: 600
-
-- name: Married couple with two eligible children and 200,000 of income
-  period: 2024
-  input:
-    people:
-      head:
-        age: 30
-      spouse:
-        age: 30
-      dependent:
-        age: 1
-      dependent2:
-        age: 1
-    households:
-      household:
-        members: [head, spouse, dependent, dependent2]
-        state_code: IL
-    tax_units:
-      tax_unit: 
-        members: [head, spouse, dependent, dependent2]
-        adjusted_gross_income: 40_000
-        tax_unit_earned_income: 200_000
-        filing_status: JOINT
-        ctc_qualifying_children: 2
+        il_eitc: 100
   output:
     il_ctc: 0
+
+- name: Single parent with two eligible children
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 12
+        ctc_qualifying_child: true
+      dependent2:
+        age: 10
+        ctc_qualifying_child: true
+      dependent3:
+        age: 9
+        ctc_qualifying_child: true
+    households:
+      household:
+        members: [head, dependent, dependent2, dependent3]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent, dependent2, dependent3]
+        il_eitc: 100
+  output:
+    il_ctc: 20

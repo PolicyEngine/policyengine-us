@@ -16,5 +16,11 @@ class ca_capi_eligible_person(Variable):
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
         )
+        is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
 
-        return aged_blind_disabled & ~is_ssi_eligible_spouse & ~is_citizen
+        return (
+            aged_blind_disabled
+            & ~is_ssi_eligible_spouse
+            & ~is_citizen
+            & ~is_qualified_noncitizen
+        )

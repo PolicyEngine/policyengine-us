@@ -10,7 +10,7 @@ class additional_standard_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
 
     def formula(tax_unit, period, parameters):
-        std = parameters(period).gov.irs.deductions.standard
+        p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        aged_blind_count = tax_unit("aged_blind_count", period)
-        return aged_blind_count * std.aged_or_blind.amount[filing_status]
+        amount_per = p.aged_or_blind.amount[filing_status]
+        return amount_per * tax_unit("aged_blind_count", period)

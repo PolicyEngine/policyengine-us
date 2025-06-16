@@ -3,7 +3,23 @@ values:
   2021-01-01:
     # Line 1B
     - us_govt_interest
-    # Dividends from federal securitites
+    # Dividends from federal securities
+    # Line 5B 
+    - taxable_social_security
+    # Line 6B
+    - military_service_income
+    # Line 7B
+    - ia_pension_exclusion
+    # Railroad unemployment income 
+    # Bonus Depreciation
+    # Iowa Health Insurance Deduction
+    # Iowa capital gains deduction
+  2024-01-01: # military_retirement_pay added in 2024.
+    # Line 1B
+    - us_govt_interest
+    # Dividends from federal securities
+    # Line 4B
+    - military_retirement_pay 
     # Line 5B 
     - taxable_social_security
     # Line 6B
@@ -24,3 +40,5 @@ metadata:
     href: https://revenue.iowa.gov/media/2746/download?inline
   - title: Iowa income tax law, 422.7 
     href: https://www.legis.iowa.gov/docs/code/422.7.pdf
+  - title: 2024 IA1040 Iowa Income Tax Return Instruction
+    href: https://revenue.iowa.gov/media/4152/download?inline#page=61

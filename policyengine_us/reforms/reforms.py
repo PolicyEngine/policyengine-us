@@ -61,12 +61,10 @@ from .state_dependent_exemptions import (
 )
 from .ctc import (
     create_ctc_older_child_supplement_reform,
+    create_ctc_additional_bracket_reform,
 )
 from .second_earner import (
     create_second_earner_tax_reform,
-)
-from .ctc.eppc import (
-    create_expanded_ctc_reform,
 )
 from .snap import (
     create_abolish_snap_deductions_reform,
@@ -92,6 +90,26 @@ from .states.mt.ctc import (
 from .congress.golden import (
     create_fisc_act_reform,
 )
+from .crfb import (
+    create_tax_employer_social_security_tax_reform,
+    create_tax_employer_medicare_tax_reform,
+    create_tax_employer_payroll_tax_reform,
+)
+from .congress.afa import (
+    create_afa_other_dependent_credit_reform,
+)
+
+from .reconciliation import (
+    create_reconciled_qbid_reform,
+    create_reconciled_pease_reform,
+    create_reconciled_tip_and_overtime_exempt_reform,
+    create_reconciled_auto_loan_interest_ald_reform,
+    create_ctc_ssn_reform,
+    create_reconciled_additional_senior_standard_deduction_reform,
+    create_reconciled_ssn_for_llc_and_aoc_reform,
+    create_aca_ptc_immigration_status_reform,
+)
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -174,7 +192,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     second_earner_tax_reform = create_second_earner_tax_reform(
         parameters, period
     )
-    expanded_ctc = create_expanded_ctc_reform(parameters, period)
     abolish_snap_deductions = create_abolish_snap_deductions_reform(
         parameters, period
     )
@@ -197,6 +214,43 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_ctc = create_mt_ctc_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
+    tax_employer_social_security_tax = (
+        create_tax_employer_social_security_tax_reform(parameters, period)
+    )
+    tax_employer_medicare_tax = create_tax_employer_medicare_tax_reform(
+        parameters, period
+    )
+    tax_employer_payroll_tax = create_tax_employer_payroll_tax_reform(
+        parameters, period
+    )
+    afa_other_dependent_credit = create_afa_other_dependent_credit_reform(
+        parameters, period
+    )
+    reconciled_qbid = create_reconciled_qbid_reform(parameters, period)
+    reconciled_pease = create_reconciled_pease_reform(parameters, period)
+    reconciled_tip_and_overtime_exempt = (
+        create_reconciled_tip_and_overtime_exempt_reform(parameters, period)
+    )
+    reconciled_auto_loan_interest_ald = (
+        create_reconciled_auto_loan_interest_ald_reform(parameters, period)
+    )
+    ctc_ssn = create_ctc_ssn_reform(parameters, period)
+    reconciled_additional_senior_standard_deduction = (
+        create_reconciled_additional_senior_standard_deduction_reform(
+            parameters, period
+        )
+    )
+
+    ctc_ssn = create_ctc_ssn_reform(parameters, period)
+    reconciled_ssn_for_llc_and_aoc = (
+        create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
+    )
+    aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
+        parameters, period
+    )
+    ctc_additional_bracket = create_ctc_additional_bracket_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -228,7 +282,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
         second_earner_tax_reform,
-        expanded_ctc,
         abolish_snap_deductions,
         abolish_snap_net_income_test,
         dc_property_tax_credit,
@@ -237,6 +290,19 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_school_tax_credit_with_phase_out,
         mt_ctc,
         fisc_act,
+        tax_employer_social_security_tax,
+        tax_employer_medicare_tax,
+        tax_employer_payroll_tax,
+        afa_other_dependent_credit,
+        reconciled_qbid,
+        reconciled_pease,
+        reconciled_tip_and_overtime_exempt,
+        reconciled_auto_loan_interest_ald,
+        ctc_ssn,
+        reconciled_additional_senior_standard_deduction,
+        reconciled_ssn_for_llc_and_aoc,
+        aca_ptc_immigration_status,
+        ctc_additional_bracket,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

@@ -1,0 +1,13 @@
+description: The Committee on Ways and Means proposed to limit the Premium Tax Credit to filers of certain immigration statuses , which comes in effect if this is true. 
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Disallowed Premium Tax Credit due to immigration status in effect
+  reference:
+    - title: AMENDMENT IN THE NATURE OF A SUBSTITUTE TO COMMITTEE PRINT PROVIDING FOR RECONCILIATION OFFERED BY MR. SMITH OF MISSOURI
+      # SEC. 112102. CERTAIN ALIENS TREATED AS INELIGIBLE FOR PREMIUM TAX CREDIT page 322
+      href: https://punchbowl.news/smitmo_017_xml/

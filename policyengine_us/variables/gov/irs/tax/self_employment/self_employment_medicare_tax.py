@@ -7,7 +7,8 @@ class self_employment_medicare_tax(Variable):
     label = "Self-employment Medicare tax"
     definition_period = YEAR
     unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/26/1401#b_1"
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.irs.self_employment.medicare_rate
-        return rate * person("taxable_self_employment_income", period)
+        p = parameters(period).gov.irs.self_employment.rate
+        return p.medicare * person("taxable_self_employment_income", period)

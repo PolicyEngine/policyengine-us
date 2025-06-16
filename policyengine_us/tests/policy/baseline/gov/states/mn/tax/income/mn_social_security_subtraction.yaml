@@ -47,3 +47,35 @@
     adjusted_gross_income: 111_999
   output:
     mn_social_security_subtraction: 21_000
+
+- name: Integration test - no reduction applies in 2023
+  absolute_error_margin: 2
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1
+        ssi: 0
+        ma_state_supplement: 0
+        social_security_retirement: 25_000
+        taxable_private_pension_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 27
+  output:
+    mn_social_security_subtraction: 21_250
+    mn_income_tax: 1_900

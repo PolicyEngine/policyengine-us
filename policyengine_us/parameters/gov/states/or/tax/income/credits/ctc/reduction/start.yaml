@@ -1,12 +1,16 @@
 description: Oregon reduces its Child Tax Credit for filers with Oregon adjusted gross income exceeding this amount.
 values:
   2023-01-01: 25_000
+  2024-01-01: 25_750
 metadata:
+  uprating: gov.irs.uprating #CPI-U
   unit: currency-USD
   period: year
   label: Oregon Child Tax Credit phase-out start
   reference:
-    - title: 2023R1 House Bill 3235 Section 2 (3)(a)
-      href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=1
+    - title: Oregon Revised Statutes Section 315.273 - 5(a)
+      href: https://casetext.com/statute/oregon-revised-statutes/title-29-revenue-and-taxation/chapter-315-personal-and-corporate-income-or-excise-tax-credits/children-and-families-poverty-relief/section-315273-qualifying-child-of-taxpayer#:~:text=Section%20315.273%20,income%2C%20as%20defined%20in%20section
     - title: 2023 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=18
+    - title: 2024 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=19

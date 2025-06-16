@@ -9,10 +9,10 @@ class adjusted_earnings(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        misc = parameters(period).gov.irs.ald.misc
+        p = parameters(period).gov.irs.ald.misc
         adjustment = (
-            (1 - misc.self_emp_tax_adj)
-            * misc.employer_share
+            (1 - p.self_emp_tax_adj)
+            * p.employer_share
             * person("self_employment_tax", period)
         )
         return max_(0, person("earned_income", period) - adjustment)

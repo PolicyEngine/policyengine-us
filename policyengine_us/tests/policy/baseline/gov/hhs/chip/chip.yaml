@@ -1,0 +1,16 @@
+- name: Eligible with $10,000 value.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    is_chip_eligible: true
+    per_capita_chip: 3_044.9
+  output:
+    chip: 3_044.9
+
+- name: Ineligible with $10,000 value.
+  period: 2022
+  input:
+    is_chip_eligible: false
+  output:
+    chip: 0

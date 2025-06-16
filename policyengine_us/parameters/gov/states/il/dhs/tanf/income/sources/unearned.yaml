@@ -1,0 +1,33 @@
+description: Illinois counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2020-01-01:
+    - social_security
+    - disability_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - farm_income
+    - farm_rent_income
+    - capital_gains
+    - debt_relief
+    - illicit_income
+    - miscellaneous_income
+    #- pension_income # exempt
+    #- veterans_benefits # exempt
+    #- gi_cash_assistance # exempt
+    #- child_support_received # exempt
+    #- rental_income # considered earned income if the individual is actively engaged in the management of the property
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois TANF unearned income sources
+  reference:
+    # The legal code defines unearned income as income other than employment or self-employment income
+    - title: Ill. Admin. Code tit. 89, § 112.100 - Unearned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.100
+    - title: Ill. Admin. Code tit. 89, § 112.110 - Exempt Unearned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.110
