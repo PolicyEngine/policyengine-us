@@ -9,11 +9,9 @@ class ny_ctc_post_2024_base(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
-    defined_for = StateCode.NY
+    defined_for = "ny_ctc_post_2024_eligible"
 
     def formula(tax_unit, period, parameters):
-        eligible = tax_unit("ny_ctc_post_2024_eligible", period)
-
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
@@ -38,5 +36,4 @@ class ny_ctc_post_2024_base(Variable):
         older_child_credit = (
             tax_unit.sum(older_children) * p.post_2024.older_child_amount
         )
-        base_amount = young_child_credit + older_child_credit
-        return where(eligible, base_amount, 0)
+        return young_child_credit + older_child_credit
