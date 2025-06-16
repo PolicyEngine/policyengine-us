@@ -11,10 +11,9 @@ class ny_inflation_refund_credits(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        # NY inflation refund credits are only available in 2025
-        if period.start.year != 2025:
-            return 0
+        return 0
 
+    def formula_2025(tax_unit, period, parameters):
         p = parameters(
             period
         ).gov.states.ny.tax.income.credits.inflation_refund_credits
@@ -38,3 +37,6 @@ class ny_inflation_refund_credits(Variable):
                 p.surviving_spouse.calc(agi, right=True),
             ],
         )
+
+    def formula_2026(tax_unit, period, parameters):
+        return 0
