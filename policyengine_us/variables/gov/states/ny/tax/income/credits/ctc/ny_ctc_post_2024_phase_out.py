@@ -9,11 +9,9 @@ class ny_ctc_post_2024_phase_out(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
-    defined_for = StateCode.NY
+    defined_for = "ny_ctc_post_2024_eligible"
 
     def formula(tax_unit, period, parameters):
-        eligible = tax_unit("ny_ctc_post_2024_eligible", period)
-
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
@@ -25,14 +23,11 @@ class ny_ctc_post_2024_phase_out(Variable):
         # Round up to nearest increment for phase-out calculation
         increment = p.post_2024.phase_out.increment
         excess_increments = (excess_income + increment - 1) // increment
-        phase_out_amount = (
-            excess_increments * p.post_2024.phase_out.rate * increment
-        )
+        phase_out_amount = excess_increments * p.post_2024.phase_out.rate
 
         # Apply phase-out only where there's a base credit and phase-out rate > 0
         has_base_credit = base_credit > 0
         has_phase_out_rate = p.post_2024.phase_out.rate > 0
         apply_phase_out = has_base_credit & has_phase_out_rate
 
-        final_phase_out = where(apply_phase_out, phase_out_amount, 0)
-        return where(eligible, final_phase_out, 0)
+        return apply_phase_out * phase_out_amount

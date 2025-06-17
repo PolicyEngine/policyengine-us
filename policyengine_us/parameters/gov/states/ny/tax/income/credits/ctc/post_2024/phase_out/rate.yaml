@@ -1,7 +1,7 @@
 description: New York applies this rate to reduce the Child Tax Credit based on income.
 values:
   2000-01-01: 0  # Default to 0
-  2025-01-01: 0.0165  # $16.50 per $1,000 = 1.65%
+  2025-01-01: 16.5
   2028-01-01: 0  # Reverts to old system post-2027
 metadata:
   unit: /1

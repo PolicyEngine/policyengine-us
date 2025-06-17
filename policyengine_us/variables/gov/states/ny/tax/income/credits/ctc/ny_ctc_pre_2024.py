@@ -10,11 +10,9 @@ class ny_ctc_pre_2024(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
-    defined_for = StateCode.NY
+    defined_for = "ny_ctc_pre_2024_eligible"
 
     def formula(tax_unit, period, parameters):
-        eligible = tax_unit("ny_ctc_pre_2024_eligible", period)
-
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
@@ -77,5 +75,4 @@ class ny_ctc_pre_2024(Variable):
         ]
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
-        base_amount = max_(applicable_minimum, federal_match)
-        return where(eligible, base_amount, 0)
+        return max_(applicable_minimum, federal_match)

@@ -20,20 +20,8 @@ class ny_ctc_post_2024_base(Variable):
         qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
 
-        # Age-based amounts: young vs older children
-        young_children = qualifies & (
-            age <= p.post_2024.young_child_age_threshold
-        )
-        older_children = (
-            qualifies
-            & (age >= p.post_2024.older_child_age_min)
-            & (age <= p.post_2024.older_child_age_max)
-        )
+        # Calculate credit amount by age using scale parameter
+        credit_by_age = p.post_2024.amount_by_age.calc(age)
+        qualifying_credit = qualifies * credit_by_age
 
-        young_child_credit = (
-            tax_unit.sum(young_children) * p.post_2024.young_child_amount
-        )
-        older_child_credit = (
-            tax_unit.sum(older_children) * p.post_2024.older_child_amount
-        )
-        return young_child_credit + older_child_credit
+        return tax_unit.sum(qualifying_credit)
