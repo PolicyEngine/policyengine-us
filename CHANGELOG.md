@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.314.1] - 2025-06-17 13:52:07
+
+### Fixed
+
+- 2023 datasets are passed into the wrong time periods.
+
 ## [1.314.0] - 2025-06-16 20:42:21
 
 ### Added
@@ -12024,6 +12030,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.314.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.0...1.314.1
 [1.314.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.313.0...1.314.0
 [1.313.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.3...1.313.0
 [1.312.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.2...1.312.3
