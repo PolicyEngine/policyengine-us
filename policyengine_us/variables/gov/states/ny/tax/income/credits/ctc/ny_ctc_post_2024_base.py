@@ -21,7 +21,7 @@ class ny_ctc_post_2024_base(Variable):
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
 
         # Calculate credit amount by age using scale parameter
-        credit_by_age = p.post_2024.amount_by_age.calc(age)
+        credit_by_age = p.post_2024.amount.calc(age)
         qualifying_credit = qualifies * credit_by_age
 
         return tax_unit.sum(qualifying_credit)
