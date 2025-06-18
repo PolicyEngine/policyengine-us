@@ -1,0 +1,17 @@
+description: Flat tax rate applied to federal adjusted gross income above certain thresholds for surviving spouses.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Tax on AGI above threshold for surviving spouses.
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0

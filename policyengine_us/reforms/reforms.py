@@ -1,3 +1,4 @@
+from .tax_on_agi import create_tax_on_agi_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .dc_kccatc import create_dc_kccatc_reform
 from .winship import create_eitc_winship_reform
@@ -116,6 +117,7 @@ import warnings
 
 
 def create_structural_reforms_from_parameters(parameters, period):
+    tax_on_agi = create_tax_on_agi_reform(parameters, period)
     afa_reform = create_american_family_act_with_baby_bonus_reform(
         parameters, period
     )
@@ -253,6 +255,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
 
     reforms = [
+        tax_on_agi,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
