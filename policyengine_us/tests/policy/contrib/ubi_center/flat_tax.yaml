@@ -14,7 +14,7 @@
     gov.contrib.ubi_center.flat_tax.rate.agi: 0.05
     gov.contrib.ubi_center.flat_tax.agi_exemption.amount.SINGLE: 30_000
     positive_agi: 50_000
-    excess_agi: 20_000
+    filing_status: SINGLE
   output:
     flat_tax: 1_000
 
@@ -24,7 +24,7 @@
     gov.contrib.ubi_center.flat_tax.rate.agi: 0.02
     gov.contrib.ubi_center.flat_tax.agi_exemption.amount.JOINT: 60_000
     positive_agi: 120_000
-    excess_agi: 60_000
+    filing_status: JOINT
   output:
     flat_tax: 1_200
 

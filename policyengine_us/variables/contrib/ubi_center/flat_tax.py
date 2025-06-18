@@ -16,7 +16,7 @@ class flat_tax(Variable):
         gross_income_flat_tax = gross_income * p.rate.gross_income
         # AGI flat tax.
         filing_status = tax_unit("filing_status", period)
-        exemption = p.agi_exemption[filing_status]
+        exemption = p.agi_exemption.amount[filing_status]
         agi = tax_unit("positive_agi", period)
         excess_agi = max_(agi - exemption, 0)
         agi_flat_tax = excess_agi * p.rate.agi
