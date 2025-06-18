@@ -72,3 +72,20 @@
         is_medicaid_eligible: true
   output: 
     medicaid_cost_if_enrolled: 7_054
+
+- name: Multiple people in recent expansion state
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: WI
+        members: [person1, person2]
+    people:
+      person1:
+        age: 25
+        employment_income: 0
+      person2:
+        age: 2
+  output: 
+    medicaid_cost_if_enrolled: [7_054, 2_867.7]
