@@ -1,0 +1,13 @@
+- name: Case 1, CTC higher than 0.
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.in_effect: true
+    age: 17
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+    meets_snap_general_work_requirements: true
+    meets_snap_work_requirements: true
