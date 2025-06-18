@@ -4,10 +4,8 @@ from policyengine_us.model_api import *
 class ny_ctc_post_2024_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "NY CTC post-2024 eligibility"
-    documentation = (
-        "Whether the tax unit is eligible for NY CTC under post-2024 rules"
-    )
+    label = "New York CTC post-2024 eligibility"
+    documentation = "Whether the tax unit is eligible for New York CTC under post-2024 rules"
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = StateCode.NY

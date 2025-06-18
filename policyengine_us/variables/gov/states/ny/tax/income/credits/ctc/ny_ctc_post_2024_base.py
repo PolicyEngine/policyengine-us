@@ -4,8 +4,10 @@ from policyengine_us.model_api import *
 class ny_ctc_post_2024_base(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NY CTC post-2024 base amount"
-    documentation = "Base NY CTC amount before phase-out under post-2024 rules"
+    label = "New York CTC post-2024 base amount"
+    documentation = (
+        "Base New York CTC amount before phase-out under post-2024 rules"
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)

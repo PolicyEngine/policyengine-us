@@ -4,8 +4,8 @@ from policyengine_us.model_api import *
 class ny_ctc_post_2024_phase_out(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NY CTC post-2024 phase-out amount"
-    documentation = "Amount by which NY CTC is reduced due to income phase-out under post-2024 rules"
+    label = "New York CTC post-2024 phase-out amount"
+    documentation = "Amount by which New York CTC is reduced due to income phase-out under post-2024 rules"
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
