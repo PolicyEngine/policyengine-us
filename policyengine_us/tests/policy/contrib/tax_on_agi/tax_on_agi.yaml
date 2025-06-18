@@ -1,8 +1,0 @@
-- name: 0% tax on AGI
-  period: 2025
-  input:
-    gov.contrib.tax_on_agi.in_effect: true
-    adjusted_gross_income: 100_000
-    filing_status: HEAD_OF_HOUSEHOLD
-  output:
-    tax_on_agi: 0
