@@ -10206,3 +10206,18 @@
     added:
     - New York supplemental income tax changes.
   date: 2025-06-12 15:51:05
+- bump: minor
+  changes:
+    added:
+    - Oklahoma Income Tax Changes 2026.
+  date: 2025-06-16 20:42:21
+- bump: patch
+  changes:
+    fixed:
+    - 2023 datasets are passed into the wrong time periods.
+  date: 2025-06-17 13:52:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing some microsimulations to break.
+  date: 2025-06-17 15:56:52
