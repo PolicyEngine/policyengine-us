@@ -4,14 +4,12 @@ from policyengine_core.periods import instant
 
 
 def create_reconciled_snap_abawd_work_requirement() -> Reform:
-    class meets_snap_abawd_work_requirements(
-        Variable
-    ):  # This one get a reform
+    class meets_snap_abawd_work_requirements(Variable):
         value_type = bool
         entity = Person
         label = "Person is eligible for SNAP benefits via Able-Bodied Adult Without Dependents (ABAWD) work requirements"
         definition_period = MONTH
-        reference = "https://www.law.cornell.edu/cfr/text/7/273.24"
+        reference = "https://agriculture.house.gov/uploadedfiles/ag-recon-combo_03_xml.pdf#page=4"
 
         def formula(person, period, parameters):
             p = parameters(period).gov.usda.snap.work_requirements.abawd
@@ -19,37 +17,78 @@ def create_reconciled_snap_abawd_work_requirement() -> Reform:
             weekly_hours_worked = person(
                 "weekly_hours_worked_before_lsr", period.this_year
             )
+            # Work at least 20 hours a week
+            is_working = weekly_hours_worked >= p.weekly_hours_threshold
             # Too old or too young can exempted from working
             worked_exempted_age = p.age_threshold.work_exempted.calc(age)
             # Unable to work due to a physical or mental limitation
             is_disabled = person("is_disabled", period)
-            # Work at least 20 hours a week
-            is_working = weekly_hours_worked >= p.weekly_hours_threshold
-            # Pregnant
-            is_pregnant = person("is_pregnant", period)
-            # Parent of a household member under 18
+            # Parent of a household member under 7 (baseline is 18)
             is_dependent = person("is_tax_unit_dependent", period)
-            is_child = age >= p.age_threshold.dependent
+            is_child = age < p.age_threshold.dependent
             is_parent = person("is_parent", period)
             has_child = person.spm_unit.any(is_dependent & is_child)
             exempted_parent = is_parent & has_child
+            # Exempted from the general work requirements
+            meets_snap_general_work_requirements = person(
+                "meets_snap_general_work_requirements", period
+            )
+            # Pregnant
+            is_pregnant = person("is_pregnant", period)
+            # Homeless (remove in 2030)
+            is_homeless = person.household("is_homeless", period)
+            # A veteran (remove in 2030)
+            is_veteran = person("is_veteran", period)
+            # Responsible for a child above 7 and is married to individual who is working
+            # paragraph (2) https://www.govinfo.gov/content/pkg/COMPS-10331/pdf/COMPS-10331.pdf#page=47
+            child_above_7 = age >= p.age_threshold.dependent
+            is_married = person.family("is_married", period)
+            has_child_above_7 = person.spm_unit.any(
+                is_dependent & child_above_7
+            )
+            is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            has_head_or_spouse_working = person.spm_unit.any(
+                is_head_or_spouse & is_working
+            )
+            exempted_married_person = where(
+                is_married & has_child_above_7, has_head_or_spouse_working, 0
+            )
+            # Sunset provision effect on 2030-10-01
+            p_reform = parameters(
+                period
+            ).gov.contrib.reconciliation.snap_abawd_work_requirement
+            if p_reform.sunset_provision_in_effect:
+                return (
+                    is_working
+                    | worked_exempted_age
+                    | is_disabled
+                    | exempted_parent
+                    | meets_snap_general_work_requirements
+                    | is_pregnant
+                    | exempted_married_person
+                )
             return (
-                worked_exempted_age
-                | is_working
+                is_working
+                | worked_exempted_age
                 | is_disabled
-                | is_pregnant
                 | exempted_parent
+                | meets_snap_general_work_requirements
+                | is_pregnant
+                | is_homeless
+                | is_veteran
+                | exempted_married_person
             )
 
     def modify_parameters(parameters):
         parameters.gov.usda.snap.work_requirements.abawd.age_threshold.dependent.update(
             start=instant("2027-01-01"), stop=instant("2035-12-31"), value=7
         )
-
-        parameters.gov.usda.snap.work_requirements.abawd.age_threshold.work_exempted.update(
+        parameters.gov.usda.snap.work_requirements.abawd.age_threshold.work_exempted[
+            2
+        ].threshold.update(
             start=instant("2027-01-01"),
             stop=instant("2035-12-31"),
-            value=65,  # thresholds[-1]: 65
+            value=65,
         )
         return parameters
 
