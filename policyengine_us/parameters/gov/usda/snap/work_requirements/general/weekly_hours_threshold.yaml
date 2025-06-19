@@ -1,0 +1,12 @@
+description: The United States Department of Agriculture limits the Supplemental Nutrition Assistance Program to individuals working more than this number of weekly hours from the general work requirements.
+
+values:
+  2019-01-01: 30
+
+metadata:
+  unit: hours
+  label: USDA SNAP general work requirements weekly hours threshold
+  period: week
+  reference:
+    - title: 7 C.F.R. § 273.7 Work provisions (b)(1)(vii)
+      href: https://www.law.cornell.edu/cfr/text/7/273.7#b_1_vii
