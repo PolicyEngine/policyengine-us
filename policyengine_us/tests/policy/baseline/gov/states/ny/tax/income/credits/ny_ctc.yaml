@@ -295,7 +295,7 @@
 - name: 2025 - Updated CTC disabled, falls back to original rules (33% of federal)
   period: 2025
   input:
-    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
     gov.states.ny.tax.income.credits.ctc.pre_tcja: false
     ctc: 1_000
     ctc_qualifying_child: true
@@ -307,7 +307,7 @@
 - name: 2025 - Updated CTC disabled, minimum credit for low income
   period: 2025
   input:
-    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
     people:
       parent:
         age: 30
@@ -328,7 +328,7 @@
 - name: 2025 - Updated CTC disabled vs enabled comparison (young child)
   period: 2025
   input:
-    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
     people:
       parent:
         age: 30

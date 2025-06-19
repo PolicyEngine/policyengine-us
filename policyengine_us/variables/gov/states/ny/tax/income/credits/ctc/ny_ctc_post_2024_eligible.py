@@ -14,7 +14,7 @@ class ny_ctc_post_2024_eligible(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
 
         # Only eligible if post-2024 rules are in effect
-        if not p.ctc_ny_in_effect:
+        if not p.post_2024.in_effect:
             return False
 
         person = tax_unit.members

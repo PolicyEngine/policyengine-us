@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ny_ctc_post_2024(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New York CTC post-2024 rules"
+    label = "New York CTC post-2024"
     documentation = "New York's Empire State Child Credit under post-2024 rules (2025-2027)"
     unit = USD
     definition_period = YEAR

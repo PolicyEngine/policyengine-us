@@ -110,7 +110,7 @@
 - name: Not eligible when post-2024 rules disabled
   period: 2025
   input:
-    gov.states.ny.tax.income.credits.ctc.ctc_ny_in_effect: false
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
     people:
       parent:
         age: 30
