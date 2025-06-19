@@ -210,7 +210,12 @@ class Microsimulation(CoreMicrosimulation):
             kwargs.pop("start_instant", DEFAULT_START_DATE)
         )
 
-        if kwargs.get("dataset") and "cps_2023" in kwargs["dataset"]:
+        dataset = kwargs.get("dataset")
+        if (
+            dataset is not None
+            and isinstance(dataset, str)
+            and "cps_2023" in dataset
+        ):
             self.default_input_period = 2023
 
         super().__init__(*args, **kwargs)
