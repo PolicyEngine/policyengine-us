@@ -252,8 +252,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
-    reconciled_medicaid_work_requirement = create_reconciled_medicaid_work_requirement_reform(
-        parameters, period
+    reconciled_medicaid_work_requirement = (
+        create_reconciled_medicaid_work_requirement_reform(parameters, period)
     )
 
     reforms = [

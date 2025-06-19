@@ -17,13 +17,15 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.reconciliation.medicaid_work_requirement
-            monthly_hours_worked = person("monthly_hours_worked", period.this_year)
+            monthly_hours_worked = person(
+                "monthly_hours_worked", period.this_year
+            )
             is_working = monthly_hours_worked >= p.monthly_hours_threshold
-            # The individual is enrolled in an educational program at least half-time. 
+            # The individual is enrolled in an educational program at least half-time.
             is_full_time_student = person("is_full_time_student", period)
             # pregnant or postpartum medical assistance p.365
             is_pregnant = person("is_pregnant", period)
-            # (dd) https://www.ssa.gov/OP_Home/ssact/title19/1902.htm about income level 
+            # (dd) https://www.ssa.gov/OP_Home/ssact/title19/1902.htm about income level
             ## Under age of 19 or over age of 65 p.376
             age = person("age", period)
             work_exempted_age = p.work_exempted_age_threshold.calc(age)
@@ -32,12 +34,25 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             is_disabled = person("is_disabled", period)
             eligible_parent = is_parent & person.tax_unit.any(is_disabled)
             ## veteran and is_permanently_and_totally_disabled (IV)
-            eligible_veteran = person("is_veteran", period) & person("is_permanently_and_totally_disabled", period)
+            eligible_veteran = person("is_veteran", period) & person(
+                "is_permanently_and_totally_disabled", period
+            )
             ## blind or disabled or is_incapable_of_self_care (V)
-            eligible_disabled = person("is_blind", period) | is_disabled | person("is_incapable_of_self_care", period)
-            
-            return is_working | is_full_time_student | is_pregnant | work_exempted_age | eligible_parent | eligible_veteran | eligible_disabled 
+            eligible_disabled = (
+                person("is_blind", period)
+                | is_disabled
+                | person("is_incapable_of_self_care", period)
+            )
 
+            return (
+                is_working
+                | is_full_time_student
+                | is_pregnant
+                | work_exempted_age
+                | eligible_parent
+                | eligible_veteran
+                | eligible_disabled
+            )
 
     class is_medicaid_eligible(Variable):
         value_type = bool
@@ -62,12 +77,15 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             immigration_status_eligible = (
                 ~undocumented | undocumented & state_covers_undocumented
             )
-            work_requirement_eligible = person("medicaid_work_requirement_eligible", period)
+            work_requirement_eligible = person(
+                "medicaid_work_requirement_eligible", period
+            )
             ca_ffyp_eligible = person("ca_ffyp_eligible", period)
             return (
-                categorically_eligible & immigration_status_eligible & work_requirement_eligible
+                categorically_eligible
+                & immigration_status_eligible
+                & work_requirement_eligible
             ) | ca_ffyp_eligible
-
 
     class reform(Reform):
         def apply(self):
