@@ -108,7 +108,7 @@ from .reconciliation import (
     create_reconciled_additional_senior_standard_deduction_reform,
     create_reconciled_ssn_for_llc_and_aoc_reform,
     create_aca_ptc_immigration_status_reform,
-    create_reconciled_cdcc_reform,
+    create_reconciliation_cdcc_reform,
 )
 
 
@@ -252,7 +252,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
-    reconciled_cdcc = create_reconciled_cdcc_reform(parameters, period)
+    reconciliation_cdcc = create_reconciliation_cdcc_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -305,7 +305,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         aca_ptc_immigration_status,
         ctc_additional_bracket,
-        reconciled_cdcc,
+        reconciliation_cdcc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

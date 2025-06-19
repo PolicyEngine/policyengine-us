@@ -3,7 +3,7 @@ from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
 
-def create_reconciled_cdcc() -> Reform:
+def create_reconciliation_cdcc() -> Reform:
     class cdcc_rate(Variable):
         value_type = float
         entity = TaxUnit
@@ -27,12 +27,14 @@ def create_reconciled_cdcc() -> Reform:
             # Second phase-out
             p_ref = parameters(period).gov.contrib.reconciliation.cdcc
             filing_status = tax_unit("filing_status", period)
+            second_phase_out_start = p_ref.phase_out.second_start[filing_status]
             second_excess_agi = max_(
-                0, agi - p_ref.phase_out.second_start[filing_status]
+                0, agi - second_phase_out_start
             )
+            second_phase_out_increment = p_ref.phase_out.second_increment[filing_status]
             second_increments = np.ceil(
                 second_excess_agi
-                / p_ref.phase_out.second_increment[filing_status]
+                / second_phase_out_increment
             )
             second_percentage_reduction = second_increments * p.phase_out.rate
             return max_(
@@ -47,9 +49,9 @@ def create_reconciled_cdcc() -> Reform:
     return reform
 
 
-def create_reconciled_cdcc_reform(parameters, period, bypass: bool = False):
+def create_reconciliation_cdcc_reform(parameters, period, bypass: bool = False):
     if bypass:
-        return create_reconciled_cdcc()
+        return create_reconciliation_cdcc()
 
     p = parameters.gov.contrib.reconciliation.cdcc
 
@@ -63,9 +65,9 @@ def create_reconciled_cdcc_reform(parameters, period, bypass: bool = False):
         current_period = current_period.offset(1, "year")
 
     if reform_active:
-        return create_reconciled_cdcc()
+        return create_reconciliation_cdcc()
     else:
         return None
 
 
-reconciled_cdcc = create_reconciled_cdcc_reform(None, None, bypass=True)
+reconciliation_cdcc = create_reconciliation_cdcc_reform(None, None, bypass=True)
