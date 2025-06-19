@@ -32,22 +32,10 @@ def create_ctc_ssn() -> Reform:
             eligible_ssn_card_type = person(
                 "meets_ctc_identification_requirements", period
             )
-            ineligible_head_or_spouse = (
-                head_or_spouse
-            ) & ~eligible_ssn_card_type
-            ineligible_people = tax_unit.sum(ineligible_head_or_spouse)
             p = parameters(period).gov.contrib.reconciliation.ctc
             if p.one_person_ssn_req:
-                is_joint = tax_unit("tax_unit_is_joint", period)
-                head_or_spouse_eligible = (
-                    head_or_spouse & eligible_ssn_card_type
-                )
-                return where(
-                    is_joint,
-                    tax_unit.any(head_or_spouse_eligible),
-                    ineligible_people == 0,
-                )
-            return ineligible_people == 0
+                return tax_unit.any(head_or_spouse & eligible_ssn_card_type)
+            return ~tax_unit.any(head_or_spouse & ~eligible_ssn_card_type)
 
     class meets_ctc_identification_requirements(Variable):
         value_type = bool
