@@ -1,0 +1,23 @@
+description: The Senate Finance Committee proposed to exempt tip income, which is phased-out if this is true.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Senate Finance Committee Tip Income Exemption phase out start
+  reference:
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=40
+
+JOINT:
+  0000-01-01: 300_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 150_000
+SURVIVING_SPOUSE:
+  0000-01-01: 300_000
+SINGLE:
+  0000-01-01: 150_000
+SEPARATE:
+  0000-01-01: 150_000
+
