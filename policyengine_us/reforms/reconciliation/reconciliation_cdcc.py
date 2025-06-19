@@ -27,14 +27,15 @@ def create_reconciliation_cdcc() -> Reform:
             # Second phase-out
             p_ref = parameters(period).gov.contrib.reconciliation.cdcc
             filing_status = tax_unit("filing_status", period)
-            second_phase_out_start = p_ref.phase_out.second_start[filing_status]
-            second_excess_agi = max_(
-                0, agi - second_phase_out_start
-            )
-            second_phase_out_increment = p_ref.phase_out.second_increment[filing_status]
+            second_phase_out_start = p_ref.phase_out.second_start[
+                filing_status
+            ]
+            second_excess_agi = max_(0, agi - second_phase_out_start)
+            second_phase_out_increment = p_ref.phase_out.second_increment[
+                filing_status
+            ]
             second_increments = np.ceil(
-                second_excess_agi
-                / second_phase_out_increment
+                second_excess_agi / second_phase_out_increment
             )
             second_percentage_reduction = second_increments * p.phase_out.rate
             return max_(
@@ -49,7 +50,9 @@ def create_reconciliation_cdcc() -> Reform:
     return reform
 
 
-def create_reconciliation_cdcc_reform(parameters, period, bypass: bool = False):
+def create_reconciliation_cdcc_reform(
+    parameters, period, bypass: bool = False
+):
     if bypass:
         return create_reconciliation_cdcc()
 
@@ -70,4 +73,6 @@ def create_reconciliation_cdcc_reform(parameters, period, bypass: bool = False):
         return None
 
 
-reconciliation_cdcc = create_reconciliation_cdcc_reform(None, None, bypass=True)
+reconciliation_cdcc = create_reconciliation_cdcc_reform(
+    None, None, bypass=True
+)
