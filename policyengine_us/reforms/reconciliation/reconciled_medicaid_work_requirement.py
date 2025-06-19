@@ -27,9 +27,6 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             agi_pre_ald = tax_unit(
                 "adjusted_gross_income_pre_auto_loan_interest_ald", period
             )
-            # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
-            excess = max_(agi_pre_ald - phaseout_start, 0)
-            increments = np.ceil(excess / p.phase_out.increment)
 
             # Calculate the excess part phase out amount (line 7).
             phase_out_amount = increments * p.phase_out.step
