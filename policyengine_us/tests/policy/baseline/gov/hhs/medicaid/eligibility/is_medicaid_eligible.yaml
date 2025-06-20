@@ -103,7 +103,6 @@
   input:
     is_optional_senior_or_disabled_for_medicaid: true
   output:
-    medicaid_category: is_optional_senior_or_disabled_for_medicaid # ADULT
     is_medicaid_eligible: true
 
 - name: Case 1, age 55, blind, with $30600 income, eligible due to blind. 
