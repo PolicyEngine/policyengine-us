@@ -1,0 +1,65 @@
+- name: Eligible student dependent
+  period: 2024
+  input:
+    state_code: PR
+    age: 25
+    is_parent_of_filer_or_spouse: false
+    is_incapable_of_self_care: false
+    is_full_time_college_student: true
+  output:
+    pr_is_tax_unit_dependent: true
+
+- name: Eligible dependent incapable of self-care
+  period: 2024
+  input:
+    state_code: PR
+    age: 26
+    is_parent_of_filer_or_spouse: false
+    is_incapable_of_self_care: true
+    is_full_time_college_student: false
+  output:
+    pr_is_tax_unit_dependent: true
+
+- name: Eligible parent of the filer dependent
+  period: 2024
+  input:
+    state_code: PR
+    age: 55
+    is_parent_of_filer_or_spouse: true
+    is_incapable_of_self_care: false
+    is_full_time_college_student: false
+  output:
+    pr_is_tax_unit_dependent: true
+
+- name: Eligible young dependent
+  period: 2024
+  input:
+    state_code: PR
+    age: 20
+    is_parent_of_filer_or_spouse: false
+    is_incapable_of_self_care: false
+    is_full_time_college_student: false
+  output:
+    pr_is_tax_unit_dependent: true
+
+- name: Eligible older dependent
+  period: 2024
+  input:
+    state_code: PR
+    age: 65
+    is_parent_of_filer_or_spouse: false
+    is_incapable_of_self_care: false
+    is_full_time_college_student: false
+  output:
+    pr_is_tax_unit_dependent: true
+
+- name: Ineligible dependent by age
+  period: 2024
+  input:
+    state_code: PR
+    age: 21
+    is_parent_of_filer_or_spouse: false
+    is_incapable_of_self_care: false
+    is_full_time_college_student: false
+  output:
+    pr_is_tax_unit_dependent: false
