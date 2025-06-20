@@ -1,5 +1,5 @@
 # Tests based on Meade and Shroff (2018), adjusted for 2022 thresholds.
-# A final, person-level 'qbid_amount' variable would aggregate these
+# A final, person-level 'qbi_deduction_amount' variable would aggregate these
 # business-level components and apply final caps.
 
 - name: Non-SSTB in phase-in range (Entity 1 from Appendix A)
@@ -17,8 +17,8 @@
     # Tentative Deduction = $16,000. W-2/UBIA Limit = $4,000.
     # Phase-in % = (400.1k-340.1k)/100k = 60%.
     # Deduction = 16k - 0.6 * (16k - 4k) = $8,800.
-    # This test result is for the final, capped qbid_amount.
-    qbid_amount: 8800
+    # This test result is for the final, capped qbi_deduction_amount.
+    qbi_deduction_amount: 8800
 
 - name: Non-SSTB in phase-in range plus REIT/PTP income
   period: 2022
@@ -33,7 +33,7 @@
   output:
     # Calculation: QBI component is $8,800. REIT component is 0.20 * 1k = $200.
     # Total = $8,800 + $200 = $9,000.
-    qbid_amount: 9000
+    qbi_deduction_amount: 9000
 
 - name: Non-SSTB above phase-in range (Entity 2 from Appendix A)
   period: 2022
@@ -48,7 +48,7 @@
   output:
     # Calculation: Above phase-in. Full W-2/UBIA limit applies.
     # Limit = max(0.5*8k, 0.25*8k + 0.025*50k) = $4,000.
-    qbid_amount: 4000
+    qbi_deduction_amount: 4000
 
 - name: Non-SSTB below threshold (Entity 3 from Appendix A)
   period: 2022
@@ -63,7 +63,7 @@
   output:
     # Calculation: Below threshold. No W-2/UBIA limit.
     # Deduction = 20% of QBI = 0.20 * 80k = $16,000.
-    qbid_amount: 16000
+    qbi_deduction_amount: 16000
 
 - name: SSTB in phase-in range (Entity 4 from Appendix A)
   period: 2022
@@ -82,7 +82,7 @@
     # Tentative Ded (reduced) = 0.2 * 44k = $8,800.
     # Limit (reduced) = max(0.5*24k, 0.25*24k + 0.025*2.4k) = $12,000.
     # Deduction = min(8800, 12000) = $8,800.
-    qbid_amount: 8800
+    qbi_deduction_amount: 8800
 
 - name: SSTB above phase-in range (Entity 5 from Appendix A)
   period: 2022
@@ -96,7 +96,7 @@
     filing_status: JOINT
   output:
     # Calculation: SSTB above phase-in range. Deduction is fully phased out.
-    qbid_amount: 0
+    qbi_deduction_amount: 0
 
 - name: SSTB below threshold (Entity 6 from Appendix A)
   period: 2022
@@ -111,7 +111,7 @@
   output:
     # Calculation: Below threshold. SSTB status and W-2/UBIA limit are ignored.
     # Deduction = 20% of QBI = 0.20 * 110k = $22,000.
-    qbid_amount: 22000
+    qbi_deduction_amount: 22000
 
 - name: Non-SSTB below threshold, high QBI (Entity 7 from Appendix A)
   period: 2022

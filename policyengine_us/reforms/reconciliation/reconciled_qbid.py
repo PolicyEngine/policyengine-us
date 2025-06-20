@@ -4,16 +4,6 @@ from policyengine_core.periods import instant
 
 
 def create_reconciled_qbid() -> Reform:
-    class qbid_amount(Variable):
-        value_type = float
-        entity = Person
-        label = "Per‑cap qualified business income deduction amount for each person"
-        unit = USD
-        definition_period = YEAR
-        reference = (
-            "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
-            "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
-        )
 
     class qbi_deduction_component(Variable):
         """
@@ -97,19 +87,17 @@ def create_reconciled_qbid() -> Reform:
             # If above threshold:
             #   - For non-SSTB, it's the greater of the S(1)(A) limit or the ramp-down deduction.
             #   - For SSTB, it's just the ramp-down deduction (since s1a_limitation is 0).
-            preliminary_deduction = where(
+            return where(
                 is_above_threshold,
                 max_(s1a_limitation, ramp_down_deduction),
                 base_deduction
             )
     
-            return preliminary_deduction
+    class reform(Reform):
+        def apply(self):
+            self.update_variable(qbi_deduction_component)
     
-        class reform(Reform):
-            def apply(self):
-                self.update_variable(qbid_amount)
-    
-        return reform
+    return reform
 
 
 def create_reconciled_qbid_reform(parameters, period, bypass: bool = False):
