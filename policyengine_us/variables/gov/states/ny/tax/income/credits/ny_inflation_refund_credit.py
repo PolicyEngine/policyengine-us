@@ -16,7 +16,7 @@ class ny_inflation_refund_credit(Variable):
     def formula_2025(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ny.tax.income.credits.inflation_refund_credit
+        ).gov.states.ny.tax.income.credits.inflation_refund
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
