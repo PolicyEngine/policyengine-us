@@ -1,13 +1,13 @@
 - name: Households that are in pregnant category are eligible.
-  period: 2018
+  period: 2018-01
   input:
     wic_category_str: PREGNANT
     is_wic_eligible: true
   output:
-    wic: 37.33 * 12
+    wic: 37.33
 
 - name: Amount is 0 if not passing the wic_eligible test.
-  period: 2022
+  period: 2022-01
   input:
     wic_category_str: INFANT
     is_wic_eligible: false
@@ -15,15 +15,15 @@
     wic: 0 
 
 - name: Households that are in postpartum category are eligible.
-  period: 2018
+  period: 2018-01
   input:
     wic_category_str: POSTPARTUM
     is_wic_eligible: true
   output:
-    wic: 30.72 * 12
+    wic: 30.72 
 
 - name: Meets eligible test but not one of the WIC demographic categories.
-  period: 2022
+  period: 2022-01
   input:
     wic_category_str: NONE
     is_wic_eligible: true
@@ -31,10 +31,10 @@
     wic: 0 
 
 - name: Eligible breastfeeding individuals. Verifies uprating.
-  period: 2022
+  period: 2022-01
   input:
     wic_category_str: BREASTFEEDING
     is_wic_eligible: true
   output:
     # Multiply by ratio of 2022-01 to 2018-01 CPI-U.
-    wic: 37.76 * 12 * 281.148 / 247.867
+    wic: 37.76 * 281.148 / 247.867
