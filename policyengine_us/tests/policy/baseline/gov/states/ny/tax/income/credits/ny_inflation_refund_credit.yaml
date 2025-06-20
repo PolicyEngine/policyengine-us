@@ -6,7 +6,7 @@
     ny_agi: 100_000
     filing_status: JOINT
   output:
-    ny_inflation_refund_credits: 400
+    ny_inflation_refund_credit: 400
 
 - name: NY 2025 inflation refund credits - joint filer between $150k-$300k gets $300
   period: 2025
@@ -16,7 +16,7 @@
     ny_agi: 200_000
     filing_status: JOINT
   output:
-    ny_inflation_refund_credits: 300
+    ny_inflation_refund_credit: 300
 
 - name: NY 2025 inflation refund credits - joint filer over $300k gets $0
   period: 2025
@@ -26,7 +26,7 @@
     ny_agi: 350_000
     filing_status: JOINT
   output:
-    ny_inflation_refund_credits: 0
+    ny_inflation_refund_credit: 0
 
 - name: NY 2025 inflation refund credits - surviving spouse under $150k gets $400
   period: 2025
@@ -36,7 +36,7 @@
     ny_agi: 100_000
     filing_status: SURVIVING_SPOUSE
   output:
-    ny_inflation_refund_credits: 400
+    ny_inflation_refund_credit: 400
 
 - name: NY 2025 inflation refund credits - single filer under $75k gets $200
   period: 2025
@@ -46,7 +46,7 @@
     ny_agi: 50_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 200
+    ny_inflation_refund_credit: 200
 
 - name: NY 2025 inflation refund credits - single filer between $75k-$150k gets $150
   period: 2025
@@ -56,7 +56,7 @@
     ny_agi: 100_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 150
+    ny_inflation_refund_credit: 150
 
 - name: NY 2025 inflation refund credits - single filer over $150k gets $0
   period: 2025
@@ -66,7 +66,7 @@
     ny_agi: 175_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 0
+    ny_inflation_refund_credit: 0
 
 - name: NY 2025 inflation refund credits - head of household under $75k gets $200
   period: 2025
@@ -76,7 +76,7 @@
     ny_agi: 60_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ny_inflation_refund_credits: 200
+    ny_inflation_refund_credit: 200
 
 - name: NY 2025 inflation refund credits - married filing separate between $75k-$150k gets $150
   period: 2025
@@ -86,7 +86,7 @@
     ny_agi: 100_000
     filing_status: SEPARATE
   output:
-    ny_inflation_refund_credits: 150
+    ny_inflation_refund_credit: 150
 
 - name: NY 2025 inflation refund credits - not available outside of NY
   period: 2025
@@ -96,7 +96,7 @@
     ny_agi: 50_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 0
+    ny_inflation_refund_credit: 0
 
 
 - name: NY 2024 inflation refund credits - not available before 2025
@@ -107,7 +107,7 @@
     ny_agi: 50_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 0
+    ny_inflation_refund_credit: 0
 
 - name: NY 2026 inflation refund credits - not available after 2025
   period: 2026
@@ -117,7 +117,7 @@
     ny_agi: 50_000
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 0
+    ny_inflation_refund_credit: 0
 
 - name: NY 2025 inflation refund credits - single filer with zero AGI should get credit
   period: 2025
@@ -127,5 +127,5 @@
     ny_agi: 0
     filing_status: SINGLE
   output:
-    ny_inflation_refund_credits: 200
+    ny_inflation_refund_credit: 200
 
