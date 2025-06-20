@@ -1,19 +1,21 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_eligible(Variable):
+class dc_gac_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for DC Temporary Assistance for Needy Families (TANF)"
+    label = "Eligible for DC General Assistance for Children (GAC)"
     definition_period = MONTH
-    reference = "https://dhs.dc.gov/service/tanf-district-families"
+    reference = (
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a#(c)"
+    )
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        demographic_eligible = (
-            add(spm_unit, period, ["dc_tanf_demographic_eligible_person"]) > 0
+        has_eligible_child = (
+            add(spm_unit, period, ["dc_gac_eligible_child"]) > 0
         )
-        income_eligible = spm_unit("dc_tanf_income_eligible", period)
+        income_eligible = spm_unit("dc_gac_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
         immigration_status_eligible = (
             add(
@@ -23,13 +25,9 @@ class dc_tanf_eligible(Variable):
             )
             > 0
         )
-        meets_work_requirements = spm_unit(
-            "dc_tanf_meets_work_requirements", period
-        )
         return (
-            demographic_eligible
+            has_eligible_child
             & income_eligible
             & resources_eligible
             & immigration_status_eligible
-            & meets_work_requirements
         )
