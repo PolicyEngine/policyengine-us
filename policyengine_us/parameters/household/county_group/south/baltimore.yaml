@@ -1,0 +1,18 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Baltimore area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Baltimore area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ANNE_ARUNDEL_COUNTY_MD
+    - BALTIMORE_COUNTY_MD
+    - CARROLL_COUNTY_MD
+    - HARFORD_COUNTY_MD
+    - HOWARD_COUNTY_MD
+    - QUEEN_ANNE_S_COUNTY_MD
+    - BALTIMORE_CITY_MD

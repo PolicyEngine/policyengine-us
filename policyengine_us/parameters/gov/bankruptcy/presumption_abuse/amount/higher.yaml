@@ -1,0 +1,13 @@
+description: The IRS determines whether there is a presumption of abuse with this higher amount under the chapter 7 bankruptcy means test.
+
+values:
+  2022-01-01: 15_150
+  
+metadata:
+  unit: currency-USD
+  period: year
+  label: Chapter 7 Bankruptcy presumption of abuse higher amount
+  reference:
+    # The number $15150 only appears in line 40 of the form.
+    - title: Official Form 122A-2 Chapter 7 Means Test Calculation
+      href: https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=8
