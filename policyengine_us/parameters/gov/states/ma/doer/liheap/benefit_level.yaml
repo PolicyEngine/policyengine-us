@@ -1,0 +1,42 @@
+description: Massachusetts calculates benefit level by comparing household's income and federal poverty guideline ratio with these thresholds under the Low Income Home Energy Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: int
+  period: year
+  label: Massachusetts benefit level based on income and FPG ratio 
+  reference:
+    - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf 
+    - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download 
+    - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
+    - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download
+
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 2
+  - threshold:
+      2021-01-01: 1.25
+    amount:
+      2021-01-01: 3
+  - threshold:
+      2021-01-01: 1.5 
+    amount:
+      2021-01-01: 4
+  - threshold:
+      2021-01-01: 1.75
+    amount:
+      2021-01-01: 5
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 6

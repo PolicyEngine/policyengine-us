@@ -5,6 +5,177 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.318.0] - 2025-06-20 00:21:33
+
+### Added
+
+- Exemptions for flat tax on AGI.
+
+## [1.317.0] - 2025-06-20 00:08:06
+
+### Added
+
+- Senate Finance CTC SSN Requirement.
+
+## [1.316.0] - 2025-06-19 23:53:40
+
+### Added
+
+- Senate Finance QBID.
+
+## [1.315.0] - 2025-06-19 14:23:44
+
+### Added
+
+- Senate Finance Overtime income exemption.
+- Senate Finance Tip income exemption.
+
+## [1.314.2] - 2025-06-17 15:56:52
+
+### Fixed
+
+- Bug causing some microsimulations to break.
+
+## [1.314.1] - 2025-06-17 13:52:07
+
+### Fixed
+
+- 2023 datasets are passed into the wrong time periods.
+
+## [1.314.0] - 2025-06-16 20:42:21
+
+### Added
+
+- Oklahoma Income Tax Changes 2026.
+
+## [1.313.0] - 2025-06-12 15:51:05
+
+### Added
+
+- New York supplemental income tax changes.
+
+## [1.312.3] - 2025-06-12 13:16:09
+
+### Added
+
+- Integration tests for TANF to verify state implementations work correctly.
+- Documentation in CLAUDE.md about period handling and state program refactoring.
+
+### Changed
+
+- Use defined_for and p = parameters(...) more consistently.
+- Refactored TANF to sum only state-specific implementations, removing federal calculation.
+
+### Fixed
+
+- TANF tests to correctly require eligibility for receiving benefits.
+- Lifeline benefit calculation by changing tuple assignment to addition.
+- Demographic TANF eligibility to use period.this_year for age calculation.
+- Demographic TANF eligibility to check is_in_secondary_school instead of is_full_time_student for student age limits.
+
+## [1.312.2] - 2025-06-11 22:42:29
+
+### Fixed
+
+- Another ACA issue.
+
+## [1.312.1] - 2025-06-11 22:17:44
+
+### Fixed
+
+- Bug in ACA calculations.
+
+## [1.312.0] - 2025-06-11 19:46:07
+
+### Added
+
+- Add take-up flags for Medicaid, CHIP and ACA PTC.
+
+## [1.311.0] - 2025-06-11 19:21:56
+
+### Fixed
+
+- Fix slcsp_rating_area_la_county parameter.
+
+## [1.310.0] - 2025-06-11 19:06:16
+
+### Added
+
+- SNAP take-up seed variable.
+
+## [1.309.1] - 2025-06-10 13:31:01
+
+### Fixed
+
+- Connecticut period in the head of household tax rate.
+
+## [1.309.0] - 2025-06-09 10:36:28
+
+### Added
+
+- Unit tests for labor supply response variables focusing on negative earnings scenarios
+- Tests for substitution elasticity with negative total earnings
+- Tests for employment income allocation with negative earnings
+
+### Changed
+
+- Refactored labor supply response module into individual variable files for better organization
+- Applied consistent code style patterns across all labor supply response variables
+- Improved parameter access patterns and income combination methods
+
+### Fixed
+
+- Fixed negative self-employment income causing counterintuitive labor supply response sign flips
+- Labor supply responses now properly handle negative total earnings by clipping to zero
+
+## [1.308.0] - 2025-06-07 20:44:11
+
+### Added
+
+- Massachusetts Low-Income Home Energy Assistance Program (LIHEAP).
+
+## [1.307.1] - 2025-06-07 13:10:54
+
+### Changed
+
+- In microsim contexts, modified county to prefer ZCTA-based counties over FIPS-based counties in all cases, including when FIPS is defined.
+
+## [1.307.0] - 2025-06-06 20:46:21
+
+### Fixed
+
+- Fix DC TANF child care deduction formula.
+
+## [1.306.0] - 2025-06-06 17:42:13
+
+### Added
+
+- Illinois Aid to the Aged, Blind or Disabled (AABD).
+
+## [1.305.0] - 2025-06-05 15:55:00
+
+### Added
+
+- Illinois Temporary Assistance for Needy Families (TANF).
+
+## [1.304.0] - 2025-06-05 13:44:56
+
+### Added
+
+- Update the California State Supplement 2025 values.
+
+## [1.303.0] - 2025-06-05 13:19:06
+
+### Added
+
+- Add default value of 40 to ssi_qualifying_quarters_earnings.
+
+## [1.302.0] - 2025-06-03 13:33:39
+
+### Added
+
+- Net worth variables (to compare imputation method impacts on policy results).
+
 ## [1.301.0] - 2025-06-01 08:18:11
 
 ### Added
@@ -11890,6 +12061,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.318.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.317.0...1.318.0
+[1.317.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.316.0...1.317.0
+[1.316.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.315.0...1.316.0
+[1.315.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.2...1.315.0
+[1.314.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.1...1.314.2
+[1.314.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.0...1.314.1
+[1.314.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.313.0...1.314.0
+[1.313.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.3...1.313.0
+[1.312.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.2...1.312.3
+[1.312.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.1...1.312.2
+[1.312.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.312.0...1.312.1
+[1.312.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.311.0...1.312.0
+[1.311.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.310.0...1.311.0
+[1.310.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.309.1...1.310.0
+[1.309.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.309.0...1.309.1
+[1.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.308.0...1.309.0
+[1.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.1...1.308.0
+[1.307.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.307.0...1.307.1
+[1.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.306.0...1.307.0
+[1.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.305.0...1.306.0
+[1.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.304.0...1.305.0
+[1.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.303.0...1.304.0
+[1.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.302.0...1.303.0
+[1.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.301.0...1.302.0
 [1.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.300.0...1.301.0
 [1.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.1...1.300.0
 [1.299.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.299.0...1.299.1

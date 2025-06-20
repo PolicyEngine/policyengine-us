@@ -1,0 +1,22 @@
+description: Illinois exempts this amount of child care expenses from the gross earned income under Temporary Assistance for Needy Families program, based on child age.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Illinois TANF child care expenses exemption amount per child
+  reference:
+  - title: Ill. Admin. Code tit. 89, § 112.143 - Recognized Employment Expenses (b)
+    href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.143
+
+
+brackets:
+  - threshold:
+      2010-01-01: 0
+    amount:
+      2010-01-01: 200
+  - threshold:
+      2010-01-01: 2
+    amount:
+      2010-01-01: 175
