@@ -15,110 +15,101 @@ def create_reconciled_qbid() -> Reform:
             "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
         )
 
-    def formula(person, period, parameters):
-        # --------------------------------------------------------------
-        # Section 199A Qualified Business Income Deduction (QBID)
-        # IRS Form 8995 / 8995-A
-        # --------------------------------------------------------------
-        p = parameters(period).gov.irs.deductions.qbi
-    
-        # --- Core inputs ---------------------------------------------
-        # Form 8995 line 1 – Qualified business income (QBI)
-        qbi = person("qualified_business_income", period)
-    
-        # SSTB check box (Form 8995 / 8995-A)
-        is_sstb = person("business_is_sstb", period)
-    
-        # Form 8995 line 6 – Qualified REIT dividends and PTP income
-        reit_ptp_income = person("qualified_reit_and_ptp_income", period)
-    
-        # Optional: business-development-company dividends
-        bdc_income = person("qualified_bdc_income", period)
-    
-        # Form 1040 line 15 – Taxable income before QBID
-        taxable_income = person.tax_unit("taxable_income_less_qbid", period)
-    
-        # Reg. 1.199A-1(b)(3) – Net capital gain
-        net_cap_gain = person.tax_unit("net_capital_gain", period)
-    
-        # Form 1040 filing-status check box
-        filing_status = person.tax_unit("filing_status", period)
-    
-        # §199A(e)(2) thresholds
-        threshold       = p.phase_out.start[filing_status]
-        phase_in_range  = p.phase_out.length[filing_status]
-    
-        # --------------------------------------------------------------
-        # 1. 20 % of QBI (§199A(a)(1))
-        # --------------------------------------------------------------
-        qbid_base = 0.20 * qbi
-    
-        # --------------------------------------------------------------
-        # 2. Wage / UBIA limitation (§199A(b)(2))
-        # --------------------------------------------------------------
-        w2_wages      = person("w2_wages_from_qualified_business", period)
-        ubia_property = person("unadjusted_basis_qualified_property", period)
-    
-        wage_limit  = 0.50 * w2_wages
-        alt_limit   = 0.25 * w2_wages + 0.025 * ubia_property
-        wage_ubia_cap = max_(wage_limit, alt_limit)
-    
-        # --------------------------------------------------------------
-        # 3. Phase-in percentage (§199A(b)(3)(B))
-        # --------------------------------------------------------------
-        over_threshold = max_(0, taxable_income - threshold)
-        phase_in_pct   = min_(1, over_threshold / phase_in_range)
-    
-        # --------------------------------------------------------------
-        # 4. SSTB applicable percentage (Reg. 1.199A-5)
-        # --------------------------------------------------------------
-        applicable_pct = where(is_sstb, 1 - phase_in_pct, 1)
-    
-        adj_qbid_base = qbid_base        * applicable_pct
-        adj_cap       = wage_ubia_cap    * applicable_pct
-    
-        # --------------------------------------------------------------
-        # 5. Apply wage/UBIA cap and phase-in reduction
-        # --------------------------------------------------------------
-        limited_deduction = min_(adj_qbid_base, adj_cap)
-        excess_amount     = max_(0, adj_qbid_base - adj_cap)
-        phased_deduction  = max_(0, adj_qbid_base - phase_in_pct * excess_amount)
-    
-        qbi_component = where(
-            phase_in_pct == 0,
-            adj_qbid_base,                      # below threshold
-            where(
-                is_sstb,
-                limited_deduction,              # SSTB above threshold
-                where(
-                    phase_in_pct < 1,
-                    phased_deduction,           # non-SSTB in phase-in band
-                    limited_deduction           # fully phased-in
-                )
-            )
+    class qbi_deduction_component(Variable):
+        """
+        The preliminary qualified business income (QBI) deduction component for a single
+        trade or business under the H.R. 1 proposal. This calculation must be performed
+        for each business, and the results are then aggregated and subject to the
+        final MTI cap at the filer level.
+        """
+        value_type = float
+        entity = Person
+        label = "QBI deduction component for a single business"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "Description of QBID under the 'One Big Beautiful Bill Act'"
         )
     
-        # --------------------------------------------------------------
-        # 6. REIT / PTP (and optional BDC) component – always 20 %
-        # --------------------------------------------------------------
-        reit_ptp_bdc_base = reit_ptp_income + where(p.use_bdc_income, bdc_income, 0)
-        reit_ptp_bdc_ded  = 0.20 * reit_ptp_bdc_base
+        def formula(person, period, parameters):
+            # --------------------------------------------------------------
+            # H.R. 1 Qualified Business Income Deduction (QBID) Component
+            # This calculates the preliminary deduction (D_pre) for a single business.
+            # --------------------------------------------------------------
+            p = parameters(period).gov.irs.deductions.qbi
+            p_rec = parameters(period).gov.contrib.reconciliation.qbid
     
-        total_before_cap = qbi_component + reit_ptp_bdc_ded
+            # --- Core Inputs ---------------------------------------------
+            # QBI for the specific trade or business
+            qbi = person("qualified_business_income", period)
     
-        # --------------------------------------------------------------
-        # 7. Overall income cap (§199A(a)(2))
-        #     20 % * (taxable income – net capital gain)
-        # --------------------------------------------------------------
-        income_cap = 0.20 * max_(0, taxable_income - net_cap_gain)
+            # Specified Service Trade or Business (SSTB) status
+            is_sstb = person("business_is_sstb", period)
     
-        return min_(total_before_cap, income_cap)
-
-    class reform(Reform):
-        def apply(self):
-            self.update_variable(qbid_amount)
-
-    return reform
+            # W-2 wages paid by the business
+            w2_wages = person("w2_wages_from_qualified_business", period)
+    
+            # Unadjusted Basis Immediately after Acquisition (UBIA) of qualified property
+            ubia_property = person("unadjusted_basis_qualified_property", period)
+    
+            # Person-level inputs from the tax unit
+            taxable_income = person.tax_unit("taxable_income_less_qbid", period)
+            filing_status = person.tax_unit("filing_status", period)
+    
+            # --- Parameters from H.R. 1 ---------------------------------
+            deduction_rate = p.deduction_rate  # e.g., 0.23 (θ_max)
+            ramp_down_rate = p.ramp_down_rate  # e.g., 0.75 (r)
+            threshold = p.threshold[filing_status] # Income threshold (τ)
+    
+            # --- Preliminary Deduction Calculation (D_pre) ----------------
+    
+            # The base deduction before any limitations.
+            # Corresponds to: θ_max * QBI
+            base_deduction = deduction_rate * qbi
+    
+            # Check if taxable income is above the threshold. The logic differs
+            # for taxpayers above and below this threshold.
+            is_above_threshold = taxable_income > threshold
+    
+            # The logic below matches the formula:
+            # D_pre = θ_max * QBI, if T <= τ
+            # D_pre = max(S(1)(A), θ_max*QBI - r*(T-τ)), if T > τ and non-SSTB
+            # D_pre = max(0, θ_max*QBI - r*(T-τ)), if T > τ and SSTB
+    
+            # Step 1: Calculate the wage and capital limitation (S(1)(A) from TCJA).
+            # This is only applicable for non-SSTBs above the threshold.
+            wage_limit = p.wpa.w2_wages_rate * w2_wages
+            capital_limit = p.wpa.w2_wages_alt_rate * w2_wages + p.wpa.ubia_rate * ubia_property
+            wpa_cap = max_(wage_limit, capital_limit)
+    
+            # S(1)(A) is the lesser of the base deduction or the WPA cap.
+            # For SSTBs, this limitation path is not available; it is effectively zero.
+            s1a_limitation = where(is_sstb, 0, min_(base_deduction, wpa_cap))
+    
+            # Step 2: Calculate the ramp-down deduction amount.
+            # Corresponds to: max(0, θ_max*QBI - r*(T-τ))
+            excess_income = max_(0, taxable_income - threshold)
+            ramp_down_amount = p_rec.phase_in_rate * excess_income
+            ramp_down_deduction = max_(0, base_deduction - ramp_down_amount)
+    
+            # Determine the preliminary deduction (D_pre) by combining the paths.
+            # If below threshold, deduction is base_deduction (ramp_down_deduction equals base_deduction).
+            # If above threshold:
+            #   - For non-SSTB, it's the greater of the S(1)(A) limit or the ramp-down deduction.
+            #   - For SSTB, it's just the ramp-down deduction (since s1a_limitation is 0).
+            preliminary_deduction = where(
+                is_above_threshold,
+                max_(s1a_limitation, ramp_down_deduction),
+                base_deduction
+            )
+    
+            return preliminary_deduction
+    
+        class reform(Reform):
+            def apply(self):
+                self.update_variable(qbid_amount)
+    
+        return reform
 
 
 def create_reconciled_qbid_reform(parameters, period, bypass: bool = False):

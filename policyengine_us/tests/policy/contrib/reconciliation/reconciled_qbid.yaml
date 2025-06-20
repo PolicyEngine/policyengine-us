@@ -3,7 +3,7 @@
   reforms: policyengine_us.reforms.reconciliation.reconciled_qbid.reconciled_qbid
   input:
     gov.contrib.reconciliation.qbid.in_effect: true
-    gov.irs.deductions.qbi.phase_out.start.HEAD_OF_HOUSEHOLD: 200_000
+    gov.irs.deductions.qbi.phase_in.start.HEAD_OF_HOUSEHOLD: 200_000
     gov.irs.deductions.qbi.max.rate: 0.22
     gov.irs.deductions.qbi.max.w2_wages.alt_rate: 0.4
     taxable_income_less_qbid: 220_000
@@ -20,7 +20,7 @@
   reforms: policyengine_us.reforms.reconciliation.reconciled_qbid.reconciled_qbid
   input:
     gov.contrib.reconciliation.qbid.in_effect: true
-    gov.irs.deductions.qbi.phase_out.start.HEAD_OF_HOUSEHOLD: 200_000
+    gov.irs.deductions.qbi.phase_in.start.HEAD_OF_HOUSEHOLD: 200_000
     gov.irs.deductions.qbi.max.rate: 0.22
     gov.irs.deductions.qbi.max.w2_wages.alt_rate: 0.4
     taxable_income_less_qbid: 200_000
