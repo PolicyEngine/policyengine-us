@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.320.0] - 2025-06-20 15:28:51
+
+### Added
+
+- Senate Finance Child and Dependent Care Credit.
+
 ## [1.319.0] - 2025-06-20 14:44:55
 
 ### Added
@@ -12067,6 +12073,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.320.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.319.0...1.320.0
 [1.319.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.318.0...1.319.0
 [1.318.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.317.0...1.318.0
 [1.317.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.316.0...1.317.0
