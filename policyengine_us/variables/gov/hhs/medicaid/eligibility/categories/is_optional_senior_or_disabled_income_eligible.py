@@ -15,10 +15,12 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
     def formula(person, period, parameters):
-        # income & assets
-        personal_income = person("ssi_countable_income", period)  # $/year
+        # income
+        personal_income = person("ssi_countable_income", period)
         tax_unit = person.tax_unit
         income = tax_unit.sum(personal_income)
+        # TODO: Each state may has its own way of calculating countable income. Not necessary follow the SSA rule.
+        # Add countable income on state level, then consolidate them with this file.
 
         #  Flags & state info
         is_joint = tax_unit("tax_unit_is_joint", period)
