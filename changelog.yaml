@@ -10257,3 +10257,8 @@
     added:
     - Add the New York inflation rebates as a refundable tax credit.
   date: 2025-06-20 18:16:25
+- bump: patch
+  changes:
+    fixed:
+    - Use adjusted gross income instead of taxable income in the Kansas zero tax computation.
+  date: 2025-06-23 15:57:50
