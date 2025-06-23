@@ -10132,3 +10132,133 @@
     added:
     - Massachusetts Low-Income Home Energy Assistance Program (LIHEAP).
   date: 2025-06-07 20:44:11
+- bump: minor
+  changes:
+    added:
+    - Unit tests for labor supply response variables focusing on negative earnings
+      scenarios
+    - Tests for substitution elasticity with negative total earnings
+    - Tests for employment income allocation with negative earnings
+    changed:
+    - Refactored labor supply response module into individual variable files for better
+      organization
+    - Applied consistent code style patterns across all labor supply response variables
+    - Improved parameter access patterns and income combination methods
+    fixed:
+    - Fixed negative self-employment income causing counterintuitive labor supply
+      response sign flips
+    - Labor supply responses now properly handle negative total earnings by clipping
+      to zero
+  date: 2025-06-09 10:36:28
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut period in the head of household tax rate.
+  date: 2025-06-10 13:31:01
+- bump: minor
+  changes:
+    added:
+    - SNAP take-up seed variable.
+  date: 2025-06-11 19:06:16
+- bump: minor
+  changes:
+    fixed:
+    - Fix slcsp_rating_area_la_county parameter.
+  date: 2025-06-11 19:21:56
+- bump: minor
+  changes:
+    added:
+    - Add take-up flags for Medicaid, CHIP and ACA PTC.
+  date: 2025-06-11 19:46:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug in ACA calculations.
+  date: 2025-06-11 22:17:44
+- bump: patch
+  changes:
+    fixed:
+    - Another ACA issue.
+  date: 2025-06-11 22:42:29
+- bump: patch
+  changes:
+    added:
+    - Integration tests for TANF to verify state implementations work correctly.
+    - Documentation in CLAUDE.md about period handling and state program refactoring.
+    changed:
+    - Use defined_for and p = parameters(...) more consistently.
+    - Refactored TANF to sum only state-specific implementations, removing federal
+      calculation.
+    fixed:
+    - TANF tests to correctly require eligibility for receiving benefits.
+    - Lifeline benefit calculation by changing tuple assignment to addition.
+    - Demographic TANF eligibility to use period.this_year for age calculation.
+    - Demographic TANF eligibility to check is_in_secondary_school instead of is_full_time_student
+      for student age limits.
+    removed:
+    - vehicles_owned variable as it was an unused imputation.
+    - Federal TANF cash calculation variables and parameters except for core components
+      (tanf, tanf_reported, tanf_person, is_demographic_tanf_eligible, is_tanf_enrolled,
+      age limits, abolish_tanf) and TANF non-cash eligibility for SNAP BBCE.
+  date: 2025-06-12 13:16:09
+- bump: minor
+  changes:
+    added:
+    - New York supplemental income tax changes.
+  date: 2025-06-12 15:51:05
+- bump: minor
+  changes:
+    added:
+    - Oklahoma Income Tax Changes 2026.
+  date: 2025-06-16 20:42:21
+- bump: patch
+  changes:
+    fixed:
+    - 2023 datasets are passed into the wrong time periods.
+  date: 2025-06-17 13:52:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing some microsimulations to break.
+  date: 2025-06-17 15:56:52
+- bump: minor
+  changes:
+    added:
+    - Senate Finance Overtime income exemption.
+    - Senate Finance Tip income exemption.
+  date: 2025-06-19 14:23:44
+- bump: minor
+  changes:
+    added:
+    - Senate Finance QBID.
+  date: 2025-06-19 23:53:40
+- bump: minor
+  changes:
+    added:
+    - Senate Finance CTC SSN Requirement.
+  date: 2025-06-20 00:08:06
+- bump: minor
+  changes:
+    added:
+    - Exemptions for flat tax on AGI.
+  date: 2025-06-20 00:21:33
+- bump: minor
+  changes:
+    added:
+    - Update New York CTC for 2025-2027 based on Senate Bill S.3009-C.
+  date: 2025-06-20 14:44:55
+- bump: minor
+  changes:
+    added:
+    - Senate Finance Child and Dependent Care Credit.
+  date: 2025-06-20 15:28:51
+- bump: minor
+  changes:
+    added:
+    - Add the New York inflation rebates as a refundable tax credit.
+  date: 2025-06-20 18:16:25
+- bump: patch
+  changes:
+    fixed:
+    - Use adjusted gross income instead of taxable income in the Kansas zero tax computation.
+  date: 2025-06-23 15:57:50

@@ -8,6 +8,7 @@ class medicaid(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a"
+    defined_for = "takes_up_medicaid_if_eligible"
 
     def formula(person, period, parameters):
         eligible = person("is_medicaid_eligible", period)
