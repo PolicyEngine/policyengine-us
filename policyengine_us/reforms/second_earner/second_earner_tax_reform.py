@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 
 
 def create_second_earner_tax() -> Reform:
-
     class is_primary_earner(Variable):
         value_type = bool
         entity = Person
