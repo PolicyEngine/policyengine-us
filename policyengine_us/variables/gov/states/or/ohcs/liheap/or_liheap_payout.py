@@ -17,10 +17,13 @@ class or_liheap_payout(Variable):
 
         p = parameters(period).gov.states["or"].ohcs.liheap
 
-        # Applies multiplier to the payout when electricity is used for both heating and cooling (not an official policy parameter.
+        # Applies multiplier to the payout when electricity is used for both heating and cooling (not an official policy parameter).
         electricity_multiplier = where(
             (utility_type == utility_type.possible_values.ELECTRICITY)
-            & (electricity_type == electricity_type.possible_values.HEATING_AND_COOLING),
+            & (
+                electricity_type
+                == electricity_type.possible_values.HEATING_AND_COOLING
+            ),
             2,
             1,
         )
@@ -34,5 +37,16 @@ class or_liheap_payout(Variable):
                 utility_type
             ],
         )
+        utility_expense = add(
+            spm_unit,
+            period,
+            [
+                "electricity_expense",
+                "fuel_oil_expense",  # heating oil expense
+                "gas_expense",  # liquid gas expense
+                "wood_pellets_expense",
+                "natural_gas_expense",
+            ],
+        )
 
-        return payout * electricity_multiplier
+        return min_(payout * electricity_multiplier, utility_expense)
