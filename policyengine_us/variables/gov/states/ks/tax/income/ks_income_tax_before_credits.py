@@ -22,5 +22,6 @@ class ks_income_tax_before_credits(Variable):
             p.joint.calc(taxable_income),
             p.other.calc(taxable_income),
         )
-        zero_tax_taxinc = p.zero_tax_threshold[filing_status]
-        return where(taxable_income <= zero_tax_taxinc, 0, tax)
+        zero_tax_agi_threshold = p.zero_tax_threshold[filing_status]
+        agi = tax_unit("ks_agi", period)
+        return where(agi <= zero_tax_agi_threshold, 0, tax)
