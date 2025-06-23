@@ -39,6 +39,7 @@ setup(
         "policyengine-us-data>=1.13.0",
         "microdf-python>=0.4.3",
         "tqdm",
+        "pytest-xdist>=3.7.0"
     ],
     extras_require={
         "dev": [
