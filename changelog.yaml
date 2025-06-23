@@ -10211,3 +10211,54 @@
     added:
     - Oklahoma Income Tax Changes 2026.
   date: 2025-06-16 20:42:21
+- bump: patch
+  changes:
+    fixed:
+    - 2023 datasets are passed into the wrong time periods.
+  date: 2025-06-17 13:52:07
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing some microsimulations to break.
+  date: 2025-06-17 15:56:52
+- bump: minor
+  changes:
+    added:
+    - Senate Finance Overtime income exemption.
+    - Senate Finance Tip income exemption.
+  date: 2025-06-19 14:23:44
+- bump: minor
+  changes:
+    added:
+    - Senate Finance QBID.
+  date: 2025-06-19 23:53:40
+- bump: minor
+  changes:
+    added:
+    - Senate Finance CTC SSN Requirement.
+  date: 2025-06-20 00:08:06
+- bump: minor
+  changes:
+    added:
+    - Exemptions for flat tax on AGI.
+  date: 2025-06-20 00:21:33
+- bump: minor
+  changes:
+    added:
+    - Update New York CTC for 2025-2027 based on Senate Bill S.3009-C.
+  date: 2025-06-20 14:44:55
+- bump: minor
+  changes:
+    added:
+    - Senate Finance Child and Dependent Care Credit.
+  date: 2025-06-20 15:28:51
+- bump: minor
+  changes:
+    added:
+    - Add the New York inflation rebates as a refundable tax credit.
+  date: 2025-06-20 18:16:25
+- bump: patch
+  changes:
+    fixed:
+    - Use adjusted gross income instead of taxable income in the Kansas zero tax computation.
+  date: 2025-06-23 15:57:50
