@@ -12,4 +12,7 @@ class savers_credit(Variable):
         "https://www.law.cornell.edu/uscode/text/26/25B#c",
     )
 
-    adds = ["savers_credit_person"]
+    def formula(tax_unit, period, parameters):
+        credit_limit = tax_unit("savers_credit_credit_limit", period)
+        potential = tax_unit("savers_credit_potential", period)
+        return min_(credit_limit, potential)

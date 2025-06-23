@@ -1,0 +1,32 @@
+from policyengine_us.model_api import *
+
+
+class residential_clean_energy_credit_credit_limit(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Residential clean energy credit credit limit"
+    definition_period = YEAR
+    documentation = "Residential clean energy tax credit"
+    unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/26/25D"
+
+    def formula(tax_unit, period, parameters):
+        income_tax_before_credits = tax_unit(
+            "income_tax_before_credits", period
+        )
+        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
+        cdcc = tax_unit("cdcc", period)
+        non_refundable_american_opportunity_credit = tax_unit(
+            "non_refundable_american_opportunity_credit", period
+        )
+        lifetime_learning_credit = tax_unit("lifetime_learning_credit", period)
+        savers_credit = tax_unit("savers_credit", period)
+        return max_(
+            income_tax_before_credits
+            - foreign_tax_credit
+            - cdcc
+            - non_refundable_american_opportunity_credit
+            - lifetime_learning_credit
+            - savers_credit,
+            0,
+        )
