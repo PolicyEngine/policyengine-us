@@ -1,0 +1,10 @@
+- name: The $30 plus 1/3 disregard is allowed for 4 consecutive months plus the $30 earned income disregard for the next
+eight (8) months = ((gross earned income/12-90)*33% +30)*4+30*8.
+  period: 2023
+  input:
+    state_code: MO
+    mo_tanf_gross_earned_income: 3600
+  output:
+    mo_tanf_gross_earned_income_deduction: 640
+
+
