@@ -1,0 +1,42 @@
+- name: Test zero applicable income after exact deductions
+  period: 2022
+  input:
+    state_code: AL
+    al_tanf_earned_income: 200  
+    al_tanf_work_expense_deduction: 250  
+    al_tanf_unearned_income: 0  
+  output:
+    al_tanf_applicable_income: 0  
+
+- name: Test positive applicable income after deductions
+  period: 2022
+  input:
+    state_code: AL
+    al_tanf_earned_income: 1000
+    al_tanf_work_expense_deduction: 200
+    al_tanf_unearned_income: 300
+    al_tanf_self_employment_net_income: 400 
+  output:
+    al_tanf_applicable_income: 1500
+
+- name: Test negative applicable income is capped at zero
+  period: 2022
+  input:
+    state_code: AL
+    al_tanf_earned_income: 300  
+    al_tanf_work_expense_deduction: 500
+    al_tanf_unearned_income: 100
+    al_tanf_self_employment_net_income: 0
+  output:
+    al_tanf_applicable_income: 100
+
+- name: 
+  period: 2022
+  input:
+    state_code: AL
+    al_tanf_earned_income: 200  
+    al_tanf_work_expense_deduction: 500
+    al_tanf_unearned_income: 300
+    al_tanf_self_employment_net_income: 600
+  output:
+    al_tanf_applicable_income: 600
