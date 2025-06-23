@@ -6,7 +6,8 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 25
+        age: 25        
+        weeks_pregnant: 25        
       person2:
         age: 0
     tax_units:
@@ -17,8 +18,8 @@
   # $800 per month for 4 months + $400 per month for 12 months => $3,200 + $4,800 = $8,000
   # No marriage bonus, no phase-out, no 1/12-of-AGI cap triggered
   output:
-    family_income_supplement_credit_base_amount: [0, 8_000]
-    family_income_supplement_credit: 8_000
+    family_income_supplement_credit_base_amount: [3_200, 8_000]    
+    family_income_supplement_credit: 11_200    
     refundable_ctc: 0
     non_refundable_ctc: 0
 
@@ -30,7 +31,7 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 30
+        age: 30        
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -53,12 +54,12 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 30
+        age: 30        
       person2:
         age: 4
         is_tax_unit_dependent: true
       person3:
-        age: 30
+        age: 30        
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -78,12 +79,12 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 40
+        age: 40        
       person2:
         age: 6
         is_tax_unit_dependent: true
       person3:
-        age: 40
+        age: 40        
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -103,7 +104,8 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 24
+        age: 24        
+        weeks_pregnant: 25        
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -120,11 +122,70 @@
         filing_status: SINGLE
   # No marriage bonus, no phase-out
   # But yearly cap = $7,000
-  output:
-    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 8_000]
-    family_income_supplement_credit: 7_000
+  output:    
+    family_income_supplement_credit_base_amount: [3_200, 4_800, 3_000, 8_000]
+    family_income_supplement_credit: 7_000    
 
-- name: Single pregnant with two kids, triggers 1/12-of-AGI cap
+- name: Pregnant woman, below 20 weeks, no credit
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
+  input:
+    gov.contrib.congress.golden.fisc_act.in_effect: true    
+    people:
+      person1:
+        age: 25
+        weeks_pregnant: 19
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 80_000
+        filing_status: SINGLE
+  output:
+    family_income_supplement_credit_base_amount: 0
+    family_income_supplement_credit: 0
+
+- name: Pregnant woman, exactly 20 weeks, full credit
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
+  input:
+    gov.contrib.congress.golden.fisc_act.in_effect: true    
+    people:
+      person1:
+        age: 25
+        weeks_pregnant: 20
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 80_000
+        filing_status: SINGLE
+  output:
+    family_income_supplement_credit_base_amount: 3200
+    family_income_supplement_credit: 3200
+
+- name: Pregnant woman, above 20 weeks, full credit
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
+  input:
+    gov.contrib.congress.golden.fisc_act.in_effect: true
+    gov.contrib.congress.golden.fisc_act.family_income_supplement.pregnancy_weeks_limit: 20
+    gov.contrib.congress.golden.fisc_act.family_income_supplement.amount.pregnancy: 3200
+    people:
+      person1:
+        age: 25
+        weeks_pregnant: 21
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 80_000
+        filing_status: SINGLE
+  output:
+    family_income_supplement_credit_base_amount: 3200
+    family_income_supplement_credit: 3200 
+
+- name: Single pregnant but no weeks provided (assumed ineligible)
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -132,23 +193,11 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 24
-      person2:
-        age: 1
-        is_tax_unit_dependent: true
-      person3:
-        age: 6
-        is_tax_unit_dependent: true
-      person4:
-        age: 0
-        is_tax_unit_dependent: true
+        age: 28        
     tax_units:
       tax_unit:
-        members: [person1, person2, person3, person4]
-        adjusted_gross_income: 7_000
+        members: [person1]
+        adjusted_gross_income: 45_000
         filing_status: SINGLE
-  # No marriage bonus, no phase-out
-  # But yearly cap = $7,000
   output:
-    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 8_000]
-    family_income_supplement_credit: 7_000
+    family_income_supplement_credit: 0  # No weeks
