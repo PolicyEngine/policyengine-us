@@ -1,0 +1,37 @@
+- name: Case 1, county in group one
+  period: 2021
+  input:
+    county_str: ABBEVILLE_COUNTY_SC
+    state_code: SC
+    out_of_state_purchase_value: 10_000
+  output:
+    sc_use_tax: 700
+
+- name: Case 2, county in group two
+  period: 2021
+  input:
+    county_str: AIKEN_COUNTY_SC
+    state_code: SC
+    out_of_state_purchase_value: 10_000
+  output:
+    sc_use_tax: 800
+
+
+- name: Case 3, county in group three
+  period: 2021
+  input:
+    county_str: CHARLESTON_COUNTY_SC
+    state_code: SC
+    out_of_state_purchase_value: 10_000
+  output:
+    sc_use_tax: 900
+
+- name: Case 4, county in default group
+  period: 2021
+  input:
+    county_str: GEORGETOWN_COUNTY_SC
+    state_code: SC
+    out_of_state_purchase_value: 10_000
+  output:
+    sc_use_tax: 600
+    
