@@ -6,7 +6,7 @@ class dc_ccsp_immigration_status_eligible_person(Variable):
     entity = Person
     label = "Eligible person for DC Child Care Subsidy Program (CCSP) based on immigration status"
     definition_period = MONTH
-    reference = ""
+    reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
@@ -15,10 +15,10 @@ class dc_ccsp_immigration_status_eligible_person(Variable):
         immigration_status_str = immigration_status.decode_to_str()
         has_qualifying_status = np.isin(
             immigration_status_str,
-            p.qualified_alien_statuses,
+            p.qualified_immigration_statuses,
         )
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
         )
-        
+
         return has_qualifying_status | is_citizen
