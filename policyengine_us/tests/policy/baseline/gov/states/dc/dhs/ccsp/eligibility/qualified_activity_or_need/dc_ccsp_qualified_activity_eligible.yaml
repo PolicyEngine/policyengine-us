@@ -1,0 +1,89 @@
+- name: Case 1, working is eligible.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 100
+    is_full_time_student: false
+    state_code: DC
+  output: 
+    dc_ccsp_qualified_activity_eligible: true
+
+- name: Case 2, ineligible due to not working and not in school.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    is_full_time_student: false
+    state_code: DC
+  output: 
+    dc_ccsp_qualified_activity_eligible: false
+
+- name: Case 3, not working but is a full time student, eligible.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    is_full_time_student: true
+    state_code: DC
+  output: 
+    dc_ccsp_qualified_activity_eligible: true
+
+- name: Case 4, both parents are working, eligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 9_600 
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 100
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_eligible: true 
+
+- name: Case 5, one parent not working, ineligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+      person2:
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_eligible: false

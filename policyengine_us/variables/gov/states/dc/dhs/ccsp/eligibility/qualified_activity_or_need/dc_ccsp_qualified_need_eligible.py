@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_ccap_qualified_need_eligible(Variable):
+class dc_ccsp_qualified_need_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for DC Child Care Assistance Program (CCAP) due to qualified need"
+    label = "Eligible for DC Child Care Subsidy Program (CCSP) due to qualified need"
     definition_period = MONTH
     defined_for = StateCode.DC
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
@@ -24,7 +24,7 @@ class dc_ccap_qualified_need_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_disabled_parent = spm_unit.any(is_head_or_spouse & is_disabled)
         # child is homeless # income waived
-        is_homeless = spm_unit("is_homeless")
+        is_homeless = spm_unit.household("is_homeless", period)
         # parent is teen parent (age <= 19) # income waived
         is_teen_parent = age <= p.teen_parent
         has_teen_parent = spm_unit.any(is_head_or_spouse & is_teen_parent)
