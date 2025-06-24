@@ -18,5 +18,5 @@ class ny_additional_ctc(Variable):
         match = p.amount.calc(agi)
         base_ctc = tax_unit("ny_ctc", period)
         credit_amount = base_ctc * match
-        credit_below_min = credit_amount < p.min_credit_value
-        return where(credit_below_min, 0, credit_amount)
+        credit_above_min = credit_amount >= p.min_credit_value
+        return credit_above_min * credit_amount

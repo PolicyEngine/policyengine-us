@@ -22,11 +22,33 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                     ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
                 )
                 eligible_ssn_card_type = citizen | non_citizen_valid_ead
-                head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-                eligible_ssn_card_holder = (
-                    eligible_ssn_card_type & head_or_spouse
+                head = person("is_tax_unit_head", period)
+                spouse = person("is_tax_unit_spouse", period)
+                eligible_ssn_card_holder = eligible_ssn_card_type & (
+                    head | spouse
                 )
                 tip_income = person("tip_income", period)
+                if p.phase_out.applies:
+                    agi = tax_unit("adjusted_gross_income", period)
+                    filing_status = tax_unit("filing_status", period)
+                    cap = p.cap[filing_status]
+                    start = p.phase_out.start[filing_status]
+                    agi_excess = max_(agi - start, 0)
+                    phase_out_amount = agi_excess * p.phase_out.rate
+                    capped_overtime_income = tax_unit.sum(
+                        min_(cap, tip_income)
+                    )
+                    phased_out_overtime_income = max_(
+                        0, capped_overtime_income - phase_out_amount
+                    )
+                    ineligible_cardholder_present = tax_unit.any(
+                        (head & ~eligible_ssn_card_holder)
+                        | (spouse & ~eligible_ssn_card_holder)
+                    )
+                    return (
+                        phased_out_overtime_income
+                        * ~ineligible_cardholder_present
+                    )
                 return tax_unit.sum(tip_income * eligible_ssn_card_holder)
 
             return 0
@@ -51,11 +73,33 @@ def create_reconciled_tip_and_overtime_exempt() -> Reform:
                     ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
                 )
                 eligible_ssn_card_type = citizen | non_citizen_valid_ead
-                head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-                eligible_ssn_card_holder = (
-                    eligible_ssn_card_type & head_or_spouse
+                head = person("is_tax_unit_head", period)
+                spouse = person("is_tax_unit_spouse", period)
+                eligible_ssn_card_holder = eligible_ssn_card_type & (
+                    head | spouse
                 )
                 overtime_income = person("fsla_overtime_premium", period)
+                if p.phase_out.applies:
+                    agi = tax_unit("adjusted_gross_income", period)
+                    filing_status = tax_unit("filing_status", period)
+                    cap = p.cap[filing_status]
+                    start = p.phase_out.start[filing_status]
+                    agi_excess = max_(agi - start, 0)
+                    phase_out_amount = agi_excess * p.phase_out.rate
+                    capped_overtime_income = tax_unit.sum(
+                        min_(cap, overtime_income)
+                    )
+                    phased_out_overtime_income = max_(
+                        0, capped_overtime_income - phase_out_amount
+                    )
+                    ineligible_cardholder_present = tax_unit.any(
+                        (head & ~eligible_ssn_card_holder)
+                        | (spouse & ~eligible_ssn_card_holder)
+                    )
+                    return (
+                        phased_out_overtime_income
+                        * ~ineligible_cardholder_present
+                    )
                 return tax_unit.sum(overtime_income * eligible_ssn_card_holder)
             return 0
 

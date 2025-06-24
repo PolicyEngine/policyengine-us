@@ -72,10 +72,6 @@ from .snap import (
 )
 from .states.dc.property_tax import create_dc_property_tax_credit_reform
 
-from .states.ny.inflation_rebates import (
-    create_ny_2025_inflation_rebates_reform,
-)
-
 from .deductions.salt import (
     create_limit_salt_deduction_to_property_taxes_reform,
 )
@@ -108,6 +104,8 @@ from .reconciliation import (
     create_reconciled_additional_senior_standard_deduction_reform,
     create_reconciled_ssn_for_llc_and_aoc_reform,
     create_aca_ptc_immigration_status_reform,
+    create_reconciliation_qbid_with_floor_reform,
+    create_reconciliation_cdcc_reform,
 )
 
 
@@ -201,9 +199,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_property_tax_credit = create_dc_property_tax_credit_reform(
         parameters, period
     )
-    ny_2025_inflation_rebates = create_ny_2025_inflation_rebates_reform(
-        parameters, period
-    )
     limit_salt_deduction_to_property_taxes = (
         create_limit_salt_deduction_to_property_taxes_reform(
             parameters, period
@@ -248,9 +243,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
         parameters, period
     )
+    reconciliation_qbid_with_floor = (
+        create_reconciliation_qbid_with_floor_reform(parameters, period)
+    )
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
+    reconciliation_cdcc = create_reconciliation_cdcc_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -285,7 +284,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_snap_deductions,
         abolish_snap_net_income_test,
         dc_property_tax_credit,
-        ny_2025_inflation_rebates,
         limit_salt_deduction_to_property_taxes,
         nyc_school_tax_credit_with_phase_out,
         mt_ctc,
@@ -302,7 +300,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_additional_senior_standard_deduction,
         reconciled_ssn_for_llc_and_aoc,
         aca_ptc_immigration_status,
+        reconciliation_qbid_with_floor,
         ctc_additional_bracket,
+        reconciliation_cdcc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

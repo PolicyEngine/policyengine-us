@@ -1,0 +1,12 @@
+description: The Senate Finance Committee proposed to phase-out the Child and Dependent Care Credit based on AGI and filing status, if this is true.
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Senate Finance Committee CDCC in effect
+  reference:
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=167

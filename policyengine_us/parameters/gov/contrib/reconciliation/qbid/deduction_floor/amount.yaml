@@ -1,0 +1,21 @@
+description: The Senate Finance Committee proposed to set a deduction floor of this amount for the Qualified Business Income Deduction, based on qualified business income.
+
+brackets:
+  - threshold:
+      0000-01-01: -.inf
+    amount:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 1_000
+    amount:
+      0000-01-01: 400
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Senate Finance Committee QBID deduction floor amount
+  reference:
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=10

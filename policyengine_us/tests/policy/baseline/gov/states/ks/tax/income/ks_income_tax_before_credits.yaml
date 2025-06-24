@@ -3,6 +3,7 @@
   input:
     filing_status: SINGLE
     ks_taxable_income: 100_000
+    ks_agi: 100_000
     state_code: KS
   output:  # from filling out 2021 Tax Computation Worksheet
     ks_income_tax_before_credits: 0.057 * 100_000 - 457.50
@@ -12,6 +13,7 @@
   input:
     filing_status: JOINT
     ks_taxable_income: 100_000
+    ks_agi: 100_000
     state_code: KS
   output:  # from filling out 2022 Tax Computation Worksheet
     ks_income_tax_before_credits: 0.057 * 100_000 - 915
@@ -21,6 +23,43 @@
   input:
     filing_status: JOINT
     ks_taxable_income: 4_900
+    ks_agi: 4_900
     state_code: KS
   output:  # from filling out 2021 Tax Computation Worksheet
     ks_income_tax_before_credits: 0
+
+- name: 492-KS.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25051
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 40
+        employment_income: 25051
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 20
+  output:
+    ks_income_tax: 1_223

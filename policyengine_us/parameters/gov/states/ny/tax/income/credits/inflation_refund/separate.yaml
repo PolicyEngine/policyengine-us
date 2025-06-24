@@ -1,0 +1,23 @@
+description: New York provides the following inflation refund credit amount for married filing separate filers, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: New York 2025 inflation refund credits separate amount
+  reference:
+    - title: New York Tax Law § 606(qqq)(3)(b) – Inflation refund credit
+      href: https://www.nysenate.gov/legislation/laws/TAX/606#QQQ
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 200
+  - threshold:
+      2025-01-01: 75_000
+    amount:
+      2025-01-01: 150
+  - threshold:
+      2025-01-01: 150_000
+    amount:
+      2025-01-01: 0

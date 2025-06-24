@@ -1,0 +1,223 @@
+- name: Normal case - base credit minus small phase-out
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5
+    ny_ctc_post_2024: 917.5  # $1,000 - $82.50
+
+- name: High income - large phase-out but still positive
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 120_000  # $45k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 742.5  # 45 increments * 16.5% = $742.50
+    ny_ctc_post_2024: 257.5  # $1,000 - $742.50
+
+- name: Very high income - phase-out exceeds base credit (potentially negative)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 150_000  # $75k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 1_237.5  # 75 increments * 16.5% = $1,237.50
+    ny_ctc_post_2024: 0  # Should not go negative - either 0 or needs max_ protection
+
+- name: Extremely high income - test negative scenario with older child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 100_000  # $25k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 330
+    ny_ctc_post_2024_phase_out: 412.5  # 25 increments * 16.5% = $412.50
+    ny_ctc_post_2024: 0  # Should not go negative - either 0 or needs max_ protection
+
+- name: No phase-out when AGI below threshold
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000  # Below $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 0
+    ny_ctc_post_2024: 1_000
+
+- name: Multiple children - base credit and phase-out
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 85_000  # $10k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_330  # $1,000 + $330
+    ny_ctc_post_2024_phase_out: 165  # 10 increments * 16.5% = $165
+    ny_ctc_post_2024: 1_165  # $1,330 - $165
+
+- name: No credit when not eligible (outside New York)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA  # California, not New York
+  output:
+    ny_ctc_post_2024_base: 0
+    ny_ctc_post_2024_phase_out: 0
+    ny_ctc_post_2024: 0
+
+- name: No credit in 2024 (before post-2024 rules)
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+    ny_ctc_post_2024_phase_out: 0
+    ny_ctc_post_2024: 0
+
+- name: No credit in 2028 (after post-2024 rules expire)
+  period: 2028
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+    ny_ctc_post_2024_phase_out: 0
+    ny_ctc_post_2024: 0
+
+- name: Joint filing - higher threshold
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 28
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        adjusted_gross_income: 120_000  # $10k over $110k threshold for joint
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 165  # 10 increments * 16.5% = $165
+    ny_ctc_post_2024: 835  # $1,000 - $165

@@ -1,0 +1,421 @@
+- name: No phase-out when AGI is below threshold (single)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 70_000  # Below $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 0
+
+- name: Phase-out at exactly threshold (single)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 75_000  # Exactly at $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 0
+
+- name: Phase-out $1k over threshold rounds up to 1 increment (single)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 76_000  # $1k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 16.5  # 1 increment * 16.5% = $16.50
+
+- name: Phase-out exactly $1k increment over threshold (single)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 76_000  # $1k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 16.5  # 1 increment * 16.5% = $16.50
+
+- name: Phase-out $5k over threshold (single)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: Phase-out with joint filing status
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 28
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        adjusted_gross_income: 115_000  # $5k over $110k threshold for joint
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: Phase-out with head of household filing status
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 78_000  # $3k over $75k threshold for head of household
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 49.5  # 3 increments * 16.5% = $49.50
+
+- name: Phase-out with married filing separately
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 58_000  # $3k over $55k threshold for separate
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 49.5  # 3 increments * 16.5% = $49.50
+
+- name: Phase-out with surviving spouse filing status
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 115_000  # $5k over $110k threshold for surviving spouse
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: Phase-out with multiple children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_330  # $1,000 + $330
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: No phase-out when base credit is zero
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 20  # Too old for credit
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # Over threshold but no base credit
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+    ny_ctc_post_2024_phase_out: 0
+
+- name: No phase-out when phase-out rate is zero (2024)
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # Over threshold but rate is 0 in 2024
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_phase_out: 0
+
+- name: No phase-out when phase-out rate is zero (2028)
+  period: 2028
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # Over threshold but rate reverts to 0 in 2028
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_phase_out: 0
+
+- name: Increment rounding behavior - $1,500 over threshold rounds to 2 increments
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 76_500  # $1,500 over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 33.0  # 2 increments * 16.5% = $33.00
+
+- name: Increment rounding behavior - $999 over threshold rounds to 1 increment
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 75_999  # $999 over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 16.5  # 1 increment * 16.5% = $16.50
+
+- name: Increment rounding behavior - $1,001 over threshold rounds to 2 increments
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 76_001  # $1,001 over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 33.0  # 2 increments * 16.5% = $33.00
+
+- name: High income phase-out calculation
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 90_000  # $15k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 247.5  # 15 increments * 16.5% = $247.50
+
+- name: Phase-out for older child with smaller base credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 330
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: Zero phase-out for 2026 (when phase-out applies)
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50
+
+- name: Zero phase-out for 2027 (last year of phase-out)
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+    ny_ctc_post_2024_phase_out: 82.5  # 5 increments * 16.5% = $82.50

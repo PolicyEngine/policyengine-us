@@ -1,0 +1,318 @@
+- name: Base credit for young child (age 0)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+
+- name: Base credit for young child (age 3)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+
+- name: Base credit for older child (age 4) 
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 330
+
+- name: No base credit for older child (age 17)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: No base credit for child too old (age 18)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: Base credit for multiple children (ages 2 and 8)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_330  # $1,000 + $330
+
+- name: Base credit for multiple young children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 1
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 2_000  # $1,000 + $1,000
+
+- name: Base credit for multiple older children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 10
+      child3:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 990  # $330 + $330 + $330
+
+- name: No base credit when child not qualifying for federal CTC
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: Base credit changes in 2026 (older children get $500)
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 500
+
+- name: Young children still get $1,000 in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+
+- name: Base credit for mixed ages in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_500  # $1,000 + $500
+
+- name: Base credit for older children in 2027 (still $500)
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 500
+
+- name: No base credit in 2024 (before post-2024 rules)
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: No base credit in 2028 (after post-2024 rules expire)
+  period: 2028
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: Base credit respects minimum age requirement
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.minimum_age: 1
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0  # Below minimum age
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 0
+
+- name: Base credit with minimum age requirement met
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.minimum_age: 1
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1  # Meets minimum age
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
