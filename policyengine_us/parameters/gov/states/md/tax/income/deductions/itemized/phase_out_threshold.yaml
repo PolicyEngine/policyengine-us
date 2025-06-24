@@ -1,0 +1,26 @@
+description: Maryland itemized deduction phase-out begins at these income thresholds.
+metadata:
+  label: Maryland itemized deduction phase-out threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Maryland FY 2025 Budget - Tax Policy Changes (Itemized deduction phase-out effective 2025)
+      href: https://mgaleg.maryland.gov/Pubs/BudgetFiscal/2025rs-budget-docs-operating-cc-summary.pdf#page=17
+
+SINGLE:
+  values:
+    2025-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 200_000
+JOINT:
+  values:
+    2025-01-01: 200_000
+SEPARATE:
+  values:
+    2025-01-01: 100_000
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 200_000
