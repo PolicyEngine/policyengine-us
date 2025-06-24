@@ -20,6 +20,8 @@ metadata:
       href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
     - title: Maryland new tax year update -exemptions and deductions
       href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+    - title: Maryland FY 2025 Budget - Tax Policy Changes (New standard deduction amounts effective 2025)
+      href: https://mgaleg.maryland.gov/Pubs/BudgetFiscal/2025rs-budget-docs-operating-cc-summary.pdf#page=17
 
 JOINT:
   values:
@@ -28,6 +30,7 @@ JOINT:
     2022-01-01: 3_200
     2023-01-01: 3_450
     2024-01-01: 3_650
+    2025-01-01: 6_700
   metadata:
     uprating: 
       parameter: gov.irs.uprating
@@ -41,6 +44,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 3_200
     2023-01-01: 3_450
     2024-01-01: 3_650
+    2025-01-01: 6_700
   metadata:
     uprating: 
       parameter: gov.irs.uprating
@@ -54,6 +58,7 @@ SURVIVING_SPOUSE:
     2022-01-01: 3_200
     2023-01-01: 3_450
     2024-01-01: 3_650
+    2025-01-01: 6_700
   metadata:
     uprating: 
       parameter: gov.irs.uprating
@@ -67,6 +72,7 @@ SINGLE:
     2022-01-01: 1_600
     2023-01-01: 1_700
     2024-01-01: 1_800
+    2025-01-01: 3_350
   metadata:
     uprating: 
       parameter: gov.irs.uprating
@@ -80,6 +86,7 @@ SEPARATE:
     2022-01-01: 1_600
     2023-01-01: 1_700
     2024-01-01: 1_800
+    2025-01-01: 3_350
   metadata:
     uprating: 
       parameter: gov.irs.uprating
