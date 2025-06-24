@@ -16,6 +16,8 @@ metadata:
       href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=46
     - title: 2024 NY Form IT-201 Instructions - Married filing jointly and qualifying surviving spouse
       href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=34
+    - title: New York FY2026 Budget Agreement (Senate Bill S3009C)
+      href: https://legislation.nysenate.gov/pdf/bills/2025/S3009C#page=12
 brackets:
   - threshold:
       2021-01-01: 0 
@@ -33,15 +35,21 @@ brackets:
       2021-01-01: 1_056
       2022-01-01: 1_076
       2023-01-01: 1_140
+      2027-01-01: 1_141
   - threshold:
       2021-01-01: 2_155_350
     amount:
       2021-01-01: 2_736
       2022-01-01: 3_016
       2023-01-01: 3_887
+      2026-01-01: 4_211
+      2027-01-01: 4_534
   - threshold:
       2021-01-01: 5_000_000
+      2033-01-01: .inf
     amount:
       2021-01-01: 63_086
       2022-01-01: 63_365
       2023-01-01: 64_237
+      2026-01-01: 64_561
+      2027-01-01: 64_884
