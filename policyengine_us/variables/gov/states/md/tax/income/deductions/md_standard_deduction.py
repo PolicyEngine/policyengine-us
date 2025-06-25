@@ -17,11 +17,11 @@ class md_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.md.tax.income.deductions.standard
 
-        # Use flat amounts starting from the specified year
-        if period.start.year >= p.flat_amounts_start_year:
-            return p.flat_amounts.amount[filing_status]
+        # Use flat amounts when applicable
+        if p.flat_deduction.applies:
+            return p.flat_deduction.amount[filing_status]
 
-        # For years before flat amounts start year, use the old formula:
+        # For years when flat deduction doesn't apply, use the old formula:
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
         md_agi = tax_unit("md_agi", period)
