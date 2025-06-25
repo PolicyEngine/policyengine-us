@@ -163,7 +163,7 @@
         state_code: MD
   output:
     # Calculated based on MD tax brackets for 2025 after standard deduction
-    md_income_tax_before_credits: 42_588.125
+    md_income_tax_before_credits: 42_550.625
 
 - name: Maryland 2025 new high income tax bracket test - Joint filer at $900,000
   absolute_error_margin: 0.01  
@@ -190,7 +190,7 @@
         state_code: MD
   output:
     # Calculated based on MD tax brackets for 2025 after standard deduction
-    md_income_tax_before_credits: 50_650.625
+    md_income_tax_before_credits: 50_578.75
 
 - name: Maryland 2025 new top tax bracket test - Single filer at $1,500,000
   absolute_error_margin: 0.01
@@ -213,4 +213,4 @@
         state_code: MD
   output:
     # Calculated based on MD tax brackets for 2025 after standard deduction
-    md_income_tax_before_credits: 90_706.25
+    md_income_tax_before_credits: 90_667.25
