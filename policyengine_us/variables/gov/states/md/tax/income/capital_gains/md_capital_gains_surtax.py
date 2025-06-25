@@ -13,16 +13,12 @@ class md_capital_gains_surtax(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        # Only applies starting in 2025
-        if period.start.year < 2025:
+        # Check if surtax applies (AGI threshold check)
+        surtax_applies = tax_unit("md_capital_gains_surtax_applies", period)
+        if not surtax_applies:
             return 0
 
         p = parameters(period).gov.states.md.tax.income.capital_gains
-
-        # Check federal AGI threshold ($350,000)
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        if federal_agi <= p.surtax_threshold:
-            return 0
 
         # Get net capital gains (sum of long-term and short-term)
         # NOTE: This is the basic implementation using readily available variables
