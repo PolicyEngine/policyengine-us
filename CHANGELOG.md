@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.323.0] - 2025-06-25 11:14:33
+
+### Changed
+
+- Make WIC monthly.
+
 ## [1.322.0] - 2025-06-24 18:26:56
 
 ### Added
@@ -12091,6 +12097,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.323.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.322.0...1.323.0
 [1.322.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.321.1...1.322.0
 [1.321.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.321.0...1.321.1
 [1.321.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.320.0...1.321.0
