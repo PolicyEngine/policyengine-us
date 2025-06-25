@@ -5,4 +5,4 @@ class receives_wic(Variable):
     value_type = bool
     entity = Person
     label = "Reported to receive WIC"
-    definition_period = YEAR
+    definition_period = MONTH

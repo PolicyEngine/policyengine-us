@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class meets_wic_categorical_eligibility(Variable):
     value_type = bool
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = (
         "Meets the program participation eligibility criteria for WIC"
     )
