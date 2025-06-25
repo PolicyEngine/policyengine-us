@@ -75,7 +75,7 @@ class qbi_deduction_component(Variable):
         # Apply the SSTB reduction to the tentative deduction and the limit.
         qbi_deduction_adj = qbi_deduction_tentative * applicable_percent
         limitation_adj = wage_ubia_limitation * applicable_percent
-        
+
         # The deduction is now limited by the adjusted wage/UBIA cap.
         deduction_after_limit = min_(qbi_deduction_adj, limitation_adj)
 
@@ -84,22 +84,24 @@ class qbi_deduction_component(Variable):
         # For a non-SSTB, we must apply the phase-in reduction.
         if is_sstb:
             return deduction_after_limit
-            
+
         # --------------------------------------------------------------
         # 5. Non-SSTB Phase-in Logic
         # --------------------------------------------------------------
         # If fully phased-in, the full limitation applies.
         if phase_in_percent == 1:
             return deduction_after_limit
-        
+
         # In the phase-in range, the deduction is reduced based on how
         # far into the range the taxpayer's income is. This blends between
         # the full 20% QBI and the wage-limited amount.
-        
+
         # Amount by which the 20% QBI exceeds the wage/UBIA limit.
         excess_amount = max_(0, qbi_deduction_adj - limitation_adj)
-        
+
         # Reduce the tentative deduction by a phased-in portion of the excess.
-        phased_in_deduction = qbi_deduction_adj - (excess_amount * phase_in_percent)
-        
+        phased_in_deduction = qbi_deduction_adj - (
+            excess_amount * phase_in_percent
+        )
+
         return phased_in_deduction
