@@ -10,13 +10,9 @@ class md_capital_gains_surtax(Variable):
     reference = [
         "https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159"  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
-    defined_for = StateCode.MD
+    defined_for = "md_capital_gains_surtax_applies"
 
     def formula(tax_unit, period, parameters):
-        # Check if surtax applies (AGI threshold check)
-        surtax_applies = tax_unit("md_capital_gains_surtax_applies", period)
-        if not surtax_applies:
-            return 0
 
         p = parameters(period).gov.states.md.tax.income.capital_gains
 

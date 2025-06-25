@@ -48,10 +48,10 @@ class md_ctc(Variable):
             increments_above_threshold = ceil(
                 excess_income / phase_out_increment
             )
-            phase_out_reduction = increments_above_threshold * phase_out_rate
+            phase_out_amount = increments_above_threshold * phase_out_rate
 
             # Apply phase-out (credit cannot go below zero)
-            return max_(base_credit - phase_out_reduction, 0)
+            return max_(base_credit - phase_out_amount, 0)
 
         # For years before phase-out start year, use old eligibility logic (hard cutoff)
         agi_eligible = tax_unit("adjusted_gross_income", period) <= p.agi_cap
