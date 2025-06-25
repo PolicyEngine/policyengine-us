@@ -11,7 +11,7 @@ class md_itemized_deductions(Variable):
         "https://govt.westlaw.com/mdc/Document/N05479690A64A11DBB5DDAC3692B918BC?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)",
         "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=5",
         "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=5",
-        "https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+        "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=160",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
     defined_for = StateCode.MD
 
