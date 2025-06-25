@@ -1,0 +1,28 @@
+description: Maryland standard deduction flat amounts (effective 2025+). These amounts are fixed and not subject to annual inflation adjustments.
+metadata:
+  label: Maryland standard deduction flat amounts
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+      href: https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159
+    - title: "Maryland new tax year update - exemptions and deductions"
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+
+JOINT:
+  values:
+    2025-01-01: 6_700
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 6_700
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 6_700
+SINGLE:
+  values:
+    2025-01-01: 3_350
+SEPARATE:
+  values:
+    2025-01-01: 3_350

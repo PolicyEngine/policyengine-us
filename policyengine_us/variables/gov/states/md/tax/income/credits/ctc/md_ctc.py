@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class md_ctc(Variable):
@@ -34,19 +35,24 @@ class md_ctc(Variable):
             federal_ctc = tax_unit("ctc", period)
             base_credit = max_(base_credit - federal_ctc, 0)
 
-        # Starting in 2025, apply income-based phase-out instead of hard cutoff
-        if period.start.year >= 2025:
+        # Apply income-based phase-out instead of hard cutoff starting from specified year
+        if period.start.year >= p.phase_out_start_year:
             agi = tax_unit("adjusted_gross_income", period)
             phase_out_threshold = p.phase_out_threshold
             phase_out_rate = p.phase_out_rate
+            phase_out_increment = p.phase_out_increment
 
-            # Calculate phase-out reduction: $50 for every $1,000 above threshold
+            # Calculate phase-out reduction: reduction for every increment (or fraction thereof) above threshold
             excess_income = max_(agi - phase_out_threshold, 0)
-            phase_out_reduction = (excess_income / 1000) * phase_out_rate
+            # Use ceiling division: any fraction of increment counts as a full increment for phase-out
+            increments_above_threshold = ceil(
+                excess_income / phase_out_increment
+            )
+            phase_out_reduction = increments_above_threshold * phase_out_rate
 
             # Apply phase-out (credit cannot go below zero)
             return max_(base_credit - phase_out_reduction, 0)
 
-        # For years before 2025, use old eligibility logic (hard cutoff)
+        # For years before phase-out start year, use old eligibility logic (hard cutoff)
         agi_eligible = tax_unit("adjusted_gross_income", period) <= p.agi_cap
         return where(agi_eligible, base_credit, 0)

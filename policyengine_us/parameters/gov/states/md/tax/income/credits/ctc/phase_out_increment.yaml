@@ -1,0 +1,10 @@
+description: The income increment amount for Maryland Child Tax Credit phase-out calculation. The credit is reduced for every dollar amount (or fraction thereof) of income above the threshold.
+values:
+  2025-01-01: 1_000
+metadata:
+  reference:
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+      href: https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159
+  unit: currency-USD
+  period: year
+  label: Maryland Child Tax Credit phase-out income increment

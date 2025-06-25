@@ -310,6 +310,30 @@
   output:
     # Base credit: $500
     # Excess income: $16,500 - $15,000 = $1,500
-    # Phase-out reduction: ($1,500 / $1,000) * $50 = $75
-    # Final credit: $500 - $75 = $425
-    md_ctc: 425
+    # Phase-out reduction: ceil($1,500 / $1,000) * $50 = ceil(1.5) * $50 = 2 * $50 = $100
+    # Final credit: $500 - $100 = $400
+    md_ctc: 400
+
+- name: 2025 CTC phase-out - $1 above threshold (fractional case)
+  period: 2025
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [head, child_1]
+        adjusted_gross_income: 15_001
+    households:
+      household:
+        members: [head, child_1]
+        state_code: MD
+  output:
+    # Base credit: $500
+    # Excess income: $15,001 - $15,000 = $1
+    # Phase-out reduction: ceil($1 / $1,000) * $50 = ceil(0.001) * $50 = 1 * $50 = $50
+    # Final credit: $500 - $50 = $450
+    md_ctc: 450
