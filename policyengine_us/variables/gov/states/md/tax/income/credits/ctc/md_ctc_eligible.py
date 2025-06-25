@@ -9,7 +9,7 @@ class md_ctc_eligible(Variable):
     reference = [
         "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child",
         "https://law.justia.com/codes/maryland/2022/tax-general/title-10/subtitle-7/section-10-751/",
-        "https://mgaleg.maryland.gov/Pubs/BudgetFiscal/2025rs-budget-docs-operating-cc-summary.pdf#page=17",  # FY 2025 Budget changes
+        "https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
     defined_for = StateCode.MD
 

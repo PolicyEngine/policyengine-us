@@ -8,7 +8,7 @@ class md_capital_gains_surtax(Variable):
     definition_period = YEAR
     unit = USD
     reference = [
-        "https://mgaleg.maryland.gov/Pubs/BudgetFiscal/2025rs-budget-docs-operating-cc-summary.pdf#page=17"  # FY 2025 Budget changes
+        "https://mgaleg.maryland.gov/2025RS/bills/hb/hb0352E.pdf#page=159"  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
     defined_for = StateCode.MD
 
