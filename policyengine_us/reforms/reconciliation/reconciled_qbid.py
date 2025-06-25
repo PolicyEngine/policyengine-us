@@ -4,106 +4,52 @@ from policyengine_core.periods import instant
 
 
 def create_reconciled_qbid() -> Reform:
-
-    class qbi_deduction_component(Variable):
-        """
-        The preliminary qualified business income (QBI) deduction component for a single
-        trade or business under the H.R. 1 proposal. This calculation must be performed
-        for each business, and the results are then aggregated and subject to the
-        final MTI cap at the filer level.
-        """
-
+    class qbid_amount(Variable):
         value_type = float
         entity = Person
-        label = "QBI deduction component for a single business"
+        label = "Per‑cap qualified business income deduction amount for each person"
         unit = USD
         definition_period = YEAR
         reference = (
-            "Description of QBID under the 'One Big Beautiful Bill Act'"
+            "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
+            "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
         )
 
         def formula(person, period, parameters):
-            # --------------------------------------------------------------
-            # H.R. 1 Qualified Business Income Deduction (QBID) Component
-            # This calculates the preliminary deduction (D_pre) for a single business.
-            # --------------------------------------------------------------
-            p = parameters(period).gov.irs.deductions.qbi
-            p_rec = parameters(period).gov.contrib.reconciliation.qbid
+            p = parameters(period).gov.irs.deductions
 
-            # --- Core Inputs ---------------------------------------------
-            # QBI for the specific trade or business
+            # 1. Compute the new maximum QBID
             qbi = person("qualified_business_income", period)
+            qbid_max = p.qbi.max.rate * qbi
 
-            # Specified Service Trade or Business (SSTB) status
-            is_sstb = person("business_is_sstb", period)
-
-            # W-2 wages paid by the business
+            # 2. Compute the wage/property cap (unchanged)
             w2_wages = person("w2_wages_from_qualified_business", period)
-
-            # Unadjusted Basis Immediately after Acquisition (UBIA) of qualified property
-            ubia_property = person(
-                "unadjusted_basis_qualified_property", period
+            b_property = person("unadjusted_basis_qualified_property", period)
+            wage_cap = w2_wages * p.qbi.max.w2_wages.rate
+            alt_cap = (
+                w2_wages * p.qbi.max.w2_wages.alt_rate
+                + b_property * p.qbi.max.business_property.rate
             )
+            full_cap = max_(wage_cap, alt_cap)
 
-            # Person-level inputs from the tax unit
-            taxable_income = person.tax_unit(
+            # 3. Phase‑out logic: 75% of each dollar above the threshold
+            taxinc_less_qbid = person.tax_unit(
                 "taxable_income_less_qbid", period
             )
             filing_status = person.tax_unit("filing_status", period)
-
-            # --- Parameters from H.R. 1 ---------------------------------
-            deduction_rate = p.deduction_rate  # e.g., 0.23 (θ_max)
-            ramp_down_rate = p.ramp_down_rate  # e.g., 0.75 (r)
-            threshold = p.threshold[filing_status]  # Income threshold (τ)
-
-            # --- Preliminary Deduction Calculation (D_pre) ----------------
-
-            # The base deduction before any limitations.
-            # Corresponds to: θ_max * QBI
-            base_deduction = deduction_rate * qbi
-
-            # Check if taxable income is above the threshold. The logic differs
-            # for taxpayers above and below this threshold.
-            is_above_threshold = taxable_income > threshold
-
-            # The logic below matches the formula:
-            # D_pre = θ_max * QBI, if T <= τ
-            # D_pre = max(S(1)(A), θ_max*QBI - r*(T-τ)), if T > τ and non-SSTB
-            # D_pre = max(0, θ_max*QBI - r*(T-τ)), if T > τ and SSTB
-
-            # Step 1: Calculate the wage and capital limitation (S(1)(A) from TCJA).
-            # This is only applicable for non-SSTBs above the threshold.
-            wage_limit = p.wpa.w2_wages_rate * w2_wages
-            capital_limit = (
-                p.wpa.w2_wages_alt_rate * w2_wages
-                + p.wpa.ubia_rate * ubia_property
-            )
-            wpa_cap = max_(wage_limit, capital_limit)
-
-            # S(1)(A) is the lesser of the base deduction or the WPA cap.
-            # For SSTBs, this limitation path is not available; it is effectively zero.
-            s1a_limitation = where(is_sstb, 0, min_(base_deduction, wpa_cap))
-
-            # Step 2: Calculate the ramp-down deduction amount.
-            # Corresponds to: max(0, θ_max*QBI - r*(T-τ))
-            excess_income = max_(0, taxable_income - threshold)
-            ramp_down_amount = p_rec.phase_in_rate * excess_income
-            ramp_down_deduction = max_(0, base_deduction - ramp_down_amount)
-
-            # Determine the preliminary deduction (D_pre) by combining the paths.
-            # If below threshold, deduction is base_deduction (ramp_down_deduction equals base_deduction).
-            # If above threshold:
-            #   - For non-SSTB, it's the greater of the S(1)(A) limit or the ramp-down deduction.
-            #   - For SSTB, it's just the ramp-down deduction (since s1a_limitation is 0).
-            return where(
-                is_above_threshold,
-                max_(s1a_limitation, ramp_down_deduction),
-                base_deduction,
-            )
+            threshold = p.qbi.phase_out.start[filing_status]
+            p_ref = parameters(period).gov.contrib.reconciliation.qbid
+            phase_out_rate = p_ref.phase_out_rate
+            excess_income = max_(0, taxinc_less_qbid - threshold)
+            reduction_amount = phase_out_rate * excess_income
+            # 4. Apply phase‑out to the 22% deduction
+            phased_deduction = max_(0, qbid_max - reduction_amount)
+            # 5. Final QBID is the lesser of the phased deduction or the wage/property cap
+            return min_(phased_deduction, full_cap)
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(qbi_deduction_component)
+            self.update_variable(qbid_amount)
 
     return reform
 

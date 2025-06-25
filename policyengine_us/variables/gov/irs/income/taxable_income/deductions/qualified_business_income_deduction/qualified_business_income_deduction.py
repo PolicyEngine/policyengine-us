@@ -16,7 +16,7 @@ class qualified_business_income_deduction(Variable):
         # compute sum of QBID amounts for each person in TaxUnit following
         # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
         person = tax_unit.members
-        qbid_amt = person("qbi_deduction_component", period)
+        qbid_amt = person("qbid_amount", period)
         uncapped_qbid = tax_unit.sum(qbid_amt)
         # apply taxinc cap at the TaxUnit level following logic
         # in 2018 IRS Publication 535, Worksheet 12-A, lines 32-37
