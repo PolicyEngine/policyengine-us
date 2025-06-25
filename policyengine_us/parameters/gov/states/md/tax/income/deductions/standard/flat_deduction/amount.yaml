@@ -1,4 +1,4 @@
-description: Maryland standard deduction flat amounts (effective 2025+). These amounts are fixed and not subject to annual inflation adjustments.
+description: Maryland standard deduction flat amounts (effective 2025+). Starting in 2026, these amounts are indexed annually using chained CPI.
 metadata:
   label: Maryland standard deduction flat amounts
   period: year
@@ -8,8 +8,11 @@ metadata:
   reference:
     - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
       href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=160
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025 (page 164 - chained CPI indexing)
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=164
     - title: "Maryland new tax year update - exemptions and deductions"
       href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+  uprating: gov.bls.cpi.c_cpi_u
 
 JOINT:
   values:
