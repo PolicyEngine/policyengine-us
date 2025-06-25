@@ -9,7 +9,6 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
         value_type = bool
         entity = Person
         label = "Eligible person for Medicaid via work requirement"
-        unit = USD
         definition_period = YEAR
         reference = "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364"
 
@@ -20,15 +19,15 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             monthly_hours_worked = person(
                 "monthly_hours_worked", period.this_year
             )
-            is_working = monthly_hours_worked >= p.monthly_hours_threshold
+            meets_monthly_work_hours = monthly_hours_worked >= p.monthly_hours_threshold
             # The individual is enrolled in an educational program at least half-time.
             is_full_time_student = person("is_full_time_student", period)
             # pregnant or postpartum medical assistance p.365
             is_pregnant = person("is_pregnant", period)
-            # (dd) https://www.ssa.gov/OP_Home/ssact/title19/1902.htm about income level
+            # https://www.ssa.gov/OP_Home/ssact/title19/1902.htm (dd) about income level
             ## Under age of 19 or over age of 65 p.376
             age = person("age", period)
-            work_exempted_age = p.work_exempted_age_threshold.calc(age)
+            work_required_age = p.age_range.calc(age)
             ## parent of a disabled person(III)
             is_parent = person("is_parent", period)
             is_disabled = person("is_disabled", period)
@@ -45,10 +44,10 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             )
 
             return (
-                is_working
+                meets_monthly_work_hours
                 | is_full_time_student
                 | is_pregnant
-                | work_exempted_age
+                | ~work_required_age
                 | eligible_parent
                 | eligible_veteran
                 | eligible_disabled
