@@ -37,7 +37,7 @@ class md_ctc(Variable):
 
         # Apply income-based phase-out instead of hard cutoff starting from specified year
         if period.start.year >= p.phase_out_start_year:
-            agi = tax_unit("adjusted_gross_income", period)
+            agi = tax_unit("md_agi", period)
             phase_out_threshold = p.phase_out_threshold
             phase_out_rate = p.phase_out_rate
             phase_out_increment = p.phase_out_increment
@@ -54,5 +54,5 @@ class md_ctc(Variable):
             return max_(base_credit - phase_out_amount, 0)
 
         # For years before phase-out start year, use old eligibility logic (hard cutoff)
-        agi_eligible = tax_unit("adjusted_gross_income", period) <= p.agi_cap
+        agi_eligible = tax_unit("md_agi", period) <= p.agi_cap
         return where(agi_eligible, base_credit, 0)
