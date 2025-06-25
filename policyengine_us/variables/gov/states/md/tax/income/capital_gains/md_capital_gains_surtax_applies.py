@@ -14,7 +14,7 @@ class md_capital_gains_surtax_applies(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.capital_gains
 
-        # Check federal AGI threshold
-        federal_agi = tax_unit("adjusted_gross_income", period)
+        # Check Maryland AGI threshold
+        md_agi = tax_unit("md_agi", period)
 
-        return federal_agi > p.surtax_threshold
+        return md_agi > p.surtax_threshold
