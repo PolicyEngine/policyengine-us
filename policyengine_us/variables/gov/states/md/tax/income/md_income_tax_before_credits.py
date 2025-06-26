@@ -34,8 +34,7 @@ class md_income_tax_before_credits(Variable):
         )
 
         # Add capital gains surtax (starting from specified year)
-        surtax_start_year = p.capital_gains.surtax_start_year
-        if period.start.year >= surtax_start_year:
+        if period.start.year >= p.capital_gains.surtax_start_year:
             capital_gains_surtax = tax_unit("md_capital_gains_surtax", period)
             return regular_income_tax + capital_gains_surtax
         return regular_income_tax

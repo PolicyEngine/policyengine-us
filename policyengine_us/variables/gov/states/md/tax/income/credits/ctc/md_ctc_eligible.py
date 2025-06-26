@@ -17,9 +17,9 @@ class md_ctc_eligible(Variable):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         agi = tax_unit("adjusted_gross_income", period)
 
-        # Starting in 2025, eligibility is based on having eligible children
+        # Starting in phase-out year, eligibility is based on having eligible children
         # (phase-out is handled in the credit amount calculation)
-        if period.start.year >= 2025:
+        if period.start.year >= p.phase_out_start_year:
             person = tax_unit.members
             dependent = person("is_tax_unit_dependent", period)
             disabled = person("is_disabled", period)
@@ -31,5 +31,5 @@ class md_ctc_eligible(Variable):
             has_eligible_children = tax_unit.sum(eligible) > 0
             return has_eligible_children
 
-        # For years before 2025, use old logic (hard AGI cutoff)
+        # For years before phase-out year, use old logic (hard AGI cutoff)
         return agi <= p.agi_cap
