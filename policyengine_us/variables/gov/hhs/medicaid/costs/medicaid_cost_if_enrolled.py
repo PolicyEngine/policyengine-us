@@ -4,20 +4,15 @@ from policyengine_us.variables.gov.hhs.medicaid.costs.medicaid_group import (
 )
 
 
-class medicaid_per_capita_cost(Variable):
+class medicaid_cost_if_enrolled(Variable):
     value_type = float
     entity = Person
     label = "Per capita Medicaid cost by eligibility group & state"
     unit = USD
     definition_period = YEAR
+    defined_for = "is_medicaid_eligible"
 
     def formula(person, period, parameters):
-        # if ineligible return 0
-        eligible = person("is_medicaid_eligible", period)
-        zero = np.zeros_like(eligible, dtype=float)
-        if not eligible.any():  # population-wide short-circuit
-            return zero
-
         state = person.household("state_code", period)
         group = person("medicaid_group", period)
 
@@ -83,8 +78,8 @@ class medicaid_per_capita_cost(Variable):
             default=0,
         )
 
-        # Avoid divide‑by‑zero in non‑expansion states, etc.
-        per_capita = np.zeros_like(enroll, dtype=float)
+        # Avoid divide‑by‑zero in non‑expansion states by assigning national average.
+        per_capita = p.totals.per_capita[group]
         mask = enroll > 0
         per_capita[mask] = spend[mask] / enroll[mask]
 
