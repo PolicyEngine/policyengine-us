@@ -5,6 +5,88 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.327.0] - 2025-06-26 16:53:09
+
+### Added
+
+- Business development company income and expanded QBID calculation tests.
+
+### Changed
+
+- Refactored qualified business income deduction logic with wage and property limitations.
+
+## [1.326.0] - 2025-06-26 14:45:33
+
+### Added
+
+- Additional tax bracket reform.
+
+## [1.325.0] - 2025-06-26 12:13:18
+
+### Added
+
+- Consolidated medicaid and medicaid per capita into medicaid cost.
+
+## [1.324.0] - 2025-06-25 19:13:43
+
+### Added
+
+- Fix Medicaid eligibility rules for senior and disabled.
+
+## [1.323.0] - 2025-06-25 11:14:33
+
+### Changed
+
+- Make WIC monthly.
+
+## [1.322.0] - 2025-06-24 18:26:56
+
+### Added
+
+- New York supplemental income tax recapture base.
+
+## [1.321.1] - 2025-06-23 15:57:50
+
+### Fixed
+
+- Use adjusted gross income instead of taxable income in the Kansas zero tax computation.
+
+## [1.321.0] - 2025-06-20 18:16:25
+
+### Added
+
+- Add the New York inflation rebates as a refundable tax credit.
+
+## [1.320.0] - 2025-06-20 15:28:51
+
+### Added
+
+- Senate Finance Child and Dependent Care Credit.
+
+## [1.319.0] - 2025-06-20 14:44:55
+
+### Added
+
+- Update New York CTC for 2025-2027 based on Senate Bill S.3009-C.
+
+## [1.318.0] - 2025-06-20 00:21:33
+
+### Added
+
+- Exemptions for flat tax on AGI.
+
+## [1.317.0] - 2025-06-20 00:08:06
+
+### Added
+
+- Senate Finance CTC SSN Requirement.
+
+## [1.316.0] - 2025-06-19 23:53:40
+
+### Added
+
+- Senate Finance QBID.
+
 ## [1.315.0] - 2025-06-19 14:23:44
 
 ### Added
@@ -12043,6 +12125,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.327.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.326.0...1.327.0
+[1.326.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.325.0...1.326.0
+[1.325.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.324.0...1.325.0
+[1.324.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.323.0...1.324.0
+[1.323.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.322.0...1.323.0
+[1.322.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.321.1...1.322.0
+[1.321.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.321.0...1.321.1
+[1.321.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.320.0...1.321.0
+[1.320.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.319.0...1.320.0
+[1.319.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.318.0...1.319.0
+[1.318.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.317.0...1.318.0
+[1.317.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.316.0...1.317.0
+[1.316.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.315.0...1.316.0
 [1.315.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.2...1.315.0
 [1.314.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.1...1.314.2
 [1.314.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.314.0...1.314.1
