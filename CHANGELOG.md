@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.327.0] - 2025-06-26 16:53:09
+
+### Added
+
+- Business development company income and expanded QBID calculation tests.
+
+### Changed
+
+- Refactored qualified business income deduction logic with wage and property limitations.
+
 ## [1.326.0] - 2025-06-26 14:45:33
 
 ### Added
@@ -12115,6 +12125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.327.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.326.0...1.327.0
 [1.326.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.325.0...1.326.0
 [1.325.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.324.0...1.325.0
 [1.324.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.323.0...1.324.0

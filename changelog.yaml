@@ -10287,3 +10287,11 @@
     added:
     - Additional tax bracket reform.
   date: 2025-06-26 14:45:33
+- bump: minor
+  changes:
+    added:
+    - Business development company income and expanded QBID calculation tests.
+    changed:
+    - Refactored qualified business income deduction logic with wage and property
+      limitations.
+  date: 2025-06-26 16:53:09
