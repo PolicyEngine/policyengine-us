@@ -16,41 +16,50 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.reconciliation.medicaid_work_requirement
-            monthly_hours_worked = person(
-                "monthly_hours_worked", period.this_year
+            # Works no less than 80 hours p.364 (2)(A)
+            monthly_hours_worked = person("monthly_hours_worked", period)
+            meets_monthly_work_hours = (
+                monthly_hours_worked >= p.monthly_hours_threshold
             )
-            meets_monthly_work_hours = monthly_hours_worked >= p.monthly_hours_threshold
-            # The individual is enrolled in an educational program at least half-time.
+            # The individual is enrolled in an educational program at least half-time. p.364 (2)(D)
             is_full_time_student = person("is_full_time_student", period)
-            # pregnant or postpartum medical assistance p.365
+            # pregnant or postpartum medical assistance p.365 (3)(A)(i)(II)(bb)
             is_pregnant = person("is_pregnant", period)
-            # https://www.ssa.gov/OP_Home/ssact/title19/1902.htm (dd) about income level
-            ## Under age of 19 or over age of 65 p.376
+            # Has attained age of 19 and is under 65 is require to work p.376 (bb)
             age = person("age", period)
             work_required_age = p.age_range.calc(age)
-            ## parent of a disabled person(III)
+            # parent of a disabled person p.377 (III)
             is_parent = person("is_parent", period)
             is_disabled = person("is_disabled", period)
-            eligible_parent = is_parent & person.tax_unit.any(is_disabled)
-            ## veteran and is_permanently_and_totally_disabled (IV)
-            eligible_veteran = person("is_veteran", period) & person(
+            is_dependent = person("is_tax_unit_dependent", period)
+            eligible_parent = is_parent & person.tax_unit.any(
+                is_dependent & is_disabled
+            )
+            # veteran and is_permanently_and_totally_disabled p.377 (IV)
+            is_veteran = person("is_veteran", period)
+            is_permanently_and_totally_disabled = person(
                 "is_permanently_and_totally_disabled", period
             )
-            ## blind or disabled or is_incapable_of_self_care (V)
-            eligible_disabled = (
-                person("is_blind", period)
-                | is_disabled
-                | person("is_incapable_of_self_care", period)
+            eligible_veteran = is_veteran & is_permanently_and_totally_disabled
+            # blind or disabled or is_incapable_of_self_care p.377 (V)
+            is_blind = person("is_blind", period)
+            is_incapable_of_self_care = person(
+                "is_incapable_of_self_care", period
             )
-
-            return (
-                meets_monthly_work_hours
-                | is_full_time_student
+            eligible_disabled = (
+                is_blind | is_disabled | is_incapable_of_self_care
+            )
+            exempted_from_work = (
+                is_full_time_student
                 | is_pregnant
-                | ~work_required_age
                 | eligible_parent
                 | eligible_veteran
                 | eligible_disabled
+            )
+            return where(
+                work_required_age,
+                meets_monthly_work_hours | exempted_from_work,
+                True,
             )
 
     class is_medicaid_eligible(Variable):

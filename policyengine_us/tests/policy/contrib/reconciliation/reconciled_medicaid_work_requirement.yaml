@@ -55,3 +55,20 @@
     is_disabled: true
   output:
     medicaid_work_requirement_eligible: true
+
+- name: Case 7, integration. 
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
+  input:
+    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        monthly_hours_worked: 80
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        monthly_hours_worked: 79
+  output:
+    medicaid_work_requirement_eligible: [true, false]
