@@ -15,6 +15,8 @@ class qualified_business_income(Variable):
         p = parameters(period).gov.irs.deductions.qbi
         gross_qbi = 0
         for var in p.income_definition:
-            gross_qbi += person(var, period) * person(var + "_would_be_qualified", period)
+            gross_qbi += person(var, period) * person(
+                var + "_would_be_qualified", period
+            )
         qbi_deductions = add(person, period, p.deduction_definition)
         return max_(0, gross_qbi - qbi_deductions)
