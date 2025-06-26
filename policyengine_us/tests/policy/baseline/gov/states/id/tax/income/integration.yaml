@@ -38,6 +38,7 @@
         short_term_capital_gains: 505.0
         long_term_capital_gains: 1505.0
         rental_income: 2005.0
+        rental_income_would_be_qualified: false
         self_employment_income: 160010
         business_is_qualified: true
         business_is_sstb: false
@@ -54,6 +55,7 @@
         short_term_capital_gains: 505.0
         long_term_capital_gains: 1505.0
         rental_income: 2005.0
+        rental_income_would_be_qualified: false
         ssi: 0  # not in TAXSIM35
         ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -104,6 +106,7 @@
         short_term_capital_gains: 3505
         long_term_capital_gains: 1505
         rental_income: 1005
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 2500
         real_estate_taxes: 4000
         deductible_mortgage_interest: 36000
@@ -119,6 +122,7 @@
         short_term_capital_gains: 3505
         long_term_capital_gains: 1505
         rental_income: 1005
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 2500
     tax_units:
       tax_unit:
