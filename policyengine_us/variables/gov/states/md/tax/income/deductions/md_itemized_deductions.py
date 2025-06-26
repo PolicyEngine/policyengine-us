@@ -23,9 +23,9 @@ class md_itemized_deductions(Variable):
             ["itemized_deductions_less_salt", "capped_property_taxes"],
         )
 
-        # Apply income-based phase-out starting from specified year
+        # Apply income-based phase-out if applicable
         p = parameters(period).gov.states.md.tax.income.deductions.itemized
-        if period.start.year >= p.phase_out_start_year:
+        if p.phase_out_applies:
             filing_status = tax_unit("filing_status", period)
             md_agi = tax_unit("md_agi", period)
             threshold = p.phase_out_threshold[filing_status]
@@ -38,5 +38,5 @@ class md_itemized_deductions(Variable):
             # Apply phase-out (itemized deductions cannot go below zero)
             return max_(base_itemized - phase_out_reduction, 0)
 
-        # For years before phase-out start year, no phase-out
+        # When phase-out does not apply, no phase-out
         return base_itemized

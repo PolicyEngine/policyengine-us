@@ -1,11 +1,11 @@
-description: The year when Maryland capital gains surtax takes effect.
+description: Whether Maryland Child Tax Credit uses income-based phase-out instead of hard AGI cutoff.
 values:
-  2013-01-01: .inf
-  2025-01-01: 2025
+  2013-01-01: false
+  2025-01-01: true
 metadata:
   reference:
     - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
       href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=160
-  unit: year
+  unit: bool
   period: year
-  label: Maryland capital gains surtax start year
+  label: Maryland Child Tax Credit uses phase-out
