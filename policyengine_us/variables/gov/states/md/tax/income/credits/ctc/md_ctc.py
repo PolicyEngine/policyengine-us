@@ -13,7 +13,7 @@ class md_ctc(Variable):
         "https://law.justia.com/codes/maryland/2022/tax-general/title-10/subtitle-7/section-10-751/",
         "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=160",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
-    defined_for = StateCode.MD
+    defined_for = "md_ctc_eligible"
 
     def formula_2020(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
@@ -53,6 +53,5 @@ class md_ctc(Variable):
             # Apply phase-out (credit cannot go below zero)
             return max_(base_credit - phase_out_amount, 0)
 
-        # When phase-out does not apply, use old eligibility logic (hard cutoff)
-        agi_eligible = tax_unit("md_agi", period) <= p.agi_cap
-        return where(agi_eligible, base_credit, 0)
+        # When phase-out does not apply, return base credit (eligibility handled in md_ctc_eligible)
+        return base_credit
