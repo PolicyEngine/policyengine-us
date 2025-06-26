@@ -1,0 +1,53 @@
+- name: Additional tax bracket is applied.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
+    gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
+    taxable_income: 1_000_000
+    filing_status: JOINT
+  output:
+    regular_tax_before_credits: 328_110
+    income_tax_main_rates: 328_110
+
+- name: Additional tax bracket is not applied.
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: false
+    gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
+    gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
+    taxable_income: 1_000_000
+    filing_status: JOINT
+  output:
+    regular_tax_before_credits: 323_310
+    income_tax_main_rates: 323_310
+
+- name: Additional tax bracket is applied, taxable income is below the threshold.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
+    gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
+    taxable_income: 600_000
+    filing_status: JOINT
+  output:
+    regular_tax_before_credits: 166_046
+    income_tax_main_rates: 166_046
+
+- name: Additional tax bracket is not applied, taxable income is below the threshold.
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: false
+    gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
+    gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
+    taxable_income: 600_000
+    filing_status: JOINT
+  output:
+    regular_tax_before_credits: 166_046
+    income_tax_main_rates: 166_046

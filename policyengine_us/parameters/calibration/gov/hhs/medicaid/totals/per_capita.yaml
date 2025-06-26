@@ -1,0 +1,20 @@
+description: The federal government and states spend this amount per capita on Medicaid for each eligbility group.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Per-capita Medicaid cost for other adults
+  breakdown:
+    - medicaid_group
+  reference:
+    - title: EXHIBIT 14. Medicaid Enrollment by State, Eligibility Group, and Dually Eligible Status | MACPAC
+      href: https://www.macpac.gov/publication/medicaid-enrollment-by-state-eligibility-group-and-dually-eligible-status/
+NON_EXPANSION_ADULT:
+  2022-01-01: 5_006
+EXPANSION_ADULT:
+  2022-01-01: 7_054
+CHILD:
+  2022-01-01: 3_538
+AGED_DISABLED:
+  2022-01-01: 21_297
+NONE:
+  2022-01-01: 0

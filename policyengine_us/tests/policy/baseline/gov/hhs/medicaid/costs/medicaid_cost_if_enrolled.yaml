@@ -11,7 +11,7 @@
         is_infant_for_medicaid: true
         is_medicaid_eligible: true
   output: 
-    medicaid_per_capita_cost: 3_564.1
+    medicaid_cost_if_enrolled: 3_564.1
 
 - name: IA disabled
   period: 2023
@@ -26,7 +26,7 @@
         is_optional_senior_or_disabled_for_medicaid: true
         is_medicaid_eligible: true
   output: 
-    medicaid_per_capita_cost: 24_257.3
+    medicaid_cost_if_enrolled: 24_257.3
 
 - name: IA aged
   period: 2023
@@ -41,7 +41,7 @@
         is_ssi_recipient_for_medicaid: true
         is_medicaid_eligible: true
   output: 
-    medicaid_per_capita_cost: 24_257.3
+    medicaid_cost_if_enrolled: 24_257.3
 
 - name: texas ineligible 
   period: 2023
@@ -56,4 +56,36 @@
         is_ssi_recipient_for_medicaid: false
         is_medicaid_eligible: false
   output: 
-    medicaid_per_capita_cost: 0
+    medicaid_cost_if_enrolled: 0
+
+- name: North Carolina Expansion adult (defaults to national average)
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: NC
+        members: [person]
+    people:
+      person:
+        is_ssi_recipient_for_medicaid: false
+        is_medicaid_eligible: true
+  output: 
+    medicaid_cost_if_enrolled: 7_054
+
+- name: Multiple people in recent expansion state
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: WI
+        members: [person1, person2]
+    people:
+      person1:
+        age: 25
+        employment_income: 0
+      person2:
+        age: 2
+  output: 
+    medicaid_cost_if_enrolled: [7_054, 2_867.7]
