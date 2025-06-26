@@ -1,0 +1,23 @@
+- name: Fulton county belongs to Atlanta by MSA.
+  period: 2024
+  input:
+    state_code: GA
+    county_str: FULTON_COUNTY_GA
+  output:
+    southern_county: ATLANTA
+
+- name: Calhoun county belongs to default south.
+  period: 2024
+  input:
+    state_code: FL
+    county_str: CALHOUN_COUNTY_FL
+  output:
+    southern_county: SOUTH_DEFAULT
+
+- name:  Not part of any south region.
+  period: 2024
+  input:
+    state_code: MA
+    county_str: SUFFOLK_COUNTY_MA
+  output:
+    southern_county: NONE
