@@ -25,11 +25,11 @@ class md_itemized_deductions(Variable):
 
         # Apply income-based phase-out if applicable
         p = parameters(period).gov.states.md.tax.income.deductions.itemized
-        if p.phase_out_applies:
+        if p.phase_out.applies:
             filing_status = tax_unit("filing_status", period)
             md_agi = tax_unit("md_agi", period)
-            threshold = p.phase_out_threshold[filing_status]
-            phase_out_rate = p.phase_out_rate
+            threshold = p.phase_out.threshold[filing_status]
+            phase_out_rate = p.phase_out.rate
 
             # Calculate phase-out reduction
             excess_income = max_(md_agi - threshold, 0)

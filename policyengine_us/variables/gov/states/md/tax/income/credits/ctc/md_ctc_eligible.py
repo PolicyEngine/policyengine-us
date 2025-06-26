@@ -19,7 +19,7 @@ class md_ctc_eligible(Variable):
 
         # When phase-out applies, eligibility is based on having eligible children
         # (phase-out is handled in the credit amount calculation)
-        if p.phase_out_applies:
+        if p.phase_out.applies:
             person = tax_unit.members
             dependent = person("is_tax_unit_dependent", period)
             disabled = person("is_disabled", period)
