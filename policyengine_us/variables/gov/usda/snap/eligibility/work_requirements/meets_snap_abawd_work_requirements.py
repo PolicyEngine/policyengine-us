@@ -12,12 +12,12 @@ class meets_snap_abawd_work_requirements(Variable):
         p = parameters(period).gov.usda.snap.work_requirements.abawd
         age = person("monthly_age", period)
         weekly_hours_worked = person(
-            "weekly_hours_worked_before_lsr", period.this_year
+            "weekly_hours_worked", period.this_year
         )
         # Work at least 20 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
-        # Too old or too young can exempted from working
-        worked_exempted_age = p.age_threshold.work_exempted.calc(age)
+        # Under 18 or 55 years of age or older are exempted
+        worked_exempted_age = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
         is_disabled = person("is_disabled", period)
         # Parent of a household member under 18

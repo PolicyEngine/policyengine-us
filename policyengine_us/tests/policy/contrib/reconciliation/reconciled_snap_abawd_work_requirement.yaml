@@ -5,7 +5,7 @@
   input:
     gov.contrib.reconciliation.snap_abawd_work_requirement.in_effect: false
     age: 55
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
@@ -17,7 +17,7 @@
   input:
     gov.contrib.reconciliation.snap_abawd_work_requirement.in_effect: true
     age: 55
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: false
@@ -31,7 +31,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked_before_lsr: 1
+        weekly_hours_worked: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -50,7 +50,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked_before_lsr: 1
+        weekly_hours_worked: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -69,7 +69,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked_before_lsr: 1
+        weekly_hours_worked: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -78,3 +78,41 @@
         is_tax_unit_dependent: true
   output:
     meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 6, reform, is veteran with a child 15 in 2027. 
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.in_effect: true
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_veteran: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 7, reform, is veteran with a child 15 in 2031, sunset provision in effect. 
+  period: 2031
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.in_effect: true
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_veteran: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [false, true]

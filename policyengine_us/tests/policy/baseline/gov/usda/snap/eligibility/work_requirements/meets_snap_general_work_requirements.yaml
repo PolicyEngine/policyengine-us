@@ -2,7 +2,7 @@
   period: 2022
   input:
     age: 15
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: false
     is_incapable_of_self_care: false
   output:
@@ -12,7 +12,7 @@
   period: 2022
   input:
     age: 60
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: false
     is_incapable_of_self_care: false
   output:
@@ -22,7 +22,7 @@
   period: 2022
   input:
     age: 16
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: false
     is_incapable_of_self_care: false
   output:
@@ -32,7 +32,7 @@
   period: 2022
   input:
     age: 39
-    weekly_hours_worked_before_lsr: 1
+    weekly_hours_worked: 1
     is_disabled: true
     is_incapable_of_self_care: false
   output:
@@ -42,7 +42,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked_before_lsr: 30
+    weekly_hours_worked: 30
     is_disabled: false
     is_incapable_of_self_care: false
   output:
@@ -52,7 +52,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked_before_lsr: 29
+    weekly_hours_worked: 29
     is_disabled: false
     is_incapable_of_self_care: false
   output:
@@ -64,7 +64,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 29
+        weekly_hours_worked: 29
       person2:
         age: 5
         is_tax_unit_dependent: true

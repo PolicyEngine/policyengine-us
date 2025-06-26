@@ -15,32 +15,31 @@ def create_reconciled_snap_abawd_work_requirement() -> Reform:
             p = parameters(period).gov.usda.snap.work_requirements.abawd
             age = person("monthly_age", period)
             weekly_hours_worked = person(
-                "weekly_hours_worked_before_lsr", period.this_year
+                "weekly_hours_worked", period.this_year
             )
             # Work at least 20 hours a week
             is_working = weekly_hours_worked >= p.weekly_hours_threshold
-            # Too old or too young can exempted from working
-            worked_exempted_age = p.age_threshold.work_exempted.calc(age)
-            # Unable to work due to a physical or mental limitation
+            # Under 18 or 65 years of age or older are exempted (baseline is 18 or 65) (A)
+            worked_exempted_age = p.age_threshold.exempted.calc(age)
+            # Unable to work due to a physical or mental limitation (B)
             is_disabled = person("is_disabled", period)
-            # Parent of a household member under 7 (baseline is 18)
+            # Parent of a household member under 7 (baseline is 18) (C)
             is_dependent = person("is_tax_unit_dependent", period)
             is_child = age < p.age_threshold.dependent
             is_parent = person("is_parent", period)
             has_child = person.spm_unit.any(is_dependent & is_child)
             exempted_parent = is_parent & has_child
-            # Exempted from the general work requirements
+            # Exempted from the general work requirements (D)
             meets_snap_general_work_requirements = person(
                 "meets_snap_general_work_requirements", period
             )
-            # Pregnant
+            # Pregnant (E)
             is_pregnant = person("is_pregnant", period)
-            # Homeless (remove in 2030)
+            # Homeless (remove in 2030) (F)
             is_homeless = person.household("is_homeless", period)
-            # A veteran (remove in 2030)
+            # A veteran (remove in 2030) (G)
             is_veteran = person("is_veteran", period)
-            # Responsible for a child above 7 and is married to individual who is working
-            # paragraph (2) https://www.govinfo.gov/content/pkg/COMPS-10331/pdf/COMPS-10331.pdf#page=47
+            # Responsible for a child above 7 and is married to individual who is working (I)
             child_above_7 = age >= p.age_threshold.dependent
             is_married = person.family("is_married", period)
             has_child_above_7 = person.spm_unit.any(
@@ -53,7 +52,7 @@ def create_reconciled_snap_abawd_work_requirement() -> Reform:
             exempted_married_person = where(
                 is_married & has_child_above_7, has_head_or_spouse_working, 0
             )
-            # Sunset provision effect on 2030-10-01
+            # Sunset provision effects on 2030-10-01
             p_reform = parameters(
                 period
             ).gov.contrib.reconciliation.snap_abawd_work_requirement
@@ -83,7 +82,7 @@ def create_reconciled_snap_abawd_work_requirement() -> Reform:
         parameters.gov.usda.snap.work_requirements.abawd.age_threshold.dependent.update(
             start=instant("2027-01-01"), stop=instant("2035-12-31"), value=7
         )
-        parameters.gov.usda.snap.work_requirements.abawd.age_threshold.work_exempted[
+        parameters.gov.usda.snap.work_requirements.abawd.age_threshold.exempted[
             2
         ].threshold.update(
             start=instant("2027-01-01"),
