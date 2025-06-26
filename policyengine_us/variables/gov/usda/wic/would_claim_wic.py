@@ -5,7 +5,7 @@ class would_claim_wic(Variable):
     value_type = bool
     entity = Person
     label = "Would claim WIC"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(person, period, parameters):
         # Assign households WIC takeup probabilistically in microsimulation.
