@@ -53,5 +53,4 @@ class md_ctc(Variable):
             # Apply phase-out (credit cannot go below zero)
             return max_(base_credit - phase_out_amount, 0)
 
-        # When phase-out does not apply, return base credit (eligibility handled in md_ctc_eligible)
         return base_credit
