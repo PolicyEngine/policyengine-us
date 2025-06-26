@@ -107,6 +107,9 @@ from .reconciliation import (
     create_reconciliation_qbid_with_floor_reform,
     create_reconciliation_cdcc_reform,
 )
+from .additional_tax_bracket import (
+    create_additional_tax_bracket_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -251,6 +254,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     reconciliation_cdcc = create_reconciliation_cdcc_reform(parameters, period)
 
+    additional_tax_bracket = create_additional_tax_bracket_reform(
+        parameters, period
+    )
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -303,6 +310,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciliation_qbid_with_floor,
         ctc_additional_bracket,
         reconciliation_cdcc,
+        additional_tax_bracket,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
