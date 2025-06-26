@@ -17,4 +17,4 @@ class or_liheap_income_threshold(Variable):
     def formula(spm_unit, period, parameters):
         state_median_income = spm_unit("hhs_smi", period)
         p = parameters(period).gov.hhs.liheap
-        return state_median_income * p.income_rate
+        return state_median_income * p.smi_limit
