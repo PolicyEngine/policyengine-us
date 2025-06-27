@@ -1,0 +1,131 @@
+- name: MD Itemized deductions 2024 - No phase-out (pre-2025)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 300_000
+    filing_status: JOINT
+    state_code: MD
+    itemized_deductions_less_salt: 25_000
+    capped_property_taxes: 10_000
+  output:
+    md_itemized_deductions: 35_000
+
+- name: MD Itemized deductions 2025 - Joint filer below threshold (no phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 150_000
+    filing_status: JOINT
+    state_code: MD
+    itemized_deductions_less_salt: 25_000
+    capped_property_taxes: 10_000
+  output:
+    md_itemized_deductions: 35_000
+
+- name: MD Itemized deductions 2025 - Joint filer at threshold (no phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: JOINT
+    state_code: MD
+    itemized_deductions_less_salt: 25_000
+    capped_property_taxes: 10_000
+  output:
+    md_itemized_deductions: 35_000
+
+- name: MD Itemized deductions 2025 - Joint filer above threshold (with phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 300_000
+    filing_status: JOINT
+    state_code: MD
+    itemized_deductions_less_salt: 25_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $35,000
+    # Excess income: $300,000 - $200,000 = $100,000
+    # Phase-out reduction: $100,000 * 7.5% = $7,500
+    # Final deductions: $35,000 - $7,500 = $27,500
+    md_itemized_deductions: 27_500
+
+- name: MD Itemized deductions 2025 - Single filer above threshold (with phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 250_000
+    filing_status: SINGLE
+    state_code: MD
+    itemized_deductions_less_salt: 20_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $30,000
+    # Excess income: $250,000 - $200,000 = $50,000
+    # Phase-out reduction: $50,000 * 7.5% = $3,750
+    # Final deductions: $30,000 - $3,750 = $26,250
+    md_itemized_deductions: 26_250
+
+- name: MD Itemized deductions 2025 - Married filing separately above threshold (with phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 150_000
+    filing_status: SEPARATE
+    state_code: MD
+    itemized_deductions_less_salt: 15_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $25,000
+    # Excess income: $150,000 - $100,000 = $50,000
+    # Phase-out reduction: $50,000 * 7.5% = $3,750
+    # Final deductions: $25,000 - $3,750 = $21,250
+    md_itemized_deductions: 21_250
+
+- name: MD Itemized deductions 2025 - Head of household above threshold (with phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MD
+    itemized_deductions_less_salt: 30_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $40,000
+    # Excess income: $400,000 - $200,000 = $200,000
+    # Phase-out reduction: $200,000 * 7.5% = $15,000
+    # Final deductions: $40,000 - $15,000 = $25,000
+    md_itemized_deductions: 25_000
+
+- name: MD Itemized deductions 2025 - Phase-out reduces deductions to zero
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 600_000
+    filing_status: JOINT
+    state_code: MD
+    itemized_deductions_less_salt: 15_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $25,000
+    # Excess income: $600,000 - $200,000 = $400,000
+    # Phase-out reduction: $400,000 * 7.5% = $30,000
+    # Final deductions: max($25,000 - $30,000, 0) = $0
+    md_itemized_deductions: 0
+
+- name: MD Itemized deductions 2025 - Surviving spouse above threshold (with phase-out)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 350_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: MD
+    itemized_deductions_less_salt: 28_000
+    capped_property_taxes: 10_000
+  output:
+    # Base deductions: $38,000
+    # Excess income: $350,000 - $200,000 = $150,000
+    # Phase-out reduction: $150,000 * 7.5% = $11,250
+    # Final deductions: $38,000 - $11,250 = $26,750
+    md_itemized_deductions: 26_750

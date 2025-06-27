@@ -141,3 +141,76 @@
     md_non_refundable_eitc: 530 # TAXSIM 280.4
     md_refundable_eitc: 249.6
     md_income_tax: -249.60
+
+- name: Maryland 2025 new high income tax bracket test - Single filer at $750,000
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 750_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Calculated based on MD tax brackets for 2025 after standard deduction
+    md_income_tax_before_credits: 42_550.625
+
+- name: Maryland 2025 new high income tax bracket test - Joint filer at $900,000
+  absolute_error_margin: 0.01  
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 450_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 43
+        employment_income: 450_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Calculated based on MD tax brackets for 2025 after standard deduction
+    md_income_tax_before_credits: 50_578.75
+
+- name: Maryland 2025 new top tax bracket test - Single filer at $1,500,000
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        employment_income: 1_500_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Calculated based on MD tax brackets for 2025 after standard deduction
+    md_income_tax_before_credits: 90_667.25
