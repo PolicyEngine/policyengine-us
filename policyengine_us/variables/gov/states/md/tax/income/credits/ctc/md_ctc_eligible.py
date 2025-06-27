@@ -31,5 +31,5 @@ class md_ctc_eligible(Variable):
             has_eligible_children = tax_unit.sum(eligible) > 0
             return has_eligible_children
 
-        # When phase-out does not apply, use old logic (hard AGI cutoff)
+        # When phase-out does not apply, use old logic (hard adjusted gross income cutoff)
         return agi <= p.agi_cap

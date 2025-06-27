@@ -18,7 +18,7 @@ class md_capital_gains_surtax_applies(Variable):
         if not p.surtax_applies:
             return False
 
-        # Check Maryland AGI threshold
+        # Check Maryland adjusted gross income threshold
         md_agi = tax_unit("md_agi", period)
 
         return md_agi > p.surtax_threshold
