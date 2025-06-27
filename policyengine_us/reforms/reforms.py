@@ -106,6 +106,7 @@ from .reconciliation import (
     create_aca_ptc_immigration_status_reform,
     create_reconciliation_qbid_with_floor_reform,
     create_reconciliation_cdcc_reform,
+    create_reconciled_snap_abawd_work_requirement_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -258,6 +259,12 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    reconciled_snap_abawd_work_requirement = (
+        create_reconciled_snap_abawd_work_requirement_reform(
+            parameters, period
+        )
+    )
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -311,6 +318,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_additional_bracket,
         reconciliation_cdcc,
         additional_tax_bracket,
+        reconciled_snap_abawd_work_requirement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
