@@ -28,8 +28,7 @@ class md_ctc_eligible(Variable):
             )
             meets_age_limit = person("age", period) < age_limit
             eligible = dependent & meets_age_limit
-            has_eligible_children = tax_unit.sum(eligible) > 0
-            return has_eligible_children
+            return tax_unit.sum(eligible) > 0
 
         # When phase-out does not apply, use old logic (hard adjusted gross income cutoff)
         return agi <= p.agi_cap
