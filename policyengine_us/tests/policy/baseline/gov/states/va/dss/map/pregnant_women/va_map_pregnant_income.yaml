@@ -1,0 +1,26 @@
+- name: Only add up the parents' and children's income.
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_mother: true
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      parent2:
+        is_father: true
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      person:
+        is_father: false
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      child:
+        is_child: true
+        va_map_earned_income: 500
+        va_map_unearned_income: 500
+    households:
+      household:
+        members: [parent1, parent2, person, child]
+        state_code: VA
+  output:
+    va_map_pregnant_income: 5_000

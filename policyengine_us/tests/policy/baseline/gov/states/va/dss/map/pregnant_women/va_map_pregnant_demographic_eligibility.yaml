@@ -1,0 +1,73 @@
+- name: No one is pregnant.
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_pregnant: false
+      parent2:
+        is_pregnant: false
+    households:
+      household:
+        members: [parent1, parent2]
+        state_code: VA
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2]
+        spm_unit_size: 2
+  output:
+    va_map_pregnant_demographic_eligibility: false
+
+- name: One is pregant but household size is 1.
+  period: 2023
+  input:
+    people:
+      parent:
+        is_pregnant: true
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+    spm_units:
+      spm_unit:
+        members: [parent]
+        spm_unit_size: 1
+  output:
+    va_map_pregnant_demographic_eligibility: false
+
+- name: One is pregant.
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_pregnant: true
+      parent2:
+        is_pregnant: false
+    households:
+      household:
+        members: [parent1, parent2]
+        state_code: VA
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2]
+        spm_unit_size: 2
+  output:
+    va_map_pregnant_demographic_eligibility: true
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_pregnant: true
+      parent2:
+        is_pregnant: false
+    households:
+      household:
+        members: [parent1, parent2]
+        state_code: DC
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2]
+        spm_unit_size: 2
+  output:
+    va_map_pregnant_demographic_eligibility: false
