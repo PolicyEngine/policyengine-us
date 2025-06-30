@@ -137,9 +137,10 @@
         state_code: MD
   output:
     # Gross gains: $50,000 + $25,000 = $75,000
-    # Net gains after losses: max($75,000 - $80,000, 0) = $0
-    # Surtax: $0 * 2% = $0
-    md_capital_gains_surtax: 0
+    # Capital losses limited to $3,000 federal cap
+    # Net gains after losses: max($75,000 - $3,000, 0) = $72,000
+    # Surtax: $72,000 * 2% = $1,440
+    md_capital_gains_surtax: 1_440
 
 - name: MD Capital gains surtax 2025 - With capital losses (partial offset)
   period: 2025
@@ -160,9 +161,10 @@
         state_code: MD
   output:
     # Gross gains: $120,000 + $30,000 = $150,000
-    # Net gains after losses: max($150,000 - $50,000, 0) = $100,000
-    # Surtax: $100,000 * 2% = $2,000
-    md_capital_gains_surtax: 2_000
+    # Capital losses limited to $3,000 federal cap (was $50,000)
+    # Net gains after losses: max($150,000 - $3,000, 0) = $147,000
+    # Surtax: $147,000 * 2% = $2,940
+    md_capital_gains_surtax: 2_940
 
 - name: MD Capital gains surtax 2025 - High earner with large gains
   period: 2025

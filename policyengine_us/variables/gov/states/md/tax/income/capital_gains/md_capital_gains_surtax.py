@@ -22,16 +22,16 @@ class md_capital_gains_surtax(Variable):
         short_term_gains = add(tax_unit, period, ["short_term_capital_gains"])
         total_capital_gains = long_term_gains + short_term_gains
 
-        # Apply capital losses (with federal $3,000 limitation)
-        capital_losses = add(tax_unit, period, ["capital_losses"])
+        # Apply capital losses (with federal limitation)
+        capital_losses = tax_unit("limited_capital_loss", period)
         # Use federal net capital gain calculation which handles loss limitations
         net_capital_gains = max_(total_capital_gains - capital_losses, 0)
 
         # LIMITATIONS AND MISSING IMPLEMENTATIONS:
         #
         # 1. PRIMARY RESIDENCE EXCLUSION (NOT IMPLEMENTED):
-        #    - Should exclude gains from primary residence sales < $1.5M
-        #    - Missing: Section 121 exclusion ($250K single, $500K joint)
+        #    - Should exclude gains from primary residence sales above threshold
+        #    - Missing: Section 121 exclusion (amounts vary by filing status)
         #    - Missing: Property sale price tracking
         #    - Missing: Primary residence identification
         #    - Reason: PolicyEngine doesn't currently model detailed property sales
@@ -67,7 +67,7 @@ class md_capital_gains_surtax(Variable):
         #
         # CURRENT IMPLEMENTATION COVERS:
         # - Basic 2% surtax rate
-        # - $350,000 federal AGI threshold
+        # - Federal AGI threshold for surtax
         # - Net capital gains calculation with loss limitations
         # - Retirement account exclusion (implicit in capital_gains variables)
         #
