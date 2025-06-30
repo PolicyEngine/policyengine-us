@@ -1,0 +1,12 @@
+description: The Qualified Business Income Deduction (QBID) under reconciliation includes business development company (BDC) dividend income if this is true.
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Whether qualified business income (QBI) under reconciliation includes business development company (BDC) dividend income at the same rate as QBI (23% as initially proposed)
+  reference:
+    - title: Providing for reconciliation pursuant to H.Con.Res. 14, the Concurrent Resolution on the Budget for Fiscal Year 2025
+      href: "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=9"

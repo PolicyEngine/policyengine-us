@@ -7,13 +7,15 @@ class ctc_qualifying_child(Variable):
     label = "CTC-qualifying child"
     documentation = "Child qualifies for the Child Tax Credit"
     definition_period = YEAR
+    defined_for = "is_tax_unit_dependent"
     reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
     def formula(person, period, parameters):
-        is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        age_limit = parameters(
-            period
-        ).gov.irs.credits.ctc.amount.base.thresholds[-1]
+        p = parameters(period).gov.irs.credits.ctc
+        age_limit = p.amount.base.thresholds[-1]
         age_eligible = age < age_limit
-        return age_eligible & is_dependent
+        meets_identification_requirements = person(
+            "meets_ctc_child_identification_requirements", period
+        )
+        return age_eligible & meets_identification_requirements

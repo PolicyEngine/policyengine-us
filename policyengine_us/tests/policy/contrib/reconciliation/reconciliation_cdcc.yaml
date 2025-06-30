@@ -1,0 +1,59 @@
+- name: AGI below first phase-out start, no second phase-out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_cdcc.reconciliation_cdcc
+  input:
+    gov.contrib.reconciliation.cdcc.in_effect: true
+    gov.irs.credits.cdcc.phase_out.max: 0.5
+    gov.irs.credits.cdcc.phase_out.min: 0.35
+    adjusted_gross_income: 15_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc_rate: 0.5
+
+- name: Phased-out at first increment 
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_cdcc.reconciliation_cdcc
+  input:
+    gov.contrib.reconciliation.cdcc.in_effect: true
+    gov.irs.credits.cdcc.phase_out.max: 0.5
+    gov.irs.credits.cdcc.phase_out.min: 0.35
+    adjusted_gross_income: 16_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc_rate: 0.49
+
+- name: First phase-out plateau
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_cdcc.reconciliation_cdcc
+  input:
+    gov.contrib.reconciliation.cdcc.in_effect: true
+    gov.irs.credits.cdcc.phase_out.max: 0.5
+    gov.irs.credits.cdcc.phase_out.min: 0.35
+    adjusted_gross_income: 60_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc_rate: 0.35
+
+- name: Second phase-out starts
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_cdcc.reconciliation_cdcc
+  input:
+    gov.contrib.reconciliation.cdcc.in_effect: true
+    gov.irs.credits.cdcc.phase_out.max: 0.5
+    gov.irs.credits.cdcc.phase_out.min: 0.35
+    adjusted_gross_income: 90_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc_rate: 0.27
+
+- name: Fully phased-out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_cdcc.reconciliation_cdcc
+  input:
+    gov.contrib.reconciliation.cdcc.in_effect: true
+    gov.irs.credits.cdcc.phase_out.max: 0.5
+    gov.irs.credits.cdcc.phase_out.min: 0.35
+    adjusted_gross_income: 400_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc_rate: 0.2

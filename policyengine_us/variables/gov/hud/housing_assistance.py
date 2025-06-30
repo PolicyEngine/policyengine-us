@@ -8,8 +8,5 @@ class housing_assistance(Variable):
     unit = USD
     documentation = "Housing assistance"
     definition_period = YEAR
-
-    def formula(spm_unit, period, parameters):
-        hap = spm_unit("hud_hap", period)
-        eligible = spm_unit("is_eligible_for_housing_assistance", period)
-        return hap * eligible
+    defined_for = "is_eligible_for_housing_assistance"
+    adds = ["hud_hap"]

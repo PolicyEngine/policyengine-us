@@ -1,0 +1,64 @@
+- name: Eligible head
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members : [person1]
+        state_code: CA
+  output:
+    ca_calworks_child_care_immigration_status_eligible_person: true
+
+- name: Ineligible head
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        immigration_status: UNDOCUMENTED
+      person2: 
+        is_tax_unit_head: false
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members : [person1, person2]
+        state_code: CA
+  output:
+    ca_calworks_child_care_immigration_status_eligible_person: [false, true]
+
+- name: Both eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2: 
+        is_tax_unit_head: false
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members : [person1, person2]
+        state_code: CA
+  output:
+    ca_calworks_child_care_immigration_status_eligible_person: [true, true]
+
+- name: Ineligible head but not spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        immigration_status: UNDOCUMENTED
+      person2: 
+        is_tax_unit_head: false
+        immigration_status: PAROLED_ONE_YEAR
+    households:
+      household1:
+        members : [person1, person2]
+        state_code: CA
+  output:
+    ca_calworks_child_care_immigration_status_eligible_person: [false, true]

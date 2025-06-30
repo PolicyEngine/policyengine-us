@@ -1,0 +1,53 @@
+- name: No labor supply response
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 0
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 10_000
+  output:
+    employment_income_behavioral_response: 0
+
+- name: All employment income
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+  output:
+    employment_income_behavioral_response: 1_000
+
+- name: Mixed income sources
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 1_200
+    employment_income_before_lsr: 40_000
+    self_employment_income_before_lsr: 20_000
+  output:
+    employment_income_behavioral_response: 800  # 1_200 * (40_000 / 60_000)
+
+- name: Negative self-employment income
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -10_000
+  output:
+    employment_income_behavioral_response: 1_250  # max_(earnings, 0) = 40_000, emp_share = 50_000/40_000 = 1.25
+
+- name: Zero total earnings
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 500
+    employment_income_before_lsr: 0
+    self_employment_income_before_lsr: 0
+  output:
+    employment_income_behavioral_response: 500  # mask approach defaults emp_share = 1 when earnings = 0
+
+- name: Negative total earnings clipped to zero
+  period: 2023
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: -40_000  # Net negative earnings
+  output:
+    employment_income_behavioral_response: 1_000  # max_(earnings, 0) = 0, defaults emp_share = 1
