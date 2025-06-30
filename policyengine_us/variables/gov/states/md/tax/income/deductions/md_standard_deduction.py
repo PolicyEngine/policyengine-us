@@ -9,7 +9,7 @@ class md_standard_deduction(Variable):
     definition_period = YEAR
     reference = [
         "https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69",
-        "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=160",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+        "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=165",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
     ]
     defined_for = StateCode.MD
 
