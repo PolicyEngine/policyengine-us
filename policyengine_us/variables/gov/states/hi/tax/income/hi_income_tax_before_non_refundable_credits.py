@@ -9,7 +9,7 @@ class hi_income_tax_before_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     # Hawaii Tax Rate Schedules
-    reference = " https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/"
+    reference = "https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/"
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
