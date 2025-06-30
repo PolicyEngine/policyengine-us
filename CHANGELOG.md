@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.327.1] - 2025-06-30 14:36:28
+
+### Fixed
+
+- Oregon retirement income credit formula.
+
 ## [1.327.0] - 2025-06-26 16:53:09
 
 ### Added
@@ -12125,6 +12131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.327.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.0...1.327.1
 [1.327.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.326.0...1.327.0
 [1.326.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.325.0...1.326.0
 [1.325.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.324.0...1.325.0
