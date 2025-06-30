@@ -10315,3 +10315,9 @@
     fixed:
     - Exclude non-mortgage interest from the California itemized deduction AGI limitation.
   date: 2025-06-30 16:31:07
+- bump: patch
+  changes:
+    fixed:
+    - Only subtract taxable pension income from Hawaii AGI.
+    - Hawaii single and separate income tax rates.
+  date: 2025-06-30 16:42:51
