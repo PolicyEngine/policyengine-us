@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class or_retirement_credit_eligible(Variable):
+class or_retirement_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for the Oregon Retirement Income Tax Credit"
+    label = "Eligible person for the Oregon Retirement Income Tax Credit"
     definition_period = YEAR
     reference = "https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=238290#:~:text=Eligible%20individuals%20receiving%20retirement%20pay,by%20the%20household%20income%20limitation."
     defined_for = StateCode.OR
@@ -19,4 +19,4 @@ class or_retirement_credit_eligible(Variable):
             .gov.states["or"]
             .tax.income.credits.retirement_income
         )
-        return (age >= p.age_eligibility) & (is_head | is_spouse)
+        return (age >= p.age_threshold) & (is_head | is_spouse)
