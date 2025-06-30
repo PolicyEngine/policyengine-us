@@ -16,9 +16,9 @@ class dc_ccsp_qualified_need_eligible(Variable):
         # child age < 19 and disabled
         is_dependent = person("is_tax_unit_dependent", period)
         is_disabled = person("is_disabled", period)
-        child_under_19 = age < p.disabled_child
+        age_eligible = age < p.disabled_child
         has_disabled_child = spm_unit.any(
-            is_dependent & is_disabled & child_under_19
+            is_dependent & is_disabled & age_eligible
         )
         # parent is disabled # income waived
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
