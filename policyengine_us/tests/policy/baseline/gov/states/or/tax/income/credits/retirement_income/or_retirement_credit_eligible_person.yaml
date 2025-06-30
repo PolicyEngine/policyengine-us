@@ -6,7 +6,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: false
   output:
-    or_retirement_credit_eligible: false
+    or_retirement_credit_eligible_person: false
 
 - name: Head ineligible
   period: 2022
@@ -16,7 +16,7 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    or_retirement_credit_eligible: false
+    or_retirement_credit_eligible_person: false
 
 - name: Spouse ineligible
   period: 2022
@@ -26,7 +26,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    or_retirement_credit_eligible: false
+    or_retirement_credit_eligible_person: false
 
 - name: Spouse eligible
   period: 2022
@@ -36,7 +36,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    or_retirement_credit_eligible: true
+    or_retirement_credit_eligible_person: true
 
 - name: Head eligible
   period: 2022
@@ -46,4 +46,4 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    or_retirement_credit_eligible: true
+    or_retirement_credit_eligible_person: true
