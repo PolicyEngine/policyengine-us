@@ -28,7 +28,7 @@ class md_income_tax_before_credits(Variable):
                 p.rates.single.calc(taxable_income),
                 p.rates.separate.calc(taxable_income),
                 p.rates.joint.calc(taxable_income),
-                p.rates.head.calc(taxable_income),
+                p.rates.head_of_household.calc(taxable_income),
                 p.rates.surviving_spouse.calc(taxable_income),
             ],
         )
