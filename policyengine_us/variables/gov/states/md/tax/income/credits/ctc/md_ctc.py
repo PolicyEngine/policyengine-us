@@ -37,7 +37,7 @@ class md_ctc(Variable):
 
         # Apply income-based phase-out instead of hard cutoff when phase-out applies
         if p.phase_out.applies:
-            agi = tax_unit("md_agi", period)
+            agi = tax_unit("adjusted_gross_income", period)
             phase_out_threshold = p.phase_out.threshold
             phase_out_rate = p.phase_out.rate
             phase_out_increment = p.phase_out.increment

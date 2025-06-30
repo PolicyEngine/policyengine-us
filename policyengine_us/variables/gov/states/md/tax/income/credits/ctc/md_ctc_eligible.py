@@ -15,7 +15,7 @@ class md_ctc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
-        agi = tax_unit("md_agi", period)
+        agi = tax_unit("adjusted_gross_income", period)
 
         # When phase-out applies, eligibility is based on having eligible children
         # (phase-out is handled in the credit amount calculation)

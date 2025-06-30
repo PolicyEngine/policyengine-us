@@ -27,7 +27,7 @@ class md_itemized_deductions(Variable):
         p = parameters(period).gov.states.md.tax.income.deductions.itemized
         if p.phase_out.applies:
             filing_status = tax_unit("filing_status", period)
-            md_agi = tax_unit("md_agi", period)
+            md_agi = tax_unit("adjusted_gross_income", period)
             threshold = p.phase_out.threshold[filing_status]
             phase_out_rate = p.phase_out.rate
 
