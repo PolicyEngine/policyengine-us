@@ -89,7 +89,7 @@
   output:
     medicaid_work_requirement_eligible: [true, true]
 
-- name: Case 9, not working, has child at age 13, but not a dependent child.  
+- name: Case 9, not working, has child at age 14,  ineligible. 
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
@@ -100,7 +100,7 @@
         is_tax_unit_head_or_spouse: true
         monthly_hours_worked: 0
       person2:
-        age: 13
-        is_tax_unit_dependent: false
+        age: 14
+        is_tax_unit_dependent: true
   output:
     medicaid_work_requirement_eligible: [false, true]
