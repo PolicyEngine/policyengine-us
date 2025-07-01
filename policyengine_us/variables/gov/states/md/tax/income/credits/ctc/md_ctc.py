@@ -38,17 +38,14 @@ class md_ctc(Variable):
         # Apply income-based phase-out instead of hard cutoff when phase-out applies
         if p.phase_out.applies:
             agi = tax_unit("adjusted_gross_income", period)
-            phase_out_threshold = p.phase_out.threshold
-            phase_out_rate = p.phase_out.rate
-            phase_out_increment = p.phase_out.increment
 
             # Calculate phase-out reduction: reduction for every increment (or fraction thereof) above threshold
-            excess_income = max_(agi - phase_out_threshold, 0)
+            excess_income = max_(agi - p.phase_out.threshold, 0)
             # Use ceiling division: any fraction of increment counts as a full increment for phase-out
             increments_above_threshold = ceil(
-                excess_income / phase_out_increment
+                excess_income / p.phase_out.increment
             )
-            phase_out_amount = increments_above_threshold * phase_out_rate
+            phase_out_amount = increments_above_threshold * p.phase_out.rate
 
             # Apply phase-out (credit cannot go below zero)
             return max_(base_credit - phase_out_amount, 0)

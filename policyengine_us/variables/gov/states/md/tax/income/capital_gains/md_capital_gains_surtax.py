@@ -18,9 +18,11 @@ class md_capital_gains_surtax(Variable):
 
         # Get net capital gains (sum of long-term and short-term)
         # NOTE: This is the basic implementation using readily available variables
-        long_term_gains = add(tax_unit, period, ["long_term_capital_gains"])
-        short_term_gains = add(tax_unit, period, ["short_term_capital_gains"])
-        total_capital_gains = long_term_gains + short_term_gains
+        total_capital_gains = add(
+            tax_unit,
+            period,
+            ["short_term_capital_gains", "long_term_capital_gains"],
+        )
 
         # Apply capital losses (with federal limitation)
         capital_losses = tax_unit("limited_capital_loss", period)

@@ -28,12 +28,12 @@ class md_itemized_deductions(Variable):
         if p.phase_out.applies:
             filing_status = tax_unit("filing_status", period)
             md_agi = tax_unit("adjusted_gross_income", period)
-            threshold = p.phase_out.threshold[filing_status]
-            phase_out_rate = p.phase_out.rate
 
             # Calculate phase-out reduction
-            excess_income = max_(md_agi - threshold, 0)
-            phase_out_reduction = excess_income * phase_out_rate
+            excess_income = max_(
+                md_agi - p.phase_out.threshold[filing_status], 0
+            )
+            phase_out_reduction = excess_income * p.phase_out.rate
 
             # Apply phase-out (itemized deductions cannot go below zero)
             return max_(base_itemized - phase_out_reduction, 0)
