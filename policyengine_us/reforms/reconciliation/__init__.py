@@ -31,3 +31,6 @@ from .reconciliation_cdcc import (
 from .reconciled_medicaid_work_requirement import (
     create_reconciled_medicaid_work_requirement_reform,
 )
+from .reconciled_snap_abawd_work_requirement import (
+    create_reconciled_snap_abawd_work_requirement_reform,
+)
