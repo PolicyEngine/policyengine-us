@@ -10,38 +10,40 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
         entity = Person
         label = "Eligible person for Medicaid via work requirement"
         definition_period = YEAR
-        reference = "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364"
+        reference = "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678"
 
         def formula(person, period, parameters):
             p = parameters(
                 period
             ).gov.contrib.reconciliation.medicaid_work_requirement
-            # Works no less than 80 hours p.364 (2)(A)
+            # Works no less than 80 hours p.680 (2)(A)
             monthly_hours_worked = person("monthly_hours_worked", period)
             meets_monthly_work_hours = (
                 monthly_hours_worked >= p.monthly_hours_threshold
             )
-            # The individual is enrolled in an educational program at least half-time. p.364 (2)(D)
+            # The individual is enrolled in an educational program at least half-time. p.680 (2)(D)
             is_full_time_student = person("is_full_time_student", period)
-            # pregnant or postpartum medical assistance p.365 (3)(A)(i)(II)(bb)
+            # pregnant or postpartum medical assistance p.681 (3)(A)(i)(II)(bb)
             is_pregnant = person("is_pregnant", period)
-            # Has attained age of 19 and is under 65 is require to work p.376 (bb)
+            # Has attained age of 19 and is under 65 is require to work p.693 (bb)
             age = person("age", period)
             work_required_age = p.age_range.calc(age)
-            # parent of a disabled person p.377 (III)
-            is_parent = person("is_parent", period)
+            # parent, guardian, caretaker of a disabled person or dependent child 13 years of age or under  p.694 (III)
             is_disabled = person("is_disabled", period)
             is_dependent = person("is_tax_unit_dependent", period)
-            eligible_parent = is_parent & person.tax_unit.any(
-                is_dependent & is_disabled
+            has_disabled = person.tax_unit.any(is_dependent & is_disabled)
+            child_age_eligible = age <= p.dependent_age_limit
+            has_dependent_child = person.tax_unit.any(
+                is_dependent & child_age_eligible
             )
-            # veteran and is_permanently_and_totally_disabled p.377 (IV)
+            eligible_parent = has_disabled | has_dependent_child
+            # veteran and is_permanently_and_totally_disabled p.694 (IV)
             is_veteran = person("is_veteran", period)
             is_permanently_and_totally_disabled = person(
                 "is_permanently_and_totally_disabled", period
             )
             eligible_veteran = is_veteran & is_permanently_and_totally_disabled
-            # blind or disabled or is_incapable_of_self_care p.377 (V)
+            # blind or disabled or is_incapable_of_self_care p.694 (V)
             is_blind = person("is_blind", period)
             is_incapable_of_self_care = person(
                 "is_incapable_of_self_care", period
