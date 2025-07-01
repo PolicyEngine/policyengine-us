@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.328.0] - 2025-06-30 19:04:17
+
+### Added
+
+- Reconciled Medicaid work requirement reform.
+
+## [1.327.6] - 2025-06-30 17:22:33
+
+### Fixed
+
+- Rhode Island 2024 income tax rate update.
+- Rhode Island 2024 exemption phase-out start.
+
+## [1.327.5] - 2025-06-30 16:42:51
+
+### Fixed
+
+- Only subtract taxable pension income from Hawaii AGI.
+- Hawaii single and separate income tax rates.
+
+## [1.327.4] - 2025-06-30 16:31:07
+
+### Fixed
+
+- Exclude non-mortgage interest from the California itemized deduction AGI limitation.
+
+## [1.327.3] - 2025-06-30 16:07:26
+
+### Fixed
+
+- Nebraska 2024 income tax brackets.
+
+## [1.327.2] - 2025-06-30 14:44:18
+
+### Fixed
+
+- Senate Finance Tip and Overtime income reforms.
+
 ## [1.327.1] - 2025-06-30 14:36:28
 
 ### Fixed
@@ -12131,6 +12169,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.328.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.6...1.328.0
+[1.327.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.5...1.327.6
+[1.327.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.4...1.327.5
+[1.327.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.3...1.327.4
+[1.327.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.2...1.327.3
+[1.327.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.1...1.327.2
 [1.327.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.0...1.327.1
 [1.327.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.326.0...1.327.0
 [1.326.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.325.0...1.326.0
