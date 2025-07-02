@@ -1,0 +1,13 @@
+description: VA MAP counts these components as resources.
+values:
+  2023-02-01:
+    - bank_accounts
+    - stocks
+    - bonds
+    - cash
+    - property
+metadata:
+  unit: list
+  reference:
+    - title: VA Medical Assistance Programs
+      href: https://www.dss.virginia.gov/files/division/bp/medical_assistance/intro_page/covered_groups/adults_aged_65/ABD_80Perc_Fact_Sheet_eff_12_2022.pdf
