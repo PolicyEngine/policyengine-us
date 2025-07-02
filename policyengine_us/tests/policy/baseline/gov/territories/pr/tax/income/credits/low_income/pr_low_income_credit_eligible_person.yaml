@@ -4,6 +4,7 @@
     state_code: PR
     age: 65
     is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit: 0
   output:
     pr_low_income_credit_eligible_person: true
 
@@ -13,6 +14,7 @@
     state_code: PR
     age: 64
     is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit: 0
   output:
     pr_low_income_credit_eligible_person: false
 
@@ -22,5 +24,15 @@
     state_code: PR
     age: 65
     is_tax_unit_head_or_spouse: false
+    pr_earned_income_credit: 0
+  output:
+    pr_low_income_credit_eligible_person: false
+
+- name: Claimed EITC
+  period: 2024
+  input:
+    age: 65
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit: 1000
   output:
     pr_low_income_credit_eligible_person: false
