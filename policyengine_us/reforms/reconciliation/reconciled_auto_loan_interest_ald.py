@@ -82,6 +82,7 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
             if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
                 agi += add(tax_unit, period, ["basic_income"])
             return agi
+
     class taxable_income_deductions(Variable):
         value_type = float
         entity = TaxUnit
@@ -102,12 +103,15 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
                 period
             ).gov.contrib.reconciliation.auto_loan_interest_ald
             if p.senate_version.applies:
-                deductions_if_itemizing = deductions_if_itemizing + auto_loan_interest_ald
-                deductions_if_not_itemizing = deductions_if_not_itemizing + auto_loan_interest_ald
+                deductions_if_itemizing = (
+                    deductions_if_itemizing + auto_loan_interest_ald
+                )
+                deductions_if_not_itemizing = (
+                    deductions_if_not_itemizing + auto_loan_interest_ald
+                )
             return where(
                 itemizes, deductions_if_itemizing, deductions_if_not_itemizing
             )
-
 
     class reform(Reform):
         def apply(self):
