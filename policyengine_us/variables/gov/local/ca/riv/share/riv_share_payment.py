@@ -11,7 +11,7 @@ class riv_share_payment(Variable):
     reference = "https://riversideca.gov/utilities/residents/assistance-programs/share-english"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.local.ca.riv.share.payment
+        p = parameters(period).gov.local.ca.riv.cap.share.payment
         electric_expense = spm_unit("pre_subsidy_electricity_expense", period)
         electric_payment = min_(electric_expense, p.electric)
         electric_emergency_payment = spm_unit(

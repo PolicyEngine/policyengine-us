@@ -12,6 +12,6 @@ class riv_share_electric_emergency_payment(Variable):
 
     def formula(spm_unit, period, parameters):
         # This electric emergency payment only assign once per 12-month period
-        p = parameters(period).gov.local.ca.riv.share.payment
+        p = parameters(period).gov.local.ca.riv.cap.share.payment
         is_urgent = spm_unit("riv_share_is_urgent", period)
         return is_urgent * p.electric_emergency
