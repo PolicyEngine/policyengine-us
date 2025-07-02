@@ -56,7 +56,7 @@ def create_reconciled_charitable_deduction_reform(
     if bypass:
         return create_reconciled_charitable_deduction()
 
-    p = parameters.gov.contrib.reconciliation.charitable_cash_donations
+    p = parameters.gov.contrib.reconciliation.charitable_donations
 
     reform_active = False
     current_period = period_(period)

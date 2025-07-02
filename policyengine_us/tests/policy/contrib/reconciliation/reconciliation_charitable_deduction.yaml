@@ -24,7 +24,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
   input:
-    gov.contrib.reconciliation.charitable_cash_donations.in_effect: true
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
     charitable_cash_donations: 500
     charitable_non_cash_donations: 300
     positive_agi: 200_000
@@ -35,7 +35,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
   input:
-    gov.contrib.reconciliation.charitable_cash_donations.in_effect: true
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
     gov.irs.deductions.itemized.charity.ceiling.all: 0.6
     gov.irs.deductions.itemized.charity.ceiling.non_cash: 0.5
     charitable_cash_donations: 600
@@ -48,7 +48,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
   input:
-    gov.contrib.reconciliation.charitable_cash_donations.in_effect: true
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
     gov.irs.deductions.itemized.charity.ceiling.all: 0.6
     gov.irs.deductions.itemized.charity.ceiling.non_cash: 0.5
     charitable_cash_donations: 3_000
