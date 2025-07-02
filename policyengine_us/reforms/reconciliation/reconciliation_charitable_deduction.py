@@ -21,7 +21,7 @@ def create_reconciled_charitable_deduction() -> Reform:
             )
             positive_agi = tax_unit("positive_agi", period)
             p = parameters(period).gov.irs.deductions.itemized.charity.ceiling
-            p_ref = parameters(period).gov.contrib.reconciliation.charitable_cash_donations
+            p_ref = parameters(period).gov.contrib.reconciliation.charitable_donations
             deduction_floor = p_ref.floor * positive_agi
             reduced_non_cash_donations = max_(non_cash_donations - deduction_floor, 0)
             capped_non_cash_donations = min_(
