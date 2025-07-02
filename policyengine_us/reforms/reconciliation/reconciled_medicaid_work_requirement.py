@@ -10,7 +10,8 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
         entity = Person
         label = "Eligible person for Medicaid via work requirement"
         definition_period = YEAR
-        reference = "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678"
+        reference = ("https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678",
+                     "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364")
 
         def formula(person, period, parameters):
             p = parameters(
@@ -28,15 +29,10 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             # Has attained age of 19 and is under 65 is require to work p.693 (bb)
             age = person("age", period)
             work_required_age = p.age_range.calc(age)
-            # parent, guardian, caretaker of a disabled person or dependent child 13 years of age or under  p.694 (III)
-            is_disabled = person("is_disabled", period)
+            # parent, guardian, caretaker of a disabled person
             is_dependent = person("is_tax_unit_dependent", period)
+            is_disabled = person("is_disabled", period)
             has_disabled = person.tax_unit.any(is_dependent & is_disabled)
-            child_age_eligible = age <= p.dependent_age_limit
-            has_dependent_child = person.tax_unit.any(
-                is_dependent & child_age_eligible
-            )
-            eligible_parent = has_disabled | has_dependent_child
             # veteran and is_permanently_and_totally_disabled p.694 (IV)
             is_veteran = person("is_veteran", period)
             is_permanently_and_totally_disabled = person(
@@ -51,18 +47,40 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             eligible_disabled = (
                 is_blind | is_disabled | is_incapable_of_self_care
             )
+            # House Version
+            # parent, guardian, caretaker of a dependent child p.377 (III)
+            # https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=377
+            is_child = person("is_child", period)
+            has_dependent_child_house = person.tax_unit.any(
+                is_dependent & is_child
+            )
+            # Senate Version
+            # parent, guardian, caretaker of a dependent child 13 years of age or under  p.694 (III)
+            child_age_eligible = age <= p.senate.dependent_age_limit
+            has_dependent_child_senate = person.tax_unit.any(
+                is_dependent & child_age_eligible
+            )
             exempted_from_work = (
                 is_full_time_student
                 | is_pregnant
-                | eligible_parent
+                | has_disabled
                 | eligible_veteran
                 | eligible_disabled
             )
-            return where(
+            if p.senate.in_effect:
+                return where(
                 work_required_age,
-                meets_monthly_work_hours | exempted_from_work,
+                meets_monthly_work_hours | exempted_from_work | has_dependent_child_senate,
                 True,
             )
+            elif p.house.in_effect:
+                return where(
+                work_required_age,
+                meets_monthly_work_hours | exempted_from_work | has_dependent_child_house,
+                True,
+            )
+            else:
+                return True
 
     class is_medicaid_eligible(Variable):
         value_type = bool
@@ -117,7 +135,10 @@ def create_reconciled_medicaid_work_requirement_reform(
     current_period = period_(period)
 
     for i in range(5):
-        if p(current_period).in_effect:
+        if (
+            p(current_period).house.in_effect
+            or p(current_period).senate.in_effect
+        ):
             reform_active = True
             break
         current_period = current_period.offset(1, "year")
