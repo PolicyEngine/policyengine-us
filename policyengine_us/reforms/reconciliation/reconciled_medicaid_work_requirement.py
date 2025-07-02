@@ -69,22 +69,19 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
                 | eligible_veteran
                 | eligible_disabled
             )
+            meets_base_requirement = (
+                meets_monthly_work_hours | exempted_from_work
+            )
+            meets_senate_condition = (
+                meets_base_requirement | has_dependent_child_senate
+            )
+            meets_house_condition = (
+                meets_base_requirement | has_dependent_child_house
+            )
             if p.senate.in_effect:
-                return where(
-                    work_required_age,
-                    meets_monthly_work_hours
-                    | exempted_from_work
-                    | has_dependent_child_senate,
-                    True,
-                )
+                return where(work_required_age, meets_senate_condition, True)
             elif p.house.in_effect:
-                return where(
-                    work_required_age,
-                    meets_monthly_work_hours
-                    | exempted_from_work
-                    | has_dependent_child_house,
-                    True,
-                )
+                return where(work_required_age, meets_house_condition, True)
             else:
                 return True
 
