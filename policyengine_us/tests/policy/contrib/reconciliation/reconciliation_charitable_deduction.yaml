@@ -2,7 +2,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
   input:
-    gov.contrib.reconciliation.charitable_cash_donations.in_effect: true
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
     charitable_cash_donations: 10_000
     charitable_non_cash_donations: 30_000
     positive_agi: 0
@@ -13,7 +13,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
   input:
-    gov.contrib.reconciliation.charitable_cash_donations.in_effect: true
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
     charitable_cash_donations: 10_000
     charitable_non_cash_donations: 30_000
     positive_agi: 200_000
@@ -42,7 +42,7 @@
     charitable_non_cash_donations: 12_000
     positive_agi: 20_000
   output:
-    charitable_deduction: 10_100
+    charitable_deduction: 10_600
 
 - name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, full cap
   period: 2026
