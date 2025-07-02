@@ -10,8 +10,10 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
         entity = Person
         label = "Eligible person for Medicaid via work requirement"
         definition_period = YEAR
-        reference = ("https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678",
-                     "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364")
+        reference = (
+            "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678",
+            "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364",
+        )
 
         def formula(person, period, parameters):
             p = parameters(
@@ -69,16 +71,20 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
             )
             if p.senate.in_effect:
                 return where(
-                work_required_age,
-                meets_monthly_work_hours | exempted_from_work | has_dependent_child_senate,
-                True,
-            )
+                    work_required_age,
+                    meets_monthly_work_hours
+                    | exempted_from_work
+                    | has_dependent_child_senate,
+                    True,
+                )
             elif p.house.in_effect:
                 return where(
-                work_required_age,
-                meets_monthly_work_hours | exempted_from_work | has_dependent_child_house,
-                True,
-            )
+                    work_required_age,
+                    meets_monthly_work_hours
+                    | exempted_from_work
+                    | has_dependent_child_house,
+                    True,
+                )
             else:
                 return True
 
