@@ -107,15 +107,12 @@ def create_reconciled_snap_abawd_work_requirement() -> Reform:
             age = person("monthly_age", period)
             is_dependent = person("is_tax_unit_dependent", period)
             if p_reform.house.in_effect:
-                return is_dependent & (
-                    age < p_reform.house.dependent_age_limit
-                )
+                age_limit = p_reform.house.dependent_age_limit
             elif p_reform.senate.in_effect:
-                return is_dependent & (
-                    age < p_reform.senate.dependent_age_limit
-                )
+                age_limit = p_reform.senate.dependent_age_limit
             else:
-                return is_dependent & (age < p.dependent)
+                age_limit = p.dependent
+            return is_dependent & (age < age_limit)
 
     class is_work_exempted_state(Variable):
         value_type = bool
