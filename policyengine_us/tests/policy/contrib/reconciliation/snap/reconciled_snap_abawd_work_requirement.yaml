@@ -1,0 +1,169 @@
+- name: Case 1, baseline, age 55 exempted from general work requirement. 
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    age: 55
+    weekly_hours_worked: 1
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 2, house reform, age 55 is not exempted from general work requirement. 
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    age: 55
+    weekly_hours_worked: 1
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 3, baseline, have a child at age 15.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 4, house reform, have a child at age 15.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [false, true]
+
+- name: Case 5, house reform, have a child at age 6.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [false, true]
+    meets_snap_work_requirements: true # eligible due to have a child under 6
+
+- name: Case 6, house reform, is veteran with a child 15 in 2027. 
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_veteran: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 7, house reform, is veteran with a child 15 in 2031, sunset provision in effect. 
+  period: 2031
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_veteran: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [false, true]
+
+- name: Case 8, senate reform, have a child at age 13.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: true
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 29
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+    meets_snap_general_work_requirements: [false, true]
+    meets_snap_work_requirements: false
+
+- name: Case 9, house reform, have a child at age 13.
+  period: 2027
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+  output:
+    meets_snap_abawd_work_requirements: [false, true]
+    meets_snap_work_requirements: false

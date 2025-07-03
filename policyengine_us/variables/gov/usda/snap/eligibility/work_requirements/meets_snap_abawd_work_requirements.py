@@ -18,18 +18,14 @@ class meets_snap_abawd_work_requirements(Variable):
         worked_exempted_age = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
         is_disabled = person("is_disabled", period)
-        # Parent of a household member under 18
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_child = age < p.age_threshold.dependent
-        is_parent = person("is_parent", period)
-        has_child = person.spm_unit.any(is_dependent & is_child)
-        exempted_parent = is_parent & has_child
-        # Exempted from the general work requirements
-        meets_snap_general_work_requirements = person(
-            "meets_snap_general_work_requirements", period
-        )
         # Pregnant
         is_pregnant = person("is_pregnant", period)
+        # Is otherwise exempt from work requirements under section 6(d)(2)
+        # of the Food and Nutrition Act of 2008, as implemented in regulations at § 273.7(b)
+        # This is the general work requirement https://www.law.cornell.edu/cfr/text/7/273.7#b
+        has_incapacitated_person = person.spm_unit.any(
+            person("is_incapable_of_self_care", period)
+        )
         # Homeless
         is_homeless = person.household("is_homeless", period)
         # A veteran
@@ -38,8 +34,7 @@ class meets_snap_abawd_work_requirements(Variable):
             is_working
             | worked_exempted_age
             | is_disabled
-            | exempted_parent
-            | meets_snap_general_work_requirements
+            | has_incapacitated_person
             | is_pregnant
             | is_homeless
             | is_veteran

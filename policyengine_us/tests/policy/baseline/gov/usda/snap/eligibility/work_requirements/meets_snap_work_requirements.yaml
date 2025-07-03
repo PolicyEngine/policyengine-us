@@ -37,3 +37,49 @@
     is_tax_unit_dependent: false
   output: 
     meets_snap_work_requirements: true
+
+- name: Case 5, have a dependent child, work 29 hours a week, eligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 29
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 6, no dependent child, work 29 hours a week, ineligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 29
+      person2:
+        age: 30
+        weekly_hours_worked: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+    meets_snap_general_work_requirements: [false, true]
+    meets_snap_work_requirements: false
