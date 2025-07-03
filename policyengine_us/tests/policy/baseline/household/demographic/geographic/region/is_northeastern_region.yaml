@@ -1,0 +1,20 @@
+- name: Massachusetts is in northeast region.
+  period: 2024
+  input:
+    state_code: MA
+  output:
+    is_northeastern_region: true
+
+- name: Pennsylvania is in northeast region. 
+  period: 2024
+  input:
+    state_code: PA
+  output:
+    is_northeastern_region: true
+
+- name: Illinois is not in northeast region.
+  period: 2024
+  input:
+    state_code: IL
+  output:
+    is_northeastern_region: false
