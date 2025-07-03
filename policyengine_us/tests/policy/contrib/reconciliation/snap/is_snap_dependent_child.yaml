@@ -1,0 +1,32 @@
+- name: Case 1, baseline, age 17 is a dependent child. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    age: 17
+  output:
+    is_snap_dependent_child: true
+
+- name: Case 2, house version, age 13 is not a  dependent child. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    age: 13
+  output:
+    is_snap_dependent_child: false
+
+- name: Case 3, senate version, age 13 is a dependent child. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: true
+    age: 13
+  output:
+    is_snap_dependent_child: true
