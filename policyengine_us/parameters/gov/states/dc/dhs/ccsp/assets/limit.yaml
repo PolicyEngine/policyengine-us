@@ -1,0 +1,11 @@
+description: The District of Columbia limits the Child Care Subsidy Program to households with assets lesser than this amount.
+values:
+  2020-01-01: 1_000_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: DC CCSP assets limit
+  reference:
+    - title: DC Child Care Subsidy Program Policy Manual
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=12

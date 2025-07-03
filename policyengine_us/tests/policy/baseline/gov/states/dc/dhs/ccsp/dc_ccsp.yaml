@@ -1,0 +1,19 @@
+- name: Case 1, eligible, payment higher. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_eligible: true
+    dc_ccsp_co_payment: 10
+    dc_ccsp_payment: 20
+  output:
+    dc_ccsp: 10
+
+- name: Case 2, ineligible 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_eligible: false
+    dc_ccsp_co_payment: 10
+    dc_ccsp_payment: 20
+  output:
+    dc_ccsp: 0
