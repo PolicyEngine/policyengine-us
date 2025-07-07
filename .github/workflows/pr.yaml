@@ -31,7 +31,7 @@ jobs:
       - name: Check version number has been properly updated
         run: .github/is-version-number-acceptable.sh
   Test:
-    runs-on: larger-runner
+    runs-on: ubuntu-latest
     continue-on-error: true
     steps:
       - name: Checkout repo
