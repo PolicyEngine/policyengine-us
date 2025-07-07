@@ -1,0 +1,31 @@
+description: All sources of household market income.
+values:
+  0000-01-01:
+  - employment_income
+  - self_employment_income
+  - partnership_s_corp_income
+  - gi_cash_assistance
+  - farm_income
+  - farm_rent_income
+  - capital_gains
+  - interest_income
+  - rental_income
+  # Royalties included in rental income
+  - dividend_income
+  - pension_income
+  # Pension income includes annuities and endowment contracts
+  - debt_relief
+  # Decedent income
+  # Estate interest income
+  - unemployment_compensation
+  - social_security
+  - illicit_income
+  - retirement_distributions
+  - miscellaneous_income
+  - ak_permanent_fund_dividend
+
+
+metadata:
+  unit: list
+  period: year
+  label: Household market income sources
