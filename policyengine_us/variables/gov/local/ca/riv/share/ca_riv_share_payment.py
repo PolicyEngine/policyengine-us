@@ -15,20 +15,20 @@ class ca_riv_share_payment(Variable):
         electricity_expense = spm_unit(
             "pre_subsidy_electricity_expense", period
         )
-        electricity_payment = min_(electricity_expense, p.electric)
+        capped_electricity_payment = min_(electricity_expense, p.electric)
         electricity_emergency_payment = spm_unit(
-            "ca_riv_share_electric_emergency_payment", period
+            "ca_riv_share_electricity_emergency_payment", period
         )
 
         water_expense = spm_unit("water_expense", period)
-        water_payment = min_(water_expense, p.water)
+        capped_water_payment = min_(water_expense, p.water)
 
         trash_expense = spm_unit("trash_expense", period)
-        trash_payment = min_(trash_expense, p.trash)
+        capped_trash_payment = min_(trash_expense, p.trash)
 
         return (
-            electricity_payment
+            capped_electricity_payment
             + electricity_emergency_payment
-            + water_payment
-            + trash_payment
+            + capped_water_payment
+            + capped_trash_payment
         )

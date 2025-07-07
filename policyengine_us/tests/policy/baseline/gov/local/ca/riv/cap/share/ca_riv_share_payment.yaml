@@ -5,7 +5,7 @@
     pre_subsidy_electricity_expense: 50 *12
     water_expense: 5 * 12
     trash_expense: 5 * 12
-    ca_riv_share_electric_emergency_payment: 0
+    ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_eligible: true
   output:
     ca_riv_share_payment: 33.21
@@ -18,7 +18,7 @@
     pre_subsidy_electricity_expense: 20 * 12
     water_expense: 3 * 12
     trash_expense: 3 * 12
-    ca_riv_share_electric_emergency_payment: 0
+    ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_eligible: true
   output:
     ca_riv_share_payment: 26
@@ -39,13 +39,13 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_riv_share_is_urgent: true
+        ca_riv_share_eligible_for_emergency_payment: true
         pre_subsidy_electricity_expense: 50 * 12
         water_expense: 5 * 12
         trash_expense: 5 * 12
   output:
     ca_riv_share_countable_income: 50_000 / 12 
-    ca_riv_share_electric_emergency_payment: 250 / 12
+    ca_riv_share_electricity_emergency_payment: 250 / 12
     ca_riv_share_payment: 54.04 
     # 33.21 + 250/12 
 
@@ -65,10 +65,10 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_riv_share_is_urgent: true
+        ca_riv_share_eligible_for_emergency_payment: true
         pre_subsidy_electricity_expense: 50 * 12
         water_expense: 5 * 12
         trash_expense: 5 * 12
   output:
-    ca_riv_share_electric_emergency_payment: 0
+    ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_payment: 0 
