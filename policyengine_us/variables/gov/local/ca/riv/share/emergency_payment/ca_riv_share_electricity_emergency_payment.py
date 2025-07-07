@@ -16,4 +16,4 @@ class ca_riv_share_electricity_emergency_payment(Variable):
         is_urgent = spm_unit(
             "ca_riv_share_eligible_for_emergency_payment", period
         )
-        return is_urgent * p.electric_emergency
+        return is_urgent * p.electricity_emergency
