@@ -1,21 +1,23 @@
 from policyengine_us.model_api import *
 
 
-class riv_share_payment(Variable):
+class ca_riv_share_payment(Variable):
     value_type = float
     entity = SPMUnit
     label = "Riverside County Sharing Households Assist Riverside's Energy program (SHARE) payment"
     unit = USD
     definition_period = MONTH
-    defined_for = "riv_share_eligible"
+    defined_for = "ca_riv_share_eligible"
     reference = "https://riversideca.gov/utilities/residents/assistance-programs/share-english"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.riv.cap.share.payment
-        electric_expense = spm_unit("pre_subsidy_electricity_expense", period)
-        electric_payment = min_(electric_expense, p.electric)
-        electric_emergency_payment = spm_unit(
-            "riv_share_electric_emergency_payment", period
+        electricity_expense = spm_unit(
+            "pre_subsidy_electricity_expense", period
+        )
+        electricity_payment = min_(electricity_expense, p.electric)
+        electricity_emergency_payment = spm_unit(
+            "ca_riv_share_electric_emergency_payment", period
         )
 
         water_expense = spm_unit("water_expense", period)
@@ -25,8 +27,8 @@ class riv_share_payment(Variable):
         trash_payment = min_(trash_expense, p.trash)
 
         return (
-            electric_payment
-            + electric_emergency_payment
+            electricity_payment
+            + electricity_emergency_payment
             + water_payment
             + trash_payment
         )

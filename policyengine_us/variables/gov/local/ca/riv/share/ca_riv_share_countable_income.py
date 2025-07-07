@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class riv_share_countable_income(Variable):
+class ca_riv_share_countable_income(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
