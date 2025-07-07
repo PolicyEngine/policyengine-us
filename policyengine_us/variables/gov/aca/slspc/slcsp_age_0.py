@@ -10,9 +10,6 @@ class slcsp_age_0(Variable):
     definition_period = MONTH
 
     def formula(household, period, parameters):
-        simulation: Simulation = household.simulation
-        if simulation.is_over_dataset:
-            return 0
         # Get state code and rating area
         state_code = household("state_code", period)
         rating_area = household("slcsp_rating_area", period)

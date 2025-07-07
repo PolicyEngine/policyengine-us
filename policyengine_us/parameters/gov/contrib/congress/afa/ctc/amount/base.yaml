@@ -1,0 +1,15 @@
+description: Senator Michael Bennet proposed a child tax credit of this base amount.
+values:
+  2025-01-01: 3_600 # 300 monthly
+metadata:
+  unit: currency-USD
+  period: year
+  label: AFA CTC base amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 120
+  reference:
+    - title: American Family Act of 2025
+      href: https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf#page=2

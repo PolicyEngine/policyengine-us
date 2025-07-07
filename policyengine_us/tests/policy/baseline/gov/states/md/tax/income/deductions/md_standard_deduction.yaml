@@ -17,3 +17,73 @@
     state_code: MD
   output:  
     md_standard_deduction: 4_700
+
+- name: MD Standard deduction 2025 - Single filer low income (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 10_000
+    filing_status: SINGLE
+    state_code: MD
+  output:
+    md_standard_deduction: 3_350
+
+- name: MD Standard deduction 2025 - Single filer high income (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: MD
+  output:
+    md_standard_deduction: 3_350
+
+- name: MD Standard deduction 2025 - Joint filer low income (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 20_000
+    filing_status: JOINT
+    state_code: MD
+  output:
+    md_standard_deduction: 6_700
+
+- name: MD Standard deduction 2025 - Joint filer high income (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: JOINT
+    state_code: MD
+  output:
+    md_standard_deduction: 6_700
+
+- name: MD Standard deduction 2025 - Head of household (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MD
+  output:
+    md_standard_deduction: 6_700
+
+- name: MD Standard deduction 2025 - Married filing separately (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SEPARATE
+    state_code: MD
+  output:
+    md_standard_deduction: 3_350
+
+- name: MD Standard deduction 2025 - Surviving spouse (flat amount)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: MD
+  output:
+    md_standard_deduction: 6_700

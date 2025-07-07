@@ -1,0 +1,15 @@
+- name: Capped SALT deduction
+  period: 2023
+  input:
+    reported_salt: 100_000
+    filing_status: SINGLE
+  output:
+    salt_deduction: 10_000
+
+- name: Cap does not apply
+  period: 2023
+  input:
+    reported_salt: 4_000
+    filing_status: SINGLE
+  output:
+    salt_deduction: 4_000

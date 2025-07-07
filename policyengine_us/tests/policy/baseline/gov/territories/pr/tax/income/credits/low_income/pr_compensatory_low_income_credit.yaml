@@ -1,6 +1,7 @@
 - name: Eligible person
   period: 2024
   input:
+    state_code: PR
     pension_income: 4_800
     pr_low_income_credit_eligible: true
   output:
@@ -9,6 +10,7 @@
 - name: Pension income above limit
   period: 2024
   input:
+    state_code: PR
     pension_income: 4_802
     pr_low_income_credit_eligible: true
   output:
@@ -17,6 +19,7 @@
 - name: Not eligible for low income credit
   period: 2024
   input:
+    state_code: PR
     pension_income: 4_800
     pr_low_income_credit_eligible: false
   output:

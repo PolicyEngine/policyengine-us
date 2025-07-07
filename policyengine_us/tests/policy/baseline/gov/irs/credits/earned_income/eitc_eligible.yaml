@@ -3,6 +3,17 @@
   input:
     eitc_investment_income_eligible: false
     eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+  output:
+    eitc_eligible: false
+
+- name: Ineligible due to no ITIN nor SSN.
+  period: 2022
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: false
     filing_status: JOINT
   output:
     eitc_eligible: false
@@ -12,6 +23,7 @@
   input:
     eitc_investment_income_eligible: true
     eitc_demographic_eligible: false
+    filer_meets_eitc_identification_requirements: true
     filing_status: JOINT
   output:
     eitc_eligible: false
@@ -21,6 +33,7 @@
   input:
     eitc_investment_income_eligible: true
     eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
     filing_status: JOINT
   output:
     eitc_eligible: true

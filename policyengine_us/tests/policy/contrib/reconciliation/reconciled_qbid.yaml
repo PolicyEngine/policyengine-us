@@ -1,0 +1,31 @@
+- name: Reconciled QBID for a hoh filer with $20k in QBI, income over threshold
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_qbid.reconciled_qbid
+  input:
+    gov.contrib.reconciliation.qbid.in_effect: true
+    gov.irs.deductions.qbi.phase_out.start.HEAD_OF_HOUSEHOLD: 200_000
+    gov.irs.deductions.qbi.max.rate: 0.22
+    gov.irs.deductions.qbi.max.w2_wages.alt_rate: 0.4
+    taxable_income_less_qbid: 220_000
+    qualified_business_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    w2_wages_from_qualified_business: 1_000_000
+  output:
+    # QBID max = 200_000 * 0.22 = 44_000
+    # Phase-out = (220_000 - 200_000) * 0.75 = 15_000 
+    qbid_amount: 29_000
+
+- name: Reconciled QBID for a hoh filer with $20k in QBI, income under threshold
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_qbid.reconciled_qbid
+  input:
+    gov.contrib.reconciliation.qbid.in_effect: true
+    gov.irs.deductions.qbi.phase_out.start.HEAD_OF_HOUSEHOLD: 200_000
+    gov.irs.deductions.qbi.max.rate: 0.22
+    gov.irs.deductions.qbi.max.w2_wages.alt_rate: 0.4
+    taxable_income_less_qbid: 200_000
+    qualified_business_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    w2_wages_from_qualified_business: 1_000_000
+  output:
+    qbid_amount: 44_000

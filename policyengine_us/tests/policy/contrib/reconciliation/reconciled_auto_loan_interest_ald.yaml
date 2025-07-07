@@ -1,0 +1,96 @@
+- name: AGI below threshold, loans capped
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income_pre_auto_loan_interest_ald: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 10_000
+
+- name: AGI above threshold, loans capped, fully phased out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income_pre_auto_loan_interest_ald: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 0
+
+
+- name: AGI above threshold, loans capped, partially phased out
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    adjusted_gross_income_pre_auto_loan_interest_ald: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 6_000
+
+- name: Integration test for AGI circularity
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+  output:
+    auto_loan_interest_ald: 6_000
+    adjusted_gross_income_pre_auto_loan_interest_ald: 220_000
+    adjusted_gross_income: 214_000
+
+- name: Senate version of auto loan interest deduction
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    gov.contrib.reconciliation.auto_loan_interest_ald.senate_version.applies: true
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: false
+  output:
+    auto_loan_interest_ald: 6_000
+    adjusted_gross_income: 220_000
+    taxable_income_deductions: 6_000
+
+- name: Senate version of auto loan interest deduction, itemizing
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    gov.contrib.reconciliation.auto_loan_interest_ald.senate_version.applies: true
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: true
+    salt_deduction: 10_000
+  output:
+    auto_loan_interest_ald: 6_000
+    adjusted_gross_income: 220_000
+    taxable_income_deductions: 16_000
+
+- name: Senate version of auto loan interest deduction does not apply
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_auto_loan_interest_ald.reconciled_auto_loan_interest_ald
+  input:
+    gov.contrib.reconciliation.auto_loan_interest_ald.in_effect: true
+    gov.contrib.reconciliation.auto_loan_interest_ald.senate_version.applies: false
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: true
+    salt_deduction: 10_000
+  output:
+    auto_loan_interest_ald: 6_000
+    adjusted_gross_income: 214_000
+    taxable_income_deductions: 10_000

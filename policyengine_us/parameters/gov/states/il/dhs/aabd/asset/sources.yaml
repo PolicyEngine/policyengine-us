@@ -1,0 +1,23 @@
+description: Illinois counts these sources as countable assets under the Aid to the Aged, Blind or Disabled program.
+values:
+  2021-01-01:
+    - spm_unit_cash_assets
+    - retirement_distributions
+    - il_aabd_countable_vehicle_value
+    #- Homestead property  # exempt 
+    #- Personal property # exempt
+    #- Burial spaces and funds # exempt
+    #- Trust funds and annuities # partially exempt
+    #- Donations or benefits from fund raisers # exempt
+    #- Lump sum payment # exempt
+    #- Federal income tax refund # exempt 
+
+metadata:
+  unit: list
+  period: month
+  label: Illinois AABD household assets
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.140 - Assets
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.140
+    - title: Ill. Admin. Code tit. 89, § 113.141 - Exempt Assets 
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.141

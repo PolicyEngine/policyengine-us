@@ -13,15 +13,6 @@ EXEMPTIONS = (
     "household_income_decile",  # because DEFAULT_SITUATION has no weights
     "spm_unit_income_decile",  # because DEFAULT_SITUATION has no weights
     "income_decile",  # because DEFAULT_SITUATION has no weights
-    "tanf_max_amount",
-    "tanf",
-    "tanf_amount_if_eligible",
-    "tanf_countable_income",
-    "tanf_initial_employment_deduction",
-    "is_tanf_initial_eligible",
-    "is_tanf_continuous_eligible",
-    "is_tanf_eligible",
-    "snap_emergency_allotment_monthly",
 )
 
 
