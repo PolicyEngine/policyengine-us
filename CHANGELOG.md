@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.336.0] - 2025-07-08 16:02:27
+
+### Added
+
+- added 2018 maximum family income for adults to qualify for medicaid
+
 ## [1.335.0] - 2025-07-07 18:44:33
 
 ### Added
@@ -12213,6 +12219,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.335.0...1.336.0
 [1.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.334.0...1.335.0
 [1.334.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.333.0...1.334.0
 [1.333.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.332.0...1.333.0
