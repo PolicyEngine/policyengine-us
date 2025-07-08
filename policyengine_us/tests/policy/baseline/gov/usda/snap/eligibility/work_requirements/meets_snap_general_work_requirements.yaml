@@ -1,0 +1,81 @@
+- name: Case 1, age 15, exempted from the general work requirements.
+  period: 2022
+  input:
+    age: 15
+    weekly_hours_worked: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 2, age 60, exempted from the general work requirements.
+  period: 2022
+  input:
+    age: 60
+    weekly_hours_worked: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 3, age 16, not exempted from the general work requirements.
+  period: 2022
+  input:
+    age: 16
+    weekly_hours_worked: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: false
+
+- name: Case 4, age 30, but disabled.
+  period: 2022
+  input:
+    age: 39
+    weekly_hours_worked: 1
+    is_disabled: true
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 5, age 30, working 30 hours per week.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked: 30
+    is_disabled: false
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 6, age 30, working 29 hours per week.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked: 29
+    is_disabled: false
+    is_incapable_of_self_care: false
+  output:
+    meets_snap_general_work_requirements: false
+
+- name: Case 7, integration test.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 29
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    meets_snap_general_work_requirements: [true, true]
