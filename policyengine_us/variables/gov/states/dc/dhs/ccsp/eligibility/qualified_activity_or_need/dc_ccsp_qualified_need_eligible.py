@@ -20,27 +20,16 @@ class dc_ccsp_qualified_need_eligible(Variable):
         has_disabled_child = spm_unit.any(
             is_dependent & is_disabled & age_eligible
         )
-        # parent is disabled # income waived
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        has_disabled_parent = spm_unit.any(is_head_or_spouse & is_disabled)
-        # child is homeless # income waived
-        is_homeless = spm_unit.household("is_homeless", period)
-        # parent is teen parent (age <= 19) # income waived
-        is_teen_parent = age <= p.teen_parent
-        has_teen_parent = spm_unit.any(is_head_or_spouse & is_teen_parent)
+        # Income test waived when parent is disabled | child is homeless  | parent is teen parent (age <= 19)
+        income_test_waived = spm_unit("dc_ccsp_income_test_waived", period)
         # parent is age >= 62 or get social_security_disability or ssi
         is_elderly = age >= p.elderly
         received_ssd_or_ssi = (
             add(spm_unit, period, ["social_security_disability", "ssi"]) > 0
         )
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_elderly_parent = (
             spm_unit.any(is_head_or_spouse & is_elderly) | received_ssd_or_ssi
         )
 
-        return (
-            has_disabled_child
-            | has_disabled_parent
-            | is_homeless
-            | has_teen_parent
-            | has_elderly_parent
-        )
+        return has_disabled_child | income_test_waived | has_elderly_parent

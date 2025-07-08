@@ -6,10 +6,9 @@
     dc_ccsp_child_category: INFANT_AND_TODDLER
     dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
     dc_ccsp_attending_days_per_month: 10
-    pre_subsidy_childcare_expenses: 99_999
     state_code: DC
   output:
-    dc_ccsp_payment: 986.5
+    dc_ccsp_maximum_subsidy_amount: 986.5
     # rate is $98.65 per day
 
 - name: Case 2, preschool in a par-time nontraditional child home. 
@@ -20,8 +19,7 @@
     dc_ccsp_child_category: PRESCHOOL
     dc_ccsp_schedule_type: PART_TIME_NONTRADITIONAL
     dc_ccsp_attending_days_per_month: 10
-    pre_subsidy_childcare_expenses: 99_999
     state_code: DC
   output:
-    dc_ccsp_payment: 397.8
+    dc_ccsp_maximum_subsidy_amount: 397.8
     # rate is $39.78 per day

@@ -15,12 +15,13 @@ class dc_ccsp_eligible(Variable):
         has_eligible_child = spm_unit.any(eligible_child)
         asset_eligible = spm_unit("dc_ccsp_asset_eligible", period)
         income_eligible = spm_unit("dc_ccsp_income_eligible", period)
+        income_test_waived = spm_unit("dc_ccsp_income_test_waived", period)
         qualified_activity_or_need_eligible = spm_unit(
             "dc_ccsp_qualified_activity_or_need_eligible", period
         )
         return (
             has_eligible_child
             & asset_eligible
-            & income_eligible
+            & (income_eligible | income_test_waived)
             & qualified_activity_or_need_eligible
         )

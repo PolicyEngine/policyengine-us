@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class dc_ccsp_co_payment(Variable):
     value_type = float
     entity = SPMUnit
+    unit = USD
     label = "DC Child Care Subsidy Program (CCSP) co-payment"
     definition_period = MONTH
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf"

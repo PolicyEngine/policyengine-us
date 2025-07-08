@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class dc_ccsp_payment(Variable):
+class dc_ccsp_maximum_subsidy_amount(Variable):
     value_type = float
     entity = Person
-    label = "DC Child Care Subsidy Program (CCSP) payment"
+    label = (
+        "DC Child Care Subsidy Program (CCSP) maximum subsidy amount per child"
+    )
     unit = USD
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/FY25%20Subsidy%20Reimbursement%20Rates%20English.pdf#page=2"
     definition_period = MONTH
@@ -23,12 +25,4 @@ class dc_ccsp_payment(Variable):
         attending_days_per_month = person(
             "dc_ccsp_attending_days_per_month", period
         )
-        uncapped_payment_per_month = (
-            uncapped_payment_per_day * attending_days_per_month
-        )
-        childcare_expenses = person("pre_subsidy_childcare_expenses", period)
-
-        return min_(
-            uncapped_payment_per_month,
-            childcare_expenses,
-        )
+        return uncapped_payment_per_day * attending_days_per_month
