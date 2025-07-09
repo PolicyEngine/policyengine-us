@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.338.0] - 2025-07-09 15:06:36
+
+### Added
+
+- Set default to true for branching to determine itemization choice.
+
 ## [1.337.0] - 2025-07-08 18:56:37
 
 ### Added
@@ -12231,6 +12237,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.337.0...1.338.0
 [1.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.1...1.337.0
 [1.336.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.0...1.336.1
 [1.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.335.0...1.336.0
