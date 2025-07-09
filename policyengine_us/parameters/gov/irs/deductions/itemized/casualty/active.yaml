@@ -2,7 +2,10 @@ description: Casualty expense deduction is active.
 metadata:
   unit: bool
   label: Casualty expense deduction active
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB extends extends elimination of casualty expense deduction, with an exception for state declared disasters.
 values:
   2013-01-01: true
   2018-01-01: false
-  2026-01-01: true
