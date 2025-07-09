@@ -8,7 +8,7 @@ class HousingType(Enum):
 
 class housing_type(Variable):
     value_type = Enum
-    entity = Household
+    entity = SPMUnit
     possible_values = HousingType
     default_value = HousingType.SINGLE_FAMILY
     definition_period = YEAR

@@ -1,0 +1,19 @@
+- name: Case 1, household size of 3, eligible.
+  period: 2025
+  input: 
+    irs_gross_income: 93_000
+    spm_unit_size: 3
+    state_code: DC
+  output: 
+    hhs_msi: 93_001
+    dc_liheap_eligible: true
+
+- name: Case 2, household size of 3, ineligible.
+  period: 2025
+  input: 
+    irs_gross_income: 93_002
+    spm_unit_size: 3
+    state_code: DC
+  output: 
+    hhs_msi: 93_001
+    dc_liheap_eligible: false
