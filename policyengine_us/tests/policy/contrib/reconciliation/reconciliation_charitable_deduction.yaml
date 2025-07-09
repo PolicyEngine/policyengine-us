@@ -1,0 +1,58 @@
+- name: No AGI
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
+  input:
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
+    charitable_cash_donations: 10_000
+    charitable_non_cash_donations: 30_000
+    positive_agi: 0
+  output:
+    charitable_deduction: 0
+
+- name: Charitable deduction with a 0.5% floor
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
+  input:
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
+    charitable_cash_donations: 10_000
+    charitable_non_cash_donations: 30_000
+    positive_agi: 200_000
+  output:
+    charitable_deduction: 39_000
+
+- name: Contributions below floor
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
+  input:
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 300
+    positive_agi: 200_000
+  output:
+    charitable_deduction: 0
+
+- name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, partial cap
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
+  input:
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
+    gov.irs.deductions.itemized.charity.ceiling.all: 0.6
+    gov.irs.deductions.itemized.charity.ceiling.non_cash: 0.5
+    charitable_cash_donations: 600
+    charitable_non_cash_donations: 12_000
+    positive_agi: 20_000
+  output:
+    charitable_deduction: 10_600
+
+- name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, full cap
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciliation_charitable_deduction.reconciliation_charitable_deduction
+  input:
+    gov.contrib.reconciliation.charitable_donations.in_effect: true
+    gov.irs.deductions.itemized.charity.ceiling.all: 0.6
+    gov.irs.deductions.itemized.charity.ceiling.non_cash: 0.5
+    charitable_cash_donations: 3_000
+    charitable_non_cash_donations: 12_000
+    positive_agi: 20_000
+  output:
+    charitable_deduction: 12_000
