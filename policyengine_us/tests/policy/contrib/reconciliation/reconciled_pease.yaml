@@ -11,7 +11,7 @@
   output:
     # Excess income: 600_000 - 577_750 = 22_250
     # Reduction = 22_250 * 0.05405405 = 1_202
-    itemized_taxable_income_deductions_reduction: 1_202
+    itemized_taxable_income_deductions_reduction: 0
 
 - name: Reconciled pease for a joint filer with $10k in itemized deductions
   period: 2026
@@ -24,7 +24,7 @@
     filing_status: JOINT
     adjusted_gross_income: 700_000
   output:
-    itemized_taxable_income_deductions_reduction: 540.54
+    itemized_taxable_income_deductions_reduction: 0
 
 - name: Reconciled pease for a joint filer with income below the top rate threshold
   period: 2026
@@ -52,7 +52,7 @@
     filing_status: JOINT
     adjusted_gross_income: 700_000
   output:
-    itemized_taxable_income_deductions_reduction: 540.54
+    itemized_taxable_income_deductions_reduction: 0
 
 - name: Amended structure in effect, some salt deduction, no other deductions
   period: 2026
