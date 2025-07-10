@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixes:
+    - Change the is_married and spm_unit_is_married logic to only count units with spouses.
+    - Fix separate income tax bracket post 2026.
+    - Check for head of household filing status before separate.
