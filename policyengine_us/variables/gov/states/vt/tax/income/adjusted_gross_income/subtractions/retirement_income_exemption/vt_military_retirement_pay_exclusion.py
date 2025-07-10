@@ -26,37 +26,37 @@ class vt_military_retirement_pay_exclusion(Variable):
         )
 
         # S.51 (2025): Income-based military pension exemption
-        agi = tax_unit("adjusted_gross_income", period)
+        if period.start.year >= 2025:
+            agi = tax_unit("adjusted_gross_income", period)
 
-        # Full exemption for households under $125k AGI
-        full_exemption_threshold = (
-            p.military_retirement.full_exemption_threshold
-        )
-        # Partial exemption for households under $175k AGI
-        partial_exemption_threshold = (
-            p.military_retirement.partial_exemption_threshold
-        )
+            # Full exemption for households under $125k AGI
+            full_exemption_threshold = (
+                p.military_retirement.full_exemption_threshold
+            )
+            # Partial exemption for households under $175k AGI
+            partial_exemption_threshold = (
+                p.military_retirement.partial_exemption_threshold
+            )
 
-        # Determine exemption amount based on AGI
-        exemption_amount = where(
-            agi < full_exemption_threshold,
-            # Full exemption: all military retirement pay
-            tax_unit_military_retirement_pay,
-            where(
-                agi < partial_exemption_threshold,
-                # Partial exemption: linear phaseout between $125k and $175k
-                tax_unit_military_retirement_pay
-                * (partial_exemption_threshold - agi)
-                / (partial_exemption_threshold - full_exemption_threshold),
-                # No exemption above $175k
-                0,
-            ),
-        )
-
-        # Apply the pre-2025 cap for years before 2025
-        if period.start.year < 2025:
+            # Determine exemption amount based on AGI
+            exemption_amount = where(
+                agi < full_exemption_threshold,
+                # Full exemption: all military retirement pay
+                tax_unit_military_retirement_pay,
+                where(
+                    agi < partial_exemption_threshold,
+                    # Partial exemption: linear phaseout between $125k and $175k
+                    tax_unit_military_retirement_pay
+                    * (partial_exemption_threshold - agi)
+                    / (partial_exemption_threshold - full_exemption_threshold),
+                    # No exemption above $175k
+                    0,
+                ),
+            )
+        else:
+            # Pre-2025: Use the original cap-based system
             exemption_amount = min_(
-                exemption_amount, p.military_retirement.amount
+                tax_unit_military_retirement_pay, p.military_retirement.amount
             )
 
         return exemption_amount

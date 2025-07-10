@@ -29,6 +29,7 @@ class vt_eitc(Variable):
                 p.match_without_children,  # 100% for workers without children
             )
         else:
+            # Pre-2025: Use standard match rate for all workers
             rate = p.match
 
         return federal_eitc * rate
