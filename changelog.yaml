@@ -10407,3 +10407,9 @@
     changed:
     - Itemization choice respects federal not fed+state tax.
   date: 2025-07-11 14:20:30
+- bump: patch
+  changes:
+    added:
+    - Added DACA and TPS as unique immigration statuses, without removing the existing
+      combined status.
+  date: 2025-07-11 19:23:54
