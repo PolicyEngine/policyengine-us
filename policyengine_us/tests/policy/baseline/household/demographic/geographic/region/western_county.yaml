@@ -1,0 +1,24 @@
+- name: Orange county belongs to Los Angeles by MSA.
+  period: 2024
+  input:
+    state_code: CA
+    county: ORANGE_COUNTY_CA
+  output:
+    western_county: LOS_ANGELES
+
+- name: Kern county belongs to default west.
+  period: 2024
+  input:
+    state_code: CA
+    county: KERN_COUNTY_CA
+  output:
+    western_county: WEST_DEFAULT
+
+- name:  Not part of any west region. 
+  period: 2024
+  input:
+    state_code: MA
+    county: SUFFOLK_COUNTY_MA
+    is_western_region: false
+  output:
+    western_county: NONE
