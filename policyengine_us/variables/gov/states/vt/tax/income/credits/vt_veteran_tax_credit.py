@@ -8,14 +8,10 @@ class vt_veteran_tax_credit(Variable):
     definition_period = YEAR
     unit = USD
     reference = [
-        "https://vtdigger.org/2025/06/25/gov-phil-scott-signs-13-5-million-tax-credit-package-benefiting-low-income-workers-families-retirees-and-veterans/",
-        "https://legislature.vermont.gov/bill/status/2026/S.51",
+        "https://vtdigger.org/2025/06/25/gov-phil-scott-signs-13-5-million-tax-credit-package-benefiting-low-income-workers-families-retirees-and-veterans/"
     ]
     defined_for = StateCode.VT
-    documentation = (
-        "Vermont veteran tax credit providing $250 refundable credit for low-income veterans "
-        "as part of S.51 (2025) tax relief package."
-    )
+    documentation = "Vermont veteran tax credit providing $250 refundable credit for low-income veterans as part of S.51 (2025) tax relief package."
 
     def formula(tax_unit, period, parameters):
         # Only applies starting in 2025
