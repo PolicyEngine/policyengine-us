@@ -7,3 +7,22 @@
 PolicyEngine US is a microsimulation model of the US state and federal tax and benefit system.
 
 To install, run `pip install policyengine-us`.
+
+## Development
+
+### Testing
+
+Run all tests:
+```bash
+make test
+```
+
+Run specific test suites:
+```bash
+make test-yaml-structural     # Structural YAML tests
+make test-yaml-no-structural  # Non-structural YAML tests (excludes reform tests)
+make test-yaml-reform         # Reform tests (not run in CI)
+make test-other              # Python-based tests
+```
+
+**Note**: Reform tests are not automatically run in CI to improve build times. When making changes to reform-related code, please run `make test-yaml-reform` locally to ensure your changes don't break existing functionality.
