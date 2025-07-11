@@ -1,0 +1,17 @@
+- name: Case 1, household size of 4, eligible.
+  period: 2023
+  input: 
+    irs_gross_income: 91_000
+    spm_unit_size: 4
+    state_code: DC
+  output:
+    dc_liheap_eligible: true
+
+- name: Case 2, household size of 4, ineligible.
+  period: 2023
+  input: 
+    irs_gross_income: 96_000
+    spm_unit_size: 4
+    state_code: DC
+  output: 
+    dc_liheap_eligible: false
