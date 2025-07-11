@@ -4,9 +4,9 @@ from policyengine_us.model_api import *
 class DCLIHEAPUtilityType(Enum):
     ELECTRICITY = "Electricity"
     GAS = "Gas"
-    VENDOR_ELECTRIC = "Vendor Electric"
+    VENDOR_ELECTRICITY = "Vendor Electricity"
     VENDOR_GAS = "Vendor Gas"
-    HEAT_IN_RENT = "Heat in Rent"  # Electric or gas included in rent
+    HEAT_IN_RENT = "Heat in Rent"  # Electricity or gas included in rent
     OIL = "Oil"
 
 

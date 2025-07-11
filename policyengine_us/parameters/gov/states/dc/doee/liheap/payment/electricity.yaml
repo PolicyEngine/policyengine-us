@@ -1,6 +1,6 @@
-description: District of Columbia determines Low Income Home Energy Assistance Program payout for Electric Utility Type
+description: The District of Columbia provides up to this electricity payment amount under the Low-Income Home Energy Assistance Program (LIHEAP).
 
-MF: 
+MULTI_FAMILY: 
   1:
     1: 
       2023-10-01: 729
@@ -101,7 +101,7 @@ MF:
     4: 
       2023-10-01: 250
 
-SF: 
+SINGLE_FAMILY: 
   1:
     1: 
       2023-10-01: 948
@@ -205,9 +205,9 @@ SF:
   metadata:
   period: year
   unit: currency-USD
-  label: DC LIHEAP Electric payout
+  label: DC LIHEAP Electricity payment
   breakdown: 
-  - housing_type
+  - dc_liheap_housing_type
   - range(1,11) # income level
   - range(1,5) # household size
   reference:

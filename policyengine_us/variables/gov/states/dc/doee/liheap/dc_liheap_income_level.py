@@ -7,13 +7,13 @@ class dc_liheap_income_level(Variable):
     label = "Income level for DC LIHEAP payment"
     definition_period = YEAR
     reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
-    defined_for = StateCode.OR
+    defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
         p = parameters(period).gov.states.dc.doee.liheap
 
-        levels = [i * p.income_level_increment for i in range(1, 9)]
+        levels = [i * p.income_level_increment for i in range(1, 10)]
 
         return select(
             [income <= level for level in levels],

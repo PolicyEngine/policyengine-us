@@ -1,31 +1,33 @@
 - name: No income, household size of 1
-  period: 2025
+  period: 2024
   input:
     irs_gross_income: 0
     dc_liheap_utility_type: ELECTRICITY
-    housing_type: SF
+    pre_subsidy_electricity_expense: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 1
     state_code: DC
   output:
     dc_liheap_payment: 948
 
 - name: Some income, household size of 4
-  period: 2025
+  period: 2024
   input:
     irs_gross_income: 2_001
     dc_liheap_utility_type: HEAT_IN_RENT
-    housing_type: SF
+    dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 4
     state_code: DC
   output:
     dc_liheap_payment: 250
 
 - name: Some income, household size of 3, gas.
-  period: 2025
+  period: 2024
   input:
     irs_gross_income: 4_001
     dc_liheap_utility_type: GAS
-    housing_type: SF
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 3
     state_code: DC
   output:
