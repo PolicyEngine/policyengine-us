@@ -10389,3 +10389,21 @@
     added:
     - Set default to true for branching to determine itemization choice.
   date: 2025-07-09 15:06:36
+- bump: minor
+  changes:
+    added:
+    - Riverside County Sharing Households Assist Riverside's Energy program (SHARE).
+  date: 2025-07-11 01:14:11
+- bump: patch
+  changes:
+    fixes:
+    - Change the is_married and spm_unit_is_married logic to only count units with
+      spouses.
+    - Fix separate income tax bracket post 2026.
+    - Check for head of household filing status before separate.
+  date: 2025-07-11 11:07:35
+- bump: minor
+  changes:
+    changed:
+    - Itemization choice respects federal not fed+state tax.
+  date: 2025-07-11 14:20:30
