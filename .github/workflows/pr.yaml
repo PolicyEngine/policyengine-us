@@ -56,6 +56,6 @@ jobs:
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: uv run coverage run -a --branch python policyengine_us/tests/run_selective_tests.py --verbose --debug
+        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
       - name: Build package
         run: uv run python -m build
