@@ -323,11 +323,6 @@ class SelectiveTestRunner:
         # Construct pytest command
         pytest_args = ["policyengine-core", "test", "-c", "policyengine_us"]
 
-        if verbose:
-            pytest_args.append("-v")
-        else:
-            pytest_args.append("-q")
-
         # Add test paths
         pytest_args.extend(sorted(test_paths))
 
