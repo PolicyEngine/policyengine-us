@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.341.0"
+version = "1.341.1"
 description = "Add your description here."
 readme = "README.md"
 authors = [
@@ -27,15 +27,9 @@ dev = [
     "furo>=2024.8.6",
     "jupyter-book>=1.0.4.post1",
     "setuptools>=80.9.0",
+    "build>=1.2.2.post1",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
 
-[dependency-groups]
-dev = [
-    "build>=1.2.2.post1",
-    "pytest>=8.4.1",
-    "toml>=0.10.2",
-    "yaml-changelog>=0.1.7",
-]
