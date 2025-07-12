@@ -3,10 +3,10 @@ import os
 
 
 def main():
-    # First, find the current package version number from the setup.py file
-    with open("setup.py", "r") as f:
+    # First, find the current package version number from the pyproject.toml file
+    with open("pyproject.toml", "r") as f:
         setup = f.read()
-    version = setup.split("version=")[1].split(",")[0].strip('"')
+    version = setup.split("version = ")[1].split(",")[0].strip('"')
     # Then, clone the https://github.com/policyengine/policyengine-api repo using the GitHub CLI
     pat = os.environ["GITHUB_TOKEN"]
     os.system(
