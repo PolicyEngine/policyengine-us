@@ -52,8 +52,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
         run: uv sync --dev
-      - name: Temporarily install -core version
-        run: uv pip install git+https://github.com/policyengine/policyengine-core@nikhilwoodruff/issue375
       - name: Run selective tests
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
