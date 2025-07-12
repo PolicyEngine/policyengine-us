@@ -31,3 +31,8 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]
