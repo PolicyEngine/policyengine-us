@@ -1078,7 +1078,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-core"
-version = "3.17.0"
+version = "3.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dpath" },
@@ -1097,9 +1097,9 @@ dependencies = [
     { name = "sortedcontainers" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/40/35/3236961d543a1ab6c6151372e6a7383665c61c62e96bbd68de9079ccc76b/policyengine_core-3.17.0.tar.gz", hash = "sha256:0fca437564e85fbee9b936433fb0739e236adc77021a22bf78d5badcb05b2d90", size = 158939, upload-time = "2025-06-05T20:16:08.381Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/77/da/e65d00632b452add2f7da9b3d9345b6be1ac4adcbf90d13bd7274073c236/policyengine_core-3.17.1.tar.gz", hash = "sha256:d979c035968cdb345d8afad80fbdfb986239db5d885cabe6e1bca00da878ab8a", size = 159039, upload-time = "2025-07-12T14:24:00.632Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/93/f2861dfc068b7f14a983a8ea42a9207cb60ff3af3d71b4f8e5051673f7c8/policyengine_core-3.17.0-py3-none-any.whl", hash = "sha256:f2fd8068bed29790cb6b8e60c8fc3845f4e3aea41cd91aaccf7f7a53aa98a48a", size = 220407, upload-time = "2025-06-05T20:16:06.966Z" },
+    { url = "https://files.pythonhosted.org/packages/00/9f/9a5e358fdf4b9c72f421276ec8718e4db817ab5177d1b161b6763849afdb/policyengine_core-3.17.1-py3-none-any.whl", hash = "sha256:43c9e7f3b013b6dddbdf1a3edbaede26ec17b5da99837228820354f1f1233e50", size = 220480, upload-time = "2025-07-12T14:23:59.293Z" },
 ]
 
 [[package]]
@@ -1134,7 +1134,7 @@ requires-dist = [
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2024.8.6" },
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=0.4.4" },
-    { name = "policyengine-core", specifier = ">=3.17.0" },
+    { name = "policyengine-core", specifier = ">=3.17.1" },
     { name = "policyengine-us-data", specifier = ">=1.17.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
