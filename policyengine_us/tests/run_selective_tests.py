@@ -262,7 +262,11 @@ class SelectiveTestRunner:
             ):
                 if not any(
                     critical in file
-                    for critical in ["setup.py", "requirements", "Makefile"]
+                    for critical in [
+                        "pyproject.toml",
+                        "requirements",
+                        "Makefile",
+                    ]
                 ):
                     continue
 

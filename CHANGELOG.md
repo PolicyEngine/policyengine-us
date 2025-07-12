@@ -2924,7 +2924,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Inclusion of unneeded packages in setup.py install_requires list.
+- Inclusion of unneeded packages in pyproject.toml install_requires list.
 
 ## [1.45.1] - 2024-08-10 11:09:59
 
@@ -11725,7 +11725,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Versioning action didn't update `setup.py`.
+- Versioning action didn't update `pyproject.toml`.
 
 ## [0.38.1] - 2022-03-28 10:40:42
 
