@@ -21,20 +21,22 @@ jobs:
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
+          fetch-depth: 100
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
-      - name: Setup Python
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
-      - name: Build changelog
-        run: pip install yaml-changelog && make changelog
-      - name: Preview changelog update
-        run: ".github/get-changelog-diff.sh"
+          python-version: 3.11
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies
+        run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Update changelog
         uses: EndBug/add-and-commit@v9
         with:

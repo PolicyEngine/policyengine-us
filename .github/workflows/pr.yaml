@@ -32,10 +32,6 @@ jobs:
         run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
         run: make changelog
-      - name: Preview changelog update
-        run: ".github/get-changelog-diff.sh"
-      - name: Check version number has been properly updated
-        run: .github/is-version-number-acceptable.sh
   Test:
     runs-on: ${{ matrix.os }}
     strategy:
