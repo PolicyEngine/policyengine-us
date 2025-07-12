@@ -45,4 +45,4 @@ clear-storage:
 # Run tests only for changed files
 test-changed:
 	@echo "Running tests for changed files..."
-	@python policyengine_us/tests/run_selective_tests.py --verbose
+	@python policyengine_us/tests/run_selective_tests.py --verbose --debug
