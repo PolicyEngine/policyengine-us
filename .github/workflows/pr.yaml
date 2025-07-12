@@ -36,6 +36,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for git diff
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -44,7 +49,10 @@ jobs:
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
         run: uv sync --dev
-      - name: Run YAML tests
+      - name: Run selective tests
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
         run: make test-changed
       - name: Produce combined coverage repository
         run: make coverage
