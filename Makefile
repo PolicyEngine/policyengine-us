@@ -40,3 +40,63 @@ clear-storage:
 	rm -f policyengine_us/data/storage/*.csv.gz
 	rm -rf policyengine_us/data/storage/*cache
 
+
+
+# Add these targets to your existing Makefile
+
+# Run tests only for changed files
+test-changed:
+	@echo "Running tests for changed files..."
+	@python run_selective_tests.py --verbose
+
+# Run tests for specific states
+test-state:
+	@if [ -z "$(STATE)" ]; then \
+		echo "Usage: make test-state STATE=ca"; \
+		exit 1; \
+	fi
+	@echo "Running tests for state: $(STATE)"
+	@pytest policyengine_us/tests/policy/baseline/gov/states/$(STATE) -v
+
+# Show what tests would run for current changes
+test-plan:
+	@echo "Test execution plan for current changes:"
+	@python run_selective_tests.py --plan
+
+# Run tests for a specific component
+test-component:
+	@if [ -z "$(COMPONENT)" ]; then \
+		echo "Usage: make test-component COMPONENT=irs/credits/ctc"; \
+		echo "Available components:"; \
+		echo "  - irs/credits/ctc"; \
+		echo "  - irs/credits/earned_income"; \
+		echo "  - usda/snap"; \
+		echo "  - hhs/medicaid"; \
+		echo "  - states/<state_abbr>"; \
+		exit 1; \
+	fi
+	@echo "Running tests for component: $(COMPONENT)"
+	@pytest policyengine_us/tests/policy/baseline/gov/$(COMPONENT) -v
+
+# Run tests in parallel for better performance
+test-parallel:
+	@echo "Running all tests in parallel..."
+	@pytest policyengine_us/tests -n auto
+
+# Run selective tests in parallel
+test-changed-parallel:
+	@echo "Running changed tests in parallel..."
+	@python run_selective_tests.py --verbose | grep -E "policyengine_us/tests" | xargs pytest -n auto
+
+# Quick smoke test - runs a minimal set of critical tests
+test-smoke:
+	@echo "Running smoke tests..."
+	@pytest policyengine_us/tests/code_health -v
+	@pytest policyengine_us/tests/test_variables.py -v
+
+# Run tests with coverage for changed files
+test-changed-coverage:
+	@echo "Running tests with coverage for changed files..."
+	@python run_selective_tests.py --verbose | grep -E "policyengine_us/tests" | xargs pytest --cov=policyengine_us --cov-report=html
+
+.PHONY: test-changed test-state test-plan test-component test-parallel test-changed-parallel test-smoke test-changed-coverage
