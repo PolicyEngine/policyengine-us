@@ -53,9 +53,9 @@ jobs:
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: make test-changed
+        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
       - name: Produce combined coverage repository
         run: make coverage
       - uses: codecov/codecov-action@v4
       - name: Build package
-        run: make
+        run: uv run python -m build
