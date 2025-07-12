@@ -59,16 +59,10 @@ jobs:
         run: make install
       - name: Run non-structural YAML tests
         run: make test-yaml-no-structural
-        env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
       - name: Run structural YAML tests
         run: make test-yaml-structural
-        env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
       - name: Run Python-based tests
         run: make test-other
-        env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
       - name: Produce combined coverage repository
         run: make coverage
       - uses: codecov/codecov-action@v4
