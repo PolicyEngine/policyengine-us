@@ -109,19 +109,34 @@ class SelectiveTestRunner:
         """Get list of changed files compared to base branch."""
         try:
             # Check if we're in a git repository
-            subprocess.run(
+            git_dir_result = subprocess.run(
                 ["git", "rev-parse", "--git-dir"],
-                check=True,
                 capture_output=True,
+                text=True,
             )
 
-            # Fetch the base branch to ensure we have latest
-            subprocess.run(
+            if git_dir_result.returncode != 0:
+                print(
+                    f"Error: Not in a git repository. Error: {git_dir_result.stderr}"
+                )
+                return set()
+
+            # Try to fetch the base branch (but don't fail if offline)
+            fetch_result = subprocess.run(
                 ["git", "fetch", "origin", self.base_branch],
                 capture_output=True,
+                text=True,
             )
 
-            # Get list of changed files
+            if fetch_result.returncode != 0:
+                print(
+                    f"Warning: Could not fetch from origin (working offline?)"
+                )
+
+            # Try different methods to get changed files
+            changed_files = set()
+
+            # Method 1: Compare with origin/base_branch
             result = subprocess.run(
                 [
                     "git",
@@ -131,17 +146,82 @@ class SelectiveTestRunner:
                 ],
                 capture_output=True,
                 text=True,
-                check=True,
             )
 
-            changed_files = set(result.stdout.strip().split("\n"))
-            # Remove empty strings
-            changed_files.discard("")
+            if result.returncode == 0:
+                files = result.stdout.strip().split("\n")
+                changed_files.update(f for f in files if f)
+            else:
+                print(f"Could not diff against origin/{self.base_branch}")
+
+                # Method 2: Try without origin/ prefix (local branch)
+                result = subprocess.run(
+                    [
+                        "git",
+                        "diff",
+                        f"{self.base_branch}...HEAD",
+                        "--name-only",
+                    ],
+                    capture_output=True,
+                    text=True,
+                )
+
+                if result.returncode == 0:
+                    files = result.stdout.strip().split("\n")
+                    changed_files.update(f for f in files if f)
+                else:
+                    # Method 3: Get uncommitted changes
+                    print("Falling back to uncommitted changes...")
+
+                    # Staged changes
+                    result = subprocess.run(
+                        ["git", "diff", "--cached", "--name-only"],
+                        capture_output=True,
+                        text=True,
+                    )
+                    if result.returncode == 0:
+                        files = result.stdout.strip().split("\n")
+                        changed_files.update(f for f in files if f)
+
+                    # Unstaged changes
+                    result = subprocess.run(
+                        ["git", "diff", "--name-only"],
+                        capture_output=True,
+                        text=True,
+                    )
+                    if result.returncode == 0:
+                        files = result.stdout.strip().split("\n")
+                        changed_files.update(f for f in files if f)
+
+                    # Untracked files
+                    result = subprocess.run(
+                        ["git", "ls-files", "--others", "--exclude-standard"],
+                        capture_output=True,
+                        text=True,
+                    )
+                    if result.returncode == 0:
+                        files = result.stdout.strip().split("\n")
+                        # Only include Python and YAML files
+                        changed_files.update(
+                            f
+                            for f in files
+                            if f
+                            and (
+                                f.endswith(".py")
+                                or f.endswith(".yaml")
+                                or f.endswith(".yml")
+                            )
+                        )
 
             return changed_files
 
-        except subprocess.CalledProcessError:
-            print("Error: Not in a git repository or git command failed")
+        except subprocess.CalledProcessError as e:
+            print(f"Error running git command: {e}")
+            print(f"Command: {e.cmd}")
+            print(f"Output: {e.output if hasattr(e, 'output') else 'N/A'}")
+            return set()
+        except Exception as e:
+            print(f"Unexpected error: {e}")
             return set()
 
     def get_affected_states(self, changed_files: Set[str]) -> Set[str]:
@@ -336,7 +416,7 @@ def main():
     )
     parser.add_argument(
         "--base-branch",
-        default="main",
+        default="master",
         help="Base branch to compare against (default: main)",
     )
     parser.add_argument(
@@ -349,10 +429,49 @@ def main():
         nargs="+",
         help="Manually specify changed files instead of using git diff",
     )
+    parser.add_argument(
+        "--uncommitted",
+        action="store_true",
+        help="Test only uncommitted changes (staged and unstaged)",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Show debug information about git state",
+    )
 
     args = parser.parse_args()
 
     runner = SelectiveTestRunner(base_branch=args.base_branch)
+
+    # Debug mode - show git status
+    if args.debug:
+        print("Git repository information:")
+        subprocess.run(["git", "status"])
+        print("\nCurrent branch:")
+        result = subprocess.run(
+            ["git", "branch", "--show-current"], capture_output=True, text=True
+        )
+        print(result.stdout.strip())
+        print("\nBase branch exists?")
+        result = subprocess.run(
+            ["git", "rev-parse", "--verify", f"origin/{args.base_branch}"],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            print(f"  origin/{args.base_branch}: exists")
+        else:
+            print(f"  origin/{args.base_branch}: NOT FOUND")
+            # Check for master
+            result = subprocess.run(
+                ["git", "rev-parse", "--verify", "origin/master"],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode == 0:
+                print(f"  origin/master: exists (use --base-branch master)")
+        print()
 
     if args.all:
         sys.exit(runner.run_all_tests())
@@ -361,10 +480,40 @@ def main():
     if args.files:
         changed_files = set(args.files)
     else:
-        changed_files = runner.get_changed_files()
+        # Check if we should override the comparison method
+        if args.uncommitted:
+            # Get only uncommitted changes
+            changed_files = set()
+
+            # Staged changes
+            result = subprocess.run(
+                ["git", "diff", "--cached", "--name-only"],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode == 0:
+                files = result.stdout.strip().split("\n")
+                changed_files.update(f for f in files if f)
+
+            # Unstaged changes
+            result = subprocess.run(
+                ["git", "diff", "--name-only"], capture_output=True, text=True
+            )
+            if result.returncode == 0:
+                files = result.stdout.strip().split("\n")
+                changed_files.update(f for f in files if f)
+
+            print(f"Testing uncommitted changes only...")
+        else:
+            changed_files = runner.get_changed_files()
 
     if not changed_files:
         print("No changed files detected.")
+        print("\nTry one of these options:")
+        print("  --uncommitted    Test only uncommitted changes")
+        print("  --all            Run all tests")
+        print("  --debug          Show git repository information")
+        print("  --files FILE...  Manually specify files to test")
         sys.exit(0)
 
     print(f"Detected {len(changed_files)} changed files:")
