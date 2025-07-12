@@ -9,100 +9,89 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Set, List, Dict
-import json
+import re
 import argparse
 
 
 class SelectiveTestRunner:
-    def __init__(self, base_branch: str = "main"):
+    def __init__(self, base_branch: str = "master"):
         self.base_branch = base_branch
         self.repo_root = Path.cwd()
-
-        # Define mappings between source directories and test directories
-        self.test_mappings = {
-            # State-specific mappings
-            "policyengine_us/parameters/gov/states": "policyengine_us/tests/policy/baseline/gov/states",
-            "policyengine_us/variables/gov/states": "policyengine_us/tests/policy/baseline/gov/states",
-            "policyengine_us/reforms/states": "policyengine_us/tests/policy/contrib/states",
-            # Federal mappings
-            "policyengine_us/parameters/gov/irs": "policyengine_us/tests/policy/baseline/gov/irs",
-            "policyengine_us/variables/gov/irs": "policyengine_us/tests/policy/baseline/gov/irs",
-            # Benefits programs
-            "policyengine_us/parameters/gov/usda/snap": "policyengine_us/tests/policy/baseline/gov/usda/snap",
-            "policyengine_us/variables/gov/usda/snap": "policyengine_us/tests/policy/baseline/gov/usda/snap",
-            "policyengine_us/parameters/gov/hhs": "policyengine_us/tests/policy/baseline/gov/hhs",
-            "policyengine_us/variables/gov/hhs": "policyengine_us/tests/policy/baseline/gov/hhs",
-            # Local government
-            "policyengine_us/parameters/gov/local": "policyengine_us/tests/policy/baseline/gov/local",
-            "policyengine_us/variables/gov/local": "policyengine_us/tests/policy/baseline/gov/local",
-            # Contributions/reforms
-            "policyengine_us/parameters/contrib": "policyengine_us/tests/policy/contrib",
-            "policyengine_us/reforms": "policyengine_us/tests/policy/reform",
-            # Core functionality
-            "policyengine_us/variables/household": "policyengine_us/tests/policy/baseline/household",
-            "policyengine_us/system.py": "policyengine_us/tests",
-            "policyengine_us/entities.py": "policyengine_us/tests",
-        }
-
-        # Define test categories that should always run
-        self.core_tests = [
-            "policyengine_us/tests/code_health",
-            "policyengine_us/tests/test_variables.py",
+        
+        # Define regex patterns for matching files to tests
+        self.test_patterns = [
+            # Rule 1: Match gov folders (excluding states) to their test directories
+            {
+                "file_pattern": r"policyengine_us/(parameters|variables)/gov/(?!states/)([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/\2"
+            },
+            
+            # Rule 2: Match state-specific changes to state tests
+            {
+                "file_pattern": r"policyengine_us/(parameters|variables)/gov/states/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/states/\2"
+            },
+            
+            # Also match state changes in local directories
+            {
+                "file_pattern": r"policyengine_us/(parameters|variables)/gov/local/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/local/\2"
+            },
+            
+            # Match reforms to reform tests
+            {
+                "file_pattern": r"policyengine_us/reforms/",
+                "test_pattern": r"policyengine_us/tests/policy/reform"
+            },
+            
+            # Match contrib parameters to contrib tests
+            {
+                "file_pattern": r"policyengine_us/parameters/contrib/",
+                "test_pattern": r"policyengine_us/tests/policy/contrib"
+            },
+            
+            # Match household variables to household tests
+            {
+                "file_pattern": r"policyengine_us/variables/household/",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/household"
+            },
+            
+            # Match reforms in specific states
+            {
+                "file_pattern": r"policyengine_us/reforms/states/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/states/\1"
+            },
         ]
-
-        # State abbreviations for more granular state testing
-        self.state_abbrevs = [
-            "al",
-            "ak",
-            "az",
-            "ar",
-            "ca",
-            "co",
-            "ct",
-            "de",
-            "dc",
-            "fl",
-            "ga",
-            "hi",
-            "id",
-            "il",
-            "in",
-            "ia",
-            "ks",
-            "ky",
-            "la",
-            "me",
-            "md",
-            "ma",
-            "mi",
-            "mn",
-            "ms",
-            "mo",
-            "mt",
-            "ne",
-            "nv",
-            "nh",
-            "nj",
-            "nm",
-            "ny",
-            "nc",
-            "nd",
-            "oh",
-            "ok",
-            "or",
-            "pa",
-            "ri",
-            "sc",
-            "sd",
-            "tn",
-            "tx",
-            "ut",
-            "vt",
-            "va",
-            "wa",
-            "wv",
-            "wi",
-            "wy",
+        
+        # Additional patterns for specific components within gov
+        self.component_patterns = [
+            # IRS components
+            {
+                "file_pattern": r"gov/irs/credits/ctc",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/irs/credits/ctc"
+            },
+            {
+                "file_pattern": r"gov/irs/credits/earned_income",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/irs/credits/earned_income"
+            },
+            # USDA components
+            {
+                "file_pattern": r"gov/usda/snap",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/usda/snap"
+            },
+            {
+                "file_pattern": r"gov/usda/wic",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/usda/wic"
+            },
+            # HHS components
+            {
+                "file_pattern": r"gov/hhs/medicaid",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/hhs/medicaid"
+            },
+            {
+                "file_pattern": r"gov/hhs/tanf",
+                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/hhs/tanf"
+            },
         ]
 
     def get_changed_files(self) -> Set[str]:
@@ -116,10 +105,30 @@ class SelectiveTestRunner:
             )
 
             if git_dir_result.returncode != 0:
-                print(
-                    f"Error: Not in a git repository. Error: {git_dir_result.stderr}"
-                )
+                print(f"Error: Not in a git repository. Error: {git_dir_result.stderr}")
                 return set()
+
+            # Check if we're in GitHub Actions
+            github_event_name = os.environ.get('GITHUB_EVENT_NAME')
+            github_base_ref = os.environ.get('GITHUB_BASE_REF')
+            
+            if github_event_name == 'pull_request' and github_base_ref:
+                # We're in a GitHub Actions PR build
+                print(f"Detected GitHub Actions PR build against {github_base_ref}")
+                
+                # GitHub Actions already has the base branch fetched
+                result = subprocess.run(
+                    ["git", "diff", f"origin/{github_base_ref}...HEAD", "--name-only"],
+                    capture_output=True,
+                    text=True
+                )
+                
+                if result.returncode == 0:
+                    files = result.stdout.strip().split('\n')
+                    changed_files = set(f for f in files if f)
+                    return changed_files
+                else:
+                    print(f"Failed to diff against origin/{github_base_ref}: {result.stderr}")
 
             # Try to fetch the base branch (but don't fail if offline)
             fetch_result = subprocess.run(
@@ -129,21 +138,14 @@ class SelectiveTestRunner:
             )
 
             if fetch_result.returncode != 0:
-                print(
-                    f"Warning: Could not fetch from origin (working offline?)"
-                )
+                print(f"Warning: Could not fetch from origin (working offline?)")
 
             # Try different methods to get changed files
             changed_files = set()
 
             # Method 1: Compare with origin/base_branch
             result = subprocess.run(
-                [
-                    "git",
-                    "diff",
-                    f"origin/{self.base_branch}...HEAD",
-                    "--name-only",
-                ],
+                ["git", "diff", f"origin/{self.base_branch}...HEAD", "--name-only"],
                 capture_output=True,
                 text=True,
             )
@@ -156,12 +158,7 @@ class SelectiveTestRunner:
 
                 # Method 2: Try without origin/ prefix (local branch)
                 result = subprocess.run(
-                    [
-                        "git",
-                        "diff",
-                        f"{self.base_branch}...HEAD",
-                        "--name-only",
-                    ],
+                    ["git", "diff", f"{self.base_branch}...HEAD", "--name-only"],
                     capture_output=True,
                     text=True,
                 )
@@ -179,9 +176,12 @@ class SelectiveTestRunner:
                         capture_output=True,
                         text=True,
                     )
-                    if result.returncode == 0:
+                    if result.returncode == 0 and result.stdout.strip():
                         files = result.stdout.strip().split("\n")
-                        changed_files.update(f for f in files if f)
+                        staged = [f for f in files if f]
+                        changed_files.update(staged)
+                        if staged:
+                            print(f"  Found {len(staged)} staged changes")
 
                     # Unstaged changes
                     result = subprocess.run(
@@ -189,9 +189,12 @@ class SelectiveTestRunner:
                         capture_output=True,
                         text=True,
                     )
-                    if result.returncode == 0:
+                    if result.returncode == 0 and result.stdout.strip():
                         files = result.stdout.strip().split("\n")
-                        changed_files.update(f for f in files if f)
+                        unstaged = [f for f in files if f]
+                        changed_files.update(unstaged)
+                        if unstaged:
+                            print(f"  Found {len(unstaged)} unstaged changes")
 
                     # Untracked files
                     result = subprocess.run(
@@ -199,19 +202,16 @@ class SelectiveTestRunner:
                         capture_output=True,
                         text=True,
                     )
-                    if result.returncode == 0:
+                    if result.returncode == 0 and result.stdout.strip():
                         files = result.stdout.strip().split("\n")
                         # Only include Python and YAML files
-                        changed_files.update(
-                            f
-                            for f in files
-                            if f
-                            and (
-                                f.endswith(".py")
-                                or f.endswith(".yaml")
-                                or f.endswith(".yml")
-                            )
-                        )
+                        untracked = [
+                            f for f in files 
+                            if f and (f.endswith('.py') or f.endswith('.yaml') or f.endswith('.yml'))
+                        ]
+                        changed_files.update(untracked)
+                        if untracked:
+                            print(f"  Found {len(untracked)} untracked Python/YAML files")
 
             return changed_files
 
@@ -224,108 +224,54 @@ class SelectiveTestRunner:
             print(f"Unexpected error: {e}")
             return set()
 
-    def get_affected_states(self, changed_files: Set[str]) -> Set[str]:
-        """Extract affected state abbreviations from changed files."""
-        affected_states = set()
-
-        for file in changed_files:
-            # Check state directories
-            for state in self.state_abbrevs:
-                if f"/states/{state}/" in file or f"/states/{state}." in file:
-                    affected_states.add(state)
-                # Also check for state-specific local directories
-                if f"/local/{state}/" in file:
-                    affected_states.add(state)
-
-        return affected_states
-
     def map_files_to_tests(self, changed_files: Set[str]) -> Set[str]:
-        """Map changed files to relevant test paths."""
+        """Map changed files to relevant test paths using regex patterns."""
         test_paths = set()
-        affected_states = self.get_affected_states(changed_files)
-
+        
         for file in changed_files:
             # Skip non-Python and non-YAML files unless they're critical
-            if not (
-                file.endswith(".py")
-                or file.endswith(".yaml")
-                or file.endswith(".yml")
-            ):
-                if not any(
-                    critical in file
-                    for critical in ["setup.py", "requirements", "Makefile"]
-                ):
+            if not (file.endswith('.py') or file.endswith('.yaml') or file.endswith('.yml')):
+                if not any(critical in file for critical in ['setup.py', 'requirements', 'Makefile']):
                     continue
-
-            # Check each mapping rule
-            mapped = False
-            for source_pattern, test_pattern in self.test_mappings.items():
-                if source_pattern in file:
-                    test_paths.add(test_pattern)
-                    mapped = True
-
-                    # If this is a state-specific change, add more specific test path
-                    if "states" in source_pattern and affected_states:
-                        for state in affected_states:
-                            state_test_path = f"{test_pattern}/{state}"
-                            test_paths.add(state_test_path)
-
-            # Special cases
-            if not mapped:
-                # Reform files
-                if "reforms" in file and file.endswith(".py"):
-                    test_paths.add("policyengine_us/tests/policy/reform")
-                    # Also test baseline if reform affects specific component
-                    if "/ctc/" in file:
-                        test_paths.add(
-                            "policyengine_us/tests/policy/baseline/gov/irs/credits/ctc"
-                        )
-                    elif "/eitc/" in file:
-                        test_paths.add(
-                            "policyengine_us/tests/policy/baseline/gov/irs/credits/earned_income"
-                        )
-
-                # Variable files not caught by mappings
-                elif "variables" in file and file.endswith(".py"):
-                    # Try to infer test location from variable path
-                    variable_path = file.replace(
-                        "policyengine_us/variables/", ""
-                    )
-                    test_path = f"policyengine_us/tests/policy/baseline/{variable_path.rsplit('/', 1)[0]}"
+            
+            # Check against regex patterns
+            for pattern in self.test_patterns:
+                match = re.search(pattern["file_pattern"], file)
+                if match:
+                    # Substitute captured groups into test pattern
+                    test_path = re.sub(pattern["file_pattern"], pattern["test_pattern"], file)
+                    # Extract just the matched portion
+                    test_path = match.expand(pattern["test_pattern"])
                     test_paths.add(test_path)
-
-                # Parameter files not caught by mappings
-                elif "parameters" in file and file.endswith(".yaml"):
-                    param_path = file.replace(
-                        "policyengine_us/parameters/", ""
-                    )
-                    test_path = f"policyengine_us/tests/policy/baseline/{param_path.rsplit('/', 1)[0]}"
-                    test_paths.add(test_path)
-
-                # Changes to test files themselves
-                elif "tests" in file:
-                    test_paths.add(file.rsplit("/", 1)[0])
-
-        # Always include core tests
-        test_paths.update(self.core_tests)
-
-        # Filter out non-existent paths
+                    
+                    # Also check for more specific component patterns
+                    for comp_pattern in self.component_patterns:
+                        if re.search(comp_pattern["file_pattern"], file):
+                            test_paths.add(comp_pattern["test_pattern"])
+            
+            # Special handling for test files themselves
+            if "tests" in file and file.endswith('.py'):
+                # Add the directory containing the test file
+                test_dir = os.path.dirname(file)
+                if test_dir:
+                    test_paths.add(test_dir)
+        
+        # Filter out non-existent paths and return
         existing_test_paths = set()
         for path in test_paths:
             if Path(path).exists():
                 existing_test_paths.add(path)
             else:
-                # Try without the full path prefix
-                simplified_path = path.replace(
-                    "policyengine_us/tests/policy/baseline/", ""
-                )
-                if Path(
-                    f"policyengine_us/tests/policy/baseline/{simplified_path}"
-                ).exists():
-                    existing_test_paths.add(
-                        f"policyengine_us/tests/policy/baseline/{simplified_path}"
-                    )
-
+                # Try to find the closest existing parent directory
+                path_obj = Path(path)
+                while path_obj.parent != path_obj:
+                    if path_obj.exists() and path_obj.is_dir():
+                        # Check if this directory contains test files
+                        if any(path_obj.glob("**/test_*.py")) or any(path_obj.glob("**/*_test.py")):
+                            existing_test_paths.add(str(path_obj))
+                            break
+                    path_obj = path_obj.parent
+        
         return existing_test_paths
 
     def run_tests(self, test_paths: Set[str], verbose: bool = False) -> int:
@@ -350,13 +296,11 @@ class SelectiveTestRunner:
         pytest_args.extend(sorted(test_paths))
 
         # Add any additional pytest arguments
-        pytest_args.extend(
-            [
-                "--tb=short",  # Shorter traceback format
-                "-x",  # Stop on first failure
-                "--disable-warnings",  # Reduce output noise
-            ]
-        )
+        pytest_args.extend([
+            "--tb=short",  # Shorter traceback format
+            "-x",  # Stop on first failure
+            "--disable-warnings",  # Reduce output noise
+        ])
 
         print(f"\nRunning command: {' '.join(pytest_args)}")
 
@@ -371,34 +315,26 @@ class SelectiveTestRunner:
         result = subprocess.run(["pytest", "policyengine_us/tests"])
         return result.returncode
 
-    def generate_test_plan(
-        self, changed_files: Set[str]
-    ) -> Dict[str, List[str]]:
+    def generate_test_plan(self, changed_files: Set[str]) -> Dict[str, List[str]]:
         """Generate a detailed test plan showing which tests will run for which files."""
         test_plan = {}
-
+        
         for file in changed_files:
-            if not (
-                file.endswith(".py")
-                or file.endswith(".yaml")
-                or file.endswith(".yml")
-            ):
+            if not (file.endswith('.py') or file.endswith('.yaml') or file.endswith('.yml')):
                 continue
-
+            
             file_tests = []
-
-            # Check each mapping
-            for source_pattern, test_pattern in self.test_mappings.items():
-                if source_pattern in file:
-                    file_tests.append(test_pattern)
-
-            # Add special case tests
-            if "reforms" in file and file.endswith(".py"):
-                file_tests.append("policyengine_us/tests/policy/reform")
-
+            
+            # Check against regex patterns
+            for pattern in self.test_patterns:
+                match = re.search(pattern["file_pattern"], file)
+                if match:
+                    test_path = match.expand(pattern["test_pattern"])
+                    file_tests.append(test_path)
+            
             if file_tests:
                 test_plan[file] = file_tests
-
+        
         return test_plan
 
 
@@ -417,7 +353,7 @@ def main():
     parser.add_argument(
         "--base-branch",
         default="master",
-        help="Base branch to compare against (default: main)",
+        help="Base branch to compare against (default: master)",
     )
     parser.add_argument(
         "--plan",
