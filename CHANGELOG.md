@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.341.1] - 2025-07-12 15:05:55
+
+### Fixed
+
+- Test efficiency.
+
+## [1.341.0] - 2025-07-12 04:17:24
+
+### Added
+
+- Ohio flat tax 2025-2026.
+
+## [1.340.1] - 2025-07-11 19:23:54
+
+### Added
+
+- Added DACA and TPS as unique immigration statuses, without removing the existing combined status.
+
+## [1.340.0] - 2025-07-11 14:20:30
+
+### Changed
+
+- Itemization choice respects federal not fed+state tax.
+
+## [1.339.1] - 2025-07-11 11:07:35
+
+## [1.339.0] - 2025-07-11 01:14:11
+
+### Added
+
+- Riverside County Sharing Households Assist Riverside's Energy program (SHARE).
+
+## [1.338.0] - 2025-07-09 15:06:36
+
+### Added
+
+- Set default to true for branching to determine itemization choice.
+
+## [1.337.0] - 2025-07-08 18:56:37
+
+### Added
+
+- 2018 maximum income for young children and pregnant people to qualify for medicaid
+
 ## [1.336.1] - 2025-07-08 18:03:44
 
 ### Fixed
@@ -2886,7 +2930,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Inclusion of unneeded packages in setup.py install_requires list.
+- Inclusion of unneeded packages in pyproject.toml install_requires list.
 
 ## [1.45.1] - 2024-08-10 11:09:59
 
@@ -11687,7 +11731,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Versioning action didn't update `setup.py`.
+- Versioning action didn't update `pyproject.toml`.
 
 ## [0.38.1] - 2022-03-28 10:40:42
 
@@ -12225,6 +12269,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.341.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.341.0...1.341.1
+[1.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.340.1...1.341.0
+[1.340.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.340.0...1.340.1
+[1.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.339.1...1.340.0
+[1.339.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.339.0...1.339.1
+[1.339.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.338.0...1.339.0
+[1.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.337.0...1.338.0
+[1.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.1...1.337.0
 [1.336.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.0...1.336.1
 [1.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.335.0...1.336.0
 [1.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.334.0...1.335.0

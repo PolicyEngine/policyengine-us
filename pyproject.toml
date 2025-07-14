@@ -1,0 +1,35 @@
+[project]
+name = "policyengine-us"
+version = "1.341.1"
+description = "Add your description here."
+readme = "README.md"
+authors = [
+    { name = "PolicyEngine", email = "hello@policyengine.org" }
+]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "microdf-python>=0.4.4",
+    "policyengine-core>=3.17.1",
+    "policyengine-us-data>=1.17.0",
+    "tqdm>=4.67.1",
+]
+
+[project.scripts]
+policyengine-us = "policyengine_us:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.9.2",
+    "furo>=2024.8.6",
+    "jupyter-book>=1.0.4.post1",
+    "setuptools>=80.9.0",
+    "build>=1.2.2.post1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["policyengine_us"]
+
