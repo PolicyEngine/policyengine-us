@@ -34,20 +34,27 @@ class vt_veteran_tax_credit(Variable):
         # Partial credit for households under $30k AGI
         partial_credit_threshold = p.partial_credit_threshold
 
-        # Calculate credit amount
-        credit_amount = where(
-            has_veteran & (agi < full_credit_threshold),
-            # Full credit
+        # Calculate credit amount based on veteran status and income
+        eligible_for_full_credit = has_veteran & (agi < full_credit_threshold)
+        eligible_for_partial_credit = (
+            has_veteran
+            & (agi >= full_credit_threshold)
+            & (agi < partial_credit_threshold)
+        )
+
+        # Calculate partial credit amount (linear phaseout)
+        partial_credit_amount = (
+            p.amount
+            * (partial_credit_threshold - agi)
+            / (partial_credit_threshold - full_credit_threshold)
+        )
+
+        return where(
+            eligible_for_full_credit,
             p.amount,
             where(
-                has_veteran & (agi < partial_credit_threshold),
-                # Partial credit: linear phaseout between $25k and $30k
-                p.amount
-                * (partial_credit_threshold - agi)
-                / (partial_credit_threshold - full_credit_threshold),
-                # No credit above $30k or for non-veterans
+                eligible_for_partial_credit,
+                partial_credit_amount,
                 0,
             ),
         )
-
-        return credit_amount

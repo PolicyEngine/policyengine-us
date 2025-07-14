@@ -1,10 +1,11 @@
-description: Vermont implements income-based military pension exemption starting this year.
+description: Vermont implements income-based military pension exemption.
 metadata:
-  label: Vermont military pension income-based exemption effective date
+  label: Vermont military pension income-based exemption effective
   period: year
-  unit: year
+  unit: bool
   reference:
     - title: S.51 (2025) - Vermont tax credit package
       href: https://legislature.vermont.gov/Documents/2026/Docs/BILLS/S-0051/S-0051%20As%20Passed%20by%20Both%20House%20and%20Senate%20Official.pdf#page=10
 values:
-  2021-01-01: 2025  # Income-based system starts in 2025
+  2021-01-01: false
+  2025-01-01: true

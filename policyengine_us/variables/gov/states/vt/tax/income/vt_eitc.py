@@ -15,8 +15,7 @@ class vt_eitc(Variable):
         p = parameters(period).gov.states.vt.tax.income.credits.eitc
 
         # S.51 (2025): Enhanced EITC for workers without children
-        enhanced_effective_date = p.enhanced_effective_date
-        is_enhanced_system = period.start.year >= enhanced_effective_date
+        is_enhanced_system = p.enhanced_effective_date
 
         # Check if tax unit has qualifying children for EITC
         person = tax_unit.members
