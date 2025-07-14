@@ -1,0 +1,13 @@
+- name: Riverside County is True
+  period: 2023
+  input:
+    county_str: RIVERSIDE_COUNTY_CA
+  output:
+    in_riv: true
+
+- name: Not Riverside County is False
+  period: 2023
+  input:
+    county_str: ORANGE_COUNTY_CA
+  output:
+    in_riv: false

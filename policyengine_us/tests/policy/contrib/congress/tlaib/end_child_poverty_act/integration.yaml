@@ -89,6 +89,10 @@
         free_school_meals: 0
         snap: 0
         ca_capi: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code_str: FL  # Florida has no TANF implementation
   output:
     ecpa_adult_dependent_credit: 0
     ecpa_child_benefit: 5_140 * 2
@@ -124,6 +128,10 @@
         free_school_meals: 0
         snap: 0
         ca_capi: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code_str: FL  # Florida has no TANF implementation
   output:
     non_refundable_ctc: 800
     household_benefits: 0
