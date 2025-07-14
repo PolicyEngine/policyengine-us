@@ -1,8 +1,9 @@
 description: Ineligible immigration status for Premium Tax Credit. 
 values:
   2018-01-01:
-    - DACA_TPS
+    - DACA_TPS #daca is eligible for PTC
     - UNDOCUMENTED
+    - TPS 
 
 metadata:
   label: Reconciliation Premium Tax Credit immigration status adjustment in effect
