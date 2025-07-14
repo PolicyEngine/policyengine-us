@@ -440,7 +440,7 @@
 - bump: patch
   changes:
     fixed:
-    - Versioning action didn't update `setup.py`.
+    - Versioning action didn't update `pyproject.toml`.
   date: 2022-03-28 10:55:27
 - bump: minor
   changes:
@@ -7897,7 +7897,7 @@
 - bump: patch
   changes:
     fixed:
-    - Inclusion of unneeded packages in setup.py install_requires list.
+    - Inclusion of unneeded packages in pyproject.toml install_requires list.
   date: 2024-08-10 19:54:58
 - bump: minor
   changes:
@@ -10407,3 +10407,19 @@
     changed:
     - Itemization choice respects federal not fed+state tax.
   date: 2025-07-11 14:20:30
+- bump: patch
+  changes:
+    added:
+    - Added DACA and TPS as unique immigration statuses, without removing the existing
+      combined status.
+  date: 2025-07-11 19:23:54
+- bump: minor
+  changes:
+    added:
+    - Ohio flat tax 2025-2026.
+  date: 2025-07-12 04:17:24
+- bump: patch
+  changes:
+    fixed:
+    - Test efficiency.
+  date: 2025-07-12 15:05:55
