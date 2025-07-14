@@ -52,5 +52,5 @@ class dc_liheap_payment(Variable):
                 heat_in_rent_payment,
                 oil_payment,
             ],
-            default = 0,
+            default=0,
         )
