@@ -5,12 +5,14 @@
     spm_unit_size: 4
     state_code: DC
   output:
+    hhs_smi: 152_043
+    # income limit = 152_043 * 0.6 = 91,225.8
     dc_liheap_eligible: true
 
 - name: Case 2, household size of 4, ineligible.
   period: 2023
   input: 
-    irs_gross_income: 96_000
+    irs_gross_income: 92_000
     spm_unit_size: 4
     state_code: DC
   output: 
