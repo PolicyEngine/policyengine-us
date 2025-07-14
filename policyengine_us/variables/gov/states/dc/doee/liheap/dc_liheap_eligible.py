@@ -14,4 +14,5 @@ class dc_liheap_eligible(Variable):
         state_median_income = spm_unit("hhs_smi", period)
         # The income concept is not clearly defined, assuming IRS gross income
         income = add(spm_unit, period, ["irs_gross_income"])
-        return income <= state_median_income * p.smi_limit
+        smi_limit = state_median_income * p.smi_limit
+        return income <= smi_limit
