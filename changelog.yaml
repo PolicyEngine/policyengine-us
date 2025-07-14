@@ -440,7 +440,7 @@
 - bump: patch
   changes:
     fixed:
-    - Versioning action didn't update `setup.py`.
+    - Versioning action didn't update `pyproject.toml`.
   date: 2022-03-28 10:55:27
 - bump: minor
   changes:
@@ -7897,7 +7897,7 @@
 - bump: patch
   changes:
     fixed:
-    - Inclusion of unneeded packages in setup.py install_requires list.
+    - Inclusion of unneeded packages in pyproject.toml install_requires list.
   date: 2024-08-10 19:54:58
 - bump: minor
   changes:
@@ -10369,3 +10369,57 @@
     added:
     - added 2018 maximum family income for infants to qualify for medicaid
   date: 2025-07-07 18:44:33
+- bump: minor
+  changes:
+    added:
+    - added 2018 maximum family income for adults to qualify for medicaid
+  date: 2025-07-08 16:02:27
+- bump: patch
+  changes:
+    fixed:
+    - Add 2009 surviving spouse itemized deduction reduction rate.
+  date: 2025-07-08 18:03:44
+- bump: minor
+  changes:
+    added:
+    - 2018 maximum income for young children and pregnant people to qualify for medicaid
+  date: 2025-07-08 18:56:37
+- bump: minor
+  changes:
+    added:
+    - Set default to true for branching to determine itemization choice.
+  date: 2025-07-09 15:06:36
+- bump: minor
+  changes:
+    added:
+    - Riverside County Sharing Households Assist Riverside's Energy program (SHARE).
+  date: 2025-07-11 01:14:11
+- bump: patch
+  changes:
+    fixes:
+    - Change the is_married and spm_unit_is_married logic to only count units with
+      spouses.
+    - Fix separate income tax bracket post 2026.
+    - Check for head of household filing status before separate.
+  date: 2025-07-11 11:07:35
+- bump: minor
+  changes:
+    changed:
+    - Itemization choice respects federal not fed+state tax.
+  date: 2025-07-11 14:20:30
+- bump: patch
+  changes:
+    added:
+    - Added DACA and TPS as unique immigration statuses, without removing the existing
+      combined status.
+  date: 2025-07-11 19:23:54
+- bump: minor
+  changes:
+    added:
+    - Ohio flat tax 2025-2026.
+  date: 2025-07-12 04:17:24
+- bump: patch
+  changes:
+    fixed:
+    - Test efficiency.
+  date: 2025-07-12 15:05:55
