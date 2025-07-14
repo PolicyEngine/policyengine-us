@@ -28,6 +28,7 @@ dev = [
     "jupyter-book>=1.0.4.post1",
     "setuptools>=80.9.0",
     "build>=1.2.2.post1",
+    "build",
 ]
 
 [tool.hatch.build.targets.wheel]
