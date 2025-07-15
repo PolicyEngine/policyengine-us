@@ -1,0 +1,25 @@
+description: The United States Department of Agriculture exempts individuals within these age brackets from the general work requirements under the Supplemental Nutrition Assistance Program.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: USDA SNAP general work requirements work exempted age threshold
+  reference:
+    - title: 7 C.F.R. § 273.7 Work provisions (b)(1)(i)
+      href: https://www.law.cornell.edu/cfr/text/7/273.7#b_1_i
+    - title: SNAP Work Requirements
+      href: https://www.fns.usda.gov/snap/work-requirements
+brackets:
+  - threshold:
+      2019-01-01: 0
+    amount: 
+      2019-01-01: true
+  - threshold: 
+      2019-01-01: 16
+    amount: 
+      2019-01-01: false
+  - threshold: 
+      2019-01-01: 60
+    amount: 
+      2019-01-01: true

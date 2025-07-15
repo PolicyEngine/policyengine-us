@@ -74,9 +74,44 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
             agi = gross_income - (
                 above_the_line_deductions + auto_loan_interest_ald
             )
+            p = parameters(
+                period
+            ).gov.contrib.reconciliation.auto_loan_interest_ald
+            if p.senate_version.applies:
+                agi = gross_income - above_the_line_deductions
             if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
                 agi += add(tax_unit, period, ["basic_income"])
             return agi
+
+    class taxable_income_deductions(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Taxable income deductions"
+        unit = USD
+        definition_period = YEAR
+
+        def formula(tax_unit, period, parameters):
+            itemizes = tax_unit("tax_unit_itemizes", period)
+            deductions_if_itemizing = tax_unit(
+                "taxable_income_deductions_if_itemizing", period
+            )
+            deductions_if_not_itemizing = tax_unit(
+                "taxable_income_deductions_if_not_itemizing", period
+            )
+            auto_loan_interest_ald = tax_unit("auto_loan_interest_ald", period)
+            p = parameters(
+                period
+            ).gov.contrib.reconciliation.auto_loan_interest_ald
+            if p.senate_version.applies:
+                deductions_if_itemizing = (
+                    deductions_if_itemizing + auto_loan_interest_ald
+                )
+                deductions_if_not_itemizing = (
+                    deductions_if_not_itemizing + auto_loan_interest_ald
+                )
+            return where(
+                itemizes, deductions_if_itemizing, deductions_if_not_itemizing
+            )
 
     class reform(Reform):
         def apply(self):
@@ -85,6 +120,7 @@ def create_reconciled_auto_loan_interest_ald() -> Reform:
             self.update_variable(
                 adjusted_gross_income_pre_auto_loan_interest_ald
             )
+            self.update_variable(taxable_income_deductions)
 
     return reform
 
