@@ -12,7 +12,8 @@ class pa_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get the federal CDCC value
-        cdcc = tax_unit("cdcc", period)
+        # Pennsylvania matches the potential federal credit
+        cdcc = tax_unit("cdcc_potential", period)
         # Access the parameter path
         p = parameters(period).gov.states.pa.tax.income.credits.cdcc
         # Multiply the federal CDCC value by the Pennsylvania CDCC rate
