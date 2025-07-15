@@ -26,7 +26,9 @@ class vt_eitc(Variable):
         enhanced_rate = where(
             has_qualifying_children,
             p.match,  # 38% for workers with children
-            p.match_without_children,  # 100% for workers without children
+            where(
+                p.match_without_children, 1.0, 0.0
+            ),  # 100% for workers without children if enabled
         )
 
         # Pre-2025: Use standard match rate for all workers
