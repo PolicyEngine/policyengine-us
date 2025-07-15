@@ -17,6 +17,8 @@ metadata:
       href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
     - title: § 10-105 (a)(2). State income tax rates
       href: https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=161
 
 brackets:
   - threshold:
@@ -51,3 +53,13 @@ brackets:
       2013-01-01: 300_000
     rate:
       2013-01-01: 0.0575
+  - threshold:
+      2013-01-01: .inf
+      2025-01-01: 600_000
+    rate:
+      2025-01-01: 0.0625
+  - threshold:
+      2013-01-01: .inf
+      2025-01-01: 1_200_000
+    rate:
+      2025-01-01: 0.0650

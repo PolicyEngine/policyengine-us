@@ -20,6 +20,7 @@ class weekly_hours_worked_before_lsr(Variable):
     label = "average weekly hours worked (before labor supply responses)"
     unit = "hour"
     definition_period = YEAR
+    default_value = 40
 
 
 class weekly_hours_worked_behavioural_response_income_elasticity(Variable):

@@ -1,0 +1,29 @@
+description: Maryland applies the following flat standard deduction amount post 2025, based on filing status.
+metadata:
+  label: Maryland standard deduction flat amount
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  breakdown:
+    - filing_status
+  propagate_metadata_to_children: true
+  reference:
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025 (page 164 - chained CPI indexing)
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=164
+    - title: "Maryland new tax year update - exemptions and deductions"
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+
+JOINT:
+  2025-01-01: 6_700
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 6_700
+SURVIVING_SPOUSE:
+  2025-01-01: 6_700
+SINGLE:
+  2025-01-01: 3_350
+SEPARATE:
+  2025-01-01: 3_350

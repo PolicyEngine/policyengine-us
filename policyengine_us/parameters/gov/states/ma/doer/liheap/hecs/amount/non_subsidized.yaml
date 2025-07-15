@@ -1,0 +1,39 @@
+description: Massachusetts provides the following High Energy Cost Supplement payment amount for homeowners and non-subsidized housing applicants based on benefit level under the Low Income Home Energy Assistance Program.
+
+0:   
+  2021-10-01: 0 
+1:
+  2021-10-01: 250
+  2022-10-01: 200
+2: 
+  2021-10-01: 230
+  2022-10-01: 180
+3: 
+  2021-10-01: 210
+  2022-10-01: 160
+4:
+  2021-10-01: 190
+  2022-10-01: 140
+5: 
+  2021-10-01: 190
+  2022-10-01: 140
+6: 
+  2021-10-01: 170
+  2022-10-01: 120
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Massachusetts LIHEAP High Energy Cost Supplement payment for homeowners and non-subsidized housing applicants
+  breakdown: 
+    - range(0,7) # benefit level
+
+  reference:
+    - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf 
+    - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download 
+    - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
+    - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download 

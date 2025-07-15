@@ -10,6 +10,7 @@ class ctc_adult_individual_maximum(Variable):
         "The CTC entitlement in respect of this person as an adult dependent."
     )
     definition_period = YEAR
+    defined_for = "is_tax_unit_dependent"
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
@@ -17,8 +18,6 @@ class ctc_adult_individual_maximum(Variable):
     )
 
     def formula(person, period, parameters):
-        ctc = parameters(period).gov.irs.credits.ctc
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_child = person("ctc_child_individual_maximum", period) > 0
-        is_adult_dependent = ~is_child & is_dependent
-        return is_adult_dependent * ctc.amount.adult_dependent
+        p = parameters(period).gov.irs.credits.ctc
+        is_adult = person("ctc_child_individual_maximum", period) == 0
+        return is_adult * p.amount.adult_dependent
