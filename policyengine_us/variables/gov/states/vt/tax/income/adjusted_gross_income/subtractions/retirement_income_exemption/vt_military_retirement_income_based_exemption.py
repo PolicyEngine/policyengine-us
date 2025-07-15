@@ -23,15 +23,15 @@ class vt_military_retirement_income_based_exemption(Variable):
 
         agi = tax_unit("adjusted_gross_income", period)
 
-        # Full exemption for households under $125k AGI
+        # Full exemption for households under the threshold
         full_exemption_threshold = p.full_exemption_threshold
-        # Partial exemption for households under $175k AGI
+        # Partial exemption for households under the upper threshold
         partial_exemption_threshold = p.partial_exemption_threshold
 
-        # Full exemption if below $125k
+        # Full exemption if below the threshold
         eligible_for_full_exemption = agi < full_exemption_threshold
 
-        # Partial exemption if between $125k and $175k
+        # Partial exemption if between the thresholds
         eligible_for_partial_exemption = (agi >= full_exemption_threshold) & (
             agi < partial_exemption_threshold
         )
