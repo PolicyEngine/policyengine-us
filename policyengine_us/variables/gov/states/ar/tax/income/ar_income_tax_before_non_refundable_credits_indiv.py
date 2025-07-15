@@ -18,5 +18,11 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
         taxable_income = person("ar_taxable_income_indiv", period)
         main_rate = p.rate.calc(taxable_income)
         pre_reduction_tax = main_rate * taxable_income
+        if p.higher_income_brackets.in_effect:
+            income_over_threshold = p.higher_income_brackets.income_threshold < taxable_income
+            higher_tax = person("ar_higher_income_bracket_indiv", period)
+            pre_reduction_tax = where(income_over_threshold, higher_tax, pre_reduction_tax)
+            print(pre_reduction_tax)
         reduction = p.reduction.calc(taxable_income)
+        print(reduction)
         return max_(pre_reduction_tax - reduction, 0)

@@ -1,14 +1,22 @@
 description: Arkansas taxes personal income at the higher rates if taxable income exceeds this threshold.
 values:
-  2021-01-01: 89_600
+  2022-01-01: 84_500
+  2023-01-01: 87_000
+  2024-01-01: 89_600
   2025-01-01: 92_300
+
 metadata:
   unit: currency-USD
   period: year
   label: Arkansas higher income tax threshold
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A) # (d)(1) for uprating.
-    href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
+    href: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-2/section-26-51-201/
   - title: 2024 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
   - title: Bill to reduce the 2024 income tax HB1001 
