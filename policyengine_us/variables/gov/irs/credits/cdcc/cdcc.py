@@ -12,4 +12,9 @@ class cdcc(Variable):
     def formula(tax_unit, period, parameters):
         credit_limit = tax_unit("cdcc_credit_limit", period)
         potential = tax_unit("cdcc_potential", period)
-        return min_(credit_limit, potential)
+        # In 2021, the CDCC was refundable
+        p = parameters(period).gov.irs.credits
+        if "cdcc" in p.refundable:
+            return potential
+        else:
+            return min_(credit_limit, potential)

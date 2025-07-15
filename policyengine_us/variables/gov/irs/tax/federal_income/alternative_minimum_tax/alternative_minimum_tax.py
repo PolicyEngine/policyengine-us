@@ -31,7 +31,7 @@ class alternative_minimum_tax(Variable):
 
         # Form 6251, Part II bottom
         # Line 8
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
+        foreign_tax_credit = tax_unit("foreign_tax_credit_potential", period)
         # Line 9
         reduced_tax = total_amt_tax - foreign_tax_credit
         # Line 10 contains regular tax before credits, lump sum distributions, and capital gains tax
