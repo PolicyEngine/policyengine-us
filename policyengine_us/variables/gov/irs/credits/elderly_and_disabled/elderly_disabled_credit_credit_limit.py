@@ -14,6 +14,6 @@ class elderly_disabled_credit_credit_limit(Variable):
         income_tax_before_credits = tax_unit(
             "income_tax_before_credits", period
         )
-        p = parameters(period).gov.irs.credits.elderly_and_disabled
+        p = parameters(period).gov.irs.credits.elderly_or_disabled
         preceding_credits = add(tax_unit, period, p.preceding_credits)
         return max_(income_tax_before_credits - preceding_credits, 0)
