@@ -21,7 +21,7 @@ class vt_veteran_tax_credit(Variable):
         # Check if anyone in tax unit is a veteran
         person = tax_unit.members
         is_veteran = person("is_veteran", period)
-        has_veteran = tax_unit.any(is_veteran)
+        veteran_present = tax_unit.any(is_veteran)
 
         # Get parameters for veteran credit
         p = parameters(period).gov.states.vt.tax.income.credits.veteran
@@ -35,9 +35,11 @@ class vt_veteran_tax_credit(Variable):
         partial_credit_threshold = p.partial_credit_threshold
 
         # Calculate credit amount based on veteran status and income
-        eligible_for_full_credit = has_veteran & (agi < full_credit_threshold)
+        eligible_for_full_credit = veteran_present & (
+            agi < full_credit_threshold
+        )
         eligible_for_partial_credit = (
-            has_veteran
+            veteran_present
             & (agi >= full_credit_threshold)
             & (agi < partial_credit_threshold)
         )
