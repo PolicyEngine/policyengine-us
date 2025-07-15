@@ -15,7 +15,7 @@ class vt_eitc(Variable):
         p = parameters(period).gov.states.vt.tax.income.credits.eitc
 
         # S.51 (2025): Enhanced EITC for workers without children
-        enhanced_structure_applies = p.enhanced_effective_date
+        enhanced_structure_applies = p.enhanced_structure.in_effect
 
         # Check if tax unit has qualifying children for EITC
         person = tax_unit.members
@@ -23,12 +23,13 @@ class vt_eitc(Variable):
         has_qualifying_children = tax_unit.any(is_child_dependent)
 
         # Different match rates for workers with and without children (2025+)
+        match_rate = where(
+            p.match_without_children, 1.0, 0.0
+        )
         enhanced_rate = where(
             has_qualifying_children,
             p.match,  # 38% for workers with children
-            where(
-                p.match_without_children, 1.0, 0.0
-            ),  # 100% for workers without children if enabled
+            match_rate  # 100% for workers without children if enabled
         )
 
         # Pre-2025: Use standard match rate for all workers
