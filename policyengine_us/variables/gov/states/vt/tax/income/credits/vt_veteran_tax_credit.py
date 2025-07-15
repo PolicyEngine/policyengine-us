@@ -44,12 +44,14 @@ class vt_veteran_tax_credit(Variable):
             & (agi < partial_credit_threshold)
         )
 
-        # Calculate partial credit amount (linear phaseout)
-        partial_credit_amount = (
-            p.amount
-            * (partial_credit_threshold - agi)
-            / (partial_credit_threshold - full_credit_threshold)
-        )
+        # Calculate partial credit amount ($5 reduction per $100 increment)
+        excess_income = agi - full_credit_threshold
+        # Number of $100 increments (rounded up)
+        income_increments = np.ceil(excess_income / 100)
+        # $5 reduction per increment
+        reduction_amount = income_increments * 5
+        # Calculate partial credit (minimum of 0)
+        partial_credit_amount = max_(p.amount - reduction_amount, 0)
 
         return where(
             eligible_for_full_credit,
