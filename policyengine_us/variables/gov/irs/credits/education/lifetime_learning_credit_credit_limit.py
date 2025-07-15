@@ -14,15 +14,8 @@ class lifetime_learning_credit_credit_limit(Variable):
         income_tax_before_credits = tax_unit(
             "income_tax_before_credits", period
         )
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
-        cdcc = tax_unit("cdcc", period)
-        non_refundable_american_opportunity_credit = tax_unit(
-            "non_refundable_american_opportunity_credit", period
-        )
-        return max_(
-            income_tax_before_credits
-            - foreign_tax_credit
-            - cdcc
-            - non_refundable_american_opportunity_credit,
-            0,
-        )
+        p = parameters(
+            period
+        ).gov.irs.credits.education.lifetime_learning_credit
+        preceding_credits = add(tax_unit, period, p.preceding_credits)
+        return max_(income_tax_before_credits - preceding_credits, 0)

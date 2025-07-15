@@ -15,31 +15,6 @@ class used_clean_vehicle_credit_credit_limit(Variable):
         income_tax_before_credits = tax_unit(
             "income_tax_before_credits", period
         )
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
-        cdcc = tax_unit("cdcc", period)
-        non_refundable_american_opportunity_credit = tax_unit(
-            "non_refundable_american_opportunity_credit", period
-        )
-        lifetime_learning_credit = tax_unit("lifetime_learning_credit", period)
-        savers_credit = tax_unit("savers_credit", period)
-        residential_clean_energy_credit = tax_unit(
-            "residential_clean_energy_credit", period
-        )
-        energy_efficient_home_improvement_credit = tax_unit(
-            "energy_efficient_home_improvement_credit", period
-        )
-        elderly_disabled_credit = tax_unit("elderly_disabled_credit", period)
-        new_clean_vehicle_credit = tax_unit("new_clean_vehicle_credit", period)
-        return max_(
-            income_tax_before_credits
-            - foreign_tax_credit
-            - cdcc
-            - non_refundable_american_opportunity_credit
-            - lifetime_learning_credit
-            - savers_credit
-            - residential_clean_energy_credit
-            - energy_efficient_home_improvement_credit
-            - elderly_disabled_credit
-            - new_clean_vehicle_credit,
-            0,
-        )
+        p = parameters(period).gov.irs.credits.clean_vehicle.used
+        preceding_credits = add(tax_unit, period, p.preceding_credits)
+        return max_(income_tax_before_credits - preceding_credits, 0)
