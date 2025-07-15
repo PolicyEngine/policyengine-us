@@ -23,11 +23,10 @@ class vt_eitc(Variable):
         has_qualifying_children = tax_unit.any(is_child_dependent)
 
         # Different match rates for workers with and without children (2025+)
-        match_rate = where(p.match_without_children, 1.0, 0.0)
         enhanced_rate = where(
             has_qualifying_children,
             p.match,  # Match rate for workers with children
-            match_rate,  # Match rate for workers without children if enabled
+            1.0,  # Match rate for workers without children
         )
 
         # Pre-2025: Use standard match rate for all workers

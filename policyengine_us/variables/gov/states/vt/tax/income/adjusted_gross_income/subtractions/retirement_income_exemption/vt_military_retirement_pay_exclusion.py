@@ -27,7 +27,7 @@ class vt_military_retirement_pay_exclusion(Variable):
 
         # S.51 (2025): Income-based military pension exemption
         is_income_based_system = (
-            p.military_retirement.income_based_effective_date
+            p.military_retirement.income_based_structure.in_effect
         )
         agi = tax_unit("adjusted_gross_income", period)
 
