@@ -5,6 +5,106 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.341.1] - 2025-07-12 15:05:55
+
+### Fixed
+
+- Test efficiency.
+
+## [1.341.0] - 2025-07-12 04:17:24
+
+### Added
+
+- Ohio flat tax 2025-2026.
+
+## [1.340.1] - 2025-07-11 19:23:54
+
+### Added
+
+- Added DACA and TPS as unique immigration statuses, without removing the existing combined status.
+
+## [1.340.0] - 2025-07-11 14:20:30
+
+### Changed
+
+- Itemization choice respects federal not fed+state tax.
+
+## [1.339.1] - 2025-07-11 11:07:35
+
+## [1.339.0] - 2025-07-11 01:14:11
+
+### Added
+
+- Riverside County Sharing Households Assist Riverside's Energy program (SHARE).
+
+## [1.338.0] - 2025-07-09 15:06:36
+
+### Added
+
+- Set default to true for branching to determine itemization choice.
+
+## [1.337.0] - 2025-07-08 18:56:37
+
+### Added
+
+- 2018 maximum income for young children and pregnant people to qualify for medicaid
+
+## [1.336.1] - 2025-07-08 18:03:44
+
+### Fixed
+
+- Add 2009 surviving spouse itemized deduction reduction rate.
+
+## [1.336.0] - 2025-07-08 16:02:27
+
+### Added
+
+- added 2018 maximum family income for adults to qualify for medicaid
+
+## [1.335.0] - 2025-07-07 18:44:33
+
+### Added
+
+- added 2018 maximum family income for infants to qualify for medicaid
+
+## [1.334.0] - 2025-07-03 00:50:54
+
+### Added
+
+- Senate reconciliation bill charitable deduction reform.
+
+## [1.333.0] - 2025-07-02 18:07:05
+
+### Added
+
+- Add Senate Medicaid work requirement reform.
+- Consolidate House and Senate Medicaid work requirement reform.
+
+## [1.332.0] - 2025-07-02 17:21:26
+
+### Added
+
+- Align market income sources with IRS gross income sources.
+
+## [1.331.0] - 2025-07-02 13:44:03
+
+### Added
+
+- Move Senate auto loan interest deduction below the line.
+
+## [1.330.0] - 2025-07-01 21:43:21
+
+### Added
+
+- SNAP work requirements.
+- Reconciliation SNAP work requirements reform.
+
+## [1.329.0] - 2025-07-01 11:26:13
+
+### Added
+
+- Apply Maryland 2025 Budget Changes.
+
 ## [1.328.0] - 2025-06-30 19:04:17
 
 ### Added
@@ -2830,7 +2930,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Inclusion of unneeded packages in setup.py install_requires list.
+- Inclusion of unneeded packages in pyproject.toml install_requires list.
 
 ## [1.45.1] - 2024-08-10 11:09:59
 
@@ -11631,7 +11731,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Versioning action didn't update `setup.py`.
+- Versioning action didn't update `pyproject.toml`.
 
 ## [0.38.1] - 2022-03-28 10:40:42
 
@@ -12169,6 +12269,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.341.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.341.0...1.341.1
+[1.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.340.1...1.341.0
+[1.340.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.340.0...1.340.1
+[1.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.339.1...1.340.0
+[1.339.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.339.0...1.339.1
+[1.339.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.338.0...1.339.0
+[1.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.337.0...1.338.0
+[1.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.1...1.337.0
+[1.336.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.336.0...1.336.1
+[1.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.335.0...1.336.0
+[1.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.334.0...1.335.0
+[1.334.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.333.0...1.334.0
+[1.333.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.332.0...1.333.0
+[1.332.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.331.0...1.332.0
+[1.331.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.330.0...1.331.0
+[1.330.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.329.0...1.330.0
+[1.329.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.328.0...1.329.0
 [1.328.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.6...1.328.0
 [1.327.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.5...1.327.6
 [1.327.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.327.4...1.327.5

@@ -11,10 +11,11 @@ def create_aca_ptc_immigration_status() -> Reform:
             stop=instant("2035-12-31"),
             value=[
                 "ASYLEE",
-                "DACA_TPS",
+                "DACA_TPS",  # daca is eligible
                 "DEPORTATION_WITHHELD",
                 "PAROLED_ONE_YEAR",
                 "UNDOCUMENTED",
+                "TPS",  # tps is  NOT eligible
             ],
         )
         return parameters
