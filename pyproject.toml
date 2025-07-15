@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    "build>=1.2.2.post1",
     "microdf-python>=0.4.4",
     "policyengine-core>=3.17.1",
     "policyengine-us-data>=1.17.0",
