@@ -56,4 +56,4 @@ jobs:
           GITHUB_BASE_REF: ${{ github.base_ref }}
         run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
       - name: Build package
-        run: uv run python -m build
+        run: uv build
