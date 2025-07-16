@@ -22,6 +22,9 @@ class tuition_and_fees_deduction_eligible(Variable):
         aoc_llc = add(
             tax_unit,
             period,
-            ["american_opportunity_credit", "lifetime_learning_credit"],
+            [
+                "american_opportunity_credit",
+                "lifetime_learning_credit_potential",
+            ],
         )
         return ~separate & (aoc_llc == 0)
