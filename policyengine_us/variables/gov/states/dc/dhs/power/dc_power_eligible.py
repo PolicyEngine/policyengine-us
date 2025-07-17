@@ -22,7 +22,12 @@ class dc_power_eligible(Variable):
             "dc_tanf_basic_eligibility_requirements", period
         )
         no_tanf_ssi_ui_income = (
-            add(spm_unit, period, ["dc_tanf", "ssi", "unemployment_compensation"]) == 0
+            add(
+                spm_unit,
+                period,
+                ["dc_tanf", "ssi", "unemployment_compensation"],
+            )
+            == 0
         )
 
         return (
