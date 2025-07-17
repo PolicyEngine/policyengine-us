@@ -16,5 +16,4 @@ class dc_gac_eligible_child(Variable):
         related_to_head_or_spouse = person(
             "is_dc_tanf_related_to_head_or_spouse", period
         )
-
         return ~related_to_head_or_spouse & eligible_child

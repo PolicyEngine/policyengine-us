@@ -9,6 +9,7 @@
     age: 17
     is_tax_unit_dependent: true
     is_in_secondary_school: false
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_pap_eligible_child: true
@@ -18,6 +19,7 @@
   input:
     age: 18
     is_in_secondary_school: false
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_pap_eligible_child: false
@@ -28,6 +30,18 @@
     age: 18
     is_tax_unit_dependent: true
     is_in_secondary_school: true
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_pap_eligible_child: true
+
+- name: Ineligible for PAP due to immigration status.
+  period: 2022-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    immigration_status: UNDOCUMENTED
+    state_code: DC
+  output:
+    dc_pap_eligible_child: false

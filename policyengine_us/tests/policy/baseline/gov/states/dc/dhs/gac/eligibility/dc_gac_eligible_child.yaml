@@ -5,6 +5,7 @@
     is_tax_unit_dependent: true
     is_in_secondary_school: false
     is_dc_tanf_related_to_head_or_spouse: false
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_gac_eligible_child: true
@@ -15,6 +16,7 @@
     age: 18
     is_in_secondary_school: false
     is_dc_tanf_related_to_head_or_spouse: false
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_gac_eligible_child: false
@@ -26,6 +28,7 @@
     is_tax_unit_dependent: true
     is_in_secondary_school: true
     is_dc_tanf_related_to_head_or_spouse: false
+    immigration_status: CITIZEN
     state_code: DC
   output:
     dc_gac_eligible_child: true
@@ -37,6 +40,19 @@
     is_tax_unit_dependent: true
     is_in_secondary_school: true
     is_dc_tanf_related_to_head_or_spouse: true
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_gac_eligible_child: false
+
+- name: Is ineligible for GAC due to immigration status.
+  period: 2022-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    is_dc_tanf_related_to_head_or_spouse: false
+    immigration_status: UNDOCUMENTED
     state_code: DC
   output:
     dc_gac_eligible_child: false

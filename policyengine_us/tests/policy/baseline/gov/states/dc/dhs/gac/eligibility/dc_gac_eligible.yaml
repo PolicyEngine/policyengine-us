@@ -5,7 +5,6 @@
     dc_gac_eligible_child: true
     dc_gac_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_gac_eligible: true
 
@@ -16,7 +15,6 @@
     dc_gac_eligible_child: true
     dc_gac_income_eligible: true
     dc_tanf_resources_eligible: false
-    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_gac_eligible: false
 
@@ -27,7 +25,6 @@
     dc_gac_eligible_child: true
     dc_gac_income_eligible: false
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_gac_eligible: false
 
@@ -38,17 +35,5 @@
     dc_gac_eligible_child: false
     dc_gac_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
-  output:
-    dc_gac_eligible: false
-
-- name: Immigration status ineligible. 
-  period: 2023-01
-  input:
-    state_code: DC
-    dc_gac_eligible_child: true
-    dc_gac_income_eligible: true
-    dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: false
   output:
     dc_gac_eligible: false

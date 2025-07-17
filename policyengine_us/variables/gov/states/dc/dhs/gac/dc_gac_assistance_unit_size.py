@@ -11,4 +11,5 @@ class dc_gac_assistance_unit_size(Variable):
     )
     defined_for = StateCode.DC
 
+    # Only eligible child can be counted as a member of the GAC assistance unit.
     adds = ["dc_gac_eligible_child"]

@@ -10,10 +10,9 @@ class dc_tanf(Variable):
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52"
     )
-    defined_for = StateCode.DC
+    defined_for = "dc_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        # If a household is receiving POWER, it cannot receive TANF at the same time
-        dc_power = spm_unit("dc_power", period)
-        dc_tanf_if_claimed = spm_unit("dc_tanf_if_claimed", period)
-        return where(dc_power > 0, 0, dc_tanf_if_claimed)
+        standard_payment = spm_unit("dc_tanf_standard_payment", period)
+        countable_income = spm_unit("dc_tanf_countable_income", period)
+        return max_(standard_payment - countable_income, 0)

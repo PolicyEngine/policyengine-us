@@ -12,4 +12,7 @@ class dc_power(Variable):
     )
     defined_for = "dc_power_eligible"
 
-    adds = ["dc_tanf_if_claimed"]
+    def formula(spm_unit, period, parameters):
+        standard_payment = spm_unit("dc_tanf_standard_payment", period)
+        countable_income = spm_unit("dc_tanf_countable_income", period)
+        return max_(standard_payment - countable_income, 0)

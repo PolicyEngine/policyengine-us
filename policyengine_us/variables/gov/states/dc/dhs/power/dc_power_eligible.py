@@ -15,12 +15,18 @@ class dc_power_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         is_head = person("is_tax_unit_head", period)
-        work_exempted = person("dc_tanf_work_exempted", period)
+        work_exempted = person("dc_tanf_work_requirement_exempt", period)
         eligible_head = spm_unit.sum(is_head & work_exempted) == 1
 
-        tanf_eligible = spm_unit("dc_tanf_eligible", period)
-        no_tanf_ssi_ui_income = (
+        meets_basic_eligibility_requirements = spm_unit(
+            "dc_tanf_basic_eligibility_requirements", period
+        )
+        no_ssi_ui_income = (
             add(spm_unit, period, ["ssi", "unemployment_compensation"]) == 0
         )
 
-        return eligible_head & tanf_eligible & no_tanf_ssi_ui_income
+        return (
+            eligible_head
+            & meets_basic_eligibility_requirements
+            & no_ssi_ui_income
+        )

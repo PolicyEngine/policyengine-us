@@ -23,5 +23,9 @@ class dc_pap_eligible_child(Variable):
         eligible_student_dependent = (
             secondary_school_student & student_dependent & dependent
         )
-
-        return eligible_minor_child | eligible_student_dependent
+        immigration_status_eligible = person(
+            "dc_tanf_immigration_status_eligible_person", period
+        )
+        return immigration_status_eligible & (
+            eligible_minor_child | eligible_student_dependent
+        )

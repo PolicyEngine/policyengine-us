@@ -17,17 +17,5 @@ class dc_gac_eligible(Variable):
         )
         income_eligible = spm_unit("dc_gac_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
-        immigration_status_eligible = (
-            add(
-                spm_unit,
-                period,
-                ["dc_tanf_immigration_status_eligible_person"],
-            )
-            > 0
-        )
-        return (
-            has_eligible_child
-            & income_eligible
-            & resources_eligible
-            & immigration_status_eligible
-        )
+
+        return has_eligible_child & income_eligible & resources_eligible

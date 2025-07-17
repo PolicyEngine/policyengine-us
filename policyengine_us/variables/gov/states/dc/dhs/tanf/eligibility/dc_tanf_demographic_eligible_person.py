@@ -17,6 +17,11 @@ class dc_tanf_demographic_eligible_person(Variable):
         related_to_head_or_spouse = person(
             "is_dc_tanf_related_to_head_or_spouse", period
         )
-
         pregnant = person("is_pregnant", period)
-        return (pap_eligible_child & related_to_head_or_spouse) | pregnant
+        immigration_status_eligible = person(
+            "dc_tanf_immigration_status_eligible_person", period
+        )
+
+        return (pap_eligible_child & related_to_head_or_spouse) | (
+            pregnant & immigration_status_eligible
+        )

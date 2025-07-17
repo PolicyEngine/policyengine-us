@@ -10,26 +10,10 @@ class dc_tanf_eligible(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        demographic_eligible = (
-            add(spm_unit, period, ["dc_tanf_demographic_eligible_person"]) > 0
-        )
-        income_eligible = spm_unit("dc_tanf_income_eligible", period)
-        resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
-        immigration_status_eligible = (
-            add(
-                spm_unit,
-                period,
-                ["dc_tanf_immigration_status_eligible_person"],
-            )
-            > 0
+        meets_basic_eligibility_requirements = spm_unit(
+            "dc_tanf_basic_eligibility_requirements", period
         )
         meets_work_requirements = spm_unit(
             "dc_tanf_meets_work_requirements", period
         )
-        return (
-            demographic_eligible
-            & income_eligible
-            & resources_eligible
-            & immigration_status_eligible
-            & meets_work_requirements
-        )
+        return meets_basic_eligibility_requirements & meets_work_requirements

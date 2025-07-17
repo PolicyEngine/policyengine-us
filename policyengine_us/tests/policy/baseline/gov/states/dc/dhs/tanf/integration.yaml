@@ -16,7 +16,7 @@
   output:
     dc_tanf: 545*12
 
-- name: Case 2, applicant has a eligible child. 
+- name: Case 2, applicant has an eligible child. 
   period: 2022
   input:
     people:
@@ -47,7 +47,7 @@
     dc_tanf_eligible: true 
     dc_tanf: 545*12
 
-- name: Case 3, applicant has a eligible child enrolled in tanf.  
+- name: Case 3, applicant has an eligible child enrolled in TANF.  
   period: 2022
   input:
     people:
