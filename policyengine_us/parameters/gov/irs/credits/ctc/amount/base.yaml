@@ -8,8 +8,13 @@ brackets:
       values:
         2013-01-01: 1_000
         2018-01-01: 2_000
+        2025-01-01: 2_200
+        2027-01-01: 2_300
+        2029-01-01: 2_400
+        2031-01-01: 2_500
+        2033-01-01: 2_600
+        2035-01-01: 2_700
         # Rose to $3,000/$3,600 in 2021. See arpa.yaml.
-        2026-01-01: 1_000
       metadata:
         reference:
           - title: 26 U.S. Code § 24(a)
@@ -18,6 +23,9 @@ brackets:
             href: https://www.law.cornell.edu/uscode/text/26/24#h
           - title: 26 U.S. Code § 24(i)
             href: https://www.law.cornell.edu/uscode/text/26/24#i
+          - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB sets CTC value in $2,200 and uprates using 2024 as the base year.
   - threshold:
       values:
         2013-01-01: 17
