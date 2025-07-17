@@ -12,7 +12,8 @@ class nm_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         nm_cdcc_max = tax_unit("nm_cdcc_max_amount", period)
-        us_cdcc = tax_unit("cdcc", period)
+        us_cdcc = tax_unit("cdcc_potential", period)
+        # New Mexico matches the potential federal credit
         if "cdcc" in parameters(period).gov.irs.credits.non_refundable:
             us_taxbc = tax_unit("income_tax_before_credits", period)
             used_us_cdcc = min_(us_cdcc, us_taxbc)

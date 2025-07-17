@@ -1,0 +1,74 @@
+- name: Case 1, expense higher than payment allowance. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    pre_subsidy_electricity_expense: 50 *12
+    water_expense: 5 * 12
+    trash_expense: 5 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    ca_riv_share_payment: 33.21
+    # 24 + 4.75 + 4.46 
+
+- name: Case 2, expense less than payment allowance. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    pre_subsidy_electricity_expense: 20 * 12
+    water_expense: 3 * 12
+    trash_expense: 3 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    ca_riv_share_payment: 26
+
+- name: Case 3, integration. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_riv_share_eligible_for_emergency_payment: true
+        pre_subsidy_electricity_expense: 50 * 12
+        water_expense: 5 * 12
+        trash_expense: 5 * 12
+  output:
+    ca_riv_share_countable_income: 50_000 / 12 
+    ca_riv_share_electricity_emergency_payment: 250 / 12
+    ca_riv_share_payment: 54.04 
+    # 33.21 + 250/12 
+
+- name: Case 4, integration, not in Riverside. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_riv_share_eligible_for_emergency_payment: true
+        pre_subsidy_electricity_expense: 50 * 12
+        water_expense: 5 * 12
+        trash_expense: 5 * 12
+  output:
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_payment: 0 
