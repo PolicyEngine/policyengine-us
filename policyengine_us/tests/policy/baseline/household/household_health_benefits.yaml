@@ -1,0 +1,17 @@
+- name: flag off
+  period: 2026
+  input:
+    include_health_benefits_in_net_income: true    
+    healthcare_benefit_value: 1_500
+  output:
+    household_health_benefits: 0
+    household_benefits: 0
+
+- name: flag on
+  period: 2026
+  input:              
+    include_health_benefits_in_net_income: true
+    healthcare_benefit_value: 1_500
+  output:
+    household_health_benefits: 1_500
+    household_benefits: 1_500

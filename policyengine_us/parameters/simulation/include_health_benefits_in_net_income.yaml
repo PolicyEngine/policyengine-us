@@ -1,8 +1,6 @@
-description: |
-  If true, net-income variables return household_net_income_including_health_benefits
-  (which already adds healthcare_benefit_value).  Default is false for
-  backward-compatibility.
+description: Whether to include health benefits in net income.
 values:
   0000-01-01: false
 metadata:
-  datatype: bool
+  unit: bool
+  label: Include health benefits in net income
