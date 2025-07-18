@@ -15,4 +15,5 @@ class ks_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.credits
+        # Kansas matches the federal credit taken
         return p.cdcc_fraction * tax_unit("cdcc", period)

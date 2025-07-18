@@ -10,6 +10,11 @@ class cdcc(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
     def formula(tax_unit, period, parameters):
-        expenses = tax_unit("cdcc_relevant_expenses", period)
-        rate = tax_unit("cdcc_rate", period)
-        return expenses * rate
+        credit_limit = tax_unit("cdcc_credit_limit", period)
+        potential = tax_unit("cdcc_potential", period)
+        # In 2021, the CDCC was refundable
+        p = parameters(period).gov.irs.credits
+        if "cdcc" in p.refundable:
+            return potential
+        else:
+            return min_(credit_limit, potential)

@@ -1,0 +1,9 @@
+- name: Income tax reduced by previous credits
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+    income_tax_before_credits: 3_000
+    cdcc: 1_000
+    savers_credit: 300
+  output:
+    new_clean_vehicle_credit_credit_limit: 1_700
