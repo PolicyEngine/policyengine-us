@@ -31,11 +31,6 @@ brackets:
   - threshold:
       values:
         2014-01-01: 0
-      metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
     amount:
       2014-01-01: 0.009 
       2019-01-01: 0
