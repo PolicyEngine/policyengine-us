@@ -33,14 +33,20 @@ class vt_military_retirement_income_based_exemption(Variable):
 
         # Partial exemption if between the thresholds
         eligible_for_partial_exemption = (agi >= full_exemption_threshold) & (
-            agi < partial_exemption_threshold
+            agi <= partial_exemption_threshold
         )
 
         # Calculate partial exemption amount (linear phaseout)
-        partial_exemption_amount = (
+        # Avoid division by zero if thresholds are equal
+        threshold_difference = (
+            partial_exemption_threshold - full_exemption_threshold
+        )
+        partial_exemption_amount = np.divide(
             tax_unit_military_retirement_pay
-            * (partial_exemption_threshold - agi)
-            / (partial_exemption_threshold - full_exemption_threshold)
+            * (partial_exemption_threshold - agi),
+            threshold_difference,
+            out=np.zeros_like(tax_unit_military_retirement_pay),
+            where=threshold_difference != 0,
         )
 
         return where(
@@ -48,7 +54,7 @@ class vt_military_retirement_income_based_exemption(Variable):
             tax_unit_military_retirement_pay,
             where(
                 eligible_for_partial_exemption,
-                partial_exemption_amount,
+                max_(partial_exemption_amount, 0),
                 0,
             ),
         )
