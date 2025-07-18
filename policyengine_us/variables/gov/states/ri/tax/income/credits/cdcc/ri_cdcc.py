@@ -10,6 +10,7 @@ class ri_cdcc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        # Rhode Island matches the federal credit taken
         fed_cdcc = tax_unit("cdcc", period)
         rate = parameters(period).gov.states.ri.tax.income.credits.cdcc.rate
         return fed_cdcc * rate

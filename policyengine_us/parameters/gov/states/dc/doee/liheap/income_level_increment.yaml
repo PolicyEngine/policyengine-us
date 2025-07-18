@@ -1,0 +1,12 @@
+description: The District of Columbia uses this increment to determine filers' income levels under the Low Income Home Energy Assistance Program (LIHEAP).
+
+values:
+  2023-10-01: 2_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: DC LIHEAP Income level increment
+  reference:
+    - title: DOEE Regular Benefits Table for FY 2024
+      href: https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf

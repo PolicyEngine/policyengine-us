@@ -1,0 +1,20 @@
+description: Non-refundable tax credits which precede the Used Clean Vehicle Credit.
+values:
+  2013-01-01:
+    - foreign_tax_credit 
+    - cdcc
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - residential_clean_energy_credit
+    - energy_efficient_home_improvement_credit
+    - elderly_disabled_credit
+    - new_clean_vehicle_credit
+
+metadata:
+  unit: list
+  period: year
+  label: Non-refundable tax credits preceding the Used Clean Vehicle Credit
+  reference:
+    - title: IRS Schedule 3, Additional Credits and Payments
+      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
