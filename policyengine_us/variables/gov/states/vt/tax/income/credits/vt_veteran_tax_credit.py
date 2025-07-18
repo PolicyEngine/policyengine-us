@@ -44,12 +44,14 @@ class vt_veteran_tax_credit(Variable):
             & (agi < partial_credit_threshold)
         )
 
-        # Calculate partial credit amount ($5 reduction per $100 increment)
+        # Calculate partial credit amount based on parameterized reduction structure
         excess_income = agi - full_credit_threshold
-        # Number of $100 increments (rounded up)
-        income_increments = np.ceil(excess_income / 100)
-        # $5 reduction per increment
-        reduction_amount = income_increments * 5
+        # Number of income increments (rounded up)
+        income_increment_amount = p.income_increment
+        income_increments = np.ceil(excess_income / income_increment_amount)
+        # Reduction per increment
+        reduction_per_increment = p.reduction_per_increment
+        reduction_amount = income_increments * reduction_per_increment
         # Calculate partial credit (minimum of 0)
         partial_credit_amount = max_(p.amount - reduction_amount, 0)
 
