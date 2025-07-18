@@ -2,7 +2,7 @@
   period: 2023
   absolute_error_margin: 0.3
   input:
-    irs_gross_income: 5_100 * 12
+    employment_income: 5_100 * 12
     spm_unit_size: 4
     in_riv: true
   output:
@@ -13,7 +13,7 @@
   period: 2023
   absolute_error_margin: 0.3
   input:
-    irs_gross_income: 5_300 * 12
+    employment_income: 5_300 * 12
     spm_unit_size: 4
     in_riv: true
   output:

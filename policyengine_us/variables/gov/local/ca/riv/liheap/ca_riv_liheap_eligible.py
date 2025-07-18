@@ -13,6 +13,6 @@ class ca_riv_liheap_eligible(Variable):
         p = parameters(period).gov.hhs.liheap
         state_median_income = spm_unit("hhs_smi", period)
         # The income concept is not clearly defined, assuming IRS gross income
-        income = add(spm_unit, period, ["irs_gross_income"])
+        countable_income = spm_unit("ca_riv_liheap_countable_income", period)
         smi_limit = state_median_income * p.smi_limit
-        return income <= smi_limit
+        return countable_income <= smi_limit
