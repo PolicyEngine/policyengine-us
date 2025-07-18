@@ -1107,7 +1107,6 @@ name = "policyengine-us"
 version = "1.341.1"
 source = { editable = "." }
 dependencies = [
-    { name = "build" },
     { name = "microdf-python" },
     { name = "policyengine-core" },
     { name = "policyengine-us-data" },
@@ -1116,7 +1115,6 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
-    { name = "build" },
     { name = "coverage" },
     { name = "furo" },
     { name = "jupyter-book" },
@@ -1130,8 +1128,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "build", specifier = ">=1.2.2.post1" },
-    { name = "build", marker = "extra == 'dev'", specifier = ">=1.2.2.post1" },
     { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.9.2" },
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2024.8.6" },
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
