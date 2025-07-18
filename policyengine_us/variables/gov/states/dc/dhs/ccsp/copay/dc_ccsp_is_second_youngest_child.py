@@ -9,7 +9,7 @@ class dc_ccsp_is_second_youngest_child(Variable):
     definition_period = MONTH
 
     def formula(person, period, parameters):
-        # the co-payment applies to the two youngest children
+        # the copay applies to the two youngest children
         eligible = person("dc_ccsp_eligible_child", period)
         age = person("monthly_age", period)
         spm_unit = person.spm_unit

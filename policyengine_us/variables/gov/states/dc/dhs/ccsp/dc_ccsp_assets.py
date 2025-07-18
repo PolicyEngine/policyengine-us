@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_ccsp_asset(Variable):
+class dc_ccsp_assets(Variable):
     value_type = float
     entity = SPMUnit
     label = "DC Child Care Subsidy Program (CCSP) asset"

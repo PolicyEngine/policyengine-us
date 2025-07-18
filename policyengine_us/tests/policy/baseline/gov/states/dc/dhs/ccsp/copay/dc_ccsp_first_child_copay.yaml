@@ -8,7 +8,7 @@
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 2
   output:
-    dc_ccsp_first_child_co_payment: 19.7
+    dc_ccsp_first_child_copay: 19.7
 
 - name: Case 2, size of 3, annual income $36000. 
   period: 2025-01
@@ -20,7 +20,7 @@
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 3
   output:
-    dc_ccsp_first_child_co_payment: 0
+    dc_ccsp_first_child_copay: 0
 
 - name: Case 3, size of 2, not the youngest child. 
   period: 2025-01
@@ -32,7 +32,7 @@
     dc_ccsp_is_youngest_child: false
     spm_unit_size: 2
   output:
-    dc_ccsp_first_child_co_payment: 0
+    dc_ccsp_first_child_copay: 0
 
 - name: Case 4, size of 2, annual income $36000, part time. 
   period: 2025-01
@@ -44,4 +44,4 @@
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 2
   output:
-    dc_ccsp_first_child_co_payment: 9.8
+    dc_ccsp_first_child_copay: 9.8

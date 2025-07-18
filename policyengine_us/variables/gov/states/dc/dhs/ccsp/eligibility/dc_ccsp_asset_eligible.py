@@ -11,5 +11,5 @@ class dc_ccsp_asset_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.dhs.ccsp.assets
-        asset = spm_unit("dc_ccsp_asset", period)
+        asset = spm_unit("dc_ccsp_assets", period)
         return asset <= p.limit

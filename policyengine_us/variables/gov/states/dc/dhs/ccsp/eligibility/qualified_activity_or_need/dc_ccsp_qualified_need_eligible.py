@@ -24,12 +24,12 @@ class dc_ccsp_qualified_need_eligible(Variable):
         income_test_waived = spm_unit("dc_ccsp_income_test_waived", period)
         # parent is age >= 62 or get social_security_disability or ssi
         is_elderly = age >= p.elderly
-        received_ssd_or_ssi = (
+        received_ssdi_or_ssi = (
             add(spm_unit, period, ["social_security_disability", "ssi"]) > 0
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_elderly_parent = (
-            spm_unit.any(is_head_or_spouse & is_elderly) | received_ssd_or_ssi
+            spm_unit.any(is_head_or_spouse & is_elderly) | received_ssdi_or_ssi
         )
 
         return has_disabled_child | income_test_waived | has_elderly_parent

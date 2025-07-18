@@ -1,12 +1,12 @@
-description: The District of Columbia applies this amount as the full time co-payment for the first child, based on household income and poverty level ratio under the Child Care Subsidy Program.
+description: The District of Columbia applies this amount as the full time copay for the first child, based on household income and poverty level ratio under the Child Care Subsidy Program.
 metadata:
   type: single_amount
   threshold_unit: /1
   amount_unit: currency-USD
   period: year
-  label: DC CCSP full-time co-payment amount for the first child
+  label: DC CCSP full-time copay amount for the first child
   reference:
-    - title: DC CCSP co-payment scale
+    - title: DC CCSP copay scale
       href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf
 
 brackets:

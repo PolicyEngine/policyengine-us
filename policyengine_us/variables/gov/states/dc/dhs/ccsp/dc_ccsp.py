@@ -11,7 +11,7 @@ class dc_ccsp(Variable):
     defined_for = "dc_ccsp_eligible"
 
     def formula(spm_unit, period, parameters):
-        co_payment = spm_unit("dc_ccsp_co_payment", period)
+        copay = spm_unit("dc_ccsp_copay", period)
         maximum_payment = add(
             spm_unit, period, ["dc_ccsp_maximum_subsidy_amount"]
         )
@@ -19,6 +19,6 @@ class dc_ccsp(Variable):
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
         uncapped_subsidy_amount = max_(
-            pre_subsidy_childcare_expense - co_payment, 0
+            pre_subsidy_childcare_expense - copay, 0
         )
         return min_(uncapped_subsidy_amount, maximum_payment)

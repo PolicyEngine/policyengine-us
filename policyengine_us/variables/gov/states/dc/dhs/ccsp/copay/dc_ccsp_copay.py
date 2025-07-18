@@ -1,17 +1,17 @@
 from policyengine_us.model_api import *
 
 
-class dc_ccsp_co_payment(Variable):
+class dc_ccsp_copay(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = "DC Child Care Subsidy Program (CCSP) co-payment"
+    label = "DC Child Care Subsidy Program (CCSP) copay"
     definition_period = MONTH
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf"
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.dc.dhs.ccsp.co_payment
+        p = parameters(period).gov.states.dc.dhs.ccsp.copay
         qualified_need_eligible = spm_unit(
             "dc_ccsp_qualified_need_eligible", period
         )
@@ -20,13 +20,13 @@ class dc_ccsp_co_payment(Variable):
         income_eligible = countable_income < fpg * p.exempted_rate
         exempted_eligible = qualified_need_eligible | income_eligible
 
-        total_co_payment = add(
+        total_copay = add(
             spm_unit,
             period,
             [
-                "dc_ccsp_first_child_co_payment",
-                "dc_ccsp_second_child_co_payment",
+                "dc_ccsp_first_child_copay",
+                "dc_ccsp_second_child_copay",
             ],
         )
 
-        return where(exempted_eligible, 0, total_co_payment)
+        return where(exempted_eligible, 0, total_copay)

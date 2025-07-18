@@ -3,11 +3,11 @@
   absolute_error_margin: 0.2
   input:
     dc_ccsp_qualified_need_eligible: true
-    dc_ccsp_first_child_co_payment: 10
-    dc_ccsp_second_child_co_payment: 10
+    dc_ccsp_first_child_copay: 10
+    dc_ccsp_second_child_copay: 10
     state_code: DC
   output:
-    dc_ccsp_co_payment: 0
+    dc_ccsp_copay: 0
 
 - name: Case 2, copayment not exempted.
   period: 2025-01
@@ -38,4 +38,4 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ccsp_co_payment: 18.5
+    dc_ccsp_copay: 18.5

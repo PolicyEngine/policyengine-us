@@ -3,7 +3,7 @@
   absolute_error_margin: 0.2
   input:
     dc_ccsp_eligible: true
-    dc_ccsp_co_payment: 10
+    dc_ccsp_copay: 10
     dc_ccsp_maximum_subsidy_amount: 20
     spm_unit_pre_subsidy_childcare_expenses: 30 * 12
   output:
@@ -14,12 +14,12 @@
   absolute_error_margin: 0.2
   input:
     dc_ccsp_eligible: false
-    dc_ccsp_co_payment: 10
+    dc_ccsp_copay: 10
     dc_ccsp_maximum_subsidy_amount: 20
   output:
     dc_ccsp: 0
 
-- name: Case 3, teen parent, income test and co-payment waived, eligible. 
+- name: Case 3, teen parent, income test and copay waived, eligible. 
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -53,10 +53,10 @@
   output:
     dc_ccsp_eligible: true
     dc_ccsp_maximum_subsidy_amount: [0, 0, 986.5]
-    dc_ccsp_co_payment: 0
+    dc_ccsp_copay: 0
     dc_ccsp: 986.5
 
-- name: Case 4, co-payment not waived, eligible. 
+- name: Case 4, copay not waived, eligible. 
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -92,5 +92,5 @@
   output:
     dc_ccsp_eligible: true
     dc_ccsp_maximum_subsidy_amount: [0, 0, 986.5]
-    dc_ccsp_co_payment: 18.5
+    dc_ccsp_copay: 18.5
     dc_ccsp: 981.5

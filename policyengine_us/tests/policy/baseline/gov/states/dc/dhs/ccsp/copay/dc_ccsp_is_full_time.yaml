@@ -1,3 +1,10 @@
+- name: Default to fll time.
+  period: 2024
+  input:
+    state_code: DC
+  output:
+    dc_ccsp_is_full_time: true
+
 - name: Is full time. 
   period: 2024
   input:
