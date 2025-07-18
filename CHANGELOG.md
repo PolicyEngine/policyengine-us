@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.347.0] - 2025-07-18 21:16:46
+
+### Added
+
+- DC Child Care Subsidy Program (CCSP).
+
 ## [1.346.0] - 2025-07-18 17:53:21
 
 ### Added
@@ -12305,6 +12311,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.347.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.346.0...1.347.0
 [1.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.345.0...1.346.0
 [1.345.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.344.0...1.345.0
 [1.344.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.343.0...1.344.0
