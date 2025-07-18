@@ -12,6 +12,8 @@ class al_federal_income_tax_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.al.tax.income.deductions.federal_tax
-        income_sources = add(tax_unit, period, p.countable_sources)
+        income_sources = add(
+            tax_unit, period, ["income_tax_before_refundable_credits"]
+        )
         federal_credits = add(tax_unit, period, p.credits)
         return max_(income_sources - federal_credits, 0)

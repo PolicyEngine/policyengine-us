@@ -14,6 +14,7 @@ class dc_cdcc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        us_cdcc = tax_unit("cdcc", period)
+        # DC matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
         p_dc = parameters(period).gov.states.dc.tax.income.credits
         return us_cdcc * p_dc.cdcc.match

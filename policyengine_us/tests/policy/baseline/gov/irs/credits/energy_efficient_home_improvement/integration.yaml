@@ -21,7 +21,7 @@
     # Audit: $1,000 * 30% = $300, capped at $150
     # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
     # Cap at $1,200
-    energy_efficient_home_improvement_credit: 1_200
+    energy_efficient_home_improvement_credit_potential: 1_200
 
 - name: Lots of expenditure types, capped by heat pump amount.
   period: 2023
@@ -50,7 +50,7 @@
     # Audit: $1,000 * 30% = $300, capped at $150
     # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
     # Cap at $1,200
-    energy_efficient_home_improvement_credit: 1_275
+    energy_efficient_home_improvement_credit_potential: 1_275
 
 - name: Lots of expenditure types, capped by heat pump amount, ineligible for rebates.
   period: 2023
@@ -76,5 +76,4 @@
     # Audit: $1,000 * 30% = $300, capped at $150
     # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
     # Cap at $1,200
-    energy_efficient_home_improvement_credit: 2_000
-  
+    energy_efficient_home_improvement_credit_potential: 2_000
