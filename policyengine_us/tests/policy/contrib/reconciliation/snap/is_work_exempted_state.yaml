@@ -1,0 +1,54 @@
+- name: Case 1, senate version, HI is exempted.
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: true
+    state_code: HI
+  output:
+    is_work_exempted_state: true
+
+- name: Case 2, senate version, AK is exempted. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: true
+    state_code: AK
+  output:
+    is_work_exempted_state: true
+
+- name: Case 3, senate version, CA is not exempted. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: true
+    state_code: CA
+  output:
+    is_work_exempted_state: false
+
+- name: Case 4, house version, AK is not exempted. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: true
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    state_code: AK
+  output:
+    is_work_exempted_state: false
+
+- name: Case 5, baseline, AK is not exempted. 
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_snap_abawd_work_requirement.reconciled_snap_abawd_work_requirement
+  input:
+    gov.contrib.reconciliation.snap_abawd_work_requirement.house.in_effect: false
+    gov.contrib.reconciliation.snap_abawd_work_requirement.senate.in_effect: false
+    state_code: AK
+  output:
+    is_work_exempted_state: false
