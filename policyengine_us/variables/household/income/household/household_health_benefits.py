@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class household_health_benefits(Variable):
     value_type = float
     entity = Household
-    label = "benefits"
+    label = "Household health benefits"
     unit = USD
     definition_period = YEAR
 

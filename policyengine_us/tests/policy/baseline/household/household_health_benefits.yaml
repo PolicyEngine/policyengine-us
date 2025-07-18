@@ -1,7 +1,7 @@
 - name: flag off
   period: 2026
   input:
-    include_health_benefits_in_net_income: true    
+    gov.household.household_health_benefits: false    
     healthcare_benefit_value: 1_500
   output:
     household_health_benefits: 0
@@ -10,8 +10,9 @@
 - name: flag on
   period: 2026
   input:              
-    include_health_benefits_in_net_income: true
+    gov.household.household_health_benefits: true
+    premium_tax_credit: 1_000
+    medicaid: 500
     healthcare_benefit_value: 1_500
   output:
-    household_health_benefits: 1_500
     household_benefits: 1_500
