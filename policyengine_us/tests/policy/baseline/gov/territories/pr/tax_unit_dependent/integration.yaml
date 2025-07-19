@@ -1,0 +1,34 @@
+- name: 1 head of household, 3 dependents
+  period: 2024
+  input:
+    people:
+      person1:
+        is_parent_of_filer_or_spouse: false
+        is_incapable_of_self_care: false
+        is_full_time_student: false
+        age: 40
+      person2:
+        is_parent_of_filer_or_spouse: true
+        is_incapable_of_self_care: false
+        is_full_time_student: true
+        age: 60
+      person3:
+        is_parent_of_filer_or_spouse: false
+        is_incapable_of_self_care: true
+        is_full_time_student: false
+        age: 25
+      person4: 
+        is_parent_of_filer_or_spouse: false
+        is_incapable_of_self_care: false
+        is_full_time_student: false
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PR 
+  output:
+    pr_is_tax_unit_dependent: [false, true, true, true]
