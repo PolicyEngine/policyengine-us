@@ -1,0 +1,54 @@
+- name: Default to fll time.
+  period: 2024
+  input:
+    state_code: DC
+  output:
+    dc_ccsp_is_full_time: true
+
+- name: Is full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: true
+
+- name: Is full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: FULL_TIME_NONTRADITIONAL
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: true
+
+- name: Is full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: EXTENDED_DAY_FULL_TIME
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: true
+
+- name: Not full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: PART_TIME_TRADITIONAL
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: false
+
+- name: Not full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: PART_TIME_NONTRADITIONAL
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: false
+
+- name: Not full time. 
+  period: 2024
+  input:
+    dc_ccsp_schedule_type: EXTENDED_DAY_PART_TIME
+    state_code: DC
+  output: 
+    dc_ccsp_is_full_time: false

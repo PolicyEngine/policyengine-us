@@ -1,0 +1,8 @@
+- name: Tax limited by foreign tax credit and CDCC
+  period: 2020
+  input:
+    income_tax_before_credits: 1_000
+    foreign_tax_credit: 100
+    cdcc: 50
+  output:
+    non_refundable_american_opportunity_credit_credit_limit: 850
