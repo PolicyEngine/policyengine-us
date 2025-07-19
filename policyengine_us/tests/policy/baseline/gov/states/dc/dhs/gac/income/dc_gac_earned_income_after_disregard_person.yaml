@@ -1,0 +1,32 @@
+- name: Full time student earnings are fully disregarded. 
+  period: 2023-01
+  input:
+    dc_tanf_gross_earned_income: 100
+    is_full_time_student: true
+    monthly_hours_worked: 120 * 12
+    dc_gac_eligible_child: true
+    state_code: DC
+  output:
+    dc_gac_earned_income_after_disregard_person: 0
+
+- name: Only GAC eligible child income counts.
+  period: 2023-01
+  input:
+    dc_tanf_gross_earned_income: 100
+    is_full_time_student: false
+    monthly_hours_worked: 120 *12
+    dc_gac_eligible_child: false
+    state_code: DC
+  output:
+    dc_gac_earned_income_after_disregard_person: 0
+
+- name: Part-time student and working full time get $7.5 disregarded. 
+  period: 2023-01
+  input:
+    dc_tanf_gross_earned_income: 100
+    is_full_time_student: false
+    monthly_hours_worked: 120 * 12
+    dc_gac_eligible_child: true
+    state_code: DC
+  output:
+    dc_gac_earned_income_after_disregard_person: 92.5

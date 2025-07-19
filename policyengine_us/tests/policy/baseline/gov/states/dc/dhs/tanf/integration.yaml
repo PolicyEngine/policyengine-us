@@ -8,6 +8,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        dc_tanf_meets_work_requirements: true
     households:
       household:
         members: [parent, child]
@@ -15,7 +16,7 @@
   output:
     dc_tanf: 545*12
 
-- name: Case 2, applicant has a eligible child. 
+- name: Case 2, applicant has an eligible child. 
   period: 2022
   input:
     people:
@@ -30,6 +31,7 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 5_000
+        dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -45,7 +47,7 @@
     dc_tanf_eligible: true 
     dc_tanf: 545*12
 
-- name: Case 3, applicant has a eligible child enrolled in tanf.  
+- name: Case 3, applicant has an eligible child enrolled in TANF.  
   period: 2022
   input:
     people:
@@ -60,6 +62,7 @@
         members: [person1, person2]
         is_tanf_enrolled: true
         childcare_expenses: 0
+        dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -90,6 +93,7 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 1_200
+        dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:
         members: [person1, person2]
