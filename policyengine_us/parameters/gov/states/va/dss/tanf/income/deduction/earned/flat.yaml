@@ -1,0 +1,35 @@
+description: VA excludes this amount of earnings from TANF countable income, up to the household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA TANF monthly flat earnings exclusion
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=29
+
+# $167 for 1-3 unit members
+# $178 for 4 unit members
+# $209 for 5 unit members
+# $240 for 6+ unit members
+
+brackets:
+  - amount:
+      2020-07-01: 167
+    threshold:
+      2020-07-01: 1
+  - amount:
+      2020-07-01: 178
+    threshold:
+      2020-07-01: 4
+  - amount:
+      2020-07-01: 209
+    threshold:
+      2020-07-01: 5
+  - amount:
+      2020-07-01: 240
+    threshold:
+      2020-07-01: 6
