@@ -1,0 +1,152 @@
+- name: Not eligible person, 2024
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 10_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 500
+        is_tax_unit_head_or_spouse: false
+      person3:
+        pr_gross_income_person: 0
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+        eitc_child_count: 2
+        pr_earned_income_credit_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 0
+
+- name: Eligible person, 0 children with max credit
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 17_660
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_child_count: 0
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 1_656
+  
+- name: Eligible person, 1 child and higher bracket
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 25_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 500
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        eitc_child_count: 1
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 2_483.004
+
+- name: Eligible person, 0 child and filing jointly
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 19_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 870
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc_child_count: 0
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 1_656
+
+- name: Eligible person, 1 child, filing jointly, higher bracket
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 25_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 0
+        is_tax_unit_head_or_spouse: true
+      person3:
+        pr_gross_income_person: 100
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        eitc_child_count: 1
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 3_670.176
+
+- name: Eligible person, 5 child, single, higher bracket
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 10
+        is_tax_unit_head_or_spouse: false
+      person3:
+        pr_gross_income_person: 100
+        is_tax_unit_head_or_spouse: false
+      person4:
+        pr_gross_income_person: 23
+        is_tax_unit_head_or_spouse: false
+      person5:
+        pr_gross_income_person: 20_000
+        is_tax_unit_head_or_spouse: false
+      person6:
+        pr_gross_income_person: 0
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        filing_status: SINGLE
+        eitc_child_count: 5
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: PR
+  output: 
+    pr_earned_income_credit: 0
