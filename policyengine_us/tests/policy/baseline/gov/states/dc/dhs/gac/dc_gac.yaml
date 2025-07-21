@@ -8,7 +8,7 @@
       person2:
         age: 1
         is_tax_unit_dependent: true
-        is_dc_tanf_related_to_head_or_spouse: true
+        is_related_to_head_or_spouse: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -34,7 +34,7 @@
         age: 1
         employment_income: 0 
         is_tax_unit_dependent: true
-        is_dc_tanf_related_to_head_or_spouse: false
+        is_related_to_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -66,7 +66,7 @@
         is_tax_unit_dependent: true
         monthly_hours_worked: 120 * 12
         is_full_time_student: false
-        is_dc_tanf_related_to_head_or_spouse: false
+        is_related_to_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2]

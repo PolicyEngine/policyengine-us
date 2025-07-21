@@ -21,17 +21,12 @@ class dc_power_eligible(Variable):
         meets_basic_eligibility_requirements = spm_unit(
             "dc_tanf_basic_eligibility_requirements", period
         )
-        no_tanf_ssi_ui_income = (
-            add(
-                spm_unit,
-                period,
-                ["dc_tanf", "ssi", "unemployment_compensation"],
-            )
-            == 0
+        has_disqualifying_benefits = spm_unit(
+            "dc_power_has_disqualifying_benefits", period
         )
 
         return (
             eligible_head
             & meets_basic_eligibility_requirements
-            & no_tanf_ssi_ui_income
+            & ~has_disqualifying_benefits
         )

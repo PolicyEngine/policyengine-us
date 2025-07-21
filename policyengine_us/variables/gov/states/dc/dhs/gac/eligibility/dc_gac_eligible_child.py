@@ -9,11 +9,7 @@ class dc_gac_eligible_child(Variable):
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
     )
-    defined_for = StateCode.DC
+    defined_for = "dc_pap_eligible_child"
 
     def formula(person, period, parameters):
-        eligible_child = person("dc_pap_eligible_child", period)
-        related_to_head_or_spouse = person(
-            "is_dc_tanf_related_to_head_or_spouse", period
-        )
-        return ~related_to_head_or_spouse & eligible_child
+        return ~person("is_related_to_head_or_spouse", period)

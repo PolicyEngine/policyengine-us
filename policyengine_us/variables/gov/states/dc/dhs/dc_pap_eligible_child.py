@@ -9,23 +9,15 @@ class dc_pap_eligible_child(Variable):
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18"
     )
-    defined_for = StateCode.DC
+    defined_for = "dc_tanf_immigration_status_eligible_person"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.dc.dhs.tanf.age_threshold
         age = person("monthly_age", period)
         dependent = person("is_tax_unit_dependent", period)
-        minor_child = age < p.minor_child
-        eligible_minor_child = minor_child & dependent
-
-        student_dependent = age < p.student_dependent
         secondary_school_student = person("is_in_secondary_school", period)
-        eligible_student_dependent = (
-            secondary_school_student & student_dependent & dependent
+        age_limit = where(
+            secondary_school_student, p.student_dependent, p.minor_child
         )
-        immigration_status_eligible = person(
-            "dc_tanf_immigration_status_eligible_person", period
-        )
-        return immigration_status_eligible & (
-            eligible_minor_child | eligible_student_dependent
-        )
+
+        return dependent & (age < age_limit)

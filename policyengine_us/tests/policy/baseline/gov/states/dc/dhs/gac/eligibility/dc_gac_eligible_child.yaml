@@ -4,7 +4,7 @@
     age: 17
     is_tax_unit_dependent: true
     is_in_secondary_school: false
-    is_dc_tanf_related_to_head_or_spouse: false
+    is_related_to_head_or_spouse: false
     immigration_status: CITIZEN
     state_code: DC
   output:
@@ -15,7 +15,7 @@
   input:
     age: 18
     is_in_secondary_school: false
-    is_dc_tanf_related_to_head_or_spouse: false
+    is_related_to_head_or_spouse: false
     immigration_status: CITIZEN
     state_code: DC
   output:
@@ -27,7 +27,7 @@
     age: 18
     is_tax_unit_dependent: true
     is_in_secondary_school: true
-    is_dc_tanf_related_to_head_or_spouse: false
+    is_related_to_head_or_spouse: false
     immigration_status: CITIZEN
     state_code: DC
   output:
@@ -39,7 +39,7 @@
     age: 18
     is_tax_unit_dependent: true
     is_in_secondary_school: true
-    is_dc_tanf_related_to_head_or_spouse: true
+    is_related_to_head_or_spouse: true
     immigration_status: CITIZEN
     state_code: DC
   output:
@@ -51,7 +51,7 @@
     age: 18
     is_tax_unit_dependent: true
     is_in_secondary_school: true
-    is_dc_tanf_related_to_head_or_spouse: false
+    is_related_to_head_or_spouse: false
     immigration_status: UNDOCUMENTED
     state_code: DC
   output:

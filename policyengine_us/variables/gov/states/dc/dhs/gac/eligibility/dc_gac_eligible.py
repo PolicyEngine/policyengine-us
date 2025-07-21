@@ -9,13 +9,12 @@ class dc_gac_eligible(Variable):
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a#(c)"
     )
-    defined_for = StateCode.DC
+    defined_for = "dc_gac_income_eligible"
 
     def formula(spm_unit, period, parameters):
         has_eligible_child = (
             add(spm_unit, period, ["dc_gac_eligible_child"]) > 0
         )
-        income_eligible = spm_unit("dc_gac_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
 
-        return has_eligible_child & income_eligible & resources_eligible
+        return has_eligible_child & resources_eligible
