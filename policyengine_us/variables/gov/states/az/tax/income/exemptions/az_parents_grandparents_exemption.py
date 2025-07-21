@@ -21,7 +21,7 @@ class az_parents_grandparents_exemption(Variable):
         age_eligible = age >= p.min_age
 
         ratio = person(
-            "share_of_care_and_support_costs_paid_by_tax_filer", period
+            "share_of_care_and_support_expense_paid_by_tax_filer", period
         )
         ratio_eligible = ratio >= p.cost_rate
 

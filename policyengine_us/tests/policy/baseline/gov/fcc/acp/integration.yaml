@@ -2,7 +2,7 @@
   period: 2022
   input:
     spm_unit_pell_grant: 100
-    broadband_cost_after_lifeline: 100 * 12
+    broadband_expense_after_lifeline: 100 * 12
   output:
     acp: 30 * 12
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     is_on_tribal_land: true
-    broadband_cost_after_lifeline: 70 * 12
+    broadband_expense_after_lifeline: 70 * 12
   output:
     acp: 70 * 12
 
@@ -29,6 +29,6 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        broadband_cost_after_lifeline: 1
+        broadband_expense_after_lifeline: 1
   output:
     acp: 0
