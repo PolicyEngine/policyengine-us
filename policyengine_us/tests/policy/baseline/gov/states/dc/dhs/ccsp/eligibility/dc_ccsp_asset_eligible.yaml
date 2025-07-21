@@ -1,0 +1,23 @@
+- name: Asset at limit, eligible.
+  period: 2022-01
+  input:
+    dc_ccsp_assets: 1_000_000
+    state_code: DC
+  output:
+    dc_ccsp_asset_eligible: true
+
+- name: Asset above limit, ineligible.
+  period: 2022-01
+  input:
+    dc_ccsp_assets: 1_000_001
+    state_code: DC
+  output:
+    dc_ccsp_asset_eligible: false
+
+- name: No asset, eligible.
+  period: 2022-01
+  input:
+    dc_ccsp_assets: 0
+    state_code: DC
+  output:
+    dc_ccsp_asset_eligible: true
