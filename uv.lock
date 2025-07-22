@@ -806,15 +806,15 @@ wheels = [
 
 [[package]]
 name = "microdf-python"
-version = "0.4.4"
+version = "0.4.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "pandas" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3a/d4/d73c7d2505e7247f761b42c84893474c8c0cbd860b0272bf019a74fbb19e/microdf_python-0.4.4.tar.gz", hash = "sha256:01ffb4f1e1f1fbceff5e9e448971ed39905916d52fbe1d87c48179c7278fb7f2", size = 22177, upload-time = "2025-07-09T17:40:10.739Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3a/d4/d73c7d2505e7247f761b42c84893474c8c0cbd860b0272bf019a74fbb19e/microdf_python-0.4.5.tar.gz", hash = "sha256:01ffb4f1e1f1fbceff5e9e448971ed39905916d52fbe1d87c48179c7278fb7f2", size = 22177, upload-time = "2025-07-09T17:40:10.739Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/51/bd8752149339e023d7f2a0a42ae3612fb38045bc873eaa465da132e0cc3c/microdf_python-0.4.4-py3-none-any.whl", hash = "sha256:435e9e9852612a81de1bdcffdc606c25dcd3fa2ea43d9fb52a85b2887bbca0ec", size = 26793, upload-time = "2025-07-09T17:40:09.641Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/51/bd8752149339e023d7f2a0a42ae3612fb38045bc873eaa465da132e0cc3c/microdf_python-0.4.5-py3-none-any.whl", hash = "sha256:435e9e9852612a81de1bdcffdc606c25dcd3fa2ea43d9fb52a85b2887bbca0ec", size = 26793, upload-time = "2025-07-09T17:40:09.641Z" },
 ]
 
 [[package]]
@@ -1131,7 +1131,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.9.2" },
     { name = "furo", marker = "extra == 'dev'", specifier = ">=2024.8.6" },
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
-    { name = "microdf-python", specifier = ">=0.4.4" },
+    { name = "microdf-python", specifier = ">=0.4.5" },
     { name = "policyengine-core", specifier = ">=3.17.1" },
     { name = "policyengine-us-data", specifier = ">=1.17.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
