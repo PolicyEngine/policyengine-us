@@ -32,7 +32,7 @@
       household1:
         members: [person1]
         state_code: CA
-    spm_unit_oecd_equiv_net_income: -1000
+    spm_unit_oecd_equiv_net_income: -1_000
     spm_unit_weight: 1
   output:
     # Note: Unlike household_income_decile, this doesn't set negatives to -1
@@ -56,8 +56,8 @@
       household1:
         members: [adult1, adult2, child1]
         state_code: CA
-    spm_unit_oecd_equiv_net_income: 50000
-    spm_unit_weight: 1000
+    spm_unit_oecd_equiv_net_income: 50_000
+    spm_unit_weight: 1_000
   output:
     # Can't predict exact decile without full distribution, but should be valid (1-10)
     spm_unit_income_decile: 
@@ -85,7 +85,7 @@
       household1:
         members: [person1]
         state_code: CA
-    spm_unit_oecd_equiv_net_income: 25000
+    spm_unit_oecd_equiv_net_income: 25_000
     spm_unit_weight: 0
   output:
     # Even with zero weight, decile_rank() should still return a value
