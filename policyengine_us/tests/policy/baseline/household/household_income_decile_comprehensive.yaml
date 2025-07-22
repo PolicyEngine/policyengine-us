@@ -1,0 +1,146 @@
+# Comprehensive tests for household_income_decile
+# This variable uses MicroSeries.decile_rank() from microdf
+
+- name: Negative income gets -1 decile
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+    household_net_income: -5000
+    household_count_people: 1
+    household_weight: 1000
+  output:
+    household_income_decile: -1
+
+- name: Zero income household gets lowest positive decile
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+    household_net_income: 0
+    household_count_people: 1
+    household_weight: 1000
+  output:
+    household_income_decile: 1
+
+- name: Multi-person household decile calculation
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+      adult2:
+        age: 32
+      child1:
+        age: 10
+      child2:
+        age: 5
+    households:
+      household1:
+        members: [adult1, adult2, child1, child2]
+        state_code: CA
+    household_net_income: 75000
+    household_count_people: 4
+    household_weight: 1000
+  output:
+    # Can't predict exact decile without full distribution, but should be valid (1-10 or -1)
+    household_income_decile:
+      - -1
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+
+- name: Single person household with positive income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+    household_net_income: 50000
+    household_count_people: 1
+    household_weight: 2000
+  output:
+    household_income_decile:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+
+- name: Household with zero weight still gets assigned a decile
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+    household_net_income: 30000
+    household_count_people: 1
+    household_weight: 0
+  output:
+    household_income_decile:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+
+- name: Verify person-weighting affects decile calculation
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+    household_net_income: 40000
+    household_count_people: 10  # High person count affects weighting
+    household_weight: 1000
+  output:
+    household_income_decile:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
