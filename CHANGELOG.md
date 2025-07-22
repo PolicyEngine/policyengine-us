@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.348.1] - 2025-07-22 15:55:01
+
+### Added
+
+- Updated microdf-python to 0.4.5.
+
 ## [1.348.0] - 2025-07-22 14:20:17
 
 ### Added
@@ -12317,6 +12323,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.348.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.348.0...1.348.1
 [1.348.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.347.0...1.348.0
 [1.347.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.346.0...1.347.0
 [1.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.345.0...1.346.0
