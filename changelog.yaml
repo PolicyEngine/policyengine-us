@@ -440,7 +440,7 @@
 - bump: patch
   changes:
     fixed:
-    - Versioning action didn't update `setup.py`.
+    - Versioning action didn't update `pyproject.toml`.
   date: 2022-03-28 10:55:27
 - bump: minor
   changes:
@@ -7897,7 +7897,7 @@
 - bump: patch
   changes:
     fixed:
-    - Inclusion of unneeded packages in setup.py install_requires list.
+    - Inclusion of unneeded packages in pyproject.toml install_requires list.
   date: 2024-08-10 19:54:58
 - bump: minor
   changes:
@@ -10407,3 +10407,69 @@
     changed:
     - Itemization choice respects federal not fed+state tax.
   date: 2025-07-11 14:20:30
+- bump: patch
+  changes:
+    added:
+    - Added DACA and TPS as unique immigration statuses, without removing the existing
+      combined status.
+  date: 2025-07-11 19:23:54
+- bump: minor
+  changes:
+    added:
+    - Ohio flat tax 2025-2026.
+  date: 2025-07-12 04:17:24
+- bump: patch
+  changes:
+    fixed:
+    - Test efficiency.
+  date: 2025-07-12 15:05:55
+- bump: minor
+  changes:
+    fixed:
+    - Update 2018 CHIP child income limit for KS, KY, ME, NC and ND.
+  date: 2025-07-16 10:45:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove net investment income from the Alabama federal tax deduction.
+  date: 2025-07-16 20:15:06
+- bump: minor
+  changes:
+    added:
+    - Cap each federal non-refundable credit at its limit based on tax liability.
+  date: 2025-07-16 21:48:52
+- bump: minor
+  changes:
+    added:
+    - Maine Dependent Exemption Credit 2025.
+  date: 2025-07-17 20:08:55
+- bump: minor
+  changes:
+    added:
+    - DC Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-18 02:51:20
+- bump: minor
+  changes:
+    added:
+    - Added simulation parameter to add healthcare toggle to net income calculations.
+  date: 2025-07-18 17:53:21
+- bump: minor
+  changes:
+    added:
+    - DC Child Care Subsidy Program (CCSP).
+  date: 2025-07-18 21:16:46
+- bump: minor
+  changes:
+    added:
+    - California Riverside County Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-22 14:20:17
+- bump: patch
+  changes:
+    added:
+    - Updated microdf-python to 0.4.5.
+  date: 2025-07-22 15:55:01
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico earned income credit (EITC).
+  date: 2025-07-22 20:02:01
