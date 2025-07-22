@@ -28,7 +28,7 @@
   output:
     pr_earned_income_credit_eligible_person: false
 
-- name: Investment income over the limit
+- name: Unearned income over the limit
   period: 2024
   input:
     is_tax_unit_head_or_spouse: true
