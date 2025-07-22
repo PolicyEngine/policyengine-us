@@ -3,22 +3,10 @@ metadata:
   unit: currency-USD
   period: year
   label: Puerto Rico retirement deduction maximum 
-  breakdown:
-    - filing_status
   reference:
-    - title: P.R. Laws tit. 13, § 30135 (7)(D)
+    - title: P.R. Laws tit. 13, § 30135 (7)(B)
       href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/
-    - title: Gov. of Puerto Rico Individual Income Tax Return Form 482.0 4 
-      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=4
     - title: Individual Income Tax Return Instructions Booklet 2023
-      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=24 
-SINGLE:
-  2025-01-01: 5_000
-JOINT:
-  2025-01-01: 10_000
-SEPARATE:
-  2025-01-01: 5_000
-HEAD_OF_HOUSEHOLD:
-  2025-01-01: 5_000
-SURVIVING_SPOUSE:
-  2025-01-01: 10_000
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=26
+values:
+  2023-01-01: 5_000
