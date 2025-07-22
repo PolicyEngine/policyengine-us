@@ -7,9 +7,8 @@ class pr_casualty_loss_deduction(Variable):
     label = "Puerto Rico casualty loss deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/" # (10)
+    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"  # (10)
     defined_for = StateCode.PR
-
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -18,14 +17,11 @@ class pr_casualty_loss_deduction(Variable):
         loss = add(tax_unit, period, ["casualty_loss"])
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
-       
+
         return select(
             [
                 filing_status == filing_statuses.SEPARATE,
-                filing_status != filing_statuses.SEPARATE
+                filing_status != filing_statuses.SEPARATE,
             ],
-            [
-                p.separate_percentage * loss,
-                loss
-            ],
+            [p.separate_percentage * loss, loss],
         )
