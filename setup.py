@@ -37,7 +37,7 @@ setup(
         "policyengine-core>=3.16.5",
         # Removing the > portion of the below will cause circular dep issues in -us-data
         "policyengine-us-data>=1.13.0",
-        "microdf-python>=0.4.3",
+        "microdf-python>=1.0.0",
         "tqdm",
     ],
     extras_require={
