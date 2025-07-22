@@ -13,29 +13,12 @@ class vt_eitc(Variable):
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.vt.tax.income.credits.eitc
-
-        # S.51 (2025): Enhanced EITC for workers without children
-        enhanced_structure_applies = p.enhanced_structure.in_effect
-
-        # Check if tax unit has qualifying children for EITC
-        person = tax_unit.members
-        is_child_dependent = person("is_child_dependent", period)
-        has_qualifying_children = tax_unit.any(is_child_dependent)
-
-        # Different match rates for workers with and without children (2025+)
-        enhanced_rate = where(
-            has_qualifying_children,
-            p.match,  # Match rate for workers with children
-            1.0,  # Match rate for workers without children
-        )
-
-        # Pre-2025: Use standard match rate for all workers
-        standard_rate = p.match
+        child_dependents = tax_unit("tax_unit_child_dependents", period)
 
         rate = where(
-            enhanced_structure_applies,
-            enhanced_rate,
-            standard_rate,
+            p.enhanced_structure.in_effect,
+            p.enhanced_structure.rate.calc(child_dependents),
+            p.match,
         )
 
         return federal_eitc * rate

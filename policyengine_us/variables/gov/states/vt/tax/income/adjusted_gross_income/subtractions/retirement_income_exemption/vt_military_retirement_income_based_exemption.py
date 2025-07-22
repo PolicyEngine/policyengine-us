@@ -23,38 +23,47 @@ class vt_military_retirement_income_based_exemption(Variable):
 
         agi = tax_unit("adjusted_gross_income", period)
 
-        # Full exemption for households under the threshold
-        full_exemption_threshold = p.full_exemption_threshold
-        # Partial exemption for households under the upper threshold
-        partial_exemption_threshold = p.partial_exemption_threshold
-
         # Full exemption if below the threshold
-        eligible_for_full_exemption = agi < full_exemption_threshold
+        eligible_for_full_exemption = agi < p.full_exemption_threshold
 
         # Partial exemption if between the thresholds
-        eligible_for_partial_exemption = (agi >= full_exemption_threshold) & (
-            agi <= partial_exemption_threshold
-        )
+        eligible_for_partial_exemption = (
+            agi >= p.full_exemption_threshold
+        ) & (agi <= p.partial_exemption_threshold)
 
         # Calculate partial exemption amount (linear phaseout)
-        # Avoid division by zero if thresholds are equal
         threshold_difference = (
-            partial_exemption_threshold - full_exemption_threshold
+            p.partial_exemption_threshold - p.full_exemption_threshold
         )
-        partial_exemption_amount = np.divide(
+        agi_below_threshold = max_(p.partial_exemption_threshold - agi, 0)
+
+        # Use mask to avoid division by zero
+        valid_threshold_difference = threshold_difference != 0
+        partial_exemption_amount = where(
+            valid_threshold_difference,
             tax_unit_military_retirement_pay
-            * (partial_exemption_threshold - agi),
-            threshold_difference,
-            out=np.zeros_like(tax_unit_military_retirement_pay),
-            where=threshold_difference != 0,
+            * agi_below_threshold
+            / threshold_difference,
+            0,
         )
 
-        return where(
-            eligible_for_full_exemption,
-            tax_unit_military_retirement_pay,
-            where(
-                eligible_for_partial_exemption,
-                max_(partial_exemption_amount, 0),
-                0,
-            ),
+        # Calculate exemption amounts for each case
+        full_exemption_amount = tax_unit_military_retirement_pay
+        partial_exemption_amount_capped = max_(partial_exemption_amount, 0)
+        no_exemption_amount = 0
+
+        # First determine if partial or no exemption
+        partial_or_no_exemption = where(
+            eligible_for_partial_exemption,
+            partial_exemption_amount_capped,
+            no_exemption_amount,
         )
+
+        # Then determine final exemption amount
+        exemption_amount = where(
+            eligible_for_full_exemption,
+            full_exemption_amount,
+            partial_or_no_exemption,
+        )
+
+        return exemption_amount

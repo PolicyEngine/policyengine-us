@@ -26,28 +26,24 @@ class vt_veteran_tax_credit(Variable):
         agi = tax_unit("adjusted_gross_income", period)
 
         # Full credit for households under $25k AGI
-        full_credit_threshold = p.full_credit_threshold
         # Partial credit for households under $30k AGI
-        partial_credit_threshold = p.partial_credit_threshold
 
         # Calculate credit amount based on veteran status and income
         eligible_for_full_credit = veteran_present & (
-            agi < full_credit_threshold
+            agi < p.full_credit_threshold
         )
         eligible_for_partial_credit = (
             veteran_present
-            & (agi >= full_credit_threshold)
-            & (agi < partial_credit_threshold)
+            & (agi >= p.full_credit_threshold)
+            & (agi < p.partial_credit_threshold)
         )
 
         # Calculate partial credit amount based on parameterized reduction structure
-        excess_income = agi - full_credit_threshold
+        excess_income = agi - p.full_credit_threshold
         # Number of income increments (rounded up)
-        income_increment_amount = p.income_increment
-        income_increments = np.ceil(excess_income / income_increment_amount)
+        income_increments = np.ceil(excess_income / p.income_increment)
         # Reduction per increment
-        reduction_per_increment = p.reduction_per_increment
-        reduction_amount = income_increments * reduction_per_increment
+        reduction_amount = income_increments * p.reduction_per_increment
         # Calculate partial credit (minimum of 0)
         partial_credit_amount = max_(p.amount - reduction_amount, 0)
 
