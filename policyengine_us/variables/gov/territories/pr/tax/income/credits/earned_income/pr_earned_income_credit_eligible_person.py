@@ -14,11 +14,11 @@ class pr_earned_income_credit_eligible_person(Variable):
         ).gov.territories.pr.tax.income.credits.earned_income
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        investment_income = person(
-            "pr_earned_income_credit_investment_income", period
+        unearned_income = person(
+            "pr_earned_income_credit_unearned_income", period
         )
-        investment_income_amount_under_limit = (
-            investment_income <= p.investment_income.limit
+        unearned_income_amount_under_limit = (
+            unearned_income <= p.unearned_income.limit
         )
 
         age = person("age", period)
@@ -29,7 +29,7 @@ class pr_earned_income_credit_eligible_person(Variable):
 
         eligible = (
             head_or_spouse
-            & investment_income_amount_under_limit
+            & unearned_income_amount_under_limit
             & age_within_range
         )
         # if separate filers are eligible
