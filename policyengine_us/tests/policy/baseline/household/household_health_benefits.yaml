@@ -1,7 +1,7 @@
 - name: flag off
   period: 2026
   input:
-    simulation.include_health_benefits_in_net_income: false    
+    gov.simulation.include_health_benefits_in_net_income: false    
     premium_tax_credit: 1_000
     medicaid: 500
     snap: 0
@@ -12,7 +12,7 @@
 - name: flag on
   period: 2026
   input:              
-    simulation.include_health_benefits_in_net_income: true
+    gov.simulation.include_health_benefits_in_net_income: true
     premium_tax_credit: 1_000
     medicaid: 500
     snap: 0

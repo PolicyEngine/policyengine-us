@@ -10,7 +10,7 @@ class household_health_benefits(Variable):
 
     def formula(household, period, parameters):
         p = parameters(period)
-        if p.simulation.include_health_benefits_in_net_income:
+        if p.gov.simulation.include_health_benefits_in_net_income:
             return add(
                 household, period, p.gov.household.household_health_benefits
             )
