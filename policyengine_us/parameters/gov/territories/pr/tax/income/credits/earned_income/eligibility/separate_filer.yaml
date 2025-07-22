@@ -1,0 +1,12 @@
+description: Puerto Rico allows married filing separate filers eligible for the EITC when this is true.
+values:
+  2023-01-01: false
+metadata:
+  unit: bool
+  label: Puerto Rico earned income credit separate filers eligible
+  reference:
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=1
+    # discrepancy: legal statute doesn't include restriction about filing status
+    - title: P.R. Laws tit. 13, § 30211
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
