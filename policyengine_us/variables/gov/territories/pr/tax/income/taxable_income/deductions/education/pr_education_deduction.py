@@ -14,10 +14,9 @@ class pr_education_deduction(Variable):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.deductions.education
-
         contributions = add(
             tax_unit, period, ["investment_in_529_plan"]
         )
         count = tax_unit("pr_education_deduction_beneficiary_count", period)
-
-        return min_(p.max * count, contributions)
+        maximum_contribution = p.max * count
+        return min_(maximum_contribution, contributions)

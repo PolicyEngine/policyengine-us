@@ -1,8 +1,0 @@
-- name: Base test
-  period: 2024
-  input:
-    investment_in_529_plan: 1_300
-    pr_education_deduction_beneficiary_count: 3
-    state_code: PR
-  output:
-    pr_casualty_loss_deduction: 1_300
