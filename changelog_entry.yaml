@@ -1,4 +1,6 @@
 - bump: patch
   changes:
     fixed:
-    - Updated uv.lock to support Python 3.13 installation.
+      - Added default parameters to select statements for better performance and clarity (issue #1176)
+      - Updated select statements with dummy True conditions to use default parameter instead
+      - Set SINGLE as default for filing status select statements per issue #3334
