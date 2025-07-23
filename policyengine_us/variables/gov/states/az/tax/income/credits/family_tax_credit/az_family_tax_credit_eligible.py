@@ -29,5 +29,6 @@ class az_family_tax_credit_eligible(Variable):
                 p.income_limit.head_of_household.calc(dependents),
                 p.income_limit.separate,
             ],
+            default=0,
         )
         return income <= income_limit
