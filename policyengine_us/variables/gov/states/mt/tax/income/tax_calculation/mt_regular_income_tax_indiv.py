@@ -33,4 +33,5 @@ class mt_regular_income_tax_indiv(Variable):
                 p.separate.calc(taxable_income),
                 p.surviving_spouse.calc(taxable_income),
             ],
+            default=p.single.calc(taxable_income),
         )

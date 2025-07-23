@@ -48,6 +48,7 @@ class ia_amt_indiv(Variable):
                     fsvals.HEAD_OF_HOUSEHOLD,
                     fsvals.SURVIVING_SPOUSE,
                 ],
+                default=fsvals.SINGLE,
             )
             amt_threshold = amt.threshold[filing_status]  # Line 23
             amt_exemption = amt.exemption[filing_status]  # Line 24
