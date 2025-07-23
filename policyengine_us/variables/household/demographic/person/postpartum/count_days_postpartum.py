@@ -15,11 +15,10 @@ class count_days_postpartum(Variable):
             [
                 under_60_days,
                 under_12_months,
-                True,
             ],
             [
                 0,
                 60,
-                np.inf,
             ],
+            default=np.inf,
         )
