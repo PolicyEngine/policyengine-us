@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.general import select_filing_status_value
 
 
 class or_federal_tax_liability_subtraction(Variable):
@@ -27,21 +28,9 @@ class or_federal_tax_liability_subtraction(Variable):
             .tax.income.subtractions.federal_tax_liability.cap
         )
         federal_agi = tax_unit("adjusted_gross_income", period)
-        cap = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.single.calc(federal_agi),
-                p.joint.calc(federal_agi),
-                p.head_of_household.calc(federal_agi),
-                p.separate.calc(federal_agi),
-                p.surviving_spouse.calc(federal_agi),
-            ],
-            default=0,
+        cap = select_filing_status_value(
+            filing_status,
+            p,
+            federal_agi,
         )
         return min_(or_federal_income_tax, cap)

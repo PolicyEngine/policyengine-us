@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.general import select_filing_status_value
 
 
 class nyc_school_tax_credit_rate_reduction_amount(Variable):
@@ -22,21 +23,8 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
         ).gov.local.ny.nyc.tax.income.credits.school.rate_reduction
 
         # Calculate amount if eligible, which varies only with filing status.
-        filing_statuses = filing_status.possible_values
-        return select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.SURVIVING_SPOUSE,
-            ],
-            [
-                p.amount.single.calc(nyc_taxable_income),
-                p.amount.joint.calc(nyc_taxable_income),
-                p.amount.separate.calc(nyc_taxable_income),
-                p.amount.head_of_household.calc(nyc_taxable_income),
-                p.amount.surviving_spouse.calc(nyc_taxable_income),
-            ],
-            default=0,
+        return select_filing_status_value(
+            filing_status,
+            p.amount,
+            nyc_taxable_income,
         )

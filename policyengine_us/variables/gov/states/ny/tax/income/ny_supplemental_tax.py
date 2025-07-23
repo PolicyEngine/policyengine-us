@@ -1,5 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_core.taxscales import MarginalRateTaxScale
+from policyengine_us.tools.general import (
+    select_filing_status_value,
+    get_previous_threshold,
+)
 
 
 class ny_supplemental_tax(Variable):
@@ -19,30 +23,28 @@ class ny_supplemental_tax(Variable):
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        statuses = [
-            status.SINGLE,
-            status.JOINT,
-            status.HEAD_OF_HOUSEHOLD,
-            status.SURVIVING_SPOUSE,
-            status.SEPARATE,
-        ]
-        in_each_status = [filing_status == s for s in statuses]
 
         rates = tax.main
-        single = rates.single
-        joint = rates.joint
-        hoh = rates.head_of_household
-        surviving_spouse = rates.surviving_spouse
-        separate = rates.separate
-        scales = [single, joint, hoh, surviving_spouse, separate]
 
-        previous_agi_threshold = select(
-            in_each_status,
-            [
-                get_previous_threshold(ny_taxable_income, scale.thresholds)
-                for scale in scales
-            ],
-            default=0,
+        # Create a dictionary for rate schedules
+        rate_schedules = {
+            "single": rates.single,
+            "joint": rates.joint,
+            "head_of_household": rates.head_of_household,
+            "surviving_spouse": rates.surviving_spouse,
+            "separate": rates.separate,
+        }
+
+        # Get previous AGI threshold based on filing status
+        def get_previous_threshold_value(scale):
+            return get_previous_threshold(ny_taxable_income, scale.thresholds)
+
+        previous_agi_threshold = select_filing_status_value(
+            filing_status,
+            {
+                k: get_previous_threshold_value(v)
+                for k, v in rate_schedules.items()
+            },
         )
 
         applicable_amount = max_(
@@ -55,21 +57,17 @@ class ny_supplemental_tax(Variable):
         )
 
         # edge case for high agi
-        agi_limit = select(
-            in_each_status,
-            [
-                single.thresholds[-1],
-                joint.thresholds[-1],
-                hoh.thresholds[-1],
-                surviving_spouse.thresholds[-1],
-                separate.thresholds[-1],
-            ],
-            default=0,
+        agi_limit = select_filing_status_value(
+            filing_status,
+            {k: v.thresholds[-1] for k, v in rate_schedules.items()},
         )
-        high_agi_rate = select(
-            in_each_status,
-            [scale.marginal_rates(agi_limit + 1) for scale in scales],
-            default=0,
+
+        high_agi_rate = select_filing_status_value(
+            filing_status,
+            {
+                k: v.marginal_rates(agi_limit + 1)
+                for k, v in rate_schedules.items()
+            },
         )
 
         supplemental_tax_high_agi = (
@@ -77,32 +75,16 @@ class ny_supplemental_tax(Variable):
         )
 
         if p.in_effect:
-            recapture_base = select(
-                in_each_status,
-                [
-                    p.recapture_base.single.calc(ny_taxable_income),
-                    p.recapture_base.joint.calc(ny_taxable_income),
-                    p.recapture_base.head_of_household.calc(ny_taxable_income),
-                    p.recapture_base.surviving_spouse.calc(ny_taxable_income),
-                    p.recapture_base.separate.calc(ny_taxable_income),
-                ],
-                default=0,
+            recapture_base = select_filing_status_value(
+                filing_status,
+                p.recapture_base,
+                ny_taxable_income,
             )
 
-            incremental_benefit = select(
-                in_each_status,
-                [
-                    p.incremental_benefit.single.calc(ny_taxable_income),
-                    p.incremental_benefit.joint.calc(ny_taxable_income),
-                    p.incremental_benefit.head_of_household.calc(
-                        ny_taxable_income
-                    ),
-                    p.incremental_benefit.surviving_spouse.calc(
-                        ny_taxable_income
-                    ),
-                    p.incremental_benefit.separate.calc(ny_taxable_income),
-                ],
-                default=0,
+            incremental_benefit = select_filing_status_value(
+                filing_status,
+                p.incremental_benefit,
+                ny_taxable_income,
             )
 
             supplemental_tax_general = (
