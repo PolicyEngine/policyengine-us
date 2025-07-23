@@ -6,3 +6,5 @@
       - Fixed typos in filenames (e.g., "if_tanf" to "il_tanf" for Illinois)
       - Removed space from filename "il _cta_reduced_fare_program.py"
       - Moved total_disability_payments from IRS calculations to household income section where input variables belong
+    fixed:
+      - Fixed household_income_decile test structure to properly place household variables under household entity
