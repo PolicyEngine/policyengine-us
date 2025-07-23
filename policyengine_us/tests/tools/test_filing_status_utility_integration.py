@@ -2,6 +2,7 @@
 Integration test for select_filing_status_value utility function.
 Tests the function with actual PolicyEngine US tax calculations.
 """
+
 import numpy as np
 import pytest
 from policyengine_us.model_api import *
@@ -16,10 +17,10 @@ def test_select_filing_status_value_with_simple_values():
         reform={},
         dataset="policyengine_us_testing",
     )
-    
+
     # Get filing status for test tax units
     filing_status = sim.calculate("filing_status", 2024)
-    
+
     # Create test parameter values like those in actual parameters
     test_values = {
         "single": 1000,
@@ -28,10 +29,10 @@ def test_select_filing_status_value_with_simple_values():
         "head_of_household": 1800,
         "surviving_spouse": 2000,
     }
-    
+
     # Apply the utility function
     result = select_filing_status_value(filing_status, test_values)
-    
+
     # Verify results match expected values based on filing status
     for i, fs in enumerate(filing_status):
         if fs == fs.possible_values.SINGLE:
@@ -52,19 +53,19 @@ def test_select_filing_status_value_with_calc_method():
         reform={},
         dataset="policyengine_us_testing",
     )
-    
+
     filing_status = sim.calculate("filing_status", 2024)
     taxable_income = sim.calculate("taxable_income", 2024)
-    
+
     # Mock parameter object with calc method
     class MockRateSchedule:
         def __init__(self, base_rate):
             self.base_rate = base_rate
-            
+
         def calc(self, income, **kwargs):
             # Simple progressive rate
             return income * self.base_rate
-    
+
     test_values = {
         "single": MockRateSchedule(0.10),
         "joint": MockRateSchedule(0.08),
@@ -72,9 +73,11 @@ def test_select_filing_status_value_with_calc_method():
         "head_of_household": MockRateSchedule(0.09),
         "surviving_spouse": MockRateSchedule(0.08),
     }
-    
-    result = select_filing_status_value(filing_status, test_values, taxable_income)
-    
+
+    result = select_filing_status_value(
+        filing_status, test_values, taxable_income
+    )
+
     # Verify calculations
     for i, fs in enumerate(filing_status):
         income = taxable_income[i]
@@ -96,17 +99,17 @@ def test_default_to_single_value():
         reform={},
         dataset="policyengine_us_testing",
     )
-    
+
     filing_status = sim.calculate("filing_status", 2024)
-    
+
     # Only provide single and joint values
     incomplete_values = {
         "single": 999,
         "joint": 1999,
     }
-    
+
     result = select_filing_status_value(filing_status, incomplete_values)
-    
+
     # All non-joint filers should get the single value
     for i, fs in enumerate(filing_status):
         if fs == fs.possible_values.JOINT:
@@ -121,20 +124,20 @@ def test_with_right_parameter():
         reform={},
         dataset="policyengine_us_testing",
     )
-    
+
     filing_status = sim.calculate("filing_status", 2024)
     agi = sim.calculate("adjusted_gross_income", 2024)
-    
+
     class MockThresholdCalc:
         def __init__(self, threshold):
             self.threshold = threshold
-            
+
         def calc(self, value, right=False, **kwargs):
             if right:
                 # Return next bracket threshold
                 return self.threshold + 10_000
             return self.threshold
-    
+
     test_values = {
         "single": MockThresholdCalc(50_000),
         "joint": MockThresholdCalc(100_000),
@@ -142,14 +145,14 @@ def test_with_right_parameter():
         "separate": MockThresholdCalc(50_000),
         "surviving_spouse": MockThresholdCalc(100_000),
     }
-    
+
     # Test without right parameter
     result_normal = select_filing_status_value(filing_status, test_values, agi)
-    
+
     # Test with right=True
     result_right = select_filing_status_value(
         filing_status, test_values, agi, right=True
     )
-    
+
     # Verify right parameter increases thresholds by 10k
     assert np.all(result_right == result_normal + 10_000)

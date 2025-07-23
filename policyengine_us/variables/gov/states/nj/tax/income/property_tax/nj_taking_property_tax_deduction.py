@@ -22,44 +22,20 @@ class nj_taking_property_tax_deduction(Variable):
         taxable_income_before_deduction = tax_unit(
             "nj_taxable_income_before_property_tax_deduction", period
         )
-        taxes_without_deduction = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SURVIVING_SPOUSE,
-                filing_status == status.SEPARATE,
-            ],
-            [
-                p.single.calc(taxable_income_before_deduction),
-                p.joint.calc(taxable_income_before_deduction),
-                p.head_of_household.calc(taxable_income_before_deduction),
-                p.surviving_spouse.calc(taxable_income_before_deduction),
-                p.separate.calc(taxable_income_before_deduction),
-            ],
-            default=0,
+        taxes_without_deduction = select_filing_status_value(
+            filing_status,
+            p,
+            taxable_income_before_deduction,
         )
 
         # calculate taxes with deduction
         taxable_income_after_deduction = max_(
             0, taxable_income_before_deduction - deduction
         )
-        taxes_with_deduction = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SURVIVING_SPOUSE,
-                filing_status == status.SEPARATE,
-            ],
-            [
-                p.single.calc(taxable_income_after_deduction),
-                p.joint.calc(taxable_income_after_deduction),
-                p.head_of_household.calc(taxable_income_after_deduction),
-                p.surviving_spouse.calc(taxable_income_after_deduction),
-                p.separate.calc(taxable_income_after_deduction),
-            ],
-            default=0,
+        taxes_with_deduction = select_filing_status_value(
+            filing_status,
+            p,
+            taxable_income_after_deduction,
         )
 
         # calculate credit amount

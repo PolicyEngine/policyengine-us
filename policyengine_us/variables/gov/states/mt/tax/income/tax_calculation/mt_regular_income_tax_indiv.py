@@ -19,19 +19,4 @@ class mt_regular_income_tax_indiv(Variable):
         if p.capital_gains.in_effect:
             capital_gains = person("long_term_capital_gains", period)
             taxable_income = max_(taxable_income - capital_gains, 0)
-        status = filing_status.possible_values
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.single.calc(taxable_income),
-                p.head_of_household.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.surviving_spouse.calc(taxable_income),
-            ],
-            default=p.single.calc(taxable_income),
-        )
+        return select_filing_status_value(filing_status, p, taxable_income)

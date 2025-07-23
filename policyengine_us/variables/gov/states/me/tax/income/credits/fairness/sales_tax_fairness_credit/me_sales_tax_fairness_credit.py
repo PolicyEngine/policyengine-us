@@ -18,19 +18,16 @@ class me_sales_tax_fairness_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         base = p.amount.base[filing_status]
-        additional_amount = select(
-            [
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.amount.additional.joint.calc(children),
-                p.amount.additional.head_of_household.calc(children),
-                p.amount.additional.surviving_spouse.calc(children),
-            ],
-            # No additional amount for single and separate filers.
-            default=0,
+        # Create a dictionary for the additional amount parameter structure
+        additional_params = {
+            "joint": p.amount.additional.joint,
+            "head_of_household": p.amount.additional.head_of_household,
+            "surviving_spouse": p.amount.additional.surviving_spouse,
+            "single": lambda x: 0,  # No additional amount for single filers
+            "separate": lambda x: 0,  # No additional amount for separate filers
+        }
+        additional_amount = select_filing_status_value(
+            filing_status, additional_params, children
         )
         max_credit = base + additional_amount
         reduction_start = p.reduction.start[filing_status]
