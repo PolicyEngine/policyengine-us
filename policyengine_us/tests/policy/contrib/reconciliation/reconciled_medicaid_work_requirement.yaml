@@ -2,7 +2,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 18
   output:
     medicaid_work_requirement_eligible: true
@@ -11,7 +11,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 65
   output:
     medicaid_work_requirement_eligible: true
@@ -20,7 +20,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 19
   output:
     medicaid_work_requirement_eligible: false
@@ -29,7 +29,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 30
     monthly_hours_worked: 79
   output:
@@ -39,7 +39,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 30
     monthly_hours_worked: 80
   output:
@@ -49,7 +49,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     age: 19
     monthly_hours_worked: 5
     is_disabled: true
@@ -60,7 +60,7 @@
   period: 2026
   reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
   input:
-    gov.contrib.reconciliation.medicaid_work_requirement.in_effect: true
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
     people:
       person1:
         age: 30
@@ -72,3 +72,51 @@
         monthly_hours_worked: 79
   output:
     medicaid_work_requirement_eligible: [true, false]
+
+- name: Case 8, not working, but has child at age 13. 
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
+  input:
+    gov.contrib.reconciliation.medicaid_work_requirement.senate.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        monthly_hours_worked: 0
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+  output:
+    medicaid_work_requirement_eligible: [true, true]
+
+- name: Case 9, not working, has child at age 14, ineligible under Senate Version. 
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
+  input:
+    gov.contrib.reconciliation.medicaid_work_requirement.senate.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        monthly_hours_worked: 0
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+  output:
+    medicaid_work_requirement_eligible: [false, true]
+
+- name: Case 10, not working, has child at age 14, eligible under House Version. 
+  period: 2026
+  reforms: policyengine_us.reforms.reconciliation.reconciled_medicaid_work_requirement.reconciled_medicaid_work_requirement
+  input:
+    gov.contrib.reconciliation.medicaid_work_requirement.house.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        monthly_hours_worked: 0
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+  output:
+    medicaid_work_requirement_eligible: [true, true]

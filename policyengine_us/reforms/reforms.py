@@ -108,11 +108,11 @@ from .reconciliation import (
     create_reconciliation_cdcc_reform,
     create_reconciled_medicaid_work_requirement_reform,
     create_reconciled_snap_abawd_work_requirement_reform,
+    create_reconciled_charitable_deduction_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
-
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -268,6 +268,9 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    reconciled_charitable_deduction = (
+        create_reconciled_charitable_deduction_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,
@@ -324,6 +327,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         additional_tax_bracket,
         reconciled_medicaid_work_requirement,
         reconciled_snap_abawd_work_requirement,
+        reconciled_charitable_deduction,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
