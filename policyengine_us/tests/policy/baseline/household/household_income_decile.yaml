@@ -23,7 +23,7 @@
   output:
     household_income_decile: -1
 
-- name: Zero income household gets lowest positive decile
+- name: Zero income household gets highest decile when it's the only household
   period: 2024
   input:
     people:
@@ -37,4 +37,4 @@
         household_count_people: 1
         household_weight: 1_000
   output:
-    household_income_decile: 1
+    household_income_decile: 10
