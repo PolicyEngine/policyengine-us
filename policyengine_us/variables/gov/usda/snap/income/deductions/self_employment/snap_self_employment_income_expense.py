@@ -9,6 +9,6 @@ class snap_self_employment_income_expense(Variable):
     definition_period = YEAR
 
 
-# Each state defines deductable self-employment income expenses for SNAP.
+# Each state defines deductible self-employment income expenses for SNAP.
 # E.g. see Mississippi: https://www.law.cornell.edu/regulations/mississippi/18-Miss-Code-R-SS-14-20-4
 # The relevant expenses are often linked to TANF self-employment income expenses.
