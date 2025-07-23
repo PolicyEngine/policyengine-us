@@ -35,4 +35,5 @@ class nj_retirement_exclusion_fraction(Variable):
                 p.percentage.surviving_spouse.calc(total_income, right=True),
                 p.percentage.separate.calc(total_income, right=True),
             ],
+            default=0,
         )

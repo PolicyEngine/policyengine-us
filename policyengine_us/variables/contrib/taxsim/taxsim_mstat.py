@@ -25,4 +25,5 @@ class taxsim_mstat(Variable):
                 6,
                 8,
             ],
+            default=1,  # SINGLE
         )

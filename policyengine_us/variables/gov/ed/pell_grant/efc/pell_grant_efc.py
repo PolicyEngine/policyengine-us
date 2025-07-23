@@ -28,4 +28,5 @@ class pell_grant_efc(Variable):
                 max_(0, head_contribution),
                 where(automatic_zero, 0, max_(0, head_contribution)),
             ],
+            default=0,
         )

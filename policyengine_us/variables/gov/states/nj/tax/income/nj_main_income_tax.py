@@ -33,4 +33,5 @@ class nj_main_income_tax(Variable):
                 p.surviving_spouse.calc(taxable_income),
                 p.separate.calc(taxable_income),
             ],
+            default=0,
         )

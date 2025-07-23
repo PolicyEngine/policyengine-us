@@ -40,6 +40,7 @@ class pr_earned_income_credit(Variable):
                 p.phase_out.threshold.single.calc(child_count),
                 p.phase_out.threshold.joint.calc(child_count),
             ],
+            default=p.phase_out.threshold.single.calc(child_count),
         )
         # could be negative if gross income not over threshold, so make the minimum value 0
         phase_out = max_(

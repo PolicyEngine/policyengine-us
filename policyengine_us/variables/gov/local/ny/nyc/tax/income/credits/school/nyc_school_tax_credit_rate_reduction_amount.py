@@ -38,4 +38,5 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
                 p.amount.head_of_household.calc(nyc_taxable_income),
                 p.amount.surviving_spouse.calc(nyc_taxable_income),
             ],
+            default=0,
         )
