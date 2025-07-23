@@ -1,0 +1,122 @@
+description: States deduct the following percentage of self-employment income for SNAP under the simplified self-employment deduction.
+AK:
+  1997-10-01: 0.5
+AL:
+  2021-10-01: 0.4
+AR:
+  2021-10-01: 0
+AZ:
+  2021-10-01: 0.4
+CA:
+  2021-10-01: 0.4
+CO:
+  2021-10-01: 0
+CT:
+  2021-10-01: 0
+DC:
+  2021-10-01: 0
+DE:
+  2021-10-01: 0.43
+FL:
+  2021-10-01: 0
+GA:
+  2021-10-01: 0.4
+GU:
+  2021-10-01: 0
+HI:
+  2021-10-01: 0
+IA:
+  2021-10-01: 0
+ID:
+  2021-10-01: 0.5
+IL:
+  2021-10-01: 0
+IN:
+  2021-10-01: 0.4
+KS:
+  2021-10-01: 0.25
+KY:
+  2021-10-01: 0
+LA:
+  2021-10-01: 0
+MA:
+  2021-10-01: 0
+MD:
+  2010-01-01: 0.3
+  2016-10-01: 0.5
+ME:
+  2021-10-01: 0
+MI:
+  2021-10-01: 0.5
+MN:
+  2021-10-01: 0.5
+MO:
+  2021-10-01: 0
+MS:
+  2021-10-01: 0
+MT:
+  2021-10-01: 0
+NC:
+  2021-10-01: 0
+ND:
+  2021-10-01: 0
+NE:
+  2016-10-01: 0.49
+NH:
+  2021-10-01: 0
+NJ:
+  2021-10-01: 0
+NM:
+  2021-10-01: 0
+NV:
+  2021-10-01: 0
+NY:
+  2021-10-01: 0
+OH:
+  2021-10-01: 0.5
+OK:
+  2021-10-01: 0.5
+OR:
+  2021-10-01: 0.5
+PA:
+  2021-10-01: 0
+RI:
+  2021-10-01: 0
+SC:
+  2005-10-01: 0.4
+SD:
+  2021-10-01: 0.55
+TN:
+  2021-10-01: 0
+TX:
+  2021-10-01: 0
+UT:
+  2021-10-01: 0.4
+VA:
+  2021-10-01: 0
+VI:
+  2021-10-01: 0
+VT:
+  2021-10-01: 0
+WA:
+  2021-10-01: 0.5
+WI:
+  2021-10-01: 0
+WV:
+  2021-10-01: 0
+WY:
+  2021-10-01: 0.25
+metadata:
+  unit: /1
+  period: year
+  label: SNAP self-employment simplified deduction rate
+  breakdown:
+  - state_code
+  reference:
+    - title: SNAP Screener SNAP Self-Employment Simplified Deductions by State
+      href: https://www.snapscreener.com/blog/self-employment
+      # Reference for Alabama, Maryland, Nebraska, and South Carolina.
+    - title: Benefits Data Trust Streamlining SNAP for the Gig Economy
+      href: https://assets-global.website-files.com/63345e33f3c909d27d0e558b/634eb3c77156ee846ee68852_streamlining-snap-gig-economy.pdf
+    - title: Delaware DEPARTMENT OF health and social services,  Division of Social Services
+      href: https://regulations.delaware.gov/register/august2005/proposed/9%20DE%20Reg%20168%2008-01-05.htm
