@@ -17,9 +17,7 @@ class hi_income_tax_before_non_refundable_credits(Variable):
         p = parameters(period).gov.states.hi.tax.income.rates
 
         income_tax = select_filing_status_value(
-            filing_status,
-            p,
-            taxable_income
+            filing_status, p, taxable_income
         )
         alternative_tax = tax_unit(
             "hi_alternative_tax_on_capital_gains", period

@@ -17,9 +17,5 @@ class or_income_tax_before_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         income = tax_unit("or_taxable_income", period)
         rates = parameters(period).gov.states["or"].tax.income.rates
-        
-        return select_filing_status_value(
-            filing_status,
-            rates,
-            income
-        )
+
+        return select_filing_status_value(filing_status, rates, income)

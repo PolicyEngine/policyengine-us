@@ -26,10 +26,7 @@ class co_ctc(Variable):
         if p.ctc_matched_federal_credit:
             federal_ctc = tax_unit("co_federal_ctc", period)
             rate = select_filing_status_value(
-                filing_status,
-                p.rate,
-                agi,
-                right=True
+                filing_status, p.rate, agi, right=True
             )
             return rate * federal_ctc
         else:
@@ -41,9 +38,6 @@ class co_ctc(Variable):
             )
             eligible_children = tax_unit.sum(eligible_child)
             amount_per_child = select_filing_status_value(
-                filing_status,
-                p.amount,
-                agi,
-                right=True
+                filing_status, p.amount, agi, right=True
             )
             return amount_per_child * eligible_children

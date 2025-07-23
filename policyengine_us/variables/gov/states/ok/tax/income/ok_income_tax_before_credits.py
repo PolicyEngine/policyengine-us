@@ -17,9 +17,5 @@ class ok_income_tax_before_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("ok_taxable_income", period)
         p = parameters(period).gov.states.ok.tax.income.rates
-        
-        return select_filing_status_value(
-            filing_status,
-            p,
-            taxable_income
-        )
+
+        return select_filing_status_value(filing_status, p, taxable_income)

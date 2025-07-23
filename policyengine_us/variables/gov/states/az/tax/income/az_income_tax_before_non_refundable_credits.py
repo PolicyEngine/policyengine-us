@@ -13,9 +13,5 @@ class az_income_tax_before_non_refundable_credits(Variable):
         income = tax_unit("az_taxable_income", period)
         filing_status = tax_unit("az_filing_status", period)
         p = parameters(period).gov.states.az.tax.income.main
-        
-        return select_filing_status_value(
-            filing_status,
-            p,
-            income
-        )
+
+        return select_filing_status_value(filing_status, p, income)

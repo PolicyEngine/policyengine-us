@@ -16,8 +16,4 @@ class al_income_tax_before_non_refundable_credits(Variable):
         taxable_income = tax_unit("al_taxable_income", period)
         p = parameters(period).gov.states.al.tax.income.rates
 
-        return select_filing_status_value(
-            filing_status,
-            p,
-            taxable_income
-        )
+        return select_filing_status_value(filing_status, p, taxable_income)

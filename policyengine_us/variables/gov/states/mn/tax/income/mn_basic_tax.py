@@ -17,9 +17,5 @@ class mn_basic_tax(Variable):
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("mn_taxable_income", period)
         p = parameters(period).gov.states.mn.tax.income.rates
-        
-        return select_filing_status_value(
-            filing_status,
-            p,
-            taxable_income
-        )
+
+        return select_filing_status_value(filing_status, p, taxable_income)

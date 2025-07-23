@@ -90,29 +90,29 @@ def select_filing_status_value(
     filing_status: ArrayLike,
     filing_status_values: dict,
     input_value: ArrayLike = None,
-    **kwargs
+    **kwargs,
 ) -> ArrayLike:
     """
     Select a value based on filing status, with SINGLE as the default.
-    
+
     This is a common pattern for selecting parameter values based on filing status.
     According to IRS SOI data, SINGLE is the most common filing status.
-    
+
     Args:
         filing_status: Array of filing status enum values
         filing_status_values: Dict mapping filing status to values or functions
         input_value: Optional input value to pass to functions (e.g., taxable income)
-    
+
     Returns:
         Array of selected values based on filing status
-    
+
     Example:
         # For parameter values
         result = select_filing_status_value(
             filing_status,
             parameters.amount
         )
-        
+
         # For calculated values (e.g., tax brackets)
         result = select_filing_status_value(
             filing_status,
@@ -121,30 +121,41 @@ def select_filing_status_value(
         )
     """
     statuses = filing_status.possible_values
-    
+
     # Helper function to get value
     def get_value(fs_value):
-        if input_value is not None and hasattr(fs_value, 'calc'):
+        if input_value is not None and hasattr(fs_value, "calc"):
             # It's a rate schedule or similar
             return fs_value.calc(input_value, **kwargs)
-        elif hasattr(fs_value, '__call__'):
+        elif hasattr(fs_value, "__call__"):
             # It's a callable
-            return fs_value(input_value, **kwargs) if input_value is not None else fs_value(**kwargs)
+            return (
+                fs_value(input_value, **kwargs)
+                if input_value is not None
+                else fs_value(**kwargs)
+            )
         else:
             # It's a simple value
             return fs_value
-    
+
     # Build conditions and values, excluding SINGLE
     conditions = []
     values = []
-    
+
     # Check each filing status except SINGLE
-    for status_enum in [statuses.JOINT, statuses.SEPARATE, statuses.HEAD_OF_HOUSEHOLD, statuses.SURVIVING_SPOUSE]:
+    for status_enum in [
+        statuses.JOINT,
+        statuses.SEPARATE,
+        statuses.HEAD_OF_HOUSEHOLD,
+        statuses.SURVIVING_SPOUSE,
+    ]:
         if status_enum.name.lower() in filing_status_values:
             conditions.append(filing_status == status_enum)
-            values.append(get_value(filing_status_values[status_enum.name.lower()]))
-    
+            values.append(
+                get_value(filing_status_values[status_enum.name.lower()])
+            )
+
     # SINGLE is the default
     default_value = get_value(filing_status_values["single"])
-    
+
     return select(conditions, values, default=default_value)
