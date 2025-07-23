@@ -10478,3 +10478,10 @@
     changed:
     - Update microdf-python dependency to >=1.0.0.
   date: 2025-07-22 21:06:21
+- bump: patch
+  changes:
+    added:
+    - Support for Python 3.13
+    changed:
+    - Updated policyengine-core dependency to >=3.19.0 for Python 3.13 support
+  date: 2025-07-23 02:05:22
