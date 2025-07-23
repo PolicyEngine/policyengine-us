@@ -1,0 +1,9 @@
+- bump: patch
+  changes:
+    changed:
+      - Improved file naming consistency by renaming generic filenames to match their variable names
+      - Split files containing multiple variables into separate files following one-variable-per-file standard
+      - Fixed typos in filenames (e.g., "if_tanf" to "il_tanf" for Illinois)
+      - Removed space from filename "il _cta_reduced_fare_program.py"
+    fixed:
+      - Fixed household_income_decile test structure to properly place household variables under household entity
