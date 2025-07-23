@@ -1,6 +1,6 @@
 description: States deduct the following percentage of self-employment income for SNAP under the simplified self-employment deduction.
 AK:
-  2021-10-01: 0.5
+  1997-10-01: 0.5
 AL:
   2021-10-01: 0.4
 AR:
@@ -42,7 +42,8 @@ LA:
 MA:
   2021-10-01: 0
 MD:
-  2021-10-01: 0.5
+  2010-01-01: 0.3
+  2016-10-01: 0.5
 ME:
   2021-10-01: 0
 MI:
@@ -60,7 +61,7 @@ NC:
 ND:
   2021-10-01: 0
 NE:
-  2021-10-01: 0.49
+  2016-10-01: 0.49
 NH:
   2021-10-01: 0
 NJ:
@@ -82,7 +83,7 @@ PA:
 RI:
   2021-10-01: 0
 SC:
-  2021-10-01: 0.4
+  2005-10-01: 0.4
 SD:
   2021-10-01: 0.55
 TN:
@@ -114,3 +115,8 @@ metadata:
   reference:
     - title: SNAP Screener SNAP Self-Employment Simplified Deductions by State
       href: https://www.snapscreener.com/blog/self-employment
+      # Reference for Alabama, Maryland, Nebraska, and South Carolina.
+    - title: Benefits Data Trust Streamlining SNAP for the Gig Economy
+      href: https://assets-global.website-files.com/63345e33f3c909d27d0e558b/634eb3c77156ee846ee68852_streamlining-snap-gig-economy.pdf
+    - title: Delaware DEPARTMENT OF health and social services,  Division of Social Services
+      href: https://regulations.delaware.gov/register/august2005/proposed/9%20DE%20Reg%20168%2008-01-05.htm

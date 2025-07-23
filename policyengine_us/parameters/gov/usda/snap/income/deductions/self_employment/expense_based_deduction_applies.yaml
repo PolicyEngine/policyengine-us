@@ -1,110 +1,110 @@
 description: Whether states allow to deduct actual self employment expenses in addition to the flat percentage deduction on gross self-employment income, under the SNAP program.
 AK:
-  2010-01-01: true
+  2021-01-01: true
 AL:
-  2010-01-01: false
+  2021-01-01: false
 AR:
-  2010-01-01: true
+  2021-01-01: true
 AZ:
-  2010-01-01: true
+  2021-01-01: true
 CA:
-  2010-01-01: true
+  2021-01-01: true
 CO:
-  2010-01-01: true
+  2021-01-01: true
 CT:
-  2010-01-01: true
+  2021-01-01: true
 DC:
-  2010-01-01: true
+  2021-01-01: true
 DE:
-  2010-01-01: false
+  2021-01-01: false
 FL:
-  2010-01-01: true
+  2021-01-01: true
 GA:
-  2010-01-01: true
+  2021-01-01: true
 GU:
-  2010-01-01: true
+  2021-01-01: true
 HI:
-  2010-01-01: true
+  2021-01-01: true
 IA:
-  2010-01-01: true
+  2021-01-01: true
 ID:
-  2010-01-01: true
+  2021-01-01: true
 IL:
-  2010-01-01: true
+  2021-01-01: true
 IN:
-  2010-01-01: true
+  2021-01-01: true
 KS:
-  2010-01-01: true
+  2021-01-01: true
 KY:
-  2010-01-01: true
+  2021-01-01: true
 LA:
-  2010-01-01: true
+  2021-01-01: true
 MA:
-  2010-01-01: true
+  2021-01-01: true
 MD:
-  2010-01-01: true
+  2021-01-01: true
 ME:
-  2010-01-01: true
+  2021-01-01: true
 MI:
-  2010-01-01: true
+  2021-01-01: true
 MN:
-  2010-01-01: true
+  2021-01-01: true
 MO:
-  2010-01-01: true
+  2021-01-01: true
 MS:
-  2010-01-01: true
+  2021-01-01: true
 MT:
-  2010-01-01: true
+  2021-01-01: true
 NC:
-  2010-01-01: true
+  2021-01-01: true
 ND:
-  2010-01-01: true
+  2021-01-01: true
 NE:
-  2010-01-01: true
+  2021-01-01: true
 NH:
-  2010-01-01: true
+  2021-01-01: true
 NJ:
-  2010-01-01: true
+  2021-01-01: true
 NM:
-  2010-01-01: true
+  2021-01-01: true
 NV:
-  2010-01-01: true
+  2021-01-01: true
 NY:
-  2010-01-01: true
+  2021-01-01: true
 OH:
-  2010-01-01: true
+  2021-01-01: true
 OK:
-  2010-01-01: false
+  2021-01-01: false
 OR:
-  2010-01-01: true
+  2021-01-01: true
 PA:
-  2010-01-01: true
+  2021-01-01: true
 RI:
-  2010-01-01: true
+  2021-01-01: true
 SC:
-  2010-01-01: false
+  2021-01-01: false
 SD:
-  2010-01-01: true
+  2021-01-01: true
 TN:
-  2010-01-01: true
+  2021-01-01: true
 TX:
-  2010-01-01: true
+  2021-01-01: true
 UT:
-  2010-01-01: true
+  2021-01-01: true
 VA:
-  2010-01-01: true
+  2021-01-01: true
 VI:
-  2010-01-01: true
+  2021-01-01: true
 VT:
-  2010-01-01: true
+  2021-01-01: true
 WA:
-  2010-01-01: true
+  2021-01-01: true
 WI:
-  2010-01-01: true
+  2021-01-01: true
 WV:
-  2010-01-01: true
+  2021-01-01: true
 WY:
-  2010-01-01: true
+  2021-01-01: true
 metadata:
   unit: bool
   period: year
@@ -112,5 +112,6 @@ metadata:
   breakdown:
   - state_code
   reference:
+    # SNAP screener provides information starting in 2021.
     - title: SNAP Screener SNAP Self-Employment Simplified Deductions by State
       href: https://www.snapscreener.com/blog/self-employment
