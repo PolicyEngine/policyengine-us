@@ -1,0 +1,20 @@
+description: Riverside County provides up to this food benefit amount based on household size under the General Relief Program.
+metadata:
+  unit: currency-USD
+  breakdown:
+    - range(1,6)
+  period: month
+  label: Riverside County maximum food benefit by household size
+  reference:
+    - title: General Assistance Eligibility p.29
+      
+1:
+  2020-01-01: 92
+2: 
+  2020-01-01: 160
+3:
+  2020-01-01: 237
+4:
+  2020-01-01: 305
+5: 
+  2020-01-01: 376

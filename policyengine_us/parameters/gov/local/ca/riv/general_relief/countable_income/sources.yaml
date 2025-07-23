@@ -1,0 +1,24 @@
+description: Riverside county counts these income sources as countable income under the General Relief Program.
+values:
+  2021-07-01:
+    - employment_income
+    - self_employment_income
+    - farm_income
+    - rental_income  # Income In-Kind
+    # interests in real or individual property
+    # training payments or work allowance 
+    - interest_income
+    - social_security
+    - ca_state_disability_insurance
+    - unemployment_compensation
+    - veterans_benefits
+    # assistance from other programs
+    # benefits from life insurance or burial payments
+    # loans and grants
+    # voluntary support
+metadata:
+  unit: list
+  period: year
+  label: Riverside County general relief countable income
+  reference: 
+    - title: General Assistance Eligibility p.18
