@@ -29,5 +29,5 @@ class il_personal_exemption(Variable):
                 == ILPersonalExemptionEligibilityStatus.PARTIALLY_ELIGIBLE,
             ],
             [2, 1],
-            0,
+            default=0,
         )

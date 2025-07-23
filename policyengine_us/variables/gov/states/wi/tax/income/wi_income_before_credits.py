@@ -20,19 +20,14 @@ class wi_income_tax_before_credits(Variable):
         taxinc = tax_unit("wi_taxable_income", period)
         fstatus = tax_unit("filing_status", period)
         p = parameters(period).gov.states.wi.tax.income
-        return select(
-            [
-                fstatus == fstatus.possible_values.SINGLE,
-                fstatus == fstatus.possible_values.JOINT,
-                fstatus == fstatus.possible_values.SURVIVING_SPOUSE,
-                fstatus == fstatus.possible_values.SEPARATE,
-                fstatus == fstatus.possible_values.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.rates.single.calc(taxinc),
-                p.rates.joint.calc(taxinc),
-                p.rates.joint.calc(taxinc),
-                p.rates.separate.calc(taxinc),
-                p.rates.head_of_household.calc(taxinc),
-            ],
-        )
+
+        # Note: Wisconsin uses joint rates for surviving spouse
+        rates_dict = {
+            "single": p.rates.single,
+            "joint": p.rates.joint,
+            "surviving_spouse": p.rates.joint,  # Uses joint rates
+            "separate": p.rates.separate,
+            "head_of_household": p.rates.head_of_household,
+        }
+
+        return select_filing_status_value(fstatus, rates_dict, taxinc)

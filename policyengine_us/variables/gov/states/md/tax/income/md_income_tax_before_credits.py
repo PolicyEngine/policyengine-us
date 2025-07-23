@@ -16,21 +16,8 @@ class md_income_tax_before_credits(Variable):
 
         # Calculate regular income tax based on filing status
         p = parameters(period).gov.states.md.tax.income
-        regular_income_tax = select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.SURVIVING_SPOUSE,
-            ],
-            [
-                p.rates.single.calc(taxable_income),
-                p.rates.separate.calc(taxable_income),
-                p.rates.joint.calc(taxable_income),
-                p.rates.head_of_household.calc(taxable_income),
-                p.rates.surviving_spouse.calc(taxable_income),
-            ],
+        regular_income_tax = select_filing_status_value(
+            filing_status, p.rates, taxable_income
         )
 
         # Add capital gains surtax if applicable

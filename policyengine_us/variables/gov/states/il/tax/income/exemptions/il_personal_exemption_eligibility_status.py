@@ -81,5 +81,5 @@ class il_personal_exemption_eligibility_status(Variable):
                 ILPersonalExemptionEligibilityStatus.NOT_ELIGIBLE,
                 ILPersonalExemptionEligibilityStatus.PARTIALLY_ELIGIBLE,
             ],
-            ILPersonalExemptionEligibilityStatus.BOTH_ELIGIBLE,
+            default=ILPersonalExemptionEligibilityStatus.BOTH_ELIGIBLE,
         )

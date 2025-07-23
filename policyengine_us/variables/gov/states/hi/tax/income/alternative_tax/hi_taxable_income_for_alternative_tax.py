@@ -28,27 +28,16 @@ class hi_taxable_income_for_alternative_tax(Variable):
         # The filer is eligible to compute the tax on the smaller of the taxable income less capital gains
         # or the taxable income capped at a threshold below the tax on capital gains rate
         reduced_taxable_income = taxable_income - smaller_net_capital_gain
-        cap_single = p.rates.single.thresholds[6]
-        cap_joint = p.rates.joint.thresholds[6]
-        cap_surviving_spouse = p.rates.surviving_spouse.thresholds[6]
-        cap_separate = p.rates.separate.thresholds[6]
-        cap_hoh = p.rates.head_of_household.thresholds[6]
-        statuses = filing_status.possible_values
-        cap = select(
-            [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.JOINT,
-                filing_status == statuses.SURVIVING_SPOUSE,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                cap_single,
-                cap_joint,
-                cap_surviving_spouse,
-                cap_separate,
-                cap_hoh,
-            ],
-        )
+
+        # Get the 6th threshold for each filing status
+        cap_values = {
+            "single": p.rates.single.thresholds[6],
+            "joint": p.rates.joint.thresholds[6],
+            "surviving_spouse": p.rates.surviving_spouse.thresholds[6],
+            "separate": p.rates.separate.thresholds[6],
+            "head_of_household": p.rates.head_of_household.thresholds[6],
+        }
+
+        cap = select_filing_status_value(filing_status, cap_values)
         capped_taxable_income = min_(taxable_income, cap)
         return max_(reduced_taxable_income, capped_taxable_income)
