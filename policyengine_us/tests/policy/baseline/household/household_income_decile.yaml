@@ -17,9 +17,9 @@
       household1:
         members: [person1]
         state_code: CA
-    household_net_income: -10_000
-    household_count_people: 1
-    household_weight: 1_000
+        household_net_income: -10_000
+        household_count_people: 1
+        household_weight: 1_000
   output:
     household_income_decile: -1
 
@@ -33,8 +33,8 @@
       household1:
         members: [person1]
         state_code: CA
-    household_net_income: 0
-    household_count_people: 1
-    household_weight: 1_000
+        household_net_income: 0
+        household_count_people: 1
+        household_weight: 1_000
   output:
     household_income_decile: 1
