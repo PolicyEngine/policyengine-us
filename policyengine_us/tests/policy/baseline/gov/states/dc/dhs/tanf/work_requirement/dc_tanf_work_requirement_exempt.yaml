@@ -24,7 +24,7 @@
         members: [person1, person2, person3, person4]
         state_code: DC
   output:
-    dc_tanf_work_requirement_exempt: [true, false, true, true]
+    dc_tanf_work_requirement_exempt: [true, false, true, false]
 
 - name: Case 2, single parent household with an infant.  
   period: 2023-01
@@ -53,7 +53,7 @@
   output:
     dc_tanf_work_requirement_exempt: [true, false, true]
 
-- name: Case 3, has incapable of self care member.  
+- name: Case 3, has college student.  
   period: 2023-01
   absolute_error_margin: 0.5
   input:
@@ -62,7 +62,8 @@
         age: 30
         is_tax_unit_head: true
       person2:
-        is_incapable_of_self_care: true
+        age: 23
+        is_full_time_college_student: true
       person3: 
         age: 5
         is_tax_unit_dependent: true
@@ -77,4 +78,4 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_tanf_work_requirement_exempt: [true, true, true]
+    dc_tanf_work_requirement_exempt: [false, true, true]

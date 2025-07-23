@@ -13,11 +13,9 @@ class dc_power_eligible(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        is_head = person("is_tax_unit_head", period)
-        work_exempted = person("dc_tanf_work_requirement_exempt", period)
-        eligible_head = spm_unit.sum(is_head & work_exempted) == 1
-
+        has_eligible_head_or_spouse = (
+            add(spm_unit, period, ["dc_power_head_or_spouse_eligible"]) > 0
+        )
         meets_basic_eligibility_requirements = spm_unit(
             "dc_tanf_basic_eligibility_requirements", period
         )
@@ -26,7 +24,7 @@ class dc_power_eligible(Variable):
         )
 
         return (
-            eligible_head
+            has_eligible_head_or_spouse
             & meets_basic_eligibility_requirements
             & ~has_disqualifying_benefits
         )
