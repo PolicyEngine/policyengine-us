@@ -10458,3 +10458,30 @@
     added:
     - DC Child Care Subsidy Program (CCSP).
   date: 2025-07-18 21:16:46
+- bump: minor
+  changes:
+    added:
+    - California Riverside County Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-22 14:20:17
+- bump: patch
+  changes:
+    added:
+    - Updated microdf-python to 0.4.5.
+  date: 2025-07-22 15:55:01
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico earned income credit (EITC).
+  date: 2025-07-22 20:02:01
+- bump: patch
+  changes:
+    changed:
+    - Update microdf-python dependency to >=1.0.0.
+  date: 2025-07-22 21:06:21
+- bump: patch
+  changes:
+    added:
+    - Support for Python 3.13
+    changed:
+    - Updated policyengine-core dependency to >=3.19.0 for Python 3.13 support
+  date: 2025-07-23 02:05:22
