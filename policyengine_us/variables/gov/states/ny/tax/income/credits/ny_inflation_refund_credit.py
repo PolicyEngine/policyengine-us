@@ -36,6 +36,7 @@ class ny_inflation_refund_credit(Variable):
                 p.separate.calc(agi, right=True),
                 p.surviving_spouse.calc(agi, right=True),
             ],
+            default=0,
         )
 
     def formula_2026(tax_unit, period, parameters):

@@ -42,6 +42,7 @@ class ny_supplemental_tax(Variable):
                 get_previous_threshold(ny_taxable_income, scale.thresholds)
                 for scale in scales
             ],
+            default=0,
         )
 
         applicable_amount = max_(
@@ -63,10 +64,12 @@ class ny_supplemental_tax(Variable):
                 surviving_spouse.thresholds[-1],
                 separate.thresholds[-1],
             ],
+            default=0,
         )
         high_agi_rate = select(
             in_each_status,
             [scale.marginal_rates(agi_limit + 1) for scale in scales],
+            default=0,
         )
 
         supplemental_tax_high_agi = (
@@ -83,6 +86,7 @@ class ny_supplemental_tax(Variable):
                     p.recapture_base.surviving_spouse.calc(ny_taxable_income),
                     p.recapture_base.separate.calc(ny_taxable_income),
                 ],
+                default=0,
             )
 
             incremental_benefit = select(
@@ -98,6 +102,7 @@ class ny_supplemental_tax(Variable):
                     ),
                     p.incremental_benefit.separate.calc(ny_taxable_income),
                 ],
+                default=0,
             )
 
             supplemental_tax_general = (

@@ -42,5 +42,6 @@ class or_federal_tax_liability_subtraction(Variable):
                 p.separate.calc(federal_agi),
                 p.surviving_spouse.calc(federal_agi),
             ],
+            default=0,
         )
         return min_(or_federal_income_tax, cap)

@@ -36,4 +36,5 @@ class ny_main_income_tax(Variable):
                 surviving_spouse.calc(taxable_income),
                 separate.calc(taxable_income),
             ],
+            default=0,
         )

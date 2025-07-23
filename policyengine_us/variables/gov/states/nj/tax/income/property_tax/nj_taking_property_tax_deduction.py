@@ -37,6 +37,7 @@ class nj_taking_property_tax_deduction(Variable):
                 p.surviving_spouse.calc(taxable_income_before_deduction),
                 p.separate.calc(taxable_income_before_deduction),
             ],
+            default=0,
         )
 
         # calculate taxes with deduction
@@ -58,6 +59,7 @@ class nj_taking_property_tax_deduction(Variable):
                 p.surviving_spouse.calc(taxable_income_after_deduction),
                 p.separate.calc(taxable_income_after_deduction),
             ],
+            default=0,
         )
 
         # calculate credit amount
