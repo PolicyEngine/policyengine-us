@@ -19,10 +19,8 @@ class snap_self_employment_expense_deduction(Variable):
         expenses = spm_unit("snap_self_employment_income_expense", period)
         p = parameters(period).gov.usda.snap.income.deductions.self_employment
         state_code = spm_unit.household("state_code", period)
-        income_percentage = p.rate[state_code]
-        percentage_based_amount = max_(
-            income_percentage * self_employment_income, 0
-        )
+        income_percentage = max_(p.rate[state_code], 0)
+        percentage_based_amount = income_percentage * self_employment_income
         # Take the larger of the income percentage and expenses assuming that the filer
         # will optimize for the larger deduction.
         smaller_of_income_percentage_and_expenses = max_(
@@ -31,5 +29,5 @@ class snap_self_employment_expense_deduction(Variable):
         return where(
             p.expense_based_deduction_applies[state_code],
             smaller_of_income_percentage_and_expenses,
-            income_percentage,
+            percentage_based_amount,
         )
