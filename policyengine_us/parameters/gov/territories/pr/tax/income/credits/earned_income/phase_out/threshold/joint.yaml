@@ -1,0 +1,31 @@
+description: Puerto Rico phases the earned income credit out above this threshold of state gross income.
+# determines the threshold for the phase-in amount to be applied based on # of children
+brackets:
+  - threshold: 
+      2023-01-01: 0
+    amount:
+      2023-01-01: 19_870
+  - threshold: 
+      2023-01-01: 1
+    amount:
+      2023-01-01: 24_280
+  - threshold: 
+      2023-01-01: 2
+    amount:
+      2023-01-01: 27_590
+  - threshold: 
+      2023-01-01: 3
+    amount:
+      2023-01-01: 27_590
+metadata:
+  amount_unit: currency-USD
+  threshold_unit: child
+  type: single_amount
+  label: Puerto Rico earned income credit phase out threshold
+  period: year
+  reference:
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2
+    # discrepancy: legal statute phase out thresholds do not correspond with tax form values
+    - title: P.R. Laws tit. 13, § 30211 (1) - (6)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
