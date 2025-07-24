@@ -10498,3 +10498,13 @@
     - Fixed household_income_decile test structure to properly place household variables
       under household entity
   date: 2025-07-23 11:09:36
+- bump: minor
+  changes:
+    added:
+    - SNAP self-employment simplified deductions.
+  date: 2025-07-23 13:54:32
+- bump: patch
+  changes:
+    fixed:
+    - Move healthcare simulation parameter to the correct simulation folder.
+  date: 2025-07-24 18:37:29
