@@ -1,0 +1,14 @@
+description: Non-refundable tax credits which precede the Lifetime Learning Credit.
+values:
+  2013-01-01:
+    - foreign_tax_credit 
+    - cdcc
+    - non_refundable_american_opportunity_credit
+
+metadata:
+  unit: list
+  period: year
+  label: Non-refundable tax credits preceding the Lifetime Learning Credit
+  reference:
+    - title: IRS Schedule 3, Additional Credits and Payments
+      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf

@@ -1,0 +1,113 @@
+description: States spends this amount on Medicaid for expansion population adults.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicaid spending for expansion adult enrollees
+  breakdown:
+    - state_code
+  reference:
+  - title: EXHIBIT 21. Medicaid Spending by State, Eligibility Group, and Dually Eligible Status | MACPAC 
+    href: https://www.macpac.gov/publication/medicaid-spending-by-state-category-and-source-of-funds/
+  # Spending by enrollment category was created by multiplying total Medicaid spending by state by the percent of spending on expansion adults.
+AL:
+  2023-01-01: 0  # Alabama has not expanded adult Medicaid
+AK:
+  2023-01-01: 641_000_000
+AZ:
+  2023-01-01: 6_842_000_000
+AR:
+  2023-01-01: 2_695_000_000
+CA:
+  2023-01-01: 33_258_000_000
+CO:
+  2023-01-01: 3_920_000_000
+CT:
+  2023-01-01: 2_504_000_000
+DE:
+  2023-01-01: 867_000_000
+DC:
+  2023-01-01: 680_000_000
+FL:
+  2023-01-01: 0 # Florida has not expanded adult Medicaid
+GA:
+  2023-01-01: 0 # Georgia has not expanded adult Medicaid
+HI:
+  2023-01-01: 1_066_000_000
+ID:
+  2023-01-01: 771_000_000
+IL:
+  2023-01-01: 13_687_000_000
+IN:
+  2023-01-01: 3_976_000_000
+IA:
+  2023-01-01: 1_712_000_000
+KS:
+  2023-01-01: 0 # Kansas has not expanded adult Medicaid
+KY:
+  2023-01-01: 5_456_000_000
+LA:
+  2023-01-01: 5_282_000_000
+ME:
+  2023-01-01: 667_000_000
+MD:
+  2023-01-01: 3_781_000_000
+MA:
+  2023-01-01: 3_832_000_000
+MI:
+  2023-01-01: 5_888_000_000
+MN:
+  2023-01-01: 3_103_000_000
+MS:
+  2023-01-01: 0  # Mississippi has not expanded adult Medicaid
+MO:
+  2023-01-01: 1_595_000_000
+MT:
+  2023-01-01: 889_000_000
+NE:
+  2023-01-01: 697_000_000
+NV:
+  2023-01-01: 2_110_000_000
+NH:
+  2023-01-01: 492_000_000
+NJ:
+  2023-01-01: 5_429_000_000
+NM:
+  2023-01-01: 2_382_000_000
+NY:
+  2023-01-01: 18_465_000_000
+NC:
+  2023-01-01: 0 # North Carolina expansion effective late-2023
+ND:
+  2023-01-01: 422_000_000
+OH:
+  2023-01-01: 7_559_000_000
+OK:
+  2023-01-01: 2_110_000_000
+OR:
+  2023-01-01: 5_584_000_000
+PA:
+  2023-01-01: 8_478_000_000
+RI:
+  2023-01-01: 669_000_000
+SC:
+  2023-01-01: 0
+SD:
+  2023-01-01: 0
+TN:
+  2023-01-01: 0
+TX:
+  2023-01-01: 0
+UT:
+  2023-01-01: 1_120_000_000
+VT:
+  2023-01-01: 542_900_000 # Values generated in calculate_vermont_spending_breakdown.py
+VA:
+  2023-01-01: 5_846_000_000
+WA:
+  2023-01-01: 7_773_000_000
+WV:
+  2023-01-01: 1_507_000_000
+WI:
+  2023-01-01: 0
+WY:
+  2023-01-01: 0

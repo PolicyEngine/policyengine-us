@@ -1,0 +1,85 @@
+- name: Reconciled pease for a hoh filer with 
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    total_itemized_taxable_income_deductions: 30_000
+    exemptions: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 600_000
+  output:
+    # Excess income: 600_000 - 577_750 = 22_250
+    # Reduction = 22_250 * 0.05405405 = 1_202
+    itemized_taxable_income_deductions_reduction: 1_202
+
+- name: Reconciled pease for a joint filer with $10k in itemized deductions
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    total_itemized_taxable_income_deductions: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 700_000
+  output:
+    itemized_taxable_income_deductions_reduction: 540.54
+
+- name: Reconciled pease for a joint filer with income below the top rate threshold
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    total_itemized_taxable_income_deductions: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 600_000
+  output:
+    itemized_taxable_income_deductions_reduction: 0
+
+- name: Amended structure in effect, no salt deduction
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    gov.contrib.reconciliation.pease.amended_structure.in_effect: true
+    total_itemized_taxable_income_deductions: 10_000
+    salt_deduction: 0
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 700_000
+  output:
+    itemized_taxable_income_deductions_reduction: 540.54
+
+- name: Amended structure in effect, some salt deduction, no other deductions
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    gov.contrib.reconciliation.pease.amended_structure.in_effect: true
+    interest_deduction: 0
+    salt_deduction: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 900_000
+  output:
+    itemized_taxable_income_deductions_reduction: 1_351.4
+
+- name: Amended structure in effect, some salt deduction, some other deductions
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.reconciliation.reconciled_pease.reconciled_pease
+  input:
+    gov.contrib.reconciliation.pease.in_effect: true
+    gov.contrib.reconciliation.pease.amended_structure.in_effect: true
+    interest_deduction: 5_000
+    salt_deduction: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 900_000
+  output:
+    itemized_taxable_income_deductions_reduction: 1_621.7

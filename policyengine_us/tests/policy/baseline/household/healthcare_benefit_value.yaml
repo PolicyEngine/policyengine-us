@@ -1,0 +1,14 @@
+- name: AZ child
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: AZ
+        members: [person]
+    people:
+      person:
+        is_infant_for_medicaid: true
+        is_medicaid_eligible: true
+  output: 
+    healthcare_benefit_value: 3_564.1

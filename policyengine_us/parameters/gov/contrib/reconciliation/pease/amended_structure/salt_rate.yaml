@@ -1,0 +1,12 @@
+description: The IRS phases the smaller of the SALT deduction or taxable income (without itemized deductions) exceeding the top tax rate threshold out at the following rate under the amended reconciliation bill.
+
+values:
+  0000-01-01: 0.13513514 # 5/37
+
+metadata:
+  unit: /1
+  period: year
+  label: Reconciled itemized deductions limitation salt rate
+  reference:
+    - title: Manager's amendment to Rules Committee Print 119-3
+      href: https://punchbowl.news/wp-content/uploads/managers-amendment.pdf#page=20

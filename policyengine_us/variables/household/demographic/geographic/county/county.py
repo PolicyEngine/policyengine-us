@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.simulations import Simulation
 from policyengine_us.tools.geography.county_helpers import (
     map_county_string_to_enum,
 )
@@ -20,11 +21,12 @@ class county(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
+        simulation: Simulation = household.simulation
 
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
-        if county_fips.all():
+        if not simulation.is_over_dataset and county_fips.all():
             COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
 
             # Decode FIPS codes

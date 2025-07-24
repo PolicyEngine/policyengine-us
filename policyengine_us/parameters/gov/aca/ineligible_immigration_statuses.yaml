@@ -1,0 +1,14 @@
+description: Ineligible immigration status for Premium Tax Credit. 
+values:
+  2018-01-01:
+    - DACA_TPS #daca is eligible for PTC
+    - UNDOCUMENTED
+    - TPS 
+
+metadata:
+  label: Reconciliation Premium Tax Credit immigration status adjustment in effect
+  period: year
+  unit: list
+  reference:
+    - title: 26 CFR § 1.36B-1 - Premium tax credit definitions.
+      href: https://www.law.cornell.edu/cfr/text/26/1.36B-1#(g)

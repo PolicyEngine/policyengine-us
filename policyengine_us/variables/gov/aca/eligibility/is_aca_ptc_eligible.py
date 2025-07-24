@@ -13,12 +13,13 @@ class is_aca_ptc_eligible(Variable):
         # determine status eligibility for ACA PTC
         fstatus = person.tax_unit("filing_status", period)
         separate = fstatus == fstatus.possible_values.SEPARATE
-        istatus = person("immigration_status", period)
-        daca_tps = istatus == istatus.possible_values.DACA_TPS
-        undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        immig_ineligible = daca_tps | undocumented
+        immigration_eligible = person(
+            "is_aca_ptc_immigration_status_eligible", period
+        )
         taxpayer_has_itin = person.tax_unit("taxpayer_has_itin", period)
-        is_status_eligible = taxpayer_has_itin & ~separate & ~immig_ineligible
+        is_status_eligible = (
+            taxpayer_has_itin & ~separate & immigration_eligible
+        )
 
         # determine coverage eligibility for ACA plan
         INELIGIBLE_COVERAGE = [

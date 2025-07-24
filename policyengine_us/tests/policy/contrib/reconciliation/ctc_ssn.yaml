@@ -1,0 +1,150 @@
+- name: Case 1, CTC higher than 0.
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    ctc_maximum_with_arpa_addition: 100
+    ctc_phase_out: 80
+    filer_meets_ctc_identification_requirements: true
+  output:
+    ctc: 20
+
+- name: Case 2, CTC capped at 0.
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    ctc_maximum_with_arpa_addition: 80
+    ctc_phase_out: 100
+    filer_meets_ctc_identification_requirements: true
+  output:
+    ctc: 0
+
+- name: Case 3, don't have valid SSN card type, CTC is 0. 
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    ctc_maximum_with_arpa_addition: 100
+    ctc_phase_out: 80
+    filer_meets_ctc_identification_requirements: false
+  output:
+    ctc: 0
+
+- name: One person has a valid SSN card type, the other does not
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [true, false]
+    filer_meets_ctc_identification_requirements: false
+
+- name: Both people are eligible
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+  output:
+    meets_ctc_identification_requirements: [true, true]
+    filer_meets_ctc_identification_requirements: true
+
+- name: One of three children eligible 
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ctc_qualifying_child: true
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 5
+        ssn_card_type: NONE
+      person4:
+        age: 5
+        ssn_card_type: CITIZEN
+  output:
+    ctc_qualifying_children: 1
+
+- name: One person has a valid SSN card type, the other does not, senate finance rules
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    gov.contrib.reconciliation.ctc.one_person_ssn_req: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [true, false]
+    filer_meets_ctc_identification_requirements: true
+
+- name: One person has a valid SSN card type, the other does not, senate finance rules, child status irrelevant
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    gov.contrib.reconciliation.ctc.one_person_ssn_req: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NONE
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [true, false, false]
+    filer_meets_ctc_identification_requirements: true
+
+- name: Single person eligible
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    gov.contrib.reconciliation.ctc.one_person_ssn_req: true
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+  output:
+    meets_ctc_identification_requirements: [true]
+    filer_meets_ctc_identification_requirements: true
+
+- name: Single person ineligible
+  period: 2026
+  absolute_error_margin: 0.9
+  reforms: policyengine_us.reforms.reconciliation.ctc_ssn.ctc_ssn
+  input:
+    gov.contrib.reconciliation.ctc.in_effect: true
+    gov.contrib.reconciliation.ctc.one_person_ssn_req: true
+    people:
+      person1:
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [false]
+    filer_meets_ctc_identification_requirements: false

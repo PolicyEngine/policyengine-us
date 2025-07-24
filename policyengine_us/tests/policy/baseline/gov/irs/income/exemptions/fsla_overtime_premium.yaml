@@ -1,0 +1,41 @@
+- name: Overtime income premium calculation (is eligible)
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 30000
+    is_paid_hourly: false
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 2727.2727
+
+- name: Overtime income premium calculation (is exempt)
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 100000
+    is_paid_hourly: false
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 0
+
+- name: Overtime income premium calculation (computer scientist)
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 56160 # above basis salary but below cs salary
+    is_paid_hourly: false
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: false
+    is_farmer_fisher: false
+    is_computer_scientist: true
+  output:
+    fsla_overtime_premium: 5105.4545

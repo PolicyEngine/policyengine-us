@@ -26,7 +26,7 @@ def create_tax_exempt() -> Reform:
                 tip_income = person("tip_income", period)
                 exempt_income += tip_income
             if p.overtime.income_tax_exempt:
-                exempt_income += person("overtime_income", period)
+                exempt_income += person("fsla_overtime_premium", period)
             return max_(total - exempt_income, 0)
 
     class payroll_tax_gross_wages(Variable):
@@ -43,7 +43,7 @@ def create_tax_exempt() -> Reform:
             if p.tip_income.payroll_tax_exempt:
                 exempt_income += person("tip_income", period)
             if p.overtime.payroll_tax_exempt:
-                exempt_income += person("overtime_income", period)
+                exempt_income += person("fsla_overtime_premium", period)
             return max_(income - exempt_income, 0)
 
     class reform(Reform):

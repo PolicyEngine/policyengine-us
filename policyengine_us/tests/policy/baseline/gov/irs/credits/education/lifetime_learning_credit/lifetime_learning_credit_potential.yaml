@@ -1,0 +1,29 @@
+- name: No expenses, no credit
+  period: 2020
+  input:
+    qualified_tuition_expenses: 0
+  output:
+    lifetime_learning_credit_potential: 0
+
+- name: Some entitlement
+  period: 2020
+  input:
+    qualified_tuition_expenses: 1_000
+  output:
+    lifetime_learning_credit_potential: 200
+
+- name: Eligibility for AOC disqualifies LLC
+  period: 2020
+  input:
+    qualified_tuition_expenses: 1_000
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    lifetime_learning_credit_potential: 0
+
+- name: Over phase_out, no entitlement
+  period: 2020
+  input:
+    qualified_tuition_expenses: 1_000
+    adjusted_gross_income: 90_000
+  output:
+    lifetime_learning_credit_potential: 0

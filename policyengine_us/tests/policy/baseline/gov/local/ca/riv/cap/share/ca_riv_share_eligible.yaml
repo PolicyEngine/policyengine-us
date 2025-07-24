@@ -1,0 +1,21 @@
+- name: Case 1, household size of 3 with $66000 income, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    ca_riv_share_countable_income: 66_000
+    spm_unit_size: 3
+    in_riv: true
+  output:
+    spm_unit_fpg: 2_220.83
+    ca_riv_share_eligible: true
+
+- name: Case 2, household size of 3 with $66700 income, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    ca_riv_share_countable_income: 66_700
+    spm_unit_size: 3
+    in_riv: true
+  output:
+    spm_unit_fpg: 2_220.83
+    ca_riv_share_eligible: false

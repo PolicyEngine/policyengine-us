@@ -30,7 +30,7 @@ class vt_renter_credit(Variable):
         fmr = p.fair_market_rent[tax_unit_size][county]
         base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
 
-        # Compute what the spreadsheet calls the "percent reabte claimable"
+        # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         income_diff = partial_credit_income_limit - vt_renter_credit_income
         income_threshold_diff = (
@@ -52,7 +52,7 @@ class vt_renter_credit(Variable):
         # income is between partial credit income limit and full credit income limit:
         ## if no subsidized: (partial credit income limit - income)/(partial credit income limit - full credit income limit) * fair market rent
         ## if subsidized: (partial credit income limit - income)/(partial credit income limit - full credit income limit) * actual pay rent amount * rent rate
-        # for all of the above situations, mulitple by the share rent rate if the the rental unit was shared
+        # for all of the above situations, multiply by the share rent rate if the the rental unit was shared
         high_income = vt_renter_credit_income > partial_credit_income_limit
         low_income = vt_renter_credit_income < full_credit_income_limit
         mid_income = ~(high_income | low_income)

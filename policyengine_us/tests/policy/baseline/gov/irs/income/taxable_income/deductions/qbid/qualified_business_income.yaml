@@ -1,0 +1,59 @@
+- name: Some income is not qualified, no deductions
+  period: 2026
+  input:
+    rental_income: 3_000
+    rental_income_would_be_qualified: false
+    estate_income: 1_000
+    estate_income_would_be_qualified: true
+    self_employment_income: 5_000
+    self_employment_income_would_be_qualified: true
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    qualified_business_income: 6_000
+
+- name: Some income is not qualified, some deductions
+  period: 2026
+  input:
+    rental_income: 3_000
+    rental_income_would_be_qualified: false
+    estate_income: 1_000
+    estate_income_would_be_qualified: true
+    self_employment_income: 5_000
+    self_employment_income_would_be_qualified: true
+    self_employment_tax_ald_person: 500
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 700
+  output:
+    qualified_business_income: 4_800
+
+- name: No income is qualified, no deductions
+  period: 2026
+  input:
+    rental_income: 3_000
+    rental_income_would_be_qualified: false
+    estate_income: 1_000
+    estate_income_would_be_qualified: false
+    self_employment_income: 5_000
+    self_employment_income_would_be_qualified: false
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    qualified_business_income: 0
+
+- name: All income is qualified, no deductions
+  period: 2026
+  input:
+    rental_income: 3_000
+    rental_income_would_be_qualified: true
+    estate_income: 1_000
+    estate_income_would_be_qualified: true
+    self_employment_income: 5_000
+    self_employment_income_would_be_qualified: true
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    qualified_business_income: 9_000
