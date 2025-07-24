@@ -143,17 +143,20 @@ def select_filing_status_value(
     values = []
 
     # Check each filing status except SINGLE
-    for status_enum in [
-        statuses.JOINT,
-        statuses.SEPARATE,
-        statuses.HEAD_OF_HOUSEHOLD,
-        statuses.SURVIVING_SPOUSE,
+    for status_name in [
+        "JOINT",
+        "SEPARATE",
+        "HEAD_OF_HOUSEHOLD",
+        "SURVIVING_SPOUSE",
     ]:
-        if status_enum.name.lower() in filing_status_values:
-            conditions.append(filing_status == status_enum)
-            values.append(
-                get_value(filing_status_values[status_enum.name.lower()])
-            )
+        # Check if this enum value exists in this filing status enum
+        if hasattr(statuses, status_name):
+            status_enum = getattr(statuses, status_name)
+            if status_enum.name.lower() in filing_status_values:
+                conditions.append(filing_status == status_enum)
+                values.append(
+                    get_value(filing_status_values[status_enum.name.lower()])
+                )
 
     # SINGLE is the default
     default_value = get_value(filing_status_values["single"])
