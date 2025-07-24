@@ -3,7 +3,16 @@
 - name: Negative value will get a decile of -1.
   period: 2024
   input:
-    household_net_income: -1
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        household_net_income: -1
+        household_count_people: 1
+        household_weight: 1_000
   output:
     household_income_decile: -1
 
