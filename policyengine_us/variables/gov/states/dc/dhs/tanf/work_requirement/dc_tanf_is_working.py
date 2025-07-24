@@ -19,10 +19,9 @@ class dc_tanf_is_working(Variable):
         age = person("monthly_age", period)
         # For single parent with a child under 6, work 20 hours pr week
         # For single parent with a child at 6 or older, work 30 hours pr week
-        is_child = person("is_child", period)
         spm_unit = person.spm_unit
-        is_youngest_child = person.get_rank(spm_unit, age, is_child) == 0
-        youngest_age = spm_unit.sum(is_youngest_child * age)
+        is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
+        youngest_age = spm_unit.sum(is_youngest_member * age)
         single_parent_requirement = (
             weekly_hours_worked >= p.single_parent.amount.calc(youngest_age)
         )
