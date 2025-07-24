@@ -16,5 +16,5 @@ class pr_education_deduction_beneficiary_count(Variable):
         ).gov.territories.pr.tax.income.taxable_income.deductions.education
         person = tax_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period) < p.age_threshold
-        return tax_unit.sum(is_dependent & age)
+        age_eligible = person("age", period) < p.age_threshold
+        return tax_unit.sum(is_dependent & age_eligible)

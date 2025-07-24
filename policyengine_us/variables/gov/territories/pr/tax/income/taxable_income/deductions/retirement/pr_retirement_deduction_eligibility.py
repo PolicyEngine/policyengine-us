@@ -17,5 +17,4 @@ class pr_retirement_deduction_eligibility(Variable):
 
         # additionally no deduction if income is only from pension and annuities
         age = person("age", period)
-        age_eligibility = age < p.age_threshold
-        return age_eligibility
+        return age < p.age_threshold

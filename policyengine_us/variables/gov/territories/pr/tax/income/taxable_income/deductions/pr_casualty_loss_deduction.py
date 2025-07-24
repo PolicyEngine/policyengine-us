@@ -16,12 +16,12 @@ class pr_casualty_loss_deduction(Variable):
         ).gov.territories.pr.tax.income.taxable_income.deductions.casualty_loss
         loss = add(tax_unit, period, ["casualty_loss"])
         filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
 
-        return select(
-            [
-                filing_status == filing_statuses.SEPARATE,
-                filing_status != filing_statuses.SEPARATE,
-            ],
-            [p.separate_percentage * loss, loss],
+        return (
+            where(
+                filing_status == filing_status.possible_values.SEPARATE,
+                p.separate_percentage,
+                1,
+            )
+            * loss
         )

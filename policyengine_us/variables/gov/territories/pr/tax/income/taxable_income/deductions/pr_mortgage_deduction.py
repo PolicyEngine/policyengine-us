@@ -24,19 +24,19 @@ class pr_mortgage_deduction(Variable):
         person = tax_unit.members
         age = person("age", period)
 
-        condition = tax_unit.any(
+        is_senior_exception = tax_unit.any(
             person("is_tax_unit_head_or_spouse", period)
             & (age >= p.age_threshold)
         )
         # True if any member fulfills condition
 
-        return select(
-            [
-                condition,
-                ~condition,
-            ],
-            [
-                min_(mortgage_interest, p.max),
-                min_(mortgage_interest, min_(limit, p.max)),
-            ],
+        # people 65+ years old are capped at max deduction amount
+        interest_capped_by_max = min_(mortgage_interest, p.max)
+        # otherwise capped by both AGI and max deduction amount
+        combined_cap = min_(limit, p.max)
+        interest_capped_by_combined = min_(mortgage_interest, combined_cap)
+        return where(
+            is_senior_exception,
+            interest_capped_by_max,
+            interest_capped_by_combined,
         )
