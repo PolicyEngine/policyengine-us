@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.350.1] - 2025-07-24 18:37:29
+
+### Fixed
+
+- Move healthcare simulation parameter to the correct simulation folder.
+
 ## [1.350.0] - 2025-07-23 13:54:32
 
 ### Added
@@ -12364,6 +12370,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.350.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.350.0...1.350.1
 [1.350.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.3...1.350.0
 [1.349.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.2...1.349.3
 [1.349.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.1...1.349.2
