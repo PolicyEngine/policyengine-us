@@ -17,7 +17,6 @@ class pell_grant_head_contribution(Variable):
         adjusted_available_income = available_income + assets
         formula = person("pell_grant_formula", period)
         uses_efc = person("pell_grant_uses_efc", period)
-        uses_sai = person("pell_grant_uses_sai", period)
         p = parameters(period).gov.ed.pell_grant.head
         positive_head_contribution = p.marginal_rate.calc(
             adjusted_available_income
@@ -41,5 +40,5 @@ class pell_grant_head_contribution(Variable):
         amount_per_dependent[mask] = total[mask] / dependents[mask]
 
         return select(
-            [uses_efc, uses_sai], [amount_per_dependent, total], default=0
+            [uses_efc, ~uses_efc], [amount_per_dependent, total], default=0
         )
