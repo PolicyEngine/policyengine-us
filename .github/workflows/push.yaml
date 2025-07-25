@@ -65,6 +65,7 @@ jobs:
       - name: Install package
         run: uv pip install -e ".[dev]" --system
       - name: Turn off default branching
+        shell: bash
         run: bash ./update_itemization.sh
       - name: Run non-structural YAML tests
         run: make test-yaml-no-structural

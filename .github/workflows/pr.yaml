@@ -51,7 +51,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --dev
       - name: Turn off default branching
-        run: bash ./update_itemization.sh
+        shell: bash
+        run: ./update_itemization.sh
       - name: Run selective tests
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
