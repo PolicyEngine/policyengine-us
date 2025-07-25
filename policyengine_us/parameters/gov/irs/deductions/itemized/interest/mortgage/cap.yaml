@@ -2,23 +2,18 @@ description: The IRS allows an itemized deduction for interest paid on mortgages
 SINGLE:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 JOINT:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 SEPARATE:
   2017-01-01: 500_000
   2018-01-01: 375_000
-  2026-01-01: 500_000
 HEAD_OF_HOUSEHOLD:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 SURVIVING_SPOUSE:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 metadata:
   breakdown: filing_status
   unit: currency-USD

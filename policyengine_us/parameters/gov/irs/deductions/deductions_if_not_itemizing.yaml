@@ -8,6 +8,14 @@ values:
     - charitable_deduction_for_non_itemizers
     - standard_deduction
     - qualified_business_income_deduction
+  2025-01-01:
+    - charitable_deduction_for_non_itemizers
+    - standard_deduction
+    - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
+    - additional_senior_deduction
+    - auto_loan_interest_deduction
 
 metadata:
   unit: list

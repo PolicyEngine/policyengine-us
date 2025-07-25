@@ -24,4 +24,11 @@ class qualified_business_income_deduction(Variable):
         netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
         p = parameters(period).gov.irs.deductions.qbi.max
         taxinc_cap = p.rate * max_(0, taxinc_less_qbid - netcg_qdiv)
-        return min_(uncapped_qbid, taxinc_cap)
+        pre_floor_qbid = min_(uncapped_qbid, taxinc_cap)
+        if p.floor.applies:
+            qualified_business_income = tax_unit(
+                "qualified_business_income", period
+            )
+            floor = p.floor.amount.calc(qualified_business_income)
+            return max_(pre_floor_qbid, floor)
+        return pre_floor_qbid
