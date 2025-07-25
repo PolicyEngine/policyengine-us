@@ -49,7 +49,7 @@ jobs:
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
           fetch: false
   Test:
-    runs-on: ubuntu-latest
+    runs-on: larger-runner
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
