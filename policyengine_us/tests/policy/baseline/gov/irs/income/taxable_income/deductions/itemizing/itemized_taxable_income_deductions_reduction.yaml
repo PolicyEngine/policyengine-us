@@ -25,3 +25,40 @@
     total_itemized_taxable_income_deductions: 1_000
   output: 
     itemized_taxable_income_deductions_reduction: 800
+
+
+- name: Amended structure in effect, no salt deduction
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    total_itemized_taxable_income_deductions: 10_000
+    salt_deduction: 0
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 700_000
+  output:
+    itemized_taxable_income_deductions_reduction: 540.54
+
+- name: Amended structure in effect, some salt deduction, no other deductions
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    interest_deduction: 0
+    salt_deduction: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 900_000
+  output:
+    itemized_taxable_income_deductions_reduction: 1_351.4
+
+- name: Amended structure in effect, some salt deduction, some other deductions
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    interest_deduction: 5_000
+    salt_deduction: 10_000
+    exemptions: 0
+    filing_status: JOINT
+    adjusted_gross_income: 900_000
+  output:
+    itemized_taxable_income_deductions_reduction: 1_621.7

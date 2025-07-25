@@ -24,3 +24,58 @@
     adjusted_net_capital_gain: 32_000
   output:
     qualified_business_income_deduction: 0
+
+- name: Reconciled QBID for a hoh filer with $20k in QBI, income over threshold
+  period: 2026
+  input:
+    taxable_income_less_qbid: 220_000
+    qualified_business_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    w2_wages_from_qualified_business: 1_000_000
+  output:
+    # QBID max = 200_000 * 0.22 = 44_000
+    # Phase-out = (220_000 - 200_000) * 0.75 = 15_000 
+    qbid_amount: 29_000
+
+- name: Reconciled QBID for a hoh filer with $20k in QBI, income under threshold
+  period: 2026
+  input:
+    taxable_income_less_qbid: 200_000
+    qualified_business_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    w2_wages_from_qualified_business: 1_000_000
+  output:
+    qbid_amount: 44_000
+
+- name: Deduction floor in effect, income above threshold
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    qbid_amount: 200
+    taxable_income_less_qbid: 600
+    adjusted_net_capital_gain: 0
+    qualified_business_income: 1_000
+  output:
+    qualified_business_income_deduction: 400
+
+- name: Deduction floor in effect, income below threshold
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    qbid_amount: 200
+    taxable_income_less_qbid: 0
+    adjusted_net_capital_gain: 0
+    qualified_business_income: 999
+  output:
+    qualified_business_income_deduction: 0
+
+- name: QBID above floor
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    qbid_amount: 2_000
+    taxable_income_less_qbid: 20_000
+    adjusted_net_capital_gain: 0
+    qualified_business_income: 1_000
+  output:
+    qualified_business_income_deduction: 2_000
