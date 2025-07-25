@@ -16,22 +16,19 @@ class charitable_deduction(Variable):
             tax_unit, period, ["charitable_non_cash_donations"]
         )
         positive_agi = tax_unit("positive_agi", period)
-        p = parameters(period).gov.irs.deductions.itemized.charity.ceiling
+        p = parameters(period).gov.irs.deductions.itemized.charity
         capped_non_cash_donations = min_(
-            non_cash_donations, p.non_cash * positive_agi
+            non_cash_donations, p.ceiling.non_cash * positive_agi
         )
 
-        total_cap = p.all * positive_agi
-        if p.floor_applies:
-            p_ref = parameters(
-                period
-            ).gov.contrib.reconciliation.charitable_donations
-            deduction_floor = p_ref.floor * positive_agi
+        total_cap = p.ceiling.all * positive_agi
+        if p.floor.applies:
+            deduction_floor = p.floor.amount * positive_agi
             reduced_non_cash_donations = max_(
                 non_cash_donations - deduction_floor, 0
             )
             capped_reduced_non_cash_donations = min_(
-                reduced_non_cash_donations, p.non_cash * positive_agi
+                reduced_non_cash_donations, capped_non_cash_donations
             )
 
             remaining_floor = max_(deduction_floor - non_cash_donations, 0)
