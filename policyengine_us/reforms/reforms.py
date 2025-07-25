@@ -53,9 +53,6 @@ from .harris.capital_gains import (
 from .tax_exempt.tax_exempt_reform import (
     create_tax_exempt_reform,
 )
-from .salt_phase_out.salt_phase_out_reform import (
-    create_salt_phase_out_reform,
-)
 from .state_dependent_exemptions import (
     create_repeal_state_dependent_exemptions_reform,
 )
@@ -176,7 +173,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
-    salt_phase_out = create_salt_phase_out_reform(parameters, period)
     repeal_state_dependent_exemptions = (
         create_repeal_state_dependent_exemptions_reform(parameters, period)
     )
@@ -267,7 +263,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_dependent_exemptions,
         harris_capital_gains,
         tip_income_tax_exempt,
-        salt_phase_out,
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
         second_earner_tax_reform,
