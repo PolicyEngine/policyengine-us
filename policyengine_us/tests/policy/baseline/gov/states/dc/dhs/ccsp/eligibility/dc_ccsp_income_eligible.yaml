@@ -8,7 +8,7 @@
     state_code: DC
   output:
     spm_unit_fpg: 1_703.33
-    hhs_smi: 9_903.48
+    hhs_smi: 9_047.513
     dc_ccsp_income_eligible: true
 
 - name: Case 2, household size of 2 with $61,330 annual income.
@@ -21,7 +21,7 @@
     state_code: DC
   output:
     spm_unit_fpg: 1_703.33
-    hhs_smi: 9_903.48
+    hhs_smi: 9_047.513
     dc_ccsp_income_eligible: false
 
 - name: Case 3, household size of 3 with $124,700 annual income.
@@ -34,7 +34,20 @@
     state_code: DC
   output:
     spm_unit_fpg: 2_151.67
-    hhs_smi: 12_233.71
+    hhs_smi: 11_176.34
+    dc_ccsp_income_eligible: false
+
+- name: Case 3, household size of 3 with $112,800 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 112_800
+    spm_unit_size: 3
+    dc_ccsp_enrolled: true
+    state_code: DC
+  output:
+    spm_unit_fpg: 2_151.67
+    hhs_smi: 11_176.34
     dc_ccsp_income_eligible: true
 
 - name: Case 4, household size of 3 with $124,800 annual income.
@@ -47,5 +60,5 @@
     state_code: DC
   output:
     spm_unit_fpg: 2_151.67
-    hhs_smi: 12_233.71
+    hhs_smi: 11_176.34
     dc_ccsp_income_eligible: false
