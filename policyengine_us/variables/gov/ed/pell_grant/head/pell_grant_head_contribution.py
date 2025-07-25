@@ -39,6 +39,4 @@ class pell_grant_head_contribution(Variable):
         mask = dependents > 0
         amount_per_dependent[mask] = total[mask] / dependents[mask]
 
-        return select(
-            [~uses_sai, uses_sai], [amount_per_dependent, total], default=0
-        )
+        return where(uses_sai, total, amount_per_dependent)
