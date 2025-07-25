@@ -1,0 +1,151 @@
+- name: S.51 - Veteran tax credit full amount below $25k AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: S.51 - Veteran tax credit at $25.1k AGI (first $100 increment)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 25_100
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 245  # $250 - $5 for first $100 increment
+
+- name: S.51 - Veteran tax credit at $26k AGI (10 increments)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 26_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 200  # $250 - (10 * $5) = $200
+
+- name: S.51 - Veteran tax credit at $27.5k AGI (25 increments)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 27_500
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 125  # $250 - (25 * $5) = $125
+
+- name: S.51 - Veteran tax credit at $29k AGI (40 increments)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 29_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 50  # $250 - (40 * $5) = $50
+
+- name: S.51 - Veteran tax credit no amount above $30k AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: S.51 - No veteran tax credit for non-veterans
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: S.51 - No veteran tax credit before 2025
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_veteran_tax_credit: 0

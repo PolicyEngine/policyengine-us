@@ -127,3 +127,56 @@
     state_code: VT
   output:
     vt_retirement_income_exemption: 2_500  # Partial qualified 10,000*0.25
+
+# S.51 (2025) tests for raised Social Security thresholds
+- name: S.51 - Social Security exemption fully qualified single at $54k AGI (2025)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 54_000
+    tax_unit_taxable_social_security: 1_000
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_retirement_income_exemption_eligible: True
+    state_code: VT
+  output:
+    vt_retirement_income_exemption: 1_000  # Fully qualified (below $55k threshold)
+
+- name: S.51 - Social Security exemption partially qualified single at $60k AGI (2025)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    tax_unit_taxable_social_security: 1_000
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_retirement_income_exemption_eligible: True
+    state_code: VT
+  output:
+    vt_retirement_income_exemption: 500  # Partial qualified (halfway between $55k and $65k)
+
+- name: S.51 - Social Security exemption fully qualified joint at $69k AGI (2025)
+  period: 2025
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 69_000
+    tax_unit_taxable_social_security: 1_000
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_retirement_income_exemption_eligible: True
+    state_code: VT
+  output:
+    vt_retirement_income_exemption: 1_000  # Fully qualified (below $70k threshold)
+
+- name: S.51 - Social Security exemption partially qualified joint at $75k AGI (2025)
+  period: 2025
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 75_000
+    tax_unit_taxable_social_security: 1_000
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_retirement_income_exemption_eligible: True
+    state_code: VT
+  output:
+    vt_retirement_income_exemption: 500  # Partial qualified (halfway between $70k and $80k)
