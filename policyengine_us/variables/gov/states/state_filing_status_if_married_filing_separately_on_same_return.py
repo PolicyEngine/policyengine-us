@@ -39,4 +39,5 @@ class state_filing_status_if_married_filing_separately_on_same_return(
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SURVIVING_SPOUSE,
             ],
+            default=StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
         )
