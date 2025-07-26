@@ -14,6 +14,6 @@ class pr_low_income_credit_eligible(Variable):
         eligible_people = tax_unit(
             "pr_low_income_credit_eligible_people", period
         )
-        income = tax_unit("pr_gross_income", period)
+        income = tax_unit("pr_gross_income_person", period)
         income_limit = p.income_limit.calc(eligible_people)
         return income <= income_limit
