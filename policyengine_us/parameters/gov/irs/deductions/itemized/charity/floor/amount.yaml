@@ -1,9 +1,8 @@
-description: The charitable donation floor applies if this is true.
+description: The charitable donation floor amount.
 metadata:
   unit: bool
   period: year
-  label: Charitable donation floor applies
+  label: Charitable donation floor amount
 
 values:
-  2013-01-01: false
-  2026-01-01: true
+  2026-01-01: 0.005

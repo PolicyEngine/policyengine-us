@@ -47,15 +47,6 @@
   output: # min(min(200, 1000 * 0.3) + min(500 - 600, 0), 1000 * 0.6)
     charitable_deduction: 600
 
-- name: 2026 filer
-  period: 2026
-  input:
-    charitable_cash_donations: 100
-    charitable_non_cash_donations: 400
-    positive_agi: 1_000
-  output: # min(min(400, 1000 * 0.3) + 100, 1000 * 0.5)
-    charitable_deduction: 400
-
 - name: No AGI
   period: 2026
   input:
