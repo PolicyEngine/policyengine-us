@@ -38,7 +38,7 @@ class lifeline(Variable):
             + is_rural_tribal * p.fcc.lifeline.amount.rural_tribal_supplement
         )
         max_amount = max_monthly_amount * MONTHS_IN_YEAR
-        phone_broadband_cost = add(
-            spm_unit, period, ["phone_cost", "broadband_cost"]
+        phone_broadband_expense = add(
+            spm_unit, period, ["phone_expense", "broadband_expense"]
         )
-        return min_(phone_broadband_cost, max_amount)
+        return min_(phone_broadband_expense, max_amount)
