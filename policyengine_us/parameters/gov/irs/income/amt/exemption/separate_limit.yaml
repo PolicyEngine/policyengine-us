@@ -3,6 +3,9 @@ metadata:
   unit: currency-USD
   uprating: gov.irs.uprating
   reference:
+    # OBBB alters separate limit via changes to the exemption amount and phase out start.
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=11
     - title: 2024 IRS data release
@@ -29,4 +32,14 @@ values:
   2023-01-01: 831_150
   2024-01-01: 875_950
   2025-01-01: 900_350
-  2026-01-01: 288_949
+  # Internal forecast, will update when CBO forecast is released.
+  2026-01-01: 639_200
+  2027-01-01: 662_750
+  2028-01-01: 676_350
+  2029-01-01: 689_950
+  2030-01-01: 703_750
+  2031-01-01: 717_650
+  2032-01-01: 731_700
+  2033-01-01: 746_100
+  2034-01-01: 760_950
+  2035-01-01: 776_150
