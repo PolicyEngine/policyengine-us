@@ -13,7 +13,7 @@ class auto_loan_interest_deduction(Variable):
         auto_loan_interest = add(tax_unit, period, ["auto_loan_interest"])
         p = parameters(
             period
-        ).gov.contrib.reconciliation.auto_loan_interest_ald
+        ).gov.irs.deductions.auto_loan_interest
         capped_interest = min_(auto_loan_interest, p.cap)
         # Get filing status.
         filing_status = tax_unit("filing_status", period)
