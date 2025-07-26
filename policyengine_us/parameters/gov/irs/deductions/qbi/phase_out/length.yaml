@@ -1,26 +1,28 @@
 description: Dollar gap between upper and lower threshold of pre-QBID taxable income
 metadata:
   unit: currency-USD
+  period: year
+  label: QBID phase-out length
   reference:
     - title: 26 U.S. Code § 199A(b)(3)(B) - Qualified business income
       href: https://www.law.cornell.edu/uscode/text/26/199A#b_3_B
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 1.0
-  2018-01-01: 50_000.0
-  2026-01-01: 1.0
+  2018-01-01: 50_000
+  2026-01-01: 75_000
 JOINT:
   2013-01-01: 1.0
-  2018-01-01: 100_000.0
-  2026-01-01: 1.0
+  2018-01-01: 100_000
+  2026-01-01: 150_000
 SEPARATE:
   2013-01-01: 1.0
-  2018-01-01: 50_000.0
-  2026-01-01: 1.0
+  2018-01-01: 50_000
+  2026-01-01: 75_000
 SINGLE:
   2013-01-01: 1.0
-  2018-01-01: 50_000.0
-  2026-01-01: 1.0
+  2018-01-01: 50_000
+  2026-01-01: 75_000
 SURVIVING_SPOUSE:
   2013-01-01: 1.0
-  2018-01-01: 100_000.0
-  2026-01-01: 1.0
+  2018-01-01: 100_000
+  2026-01-01: 150_000

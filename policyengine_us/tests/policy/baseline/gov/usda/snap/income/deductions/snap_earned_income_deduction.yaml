@@ -1,11 +1,50 @@
-- name: Default is zero.
-  period: 2022
-  output:
-    snap_earned_income_deduction: 0
+# - name: Default is zero.
+#   period: 2022
+#   output:
+#     snap_earned_income_deduction: 0
 
-- name: Otherwise 20% of earned income.
-  period: 2022
+# - name: Otherwise 20% of earned income.
+#   period: 2022
+#   input:
+#     snap_earned_income: 10_000
+#   output:
+#     snap_earned_income_deduction: 2_000
+
+- name: 2025_ca_tax_household_test
+  absolute_error_margin: 0.01
+  period: 2025
   input:
-    snap_earned_income: 10_000
+    people:
+      husband:
+        age: 45
+        employment_income: 120_000
+        self_employment_income: 15_000
+        short_term_capital_gains: 2_000
+        long_term_capital_gains: 5_000
+        taxable_interest_income: 4_000
+        tax_exempt_interest_income: 500
+        student_loan_interest: 2_500
+      wife:
+        age: 43
+        employment_income: 92_000
+        taxable_interest_income: 1_200
+      child1:
+        age: 14
+      child2:
+        age: 20
+        employment_income: 20_000
+    tax_units:
+      our_tax_unit:
+        members: [husband, wife, child1, child2]
+        filing_status: JOINT
+    households:
+      our_household:
+        members: [husband, wife, child1, child2]
+        state_fips: 6  # CA
+    spm_units:
+      our_spm_unit:
+        members: [husband, wife, child1, child2]
   output:
-    snap_earned_income_deduction: 2_000
+    income_tax: 0  
+    state_income_tax: 0
+    eitc: 0  

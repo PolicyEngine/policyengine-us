@@ -1,6 +1,7 @@
 - name: Deduction floor applies
   period: 2026
   input:
+    gov.irs.deductions.itemized.misc.applies: true
     unreimbursed_business_employee_expenses: 600
     tax_preparation_fees: 400
     adjusted_gross_income: 2_000
@@ -10,6 +11,7 @@
 - name: Deduction floor does not apply
   period: 2026
   input:
+    gov.irs.deductions.itemized.misc.applies: true
     unreimbursed_business_employee_expenses: 1_800
     tax_preparation_fees: 200
     adjusted_gross_income: 0
