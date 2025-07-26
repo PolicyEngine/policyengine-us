@@ -40,9 +40,9 @@
         filing_status: SEPARATE
         adjusted_gross_income: 120_000
   output:
-    salt_deduction: 3_000
+    salt_deduction: 5_000
 
-- name: Fully phased out
+- name: Fully phased out, floor applies
   period: 2024
   input:
     people: 
@@ -54,23 +54,7 @@
         filing_status: SEPARATE
         adjusted_gross_income: 500_000
   output:
-    salt_deduction: 0
-
-- name: Joint filers with income above reduction amount
-  period: 2024
-  input:
-    people: 
-      person1:
-        real_estate_taxes: 10_000
-      person2: 
-        real_estate_taxes: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-        adjusted_gross_income: 120_000
-  output:
-    salt_deduction: 8_000
+    salt_deduction: 5_000
 
 - name: Floor applies
   period: 2026
@@ -84,7 +68,7 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        adjusted_gross_income: 120_000
+        adjusted_gross_income: 1_000_000
   output:
     salt_cap: 10_000
     salt_deduction: 10_000
