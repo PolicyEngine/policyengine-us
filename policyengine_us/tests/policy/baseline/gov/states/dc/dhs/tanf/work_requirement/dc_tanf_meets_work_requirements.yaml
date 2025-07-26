@@ -1,0 +1,53 @@
+- name: Case 1, two-parent household, combined hours higher than 35. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 5
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: true
+
+- name: Case 2, single parent household with an infant.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 61
+      person3: 
+        age: 0.5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_meets_work_requirements: true

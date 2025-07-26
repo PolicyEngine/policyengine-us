@@ -1,0 +1,94 @@
+- name: Case 1, family of 4.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+      person2:
+        age: 59
+        is_tax_unit_spouse: true
+      person3: 
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        dc_tanf_basic_eligibility_requirements: true
+        dc_power_has_disqualifying_benefits: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DC
+  output:
+    dc_power_head_or_spouse_eligible: [true, false, false, false]
+    dc_power_eligible: true
+
+- name: Case 2, does not meet TANF basic eligibility requirements.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        weekly_hours_worked: 0
+      person2:
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        weekly_hours_worked: 0
+      person3: 
+        age: 5
+        is_tax_unit_dependent: true
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        dc_tanf_basic_eligibility_requirements: false
+        dc_power_has_disqualifying_benefits: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_power_eligible: false
+
+- name: Case 3, receives ssi, not eligible.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        ssi: 10
+        weekly_hours_worked: 0
+      person2:
+        is_incapable_of_self_care: true
+        weekly_hours_worked: 0
+      person3: 
+        age: 5
+        is_tax_unit_dependent: true
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_power_eligible: false
