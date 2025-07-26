@@ -13,9 +13,7 @@ class additional_senior_deduction(Variable):
     reference = "https://punchbowl.news/smitmo_017_xml/"  # page 35
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.contrib.reconciliation.additional_senior_standard_deduction
+        p = parameters(period).gov.irs.deductions.senior_deduction
         aged_head = tax_unit("aged_head", period).astype(int)
         aged_spouse = tax_unit("aged_spouse", period).astype(int)
         aged_count = aged_spouse + aged_head

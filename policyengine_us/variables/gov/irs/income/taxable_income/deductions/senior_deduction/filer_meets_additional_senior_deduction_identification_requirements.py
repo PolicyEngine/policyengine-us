@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class filer_meets_additional_senior_standard_deduction_identification_requirements(
+class filer_meets_additional_senior_deduction_identification_requirements(
     Variable
 ):
     value_type = bool

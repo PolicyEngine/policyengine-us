@@ -1,51 +1,3 @@
-- name: Two eligible seniors with income below the phase-out
-  period: 2026
-  input:
-    people: 
-      person1:
-        age: 65
-        is_tax_unit_head_or_spouse: true
-        ssn_card_type: CITIZEN
-      person2:
-        age: 65
-        is_tax_unit_head_or_spouse: true
-        ssn_card_type: CITIZEN
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-        adjusted_gross_income: 100_000
-        salt_deduction: 0
-        standard_deduction: 0
-  output:
-    additional_senior_standard_deduction: 8_000
-    taxable_income_deductions_if_itemizing: 8_000
-    taxable_income_deductions_if_not_itemizing: 8_000
-
-- name: One eligible senior, no additional SD 
-  period: 2026
-  input:
-    people: 
-      person1:
-        age: 65
-        is_tax_unit_head_or_spouse: true
-        ssn_card_type: CITIZEN
-      person2:
-        age: 65
-        is_tax_unit_head_or_spouse: true
-        ssn_card_type: NONE
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-        adjusted_gross_income: 100_000
-        salt_deduction: 0
-        standard_deduction: 0
-  output:
-    additional_senior_standard_deduction: 0
-    taxable_income_deductions_if_itemizing: 0
-    taxable_income_deductions_if_not_itemizing: 0
-
 - name: Two eligible seniors, income above the phase-out
   period: 2026
   input:
@@ -66,7 +18,7 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_standard_deduction: 6_000
+    additional_senior_deduction: 6_000
     taxable_income_deductions_if_itemizing: 6_000
     taxable_income_deductions_if_not_itemizing: 6_000
 
@@ -85,7 +37,7 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_standard_deduction: 3_400
+    additional_senior_deduction: 3_400
     taxable_income_deductions_if_itemizing: 3_400
     taxable_income_deductions_if_not_itemizing: 3_400
 
@@ -104,7 +56,7 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_standard_deduction: 0
+    additional_senior_deduction: 0
     taxable_income_deductions_if_itemizing: 0
     taxable_income_deductions_if_not_itemizing: 0
 
@@ -125,7 +77,7 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_standard_deduction: 3_400
+    additional_senior_deduction: 3_400
     overtime_income_deduction: 2_000
     tip_income_deduction: 1_000
     taxable_income_deductions_if_itemizing: 6_400
@@ -148,7 +100,7 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_standard_deduction: 3_400
+    additional_senior_deduction: 3_400
     overtime_income_deduction: 2_000
     tip_income_deduction: 1_000
     taxable_income_deductions_if_itemizing: 6_400

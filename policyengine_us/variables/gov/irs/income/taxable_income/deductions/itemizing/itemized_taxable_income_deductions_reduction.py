@@ -21,7 +21,7 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 "total_itemized_taxable_income_deductions", period
             )
             maximum_deductions_reduction = maximum_deductions * p.rate.base
-            if p.in_effect:
+            if p.amended_structure.applies:
                 top_rate_threshold = parameters(
                     period
                 ).gov.irs.income.bracket.thresholds["6"][filing_status]
@@ -36,6 +36,6 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
-                return p.rate * lesser_of_deductions_or_excess
+                return p.amended_structure.rate * lesser_of_deductions_or_excess
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0
