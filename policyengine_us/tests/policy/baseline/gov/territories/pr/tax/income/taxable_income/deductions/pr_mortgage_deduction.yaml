@@ -1,0 +1,87 @@
+- name: Taxpayer over 65 years old over maximum deduction amount
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 20_000
+      person2:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 10_000
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_mortgage_deduction: 35_000
+
+- name: Spouse over 65 years old under maximum deduction amount
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 30_000
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 10_000
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_mortgage_deduction: 34_000
+
+- name: Taxpayer under 65 years old limited by AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 20_000
+      person2:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 10_000
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_mortgage_deduction: 3_000
+
+- name: Base test
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 3_000
+      person2:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        deductible_mortgage_interest: 3_001
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 20_000
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_mortgage_deduction: 6_000
