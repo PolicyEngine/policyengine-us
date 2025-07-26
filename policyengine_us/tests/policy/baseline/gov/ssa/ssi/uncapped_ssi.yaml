@@ -2,8 +2,7 @@
   period: 2022
   input:
     ssi_amount_if_eligible: 100
-    meets_ssi_resource_test: true
-    is_ssi_eligible_individual: true
+    is_ssi_eligible: true
     ssi_countable_income: 0
   output:
     uncapped_ssi: 100
@@ -12,8 +11,7 @@
   period: 2022
   input:
     ssi_amount_if_eligible: 100
-    meets_ssi_resource_test: true
-    is_ssi_eligible_individual: true
+    is_ssi_eligible: true
     ssi_countable_income: 99
   output:
     uncapped_ssi: 1
@@ -22,28 +20,16 @@
   period: 2022
   input:
     ssi_amount_if_eligible: 100
-    meets_ssi_resource_test: true
-    is_ssi_eligible_individual: true
+    is_ssi_eligible: true
     ssi_countable_income: 101
   output:
     uncapped_ssi: -1
-
-- name: Fails resource test
-  period: 2022
-  input:
-    ssi_amount_if_eligible: 100
-    meets_ssi_resource_test: false
-    is_ssi_eligible_individual: true
-    ssi_countable_income: 0
-  output:
-    uncapped_ssi: 0
 
 - name: Not eligible
   period: 2022
   input:
     ssi_amount_if_eligible: 100
-    meets_ssi_resource_test: true
-    is_ssi_eligible_individual: false
+    is_ssi_eligible: false
     ssi_countable_income: 0
   output:
     uncapped_ssi: 0
