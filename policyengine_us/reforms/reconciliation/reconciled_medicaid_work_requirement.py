@@ -11,7 +11,7 @@ def create_reconciled_medicaid_work_requirement() -> Reform:
         label = "Eligible person for Medicaid via work requirement"
         definition_period = YEAR
         reference = (
-            "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678",
+            "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf#page=678",
             "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364",
         )
 
