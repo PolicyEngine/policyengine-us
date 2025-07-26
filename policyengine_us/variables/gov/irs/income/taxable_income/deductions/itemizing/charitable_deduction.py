@@ -28,7 +28,7 @@ class charitable_deduction(Variable):
                 non_cash_donations - deduction_floor, 0
             )
             capped_reduced_non_cash_donations = min_(
-                reduced_non_cash_donations, capped_non_cash_donations
+                reduced_non_cash_donations, p.ceiling.non_cash * positive_agi
             )
 
             remaining_floor = max_(deduction_floor - non_cash_donations, 0)
