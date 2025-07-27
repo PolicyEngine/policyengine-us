@@ -1,11 +1,11 @@
-description: The IRS requires a Social Security Number for qualifying children for the Child Tax Credit if this is true.
+description: The IRS requires a Social Security Number for at least one of the adults in the household to qualify for the Child Tax Credit, if this is true.
 values:
   2018-01-01: false
   2025-01-01: true
 metadata:
   unit: bool
   period: year
-  label: Child Tax Credit child identification requirement applies
+  label: Child Tax Credit adult identification requirement applies
   reference:
-    - title: 26 U.S. Code § 24(h)(7)
-      href: https://www.law.cornell.edu/uscode/text/26/24#h_7
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=7

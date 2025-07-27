@@ -36,6 +36,8 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
-                return p.amended_structure.rate * lesser_of_deductions_or_excess
+                return (
+                    p.amended_structure.rate * lesser_of_deductions_or_excess
+                )
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0
