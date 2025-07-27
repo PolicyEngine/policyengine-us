@@ -1,4 +1,4 @@
-description: The Committee on Ways and Means proposed an auto loan above the line deduction, which is capped at the following amount.
+description: The IRS caps the auto loan interest deduction at the following amount.
 
 values:
   2026-01-01: 10_000
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: year
-  label: Reconciled auto loan above the line deduction cap
+  label: Auto loan interest deduction cap
   reference:
-    - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
-      href: https://punchbowl.news/smitmo_017_xml/ #page 38
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=46

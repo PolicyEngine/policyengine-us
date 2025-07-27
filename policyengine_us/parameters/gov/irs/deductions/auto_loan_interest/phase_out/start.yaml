@@ -1,13 +1,13 @@
-description: The Committee on Ways and Means proposed an auto loan above the line deduction, which is reduced for filers with adjusted gross income above this threshold, based on filing status.
+description: The IRS reduces the auto loan interest deduction for filers with adjusted gross income above this threshold, based on filing status.
 metadata:
   unit: currency-USD
   period: year
-  label: Reconciled auto loan above the line deduction reduction start
+  label: Auto loan interest deduction reduction start
   breakdown:
     - filing_status
   reference:
-    - title: COMMITTEE ON WAYS AND MEANS, THE ONE, BIG, BEAUTIFUL BILL
-      href: https://punchbowl.news/smitmo_017_xml/ #page 38
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=47
 
 SINGLE:
   2026-01-01: 100_000
