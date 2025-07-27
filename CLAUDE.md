@@ -41,6 +41,7 @@ make documentation
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
+- **GitHub CLI Dollar Sign Issue**: When creating PRs/issues with `gh` command, escape dollar signs with backslashes (e.g., `\$2,400`) or use single quotes for the entire string. Otherwise, shell interprets `$2` as an empty variable, turning `$2,400` into `,400`.
 
 ## Code Style Guidelines
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
