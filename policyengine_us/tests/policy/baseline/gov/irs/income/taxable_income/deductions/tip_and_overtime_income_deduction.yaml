@@ -1,37 +1,3 @@
-- name: Tip income is exempt but overtime income is not
-  period: 2026
-  input:
-    tip_income: 200
-    fsla_overtime_premium: 300
-    standard_deduction: 0
-    qualified_business_income_deduction: 0
-    charitable_deduction: 0
-    interest_deduction: 0
-    salt_deduction: 0
-    medical_expense_deduction: 0
-    casualty_loss_deduction: 0
-    misc_deduction: 0
-  output:
-    taxable_income_deductions_if_itemizing: 200
-    taxable_income_deductions_if_not_itemizing: 200
-
-- name: Tip income is not exempt but overtime income is
-  period: 2026
-  input:
-    tip_income: 200
-    fsla_overtime_premium: 300
-    standard_deduction: 0
-    qualified_business_income_deduction: 0
-    charitable_deduction: 0
-    interest_deduction: 0
-    salt_deduction: 0
-    medical_expense_deduction: 0
-    casualty_loss_deduction: 0
-    misc_deduction: 0
-  output:
-    taxable_income_deductions_if_itemizing: 300
-    taxable_income_deductions_if_not_itemizing: 300
-
 - name: Tip and overtime income are exempt
   period: 2026
   input:
@@ -49,7 +15,7 @@
     taxable_income_deductions_if_itemizing: 500
     taxable_income_deductions_if_not_itemizing: 500
 
-- name: Test for SSN card type - head eligible 
+- name: Test for SSN card type - head eligible - no deduction allowed
   period: 2026
   input:
     people: 
@@ -73,10 +39,12 @@
         casualty_loss_deduction: 0
         misc_deduction: 0
   output:
-    taxable_income_deductions_if_itemizing: 500
-    taxable_income_deductions_if_not_itemizing: 500
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
 
-- name: Test for SSN card type - spouse eligible 
+- name: Test for SSN card type - spouse eligible - no deduction allowed
   period: 2026
   input:
     people: 
@@ -100,8 +68,39 @@
         casualty_loss_deduction: 0
         misc_deduction: 0
   output:
-    taxable_income_deductions_if_itemizing: 1_500
-    taxable_income_deductions_if_not_itemizing: 1_500
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Test for SSN card type - both eligible
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: CITIZEN
+        tip_income: 200
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 600
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    tip_income_deduction: 800
+    overtime_income_deduction: 1_200
+    taxable_income_deductions_if_itemizing: 2_000
+    taxable_income_deductions_if_not_itemizing: 2_000
 
 - name: Phase out structure applies, joint filing status, agi below phase out start
   period: 2026
