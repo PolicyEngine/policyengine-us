@@ -1,8 +1,11 @@
-description: The charitable donation floor applies if this is true.
+description: The IRS floors the charitable deduction, if this is true.
 metadata:
   unit: bool
   period: year
   label: Charitable donation floor applies
+  reference:
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=238
 
 values:
   2013-01-01: false

@@ -1,4 +1,4 @@
-description: The itemized deductions amended reduction structure applies if this is true.
+description: The IRS reduces the itemized deductions at an amended structure, if this is true.
 
 values:
   2009-01-01: false
@@ -8,3 +8,6 @@ metadata:
   unit: bool
   period: year
   label: Itemized deductions amended reduction structure applies
+  reference:
+    - title: Senate Finance Committee Legislative Text Title VII
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=18
