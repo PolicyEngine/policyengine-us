@@ -1,0 +1,39 @@
+- name: Ineligible cardholder present
+  period: 2025
+  input:
+    tip_income_deduction_ineligible_cardholder_present: true
+    tip_income: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 0
+
+- name: AGI below phase out start
+  period: 2025
+  input:
+    tip_income_deduction_ineligible_cardholder_present: false
+    tip_income: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 10_000
+
+- name: Fully phased out
+  period: 2025
+  input:
+    tip_income_deduction_ineligible_cardholder_present: false
+    tip_income: 10_000
+    adjusted_gross_income: 1_000_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 0
+
+- name: Partially phased out
+  period: 2025
+  input:
+    tip_income_deduction_ineligible_cardholder_present: false
+    tip_income: 10_000
+    adjusted_gross_income: 190_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 10_000
