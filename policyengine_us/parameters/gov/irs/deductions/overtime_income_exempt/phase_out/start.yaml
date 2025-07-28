@@ -1,11 +1,11 @@
-description: The Senate Finance Committee proposed to exempt overtime income, which is phased-out if this is true.
+description: The IRS phases out the overtime income exemption for income above this threshold, based on filing status.
 
 metadata:
   unit: currency-USD
   period: year
   breakdown:
     - filing_status
-  label: Senate Finance Overtime Income Exemption phase out start
+  label: Overtime income exemption phase out start
   reference:
     - title: Senate Finance Committee Legislative Text Title VII
       href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=40
@@ -21,4 +21,3 @@ SINGLE:
   2025-01-01: 150_000
 SEPARATE:
   2025-01-01: 150_000
-
