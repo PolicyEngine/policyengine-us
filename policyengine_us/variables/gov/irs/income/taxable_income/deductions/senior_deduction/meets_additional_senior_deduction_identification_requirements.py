@@ -6,7 +6,7 @@ class additional_senior_deduction_eligible_person(Variable):
     entity = Person
     definition_period = YEAR
     label = "Person is eligible for the additional senior deduction"
-    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=3"
+    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(person, period, parameters):
         ssn_card_type = person("ssn_card_type", period)

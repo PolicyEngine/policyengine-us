@@ -6,7 +6,7 @@ class meets_ctc_identification_requirements(Variable):
     entity = Person
     definition_period = YEAR
     label = "Person meets CTC identification requirements"
-    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=7"
+    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(person, period, parameters):
         ssn_card_type = person("ssn_card_type", period)

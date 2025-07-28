@@ -7,7 +7,7 @@ class auto_loan_interest_deduction(Variable):
     label = "Auto loan interest deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=45"
+    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(tax_unit, period, parameters):
         auto_loan_interest = add(tax_unit, period, ["auto_loan_interest"])
