@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class people(Variable):
+class person_count(Variable):
     value_type = float
     entity = Person
     label = "People represented"
