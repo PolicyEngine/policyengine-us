@@ -7,6 +7,9 @@ description: New Hampshire taxes interest and dividends at this rate.
 # and 1981 mention rate changes but specific historical rates are not
 # documented in current statutes. Following TAXSIM's implementation for
 # pre-2017 values in the absence of other sources.
+#
+# Historical rate sourced from TAXSIM 35 (http://taxsim.nber.org/taxsim35/):
+# - 1977-2022: 5% rate (TAXSIM source code line 21262)
 values:
   1977-01-01: 0.05
   2023-01-01: 0.04

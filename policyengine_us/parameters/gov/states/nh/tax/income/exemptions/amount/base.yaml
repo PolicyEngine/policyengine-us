@@ -39,6 +39,11 @@ metadata:
 # base and $1,200 additional (as of 2022) but historical amounts are not
 # documented in current statutes. Following TAXSIM's implementation for
 # pre-2017 values in the absence of other sources.
+#
+# Historical values sourced from TAXSIM 35 (http://taxsim.nber.org/taxsim35/):
+# - 1977-1980: $600 single, $1,200 joint (TAXSIM source code lines 21267-21269)
+# - 1981-1994: $1,200 single, $2,400 joint (TAXSIM source code lines 21265-21266)
+# - 1995+: $2,400 single, $4,800 joint (TAXSIM source code lines 21263-21264)
 SINGLE: 
   1977-01-01: 600
   1981-01-01: 1_200

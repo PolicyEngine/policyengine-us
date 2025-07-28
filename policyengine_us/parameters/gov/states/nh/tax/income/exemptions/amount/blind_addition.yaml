@@ -28,6 +28,12 @@ metadata:
       href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2018-print.pdf#page=3
     - title: 2017 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
       href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2017-print.pdf#page=3
+# NOTE: Historical exemption amounts based on TAXSIM implementation
+# due to limited primary sources (see base.yaml for details)
+#
+# Historical values sourced from TAXSIM 35 (http://taxsim.nber.org/taxsim35/):
+# - 1977-1980: $600 additional exemption (TAXSIM source code lines 21267-21269)
+# - 1981+: $1,200 additional exemption (TAXSIM source code lines 21265-21266)
 values:
   1977-01-01: 600
   1981-01-01: 1_200
