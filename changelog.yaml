@@ -10503,3 +10503,38 @@
     added:
     - SNAP self-employment simplified deductions.
   date: 2025-07-23 13:54:32
+- bump: patch
+  changes:
+    fixed:
+    - Move healthcare simulation parameter to the correct simulation folder.
+  date: 2025-07-24 18:37:29
+- bump: minor
+  changes:
+    added:
+    - Update FY2025 HHS SMI parameter.
+  date: 2025-07-24 22:52:03
+- bump: patch
+  changes:
+    added:
+    - Added Documentation page for Medicaid and ACA.
+  date: 2025-07-25 02:23:14
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization turned off for tests.
+  date: 2025-07-25 16:57:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix broken unit tests.
+  date: 2025-07-27 20:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Remove spm_unit_income_decile test with zero weight.
+  date: 2025-07-27 23:15:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove the second earner tax reform.
+  date: 2025-07-28 12:28:49

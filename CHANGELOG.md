@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.351.5] - 2025-07-28 12:28:49
+
+### Fixed
+
+- Remove the second earner tax reform.
+
+## [1.351.4] - 2025-07-27 23:15:44
+
+### Fixed
+
+- Remove spm_unit_income_decile test with zero weight.
+
+## [1.351.3] - 2025-07-27 20:47:27
+
+### Fixed
+
+- Fix broken unit tests.
+
+## [1.351.2] - 2025-07-25 16:57:30
+
+### Fixed
+
+- Default itemization turned off for tests.
+
+## [1.351.1] - 2025-07-25 02:23:14
+
+### Added
+
+- Added Documentation page for Medicaid and ACA.
+
+## [1.351.0] - 2025-07-24 22:52:03
+
+### Added
+
+- Update FY2025 HHS SMI parameter.
+
+## [1.350.1] - 2025-07-24 18:37:29
+
+### Fixed
+
+- Move healthcare simulation parameter to the correct simulation folder.
+
 ## [1.350.0] - 2025-07-23 13:54:32
 
 ### Added
@@ -12364,6 +12406,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.351.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.4...1.351.5
+[1.351.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.3...1.351.4
+[1.351.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.2...1.351.3
+[1.351.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.1...1.351.2
+[1.351.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.0...1.351.1
+[1.351.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.350.1...1.351.0
+[1.350.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.350.0...1.350.1
 [1.350.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.3...1.350.0
 [1.349.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.2...1.349.3
 [1.349.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.349.1...1.349.2
