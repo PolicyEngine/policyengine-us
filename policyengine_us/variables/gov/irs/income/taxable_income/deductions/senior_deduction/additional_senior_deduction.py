@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class additional_senior_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Additional senior deduction"
+    label = "Senior deduction"
     unit = USD
     definition_period = YEAR
     defined_for = (
         "filer_meets_additional_senior_deduction_identification_requirements"
     )
-    reference = "https://punchbowl.news/smitmo_017_xml/"  # page 35
+    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=3"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.senior_deduction
@@ -22,6 +22,6 @@ class additional_senior_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         phase_out_amount = where(
-            joint, p.rate.joint.calc(agi), p.rate.other.calc(agi)
+            joint, p.phase_out_rate.joint.calc(agi), p.phase_out_rate.other.calc(agi)
         )
         return max_(base_deduction - phase_out_amount, 0)
