@@ -6,13 +6,12 @@ class meets_ctc_identification_requirements(Variable):
     entity = Person
     definition_period = YEAR
     label = "Person meets CTC identification requirements"
-    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
+    reference = (
+        "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
+    )
 
     def formula(person, period, parameters):
         ssn_card_type = person("ssn_card_type", period)
-        ssn_card_types = ssn_card_type.possible_values
-        citizen = ssn_card_type == ssn_card_types.CITIZEN
-        non_citizen_valid_ead = (
-            ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
-        )
-        return citizen | non_citizen_valid_ead
+        ssn_card_str = ssn_card_type.decode_to_str()
+        p = parameters(period).gov.irs.credits.ctc
+        return np.isin(ssn_card_str, p.eligible_ssn_card_type)

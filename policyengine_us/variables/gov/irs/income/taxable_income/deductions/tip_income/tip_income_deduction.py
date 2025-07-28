@@ -13,7 +13,7 @@ class tip_income_deduction(Variable):
         tip_income = person("tip_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.irs.deductions.tip_income_exempt
+        p = parameters(period).gov.irs.deductions.tip_income
         start = p.phase_out.start[filing_status]
         agi_excess = max_(agi - start, 0)
         phase_out_amount = agi_excess * p.phase_out.rate

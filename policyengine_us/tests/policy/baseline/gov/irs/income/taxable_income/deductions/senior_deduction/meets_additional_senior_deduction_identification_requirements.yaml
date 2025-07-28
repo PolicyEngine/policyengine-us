@@ -1,4 +1,4 @@
-- name: Two eligible seniors, income above the phase-out
+- name: Two eligible seniors
   period: 2025
   input:
     people: 
@@ -13,16 +13,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: JOINT
-        adjusted_gross_income: 200_000
-        salt_deduction: 0
-        standard_deduction: 0
   output:
-    additional_senior_deduction: 9_000
-    taxable_income_deductions_if_itemizing: 9_000
-    taxable_income_deductions_if_not_itemizing: 9_000
+    additional_senior_deduction_eligible_person: [true, true]
 
-- name: Single senior, income above the phase-out, 2025
+- name: One non-senior
   period: 2025
   input:
     people: 
@@ -30,37 +24,17 @@
         age: 65
         is_tax_unit_head_or_spouse: true
         ssn_card_type: CITIZEN
-    tax_units:
-      tax_unit:
-        members: [person1]
-        adjusted_gross_income: 90_000
-        salt_deduction: 0
-        standard_deduction: 0
-  output:
-    additional_senior_deduction: 5_100
-    taxable_income_deductions_if_itemizing: 5_100
-    taxable_income_deductions_if_not_itemizing: 5_100
-
-- name: Single non-senior, income above the phase-out
-  period: 2025
-  input:
-    people: 
-      person1:
+      person2:
         age: 64
         is_tax_unit_head_or_spouse: true
-        ssn_card_type: CITIZEN
+        ssn_card_type: NON_CITIZEN_VALID_EAD
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 90_000
-        salt_deduction: 0
-        standard_deduction: 0
+        members: [person1, person2]
   output:
-    additional_senior_deduction: 0
-    taxable_income_deductions_if_itemizing: 0
-    taxable_income_deductions_if_not_itemizing: 0
+    additional_senior_deduction_eligible_person: [true, false]
 
-- name: Test with two structural reforms, tips, overtime and the SD are added
+- name: One senior dependent 
   period: 2025
   input:
     people: 
@@ -68,22 +42,17 @@
         age: 65
         is_tax_unit_head_or_spouse: true
         ssn_card_type: CITIZEN
-        tip_income: 1_000
-        fsla_overtime_premium: 2_000
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 90_000
-        salt_deduction: 0
-        standard_deduction: 0
+        members: [person1, person2]
   output:
-    additional_senior_deduction: 5_100
-    overtime_income_deduction: 2_000
-    tip_income_deduction: 1_000
-    taxable_income_deductions_if_itemizing: 8_100
-    taxable_income_deductions_if_not_itemizing: 8_100
+    additional_senior_deduction_eligible_person: [true, false]
 
-- name: Testing when reforms are initialized in another order
+- name: One person without an SSN card
   period: 2025
   input:
     people: 
@@ -91,17 +60,12 @@
         age: 65
         is_tax_unit_head_or_spouse: true
         ssn_card_type: CITIZEN
-        tip_income: 1_000
-        fsla_overtime_premium: 2_000
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: NONE
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 90_000
-        salt_deduction: 0
-        standard_deduction: 0
+        members: [person1, person2]
   output:
-    additional_senior_deduction: 5_100
-    overtime_income_deduction: 2_000
-    tip_income_deduction: 1_000
-    taxable_income_deductions_if_itemizing: 8_100
-    taxable_income_deductions_if_not_itemizing: 8_100
+    additional_senior_deduction_eligible_person: [true, false]

@@ -13,7 +13,7 @@ class overtime_income_deduction(Variable):
         overtime_income = person("fsla_overtime_premium", period)
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.irs.deductions.overtime_income_exempt
+        p = parameters(period).gov.irs.deductions.overtime_income
         cap = p.cap[filing_status]
         start = p.phase_out.start[filing_status]
         agi_excess = max_(agi - start, 0)
