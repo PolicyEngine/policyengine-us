@@ -25,8 +25,9 @@
         members: [person1]
         filing_status: SINGLE
         adjusted_gross_income: 100_000
+        state_and_local_sales_or_income_tax: 1_000
   output:
-    salt_deduction: 10_000
+    salt_deduction: 11_000
 
 - name: Separate filer with income above reduction amount
   period: 2025
@@ -38,9 +39,10 @@
       tax_unit:
         members: [person1]
         filing_status: SEPARATE
-        adjusted_gross_income: 120_000
+        adjusted_gross_income: 290_000
+        state_and_local_sales_or_income_tax: 1_000
   output:
-    salt_deduction: 5_000
+    salt_deduction: 8_000
 
 - name: Fully phased out, floor applies
   period: 2026
