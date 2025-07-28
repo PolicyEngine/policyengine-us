@@ -100,11 +100,8 @@ from .reconciliation import (
     create_ctc_ssn_reform,
     create_reconciled_additional_senior_standard_deduction_reform,
     create_reconciled_ssn_for_llc_and_aoc_reform,
-    create_aca_ptc_immigration_status_reform,
     create_reconciliation_qbid_with_floor_reform,
     create_reconciliation_cdcc_reform,
-    create_reconciled_medicaid_work_requirement_reform,
-    create_reconciled_snap_abawd_work_requirement_reform,
     create_reconciled_charitable_deduction_reform,
 )
 from .additional_tax_bracket import (
@@ -239,9 +236,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
     )
-    aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
-        parameters, period
-    )
     reconciliation_qbid_with_floor = (
         create_reconciliation_qbid_with_floor_reform(parameters, period)
     )
@@ -252,15 +246,6 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     additional_tax_bracket = create_additional_tax_bracket_reform(
         parameters, period
-    )
-    reconciled_medicaid_work_requirement = (
-        create_reconciled_medicaid_work_requirement_reform(parameters, period)
-    )
-
-    reconciled_snap_abawd_work_requirement = (
-        create_reconciled_snap_abawd_work_requirement_reform(
-            parameters, period
-        )
     )
     reconciled_charitable_deduction = (
         create_reconciled_charitable_deduction_reform(parameters, period)
@@ -313,13 +298,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_ssn,
         reconciled_additional_senior_standard_deduction,
         reconciled_ssn_for_llc_and_aoc,
-        aca_ptc_immigration_status,
         reconciliation_qbid_with_floor,
         ctc_additional_bracket,
         reconciliation_cdcc,
         additional_tax_bracket,
-        reconciled_medicaid_work_requirement,
-        reconciled_snap_abawd_work_requirement,
         reconciled_charitable_deduction,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
