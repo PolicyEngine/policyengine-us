@@ -8,7 +8,7 @@ class meets_additional_senior_deduction_identification_requirements(Variable):
     label = (
         "Person meets additional senior deduction identification requirements"
     )
-    reference = "https://punchbowl.news/smitmo_017_xml/"  # page 35
+    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=3"
 
     def formula(person, period, parameters):
         ssn_card_type = person("ssn_card_type", period)

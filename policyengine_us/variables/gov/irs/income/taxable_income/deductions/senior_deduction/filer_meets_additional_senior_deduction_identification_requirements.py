@@ -10,6 +10,7 @@ class filer_meets_additional_senior_deduction_identification_requirements(
     label = (
         "Filer meets additional senior deduction identification requirements"
     )
+    reference = "https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=3"
 
     def formula(tax_unit, period, parameters):
         # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
