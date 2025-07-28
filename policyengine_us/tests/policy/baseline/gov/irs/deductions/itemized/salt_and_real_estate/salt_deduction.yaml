@@ -15,7 +15,7 @@
     salt_deduction: 4_000
 
 - name: Single filer with income below reduction amount
-  period: 2024
+  period: 2025
   input:
     people: 
       person1:
@@ -29,7 +29,7 @@
     salt_deduction: 10_000
 
 - name: Separate filer with income above reduction amount
-  period: 2024
+  period: 2025
   input:
     people: 
       person1:
@@ -43,7 +43,7 @@
     salt_deduction: 5_000
 
 - name: Fully phased out, floor applies
-  period: 2024
+  period: 2026
   input:
     people: 
       person1:
