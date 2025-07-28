@@ -7,6 +7,7 @@ class overtime_income_deduction(Variable):
     label = "Overtime income deduction"
     unit = USD
     definition_period = YEAR
+    defined_for = "overtime_income_deduction_ssn_requirement_met"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -20,10 +21,4 @@ class overtime_income_deduction(Variable):
         phase_out_amount = agi_excess * p.phase_out.rate
         total_overtime_income = tax_unit.sum(overtime_income)
         capped_overtime_income = min_(cap, total_overtime_income)
-        phased_out_overtime_income = max_(
-            0, capped_overtime_income - phase_out_amount
-        )
-        ineligible_cardholder_present = tax_unit(
-            "overtime_income_deduction_ineligible_cardholder_present", period
-        )
-        return phased_out_overtime_income * ~ineligible_cardholder_present
+        return max_(0, capped_overtime_income - phase_out_amount)
