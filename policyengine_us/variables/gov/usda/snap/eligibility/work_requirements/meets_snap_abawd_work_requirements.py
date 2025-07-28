@@ -15,7 +15,7 @@ class meets_snap_abawd_work_requirements(Variable):
         # Work at least 20 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
         # Adults within an age range are exempt
-        worked_exempted_age = p.age_threshold.exempted.calc(age)
+        working_age_exempt = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
         is_disabled = person("is_disabled", period)
         # Parent of a household member under 18
@@ -54,7 +54,7 @@ class meets_snap_abawd_work_requirements(Variable):
             )
             base_conditions = (
                 is_working
-                | worked_exempted_age
+                | working_age_exempt
                 | is_disabled
                 | exempt_parent
                 | meets_snap_general_work_requirements
@@ -66,7 +66,7 @@ class meets_snap_abawd_work_requirements(Variable):
             return base_conditions | is_homeless | is_veteran
         return (
             is_working
-            | worked_exempted_age
+            | working_age_exempt
             | is_disabled
             | exempt_parent
             | meets_snap_general_work_requirements
