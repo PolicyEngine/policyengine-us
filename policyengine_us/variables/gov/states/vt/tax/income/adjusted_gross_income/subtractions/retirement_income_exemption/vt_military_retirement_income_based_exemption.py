@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class vt_military_retirement_income_based_exemption(Variable):
@@ -23,13 +24,23 @@ class vt_military_retirement_income_based_exemption(Variable):
 
         agi = tax_unit("adjusted_gross_income", period)
 
-        # Full exemption if below the threshold
-        eligible_for_full_exemption = agi < p.full_exemption_threshold
+        # Check if thresholds are finite (feature is active)
+        thresholds_are_finite = (
+            ~np.isinf(p.full_exemption_threshold) & 
+            ~np.isinf(p.partial_exemption_threshold)
+        )
 
-        # Partial exemption if between the thresholds
+        # Full exemption if below the threshold AND thresholds are finite
+        eligible_for_full_exemption = (
+            thresholds_are_finite & (agi < p.full_exemption_threshold)
+        )
+
+        # Partial exemption if between the thresholds AND thresholds are finite
         eligible_for_partial_exemption = (
-            agi >= p.full_exemption_threshold
-        ) & (agi <= p.partial_exemption_threshold)
+            thresholds_are_finite &
+            (agi >= p.full_exemption_threshold) &
+            (agi <= p.partial_exemption_threshold)
+        )
 
         # Calculate partial exemption amount (linear phaseout)
         threshold_difference = (
