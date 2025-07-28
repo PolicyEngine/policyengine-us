@@ -31,13 +31,12 @@ class tip_income_deduction(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.tip_income_exempt
-        cap = p.cap[filing_status]
         start = p.phase_out.start[filing_status]
         agi_excess = max_(agi - start, 0)
         phase_out_amount = agi_excess * p.phase_out.rate
         total_tip_income = tax_unit.sum(tip_income)
-        capped_overtime_income = min_(cap, total_tip_income)
-        phased_out_overtime_income = max_(
-            0, capped_overtime_income - phase_out_amount
+        capped_tip_income = min_(p.cap, total_tip_income)
+        phased_out_tip_income = max_(
+            0, capped_tip_income - phase_out_amount
         )
-        return phased_out_overtime_income * ~ineligible_cardholder_present
+        return phased_out_tip_income * ~ineligible_cardholder_present

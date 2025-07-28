@@ -1,22 +1,12 @@
-description: The Senate Finance Committee proposed to exempt tip income, which is capped at this amount.
+description: The IRS caps the tip income exemption at this amount.
 
 metadata:
   unit: currency-USD
   period: year
-  breakdown:
-    - filing_status
-  label: Tip Income Exemption cap
+  label: Tip income exemption cap
   reference:
     - title: Senate Finance Committee Legislative Text Title VII
-      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=40
+      href: https://www.finance.senate.gov/imo/media/doc/finance_committee_legislative_text_title_vii.pdf#page=31
 
-JOINT:
-  2025-01-01: 25_000
-HEAD_OF_HOUSEHOLD:
-  2025-01-01: 25_000
-SURVIVING_SPOUSE:
-  2025-01-01: 25_000
-SINGLE:
-  2025-01-01: 25_000
-SEPARATE:
+values:
   2025-01-01: 25_000
