@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.352.0] - 2025-07-28 16:41:24
+
+### Added
+
+- ucgid variable.
+- household_count variable.
+- spm_unit_count variable.
+- tax_unit_count variable.
+
 ## [1.351.5] - 2025-07-28 12:28:49
 
 ### Fixed
@@ -12406,6 +12415,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.352.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.5...1.352.0
 [1.351.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.4...1.351.5
 [1.351.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.3...1.351.4
 [1.351.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.2...1.351.3
