@@ -36,7 +36,5 @@ class tip_income_deduction(Variable):
         phase_out_amount = agi_excess * p.phase_out.rate
         total_tip_income = tax_unit.sum(tip_income)
         capped_tip_income = min_(p.cap, total_tip_income)
-        phased_out_tip_income = max_(
-            0, capped_tip_income - phase_out_amount
-        )
+        phased_out_tip_income = max_(0, capped_tip_income - phase_out_amount)
         return phased_out_tip_income * ~ineligible_cardholder_present

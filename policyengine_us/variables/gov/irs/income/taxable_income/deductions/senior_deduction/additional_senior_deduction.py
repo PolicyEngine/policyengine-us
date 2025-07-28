@@ -22,6 +22,8 @@ class additional_senior_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         phase_out_amount = where(
-            joint, p.phase_out_rate.joint.calc(agi), p.phase_out_rate.other.calc(agi)
+            joint,
+            p.phase_out_rate.joint.calc(agi),
+            p.phase_out_rate.other.calc(agi),
         )
         return max_(base_deduction - phase_out_amount, 0)
