@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class people(Variable):
+class spm_unit_count(Variable):
     value_type = float
-    entity = Person
-    label = "People represented"
+    entity = SPMUnit
+    label = "SPM units represented"
     definition_period = YEAR
     default_value = 1.0
