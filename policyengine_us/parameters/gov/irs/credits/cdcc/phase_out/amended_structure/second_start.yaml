@@ -2,6 +2,8 @@ description: The IRS phases the Child and Dependent Care Credit rate out in incr
 metadata:
   unit: currency-USD
   period: year
+  breakdown:
+    - filing_status
   label: CDCC amended phase-out second start
   reference:
     - title: H.R.1 - One Big Beautiful Bill Act

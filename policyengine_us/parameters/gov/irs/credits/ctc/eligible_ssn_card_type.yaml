@@ -1,11 +1,11 @@
-description: The IRS limits the overtime income deduction to filers with one of these SSN Card types.
+description: The IRS limits the child tax credit to filers with one of these SSN Card types.
 values:
   2018-01-01:
     - CITIZEN
     - NON_CITIZEN_VALID_EAD
 
 metadata:
-  label: Overtime income deduction eligible SSN card types
+  label: Child tax credit eligible SSN card type
   period: year
   unit: list
   reference:
