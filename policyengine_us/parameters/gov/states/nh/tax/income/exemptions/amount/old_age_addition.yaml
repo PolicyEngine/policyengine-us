@@ -15,16 +15,15 @@ metadata:
       href: https://www.revenue.nh.gov/forms/2023/documents/dp-10-instructions-2022.pdf#page=4
     - title: 2021 New Hampshire DP-10 Form
       href: https://www.revenue.nh.gov/forms/2022/documents/dp-10-2021-print.pdf#page=3
+    # NBER Historical Forms (only these 3 forms exist on NBER)
+    - title: 2022 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://taxsim.nber.org/historical_state_tax_forms/NH/2022/dp-10-2022-print.pdf#page=3
+    - title: 2021 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://taxsim.nber.org/historical_state_tax_forms/NH/2021/dp-10-2021-print.pdf#page=3
     - title: 2020 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
       href: https://taxsim.nber.org/historical_state_tax_forms/NH/2020/dp-10-2020-print.pdf#page=3
-    - title: 2008 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NH/2008/dp-10-2008.pdf#page=3
-    - title: 2000 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NH/2000/dp-10-2000.pdf#page=3
-    - title: 1995 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NH/1995/dp-10-1995.pdf#page=3
-    - title: 1990 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NH/1990/dp-10-1990.pdf#page=2
+# NOTE: Historical exemption amounts based on TAXSIM implementation
+# due to limited primary sources (see base.yaml for details)
 values:
   1977-01-01: 600
   1981-01-01: 1_200
