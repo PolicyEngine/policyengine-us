@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.351.5] - 2025-07-28 12:28:49
+## [1.351.6] - 2025-07-28 12:28:49
 
 ### Fixed
 
 - Remove the second earner tax reform.
+
+## [1.351.5] - 2025-07-28 10:58:35
+
+### Added
+
+- Tests verifying Washington state had no income tax in 2020
 
 ## [1.351.4] - 2025-07-27 23:15:44
 
@@ -12406,6 +12412,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.351.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.5...1.351.6
 [1.351.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.4...1.351.5
 [1.351.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.3...1.351.4
 [1.351.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.351.2...1.351.3
