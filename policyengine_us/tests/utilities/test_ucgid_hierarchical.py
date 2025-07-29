@@ -56,3 +56,17 @@ class TestUCGIDHierarchical:
         # Test hierarchy matching in simulation context
         is_in_us = ucgid_enum.matches_hierarchy("0100000US")
         assert is_in_us == True
+
+    def test_ucgid_str_variable(self):
+        """Test the UCGID string variable functionality."""
+        simulation = Microsimulation()
+        ucgid_str_values = simulation.calculate("ucgid_str", "2024")
+
+        # The UCGID string variable should return a string representation
+        ucgid_str = ucgid_str_values.iloc[0]
+        assert type(ucgid_str) == str
+        assert (
+            ucgid_str.startswith("0100000US")
+            | ucgid_str.startswith("0400000US")
+            | ucgid_str.startswith("5001800US")
+        )
