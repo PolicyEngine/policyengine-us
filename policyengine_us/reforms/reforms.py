@@ -91,9 +91,6 @@ from .congress.afa import (
 
 from .reconciliation import (
     create_reconciled_ssn_for_llc_and_aoc_reform,
-    create_aca_ptc_immigration_status_reform,
-    create_reconciled_medicaid_work_requirement_reform,
-    create_reconciled_snap_abawd_work_requirement_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -211,24 +208,12 @@ def create_structural_reforms_from_parameters(parameters, period):
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
     )
-    aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
-        parameters, period
-    )
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
 
     additional_tax_bracket = create_additional_tax_bracket_reform(
         parameters, period
-    )
-    reconciled_medicaid_work_requirement = (
-        create_reconciled_medicaid_work_requirement_reform(parameters, period)
-    )
-
-    reconciled_snap_abawd_work_requirement = (
-        create_reconciled_snap_abawd_work_requirement_reform(
-            parameters, period
-        )
     )
 
     reforms = [
@@ -271,11 +256,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
         reconciled_ssn_for_llc_and_aoc,
-        aca_ptc_immigration_status,
         ctc_additional_bracket,
         additional_tax_bracket,
-        reconciled_medicaid_work_requirement,
-        reconciled_snap_abawd_work_requirement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
