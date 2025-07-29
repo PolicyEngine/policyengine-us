@@ -1,0 +1,12 @@
+description: The IRS phases out the SALT deduction at this rate of adjusted gross income over the phase-out threshold.
+
+values:
+  2025-01-01: 0.3
+
+metadata:
+  label: SALT deduction phase out rate 
+  unit: /1
+  period: year
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
