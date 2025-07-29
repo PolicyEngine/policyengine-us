@@ -2,6 +2,7 @@ description: Pass-through qualified business income deduction rate.
 metadata:
   label: Qualified business income deduction rate
   unit: /1
+  period: year
   reference:
     - title: 26 U.S. Code § 199A(a)(2) - Qualified business income
       href: https://www.law.cornell.edu/uscode/text/26/199A#a_2
@@ -12,5 +13,3 @@ values:
   2016-01-01: 0.0
   2017-01-01: 0.0
   2018-01-01: 0.2
-  2019-01-01: 0.2
-  2026-01-01: 0.0

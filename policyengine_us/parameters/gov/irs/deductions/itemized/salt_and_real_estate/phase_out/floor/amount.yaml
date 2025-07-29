@@ -1,0 +1,21 @@
+description: The IRS floors the SALT deduction at this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: SALT deduction floor amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+SINGLE:
+  2025-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 10_000
+JOINT:
+  2025-01-01: 10_000
+SURVIVING_SPOUSE:
+  2025-01-01: 10_000
+SEPARATE:
+  2025-01-01: 5_000 
