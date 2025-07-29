@@ -28,7 +28,7 @@
 - name: Case 4, age 30, but disabled.
   period: 2022
   input:
-    age: 39
+    age: 30
     weekly_hours_worked: 1
     is_disabled: true
   output:
@@ -85,7 +85,7 @@
   output:
     meets_snap_abawd_work_requirements: [false, true]
 
-- name: Case 1, baseline, age 55 exempted from general work requirement. 
+- name: Case 9, baseline, age 55 exempted from general work requirement. 
   period: 2026
   absolute_error_margin: 0.9
   input:
@@ -95,7 +95,7 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 2, reform, age 55 is not exempted from general work requirement. 
+- name: Case 10, reform, age 55 is not exempted from general work requirement. 
   period: 2027
   absolute_error_margin: 0.9
   input:
@@ -105,7 +105,7 @@
   output:
     meets_snap_abawd_work_requirements: false
 
-- name: Case 3, baseline, have a child at age 15.
+- name: Case 11, baseline, have a child at age 15.
   period: 2026-01
   absolute_error_margin: 0.9
   input:
@@ -122,7 +122,7 @@
   output:
     meets_snap_abawd_work_requirements: [true, true]
 
-- name: Case 4, reform, have a child at age 15.
+- name: Case 12, reform, have a child at age 15.
   period: 2027
   absolute_error_margin: 0.9
   input:
@@ -139,7 +139,7 @@
   output:
     meets_snap_abawd_work_requirements: [false, true]
 
-- name: Case 5, reform, have a child at age 6.
+- name: Case 13, reform, have a child at age 6.
   period: 2027
   absolute_error_margin: 0.9
   input:
@@ -156,7 +156,7 @@
   output:
     meets_snap_abawd_work_requirements: [true, true]
 
-- name: Case 6, reform, is veteran with a child 15 in 2027. 
+- name: Case 14, reform, is veteran with a child 15 in 2027. 
   period: 2027
   absolute_error_margin: 0.9
   input:
@@ -171,10 +171,10 @@
         is_disabled: false
         is_tax_unit_dependent: true
   output:
-    meets_snap_abawd_work_requirements: [true, true]
+    meets_snap_abawd_work_requirements: [false, true]
 
-- name: Case 7, reform, is veteran with a child 15 in 2031, sunset provision in effect. 
-  period: 2031
+- name: Case 15, reform, meets requirement due to work exempted state. 
+  period: 2027
   absolute_error_margin: 0.9
   input:
     people:
@@ -187,5 +187,20 @@
         age: 15
         is_disabled: false
         is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
   output:
-    meets_snap_abawd_work_requirements: [false, true]
+    meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 16, baseline, live in HI in 2026. 
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    age: 18
+    weekly_hours_worked: 1
+    is_disabled: false
+    state_code: HI
+  output:
+    meets_snap_abawd_work_requirements: false
