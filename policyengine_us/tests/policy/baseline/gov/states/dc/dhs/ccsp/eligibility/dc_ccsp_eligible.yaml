@@ -1,0 +1,21 @@
+- name: Case 1, passed for eligibility check.
+  period: 2022
+  input:
+    dc_ccsp_eligible_child: true
+    dc_ccsp_asset_eligible: true
+    dc_ccsp_income_eligible: true
+    dc_ccsp_qualified_activity_or_need_eligible: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible: true
+
+- name: Case 2, ineligible due to income.
+  period: 2022
+  input:
+    dc_ccsp_eligible_child: true
+    dc_ccsp_asset_eligible: true
+    dc_ccsp_income_eligible: false
+    dc_ccsp_qualified_activity_or_need_eligible: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible: false

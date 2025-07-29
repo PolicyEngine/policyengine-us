@@ -1,0 +1,96 @@
+- name: Case 1, eligible, payment higher. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_eligible: true
+    dc_ccsp_copay: 10
+    dc_ccsp_maximum_subsidy_amount: 20
+    spm_unit_pre_subsidy_childcare_expenses: 30 * 12
+  output:
+    dc_ccsp: 20
+
+- name: Case 2, ineligible 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_eligible: false
+    dc_ccsp_copay: 10
+    dc_ccsp_maximum_subsidy_amount: 20
+  output:
+    dc_ccsp: 0
+
+- name: Case 3, teen parent, income test and copay waived, eligible. 
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 999_999
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 19
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        is_tax_unit_dependent: true
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_child_category: INFANT_AND_TODDLER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+        dc_ccsp_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        spm_unit_pre_subsidy_childcare_expenses: 1_000 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_eligible: true
+    dc_ccsp_maximum_subsidy_amount: [0, 0, 986.5]
+    dc_ccsp_copay: 0
+    dc_ccsp: 986.5
+
+- name: Case 4, copay not waived, eligible. 
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 22_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30
+        employment_income: 20_000
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_child_category: INFANT_AND_TODDLER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+        dc_ccsp_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        spm_unit_pre_subsidy_childcare_expenses: 1_000 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_eligible: true
+    dc_ccsp_maximum_subsidy_amount: [0, 0, 986.5]
+    dc_ccsp_copay: 18.5
+    dc_ccsp: 981.5

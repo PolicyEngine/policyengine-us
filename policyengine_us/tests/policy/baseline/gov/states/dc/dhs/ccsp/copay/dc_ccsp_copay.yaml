@@ -1,0 +1,41 @@
+- name: Case 1, copayment exempted due to qualified need eligible.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_qualified_need_eligible: true
+    dc_ccsp_first_child_copay: 10
+    dc_ccsp_second_child_copay: 10
+    state_code: DC
+  output:
+    dc_ccsp_copay: 0
+
+- name: Case 2, copayment not exempted.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 42_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        is_tax_unit_dependent: true
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+        dc_ccsp_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_copay: 18.5

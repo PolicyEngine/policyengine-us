@@ -1,0 +1,13 @@
+description: Puerto Rico limits the Earned Income Tax Credit to filers of this age or older.
+values:
+  2023-01-01: 19
+metadata:
+  unit: year
+  period: year
+  label: Puerto Rico earned income credit minimum age
+  reference:
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=1
+    # discrepancy: legal statute doesn't include minimum age
+    - title: P.R. Laws tit. 13, § 30211
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/

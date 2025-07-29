@@ -1,0 +1,64 @@
+- name: Case 1, household size of 2 with $61,300 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 61_300
+    spm_unit_size: 2
+    dc_ccsp_enrolled: false
+    state_code: DC
+  output:
+    spm_unit_fpg: 1_703.33
+    hhs_smi: 9_047.513
+    dc_ccsp_income_eligible: true
+
+- name: Case 2, household size of 2 with $61,330 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 61_330
+    spm_unit_size: 2
+    dc_ccsp_enrolled: false
+    state_code: DC
+  output:
+    spm_unit_fpg: 1_703.33
+    hhs_smi: 9_047.513
+    dc_ccsp_income_eligible: false
+
+- name: Case 3, household size of 3 with $124,700 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 124_700
+    spm_unit_size: 3
+    dc_ccsp_enrolled: true
+    state_code: DC
+  output:
+    spm_unit_fpg: 2_151.67
+    hhs_smi: 11_176.34
+    dc_ccsp_income_eligible: false
+
+- name: Case 3, household size of 3 with $112,800 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 112_800
+    spm_unit_size: 3
+    dc_ccsp_enrolled: true
+    state_code: DC
+  output:
+    spm_unit_fpg: 2_151.67
+    hhs_smi: 11_176.34
+    dc_ccsp_income_eligible: true
+
+- name: Case 4, household size of 3 with $124,800 annual income.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    employment_income: 124_800 
+    spm_unit_size: 3
+    dc_ccsp_enrolled: true
+    state_code: DC
+  output:
+    spm_unit_fpg: 2_151.67
+    hhs_smi: 11_176.34
+    dc_ccsp_income_eligible: false

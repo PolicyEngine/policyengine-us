@@ -1,0 +1,30 @@
+description: Puerto Rico provides the following maximum amount of earned income credit.
+brackets:
+  - threshold: 
+      2023-01-01: 0
+    amount:
+      2023-01-01: 1_656
+  - threshold: 
+      2023-01-01: 1
+    amount:
+      2023-01-01: 3_864
+  - threshold: 
+      2023-01-01: 2
+    amount:
+      2023-01-01: 6_072
+  - threshold: 
+      2023-01-01: 3
+    amount:
+      2023-01-01: 7_173
+metadata:
+  amount_unit: currency-USD
+  threshold_unit: child
+  type: single_amount
+  label: Puerto Rico earned income credit max amount
+  period: year
+  reference:
+    # discrepancy: legal statute max amount doesn't correspond with tax form values 
+    - title: P.R. Laws tit. 13, § 30211 (1)-(6)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2

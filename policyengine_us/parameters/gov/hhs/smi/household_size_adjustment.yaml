@@ -1,4 +1,4 @@
-description: HHS household size adjustments for State Median Income
+description: The US Department of Health and Human Services household size adjustments for state median income.
 
 first_person:
   2021-10-01: 0.52
@@ -9,7 +9,8 @@ additional_person:
 
 metadata:
   unit: /1
+  period: year
+  label: HHS SMI household size adjustments
   reference:
     - title: State Median Income (SMI) by household size FFY 2022
       href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM03%20Attachment1%20SMITable_FY2022.pdf
-  period: year

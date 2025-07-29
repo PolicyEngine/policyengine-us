@@ -1,0 +1,120 @@
+- name: Case 1, both parents are working, eligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 100
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 200
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_or_need_eligible: true
+
+- name: Case 2, parents are not working, but child is disabled, eligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_or_need_eligible: true
+
+- name: Case 3, parents are not working, but one of them is elderly, eligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 62
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 50
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_or_need_eligible: true
+
+- name: Case 4, parents are not working, but they are teen parent, eligible. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 19
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ccsp_qualified_activity_or_need_eligible: true

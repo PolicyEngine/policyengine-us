@@ -1,0 +1,13 @@
+description: Puerto Rico limits the earned income credit to filers with unearned income below this threshold. 
+values: 
+  2023-01-01: 10_000
+metadata:
+  unit: currency-USD
+  label: Puerto Rico earned income credit unearned income limit
+  period: year
+  reference:
+    # discrepancy: legal statute lists unearned income as 2_200 
+    - title: P.R. Laws tit. 13, § 30211 (6)(e)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=4
