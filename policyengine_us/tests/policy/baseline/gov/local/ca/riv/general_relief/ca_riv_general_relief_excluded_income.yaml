@@ -1,0 +1,19 @@
+- name: Case 1, household of 3, 1 ineligible person. 
+  period: 2024
+  input:
+    ca_riv_general_relief_ineligible_person: true
+    ca_riv_general_relief_countable_income_person: 600
+    spm_unit_size: 3
+    ca_riv_general_relief_budget_unit_size: 2
+  output:
+    ca_riv_general_relief_excluded_income: 200
+
+- name: Case 2, not an ineligible person, no excluded income. 
+  period: 2024
+  input:
+    ca_riv_general_relief_ineligible_person: false
+    ca_riv_general_relief_countable_income_person: 600
+    spm_unit_size: 3
+    ca_riv_general_relief_budget_unit_size: 2
+  output:
+    ca_riv_general_relief_excluded_income: 0

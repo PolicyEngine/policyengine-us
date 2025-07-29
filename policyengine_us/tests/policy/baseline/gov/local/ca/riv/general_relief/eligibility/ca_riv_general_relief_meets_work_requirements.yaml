@@ -1,0 +1,75 @@
+- name: Case 1, all members meet work requirement due to is working or age exempted. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 65
+        employment_income: 0
+      person3:
+        age: 18
+        employment_income: 0
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_riv_general_relief_meets_work_requirements: [true, true, true]
+
+- name: Case 2, all members do not meet work requirement due to no income and age not exempted. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 64
+        employment_income: 0
+      person3:
+        age: 19
+        employment_income: 0
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_riv_general_relief_meets_work_requirements: [false, false, false]
+
+- name: Case 3, all members meet work requirement due to has incapacitated member. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 64
+        employment_income: 0
+      person3:
+        age: 18
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_riv_general_relief_meets_work_requirements: [true, true, true]

@@ -2,8 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ca_riv_general_relief_special_needs(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
+    unit = USD
     label = "Riverside County General Relief special needs"
     definition_period = YEAR
     defined_for = "in_riv"

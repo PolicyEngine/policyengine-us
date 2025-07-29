@@ -1,0 +1,43 @@
+- name: Case 1, ineligible person due to has ssi.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 100
+    ca_tanf: 0
+    ca_riv_general_relief_immigration_status_eligible: true
+    ca_riv_general_relief_meets_work_requirements: true
+  output:
+    ca_riv_general_relief_ineligible_person: true
+
+- name: Case 2, ineligible person due to not meet work requirements.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 0
+    ca_tanf: 0
+    ca_riv_general_relief_immigration_status_eligible: true
+    ca_riv_general_relief_meets_work_requirements: false
+  output:
+    ca_riv_general_relief_ineligible_person: true
+
+- name: Case 3, ineligible person due to immigration status ineligible.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 0
+    ca_tanf: 0
+    ca_riv_general_relief_immigration_status_eligible: false
+    ca_riv_general_relief_meets_work_requirements: true
+  output:
+    ca_riv_general_relief_ineligible_person: true
+
+- name: Case 4, not an ineligible person.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 0
+    ca_tanf: 0
+    ca_riv_general_relief_immigration_status_eligible: true
+    ca_riv_general_relief_meets_work_requirements: true
+  output:
+    ca_riv_general_relief_ineligible_person: false

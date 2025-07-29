@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class ca_riv_general_relief(Variable):
-    value_type = int
+    value_type = float
     entity = SPMUnit
     unit = USD
     label = "Riverside County General Relief"

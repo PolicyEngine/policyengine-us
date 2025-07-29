@@ -1,0 +1,17 @@
+- name: Case 1, housing cost higher than housing benefit, take maximum payment.
+  period: 2024-01
+  input:
+    ca_riv_general_relief_budget_unit_size: 3
+    housing_cost: 500 * 12
+    in_riv: true
+  output:
+    ca_riv_general_relief_needs_standards: 547
+
+- name: Case 2, no housing cost, no housing benefit.
+  period: 2024-01
+  input:
+    ca_riv_general_relief_budget_unit_size: 7
+    housing_cost: 0
+    in_riv: true
+  output:
+    ca_riv_general_relief_needs_standards: 376 + 30

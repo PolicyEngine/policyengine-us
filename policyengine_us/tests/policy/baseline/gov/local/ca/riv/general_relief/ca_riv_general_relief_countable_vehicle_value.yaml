@@ -1,0 +1,23 @@
+- name: Case 1, vehicles value higher than deduction amount.
+  period: 2024
+  input:
+    household_vehicles_value: 4_660
+    in_riv: true
+  output:
+    ca_riv_general_relief_countable_vehicle_value: 10
+
+- name: Case 2, vehicles value lower than deduction amount.
+  period: 2024
+  input:
+    household_vehicles_value: 4_640
+    in_riv: true
+  output:
+    ca_riv_general_relief_countable_vehicle_value: 0
+
+- name: Case 3, vehicles value same as deduction amount.
+  period: 2024
+  input:
+    household_vehicles_value: 4_650
+    in_riv: true
+  output:
+    ca_riv_general_relief_countable_vehicle_value: 0

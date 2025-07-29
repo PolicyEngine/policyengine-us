@@ -16,4 +16,4 @@ class ca_riv_general_relief_countable_vehicle_value(Variable):
         total_vehicle_value = spm_unit.household(
             "household_vehicles_value", period
         )
-        return min_(total_vehicle_value - p.amount, 0)
+        return max_(total_vehicle_value - p.amount, 0)
