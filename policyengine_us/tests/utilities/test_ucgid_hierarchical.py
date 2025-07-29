@@ -2,6 +2,7 @@
 Test script demonstrating UCGID hierarchical functionality.
 """
 
+import numpy as np
 from policyengine_us import Microsimulation
 from policyengine_us.variables.household.demographic.geographic.ucgid.ucgid_enum import (
     UCGID,
@@ -70,3 +71,23 @@ class TestUCGIDHierarchical:
             | ucgid_str.startswith("0400000US")
             | ucgid_str.startswith("5001800US")
         )
+
+        # Create a basic simulation to test with specific input values
+        from policyengine_us import Simulation
+
+        simulation = Simulation(
+            situation={
+                "people": {"person": {}},
+                "households": {"household": {"members": ["person"]}},
+            }
+        )
+
+        # Set a specific UCGID value for testing (CA_23)
+        simulation.set_input("ucgid", 2024, UCGID.CA_23)
+
+        # Calculate the ucgid_str value
+        ucgid_str_values = simulation.calculate("ucgid_str", 2024)
+        ucgid_str = ucgid_str_values[0]
+
+        # Verify it contains all three hierarchical codes
+        assert ucgid_str == "5001800US0623,0400000US06,0100000US"
