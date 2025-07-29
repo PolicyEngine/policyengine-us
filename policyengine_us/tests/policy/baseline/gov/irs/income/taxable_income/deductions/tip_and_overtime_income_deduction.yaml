@@ -1,0 +1,379 @@
+- name: Tip and overtime income are exempt
+  period: 2026
+  input:
+    tip_income: 200
+    fsla_overtime_premium: 300
+    standard_deduction: 0
+    qualified_business_income_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 500
+    taxable_income_deductions_if_not_itemizing: 500
+
+- name: Test for SSN card type - head eligible - no deduction allowed
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: CITIZEN
+        tip_income: 200
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        tip_income: 600
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Test for SSN card type - spouse eligible - no deduction allowed
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NONE
+        tip_income: 200
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 600
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Test for SSN card type - both eligible
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: CITIZEN
+        tip_income: 200
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 600
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    tip_income_deduction: 800
+    overtime_income_deduction: 1_200
+    taxable_income_deductions_if_itemizing: 2_000
+    taxable_income_deductions_if_not_itemizing: 2_000
+
+- name: Phase out structure applies, joint filing status, agi below phase out start
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_200
+    taxable_income_deductions_if_not_itemizing: 1_200
+
+- name: Phase out structure applies, joint filing status, agi below phase out start, head not eligible
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NONE
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Phase out structure applies, joint filing status, agi below phase out start, child without ssn card
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 900
+      person3:
+        ssn_card_type: NONE
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_200
+    taxable_income_deductions_if_not_itemizing: 1_200
+
+- name: Phase out structure applies, joint filing status, agi below phase out start, partially phased out
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 302_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_000
+    taxable_income_deductions_if_not_itemizing: 1_000
+
+- name: Phase out structure applies, joint filing status, agi below phase out start, fully phased out
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        fsla_overtime_premium: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 500_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Tip income phase out structure applies, joint filing status, agi below phase out start
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_200
+    taxable_income_deductions_if_not_itemizing: 1_200
+
+- name: Tip income phase out structure applies, joint filing status, agi below phase out start, head not eligible
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NONE
+        tip_income: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
+
+- name: Tip income phase out structure applies, joint filing status, agi below phase out start, child without ssn card
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 900
+      person3:
+        ssn_card_type: NONE
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_200
+    taxable_income_deductions_if_not_itemizing: 1_200
+
+- name: Tip income phase out structure applies, joint filing status, agi below phase out start, partially phased out
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 302_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 1_000
+    taxable_income_deductions_if_not_itemizing: 1_000
+
+- name: Tip income phase out structure applies, joint filing status, agi below phase out start, fully phased out
+  period: 2026
+  input:
+    people: 
+      person1:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 300
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        tip_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 500_000
+        standard_deduction: 0
+        qualified_business_income_deduction: 0
+        charitable_deduction: 0
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0

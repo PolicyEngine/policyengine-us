@@ -1,0 +1,13 @@
+description: The IRS phases the Child and Dependent Care Credit rate out at an amended structure, if this is true.
+
+values:
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: CDCC amended phase-out structure in effect
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

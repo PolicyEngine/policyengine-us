@@ -1,0 +1,26 @@
+- name: Senate version of auto loan interest deduction
+  period: 2026
+  input:
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: false
+  output:
+    auto_loan_interest_deduction: 6_000
+    adjusted_gross_income: 220_000
+    taxable_income_deductions: 6_000
+
+- name: Senate version of auto loan interest deduction, itemizing
+  period: 2026
+  input:
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: true
+    salt_deduction: 10_000
+  output:
+    auto_loan_interest_deduction: 6_000
+    adjusted_gross_income: 220_000
+    taxable_income_deductions: 16_000

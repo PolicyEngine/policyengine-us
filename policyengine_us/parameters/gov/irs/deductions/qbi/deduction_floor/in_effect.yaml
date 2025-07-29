@@ -1,0 +1,13 @@
+description: The IRS applies a deduction floor for the Qualified Business Income Deduction, if this is true.
+
+values:
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: QBID deduction floor in effect
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

@@ -1,0 +1,22 @@
+description: The IRS caps the overtime income exemption at this amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Overtime income exemption cap
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+JOINT:
+  2025-01-01: 25_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 12_500
+SURVIVING_SPOUSE:
+  2025-01-01: 12_500
+SINGLE:
+  2025-01-01: 12_500
+SEPARATE:
+  2025-01-01: 12_500

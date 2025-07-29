@@ -12,6 +12,9 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
       href: https://www.cbo.gov/data/budget-economic-data
+    # OBBB permanently sets value to zero.
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
 
 values:
   2013-01-01: 3_900
@@ -20,14 +23,3 @@ values:
   2016-01-01: 4_050
   2017-01-01: 4_050
   2018-01-01: 0
-  # Values derived from the CBO Projections
-  2026-01-01: 5_300
-  2027-01-01: 5_400
-  2028-01-01: 5_500
-  2029-01-01: 5_650
-  2030-01-01: 5_750
-  2031-01-01: 5_850
-  2032-01-01: 5_950
-  2033-01-01: 6_100
-  2034-01-01: 6_200
-  2035-01-01: 6_350

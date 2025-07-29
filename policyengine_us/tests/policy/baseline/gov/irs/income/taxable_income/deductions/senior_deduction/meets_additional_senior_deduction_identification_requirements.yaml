@@ -1,0 +1,71 @@
+- name: Two eligible seniors
+  period: 2025
+  input:
+    people: 
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    additional_senior_deduction_eligible_person: [true, true]
+
+- name: One non-senior
+  period: 2025
+  input:
+    people: 
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    additional_senior_deduction_eligible_person: [true, false]
+
+- name: One senior dependent 
+  period: 2025
+  input:
+    people: 
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    additional_senior_deduction_eligible_person: [true, false]
+
+- name: One person without an SSN card
+  period: 2025
+  input:
+    people: 
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    additional_senior_deduction_eligible_person: [true, false]

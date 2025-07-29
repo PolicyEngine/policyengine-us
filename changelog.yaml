@@ -10556,3 +10556,28 @@
     fixed:
     - Fix ca_state_supplement_dependent_amount formula.
   date: 2025-07-28 20:42:43
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to current policy.
+  date: 2025-07-29 11:34:28
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to benefits to current policy.
+  date: 2025-07-29 11:48:42
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico deductions.
+  date: 2025-07-29 12:54:00
+- bump: minor
+  changes:
+    added:
+    - Update federal tax parameters following passage of HR 1.
+  date: 2025-07-29 13:28:50
+- bump: patch
+  changes:
+    added:
+    - Fix broken unit tests introduced through OBBBA parametric changes.
+  date: 2025-07-29 16:49:54

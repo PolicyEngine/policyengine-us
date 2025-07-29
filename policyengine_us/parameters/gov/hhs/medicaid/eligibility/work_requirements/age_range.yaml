@@ -1,0 +1,25 @@
+description: The Department of Health and Human Services requires individuals within these age brackets to meet Medicaid work requirements.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: Medicaid work requirements age threshold
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    amount: 
+      2027-01-01: false
+  - threshold: 
+      2027-01-01: 19
+    amount: 
+      2027-01-01: true
+  - threshold: 
+      2027-01-01: 65
+    amount: 
+      2027-01-01: false

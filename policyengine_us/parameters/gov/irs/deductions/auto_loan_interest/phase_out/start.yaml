@@ -1,0 +1,21 @@
+description: The IRS reduces the auto loan interest deduction for filers with adjusted gross income above this threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Auto loan interest deduction reduction start
+  breakdown:
+    - filing_status
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+SINGLE:
+  2025-01-01: 100_000
+SEPARATE:
+  2025-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 100_000
+JOINT:
+  2025-01-01: 200_000
+SURVIVING_SPOUSE:
+  2025-01-01: 200_000

@@ -17,9 +17,9 @@
   output:
     meets_ctc_child_identification_requirements: true
 
-- name: After 2025, the CTC does not require a Social Security Number for qualifying children.
+- name: After 2025, the CTC still requires a Social Security Number for qualifying children.
   period: 2026
   input:
     ssn_card_type: OTHER_NON_CITIZEN
   output:
-    meets_ctc_child_identification_requirements: true
+    meets_ctc_child_identification_requirements: false

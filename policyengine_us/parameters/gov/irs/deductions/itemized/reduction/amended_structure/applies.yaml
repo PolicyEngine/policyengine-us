@@ -1,0 +1,13 @@
+description: The IRS reduces the itemized deductions at an amended structure, if this is true.
+
+values:
+  2009-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Itemized deductions amended reduction structure applies
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
