@@ -17,21 +17,9 @@ class vt_normal_income_tax(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("vt_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
         p = parameters(period).gov.states.vt.tax.income.rates
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.single.calc(income),
-                p.joint.calc(income),
-                p.separate.calc(income),
-                p.surviving_spouse.calc(income),
-                p.head_of_household.calc(income),
-            ],
+        return select_filing_status_value(
+            filing_status,
+            p,
+            income,
         )

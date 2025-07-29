@@ -1,0 +1,55 @@
+# Test that select_filing_status_value works correctly with MD income tax
+- name: Test filing status utility with MD tax - single filer
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        md_taxable_income: 50_000
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    md_income_tax_before_credits: 2_322.50
+
+- name: Test filing status utility with MD tax - joint filers
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 28
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_taxable_income: 100_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    md_income_tax_before_credits: 4_697.50
+
+- name: Test filing status utility with MD tax - head of household
+  period: 2024
+  input:
+    people:
+      head:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        md_taxable_income: 75_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MD
+  output:
+    md_income_tax_before_credits: 3_510.00

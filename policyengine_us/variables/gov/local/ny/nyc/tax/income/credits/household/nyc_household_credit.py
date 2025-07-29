@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.general import select_filing_status_value
 
 
 class nyc_household_credit(Variable):
@@ -23,23 +24,25 @@ class nyc_household_credit(Variable):
         # Then get their number of people.
         tax_unit_size = tax_unit("tax_unit_size", period)
 
-        filing_statuses = filing_status.possible_values
-
-        return select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.SEPARATE,
-            ],
-            [
-                # Single filers get a flat amount.
-                p.flat_amount.calc(federal_agi, right=True),
-                # Separate filers get an amount for each person in the tax
-                # unit, varying with AGI.
-                p.separate_per_dependent.calc(federal_agi, right=True)
-                * tax_unit_size,
-            ],
-            # Joint, head of household, and surviving spouse filers have a different
-            # amount per person, varying with AGI.
-            default=p.other_per_dependent.calc(federal_agi, right=True)
+        # Create a dictionary of values for each filing status
+        filing_status_values = {
+            "single": p.flat_amount.calc(federal_agi, right=True),
+            "separate": p.separate_per_dependent.calc(federal_agi, right=True)
             * tax_unit_size,
+            # Joint, head of household, and surviving spouse use the same formula
+            "joint": p.other_per_dependent.calc(federal_agi, right=True)
+            * tax_unit_size,
+            "head_of_household": p.other_per_dependent.calc(
+                federal_agi, right=True
+            )
+            * tax_unit_size,
+            "surviving_spouse": p.other_per_dependent.calc(
+                federal_agi, right=True
+            )
+            * tax_unit_size,
+        }
+
+        return select_filing_status_value(
+            filing_status,
+            filing_status_values,
         )

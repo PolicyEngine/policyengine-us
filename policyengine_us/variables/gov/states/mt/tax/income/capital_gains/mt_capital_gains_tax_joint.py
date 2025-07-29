@@ -21,37 +21,28 @@ class mt_capital_gains_tax_joint(Variable):
             )
             status = filing_status.possible_values
 
-            lower_rate = select(
-                [
-                    filing_status == status.SINGLE,
-                    filing_status == status.SEPARATE,
-                    filing_status == status.JOINT,
-                    filing_status == status.SURVIVING_SPOUSE,
-                    filing_status == status.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    p.rates.single.amounts[0],
-                    p.rates.separate.amounts[0],
-                    p.rates.joint.amounts[0],
-                    p.rates.surviving_spouse.amounts[0],
-                    p.rates.head_of_household.amounts[0],
-                ],
+            lower_rate_dict = {
+                "single": p.rates.single.amounts[0],
+                "separate": p.rates.separate.amounts[0],
+                "joint": p.rates.joint.amounts[0],
+                "surviving_spouse": p.rates.surviving_spouse.amounts[0],
+                "head_of_household": p.rates.head_of_household.amounts[0],
+            }
+            lower_rate = select_filing_status_value(
+                filing_status,
+                lower_rate_dict,
             )
-            higher_rate = select(
-                [
-                    filing_status == status.SINGLE,
-                    filing_status == status.SEPARATE,
-                    filing_status == status.JOINT,
-                    filing_status == status.SURVIVING_SPOUSE,
-                    filing_status == status.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    p.rates.single.amounts[-1],
-                    p.rates.separate.amounts[-1],
-                    p.rates.joint.amounts[-1],
-                    p.rates.surviving_spouse.amounts[-1],
-                    p.rates.head_of_household.amounts[-1],
-                ],
+
+            higher_rate_dict = {
+                "single": p.rates.single.amounts[-1],
+                "separate": p.rates.separate.amounts[-1],
+                "joint": p.rates.joint.amounts[-1],
+                "surviving_spouse": p.rates.surviving_spouse.amounts[-1],
+                "head_of_household": p.rates.head_of_household.amounts[-1],
+            }
+            higher_rate = select_filing_status_value(
+                filing_status,
+                higher_rate_dict,
             )
             # Calculate taxes
             capital_gains_below_threshold = min_(

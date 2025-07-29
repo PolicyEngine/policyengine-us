@@ -33,5 +33,6 @@ class mt_capital_gains_tax_applicable_threshold_indiv(Variable):
                 p.rates.head_of_household.thresholds[-1],
                 p.rates.surviving_spouse.thresholds[-1],
             ],
+            default=p.rates.single.thresholds[-1],
         )
         return max_(rate_threshold - non_qualified_income, 0)

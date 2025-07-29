@@ -22,20 +22,15 @@ class md_senior_tax_credit(Variable):
         spouse_eligible = (spouse_age >= p.age_eligibility).astype(int)
         eligible_count = head_eligible + spouse_eligible
 
-        credit_amount = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SURVIVING_SPOUSE,
-                filing_status == status.SEPARATE,
-            ],
-            [
-                p.amount.single,
-                p.amount.joint[eligible_count],
-                p.amount.head_of_household,
-                p.amount.surviving_spouse,
-                p.amount.separate,
-            ],
+        # For joint filers, use eligible_count to index into the joint amount array
+        credit_params = {
+            "single": p.amount.single,
+            "joint": p.amount.joint[eligible_count],
+            "head_of_household": p.amount.head_of_household,
+            "surviving_spouse": p.amount.surviving_spouse,
+            "separate": p.amount.separate,
+        }
+        credit_amount = select_filing_status_value(
+            filing_status, credit_params
         )
         return (eligible_count > 0) * credit_amount

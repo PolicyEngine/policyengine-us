@@ -34,4 +34,5 @@ class ccdf_age_group(Variable):
                 CCDFAgeGroup.PRESCHOOLER,
                 CCDFAgeGroup.SCHOOL_AGE,
             ],
+            default=CCDFAgeGroup.SCHOOL_AGE,
         )

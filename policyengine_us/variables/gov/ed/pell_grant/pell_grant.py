@@ -14,10 +14,9 @@ class pell_grant(Variable):
         efc = person("pell_grant_efc", period)
         sai = person("pell_grant_sai", period)
         eligibility = person("pell_grant_eligibility_type", period)
-        uses_efc = person("pell_grant_uses_efc", period)
         uses_sai = person("pell_grant_uses_sai", period)
         p = parameters(period).gov.ed.pell_grant
-        contribution = select([uses_efc, uses_sai], [efc, sai])
+        contribution = where(uses_sai, sai, efc)
         unbounded = coa - contribution
         amount = where(unbounded < p.amount.min, 0, unbounded)
         uncapped_efc_pell = amount * (
@@ -30,9 +29,8 @@ class pell_grant(Variable):
                 eligibility == eligibility.possible_values.MINIMUM,
             ],
             [0, p.amount.max, amount],
+            default=0,
         )
-        uncapped = select(
-            [uses_efc, uses_sai], [uncapped_efc_pell, uncapped_sai_pell]
-        )
+        uncapped = where(uses_sai, uncapped_sai_pell, uncapped_efc_pell)
         max = min_(coa, p.amount.max)
         return min_(max, uncapped)

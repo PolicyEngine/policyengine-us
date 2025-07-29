@@ -36,5 +36,6 @@ class wi_standard_deduction(Variable):
                 deduction.standard.phase_out.separate.calc(agi),
                 deduction.standard.phase_out.head_of_household.calc(agi),
             ],
+            default=0,
         )
         return max_(0, max_amount - phase_out_amount)

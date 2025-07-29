@@ -28,7 +28,6 @@ class fsla_overtime_occupation_exemption_category(Variable):
                 person("is_executive_administrative_professional", period),
                 person("is_farmer_fisher", period),
                 person("is_computer_scientist", period),
-                True,  # Default case
             ],
             [
                 OvertimeExemptionCategory.MILITARY,
@@ -36,6 +35,6 @@ class fsla_overtime_occupation_exemption_category(Variable):
                 OvertimeExemptionCategory.EXECUTIVE_ADMINISTRATIVE,
                 OvertimeExemptionCategory.FARMER_FISHER,
                 OvertimeExemptionCategory.COMPUTER_SCIENTIST,
-                OvertimeExemptionCategory.NONE,
             ],
+            default=OvertimeExemptionCategory.NONE,
         )
