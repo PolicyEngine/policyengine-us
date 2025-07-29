@@ -11,7 +11,7 @@ class ca_riv_general_relief_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.riv.general_relief
         age = spm_unit.members("monthly_age", period)
-        # Adults with dependent children under 18 are NOT eligible for GA.
+        # Adults with dependent children under certain age are NOT eligible for GA.
         # They should apply for CalWORKs (California's TANF) instead.
         age_eligible = spm_unit.all(age >= p.age_threshold)
 

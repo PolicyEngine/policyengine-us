@@ -9,8 +9,9 @@ class ca_riv_general_relief_ineligible_person(Variable):
     defined_for = "in_riv"
 
     def formula(person, period, parameters):
-        has_ssi = person("ssi", period) > 0
-        has_tanf = person.spm_unit("ca_tanf", period) > 0
+        receives_ssi_or_tanf = (
+            add(person.spm_unit, period, ["ssi", "ca_tanf"]) > 0
+        )
         immigration_status_eligible = person(
             "ca_riv_general_relief_immigration_status_eligible", period
         )
@@ -18,8 +19,7 @@ class ca_riv_general_relief_ineligible_person(Variable):
             "ca_riv_general_relief_meets_work_requirements", period
         )
         return (
-            has_ssi
-            | has_tanf
+            receives_ssi_or_tanf
             | ~immigration_status_eligible
             | ~meets_work_requirement
         )

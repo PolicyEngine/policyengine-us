@@ -7,12 +7,17 @@ class ca_riv_general_relief_immigration_status_eligible(Variable):
     label = "Eligible for the Riverside County General Relief due to immigration status"
     definition_period = MONTH
     defined_for = "in_riv"
-    # p.40
+    # p.16
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.local.ca.riv.general_relief
         immigration_status = person("immigration_status", period)
-        undocumented = (
-            immigration_status
-            == immigration_status.possible_values.UNDOCUMENTED
+        is_citizen = (
+            immigration_status == immigration_status.possible_values.CITIZEN
         )
-        return ~undocumented
+        immigration_status_str = immigration_status.decode_to_str()
+        has_qualifying_status = np.isin(
+            immigration_status_str,
+            p.qualified_noncitizen_status,
+        )
+        return has_qualifying_status | is_citizen

@@ -19,8 +19,8 @@ class ca_riv_general_relief_meets_work_requirements(Variable):
             )
             > 0
         )
-        # Age >= 65 exempted from working
-        # Full-time student in secondary school younger than 19 exempted from working
+        # Elders are exempted from working
+        # Full-time student in secondary school younger than certain age exempted from working
         age = person("monthly_age", period)
         is_full_time_student = person("is_full_time_student", period)
         in_secondary_school = person("is_in_secondary_school", period)
