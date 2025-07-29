@@ -7,8 +7,7 @@ class medicaid_work_requirement_eligible(Variable):
     label = "Eligible person for Medicaid via work requirement"
     definition_period = YEAR
     reference = (
-        "https://www.budget.senate.gov/imo/media/doc/the_one_big_beautiful_bill_act.pdf=678",
-        "https://budget.house.gov/imo/media/doc/one_big_beautiful_bill_act_-_full_bill_text.pdf#page=364",
+        "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
     )
 
     def formula(person, period, parameters):
@@ -41,7 +40,7 @@ class medicaid_work_requirement_eligible(Variable):
         eligible_disabled = is_blind | is_disabled | is_incapable_of_self_care
         # parent, guardian, caretaker of a dependent child 13 years of age or under  p.694 (III)
         child_age_eligible = age <= p.dependent_age_limit
-        has_dependent_child_senate = person.tax_unit.any(
+        has_eligible_dependent_child = person.tax_unit.any(
             is_dependent & child_age_eligible
         )
         exempted_from_work = (
@@ -52,7 +51,7 @@ class medicaid_work_requirement_eligible(Variable):
             | eligible_disabled
         )
         meets_base_requirement = meets_monthly_work_hours | exempted_from_work
-        meets_senate_condition = (
-            meets_base_requirement | has_dependent_child_senate
+        meets_conditions = (
+            meets_base_requirement | has_eligible_dependent_child
         )
-        return where(work_required_age, meets_senate_condition, True)
+        return where(work_required_age, meets_conditions, True)
