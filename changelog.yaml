@@ -10428,3 +10428,146 @@
     fixed:
     - Update 2018 CHIP child income limit for KS, KY, ME, NC and ND.
   date: 2025-07-16 10:45:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove net investment income from the Alabama federal tax deduction.
+  date: 2025-07-16 20:15:06
+- bump: minor
+  changes:
+    added:
+    - Cap each federal non-refundable credit at its limit based on tax liability.
+  date: 2025-07-16 21:48:52
+- bump: minor
+  changes:
+    added:
+    - Maine Dependent Exemption Credit 2025.
+  date: 2025-07-17 20:08:55
+- bump: minor
+  changes:
+    added:
+    - DC Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-18 02:51:20
+- bump: minor
+  changes:
+    added:
+    - Added simulation parameter to add healthcare toggle to net income calculations.
+  date: 2025-07-18 17:53:21
+- bump: minor
+  changes:
+    added:
+    - DC Child Care Subsidy Program (CCSP).
+  date: 2025-07-18 21:16:46
+- bump: minor
+  changes:
+    added:
+    - California Riverside County Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-22 14:20:17
+- bump: patch
+  changes:
+    added:
+    - Updated microdf-python to 0.4.5.
+  date: 2025-07-22 15:55:01
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico earned income credit (EITC).
+  date: 2025-07-22 20:02:01
+- bump: patch
+  changes:
+    changed:
+    - Update microdf-python dependency to >=1.0.0.
+  date: 2025-07-22 21:06:21
+- bump: patch
+  changes:
+    added:
+    - Support for Python 3.13
+    changed:
+    - Updated policyengine-core dependency to >=3.19.0 for Python 3.13 support
+  date: 2025-07-23 02:05:22
+- bump: patch
+  changes:
+    changed:
+    - Improved file naming consistency by renaming generic filenames to match their
+      variable names
+    - Split files containing multiple variables into separate files following one-variable-per-file
+      standard
+    - Fixed typos in filenames (e.g., "if_tanf" to "il_tanf" for Illinois)
+    - Removed space from filename "il _cta_reduced_fare_program.py"
+    fixed:
+    - Fixed household_income_decile test structure to properly place household variables
+      under household entity
+  date: 2025-07-23 11:09:36
+- bump: minor
+  changes:
+    added:
+    - SNAP self-employment simplified deductions.
+  date: 2025-07-23 13:54:32
+- bump: patch
+  changes:
+    fixed:
+    - Move healthcare simulation parameter to the correct simulation folder.
+  date: 2025-07-24 18:37:29
+- bump: minor
+  changes:
+    added:
+    - Update FY2025 HHS SMI parameter.
+  date: 2025-07-24 22:52:03
+- bump: patch
+  changes:
+    added:
+    - Added Documentation page for Medicaid and ACA.
+  date: 2025-07-25 02:23:14
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization turned off for tests.
+  date: 2025-07-25 16:57:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix broken unit tests.
+  date: 2025-07-27 20:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Remove spm_unit_income_decile test with zero weight.
+  date: 2025-07-27 23:15:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove the second earner tax reform.
+  date: 2025-07-28 12:28:49
+- bump: minor
+  changes:
+    added:
+    - ucgid variable.
+    - household_count variable.
+    - spm_unit_count variable.
+    - tax_unit_count variable.
+  date: 2025-07-28 16:41:24
+- bump: patch
+  changes:
+    changed:
+    - person_count variable.
+  date: 2025-07-28 17:17:37
+- bump: minor
+  changes:
+    fixed:
+    - Fix ca_state_supplement_dependent_amount formula.
+  date: 2025-07-28 20:42:43
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to current policy.
+  date: 2025-07-29 11:34:28
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to benefits to current policy.
+  date: 2025-07-29 11:48:42
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico deductions.
+  date: 2025-07-29 12:54:00

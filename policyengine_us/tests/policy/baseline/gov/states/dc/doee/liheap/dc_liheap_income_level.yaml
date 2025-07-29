@@ -1,0 +1,23 @@
+- name: Case 1, income 0, level 1.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    state_code: DC
+  output:
+    dc_liheap_income_level: 1
+
+- name: Case 2, income 2001, level 2.
+  period: 2024
+  input:
+    irs_gross_income: 2_001
+    state_code: DC
+  output:
+    dc_liheap_income_level: 2
+
+- name: Case 3, income 20000, level 10.
+  period: 2024
+  input:
+    irs_gross_income: 20_000
+    state_code: DC
+  output:
+    dc_liheap_income_level: 10

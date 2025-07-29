@@ -27,19 +27,22 @@ values:
     - new_clean_vehicle_credit
   # CDCC became non-refundable again in 2022.
   2022-01-01:
-    - cdcc
-    - elderly_disabled_credit
+    # Sequencing the credits based on Schedule 3 (Form 1040)
+    - foreign_tax_credit # 1
+    - cdcc # 2
+    - non_refundable_american_opportunity_credit # 3
+    - lifetime_learning_credit # 3
+    - savers_credit # 4
+    - residential_clean_energy_credit # 5a
+    - energy_efficient_home_improvement_credit # 5b
+    - elderly_disabled_credit # 6d
+    # Inflation Reduction Act introduces a used EV credit.
+    - new_clean_vehicle_credit # 6f
+    - used_clean_vehicle_credit # 6f
     # Adoption expense credit
     - non_refundable_ctc
     # Home mortgage credit
-    - non_refundable_american_opportunity_credit
-    - lifetime_learning_credit
-    - savers_credit
-    - residential_clean_energy_credit
-    - energy_efficient_home_improvement_credit
-    - new_clean_vehicle_credit
-    # Inflation Reduction Act introduces a used EV credit.
-    - used_clean_vehicle_credit
+
 metadata:
   unit: list
   label: Non-refundable tax credits

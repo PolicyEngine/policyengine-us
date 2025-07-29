@@ -22,7 +22,6 @@ class tax_unit_itemizes(Variable):
         else:
             # determine federal itemization behavior by comparing deductions
             standard_deduction = tax_unit("standard_deduction", period)
-            p = parameters(period).gov.irs.deductions
             itemized_deductions = tax_unit(
                 "itemized_taxable_income_deductions", period
             )

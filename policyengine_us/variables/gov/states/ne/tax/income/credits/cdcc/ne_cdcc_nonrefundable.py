@@ -18,6 +18,7 @@ class ne_cdcc_nonrefundable(Variable):
         # determine AGI eligibility
         eligible = ~tax_unit("ne_cdcc_refundable_eligible", period)
         # determine NE nonrefundable cdcc amount
-        us_cdcc = tax_unit("cdcc", period)
+        # Nebraska matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
         ne_cdcc = us_cdcc * p.cdcc.nonrefundable.fraction
         return eligible * ne_cdcc

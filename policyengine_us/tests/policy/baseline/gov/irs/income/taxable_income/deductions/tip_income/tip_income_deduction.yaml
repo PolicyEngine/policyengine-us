@@ -1,0 +1,79 @@
+- name: Ineligible cardholder present
+  period: 2025
+  input:
+    tip_income_deduction_ssn_requirement_met: false
+    tip_income: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 0
+
+- name: AGI below phase out start
+  period: 2025
+  input:
+    tip_income_deduction_ssn_requirement_met: true
+    tip_income: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 10_000
+
+- name: Fully phased out
+  period: 2025
+  input:
+    tip_income_deduction_ssn_requirement_met: true
+    tip_income: 10_000
+    adjusted_gross_income: 1_000_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 0
+
+- name: Partially phased out
+  period: 2025
+  input:
+    tip_income_deduction_ssn_requirement_met: true
+    tip_income: 10_000
+    adjusted_gross_income: 190_000
+    filing_status: JOINT
+  output:
+    tip_income_deduction: 10_000
+
+- name: Ineligible cardholder present
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        tip_income: 1_000
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: false
+    tip_income_deduction: 0
+
+- name: Ineligible cardholder not present
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        tip_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: true
+    tip_income_deduction: 1_000
