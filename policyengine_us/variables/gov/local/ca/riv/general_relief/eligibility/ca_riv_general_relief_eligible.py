@@ -10,9 +10,38 @@ class ca_riv_general_relief_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.riv.general_relief
-        # Age >= 18, or emancipated minor ?
+        age = spm_unit.members("monthly_age", period)
+        # Adults with dependent children under 18 are NOT eligible for GA.
+        # They should apply for CalWORKs (California's TANF) instead.
+        age_eligible = spm_unit.all(age >= p.age_threshold)
 
-        # citizen or eligible non-citizen
-        # income eligible
-        # asset eligible
-        # meets work requirements
+        immigration_status_eligible = (
+            add(
+                spm_unit,
+                period,
+                ["ca_riv_general_relief_immigration_status_eligible"],
+            )
+            > 0
+        )
+        meets_work_requirements = (
+            add(
+                spm_unit,
+                period,
+                ["ca_riv_general_relief_meets_work_requirements"],
+            )
+            > 0
+        )
+        property_eligible = spm_unit(
+            "ca_riv_general_relief_property_eligible", period
+        )
+        income_eligible = spm_unit(
+            "ca_riv_general_relief_income_eligible", period
+        )
+
+        return (
+            age_eligible
+            & immigration_status_eligible
+            & property_eligible
+            & income_eligible
+            & meets_work_requirements
+        )
