@@ -30,7 +30,7 @@ programs:
     general_program: "General Relief / Assistance"
     specific_program: "General Assistance for Children program"
     link: "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a?utm_source=chatgpt.com"
-    estimate: 1_000
+    estimate: 800
     notes: "Eligibility based on TANF"
     complete: false
     invoiced: false
@@ -39,8 +39,8 @@ programs:
     general_program: "Utility Subsidies"
     specific_program: "DC LIHEAP"
     link: "https://www.commerce.wa.gov/community-opportunities/liheap/"
-    estimate: 700
-    notes: "Simple eligibility check"
+    estimate: 1_400
+    notes: "Legal code: https://code.dccouncil.gov/us/dc/council/code/sections/4-261.03"
     complete: false
     invoiced: false
   
@@ -48,8 +48,8 @@ programs:
     general_program: "Child Care Subsidies"
     specific_program: "DC Childcare subsidy program"
     link: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"
-    estimate: 1_500
-    notes: "Sliding scale calculations"
+    estimate: 1_100
+    notes: ""
     complete: false
     invoiced: false
   
@@ -75,8 +75,8 @@ programs:
     general_program: "Section 8"
     specific_program: ""
     link: ""
-    estimate: 1_200
-    notes: "Housing voucher calculations"
+    estimate: 800
+    notes: ""
     complete: false
     invoiced: false
   
@@ -93,8 +93,8 @@ programs:
     general_program: "TANF"
     specific_program: "Temporary Assistance & Family Assistance"
     link: "https://otda.ny.gov/programs/temporary-assistance/"
-    estimate: 2_400
-    notes: "Complex eligibility and benefit calculation"
+    estimate: 2_200
+    notes: ""
     complete: false
     invoiced: false
   
@@ -102,8 +102,8 @@ programs:
     general_program: "SNAP"
     specific_program: ""
     link: ""
-    estimate: 500
-    notes: "State-specific SNAP rules"
+    estimate: 800
+    notes: ""
     complete: false
     invoiced: false
   
@@ -120,8 +120,8 @@ programs:
     general_program: "General Relief / Assistance"
     specific_program: "NY Cash Assistance"
     link: "https://www.nyc.gov/site/hra/help/cash-assistance.page"
-    estimate: 1_400
-    notes: "Multiple assistance types"
+    estimate: 1_500
+    notes: ""
     complete: false
     invoiced: false
   
@@ -129,8 +129,8 @@ programs:
     general_program: "Utility Subsidies"
     specific_program: "NY HEAP"
     link: "https://otda.ny.gov/programs/heap"
-    estimate: 700
-    notes: "Simple eligibility and payment"
+    estimate: 1_100
+    notes: ""
     complete: false
     invoiced: false
   
@@ -139,7 +139,7 @@ programs:
     specific_program: "NY CCAP"
     link: "https://ocfs.ny.gov/programs/childcare/ccap/"
     estimate: 1_500
-    notes: "Sliding scale calculations"
+    notes: ""
     complete: false
     invoiced: false
   
@@ -165,8 +165,8 @@ programs:
     general_program: "Section 8"
     specific_program: ""
     link: ""
-    estimate: 1_200
-    notes: "Housing voucher calculations"
+    estimate: 800
+    notes: ""
     complete: false
     invoiced: false
   
@@ -183,8 +183,8 @@ programs:
     general_program: "TANF"
     specific_program: "IL TANF"
     link: "https://il.db101.org/il/programs/income_support/tanf/faqs.htm#:~:text=get%20TANF%20benefits.-,The%20Illinois%20Department%20of%20Human%20Services%20provides%20a%20chart%20of,less%20than%20%24753%20a%20month"
-    estimate: 2_400
-    notes: "Complex assistance units and time limits"
+    estimate: 1_300
+    notes: "Legal code: https://www.ilga.gov/legislation/ilcs/ilcs4.asp?DocName=030500050HArt%2E+IV&ActID=1413&ChapterID=28&SeqStart=7200000&SeqEnd=11600000"
     complete: false
     invoiced: false
   
@@ -219,8 +219,8 @@ programs:
     general_program: "Utility Subsidies"
     specific_program: "IL LIHEAP"
     link: "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html#:~:text=The%20LIHEAP%20application%20period%20is%20October%201%2C,15%2C%202025%2C%20or%20until%20funding%20is%20exhausted.&text=If%20your%20household%27s%20combined%20income%20for%20the,you%20may%20be%20eligible%20to%20receive%20assistance"
-    estimate: 700
-    notes: "Simple eligibility check"
+    estimate: 1_800
+    notes: "Includes the Utility Billing Relief Program"
     complete: false
     invoiced: false
   
@@ -229,7 +229,7 @@ programs:
     specific_program: "IL CCAP"
     link: "https://www.dhs.state.il.us/page.aspx?item=9877"
     estimate: 1_500
-    notes: "Sliding scale calculations"
+    notes: ""
     complete: false
     invoiced: false
   
@@ -255,8 +255,8 @@ programs:
     general_program: "Section 8"
     specific_program: ""
     link: ""
-    estimate: 1_200
-    notes: "Housing voucher calculations"
+    estimate: 800
+    notes: ""
     complete: false
     invoiced: false
   
@@ -282,8 +282,8 @@ programs:
     general_program: "General Relief"
     specific_program: ""
     link: ""
-    estimate: 1_400
-    notes: "Employment requirements, loan tracking, county-specific rules"
+    estimate: 1_500
+    notes: "Employment status, loan tracking, dependency on other benefits, county-specific rules"
     complete: false
     invoiced: false
   
@@ -291,8 +291,8 @@ programs:
     general_program: "Community Action Partnership LIHEAP"
     specific_program: ""
     link: "https://capriverside.org/utility-assistance-program"
-    estimate: 400
-    notes: "Simple eligibility determination"
+    estimate: 600
+    notes: "60% SMI test + categorical eligibility requiring SNAP/TANF/SSI checks"
     complete: false
     invoiced: false
   
@@ -300,9 +300,9 @@ programs:
     general_program: "General Assistance"
     specific_program: ""
     link: "https://www.alamedacountysocialservices.org/ex/our-services/Work-and-Money/General-Assistance/index"
-    estimate: 1_600
-    notes: "Complex time limits, employability determination, exemptions"
+    estimate: 1_800
+    notes: "Complex time tracking (3 in 12), employability determination, SSI requirements, exemptions"
     complete: false
     invoiced: false
 
-total_estimate: 22_800
+total_estimate: 23_300
