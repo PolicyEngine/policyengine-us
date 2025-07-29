@@ -25,7 +25,8 @@ class ucgid(Variable):
             return household("ucgid", period)
 
         # Try to derive from state_code
-        state_code = household("state_code", period)
+        state_code_enum = household("state_code", period)
+        state_code_strings = state_code_enum.decode_to_str()
 
         # Map state codes to UCGID state values
         state_mapping = {
@@ -82,10 +83,9 @@ class ucgid(Variable):
             "WY": UCGID.WY,
         }
 
-        # Convert state codes to UCGID values
-        result = np.empty(len(state_code), dtype=object)
-        for i, code in enumerate(state_code):
-            state_str = str(code) if hasattr(code, "__str__") else code
+        # Convert state code strings to UCGID values
+        result = np.empty(len(state_code_strings), dtype=object)
+        for i, state_str in enumerate(state_code_strings):
             if state_str in state_mapping:
                 result[i] = state_mapping[state_str]
             else:
