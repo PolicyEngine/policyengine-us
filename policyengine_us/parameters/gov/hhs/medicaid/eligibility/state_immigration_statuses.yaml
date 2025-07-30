@@ -1,0 +1,45 @@
+description: Additional immigration statuses covered by Medicaid in specific states beyond federal requirements. States use their own funding to extend coverage.
+metadata:
+  unit: list
+  period: year
+  label: State-extended Medicaid immigration status coverage
+  breakdown:
+  - state_code
+  reference:
+    - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2023: Findings from a 50-State Survey"
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf
+    - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022: Findings from a 50-State Survey"
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf
+
+# Only include states that extend coverage beyond federal requirements
+# Most states have no additional coverage, so they don't need entries here
+
+# California - covers undocumented immigrants starting 2022
+CA:
+  2022-01-01:
+    - UNDOCUMENTED
+
+# DC - covers undocumented immigrants
+DC:
+  2021-01-01:
+    - UNDOCUMENTED
+
+# Illinois - covers undocumented immigrants starting 2022
+IL:
+  2022-01-01:
+    - UNDOCUMENTED
+
+# Massachusetts - covers undocumented immigrants
+MA:
+  2021-01-01:
+    - UNDOCUMENTED
+
+# New York - covers undocumented immigrants
+NY:
+  2021-01-01:
+    - UNDOCUMENTED
+
+# Oregon - covers undocumented immigrants starting 2023
+OR:
+  2023-07-01:
+    - UNDOCUMENTED
