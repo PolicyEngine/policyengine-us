@@ -24,12 +24,18 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         # Check if immigration status is in state-specific extended coverage
-        state_extended_statuses = p.state_immigration_statuses[state]
+        # Handle states with no extended coverage using getattr with None default
+        state_code_lower = state.lower()
+        if state_code_lower == "or":
+            state_code_lower = "or_"
 
-        # Handle states with no extended coverage (empty lists)
+        state_extended_param = getattr(
+            p.state_extended_immigration_statuses, state_code_lower, None
+        )
+
         state_eligible = where(
-            len(state_extended_statuses) > 0,
-            np.isin(immigration_status_str, state_extended_statuses),
+            state_extended_param is not None,
+            np.isin(immigration_status_str, state_extended_param),
             False,
         )
 
