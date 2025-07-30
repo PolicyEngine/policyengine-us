@@ -24,19 +24,43 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         # Check if immigration status is in state-specific extended coverage
-        # Handle states with no extended coverage using getattr with None default
-        state_code_lower = state.lower()
-        if state_code_lower == "or":
-            state_code_lower = "or_"
-
-        state_extended_param = getattr(
-            p.state_extended_immigration_statuses, state_code_lower, None
-        )
-
-        state_eligible = where(
-            state_extended_param is not None,
-            np.isin(immigration_status_str, state_extended_param),
-            False,
+        # Only states with extended coverage beyond federal requirements
+        state_eligible = select(
+            [
+                state == "CA",
+                state == "DC",
+                state == "IL",
+                state == "MA",
+                state == "NY",
+                state == "OR",
+            ],
+            [
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses.ca,
+                ),
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses.dc,
+                ),
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses.il,
+                ),
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses.ma,
+                ),
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses.ny,
+                ),
+                np.isin(
+                    immigration_status_str,
+                    p.state_extended_immigration_statuses["or_"],
+                ),
+            ],
+            default=False,
         )
 
         return federal_eligible | state_eligible
