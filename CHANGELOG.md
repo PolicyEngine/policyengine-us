@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.358.0] - 2025-07-30 22:55:21
+
+### Added
+
+- Sen. Hawley tariff rebate reform.
+
 ## [1.357.2] - 2025-07-30 10:45:15
 
 ### Fixed
@@ -12463,6 +12469,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.358.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.2...1.358.0
 [1.357.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.1...1.357.2
 [1.357.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.0...1.357.1
 [1.357.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.356.0...1.357.0
