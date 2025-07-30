@@ -95,6 +95,9 @@ from .reconciliation import (
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
+from .congress.awra import (
+    create_american_worker_rebate_act_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -215,6 +218,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     additional_tax_bracket = create_additional_tax_bracket_reform(
         parameters, period
     )
+    american_worker_rebate_act = create_american_worker_rebate_act_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -258,6 +264,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         additional_tax_bracket,
+        american_worker_rebate_act,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

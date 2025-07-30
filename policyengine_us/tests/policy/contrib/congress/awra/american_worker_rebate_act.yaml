@@ -1,0 +1,22 @@
+- name: Eligible head of household with one eligible child.
+  period: 2025
+  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 20_000
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: 600
+    american_worker_tax_rebate_base_amount: 600
+    american_worker_tax_rebate: 1_200
