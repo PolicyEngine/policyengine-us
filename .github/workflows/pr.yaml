@@ -36,6 +36,14 @@ jobs:
     name: Test API Versioning (to delete)
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+      - name: Install package
+        run: make install
       - name: Update API
         run: python .github/update_api.py
         env:
