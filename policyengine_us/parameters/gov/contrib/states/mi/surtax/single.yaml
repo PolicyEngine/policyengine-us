@@ -3,7 +3,7 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Michigan surtax on single filers
+  label: Michigan surtax on single filers.
   reference:
 brackets:
   - threshold:
@@ -13,5 +13,4 @@ brackets:
   - threshold:
       2027-01-01: 500_000
     rate:
-      0000-01-01: 0
       2027-01-01: 0.05
