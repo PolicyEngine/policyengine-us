@@ -32,6 +32,14 @@ jobs:
         run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
         run: make changelog
+  test-api-versioning:
+    name: Test API Versioning (to delete)
+    steps:
+      - name: Update API
+        run: python .github/update_api.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
+
   Test:
     runs-on: ubuntu-latest
     steps:
