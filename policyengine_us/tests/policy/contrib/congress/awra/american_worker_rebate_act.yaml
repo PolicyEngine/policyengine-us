@@ -17,6 +17,6 @@
         adjusted_gross_income: 20_000
   output:
     american_worker_tax_rebate_eligible: true
-    american_worker_tax_rebate_child_amount: 600
+    american_worker_tax_rebate_child_amount: [0, 600]
     american_worker_tax_rebate_base_amount: 600
     american_worker_tax_rebate: 1_200

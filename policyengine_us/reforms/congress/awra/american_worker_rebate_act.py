@@ -71,10 +71,18 @@ def create_american_worker_rebate_act() -> Reform:
         definition_period = YEAR
         defined_for = "american_worker_tax_rebate_eligible"
 
-        adds = [
-            "american_worker_tax_rebate_base_amount",
-            "american_worker_tax_rebate_child_amount",
-        ]
+        def formula(tax_unit, period, parameters):
+            total_amount = add(tax_unit, period, [
+                "american_worker_tax_rebate_base_amount",
+                "american_worker_tax_rebate_child_amount",
+            ])
+            agi = tax_unit("adjusted_gross_income", period)
+            filing_status = tax_unit("filing_status", period)
+            p = parameters(period).gov.contrib.congress.awra
+            agi_excess = max_(agi - p.phase_out.start[filing_status], 0)
+            phase_out = agi_excess * p.phase_out.rate
+            return max_(total_amount - phase_out, 0)
+
 
     class american_worker_tax_rebate_child_amount(Variable):
         value_type = float
@@ -85,7 +93,7 @@ def create_american_worker_rebate_act() -> Reform:
         definition_period = YEAR
         defined_for = "ctc_qualifying_child"
 
-        adds = "gov.contrib.congress.awra.amount.non_joint"
+        adds = ["gov.contrib.congress.awra.amount.non_joint"]
 
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
