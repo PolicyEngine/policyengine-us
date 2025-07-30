@@ -4,7 +4,6 @@ description: Maximum value of the CTC for adult dependents.
 values:
   0000-01-01: 0
   2018-01-01: 500
-  2026-01-01: 0
 metadata:
   unit: currency-USD
   period: year
@@ -13,3 +12,6 @@ metadata:
     # TCJA only.
     - title: 26 U.S. Code § 24(h)(4)(a)
       href: https://www.law.cornell.edu/uscode/text/26/24#h_4_A
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB extends TCJA CTC, including adult dependent credit.

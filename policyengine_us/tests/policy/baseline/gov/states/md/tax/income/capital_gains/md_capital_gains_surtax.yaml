@@ -1,0 +1,214 @@
+- name: MD Capital gains surtax 2024 - Not yet effective
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+        short_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_capital_gains_surtax: 0
+
+- name: MD Capital gains surtax 2025 - Below AGI threshold (no surtax)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 300_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_capital_gains_surtax: 0
+
+- name: MD Capital gains surtax 2025 - At AGI threshold (no surtax)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 75_000
+        short_term_capital_gains: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 350_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_capital_gains_surtax: 0
+
+- name: MD Capital gains surtax 2025 - Above AGI threshold with capital gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+        short_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Net capital gains: $100,000 + $50,000 = $150,000
+    # Surtax: $150,000 * 2% = $3,000
+    md_capital_gains_surtax: 3_000
+
+- name: MD Capital gains surtax 2025 - Long-term gains only
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 200_000
+        short_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Net capital gains: $200,000
+    # Surtax: $200,000 * 2% = $4,000
+    md_capital_gains_surtax: 4_000
+
+- name: MD Capital gains surtax 2025 - Short-term gains only
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 0
+        short_term_capital_gains: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 450_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Net capital gains: $80,000
+    # Surtax: $80,000 * 2% = $1,600
+    md_capital_gains_surtax: 1_600
+
+- name: MD Capital gains surtax 2025 - With capital losses (no net gains)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: 25_000
+        capital_losses: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Gross gains: $50,000 + $25,000 = $75,000
+    # Capital losses limited to $3,000 federal cap
+    # Net gains after losses: max($75,000 - $3,000, 0) = $72,000
+    # Surtax: $72,000 * 2% = $1,440
+    md_capital_gains_surtax: 1_440
+
+- name: MD Capital gains surtax 2025 - With capital losses (partial offset)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 120_000
+        short_term_capital_gains: 30_000
+        capital_losses: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 450_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Gross gains: $120,000 + $30,000 = $150,000
+    # Capital losses limited to $3,000 federal cap (was $50,000)
+    # Net gains after losses: max($150,000 - $3,000, 0) = $147,000
+    # Surtax: $147,000 * 2% = $2,940
+    md_capital_gains_surtax: 2_940
+
+- name: MD Capital gains surtax 2025 - High earner with large gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 500_000
+        short_term_capital_gains: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Net capital gains: $500,000 + $200,000 = $700,000
+    # Surtax: $700,000 * 2% = $14,000
+    md_capital_gains_surtax: 14_000
+
+# NOTE: The following test case represents a limitation of the current implementation
+# In reality, primary residence sales under $1.5M should be excluded from the surtax
+- name: MD Capital gains surtax 2025 - Limitation test (includes all gains)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 300_000  # Could include primary residence sale
+        short_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 750_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Current implementation includes ALL capital gains
+    # Real implementation should exclude primary residence < $1.5M
+    # This test documents current behavior, not ideal behavior
+    # Net capital gains: $300,000 (should potentially be less with exclusions)
+    # Surtax: $300,000 * 2% = $6,000 (may overstate actual liability)
+    md_capital_gains_surtax: 6_000

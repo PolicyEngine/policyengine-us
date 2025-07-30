@@ -1,40 +1,51 @@
-- name: TANF eligible and has benefit
-  period: 2022
-  input:
-    is_tanf_eligible: true
-    tanf_amount_if_eligible: 200
-  output:
-    tanf: 200
+# Unit tests for tanf variable - testing only direct inputs
 
-- name: TANF ineligible and does not receive benefit
+- name: TANF abolition parameter returns zero
   period: 2022
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
+    gov.hhs.tanf.abolish_tanf: true
+    tanf_reported: 500
+    ca_tanf: 300
+    co_tanf: 200
   output:
     tanf: 0
 
-- name: Has TANF reported
+- name: TANF reported is used when positive
   period: 2022
   input:
-    tanf_reported: 1
+    tanf_reported: 200
+    ca_tanf: 100
+    co_tanf: 50
   output:
-    tanf: 1
+    tanf: 200
 
-- name: Has CO TANF
-  period: 2023
+- name: State TANF values are summed when no reported value
+  period: 2022
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
+    tanf_reported: 0
+    ca_tanf: 150
     co_tanf: 100
+    dc_tanf: 75
+    ny_tanf: 125
   output:
-    tanf: 100
+    tanf: 450
 
-- name: Has NY TANF
-  period: 2023
+- name: Zero TANF when no state programs and no reported value
+  period: 2022
   input:
-    is_tanf_eligible: false
-    tanf_amount_if_eligible: -100
-    ny_tanf: 100
+    tanf_reported: 0
+    ca_tanf: 0
+    co_tanf: 0
+    dc_tanf: 0
+    ny_tanf: 0
   output:
-    tanf: 100
+    tanf: 0
+
+- name: Only positive reported TANF overrides state values
+  period: 2022
+  input:
+    tanf_reported: 0
+    ca_tanf: 100
+    ny_tanf: 200
+  output:
+    tanf: 300

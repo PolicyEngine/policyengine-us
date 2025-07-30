@@ -1,0 +1,21 @@
+description: The IRS applies a deduction floor of this amount for the Qualified Business Income Deduction, based on qualified business income.
+
+brackets:
+  - threshold:
+      2026-01-01: -.inf
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1_000
+    amount:
+      2026-01-01: 400
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: QBID deduction floor amount
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

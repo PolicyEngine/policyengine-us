@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: PA
-    cdcc: 0
+    cdcc_potential: 0
   output:
     pa_cdcc: 0
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     state_code: PA
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     pa_cdcc: 300
 
@@ -18,6 +18,6 @@
   period: 2023
   input:
     state_code: PA
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     pa_cdcc: 1_000

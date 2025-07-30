@@ -1,0 +1,12 @@
+description: The IRS caps the tip income exemption at this amount.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Tip income exemption cap
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+values:
+  2025-01-01: 25_000

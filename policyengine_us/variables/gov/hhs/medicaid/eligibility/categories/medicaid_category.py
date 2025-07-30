@@ -11,6 +11,7 @@ class MedicaidCategory(Enum):
     PARENT = "Parent"
     PREGNANT = "Pregnant"
     SSI_RECIPIENT = "SSI recipient"
+    SENIOR_OR_DISABLED = " Senior or disabled"
     NONE = "None"
 
 
@@ -36,6 +37,7 @@ class medicaid_category(Variable):
             is_parent_for_medicaid=MedicaidCategory.PARENT,
             is_pregnant_for_medicaid=MedicaidCategory.PREGNANT,
             is_ssi_recipient_for_medicaid=MedicaidCategory.SSI_RECIPIENT,
+            is_optional_senior_or_disabled_for_medicaid=MedicaidCategory.SENIOR_OR_DISABLED,
         )
 
         # Ensure parametric reforms to the list of categories prevent those

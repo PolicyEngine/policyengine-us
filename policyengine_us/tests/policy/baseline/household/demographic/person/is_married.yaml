@@ -13,3 +13,18 @@
         members: [head, spouse]
   output:
     is_married: true
+
+- name: Separate filing status should not be married
+  period: 2022
+  input:
+    people:
+      head: {}
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    families:
+      family:
+        members: [head]
+  output:
+    is_married: false

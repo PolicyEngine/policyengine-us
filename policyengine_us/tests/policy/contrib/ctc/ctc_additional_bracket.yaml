@@ -36,7 +36,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
   output:
-    ctc_child_individual_maximum: [0, 0, 2_000, 2_000]
+    ctc_child_individual_maximum: [0, 0, 2_200, 2_200]
 
 - name: Joint filers with two kids, different refundable amounts
   period: 2024

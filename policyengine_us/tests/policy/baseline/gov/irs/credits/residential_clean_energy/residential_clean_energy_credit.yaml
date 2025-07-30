@@ -1,7 +1,7 @@
 - name: Default is zero.
   period: 2022
   output:
-    residential_clean_energy_credit: 0
+    residential_clean_energy_credit_potential: 0
 
 - name: 30% in 2022.
   period: 2022
@@ -16,7 +16,7 @@
     fuel_cell_property_expenditures: 1_100
     fuel_cell_property_capacity: 1
   output:
-    residential_clean_energy_credit: 1_800  # 30% of $6,000.
+    residential_clean_energy_credit_potential: 1_800  # 30% of $6,000.
 
 - name: 26% in 2033.
   period: 2033
@@ -31,4 +31,4 @@
     fuel_cell_property_expenditures: 1_100
     fuel_cell_property_capacity: 1
   output:
-    residential_clean_energy_credit: 1_560  # 26% of $6,000.
+    residential_clean_energy_credit_potential: 1_560  # 26% of $6,000.
