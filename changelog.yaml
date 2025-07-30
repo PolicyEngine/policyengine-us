@@ -10591,3 +10591,8 @@
     added:
     - Sen. Hawley tariff rebate reform.
   date: 2025-07-30 22:55:21
+- bump: patch
+  changes:
+    changed:
+    - Fixed how update_api.py retrieves the version number from pyproject.toml.
+  date: 2025-07-30 23:20:43
