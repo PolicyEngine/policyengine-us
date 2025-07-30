@@ -1,6 +1,6 @@
 - name: Eligible head of household with one eligible child.
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -23,7 +23,7 @@
 
 - name: Undocumented head, household is ineligible
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -46,7 +46,7 @@
 
 - name: Undocumented head, spouse is eligible, household is ineligible
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -72,7 +72,7 @@
 
 - name: Eligible head of household with one eligible child, agi over phase-out threshold.
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -95,7 +95,7 @@
 
 - name: Eligible married couple with one eligible child, fully phased out.
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -121,7 +121,7 @@
 
 - name: Child not eligible
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:
@@ -147,7 +147,7 @@
 
 - name: One eligible child, one ineligible child
   period: 2025
-  reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
     gov.contrib.congress.hawley.awra.in_effect: true
     people:

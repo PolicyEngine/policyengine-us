@@ -95,7 +95,7 @@ from .reconciliation import (
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
-from .congress.awra import (
+from .congress.hawley.awra import (
     create_american_worker_rebate_act_reform,
 )
 
