@@ -258,10 +258,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
-    mi_surtax = create_mi_surtax_reform(
-        parameters, period
-    )
-
+    mi_surtax = create_mi_surtax_reform(parameters, period)
 
     reforms = [
         afa_reform,
