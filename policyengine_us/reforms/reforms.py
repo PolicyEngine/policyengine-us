@@ -112,6 +112,9 @@ from .reconciliation import (
     create_reconciled_ssn_for_llc_and_aoc_reform,
     create_aca_ptc_immigration_status_reform,
 )
+from .surtax import (
+    create_mi_surtax_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -255,6 +258,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
+    mi_surtax = create_mi_surtax_reform(
+        parameters, period
+    )
+
 
     reforms = [
         afa_reform,
@@ -308,6 +315,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         aca_ptc_immigration_status,
         ctc_additional_bracket,
+        mi_surtax,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
