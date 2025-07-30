@@ -34,6 +34,7 @@ jobs:
         run: make changelog
   test-api-versioning:
     name: Test API Versioning (to delete)
+    runs-on: ubuntu-latest
     steps:
       - name: Update API
         run: python .github/update_api.py
