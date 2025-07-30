@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.357.2] - 2025-07-30 10:45:15
+
+### Fixed
+
+- Fix reported SALT unit test.
+
 ## [1.357.1] - 2025-07-29 16:49:54
 
 ### Added
@@ -12457,6 +12463,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.357.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.1...1.357.2
 [1.357.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.0...1.357.1
 [1.357.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.356.0...1.357.0
 [1.356.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.355.0...1.356.0
