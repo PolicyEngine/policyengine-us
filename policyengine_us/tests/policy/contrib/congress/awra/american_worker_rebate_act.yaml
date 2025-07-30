@@ -2,7 +2,7 @@
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: CITIZEN
@@ -25,7 +25,7 @@
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: UNDOCUMENTED
@@ -48,7 +48,7 @@
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: UNDOCUMENTED
@@ -74,7 +74,7 @@
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: CITIZEN
@@ -93,11 +93,11 @@
     american_worker_tax_rebate_base_amount: 600
     american_worker_tax_rebate: 950
 
-- name: Eligible head of household with one eligible child, fully phased out.
+- name: Eligible married couple with one eligible child, fully phased out.
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: CITIZEN
@@ -119,12 +119,11 @@
     american_worker_tax_rebate_base_amount: 1_200
     american_worker_tax_rebate: 0
 
-
 - name: Child not eligible
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: CITIZEN
@@ -150,7 +149,7 @@
   period: 2025
   reforms: policyengine_us.reforms.congress.awra.american_worker_rebate_act.american_worker_rebate_act
   input:
-    gov.contrib.congress.awra.in_effect: true
+    gov.contrib.congress.hawley.awra.in_effect: true
     people:
       head:
         immigration_status: CITIZEN

@@ -19,7 +19,7 @@ def create_american_worker_rebate_act() -> Reform:
             immigration_status_str = immigration_status.decode_to_str()
             eligible_immigration_statuses = parameters(
                 period
-            ).gov.contrib.congress.awra.eligible_immigration_statuses
+            ).gov.contrib.congress.hawley.awra.eligible_immigration_statuses
             is_eligible_immigration_status = np.isin(
                 immigration_status_str, eligible_immigration_statuses
             )
@@ -27,17 +27,11 @@ def create_american_worker_rebate_act() -> Reform:
             meets_ctc_identification_requirements = person(
                 "meets_ctc_identification_requirements", period
             )
-            eligible_head_or_spouse_count = tax_unit.sum(
-                head_or_spouse
-                & is_eligible_immigration_status
+            ineligible_head_or_spouse = head_or_spouse & ~(
+                is_eligible_immigration_status
                 & meets_ctc_identification_requirements
             )
-            joint = tax_unit("tax_unit_is_joint", period)
-            return where(
-                joint,
-                eligible_head_or_spouse_count == 2,
-                eligible_head_or_spouse_count == 1,
-            )
+            return ~tax_unit.any(ineligible_head_or_spouse)
 
     class american_worker_tax_rebate_base_amount(Variable):
         value_type = float
@@ -51,14 +45,13 @@ def create_american_worker_rebate_act() -> Reform:
         defined_for = "american_worker_tax_rebate_eligible"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.awra
-            joint = tax_unit("tax_unit_is_joint", period)
-            non_joint_amount = p.amount.non_joint
-            return where(
-                joint,
-                non_joint_amount * p.amount.joint_multiplier,
-                non_joint_amount,
+            p = parameters(period).gov.contrib.congress.hawley.awra
+            multiplier = where(
+                tax_unit("tax_unit_is_joint", period),
+                p.amount.joint_multiplier,
+                1,
             )
+            return multiplier * p.amount.non_joint
 
     class american_worker_tax_rebate(Variable):
         value_type = float
@@ -82,7 +75,7 @@ def create_american_worker_rebate_act() -> Reform:
             )
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
-            p = parameters(period).gov.contrib.congress.awra
+            p = parameters(period).gov.contrib.congress.hawley.awra
             agi_excess = max_(agi - p.phase_out.start[filing_status], 0)
             phase_out = agi_excess * p.phase_out.rate
             return max_(total_amount - phase_out, 0)
@@ -96,7 +89,7 @@ def create_american_worker_rebate_act() -> Reform:
         definition_period = YEAR
         defined_for = "ctc_qualifying_child"
 
-        adds = ["gov.contrib.congress.awra.amount.non_joint"]
+        adds = ["gov.contrib.congress.hawley.awra.amount.non_joint"]
 
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
@@ -130,7 +123,7 @@ def create_american_worker_rebate_act_reform(
     if bypass:
         return create_american_worker_rebate_act()
 
-    p = parameters.gov.contrib.congress.awra
+    p = parameters.gov.contrib.congress.hawley.awra
 
     reform_active = False
     current_period = period_(period)
