@@ -1,0 +1,7 @@
+- name: 10% rate
+  period: 2018
+  input:
+    cdcc_relevant_expenses: 2_000
+    cdcc_rate: 0.1
+  output:
+    cdcc_potential: 200

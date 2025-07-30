@@ -17,45 +17,46 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 100
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: 3.13
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies
+        run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
-        run: pip install yaml-changelog>=0.1.7 && make changelog
-      - name: Preview changelog update
-        run: ".github/get-changelog-diff.sh"
-      - name: Check version number has been properly updated
-        run: .github/is-version-number-acceptable.sh
+        run: make changelog
   Test:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 10  # Need full history for git diff
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
-      - name: Install package
-        run: make install
-      - name: Run non-structural YAML tests
-        run: make test-yaml-no-structural
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --dev
+      - name: Turn off default branching
+        shell: bash
+        run: ./update_itemization.sh
+      - name: Run selective tests
         env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - name: Run structural YAML tests
-        run: make test-yaml-structural
-        env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - name: Run Python-based tests
-        run: make test-other
-        env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - name: Produce combined coverage repository
-        run: make coverage
-      - uses: codecov/codecov-action@v4
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
       - name: Build package
-        run: make
+        run: uv build

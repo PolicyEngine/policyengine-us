@@ -12,5 +12,6 @@ class ar_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ar.tax.income.credits.cdcc
+        # Arkansas matches the federal credit taken
         cdcc = tax_unit("cdcc", period)
         return cdcc * p.match

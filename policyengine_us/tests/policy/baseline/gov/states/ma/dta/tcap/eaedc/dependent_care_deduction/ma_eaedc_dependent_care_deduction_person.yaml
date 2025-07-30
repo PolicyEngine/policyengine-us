@@ -6,7 +6,7 @@
         age: 35
         is_tax_unit_dependent: false 
         ma_eaedc_eligible_dependent: false
-        weekly_hours_worked_before_lsr: 40
+        weekly_hours_worked: 40
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -23,15 +23,15 @@
         members: [person1, person2]
         state_code: MA
   output:
-    ma_eaedc_dependent_care_deduction_person: [0,2_100]
+    ma_eaedc_dependent_care_deduction_person: [0, 2_100]
 
 - name: Case 2, older dependent, 10 hours/week.
   period: 2023-01
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
-    monthly_age: 2
+    weekly_hours_worked: 10
+    age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 44
@@ -41,8 +41,8 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
-    monthly_age: 1
+    weekly_hours_worked: 10
+    age: 1
     pre_subsidy_childcare_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 50
@@ -52,8 +52,8 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
-    monthly_age: 2
+    weekly_hours_worked: 10
+    age: 2
     pre_subsidy_childcare_expenses: 30
   output:
     ma_eaedc_dependent_care_deduction_person: 2.5
@@ -63,8 +63,8 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 60
-    monthly_age: 2
+    weekly_hours_worked: 60
+    age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 175
@@ -74,7 +74,7 @@
   input: 
     people:
       person1:
-        weekly_hours_worked_before_lsr: 60
+        weekly_hours_worked: 60
       person2:
         ma_eaedc_eligible_dependent: true
         age: 12

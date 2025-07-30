@@ -2,7 +2,6 @@ description: Additional Child Tax Credit income threshold
 values:
   2013-01-01: 3_000
   2018-01-01: 2_500
-  2026-01-01: 3_000
 metadata:
   unit: currency-USD
   period: year
@@ -13,3 +12,6 @@ metadata:
     # TCJA:
     - title: 26 U.S. Code § 24(h)(6)
       href: https://www.law.cornell.edu/uscode/text/26/24#h_6
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB extends TCJA CTC phase-in threshold.
