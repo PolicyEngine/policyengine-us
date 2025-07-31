@@ -13,9 +13,9 @@ metadata:
     - title: 2023 Montana Individual Income Tax Return (Taxable Social Security Benefits Schedule)
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=6
       # Montana uses the difference between the higher and lower federal social security parameters in the 
-      # computation while adjusting the separate values as half of the joint amount. This is not docuemnted
+      # computation while adjusting the separate values as half of the joint amount. This is not documented
       # in the Montana legal code. 
-      # Starting in 2024 all Social Security is taxable, this is relfected in mt_agi.py
+      # Starting in 2024 all Social Security is taxable, this is reflected in mt_agi.py
 SINGLE:
   2021-01-01: 34_000
 HEAD_OF_HOUSEHOLD:

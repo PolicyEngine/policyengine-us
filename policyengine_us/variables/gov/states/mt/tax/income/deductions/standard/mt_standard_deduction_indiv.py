@@ -20,7 +20,7 @@ class mt_standard_deduction_indiv(Variable):
             period,
         )
 
-        if p.applies:
+        if p.state_specific_deduction_applies:
             # ── Pre-2024 MT-specific calculation ────────────────────────────────
             agi = person("mt_agi", period)
             floor = p.floor[filing_status]

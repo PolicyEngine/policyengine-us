@@ -17,7 +17,7 @@ class mt_agi(Variable):
         # Montana taxable social security benefits can be either addition or subtraction
         # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
 
-        p = parameters(period).gov.states.mt.tax.income.deductions.standard
+        p = parameters(period).gov.states.mt.tax.income.social_security
         if p.applies:
             # 2023 and before: apply lines 21-24 adjustment for social security
             taxable_ss = person("taxable_social_security", period)
