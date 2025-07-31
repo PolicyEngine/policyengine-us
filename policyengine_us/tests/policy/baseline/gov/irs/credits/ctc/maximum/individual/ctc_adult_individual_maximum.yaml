@@ -27,10 +27,10 @@
   output:
     ctc_adult_individual_maximum: 500
 
-- name: Returns to zero post-TCJA.
+- name: Extended by OBBB.
   period: 2026
   input:
     is_tax_unit_dependent: true
     ctc_child_individual_maximum: 0
   output:
-    ctc_adult_individual_maximum: 0
+    ctc_adult_individual_maximum: 500
