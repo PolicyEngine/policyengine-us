@@ -43,12 +43,12 @@ class meets_snap_abawd_work_requirements(Variable):
             | meets_snap_general_work_requirements
             | is_pregnant
         )
-        if p.amended_structure.in_effect:
-            # Work exempted state
+        if p.modified_work_requirements.in_effect:
+            # States exempt from work requirements.
             state_code = person.household("state_code", period)
             state_code_str = state_code.decode_to_str()
             is_abawd_work_requirements_exempt_state = np.isin(
-                state_code_str, p.amended_structure.exempted_states
+                state_code_str, p.modified_work_requirements.exempt_states
             )
             return base_conditions | is_abawd_work_requirements_exempt_state
         return base_conditions | is_homeless | is_veteran
