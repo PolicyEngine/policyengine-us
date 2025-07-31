@@ -1,0 +1,17 @@
+- name: Case 1, eligible for early head start in CA.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_early_head_start_eligible: true
+  output:
+    early_head_start: 18_807.49 # 492,850,200 / 28,205
+
+- name: Case 2, ineligible for early head start in CA.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_early_head_start_eligible: false
+  output:
+    early_head_start: 0
