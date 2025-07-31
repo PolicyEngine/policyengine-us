@@ -10581,3 +10581,18 @@
     added:
     - Fix broken unit tests introduced through OBBBA parametric changes.
   date: 2025-07-29 16:49:54
+- bump: patch
+  changes:
+    fixed:
+    - Fix reported SALT unit test.
+  date: 2025-07-30 10:45:15
+- bump: minor
+  changes:
+    added:
+    - Sen. Hawley tariff rebate reform.
+  date: 2025-07-30 22:55:21
+- bump: patch
+  changes:
+    changed:
+    - Fixed how update_api.py retrieves the version number from pyproject.toml.
+  date: 2025-07-30 23:20:43
