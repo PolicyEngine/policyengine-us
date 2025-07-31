@@ -15,7 +15,7 @@ class dc_tanf_standard_payment(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        unit_size = spm_unit("spm_unit_size", period)
+        unit_size = spm_unit("dc_tanf_assistance_unit_size", period)
         p = parameters(period).gov.states.dc.dhs.tanf.standard_payment
         capped_unit_size = min_(unit_size, p.max_unit_size)
         return p.amount[capped_unit_size]

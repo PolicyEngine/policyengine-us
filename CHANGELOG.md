@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.360.0] - 2025-07-31 13:59:29
+
+### Added
+
+- DC General Assistance for Children (GAC).
+- DC TANF work requirements.
+- DC Program on Work, Employment, and Responsibility (POWER).
+
+### Fixed
+
+- Refactored formulas in accordance with TANF and GAC.
+
+## [1.359.1] - 2025-07-31 12:15:15
+
+### Fixed
+
+- Add build back back to pyproject.toml.
+
+## [1.359.0] - 2025-07-31 09:28:58
+
+### Added
+
+- Vermont tax credit legislation changes
+
+## [1.358.1] - 2025-07-30 23:20:43
+
+### Changed
+
+- Fixed how update_api.py retrieves the version number from pyproject.toml.
+
+## [1.358.0] - 2025-07-30 22:55:21
+
+### Added
+
+- Sen. Hawley tariff rebate reform.
+
 ## [1.357.2] - 2025-07-30 10:45:15
 
 ### Fixed
@@ -12463,6 +12499,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.1...1.360.0
+[1.359.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.0...1.359.1
+[1.359.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.358.1...1.359.0
+[1.358.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.358.0...1.358.1
+[1.358.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.2...1.358.0
 [1.357.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.1...1.357.2
 [1.357.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.357.0...1.357.1
 [1.357.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.356.0...1.357.0

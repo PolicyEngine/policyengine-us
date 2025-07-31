@@ -1,0 +1,14 @@
+description: The District of Columbia considers receipt of these benefits as disqualifying for the Program on Work, Employment, and Responsibility (POWER).
+values:
+  1975-01-01:
+    - dc_tanf
+    - ssi
+    - unemployment_compensation
+
+metadata:
+  label: DC POWER disqualifying benefits
+  period: year
+  unit: list
+  reference:
+    - title: § 4-205.72. POWER — Establishment; eligibility.
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.72#(d)

@@ -1,0 +1,84 @@
+- name: Case 1, has incapacitated member.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_parent: true
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: true
+        is_parent: true
+      person3: 
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_power_head_or_spouse_eligible: [true, true, false]
+
+- name: Case 2, spouse is pregnant.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_tax_unit_spouse: true
+        is_pregnant: true
+      person3: 
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_power_head_or_spouse_eligible: [false, true, false]
+
+- name: Case 3, is older than 60 years old.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+      person2:
+        age: 59
+        is_tax_unit_spouse: true
+      person3: 
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_power_head_or_spouse_eligible: [true, false, false]

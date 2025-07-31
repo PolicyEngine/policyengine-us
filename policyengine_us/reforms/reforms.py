@@ -98,6 +98,9 @@ from .states.mi.surtax import (
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
+from .congress.hawley.awra import (
+    create_american_worker_rebate_act_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -219,6 +222,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mi_surtax = create_mi_surtax_reform(parameters, period)
 
+    american_worker_rebate_act = create_american_worker_rebate_act_reform(
+        parameters, period
+    )
+
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -262,6 +270,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_additional_bracket,
         mi_surtax,
         additional_tax_bracket,
+        american_worker_rebate_act,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
