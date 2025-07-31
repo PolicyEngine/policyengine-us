@@ -22,7 +22,9 @@
 
 - name: Single filer above threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 600_000
     filing_status: SINGLE
     state_code: MI
@@ -32,7 +34,9 @@
 
 - name: Single filer well above threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 1_000_000
     filing_status: SINGLE
     state_code: MI
@@ -42,7 +46,9 @@
 
 - name: Joint filer below threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 800_000
     filing_status: JOINT
     state_code: MI
@@ -51,7 +57,9 @@
 
 - name: Joint filer at threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 1_000_000
     filing_status: JOINT
     state_code: MI
@@ -60,7 +68,9 @@
 
 - name: Joint filer above threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 1_200_000
     filing_status: JOINT
     state_code: MI
@@ -70,7 +80,9 @@
 
 - name: Joint filer well above threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+    gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 2_000_000
     filing_status: JOINT
     state_code: MI
