@@ -2,29 +2,27 @@ description: The IRS allows an itemized deduction for interest paid on mortgages
 SINGLE:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 JOINT:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 SEPARATE:
   2017-01-01: 500_000
   2018-01-01: 375_000
-  2026-01-01: 500_000
 HEAD_OF_HOUSEHOLD:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 SURVIVING_SPOUSE:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
-  2026-01-01: 1_000_000
 metadata:
   breakdown: filing_status
   unit: currency-USD
   period: year
   label: IRS home mortgage value cap
   reference:
+    # OBBB extends TCJA limits on mortgage interested deduction.
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
     # Hawaii applies this AGI threshold in the state itemized deductions computation
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-2.4, (j)(3)
       href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=10

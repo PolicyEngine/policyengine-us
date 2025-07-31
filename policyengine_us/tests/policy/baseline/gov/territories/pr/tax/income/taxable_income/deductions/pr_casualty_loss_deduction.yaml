@@ -1,0 +1,17 @@
+- name: Separate filer
+  period: 2024
+  input:
+    casualty_loss: 20_000
+    filing_status: SEPARATE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 10_000
+
+- name: Single filer
+  period: 2024
+  input:
+    casualty_loss: 3_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 3_000

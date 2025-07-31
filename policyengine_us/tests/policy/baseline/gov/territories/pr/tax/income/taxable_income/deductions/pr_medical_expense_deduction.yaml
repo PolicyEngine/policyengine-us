@@ -1,0 +1,38 @@
+- name: Medical expenses higher than adjusted gross income
+  period: 2024
+  input:
+    people:
+      person1:
+        medical_out_of_pocket_expenses: 15_000
+      person2:
+        medical_out_of_pocket_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:  
+    pr_medical_expense_deduction: 19_940
+
+
+- name: Medical expenses lower than adjusted gross income
+  period: 2024
+  input:
+    people:
+      person1:
+        medical_out_of_pocket_expenses: 2000
+      person2:
+        medical_out_of_pocket_expenses: 999
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        pr_agi: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:  
+    pr_medical_expense_deduction: 0

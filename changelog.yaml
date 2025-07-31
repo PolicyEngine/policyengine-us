@@ -10518,3 +10518,100 @@
     added:
     - Added Documentation page for Medicaid and ACA.
   date: 2025-07-25 02:23:14
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization turned off for tests.
+  date: 2025-07-25 16:57:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix broken unit tests.
+  date: 2025-07-27 20:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Remove spm_unit_income_decile test with zero weight.
+  date: 2025-07-27 23:15:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove the second earner tax reform.
+  date: 2025-07-28 12:28:49
+- bump: minor
+  changes:
+    added:
+    - ucgid variable.
+    - household_count variable.
+    - spm_unit_count variable.
+    - tax_unit_count variable.
+  date: 2025-07-28 16:41:24
+- bump: patch
+  changes:
+    changed:
+    - person_count variable.
+  date: 2025-07-28 17:17:37
+- bump: minor
+  changes:
+    fixed:
+    - Fix ca_state_supplement_dependent_amount formula.
+  date: 2025-07-28 20:42:43
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to current policy.
+  date: 2025-07-29 11:34:28
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to benefits to current policy.
+  date: 2025-07-29 11:48:42
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico deductions.
+  date: 2025-07-29 12:54:00
+- bump: minor
+  changes:
+    added:
+    - Update federal tax parameters following passage of HR 1.
+  date: 2025-07-29 13:28:50
+- bump: patch
+  changes:
+    added:
+    - Fix broken unit tests introduced through OBBBA parametric changes.
+  date: 2025-07-29 16:49:54
+- bump: patch
+  changes:
+    fixed:
+    - Fix reported SALT unit test.
+  date: 2025-07-30 10:45:15
+- bump: minor
+  changes:
+    added:
+    - Sen. Hawley tariff rebate reform.
+  date: 2025-07-30 22:55:21
+- bump: patch
+  changes:
+    changed:
+    - Fixed how update_api.py retrieves the version number from pyproject.toml.
+  date: 2025-07-30 23:20:43
+- bump: minor
+  changes:
+    added:
+    - Vermont tax credit legislation changes
+  date: 2025-07-31 09:28:58
+- bump: patch
+  changes:
+    fixed:
+    - Add build back back to pyproject.toml.
+  date: 2025-07-31 12:15:15
+- bump: minor
+  changes:
+    added:
+    - DC General Assistance for Children (GAC).
+    - DC TANF work requirements.
+    - DC Program on Work, Employment, and Responsibility (POWER).
+    fixed:
+    - Refactored formulas in accordance with TANF and GAC.
+  date: 2025-07-31 13:59:29

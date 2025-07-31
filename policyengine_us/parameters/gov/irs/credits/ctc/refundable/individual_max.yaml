@@ -6,12 +6,18 @@ values:
   2022-01-01: 1_500
   2023-01-01: 1_600
   2024-01-01: 1_700
-  2026-01-01: 1_000
+  2027-01-01: 1_800
+  2029-01-01: 1_900
+  2032-01-01: 2_000
+  2034-01-01: 2_100
 metadata:
   unit: currency-USD
   period: year
   label: Child tax credit refundable maximum amount
   reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB extends TCJA CTC refundable maximum, sets base year to 2017 instead of 2016 for uprating.
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=8
     - title: 2024 IRS data release
