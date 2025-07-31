@@ -1,0 +1,171 @@
+- name: Case 1, applicant has an eligible child. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 6_000
+        weekly_hours_worked: 25
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        childcare_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_childcare_deduction: 200
+    dc_tanf_earned_income_after_disregard_person: [340, 0]
+    dc_tanf_countable_income: 140
+    dc_tanf_standard_payment: 560
+    dc_tanf_eligible: true 
+    dc_tanf: 420
+    dc_gac_eligible: false
+    dc_gac: 0
+    dc_power_eligible: false
+    dc_power: 0
+
+- name: Case 2, testing GAC, applicant has a TANF unrelated child.  
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_020
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 1
+    dc_tanf_eligible: false
+    dc_tanf: 0
+    dc_gac_eligible: true
+    dc_gac: 450
+
+- name: Case 3, testing TANF and POWER, applicants is working and has an incapacitated member, take TANF. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 6_000
+        weekly_hours_worked: 40
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 2
+    dc_tanf_eligible: true
+    dc_tanf_countable_income: 340
+    dc_tanf_standard_payment: 560
+    dc_tanf: 220
+    dc_power_eligible: false
+    dc_power: 0
+
+- name: Case 4, testing TANF and POWER, applicants is not working, ineligible for TANF, eligible for POWER. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked: 0
+        is_parent: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 2
+    dc_tanf_eligible: false
+    dc_tanf_countable_income: 0
+    dc_tanf_standard_payment: 560
+    dc_tanf: 0
+    dc_tanf_basic_eligibility_requirements: true
+    dc_power_head_or_spouse_eligible: [true, false]
+    dc_power_eligible: true
+    dc_power: 560
+
+- name: Case 5, testing GAC and TANF and POWER, applicant has two child, one related to head or spouse, one is not related, 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 6_000
+        weekly_hours_worked: 0
+        is_parent: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_assistance_unit_size: 2
+    dc_gac_assistance_unit_size: 1
+    dc_tanf_eligible: false
+    dc_power_eligible: true
+    dc_gac_eligible: true
+    dc_tanf: 0
+    dc_gac: 450
+    dc_tanf_countable_income: 340
+    dc_tanf_standard_payment: 560
+    dc_power: 220
+
