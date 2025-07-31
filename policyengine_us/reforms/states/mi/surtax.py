@@ -19,29 +19,11 @@ def create_mi_surtax() -> Reform:
                 return 0
 
             taxable_income = tax_unit("mi_taxable_income", period)
-            filing_status = tax_unit("filing_status", period)
-
-            # Get surtax parameters based on filing status
-            if filing_status == FilingStatus.JOINT:
-                surtax_params = parameters(
+            joint = tax_unit("tax_unit_is_joint", period)
+            p = parameters(
                     period
-                ).gov.contrib.states.mi.surtax.joint
-            else:
-                surtax_params = parameters(
-                    period
-                ).gov.contrib.states.mi.surtax.single
-
-            # Calculate surtax using marginal rate structure
-            surtax = 0
-            for bracket in surtax_params.brackets:
-                threshold = bracket.threshold
-                rate = bracket.rate
-
-                if taxable_income > threshold:
-                    surtax += (taxable_income - threshold) * rate
-                    break
-
-            return surtax
+                ).gov.contrib.states.mi.surtax
+            return where(joint, p.joint.calc(taxable_income), p.single.calc(taxable_income))
 
     class mi_income_tax(Variable):
         value_type = float
