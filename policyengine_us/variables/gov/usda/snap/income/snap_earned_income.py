@@ -12,4 +12,4 @@ class snap_earned_income(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/7/273.9#b_1"
     unit = USD
 
-    adds = "gov.usda.snap.income.sources.earned"
+    adds = ["snap_earned_income_person"]
