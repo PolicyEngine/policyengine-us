@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class earned_income(Variable):
+class irs_earned_income(Variable):
     value_type = float
     entity = Person
     label = "Earned income"
