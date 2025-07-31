@@ -1,0 +1,17 @@
+- name: Case 1, all members are in TANF assistance unit size.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    dc_gac_assistance_unit_size: 0
+    state_code: DC
+  output: 
+    dc_tanf_assistance_unit_size: 3
+  
+- name: Case 2, one member is in GAC assistance unit.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    dc_gac_assistance_unit_size: 1
+    state_code: DC
+  output: 
+    dc_tanf_assistance_unit_size: 2
