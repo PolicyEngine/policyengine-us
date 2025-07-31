@@ -3,15 +3,15 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Michigan surtax on joint filers.
+  label: Michigan surtax joint rate
   reference: 
     - title: Invest in Our Kids ballot initiative
       href: https://www.investinourkids.com/
 brackets:
   - threshold:
-      0000-01-01: 0
+      2027-01-01: 0
     rate:
-      0000-01-01: 0
+      2027-01-01: 0
   - threshold:
       2027-01-01: 1_000_000
     rate:
