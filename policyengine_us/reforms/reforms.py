@@ -92,7 +92,7 @@ from .congress.afa import (
 from .reconciliation import (
     create_reconciled_ssn_for_llc_and_aoc_reform,
 )
-from .surtax import (
+from .states.mi.surtax import (
     create_mi_surtax_reform,
 )
 from .additional_tax_bracket import (

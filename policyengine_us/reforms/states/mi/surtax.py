@@ -81,4 +81,8 @@ def create_mi_surtax_reform(
     if reform_active:  
         return create_mi_surtax()  
     else:  
-        return None  
+        return None
+    
+create_mi_surtax_reform(
+    None, None, bypass=True
+)
