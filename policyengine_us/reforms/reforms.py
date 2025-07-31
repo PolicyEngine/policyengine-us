@@ -226,7 +226,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
-
     reforms = [
         afa_reform,
         winship_reform,
