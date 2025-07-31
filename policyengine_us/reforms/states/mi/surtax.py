@@ -11,13 +11,6 @@ def create_mi_surtax() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            # Check if surtax is in effect
-            in_effect = parameters(
-                period
-            ).gov.contrib.states.mi.surtax.rate.in_effect
-            if not in_effect:
-                return 0
-
             taxable_income = tax_unit("mi_taxable_income", period)
             joint = tax_unit("tax_unit_is_joint", period)
             p = parameters(
