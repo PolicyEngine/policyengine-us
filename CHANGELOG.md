@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.361.0] - 2025-07-31 22:20:59
+
+### Added
+
+- Exempt income from children in school from SNAP.
+
 ## [1.360.1] - 2025-07-31 22:16:19
 
 ### Fixed
@@ -12505,6 +12511,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.361.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.360.1...1.361.0
 [1.360.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.360.0...1.360.1
 [1.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.1...1.360.0
 [1.359.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.0...1.359.1
