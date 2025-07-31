@@ -1,6 +1,8 @@
 - name: Single filer below threshold in 2027
   period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
   input:
+      gov.contrib.states.mi.surtax.in_effect: True
     mi_taxable_income: 400_000
     filing_status: SINGLE
     state_code: MI

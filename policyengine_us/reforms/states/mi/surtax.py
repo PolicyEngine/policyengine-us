@@ -1,7 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
-
-class mi_surtax(Variable):
+def create_mi_surtax() -> Reform:
+    class mi_surtax(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan surtax"
@@ -41,3 +42,14 @@ class mi_surtax(Variable):
                 break
 
         return surtax
+class mi_income_tax(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Michigan income tax"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.MI
+
+    adds = ["mi_income_tax_before_refundable_credits", "mi_surtax"]
+    subtracts = ["mi_refundable_credits"]
+
