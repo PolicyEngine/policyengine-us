@@ -34,7 +34,12 @@ class meets_snap_abawd_work_requirements(Variable):
         is_homeless = person.household("is_homeless", period)
         # A veteran
         is_veteran = person("is_veteran", period)
-
+        # States exempt from work requirements.
+        state_code = person.household("state_code", period)
+        state_code_str = state_code.decode_to_str()
+        is_abawd_work_requirements_exempt_state = np.isin(
+            state_code_str, p.exempt_states
+        )
         base_conditions = (
             is_working
             | working_age_exempt
@@ -42,13 +47,8 @@ class meets_snap_abawd_work_requirements(Variable):
             | exempt_parent
             | meets_snap_general_work_requirements
             | is_pregnant
+            | is_abawd_work_requirements_exempt_state
         )
-        if p.modified_work_requirements.in_effect:
-            # States exempt from work requirements.
-            state_code = person.household("state_code", period)
-            state_code_str = state_code.decode_to_str()
-            is_abawd_work_requirements_exempt_state = np.isin(
-                state_code_str, p.modified_work_requirements.exempt_states
-            )
-            return base_conditions | is_abawd_work_requirements_exempt_state
+        if p.in_effect:
+            return base_conditions
         return base_conditions | is_homeless | is_veteran

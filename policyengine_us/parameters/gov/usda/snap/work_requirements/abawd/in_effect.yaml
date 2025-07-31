@@ -1,0 +1,13 @@
+description: The Department of Agriculture removes the exemption from Able-Bodied Adult Without Dependents (ABAWD) work requirements for homeless individuals or veterans under the Supplemental Nutrition Assistance Program, if this is true.
+
+values:
+  0000-01-01: false
+  2027-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: SNAP ABAWD work requirement exemption removed for homeless or veterans
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
