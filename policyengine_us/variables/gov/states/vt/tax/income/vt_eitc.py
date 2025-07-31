@@ -12,5 +12,13 @@ class vt_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)
-        rate = parameters(period).gov.states.vt.tax.income.credits.eitc.match
+        p = parameters(period).gov.states.vt.tax.income.credits.eitc
+        child_dependents = tax_unit("tax_unit_child_dependents", period)
+
+        rate = where(
+            p.enhanced_structure.in_effect,
+            p.enhanced_structure.rate.calc(child_dependents),
+            p.match,
+        )
+
         return federal_eitc * rate
