@@ -81,6 +81,9 @@
         age: 4
         is_disabled: true
         is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1]
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -102,6 +105,9 @@
         age: 5
         is_disabled: true
         is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -111,7 +117,7 @@
   output:
     ssi_claim_is_joint: [false, false, false]
 
-- name: Case 5, joint filers, both head and spouse eligible, and a eligible child.
+- name: Case 5, martial unit, both head and spouse eligible, and a eligible child.
   period: 2025-01
   input:
     people:
@@ -127,6 +133,9 @@
         age: 5
         is_disabled: true
         is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -134,4 +143,4 @@
       household:
         members: [person1, person2, person3]
   output:
-    ssi_claim_is_joint: [true, true, true]
+    ssi_claim_is_joint: [true, true, false]
