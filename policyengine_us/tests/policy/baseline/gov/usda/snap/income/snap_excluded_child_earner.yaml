@@ -4,7 +4,7 @@
     age: 17
     is_in_k12_school: true
   output:
-    is_countable_income_earner: false
+    snap_excluded_child_earner: true
 
 - name: Case 2, not an income exclusion child due to age.
   period: 2024-01
@@ -12,7 +12,7 @@
     age: 18
     is_in_k12_school: true
   output:
-    is_countable_income_earner: true
+    snap_excluded_child_earner: false
 
 - name: Case 3, not an income exclusion child due to not in school.
   period: 2024-01
@@ -20,10 +20,10 @@
     age: 17
     is_in_k12_school: false
   output:
-    is_countable_income_earner: true
+    snap_excluded_child_earner: false
 
-- name: Case 4, default member's income should count.
+- name: Case 4, default member is not an income exclusion child.
   period: 2024-01
   input:
   output:
-    is_countable_income_earner: true
+    snap_excluded_child_earner: false
