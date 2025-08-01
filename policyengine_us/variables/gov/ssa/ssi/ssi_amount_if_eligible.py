@@ -15,7 +15,7 @@ class ssi_amount_if_eligible(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         head_or_spouse_amount = where(
             person("ssi_claim_is_joint", period),
-            (p.couple) / 2,
+            p.couple / 2,
             p.individual,
         )
         # Adults amount is based on whether it is a joint claim
