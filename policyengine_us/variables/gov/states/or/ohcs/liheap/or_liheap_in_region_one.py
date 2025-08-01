@@ -14,4 +14,4 @@ class or_liheap_in_region_one(Variable):
     def formula(spm_unit, period, parameters):
         county = spm_unit.household("county_str", period)
         p = parameters(period).gov.states["or"].ohcs.liheap
-        return county in p.or_liheap_region_one_counties
+        return county in p.region_one_counties

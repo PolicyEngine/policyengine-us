@@ -10,7 +10,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        utility_type: NATURAL_GAS
+        or_heating_type: NATURAL_GAS
         natural_gas_expense: 600
         heat_in_rent: false
         housing_assistance: 0
@@ -37,7 +37,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        utility_type: ELECTRICITY
+        or_heating_type: ELECTRICITY
         electricity_expense: 900
         heat_in_rent: false
         housing_assistance: 0
@@ -71,7 +71,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        utility_type: NATURAL_GAS
+        or_heating_type: NATURAL_GAS
         natural_gas_expense: 600
         heat_in_rent: false
         housing_assistance: 100
@@ -104,7 +104,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        utility_type: NATURAL_GAS
+        or_heating_type: NATURAL_GAS
         natural_gas_expense: 200
         heat_in_rent: false
         housing_assistance: 100
@@ -133,7 +133,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        utility_type: ELECTRICITY
+        or_heating_type: ELECTRICITY
         heat_in_rent: true
         housing_assistance: 500
     households:

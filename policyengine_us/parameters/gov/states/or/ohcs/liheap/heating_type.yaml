@@ -1,0 +1,16 @@
+description: Oregon uses these heating types to determine payout under the Low-Income Energy Assistance Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Oregon Heating Type
+  reference:
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021
+      href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55
+values:
+  2021-01-01: 
+    - electricity_expense
+    - fuel_oil_expense # heating oil expense
+    - gas_expense #liquid gas expense
+    - wood_pellets_expense    
+    - natural_gas_expense

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class UtilityType(Enum):
+class ORHeatingType(Enum):
     ELECTRICITY = "Electricity"
     HEATING_OIL = "Heating Oil"
     LIQUID_GAS = "Liquid Gas"
@@ -9,10 +9,10 @@ class UtilityType(Enum):
     WOOD_PELLETS = "Wood Pellets"
 
 
-class utility_type(Variable):
+class or_heating_type(Variable):
     value_type = Enum
     entity = SPMUnit
-    possible_values = UtilityType
-    default_value = UtilityType.ELECTRICITY
+    possible_values = ORHeatingType
+    default_value = ORHeatingType.ELECTRICITY
     definition_period = YEAR
-    label = "Household Utility type"
+    label = "Household Heating type"

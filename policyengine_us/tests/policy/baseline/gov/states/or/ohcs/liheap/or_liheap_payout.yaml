@@ -5,7 +5,7 @@
     state_code: OR
     spm_unit_size: 2
     irs_gross_income: 30_000
-    utility_type: NATURAL_GAS
+    or_heating_type: NATURAL_GAS
     natural_gas_expense: 300
   output: 
     or_liheap_payout: 285
@@ -17,7 +17,7 @@
     state_code: OR
     spm_unit_size: 7
     irs_gross_income: 40_000
-    utility_type: HEATING_OIL
+    or_heating_type: HEATING_OIL
     fuel_oil_expense: 900
   output:
     or_liheap_payout: 750
@@ -29,7 +29,7 @@
     state_code: OR
     spm_unit_size: 3
     irs_gross_income: 35_000
-    utility_type: ELECTRICITY
+    or_heating_type: ELECTRICITY
     or_liheap_electricity_type: HEATING
     electricity_expense: 500
   output:
@@ -42,7 +42,7 @@
     state_code: OR
     spm_unit_size: 3
     irs_gross_income: 35_000
-    utility_type: ELECTRICITY
+    or_heating_type: ELECTRICITY
     or_liheap_electricity_type: COOLING
     electricity_expense: 500
   output:
@@ -55,7 +55,7 @@
     state_code: OR
     spm_unit_size: 3
     irs_gross_income: 35_000
-    utility_type: ELECTRICITY
+    or_heating_type: ELECTRICITY
     or_liheap_electricity_type: HEATING_AND_COOLING
     electricity_expense: 1_000
   output:
@@ -68,7 +68,7 @@
     state_code: OR
     spm_unit_size: 3
     irs_gross_income: 35_000
-    utility_type: ELECTRICITY
+    or_heating_type: ELECTRICITY
     or_liheap_electricity_type: HEATING_AND_COOLING
     electricity_expense: 500
   output:
@@ -81,7 +81,7 @@
     state_code: OR
     spm_unit_size: 2
     irs_gross_income: 60_000
-    utility_type: NATURAL_GAS
+    or_heating_type: NATURAL_GAS
     natural_gas_expense: 200
     or_liheap_eligibility: false
   output: 

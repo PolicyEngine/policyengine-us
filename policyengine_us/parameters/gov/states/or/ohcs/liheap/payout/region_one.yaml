@@ -584,7 +584,7 @@ metadata:
   breakdown:
     - range(1,6) # household size  
     - range(1,4) # benefit level 
-    - utility_type 
+    - or_heating_type
   reference:
     - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021
       href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55
@@ -596,5 +596,3 @@ metadata:
       href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/Final-PY2024-Manual-Master-09%2021%202023.pdf#page=56
     - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2025
       href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58
-      
-
