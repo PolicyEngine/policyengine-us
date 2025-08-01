@@ -10635,3 +10635,8 @@
     fixed:
     - Disable Montana married filing separately on same return logic past 2024.
   date: 2025-07-31 23:59:46
+- bump: minor
+  changes:
+    added:
+    - Default to first alphabetical county in state when county is not specified.
+  date: 2025-08-01 22:07:50
