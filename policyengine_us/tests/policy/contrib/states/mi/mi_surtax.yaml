@@ -1,0 +1,91 @@
+- name: Single filer below threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 400_000
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    mi_surtax: 0
+
+- name: Single filer at threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 500_000
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    mi_surtax: 0
+
+- name: Single filer above threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    # (600_000 - 500_000) * 0.05 = 100_000 * 0.05 = 5_000
+    mi_surtax: 5_000
+
+- name: Single filer well above threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    # (1_000_000 - 500_000) * 0.05 = 500_000 * 0.05 = 25_000
+    mi_surtax: 25_000
+
+- name: Joint filer below threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 800_000
+    filing_status: JOINT
+    state_code: MI
+  output:
+    mi_surtax: 0
+
+- name: Joint filer at threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 1_000_000
+    filing_status: JOINT
+    state_code: MI
+  output:
+    mi_surtax: 0
+
+- name: Joint filer above threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 1_200_000
+    filing_status: JOINT
+    state_code: MI
+  output:
+    # (1_200_000 - 1_000_000) * 0.05 = 200_000 * 0.05 = 10_000
+    mi_surtax: 10_000
+
+- name: Joint filer well above threshold in 2027
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 2_000_000
+    filing_status: JOINT
+    state_code: MI
+  output:
+    # (2_000_000 - 1_000_000) * 0.05 = 1_000_000 * 0.05 = 50_000
+    mi_surtax: 50_000
