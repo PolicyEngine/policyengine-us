@@ -30,12 +30,8 @@ class or_liheap_payout(Variable):
 
         payout = where(
             is_region1,
-            p.payout.region_one[unit_size][benefit_level][
-                or_heating_type
-            ],
-            p.payout.region_two[unit_size][benefit_level][
-                or_heating_type
-            ],
+            p.payout.region_one[unit_size][benefit_level][or_heating_type],
+            p.payout.region_two[unit_size][benefit_level][or_heating_type],
         )
         heating_expense = add(spm_unit, period, p.heating_type)
 

@@ -15,8 +15,7 @@ class or_liheap_benefit_level(Variable):
         p = parameters(period).gov.states["or"].ohcs.liheap
 
         levels = [
-            threshold * p.benefit_level_multiplier * i
-            for i in range(1, 4)
+            threshold * p.benefit_level_multiplier * i for i in range(1, 4)
         ]
 
         return select(
