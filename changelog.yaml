@@ -10615,3 +10615,23 @@
     fixed:
     - Refactored formulas in accordance with TANF and GAC.
   date: 2025-07-31 13:59:29
+- bump: patch
+  changes:
+    fixed:
+    - Corrected income tax thresholds for low-income Arkansas tax tables.
+  date: 2025-07-31 22:16:19
+- bump: minor
+  changes:
+    added:
+    - Exempt income from children in school from SNAP.
+  date: 2025-07-31 22:20:59
+- bump: minor
+  changes:
+    added:
+    - 2018 medicaid older children income limits.
+  date: 2025-07-31 23:48:33
+- bump: patch
+  changes:
+    fixed:
+    - Disable Montana married filing separately on same return logic past 2024.
+  date: 2025-07-31 23:59:46

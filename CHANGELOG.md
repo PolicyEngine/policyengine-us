@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.362.1] - 2025-07-31 23:59:46
+
+### Fixed
+
+- Disable Montana married filing separately on same return logic past 2024.
+
+## [1.362.0] - 2025-07-31 23:48:33
+
+### Added
+
+- 2018 medicaid older children income limits.
+
+## [1.361.0] - 2025-07-31 22:20:59
+
+### Added
+
+- Exempt income from children in school from SNAP.
+
+## [1.360.1] - 2025-07-31 22:16:19
+
+### Fixed
+
+- Corrected income tax thresholds for low-income Arkansas tax tables.
+
 ## [1.360.0] - 2025-07-31 13:59:29
 
 ### Added
@@ -12499,6 +12523,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.362.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.362.0...1.362.1
+[1.362.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.361.0...1.362.0
+[1.361.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.360.1...1.361.0
+[1.360.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.360.0...1.360.1
 [1.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.1...1.360.0
 [1.359.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.359.0...1.359.1
 [1.359.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.358.1...1.359.0
