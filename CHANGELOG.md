@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.363.1] - 2025-08-01 23:41:54
+
+### Fixed
+
+- Cap the North Carolina Subsidized Child Care Assistance Program benefit amount at pre_subsidy_childcare_expense.
+
 ## [1.363.0] - 2025-08-01 22:07:50
 
 ### Added
@@ -12529,6 +12535,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.363.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.363.0...1.363.1
 [1.363.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.362.1...1.363.0
 [1.362.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.362.0...1.362.1
 [1.362.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.361.0...1.362.0

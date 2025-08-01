@@ -10640,3 +10640,9 @@
     added:
     - Default to first alphabetical county in state when county is not specified.
   date: 2025-08-01 22:07:50
+- bump: patch
+  changes:
+    fixed:
+    - Cap the North Carolina Subsidized Child Care Assistance Program benefit amount
+      at pre_subsidy_childcare_expense.
+  date: 2025-08-01 23:41:54
