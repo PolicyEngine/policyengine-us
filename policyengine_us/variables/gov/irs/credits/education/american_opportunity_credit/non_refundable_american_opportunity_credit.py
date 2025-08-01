@@ -10,5 +10,11 @@ class non_refundable_american_opportunity_credit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
 
-    adds = ["american_opportunity_credit"]
-    subtracts = ["refundable_american_opportunity_credit"]
+    def formula(tax_unit, period, parameters):
+        credit_limit = tax_unit(
+            "non_refundable_american_opportunity_credit_credit_limit", period
+        )
+        potential = tax_unit(
+            "non_refundable_american_opportunity_credit_potential", period
+        )
+        return min_(credit_limit, potential)

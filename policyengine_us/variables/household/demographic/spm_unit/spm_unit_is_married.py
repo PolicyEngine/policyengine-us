@@ -9,15 +9,5 @@ class spm_unit_is_married(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        # If any tax unit is a married filer, assume the family is.
         person = spm_unit.members
-        filing_status = person.tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
-        person_is_married = is_in(
-            person.tax_unit("filing_status", period),
-            [
-                filing_statuses.JOINT,
-                filing_statuses.SEPARATE,
-            ],
-        )
-        return spm_unit.any(person_is_married)
+        return spm_unit.any(person("is_tax_unit_spouse", period))

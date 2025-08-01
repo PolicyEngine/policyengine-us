@@ -101,6 +101,15 @@ make documentation
 - **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
 ## Testing Best Practices
+- **Test File Naming**:
+  - Name unit test files after the variable being tested (e.g., `household_income_decile.yaml`)
+  - Use `integration.yaml` for integration tests that test multiple variables together
+  - Do not use any other naming patterns for test files
+
+- **Test Formatting**:
+  - **ALWAYS use underscore thousands separators** in numeric values (e.g., `1_000`, `50_000`, not `1000`, `50000`)
+  - This applies to all numeric values in YAML tests including income, weights, thresholds, etc.
+
 - **Unit Tests**: 
   - Create tests in `variable.yaml` that test only the direct inputs to `variable.py`
   - Unit tests should focus on validating a single variable's logic in isolation

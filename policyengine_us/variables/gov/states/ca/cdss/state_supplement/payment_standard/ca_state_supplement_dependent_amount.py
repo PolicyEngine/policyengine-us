@@ -25,10 +25,4 @@ class ca_state_supplement_dependent_amount(Variable):
         dependent_count = spm_unit.sum(
             dependent & dependent_age_eligible & (is_disabled | blind)
         )
-        eligible_person = person("ca_state_supplement_eligible_person", period)
-        eligible_head_or_spouse_present = spm_unit.any(eligible_person)
-        return (
-            dependent_count
-            * p.dependent.amount
-            * eligible_head_or_spouse_present
-        )
+        return dependent_count * p.dependent.amount

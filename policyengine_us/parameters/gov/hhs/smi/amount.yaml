@@ -1,4 +1,4 @@
-description: State median income for 4-person households by state
+description: The US Department of Health and Human Services provides these state median income for 4-person households, by state.
 
 AK:
   2021-10-01: 104_070
@@ -263,14 +263,15 @@ WY:
 
 metadata:
   unit: currency-USD
-  reference:
-    - title: State Median Income (SMI) by household size FFY 2022
-      href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM03%20Attachment1%20SMITable_FY2022.pdf
-    - title: State Median Income (SMI) by Household Size for Optional Use in FFY 2022 and Mandatory Use in LIHEAP for FFY 2023
-      href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att1SMITable_FY2023.pdf
-    - title: State Median Income (SMI) by Household Size for Mandatory Use in LIHWAP for FY 2024
-      href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHWAP_Att1SMITable_FY2023.pdf
-    - title: State Median Income (SMI) by Household Size for Optional Use in FFY 2024 and Mandatory Use in LIHEAP for FY 25
-      href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable_0.pdf#page=2   
   period: year
+  label: HHS SMI 4-person household
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  reference:
+  - title: State Median Income (SMI) by household size for Mandatory Use in LIHEAP for FFY 2022
+    href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM03%20Attachment1%20SMITable_FY2022.pdf
+  - title: State Median Income (SMI) by Household Size for Mandatory Use in LIHEAP for FFY 2023
+    href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att1SMITable_FY2023.pdf
+  - title: State Median Income (SMI) by Household Size for Mandatory Use in LIHEAP for FY 2024
+    href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHWAP_Att1SMITable_FY2023.pdf
+  - title: State Median Income (SMI) by Household Size for Mandatory Use in LIHEAP for FY 2025
+    href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf

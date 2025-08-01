@@ -1,0 +1,15 @@
+description: The District of Columbia counts these sources as assets under the Child Care Subsidy Program.
+values:
+  2020-01-01:
+    - spm_unit_cash_assets
+    - assessed_property_value
+    # money in bank accounts
+    # investment 
+
+metadata:
+  unit: list
+  period: year
+  label: DC CCSP assets sources
+  reference:
+    - title: DC Child Care Subsidy Program Policy Manual
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=12

@@ -1,0 +1,39 @@
+- name: Case 1, has dependent child, meets both work requirements.
+  period: 2022
+  input:
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: true
+    monthly_age: 17
+    is_tax_unit_dependent: true
+  output: 
+    meets_snap_work_requirements: true
+
+- name: Case 2, has dependent child, meets the general work requirements.
+  period: 2022
+  input:
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: false
+    monthly_age: 17
+    is_tax_unit_dependent: true
+  output: 
+    meets_snap_work_requirements: true
+
+- name: Case 3, no dependent child, meets only one work requirements.
+  period: 2022
+  input:
+    meets_snap_general_work_requirements: false
+    meets_snap_abawd_work_requirements: true
+    monthly_age: 18
+    is_tax_unit_dependent: false
+  output: 
+    meets_snap_work_requirements: false
+
+- name: Case 4, no dependent child, meets both work requirements.
+  period: 2022
+  input:
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: true
+    monthly_age: 18
+    is_tax_unit_dependent: false
+  output: 
+    meets_snap_work_requirements: true

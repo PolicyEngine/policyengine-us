@@ -1,0 +1,176 @@
+- name: Eligible head of household with one eligible child.
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 20_000
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: [0, 600]
+    american_worker_tax_rebate_base_amount: 600
+    american_worker_tax_rebate: 1_200
+
+- name: Undocumented head, household is ineligible
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: UNDOCUMENTED
+        ssn_card_type: NONE
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 20_000
+  output:
+    american_worker_tax_rebate_eligible: false
+    american_worker_tax_rebate_child_amount: [0, 600]
+    american_worker_tax_rebate_base_amount: 0
+    american_worker_tax_rebate: 0
+
+- name: Undocumented head, spouse is eligible, household is ineligible
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: UNDOCUMENTED
+        ssn_card_type: NONE
+      spouse:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 20_000
+  output:
+    american_worker_tax_rebate_eligible: false
+    american_worker_tax_rebate_child_amount: [0, 0, 600]
+    american_worker_tax_rebate_base_amount: 0
+    american_worker_tax_rebate: 0
+
+- name: Eligible head of household with one eligible child, agi over phase-out threshold.
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 117_500
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: [0, 600]
+    american_worker_tax_rebate_base_amount: 600
+    american_worker_tax_rebate: 950
+
+- name: Eligible married couple with one eligible child, fully phased out.
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      spouse:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 220_000
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: [0, 0,600]
+    american_worker_tax_rebate_base_amount: 1_200
+    american_worker_tax_rebate: 0
+
+- name: Child not eligible
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      spouse:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: NONE
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 100_000
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: [0, 0, 0]
+    american_worker_tax_rebate_base_amount: 1_200
+    american_worker_tax_rebate: 1_200
+
+- name: One eligible child, one ineligible child
+  period: 2025
+  reforms: policyengine_us.reforms.congress.hawley.awra.american_worker_rebate_act.american_worker_rebate_act
+  input:
+    gov.contrib.congress.hawley.awra.in_effect: true
+    people:
+      head:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      spouse:
+        immigration_status: CITIZEN
+        ssn_card_type: CITIZEN
+      dependent:
+        age: 3
+        ssn_card_type: NONE
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 3
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent, dependent2]
+        adjusted_gross_income: 100_000
+  output:
+    american_worker_tax_rebate_eligible: true
+    american_worker_tax_rebate_child_amount: [0, 0, 0, 600]
+    american_worker_tax_rebate_base_amount: 1_200
+    american_worker_tax_rebate: 1_800

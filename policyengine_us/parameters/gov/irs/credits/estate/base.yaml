@@ -4,6 +4,8 @@ metadata:
   label: Estate tax credit base exclusion amount  
   period: year
   reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=18
     - title: 26 U.S. Code § 2010 - Unified credit against estate tax - (c)(3)(A)
@@ -55,7 +57,5 @@ values:
   2023-01-01: 12_920_000  
   2024-01-01: 13_610_000
   2025-01-01: 13_990_000
-  # Based on the legal code, we use 2017 value as the base 
-  # and cpi_w (2026Q1 projection) for uprating
-  # 5,000,000 * 321.701 (2026Q1) / 236.854 (2017-01-01)
-  2026-01-01: 6_790_000 
+  # OBBB sets estate credit value to $15M.
+  2026-01-01: 15_000_000

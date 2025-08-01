@@ -1,0 +1,23 @@
+- name: Citizen is eligible.
+  period: 2022
+  input:
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_ccsp_immigration_status_eligible_person: true
+
+- name: REFUGEE is eligible.
+  period: 2022
+  input:
+    immigration_status: REFUGEE
+    state_code: DC
+  output:
+    dc_ccsp_immigration_status_eligible_person: true
+
+- name: Undocumented is ineligible.
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: DC
+  output:
+    dc_ccsp_immigration_status_eligible_person: false

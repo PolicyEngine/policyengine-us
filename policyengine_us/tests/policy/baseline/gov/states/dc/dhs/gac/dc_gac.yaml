@@ -1,0 +1,86 @@
+- name: Integration test 1, child is related to head or spouse, ineligible. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_gac_assistance_unit_size: 0 
+    dc_gac_eligible: false
+
+- name: Integration test 2
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_000
+      person2:
+        age: 1
+        employment_income: 0 
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_gac_eligible_child: [false, true]
+    dc_gac_assistance_unit_size: 1
+    dc_gac_standard_payment: 450
+    dc_gac_countable_income: 0
+    dc_gac_eligible: true
+    dc_gac: 450
+
+- name: Integration test 3
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_000
+      person2:
+        age: 17
+        employment_income: 3_600 # $300 monthly 
+        is_tax_unit_dependent: true
+        monthly_hours_worked: 120 * 12
+        is_full_time_student: false
+        is_related_to_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_gac_eligible_child: [false, true]
+    dc_gac_assistance_unit_size: 1
+    dc_gac_standard_payment: 450
+    dc_gac_countable_income: 292.5
+    dc_gac_eligible: true
+    dc_gac: 157.5

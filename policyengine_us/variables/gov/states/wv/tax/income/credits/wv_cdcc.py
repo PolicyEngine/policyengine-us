@@ -11,6 +11,7 @@ class wv_cdcc(Variable):
     reference = "https://code.wvlegislature.gov/11-21-26/"
 
     def formula(tax_unit, period, parameters):
+        # West Virginia matched the federal credit taken
         cdcc = tax_unit("cdcc", period)
         p = parameters(period).gov.states.wv.tax.income.credits.cdcc
         return cdcc * p.match

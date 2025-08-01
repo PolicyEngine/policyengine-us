@@ -21,3 +21,41 @@
     ca_standard_deduction: 10_726
     ca_deductions: 10_726
     ca_taxable_income: 79_274
+
+- name: 492-CA.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 422343
+        taxable_interest_income: 6389000
+      person2:
+        age: 40
+        employment_income: 1
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ca_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 6
+  output:
+    ca_income_tax: 791_292

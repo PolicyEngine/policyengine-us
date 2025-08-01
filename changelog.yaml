@@ -440,7 +440,7 @@
 - bump: patch
   changes:
     fixed:
-    - Versioning action didn't update `setup.py`.
+    - Versioning action didn't update `pyproject.toml`.
   date: 2022-03-28 10:55:27
 - bump: minor
   changes:
@@ -7897,7 +7897,7 @@
 - bump: patch
   changes:
     fixed:
-    - Inclusion of unneeded packages in setup.py install_requires list.
+    - Inclusion of unneeded packages in pyproject.toml install_requires list.
   date: 2024-08-10 19:54:58
 - bump: minor
   changes:
@@ -10282,3 +10282,356 @@
     added:
     - Consolidated medicaid and medicaid per capita into medicaid cost.
   date: 2025-06-26 12:13:18
+- bump: minor
+  changes:
+    added:
+    - Additional tax bracket reform.
+  date: 2025-06-26 14:45:33
+- bump: minor
+  changes:
+    added:
+    - Business development company income and expanded QBID calculation tests.
+    changed:
+    - Refactored qualified business income deduction logic with wage and property
+      limitations.
+  date: 2025-06-26 16:53:09
+- bump: patch
+  changes:
+    fixed:
+    - Oregon retirement income credit formula.
+  date: 2025-06-30 14:36:28
+- bump: patch
+  changes:
+    fixed:
+    - Senate Finance Tip and Overtime income reforms.
+  date: 2025-06-30 14:44:18
+- bump: patch
+  changes:
+    fixed:
+    - Nebraska 2024 income tax brackets.
+  date: 2025-06-30 16:07:26
+- bump: patch
+  changes:
+    fixed:
+    - Exclude non-mortgage interest from the California itemized deduction AGI limitation.
+  date: 2025-06-30 16:31:07
+- bump: patch
+  changes:
+    fixed:
+    - Only subtract taxable pension income from Hawaii AGI.
+    - Hawaii single and separate income tax rates.
+  date: 2025-06-30 16:42:51
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island 2024 income tax rate update.
+    - Rhode Island 2024 exemption phase-out start.
+  date: 2025-06-30 17:22:33
+- bump: minor
+  changes:
+    added:
+    - Reconciled Medicaid work requirement reform.
+  date: 2025-06-30 19:04:17
+- bump: minor
+  changes:
+    added:
+    - Apply Maryland 2025 Budget Changes.
+  date: 2025-07-01 11:26:13
+- bump: minor
+  changes:
+    added:
+    - SNAP work requirements.
+    - Reconciliation SNAP work requirements reform.
+  date: 2025-07-01 21:43:21
+- bump: minor
+  changes:
+    added:
+    - Move Senate auto loan interest deduction below the line.
+  date: 2025-07-02 13:44:03
+- bump: minor
+  changes:
+    added:
+    - Align market income sources with IRS gross income sources.
+  date: 2025-07-02 17:21:26
+- bump: minor
+  changes:
+    added:
+    - Add Senate Medicaid work requirement reform.
+    - Consolidate House and Senate Medicaid work requirement reform.
+  date: 2025-07-02 18:07:05
+- bump: minor
+  changes:
+    added:
+    - Senate reconciliation bill charitable deduction reform.
+  date: 2025-07-03 00:50:54
+- bump: minor
+  changes:
+    added:
+    - added 2018 maximum family income for infants to qualify for medicaid
+  date: 2025-07-07 18:44:33
+- bump: minor
+  changes:
+    added:
+    - added 2018 maximum family income for adults to qualify for medicaid
+  date: 2025-07-08 16:02:27
+- bump: patch
+  changes:
+    fixed:
+    - Add 2009 surviving spouse itemized deduction reduction rate.
+  date: 2025-07-08 18:03:44
+- bump: minor
+  changes:
+    added:
+    - 2018 maximum income for young children and pregnant people to qualify for medicaid
+  date: 2025-07-08 18:56:37
+- bump: minor
+  changes:
+    added:
+    - Set default to true for branching to determine itemization choice.
+  date: 2025-07-09 15:06:36
+- bump: minor
+  changes:
+    added:
+    - Riverside County Sharing Households Assist Riverside's Energy program (SHARE).
+  date: 2025-07-11 01:14:11
+- bump: patch
+  changes:
+    fixes:
+    - Change the is_married and spm_unit_is_married logic to only count units with
+      spouses.
+    - Fix separate income tax bracket post 2026.
+    - Check for head of household filing status before separate.
+  date: 2025-07-11 11:07:35
+- bump: minor
+  changes:
+    changed:
+    - Itemization choice respects federal not fed+state tax.
+  date: 2025-07-11 14:20:30
+- bump: patch
+  changes:
+    added:
+    - Added DACA and TPS as unique immigration statuses, without removing the existing
+      combined status.
+  date: 2025-07-11 19:23:54
+- bump: minor
+  changes:
+    added:
+    - Ohio flat tax 2025-2026.
+  date: 2025-07-12 04:17:24
+- bump: patch
+  changes:
+    fixed:
+    - Test efficiency.
+  date: 2025-07-12 15:05:55
+- bump: minor
+  changes:
+    fixed:
+    - Update 2018 CHIP child income limit for KS, KY, ME, NC and ND.
+  date: 2025-07-16 10:45:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove net investment income from the Alabama federal tax deduction.
+  date: 2025-07-16 20:15:06
+- bump: minor
+  changes:
+    added:
+    - Cap each federal non-refundable credit at its limit based on tax liability.
+  date: 2025-07-16 21:48:52
+- bump: minor
+  changes:
+    added:
+    - Maine Dependent Exemption Credit 2025.
+  date: 2025-07-17 20:08:55
+- bump: minor
+  changes:
+    added:
+    - DC Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-18 02:51:20
+- bump: minor
+  changes:
+    added:
+    - Added simulation parameter to add healthcare toggle to net income calculations.
+  date: 2025-07-18 17:53:21
+- bump: minor
+  changes:
+    added:
+    - DC Child Care Subsidy Program (CCSP).
+  date: 2025-07-18 21:16:46
+- bump: minor
+  changes:
+    added:
+    - California Riverside County Low-Income Home Energy Assistance Program (LIHEAP).
+  date: 2025-07-22 14:20:17
+- bump: patch
+  changes:
+    added:
+    - Updated microdf-python to 0.4.5.
+  date: 2025-07-22 15:55:01
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico earned income credit (EITC).
+  date: 2025-07-22 20:02:01
+- bump: patch
+  changes:
+    changed:
+    - Update microdf-python dependency to >=1.0.0.
+  date: 2025-07-22 21:06:21
+- bump: patch
+  changes:
+    added:
+    - Support for Python 3.13
+    changed:
+    - Updated policyengine-core dependency to >=3.19.0 for Python 3.13 support
+  date: 2025-07-23 02:05:22
+- bump: patch
+  changes:
+    changed:
+    - Improved file naming consistency by renaming generic filenames to match their
+      variable names
+    - Split files containing multiple variables into separate files following one-variable-per-file
+      standard
+    - Fixed typos in filenames (e.g., "if_tanf" to "il_tanf" for Illinois)
+    - Removed space from filename "il _cta_reduced_fare_program.py"
+    fixed:
+    - Fixed household_income_decile test structure to properly place household variables
+      under household entity
+  date: 2025-07-23 11:09:36
+- bump: minor
+  changes:
+    added:
+    - SNAP self-employment simplified deductions.
+  date: 2025-07-23 13:54:32
+- bump: patch
+  changes:
+    fixed:
+    - Move healthcare simulation parameter to the correct simulation folder.
+  date: 2025-07-24 18:37:29
+- bump: minor
+  changes:
+    added:
+    - Update FY2025 HHS SMI parameter.
+  date: 2025-07-24 22:52:03
+- bump: patch
+  changes:
+    added:
+    - Added Documentation page for Medicaid and ACA.
+  date: 2025-07-25 02:23:14
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization turned off for tests.
+  date: 2025-07-25 16:57:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix broken unit tests.
+  date: 2025-07-27 20:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Remove spm_unit_income_decile test with zero weight.
+  date: 2025-07-27 23:15:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove the second earner tax reform.
+  date: 2025-07-28 12:28:49
+- bump: minor
+  changes:
+    added:
+    - ucgid variable.
+    - household_count variable.
+    - spm_unit_count variable.
+    - tax_unit_count variable.
+  date: 2025-07-28 16:41:24
+- bump: patch
+  changes:
+    changed:
+    - person_count variable.
+  date: 2025-07-28 17:17:37
+- bump: minor
+  changes:
+    fixed:
+    - Fix ca_state_supplement_dependent_amount formula.
+  date: 2025-07-28 20:42:43
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to current policy.
+  date: 2025-07-29 11:34:28
+- bump: minor
+  changes:
+    added:
+    - Move OBBBA structural reforms to benefits to current policy.
+  date: 2025-07-29 11:48:42
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico deductions.
+  date: 2025-07-29 12:54:00
+- bump: minor
+  changes:
+    added:
+    - Update federal tax parameters following passage of HR 1.
+  date: 2025-07-29 13:28:50
+- bump: patch
+  changes:
+    added:
+    - Fix broken unit tests introduced through OBBBA parametric changes.
+  date: 2025-07-29 16:49:54
+- bump: patch
+  changes:
+    fixed:
+    - Fix reported SALT unit test.
+  date: 2025-07-30 10:45:15
+- bump: minor
+  changes:
+    added:
+    - Sen. Hawley tariff rebate reform.
+  date: 2025-07-30 22:55:21
+- bump: patch
+  changes:
+    changed:
+    - Fixed how update_api.py retrieves the version number from pyproject.toml.
+  date: 2025-07-30 23:20:43
+- bump: minor
+  changes:
+    added:
+    - Vermont tax credit legislation changes
+  date: 2025-07-31 09:28:58
+- bump: patch
+  changes:
+    fixed:
+    - Add build back back to pyproject.toml.
+  date: 2025-07-31 12:15:15
+- bump: minor
+  changes:
+    added:
+    - DC General Assistance for Children (GAC).
+    - DC TANF work requirements.
+    - DC Program on Work, Employment, and Responsibility (POWER).
+    fixed:
+    - Refactored formulas in accordance with TANF and GAC.
+  date: 2025-07-31 13:59:29
+- bump: patch
+  changes:
+    fixed:
+    - Corrected income tax thresholds for low-income Arkansas tax tables.
+  date: 2025-07-31 22:16:19
+- bump: minor
+  changes:
+    added:
+    - Exempt income from children in school from SNAP.
+  date: 2025-07-31 22:20:59
+- bump: minor
+  changes:
+    added:
+    - 2018 medicaid older children income limits.
+  date: 2025-07-31 23:48:33
+- bump: patch
+  changes:
+    fixed:
+    - Disable Montana married filing separately on same return logic past 2024.
+  date: 2025-07-31 23:59:46

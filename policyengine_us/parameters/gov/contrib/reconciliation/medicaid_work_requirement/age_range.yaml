@@ -1,0 +1,25 @@
+description: The Committee on Ways and Means proposed to require individuals within these age brackets to meet Medicaid work requirements.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: Reconciliation Medicaid work requirements age threshold
+  reference:
+    - title: S.Amdt.2360 to H.R.1 Sec. 71121 (a)(9)(A)(i)(II)(bb)
+      href: https://www.congress.gov/amendment/119th-congress/senate-amendment/2360/text
+
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    amount: 
+      2027-01-01: false
+  - threshold: 
+      2027-01-01: 19
+    amount: 
+      2027-01-01: true
+  - threshold: 
+      2027-01-01: 65
+    amount: 
+      2027-01-01: false
