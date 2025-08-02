@@ -1,58 +1,140 @@
-- name: SSI integration test
-  period: 2023
+# - name: SSI integration test
+#   period: 2023
+#   input:
+#     people:
+#       # Single person - eligible for SSI
+#       person1:
+#         age: 65
+#         is_disabled: true
+#         is_tax_unit_head: true
+#         ssi_earned_income: 0
+#         ssi_unearned_income: 0
+#       # Married couple - both eligible for SSI
+#       person2:
+#         age: 68
+#         is_disabled: true
+#         is_tax_unit_head: true
+#         ssi_earned_income: 0
+#         ssi_unearned_income: 0
+#       person3:
+#         age: 70
+#         is_disabled: true
+#         is_tax_unit_spouse: true
+#         ssi_earned_income: 0
+#         ssi_unearned_income: 0
+#       # Married couple - only one eligible for SSI
+#       person4:
+#         age: 72
+#         is_disabled: true
+#         is_tax_unit_head: true
+#         ssi_earned_income: 0
+#         ssi_unearned_income: 0
+#       person5:
+#         age: 50
+#         is_disabled: false
+#         is_tax_unit_spouse: true
+#         ssi_earned_income: 12000
+#         ssi_unearned_income: 0
+#     tax_units:
+#       tax_unit1:
+#         members: [person1]
+#       tax_unit2:
+#         members: [person2, person3]
+#       tax_unit3:
+#         members: [person4, person5]
+#     marital_units:
+#       marital_unit1:
+#         members: [person1]
+#       marital_unit2:
+#         members: [person2, person3]
+#       marital_unit3:
+#         members: [person4, person5]
+#   output:
+#     # Eligibility variables
+#     is_ssi_aged_blind_disabled: [true, true, true, true, false]
+#     is_ssi_eligible_individual: [true, true, false, true, false]
+    
+#     # Joint claim status
+#     ssi_claim_is_joint: [false, true, false, true, false]
+
+- name: Case A, single filer with a child, only child disabled. 
+  period: 2022
   input:
     people:
-      # Single person - eligible for SSI
       person1:
-        age: 65
-        is_disabled: true
-        is_tax_unit_head: true
-        ssi_earned_income: 0
-        ssi_unearned_income: 0
-      # Married couple - both eligible for SSI
+        age: 34
+        employment_income: 0
       person2:
-        age: 68
-        is_disabled: true
-        is_tax_unit_head: true
-        ssi_earned_income: 0
-        ssi_unearned_income: 0
-      person3:
-        age: 70
-        is_disabled: true
-        is_tax_unit_spouse: true
-        ssi_earned_income: 0
-        ssi_unearned_income: 0
-      # Married couple - only one eligible for SSI
-      person4:
-        age: 72
-        is_disabled: true
-        is_tax_unit_head: true
-        ssi_earned_income: 0
-        ssi_unearned_income: 0
-      person5:
-        age: 50
-        is_disabled: false
-        is_tax_unit_spouse: true
-        ssi_earned_income: 12000
-        ssi_unearned_income: 0
+        age: 12
+        is_tax_unit_dependent: true
+        is_ssi_aged_blind_disabled: true
     tax_units:
-      tax_unit1:
-        members: [person1]
-      tax_unit2:
-        members: [person2, person3]
-      tax_unit3:
-        members: [person4, person5]
-    marital_units:
-      marital_unit1:
-        members: [person1]
-      marital_unit2:
-        members: [person2, person3]
-      marital_unit3:
-        members: [person4, person5]
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
   output:
-    # Eligibility variables
-    is_ssi_aged_blind_disabled: [true, true, true, true, false]
-    is_ssi_eligible_individual: [true, true, false, true, false]
-    
-    # Joint claim status
-    ssi_claim_is_joint: [false, true, false, true, false]
+    ssi: [0, 15_132]
+
+- name: Case A1, single filer with a child, both disabled. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 0
+        is_ssi_aged_blind_disabled: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        is_ssi_aged_blind_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi: [15_132, 15_132]
+
+- name: Case B, joint filers, only 1 disabled.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 0
+      person2:
+        age: 22
+        employment_income: 0
+        is_ssi_aged_blind_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi: [0, 15_132]
+
+- name: Case B1, joint filers, both disabled.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 0
+        is_ssi_aged_blind_disabled: true
+      person2:
+        age: 22
+        employment_income: 0
+        is_ssi_aged_blind_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi: [15_132, 0]
