@@ -1,21 +1,21 @@
-- name: SSI claim is joint
+- name: Case 1, SSI claim is joint.
   period: 2023
   input:
     people:
       # Single person in a marital unit
       person1:
-        is_ssi_eligible_individual: true
+        is_disabled: true
         is_tax_unit_head: true
       # Two people in a marital unit, both SSI eligible
       person2:
-        is_ssi_eligible_individual: true
+        is_disabled: true
         is_tax_unit_head: true
       person3:
-        is_ssi_eligible_individual: true
+        is_disabled: true
         is_tax_unit_spouse: true
       # Person not eligible for SSI
       person4:
-        is_ssi_eligible_individual: false
+        is_disabled: false
         is_tax_unit_head: true
     tax_units:
       tax_unit1:
@@ -33,3 +33,114 @@
         members: [person4]
   output:
     ssi_claim_is_joint: [false, true, true, false]
+
+- name: Case 2, SSI claim is not joint.
+  period: 2023
+  input:
+    people:
+      # Single person in a marital unit
+      person1:
+        is_disabled: true
+        is_tax_unit_head: true
+      # Two people in a marital unit, only one SSI eligible
+      person2:
+        is_disabled: true
+        is_tax_unit_head: true
+      person3:
+        is_disabled: false
+        is_tax_unit_spouse: true
+      # Person not eligible for SSI
+      person4:
+        is_disabled: false
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+      tax_unit3:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+      marital_unit3:
+        members: [person4]
+  output:
+    ssi_claim_is_joint: [false, false, false, false]
+
+- name: Case 3, eligible head with an eligible child, not joint.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        is_disabled: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ssi_claim_is_joint: [false, false]
+
+- name: Case 4, two adults, one eligible and the other is not, and a eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+        is_disabled: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    ssi_claim_is_joint: [false, false, false]
+
+- name: Case 5, martial unit, both head and spouse eligible, and a eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        is_disabled: true
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+        is_disabled: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    ssi_claim_is_joint: [true, true, false]
