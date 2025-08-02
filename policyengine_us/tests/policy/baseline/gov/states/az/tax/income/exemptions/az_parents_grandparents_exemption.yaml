@@ -6,12 +6,12 @@
         age: 30
         is_parent_of_filer_or_spouse: false
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0
+        share_of_care_and_support_expense_paid_by_tax_filer: 0
       person2:
         age: 65
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
     households:
       household:
         members: [person1, person2]
@@ -27,12 +27,12 @@
         age: 70
         is_parent_of_filer_or_spouse: false
         is_grandparent_of_filer_or_spouse: true
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
       person2:
         age: 65
         is_parent_of_filer_or_spouse: false
         is_grandparent_of_filer_or_spouse: true
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
     households:
       household:
         members: [person1, person2]
@@ -48,22 +48,22 @@
         age: 65
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.4
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.4
       person2:
         age: 65
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
       person3:
         age: 85
         is_parent_of_filer_or_spouse: false
         is_grandparent_of_filer_or_spouse: true
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.5
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.5
       person4:
         age: 85
         is_parent_of_filer_or_spouse: false
         is_grandparent_of_filer_or_spouse: true
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -79,12 +79,12 @@
         age: 40
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
       person2:
         age: 60
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.6
     households:
       household:
         members: [person1, person2]
@@ -100,12 +100,12 @@
         age: 65
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.4
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.4
       person2:
         age: 65
         is_parent_of_filer_or_spouse: true
         is_grandparent_of_filer_or_spouse: false
-        share_of_care_and_support_costs_paid_by_tax_filer: 0.4
+        share_of_care_and_support_expense_paid_by_tax_filer: 0.4
     households:
       household:
         members: [person1, person2]
