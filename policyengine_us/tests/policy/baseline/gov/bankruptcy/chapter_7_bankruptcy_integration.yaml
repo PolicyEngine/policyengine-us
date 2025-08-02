@@ -1,0 +1,48 @@
+- name: Case 1, integration test. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        irs_employment_income: 24_000
+        has_vehicle_loan: true
+        vehicle_mortgage_expense: 7_200
+        public_transportation_expense: 240
+        medical_out_of_pocket_expenses: 100
+        health_insurance_premiums: 120
+        health_savings_account_payroll_contributions: 120
+      person2:
+        age: 45
+        irs_employment_income: 24_000
+        has_vehicle_loan: false
+      person3: 
+        age: 5
+        irs_employment_income: 0 
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3 
+        housing_cost: 22_800
+        spm_unit_federal_tax: 120
+        chapter_7_bankruptcy_nonpriority_unsecured_debt: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: kern_county_ca
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        k12_tuition_and_fees: 2_400
+  output:
+    chapter_7_bankruptcy_adjusted_monthly_income: 4_000
+    chapter_7_bankruptcy_food_clothing_and_others_deduction: 1_677 
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 249
+    chapter_7_bankruptcy_local_standards_deductions: 998
+    chapter_7_bankruptcy_vehicle_operation_expense_deduction: 273
+    chapter_7_bankruptcy_other_necessary_expenses_deductions: 10
+    chapter_7_bankruptcy_additional_expense_deductions: 209.58
+    chapter_7_bankruptcy_debt_payment_deductions: 2_500   #(22800+7200)/12 
+    chapter_7_bankruptcy_total_deductions: 5_916.58
+    chapter_7_bankruptcy_is_presumption_of_abuse: false
