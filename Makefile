@@ -24,6 +24,7 @@ documentation:
 	python docs/scripts/generate_variable_docs.py
 	jb build docs
 	python policyengine_us/tools/add_plotly_to_book.py docs/_build
+	python docs/scripts/generate_latex_paper.py
 build:
 	rm policyengine_us/data/storage/*.h5 | true
 	python -m build
