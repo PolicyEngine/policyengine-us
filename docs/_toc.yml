@@ -16,6 +16,16 @@ parts:
     chapters:
       - file: api/index
 
+  - caption: Contributing
+    chapters:
+      - file: contributing/index
+        sections:
+          - file: contributing/setup
+          - file: contributing/workflow
+          - file: contributing/testing
+          - file: contributing/style-guide
+          - file: contributing/documentation
+
   - caption: Government programs
     chapters:
       - file: gov/fcc/index
