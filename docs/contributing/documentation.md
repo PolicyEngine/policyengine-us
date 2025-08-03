@@ -323,16 +323,18 @@ from monthly calculations.
 Show examples in multiple formats:
 
 ````markdown
-```{tab-set}
-```{tab-item} Python
+::::{tab-set}
+
+:::{tab-item} Python
 :sync: python
 
 ```python
 sim = Microsimulation()
 eitc = sim.calculate("earned_income_tax_credit", 2024)
 ```
+:::
 
-```{tab-item} YAML Test
+:::{tab-item} YAML Test
 :sync: yaml
 
 ```yaml
@@ -343,7 +345,9 @@ eitc = sim.calculate("earned_income_tax_credit", 2024)
   output:
     earned_income_tax_credit: 3_584
 ```
-```
+:::
+
+::::
 ````
 
 ## Building Documentation

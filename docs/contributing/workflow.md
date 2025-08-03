@@ -6,16 +6,14 @@ This guide covers the typical workflow for contributing to PolicyEngine US.
 
 We follow [GitHub Flow](https://guides.github.com/introduction/flow/):
 
-```{mermaid}
-graph LR
-    A[Fork & Clone] --> B[Create Branch]
-    B --> C[Make Changes]
-    C --> D[Test Locally]
-    D --> E[Push to Fork]
-    E --> F[Open PR]
-    F --> G[Code Review]
-    G --> H[Merge to master]
-```
+1. **Fork & Clone** - Create your own copy of the repository
+2. **Create Branch** - Make a feature branch for your changes
+3. **Make Changes** - Implement your feature or fix
+4. **Test Locally** - Run tests to ensure everything works
+5. **Push to Fork** - Push your branch to your GitHub fork
+6. **Open PR** - Create a pull request to the main repository
+7. **Code Review** - Maintainers review and provide feedback
+8. **Merge to master** - Once approved, changes are merged
 
 ## Step-by-Step Guide
 
