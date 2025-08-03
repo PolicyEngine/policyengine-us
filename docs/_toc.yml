@@ -2,6 +2,20 @@ format: jb-book
 root: index
 parts:
 
+  - caption: Policy Reference
+    chapters:
+      - file: policy/index
+        sections:
+          - file: policy/program-summary
+          - file: policy/federal/taxation/income/index
+            sections:
+              - file: policy/federal/taxation/income/credits/eitc
+          - file: policy/federal/transfers/safety-net/snap
+  
+  - caption: API Documentation
+    chapters:
+      - file: api/index
+
   - caption: Government programs
     chapters:
       - file: gov/fcc/index
