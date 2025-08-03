@@ -4,9 +4,13 @@ This guide will help you set up your development environment for contributing to
 
 ## Prerequisites
 
-- Python 3.10-3.13 (check `pyproject.toml` for current versions)
+- Python 3.10-3.13 (3.13 is the default and recommended version)
 - Git
 - A GitHub account
+
+```{note}
+Python 3.13 is used in our CI/CD pipelines and is the recommended version for development. While the package supports Python 3.10-3.13, using 3.13 ensures consistency with our automated testing environment.
+```
 - A code editor (we recommend VS Code)
 
 ## Installation Methods
