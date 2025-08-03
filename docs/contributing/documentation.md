@@ -365,15 +365,25 @@ jupyter-book build .
 
 ### Auto-generated Content
 
-Some documentation is generated automatically:
+The Variables and Parameters reference documentation is generated automatically from the codebase:
 
 ```bash
-# Generate parameter documentation
+# Generate parameter documentation from YAML files
 python docs/scripts/generate_parameter_docs.py
 
-# Generate variable reference
+# Generate variable reference from Python files
 python docs/scripts/generate_variable_docs.py
+
+# Both are run automatically when building docs:
+make documentation
 ```
+
+These scripts:
+- Extract metadata from all variables and parameters
+- Organize by module hierarchy (gov/irs/credits, etc.)
+- Include legislative references and current values
+- Generate comprehensive searchable documentation
+- Are run automatically during `make documentation`
 
 ### CI/CD
 

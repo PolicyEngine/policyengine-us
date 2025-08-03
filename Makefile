@@ -20,6 +20,8 @@ coverage:
 	coverage xml -i
 documentation:
 	jb clean docs
+	python docs/scripts/generate_parameter_docs.py
+	python docs/scripts/generate_variable_docs.py
 	jb build docs
 	python policyengine_us/tools/add_plotly_to_book.py docs/_build
 build:
