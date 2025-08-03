@@ -10,7 +10,9 @@ parts:
           - file: policy/federal/taxation/income/index
             sections:
               - file: policy/federal/taxation/income/credits/eitc
+              - file: policy/federal/taxation/income/credits/ctc
           - file: policy/federal/transfers/safety-net/snap
+          - file: policy/federal/transfers/social-insurance/unemployment
   
   - caption: API Documentation
     chapters:
