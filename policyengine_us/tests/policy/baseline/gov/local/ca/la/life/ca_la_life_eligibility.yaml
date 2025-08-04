@@ -1,0 +1,45 @@
+- name: 3 people
+  period: 2022
+  input:
+    is_child: false
+    household_size: 3
+    household_net_income: 53_000
+    ca_la_life_program_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: single child
+  period: 2022
+  input:
+    is_child: true
+    is_child_of_tax_head: false
+    household_size: 1
+    household_net_income: 40_000
+    ca_la_life_program_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: false
+
+- name: child with adult head of household
+  period: 2022
+  input:
+    is_child: true
+    is_child_of_tax_head: true
+    household_size: 2
+    household_net_income: 47_000
+    ca_la_life_program_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: program eligible
+  period: 2022
+  input:
+    is_child: false
+    household_size: 3
+    household_net_income: 54_000
+    ca_la_life_program_eligible: true
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
