@@ -10635,3 +10635,19 @@
     fixed:
     - Disable Montana married filing separately on same return logic past 2024.
   date: 2025-07-31 23:59:46
+- bump: minor
+  changes:
+    added:
+    - Default to first alphabetical county in state when county is not specified.
+  date: 2025-08-01 22:07:50
+- bump: patch
+  changes:
+    fixed:
+    - Cap the North Carolina Subsidized Child Care Assistance Program benefit amount
+      at pre_subsidy_childcare_expense.
+  date: 2025-08-01 23:41:54
+- bump: minor
+  changes:
+    fixed:
+    - Adjustment in meets_snap_abawd_work_requirements formula.
+  date: 2025-08-02 00:01:59
