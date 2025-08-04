@@ -154,3 +154,34 @@
     ar_income_tax_before_non_refundable_credits_indiv: [6_354, 0]
     ar_files_separately: false
     ar_income_tax: 6_267.7
+
+- name: 60188-AR.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12125.0
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 12125.0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5
+  output:
+    ar_income_tax: 275
