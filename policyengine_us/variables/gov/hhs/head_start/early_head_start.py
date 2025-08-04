@@ -12,9 +12,9 @@ class early_head_start(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.head_start.early_head_start
         state = person.household("state_code_str", period)
-        funding = p.funding[state]
+        spending = p.spending[state]
         enrollment = p.enrollment[state]
         mask = enrollment > 0
-        result = np.zeros_like(p.funding[state])
-        result[mask] = funding[mask] / enrollment[mask]
+        result = np.zeros_like(p.spending[state])
+        result[mask] = spending[mask] / enrollment[mask]
         return result
