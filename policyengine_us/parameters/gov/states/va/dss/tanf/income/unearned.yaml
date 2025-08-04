@@ -1,0 +1,19 @@
+description: VA TANF counts these income sources as unearned income.
+values:
+  2020-07-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - child_support_received
+metadata:
+  unit: list
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=46

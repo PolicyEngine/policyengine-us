@@ -1,0 +1,67 @@
+- name: Two parents without a child is not eligible.
+  period: 2023
+  input:
+    people:
+      parent1:
+        age: 19
+        is_child: false
+      parent2:
+        age: 19
+        is_child: false
+    households:
+      household:
+        members: [parent1, parent2]
+        state_code: VA
+  output:
+    va_map_famis_age_eligibility: false
+
+- name: Child older than age limit is not eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 45
+        is_child: false
+      child:
+        age: 20
+        is_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_map_famis_age_eligibility: false
+
+- name: A 19-year-old child is eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        is_child: false
+      child:
+        age: 19
+        is_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_map_famis_age_eligibility: true
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        is_child: false
+      child:
+        age: 19
+        is_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    va_map_famis_age_eligibility: false
