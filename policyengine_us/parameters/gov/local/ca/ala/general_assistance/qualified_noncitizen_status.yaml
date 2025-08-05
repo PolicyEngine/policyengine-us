@@ -1,0 +1,17 @@
+description: Alameda county considers these statuses as qualified noncitizens under the General Relief Program.
+values:
+  1975-01-01:
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - LEGAL_PERMANENT_RESIDENT
+    - VICTIMS_OF_TRAFFICKING
+    
+metadata:
+  label: Alameda County General Relief qualified noncitizen statuses
+  period: year
+  unit: list
+  reference:
+    - title: Alameda County Social Services Agency - General Assistance
+      href: https://www.alamedacountysocialservices.org/our-services/Work-and-Money/General-Assistance/index
