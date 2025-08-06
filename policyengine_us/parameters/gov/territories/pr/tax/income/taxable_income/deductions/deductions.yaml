@@ -1,0 +1,13 @@
+description: Puerto Rico deductions from taxable income.
+values:
+  2023-01-01:
+    - pr_casualty_loss_deduction
+    - pr_charitable_deduction
+    - pr_medical_expense_deduction
+    - pr_mortgage_deduction
+    - pr_education_deduction
+    - pr_retirement_deduction
+metadata:
+  unit: list
+  period: year
+  label: Puerto Rico income deductions
