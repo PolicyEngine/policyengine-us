@@ -1,13 +1,11 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
 class me_dependent_exemption_credit_amount_person(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Maine dependent exemption credit amount for each person"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
-    unit = USD
     definition_period = YEAR
     defined_for = "ctc_qualifying_child"
 
