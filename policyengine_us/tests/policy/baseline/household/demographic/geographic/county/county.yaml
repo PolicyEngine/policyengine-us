@@ -39,3 +39,17 @@
     county_fips: ["36059", "06037", "26163", "32003"]
   output:
     county: [NASSAU_COUNTY_NY, LOS_ANGELES_COUNTY_CA, WAYNE_COUNTY_MI, CLARK_COUNTY_NV]
+
+- name: Only have the state code CA as input, return the first county of that state.
+  period: 2025
+  input:
+    state_code: CA
+  output:
+    county: ALAMEDA_COUNTY_CA
+
+- name: Only have the state code DC as input, return the first county of that state.
+  period: 2025
+  input:
+    state_code: DC
+  output:
+    county: DISTRICT_OF_COLUMBIA_DC
