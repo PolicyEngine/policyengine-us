@@ -18,10 +18,10 @@ class pr_dependents_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
-        ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
+        ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent.amount
         amount = where(
             filing_status == filing_status.possible_values.SEPARATE,
-            p.separate_amount,
-            p.non_separate_amount,
+            p.separate,
+            p.non_separate,
         )
         return dependents * amount

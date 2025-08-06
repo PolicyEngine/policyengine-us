@@ -19,6 +19,6 @@ class pr_exemptions_is_eligible_student(Variable):
         is_student = person("is_full_time_college_student", period)
         gross_income = person("pr_gross_income", period)
         age = person("age", period)
-        age_eligibility = age < p.age_limit
-        income_eligibility = gross_income < p.student_limit
+        age_eligibility = age < p.age_threshold.student
+        income_eligibility = gross_income < p.income_limit.student
         return is_dependent & is_student & income_eligibility & age_eligibility

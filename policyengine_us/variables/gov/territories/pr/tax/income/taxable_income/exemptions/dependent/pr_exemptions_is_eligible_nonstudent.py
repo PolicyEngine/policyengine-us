@@ -14,8 +14,8 @@ class pr_exemptions_is_eligible_nonstudent(Variable):
         # if dependent is a student, can earn gross income up to 7500 to be eligible for exemption
         p = parameters(
             period
-        ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent
+        ).gov.territories.pr.tax.income.taxable_income.exemptions.dependent.income_limit
         is_dependent = person("pr_is_tax_unit_dependent", period)
         gross_income = person("pr_gross_income", period)
-        income_eligibility = gross_income < p.nonstudent_limit
+        income_eligibility = gross_income < p.nonstudent
         return is_dependent & income_eligibility
