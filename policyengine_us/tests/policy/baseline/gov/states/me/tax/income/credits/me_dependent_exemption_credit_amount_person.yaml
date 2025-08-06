@@ -1,0 +1,29 @@
+- name: Child dependent under 6
+  period: 2025
+  input:
+    state_code: ME
+    ctc_qualifying_child: true
+    is_tax_unit_dependent: true
+    age: 2
+  output:
+    me_dependent_exemption_credit_amount_person: 600
+
+- name: Child dependent over 6
+  period: 2025
+  input:
+    state_code: ME
+    ctc_qualifying_child: true
+    is_tax_unit_dependent: true
+    age: 8
+  output:
+    me_dependent_exemption_credit_amount_person: 300
+
+- name: Non CTC eligible child
+  period: 2025
+  input:
+    state_code: ME
+    ctc_qualifying_child: false
+    is_tax_unit_dependent: true
+    age: 2
+  output:
+    me_dependent_exemption_credit_amount_person: 0
