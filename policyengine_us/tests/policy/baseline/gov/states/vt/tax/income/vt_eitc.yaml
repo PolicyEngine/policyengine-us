@@ -21,3 +21,42 @@
     state_code: VT
   output: 
     vt_eitc: 720
+
+# S.51 (2025) tests for enhanced EITC for workers without children
+- name: S.51 - EITC for workers with children remains 38% in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        eitc: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    vt_eitc: 380
+
+- name: S.51 - EITC for workers without children becomes 100% in 2025
+  period: 2025
+  input:
+    people:
+      worker:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [worker]
+        filing_status: SINGLE
+        eitc: 600
+    households:
+      household:
+        members: [worker]
+        state_code: VT
+  output:
+    vt_eitc: 600

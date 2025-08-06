@@ -1,0 +1,13 @@
+description: Vermont implements the enhanced earned income tax credit for workers without children, if this is true.
+metadata:
+  label: Vermont enhanced EITC in effect
+  period: year
+  unit: bool
+  reference:
+    - title: S.51 (2025) - Vermont tax credit package
+      href: https://legislature.vermont.gov/Documents/2026/Docs/BILLS/S-0051/S-0051%20As%20Passed%20by%20Both%20House%20and%20Senate%20Official.pdf#page=7
+    - title: Vermont Legislature S.51 Bill Status
+      href: https://legislature.vermont.gov/bill/status/2026/S.51
+values:
+  2021-01-01: false
+  2025-01-01: true

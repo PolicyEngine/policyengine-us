@@ -1,0 +1,81 @@
+- name: Case 1, family of 4.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 61
+      person2:
+        age: 60
+      person3: 
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DC
+  output:
+    dc_tanf_work_requirement_exempt: [true, false, true, false]
+
+- name: Case 2, single parent household with an infant.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 35
+      person3: 
+        age: 0.5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_work_requirement_exempt: [true, false, true]
+
+- name: Case 3, has college student.  
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 23
+        is_full_time_college_student: true
+      person3: 
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_work_requirement_exempt: [false, true, true]

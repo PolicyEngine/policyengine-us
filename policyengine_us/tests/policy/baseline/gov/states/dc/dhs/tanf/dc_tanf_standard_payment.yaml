@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: DC
-    spm_unit_size: 1
+    dc_tanf_assistance_unit_size: 1
   output:
     dc_tanf_standard_payment: 437 * 12
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     state_code: DC
-    spm_unit_size: 10
+    dc_tanf_assistance_unit_size: 10
   output:
     dc_tanf_standard_payment: 1_750 * 12
 
@@ -18,7 +18,7 @@
   period: 2023
   input:
     state_code: VA
-    spm_unit_size: 10
+    dc_tanf_assistance_unit_size: 10
   output:
     dc_tanf_standard_payment: 0
 
@@ -26,7 +26,7 @@
   period: 2022
   input:
     state_code: DC
-    spm_unit_size: 17
+    dc_tanf_assistance_unit_size: 17
   output:
     dc_tanf_standard_payment: 1_750 * 12
 
@@ -34,6 +34,6 @@
   period: 2024-01
   input:
     state_code: DC
-    spm_unit_size: 17
+    dc_tanf_assistance_unit_size: 17
   output:
     dc_tanf_standard_payment: 2_668

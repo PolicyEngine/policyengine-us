@@ -1,4 +1,4 @@
-- name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+- name: Case 1, Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022-01
   absolute_error_margin: 0.01 # Floating point issue.
   input:
@@ -97,3 +97,32 @@
     snap_max_allotment: 658
     # The family’s monthly SNAP benefit is $612.
     snap_normal_allotment: 612
+
+- name: Test for exclude child income, same as case 1 but adding income to one child.
+  period: 2022-01
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+        employment_income: 
+          2022: 2_000 * 12
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+        is_in_k12_school: true
+        employment_income: 2_000 * 12
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_code_str: CA
+  output:
+    snap_earned_income_deduction: 2_000 * 0.2 # Flat 20% rate.
+    snap_standard_deduction: 184 #(parameter for family of 4 in contiguous US)
+    snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
+    snap_max_allotment: 835 # (parameter for family of 4 in contiguous US).

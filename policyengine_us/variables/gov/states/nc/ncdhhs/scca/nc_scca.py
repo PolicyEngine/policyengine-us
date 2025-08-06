@@ -19,4 +19,8 @@ class nc_scca(Variable):
         )
 
         parent_fee = spm_unit("nc_scca_parent_fee", period)
-        return max_(total_market_rate - parent_fee, 0)
+        uncapped_amount = max_(total_market_rate - parent_fee, 0)
+        childcare_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
+        return min_(childcare_expenses, uncapped_amount)

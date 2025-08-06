@@ -1,0 +1,100 @@
+- name: Zero federal EITC - zero Vermont EITC
+  period: 2022
+  input:
+    eitc: 0
+    tax_unit_child_dependents: 1
+  output:
+    vt_eitc: 0
+
+- name: Federal EITC with one child - 38% match rate in 2022
+  period: 2022
+  input:
+    state_code: VT
+    eitc: 1_000
+    tax_unit_child_dependents: 1
+  output:
+    vt_eitc: 380  # 38% of $1,000
+
+- name: Federal EITC with multiple children - 38% match rate in 2022
+  period: 2022
+  input:
+    state_code: VT
+    eitc: 2_000
+    tax_unit_child_dependents: 2
+  output:
+    vt_eitc: 760  # 38% of $2,000
+
+- name: Federal EITC with no children - 38% match rate in 2022 (before enhancement)
+  period: 2022
+  input:
+    state_code: VT
+    eitc: 500
+    tax_unit_child_dependents: 0
+  output:
+    vt_eitc: 190  # 38% of $500
+
+- name: Enhanced structure not in effect - use basic match rate in 2024
+  period: 2024
+  input:
+    state_code: VT
+    eitc: 1_200
+    tax_unit_child_dependents: 1
+  output:
+    vt_eitc: 456  # 38% of $1,200 (using basic match rate)
+
+- name: Enhanced structure in effect for childless workers in 2025
+  period: 2025
+  input:
+    state_code: VT
+    eitc: 600
+    tax_unit_child_dependents: 0
+  output:
+    # Enhanced structure should provide 100% match for childless workers
+    vt_eitc: 600
+
+- name: Enhanced structure in effect for workers with children in 2025
+  period: 2025
+  input:
+    state_code: VT
+    eitc: 1_500
+    tax_unit_child_dependents: 1
+  output:
+    # Enhanced structure should still use 38% match for workers with children
+    vt_eitc: 570
+
+- name: Large federal EITC amount
+  period: 2022
+  input:
+    state_code: VT
+    eitc: 5_000
+    tax_unit_child_dependents: 3
+  output:
+    vt_eitc: 1_900  # 38% of $5,000
+
+- name: Very small federal EITC amount
+  period: 2022
+  input:
+    state_code: VT
+    eitc: 1
+    tax_unit_child_dependents: 1
+  output:
+    vt_eitc: 0.38  # 38% of $1
+
+- name: Federal EITC in 2021 with 36% match rate
+  period: 2021
+  input:
+    state_code: VT
+    eitc: 1_000
+    tax_unit_child_dependents: 1
+  output:
+    vt_eitc: 360  # 36% of $1,000 (2021 rate)
+
+- name: Three children in enhanced structure
+  period: 2025
+  input:
+    state_code: VT
+    eitc: 2_000
+    tax_unit_child_dependents: 3
+  output:
+    # Enhanced structure should use parameterized rate for 3 children
+    vt_eitc: 760  # Should be 38% for children in most cases

@@ -18,7 +18,7 @@ class meets_snap_abawd_work_requirements(Variable):
         working_age_exempt = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
         is_disabled = person("is_disabled", period)
-        # Parent of a household member under 18
+        # Parent or other member of a household with responsibility for a dependent child under certain age
         is_dependent = person("is_tax_unit_dependent", period)
         is_qualifying_child = age < p.age_threshold.dependent
         is_parent = person("is_parent", period)
@@ -34,43 +34,21 @@ class meets_snap_abawd_work_requirements(Variable):
         is_homeless = person.household("is_homeless", period)
         # A veteran
         is_veteran = person("is_veteran", period)
-        if p.amended_structure.in_effect:
-            is_child = person("is_child", period)
-            older_child_dependent = (
-                is_dependent & is_child & ~is_qualifying_child
-            )
-            is_married = person.family("is_married", period)
-            has_older_child_dependent = person.spm_unit.any(
-                older_child_dependent
-            )
-            is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            has_head_or_spouse_working = person.spm_unit.any(
-                is_head_or_spouse & is_working
-            )
-            exempt_married_person = where(
-                is_married & has_older_child_dependent,
-                has_head_or_spouse_working,
-                0,
-            )
-            base_conditions = (
-                is_working
-                | working_age_exempt
-                | is_disabled
-                | exempt_parent
-                | meets_snap_general_work_requirements
-                | is_pregnant
-                | exempt_married_person
-            )
-            if p.amended_structure.sunset_provisions_apply:
-                return base_conditions
-            return base_conditions | is_homeless | is_veteran
-        return (
+        # States exempt from work requirements.
+        state_code = person.household("state_code", period)
+        state_code_str = state_code.decode_to_str()
+        is_abawd_work_requirements_exempt_state = np.isin(
+            state_code_str, p.exempt_states
+        )
+        base_conditions = (
             is_working
             | working_age_exempt
             | is_disabled
             | exempt_parent
             | meets_snap_general_work_requirements
             | is_pregnant
-            | is_homeless
-            | is_veteran
+            | is_abawd_work_requirements_exempt_state
         )
+        if p.in_effect:
+            return base_conditions
+        return base_conditions | is_homeless | is_veteran

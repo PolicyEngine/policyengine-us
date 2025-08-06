@@ -1,0 +1,128 @@
+- name: Case 1, two-parent household, combined hours higher than 35. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 5
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_is_working: [true, true, true]
+
+- name: Case 2, two-parent household, combined hours lower than 35. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 4
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_tanf_is_working: [false, false, false]
+
+- name: Case 3, single parent household, has child under 6. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+      person2: 
+        age: 5
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_is_working: [true, false]
+
+- name: Case 4, single parent household, no child under 6. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+      person2: 
+        age: 8
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_is_working: [false, false]
+
+- name: Case 5, single parent household, no child under 6, eligible because work 30 hours a week. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2: 
+        age: 8
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_is_working: [true, false]

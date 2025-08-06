@@ -5,7 +5,7 @@
     dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
+    dc_tanf_meets_work_requirements: true
   output:
     dc_tanf_eligible: true
 
@@ -16,7 +16,7 @@
     dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: false
-    dc_tanf_immigration_status_eligible_person: true
+    dc_tanf_meets_work_requirements: true
   output:
     dc_tanf_eligible: false
 
@@ -27,7 +27,7 @@
     dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: false
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
+    dc_tanf_meets_work_requirements: true
   output:
     dc_tanf_eligible: false
 
@@ -38,17 +38,17 @@
     dc_tanf_demographic_eligible_person: false
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: true
+    dc_tanf_meets_work_requirements: true
   output:
     dc_tanf_eligible: false
 
-- name: Immigration status ineligible. 
+- name: Does not meet work requirement. 
   period: 2023-01
   input:
     state_code: DC
     dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_immigration_status_eligible_person: false
+    dc_tanf_meets_work_requirements: false
   output:
     dc_tanf_eligible: false

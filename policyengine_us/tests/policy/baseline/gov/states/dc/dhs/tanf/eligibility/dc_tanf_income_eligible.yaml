@@ -7,7 +7,6 @@
   output:
     dc_tanf_income_eligible: true
 
-
 - name: Household with income equals need standard is eligible.
   period: 2023
   input:
@@ -16,7 +15,6 @@
     dc_tanf_countable_income: 1
   output:
     dc_tanf_income_eligible: true
-
 
 - name: Household with income exceeding need standard is ineligible.
   period: 2023

@@ -1,0 +1,14 @@
+description: The tax rebate, proposed by the American Worker Rebate Act, is limited to filers of the following immigration statuses.
+values:
+  0000-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+
+
+metadata:
+  label: American Worker Rebate Act eligible immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: American Worker Rebate Act
+      href: https://www.hawley.senate.gov/wp-content/uploads/2025/07/Hawley-American-Worker-Rebate-Act-Bill-Text.pdf#page=4

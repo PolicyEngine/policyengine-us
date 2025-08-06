@@ -53,3 +53,40 @@
     adjusted_gross_income: 150_000
   output:
     vt_ctc: 500
+
+# S.51 (2025) tests for expanded age eligibility
+- name: S.51 - CTC includes 6-year-olds starting 2025
+  period: 2025
+  input:
+    state_code: VT
+    age: 6
+    adjusted_gross_income: 50_000
+  output:
+    vt_ctc: 1_000
+
+- name: S.51 - CTC still applies to 5-year-olds in 2025
+  period: 2025
+  input:
+    state_code: VT
+    age: 5
+    adjusted_gross_income: 50_000
+  output:
+    vt_ctc: 1_000
+
+- name: S.51 - CTC does not apply to 7-year-olds in 2025
+  period: 2025
+  input:
+    state_code: VT
+    age: 7
+    adjusted_gross_income: 50_000
+  output:
+    vt_ctc: 0
+
+- name: S.51 - CTC did not include 6-year-olds before 2025
+  period: 2024
+  input:
+    state_code: VT
+    age: 6
+    adjusted_gross_income: 50_000
+  output:
+    vt_ctc: 0

@@ -1,0 +1,20 @@
+description: The District of Columbia requires this amount of weekly working hours under the Temporary Assistance for Needy Families program, based on youngest child age.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: int
+  period: week
+  label: DC TANF single parent weekly working hours
+  reference:
+    - title: Code of the District of Columbia § 4-205.19b (b)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19b#(b)
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 30

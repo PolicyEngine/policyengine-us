@@ -1,0 +1,21 @@
+description: The District of Columbia considers these statuses as qualified noncitizens for the Temporary Assistance for Needy Families program.
+values:
+  1975-01-01:
+    - LEGAL_PERMANENT_RESIDENT
+    - ASYLEE
+    - REFUGEE
+    - PAROLED_ONE_YEAR
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - CUBAN_HAITIAN_ENTRANT
+    
+
+metadata:
+  label: DC TANF qualified noncitizen statuses
+  period: year
+  unit: list
+  reference:
+    - title: § 4-205.24. Eligibility requirements for alien children
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.24#(a)
+    - title: 8 U.S. Code § 1641 - Definitions
+      href: https://www.law.cornell.edu/uscode/text/8/1641

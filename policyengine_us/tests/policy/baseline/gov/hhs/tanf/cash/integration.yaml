@@ -71,6 +71,7 @@
       spm_unit:
         members: [parent, child]
         is_tanf_enrolled: true
+        dc_tanf_meets_work_requirements: true
     households:
       household:
         members: [parent, child]

@@ -1,0 +1,47 @@
+- name: Default person is 18 and out of school, therefore ineligible child under Public Assistance Programs.
+  period: 2022
+  output:
+    dc_pap_eligible_child: false
+
+- name: Is eligible for PAP due to children under 18
+  period: 2022-01
+  input:
+    age: 17
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_pap_eligible_child: true
+
+- name: 18-year-old out of school is not eligible for PAP
+  period: 2022-01
+  input:
+    age: 18
+    is_in_secondary_school: false
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_pap_eligible_child: false
+
+- name: Is eligible for PAP due to being an 18-year-old in school
+  period: 2022-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_pap_eligible_child: true
+
+- name: Ineligible for PAP due to immigration status.
+  period: 2022-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    immigration_status: UNDOCUMENTED
+    state_code: DC
+  output:
+    dc_pap_eligible_child: false
