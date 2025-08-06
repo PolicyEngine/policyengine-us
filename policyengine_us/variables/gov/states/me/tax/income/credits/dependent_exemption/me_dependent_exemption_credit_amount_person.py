@@ -2,8 +2,9 @@ from policyengine_us.model_api import *
 
 
 class me_dependent_exemption_credit_amount_person(Variable):
-    value_type = bool
+    value_type = float
     entity = Person
+    unit = USD
     label = "Maine dependent exemption credit amount for each person"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
     definition_period = YEAR
