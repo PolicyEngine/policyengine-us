@@ -11,6 +11,6 @@ class ca_riv_general_relief(Variable):
 
     adds = [
         "ca_riv_general_relief_needs_standards",
-        "ca_riv_general_relief_special_needs",
+        "ca_riv_general_relief_special_needs_amount",
     ]
     subtracts = ["ca_riv_general_relief_countable_income"]

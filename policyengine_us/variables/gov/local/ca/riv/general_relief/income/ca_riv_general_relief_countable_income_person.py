@@ -5,8 +5,10 @@ class ca_riv_general_relief_countable_income_person(Variable):
     value_type = float
     entity = Person
     unit = USD
-    label = "Riverside County General Relief countable income per person"
-    definition_period = YEAR
-    defined_for = "in_riv"
+    label = "Person's countable income before proration"
+    definition_period = MONTH
 
-    adds = "gov.local.ca.riv.general_relief.countable_income.sources"
+    adds = [
+        "ca_riv_general_relief_net_earned_income",
+        "ca_riv_general_relief_unearned_income",
+    ]

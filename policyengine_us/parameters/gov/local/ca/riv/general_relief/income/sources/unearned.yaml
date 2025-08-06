@@ -1,12 +1,7 @@
-description: Riverside county counts these income sources as countable income under the General Relief Program.
+description: Riverside county counts these income sources as unearned income under the General Relief Program.
 values:
   2020-01-01:
-    - employment_income
-    - self_employment_income
     - farm_income
-    - rental_income  # Income In-Kind
-    # interests in real or individual property
-    # training payments or work allowance 
     - interest_income
     - social_security
     - ca_state_disability_insurance
@@ -19,6 +14,6 @@ values:
 metadata:
   unit: list
   period: year
-  label: Riverside County General Relief countable income
+  label: Riverside County General Relief unearned income sources
   reference: 
     - title: General Assistance Eligibility p.18

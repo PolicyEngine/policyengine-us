@@ -10,7 +10,7 @@ class ca_riv_general_relief_property_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.riv.general_relief.property
-        total_property = spm_unit(
-            "ca_riv_general_relief_countable_property", period
+        total_property_value = spm_unit(
+            "ca_riv_general_relief_countable_property_value", period
         )
-        return total_property < p.limit
+        return total_property_value < p.limit

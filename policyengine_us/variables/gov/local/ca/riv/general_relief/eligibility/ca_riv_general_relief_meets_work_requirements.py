@@ -19,12 +19,12 @@ class ca_riv_general_relief_meets_work_requirements(Variable):
             )
             > 0
         )
-        # Elders are exempted from working
         # Full-time student in secondary school younger than certain age exempted from working
         age = person("monthly_age", period)
         is_full_time_student = person("is_full_time_student", period)
         in_secondary_school = person("is_in_secondary_school", period)
         qualify_person = is_full_time_student & in_secondary_school
+        # Elders are exempt from working
         work_exempted_due_to_age = where(
             qualify_person, age < p.younger, age >= p.older
         )
