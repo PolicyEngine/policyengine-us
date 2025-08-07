@@ -1,0 +1,16 @@
+description: The Department of Agriculture exempts the Able-Bodied Adult Without Dependents (ABAWD) work requirements for these states under the Supplemental Nutrition Assistance Program.
+
+values:
+  2018-01-01:
+    []
+  2027-01-01:
+    - HI
+    - AK
+
+metadata:
+  label: SNAP ABAWD work requirement exempt states
+  period: year
+  unit: list
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

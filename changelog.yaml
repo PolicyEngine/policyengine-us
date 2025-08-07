@@ -10581,3 +10581,106 @@
     added:
     - Fix broken unit tests introduced through OBBBA parametric changes.
   date: 2025-07-29 16:49:54
+- bump: patch
+  changes:
+    fixed:
+    - Fix reported SALT unit test.
+  date: 2025-07-30 10:45:15
+- bump: minor
+  changes:
+    added:
+    - Sen. Hawley tariff rebate reform.
+  date: 2025-07-30 22:55:21
+- bump: patch
+  changes:
+    changed:
+    - Fixed how update_api.py retrieves the version number from pyproject.toml.
+  date: 2025-07-30 23:20:43
+- bump: minor
+  changes:
+    added:
+    - Vermont tax credit legislation changes
+  date: 2025-07-31 09:28:58
+- bump: patch
+  changes:
+    fixed:
+    - Add build back back to pyproject.toml.
+  date: 2025-07-31 12:15:15
+- bump: minor
+  changes:
+    added:
+    - DC General Assistance for Children (GAC).
+    - DC TANF work requirements.
+    - DC Program on Work, Employment, and Responsibility (POWER).
+    fixed:
+    - Refactored formulas in accordance with TANF and GAC.
+  date: 2025-07-31 13:59:29
+- bump: patch
+  changes:
+    fixed:
+    - Corrected income tax thresholds for low-income Arkansas tax tables.
+  date: 2025-07-31 22:16:19
+- bump: minor
+  changes:
+    added:
+    - Exempt income from children in school from SNAP.
+  date: 2025-07-31 22:20:59
+- bump: minor
+  changes:
+    added:
+    - 2018 medicaid older children income limits.
+  date: 2025-07-31 23:48:33
+- bump: patch
+  changes:
+    fixed:
+    - Disable Montana married filing separately on same return logic past 2024.
+  date: 2025-07-31 23:59:46
+- bump: minor
+  changes:
+    added:
+    - Default to first alphabetical county in state when county is not specified.
+  date: 2025-08-01 22:07:50
+- bump: patch
+  changes:
+    fixed:
+    - Cap the North Carolina Subsidized Child Care Assistance Program benefit amount
+      at pre_subsidy_childcare_expense.
+  date: 2025-08-01 23:41:54
+- bump: minor
+  changes:
+    fixed:
+    - Adjustment in meets_snap_abawd_work_requirements formula.
+  date: 2025-08-02 00:01:59
+- bump: minor
+  changes:
+    added:
+    - Michigan surtax ballot initiative.
+  date: 2025-08-04 21:22:30
+- bump: patch
+  changes:
+    fixed:
+    - Edit the formula of ucgid_str to return the ucgid hierarchical codes.
+  date: 2025-08-06 20:20:25
+- bump: patch
+  changes:
+    fixed:
+    - Fix Maine Dependent Exemption Tax Credit.
+  date: 2025-08-06 20:24:41
+- bump: minor
+  changes:
+    added:
+    - 2025 Virginia income tax changes.
+  date: 2025-08-06 20:43:30
+- bump: patch
+  changes:
+    added:
+    - Blind SGA parameter & 2025 value
+    changed:
+    - Updated SSI 2025 non-blind SGA parameter value.
+    - Updated SSI 2025 student income exclusion amount and cap parameter values.
+  date: 2025-08-07 12:51:20
+- bump: patch
+  changes:
+    fixed:
+    - Fix Hawley rebate to get impacts in years other than 2025.
+  date: 2025-08-07 12:54:07

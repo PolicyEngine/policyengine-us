@@ -35,9 +35,23 @@ class county(Variable):
             state_code = county_fips_codes.loc[county_fips, "state"]
             return map_county_string_to_enum(county_name, state_code)
 
-        # Attempt to look up from ZIP code
-        zip_code = household("zip_code", period).astype(int)
-        zip_codes = ZIP_CODE_DATASET.set_index("zip_code")
-        county_name = zip_codes.county[zip_code]
-        state_code = zip_codes.state[zip_code]
-        return map_county_string_to_enum(county_name, state_code)
+        # Check if zip_code was explicitly provided as input
+        # The zip_code variable auto-generates values, so we need to check if it was user input
+        input_variables = getattr(simulation, "input_dataset", {})
+        if (
+            isinstance(input_variables, dict)
+            and "zip_code" not in input_variables
+        ):
+            # No ZIP code was provided by user, use first county in state
+            return household("first_county_in_state", period)
+
+        # Attempt to look up from ZIP code (only if explicitly provided)
+        try:
+            zip_code = household("zip_code", period).astype(int)
+            zip_codes = ZIP_CODE_DATASET.set_index("zip_code")
+            county_name = zip_codes.county[zip_code]
+            state_code = zip_codes.state[zip_code]
+            return map_county_string_to_enum(county_name, state_code)
+        except:
+            # If ZIP code lookup fails, use first county in state as fallback
+            return household("first_county_in_state", period)
