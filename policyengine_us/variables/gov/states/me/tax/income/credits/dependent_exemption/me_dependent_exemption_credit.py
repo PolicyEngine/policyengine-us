@@ -12,8 +12,6 @@ class me_dependent_exemption_credit(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        # First get total the number of dependents (line 1).
-        dependents = tax_unit("tax_unit_dependents", period)
 
         # Get their Maine AGI (line 3).
         me_agi = tax_unit("me_agi", period)
@@ -24,7 +22,9 @@ class me_dependent_exemption_credit(Variable):
         ).gov.states.me.tax.income.credits.dependent_exemption
 
         # Calculate the maximum dependents exemption amount (line 2).
-        max_amount = dependents * p.amount
+        max_amount = add(
+            tax_unit, period, ["me_dependent_exemption_credit_amount_person"]
+        )
 
         # Get filing status.
         filing_status = tax_unit("filing_status", period)
