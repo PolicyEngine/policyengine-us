@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.366.1] - 2025-08-07 12:51:20
+
+### Added
+
+- Blind SGA parameter & 2025 value
+
+### Changed
+
+- Updated SSI 2025 non-blind SGA parameter value.
+- Updated SSI 2025 student income exclusion amount and cap parameter values.
+
 ## [1.366.0] - 2025-08-06 20:43:30
 
 ### Added
@@ -12565,6 +12576,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.366.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.0...1.366.1
 [1.366.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.2...1.366.0
 [1.365.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.1...1.365.2
 [1.365.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.0...1.365.1
