@@ -1,0 +1,23 @@
+description: Puerto Rico provides the following personal exemption amount, based on filing status.
+SINGLE:
+  2023-01-01: 3_500
+JOINT:
+  2023-01-01: 7_000
+SEPARATE:
+  2023-01-01: 3_500
+SURVIVING_SPOUSE:
+  2023-01-01: 7_000
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 3_500
+## Legal code only specifies values for joint, single, and separate filing statuses
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Puerto Rico personal exemption amount
+  reference:
+    - title: Gov. of Puerto Rico Form 482.0 2024 
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2
+    - title: P.R. Laws tit. 13, § 30138 (a)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30138/
