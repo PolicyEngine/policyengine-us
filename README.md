@@ -6,4 +6,14 @@
 
 PolicyEngine US is a microsimulation model of the US state and federal tax and benefit system.
 
+## Installation
+
 To install, run `pip install policyengine-us`.
+
+## Documentation
+
+For documentation, visit **[policyengine.github.io/policyengine-us](https://policyengine.github.io/policyengine-us/)**
+
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
