@@ -1,0 +1,48 @@
+description: All state standard deduction variables.
+values:
+  0000-01-01:
+    - al_standard_deduction  # Alabama
+    - ar_standard_deduction  # Arkansas
+    - az_standard_deduction  # Arizona
+    - ca_standard_deduction  # California
+    # Connecticut adopts federal standard deduction
+    - dc_standard_deduction  # DC
+    - de_standard_deduction  # Delaware
+    - ga_standard_deduction  # Georgia
+    - hi_standard_deduction  # Hawaii
+    - ia_standard_deduction  # Iowa
+    # Idaho adopts federal standard deduction.
+    # Illinois doesn't have a standard deduction.
+    # Indiana doesn't have deductions (taxes AGI directly).
+    - ks_standard_deduction  # Kansas
+    - ky_standard_deduction  # Kentucky
+    - la_standard_deduction  # Louisiana
+    # Massachusetts doesn't have deductions in a standard form.
+    - md_standard_deduction  # Maryland
+    # Maine adopts federal standard deduction.
+    - mi_standard_deduction  # Michigan
+    - mn_standard_deduction  # Minnesota
+    # Missouri adopts federal standard deduction
+    - ms_standard_deduction  # Mississippi
+    - mt_standard_deduction  # Montana
+    - nc_standard_deduction  # North Carolina
+    # North Dakota adopts federal deductions.
+    - ne_standard_deduction  # Nebraska
+    # New Jersey doesn't have a standard deduction.
+    # New Mexico adopts the federal standard deduction.
+    - ny_standard_deduction  # New York
+    # Ohio doesn't have a conventional deduction system.
+    - ok_standard_deduction  # Oklahoma
+    - or_standard_deduction  # Oregon
+    - ri_standard_deduction  # Rhode Island
+    # South Carolina adjusts federal taxable income rather than having a state standard deduction.
+    # Utah adopts federal standard deduction
+    - va_standard_deduction  # Virginia
+    - vt_standard_deduction  # Vermont
+    - wi_standard_deduction  # Wisconsin
+    # West Virginia doesn't have a standard deduction.
+
+metadata:
+  unit: list
+  period: year
+  label: State Standard Deduction Variables

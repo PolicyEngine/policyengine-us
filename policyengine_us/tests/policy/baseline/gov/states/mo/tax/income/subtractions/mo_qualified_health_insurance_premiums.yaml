@@ -3,7 +3,7 @@
   absolute_error_margin: 0
   input:
     health_insurance_premiums: 12_000
-    medical_out_of_pocket_expenses: 0
+    medical_out_of_pocket_expenses: 12_000
     medical_expense_deduction: 0
     tax_unit_itemizes: False
     taxable_income: 10_000
@@ -16,7 +16,7 @@
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 5_000
-    medical_out_of_pocket_expenses: 0
+    medical_out_of_pocket_expenses: 5_000
     medical_expense_deduction: 4_625 #medical expenses over 7.5% of taxable_income, equals to 92.5% of income and insurance_premiums
     tax_unit_itemizes: True
     taxable_income: 5_000
@@ -29,7 +29,7 @@
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 12_000
-    medical_out_of_pocket_expenses: 0
+    medical_out_of_pocket_expenses: 12_000
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
     taxable_income: 7_000
@@ -42,7 +42,7 @@
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 6_000
-    medical_out_of_pocket_expenses: 6_000
+    medical_out_of_pocket_expenses: 12_000
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
     taxable_income: 7_000

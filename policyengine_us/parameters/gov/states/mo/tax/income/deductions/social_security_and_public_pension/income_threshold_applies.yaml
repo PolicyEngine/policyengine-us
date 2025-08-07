@@ -1,0 +1,17 @@
+description: Missouri limits social security and public pension deductions to households below certain income thresholds, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Missouri social security and public pension income thresholds apply 
+  reference:
+    - title: 2023 MO-1040 Book - Individual Income Tax Long Form
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=29
+      # Income thresholds removed in 2024.
+    - title: 2024 MO-1040 Book - Individual Income Tax Long Form
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=29
+    - title: MO Statute - Chapter 143.125, Subsection 2
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.125
+
+values:
+  2021-01-01: true
+  2024-01-01: false

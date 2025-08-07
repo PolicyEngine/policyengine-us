@@ -27,3 +27,13 @@
     medicaid_income_level: 1.39
   output:
     is_adult_for_medicaid: false
+
+- name: Adult at FPL in AZ
+  period: 2022
+  input:
+    state_code: AZ
+    age: 22
+    medicaid_income_level: 1.38
+  output:
+    is_adult_for_medicaid: true
+    

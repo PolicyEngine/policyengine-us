@@ -1,0 +1,21 @@
+- name: Case 1, household size of 4 with income $61,200, eligible.
+  period: 2023
+  absolute_error_margin: 0.3
+  input:
+    employment_income: 5_100 * 12
+    spm_unit_size: 4
+    in_riv: true
+  output:
+    hhs_smi: 103_856
+    ca_riv_liheap_eligible: true
+
+- name: Case 2, household size of 4 with income $63,600, ineligible.
+  period: 2023
+  absolute_error_margin: 0.3
+  input:
+    employment_income: 5_300 * 12
+    spm_unit_size: 4
+    in_riv: true
+  output:
+    hhs_smi: 103_856
+    ca_riv_liheap_eligible: false

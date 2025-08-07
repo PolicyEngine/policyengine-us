@@ -1,0 +1,71 @@
+- name: There is no recapture for this set of brackets in 2023 (single)
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 110_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_low_tax_recapture: 0
+
+- name: There is no recapture for this set of brackets in 2023 (joint)
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 222_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_low_tax_recapture: 0
+
+- name: Below starting threshold (single)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 100_499
+    filing_status: SINGLE
+  output:
+    ct_income_tax_low_tax_recapture: 0
+
+- name: Below starting threshold (joint)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 167_999
+    filing_status: JOINT
+  output:
+    ct_income_tax_low_tax_recapture: 0
+
+- name: Add two increments (single)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 115_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_low_tax_recapture: 75
+
+- name: Add two increments (single)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 230_001
+    filing_status: JOINT
+  output:
+    ct_income_tax_low_tax_recapture: 150
+
+- name: Recapture should not exceed cap even if AGI is really high (single)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 1_000_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_low_tax_recapture: 250
+
+- name: Recapture should not exceed cap even if AGI is really high (joint)
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 1_000_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_low_tax_recapture: 500

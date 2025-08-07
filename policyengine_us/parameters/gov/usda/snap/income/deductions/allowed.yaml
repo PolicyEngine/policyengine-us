@@ -7,8 +7,11 @@ values:
     - snap_child_support_deduction
     - snap_excess_medical_expense_deduction
     - snap_excess_shelter_expense_deduction
+    - snap_self_employment_expense_deduction
 metadata:
   reference:
     - title: United States Code, Title 7, Subsection 2014(e)
       href: https://www.law.cornell.edu/uscode/text/7/2014#e
-  unit: variable
+  unit: list
+  period: year
+  label: SNAP deductions allowed

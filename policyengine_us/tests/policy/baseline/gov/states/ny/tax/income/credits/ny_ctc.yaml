@@ -23,7 +23,7 @@
   output:
     ny_ctc: 0
 
-- name: Parent of four-year old child with no income gets minimum credit, 33% of $1,000
+- name: Parent of four-year old child with no income gets minimum credit, $100 per child
   period: 2022
   input:
     people:
@@ -40,9 +40,9 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 330
+    ny_ctc: 100
 
-- name: Parent of four-year old child with no income gets minimum credit, 33% of $1,000
+- name: Parent of four-year old child with no income gets minimum credit, $100 per child
   period: 2022
   input:
     people:
@@ -59,7 +59,7 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 330
+    ny_ctc: 100
 
 - name: Simpler calculation if not set to pre-TCJA.
   period: 2022
@@ -71,3 +71,277 @@
     age: 5 # Must be 4+ to be eligible.
   output:
     ny_ctc: 330
+
+- name: 2023 Three-year old child gets minimum credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+
+- name: 2023 Newly born child (zero-year old) gets minimum credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+
+- name: Single parent of one child without income - should receive credit floor
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    refundable_ctc: 0
+    non_refundable_ctc: 2_200
+    income_tax_before_credits: 0
+    ctc: 2_200 # $1,000 for the calculation as pre-TCJA values apply
+    ctc_value: 0
+    ny_ctc: 1_000  # Updated CTC: $1,000 for child age 0
+
+- name: Single parent of one child with income - should receive percentage credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    refundable_ctc: 1_562.50
+    non_refundable_ctc: 637.5
+    ctc: 2_200
+    ctc_value: 2_200
+    ny_ctc: 1_000 # Updated CTC: $1,000 for child age 0
+
+# Updated CTC Tests for 2025-2027 Rules
+- name: 2025 - Young child (age 2) gets $1,000 credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 1_000
+
+- name: 2025 - Older child (age 8) gets $330 credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 330
+
+- name: 2025 - Two children (ages 2 and 8) get combined credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc: 1_330  # $1,000 + $330
+
+- name: 2026 - Older child (age 8) gets increased $500 credit
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 500
+
+- name: 2025 - Phase-out at $80k AGI for single filer with one young child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 80_000  # $5k over $75k threshold
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 917.5  # $1,000 - (5 * $16.50) = $1,000 - $82.50
+
+- name: 2025 - Joint filer under $110k threshold gets full credit
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 28
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        adjusted_gross_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    ny_ctc: 1_000
+
+- name: 2028 - Reverts to old system (33% of federal CTC)
+  period: 2028
+  input:
+    gov.states.ny.tax.income.credits.ctc.pre_tcja: false
+    ctc: 1_000
+    ctc_qualifying_child: true
+    state_code: NY
+    age: 8  # Must be 4+ to be eligible
+  output:
+    ny_ctc: 330  # Back to 33% of federal CTC
+
+# Test disabled switch - should use original rules
+- name: 2025 - Updated CTC disabled, falls back to original rules (33% of federal)
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
+    gov.states.ny.tax.income.credits.ctc.pre_tcja: false
+    ctc: 1_000
+    ctc_qualifying_child: true
+    state_code: NY
+    age: 8  # Must be 4+ to be eligible
+  output:
+    ny_ctc: 330  # Original rule: 33% of federal CTC
+
+- name: 2025 - Updated CTC disabled, minimum credit for low income
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 10_000  # Low income
+        ctc: 0  # No federal CTC
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100  # Original rule: $100 minimum per child
+
+- name: 2025 - Updated CTC disabled vs enabled comparison (young child)
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2  # Young child
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income: 50_000
+        ctc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100  # Original rule: $100 minimum (not $1,000 from updated rules)

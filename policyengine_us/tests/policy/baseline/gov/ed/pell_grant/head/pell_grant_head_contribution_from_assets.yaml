@@ -1,0 +1,35 @@
+- name: Simplified formula applies
+  period: 2023
+  input:
+    pell_grant_head_assets: 100
+    pell_grant_simplified_formula_applies: true
+    pell_grant_formula: A
+  output:
+    pell_grant_contribution_from_assets: 0
+
+- name: Formula A
+  period: 2024
+  input:
+    pell_grant_head_assets: 100
+    pell_grant_simplified_formula_applies: false
+    pell_grant_formula: A
+  output:
+    pell_grant_contribution_from_assets: 12
+
+- name: Formula B
+  period: 2024
+  input:
+    pell_grant_head_assets: 100
+    pell_grant_simplified_formula_applies: false
+    pell_grant_formula: B
+  output:
+    pell_grant_contribution_from_assets: 20
+
+- name: Formula C
+  period: 2024
+  input:
+    pell_grant_head_assets: 100
+    pell_grant_simplified_formula_applies: false
+    pell_grant_formula: C
+  output:
+    pell_grant_contribution_from_assets: 7

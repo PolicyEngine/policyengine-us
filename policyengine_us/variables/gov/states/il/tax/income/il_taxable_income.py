@@ -7,6 +7,7 @@ class il_taxable_income(Variable):
     label = "IL taxable income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         base_income = tax_unit("il_base_income", period)

@@ -1,32 +1,58 @@
-- name: Elderly individual with no income.
-  period: 2022
+- name: SSI integration test
+  period: 2023
   input:
-    is_ssi_aged_blind_disabled: true
+    people:
+      # Single person - eligible for SSI
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      # Married couple - both eligible for SSI
+      person2:
+        age: 68
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person3:
+        age: 70
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      # Married couple - only one eligible for SSI
+      person4:
+        age: 72
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person5:
+        age: 50
+        is_disabled: false
+        is_tax_unit_spouse: true
+        ssi_earned_income: 12000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+      tax_unit3:
+        members: [person4, person5]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+      marital_unit3:
+        members: [person4, person5]
   output:
-    ssi: 841 * 12
-
-- name: Disabled individual with no income
-  period: 2022
-  input:
-    age: 40
-    is_ssi_aged_blind_disabled: true
-  output:
-    ssi: 841 * 12
-
-- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
-  period: 2021
-  input:
-    is_ssi_aged_blind_disabled: true
-    social_security: 300 * 12
-  output:
-    ssi_countable_income: 280 * 12
-    ssi: 514 * 12 # 794 - 280
-
-- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
-  period: 2021
-  input:
-    is_ssi_aged_blind_disabled: true
-    employment_income: 317 * 12
-  output:
-    ssi_countable_income: 116 * 12
-    ssi: 678 * 12 # 794 - 116
+    # Eligibility variables
+    is_ssi_aged_blind_disabled: [true, true, true, true, false]
+    is_ssi_eligible_individual: [true, true, false, true, false]
+    
+    # Joint claim status
+    ssi_claim_is_joint: [false, true, false, true, false]

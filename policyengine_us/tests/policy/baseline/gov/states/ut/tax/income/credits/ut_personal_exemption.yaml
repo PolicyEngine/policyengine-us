@@ -1,0 +1,35 @@
+- name: 2023 - 3 total dependents, no additional dependents
+  period: 2023
+  input:
+    ut_total_dependents: 3
+    ut_personal_exemption_additional_dependents: 0
+    state_code: UT
+  output: 
+    ut_personal_exemption: 5_823 # 1941 * 3
+
+- name: 2023 - 3 total dependents, 2 additional dependents
+  period: 2023
+  input:
+    ut_total_dependents: 3
+    ut_personal_exemption_additional_dependents: 2
+    state_code: UT
+  output: 
+    ut_personal_exemption: 9_705 # 1941 * 5
+
+- name: 2022 - 3 total dependents, additional dependent exemption not initiated
+  period: 2022
+  input:
+    ut_total_dependents: 3
+    ut_personal_exemption_additional_dependents: 0
+    state_code: UT
+  output: 
+    ut_personal_exemption: 5_406 # 1802 * 3
+
+- name: 2022 - 3 total dependents, additional dependent exemption not initiated
+  period: 2022
+  input:
+    ut_total_dependents: 3
+    ut_personal_exemption_additional_dependents: 2
+    state_code: UT
+  output: 
+    ut_personal_exemption: 5_406 # 1802 * 3

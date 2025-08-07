@@ -4,6 +4,7 @@
     ia_regular_tax_joint: 600
     ia_alternate_tax_joint: 700
     state_code: IA
+    ia_alternate_tax_eligible: true
   output:
     ia_base_tax_joint: 600
 
@@ -13,5 +14,16 @@
     ia_regular_tax_joint: 800
     ia_alternate_tax_joint: 700
     state_code: IA
+    ia_alternate_tax_eligible: true
   output:
     ia_base_tax_joint: 700
+
+- name: Ineligible for the alternate tax
+  period: 2022
+  input:
+    ia_regular_tax_joint: 800
+    ia_alternate_tax_joint: 700
+    state_code: IA
+    ia_alternate_tax_eligible: false
+  output:
+    ia_base_tax_joint: 800

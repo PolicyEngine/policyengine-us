@@ -6,9 +6,18 @@ class is_ssi_eligible_individual(Variable):
     entity = Person
     label = "Is an SSI-eligible individual"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/42/1382#a"
 
     def formula(person, period, parameters):
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_ssi_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        return aged_blind_disabled & ~is_ssi_eligible_spouse
+        is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
+        immigration_status = person("immigration_status", period)
+        is_citizen = (
+            immigration_status == immigration_status.possible_values.CITIZEN
+        )
+
+        return (
+            aged_blind_disabled
+            & ~is_ssi_eligible_spouse
+            & (is_qualified_noncitizen | is_citizen)
+        )

@@ -1,0 +1,75 @@
+- name: At least one eligible child, at least one eligible parent, is income eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_child_care_subsidy_eligible_parent: true
+      person2:
+        ne_child_care_subsidy_eligible_child: true
+    spm_units:
+      spm_unit:
+        ne_child_care_subsidy_income_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: true
+
+- name: No eligible children, at least one eligible parent, is income eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_child_care_subsidy_eligible_parent: true
+      person2:
+        ne_child_care_subsidy_eligible_child: false
+    spm_units:
+      spm_unit:
+        ne_child_care_subsidy_income_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: false
+
+- name: At least one eligible child, no eligible parents, is income eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_child_care_subsidy_eligible_parent: false
+      person2:
+        ne_child_care_subsidy_eligible_child: true
+    spm_units:
+      spm_unit:
+        ne_child_care_subsidy_income_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: false
+
+- name: At least one eligible child, at least one eligible parent, not income eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_child_care_subsidy_eligible_parent: false
+      person2:
+        ne_child_care_subsidy_eligible_child: true
+    spm_units:
+      spm_unit:
+        ne_child_care_subsidy_income_eligible: false
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: false

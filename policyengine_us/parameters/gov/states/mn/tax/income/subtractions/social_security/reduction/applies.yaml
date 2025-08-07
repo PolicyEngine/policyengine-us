@@ -1,0 +1,20 @@
+description: Minnesota reduced the social security subtraction if this is true.
+metadata:
+  unit: bool
+  label: Minnesota social security subtraction reduction applies
+  period: year
+  reference:
+  - title: Minnesota Statutes 290.0132 Subd. 26.Social Security benefits. (c)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - title: 2021 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf#page=4
+  - title: 2022 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf#page=4
+  - title: 2023 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1m-23_0.pdf#page=4
+  - title: 2024 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf#page=4
+
+values:
+  2021-01-01: false
+  2023-01-01: true

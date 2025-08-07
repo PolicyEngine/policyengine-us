@@ -1,0 +1,15 @@
+- name: Reform not in effect
+  period: 2024
+  input:
+    snap_net_income_fpg_ratio: 1.5
+  output:
+    meets_snap_net_income_test: false
+
+- name: Reform in effect
+  period: 2024
+  reforms: policyengine_us.reforms.snap.abolish_snap_net_income_test.abolish_snap_net_income_test
+  input:
+    gov.contrib.snap.abolish_net_income_test.in_effect: true
+    snap_net_income_fpg_ratio: 1.5
+  output:
+    meets_snap_net_income_test: true

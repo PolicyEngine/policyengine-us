@@ -34,8 +34,8 @@ class md_senior_tax_credit(Variable):
                 p.amount.single,
                 p.amount.joint[eligible_count],
                 p.amount.head_of_household,
-                p.amount.widow,
+                p.amount.surviving_spouse,
                 p.amount.separate,
             ],
         )
-        return where(eligible_count > 0, credit_amount, 0)
+        return (eligible_count > 0) * credit_amount

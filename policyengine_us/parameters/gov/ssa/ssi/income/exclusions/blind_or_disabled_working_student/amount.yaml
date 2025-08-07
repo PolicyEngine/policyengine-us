@@ -1,0 +1,65 @@
+description: The Social Security Administration excludes the following earned income amount for blind or disabled student filers under the Supplemental Security Income.
+
+values:
+  1974-01-01: 400
+  2001-01-01: 1_290
+  2002-01-01: 1_320
+  2003-01-01: 1_340
+  2004-01-01: 1_370
+  2005-01-01: 1_410
+  2006-01-01: 1_460
+  2007-01-01: 1_510
+  2008-01-01: 1_550
+  2009-01-01: 1_640
+  2012-01-01: 1_700
+  2013-01-01: 1_730
+  2014-01-01: 1_750
+  2015-01-01: 1_780
+  2017-01-01: 1_790
+  2018-01-01: 1_820
+  2019-01-01: 1_870
+  2020-01-01: 1_900
+  2021-01-01: 1_930
+  2022-01-01: 2_040
+  2023-01-01: 2_220
+  2024-01-01: 2_290
+metadata:
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  label: SSI blind or disabled working student earned income exclusion amount
+  unit: currency-USD
+  period: month
+  reference:
+    - title: 20 CFR § 416.1112 - Earned income we do not count.
+      href: https://www.law.cornell.edu/cfr/text/20/416.1112#c_3
+    - title: 2011 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI11/Exclusions.html#39619
+    - title: 2012 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/OACT/ssir/SSI12/V_B_Exclusions.html#39619
+    - title: 2013 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI13/V_B_Exclusions.html#39619
+    - title: 2014 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI14/V_B_Exclusions.html#39619
+    - title: 2015 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI15/V_B_Exclusions.html#39619
+    - title: 2016 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI16/V_B_Exclusions.html#39619
+    - title: 2017 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI17/V_B_Exclusions.html#39619
+    - title: 2018 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI18/V_B_Exclusions.html#39619
+    - title: 2019 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI19/V_B_Exclusions.html#39619
+    - title: 2020 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI20/V_B_Exclusions.html#39619
+    - title: 2021 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI21/V_B_Exclusions.html#39619
+    - title: 2022 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI22/V_B_Exclusions.html#39619
+    - title: 2023 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI23/V_B_Exclusions.html#39619
+    - title: 2024 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/OACT/ssir/SSI24/V_E_WorkIncentives.html

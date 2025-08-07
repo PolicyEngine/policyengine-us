@@ -1,0 +1,39 @@
+- name: Case 1, eligible.   
+  period: 2022
+  input:
+    il_cta_rta_reduced_fare_eligible: true
+    il_cta_children_reduced_fare_eligible: false
+    il_cta_student_reduced_fare_eligible: false
+    state_code: IL
+  output:
+    il_cta_reduced_fare_eligible: true
+
+- name: Case 2, ineligible.   
+  period: 2022
+  input:
+    il_cta_rta_reduced_fare_eligible: false
+    il_cta_children_reduced_fare_eligible: false
+    il_cta_student_reduced_fare_eligible: false
+    state_code: IL
+  output:
+    il_cta_reduced_fare_eligible: false    
+
+- name: Case 3, eligible due to student.   
+  period: 2022
+  input:
+    il_cta_rta_reduced_fare_eligible: false
+    il_cta_children_reduced_fare_eligible: false
+    il_cta_student_reduced_fare_eligible: true
+    state_code: IL
+  output:
+    il_cta_reduced_fare_eligible: true
+
+- name: Case 4, eligible due to children.   
+  period: 2022
+  input:
+    il_cta_rta_reduced_fare_eligible: false
+    il_cta_children_reduced_fare_eligible: true
+    il_cta_student_reduced_fare_eligible: false
+    state_code: IL
+  output:
+    il_cta_reduced_fare_eligible: true

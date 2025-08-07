@@ -1,0 +1,24 @@
+- name: low assets, eligible for Medicaid
+  period: 2022
+  input:
+    ssi_countable_resources: 1_000
+    state_code: TX
+  output:
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: high assets, ineligible for Medicaid
+  period: 2022
+  input:
+    ssi_countable_resources: 1_000_000
+    state_code: TX
+  output:
+    is_optional_senior_or_disabled_asset_eligible: false
+
+
+- name: high assets, eligible for Medicaid in CA
+  period: 2024
+  input:
+    ssi_countable_resources: 1_000_000
+    state_code: CA
+  output:
+    is_optional_senior_or_disabled_asset_eligible: true

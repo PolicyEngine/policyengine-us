@@ -1,0 +1,39 @@
+- name: Case 1, age qualify, is a dependent, is not tafdc related, eligible.
+  period: 2022
+  input:
+    age: 16
+    is_tax_unit_dependent: true
+    is_tafdc_related_to_head_or_spouse: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible_dependent: true
+
+- name: Case 2, age not qualify, not eligible.
+  period: 2022
+  input:
+    age: 19
+    is_tax_unit_dependent: true
+    is_tafdc_related_to_head_or_spouse: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible_dependent: false
+
+- name: Case 3, not a dependent, not eligible.
+  period: 2022
+  input:
+    age: 16
+    is_tax_unit_dependent: false
+    is_tafdc_related_to_head_or_spouse: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible_dependent: false
+
+- name: Case 4, is tafdc related, not eligible.
+  period: 2022
+  input:
+    age: 16
+    is_tax_unit_dependent: true
+    is_tafdc_related_to_head_or_spouse: true
+    state_code: MA
+  output:
+    ma_eaedc_eligible_dependent: false

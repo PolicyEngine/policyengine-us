@@ -9,4 +9,3 @@ class ca_child_care_subsidies(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
     adds = ["ca_calworks_child_care"]
-    exhaustive_parameter_dependencies = "gov.states.ca.cdss.tanf.child_care"

@@ -36,7 +36,7 @@ class wv_low_income_family_tax_credit(Variable):
                 p.amount.separate.calc(reduced_agi),
                 p.amount.joint.calc(reduced_agi),
                 p.amount.head_of_household.calc(reduced_agi),
-                p.amount.widow.calc(reduced_agi),
+                p.amount.surviving_spouse.calc(reduced_agi),
             ],
         )
 

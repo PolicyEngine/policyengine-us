@@ -9,36 +9,36 @@
         employment_income: 20_000
         social_security: 24_000
         real_estate_taxes: 8_000
-        interest_expense: 10_000
+        deductible_interest_expense: 10_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 74
         employment_income: 30_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person6:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -48,7 +48,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -73,29 +73,29 @@
         taxable_pension_income: 12_000
         social_security: 3_000
         real_estate_taxes: 23_000
-        interest_expense: 25_000
+        deductible_interest_expense: 25_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -105,7 +105,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -126,36 +126,36 @@
         taxable_interest_income: 5_010
         social_security: 24_000
         real_estate_taxes: 23_000
-        interest_expense: 17_000
+        deductible_interest_expense: 17_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 74
         employment_income: 22_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person6:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -166,7 +166,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         tax_unit_childcare_expenses: 1_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -189,36 +189,36 @@
         taxable_interest_income: 5_010
         social_security: 24_000
         real_estate_taxes: 23_000
-        interest_expense: 17_000
+        deductible_interest_expense: 17_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 74
         employment_income: 22_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person6:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -229,7 +229,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         tax_unit_childcare_expenses: 1_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
       household:

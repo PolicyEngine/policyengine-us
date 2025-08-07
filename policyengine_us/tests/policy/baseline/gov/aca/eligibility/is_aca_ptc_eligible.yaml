@@ -4,6 +4,7 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
+    is_chip_eligible: false
     aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: true
@@ -14,6 +15,7 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: true
+    is_chip_eligible: false
     aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: false
@@ -24,6 +26,7 @@
     is_medicaid_eligible: true
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
+    is_chip_eligible: false
     aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: false
@@ -44,11 +47,23 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
+    is_chip_eligible: false
     aca_magi_fraction: 6.50
   output:
      is_aca_ptc_eligible: true
 
-- name: is_aca_ptc_eligible unit test 6 --- max three children pay ACA premium
+- name: is_aca_ptc_eligible unit test 6 --- income B
+  period: 2022
+  input:
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: true
+    aca_magi_fraction: 6.50
+  output:
+     is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 7 --- max three children pay ACA premium
   period: 2022
   input:
     people:

@@ -7,3 +7,4 @@ class long_term_health_insurance_premiums(Variable):
     label = "Long-term health insurance premiums"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

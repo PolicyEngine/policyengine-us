@@ -1,0 +1,13 @@
+description: California provides the following state supplement food allowance for married adults whose living arrangements prevents them from preparing their own meals.
+metadata:
+  unit: currency-USD
+  period: month
+  label: California state supplement food allowance married amount
+  reference:
+    - title: California Welfare and Institutions Code Division 9, Part 3, Chapter 3, Article 5, Section 12200 (e)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+    - title: Supplemental Security Income (SSI) in California
+      href: https://www.ssa.gov/pubs/EN-05-11125.pdf#page=2
+values:
+  1991-01-01: 136
+  2025-01-01: 257.74 # $2,315.57 - $2,057.83

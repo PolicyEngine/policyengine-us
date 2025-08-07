@@ -1,0 +1,15 @@
+description: Maximum age for ACA slcsp amounts.
+metadata:
+  period: year
+  label: ACA maximum slcsp adult age
+  reference:
+    - title: Medicare & the Health Insurance Marketplace
+      href: https://www.medicare.gov/Pubs/pdf/11694-Medicare-and-Marketplace.pdf
+    - title: KFF Health Insurance Marketplace Calculator
+      href: https://www.kff.org/interactive/subsidy-calculator/
+      # https://www.kff.org/interactive/subsidy-calculator-202?/ for prior years
+      # The above references have (since 2014) contained a pull-down menu that
+      # has this title:
+      #   5. Number of adults (21 to 64) enrolling in Marketplace coverage
+values:
+  2014-01-01: 64

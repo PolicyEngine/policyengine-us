@@ -40,6 +40,7 @@
   input:
     ia_taxable_income_indiv: 6_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
     ia_regular_tax_indiv: 264
 
@@ -49,6 +50,7 @@
   input:
     ia_taxable_income_indiv: 7_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
     ia_regular_tax_indiv: 312.2
 
@@ -58,6 +60,7 @@
   input:
     ia_taxable_income_indiv: 30_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
     ia_regular_tax_indiv: 1_420.8   #6_000*0.044+24_000*0.0482=1420.8
 
@@ -67,6 +70,7 @@
   input:
     ia_taxable_income_indiv: 80_000
     state_code: IA
+    filing_status: SINGLE
   output:  
     ia_regular_tax_indiv: 4_285.8 
 
@@ -76,8 +80,9 @@
   input:
     ia_taxable_income_indiv: 30_000
     state_code: IA
+    filing_status: SINGLE
   output:  
-    ia_regular_tax_indiv: 1_420.8
+    ia_regular_tax_indiv: 1_419.9 #6_210*0.044+23_790*0.0482=1420.8
 
 - name: IA regular tax indiv unit test 10, using all rates 2024
   absolute_error_margin: 0.5
@@ -85,8 +90,9 @@
   input:
     ia_taxable_income_indiv: 80_000
     state_code: IA
+    filing_status: SINGLE
   output:  
-    ia_regular_tax_indiv: 4_270.8
+    ia_regular_tax_indiv: 4_260.7
 
 - name: IA regular tax indiv unit test 11, using two rates 2025
   absolute_error_margin: 0.5
@@ -94,8 +100,9 @@
   input:
     ia_taxable_income_indiv: 30_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
-    ia_regular_tax_indiv: 1_420.8
+    ia_regular_tax_indiv: 1_419.9
 
 - name: IA regular tax indiv unit test 12, using all rates 2025
   absolute_error_margin: 0.5
@@ -103,8 +110,9 @@
   input:
     ia_taxable_income_indiv: 80_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
-    ia_regular_tax_indiv: 3_830.8 
+    ia_regular_tax_indiv: 3_829.9
 
 - name: IA regular tax indiv unit test 13, using two rates 2026
   absolute_error_margin: 0.5
@@ -112,6 +120,7 @@
   input:
     ia_taxable_income_indiv: 30_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
     ia_regular_tax_indiv: 1_170
 
@@ -121,5 +130,6 @@
   input:
     ia_taxable_income_indiv: 80_000
     state_code: IA
+    filing_status: SEPARATE
   output:  
     ia_regular_tax_indiv: 3_120

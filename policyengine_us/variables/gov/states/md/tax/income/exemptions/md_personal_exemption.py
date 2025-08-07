@@ -30,6 +30,6 @@ class md_personal_exemption(Variable):
                 p.separate.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.head.calc(agi, right=True),
-                p.widow.calc(agi, right=True),
+                p.surviving_spouse.calc(agi, right=True),
             ],
         )

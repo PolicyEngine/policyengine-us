@@ -8,29 +8,29 @@
         age: 28
         employment_income: 104_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 28
         employment_income: 148_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
       person4:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
       person5:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
       person6:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -39,7 +39,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6]
@@ -91,24 +91,24 @@
         age: 72
         employment_income: 30_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 72
         employment_income: 22_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 16
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -118,7 +118,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -136,14 +136,14 @@
         age: 69
         employment_income: 9_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 69
         employment_income: 30_010
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -153,7 +153,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]
@@ -196,6 +196,7 @@
         taxable_interest_income: 5_505.0
         long_term_capital_gains: 1_505.0
         rental_income: 505.0
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 1_500.0
         social_security: 4_500.0
         rent: 3_000
@@ -204,7 +205,7 @@
         business_is_sstb: false
         w2_wages_from_qualified_business: 100e6
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
@@ -214,10 +215,11 @@
         taxable_interest_income: 5_505.0
         long_term_capital_gains: 1_505.0
         rental_income: 505.0
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 1_500.0
         social_security: 4_500.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -227,7 +229,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -248,6 +250,7 @@
         taxable_interest_income: 5_505.0
         long_term_capital_gains: 5_005.0
         rental_income: 2_005.0
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 1_000.0
         rent: 19_000
         self_employment_income: 46_010
@@ -255,7 +258,7 @@
         business_is_sstb: true
         w2_wages_from_qualified_business: 100e6
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
@@ -264,24 +267,25 @@
         taxable_interest_income: 5_505.0
         long_term_capital_gains: 5_005.0
         rental_income: 2_005.0
+        rental_income_would_be_qualified: false
         taxable_private_pension_income: 1_000.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -291,7 +295,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -314,9 +318,9 @@
         employment_income: 144_010
         social_security: 4_500
         real_estate_taxes: 24_000
-        interest_expense: 4_000
+        deductible_interest_expense: 4_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
@@ -324,7 +328,7 @@
         employment_income: 157_010
         social_security: 4_500
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -334,7 +338,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -342,3 +346,31 @@
         state_code: IA
   output:  # expected ia_income_tax from patched TAXSIM35 2023-06-23 version
     ia_income_tax: 14_590.43
+
+- name: Single person with $40,000 of employment income
+  absolute_error_margin: 1
+  period: 2023
+  input:
+    people:
+      person1:
+        employment_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:  
+    ia_income_tax: 1_195
+
+- name: Single person with $40,000 of employment income
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        taxable_interest_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:  
+    ia_taxable_income_consolidated: 85_400

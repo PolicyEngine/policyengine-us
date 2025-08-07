@@ -1,0 +1,46 @@
+[project]
+name = "policyengine-us"
+version = "1.366.0"
+description = "Add your description here."
+readme = "README.md"
+authors = [
+    { name = "PolicyEngine", email = "hello@policyengine.org" }
+]
+requires-python = ">=3.10,<3.14"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "microdf-python>=1.0.0",
+    "policyengine-core>=3.19.0",
+    "policyengine-us-data>=1.17.0",
+    "tqdm>=4.67.1",
+]
+
+[project.scripts]
+policyengine-us = "policyengine_us:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.9.2",
+    "furo>=2024.8.6",
+    "jupyter-book>=1.0.4.post1",
+    "setuptools>=80.9.0",
+    "build>=1.2.2.post1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["policyengine_us"]
+

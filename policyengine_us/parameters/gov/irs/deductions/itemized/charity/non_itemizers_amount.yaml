@@ -1,0 +1,50 @@
+description: IRS allows for the following charitable deduction amount for non-itemizers, based on filing status.
+metadata:
+  unit: currency-USD
+  label: Charitable deduction amount for non-itemizers
+  period: year
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2020 Publication 526 Charitable Contributions
+      href: https://www.irs.gov/pub/irs-prior/p526--2020.pdf#page=2
+    - title: 2021 Publication 526 Charitable Contributions
+      href: https://www.irs.gov/pub/irs-prior/p526--2021.pdf#page=2
+      # The legal code does not describe the 2020 deduction values 
+    - title: 26 U.S. Code § 170 - Charitable, etc., contributions and gifts - (p)
+      href: https://www.law.cornell.edu/uscode/text/26/170
+    - title: Expanded tax benefits help individuals and businesses give to charity during 2021; deductions up to $600 available for cash donations by non-itemizers
+      href: https://www.irs.gov/newsroom/expanded-tax-benefits-help-individuals-and-businesses-give-to-charity-during-2021-deductions-up-to-600-available-for-cash-donations-by-non-itemizers
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+JOINT:
+  2018-01-01: 0
+  2020-01-01: 300
+  2021-01-01: 600
+  2022-01-01: 0
+  2026-01-01: 2_000
+SINGLE:
+  2018-01-01: 0
+  2020-01-01: 150
+  2021-01-01: 300
+  2022-01-01: 0
+  2026-01-01: 1_000
+SEPARATE:
+  2018-01-01: 0
+  2020-01-01: 150
+  2021-01-01: 300
+  2022-01-01: 0
+  2026-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 0
+  2020-01-01: 150
+  2021-01-01: 300
+  2022-01-01: 0
+  2026-01-01: 1_000
+SURVIVING_SPOUSE:
+  2018-01-01: 0
+  2020-01-01: 150
+  2021-01-01: 300
+  2022-01-01: 0
+  2026-01-01: 1_000

@@ -11,6 +11,7 @@ class sc_military_deduction_indv(Variable):
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17",
     )
     definition_period = YEAR
+    defined_for = StateCode.SC
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

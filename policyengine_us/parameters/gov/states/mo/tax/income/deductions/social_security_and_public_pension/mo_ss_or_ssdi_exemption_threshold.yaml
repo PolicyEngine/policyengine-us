@@ -1,0 +1,24 @@
+description: Missouri sets the following thresholds for social security or social security disability income exemption for different filing status.
+SINGLE: 
+  2021-01-01: 85_000
+JOINT:
+  2021-01-01: 100_000
+SEPARATE:
+  2021-01-01: 85_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 85_000
+SURVIVING_SPOUSE:
+  2021-01-01: 85_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri social security or social security disability income exemption threshold
+  reference:
+    - title: 2021 Form MO-1040 Individual Income Tax Long Form
+      href: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
+    - title: 2021 Form MO-1040 Individual Income Tax Long Form Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17
+    - title: Revisor of Missouri Title X TAXATION AND REVENUE Chapter 143.124
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+  breakdown:
+  - filing_status

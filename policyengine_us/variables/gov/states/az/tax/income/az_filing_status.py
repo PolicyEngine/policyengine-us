@@ -33,7 +33,7 @@ class az_filing_status(Variable):
                 us_filing_status == fsvals.SEPARATE,
             ],
             [
-                # In Arizona, widowed filers are treated as heads of households.
+                # In Arizona, surviving spouse filers are treated as heads of households.
                 ArizonaFilingStatus.JOINT,
                 ArizonaFilingStatus.SINGLE,
                 ArizonaFilingStatus.SEPARATE,

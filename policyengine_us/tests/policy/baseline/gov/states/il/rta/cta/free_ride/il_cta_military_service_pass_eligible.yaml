@@ -1,0 +1,26 @@
+- name: Case 1, is in active duty, eligible. 
+  period: 2022
+  input:
+    military_basic_pay: 100
+    is_fully_disabled_service_connected_veteran: false
+    state_code: IL
+  output:
+    il_cta_military_service_pass_eligible: true
+
+- name: Case 2, is disabled veteran, eligible. 
+  period: 2022
+  input:
+    military_basic_pay: 0
+    is_fully_disabled_service_connected_veteran: true
+    state_code: IL
+  output:
+    il_cta_military_service_pass_eligible: true
+
+- name: Case 32, is neither disabled veteran nor in active duty ineligible. 
+  period: 2022
+  input:
+    military_basic_pay: 0
+    is_fully_disabled_service_connected_veteran: false
+    state_code: IL
+  output:
+    il_cta_military_service_pass_eligible: false

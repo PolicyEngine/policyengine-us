@@ -1,10 +1,17 @@
 description: Indiana provides up a military service deduction of up to this amount per person.
 values:
   2021-01-01: 5_000
+  2024-01-01: .inf
 metadata:
   period: year
   unit: currency-USD
   label: Indiana max military service deduction
   reference:
+    # The statute is not yet updated to reflect the 2024 increase in active duty military compensation to 100%
+    # see House Bill 1034: https://iga.in.gov/legislative/2023/bills/house/1034/details
     - title: IC 6-3-2-4 Military service deduction; retirement income or survivor's benefits deduction (a)(1)
       href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4
+    - title: 2023 IT-40 Income Tax Form Instruction Booklet, pg. 17
+      href: https://forms.in.gov/Download.aspx?id=15792
+    - title: 2024 IT-40 Income Tax Form Instruction Booklet, pg. 18
+      href: https://forms.in.gov/Download.aspx?id=16379

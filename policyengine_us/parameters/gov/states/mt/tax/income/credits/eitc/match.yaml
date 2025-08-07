@@ -1,0 +1,25 @@
+description: Montana matches this fraction of the federal earned income tax credit.
+values:
+  2021-01-01: 0.03
+  2024-01-01: 0.10
+  2026-01-01: 0.20
+metadata:
+  unit: year
+  period: year
+  label: Montana EITC match
+  reference:
+    - title: Montana Code 2021, § 15-30-2318 (2), Earned income tax credit  
+      href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-23/section-15-30-2318/
+    - title: Montana Code 2022, § 15-30-2318 (2), Earned income tax credit  
+      href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2318/
+    # The amendment applies in 2024
+    - title: Montana Code 2023, § 15-30-2318 (2), Earned income tax credit 
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0180/0150-0300-0230-0180.html
+    - title: 2023 Monatana Form 2 Individual Income Tax Instructions, line 23b
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=1
+    - title: 2024 Montana Form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf#page=16
+    - title: House Bill 337 (Bill Text, page 6)
+      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=bill
+    - title: House Bill 337 (Status, signed by Governor)
+      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=status

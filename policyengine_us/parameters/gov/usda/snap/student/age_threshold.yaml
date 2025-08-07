@@ -1,0 +1,23 @@
+description: The United States includes students in the Supplemental Nutrition Assistance Program unit if their age falls into the following range.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: true 
+  - threshold:
+      2018-01-01: 18
+    amount:
+      2018-01-01: false 
+  - threshold:
+      2018-01-01: 50
+    amount:
+      2018-01-01: true
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: bool
+  label: SNAP student age eligibility threshold
+  reference:
+    - title: 7 U.S. Code § 2015 - Eligibility disqualifications (e)(1)
+      href: https://www.law.cornell.edu/uscode/text/7/2015

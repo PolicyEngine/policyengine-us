@@ -12,11 +12,6 @@ class aged_blind_count(Variable):
     def formula(tax_unit, period, parameters):
         blind_head = tax_unit("blind_head", period).astype(int)
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
-        age_threshold = parameters(
-            period
-        ).gov.irs.deductions.standard.aged_or_blind.age_threshold
-        aged_head = (tax_unit("age_head", period) >= age_threshold).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(
-            int
-        )
+        aged_head = tax_unit("aged_head", period).astype(int)
+        aged_spouse = tax_unit("aged_spouse", period).astype(int)
         return blind_head + blind_spouse + aged_head + aged_spouse

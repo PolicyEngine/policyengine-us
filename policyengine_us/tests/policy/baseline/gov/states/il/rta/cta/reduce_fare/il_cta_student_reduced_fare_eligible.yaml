@@ -1,0 +1,26 @@
+- name: Case 1, eligible student.   
+  period: 2022
+  input:
+    age: 20
+    is_in_secondary_school: true
+    state_code: IL
+  output:
+    il_cta_student_reduced_fare_eligible: true
+
+- name: Case 2, age qualify but not in school.   
+  period: 2022
+  input:
+    age: 10
+    is_in_secondary_school: false
+    state_code: IL
+  output:
+    il_cta_student_reduced_fare_eligible: false
+
+- name: Case 3, in school but age ineligible.   
+  period: 2022
+  input:
+    age: 21
+    is_in_secondary_school: true
+    state_code: IL
+  output:
+    il_cta_student_reduced_fare_eligible: false

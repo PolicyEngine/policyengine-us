@@ -1,0 +1,15 @@
+- name: 0 out if gross income deduction is present
+  period: 2022
+  input:
+    child_support_expense: 500
+    snap_child_support_gross_income_deduction: 500
+  output:
+    snap_child_support_deduction: 0
+
+- name: Otherwise, full deduction
+  period: 2022
+  input:
+    child_support_expense: 500
+    snap_child_support_gross_income_deduction: 0
+  output:
+    snap_child_support_deduction: 500

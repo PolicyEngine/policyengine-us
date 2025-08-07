@@ -1,0 +1,26 @@
+- name: Case 1, not in public housing, 7 people.
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    is_in_public_housing: false
+    state_code: MA
+  output:
+    ma_tafdc_payment_standard: 1_356
+
+- name: Case 2, not in public housing, 10 people.
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    is_in_public_housing: false
+    state_code: MA
+  output:
+    ma_tafdc_payment_standard: 1_766
+
+- name: Case 3, in public housing, 7 people.
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    is_in_public_housing: true
+    state_code: MA
+  output:
+    ma_tafdc_payment_standard: 1_316

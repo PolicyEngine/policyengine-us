@@ -1,0 +1,25 @@
+- name: Default is citizen, which is an eligible SSN card type for the CTC.
+  period: 2023
+  output:
+    meets_ctc_child_identification_requirements: true
+
+- name: Person is not eligible for the CTC. 
+  period: 2023
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Person is eligible for the CTC. 
+  period: 2023
+  input:
+    ssn_card_type: NON_CITIZEN_VALID_EAD
+  output:
+    meets_ctc_child_identification_requirements: true
+
+- name: After 2025, the CTC still requires a Social Security Number for qualifying children.
+  period: 2026
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    meets_ctc_child_identification_requirements: false

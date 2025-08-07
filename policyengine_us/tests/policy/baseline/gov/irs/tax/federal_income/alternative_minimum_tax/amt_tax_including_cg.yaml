@@ -1,0 +1,59 @@
+- name: First bracket, no capital gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 50_000
+    dwks10: 0
+    dwks13: 0
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_tax_including_cg: 13_000
+
+- name: First bracket, no capital gains, higher income
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 100_000
+    dwks10: 0
+    dwks13: 0
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_tax_including_cg: 26_000
+
+- name: Income with capital gains in first bracket
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 100_000
+    dwks10: 50_000
+    dwks13: 30_000
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_tax_including_cg: 22_700
+
+- name: AMT with capital gains in second bracket
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 600_000
+    dwks10: 200_000
+    dwks13: 150_000
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_tax_including_cg: 144_086
+
+- name: AMT with unrecaptured section 1250 gains
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 1_000_000
+    dwks10: 500_000
+    dwks13: 300_000
+    dwks14: 0
+    unrecaptured_section_1250_gain: 200_000
+  output:
+    amt_tax_including_cg: 230_586

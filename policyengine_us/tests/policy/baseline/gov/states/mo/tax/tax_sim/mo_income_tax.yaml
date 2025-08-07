@@ -15,7 +15,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        aca_ptc: 0
     household:
       members: [person1, person2, person3]
       state_code: MO
@@ -42,7 +42,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        aca_ptc: 0
     household:
       members: [person1, person2, person3]
       state_code: MO
@@ -67,7 +67,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        aca_ptc: 0
     household:
       members: [person1, person2, person3]
       state_code: MO
@@ -94,7 +94,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        aca_ptc: 0
     household:
       members: [person1, person2, person3]
       state_code: MO
@@ -121,7 +121,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        aca_ptc: 0
     household:
       members: [person1, person2, person3]
       state_code: MO
@@ -147,7 +147,7 @@
         age: 5
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]
@@ -166,14 +166,14 @@
         age: 37
         employment_income: 160_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 39
         employment_income: 160_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -183,7 +183,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]

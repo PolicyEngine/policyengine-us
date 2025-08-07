@@ -1,0 +1,43 @@
+- name: NE child care subsidy no fee
+  period: 2024
+  input:
+    ne_child_care_subsidy_eligible: true
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    spm_unit_fpg: 100
+    spm_unit_net_income: 100
+    state_code: NE
+  output:
+    ne_child_care_subsidy: 50
+
+- name: NE child care subsidy with small fee
+  period: 2024
+  input:
+    ne_child_care_subsidy_eligible: true
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    spm_unit_fpg: 100
+    spm_unit_net_income: 200
+    state_code: NE
+  output:
+    ne_child_care_subsidy: 36 # 50 - 0.07 * 200
+
+- name: NE child care subsidy with big fee
+  period: 2024
+  input:
+    ne_child_care_subsidy_eligible: true
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    spm_unit_fpg: 100
+    spm_unit_net_income: 2_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy: 0 # 50 - 0.07 * 2000 < 0
+
+- name: NE child care subsidy not eligible
+  period: 2024
+  input:
+    ne_child_care_subsidy_eligible: false
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    spm_unit_fpg: 100
+    spm_unit_net_income: 100
+    state_code: NE
+  output:
+    ne_child_care_subsidy: 0

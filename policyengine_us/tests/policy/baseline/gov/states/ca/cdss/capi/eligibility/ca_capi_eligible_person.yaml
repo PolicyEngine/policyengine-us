@@ -1,0 +1,30 @@
+- name: Eligible person - undocumented
+  period: 2023
+  input:
+    is_ssi_aged_blind_disabled: true
+    is_ssi_eligible_spouse: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    ca_capi_eligible_person: true
+
+- name: Citizens are not eligible
+  period: 2023
+  input:
+    is_ssi_aged_blind_disabled: true
+    is_ssi_eligible_spouse: false
+    immigration_status: CITIZEN
+    state_code: CA
+  output:
+    ca_capi_eligible_person: false
+
+- name: Eligible person - legal permanent resident - not enough qualifying quarters for ssi
+  period: 2023
+  input:
+    is_ssi_aged_blind_disabled: true
+    is_ssi_eligible_spouse: false
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
+    state_code: CA
+  output:
+    ca_capi_eligible_person: true

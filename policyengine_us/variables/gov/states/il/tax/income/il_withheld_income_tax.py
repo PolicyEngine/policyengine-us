@@ -10,12 +10,10 @@ class il_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.il.tax.income
         # Since Illinois does not have a standard deduction
         # we apply the personal exemption amount
         personal_exemptions = p.exemption.personal
-        reduced_employment_income = max_(
-            employment_income - personal_exemptions, 0
-        )
-        return p.rate * reduced_employment_income
+        reduced_agi = max_(agi - personal_exemptions, 0)
+        return p.rate * reduced_agi

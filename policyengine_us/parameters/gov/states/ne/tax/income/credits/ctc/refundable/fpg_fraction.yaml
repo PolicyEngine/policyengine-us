@@ -1,0 +1,15 @@
+description: Nebraska limits the refundable child tax credit to filers with an total household income at or below this fraction of the federal poverty guideline.  
+
+values:
+  2024-01-01: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: Nebraska refundable child tax credit FPG limit
+  reference:
+    - title: Nebraska Revised Statute | Chapter 77 | §7203 (1)(c)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203
+    - title: 2024 Nebraska Individual Income Tax Booklet
+      href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=2
+    # Credit can also be claimed by families with a child in qualifying child care programs with household income below a certain threshold. We do not model this component.

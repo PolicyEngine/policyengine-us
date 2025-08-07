@@ -38,3 +38,23 @@
     dc_snap_temporary_local_benefit: 3 
   output:
     snap: 6
+
+- name: North Carolina 2025, yearly integration test
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:   
+      person1:
+        age: 55
+        is_blind: true
+        employment_income: 30_600
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+  # only eligible in the last three months of the year
+  # due to higher federal poverty guidelines
+    snap_self_employment_income_after_expense_deduction: 0
+    snap_self_employment_expense_deduction: 0
+    snap: 71.75 

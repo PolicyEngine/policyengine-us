@@ -3,6 +3,12 @@ metadata:
   label: Minnesota extra standard deduction amount for each aged/blind head/spouse
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -16,59 +22,36 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=12
   - title: 2023 Minnesota M1 form instructions
     href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=13
+  - title: 2024 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1-inst-24_0.pdf#page=12
 
 JOINT:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+    2024-01-01: 1_550
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+    2024-01-01: 1_950
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+    2024-01-01: 1_550
 SINGLE:
   values:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+    2024-01-01: 1_950
 SEPARATE:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+    2024-01-01: 1_950

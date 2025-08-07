@@ -1,0 +1,32 @@
+- name: 10k in employment income, with a dependent care deduction
+  period: 2023
+  input:
+    ma_tafdc_dependent_care_deduction: 400
+    employment_income: 10_000 
+    self_employment_income: 0 
+    state_code: MA
+  output:
+    # $200 monthly disregard -> 10,000 - 2,400 = 7,600
+    # 50% disregard applied -> 7,600 * 0.5 = 3,800
+    # dependent care deduction -> 3,800 - 400 = 3,400
+    ma_tafdc_partially_disregarded_earned_income: 3_400
+
+- name: Income fully reduced 
+  period: 2023
+  input:
+    ma_tafdc_dependent_care_deduction: 400
+    employment_income: 2_000 
+    self_employment_income: 500
+    state_code: MA
+  output:
+    ma_tafdc_partially_disregarded_earned_income: 0
+
+- name: No income
+  period: 2023
+  input:
+    ma_tafdc_dependent_care_deduction: 1_000
+    employment_income: 0 
+    self_employment_income: 0
+    state_code: MA
+  output:
+    ma_tafdc_partially_disregarded_earned_income: 0

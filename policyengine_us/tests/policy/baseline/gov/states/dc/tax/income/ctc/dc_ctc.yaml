@@ -1,0 +1,19 @@
+- name: Case 1, no phase_out, single filer with 2 qualifying children.
+  period: 2025
+  input:
+    adjusted_gross_income: 120_000
+    filing_status: SINGLE
+    dc_ctc_capped_children: 2
+    state_code: DC
+  output:
+    dc_ctc: 840
+
+- name: Case 2, income above income threshold, single filer with 2 qualifying children.
+  period: 2025
+  input:
+    adjusted_gross_income: 162_000
+    filing_status: SINGLE
+    dc_ctc_capped_children: 2
+    state_code: DC
+  output:
+    dc_ctc: 800

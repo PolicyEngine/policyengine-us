@@ -148,7 +148,7 @@
   output:
     nm_medical_care_expense_deduction: 100
 
-- name: 2015 widow filer adjusted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
+- name: 2015 surviving spouse filer adjusted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -158,7 +158,7 @@
   output:
     nm_medical_care_expense_deduction: 250
 
-- name: 2015 widow filer adjusted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 250
+- name: 2015 surviving spouse filer adjusted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -168,7 +168,7 @@
   output:
     nm_medical_care_expense_deduction: 250
 
-- name: 2015 widow filer adjusted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 150
+- name: 2015 surviving spouse filer adjusted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -178,7 +178,7 @@
   output:
     nm_medical_care_expense_deduction: 150
 
-- name: 2015 widow filer adjusted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 150
+- name: 2015 surviving spouse filer adjusted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -188,7 +188,7 @@
   output:
     nm_medical_care_expense_deduction: 150
 
-- name: 2015 widow filer adjusted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 100
+- name: 2015 surviving spouse filer adjusted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -338,7 +338,7 @@
   output:
     nm_medical_care_expense_deduction: 0
 
-- name: 2025 widow filer adjusted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+- name: 2025 surviving spouse filer adjusted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 0
   period: 2025
   input:
     state_code: NM
@@ -348,7 +348,7 @@
   output:
     nm_medical_care_expense_deduction: 0
 
-- name: 2025 widow filer adjusted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+- name: 2025 surviving spouse filer adjusted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 0
   period: 2025
   input:
     state_code: NM
@@ -358,7 +358,7 @@
   output:
     nm_medical_care_expense_deduction: 0
 
-- name: 2025 widow filer adjusted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+- name: 2025 surviving spouse filer adjusted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 0
   period: 2025
   input:
     state_code: NM

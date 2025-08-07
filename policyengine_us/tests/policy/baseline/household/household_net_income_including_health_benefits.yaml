@@ -1,0 +1,23 @@
+- name: Household with no income and yes healthcare benefits
+  period: 2024
+  input:
+    household_net_income: 0
+    healthcare_benefit_value: 1_000
+  output:
+    household_net_income_including_health_benefits: 1_000
+
+- name: Household with no income and no healthcare benefits
+  period: 2024
+  input:
+    household_net_income: 0
+    healthcare_benefit_value: 0
+  output:
+    household_net_income_including_health_benefits: 0
+
+- name: Household with yes income and yes healthcare benefits
+  period: 2024
+  input:
+    household_net_income: 2_000
+    healthcare_benefit_value: 2_000
+  output:
+    household_net_income_including_health_benefits: 4_000

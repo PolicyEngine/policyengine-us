@@ -1,0 +1,41 @@
+description: New York provides the following Drive Clean point-of-sale rebate amount, based on the all-electric range of the vehicle.
+brackets:
+  # 0 - 19 miles 
+  - threshold:
+      2017-03-21: -.inf
+    amount:
+      2017-03-21: 500
+  # 20 - 39 miles
+  - threshold:
+      2017-03-21: 20
+    amount:
+      2017-03-21: 1_100
+      2021-06-30: 500
+  # 40 - 119 miles
+  - threshold:
+      2017-03-21: 40
+    amount:
+      2017-03-21: 1_700
+      2021-06-31: 1_000
+  # 120 - 199 miles
+  - threshold:
+      2017-03-21: 119
+    amount:
+      2017-03-21: 2_000
+      2021-06-31: 1_000
+  # 200 miles and above
+  - threshold:
+      2017-03-21: 200
+    amount:
+      2017-03-21: 2_000
+     
+metadata:
+  type: single_amount  
+  rate_unit: miles  
+  threshold_unit: currency-USD  
+  period: year
+  label: New York Drive Clean point-of-sale rebate amount
+
+  reference:
+    - title: NYSERDA Drive Clean Implementation Manual
+      href: https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8

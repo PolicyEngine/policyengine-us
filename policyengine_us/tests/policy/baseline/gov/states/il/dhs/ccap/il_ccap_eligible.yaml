@@ -1,0 +1,104 @@
+- name: Eligible family for the program.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: true
+    il_ccap_parent_meets_working_requirements: true
+    state_code: IL
+  output:
+    il_ccap_eligible: true
+
+- name: Ineligible family due to income.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: false
+    il_ccap_parent_meets_working_requirements: true
+    state_code: IL
+  output:
+    il_ccap_eligible: false
+
+- name: Ineligible family due to not working.
+  period: 2023
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_income_eligible: true
+    il_ccap_parent_meets_working_requirements: false
+    state_code: IL
+  output:
+    il_ccap_eligible: false
+
+- name: Ineligible family due to no eligible child.
+  period: 2023
+  input:
+    il_ccap_eligible_child: false
+    il_ccap_income_eligible: true
+    il_ccap_parent_meets_working_requirements: false
+    state_code: IL
+  output:
+    il_ccap_eligible: false
+
+- name: Integration case 1, eligible family.  
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 51_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 0
+        is_full_time_student: true
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        il_ccap_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_ccap_eligible: true 
+
+- name: Integration case 2, ineligible family due to income.  
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 52_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 0
+        is_full_time_student: true
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        il_ccap_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_ccap_income_eligible: false
+    il_ccap_eligible: false 

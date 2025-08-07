@@ -3,6 +3,12 @@ metadata:
   label: Arizona charitable contribution credit cap
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: upwards
+      interval: 1
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -15,11 +21,26 @@ metadata:
 
 JOINT:
   2021-01-01: 800
+  2022-01-01: 800
+  2023-01-01: 841
+  2024-01-01: 938
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
+  2024-01-01: 470
 SURVIVING_SPOUSE:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
+  2024-01-01: 470
 SINGLE:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
+  2024-01-01: 470
 SEPARATE:
   2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
+  2024-01-01: 470

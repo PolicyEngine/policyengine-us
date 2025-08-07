@@ -10,23 +10,32 @@ metadata:
     href: https://www.ksrevenue.gov/pdf/ip22.pdf#page=6
   - title: 2023 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=6
+  - title: 2024 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=2
   - title: Kansas 2022 Statute Article 32 §79-32,119(c)
     href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0119_section/079_032_0119_k/
+  - title: Kansas Notice 24-08 Changes to individual income tax
+    href: https://www.ksrevenue.gov/taxnotices/notice24-08.pdf#page=2
     
 JOINT:
   2013-01-01: 7_500
   2021-01-01: 8_000
+  2024-01-01: 8_240
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 5_500
   2021-01-01: 6_000
+  2024-01-01: 6_180
 SURVIVING_SPOUSE:
   2013-01-01: 7_500
   2021-01-01: 8_000
+  2024-01-01: 8_240
 SINGLE:
   2013-01-01: 3_000
   2021-01-01: 3_500
+  2024-01-01: 3_605
 SEPARATE:
   # The legal code doesn't specify the value for separate, but
   # recent tax forms show that it is half the joint value.
   2013-01-01: 3_750
   2021-01-01: 4_000
+  2024-01-01: 4_120

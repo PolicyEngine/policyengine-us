@@ -12,3 +12,4 @@ class short_term_capital_gains(Variable):
         title="26 U.S. Code § 1222(1)",
         href="https://www.law.cornell.edu/uscode/text/26/1222#1",
     )
+    uprating = "calibration.gov.irs.soi.short_term_capital_gains"

@@ -18,14 +18,20 @@ brackets:
       2017-01-01: 0.04
       2018-01-01: 0.03
       2022-01-01: 0.04
+      2023-01-01: 0.05
       2024-01-01: 0.047
       2025-01-01: 0.044
       2026-01-01: 0.04
+      2027-01-01: 0.0375
+      2028-01-01: 0.035
+      2029-01-01: 0.0325
+      2030-01-01: 0.03
+      # If economic triggers are met in years after 2030, the income tax rate can be further reduced.
   - threshold:
       2017-01-01: 10_000
       2018-01-01: 5_000
       2022-01-01: 10_000
-      2024-01-01: .inf
+      2023-01-01: .inf
     rate:
       2017-01-01: 0.05
       2018-01-01: 0.04
@@ -50,3 +56,11 @@ metadata:
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=20
     - title: Mississippi Income Tax Instructions 2023 - House Bill 531
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=3  
+    - title: Mississippi Department of Revenue - Tax Rates, Exemptions, & Deductions
+      href: https://www.dor.ms.gov/individual/tax-rates
+    - title: Mississippi Income Tax Instructions 2024
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100241.pdf#page=3
+    - title: House Bill 1 # Signed by Governor
+      href: https://billstatus.ls.state.ms.us/2025/pdf/history/HB/HB0001.xml
+    - title: House Bill 1 (Bill Text)
+      href: https://billstatus.ls.state.ms.us/documents/2025/pdf/HB/0001-0099/HB0001SG.pdf

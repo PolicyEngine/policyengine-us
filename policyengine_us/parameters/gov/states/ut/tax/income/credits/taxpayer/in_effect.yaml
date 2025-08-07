@@ -1,0 +1,19 @@
+description: Utah provides an additional qualifying dependent personal exemption if this is true.
+values:
+  0000-01-01: false
+  2023-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: Utah additional qualifying dependent for personal exemption in the year of birth in effect
+  reference:
+    - title: Utah Code §59-10-1018 (1)(g) # Effective 2021-05-05; Superseded 2023-05-23
+      href: https://le.utah.gov/xcode/historical.html?date=2/7/2025&oc=/xcode/Title59/Chapter10/C59-10-S1018_2021050520210505.html
+    - title: Utah Code §59-10-1018 (1)(g) # Effective 2023-05-23
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html?v=C59-10-S1018_2023050320230503
+    - title: 2023 TC-40 Utah Individual Income Tax Form, What's New, Additional dependent for taxpayer tax credit
+      href: https://tax.utah.gov/forms/2023/tc-40inst.pdf#page=4
+    - title: Utah Code §59-10-1018 (1)(g) # Current tax code; last viewed 2025-02-07
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html
+    - title: Current TC-40 Utah Individual Income Tax Form (Line 2) # last viewed 2025-02-07
+      href: https://tax.utah.gov/forms/current/tc-40inst.pdf#page=9

@@ -7,6 +7,7 @@ class sc_retirement_cap(Variable):
     label = "South Carolina retirement income subtraction cap"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.SC
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement

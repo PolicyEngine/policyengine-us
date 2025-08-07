@@ -1,0 +1,23 @@
+description: New York provides the following inflation refund credit amount for surviving spouses, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: New York 2025 inflation refund credits surviving spouse amount
+  reference:
+    - title: New York Tax Law § 606(qqq)(3)(a) – Inflation refund credit
+      href: https://www.nysenate.gov/legislation/laws/TAX/606#QQQ
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 400
+  - threshold:
+      2025-01-01: 150_000
+    amount:
+      2025-01-01: 300
+  - threshold:
+      2025-01-01: 300_000
+    amount:
+      2025-01-01: 0

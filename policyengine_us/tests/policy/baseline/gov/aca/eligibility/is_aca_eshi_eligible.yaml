@@ -1,0 +1,23 @@
+- name: is_aca_eshi_eligible unit test 1
+  period: 2025
+  input:
+    has_esi: true
+    offered_aca_disqualifying_esi: false
+  output:
+    is_aca_eshi_eligible: true
+
+- name: is_aca_eshi_eligible unit test 2
+  period: 2025
+  input:
+    has_esi: false
+    offered_aca_disqualifying_esi: false #no esi, can get aca
+  output:
+    is_aca_eshi_eligible: false
+
+- name: is_aca_eshi_eligible unit test 3
+  period: 2025
+  input:
+    has_esi: false
+    offered_aca_disqualifying_esi: false  # doesn’t matter
+  output:
+    is_aca_eshi_eligible: false

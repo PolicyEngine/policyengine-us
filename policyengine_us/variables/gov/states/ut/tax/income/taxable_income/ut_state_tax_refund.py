@@ -9,4 +9,5 @@ class ut_state_tax_refund(Variable):
     documentation = "Form TC-40, line 7"
     definition_period = YEAR
     defined_for = StateCode.UT
+
     adds = ["salt_refund_last_year"]

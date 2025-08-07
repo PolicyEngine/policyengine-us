@@ -28,6 +28,6 @@ class wv_income_tax_before_non_refundable_credits(Variable):
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.head.calc(taxable_income),
-                p.widow.calc(taxable_income),
+                p.surviving_spouse.calc(taxable_income),
             ],
         )

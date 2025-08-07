@@ -1,0 +1,14 @@
+- name: Single person with no child
+  period: 2026
+  absolute_error_margin: 0.01
+  # Refer to test object, not just the file
+  reforms: policyengine_us.reforms.crfb.tax_employer_medicare_tax.tax_employer_medicare_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_medicare_tax.in_effect: true
+    people:
+      person1:
+        age: 24
+        rental_income: 1
+        employer_medicare_tax: 5_000
+  output:
+    irs_gross_income: 5_001

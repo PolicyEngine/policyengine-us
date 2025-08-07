@@ -1,0 +1,17 @@
+description: Illinois defines the following counties as area 6 under the Aid to the Aged, Blind or Disabled program.
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois AABD utility allowances AREA 6 counties 
+  reference:
+    - title: WAG 25-03-03 AABD Fuel and Utility Allowances by Area
+      href: https://www.dhs.state.il.us/page.aspx?item=12668
+values:
+  2024-01-01: 
+    - BOND_COUNTY_IL
+    - CLINTON_COUNTY_IL
+    - MADISON_COUNTY_IL
+    - MONROE_COUNTY_IL
+    - ST_CLAIR_COUNTY_IL
+    - WASHINGTON_COUNTY_IL

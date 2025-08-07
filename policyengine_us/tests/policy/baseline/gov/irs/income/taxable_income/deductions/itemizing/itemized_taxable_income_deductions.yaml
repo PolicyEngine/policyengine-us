@@ -1,0 +1,15 @@
+- name: Reduction exceeds total deductions
+  period: 2024
+  input:
+    total_itemized_taxable_income_deductions: 1_000
+    itemized_taxable_income_deductions_reduction: 2_000
+  output: 
+    itemized_taxable_income_deductions: 0
+
+- name: Partial reduction
+  period: 2024
+  input:
+    total_itemized_taxable_income_deductions: 1_000
+    itemized_taxable_income_deductions_reduction: 400
+  output: 
+    itemized_taxable_income_deductions: 600

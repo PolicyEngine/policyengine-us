@@ -26,7 +26,7 @@ class id_income_tax_before_non_refundable_credits(Variable):
                 rates.single.calc(income),
                 rates.joint.calc(income),
                 rates.separate.calc(income),
-                rates.widow.calc(income),
+                rates.surviving_spouse.calc(income),
                 rates.head_of_household.calc(income),
             ],
         )

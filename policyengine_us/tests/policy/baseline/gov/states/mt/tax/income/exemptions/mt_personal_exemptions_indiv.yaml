@@ -1,5 +1,5 @@
 - name: Four exemptions total
-  period: 2023
+  period: 2022
   input:
     is_tax_unit_head: true
     is_blind: false
@@ -9,7 +9,7 @@
     mt_personal_exemptions_indiv: 5_420
 
 - name: No exemptions for the dependent 
-  period: 2023
+  period: 2022
   input:
     is_tax_unit_head: false
     is_blind: false
@@ -37,3 +37,13 @@
         state_code: MT
   output:
     mt_personal_exemptions_indiv: [5_420, 5_420, 0]
+
+- name: 2024 repealed
+  period: 2024
+  input:
+    is_tax_unit_head: true
+    is_blind: false
+    state_code: MT
+    mt_aged_exemption_eligible_person: true
+  output: 
+    mt_personal_exemptions_indiv: 0

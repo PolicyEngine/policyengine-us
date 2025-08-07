@@ -10,15 +10,11 @@ class oh_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.oh.tax.income
-        exempt = p.agi_threshold > employment_income
+        exempt = p.agi_threshold > agi
         # Since Ohio does not have a standard deduction, we apply the
         # personal exemption amount based on employment income as opposed to AGI
-        personal_exemptions = p.exemptions.personal.amount.calc(
-            employment_income
-        )
-        reduced_employment_income = max_(
-            employment_income - personal_exemptions, 0
-        )
-        return p.rates.calc(reduced_employment_income) * ~exempt
+        personal_exemptions = p.exemptions.personal.amount.calc(agi)
+        reduced_agi = max_(agi - personal_exemptions, 0)
+        return p.rates.calc(reduced_agi) * ~exempt

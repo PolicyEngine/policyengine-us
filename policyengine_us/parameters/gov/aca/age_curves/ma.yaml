@@ -1,0 +1,155 @@
+description: Massachusetts multiplies base marketplace plan premiums by these age-specific factors to determine age-specific premiums.
+metadata:
+  type: single_amount
+  period: year
+  amount_unit: /1
+  threshold_unit: int
+  label: ACA premium age curve factors - MA
+  reference:
+  - title: CMS Market Rating Reforms State Specific Age Curve Variations
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf
+brackets:
+- threshold:
+    2018-01-01: 0
+  amount:
+    2018-01-01: 1.0
+- threshold:
+    2018-01-01: 21
+  amount:
+    2018-01-01: 1.5752
+- threshold:
+    2018-01-01: 27
+  amount:
+    2018-01-01: 1.6245
+- threshold:
+    2018-01-01: 28
+  amount:
+    2018-01-01: 1.6644
+- threshold:
+    2018-01-01: 29
+  amount:
+    2018-01-01: 1.6977
+- threshold:
+    2018-01-01: 30
+  amount:
+    2018-01-01: 1.7137
+- threshold:
+    2018-01-01: 31
+  amount:
+    2018-01-01: 1.7377
+- threshold:
+    2018-01-01: 32
+  amount:
+    2018-01-01: 1.7617
+- threshold:
+    2018-01-01: 33
+  amount:
+    2018-01-01: 1.7763
+- threshold:
+    2018-01-01: 34
+  amount:
+    2018-01-01: 1.7923
+- threshold:
+    2018-01-01: 35
+  amount:
+    2018-01-01: 1.8003
+- threshold:
+    2018-01-01: 36
+  amount:
+    2018-01-01: 1.8083
+- threshold:
+    2018-01-01: 37
+  amount:
+    2018-01-01: 1.8149
+- threshold:
+    2018-01-01: 38
+  amount:
+    2018-01-01: 1.8229
+- threshold:
+    2018-01-01: 39
+  amount:
+    2018-01-01: 1.8389
+- threshold:
+    2018-01-01: 40
+  amount:
+    2018-01-01: 1.8549
+- threshold:
+    2018-01-01: 41
+  amount:
+    2018-01-01: 1.8775
+- threshold:
+    2018-01-01: 42
+  amount:
+    2018-01-01: 1.9001
+- threshold:
+    2018-01-01: 43
+  amount:
+    2018-01-01: 1.9308
+- threshold:
+    2018-01-01: 44
+  amount:
+    2018-01-01: 1.968
+- threshold:
+    2018-01-01: 45
+  amount:
+    2018-01-01: 2.012
+- threshold:
+    2018-01-01: 46
+  amount:
+    2018-01-01: 2.0639
+- threshold:
+    2018-01-01: 47
+  amount:
+    2018-01-01: 2.1212
+- threshold:
+    2018-01-01: 48
+  amount:
+    2018-01-01: 2.1851
+- threshold:
+    2018-01-01: 49
+  amount:
+    2018-01-01: 2.2477
+- threshold:
+    2018-01-01: 50
+  amount:
+    2018-01-01: 2.3182
+- threshold:
+    2018-01-01: 51
+  amount:
+    2018-01-01: 2.3862
+- threshold:
+    2018-01-01: 52
+  amount:
+    2018-01-01: 2.4594
+- threshold:
+    2018-01-01: 53
+  amount:
+    2018-01-01: 2.5326
+- threshold:
+    2018-01-01: 54
+  amount:
+    2018-01-01: 2.6112
+- threshold:
+    2018-01-01: 55
+  amount:
+    2018-01-01: 2.6884
+- threshold:
+    2018-01-01: 56
+  amount:
+    2018-01-01: 2.7696
+- threshold:
+    2018-01-01: 57
+  amount:
+    2018-01-01: 2.8522
+- threshold:
+    2018-01-01: 58
+  amount:
+    2018-01-01: 2.9374
+- threshold:
+    2018-01-01: 59
+  amount:
+    2018-01-01: 3.036
+- threshold:
+    2018-01-01: 60
+  amount:
+    2018-01-01: 3.1491

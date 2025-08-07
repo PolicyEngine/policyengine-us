@@ -91,7 +91,7 @@
         long_term_capital_gains: 1005.0
         rental_income: 2505.0
         real_estate_taxes: 24000
-        mortgage_interest: 14000
+        deductible_mortgage_interest: 14000
         self_employment_income: 141010
         business_is_qualified: true
         business_is_sstb: false
@@ -104,19 +104,19 @@
         long_term_capital_gains: 1005.0
         rental_income: 2505.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person4:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     tax_units:
@@ -136,4 +136,32 @@
   output:  # expected results from patched TAXSIM35 2024-05-07 version
     va_reduced_itemized_deductions: 37_049.81
     va_itemized_deductions: 37_049.81
-    va_income_tax: 18433.05
+    va_income_tax: 18175.545
+
+- name: Joint couple with one child, 81k income each
+  absolute_error_margin: 2
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 81_000
+      person2:
+        age: 38
+        employment_income: 81_000
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        va_rebate: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:  
+    va_taxable_income: 143_210
+    va_income_tax_before_non_refundable_credits: 7_977
+    va_non_refundable_credits: 0
+    va_spouse_tax_adjustment: 257
+    va_income_tax: 7_718

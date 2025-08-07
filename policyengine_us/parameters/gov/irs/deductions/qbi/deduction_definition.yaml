@@ -5,5 +5,8 @@ values:
     - self_employed_health_insurance_ald_person
     - self_employed_pension_contribution_ald_person
 metadata:
-  unit: variable
+  unit: list
   label: Qualified business income deductions
+  reference:
+    - title: 26 U.S. Code § 199A(c)(1) - Qualified business income
+      href: https://www.law.cornell.edu/uscode/text/26/199A#c_1

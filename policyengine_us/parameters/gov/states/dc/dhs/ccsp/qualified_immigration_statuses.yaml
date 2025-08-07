@@ -1,0 +1,17 @@
+description: The District of Columbia limits the Child Care Subsidy Program to children of these immigration statuses.
+values:
+  1975-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - PAROLED_ONE_YEAR
+    - DEPORTATION_WITHHELD
+
+metadata:
+  label: DC CCSP qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: DC Child Care Subsidy Program Policy Manual
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8

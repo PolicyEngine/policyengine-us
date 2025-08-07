@@ -14,17 +14,49 @@ class mn_standard_deduction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mn.tax.income.deductions
-        # ... calculate pre-limitation amount
+        # Calculate standard deduction base amount and any additional amount for aged/blind
+        p = parameters(period).gov.states.mn.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        base_amt = p.standard.base[filing_status]
-        aged_blind_count = tax_unit("aged_blind_count", period)
-        extra_amt = aged_blind_count * p.standard.extra[filing_status]
-        std_ded = base_amt + extra_amt
-        # ... calculate standard deduction offset
-        std_ded_offset = p.deduction_fraction * std_ded
+        lower_reduction_rate = p.reduction.excess_agi_fraction.low
+        lower_reduction_threshold = p.reduction.agi_threshold.low[
+            filing_status
+        ]
         agi = tax_unit("adjusted_gross_income", period)
-        excess_agi = max_(0, agi - p.agi_threshold[filing_status])
-        excess_agi_offset = p.excess_agi_fraction * excess_agi
-        offset = min_(std_ded_offset, excess_agi_offset)
-        return max_(0, std_ded - offset)
+        lower_excess = max_(0, agi - lower_reduction_threshold)
+        base_amt = p.base[filing_status]
+        aged_blind_count = tax_unit("aged_blind_count", period)
+        extra_amt = aged_blind_count * p.extra[filing_status]
+        std_ded = base_amt + extra_amt
+        alternate_reduction_amount = p.reduction.alternate.rate * std_ded
+        if p.reduction.alternate_reduction_applies:
+            higher_reduction_threshold = p.reduction.agi_threshold.high[
+                filing_status
+            ]
+
+            spread = higher_reduction_threshold - lower_reduction_threshold
+            lower_reduction_amount = lower_reduction_rate * min_(
+                lower_excess, spread
+            )
+            higher_reduction_rate = p.reduction.excess_agi_fraction.high
+            higher_excess = max_(0, agi - higher_reduction_threshold)
+            higher_reduction_amount = higher_reduction_rate * higher_excess
+            main_reduction_amount = (
+                lower_reduction_amount + higher_reduction_amount
+            )
+            alternate_reduction_applies = (
+                agi > p.reduction.alternate.income_threshold
+            )
+            smaller_reduction_amount = min_(
+                alternate_reduction_amount, main_reduction_amount
+            )
+            reduction = where(
+                alternate_reduction_applies,
+                alternate_reduction_amount,
+                smaller_reduction_amount,
+            )
+        else:
+            # ... calculate pre-limitation amount
+            excess_agi = max_(0, agi - lower_reduction_threshold)
+            main_reduction_amount = lower_reduction_rate * excess_agi
+            reduction = min_(alternate_reduction_amount, main_reduction_amount)
+        return max_(0, std_ded - reduction)

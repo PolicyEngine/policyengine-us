@@ -1,0 +1,31 @@
+- name: Case 1, eligible child.   
+  period: 2022
+  input:
+    age: 7
+    state_code: IL
+  output:
+    il_cta_children_reduced_fare_eligible: true
+
+- name: Case 2, eligible child.   
+  period: 2022
+  input:
+    age: 11
+    state_code: IL
+  output:
+    il_cta_children_reduced_fare_eligible: true
+
+- name: Case 3, ineligible child.   
+  period: 2022
+  input:
+    age: 12
+    state_code: IL
+  output:
+    il_cta_children_reduced_fare_eligible: false
+
+- name: Case 4, ineligible child.   
+  period: 2022
+  input:
+    age: 6
+    state_code: IL
+  output:
+    il_cta_children_reduced_fare_eligible: false

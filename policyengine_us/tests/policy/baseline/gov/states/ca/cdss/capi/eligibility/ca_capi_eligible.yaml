@@ -1,0 +1,29 @@
+- name: Eligible
+  period: 2024
+  input:
+    ca_capi_resource_eligible: true
+    ca_capi_income_eligible: true
+    state_code: CA
+    ca_capi_eligible_person: true
+  output:
+    ca_capi_eligible: true
+
+- name: Resource ineligible
+  period: 2024
+  input:
+    ca_capi_resource_eligible: false
+    ca_capi_income_eligible: true
+    ca_capi_eligible_person: true
+    state_code: CA
+  output:
+    ca_capi_eligible: false
+
+- name: Income ineligible
+  period: 2024
+  input:
+    ca_capi_resource_eligible: true
+    ca_capi_income_eligible: false
+    ca_capi_eligible_person: true
+    state_code: CA
+  output:
+    ca_capi_eligible: false

@@ -1,0 +1,19 @@
+- name: Single person.
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+    uncapped_ssi: -100
+    ma_maximum_state_supplement: 300
+    meets_ssi_resource_test: true
+  output:
+    ma_state_supplement: 200
+
+- name: Single person fails resource test.
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+    uncapped_ssi: -100
+    ma_maximum_state_supplement: 300
+    meets_ssi_resource_test: false
+  output:
+    ma_state_supplement: 0

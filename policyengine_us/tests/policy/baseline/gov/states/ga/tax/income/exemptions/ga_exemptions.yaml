@@ -34,7 +34,7 @@
   output:
     ga_exemptions: 6_700
 
-- name: Widow filer
+- name: Surviving spouse filer
   period: 2021
   input:
     filing_status: SURVIVING_SPOUSE
@@ -42,3 +42,21 @@
     state_code: GA
   output:
     ga_exemptions: 5_700
+
+- name: 2024 Single filer, personal exemption not available
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_dependents: 1
+    state_code: GA
+  output:
+    ga_exemptions: 4_000
+
+- name: 2024 Surviving spouse filer, personal exemption not available
+  period: 2024
+  input:
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 1
+    state_code: GA
+  output:
+    ga_exemptions: 4_000

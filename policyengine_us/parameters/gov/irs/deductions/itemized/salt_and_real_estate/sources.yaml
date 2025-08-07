@@ -1,0 +1,13 @@
+description: The State and local taxes and real estate tax deduction is limited to the following sources.
+values:
+  2013-01-01:
+    - state_and_local_sales_or_income_tax
+    - real_estate_taxes
+
+metadata:
+  unit: list
+  period: year
+  label: SALT and real estate tax deduction sources
+  reference:
+    - title: 26 U.S. Code § 164 - Taxes (a)
+      href: https://www.law.cornell.edu/uscode/text/26/164

@@ -1,0 +1,187 @@
+- name: NY single adult
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true   
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: ONE_ADULT
+
+- name: NY two adults
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+      person2:
+        age: 32
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: TWO_ADULTS
+
+- name: NY three adults still classified as two_adults
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+      person2:
+        age: 32
+        is_aca_ptc_eligible: true
+      person3:
+        age: 35
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: TWO_ADULTS
+
+- name: NY single parent with child
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+      person2:
+        age: 5
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY two parents with child
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+      person2:
+        age: 32
+        is_aca_ptc_eligible: true
+      person3:
+        age: 5
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY child only
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 15
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_category: CHILD_ONLY
+
+- name: VT single adult
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_category: ONE_ADULT
+
+- name: VT two adults with child
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+      person2:
+        age: 32
+        is_aca_ptc_eligible: true
+      person3:
+        age: 5
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: Non-family tier state uses individual age rating
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: CA
+  output:
+    slcsp_family_tier_category: INDIVIDUAL_AGE_RATED

@@ -1,0 +1,26 @@
+description: All state property tax credits and circuit breaker programs.
+values:
+  0000-01-01:
+    - az_property_tax_credit  # Arizona Property Tax Credit
+    - ct_property_tax_credit  # Connecticut Property Tax Credit
+    # Exclude ca_renter_credit as it is for renters, not homeowners.
+    - dc_ptc  # DC Property Tax Credit
+    # Exclude hi_tax_credit_for_low_income_household_renters as it is for renters, not homeowners.
+    - ma_senior_circuit_breaker  # Massachusetts Senior Circuit Breaker Credit
+    - me_property_tax_fairness_credit  # Maine Property Tax Fairness Credit
+    - mi_homestead_property_tax_credit  # Michigan homestead property tax credit
+    - mo_property_tax_credit  # Missouri property tax credit
+    - mt_elderly_homeowner_or_renter_credit  # Montana Elderly Homeowner/Renter Credit
+    - nj_property_tax_credit  # New Jersey property tax credit
+    - nm_property_tax_rebate  # New Mexico property tax rebate
+    - ny_real_property_tax_credit  # New York real property tax credit
+    - ri_property_tax_credit  # Rhode Island property tax credit
+    # Omit vt_renter_credit
+    - wi_homestead_credit  # Wisconsin homestead credit
+    - wi_property_tax_credit  # Wisconsin property tax credit
+    - wv_homestead_excess_property_tax_credit  # West Virginia
+
+metadata:
+  unit: list
+  period: year
+  label: State Property Tax Credits and Circuit Breakers

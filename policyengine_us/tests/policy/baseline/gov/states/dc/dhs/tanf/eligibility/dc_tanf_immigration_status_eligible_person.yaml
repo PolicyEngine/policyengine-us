@@ -1,0 +1,23 @@
+- name: Eligible refugee 
+  period: 2023
+  input:
+    immigration_status: REFUGEE
+    state_code: DC
+  output:
+    dc_tanf_immigration_status_eligible_person: true
+
+- name: Not eligible undocumented 
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: DC
+  output:
+    dc_tanf_immigration_status_eligible_person: false
+
+- name: Eligible citizen 
+  period: 2023
+  input:
+    immigration_status: CITIZEN
+    state_code: DC
+  output:
+    dc_tanf_immigration_status_eligible_person: true

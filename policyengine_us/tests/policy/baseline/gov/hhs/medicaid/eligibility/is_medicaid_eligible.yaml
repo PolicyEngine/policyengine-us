@@ -71,3 +71,102 @@
     state_code_str: CO
   output:
     is_medicaid_eligible: false
+
+- name: Eligible via medicaid eligibility and immigration eligibility
+  period: 2022
+  input:
+    medicaid_category: YOUNG_ADULT
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ca_ffyp_eligible: false
+  output:
+    is_medicaid_eligible: true
+
+
+- name: Ineligible because not ca ffyp eligible and not both medicaid eligible and immigration eligible
+  period: 2022
+  input:
+    medicaid_category: YOUNG_ADULT
+    immigration_status: UNDOCUMENTED
+    ca_ffyp_eligible: false
+  output:
+    is_medicaid_eligible: true
+
+- name: Eligible via California FFYP program
+  period: 2022
+  input:
+    ca_ffyp_eligible: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Senior or disabled 
+  period: 2022
+  input:
+    is_optional_senior_or_disabled_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 1, age 55, blind, with $30600 income, eligible due to blind. 
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 30_600
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 37  # NC
+        county: CABARRUS_COUNTY_NC
+        three_digit_zip_code: 280
+  output:
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+- name: Case 2, age 55, non-blind, with $30600 income, ineligible due to income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 30_600
+        is_blind: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 37  # NC
+        county: CABARRUS_COUNTY_NC
+        three_digit_zip_code: 280
+  output:
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+
+- name: Case 3, age 65, non-blind, with $30600 income, eligible due to senior. 
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 30_600
+        is_blind: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 37  # NC
+        county: CABARRUS_COUNTY_NC
+        three_digit_zip_code: 280
+  output:
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true

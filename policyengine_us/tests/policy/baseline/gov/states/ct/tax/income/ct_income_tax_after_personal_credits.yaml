@@ -34,7 +34,7 @@
   output:
     ct_income_tax_after_personal_credits: 880
 
-- name: 2022 Widow household with credit of 1 - maximum credit
+- name: 2022 Surviving spouse household with credit of 1 - maximum credit
   period: 2022
   input:
     state_code: CT
@@ -82,12 +82,12 @@
   output:
     ct_income_tax_after_personal_credits: 760
 
-- name: 2024 Widow household with credit of 1 - maximum credit
+- name: 2024 Surviving spouse household with credit of 1 - maximum credit
   period: 2024
   input:
     state_code: CT
     ct_taxable_income: 40_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
     ct_personal_credit_rate: 1

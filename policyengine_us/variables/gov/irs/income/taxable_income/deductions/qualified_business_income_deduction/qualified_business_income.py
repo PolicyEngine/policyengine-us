@@ -9,13 +9,14 @@ class qualified_business_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/199A#c"
+    defined_for = "business_is_qualified"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.deductions
-        income_components = p.qbi.income_definition
-        gross_qbi = add(person, period, income_components)
-        deduction_components = p.qbi.deduction_definition
-        qbi_deductions = add(person, period, deduction_components)
-        adjusted_qbi = max_(0, gross_qbi - qbi_deductions)
-        qualified = person("business_is_qualified", period)
-        return adjusted_qbi * qualified
+        p = parameters(period).gov.irs.deductions.qbi
+        gross_qbi = 0
+        for var in p.income_definition:
+            gross_qbi += person(var, period) * person(
+                var + "_would_be_qualified", period
+            )
+        qbi_deductions = add(person, period, p.deduction_definition)
+        return max_(0, gross_qbi - qbi_deductions)

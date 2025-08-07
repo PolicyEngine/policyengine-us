@@ -1,0 +1,15 @@
+description: Non-refundable tax credits which precede the Retirement Savings Credit.
+values:
+  2013-01-01:
+    - foreign_tax_credit 
+    - cdcc
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+
+metadata:
+  unit: list
+  period: year
+  label: Non-refundable tax credits preceding the Retirement Savings Credit
+  reference:
+    - title: IRS Schedule 3, Additional Credits and Payments
+      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf

@@ -1,0 +1,117 @@
+- name: Integration test - single filer with 150k employment income and 50k qualified dividend income as well as 50k long term capital gains
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+        long_term_capital_gains: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # expected output from online TAXSIM-35
+    # which is at: https://taxsim.nber.org/taxsim35/
+    alternative_minimum_tax: 0
+    adjusted_gross_income: 250_000
+    taxable_income: 237_050
+    net_investment_income_tax: 1_900
+    income_tax: 43_627.50
+
+- name: Integration test - single filer with 5k of income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    alternative_minimum_tax: 0
+
+- name: Integration test - single filer with 5k of income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    alternative_minimum_tax: 0
+
+- name: Integration test - single filer with 5k of income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    alternative_minimum_tax: 0
+
+- name: AMT does not apply if regular tax is higher than AMT
+  period: 2022
+  input:
+    amt_base_tax: 10_000
+    amt_part_iii_required: false
+    amt_tax_including_cg: 2_000
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 11_000
+    form_4972_lumpsum_distributions: 0
+    capital_gains_tax: 0
+  output:
+    alternative_minimum_tax: 0
+
+- name: Part iii required, AMT higher than regular tax
+  period: 2022
+  input:
+    amt_base_tax: 15_000
+    amt_part_iii_required: true
+    amt_tax_including_cg: 12_000
+    foreign_tax_credit: 0
+    regular_tax_before_credits: 11_000
+    form_4972_lumpsum_distributions: 0
+    capital_gains_tax: 0
+  output:
+    alternative_minimum_tax: 1_000

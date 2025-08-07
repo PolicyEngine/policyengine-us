@@ -8,3 +8,5 @@ class nj_total_deductions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
+
+    adds = ["nj_medical_expense_deduction"]

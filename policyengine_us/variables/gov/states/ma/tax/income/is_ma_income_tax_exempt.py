@@ -8,6 +8,7 @@ class is_ma_income_tax_exempt(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5"
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("ma_agi", period)

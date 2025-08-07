@@ -32,15 +32,31 @@ class va_reduced_itemized_deductions(Variable):
         excess_ded = max_(applicable_ded - reducible_ded, 0)
         # If 0 - no reduction
         # Line 4 - IRS deduction rate of excess
+
         # The federal limitation on itemized deductions does not apply during the TCJA period
         # Virginia still applies the limitation
-        year = period.start.year
-        if year >= 2018 and year <= 2026:
-            instant_str = f"2017-01-01"
-        else:
-            instant_str = period
-        p_irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
-        excess_ded_fraction = excess_ded * p_irs.itemized_deduction_rate
+
+        # Here, we use a parameter that mostly keeps in line with the IRS's;
+        # Virginia follows the IRS, except for TCJA-related policies, hence we
+        # remove anything TCJA related, but keep everything else coupled to the IRS
+
+        # Shortcut to the full parameter, not parameter at instant, for IRS itemized limitations
+        full_irs_param: Parameter = (
+            parameters.gov.irs.deductions.itemized.limitation
+        )
+
+        va_itemized_deduction_rate = (
+            full_irs_param.itemized_deduction_rate.clone()
+        )
+
+        # Eliminate infinite values created by the TCJA's elimination of this param
+        va_itemized_deduction_rate.values_list = [
+            entry
+            for entry in va_itemized_deduction_rate.values_list
+            if not (entry.value == np.inf or entry.value == -np.inf)
+        ]
+
+        excess_ded_fraction = excess_ded * va_itemized_deduction_rate(period)
         # Line 5 Federal AGI
         federal_agi = tax_unit("adjusted_gross_income", period)
         # Line 6 - applicable amount
@@ -49,7 +65,17 @@ class va_reduced_itemized_deductions(Variable):
         # Line 7 - excess
         excess = max_(federal_agi - applicable_amount, 0)
         # Line 8 - excess times federal item. ded. AGI rate
-        agi_adjustment = p_irs.agi_rate * excess
+
+        # Here again, Virginia follows the IRS, except for TCJA-related policies,
+        # and we'll need to eliminate infinite values created by TCJA abolishing param
+        va_agi_rate = full_irs_param.agi_rate.clone()
+        va_agi_rate.values_list = [
+            entry
+            for entry in va_agi_rate.values_list
+            if not (entry.value == np.inf or entry.value == -np.inf)
+        ]
+
+        agi_adjustment = va_agi_rate(period) * excess
         # Line 9 - min of line 4 and line 8
         va_itm_deds_adjustment = min_(agi_adjustment, excess_ded_fraction)
         # Output from Part A (Line 1 - Line 9)

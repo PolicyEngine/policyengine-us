@@ -12,7 +12,7 @@
     eitc: 1_000
     state_code: MT
   output: 
-    mt_eitc: 100
+    mt_eitc: 30
 
 - name: 2022 EITC from federal (test 2)
   period: 2022
@@ -40,3 +40,11 @@
         state_code: MT
   output:
     mt_eitc: [30, 0]
+
+- name: 2024 10% EITC match
+  period: 2024
+  input:
+    eitc: 1_000
+    state_code: MT
+  output: 
+    mt_eitc: 100

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_widow_exemption(Variable):
+class la_surviving_spouse_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana qualifying widow exemption"
+    label = "Louisiana qualifying surviving spouse exemption"
     reference = (
         "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf#page=1"
     )
@@ -14,6 +14,8 @@ class la_widow_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_widowed = tax_unit.any(person("is_widowed", period))
+        is_surviving_spouse = tax_unit.any(
+            person("is_surviving_spouse", period)
+        )
         p = parameters(period).gov.states.la.tax.income.exemptions
-        return is_widowed * p.widow
+        return is_surviving_spouse * p.surviving_spouse

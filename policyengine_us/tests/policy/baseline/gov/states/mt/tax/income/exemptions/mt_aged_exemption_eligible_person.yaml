@@ -24,3 +24,12 @@
     state_code: MT
   output: 
     mt_aged_exemption_eligible_person: false
+
+- name: 2024 exemption repealed
+  period: 2024
+  input:
+    age: 65
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output: 
+    mt_aged_exemption_eligible_person: false

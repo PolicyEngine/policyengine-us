@@ -1,0 +1,47 @@
+- name: Case 1, eligible senior.   
+  period: 2022
+  input:
+    age: 65
+    is_disabled: false
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    adjusted_gross_income_person: 10_000
+    state_code: IL
+  output:
+    il_bap_eligible: true
+
+- name: Case 2, disabled but not permanently disabled, ineligible.   
+  period: 2022
+  input:
+    age: 30
+    is_disabled: true
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    adjusted_gross_income_person: 10_000
+    state_code: IL
+  output:
+    il_bap_eligible: false
+
+- name: Case 3, senior age eligible but income ineligible.
+  period: 2022
+  input:
+    age: 65
+    is_disabled: false
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    adjusted_gross_income_person: 34_000
+    state_code: IL
+  output:
+    il_bap_eligible: false
+
+- name: Case 4, disabled but too young, ineligible.   
+  period: 2022
+  input:
+    age: 15
+    is_disabled: true
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: true
+    adjusted_gross_income_person: 10_000
+    state_code: IL
+  output:
+    il_bap_eligible: false

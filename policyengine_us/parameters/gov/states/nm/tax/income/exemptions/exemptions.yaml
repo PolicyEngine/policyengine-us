@@ -1,0 +1,43 @@
+description: New Mexico applies the following exemptions to federal adjusted gross income.
+values:
+  2021-01-01:
+    - nm_aged_blind_exemption
+    - nm_hundred_year_exemption
+    - nm_low_and_middle_income_exemption
+    - nm_medical_expense_exemption
+    - nm_social_security_income_exemption
+  
+  2022-01-01:
+    - nm_aged_blind_exemption
+    - nm_hundred_year_exemption
+    - nm_low_and_middle_income_exemption
+    - nm_medical_expense_exemption
+    - nm_social_security_income_exemption
+    - nm_armed_forces_retirement_pay_exemption_person
+
+  2027-01-01: 
+    - nm_aged_blind_exemption
+    - nm_hundred_year_exemption
+    - nm_low_and_middle_income_exemption
+    - nm_medical_expense_exemption
+    - nm_social_security_income_exemption
+    
+    
+metadata:
+  unit: list
+  period: year
+  label: New Mexico exemptions
+  reference:
+    # Note that the PIT-ADJ form does not contain the low- and middle-income exemption. That is only in the instruction for PIT-ADJ form.
+    - title: 2022 PIT-ADJ SCHEDULE OF ADDITIONS, DEDUCTIONS, AND EXEMPTIONS 
+      href: https://www.taxformfinder.org/forms/2022/2022-new-mexico-form-pit-adj.pdf
+    - title: 2023 PIT-ADJ SCHEDULE OF ADDITIONS, DEDUCTIONS, AND EXEMPTIONS 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/247e3a1f-2a1f-4002-a689-e1c3994dde9d/2023pit-adj.pdf
+    - title: 2024 PIT-ADJ SCHEDULE OF ADDITIONS, DEDUCTIONS, AND EXEMPTIONS 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/d36fdefa-8c60-4b26-b368-ee712432a54d/2024pit-adj.pdf
+    - title: INSTRUCTIONS booklet for personal income tax forms 2022 
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2022/PITbook2022.pdf#page=46
+    - title: INSTRUCTIONS FOR 2023 PIT-ADJ
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/cb0dc85c-5c28-45b1-a3f5-1e00fffaaf6b/2023pit-adj-ins.pdf#page=3
+    - title: INSTRUCTIONS FOR 2024 PIT-ADJ
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/97f27f33-5e23-4a25-ad68-0980a22b802d/PITbook2024.pdf#page=49

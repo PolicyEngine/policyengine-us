@@ -11,3 +11,4 @@ class in_other_add_backs(Variable):
         "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"
     )
     # use federal variables if they are added later
+    defined_for = StateCode.IN

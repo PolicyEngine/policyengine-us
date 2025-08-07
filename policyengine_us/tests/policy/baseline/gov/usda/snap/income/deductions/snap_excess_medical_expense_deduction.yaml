@@ -14,7 +14,7 @@
   period: 2022
   input:
     is_usda_disabled: true
-    medical_expense: 35 * 12
+    medical_out_of_pocket_expenses: 35 * 12
   output:
     snap_excess_medical_expense_deduction: 0
 
@@ -23,10 +23,10 @@
   absolute_error_margin: 1
   input:
     is_usda_disabled: true
-    medical_expense: 35.01 * 12
+    medical_out_of_pocket_expenses: 35.01 * 12
     state_code_str: CA
   output:
-    snap_excess_medical_expense_deduction: 1472.62
+    snap_excess_medical_expense_deduction: 120 * 12
 
 - name: Elderly/disabled person in California with $155 medical expenses gets the standard medical expense deduction.
   period: 2022
@@ -34,20 +34,51 @@
   input:
     is_usda_disabled: true
     is_usda_elderly: true
-    medical_expense: 155 * 12
+    medical_out_of_pocket_expenses: 155 * 12
     state_code_str: CA
   output:
-    snap_excess_medical_expense_deduction: 1472.61
+    snap_excess_medical_expense_deduction: (155 - 35) * 12
 
 - name: Elderly person in California with $156 medical expenses takes the normal deduction.
   period: 2022
   absolute_error_margin: 1
   input:
     is_usda_elderly: true
-    medical_expense: 156 * 12
+    medical_out_of_pocket_expenses: 156 * 12
     state_code_str: CA
   output:
-    snap_excess_medical_expense_deduction: 1481.62
+    snap_excess_medical_expense_deduction: (156 - 35) * 12
+
+- name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    is_usda_disabled: true
+    medical_out_of_pocket_expenses: 35.01 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 150 * 12
+
+- name: Elderly/disabled person in California with $185 medical expenses gets the standard medical expense deduction.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    is_usda_disabled: true
+    is_usda_elderly: true
+    medical_out_of_pocket_expenses: 185 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 150 * 12
+
+- name: Elderly person in California with $186 medical expenses takes the normal deduction.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    is_usda_elderly: true
+    medical_out_of_pocket_expenses: 186 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 151 * 12  # $151 excess
 
 - name: Expenses must be for the elderly/disabled person.
   period: 2022
@@ -56,7 +87,7 @@
       elderly:
         is_usda_elderly: true
       young:
-        medical_expense: 100 * 12
+        medical_out_of_pocket_expenses: 100 * 12
     spm_units:
       spm_unit:
         members: [elderly, young]

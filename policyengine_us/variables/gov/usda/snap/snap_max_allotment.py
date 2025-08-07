@@ -14,11 +14,11 @@ class snap_max_allotment(Variable):
         MAX_HOUSEHOLD_SIZE_UNDER_MAIN = 8
         snap_region = spm_unit.household("snap_region_str", period)
         household_size = min_(
-            spm_unit("spm_unit_size", period), MAX_HOUSEHOLD_SIZE_UNDER_MAIN
+            spm_unit("snap_unit_size", period), MAX_HOUSEHOLD_SIZE_UNDER_MAIN
         )
         additional_members = max_(
             0,
-            spm_unit("spm_unit_size", period) - MAX_HOUSEHOLD_SIZE_UNDER_MAIN,
+            spm_unit("snap_unit_size", period) - MAX_HOUSEHOLD_SIZE_UNDER_MAIN,
         )
         main_allotment = max_allotments.main[snap_region][household_size]
         additional_allotment = (

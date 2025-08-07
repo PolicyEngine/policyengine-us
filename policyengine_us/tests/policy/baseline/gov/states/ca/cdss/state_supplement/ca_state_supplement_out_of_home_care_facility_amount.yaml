@@ -1,0 +1,59 @@
+- name: One person in out of home care facility
+  period: 2024
+  input:
+    people:
+      person1:
+        in_out_of_home_care_facility: true
+        ca_state_supplement_eligible_person: true
+      person2:
+        in_out_of_home_care_facility: false
+        ca_state_supplement_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_out_of_home_care_facility_amount: 8_508
+
+- name: Nobody in out of home care facility
+  period: 2024
+  input:
+    people:
+      person1:
+        in_out_of_home_care_facility: false
+        ca_state_supplement_eligible_person: true
+      person2:
+        in_out_of_home_care_facility: false
+        ca_state_supplement_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_out_of_home_care_facility_amount: 0
+
+- name: Ineligible person in out of home care facility
+  period: 2024
+  input:
+    people:
+      person1:
+        in_out_of_home_care_facility: true
+        ca_state_supplement_eligible_person: false
+      person2:
+        in_out_of_home_care_facility: false
+        ca_state_supplement_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_out_of_home_care_facility_amount: 0

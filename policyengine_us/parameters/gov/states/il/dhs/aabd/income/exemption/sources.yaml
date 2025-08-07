@@ -1,0 +1,22 @@
+description: Illinois counts the following expense sources as exempted from earned income under the Aid to the Aged, Blind or Disabled program.
+values:
+  2021-01-01:
+    - state_withheld_income_tax
+    - employee_social_security_tax
+    - il_aabd_child_care_expense_exemption
+    # transportation cost
+    # lunch supplementation
+    # Special tools and uniforms required by employment
+    # Union dues
+    # Group life insurance premiums
+    # Group health insurance premiums
+    # Retirement plan withholdings
+    # The reasonable cost of items and services which are needed and used to enable a disabled person to work
+ 
+metadata:
+  unit: list
+  period: year
+  label: Illinois AABD expenses exemption sources
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.125 - Recognized Employment Expenses
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.125

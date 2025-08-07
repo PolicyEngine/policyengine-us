@@ -1,0 +1,59 @@
+- name: No income, two children
+  period: 2023
+  input:
+    tax_unit_earned_income: 0
+    ctc_social_security_tax: 100_000
+    eitc: 0
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in: 0
+
+- name: Income below phase-in start, two children
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_000
+    ctc_social_security_tax: 100_000
+    eitc: 0
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in: 0
+
+- name: Income Above phase-in start, two children
+  period: 2023
+  input:
+    tax_unit_earned_income: 8_000
+    ctc_social_security_tax: 100_000
+    eitc: 0
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in: 825
+
+- name: Income Above phase-in start, two children
+  period: 2023
+  input:
+    tax_unit_earned_income: 8_000
+    ctc_social_security_tax: 100_000
+    eitc: 0
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in: 825
+
+- name: Income Above phase-in start, three children
+  period: 2023
+  input:
+    tax_unit_earned_income: 8_000
+    ctc_social_security_tax: 20_000
+    eitc: 0
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_in: 20_000
+
+- name: Income Above phase-in start, three children with EITC
+  period: 2023
+  input:
+    tax_unit_earned_income: 8_000
+    ctc_social_security_tax: 20_000
+    eitc: 19_900
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_in: 825

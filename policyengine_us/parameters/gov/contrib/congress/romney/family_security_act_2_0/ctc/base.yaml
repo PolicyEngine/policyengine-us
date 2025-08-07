@@ -1,0 +1,21 @@
+description: Senator Mitt Romney proposed providing the following Child Tax Credit amount per child under the Family Security Act 2.0, based on age.
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0 # 4_200
+  - threshold:
+      2022-01-01: 6
+    amount:
+      2022-01-01: 0 # 3_000
+  - threshold:
+      2022-01-01: 18
+    amount:
+      2022-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  amount_period: year
+  label: Family Security Act 2.0 Child Tax Credit amount

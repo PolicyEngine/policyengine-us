@@ -1,6 +1,6 @@
 description: Colorado multiplies the maximum family affordability tax credit by this fraction, based on the child's age.
 metadata:
-  label: Colorado family affordability tax credit age-based reductions
+  label: Colorado family affordability tax credit age-based multiplier
   type: single_amount
   threshold_unit: year
   amount_unit: /1
@@ -8,6 +8,8 @@ metadata:
   reference:
     - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
       href: https://leg.colorado.gov/bills/hb24-1311
+    - title: 2024 Colorado Child Tax Credit Instructions, Section C
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2024.pdf#page=3
 brackets:
   - threshold:
       2024-01-01: 0

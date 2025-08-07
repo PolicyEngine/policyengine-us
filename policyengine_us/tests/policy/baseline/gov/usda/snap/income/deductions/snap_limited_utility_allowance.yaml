@@ -30,3 +30,26 @@
     water_expense: 1
   output:
     snap_limited_utility_allowance: 1_770 # 144 * 9 + 158 * 3
+
+- name: Limited Utility Allowance 4
+  period: 2025
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NC
+    spm_unit_size: 1
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 4_584 # 382 * 12
+
+- name: Limited Utility Allowance 5
+  period: 2025
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NC
+    spm_unit_size: 11
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 6_588 # 549 * 12 

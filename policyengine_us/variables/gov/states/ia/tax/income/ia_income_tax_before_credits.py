@@ -16,8 +16,14 @@ class ia_income_tax_before_credits(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        return where(
-            tax_unit("ia_files_separately", period),
-            tax_unit("ia_income_tax_indiv", period),
-            tax_unit("ia_income_tax_joint", period),
-        )
+        p = parameters(
+            period
+        ).gov.states.ia.tax.income.married_filing_separately_on_same_return
+        if p.availability:
+            return where(
+                tax_unit("ia_files_separately", period),
+                tax_unit("ia_income_tax_indiv", period),
+                tax_unit("ia_income_tax_joint", period),
+            )
+        else:
+            return tax_unit("ia_income_tax_consolidated", period)

@@ -1,0 +1,35 @@
+- name: Case 1, agi below first threshold. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 5_000
+    ny_itemized_deductions_max: 200
+    charitable_deduction: 0
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_incremental_reduction: 0
+
+- name: Case 2, agi in first reduction condition. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 475_000
+    ny_itemized_deductions_max: 100
+    charitable_deduction: 0
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_incremental_reduction: 25
+
+- name: Case 3, agi in second reduction condition. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 880_000
+    ny_itemized_deductions_max: 100
+    charitable_deduction: 0
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_incremental_reduction: 50

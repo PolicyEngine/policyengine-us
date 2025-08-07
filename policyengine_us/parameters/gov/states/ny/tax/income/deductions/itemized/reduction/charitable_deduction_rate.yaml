@@ -1,0 +1,32 @@
+description: New York reduces the itemized deductions by this rate of the federal charitable deduction for filers with adjusted gross income exceeding the first threshold.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: New York itemized deduction reduction based on charitable deduction rate
+  reference:
+    - title: SECTION 615 New York itemized deduction of a resident individual (g)
+      href: https://www.nysenate.gov/legislation/laws/TAX/615
+    - title: 2021 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
+    - title: 2022 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2022/inc/it196i_2022.pdf#page=20
+    - title: 2023 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it196i-2023.pdf#page=29
+    - title: 2024 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2024/inc/it196i_2024.pdf#page=20
+
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1_000_000
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 10_000_000
+    amount:
+      2021-01-01: 0.25

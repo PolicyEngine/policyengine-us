@@ -1,0 +1,14 @@
+description: New York caps college tuition expenses at this amount per eligible student when calculating the credit and deduction.
+values:
+  2019-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York allowable college tuition expenses cap
+  reference:
+    - title: Section 606 Credits against tax (t)(2)(A)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: 2023 NY Form IT-196 Instructions Line 48
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it196i-2023.pdf#page=30
+    - title: NY Form IT-272 Part 1
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it272_fill_in.pdf#page=1

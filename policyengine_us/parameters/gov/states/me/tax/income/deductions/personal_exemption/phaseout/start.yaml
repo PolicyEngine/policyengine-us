@@ -4,6 +4,8 @@ metadata:
   period: year
   label: Maine personal exemption phase-out start
   reference:
+    - title: 2024 Instructions for Form 1040ME - Worksheet for Phaseout of Personal Exemption Deduction Amount, Line 2
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_book_gen_instr.pdf#page=4
     - title: 2023 Instructions for Form 1040ME Line 2
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_book_gen_instr.pdf#page=4
     - title: §5403. Annual adjustments for inflation 8
@@ -21,6 +23,7 @@ SINGLE:
     2021-01-01: 279_500
     2022-01-01: 286_200
     2023-01-01: 305_150
+    2024-01-01: 323_900
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -31,16 +34,18 @@ SEPARATE:
     2021-01-01: 167_700
     2022-01-01: 171_700
     2023-01-01: 183_050
+    2024-01-01: 194_325
   uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
-      interval: 50
+      interval: 25
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 307_450
     2022-01-01: 314_800
     2023-01-01: 335_650
+    2024-01-01: 356_300
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -51,6 +56,7 @@ JOINT:
     2021-01-01: 335_400
     2022-01-01: 343_400
     2023-01-01: 366_100
+    2024-01-01: 388_650
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -61,6 +67,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 335_400
     2022-01-01: 343_400
     2023-01-01: 366_100
+    2024-01-01: 388_650
   uprating:
     parameter: gov.irs.uprating
     rounding:

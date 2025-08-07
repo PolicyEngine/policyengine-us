@@ -1,0 +1,50 @@
+- name: Case 1, eligible for Free Ride Program, use Free Ride Program benefit amount.    
+  period: 2023-01
+  input:
+    il_cta_free_ride_benefit: 75
+    il_cta_reduced_fare_benefit: 40
+    state_code: IL
+  output:
+    il_cta_benefit: 75
+
+- name: Case 2, ineligible for Free Ride Program, use Reduced Fare Program benefit amount.    
+  period: 2023-01
+  input:
+    il_cta_free_ride_benefit: 0
+    il_cta_reduced_fare_benefit: 40
+    state_code: IL
+  output:
+    il_cta_benefit: 40
+
+- name: Case 3, integration test, eligible for Free Ride Program.    
+  period: 2023-01
+  input:
+    age: 65
+    is_disabled: false
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    irs_gross_income: 10_000
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_benefit: 75
+
+- name: Case 4, integration test, eligible for Reduced Fare Program.    
+  period: 2023-01
+  input:
+    age: 30
+    is_disabled: true
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_benefit: 40
+
+- name: Case 5, integration test, the user is not eligible for any benefit.    
+  period: 2023-01
+  input:
+    age: 30
+    is_disabled: false
+    is_medicare_eligible: false
+    state_code: IL
+  output:
+    il_cta_benefit: 0

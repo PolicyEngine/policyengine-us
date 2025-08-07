@@ -1,0 +1,108 @@
+- name: Eligible head of household without earned income
+  period: 2019
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        earned_income: 0
+      person2:
+        age: 12
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc: 0
+  output:
+    middle_class_tax_credit: 0
+    income_tax_refundable_credits: 0
+
+- name: Eligible head of household without capped credit amount
+  period: 2019
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        earned_income: 4_000
+      person2:
+        age: 12
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc: 0
+  output:
+    middle_class_tax_credit: 3_000
+    income_tax_refundable_credits: 3_225
+
+
+- name: Eligible single person, fully phased out
+  period: 2019
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        earned_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+        eitc: 0
+  output:
+    middle_class_tax_credit: 0
+    income_tax_refundable_credits: 0
+
+
+- name: Eligible single person, partially phased out
+  period: 2019
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        earned_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+        eitc: 1_000
+  output:
+    middle_class_tax_credit: 1_500
+    income_tax_refundable_credits: 2_500
+
+- name: Joint, partially phased-out credit
+  period: 2019
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        earned_income: 3_000
+      person2:
+        age: 28
+        earned_income: 2_000
+      person3:
+        age: 12
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 70_000
+        filing_status: JOINT
+        eitc: 0
+  output:
+    middle_class_tax_credit: 3_750
+    income_tax_refundable_credits: 3_750

@@ -1,0 +1,24 @@
+description: Senator Michael Bennet proposed a child tax credit with a multiplier of this amount of the base amount, based on the child's age.
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 1.2
+  - threshold:
+      2025-01-01: 6
+    amount: 
+      2025-01-01: 1
+  - threshold:
+      2025-01-01: 18
+    amount: 
+      2025-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: AFA CTC multiplier
+  reference:
+    - title: American Family Act of 2025
+      href: https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf#page=2

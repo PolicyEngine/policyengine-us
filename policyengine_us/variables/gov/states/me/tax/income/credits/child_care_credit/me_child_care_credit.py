@@ -21,6 +21,7 @@ class me_child_care_credit(Variable):
             "me_step_4_share_of_child_care_expenses", period
         )
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
+        # Maine matches the federal credit taken
         cdcc = tax_unit("cdcc", period)
         # Line 2a: Column A
         cdcc_regular_portion = cdcc * (1 - step_4_share_of_expenses)

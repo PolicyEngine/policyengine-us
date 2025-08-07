@@ -1,0 +1,16 @@
+- name: Seniors do not qualify for the ECPA filer credit
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    # Household.
+    people:
+      head:
+        age: 76
+        is_tax_unit_head: True
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 30_000
+  output:
+    ecpa_filer_credit: 0

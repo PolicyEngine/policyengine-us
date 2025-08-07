@@ -1,0 +1,35 @@
+- name: Single person, eligible
+  period: 2023
+  input:
+    ca_capi_resources: 2_000
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    ca_capi_resource_eligible: true
+
+- name: Single person, ineligible
+  period: 2023
+  input:
+    ca_capi_resources: 2_001
+    spm_unit_is_married: false
+    state_code: CA
+  output:
+    ca_capi_resource_eligible: false
+
+- name: Couple eligible
+  period: 2023
+  input:
+    ca_capi_resources: 3_000
+    spm_unit_is_married: true
+    state_code: CA
+  output:
+    ca_capi_resource_eligible: true
+
+- name: Couple ineligible
+  period: 2023
+  input:
+    ca_capi_resources: 3_001
+    spm_unit_is_married: true
+    state_code: CA
+  output:
+    ca_capi_resource_eligible: false

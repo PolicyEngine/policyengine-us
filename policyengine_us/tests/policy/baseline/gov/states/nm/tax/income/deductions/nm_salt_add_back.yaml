@@ -1,0 +1,64 @@
+- name: NM itemized deduction unit test 1
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: True
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 7_500
+    standard_deduction: 5_000
+    state_code: NM
+  output:
+    nm_salt_add_back: 4_000
+
+- name: NM itemized deduction unit test 2
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: True
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 0
+    standard_deduction: 2_000
+    state_code: NM
+  output:
+    nm_salt_add_back: 3_000
+
+- name: NM itemized deduction unit test 3
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    tax_unit_itemizes: True
+    state_and_local_sales_or_income_tax: 7_500
+    real_estate_taxes: 0
+    standard_deduction: 2_000
+    state_code: NM
+  output:
+    nm_salt_add_back: 3_000
+
+- name: NM itemized deduction unit test 4
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: True
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    standard_deduction: 2_000
+    state_code: NM
+  output:
+    nm_salt_add_back: 0
+
+- name: NM itemized deduction unit test 5
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: False
+    state_and_local_sales_or_income_tax: 7_500
+    real_estate_taxes: 0
+    standard_deduction: 2_000
+    state_code: NM
+  output:
+    nm_salt_add_back: 0

@@ -1,0 +1,69 @@
+- name: Case 1, has a dependent, age is above threshold. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_caretaker_family: false
+
+- name: Case 2, has a dependent, age is below threshold. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_tafdc_related_to_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_caretaker_family: true
+
+- name: Case 3, don't have a dependent, ineligible. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 18
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_caretaker_family: false

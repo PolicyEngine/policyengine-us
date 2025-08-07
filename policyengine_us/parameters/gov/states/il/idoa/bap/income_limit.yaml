@@ -1,0 +1,26 @@
+description: The Illinois Department on Aging limits its Benefit Access Program to households with gross income below this amount, based on household size.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - range(1, 4)
+  label: Illinois Benefit Access Program income limit 
+  reference:
+    - title: 2024 Illinois Compiled Statutes Chapter 320 ILCS 25/4 (a-5)
+      href: https://law.justia.com/codes/illinois/chapter-320/act-320-ilcs-25/#:~:text=(a%2D5)%20Income%20eligibility%20limitation.%20For%20purposes%20of%20this,55%2C500%20for%20a%20household%20containing%203%20or%20more%20persons.
+    - title: Illinois Department on Aging Benefit Access Program
+      href: https://ilaging.illinois.gov/benefitsaccess.html
+    - title: Chicago Transit Authority (CTA) Reduced Fare & Free Ride Programs
+      href: https://www.transitchicago.com/reduced-fare-programs/#free
+
+
+1: 
+  2008-01-01: 22_218
+  2020-01-01: 33_562
+2: 
+  2008-01-01: 29_480
+  2020-01-01: 44_533
+3: 
+  2008-01-01: 36_740
+  2020-01-01: 55_500

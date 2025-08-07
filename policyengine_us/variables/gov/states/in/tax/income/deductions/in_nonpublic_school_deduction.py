@@ -8,6 +8,7 @@ class in_nonpublic_school_deduction(Variable):
     definition_period = YEAR
     unit = USD
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-22"  # (d)(1)
+    defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):
         p = (

@@ -142,7 +142,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -169,7 +169,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1]
@@ -195,7 +195,7 @@
         social_security_retirement: 1500.0
         rent: 15000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
@@ -207,7 +207,7 @@
         taxable_private_pension_income: 6000.0
         social_security_retirement: 1500.0
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
@@ -241,7 +241,7 @@
         taxable_private_pension_income: 4000
         social_security_retirement: 12000
         real_estate_taxes: 2000
-        mortgage_interest: 1000
+        deductible_mortgage_interest: 1000
         self_employment_income: 121010
         business_is_qualified: true
         business_is_sstb: false

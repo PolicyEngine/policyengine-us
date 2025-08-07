@@ -9,11 +9,12 @@ values:
     - is_homeless
     - is_runaway_child
     - is_migratory_child
-    # Also Head Start child
+    - is_head_start_eligible
 
 metadata:
   unit: list
   period: year
+  label: Free school meals qualifying programs
   reference:
     - title: 7 CFR § 245.2 - Definitions
       href: https://www.law.cornell.edu/cfr/text/7/245.2

@@ -1,0 +1,107 @@
+- name: Vehicle Cost Normal, Short-range
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 5
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Vehicle Cost Normal, Mid-range
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    ny_drive_clean_rebate: 1_000
+
+- name: Vehicle Cost Normal, Long-range
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    ny_drive_clean_rebate: 2_000
+
+- name: Vehicle Cost High, Mid-range
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 50_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Vehicle Cost High, Long-range
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 50_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Purchased before 2021-06-30, Normal Cost, Range < 20 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 42_000
+    ny_drive_clean_vehicle_electric_range: 10
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Purchased before 2021-06-30, Normal Cost, Range 20 - 39 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 42_000
+    ny_drive_clean_vehicle_electric_range: 20
+  output:
+    ny_drive_clean_rebate: 1_100
+  
+- name: Purchased before 2021-06-30, Normal Cost, Range 40 - 119 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 42_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    ny_drive_clean_rebate: 1_700
+
+- name: Purchased before 2021-06-30, Normal Cost, Range >= 120 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 42_000
+    ny_drive_clean_vehicle_electric_range: 120
+  output:
+    ny_drive_clean_rebate: 2_000
+
+- name: Purchased before 2021-06-30, High Cost, Range 20 - 39 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 70_000
+    ny_drive_clean_vehicle_electric_range: 20
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Purchased before 2021-06-30, High Cost, Range 40 - 119 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 70_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    ny_drive_clean_rebate: 500
+
+- name: Purchased before 2021-06-30, High Cost, Range >= 120 miles
+  period: 2019
+  input:
+    state_code: NY
+    ny_drive_clean_vehicle_cost: 70_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    ny_drive_clean_rebate: 500

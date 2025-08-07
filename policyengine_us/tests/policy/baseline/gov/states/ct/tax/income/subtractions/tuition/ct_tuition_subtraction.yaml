@@ -34,7 +34,7 @@
   output:
     ct_tuition_subtraction: 5_000
 
-- name: Widow filing with qualified tuition expenses less than tuition subtraction max amount
+- name: Surviving spouse filing with qualified tuition expenses less than tuition subtraction max amount
   period: 2022
   input:
     state_code: CT
@@ -43,7 +43,7 @@
   output:
     ct_tuition_subtraction: 1_000
 
-- name: Widow filing with qualified tuition expenses more than tuition subtraction max amount
+- name: Surviving spouse filing with qualified tuition expenses more than tuition subtraction max amount
   period: 2022
   input:
     state_code: CT

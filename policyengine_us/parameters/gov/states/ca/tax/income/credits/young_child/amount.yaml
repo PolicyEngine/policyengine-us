@@ -3,6 +3,7 @@ values:
   2021-01-01: 1_000
   2022-01-01: 1_083
   2023-01-01: 1_117
+  2024-01-01: 1_154
 
 metadata:
   unit: currency-USD
@@ -16,3 +17,11 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=3
     - title: 2023 CalEITC Form 3514
       href: https://www.ftb.ca.gov/forms/2023/2023-3514.pdf#page=3
+    - title: 2024 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2024/2024-3514.pdf#page=3
+  # The legal code specifies the amount as $1,176 multiplied by the CalEITC adjustment factor ($1,000 in 2021).
+  # Since the base value is adjusted annually with inflation.
+  # For accuracy, we use the final product as the parameter value 
+  # due to the tax forms showing inflation-adjusted final values and not the base value.
+    - title: California Legal code REVENUE AND TAXATION CODE, section 17052.1,(a)(2)(A)(i)
+      href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170521-young-child-tax-credit

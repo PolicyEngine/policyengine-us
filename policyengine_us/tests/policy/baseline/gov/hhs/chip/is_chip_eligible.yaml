@@ -1,0 +1,13 @@
+- name: Eligible
+  period: 2022
+  input:
+    chip_category: CHILD
+  output:
+    is_chip_eligible: true
+
+- name: Ineligible
+  period: 2022
+  input:
+    chip_category: NONE
+  output:
+    is_chip_eligible: false

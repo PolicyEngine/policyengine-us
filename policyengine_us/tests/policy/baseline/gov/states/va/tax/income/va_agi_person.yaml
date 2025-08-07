@@ -1,0 +1,37 @@
+- name: Attributing the state adjusted gross income based on federal AGI
+  period: 2021
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 10_000
+      person2:
+        adjusted_gross_income_person: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_agi: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_agi_person: [7_500, 22_500]
+
+- name: One person without income
+  period: 2021
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 10_000
+      person2:
+        adjusted_gross_income_person: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_agi: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_agi_person: [8_000, 0]

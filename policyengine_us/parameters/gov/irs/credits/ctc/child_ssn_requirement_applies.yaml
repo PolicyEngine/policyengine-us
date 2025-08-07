@@ -1,0 +1,13 @@
+description: The IRS requires a Social Security Number for qualifying children for the Child Tax Credit if this is true.
+values:
+  2018-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Child Tax Credit child identification requirement applies
+  reference:
+    - title: 26 U.S. Code § 24(h)(7)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_7
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    # OBBB extends TCJA CTC SSN requirement for children.

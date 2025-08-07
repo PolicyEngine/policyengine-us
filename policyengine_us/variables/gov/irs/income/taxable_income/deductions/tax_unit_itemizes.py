@@ -10,7 +10,7 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        if parameters(period).simulation.branch_to_determine_itemization:
+        if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability
             tax_liability_if_itemizing = tax_unit(
                 "tax_liability_if_itemizing", period
@@ -22,6 +22,7 @@ class tax_unit_itemizes(Variable):
         else:
             # determine federal itemization behavior by comparing deductions
             standard_deduction = tax_unit("standard_deduction", period)
-            p = parameters(period).gov.irs.deductions
-            itemized_deductions = add(tax_unit, period, p.itemized_deductions)
+            itemized_deductions = tax_unit(
+                "itemized_taxable_income_deductions", period
+            )
             return itemized_deductions > standard_deduction

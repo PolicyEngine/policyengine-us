@@ -1,0 +1,21 @@
+description: New Hampshire taxes individual income, if this is true.
+values:
+  2021-01-01: true  
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New Hampshire individual income tax in effect 
+  reference:
+    - title: TECHNICAL INFORMATION RELEASE TIR 2025-001 I&D Tax Repealed Effective January 1, 2025
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/2025-001-technical-information-release-repeal.pdf
+    - title: New Hampshire Statutes - TITLE V - CHAPTER 77 - Section 77:1
+      href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-1.htm
+    - title: 2021 New Hampshire DP-10 Form
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2021-print.pdf#page=4
+    - title: 2022 New Hampshire DP-10 Form Instructions Line 10
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2022.pdf#page=4   
+    - title: 2023 New Hampshire DP-10 Form Instructions Line 10
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2023_0.pdf#page=7     
+    - title: 2024 New Hampshire DP-10 Form Instructions Line 10
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2024.pdf#page=7

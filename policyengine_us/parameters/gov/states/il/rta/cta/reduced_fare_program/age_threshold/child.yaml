@@ -1,0 +1,23 @@
+description: The Chicago Transit Authority provides the Children Ages 7-11 Reduced Fare Program to applicants who are within these age brackets.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: CTA Children Ages 7-11 Reduced Fare Program child age threshold
+  reference:
+    - title: Chicago Transit Authority (CTA) Reduced Fare & Free Ride Programs
+      href: https://www.transitchicago.com/reduced-fare-programs/#kids
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount: 
+      2021-01-01: false
+  - threshold: 
+      2021-01-01: 7
+    amount: 
+      2021-01-01: true
+  - threshold: 
+      2021-01-01: 12
+    amount: 
+      2021-01-01: false

@@ -1,0 +1,29 @@
+- name: Investment income ineligible.
+  period: 2022
+  input:
+    ok_federal_eitc_investment_income_eligible: false
+    ok_federal_eitc_demographic_eligible: true
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_federal_eitc_eligible: false
+
+- name: Demographic ineligible.
+  period: 2022
+  input:
+    ok_federal_eitc_investment_income_eligible: true
+    ok_federal_eitc_demographic_eligible: false
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_federal_eitc_eligible: false
+
+- name: Eligible.
+  period: 2022
+  input:
+    ok_federal_eitc_investment_income_eligible: true
+    ok_federal_eitc_demographic_eligible: true
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_federal_eitc_eligible: true

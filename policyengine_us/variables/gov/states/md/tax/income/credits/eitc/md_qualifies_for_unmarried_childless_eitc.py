@@ -13,12 +13,12 @@ class md_qualifies_for_unmarried_childless_eitc(Variable):
     def formula(tax_unit, period, parameters):
         childless = tax_unit("eitc_child_count", period) == 0
         # Law says "individual".
-        # Tax form instructions clarify that this means single/head/widow.
+        # Tax form instructions clarify that this means single/head/surviving spouse.
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
-        single_head_widow = (
+        single_head_surviving_spouse = (
             (filing_status == filing_statuses.SINGLE)
             | (filing_status == filing_statuses.HEAD_OF_HOUSEHOLD)
             | (filing_status == filing_statuses.SURVIVING_SPOUSE)
         )
-        return childless & single_head_widow
+        return childless & single_head_surviving_spouse

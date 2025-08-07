@@ -10,11 +10,12 @@ brackets:
         2021-01-01: 67_700
         2022-01-01: 69_700
         2023-01-01: 74_750
+        2024-01-01: 78_775
       uprating: 
         parameter: gov.irs.uprating
         rounding:
           type: downwards
-          interval: 50
+          interval: 25
     rate:
       2021-01-01: 0.0204
       2023-01-01: 0.0195
@@ -23,11 +24,12 @@ brackets:
         2021-01-01: 163_550
         2022-01-01: 168_450
         2023-01-01: 275_100
+        2024-01-01: 289_975
       uprating: 
         parameter: gov.irs.uprating
         rounding:
           type: downwards
-          interval: 50
+          interval: 25
     rate:
       2021-01-01: 0.0227
       2023-01-01: 0.0250
@@ -61,6 +63,8 @@ metadata:
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=34
   - title: 2023 North Dakota income tax instructions
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/2023-individual-income-tax-booklet.pdf#page=30
+  - title: 2024 North Dakota income tax instructions
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2024-iit/2024-individual-income-tax-booklet.pdf#page=29
   - title: North Dakota legal code 57-38-30.3.(1)(b)
     href: https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax
-
+  # Statutes point to federal uprating that rounds to the lowest $50. However, 2024 tax forms have thresholds rounded to $25. We will round to $25 to match the tax form. 

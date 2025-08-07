@@ -29,7 +29,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
             tax_unit_mo_agi - tax_unit_taxable_social_security_benefits
         )  # Equivalent to Line 3 of section A and B
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mo.tax.income.deductions
+        p = parameters(
+            period
+        ).gov.states.mo.tax.income.deductions.social_security_and_public_pension
 
         # Section A, Public Pension Amounts
         # TODO:
@@ -58,17 +60,20 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         )
 
         # From instructions here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17
-        adjusted_ss_or_ssdi_value = where(
-            (mo_agi - ss_or_ssdi_exemption_threshold) > 0,
-            eligible_ss_or_ssd,  # this comes froms the result of section c
-            taxable_social_security_benefits,  # this is the unmodified benefits value, from Part 3 - Section C, Line 6
-        )
-        public_pension_less_ss_deduction = max_(
-            public_pension_value - adjusted_ss_or_ssdi_value, 0
-        )
+        if p.income_threshold_applies:
+            adjusted_ss_or_ssdi_value = where(
+                (mo_agi - ss_or_ssdi_exemption_threshold) > 0,
+                eligible_ss_or_ssd,
+                # this comes from the result of section c
+                taxable_social_security_benefits,  # this is the unmodified benefits value, from Part 3 - Section C, Line 6
+            )
+            public_pension_less_ss_deduction = max_(
+                public_pension_value - adjusted_ss_or_ssdi_value, 0
+            )
 
-        return max_(
-            public_pension_less_ss_deduction
-            - agi_over_public_pension__allowance,
-            0,
-        )
+            return max_(
+                public_pension_less_ss_deduction
+                - agi_over_public_pension__allowance,
+                0,
+            )
+        return max_(public_pension_value - eligible_ss_or_ssd, 0)

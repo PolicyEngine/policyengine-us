@@ -32,9 +32,9 @@ class ny_supplemental_tax(Variable):
         single = rates.single
         joint = rates.joint
         hoh = rates.head_of_household
-        widow = rates.widow
+        surviving_spouse = rates.surviving_spouse
         separate = rates.separate
-        scales = [single, joint, hoh, widow, separate]
+        scales = [single, joint, hoh, surviving_spouse, separate]
 
         previous_agi_threshold = select(
             in_each_status,
@@ -53,34 +53,6 @@ class ny_supplemental_tax(Variable):
             applicable_amount / p.phase_in_length,
         )
 
-        recapture_base = select(
-            in_each_status,
-            [
-                p.recapture_base.single.calc(ny_taxable_income),
-                p.recapture_base.joint.calc(ny_taxable_income),
-                p.recapture_base.head_of_household.calc(ny_taxable_income),
-                p.recapture_base.widow.calc(ny_taxable_income),
-                p.recapture_base.separate.calc(ny_taxable_income),
-            ],
-        )
-
-        incremental_benefit = select(
-            in_each_status,
-            [
-                p.incremental_benefit.single.calc(ny_taxable_income),
-                p.incremental_benefit.joint.calc(ny_taxable_income),
-                p.incremental_benefit.head_of_household.calc(
-                    ny_taxable_income
-                ),
-                p.incremental_benefit.widow.calc(ny_taxable_income),
-                p.incremental_benefit.separate.calc(ny_taxable_income),
-            ],
-        )
-
-        supplemental_tax_general = (
-            recapture_base + phase_in_fraction * incremental_benefit
-        )
-
         # edge case for high agi
         agi_limit = select(
             in_each_status,
@@ -88,7 +60,7 @@ class ny_supplemental_tax(Variable):
                 single.thresholds[-1],
                 joint.thresholds[-1],
                 hoh.thresholds[-1],
-                widow.thresholds[-1],
+                surviving_spouse.thresholds[-1],
                 separate.thresholds[-1],
             ],
         )
@@ -101,8 +73,45 @@ class ny_supplemental_tax(Variable):
             ny_taxable_income * high_agi_rate - ny_main_income_tax
         )
 
+        if p.in_effect:
+            recapture_base = select(
+                in_each_status,
+                [
+                    p.recapture_base.single.calc(ny_taxable_income),
+                    p.recapture_base.joint.calc(ny_taxable_income),
+                    p.recapture_base.head_of_household.calc(ny_taxable_income),
+                    p.recapture_base.surviving_spouse.calc(ny_taxable_income),
+                    p.recapture_base.separate.calc(ny_taxable_income),
+                ],
+            )
+
+            incremental_benefit = select(
+                in_each_status,
+                [
+                    p.incremental_benefit.single.calc(ny_taxable_income),
+                    p.incremental_benefit.joint.calc(ny_taxable_income),
+                    p.incremental_benefit.head_of_household.calc(
+                        ny_taxable_income
+                    ),
+                    p.incremental_benefit.surviving_spouse.calc(
+                        ny_taxable_income
+                    ),
+                    p.incremental_benefit.separate.calc(ny_taxable_income),
+                ],
+            )
+
+            supplemental_tax_general = (
+                recapture_base + phase_in_fraction * incremental_benefit
+            )
+
+            return where(
+                ny_agi > agi_limit,
+                supplemental_tax_high_agi,
+                supplemental_tax_general,
+            )
+
         return where(
             ny_agi > agi_limit,
             supplemental_tax_high_agi,
-            supplemental_tax_general,
+            0,
         )

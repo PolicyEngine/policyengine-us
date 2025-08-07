@@ -1,0 +1,235 @@
+- name: Household with rent not over 30% of gross income
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 1_000
+        rent: 300
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: false
+  output:
+    rent_relief_tax_credit: 0
+    income_tax_refundable_credits: 0
+
+- name: Household with rent over 30% of gross income, full percentage
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 1_000
+        rent: 600
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: false
+  output:
+    rent_relief_tax_credit: 300
+    income_tax_refundable_credits: 300
+
+- name: Credit fully reduced, safmr used for HCV
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 100_001
+        rent: 40_000
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: true
+  output:
+    rent_relief_tax_credit: 0
+
+
+- name: Credit partially reduced, SAFMR not used for HCV 
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 55_000
+        rent: 26_500
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: false
+  output:
+    rent_relief_tax_credit: 4_250
+
+- name: Household received subsidized rent 
+  period: 2019
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 55_000
+        rent: 26_500
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: false
+  output:
+    rent_relief_tax_credit: 2_116.5
+
+- name: Householf received subsidized rent, reduced to 0
+  period: 2019
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 55_000
+        rent: 26_500
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 27_000
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: false
+  output:
+    rent_relief_tax_credit: 0
+
+- name: Credit partially reduced, safmr used for HCV
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 55_000
+        rent: 26_500
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: true
+  output:
+    rent_relief_tax_credit: 6_375
+
+- name: 50k in a SAMFR-for-HCV area
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    people:
+      person1:
+        irs_gross_income: 50_000
+        rent: 26_500
+      person2:
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        small_area_fair_market_rent: 25_000
+        safmr_used_for_hcv: true
+  output:
+    rent_relief_tax_credit: 10_000
+
+- name: 80k in a SAMFR-for-HCV area
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    irs_gross_income: 0
+    pre_subsidy_rent: 80_000
+    safmr_used_for_hcv: true
+    small_area_fair_market_rent: 80_000
+    rent: 80_000
+    state_code: CA
+  output:
+    rent_relief_tax_credit: 80_000
+
+- name: 80k in a SAMFR-for-HCV area
+  period: 2019
+  reforms: policyengine_us.reforms.harris.rent_relief_act.rent_relief_tax_credit.rent_relief_tax_credit
+  input:
+    gov.contrib.harris.rent_relief_act.rent_relief_credit.in_effect: true
+    irs_gross_income: 25_000
+    pre_subsidy_rent: 80_000
+    safmr_used_for_hcv: true
+    small_area_fair_market_rent: 80_000
+    rent: 80_000
+    state_code: CA
+  output:
+    rent_relief_tax_credit: 72_500

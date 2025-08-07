@@ -7,6 +7,7 @@ class rent(Variable):
     label = "Rent"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"
 
     def formula(person, period, parameters):
         pre_subsidy_rent = person("pre_subsidy_rent", period)

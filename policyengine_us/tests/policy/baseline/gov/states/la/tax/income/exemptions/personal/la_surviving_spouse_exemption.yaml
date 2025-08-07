@@ -1,0 +1,43 @@
+- name: Qualifying surviving spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        is_surviving_spouse: True
+      person2:
+        age: 64
+        is_tax_unit_spouse: 1
+        is_surviving_spouse: False
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_surviving_spouse_exemption: 1_000
+
+- name: Non surviving spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        is_surviving_spouse: False
+      person2:
+        age: 64
+        is_tax_unit_spouse: 1
+        is_surviving_spouse: False
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_surviving_spouse_exemption: 0

@@ -1,0 +1,36 @@
+description: Minnesota reduces itemized deductions by a higher rate when federal adjusted gross income is above this threshold.
+metadata:
+  label: Minnesota itemized deduction higher reduction AGI threshold
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  propagate_metadata_to_children: true
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0122 ITEMIZED DEDUCTIONS. Subd. 2 (a)(1)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
+  - title: 2023 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1sa-23.pdf#page=8
+  - title: 2024 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8
+
+JOINT:
+  2023-01-01: 304_970
+  2024-01-01: 321_350
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 304_970
+  2024-01-01: 321_350
+SURVIVING_SPOUSE:
+  2023-01-01: 304_970
+  2024-01-01: 321_350
+SINGLE:
+  2023-01-01: 304_970
+  2024-01-01: 321_350
+SEPARATE:
+  2023-01-01: 152_485
+  2024-01-01: 160_675

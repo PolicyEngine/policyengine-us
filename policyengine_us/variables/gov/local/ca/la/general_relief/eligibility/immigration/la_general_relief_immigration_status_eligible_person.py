@@ -15,5 +15,6 @@ class la_general_relief_immigration_status_eligible_person(Variable):
         istatus = person("immigration_status", period)
         daca_tps = istatus == istatus.possible_values.DACA_TPS
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Assuming that the applicant's/participant's immigration status is recorded
-        return ~(daca_tps | undocumented)
+        return ~(daca_tps | undocumented) & head_or_spouse

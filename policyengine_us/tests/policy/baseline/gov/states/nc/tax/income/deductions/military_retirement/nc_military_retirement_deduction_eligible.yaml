@@ -1,0 +1,26 @@
+- name: Is medically retired, is not years eligible
+  period: 2022
+  input:
+    is_permanently_disabled_veteran: true
+    years_in_military: 19
+    state_code: NC
+  output:
+    nc_military_retirement_deduction_eligible: true
+
+- name: Is not medically retired, is years eligible
+  period: 2022
+  input:
+    is_permanently_disabled_veteran: false
+    years_in_military: 20
+    state_code: NC
+  output:
+    nc_military_retirement_deduction_eligible: true
+
+- name: Not medically retired, not years eligible
+  period: 2022
+  input:
+    is_permanently_disabled_veteran: false
+    years_in_military: 19
+    state_code: NC
+  output:
+    nc_military_retirement_deduction_eligible: false

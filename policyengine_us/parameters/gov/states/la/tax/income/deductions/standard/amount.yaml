@@ -1,0 +1,27 @@
+description: Louisiana provides the following standard deduction amount, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Louisiana standard deduction amount
+  uprating: gov.bls.cpi.cpi_u
+  propagate_metadata_to_children: true
+  breakdown:
+    - filing_status
+  reference:
+    # The legal code does not represent the changes by the House Bill 10,
+    # the state legislature passed in November 2024, source: https://legis.la.gov/legis/BillInfo.aspx?i=247853
+    - title: Louisiana 2024 Third Extraordinary Session, House Bill 10, §294
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1391418
+
+SINGLE:
+  2025-01-01: 12_500
+SURVIVING_SPOUSE:
+  2025-01-01: 25_000
+SEPARATE:
+  2025-01-01: 12_500
+# The legal code defines the HoH and Joint amounts as 200% of the 
+# Single amount.
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 25_000
+JOINT:
+  2025-01-01: 25_000

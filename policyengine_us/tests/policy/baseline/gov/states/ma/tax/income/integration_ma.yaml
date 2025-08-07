@@ -11,7 +11,7 @@
         long_term_capital_gains: 35_000
         rent: 7_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -22,7 +22,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -41,7 +41,7 @@
         short_term_capital_gains: 73_000
         rent: 8_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         age: 11
@@ -55,7 +55,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -75,7 +75,7 @@
         taxable_interest_income: 20_000
         short_term_capital_gains: 10_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -86,7 +86,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -109,7 +109,7 @@
         social_security: 22_000
         rent: 17_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -120,7 +120,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -139,7 +139,7 @@
         employment_income: 40_000
         qualified_dividend_income: 20_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -150,7 +150,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -173,19 +173,19 @@
         social_security: 8_000
         rent: 8_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -197,7 +197,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -219,7 +219,7 @@
 
     ma_income_tax_before_credits: 0.05 * 120 + 0.12 * 9_010 + 0.05 * 8_010
                                   # = 1487.70
-    ma_dependent_credit: 360
+    ma_child_and_family_credit: 360
     ma_income_tax: 1_487.70 - 360
 
 - name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount less than rental deduction cap
@@ -237,19 +237,19 @@
         social_security: 8_000
         rent: 7_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -261,7 +261,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -283,7 +283,7 @@
 
     ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_630 + 0.05 * 0 + 0.05 * 8_010
                                   # = 1134.05
-    ma_dependent_credit: 620 # = 310 * 2
+    ma_child_and_family_credit: 620 # = 310 * 2
     ma_income_tax: 1134.05 - 620
 
 - name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount more than rental deduction cap
@@ -301,19 +301,19 @@
         social_security: 8_000
         rent: 9_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -325,7 +325,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -347,7 +347,7 @@
 
     ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_220 + 0.05 * 0 + 0.05 * 8_010
                                   # = 1099.20
-    ma_dependent_credit: 620 # = 310 * 2
+    ma_child_and_family_credit: 620 # = 310 * 2
     ma_income_tax: 1099.20 - 620
 
 - name: Tax unit with taxsimid 78550 in u21.its.csv and u21.ots.csv
@@ -365,13 +365,13 @@
         social_security: 18_000
         rent: 18_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 11
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
@@ -383,7 +383,7 @@
       tax_unit:
         members: [person1, person2]
         tax_unit_childcare_expenses: 3_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]
@@ -395,7 +395,7 @@
     ma_income_tax_before_credits: 376.50
     ma_limited_income_tax_credit: 12.50
     ma_non_refundable_credits: 12.50
-    ma_dependent_credit: 180.00
+    ma_child_and_family_credit: 180.00
     ma_senior_circuit_breaker: 966.00
     ma_refundable_credits: 180 + 966
     ma_income_tax: 376.50 - 12.50 - 180 - 966

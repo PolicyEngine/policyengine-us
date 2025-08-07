@@ -1,0 +1,18 @@
+description: Massachusetts exempts interest from savings in Massachusetts if this is true.
+
+values:
+  2002-01-01: true
+  2024-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts interest exemption in effect
+  reference:
+    - title: Form 1 2024 Massachusetts Resident Income Tax - Repeal of the Deduction of Interest from Massachusetts banks
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=3
+    - title: Repeal Deduction of Interest From Savings in Massachusetts Banks 1
+      href: https://budget.digital.mass.gov/govbudget/fy25/outside-section/section-44-repeal-deduction-of-interest-from-savings-in-massachusetts-banks-1/
+    - title: Chapter 62, Section 3
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    # Relevant section has been deleted

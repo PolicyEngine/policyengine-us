@@ -1,0 +1,35 @@
+- name: Case 1, in 2022, military retirement pay less than floor.
+  period: 2022
+  input:
+    state_code: NM
+    military_retirement_pay: 8_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 8_000
+
+- name: Case 2, in 2022, military retirement pay higher than floor.
+  period: 2022
+  input:
+    state_code: NM
+    military_retirement_pay: 11_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 10_000
+
+- name: Case 3, in 2023, military retirement pay less than floor.
+  period: 2023
+  input:
+    state_code: NM
+    military_retirement_pay: 11_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 11_000
+
+- name: Case 4, only head or spouse qualify.
+  period: 2023
+  input:
+    state_code: NM
+    military_retirement_pay: 11_000
+    is_tax_unit_head_or_spouse: false
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 0

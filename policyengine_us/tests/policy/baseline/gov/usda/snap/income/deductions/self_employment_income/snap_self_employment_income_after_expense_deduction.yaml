@@ -1,0 +1,7 @@
+- name: Income reduced by deduction
+  period: 2022
+  input:
+    self_employment_income: 500
+    snap_self_employment_expense_deduction: 300
+  output:
+    snap_self_employment_income_after_expense_deduction: 200

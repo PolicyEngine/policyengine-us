@@ -3,17 +3,23 @@ brackets:
   - threshold:
       2021-01-01: 0
     rate:
-      # The first $25,000 income are not taxed; Ohio has a tax cliff.
-      # This is the rate implied by the starting tax amount $346.16
-      # divided by $25,000.
-      # Separately, we add a variable for being tax exempt, set if income
-      # is below $25,000.
+      # The first bracket has a 0% rate, but when entering the second bracket,
+      # a flat amount is added ($360.69 in 2024) plus the marginal rate on excess income.
+      # This rate represents the implied average rate that would generate that flat amount
+      # at the second bracket's threshold.
+      #this creates a tax cliff
       2021-01-01: 0.01385
+      2024-01-01: 0.0138462
+      2025-01-01: 0.0131287
+      2026-01-01: 0.0127448
   - threshold: 
       values:
         2021-01-01: 25_000
         2022-01-01: 26_050
         2023-01-01: 26_050
+        2024-01-01: 26_050
+        2025-01-01: 26_050
+        2026-01-01: 26_050
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -27,6 +33,7 @@ brackets:
         2021-01-01: 44_250
         2022-01-01: 46_100
         2023-01-01: 100_000
+        2026-01-01: .inf
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -36,6 +43,7 @@ brackets:
       2021-01-01: 0.03226
       2023-01-01: 0.03688
       2024-01-01: 0.035
+      2025-01-01: 0.0315
   - threshold:
       values:
         2021-01-01: 88_450
@@ -68,3 +76,8 @@ metadata:
       href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=31
     - title: Ohio Income Tax Form 2023 Instructions
       href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=46
+    - title: Ohio Income Tax Form 2024 Instructions 
+      href: https://dam.assets.ohio.gov/image/upload/v1735920104/tax.ohio.gov/forms/ohio_individual/individual/2024/it1040-booklet.pdf#page=18
+    - title: House Bill 96
+      href: https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/07_EN/pdf/#page=2608
+

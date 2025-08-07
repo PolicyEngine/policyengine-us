@@ -1,0 +1,35 @@
+- name: Income eligible, child age eligible, then entry eligible.
+  period: 2024
+  input:
+    nc_scca_entry_income_eligible: true
+    nc_scca_has_eligible_child: true
+    state_code: NC
+  output:
+    nc_scca_entry_eligible: true
+
+- name: Income not eligible, child age eligible, then entry not eligible.
+  period: 2024
+  input:
+    nc_scca_entry_income_eligible: false
+    nc_scca_has_eligible_child: true
+    state_code: NC
+  output:
+    nc_scca_entry_eligible: false
+
+- name: Income eligible, child age not eligible, then entry not eligible.
+  period: 2024
+  input:
+    nc_scca_entry_income_eligible: true
+    nc_scca_has_eligible_child: false
+    state_code: NC
+  output:
+    nc_scca_entry_eligible: false
+
+- name: Income not eligible, child age not eligible, then entry not eligible.
+  period: 2024
+  input:
+    nc_scca_entry_income_eligible: false
+    nc_scca_has_eligible_child: false
+    state_code: NC
+  output:
+    nc_scca_entry_eligible: false

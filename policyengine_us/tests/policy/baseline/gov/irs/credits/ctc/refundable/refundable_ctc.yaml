@@ -1,0 +1,83 @@
+- name: Max CTC but not phased-in
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: false
+    ctc_refundable_maximum: 1_000
+    ctc: 1_000
+    ctc_phase_out: 0
+    ctc_phase_in: 0
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 0
+
+- name: Credit fully phased-in
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: false
+    ctc_refundable_maximum: 1_000
+    ctc: 1_000
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 1_000
+
+- name: Phase-out does not apply if not fully refundable
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: false
+    ctc_refundable_maximum: 1_000
+    ctc: 1_000
+    ctc_phase_out: 2_000
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 1_000
+
+- name: Fully refundable credit, fully phased out
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: true
+    ctc_refundable_maximum: 1_000
+    ctc: 1_000
+    ctc_phase_out: 2_000
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 0
+
+- name: Fully refundable credit, partially phased-out
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: true
+    ctc_refundable_maximum: 3_000
+    ctc: 3_000
+    ctc_phase_out: 2_000
+    ctc_phase_in: 0
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 1_000
+
+- name: Partially phased-in credit
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: false
+    ctc_refundable_maximum: 3_000
+    ctc: 1_000
+    ctc_phase_out: 2_000
+    ctc_phase_in: 500
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 500
+
+- name: Fully limited by tax liability
+  period: 2023
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: false
+    ctc_refundable_maximum: 3_000
+    ctc: 1_000
+    ctc_phase_out: 2_000
+    ctc_phase_in: 500
+    ctc_limiting_tax_liability: 4_000
+  output:
+    refundable_ctc: 0

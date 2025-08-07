@@ -8,4 +8,5 @@ class oh_section_179_expense_add_back(Variable):
     definition_period = YEAR
     documentation = ""
     reference = ""
+    defined_for = StateCode.OH
     # use federal variables if they are added later

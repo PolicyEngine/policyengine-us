@@ -4,9 +4,8 @@ from policyengine_us.model_api import *
 class ny_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Itemizes NY deductions"
-    unit = USD
-    documentation = "Tax units who itemize their federal deductions can opt to itemize their NY deductions. However, if a standard deduction causes a lower tax liability, they must choose that."
+    label = "Itemizes New York deductions"
+    documentation = "Tax units who itemize their federal deductions can opt to itemize their New York deductions. However, if a standard deduction causes a lower tax liability, they must choose that."
     definition_period = YEAR
     defined_for = StateCode.NY
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"

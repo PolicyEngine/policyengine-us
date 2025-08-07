@@ -1,0 +1,14 @@
+description: The US deducts the following expenses under the miscellaneous deduction.
+values:
+  2013-01-01:
+    - unreimbursed_business_employee_expenses
+    - tax_preparation_fees
+metadata:
+  period: year
+  unit: list
+  label: Miscellaneous deduction sources
+  reference:
+    - title: 26 U.S. Code § 67 - 2-percent floor on miscellaneous itemized deductions (b)
+      href: https://www.law.cornell.edu/uscode/text/26/67
+    - title: 2017 Schedule A Instructions
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=12

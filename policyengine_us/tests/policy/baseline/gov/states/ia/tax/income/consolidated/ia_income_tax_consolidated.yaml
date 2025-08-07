@@ -1,0 +1,32 @@
+- name: Eligible, regular tax is lower than alternate tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_regular_tax_consolidated: 10_000
+    ia_alternate_tax_eligible: true
+    ia_alternate_tax_consolidated: 12_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_income_tax_consolidated: 10_000
+
+- name: Eligible, alternate tax is lower than regular tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_regular_tax_consolidated: 12_000
+    ia_alternate_tax_eligible: true
+    ia_alternate_tax_consolidated: 10_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_income_tax_consolidated: 10_000
+
+- name: Ineligible, regular tax is lower than alternate tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_regular_tax_consolidated: 12_000
+    ia_alternate_tax_eligible: false
+    ia_alternate_tax_consolidated: 10_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_income_tax_consolidated: 12_000

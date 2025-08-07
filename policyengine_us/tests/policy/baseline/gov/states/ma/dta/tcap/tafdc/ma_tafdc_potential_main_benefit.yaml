@@ -1,0 +1,19 @@
+- name: Payment standard higher than income. 
+  period: 2023
+  input:
+    ma_tafdc_payment_standard: 100
+    ma_tafdc_applicable_income_grant_amount: 80
+    ma_tafdc_eligible: true
+    state_code: MA
+  output:
+    ma_tafdc_potential_main_benefit: 20
+
+- name: Payment standard lower than income
+  period: 2023
+  input:
+    ma_tafdc_payment_standard: 100
+    ma_tafdc_applicable_income_grant_amount: 180
+    ma_tafdc_eligible: true
+    state_code: MA
+  output:
+    ma_tafdc_potential_main_benefit: 0

@@ -1,0 +1,740 @@
+- name: Family of two, no children, no disabilities, monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 1700
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of two, no children, no disabilities, monthly income below FPL, saving $0/month.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 1700
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of three (1 child, 17), no disabilities, monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2150
+        members: [person1, person2, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2150
+        members: [person1, person2, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 108
+
+- name: Family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2150
+        members: [person1, person2, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 108
+
+- name: Family of three (1 child, 17 with disabilities), lives in Chatham County, monthly income below FPL, saving $16/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 4302
+        members: [person1, person2, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: CHATHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 16
+
+- name: Family of three (1 child, 17 with disabilities), lives in Mitchell County, monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 4302
+        members: [person1, person2, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: MITCHELL_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 0 & 1), no disabilities, monthly income below FPL, saving $1392/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 0
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 1392
+
+- name: Family of four (2 children, ages 1 & 2), no disabilities, monthly income below FPL, saving $1378/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 1378
+
+- name: Family of four (2 children, ages 0 & 3), no disabilities, monthly income below FPL, saving $1280/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 0
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 1280
+
+- name: Family of four (2 children, ages 3 & 5), no disabilities, monthly income below FPL, saving $1168/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 1168
+
+- name: Family of four (2 children, ages 3 & 7), no disabilities, monthly income below FPL, saving $647/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 647
+
+- name: Family of four (2 children, ages 3 & 7), no disabilities, monthly income over FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5200
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 6 & 7), no disabilities, monthly income below FPL, saving $414/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 3457
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 414
+
+- name: Family of four (2 children, ages 6 & 13), no disabilities, monthly income below FPL, saving $34/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 3457
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 34
+
+- name: Family of four (2 children, ages 6 & 13 with disabilities), monthly income below FPL, saving $240/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 240
+
+- name: Family of four (2 children, ages 13 & 17), no disabilities, monthly income over FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5200
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 13 & 17 with disabilities), monthly income below FPL, saving $34/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 3457
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 34
+
+- name: Family of four (2 children, ages 13 & 17 with disabilities), monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 13 & 18 with disabilities), monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 3457
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 13 with disabilities & 18), live in Durham County, monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
+- name: Family of four (2 children, ages 13 with disabilities & 18), live in Perquimans County, monthly income below FPL, saving $4/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2000
+        members: [person1, person2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: PERQUIMANS_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 4
+
+- name: Family of six (4 children, ages 1, age 2, age 4 and age 6), no disabilities, live in New Hanover County, monthly income below FPL, saving $2884/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child3:
+        age: 4
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child4:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 5199
+        members: [person1, person2, child1, child2, child3, child4]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4]
+        county_str: NEW_HANOVER_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 2884
+
+- name: Family of 3 (2 children, ages 3, age 7), no disabilities, live in Cabarrus County, monthly income below FPL, saving $1305/month.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2000
+        members: [person1, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: CABARRUS_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 1305
+
+- name: No childcare expenses
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        nc_scca_countable_income: 2000
+        members: [person1, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: CABARRUS_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0

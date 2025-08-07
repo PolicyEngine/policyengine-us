@@ -16,10 +16,14 @@ class taxable_self_employment_income(Variable):
             "s_corp_self_employment_income",
         ]
         gross_sei = add(person, period, SEI_SOURCES)
-        irs = parameters(period).gov.irs
-        se = irs.self_employment
-        combined_rate = se.social_security_rate + se.medicare_rate
-        deduction_rate = irs.ald.misc.employer_share * combined_rate
+        p = parameters(period).gov.irs
+        combined_rate = (
+            p.self_employment.rate.social_security
+            + p.self_employment.rate.medicare
+        )
+        deduction_rate = p.ald.misc.employer_share * combined_rate
         net_sei = gross_sei * (1 - deduction_rate)
         # exclude net self-employment income below the reporting threshold.
-        return where(net_sei < se.net_earnings_exemption, 0, net_sei)
+        return where(
+            net_sei < p.self_employment.net_earnings_exemption, 0, net_sei
+        )

@@ -1,0 +1,61 @@
+- name: integration test 1, a married couple with 2 dependents
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 15_000
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 10_000
+        age: 44
+        is_tax_unit_head_or_spouse: true
+      person3:
+        pr_gross_income_person: 0
+        age: 5
+      person4:
+        pr_gross_income_person: 1_000
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PR
+  output: 
+    pr_earned_income_credit_eligible: true
+    pr_earned_income_credit: 6_072
+
+- name: integration test 2, individual with 4 dependents
+  period: 2024
+  input:
+    people:
+      person1: 
+        pr_gross_income_person: 30_000
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      person2:
+        pr_gross_income_person: 500
+        age: 5
+      person3:
+        pr_gross_income_person: 0
+        age: 15
+      person4:
+        pr_gross_income_person: 0
+        age: 2
+      person5:
+        pr_gross_income_person: 0
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: PR
+  output: 
+    pr_earned_income_credit_eligible: true
+    pr_earned_income_credit: 4_839.878

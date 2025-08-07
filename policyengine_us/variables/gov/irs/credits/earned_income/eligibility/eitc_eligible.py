@@ -14,8 +14,14 @@ class eitc_eligible(Variable):
             "eitc_investment_income_eligible", period
         )
         demographic_eligible = tax_unit("eitc_demographic_eligible", period)
+        # The head or spouse in the tax unit must have valid SSN card type to be eligible for the EITC
+        filers_has_ssn = tax_unit(
+            "filer_meets_eitc_identification_requirements", period
+        )
         # Define eligibility before considering separate filer limitation.
-        eligible = demographic_eligible & investment_income_eligible
+        eligible = (
+            demographic_eligible & investment_income_eligible & filers_has_ssn
+        )
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible

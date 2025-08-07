@@ -1,4 +1,4 @@
-- name: Unit test 1 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 1 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -11,7 +11,7 @@
     ny_supplemental_tax: 22.278
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 1 
 
-- name: Unit test 2 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 2 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -24,7 +24,7 @@
     ny_supplemental_tax: 1_056 #474+582
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 2
 
-- name: Unit test 3 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 3 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -37,7 +37,7 @@
     ny_supplemental_tax: 1_056 #474+582
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 3
 
-- name: Unit test 4 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 4 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -50,7 +50,7 @@
     ny_supplemental_tax: 63_086
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 4
 
-- name: Unit test 5 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 5 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -63,7 +63,7 @@
     ny_supplemental_tax: 95_586
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 5
 
-- name: Unit test 6 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+- name: Unit test 6 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
   absolute_error_margin: 0.1
   period: 2021
   input:
@@ -269,6 +269,30 @@
 - name: Unit test for 2023 ny_supplemental_tax separate filers
   absolute_error_margin: 0.1
   period: 2023
+  input:
+    state_code: NY
+    filing_status: SEPARATE 
+    ny_agi: 220_000
+    ny_taxable_income: 200_000
+    ny_main_income_tax: 11_963.755
+  output:
+    ny_supplemental_tax: 568
+
+- name: Unit test for year 2028 married filing jointly and qualifying surviving spouse
+  absolute_error_margin: 0.1
+  period: 2028
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 110_000 
+    ny_taxable_income: 27_900 
+    ny_main_income_tax: 1_202
+  output:
+    ny_supplemental_tax: 15.651
+
+- name: Unit test for 2028 separate filers
+  absolute_error_margin: 0.1
+  period: 2028
   input:
     state_code: NY
     filing_status: SEPARATE 

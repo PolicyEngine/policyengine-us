@@ -8,6 +8,7 @@ class or_cdcc_relevant_expenses(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://oregon.public.law/statutes/ors_315.264"
+    defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
         p_cdcc = parameters(period).gov.irs.credits.cdcc

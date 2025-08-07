@@ -6,6 +6,7 @@ class nm_eitc_demographic_eligible(Variable):
     entity = TaxUnit
     label = "Meets demographic eligibility for New Mexico EITC"
     definition_period = YEAR
+    defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
         # New Mexico applies the same criteria as the federal EITC, but

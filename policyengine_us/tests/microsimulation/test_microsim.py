@@ -1,9 +1,22 @@
-def test_microsim_runs_cps():
+import pytest
+
+DATASETS = [
+    "hf://policyengine/policyengine-us-data/cps_2023.h5",
+    "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
+]
+
+YEARS = list(range(2024, 2026))
+
+
+@pytest.mark.parametrize("dataset", DATASETS)
+@pytest.mark.parametrize("year", YEARS)
+def test_microsim_runs(dataset: str, year: int):
     import numpy as np
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation()
-    hnet = sim.calc("household_net_income")
+    sim = Microsimulation(dataset=dataset)
+    sim.subsample(1_000)
+    hnet = sim.calc("household_net_income", period=year)
     assert not hnet.isna().any(), "Some households have NaN net income."
     # Deciles are 1-10, with -1 for negative income.
     DECILES = [

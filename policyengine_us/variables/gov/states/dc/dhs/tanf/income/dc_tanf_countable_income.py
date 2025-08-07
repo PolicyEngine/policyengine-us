@@ -4,19 +4,26 @@ from policyengine_us.model_api import *
 class dc_tanf_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "DC TANF countable income"
+    label = (
+        "DC Temporary Assistance for Needy Families (TANF) countable income"
+    )
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        gross_earnings = spm_unit("dc_tanf_gross_earned_income", period)
-        gross_unearned_income = spm_unit(
-            "dc_tanf_countable_gross_unearned_income", period
+        income_sources = add(
+            spm_unit,
+            period,
+            [
+                "dc_tanf_countable_earned_income",
+                "dc_tanf_countable_unearned_income",
+            ],
         )
-        p = parameters(period).gov.states.dc.dhs.tanf.income.deductions.earned
-        annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
-        earnings_after_deduction = max_(
-            gross_earnings - annual_flat_exclusion, 0
-        ) * (1 - p.percentage)
-        return earnings_after_deduction + gross_unearned_income
+        # Exclude income from GAC, this only applies when the child in household is unrelated to
+        # the head or spouse
+        gac_countable_income = spm_unit("dc_gac_countable_income", period)
+        childcare_deduction = spm_unit("dc_tanf_childcare_deduction", period)
+        return max_(
+            income_sources - gac_countable_income - childcare_deduction, 0
+        )

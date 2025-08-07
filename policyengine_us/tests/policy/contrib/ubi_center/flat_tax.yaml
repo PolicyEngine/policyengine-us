@@ -1,0 +1,29 @@
+- name: 10% flat tax on AGI and 20% flat tax on gross income
+  period: 2023
+  input:
+    gov.contrib.ubi_center.flat_tax.rate.agi: 0.1
+    gov.contrib.ubi_center.flat_tax.rate.gross_income: 0.2
+    positive_agi: 2_000
+    positive_gross_income: 5_000
+  output:
+    flat_tax: 1_200
+
+- name: 5% flat tax on AGI and 30k exemption for single filer
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.rate.agi: 0.05
+    gov.contrib.ubi_center.flat_tax.exemption.agi.SINGLE: 30_000
+    positive_agi: 50_000
+    filing_status: SINGLE
+  output:
+    flat_tax: 1_000
+
+- name: 2% flat tax on AGI and 60k exemption for joint filer
+  period: 2025
+  input:
+    gov.contrib.ubi_center.flat_tax.rate.agi: 0.02
+    gov.contrib.ubi_center.flat_tax.exemption.agi.JOINT: 60_000
+    positive_agi: 120_000
+    filing_status: JOINT
+  output:
+    flat_tax: 1_200

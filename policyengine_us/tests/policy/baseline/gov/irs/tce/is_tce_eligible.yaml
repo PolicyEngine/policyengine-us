@@ -1,0 +1,20 @@
+- name: TCE ineligible.
+  period: 2023
+  input:
+    age: 50
+  output:
+    is_tce_eligible: false
+
+- name: TCE eligible 1.
+  period: 2023
+  input:
+    age: 60
+  output:
+    is_tce_eligible: true
+
+- name: TCE eligible 2.
+  period: 2023
+  input:
+    age: 70
+  output:
+    is_tce_eligible: true

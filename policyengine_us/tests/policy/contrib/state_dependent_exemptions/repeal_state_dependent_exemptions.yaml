@@ -1,0 +1,81 @@
+- name: Single filer with one dependent in Alabama
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_dependent_exemption: 0
+
+- name: Reform not active
+  period: 2024
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people: 
+      person1:
+        age: 38
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_dependent_exemption: 1_000
+
+- name: Joint filers with one dependent in Vermont
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2:
+        age: 38
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    vt_personal_exemptions: 10_200
+
+- name: Joint filers with one dependent in Vermont - reform not in effect
+  period: 2024
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: false
+    people: 
+      person1:
+        age: 38
+      person2:
+        age: 38
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    vt_personal_exemptions: 15_300

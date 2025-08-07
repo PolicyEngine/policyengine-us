@@ -1,0 +1,30 @@
+- name: Single parent with one dependent
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      child:
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    pell_grant_max_fpg_percent_limit: [2.25, 2.25]
+
+- name: Non-single parents with one dependent
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+      child:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+  output:
+    pell_grant_max_fpg_percent_limit: [1.75, 1.75, 1.75]

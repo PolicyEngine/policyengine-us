@@ -7,3 +7,4 @@ class physician_services_expense(Variable):
     label = "Physician services expenses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

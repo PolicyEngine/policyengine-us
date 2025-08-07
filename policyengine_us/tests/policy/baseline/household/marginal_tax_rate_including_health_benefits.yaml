@@ -1,0 +1,54 @@
+- name: simple marginal_tax_rate- make sure health stays the same
+  absolute_error_margin: 0.0001
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:  # as expected from above two test results; also same as TAXSIM35
+    marginal_tax_rate_including_health_benefits: 0.4345  # that is, 43.45%
+
+- name: West Virginia adult no healthcare benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 54
+    employment_income: 30_000
+    healthcare_benefit_value: 0
+  output:  
+    marginal_tax_rate_including_health_benefits: 0.442  # 44.2%
+
+- name: West Virginia adult yes healthcare benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 54
+    employment_income: 30_000
+    is_aca_ptc_eligible: true
+  output:  
+    marginal_tax_rate_including_health_benefits: 0.536  # 53.6%
+
+- name: Hawaii No income and no healthcare benefits 
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 15 # HI
+    employment_income: 0
+    healthcare_benefit_value: 0
+  output:  
+    marginal_tax_rate_including_health_benefits: -0.0306
+
+- name: Michigan No income and yes healthcare benefits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 30
+    state_fips: 26 # MI
+    employment_income: 0
+    is_medicaid_eligible: true
+  output:  
+    marginal_tax_rate_including_health_benefits: -0.0033

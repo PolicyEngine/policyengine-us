@@ -32,7 +32,7 @@
         members: [person1, person2, person3, person4]
         state_fips: 41  # Oregon
   output:
-    is_aca_ptc_eligible_ca: [false, false, false, false]
+    is_aca_ptc_eligible: [false, false, false, false]
 
 - name: ACA-NEG-02
   period: 2023
@@ -50,7 +50,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true]
+    is_aca_ptc_eligible: [true]
     # SBN test assumes ineligible because person is above ACA income limit,
     # but that income limit has been removed for the 2021-2025 plan years
     # by the following federal legislation:
@@ -79,7 +79,7 @@
         members: [person1, person2]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true, true]
+    is_aca_ptc_eligible: [true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
     # but that income limit has been removed for the 2021-2025 plan years
     # by the following federal legislation:
@@ -111,7 +111,7 @@
         members: [person1, person2, person3]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true, true, true]
+    is_aca_ptc_eligible: [true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
     # but that income limit has been removed for the 2021-2025 plan years
     # by the following federal legislation:
@@ -146,7 +146,7 @@
         members: [person1, person2, person3, person4]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true, true, true, true]
+    is_aca_ptc_eligible: [true, true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
     # but that income limit has been removed for the 2021-2025 plan years
     # by the following federal legislation:
@@ -184,7 +184,7 @@
         members: [person1, person2, person3, person4, person5]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true, true, true, true, true]
+    is_aca_ptc_eligible: [true, true, true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
     # but that income limit has been removed for the 2021-2025 plan years
     # by the following federal legislation:
@@ -209,7 +209,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false]
+    is_aca_ptc_eligible: [false]
     # this person will always be ineligible for ACA because is eligible
     # for employer-sponsored health insurance
 
@@ -242,7 +242,7 @@
         members: [person1, person2, person3, person4, person5]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false, false, false, false, false]
+    is_aca_ptc_eligible: [false, false, false, false, false]
     # this tax unit will always be ineligible for ACA because is eligible
     # for employer-sponsored health insurance
 
@@ -264,7 +264,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false]
+    is_aca_ptc_eligible: [false]
 
 - name: ACA-NEG-10
   period: 2023
@@ -272,7 +272,7 @@
     people:
       person1:
         age: 33
-        immigration_status: DACA_TPS
+        immigration_status: DACA_TPS #daca is eligible for PTC in CA, tps not anymore
         has_itin: false
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false
@@ -284,7 +284,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false]
+    is_aca_ptc_eligible: [false]
 
 - name: ACA-NEG-11
   period: 2023
@@ -304,7 +304,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false]
+    is_aca_ptc_eligible: [false]
 
 - name: ACA-NEG-12
   period: 2023
@@ -324,7 +324,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [false]
+    is_aca_ptc_eligible: [false]
 
 - name: ACA-POS-01
   period: 2023
@@ -342,7 +342,7 @@
         members: [person1]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true]
+    is_aca_ptc_eligible: [true]
 
 - name: ACA-POS-02
   period: 2023
@@ -364,7 +364,7 @@
         members: [person1, person2]
         state_fips: 6  # California
   output:
-    is_aca_ptc_eligible_ca: [true, true]
+    is_aca_ptc_eligible: [true, true]
 
 - name: ACA-POS-03
   period: 2023
@@ -391,7 +391,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, false, false]
-    is_aca_ptc_eligible_ca: [false, true, true]
+    is_aca_ptc_eligible: [false, true, true]
 
 - name: ACA-POS-04
   period: 2023
@@ -418,7 +418,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, false, false]
-    is_aca_ptc_eligible_ca: [false, false, false]
+    is_aca_ptc_eligible: [false, false, false]
 
 - name: ACA-POS-05
   period: 2023
@@ -452,7 +452,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, false, false, false, false]
-    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+    is_aca_ptc_eligible: [false, true, true, true, true]
 
 - name: ACA-POS-06
   period: 2023
@@ -487,7 +487,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, false, false, false, false]
-    is_aca_ptc_eligible_ca: [false, false, false, false, false]
+    is_aca_ptc_eligible: [false, false, false, false, false]
     # nobody is ACA PTC eligible because neither head nor spouse have an ITIN;
     # either having an ITIN would make the spouse and children ACA eligible
 
@@ -515,7 +515,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [true, true, true]
-    is_aca_ptc_eligible_ca: [false, false, false]
+    is_aca_ptc_eligible: [false, false, false]
 
 - name: MED-ACA-COMB-02
   period: 2023
@@ -541,7 +541,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, true, true]
-    is_aca_ptc_eligible_ca: [true, false, false]
+    is_aca_ptc_eligible: [true, false, false]
 
 - name: MED-ACA-COMB-03
   period: 2023
@@ -569,7 +569,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, true, true, true]
-    is_aca_ptc_eligible_ca: [true, false, false, false]
+    is_aca_ptc_eligible: [true, false, false, false]
 
 - name: MED-ACA-COMB-04
   period: 2023
@@ -600,7 +600,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, true, true, true, true]
-    is_aca_ptc_eligible_ca: [true, false, false, false, false]
+    is_aca_ptc_eligible: [true, false, false, false, false]
 
 - name: MED-ACA-COMB-05
   period: 2023
@@ -629,7 +629,7 @@
         state_fips: 6  # California
   output:
     is_medicaid_eligible: [false, true, true, true]
-    is_aca_ptc_eligible_ca: [true, false, false, false]
+    is_aca_ptc_eligible: [true, false, false, false]
 
 - name: MED-ACA-COMB-06
   period: 2023
@@ -662,7 +662,7 @@
         state_fips: 6  # California
   output:
     #is_medicaid_eligible: [false, false, false, false, false]
-    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+    is_aca_ptc_eligible: [false, true, true, true, true]
     # with $93K income PEUS gets three kids Medicaid eligible and hence
     #                            only spouse is ACA eligible
     # with $94K income PEUS gets nobody Medicaid eligible and hence

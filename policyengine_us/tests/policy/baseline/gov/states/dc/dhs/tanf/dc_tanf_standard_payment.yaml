@@ -1,0 +1,39 @@
+- name: If one person, grant standard is $437 * 12/yr.
+  period: 2022
+  input:
+    state_code: DC
+    dc_tanf_assistance_unit_size: 1
+  output:
+    dc_tanf_standard_payment: 437 * 12
+
+- name: If ten people, grant standard is $1750 * 12/yr.
+  period: 2022
+  input:
+    state_code: DC
+    dc_tanf_assistance_unit_size: 10
+  output:
+    dc_tanf_standard_payment: 1_750 * 12
+
+- name: Only calculate for DC.
+  period: 2023
+  input:
+    state_code: VA
+    dc_tanf_assistance_unit_size: 10
+  output:
+    dc_tanf_standard_payment: 0
+
+- name: 17 people in 2022, should be capped at 10
+  period: 2022
+  input:
+    state_code: DC
+    dc_tanf_assistance_unit_size: 17
+  output:
+    dc_tanf_standard_payment: 1_750 * 12
+
+- name: 17 people in january of 2024, should be capped at 19
+  period: 2024-01
+  input:
+    state_code: DC
+    dc_tanf_assistance_unit_size: 17
+  output:
+    dc_tanf_standard_payment: 2_668

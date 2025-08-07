@@ -8,16 +8,5 @@ class household_market_income(Variable):
     documentation = "Income from non-government sources."
     definition_period = YEAR
     unit = USD
-    adds = [
-        "employment_income",
-        "self_employment_income",
-        "pension_income",
-        "dividend_income",
-        "interest_income",
-        "gi_cash_assistance",
-        "capital_gains",
-        "rental_income",
-        "illicit_income",
-        "farm_income",
-        "miscellaneous_income",
-    ]
+
+    adds = "gov.household.market_income_sources"

@@ -1,4 +1,4 @@
-description: Match rate of the NY Supplemental EITC.
+description: New York matches this fraction of the federal earned income tax credit in its supplemental EITC.
 values:
   2019-01-01: 0
   2021-01-01: 0.25
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: /1
   period: year
-  label: New York Supplemental EITC Match
+  label: New York supplemental EITC match
   reference:
     - title: Section 606 Credits against tax (d)(8)
       href: https://www.nysenate.gov/legislation/laws/TAX/606 # (d)(8)

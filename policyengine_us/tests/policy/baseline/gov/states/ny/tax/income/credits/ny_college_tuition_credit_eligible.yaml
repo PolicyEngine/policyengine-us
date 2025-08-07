@@ -1,0 +1,15 @@
+- name: Eligible if doesn't itemize (note this is an approximation for having claimed the college tuition itemized deduction).
+  period: 2022
+  input:
+    state_code: NY
+    ny_itemizes: false
+  output:
+    ny_college_tuition_credit_eligible: true
+
+- name: Ineligible if itemizes (note this is an approximation for having claimed the college tuition itemized deduction).
+  period: 2022
+  input:
+    state_code: NY
+    ny_itemizes: true
+  output:
+    ny_college_tuition_credit_eligible: false

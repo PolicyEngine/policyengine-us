@@ -1,0 +1,15 @@
+- name: One head and one spouse
+  period: 2022
+  input:
+    state_code: DE
+    head_spouse_count: 2
+  output:
+    de_relief_rebate: 600
+
+- name: Only one head
+  period: 2022
+  input:
+    state_code: DE
+    head_spouse_count: 1
+  output:
+    de_relief_rebate: 300

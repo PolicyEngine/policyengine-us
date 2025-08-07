@@ -1,0 +1,13 @@
+- name: Default income elasticity is zero
+  period: 2023
+  input:
+    gov.simulation.labor_supply_responses.elasticities.income: 0
+  output:
+    income_elasticity: 0
+
+- name: Custom income elasticity value
+  period: 2023
+  input:
+    gov.simulation.labor_supply_responses.elasticities.income: -0.2
+  output:
+    income_elasticity: -0.2

@@ -1,6 +1,6 @@
 description: Wisconsin homestead credit recognizes these income sources.
 metadata:
-  unit: variable
+  unit: list
   label: Wisconsin homestead credit income sources
   reference:
     - title: Homestead Tax Credit, Wisconsin Legislative Fiscal Bureau
@@ -15,5 +15,5 @@ values:
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:
     - ssi
-    - state_supplement
+    # wi_state_supplement
     - tanf

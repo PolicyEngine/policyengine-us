@@ -9,3 +9,15 @@
     snap_gross_income_fpg_ratio: 2.05
   output:
     meets_tanf_non_cash_gross_income_test: false
+
+- name: Integration test, NC with $30,600 employment income
+  period: 2026-01
+  absolute_error_margin: 0.05
+  input:
+    employment_income: 30_600 # 2550 monthly
+    state_code: NC
+  output:
+    snap_gross_income: 2_550
+    snap_gross_income_fpg_ratio: 1.95
+    # Gross income limit is 200% of FPL, so this should be true.
+    meets_tanf_non_cash_gross_income_test: true

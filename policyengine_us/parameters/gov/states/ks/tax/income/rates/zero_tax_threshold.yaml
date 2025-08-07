@@ -1,6 +1,6 @@
 description: Kansas only levies taxes on filers with at least this much taxable income.
 metadata:
-  label: KS zero-tax taxable-income threshold
+  label: KS zero-tax taxable-income threshold 
   period: year
   unit: currency-USD
   breakdown:
@@ -12,6 +12,9 @@ metadata:
     href: https://www.ksrevenue.gov/pdf/ip22.pdf
   - title: 2023 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=32
+  - title: 2024 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=3
+  # The minimum filing requirement only appears in the tax forms, not in the legal code
   - title: Kansas 2022 Statute | Article 32 | §79-32,110_(e)
     href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/
 
@@ -19,15 +22,20 @@ metadata:
 JOINT:
   2016-01-01: 12_500
   2018-01-01: 5_000
+  2024-01-01: 26_560 # 8,240 + 18,320
 HEAD_OF_HOUSEHOLD:
   2016-01-01: 5_000
   2018-01-01: 2_500
+  2024-01-01: 17_660 # 6,180 + 9,160 + 2,320
 SURVIVING_SPOUSE:
   2016-01-01: 5_000
   2018-01-01: 2_500
+  2024-01-01: 12_765 # 3,605 + 9,160
 SINGLE:
   2016-01-01: 5_000
   2018-01-01: 2_500
+  2024-01-01: 12_765 # 3,605 + 9,160
 SEPARATE:
   2016-01-01: 5_000
   2018-01-01: 2_500
+  2024-01-01: 13_280 # 4,120 + 9,160

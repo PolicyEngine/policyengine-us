@@ -4,6 +4,7 @@ values:
   2021-01-01: 2_100
   2022-01-01: 2_200
   2023-01-01: 2_300
+  2024-01-01: 2_450
 
 metadata:
   unit: currency-USD
@@ -18,6 +19,13 @@ metadata:
     - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 7
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2
+    - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 8
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine property tax fairness credit benefit base for single filers

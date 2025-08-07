@@ -27,15 +27,17 @@ class me_property_tax_fairness_credit_benefit_base(Variable):
         head_of_household_multiple_child = head_of_household & (
             dependents > p.dependent_count_threshold
         )
-        # legal code does not mention widow, but it does appear in the tax form
-        widow = filing_status == filing_statuses.SURVIVING_SPOUSE
+        # legal code does not mention surviving spouse, but it does appear in the tax form
+        surviving_spouse = filing_status == filing_statuses.SURVIVING_SPOUSE
         # Separate filers are ineligible so not included in this select statement.
         # This benefit base does not include the senior amount that takes effect in 2024.
         return select(
             [
                 single,
                 joint_no_child | head_of_household_one_child,
-                joint_with_child | head_of_household_multiple_child | widow,
+                joint_with_child
+                | head_of_household_multiple_child
+                | surviving_spouse,
             ],
             [
                 p.benefit_base.single,

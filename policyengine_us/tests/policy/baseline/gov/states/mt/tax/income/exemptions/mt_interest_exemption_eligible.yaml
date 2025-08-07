@@ -58,3 +58,19 @@
         state_code: MT
   output:
     mt_interest_exemption_eligible_person: [true, true]
+
+- name: 2024 exemption repealed
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+    households:
+      household:
+        state_code: MT
+  output: 
+    mt_interest_exemption_eligible_person: [false, false]

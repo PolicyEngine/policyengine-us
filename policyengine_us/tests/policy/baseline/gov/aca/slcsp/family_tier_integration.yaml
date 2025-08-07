@@ -1,0 +1,166 @@
+- name: NY single adult premium calculation
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36  # NY state code
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: ONE_ADULT
+    slcsp_family_tier_multiplier: 1.0
+    slcsp: 760
+
+- name: NY family with two adults and one child
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+        monthly_age: 35
+        is_aca_ptc_eligible: true 
+      person2:
+        age: 32
+        monthly_age: 32
+        is_aca_ptc_eligible: true
+      person3:
+        age: 5
+        monthly_age: 5
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36  # NY state code
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 2.85
+    slcsp: 2166  # 760 * 2.85
+
+- name: VT single adult premium calculation
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: VT
+        state_fips: 50  # VT state code
+        slcsp_rating_area: 1
+        slcsp_age_0: 1277
+  output:
+    slcsp_family_tier_category: ONE_ADULT
+    slcsp_family_tier_multiplier: 1.0
+    slcsp: 1277
+
+- name: VT family with one adult and two children
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 10
+        monthly_age: 10
+        is_aca_ptc_eligible: true
+      person3:
+        age: 8
+        monthly_age: 8
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50  # VT state code
+        slcsp_rating_area: 1
+        slcsp_age_0: 1277
+  output:
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 1.93
+    slcsp: 2464.61  # 1277 * 1.93
+
+- name: NY child only household
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 17
+        monthly_age: 17
+        is_aca_ptc_eligible: true
+      person2:
+        age: 15
+        monthly_age: 15
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36  # NY state code
+        slcsp_rating_area: 2
+        slcsp_age_0: 560
+  output:
+    slcsp_family_tier_category: CHILD_ONLY
+    slcsp_family_tier_multiplier: 0.412
+    slcsp: 230.72  # 560 * 0.412
+
+- name: Regular age rating state like CA
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+        monthly_age: 35
+        slcsp_age_curve_amount_person: 297.77  # 244 * 1.222 (age 35 multiplier)
+      person2:
+        age: 32
+        monthly_age: 32
+        slcsp_age_curve_amount_person: 288.71  # 244 * 1.183 (age 32 multiplier)
+      person3:
+        age: 5
+        monthly_age: 5
+        slcsp_age_curve_amount_person: 186.66  # 244 * 0.765 (age 5 multiplier)
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: CA
+        state_fips: 6  # CA state code
+        slcsp_rating_area: 15
+        slcsp_age_0: 244
+  output:
+    # These all get zeroed out due to defined_for.
+    slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
+    slcsp_family_tier_multiplier: 0
+    slcsp: 773.14  # sum of individual premiums

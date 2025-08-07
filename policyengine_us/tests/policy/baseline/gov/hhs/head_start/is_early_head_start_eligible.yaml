@@ -1,0 +1,59 @@
+- name: Not Early Head Start eligible 1
+  period: 2021
+  input:
+    age: 3
+    is_pregnant: false
+    is_head_start_categorically_eligible: false
+    is_head_start_income_eligible: false
+  output:
+    is_early_head_start_eligible: false
+
+- name: Not Early Head Start eligible 2
+  period: 2021
+  input:
+    age: 3
+    is_pregnant: false
+    is_head_start_categorically_eligible: false
+    is_head_start_income_eligible: true
+  output:
+    is_early_head_start_eligible: false
+
+- name: Not Early Head Start eligible 3
+  period: 2021
+  input:
+    age: 28
+    is_pregnant: true
+    is_head_start_categorically_eligible: false
+    is_head_start_income_eligible: false
+  output:
+    is_early_head_start_eligible: false
+
+- name: Early Head Start eligible 1
+  period: 2021
+  input:
+    age: 1
+    is_pregnant: false
+    is_head_start_categorically_eligible: true
+    is_head_start_income_eligible: false
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible 2
+  period: 2021
+  input:
+    age: 26
+    is_pregnant: true
+    is_head_start_categorically_eligible: false
+    is_head_start_income_eligible: true
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible 3
+  period: 2021
+  input:
+    age: 2
+    is_pregnant: false
+    is_head_start_categorically_eligible: true
+    is_head_start_income_eligible: true
+  output:
+    is_early_head_start_eligible: true

@@ -15,4 +15,4 @@ class al_retirement_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.AL
 
-    adds = ["al_retirement_exemption_eligible_person"]
+    adds = ["al_retirement_exemption_person"]

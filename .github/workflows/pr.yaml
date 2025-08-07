@@ -6,7 +6,7 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check formatting
         uses: "lgeiger/black-action@master"
         with:
@@ -15,43 +15,48 @@ jobs:
     name: Check version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 100
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies
+        run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
-        run: pip install yaml-changelog>=0.1.7 && make changelog
-      - name: Preview changelog update
-        run: ".github/get-changelog-diff.sh"
-      - name: Check version number has been properly updated
-        run: .github/is-version-number-acceptable.sh
+        run: make changelog
   Test:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: true
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v4
         with:
-          python-version: 3.11
-      - name: Install package
-        run: make install
-      - name: Run tests
-        run: make test
+          fetch-depth: 10  # Need full history for git diff
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --dev
+      - name: Turn off default branching
+        shell: bash
+        run: ./update_itemization.sh
+      - name: Run selective tests
         env:
-          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - uses: codecov/codecov-action@v3
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
       - name: Build package
-        run: make
-      - name: Test documentation builds
-        if: matrix.os == 'ubuntu-latest'
-        run: make documentation
+        run: uv build

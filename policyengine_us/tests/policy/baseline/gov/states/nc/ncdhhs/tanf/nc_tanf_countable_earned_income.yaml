@@ -1,0 +1,35 @@
+- name: No earned income, $0 per year
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    nc_tanf_countable_earned_income: 0
+
+- name: Earned employee income $500, self-employment income $500, $1000 per year
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 500
+    self_employment_income: 500
+  output:
+    nc_tanf_countable_earned_income: 1_000
+
+- name: Earned employee income $500, no self-employment income, $500 per year
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 500
+    self_employment_income: 0
+  output:
+    nc_tanf_countable_earned_income: 500
+
+- name: Earned employee income $0, self-employment income $500, $500 per year
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 0
+    self_employment_income: 500
+  output:
+    nc_tanf_countable_earned_income: 500

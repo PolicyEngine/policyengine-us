@@ -1,0 +1,32 @@
+description: Kamala Harris proposed a rent relief tax credit of the following percentage of excess rent, based on gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Rent Relief Credit applicable percentage
+  period: year
+  reference: 
+    - title: S.1106 - Rent Relief Act of 2019 SEC. 36C (c)(1)(A)
+      href: https://www.congress.gov/bill/116th-congress/senate-bill/1106/text
+
+brackets:
+  - threshold:
+      2019-01-01: -.inf
+    amount:
+      2019-01-01: 1
+  - threshold:
+      2019-01-01: 25_000
+    amount:
+      2019-01-01: 0.75
+  - threshold:
+      2019-01-01: 50_000
+    amount:
+      2019-01-01: 0.5
+  - threshold:
+      2019-01-01: 75_000
+    amount:
+      2019-01-01: 0.25
+  - threshold:
+      2019-01-01: 100_000
+    amount:
+      2019-01-01: 0

@@ -1,0 +1,23 @@
+description: The IRS counts these sources as income for the optional state sales tax tables.
+metadata:
+  period: year
+  unit: list
+  label: State sales tax table income sources
+  reference:
+    - title: Instructions for Schedule A (2024)
+      href: https://www.irs.gov/instructions/i1040sca#en_US_2024_publink1000131499
+
+values:
+  2023-01-01:
+    - adjusted_gross_income
+    - tax_exempt_interest_income
+    - veterans_benefits
+    # Nontaxable combat pay - not available.
+    - workers_compensation
+    - tax_exempt_social_security
+    # Nontaxable IRA, pension, or annuity distributions (excluding rollovers).
+    - tax_exempt_pension_income
+    - tax_exempt_retirement_distributions
+    # Public assistance payments.
+    - tanf
+    - ssi

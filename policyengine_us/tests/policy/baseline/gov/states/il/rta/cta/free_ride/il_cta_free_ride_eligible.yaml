@@ -1,0 +1,71 @@
+- name: Case 1, eligible senior.   
+  period: 2022
+  input:
+    age: 65
+    is_disabled: false
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    irs_gross_income: 10_000
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: true
+
+- name: Case 2, disabled but not permanently disabled, ineligible.   
+  period: 2022
+  input:
+    age: 30
+    is_disabled: true
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    irs_gross_income: 10_000
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: false
+
+- name: Case 3, eligible military status.   
+  period: 2022
+  input:
+    age: 64
+    is_disabled: false
+    il_cta_military_service_pass_eligible: true
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: true
+
+- name: Case 4, eligible young child.   
+  period: 2022
+  input:
+    age: 6
+    is_disabled: false
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: true
+
+- name: Case 5, senior age eligible but income ineligible.
+  period: 2022
+  input:
+    age: 65
+    is_disabled: false
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: false
+    irs_gross_income: 34_000
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: false
+
+- name: Case 6, disabled but too young, ineligible.   
+  period: 2022
+  input:
+    age: 15
+    is_disabled: true
+    spm_unit_size: 1
+    is_permanently_and_totally_disabled: true
+    irs_gross_income: 10_000
+    il_cta_military_service_pass_eligible: false
+    state_code: IL
+  output:
+    il_cta_free_ride_eligible: false

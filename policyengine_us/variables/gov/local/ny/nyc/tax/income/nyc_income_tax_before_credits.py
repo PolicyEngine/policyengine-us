@@ -26,7 +26,7 @@ class nyc_income_tax_before_credits(Variable):
                 rates.single.calc(taxable_income),
                 rates.joint.calc(taxable_income),
                 rates.head_of_household.calc(taxable_income),
-                rates.widow.calc(taxable_income),
+                rates.surviving_spouse.calc(taxable_income),
                 rates.separate.calc(taxable_income),
             ],
         )

@@ -1,0 +1,15 @@
+- name: Case 1, is urgent, $250 per year.
+  period: 2025
+  input:
+    ca_riv_share_eligible_for_emergency_payment: true
+    in_riv: true
+  output:
+    ca_riv_share_electricity_emergency_payment: 250
+
+- name: Case 2, not urgent, $0.
+  period: 2025
+  input:
+    ca_riv_share_eligible_for_emergency_payment: false
+    in_riv: true
+  output:
+    ca_riv_share_electricity_emergency_payment: 0

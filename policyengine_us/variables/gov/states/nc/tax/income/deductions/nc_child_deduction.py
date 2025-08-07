@@ -27,7 +27,7 @@ class nc_child_deduction(Variable):
                 p.single.calc(federal_agi, right=True),
                 p.separate.calc(federal_agi, right=True),
                 p.joint.calc(federal_agi, right=True),
-                p.widow.calc(federal_agi, right=True),
+                p.surviving_spouse.calc(federal_agi, right=True),
                 p.head_of_household.calc(federal_agi, right=True),
             ],
         )

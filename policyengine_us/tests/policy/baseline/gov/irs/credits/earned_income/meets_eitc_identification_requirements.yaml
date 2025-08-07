@@ -1,0 +1,18 @@
+- name: Default is citizen, which is an eligible SSN card type for EITC.
+  period: 2023
+  output:
+    meets_eitc_identification_requirements: true
+
+- name: Person is not eligible for EITC. 
+  period: 2023
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    meets_eitc_identification_requirements: false
+
+- name: Person is eligible for EITC. 
+  period: 2023
+  input:
+    ssn_card_type: NON_CITIZEN_VALID_EAD
+  output:
+    meets_eitc_identification_requirements: true

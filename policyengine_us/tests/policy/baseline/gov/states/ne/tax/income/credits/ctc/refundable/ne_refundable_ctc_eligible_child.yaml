@@ -1,0 +1,65 @@
+- name: NE refundable CTC eligible child 1
+  period: 2024
+  input:
+    age: 5
+    is_tax_unit_dependent: true
+    pre_subsidy_childcare_expenses: 100
+    ne_refundable_ctc_income_eligible: true
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: true
+
+- name: NE refundable CTC eligible child 2
+  period: 2024
+  input:
+    age: 5
+    is_tax_unit_dependent: true
+    pre_subsidy_childcare_expenses: 0
+    ne_refundable_ctc_income_eligible: true
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: true
+
+- name: NE refundable CTC eligible child 3
+  period: 2024
+  input:
+    age: 5
+    is_tax_unit_dependent: true
+    pre_subsidy_childcare_expenses: 100
+    ne_refundable_ctc_income_eligible: false
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: true
+  
+- name: NE refundable CTC ineligible child because of age
+  period: 2024
+  input:
+    age: 7
+    is_tax_unit_dependent: true
+    pre_subsidy_childcare_expenses: 0
+    ne_refundable_ctc_income_eligible: true
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false
+
+- name: NE refundable CTC ineligible child because not a dependent
+  period: 2024
+  input:
+    age: 3
+    is_tax_unit_dependent: false
+    pre_subsidy_childcare_expenses: 100
+    ne_refundable_ctc_income_eligible: true
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false
+
+- name: NE refundable CTC ineligible child because none of the three criteria
+  period: 2024
+  input:
+    age: 3
+    is_tax_unit_dependent: true
+    pre_subsidy_childcare_expenses: 0
+    ne_refundable_ctc_income_eligible: false
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false

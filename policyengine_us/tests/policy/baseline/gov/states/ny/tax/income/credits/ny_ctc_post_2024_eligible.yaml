@@ -1,0 +1,293 @@
+- name: Eligible with young child (age 2)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Eligible with older child (age 8)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Not eligible with child too old (age 18)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Not eligible when child doesn't qualify for federal CTC
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Not eligible in 2024 (before post-2024 rules)
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Not eligible in 2028 (after post-2024 rules expire)
+  period: 2028
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Not eligible when post-2024 rules disabled
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.post_2024.in_effect: false
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Eligible with multiple qualifying children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Eligible with mix of qualifying and non-qualifying children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2  # Qualifying
+      child2:
+        age: 18  # Not qualifying (too old)
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Not eligible with no children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Not eligible when outside New York
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA  # California, not New York
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Eligible respects minimum age requirement
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.minimum_age: 1
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1  # Meets minimum age
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Not eligible when below minimum age requirement
+  period: 2025
+  input:
+    gov.states.ny.tax.income.credits.ctc.minimum_age: 1
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0  # Below minimum age
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: false
+
+- name: Eligible in 2025 (start of post-2024 rules)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Eligible in 2026
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
+
+- name: Eligible in 2027 (last year of post-2024 rules)
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true

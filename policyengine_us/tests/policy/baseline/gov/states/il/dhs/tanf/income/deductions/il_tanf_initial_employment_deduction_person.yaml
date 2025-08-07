@@ -1,0 +1,47 @@
+- name: Case 1, household size of 1 with $10000 earned income. 
+  period: 2023
+  input:
+    spm_unit_size: 1
+    il_tanf_gross_earned_income: 10_000
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    spm_unit_fpg: 14_580
+    il_tanf_payment_level_for_initial_eligibility: 4_374
+    il_tanf_initial_employment_deduction_person: 2_916
+    # fpg: 14_580 
+    # payment level: 4_374 
+    # 0.5 * 14_580 - 4_374 = 2_916 
+
+- name: Case 2, household size of 2 with $10000 earned income.
+  period: 2023
+  input:
+    spm_unit_size: 2
+    il_tanf_gross_earned_income: 10_000
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_tanf_initial_employment_deduction_person: 3_944
+    # fpg: 19_720
+    # payment level: 5_916
+    # 0.5 * 19_720 - 5_916 = 3_944
+
+- name: Case 3, household size of 1 with $10000 earned income, but not head or spouse. 
+  period: 2023
+  input:
+    spm_unit_size: 1
+    il_tanf_gross_earned_income: 10_000
+    is_tax_unit_head_or_spouse: false
+    state_code: IL
+  output:
+    il_tanf_initial_employment_deduction_person: 0
+
+- name: Case 4, household size of 1 with $2000 earned income, 
+  period: 2023
+  input:
+    spm_unit_size: 1
+    il_tanf_gross_earned_income: 2_000
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_tanf_initial_employment_deduction_person: 2_000

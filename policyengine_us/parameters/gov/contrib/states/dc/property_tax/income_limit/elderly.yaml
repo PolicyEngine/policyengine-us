@@ -1,0 +1,53 @@
+description: DC limits the property tax credit to households with at least one elderly head or spouse with adjusted gross income below this threshold, based on filing status.
+metadata:
+  label: DC property tax credit elderly income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+
+JOINT:
+  values:
+    2025-01-01: 89_400
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 89_400
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 89_400
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+SINGLE:
+  values:
+    2025-01-01: 89_400
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+SEPARATE:
+  values:
+    2025-01-01: 89_400
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25

@@ -1,0 +1,14 @@
+- name: Case 1, eligible, get $1800.
+  period: 2023
+  input:
+    co_denver_property_tax_relief_renter_eligible: true 
+  output:
+    co_denver_renter_property_tax_relief: 1_000
+
+- name: Case 2, not eligible get $0. 
+  period: 2023
+  input:
+    co_denver_property_tax_relief_renter_eligible: false
+  output:
+    co_denver_renter_property_tax_relief: 0
+    

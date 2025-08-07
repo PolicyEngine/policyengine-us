@@ -1,0 +1,17 @@
+- name: Payment standard fully reduced
+  period: 2024
+  input:
+    ssi: 1_200
+    ca_state_supplement_payment_standard: 1_000
+    state_code: CA
+  output:
+    ca_state_supplement: 0
+
+- name: Payment standard partially reduced
+  period: 2024
+  input:
+    ssi: 1_200
+    ca_state_supplement_payment_standard: 2_000
+    state_code: CA
+  output:
+    ca_state_supplement: 800

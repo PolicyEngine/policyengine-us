@@ -14,6 +14,6 @@ class is_mother(Variable):
         #    (provided in the CPS).
         # 2. Breastfeeding (user-input).
         female = person("is_female", period)
-        has_children = person("own_children_in_household", period) > 0
+        has_children = person("is_parent", period)
         breastfeeding = person("is_breastfeeding", period)
         return breastfeeding | (female & has_children)

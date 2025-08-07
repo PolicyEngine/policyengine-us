@@ -5,10 +5,16 @@ values:
   2021-01-01: 1_170
   2022-01-01: 1_200
   2023-01-01: 2_590
+  2024-01-01: 2_730
 metadata:
   unit: currency-USD
   period: year
   label: Massachusetts Senior Circuit Breaker maximum payment
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   reference:
     # In 2023 the legal code doubled the maximum pre-inflation adjustment credit 
     # amount from $750 to $1,500
@@ -23,5 +29,7 @@ metadata:
       href: https://www.mass.gov/doc/2022-form-1-instructions/download#page=17
     - title: Form 1 2023 Massachusetts Resident Income Tax (line 44)
       href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=17
+    - title: Form 1 2024 Massachusetts Resident Income Tax - Annual Update of Circuit Breaker Tax Credit 
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=3
     - title: 2023 Schedule CB
       href: https://www.mass.gov/doc/2023-schedule-cb-circuit-breaker-credit/download

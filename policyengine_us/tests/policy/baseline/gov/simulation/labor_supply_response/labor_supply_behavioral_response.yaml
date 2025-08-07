@@ -1,0 +1,41 @@
+- name: No elasticities means no response
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 10_000
+    gov.simulation.labor_supply_responses.elasticities.income: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+  output:
+    labor_supply_behavioral_response: 0
+
+- name: Zero income and substitution elasticities
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 10_000
+    income_elasticity_lsr: 0
+    substitution_elasticity_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.income: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+  output:
+    labor_supply_behavioral_response: 0
+
+- name: Negative total earnings with elasticities off
+  period: 2023
+  input:
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: -40_000  # Net negative earnings
+    gov.simulation.labor_supply_responses.elasticities.income: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+  output:
+    labor_supply_behavioral_response: 0
+
+- name: Positive earnings with self-employment loss and elasticities off
+  period: 2023
+  input:
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -10_000  # Net positive earnings = 40_000
+    gov.simulation.labor_supply_responses.elasticities.income: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+  output:
+    labor_supply_behavioral_response: 0

@@ -1,0 +1,26 @@
+- name: In Indiana 
+  period: 2021
+  input:
+    in_agi: 1_000
+    county_str: BOONE_COUNTY_IN
+    state_code_str: IN
+  output: 
+    in_county_tax: 15
+
+- name: In Indiana, different county
+  period: 2021
+  input:
+    in_agi: 1_000
+    county_str: CLARK_COUNTY_IN
+    state_code_str: IN
+  output: 
+    in_county_tax: 20
+
+- name: Not in Indiana
+  period: 2021
+  input:
+    in_agi: 1_000
+    county_str: BALTIMORE_CITY_MD
+    state_code_str: MD
+  output: 
+    in_county_tax: 0

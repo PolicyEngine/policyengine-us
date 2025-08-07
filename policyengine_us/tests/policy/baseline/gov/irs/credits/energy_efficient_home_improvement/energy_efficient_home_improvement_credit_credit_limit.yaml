@@ -1,0 +1,9 @@
+- name: Income tax reduced by previous credits
+  period: 2023
+  input:
+    income_tax_before_credits: 3_000
+    cdcc: 400
+    lifetime_learning_credit: 300
+    savers_credit: 300
+  output:
+    energy_efficient_home_improvement_credit_credit_limit: 2_000

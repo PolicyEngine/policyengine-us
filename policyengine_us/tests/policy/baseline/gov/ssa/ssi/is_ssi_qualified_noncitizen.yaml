@@ -1,0 +1,36 @@
+- name: SSI citizenship tests
+  period: 2024
+  input:
+    people:
+      person0:
+        is_disabled: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 30
+      person1:
+        is_disabled: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 50
+      person2:
+        is_disabled: true
+        immigration_status: REFUGEE
+      person3:
+        is_disabled: true
+        immigration_status: ASYLEE
+      person4:
+        is_disabled: true
+        immigration_status: DEPORTATION_WITHHELD
+      person5:
+        is_disabled: true
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+      person6:
+        is_disabled: true
+        immigration_status: CONDITIONAL_ENTRANT
+      person7:
+        is_disabled: true
+        immigration_status: PAROLED_ONE_YEAR
+      person8:
+        is_disabled: true
+        immigration_status: UNDOCUMENTED
+  output:
+    is_ssi_qualified_noncitizen: [false, true, true, true, true, true, true, true, false]
+    is_ssi_eligible_individual: [false, true, true, true, true, true, true, true, false]

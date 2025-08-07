@@ -1,0 +1,49 @@
+description: All state taxable income variables.
+values:
+  0000-01-01:
+    - al_taxable_income  # Alabama 
+    - ar_taxable_income  # Arkansas
+    - az_taxable_income  # Arizona
+    - ca_taxable_income  # California
+    - co_taxable_income  # Colorado
+    - ct_taxable_income  # Connecticut
+    - dc_taxable_income  # DC
+    - de_taxable_income  # Delaware
+    - ga_taxable_income  # Georgia
+    - hi_taxable_income  # Hawaii
+    - ia_taxable_income  # Iowa
+    - id_taxable_income  # Idaho
+    - il_taxable_income  # Illinois
+    - in_agi  # Indiana taxes AGI directly.
+    - ks_taxable_income  # Kansas
+    - ky_taxable_income  # Kentucky
+    - la_taxable_income  # Louisiana
+    # Massachusetts has multiple taxable income variables.
+    - md_taxable_income  # Maryland
+    - me_taxable_income  # Maine
+    - mi_taxable_income  # Michigan
+    - mn_taxable_income  # Minnesota
+    - mo_taxable_income  # Missouri
+    - ms_taxable_income  # Mississippi
+    - mt_taxable_income  # Montana
+    - nc_taxable_income  # North Carolina
+    - nd_taxable_income  # North Dakota
+    - ne_taxable_income  # Nebraska
+    - nj_taxable_income  # New Jersey
+    - nm_taxable_income  # New Mexico
+    - ny_taxable_income  # New York
+    - oh_taxable_income  # Ohio
+    - ok_taxable_income  # Oklahoma
+    - or_taxable_income  # Oregon
+    - ri_taxable_income  # Rhode Island
+    - sc_taxable_income  # South Carolina
+    - ut_taxable_income  # Utah
+    - va_taxable_income  # Virginia
+    - vt_taxable_income  # Vermont
+    - wi_taxable_income  # Wisconsin
+    - wv_taxable_income  # West Virginia
+
+metadata:
+  unit: list
+  period: year
+  label: State Taxable Income Variables

@@ -2,7 +2,16 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    cdcc: 800
+    cdcc_potential: 800
     state_code: WI
   output:
-    wi_childcare_expense_credit: 400
+    wi_childcare_expense_credit: 400 # 800 * 0.5
+
+- name: 2024 CDCC
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    cdcc_potential: 800
+    state_code: WI
+  output:
+    wi_childcare_expense_credit: 800 # 800 * 1

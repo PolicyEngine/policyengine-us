@@ -1,12 +1,15 @@
 description: Connecticut matches this percent of the federal earned income tax credit.
 values:
-   2017-01-01: 0.230 
+   2017-01-01: 0.23
    2021-01-01: 0.305
-   2023-01-01: 0.40
+   2023-01-01: 0.4
 metadata:
   unit: /1
   label: Connecticut EITC match
+  period: year
   reference:
+    - title: Connecticut Earned Income Tax Credit Form (2024)
+      href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=3
     - title: Connecticut Earned Income Tax Credit Form (2023)
       href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/Schedule-CT-EITC_1223.pdf#page=2
     - title: Connecticut Earned Income Tax Credit Form (2022)

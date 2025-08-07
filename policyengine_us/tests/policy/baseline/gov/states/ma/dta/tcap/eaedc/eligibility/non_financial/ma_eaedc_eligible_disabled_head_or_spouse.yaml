@@ -1,0 +1,68 @@
+- name: Case 1, head or spouse of household is disabled. 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+        is_ssi_eligible: false
+      person2:
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_disabled_head_or_spouse: true
+
+- name: Case 2, dependent is disabled but head or spouse is not. 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+
+- name: Case 3, no disabled in household. 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_eligible_disabled_head_or_spouse: false

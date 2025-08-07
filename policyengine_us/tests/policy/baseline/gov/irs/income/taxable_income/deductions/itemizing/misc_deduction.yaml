@@ -1,0 +1,16 @@
+- name: No deduction allowed
+  period: 2026
+  input:
+    unreimbursed_business_employee_expenses: 1_000
+    adjusted_gross_income: 1_000_000
+  output: 
+    misc_deduction: 0
+
+- name: Deduction does not apply in 2024
+  period: 2024
+  input:
+    unreimbursed_business_employee_expenses: 1_800
+    tax_preparation_fees: 200
+    adjusted_gross_income: 0
+  output: 
+    misc_deduction: 0

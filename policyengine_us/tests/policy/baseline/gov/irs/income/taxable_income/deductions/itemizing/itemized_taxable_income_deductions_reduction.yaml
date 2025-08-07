@@ -1,0 +1,28 @@
+- name: No reduction in 2024
+  period: 2024
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 200_000
+  output: 
+    itemized_taxable_income_deductions_reduction: 0
+
+- name: Reduction in 2026, due to AGI
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 200_000
+  output: 
+    itemized_taxable_income_deductions_reduction: 10_811
+
+- name: Reduction in 2026, due to total deductions reduction
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 650_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 1_000
+  output: 
+    itemized_taxable_income_deductions_reduction: 54

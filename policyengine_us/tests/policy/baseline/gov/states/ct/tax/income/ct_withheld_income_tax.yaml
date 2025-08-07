@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 17_000
+    adjusted_gross_income_person: 17_000
     filing_status: JOINT
     state_code: CT
   output:
@@ -12,7 +12,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 17_000
+    adjusted_gross_income_person: 17_000
     filing_status: SURVIVING_SPOUSE
     state_code: CT
   output:
@@ -22,7 +22,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 14_000
+    adjusted_gross_income_person: 14_000
     filing_status: SURVIVING_SPOUSE
     state_code: CT
   output:

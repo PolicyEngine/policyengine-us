@@ -1,0 +1,61 @@
+- name: Only one person with eligible expenses
+  period: 2021
+  input:
+    people:
+      person1:
+        alimony_expense: 10_000
+        divorce_year: 2020
+      person2:
+        alimony_expense: 1_000
+        divorce_year: 2018
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    alimony_expense_ald: 1_000
+
+- name: None of the expenses eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        alimony_expense: 3_000
+        divorce_year: 2020
+      person2:
+        alimony_expense: 1_000
+        divorce_year: 2021
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    alimony_expense_ald: 0
+
+- name: Default divorce year is 2010
+  period: 2021
+  input:
+    people:
+      person1:
+        alimony_expense: 10_000
+      person2:
+        alimony_expense: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    alimony_expense_ald: 11_000
+
+- name: All eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        alimony_expense: 3_000
+        divorce_year: 2014
+      person2:
+        alimony_expense: 1_000
+        divorce_year: 2027
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    alimony_expense_ald: 4_000

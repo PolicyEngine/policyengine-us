@@ -1,0 +1,16 @@
+description: The itemized deductions reduction applies if this is true.
+
+values:
+  2009-01-01: true
+  2010-01-01: false
+  2013-01-01: true
+  2018-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Itemized deductions reduction applies
+  reference:
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions, (a)(2) 
+      href: https://www.law.cornell.edu/uscode/text/26/68

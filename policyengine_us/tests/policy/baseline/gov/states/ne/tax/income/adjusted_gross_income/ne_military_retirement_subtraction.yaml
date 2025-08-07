@@ -1,0 +1,55 @@
+- name: Test 1 for 2022, NE military retirement substraction of amount $30,000, only person in tax unit, 67 or older
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 30_000
+
+- name: Test 2 for 2021, NE military retirement substraction of amount $30,000, only person in tax unit, 67 or older
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 12_000
+
+- name: Test 3 for 2022, NE military retirement substraction of amount $30,000, only person in tax unit, less than 67
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 0
+
+

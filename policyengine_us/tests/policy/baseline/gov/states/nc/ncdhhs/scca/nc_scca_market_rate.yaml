@@ -1,0 +1,53 @@
+- name: Infant lives in Almance county, rate is 956
+  period: 2024
+  input:
+    county_str: ALAMANCE_COUNTY_NC
+    nc_scca_age_group: 1
+    state_code: NC
+  output:
+    nc_scca_market_rate: 956
+
+- name: 2 year old lives in Dare county, rate is 1_062
+  period: 2024
+  input:
+    county_str: DARE_COUNTY_NC
+    nc_scca_age_group: 2
+    state_code: NC
+  output:
+    nc_scca_market_rate: 1_062
+
+- name: 3 year old lives in New Hanover county, rate is 934
+  period: 2024
+  input:
+    county_str: NEW_HANOVER_COUNTY_NC
+    nc_scca_age_group: 3
+    state_code: NC
+  output:
+    nc_scca_market_rate: 934
+
+- name: 6 year old lives in Yancey county, rate is 203
+  period: 2024
+  input:
+    county_str: YANCEY_COUNTY_NC
+    nc_scca_age_group: 4
+    state_code: NC
+  output:
+    nc_scca_market_rate: 203
+
+- name: 12 year old lives in Wilkes county, rate is 301
+  period: 2024
+  input:
+    county_str: WILKES_COUNTY_NC
+    nc_scca_age_group: 4
+    state_code: NC
+  output:
+    nc_scca_market_rate: 301
+
+- name: 16 year old lives in Alexander county, rate is 263
+  period: 2024
+  input:
+    county_str: ALEXANDER_COUNTY_NC
+    nc_scca_age_group: 4
+    state_code: NC
+  output:
+    nc_scca_market_rate: 263

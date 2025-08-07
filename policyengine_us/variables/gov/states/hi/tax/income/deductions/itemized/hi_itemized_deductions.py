@@ -25,7 +25,6 @@ class hi_itemized_deductions(Variable):
         total_itemized_deduction_eligibility = (
             hi_agi < p.agi_threshold[filing_status]
         )
-
         return where(
             total_itemized_deduction_eligibility,
             tax_unit("hi_total_itemized_deductions", period),

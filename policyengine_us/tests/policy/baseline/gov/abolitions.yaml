@@ -1,0 +1,9 @@
+- name: Abolish adjusted gross income
+  period: 2024
+  input:
+    gov.abolitions.adjusted_gross_income: true
+    filing_status: SINGLE
+    taxable_self_employment_income: 1_000
+    irs_employment_income: 10_000
+  output:
+    adjusted_gross_income: 0

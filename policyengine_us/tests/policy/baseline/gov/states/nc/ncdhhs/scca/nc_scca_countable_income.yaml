@@ -1,0 +1,43 @@
+- name: No income, countable income is $0
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 0
+    self_employment_income: 0
+    pension_income: 0
+    veterans_benefits: 0
+    unemployment_compensation: 0
+    disability_benefits: 0
+    workers_compensation: 0
+    social_security: 0
+    retirement_distributions: 0
+    rental_income: 0
+    child_support_received: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    miscellaneous_income: 0
+  output:
+    nc_scca_countable_income: 0
+
+- name: $1,000 in each income source, countable income is $15_000
+  period: 2024
+  input:
+    state_code: NC
+    employment_income: 1_000
+    self_employment_income: 1_000
+    pension_income: 1_000
+    veterans_benefits: 1_000
+    unemployment_compensation: 1_000
+    disability_benefits: 1_000
+    workers_compensation: 1_000
+    social_security: 1_000
+    retirement_distributions: 1_000
+    rental_income: 1_000
+    child_support_received: 1_000
+    alimony_income: 1_000
+    dividend_income: 1_000
+    interest_income: 1_000
+    miscellaneous_income: 1_000
+  output:
+    nc_scca_countable_income: 15_000

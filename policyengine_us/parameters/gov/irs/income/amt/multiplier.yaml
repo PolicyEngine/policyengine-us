@@ -1,0 +1,21 @@
+description: The IRS multiplies the Alternative Minimum Tax income tax brackets by this rate, based on filing status.
+metadata:
+  unit: /1
+  period: year
+  breakdown:
+    - filing_status
+  label: AMT tax bracket multiplier
+  reference:
+    - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (b)(1)(C)
+      href: https://www.law.cornell.edu/uscode/text/26/55#b_1_C
+
+SINGLE:
+  2013-01-01: 1
+JOINT:
+  2013-01-01: 1
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 1
+SURVIVING_SPOUSE:
+  2013-01-01: 0.5
+SEPARATE:
+  2013-01-01: 1

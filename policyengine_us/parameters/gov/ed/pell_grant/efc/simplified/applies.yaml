@@ -1,0 +1,13 @@
+description: The simplified pell grant efc formula is applied if this is true.
+
+values:
+  0000-01-01: true
+  2024-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Pell Grant EFC simplified formula applies
+  reference:
+    - title: FAFSA® Pell Eligibility and SAI Guide | Step 2
+      href: https://fsapartners.ed.gov/sites/default/files/2024-01/20242025FAFSAPellEligibilityandSAIGuide.pdf#page=11

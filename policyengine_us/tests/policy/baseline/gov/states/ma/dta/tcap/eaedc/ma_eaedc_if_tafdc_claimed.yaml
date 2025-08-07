@@ -1,0 +1,17 @@
+- name: Standard assistance higher than income.
+  period: 2023
+  input:
+    ma_eaedc_standard_assistance: 100
+    ma_eaedc_net_income: 80
+    ma_eaedc_eligible: true
+  output:
+    ma_eaedc_if_claimed: 20
+
+- name: Standard assistance lower than income.  
+  period: 2023
+  input:
+    ma_eaedc_standard_assistance: 100
+    ma_eaedc_net_income: 100
+    ma_eaedc_eligible: true
+  output:
+    ma_eaedc_if_claimed: 0

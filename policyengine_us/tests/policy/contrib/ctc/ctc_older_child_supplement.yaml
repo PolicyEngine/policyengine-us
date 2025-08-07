@@ -1,0 +1,78 @@
+- name: Joint filers with two kids
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_older_child_supplement.ctc_older_child_supplement
+  input:
+    gov.contrib.ctc.oldest_child_supplement.amount: 1_000
+    gov.contrib.ctc.oldest_child_supplement.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 6
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 3_000, 2_000]
+
+- name: Joint filers with two kids, same age
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_older_child_supplement.ctc_older_child_supplement
+  input:
+    gov.contrib.ctc.oldest_child_supplement.amount: 1_000
+    gov.contrib.ctc.oldest_child_supplement.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 5
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 3_000, 2_000]
+
+- name: Reform not in effect
+  period: 2024
+  input:
+    gov.contrib.ctc.oldest_child_supplement.amount: 1_000
+    gov.contrib.ctc.oldest_child_supplement.in_effect: false
+    people: 
+      person1:
+        age: 38
+      person2: 
+        age: 38
+      person3:
+        age: 5
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    ctc_child_individual_maximum: [0, 0, 2_000, 2_000]
+
+- name: Single filer with one kids, same age
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_older_child_supplement.ctc_older_child_supplement
+  input:
+    gov.contrib.ctc.oldest_child_supplement.amount: 1_000
+    gov.contrib.ctc.oldest_child_supplement.in_effect: true
+    people: 
+      person1:
+        age: 38
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ctc_child_individual_maximum: [0, 3_000]

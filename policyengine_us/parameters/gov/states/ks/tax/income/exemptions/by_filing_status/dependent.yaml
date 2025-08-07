@@ -1,0 +1,18 @@
+description: Kansas provides this exemption amount for each dependent in a filing unit post 2024.
+values:
+  2021-01-01: 2_320
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Kansas personal exemption by filing status dependent amount
+  reference:
+    - title: 2023 Form K-40 instructions
+      href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=2
+    # Structure is applied in 2024
+    - title: 2024 Form K-40 instructions
+      href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=2
+    - title: Kansas Notice 24-08 Changes to individual income tax
+      href: https://www.ksrevenue.gov/taxnotices/notice24-08.pdf#page=2
+    - title: Kan. Stat. § 79-32,121 (a) 
+      href: https://casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual

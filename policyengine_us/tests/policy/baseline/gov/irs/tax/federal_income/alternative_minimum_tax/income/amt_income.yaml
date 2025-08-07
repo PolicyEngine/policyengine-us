@@ -1,0 +1,47 @@
+- name: Single filer, itemizing
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 10_000
+    standard_deduction: 1_000
+    salt_deduction: 2_000
+    filing_status: SINGLE
+  output:
+    amt_income: 12_000
+
+- name: Joint filers, do not itemize
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    taxable_income: 10_000
+    standard_deduction: 1_000
+    salt_deduction: 2_000
+    filing_status: JOINT
+  output:
+    amt_income: 11_000
+
+- name: Separate filers, do not itemize, with separate addition
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    taxable_income: 800_000
+    standard_deduction: 1_000
+    salt_deduction: 2_000
+    filing_status: SEPARATE
+  output:
+    amt_income: 807_225
+
+- name: Joint filers, do not itemize, without separate addition
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    taxable_income: 800_000
+    standard_deduction: 1_000
+    salt_deduction: 2_000
+    filing_status: JOINT
+  output:
+    amt_income: 801_000

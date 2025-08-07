@@ -10,6 +10,12 @@ brackets:
      2021-01-01: 3_110
      2022-01-01: 3_200
      2023-01-01: 3_330
+     2024-01-01: 3_460
+   metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 10
    rate:
      1994-01-01: 0.03
  - threshold:
@@ -17,10 +23,17 @@ brackets:
      2021-01-01: 6_220
      2022-01-01: 16_040
      2023-01-01: 16_680
+     2024-01-01: 17_330
+   metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 10
    rate:
      1994-01-01: 0.04
      2022-01-01: 0.065
      2023-01-01: 0.064
+     2024-01-01: 0.062
  - threshold:
      1994-01-01: 6_660
      2021-01-01: 9_330
@@ -47,6 +60,8 @@ brackets:
 
 metadata:
   reference:
+    - title: SC 2024 Income Tax Chart
+      href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2024.pdf#page=1
     - title: SC 1040ES Instructions 2023
       href: https://dor.sc.gov/forms-site/Forms/SC1040ES_2023.pdf#page=4
     - title: SC 2022 Income Tax Chart

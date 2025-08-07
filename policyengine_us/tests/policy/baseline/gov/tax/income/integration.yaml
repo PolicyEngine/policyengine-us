@@ -1,0 +1,27 @@
+- name: Single parent with one child in DC
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_010
+      person2:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC 
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    state_taxable_income: -11_890
+    state_standard_deduction: 21_900
+    state_property_tax_credit: 0
+    state_itemized_deductions: 0
+    state_eitc: 2_382
+    state_ctc: 0
+    state_cdcc: 336
+    state_agi: 10_010

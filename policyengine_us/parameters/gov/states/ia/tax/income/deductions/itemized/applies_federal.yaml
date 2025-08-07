@@ -1,0 +1,15 @@
+description: Iowa applies the federal itemized deduction if this is true.
+values:
+  0000-01-01: false
+  2023-01-01: true
+
+metadata:
+  label: Iowa federal itemized deduction applies
+  period: year
+  unit: bool
+  reference: 
+  - title: Iowa Department of Revenue - 2023 IA1040 Income Tax Return instructions - Iowa Taxable Income
+    href: https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/1040-expanded-instructions/iowa-taxable-income
+  # The legal code does not represent the current policy according to the 2023 IA1040 instructions.
+  - title: Iowa Admin. Code Rule 701-303.4 - Optional standard deduction
+    href: https://www.legis.iowa.gov/docs/iac/agency/01-24-2024.701.pdf#page=1019

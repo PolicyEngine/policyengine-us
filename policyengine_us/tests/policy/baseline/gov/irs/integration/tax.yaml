@@ -52,7 +52,7 @@
         is_tax_unit_head: true
         age: 27
         ssi: 0  # not in USI-Tax-Analyzer
-        state_supplement: 0  # not in USI-Tax-Analyzer
+        ma_state_supplement: 0  # not in USI-Tax-Analyzer
         wic: 0  # not in USI-Tax-Analyzer
         employment_income: 64_000
         qualified_tuition_expenses: 11_000
@@ -65,7 +65,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+        aca_ptc: 0  # not in USI-Tax-Analyzer
     households:
       household:
         members: [person1]
@@ -90,7 +90,7 @@
         tax_exempt_interest_income: 50_000
         social_security: 60_000
         ssi: 0  # not in USI-Tax-Analyzer
-        state_supplement: 0  # not in USI-Tax-Analyzer
+        ma_state_supplement: 0  # not in USI-Tax-Analyzer
         wic: 0  # not in USI-Tax-Analyzer
     spm_units:
       spm_unit:
@@ -100,7 +100,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+        aca_ptc: 0  # not in USI-Tax-Analyzer
     households:
       household:
         members: [person1]

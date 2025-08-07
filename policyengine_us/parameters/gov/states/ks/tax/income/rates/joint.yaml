@@ -4,14 +4,19 @@ brackets:
       2018-01-01: 0
     rate:
       2018-01-01: 0.031
+      2024-01-01: 0.052
   - threshold:
       2018-01-01: 30_000
+      2024-01-01: 46_001
     rate:
       2018-01-01: 0.0525
+      2024-01-01: 0.0558
   - threshold:
       2018-01-01: 60_000
+      2024-01-01: .inf
     rate:
       2018-01-01: 0.057
+      2024-01-01: 0.0558
 
 metadata:
   threshold_unit: currency_USD
@@ -24,5 +29,9 @@ metadata:
     href: https://www.ksrevenue.gov/pdf/ip22.pdf
   - title: 2023 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=32
+  - title: 2024 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=34
   - title: Kansas 2022 Statute Article 32 §79-32,110_k
     href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/
+  - title: Kansas Notice 24-08 Changes to individual income tax
+    href: https://www.ksrevenue.gov/taxnotices/notice24-08.pdf#page=2

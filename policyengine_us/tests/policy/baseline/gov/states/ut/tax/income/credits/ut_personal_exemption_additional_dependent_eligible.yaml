@@ -1,0 +1,26 @@
+- name: Born on current year and is tax unit dependent
+  period: 2023
+  input:
+    is_tax_unit_dependent: true
+    birth_year: 2023
+    state_code: UT
+  output: 
+    ut_personal_exemption_additional_dependent_eligible: true
+
+- name: Not born on current year
+  period: 2023
+  input:
+    is_tax_unit_dependent: true
+    birth_year: 2022
+    state_code: UT
+  output: 
+    ut_personal_exemption_additional_dependent_eligible: false
+
+- name: Not tax unit dependent
+  period: 2023
+  input:
+    is_tax_unit_dependent: false
+    birth_year: 2023
+    state_code: UT
+  output: 
+    ut_personal_exemption_additional_dependent_eligible: false

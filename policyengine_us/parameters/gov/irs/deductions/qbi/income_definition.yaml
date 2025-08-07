@@ -3,8 +3,14 @@ values:
   2018-01-01:
     - self_employment_income
     - partnership_s_corp_income
-    - farm_income
     - farm_rent_income
+    - farm_operations_income
+    - rental_income
+    - estate_income
+
 metadata:
-  unit: variable
+  unit: list
   label: Qualified business income sources
+  reference:
+    - title: 26 U.S. Code § 199A(c)(3)(A) - Qualified business income
+      href: https://www.law.cornell.edu/uscode/text/26/199A#c_3_A

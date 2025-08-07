@@ -1,0 +1,13 @@
+- name: LA County is True
+  period: 2023
+  input:
+    county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    in_la: true
+
+- name: Not LA County is False
+  period: 2023
+  input:
+    county_str: SHASTA_COUNTY_CA
+  output:
+    in_la: false

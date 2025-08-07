@@ -1,7 +1,8 @@
-description: Oregon caps its federal tax liability subtraction for widow(er) filers at this amount, depending on federal AGI.
+description: Oregon caps its federal tax liability subtraction for surviving spouse filers at this amount, depending on federal AGI.
 metadata:
-  name: or_subtractions
   label: Oregon subtractions
+  period: year
+  unit: list
   reference:
     - title: Chapter 316 - Personal Income Tax
       href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.800

@@ -1,0 +1,20 @@
+description: New Mexico exempts this amount of armed forces retirement pay. 
+values:
+  2022-01-01: 10_000
+  2023-01-01: 20_000
+  2024-01-01: 30_000
+  # expires after 2026
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Mexico armed forces retirement pay exemption cap
+  reference:
+    - title: N.M. Stat. § 7-2-5.13 Exemption; armed forces retirement pay (A)
+      href: https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-513-effective-until-112025-exemption-armed-forces-retirement-pay
+    - title: INSTRUCTIONS booklet for personal income tax forms 2022 
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2022/PITbook2022.pdf#page=52
+    - title: INSTRUCTIONS FOR 2023 PIT-ADJ
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/cb0dc85c-5c28-45b1-a3f5-1e00fffaaf6b/2023pit-adj-ins.pdf#page=7
+    - title: INSTRUCTIONS FOR 2024 PIT-ADJ
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/97f27f33-5e23-4a25-ad68-0980a22b802d/PITbook2024.pdf#page=55
+    

@@ -1,0 +1,19 @@
+- name: Gross earned income is higher than deductions.
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    state_code: MA
+  output:
+    ma_tafdc_earned_income_after_deductions: 130
+
+- name: Gross earned income is lower than deductions.
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 470
+    state_code: MA
+  output:
+    ma_tafdc_earned_income_after_deductions: 0

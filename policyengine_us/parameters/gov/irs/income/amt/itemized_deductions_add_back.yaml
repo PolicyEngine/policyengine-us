@@ -1,0 +1,12 @@
+description: The US adds these deductions back when calculating alternative minimum taxable income.
+values:
+  2013-01-01:
+    - salt_deduction
+    - misc_deduction
+metadata:
+  period: year
+  unit: list
+  label: AMT income itemized deductions add back
+  reference:
+    - title: 26 U.S. Code § 56 - Adjustments in computing alternative minimum taxable income (b)(1)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/56#b_1_A

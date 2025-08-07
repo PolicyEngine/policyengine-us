@@ -1,0 +1,265 @@
+- name: One adult dependent
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: true
+        other_dependent_credit_maximum: 500
+      dependent:
+        age: 0
+        is_tax_unit_dependent: true
+        other_dependent_credit_maximum: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        other_dependent_credit_phase_out: 400
+  output:
+    other_dependent_credit: 100
+
+- name: No adult dependents
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+        other_dependent_credit_maximum: 0
+      dependent:
+        age: 0
+        is_tax_unit_dependent: true
+        other_dependent_credit_maximum: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        other_dependent_credit_phase_out: 400
+  output:
+    other_dependent_credit: 0
+
+- name: Integration test - one adult dependent, without limited phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 350_000
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    other_dependent_credit_maximum: [0, 500]
+    other_dependent_credit_phase_out: 0
+    other_dependent_credit: 500
+    income_tax_non_refundable_credits: 500
+
+
+- name: Integration test - one adult dependent, fully phased out
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 450_000
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    other_dependent_credit_maximum: [0, 500]
+    other_dependent_credit_phase_out: 2_500
+    other_dependent_credit: 0
+    income_tax_non_refundable_credits: 0
+
+- name: Integration test - no adult dependent
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 350_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    other_dependent_credit_maximum: [0, 0]
+    other_dependent_credit_phase_out: 2_500
+    other_dependent_credit: 0
+    income_tax_non_refundable_credits: 0
+
+- name: Integration test - CTC partially phased out
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 300_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    refundable_ctc: 2_000
+    ctc_higher_phase_out: 0
+    ctc_lower_phase_out: 9_400
+    ctc_refundable_maximum: 3_600
+    ctc: 2_000
+
+- name: Integration test - CTC partially phased out, 2 kids
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 300_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2, person3]
+  output:
+    ctc: 4_000
+    ctc_refundable_maximum: 7_200
+    refundable_ctc: 4_000
+    ctc_higher_phase_out: 0
+    ctc_lower_phase_out: 9_400
+
+
+- name: Integration test - CTC fully phased out
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 600_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2]
+  output:
+    refundable_ctc: 0
+    ctc_higher_phase_out: 15_000
+    ctc_lower_phase_out: 24_400
+    ctc_refundable_maximum: 3_600
+
+- name: Integration test - CTC full amount
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 80_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2, person3]
+  output:
+    ctc_refundable_maximum: 7_920
+    ctc_lower_phase_out: 0
+    ctc_higher_phase_out: 0
+    ctc: 7_920
+    refundable_ctc: 7_920
+    
+
+- name: Integration test - CTC fully phased out
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 800_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2, person3]
+  output:
+    refundable_ctc: 0
+    ctc_higher_phase_out: 25_000
+    ctc_lower_phase_out: 34_400
+    ctc_refundable_maximum: 7_920
+    ctc: 0
+
+- name: Integration test - Baby bonus and base CTC
+  period: 2025
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 80_000
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, person2, person3]
+  output:
+    refundable_ctc: 9_960
+    ctc_higher_phase_out: 0
+    ctc_lower_phase_out: 0
+    ctc_refundable_maximum: 9_960
+    ctc: 9_960

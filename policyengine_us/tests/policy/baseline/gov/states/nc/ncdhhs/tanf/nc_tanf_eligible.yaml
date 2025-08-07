@@ -1,0 +1,26 @@
+- name: Is NC demographic eligible and income eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_demographic_tanf_eligible: true
+    nc_tanf_income_eligible: true
+  output:
+    nc_tanf_eligible: true
+
+- name: Is demographic eligible but not income eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_demographic_tanf_eligible: true
+    nc_tanf_income_eligible: false
+  output:
+    nc_tanf_eligible: false
+
+- name: Is not demographic eligible but is income eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_demographic_tanf_eligible: false
+    nc_tanf_income_eligible: true
+  output:
+    nc_tanf_eligible: false

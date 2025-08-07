@@ -1,0 +1,40 @@
+description: North Carolina defines the following need standard for its Temporary Assistance for Needy Families program, dependent on the number of household members.
+
+1: 
+  2024-01-01: 362 
+2: 
+  2024-01-01: 472 
+3: 
+  2024-01-01: 544 
+4: 
+  2024-01-01: 594 
+5: 
+  2024-01-01: 648 
+6: 
+  2024-01-01: 698 
+7: 
+  2024-01-01: 746 
+8: 
+  2024-01-01: 772 
+9: 
+  2024-01-01: 812 
+10: 
+  2024-01-01: 860
+11: 
+  2024-01-01: 896
+12: 
+  2024-01-01: 946
+13: 
+  2024-01-01: 992
+14: 
+  2024-01-01: 1_042
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: North Carolina TANF monthly need standard
+  breakdown:
+    - range(1, 15)
+  reference:
+    - title: WORK FIRST | Income and Budgeting (Change No. 04-2023, January 1, 2024)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf#page=5

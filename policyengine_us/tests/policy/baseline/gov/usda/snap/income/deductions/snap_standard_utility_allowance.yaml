@@ -38,4 +38,22 @@
     trash_expense: 400
     sewage_expense: 1
   output:
-    snap_standard_utility_allowance: 0 
+    snap_standard_utility_allowance: 0
+
+- name: Standard Utility Allowance NC 1 member
+  period: 2025
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 1
+  output:
+    snap_standard_utility_allowance: 7_440 # 620 * 12
+
+- name: Standard Utility Allowance NC a lot of members
+  period: 2025
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 11
+  output:
+    snap_standard_utility_allowance: 10_656 # 888 * 12

@@ -1,0 +1,224 @@
+- name: Case 1, applicant is an elderly person with no income.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 67
+        is_disabled: false
+        is_ssi_eligible: false
+        is_tax_unit_head_or_spouse: true
+        ma_tcap_gross_earned_income: 0
+        ma_tcap_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ma_eaedc_living_arrangement: A
+        ma_eaedc_countable_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_eaedc: 4_812
+    ma_eaedc_eligible: true
+    ma_eaedc_standard_assistance: 4_812
+    ma_eaedc_dependent_care_deduction: 0
+    ma_eaedc_net_income: 0
+
+- name: Case 2, applicant is an disabled person with $12000 income.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+        ma_tcap_gross_earned_income: 12_000
+        ma_tcap_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ma_eaedc_living_arrangement: A
+        ma_eaedc_countable_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_eaedc: 0
+    ma_eaedc_eligible: false
+    ma_eaedc_standard_assistance: 4_812
+    ma_eaedc_dependent_care_deduction: 0
+    ma_eaedc_net_income: 8_223.6
+
+- name: Case 3, applicant is a household with 1 dependent child.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        ma_tcap_gross_earned_income: 12_000
+        ma_tcap_gross_unearned_income: 100
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_tafdc_related_to_head_or_spouse: false
+        ma_tcap_gross_earned_income: 0
+        ma_tcap_gross_unearned_income: 0
+        pre_subsidy_childcare_expenses: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_living_arrangement: A
+        ma_eaedc_countable_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc: 0
+    ma_eaedc_eligible: false
+    ma_eaedc_standard_assistance: 6_264
+    ma_eaedc_dependent_care_deduction: 2_100
+    ma_eaedc_countable_earned_income: 6_123.6  # 8223.6 - 2100
+    ma_eaedc_net_income: 6_223.6 # 6123.6 + 100
+    # 515.9*4 + 770*8 = 8223.6
+    # standard assistance: 522 per month
+    # dependent care deduction: 175 per month 
+    # 515.9 - 175 < 522 
+
+- name: Case 4, applicant is caring a disabled person with income higher than $1500 monthly.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        ma_tcap_gross_earned_income: 2_400
+        ma_tcap_gross_unearned_income: 0
+      person2:
+        age: 25
+        is_disabled: true
+        is_tax_unit_dependent: true
+        is_tafdc_related_to_head_or_spouse: false
+        ma_tcap_gross_earned_income: 18_001
+        ma_tcap_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_living_arrangement: A
+        ma_eaedc_countable_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc: 0
+    ma_eaedc_eligible: false
+
+- name: Integration test 1, pregnant single parent with rent
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 19
+        is_pregnant: true
+        employment_income: 9_600
+        rent: 1_200
+        weekly_hours_worked: 13.3
+      person2:
+        age: 4
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_living_arrangement: A
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        #is_in_public_housing: true
+  output:
+    ma_tcap_gross_earned_income: [9_600, 0] # 800 per month
+    ma_tafdc_countable_earned_income: [1_800, 0]
+    ma_tafdc_applicable_income_grant_amount: 1_800
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 8_256 #688*12
+    ma_tafdc_eligible_dependent: [False, True]
+    ma_tafdc_dependent_care_deduction: 0
+    ma_tafdc: 6_956 # 6959/12 = 580
+    ma_eaedc_eligible: false
+    ma_eaedc_immigration_status_eligible: true
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: false
+    ma_eaedc_income_eligible: false # this is false because only the first 4 months eligible. 
+    ma_eaedc_assets_limit_eligible: true
+    ma_eaedc_standard_assistance: 6_264 # 522*12
+    ma_eaedc_net_income: 6_087.6
+    ma_eaedc: 0
+
+- name: Integration test 2, pregnant single parent with rent
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 19
+        is_pregnant: true
+        employment_income: 9_600
+        rent: 1_200
+        weekly_hours_worked: 13.3
+      person2:
+        age: 4
+        is_tafdc_related_to_head_or_spouse: false
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_living_arrangement: A
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        #is_in_public_housing: true
+  output:
+    ma_tcap_gross_earned_income: [800, 0] # 800 per month
+    ma_tafdc_countable_earned_income: [150, 0]
+    ma_tafdc_applicable_income_grant_amount: 150
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 688
+    ma_tafdc_eligible_dependent: [False, True]
+    ma_tafdc_dependent_care_deduction: 0
+    ma_tafdc: 580      # In 2025-05: 688 - 300 + 41.7 = 429.7
+    ma_eaedc_eligible: true
+    ma_eaedc_immigration_status_eligible: true
+    ma_eaedc_financial_eligible: true
+    ma_eaedc_non_financial_eligible: true
+    ma_eaedc_income_eligible: true
+    ma_eaedc_assets_limit_eligible: true
+    ma_eaedc_standard_assistance: 522
+    ma_eaedc_net_income: 381.9
+    ma_eaedc: 0  # because tafdc is higher than eaedc    

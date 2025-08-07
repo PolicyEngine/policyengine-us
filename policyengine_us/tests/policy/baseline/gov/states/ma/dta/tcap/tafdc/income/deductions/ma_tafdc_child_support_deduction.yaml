@@ -1,0 +1,31 @@
+- name: No alimony income
+  period: 2023
+  input:
+    alimony_income: 0
+    state_code: MA
+  output:
+    ma_tafdc_child_support_deduction: 0
+
+- name: Some alimony income
+  period: 2023
+  input:
+    alimony_income: 20
+    state_code: MA
+  output:
+    ma_tafdc_child_support_deduction: 20
+
+- name: Capped at a certain amount
+  period: 2023
+  input:
+    alimony_income: 700 
+    state_code: MA
+  output:
+    ma_tafdc_child_support_deduction: 600
+
+- name: Annual test
+  period: 2023
+  input:
+    alimony_income: 8_400 
+    state_code: MA
+  output:
+    ma_tafdc_child_support_deduction: 600

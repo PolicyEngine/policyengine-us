@@ -1,0 +1,15 @@
+- name: NY (family tier state)
+  period: 2023
+  input:
+    state_code_str: NY
+    state_fips: 36
+  output:
+    slcsp_family_tier_applies: TRUE
+
+- name: CA (age curve state)
+  period: 2023
+  input:
+    state_code_str: CA
+    state_fips: 6
+  output:
+    slcsp_family_tier_applies: FALSE

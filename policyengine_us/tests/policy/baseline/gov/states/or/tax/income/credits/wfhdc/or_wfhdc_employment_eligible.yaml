@@ -1,4 +1,4 @@
-- name: Separate/head of household/widow filing with non-working head is not eligible.
+- name: Separate/head of household/surviving_spouse filing with non-working head is not eligible.
   period: 2021
   input:
     people:
@@ -25,7 +25,7 @@
   output:
     or_wfhdc_employment_eligible: false
 
-- name: Separate/head of household/widow filing with working head is eligible.
+- name: Separate/head of household/surviving_spouse filing with working head is eligible.
   period: 2021
   input:
     people:

@@ -1,0 +1,40 @@
+description: All state Child and Dependent Care Credits and related credits.
+values:
+  0000-01-01:
+    - ar_cdcc  # Arkansas
+    - ca_cdcc  # California
+    - co_cdcc  # Colorado
+    - co_low_income_cdcc  # Colorado Low-income CDCC (separate from co_cdcc)
+    - dc_cdcc  # District of Columbia
+    - dc_kccatc  # District of Columbia Keep Child Care Affordable Tax Credit
+    - de_cdcc  # Delaware
+    - ga_cdcc  # Georgia
+    - hi_cdcc  # Hawaii
+    - ia_cdcc  # Iowa
+    - ks_cdcc  # Kansas
+    - ky_cdcc  # Kentucky (household and dependent care service credit)
+    - la_non_refundable_cdcc  # Louisiana
+    - la_refundable_cdcc  # Louisiana
+    - ma_dependent_care_credit  # Massachusetts
+    - md_cdcc  # Maryland
+    - me_child_care_credit  # Maine
+    - mn_cdcc  # Minnesota
+    - ne_cdcc_nonrefundable  # Nebraska
+    - ne_cdcc_refundable  # Nebraska
+    - nj_cdcc  # New Jersey
+    - nm_cdcc  # New Mexico
+    - ny_cdcc  # New York
+    - oh_cdcc  # Ohio
+    - ok_child_care_child_tax_credit  # Oklahoma Child Care/Child Tax Credit - note, also in state_ctcs.
+    - or_working_family_household_and_dependent_care_credit  # Oregon
+    - pa_cdcc  # Pennsylvania
+    - ri_cdcc  # Rhode Island
+    - sc_cdcc  # South Carolina
+    - vt_cdcc  # Vermont
+    - vt_low_income_cdcc  # Vermont low-income CDCC
+    - wi_childcare_expense_credit  # Wisconsin
+
+metadata:
+  unit: list
+  period: year
+  label: State Child and Dependent Care Credits

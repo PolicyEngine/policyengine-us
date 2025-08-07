@@ -1,0 +1,22 @@
+- name: Unit does not itemize
+  period: 2026
+  input:
+    adjusted_gross_income: 40_000
+    tax_unit_itemizes: false
+    charitable_deduction: 3_000
+    casualty_loss_deduction: 1_000
+    standard_deduction: 5_000
+  output:
+    taxable_income_less_qbid: 35_000
+
+- name: Unit itemizes
+  period: 2026
+  input:
+    adjusted_gross_income: 40_000
+    tax_unit_itemizes: true
+    charitable_deduction: 3_000
+    casualty_loss_deduction: 1_000
+    standard_deduction: 5_000
+    salt_deduction: 0
+  output:
+    taxable_income_less_qbid: 36_000

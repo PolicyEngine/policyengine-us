@@ -3,11 +3,19 @@
   input:
     american_opportunity_credit: 0
   output:
-    non_refundable_american_opportunity_credit: 0
+    non_refundable_american_opportunity_credit_potential: 0
 
 - name: Non-refundable is 60% of AOC
   period: 2020
   input:
     american_opportunity_credit: 1_000
   output:
-    non_refundable_american_opportunity_credit: 600
+    non_refundable_american_opportunity_credit_potential: 600
+
+- name: Capped at limit
+  period: 2020
+  input:
+    non_refundable_american_opportunity_credit_potential: 1_000
+    non_refundable_american_opportunity_credit_credit_limit: 500
+  output:
+    non_refundable_american_opportunity_credit: 500

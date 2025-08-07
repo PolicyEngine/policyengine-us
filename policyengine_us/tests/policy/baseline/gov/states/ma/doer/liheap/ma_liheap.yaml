@@ -1,0 +1,79 @@
+- name: Case 1, household size of 4 with $40_000 income, use electricity as heating type, homeowner. 
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: ELECTRICITY
+    electricity_expense: 1_300
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA 
+  output:
+    ma_liheap_income_eligible: true
+    ma_liheap_eligible: true
+    ma_liheap_benefit_level: 3
+    ma_liheap_hecs_payment: 160
+    ma_liheap_standard_payment: 852
+    ma_liheap: 1_012
+
+- name: Case 2, household size of 4 with $40_000 income, use electricity as heating type, homeowner. 
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: ELECTRICITY
+    electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA 
+  output:
+    ma_liheap_income_eligible: true
+    ma_liheap_eligible: true
+    ma_liheap_benefit_level: 3
+    ma_liheap_hecs_payment: 160
+    ma_liheap_standard_payment: 852
+    ma_liheap: 500    
+
+- name: Case 3, household size of 4 with $60_000 income, use other as heating type, subsidized housing tenant. 
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 17_000
+    ma_liheap_heating_type: OTHER
+    heating_cooling_expense: 500
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+    heating_expense_last_year: 0
+    state_code: MA 
+  output:
+    ma_liheap_income_eligible: true
+    ma_liheap_eligible: false # rent is not high enough
+    ma_liheap_benefit_level: 6
+    ma_liheap_hecs_payment: 0
+    ma_liheap_standard_payment: 0
+    ma_liheap: 0
+
+- name: Case 4, household size of 4 with $60_000 income, use other as heating type, subsidized housing tenant. 
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 18_001
+    ma_liheap_heating_type: OTHER
+    heating_cooling_expense: 800
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: true
+    heating_expense_last_year: 1_800
+    state_code: MA 
+  output:
+    ma_liheap_income_eligible: true
+    ma_liheap_eligible: true
+    ma_liheap_benefit_level: 6
+    ma_liheap_hecs_payment: 120
+    ma_liheap_standard_payment: 672
+    ma_liheap: 792

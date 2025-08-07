@@ -1,0 +1,44 @@
+- name: No income - full CTC match
+  period: 2024
+  input:
+    state_code: NY
+    adjusted_gross_income: 0
+    ny_ctc: 100
+  output:
+    ny_additional_ctc: 100
+
+- name: Minimum match amount
+  period: 2024
+  input:
+    state_code: NY
+    adjusted_gross_income: 130_000
+    ny_ctc: 100
+  output:
+    ny_additional_ctc: 25
+
+- name: No CTC 
+  period: 2024
+  input:
+    state_code: NY
+    adjusted_gross_income: 130_000
+    ny_ctc: 0
+  output:
+    ny_additional_ctc: 0
+
+- name: Partial match
+  period: 2024
+  input:
+    state_code: NY
+    adjusted_gross_income: 49_999
+    ny_ctc: 100
+  output:
+    ny_additional_ctc: 50
+
+- name: Base credit below min
+  period: 2024
+  input:
+    state_code: NY
+    adjusted_gross_income: 49_999
+    ny_ctc: 25
+  output:
+    ny_additional_ctc: 0

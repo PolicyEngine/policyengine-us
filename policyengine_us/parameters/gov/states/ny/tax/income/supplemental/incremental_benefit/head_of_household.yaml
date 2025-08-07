@@ -14,6 +14,10 @@ metadata:
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=49
     - title: 2023 NY Form IT-201 Instructions - Head of household
       href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=50
+    - title: 2024 NY Form IT-201 Instructions - Head of Household
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=38
+    - title: New York FY2026 Budget Agreement (Senate Bill S3009C)
+      href: https://legislation.nysenate.gov/pdf/bills/2025/S3009C#page=12
 brackets:
   - threshold:
       2021-01-01: 0
@@ -27,12 +31,17 @@ brackets:
       2021-01-01: 1_401
       2022-01-01: 1_616
       2023-01-01: 2_289
+      2026-01-01: 2_559
+      2027-01-01: 2_827
   - threshold:
       2021-01-01: 1_616_450
     amount:
       2021-01-01: 45_260
       2022-01-01: 45_261
+      2026-01-01: 45_260
+      2033-01-01: 31_844
   - threshold:
       2021-01-01: 5_000_000
+      2033-01-01: .inf
     amount:
       2021-01-01: 32_500

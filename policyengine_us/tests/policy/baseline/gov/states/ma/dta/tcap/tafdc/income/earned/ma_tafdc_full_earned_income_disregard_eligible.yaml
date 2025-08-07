@@ -1,0 +1,17 @@
+- name: Case 1, eligible for full earned income disregard.
+  period: 2023
+  input:
+    ma_tafdc_applicable_income_for_financial_eligibility: 0
+    spm_unit_fpg: 100
+    state_code: MA
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 2, not eligible for full earned income disregard.
+  period: 2023
+  input:
+    ma_tafdc_applicable_income_for_financial_eligibility: 210
+    spm_unit_fpg: 100
+    state_code: MA
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: false

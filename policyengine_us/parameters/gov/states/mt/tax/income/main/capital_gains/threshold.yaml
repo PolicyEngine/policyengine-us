@@ -1,0 +1,22 @@
+description: Montana taxes net long-term capital gains above this threshold by a higher rate, based on filing status.
+metadata:
+  label: Montana capital gains tax threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2023 Montana Form 2 Individual Income Tax Instructions, Net Long-Term Capital Gains Tax Table
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6
+    - title: Montana Code Annotated 2023, TITLE 15. TAXATION, CHAPTER 30. INDIVIDUAL INCOME TAX, Part 21. Rate and General Provisions-(2)
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+JOINT:
+  2024-01-01: 41_000
+HEAD_OF_HOUSEHOLD:
+  2024-01-01: 30_750
+SURVIVING_SPOUSE:
+  2024-01-01: 41_000
+SINGLE:
+  2024-01-01: 20_500
+SEPARATE:
+  2024-01-01: 20_500

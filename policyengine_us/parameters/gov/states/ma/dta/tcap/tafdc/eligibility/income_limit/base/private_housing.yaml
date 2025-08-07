@@ -1,0 +1,79 @@
+description: Massachusetts provides the Transitional Aid to Families with Dependent Children program to applicants in private housing with gross income less than this limit, based on family size.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: int
+  amount_unit: currency-USD
+  label: Massachusetts TAFDC private household income limit base amount 
+  reference:
+  - title: 2021 TAFDC and EAEDC Benefit increase Report
+    href: https://www.mass.gov/doc/tafdc-and-eaedc-benefit-increase-report/download#:~:text=In%20response%20to%20COVID%2D19,by%2010%25%20effective%20January%201.
+  - title: 2022 Transitional Aid to Families with Dependent Children Consolidated Report
+    href: https://www.mass.gov/doc/tafdc-consolidated-report-march-2022/download
+  - title: 2023 Transitional Aid to Families with Dependent Children Consolidated Report
+    href: https://www.mass.gov/doc/tafdc-consolidated-report-march-2022/download
+  - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 73. How much income can you have and still qualify for TAFDC?
+    href: https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 467
+      2022-01-01: 506
+      2023-01-01: 553
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 580
+      2022-01-01: 629
+      2023-01-01: 688
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 692
+      2022-01-01: 753
+      2023-01-01: 823
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 800
+      2022-01-01: 869
+      2023-01-01: 952
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 911
+      2022-01-01: 990
+      2023-01-01: 1_085
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 1_026
+      2022-01-01: 1_115
+      2023-01-01: 1_223
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 1_137
+      2022-01-01: 1_236
+      2023-01-01: 1_356
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 1_247
+      2022-01-01: 1_356
+      2023-01-01: 1_488
+  - threshold:
+      2021-01-01: 9
+    amount:
+      2021-01-01: 1_357
+      2022-01-01: 1_476
+      2023-01-01: 1_620
+  - threshold:
+      2021-01-01: 10
+    amount:
+      2021-01-01: 1_468
+      2022-01-01: 1_598
+      2023-01-01: 1_754

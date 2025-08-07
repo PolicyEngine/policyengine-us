@@ -1,0 +1,87 @@
+- name: Reform applied and income above new threshold
+  period: 2024
+  reforms: policyengine_us.reforms.harris.capital_gains.harris_capital_gains.harris_capital_gains
+  input:
+    gov.contrib.harris.capital_gains.in_effect: true
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 1_100_000
+        filing_status: JOINT
+  output:
+    capital_gains_tax: 48_000
+
+- name: Reform not applied
+  period: 2024
+  input:
+    # Household.
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 1_100_000
+        filing_status: JOINT
+  output:
+    # 200,000 taxed at 20%
+    capital_gains_tax: 40_000
+
+- name: Reform applied but income below new threshold
+  period: 2024
+  reforms: policyengine_us.reforms.harris.capital_gains.harris_capital_gains.harris_capital_gains
+  input:
+    gov.contrib.harris.capital_gains.in_effect: true
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 100_000
+        filing_status: JOINT
+  output:
+    capital_gains_tax: 892.5
+
+- name: Reform not applied but income below new threshold
+  period: 2024
+  reforms: policyengine_us.reforms.harris.capital_gains.harris_capital_gains.harris_capital_gains
+  input:
+    gov.contrib.harris.capital_gains.in_effect: true
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 100_000
+        filing_status: JOINT
+  output:
+    capital_gains_tax: 892.5

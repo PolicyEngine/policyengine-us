@@ -69,3 +69,20 @@
     ms_taxable_income_indiv: 4_000
   output:
     ms_income_tax_before_credits_indiv: 0 
+
+
+- name: High earner in 2023
+  period: 2023
+  input:
+    state_code: MS
+    ms_taxable_income_indiv: 1_000_000
+  output:
+    ms_income_tax_before_credits_indiv: 49_500
+
+- name: Income over top threshold in 2023
+  period: 2023
+  input:
+    state_code: MS
+    ms_taxable_income_indiv: 12_000
+  output:
+    ms_income_tax_before_credits_indiv: 100

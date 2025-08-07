@@ -1,0 +1,15 @@
+description: Maximum age for ACA slcsp amounts.
+metadata:
+  period: year
+  label: ACA maximum slcsp child age
+  reference:
+    - title: KFF Health Insurance Marketplace Calculator
+      href: https://www.kff.org/interactive/subsidy-calculator/
+      # https://www.kff.org/interactive/subsidy-calculator-202?/ for prior years
+      # The above references have (since 2014) contained a pull-down menu that
+      # has this title:
+      #  6. Number of children (20 and younger) enrolling in Marketplace coverage
+      # this is possibly not true for New York and Vermont the family tier states. 
+      # But no definitive sources have been found  
+values:
+  2014-01-01: 20

@@ -11,3 +11,4 @@ class sc_tuition_credit_eligible(Variable):
         "https://www.scstatehouse.gov/code/t12c006.php",
         # South Carolina Legal Code | SECTION 12-6-3385 (B)(3)(b)
     )
+    defined_for = StateCode.SC

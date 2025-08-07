@@ -1,0 +1,54 @@
+- name: Is demographic eligible, income eligible and resource eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: true
+    dc_tanf_income_eligible: true
+    dc_tanf_resources_eligible: true
+    dc_tanf_meets_work_requirements: true
+  output:
+    dc_tanf_eligible: true
+
+- name: Is demographic eligible, income eligible but not resource eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: true
+    dc_tanf_income_eligible: true
+    dc_tanf_resources_eligible: false
+    dc_tanf_meets_work_requirements: true
+  output:
+    dc_tanf_eligible: false
+
+- name: Is demographic eligible, resource eligible but not income eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: true
+    dc_tanf_income_eligible: false
+    dc_tanf_resources_eligible: true
+    dc_tanf_meets_work_requirements: true
+  output:
+    dc_tanf_eligible: false
+
+- name: Is resource eligible, income eligible but not demographic eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: false
+    dc_tanf_income_eligible: true
+    dc_tanf_resources_eligible: true
+    dc_tanf_meets_work_requirements: true
+  output:
+    dc_tanf_eligible: false
+
+- name: Does not meet work requirement. 
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: true
+    dc_tanf_income_eligible: true
+    dc_tanf_resources_eligible: true
+    dc_tanf_meets_work_requirements: false
+  output:
+    dc_tanf_eligible: false

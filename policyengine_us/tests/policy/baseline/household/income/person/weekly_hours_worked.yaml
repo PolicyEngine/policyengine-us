@@ -1,0 +1,59 @@
+- name: Weekly hours worked with labor supply response
+  period: 2022
+  input:
+    weekly_hours_worked_before_lsr: 40
+    labor_supply_behavioral_response: 1
+    income_elasticity_lsr: 0.1
+    substitution_elasticity_lsr: 0.2
+    employment_income_before_lsr: 100_000
+    self_employment_income_before_lsr: 50_000
+  output:
+    # Calculation steps:
+    # Total earnings: 100_000 + 50_000 = 150_000
+    # weekly_hours_worked_behavioural_response_income_elasticity = 40 * (0.1 / 150_000)
+    # = 40 * 6.6666667e-07
+    # = 2.6666667e-05
+    weekly_hours_worked_behavioural_response_income_elasticity: 2.6666667e-05
+
+    # weekly_hours_worked_behavioural_response_substitution_elasticity = 40 * (0.2 / 150_000)
+    # = 40 * 1.3333333e-06
+    # = 5.3333333e-05
+    weekly_hours_worked_behavioural_response_substitution_elasticity: 5.3333333e-05
+
+    # weekly_hours_worked_behavioural_response = 2.6666667e-05 + 5.3333333e-05
+    # = 8.0000000e-05
+    weekly_hours_worked_behavioural_response: 8.0000000e-05
+
+- name: Weekly hours worked with zero earnings
+  period: 2022
+  input:
+    weekly_hours_worked_before_lsr: 40
+    labor_supply_behavioral_response: 1
+    income_elasticity_lsr: 0.1
+    substitution_elasticity_lsr: 0.2
+    employment_income_before_lsr: 0
+    self_employment_income_before_lsr: 0
+  output:
+    # Calculation steps:
+    # Total earnings: 0 + 0 = 0
+    # weekly_hours_worked_behavioural_response_income_elasticity = 0 (division by zero avoided in Python code)
+    weekly_hours_worked_behavioural_response_income_elasticity: 0
+
+    # weekly_hours_worked_behavioural_response_substitution_elasticity = 0 (division by zero avoided in Python code)
+    weekly_hours_worked_behavioural_response_substitution_elasticity: 0
+
+    # weekly_hours_worked_beha
+
+- name: Weekly hours worked with zero labor supply response
+  period: 2022
+  input:
+    weekly_hours_worked_before_lsr: 40
+    labor_supply_behavioral_response: 0  # Trigger the condition for np.zeros_like(original)
+    income_elasticity_lsr: 0.1
+    substitution_elasticity_lsr: 0.2
+    employment_income_before_lsr: 100_000
+    self_employment_income_before_lsr: 50_000
+  output:
+    weekly_hours_worked_behavioural_response_income_elasticity: 0
+    weekly_hours_worked_behavioural_response_substitution_elasticity: 0
+    weekly_hours_worked_behavioural_response: 0

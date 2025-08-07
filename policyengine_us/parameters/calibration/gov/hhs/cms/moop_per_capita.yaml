@@ -1,0 +1,35 @@
+description: The Centers for Medicare and Medicaid Services (CMS) projects these per-capita out-of-pocket health payments.
+metadata:
+  unit: currency-USD
+  label: Per-capita MOOP
+  reference:
+  # Data underlying figures:
+  # https://www.cms.gov/files/zip/nhe-projections-tables.zip
+  # Table03 National Health Expenditures by Sources of Funds
+  # Retrieved 2025-02-17.
+  - title: NHE Projections
+    href: https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
+values:
+  # Historical.
+  2016-01-01: 1_130
+  2017-01-01: 1_139
+  2018-01-01: 1_181
+  2019-01-01: 1_227
+  2020-01-01: 1_210
+  2021-01-01: 1_341
+  2022-01-01: 1_425
+  # Projections.
+  2023-01-01: 1_528
+  2024-01-01: 1_619
+  2025-01-01: 1_669
+  2026-01-01: 1_720
+  2027-01-01: 1_786
+  2028-01-01: 1_851
+  2029-01-01: 1_917
+  2030-01-01: 1_985
+  2031-01-01: 2_057
+  2032-01-01: 2_131
+  # Applying the same growth rate as 2031-2032.
+  2033-01-01: 2_208 # 2_131 * (2_131 / 2_057)
+  2034-01-01: 2_287 # 2_131 * (2_131 / 2_057)^2
+  2035-01-01: 2_369 # 2_131 * (2_131 / 2_057)^3

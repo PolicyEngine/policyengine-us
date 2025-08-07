@@ -1,0 +1,53 @@
+- name: Eligible person, 
+  period: 2022-01
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 6
+  output:
+    ca_la_expectant_parent_payment_eligible: true
+
+- name: Pregnancy month before 6
+  period: 2023-01
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 5
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Not in LA
+  period: 2023-01
+  input:
+    in_la: false
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 7
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Not in foster care
+  period: 2024-01
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: false
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Pregnancy month after 9
+  period: 2023-01
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 10
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Eligible person, 8 months pregnant
+  period: 2022-01
+  input:
+    in_la: true
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment_eligible: true

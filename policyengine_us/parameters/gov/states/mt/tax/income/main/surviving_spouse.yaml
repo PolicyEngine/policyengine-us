@@ -1,0 +1,89 @@
+description: Montana taxes surviving spouses at this rate structure.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Montana income tax surviving spouses
+  reference:
+    - title: Montana Code Annotated 2021 Title 15, Chapter 30, Part 21, 15-30-2103 
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+    - title: 2022 Montana income tax form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=16
+    - title: 2021 Montana income tax form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=15
+    - title: 2023 Montana income tax form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=18
+    - title: 2024 Montana income tax tables
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2024/12/2024-Tax-Tables.pdf
+# Before 2024 Montana has a consistent tax rate for each filing status
+# After 2024 the tax rate depends on the filing status
+    - title: House Bill 337 (Bill Text)
+      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=bill
+    - title: House Bill 337 (Status, signed by Governor)
+      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=status
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.01
+      2024-01-01: 0.047
+  - threshold:
+      values:
+        2021-01-01: 3_100
+        2022-01-01: 3_300
+        2023-01-01: 3_600
+        2024-01-01: 41_000
+        2026-01-01: 95_000
+        2027-01-01: 130_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 100
+    rate:
+      2021-01-01: 0.02
+      2024-01-01: 0.059
+      2026-01-01: 0.0565
+      2027-01-01: 0.054
+  - threshold:
+      2021-01-01: 5_500
+      2022-01-01: 5_800
+      2023-01-01: 6_300
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.03
+      2024-01-01: 0.059
+  - threshold:
+      2021-01-01: 8_400
+      2022-01-01: 8_900 
+      2023-01-01: 9_700
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.04
+      2024-01-01: 0.059
+  - threshold:
+      2021-01-01: 11_400
+      2022-01-01: 12_000
+      2023-01-01: 13_000
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.05
+      2024-01-01: 0.059
+  - threshold:
+      2021-01-01: 14_600
+      2022-01-01: 15_400
+      2023-01-01: 16_800
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.06
+      2024-01-01: 0.059
+  - threshold:
+      2021-01-01: 18_800
+      2022-01-01: 19_800
+      2023-01-01: 21_600
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.069
+      2022-01-01: 0.0675
+      2024-01-01: 0.059

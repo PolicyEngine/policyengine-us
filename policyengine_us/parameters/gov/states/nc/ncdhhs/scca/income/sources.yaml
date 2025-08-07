@@ -1,0 +1,27 @@
+description: North Carolina counts these sources as gross income for its Subsidized Child Care Assistance program.
+
+values:
+  2024-08-01:
+  - employment_income
+  - self_employment_income
+  - pension_income
+  - veterans_benefits
+  - unemployment_compensation
+  - disability_benefits
+  - workers_compensation
+  - social_security
+  - retirement_distributions
+  - rental_income
+  - child_support_received
+  - alimony_income
+  - dividend_income
+  - interest_income
+  - miscellaneous_income
+
+metadata:
+  unit: list
+  period: year
+  label: North Carolina SCCA gross income sources
+  reference:
+    title: Subsidized Child Care Assistance Program Policy Manual - Chapter 7. Family Definition and Determining Income Eligibility
+    href: https://policies.ncdhhs.gov/wp-content/uploads/FINAL-Chapter-7-Family-definition-and-determining-income-eligibility-8_2024-BLACK.pdf#page=11

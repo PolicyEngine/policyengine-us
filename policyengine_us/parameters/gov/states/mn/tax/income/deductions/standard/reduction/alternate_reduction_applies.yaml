@@ -1,0 +1,11 @@
+description: Minnesota applies an alternate standard deduction reduction if this is true.
+values:
+  2021-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Minnesota standard deduction alternate reduction applies
+  reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. 
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5

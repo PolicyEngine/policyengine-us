@@ -1,0 +1,83 @@
+- name: One dependent, work part time, not married.
+  period: 2023-01
+  input:
+    tax_unit_dependents: 1 
+    childcare_expenses: 100 * 12
+    monthly_hours_worked: 99 * 12
+    is_married: false
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 100
+
+- name: One dependent, work part time, not married. 
+  period: 2023-01
+  input:
+    tax_unit_dependents: 1 
+    childcare_expenses: 130 * 12
+    monthly_hours_worked: 99 * 12
+    is_married: false
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 128
+
+- name: One dependent, work part time, married. 
+  period: 2023-01
+  input:
+    tax_unit_dependents: 1 
+    childcare_expenses: 100 * 12
+    monthly_hours_worked: 99 * 12
+    is_married: true
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 50
+
+- name: Two dependents, work full time, not married.
+  period: 2023-01
+  input:
+    tax_unit_dependents: 2 
+    childcare_expenses: 330 * 12
+    monthly_hours_worked: 100 * 12
+    is_married: false
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 320
+
+- name: Two dependents, work full time, married.
+  period: 2023-01
+  input:
+    tax_unit_dependents: 2 
+    childcare_expenses: 330 * 12
+    monthly_hours_worked: 100 * 12
+    is_married: true
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 160
+
+- name: Not head or spouse, zero.
+  period: 2023
+  input:
+    tax_unit_dependents: 1 
+    childcare_expenses: 100 * 12
+    monthly_hours_worked: 100 * 12
+    is_married: false
+    is_tax_unit_head_or_spouse: false
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 0
+
+- name: No dependent, 0. 
+  period: 2023
+  input:
+    tax_unit_dependents: 0
+    childcare_expenses: 100 * 12
+    monthly_hours_worked: 100 * 12
+    is_married: false
+    is_tax_unit_head_or_spouse: true
+    state_code: IL
+  output:
+    il_aabd_child_care_expense_exemption: 0

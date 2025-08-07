@@ -53,3 +53,19 @@
     aca_magi_fraction: 4.40
   output:
     aca_ptc_phase_out_rate: 0.0850
+
+- name: aca_ptc_phase_out_rate 2025
+  period: 2025
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_ptc_phase_out_rate: 0.0850
+
+- name: aca_ptc_phase_out_rate 2026
+  period: 2026
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_ptc_phase_out_rate: 0.0950

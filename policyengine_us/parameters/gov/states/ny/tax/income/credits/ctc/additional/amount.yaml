@@ -1,0 +1,32 @@
+description: New York State matches this fraction of the Empire State Credit as an additional credit, based on the federal adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: New York additional Empire State Child Credit match
+  reference:
+    - title: New York Department of Taxation Additional Empire State child credit payments - 2023
+      href: https://www.tax.ny.gov/pit/empire-child-credit-payments.htm
+    - title: New York Department of Taxation Additional Empire State child credit payments - 2021
+      href: https://www.tax.ny.gov/pit/child-earned-payments.htm
+    - title: Consolidated Laws of New York, Cahpter 60, Tax Article 22 Personal Income Tax, Section 606 Credits against tax (c-1)(4)(A) / (c-1)(5)(A)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 0.75
+  - threshold:
+      2021-01-01: 25_000
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 0.25

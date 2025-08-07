@@ -1,0 +1,47 @@
+- name: Itemizes
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+  output:
+    amt_excluded_deductions: 4_000
+
+- name: Does not itemize 
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+  output:
+    amt_excluded_deductions: 7_000
+
+- name: Itemizes, misc deduction applied
+  period: 2026
+  input:
+    tax_unit_itemizes: true
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+    misc_deduction: 1_000
+  output:
+    amt_excluded_deductions: 5_000
+
+- name: Does not itemize, 2026
+  period: 2026
+  input:
+    tax_unit_itemizes: false
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+    misc_deduction: 1_000
+  output:
+    amt_excluded_deductions: 7_000
+
+- name: Itemizes, misc deduction does not apply
+  period: 2025
+  input:
+    tax_unit_itemizes: true
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+    unreimbursed_business_employee_expenses: 1_000
+  output:
+    amt_excluded_deductions: 4_000

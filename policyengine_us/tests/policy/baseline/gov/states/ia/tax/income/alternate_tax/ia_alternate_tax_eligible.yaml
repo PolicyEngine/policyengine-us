@@ -1,0 +1,15 @@
+- name: Single filing status is not eligible for the alternate tax
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: IA
+  output:
+    ia_alternate_tax_eligible: false
+
+- name: Joint filing status is eligible for the alternate tax
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_alternate_tax_eligible: true

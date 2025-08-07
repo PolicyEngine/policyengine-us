@@ -13,7 +13,7 @@ class meets_ssi_resource_test(Variable):
         # Assign individuals SSI pass rate probabilistically in microsimulation.
         # Apply policy logic in individual simulation.
         p = parameters(period).gov.ssa.ssi
-        if hasattr(person.simulation, "dataset"):
+        if person.simulation.dataset is not None:
             return random(person) < p.eligibility.resources.pass_rate
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)

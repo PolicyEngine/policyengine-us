@@ -1,0 +1,21 @@
+description: Oklahoma applies the following subtractions to federal adjusted gross income.
+values:
+  2021-01-01:
+    - us_govt_interest
+    - taxable_social_security
+    - ok_pension_subtraction
+    - ok_military_retirement_exclusion
+
+metadata:
+  unit: list
+  label: Oklahoma subtractions
+  period: year
+  reference:
+    - title: 2021 Oklahoma Resident Individual Income Tax Forms and Instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf#page=16
+    - title: 2021 Oklahoma Resident Individual Income Tax Forms and Instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2022/511-Pkt-2022.pdf#page=16
+    - title: 2023 Oklahoma Resident Individual Income Tax Forms and Instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2023/511-Pkt.pdf#page=16
+    - title: 2024 Oklahoma Resident Individual Income Tax Forms and Instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=16

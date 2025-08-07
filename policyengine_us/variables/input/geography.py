@@ -4,6 +4,13 @@ from policyengine_core.simulations import Simulation
 from policyengine_us.variables.household.demographic.geographic.state_name import (
     StateName,
 )
+from policyengine_us.parameters.gov.hhs.medicaid.geography import (
+    medicaid_rating_areas,
+    second_lowest_silver_plan_cost,
+)
+import warnings
+
+warnings.filterwarnings("ignore")
 
 label = "Geography"
 
@@ -88,64 +95,40 @@ class medicaid_rating_area(Variable):
     hidden_input = True
 
     def formula(household, period, parameters):
-        simulation: Simulation = household.simulation
-        if (
-            simulation.get_holder("reported_slspc").get_array(period)
-            is not None
-        ):
-            # If the user has provided a value for the second-lowest silver plan
-            # cost, skip.
-            return 0
-        parameter_tree = household.simulation.tax_benefit_system.parameters
-        if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
-            medicaid_parameters = ParameterNode(
-                directory_path=REPO
-                / "data"
-                / "parameters"
-                / "gov"
-                / "hhs"
-                / "medicaid"
-                / "geography"
-            )
-            medicaid_parameters = homogenize_parameter_structures(
-                medicaid_parameters,
-                household.simulation.tax_benefit_system.variables,
-            )
-            parameter_tree.gov.hhs.medicaid.add_child(
-                "geography", medicaid_parameters
-            )
-        mra = parameter_tree.gov.hhs.medicaid.geography.medicaid_rating_area(
-            period
-        )
         three_digit_zip_code = household("three_digit_zip_code", period)
         county = household("county_str", period)
-        locations = np.array(list(mra._children))
-        county_in_locations = np.isin(county, locations)
-        location = where(
-            county_in_locations,
-            county,
-            three_digit_zip_code,
+        # Try a lookup on zip code, fill missing values with a lookup on county, fill missing with zero.
+        df = pd.DataFrame(
+            {
+                "location": county,
+            }
         )
-        valid_location = np.isin(location, locations)
-        rating_areas = np.ones_like(
-            location
-        )  # ~2.8% of locations don't match with a a scraped MRA. For these, we assign to the State's first MRA.
-        if valid_location.sum() > 0:
-            rating_areas[valid_location] = mra[location[valid_location]]
-        return rating_areas
-
-
-class reported_slspc(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "reported second lowest silver plan cost"
-    unit = USD
-    definition_period = YEAR
-    hidden_input = True
+        df_matched = pd.merge(
+            df,
+            medicaid_rating_areas,
+            how="left",
+            left_on="location",
+            right_on="location",
+        )
+        county_lookup_failed = df_matched.rating_area.isna()
+        df_matched.location[county_lookup_failed] = three_digit_zip_code[
+            county_lookup_failed
+        ]
+        df_matched = pd.merge(
+            df_matched,
+            medicaid_rating_areas,
+            how="left",
+            left_on="location",
+            right_on="location",
+        )
+        df_matched["rating_area"] = df_matched["rating_area_x"].fillna(
+            df_matched["rating_area_y"]
+        )
+        return df_matched["rating_area"].fillna(1)
 
 
 class county_fips(Variable):
-    value_type = int
+    value_type = str
     label = "County FIPS code"
     entity = Household
     definition_period = YEAR

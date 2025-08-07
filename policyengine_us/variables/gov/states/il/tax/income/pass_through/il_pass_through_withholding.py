@@ -7,3 +7,4 @@ class il_pass_through_withholding(Variable):
     label = "IL Pass-Through Withholding"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL

@@ -7,3 +7,4 @@ class prescription_expense(Variable):
     label = "Prescription expenses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

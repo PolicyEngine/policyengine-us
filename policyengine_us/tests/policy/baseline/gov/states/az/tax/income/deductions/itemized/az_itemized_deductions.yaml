@@ -1,79 +1,85 @@
-- name: when az_charitable_contributions_credit==0
+- name: No charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 100 
     casualty_loss_deduction: 200
-    medical_expense: 500 
+    medical_out_of_pocket_expenses: 500 
     charitable_deduction: 500 
     az_charitable_contributions_credit: 0
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_300
 
-- name: when az_charitable_contributions_credit!=0
+- name: Some charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 100
     casualty_loss_deduction: 200
-    medical_expense: 700
+    medical_out_of_pocket_expenses: 700
     charitable_deduction: 500
     az_charitable_contributions_credit: 500
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_000
 
-- name: medical_expense > medical_expense_deduction, charitable_deduction < az_charitable_contributions_credit
+- name: Medical expenses over medical expense deduction, charitable deduction under charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 200 
     casualty_loss_deduction: 300 
-    medical_expense: 600
+    medical_out_of_pocket_expenses: 600
     charitable_deduction: 500 
     az_charitable_contributions_credit: 600
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_100
 
 
-- name: medical_expense > medical_expense_deduction, charitable_deduction > az_charitable_contributions_credit
+- name: Medical expenses over medical expense deduction, charitable deduction over charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 200 
     casualty_loss_deduction: 300 
-    medical_expense: 700 
+    medical_out_of_pocket_expenses: 700 
     charitable_deduction: 700 
     az_charitable_contributions_credit: 600
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_300
   
 
-- name: medical_expense >= medical_expense_deduction, charitable_deduction > az_charitable_contributions_credit
+- name: Medical expenses over medical expense deduction, charitable deduction over charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 200 
     casualty_loss_deduction: 300 
-    medical_expense: 600
+    medical_out_of_pocket_expenses: 600
     charitable_deduction: 700 
     az_charitable_contributions_credit: 600
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_200
 
-- name: medical_expense > medical_expense_deduction, charitable_deduction < az_charitable_contributions_credit
+- name: Medical expenses over medical expense deduction, charitable deduction under charitable contributions credit
   absolute_error_margin: 0.01
   period: 2022
   input:
     state_code: AZ
     interest_deduction: 200 
     casualty_loss_deduction: 300 
-    medical_expense: 600
+    medical_out_of_pocket_expenses: 600
     charitable_deduction: 700 
     az_charitable_contributions_credit: 800
+    state_sales_tax: 0
   output:
     az_itemized_deductions: 1_100

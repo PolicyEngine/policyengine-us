@@ -1,0 +1,39 @@
+- name: Case 1, eligible parent for payment. 
+  period: 2022-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_parent: true
+
+- name: Case 2, ineligible parent for payment due to not head or spouse. 
+  period: 2022-01
+  input:
+    is_tax_unit_head_or_spouse: false
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_parent: false
+
+- name: Case 3, ineligible parent for payment due to immigration status. 
+  period: 2022-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    il_tanf_immigration_status_eligible_person: false
+    ssi: 0 
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_parent: false
+
+- name: Case 4, ineligible parent for payment due to receive ssi. 
+  period: 2022-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 100
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_parent: false

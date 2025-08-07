@@ -15,12 +15,12 @@ class dwks09(Variable):
             period,
             ["long_term_capital_gains", "qualified_dividend_income"],
         )
-        dwks07 = min_(qdiv_plus_ltcg, tax_unit("net_capital_gains", period))
+        net_cg = min_(qdiv_plus_ltcg, tax_unit("net_capital_gains", period))
         # dwks08 = min(dwks03, dwks04)
         # dwks09 = max(0., dwks07 - dwks08)
         # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF dwks09=... COMMENT
         other_cg = add(tax_unit, period, ["non_sch_d_capital_gains"])
-        mod_cg = where(other_cg > 0, other_cg, max_(0, dwks07) + other_cg)
+        mod_cg = where(other_cg > 0, other_cg, max_(0, net_cg) + other_cg)
         return max_(
             0,
             mod_cg - min_(0, tax_unit("investment_income_form_4952", period)),

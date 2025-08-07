@@ -1,0 +1,11 @@
+description: Vermont has no age variation in ACA premiums.
+metadata:
+  type: single_amount
+  unit: /1
+  period: year
+  label: ACA premium age curve factors - VT
+  reference:
+  - title: CMS Market Rating Reforms State Specific Age Curve Variations
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating#age
+values:
+ 2018-01-01: 1.0

@@ -7,3 +7,4 @@ class non_qualified_dividend_income(Variable):
     label = "non-qualified dividend income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.non_qualified_dividend_income"

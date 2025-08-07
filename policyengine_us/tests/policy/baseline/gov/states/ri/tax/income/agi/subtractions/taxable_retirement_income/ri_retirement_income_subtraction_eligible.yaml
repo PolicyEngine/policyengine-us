@@ -18,7 +18,7 @@
   output:
     ri_retirement_income_subtraction_eligible: true
 
-- name: Widow filer eligible 
+- name: Surviving spouse filer eligible 
   period: 2022
   input:
     state_code: RI
@@ -28,7 +28,7 @@
   output:
     ri_retirement_income_subtraction_eligible: true
 
-- name: Widow filer ineligible 
+- name: Surviving spouse filer ineligible 
   period: 2022
   input:
     state_code: RI
@@ -38,7 +38,7 @@
   output:
     ri_retirement_income_subtraction_eligible: false
 
-- name: Widow filer ineligible in 2021
+- name: Surviving spouse filer ineligible in 2021
   period: 2021
   input:
     state_code: RI

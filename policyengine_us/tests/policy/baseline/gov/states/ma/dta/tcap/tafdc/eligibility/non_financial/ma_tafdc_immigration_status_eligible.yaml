@@ -1,0 +1,15 @@
+- name: Eligible refugee 
+  period: 2023
+  input:
+    immigration_status: REFUGEE
+    state_code: MA
+  output:
+    ma_tafdc_immigration_status_eligible: true
+
+- name: Not eligible undocumented 
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: MA
+  output:
+    ma_tafdc_immigration_status_eligible: false

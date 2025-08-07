@@ -1,0 +1,54 @@
+- name: Joint filers with 81k of income each and one dependent
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_000
+      person2: 
+        age: 19
+        employment_income: 81_000
+      person3:
+        age: 8
+    tax_units:
+      tax_units:
+        members: [person1, person2, person3]
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_income_tax: 5_338
+
+- name: 2123-RI.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+        taxable_interest_income: 124
+        taxable_pension_income: 175_500
+        social_security_retirement: 12_520
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 44
+  output:
+    ri_income_tax: 7_337

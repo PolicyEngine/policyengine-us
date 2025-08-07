@@ -2,12 +2,10 @@ description: QBID cap rate on pass-through business W-2 wages paid.
 metadata:
   label: QBID rate on W-2 wages
   unit: /1
+  period: year
+  reference:
+    - title: 26 U.S. Code § 199A(b)(2)(B)(i) - Qualified business income
+      href: https://www.law.cornell.edu/uscode/text/26/199A#b_2_B_i
 values:
   2013-01-01: 0.0
-  2014-01-01: 0.0
-  2015-01-01: 0.0
-  2016-01-01: 0.0
-  2017-01-01: 0.0
   2018-01-01: 0.5
-  2019-01-01: 0.5
-  2026-01-01: 0.0

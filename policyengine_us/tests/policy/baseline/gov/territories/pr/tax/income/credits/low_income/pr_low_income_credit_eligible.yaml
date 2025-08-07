@@ -1,0 +1,79 @@
+- name: Two eligible people
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_low_income_credit_eligible_person: true
+        pr_gross_income_person: 20_000
+      person2:
+        pr_low_income_credit_eligible_person: true
+        pr_gross_income_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_low_income_credit_eligible: true
+
+- name: Two ineligible people
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_low_income_credit_eligible_person: false
+        pr_gross_income_person: 20_000
+      person2:
+        pr_low_income_credit_eligible_person: false
+        pr_gross_income_person: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_low_income_credit_eligible: false
+
+- name: One person eligible
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_low_income_credit_eligible_person: true
+        pr_gross_income_person: 10_000
+      person2:
+        pr_low_income_credit_eligible_person: false
+        pr_gross_income_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_low_income_credit_eligible: true
+
+- name: One person age eligible but income ineligible
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_low_income_credit_eligible_person: true
+        pr_gross_income_person: 10_000
+      person2:
+        pr_low_income_credit_eligible_person: false
+        pr_gross_income_person: 5_001
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: PR
+  output:  
+    pr_low_income_credit_eligible: false

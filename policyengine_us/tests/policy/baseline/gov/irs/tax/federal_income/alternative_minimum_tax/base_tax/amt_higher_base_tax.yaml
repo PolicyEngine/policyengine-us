@@ -1,0 +1,23 @@
+- name: Single person, low income
+  period: 2022
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 10_000
+  output:
+    amt_higher_base_tax: 0
+
+- name: Single person, 400k income
+  period: 2022
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 400_000
+  output:
+    amt_higher_base_tax: 54_292
+
+- name: Joint, 600k income
+  period: 2022
+  input:
+    filing_status: JOINT
+    amt_income_less_exemptions: 600_000
+  output:
+    amt_higher_base_tax: 110_292

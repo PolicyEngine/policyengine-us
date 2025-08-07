@@ -7,3 +7,4 @@ class alimony_income(Variable):
     label = "Alimony income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.self_employment_income"

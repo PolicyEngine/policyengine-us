@@ -1,0 +1,11 @@
+description: California provides a separate maximum Lifeline benefit amount if this is true.
+values:
+  0000-01-01: false
+  2024-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: California Lifeline maximum benefit in effect
+  reference:
+    - title: California LifeLine Eligibility
+      href: https://www.cpuc.ca.gov/consumer-support/financial-assistance-savings-and-discounts/lifeline/california-lifeline-eligibility

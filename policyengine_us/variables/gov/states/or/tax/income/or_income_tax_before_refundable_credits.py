@@ -7,6 +7,7 @@ class or_income_tax_before_refundable_credits(Variable):
     label = "OR income tax before refundable credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
         income_tax_before_credits = tax_unit(

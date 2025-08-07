@@ -15,8 +15,12 @@ class ca_calworks_child_care_eligible(Variable):
         work_requirement = spm_unit(
             "ca_calworks_child_care_meets_work_requirement", period
         )
-        immigration_eligible = spm_unit(
-            "ca_calworks_child_care_immigration_status_eligible", period
+        person = spm_unit.members
+        immigration_eligible = spm_unit.all(
+            person(
+                "ca_calworks_child_care_immigration_status_eligible_person",
+                period,
+            )
         )
         return (
             receives_tanf

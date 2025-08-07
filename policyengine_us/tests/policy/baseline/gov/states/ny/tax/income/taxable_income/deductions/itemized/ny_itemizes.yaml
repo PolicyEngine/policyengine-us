@@ -1,0 +1,32 @@
+- name: Case 1, itemzied deduction higher than standard deduction. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: true
+    ny_standard_deduction: 200
+    ny_itemized_deductions: 300
+    state_code: NY
+  output:
+    ny_itemizes: true
+
+- name: Case 2, itemzied deduction less than standard deduction. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: true
+    ny_standard_deduction: 300
+    ny_itemized_deductions: 100
+    state_code: NY
+  output:
+    ny_itemizes: false
+
+- name: Case 3, not itemzies. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: false
+    ny_standard_deduction: 300
+    ny_itemized_deductions: 500
+    state_code: NY
+  output:
+    ny_itemizes: false

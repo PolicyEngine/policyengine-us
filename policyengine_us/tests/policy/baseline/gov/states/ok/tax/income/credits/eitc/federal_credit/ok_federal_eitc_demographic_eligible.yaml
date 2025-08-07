@@ -1,0 +1,49 @@
+- name: No children and under 25, not eligible.
+  period: 2022
+  input:
+    age: 24
+    state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false
+
+- name: No children and over 25, ineligible.
+  period: 2022
+  input:
+    age: 25
+  output:
+    ok_federal_eitc_demographic_eligible: false
+
+- name: Children and under 25, eligible.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 24
+      child:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household: 
+        members: [child, parent]
+        state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: true
+
+- name: Non-student in 2021 ineligible at age 19.
+  period: 2021
+  input:
+    age: 19
+    state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false
+
+- name: Student in 2021 not eligible at age 19.
+  period: 2021
+  input:
+    age: 19
+    is_full_time_student: true
+    state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false

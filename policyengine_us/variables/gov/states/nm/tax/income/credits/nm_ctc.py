@@ -19,7 +19,7 @@ class nm_ctc(Variable):
         # https://www.law.cornell.edu/uscode/text/26/152#c
         children = tax_unit("eitc_child_count", period)
         p = parameters(period).gov.states.nm.tax.income.credits.ctc
-        amount_per_child = p.amount.calc(agi)
+        amount_per_child = p.amount.calc(agi, right=True)
         amount = amount_per_child * children
         # Halve the credit if married filing separately.
         filing_status = tax_unit("filing_status", period)

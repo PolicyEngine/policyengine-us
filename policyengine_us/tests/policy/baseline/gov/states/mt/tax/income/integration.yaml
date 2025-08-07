@@ -33,6 +33,59 @@
     mt_eitc: [98.854, 0, 0]
     mt_income_tax_joint: 354.65
 
+- name: Married couple with employment income (2023 tax code)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 40_000
+        age: 35
+      person2:
+        employment_income: 30_000
+        age: 33
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        capital_gains_tax: 400
+        mt_income_tax_joint: 2398.75
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_personal_exemptions_joint: [5_920, 0]
+    mt_agi: [40_000, 30_000]
+    mt_standard_deduction_joint: [11_080, 0]
+    mt_taxable_income_joint: [53_000, 0]
+    mt_income_tax_joint: 2_398.75
+
+- name: Married couple with employment income (2024 tax code)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 40_000
+        age: 35
+      person2:
+        employment_income: 30_000
+        age: 33
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        mt_income_tax_joint: 1917.60
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_personal_exemptions_joint: [0, 0]
+    mt_agi: [40_000, 30_000]
+    mt_standard_deduction_joint: [29_200, 0]
+    mt_taxable_income_joint: [40_800, 0]
+    mt_income_tax_joint: 1_917.60
+
 - name: Tax unit with taxsimid 22630 in e21.its.csv and e21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
@@ -48,7 +101,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -122,7 +175,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -134,3 +187,68 @@
         state_fips: 30  # MT
   output:  # expected results from patched TAXSIM35 2024-04-29 version
     mt_income_tax: 61.04
+
+- name: 1-MT.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      person2:
+        age: 10
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    mt_income_tax: -421
+
+- name: 507-MT.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 671000.0
+      person2:
+        age: 40
+        employment_income: 671000.0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    mt_files_separately: false
+    mt_income_tax: 76_963

@@ -15,11 +15,6 @@ class ga_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ga.tax.income.exemptions
-        filing_status = tax_unit("filing_status", period)
-
-        # Personal Exemptions
-        personal_exemptions = p.personal[filing_status]
-
         # Dependent exemptions
         dependents = tax_unit(
             "tax_unit_dependents", period
@@ -27,4 +22,8 @@ class ga_exemptions(Variable):
         dependent_exemptions = dependents * p.dependent
 
         # total exemptions
-        return personal_exemptions + dependent_exemptions
+        if p.personal.availability:
+            filing_status = tax_unit("filing_status", period)
+            personal_exemptions = p.personal.amount[filing_status]
+            return personal_exemptions + dependent_exemptions
+        return dependent_exemptions

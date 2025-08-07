@@ -1,5 +1,50 @@
 description: Individual earnings below this amount are subjected to Social Security (OASDI) payroll tax. This parameter is indexed by the rate of growth in average wages, not by the price inflation rate.
 values:
+  1937-01-01: 3_000
+  1951-01-01: 3_600
+  1955-01-01: 4_200
+  1959-01-01: 4_800
+  1966-01-01: 6_600
+  1968-01-01: 7_800
+  1972-01-01: 9_000
+  1973-01-01: 10_800
+  1974-01-01: 13_200
+  1975-01-01: 14_100
+  1976-01-01: 15_300
+  1977-01-01: 16_500
+  1978-01-01: 17_700
+  1979-01-01: 22_900
+  1980-01-01: 25_900
+  1981-01-01: 29_700
+  1982-01-01: 32_400
+  1983-01-01: 35_700
+  1984-01-01: 37_800
+  1985-01-01: 39_600
+  1986-01-01: 42_000
+  1987-01-01: 43_800
+  1988-01-01: 45_000
+  1989-01-01: 48_000
+  1990-01-01: 51_300
+  1991-01-01: 53_400
+  1992-01-01: 55_500
+  1993-01-01: 57_600
+  1994-01-01: 60_600
+  1995-01-01: 61_200
+  1996-01-01: 62_700
+  1997-01-01: 65_400
+  1998-01-01: 68_400
+  1999-01-01: 72_600
+  2000-01-01: 76_200
+  2001-01-01: 80_400
+  2002-01-01: 84_900
+  2003-01-01: 87_000
+  2004-01-01: 87_900
+  2005-01-01: 90_000
+  2006-01-01: 94_200
+  2007-01-01: 97_500
+  2008-01-01: 102_000
+  2009-01-01: 106_800
+  2012-01-01: 110_100
   2013-01-01: 113_700
   2014-01-01: 117_000
   2015-01-01: 118_500
@@ -12,24 +57,33 @@ values:
   2022-01-01: 147_000
   2023-01-01: 160_200
   2024-01-01: 168_600
-  # CBO forecast.
   2025-01-01: 176_100
-  2026-01-01: 183_300
-  2027-01-01: 189_900
-  2028-01-01: 196_200
-  2029-01-01: 202_800
-  2030-01-01: 210_300
-  2031-01-01: 217_800
-  2032-01-01: 225_600
-  2033-01-01: 233_700
-  2034-01-01: 241_800
+  # CBO forecast.
+  2026-01-01: 186_000
+  2027-01-01: 192_600
+  2028-01-01: 198_600
+  2029-01-01: 206_400
+  2030-01-01: 214_200
+  2031-01-01: 222_300
+  2032-01-01: 230_100
+  2033-01-01: 237_900
+  2034-01-01: 246_000
+  2035-01-01: 254_400
 metadata:
   unit: currency-USD
   period: year
   label: Social Security earnings cap
+  uprating: gov.ssa.nawi
   reference:
-    - title: Maximum Taxable Earnings Each Year
-      href: https://www.ssa.gov/benefits/retirement/planner/maxtax.html
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
-      # 1. Tax Parameters. Row 160.
-      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+    - title: 42 U.S.C. § 430(b)
+      href: https://www.law.cornell.edu/uscode/text/42/430#b
+      # (b)(1) sets the base at $60,600 for 1994
+      # (b)(2) indexes based on the national average wage index relative to 1992
+    - title: 26 U.S.C. § 3121(a)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/3121#a_1
+      # Defines wages for FICA tax purposes as amounts from the benefit base.
+    - title: Contribution And Benefit Base
+      href: https://www.ssa.gov/oact/cola/cbb.html
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
+      # 1. Tax Parameters. Row 161.
+      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx

@@ -1,5 +1,5 @@
-- name: Single parent of one with no earnings gets maximum benefit.
-  period: 2023
+- name: Case 1, single parent of one with no earnings gets maximum benefit.
+  period: 2022
   input:
     people:
       parent: {}
@@ -8,9 +8,103 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        dc_tanf_meets_work_requirements: true
     households:
       household:
         members: [parent, child]
         state_code: DC
   output:
-    dc_tanf: 545 * 12
+    dc_tanf: 545*12
+
+- name: Case 2, applicant has an eligible child. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        childcare_expenses: 5_000
+        dc_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_childcare_deduction: 200*12
+    dc_tanf_earned_income_after_disregard_person: [2_080, 0]
+    dc_tanf_countable_income: 0
+    dc_tanf_standard_payment: 545*12
+    dc_tanf_eligible: true 
+    dc_tanf: 545*12
+
+- name: Case 3, applicant has an eligible child enrolled in TANF.  
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 4_020
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        childcare_expenses: 0
+        dc_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_childcare_deduction: 0
+    dc_tanf_earned_income_after_disregard_person: [693, 0]
+    dc_tanf_countable_income: 693
+    dc_tanf_standard_payment: 545*12
+    dc_tanf_eligible: true 
+    dc_tanf: 5_847 # 545*12 - 693 = 5847
+
+- name: Case 4, applicant income ineligible for the program. 
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        childcare_expenses: 1_200
+        dc_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_tanf_childcare_deduction: 1_200   # min(1200, 175*12)
+    dc_tanf_earned_income_after_disregard_person: [34_080, 0]  # 36000 - 160*12 = 34080
+    dc_tanf_countable_income: 32_880
+    dc_tanf_standard_payment: 6_585  # 545*9 + 560*3 because monthly payment values update in October 1
+    dc_tanf_eligible: false 
+    dc_tanf: 0

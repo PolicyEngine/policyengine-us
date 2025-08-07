@@ -3,9 +3,12 @@ values:
   2021-01-01: 175
   2022-01-01: 182
   2023-01-01: 198
+  2024-01-01: 208
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
   label: Michigan home heating additional base amount per additional exemption
   reference:
     - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(a)
@@ -16,3 +19,5 @@ metadata:
       href: https://www.efile.com/pdf/5988.pdf#page=13
     - title: Michigan 2023 Book MI-1040CR7 Home Heating Instructions, Table A
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040CR-7.pdf#page=11
+    - title: Michigan 2024 Book MI-1040CR7 Home Heating Instructions, Table A
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf#page=11

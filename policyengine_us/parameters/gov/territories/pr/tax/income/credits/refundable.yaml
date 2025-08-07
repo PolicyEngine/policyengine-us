@@ -1,0 +1,18 @@
+description: Puerto Rico provides the following refundable income tax credits.
+metadata:
+  unit: list
+  period: year
+  label: Puerto Rico refundable credits
+  reference:
+    # Low Income Credit
+    - title: Gov. of Puerto Rico Form 481.10 2023 
+      href: https://hacienda.pr.gov/sites/default/files/documentos/481.10_2023_informative.pdf#page=4
+
+values:
+  2021-01-01:
+    - pr_low_income_credit
+    - pr_compensatory_low_income_credit
+  2023-01-01:
+    - pr_low_income_credit
+    - pr_compensatory_low_income_credit
+    - pr_earned_income_credit

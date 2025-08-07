@@ -1,0 +1,26 @@
+- name: Household with no income is eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 362 * 12
+    spm_unit_size: 1
+  output:
+    nc_tanf_income_eligible: true
+
+- name: Household with income and less than the allowed difference is ineligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 42 * 12
+    spm_unit_size: 2
+  output:
+    nc_tanf_income_eligible: false
+
+- name: Household with income and greater than the allowed difference is eligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 72 * 12
+    spm_unit_size: 2
+  output:
+    nc_tanf_income_eligible: true

@@ -1,0 +1,117 @@
+- name: Case 1, one child age of 5. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+        weekly_hours_worked: 40
+        ma_eaedc_eligible_dependent: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 3_600
+        weekly_hours_worked: 0
+        ma_eaedc_eligible_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 2_100
+
+- name: Case 2, one child age of 1.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false
+        weekly_hours_worked: 40 
+        ma_eaedc_eligible_dependent: false
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 2_040
+        weekly_hours_worked: 0
+        ma_eaedc_eligible_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 2_040
+
+- name: Case 3, two children age of 1 and 5.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+        weekly_hours_worked: 40
+        ma_eaedc_eligible_dependent: false
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 2_040
+        weekly_hours_worked: 0
+        ma_eaedc_eligible_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 2_760
+        weekly_hours_worked: 0
+        ma_eaedc_eligible_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 4_140
+
+- name: Case 4, one child age of 5, weekly hours is 25.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+        weekly_hours_worked: 25
+        ma_eaedc_eligible_dependent: false
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 3_600
+        weekly_hours_worked: 0
+        ma_eaedc_eligible_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 1_584

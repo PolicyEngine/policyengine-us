@@ -40,7 +40,7 @@ class or_federal_tax_liability_subtraction(Variable):
                 p.joint.calc(federal_agi),
                 p.head_of_household.calc(federal_agi),
                 p.separate.calc(federal_agi),
-                p.widow.calc(federal_agi),
+                p.surviving_spouse.calc(federal_agi),
             ],
         )
         return min_(or_federal_income_tax, cap)

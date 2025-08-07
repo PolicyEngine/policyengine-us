@@ -18,10 +18,8 @@ class marginal_tax_rate(Variable):
         adult_indexes = person("adult_earnings_index", period)
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
-        total_earnings = employment_income + self_employment_income
-        emp_self_emp_ratio = where(
-            total_earnings > 0, employment_income / total_earnings, 1
-        )
+        emp_self_emp_ratio = person("emp_self_emp_ratio", period)
+
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
             for variable in sim.tax_benefit_system.variables:
@@ -46,6 +44,7 @@ class marginal_tax_rate(Variable):
             netinc_alt = alt_person.household("household_net_income", period)
             increase = netinc_alt - netinc_base
             mtr_values += where(mask, 1 - increase / delta, 0)
+            del sim.branches[f"mtr_for_adult_{adult_index}"]
         return mtr_values
 
 

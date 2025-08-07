@@ -1,0 +1,15 @@
+- name: Eligible infant 
+  period: 2023
+  input:
+    ma_tafdc_eligible_infant: true
+    state_code: MA
+  output:
+    ma_tafdc_infant_benefit: 300
+
+- name: Ineligible infant 
+  period: 2023
+  input:
+    ma_tafdc_eligible_infant: false
+    state_code: MA
+  output:
+    ma_tafdc_infant_benefit: 0

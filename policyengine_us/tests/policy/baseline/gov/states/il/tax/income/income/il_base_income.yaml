@@ -5,6 +5,7 @@
     dividend_income: 2_500
     taxable_pension_income: 1_000
     il_schedule_m_subtractions: 100
+    state_code: IL
   output:
     il_base_income: 8_900
 
@@ -15,6 +16,7 @@
     tax_exempt_interest_income: 4_500
     il_schedule_m_additions: 1_300
     il_schedule_m_subtractions: 50
+    state_code: IL
   output:
     il_base_income: 30_750
 
@@ -23,5 +25,6 @@
   input:
     adjusted_gross_income: 5_000
     taxable_social_security: 1_300
+    state_code: IL
   output:
     il_base_income: 3_700

@@ -4,5 +4,38 @@
   period: 2024
   input:
     household_net_income: -1
+    household_weight: 1
   output:
     household_income_decile: -1
+
+- name: Large negative income also gets -1 decile
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        household_net_income: -10_000
+        household_count_people: 1
+        household_weight: 1_000
+  output:
+    household_income_decile: -1
+
+- name: Zero income household gets highest decile when it's the only household
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        household_net_income: 0
+        household_count_people: 1
+        household_weight: 1_000
+  output:
+    household_income_decile: 10

@@ -1,0 +1,34 @@
+- name: Case 1, has eligible dependent. 
+  period: 2023
+  input:
+    ma_tafdc_eligible_dependent: true
+    ma_tafdc_pregnancy_eligible: false
+    state_code: MA
+  output:
+    ma_tafdc_dependent_criteria_eligible: true
+
+- name: Case 2, has eligible pregnancy.
+  period: 2023
+  input:
+    people:
+      person1:
+        ma_tafdc_eligible_dependent: false
+        ma_tafdc_pregnancy_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_criteria_eligible: true
+
+- name: Case 3, has neither eligible dependent nor pregnancy. 
+  period: 2023-01
+  input:
+    ma_tafdc_eligible_dependent: false
+    ma_tafdc_pregnancy_eligible: false
+    state_code: MA
+  output:
+    ma_tafdc_dependent_criteria_eligible: false

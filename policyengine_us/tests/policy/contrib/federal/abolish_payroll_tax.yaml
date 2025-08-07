@@ -6,7 +6,9 @@
     ca_income_tax_before_refundable_credits: 1_000
     employee_payroll_tax: 600
   output:
+    household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_000
+
 
 - name: No reform
   period: 2022
@@ -15,4 +17,5 @@
     ca_income_tax_before_refundable_credits: 1_000
     employee_payroll_tax: 600
   output:
+    household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_600

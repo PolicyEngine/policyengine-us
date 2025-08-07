@@ -47,3 +47,21 @@
     ssi_countable_income: 0
   output:
     uncapped_ssi: 0
+
+- name: Eligible using defined for 
+  period: 2022
+  input:
+    ssi_amount_if_eligible: 100
+    is_ssi_eligible: true
+    ssi_countable_income: 0
+  output:
+    uncapped_ssi: 100
+
+- name: Ineligible using defined for 
+  period: 2022
+  input:
+    ssi_amount_if_eligible: 100
+    is_ssi_eligible: false
+    ssi_countable_income: 0
+  output:
+    uncapped_ssi: 0

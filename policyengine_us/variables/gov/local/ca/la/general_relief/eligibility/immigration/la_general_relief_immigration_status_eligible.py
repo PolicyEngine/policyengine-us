@@ -15,6 +15,6 @@ class la_general_relief_immigration_status_eligible(Variable):
         eligible_person = person(
             "la_general_relief_immigration_status_eligible_person", period
         )
-        # To be eligible for General Relief (GR), all applicants/participants must
+        # To be eligible for General Relief (GR), at least one applicants/participants must
         # meet the eligibility criteria
-        return spm_unit.all(eligible_person)
+        return spm_unit.any(eligible_person)

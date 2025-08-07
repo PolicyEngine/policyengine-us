@@ -13,9 +13,10 @@ class md_income_tax_before_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         taxable_income = tax_unit("md_taxable_income", period)
-        # Calculate for each of the filing statuses and return the appropriate one.
-        p = parameters(period).gov.states.md.tax.income.rates
-        return select(
+
+        # Calculate regular income tax based on filing status
+        p = parameters(period).gov.states.md.tax.income
+        regular_income_tax = select(
             [
                 filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.SEPARATE,
@@ -24,10 +25,16 @@ class md_income_tax_before_credits(Variable):
                 filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.joint.calc(taxable_income),
-                p.head.calc(taxable_income),
-                p.widow.calc(taxable_income),
+                p.rates.single.calc(taxable_income),
+                p.rates.separate.calc(taxable_income),
+                p.rates.joint.calc(taxable_income),
+                p.rates.head_of_household.calc(taxable_income),
+                p.rates.surviving_spouse.calc(taxable_income),
             ],
         )
+
+        # Add capital gains surtax if applicable
+        if p.capital_gains.surtax_applies:
+            capital_gains_surtax = tax_unit("md_capital_gains_surtax", period)
+            return regular_income_tax + capital_gains_surtax
+        return regular_income_tax

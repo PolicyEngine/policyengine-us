@@ -1,0 +1,23 @@
+- name: Eligible
+  period: 2022
+  input:
+    meets_ssi_resource_test: true
+    is_ssi_eligible_individual: true
+  output:
+    is_ssi_eligible: true
+
+- name: Resource ineligible
+  period: 2022
+  input:
+    meets_ssi_resource_test: false
+    is_ssi_eligible_individual: true
+  output:
+    is_ssi_eligible: false
+
+- name: Ineligible individual
+  period: 2022
+  input:
+    meets_ssi_resource_test: true
+    is_ssi_eligible_individual: false
+  output:
+    is_ssi_eligible: false

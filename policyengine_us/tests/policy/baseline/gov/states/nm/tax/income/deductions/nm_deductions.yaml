@@ -2,7 +2,7 @@
   period: 2021
   input:
     tax_unit_itemizes: true
-    nm_itemized_deductions: 1_000
+    total_itemized_taxable_income_deductions: 1_000
     standard_deduction: 2_500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
@@ -15,7 +15,7 @@
   period: 2021
   input:
     tax_unit_itemizes: false
-    nm_itemized_deductions: 1_000
+    total_itemized_taxable_income_deductions: 1_000
     standard_deduction: 2_500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
@@ -27,7 +27,7 @@
   period: 2021
   input:
     tax_unit_itemizes: true
-    nm_itemized_deductions: 1_000
+    total_itemized_taxable_income_deductions: 1_000
     standard_deduction: 2_500
     nm_medical_care_expense_deduction: 0
     nm_net_capital_gains_deduction: 0

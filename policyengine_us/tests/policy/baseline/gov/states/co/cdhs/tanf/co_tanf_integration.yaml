@@ -4,8 +4,10 @@
     people:
       person1:
         is_adult: true
+        age: 40
       person2:
         is_child: true
+        age: 12
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,30 +34,43 @@
       adult2:
         is_adult: true
         is_pregnant: true
+        age: 29
       child1:
         is_child: true
+        age: 11
       child2:
         is_child: true
+        age: 12
       child3:
         is_child: true
+        age: 6
       child4:
         is_child: true
+        age: 6
       child5:
         is_child: true
+        age: 7
       child6:
         is_child: true
+        age: 4
       child7:
         is_child: true
+        age: 5
       child8:
         is_child: true
+        age: 13
       child9:
         is_child: true
+        age: 11
       child10:
         is_child: true
+        age: 11
       child11:
         is_child: true
+        age: 11
       child12:
         is_child: true
+        age: 11
     spm_units:
       spm_unit:
         members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12]
@@ -68,3 +83,4 @@
         state_code: CO
   output:
     co_tanf: 19_868
+    

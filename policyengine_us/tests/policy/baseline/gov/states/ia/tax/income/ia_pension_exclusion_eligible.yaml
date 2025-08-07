@@ -116,3 +116,21 @@
         state_code: IA
   output:
     ia_pension_exclusion_eligible: [true, true]
+
+- name: Only person who meets the age requirement is not a head or spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 54
+      person2:
+        age: 54
+      person3:
+        age: 70
+        is_tax_unit_head_or_spouse: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [false, false, false]

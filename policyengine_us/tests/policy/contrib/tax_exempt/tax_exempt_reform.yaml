@@ -1,0 +1,62 @@
+- name: Overtime and tips are excluded from income and payroll tax
+  period: 2024
+  reforms: policyengine_us.reforms.tax_exempt.tax_exempt_reform.tax_exempt_reform
+  input:
+    gov.contrib.tax_exempt.in_effect: true
+    gov.contrib.tax_exempt.overtime.payroll_tax_exempt: true
+    gov.contrib.tax_exempt.overtime.income_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
+    fsla_overtime_premium: 10_000
+    tip_income: 10_000
+    irs_employment_income: 30_000
+  output:
+    irs_gross_income: 10_000
+    payroll_tax_gross_wages: 10_000
+
+- name: Reform does not apply
+  period: 2024
+  input:
+    gov.contrib.tax_exempt.in_effect: false
+    gov.contrib.tax_exempt.overtime.payroll_tax_exempt: true
+    gov.contrib.tax_exempt.overtime.income_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
+    # fsla_overtime_premium: 10_000
+    # tip_income: 10_000
+    irs_employment_income: 30_000
+  output:
+    irs_gross_income: 30_000
+    payroll_tax_gross_wages: 30_000
+
+- name: Overtime and tips are excluded from income but not payroll tax
+  period: 2024
+  reforms: policyengine_us.reforms.tax_exempt.tax_exempt_reform.tax_exempt_reform
+  input:
+    gov.contrib.tax_exempt.in_effect: true
+    gov.contrib.tax_exempt.overtime.payroll_tax_exempt: false
+    gov.contrib.tax_exempt.overtime.income_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: false
+    gov.contrib.tax_exempt.tip_income.income_tax_exempt: true
+    fsla_overtime_premium: 10_000
+    tip_income: 10_000
+    irs_employment_income: 30_000
+  output:
+    irs_gross_income: 10_000
+    payroll_tax_gross_wages: 30_000
+
+- name: Overtime is income tax exempt and tips are payroll tax exempt
+  period: 2024
+  reforms: policyengine_us.reforms.tax_exempt.tax_exempt_reform.tax_exempt_reform
+  input:
+    gov.contrib.tax_exempt.in_effect: true
+    gov.contrib.tax_exempt.overtime.payroll_tax_exempt: false
+    gov.contrib.tax_exempt.overtime.income_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.payroll_tax_exempt: true
+    gov.contrib.tax_exempt.tip_income.income_tax_exempt: false
+    fsla_overtime_premium: 12_000
+    tip_income: 11_000
+    irs_employment_income: 30_000
+  output:
+    irs_gross_income: 18_000
+    payroll_tax_gross_wages: 19_000

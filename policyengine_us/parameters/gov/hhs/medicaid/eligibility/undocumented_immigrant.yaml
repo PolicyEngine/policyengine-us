@@ -6,7 +6,9 @@ metadata:
   breakdown:
   - state_code
   reference:
-    # Currenly, states that only cover a certain age group of undocumented immigrants are not included in this list.
+    # currently, states that only cover a certain age group of undocumented immigrants are not included in this list.
+    - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2023: Findings from a 50-State Survey"
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2021: Findings from a 50-State Survey"
@@ -90,6 +92,7 @@ OK:
   2021-01-01: false
 OR:
   2021-01-01: false
+  2023-07-01: true
 PA:
   2021-01-01: false
 RI:

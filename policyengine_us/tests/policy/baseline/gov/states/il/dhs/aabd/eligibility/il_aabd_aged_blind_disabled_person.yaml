@@ -1,0 +1,39 @@
+- name: Case 1, elderly.
+  period: 2023
+  input:
+    age: 65
+    is_blind: false
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_aged_blind_disabled_person: true
+
+- name: Case 2, blind.
+  period: 2023
+  input:
+    age: 64
+    is_blind: true
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_aged_blind_disabled_person: true
+
+- name: Case 3, disabled.
+  period: 2023
+  input:
+    age: 64
+    is_blind: false
+    is_ssi_disabled: true
+    state_code: IL
+  output:
+    il_aabd_aged_blind_disabled_person: true
+
+- name: Case 4, neither of those.
+  period: 2023
+  input:
+    age: 64
+    is_blind: false
+    is_ssi_disabled: false
+    state_code: IL
+  output:
+    il_aabd_aged_blind_disabled_person: false

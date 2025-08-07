@@ -11,8 +11,9 @@ class eitc(Variable):
     defined_for = "eitc_eligible"
 
     def formula(tax_unit, period, parameters):
+        takes_up_eitc = tax_unit("takes_up_eitc", period)
         maximum = tax_unit("eitc_maximum", period)
         phased_in = tax_unit("eitc_phased_in", period)
         reduction = tax_unit("eitc_reduction", period)
         limitation = max_(0, maximum - reduction)
-        return min_(phased_in, limitation)
+        return min_(phased_in, limitation) * takes_up_eitc

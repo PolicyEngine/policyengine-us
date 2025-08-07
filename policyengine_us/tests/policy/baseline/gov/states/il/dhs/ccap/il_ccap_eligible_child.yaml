@@ -1,0 +1,54 @@
+- name: Eligible child for the program.
+  period: 2024
+  input:
+    age: 3
+    is_disabled : false
+    il_ccap_immigration_status_eligible_person: true
+    is_tax_unit_dependent: true
+    state_code: IL 
+  output: 
+    il_ccap_eligible_child: true
+
+- name: Ineligible child for the program due to age.
+  period: 2024
+  input:
+    age: 13
+    is_disabled: false
+    il_ccap_immigration_status_eligible_person: true
+    is_tax_unit_dependent: true
+    state_code: IL 
+  output: 
+    il_ccap_eligible_child: false
+
+- name: Ineligible disabled child for the program due to age.
+  period: 2024
+  input:
+    age: 19
+    is_disabled: true
+    il_ccap_immigration_status_eligible_person: true
+    is_tax_unit_dependent: true
+    state_code: IL 
+  output: 
+    il_ccap_eligible_child: false
+
+- name: Eligible disabled child for the program. 
+  period: 2024
+  input:
+    age: 18
+    is_disabled: true
+    il_ccap_immigration_status_eligible_person: true
+    is_tax_unit_dependent: true
+    state_code: IL 
+  output: 
+    il_ccap_eligible_child: true
+
+- name: Ineligible child for the program due to not a dependent. 
+  period: 2024
+  input:
+    age: 3
+    is_disabled: true
+    il_ccap_immigration_status_eligible_person: true
+    is_tax_unit_dependent: false
+    state_code: IL 
+  output: 
+    il_ccap_eligible_child: false

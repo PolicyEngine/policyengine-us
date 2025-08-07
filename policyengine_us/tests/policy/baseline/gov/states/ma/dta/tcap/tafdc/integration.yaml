@@ -1,0 +1,131 @@
+- name: Case 1, applicant is pregnant, eaedc ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_pregnant: true
+        current_pregnancy_month: 6
+        ma_tcap_gross_earned_income: 0
+        alimony_income: 0 
+        pension_income: 0 
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ma_tafdc_immigration_status_eligible: true
+        spm_unit_size: 1
+        ma_eaedc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc: 506 * 12
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 506 * 12
+    ma_tafdc_dependent_care_deduction: 0
+    ma_tafdc_applicable_income_grant_amount: 0
+
+- name: Case 2, applicant has a dependent child that still goes to school.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 40
+        is_pregnant: false
+        current_pregnancy_month: 0
+        employment_income: 10_000
+        alimony_income: 0 
+        pension_income: 0 
+        social_security: 0
+        weekly_hours_worked: 10
+      person2:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 3_000
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_tafdc_immigration_status_eligible: true
+        spm_unit_size: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tcap_gross_earned_income: [10_000, 0]
+    ma_tafdc_countable_earned_income: [1_768, 0]
+    ma_tafdc_applicable_income_grant_amount: 1_768
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 629*12
+    ma_tafdc_eligible_dependent: [False, True]
+    ma_tafdc_dependent_care_deduction: 528
+    ma_tafdc: 6_230
+    # 10000 - 2400 = 7600
+    # 7600/2 = 3800 (first 6 months full disregard)
+    # 50% disregard = 1900
+    # 1900 - 44*12 = 1768
+    # 629*12 - 1768 + 450 = 6230
+
+- name: Case 3, applicant and his spouse has 1 dependent child.
+  period: 2022
+
+  input:
+    people:
+      person1:
+        age: 40
+        is_pregnant: false
+        current_pregnancy_month: 0
+        employment_income: 30_000
+        alimony_income: 0 
+        pension_income: 0 
+        social_security: 0
+        weekly_hours_worked: 4
+      person2:
+        age: 40
+        is_pregnant: false
+        current_pregnancy_month: 0
+        employment_income: 20_000
+        alimony_income: 0 
+        pension_income: 0 
+        social_security: 0
+        weekly_hours_worked: 4
+      person3:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 3_000
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_tafdc_immigration_status_eligible: true
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tcap_gross_earned_income: [30_000, 20_000, 0]
+    ma_tafdc_eligible: false
+    ma_tafdc_payment_standard: 753*12
+    ma_tafdc_eligible_dependent: [False, False, True]
+    ma_tafdc_dependent_care_deduction: 528
+    ma_tafdc: 0
+    # Income is too high for TAFDC

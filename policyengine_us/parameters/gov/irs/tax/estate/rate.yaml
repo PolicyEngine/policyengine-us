@@ -1,0 +1,65 @@
+description: The IRS taxes estate at the following rates. 
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.18
+  - threshold:
+      2017-01-01: 10_000
+    rate:
+      2017-01-01: 0.2
+  - threshold:
+      2017-01-01: 20_000
+    rate:
+      2017-01-01: 0.22
+  - threshold:
+      2017-01-01: 40_000
+    rate:
+      2017-01-01: 0.24
+  - threshold:
+      2017-01-01: 60_000
+    rate:
+      2017-01-01: 0.26
+  - threshold:
+      2017-01-01: 80_000
+    rate:
+      2017-01-01: 0.28
+  - threshold:
+      2017-01-01: 100_000
+    rate:
+      2017-01-01: 0.3
+  - threshold:
+      2017-01-01: 150_000
+    rate:
+      2017-01-01: 0.32
+  - threshold:
+      2017-01-01: 250_000
+    rate:
+      2017-01-01: 0.34
+  - threshold:
+      2017-01-01: 500_000
+    rate:
+      2017-01-01: 0.37
+  - threshold:
+      2017-01-01: 750_000
+    rate:
+      2017-01-01: 0.39
+  - threshold:
+      2017-01-01: 1_000_000
+    rate:
+      2017-01-01: 0.4
+metadata:
+  type: marginal_rate
+  rate_unit: /1
+  threshold_unit: currency-USD
+  period: year
+  label: Estate tax rate  
+  reference:
+    - title: 26 U.S. Code § 2001 - Imposition and rate of tax - (c)
+      href: https://www.law.cornell.edu/uscode/text/26/2001#b_1
+    - title: Instructions for Form 706 (Rev. September 2023)
+      href: https://www.irs.gov/pub/irs-pdf/i706.pdf#page=6
+    - title: Instructions for Form 706 (Rev. September 2022)
+      href: https://www.irs.gov/pub/irs-prior/i706--2022.pdf#page=6
+    - title: Instructions for Form 706 (Rev. September 2021)
+      href: https://www.irs.gov/pub/irs-prior/i706--2021.pdf#page=6

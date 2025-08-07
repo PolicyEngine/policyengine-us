@@ -1,0 +1,10 @@
+- name: Partially phased-in credit
+  period: 2022
+  input:
+    ok_federal_eitc_eligible: true
+    ok_federal_eitc_maximum: 4_000
+    ok_federal_eitc_phased_in: 2_000
+    ok_federal_eitc_reduction: 100
+    state_code: OK
+  output:
+    ok_federal_eitc: 2_000

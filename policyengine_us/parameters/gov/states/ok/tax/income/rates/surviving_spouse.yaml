@@ -1,0 +1,65 @@
+description: Oklahoma levies this income tax schedule for surviving spouse filers.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.005
+      2022-01-01: 0.0025
+      2026-01-01: 0
+  - threshold:
+      2021-01-01: 2_000
+      2026-01-01: 7_500
+    rate:
+      2021-01-01: 0.01
+      2022-01-01: 0.0075
+      2026-01-01: 0.025
+  - threshold:
+      2021-01-01: 5_000
+      2026-01-01: 9_800
+    rate:
+      2021-01-01: 0.02
+      2022-01-01: 0.0175
+      2026-01-01: 0.035
+  - threshold:
+      2021-01-01: 7_500
+      2026-01-01: 14_400
+    rate:
+      2021-01-01: 0.03
+      2022-01-01: 0.0275
+      2026-01-01: 0.045
+  - threshold:
+      2021-01-01: 9_800
+      2026-01-01: .inf
+    rate:
+      2021-01-01: 0.04
+      2022-01-01: 0.0375
+  - threshold:
+      2021-01-01: 12_200
+    # 68 O.S. § 2355(C)(2)(a) defines the bracket structure incrementally.  
+    # $2,000 + $3,000 + $2,500 + $2,300 + $4,600 = $14,400  
+      2024-01-01: 14_400
+      2026-01-01: .inf
+    rate:
+      2021-01-01: 0.05
+      2022-01-01: 0.0475
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Oklahoma income tax rates for surviving spouse filing units
+  reference:
+    - title: Oklahoma Statutes
+      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92565
+    - title: 2021 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+    - title: 2022 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2022/511-Pkt-2022.pdf
+    - title: 2023 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2023/511-Pkt.pdf#page=38
+    - title: 2024 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=38
+    - title: Oklahoma House Bill 2764
+      href: https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/hB/HB2764%20ENR.PDF#page=11
+    # Statute not yet updated to reflect 2026 income tax rates

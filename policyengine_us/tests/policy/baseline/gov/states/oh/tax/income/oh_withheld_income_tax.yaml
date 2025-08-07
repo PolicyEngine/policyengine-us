@@ -2,7 +2,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 35_000
+    adjusted_gross_income_person: 35_000
     filing_status: JOINT
     state_code: OH
   output:
@@ -12,7 +12,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 35_000
+    adjusted_gross_income_person: 35_000
     filing_status: SURVIVING_SPOUSE
     state_code: OH
   output:
@@ -22,7 +22,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 24_999
+    adjusted_gross_income_person: 24_999
     filing_status: SURVIVING_SPOUSE
     state_code: OH
   output:

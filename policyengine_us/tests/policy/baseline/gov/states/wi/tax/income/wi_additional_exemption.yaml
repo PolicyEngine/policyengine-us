@@ -1,0 +1,25 @@
+- name: Aged head
+  period: 2022
+  input:
+    age_head: 65
+    state_code: WI
+  output:
+    wi_additional_exemption: 250
+
+- name: Aged head and aged spouse
+  period: 2022
+  input:
+    age_head: 65
+    age_spouse: 65
+    state_code: WI
+  output:
+    wi_additional_exemption: 500
+
+- name: No aged head or aged spouse
+  period: 2022
+  input:
+    age_head: 64
+    age_spouse: 64
+    state_code: WI
+  output:
+    wi_additional_exemption: 0

@@ -1,0 +1,13 @@
+- name: 2% of state sales tax
+  period: 2023
+  input:
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 200
+
+- name: No state sales tax
+  period: 2023
+  input:
+    state_sales_tax: 0
+  output:
+    local_sales_tax: 0

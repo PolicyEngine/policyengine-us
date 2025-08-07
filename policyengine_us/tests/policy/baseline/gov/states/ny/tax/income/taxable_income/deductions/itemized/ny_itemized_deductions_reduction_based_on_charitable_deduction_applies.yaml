@@ -1,0 +1,17 @@
+- name: Case 1, agi below threshold. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 5_000
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: false
+
+- name: Case 2, agi above threshold. 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_agi: 1_000_001
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: true

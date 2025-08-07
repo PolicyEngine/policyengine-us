@@ -1,0 +1,35 @@
+- name: Case 1, no asset, eligible.  
+  period: 2022-01
+  input:
+    il_aabd_countable_assets: 0
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_asset_value_eligible: true
+
+- name: Case 2, some asset, eligible.
+  period: 2022-01
+  input:
+    il_aabd_countable_assets: 3_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_asset_value_eligible: true
+
+- name: Case 3, too much asset, ineligible.
+  period: 2022-01
+  input:
+    il_aabd_countable_assets: 2_001
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_aabd_asset_value_eligible: false
+
+- name: Case 4, some asset, eligible.
+  period: 2022-01
+  input:
+    il_aabd_countable_assets: 3_050
+    spm_unit_size: 3
+    state_code: IL
+  output:
+    il_aabd_asset_value_eligible: true

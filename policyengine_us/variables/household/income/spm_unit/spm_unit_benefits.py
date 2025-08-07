@@ -12,7 +12,7 @@ class spm_unit_benefits(Variable):
         BENEFITS = [
             "social_security",
             "ssi",
-            "state_supplement",
+            "ma_state_supplement",  # Massachusetts benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.
@@ -29,11 +29,16 @@ class spm_unit_benefits(Variable):
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
             "unemployment_compensation",
+            # One-time energy relief payments.
+            # Paid at the same time as the Alaska Permanent Fund Dividend,
+            # which is part of IRS gross income.
+            "ak_energy_relief",
             # Contributed.
             "basic_income",
+            "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-            BENEFITS.append("premium_tax_credit")
+            BENEFITS.append("aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
         return add(spm_unit, period, BENEFITS)

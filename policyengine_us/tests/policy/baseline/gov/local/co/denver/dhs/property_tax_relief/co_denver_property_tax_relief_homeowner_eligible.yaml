@@ -1,0 +1,60 @@
+- name: Case 1, Homeowner with income higher than ami, ineligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 53_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: false 
+    
+
+- name: Case 2, Homeowner with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 52_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: true
+ 
+- name: Case 3, Homeowner with income less than ami, but is not elderly, not disabled, no dependent, hense ineligible.  
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 20_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: false
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: false
+
+- name: Case 4, Homeowner size of 3, with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 3 
+    co_denver_property_tax_relief_income: 60_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: true
+    
+- name: Case 5, Homeowner size of 6, with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 6 
+    co_denver_property_tax_relief_income: 80_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: true

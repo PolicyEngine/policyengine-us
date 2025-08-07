@@ -10,12 +10,10 @@ class in_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states["in"].tax.income
         # Since Indiana does not have a standard deduction, we apply the maximum
         # personal exemption amount
         personal_exemptions = p.exemptions.base.amount
-        reduced_employment_income = max_(
-            employment_income - personal_exemptions, 0
-        )
-        return p.agi_rate * reduced_employment_income
+        reduced_agi = max_(agi - personal_exemptions, 0)
+        return p.agi_rate * reduced_agi

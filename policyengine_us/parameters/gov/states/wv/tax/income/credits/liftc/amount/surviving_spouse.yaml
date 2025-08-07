@@ -1,0 +1,63 @@
+description: West Virginia allows for this low-income family tax credit amount for surviving spouse filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: West Virginia low-income family tax credit for surviving spouse filers
+  reference:
+    - title: Code of West Virginia §11-21-22B (b)
+      href: https://code.wvlegislature.gov/11-21-22B/
+    - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=28 
+    - title: 2022 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=42
+    - title: 2023 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=14
+    - title: West Virginia Personal Income Tax Forms And Instructions 2024, Family Tax Credit Tables
+      href: https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=14
+
+brackets:
+  - threshold:
+      2007-01-01: -.inf
+    amount:
+      2007-01-01: 1
+  - threshold:
+      2007-01-01: 0
+    amount:
+      2007-01-01: 0.9
+  - threshold:
+      2007-01-01: 300
+    amount:
+      2007-01-01: 0.8
+  - threshold:
+      2007-01-01: 600
+    amount:
+      2007-01-01: 0.7
+  - threshold:
+      2007-01-01: 900
+    amount:
+      2007-01-01: 0.6
+  - threshold:
+      2007-01-01: 1_200
+    amount:
+      2007-01-01: 0.5
+  - threshold:
+      2007-01-01: 1_500
+    amount:
+      2007-01-01: 0.4
+  - threshold:
+      2007-01-01: 1_800
+    amount:
+      2007-01-01: 0.3
+  - threshold:
+      2007-01-01: 2_100
+    amount:
+      2007-01-01: 0.2
+  - threshold:
+      2007-01-01: 2_400
+    amount:
+      2007-01-01: 0.1
+  - threshold:
+      2007-01-01: 2_700
+    amount:
+      2007-01-01: 0

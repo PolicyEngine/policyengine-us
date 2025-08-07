@@ -1,0 +1,20 @@
+description: Illinois exempts a fraction of amount from blind earned income under the Aid to the Aged, Blind or Disabled program.
+brackets:
+  - threshold:
+      2009-01-01: 0
+    rate:
+      2009-01-01: 1
+  - threshold:
+      2009-01-01: 85
+    rate:
+      2009-01-01: 0.5
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: month
+  label: Illinois AABD blind earned income exemption rate   
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.120 - Exempt Earned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.120

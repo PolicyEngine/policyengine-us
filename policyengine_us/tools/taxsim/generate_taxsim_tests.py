@@ -5,7 +5,7 @@ import pandas as pd
 import subprocess
 import stat
 from io import StringIO
-from policyengine_us.data.datasets.cps.cps import CPS
+from policyengine_us_data import CPS_2024
 from policyengine_core.data import Dataset
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us import Microsimulation
@@ -104,7 +104,6 @@ class TaxSim35:
     NEUTRALIZED_VARIABLES = [
         "snap",
         "ssi",
-        "state_supplement",
         "tanf",
         "wic",
     ]
@@ -300,6 +299,6 @@ if __name__ == "__main__":
     taxsim = TaxSim35()
     taxsim.OUTPUT_VARIABLES = args.outputs
     result = taxsim.generate_from_microsimulation(
-        CPS, args.year, number=args.num
+        CPS_2024, args.year, number=args.num
     )
     print(result)

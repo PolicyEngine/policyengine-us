@@ -1,0 +1,29 @@
+- name: Reduced single threshold
+  period: 2024
+  input:
+    long_term_capital_gains: 2_000
+    mt_taxable_income_indiv: 2_500
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_applicable_threshold_indiv: 20_000 
+
+- name: No nonqualified income
+  period: 2024
+  input:
+    long_term_capital_gains: 2_000
+    mt_taxable_income_indiv: 1_000
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_applicable_threshold_indiv: 20_500
+
+- name: Negative threshold, capped at 0
+  period: 2024
+  input:
+    long_term_capital_gains: 2_000
+    mt_taxable_income_indiv: 40_000
+    state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
+    state_code: MT
+  output:
+    mt_capital_gains_tax_applicable_threshold_indiv: 0

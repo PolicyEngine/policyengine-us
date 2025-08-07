@@ -1,0 +1,20 @@
+description: Representative Jared Golden proposed a family income supplement which is phased out at this rate for joint filers, based on adjusted gross income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: FISC Act family income supplement joint phase-out rate
+  period: year
+  reference:
+    - title: Family Income Supplemental Credit Act, Sec. 2, (d)(3)(A)
+      href: https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf#page=6
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 250_000
+    rate:
+      2026-01-01: 0.2 # defined as a monthly phase-out rate of 0.01667

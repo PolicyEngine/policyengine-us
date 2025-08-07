@@ -1,0 +1,62 @@
+description: Connecticut subtracts this fraction of annuity and pension income from adjusted gross income, for filers who do not file as married filing jointly.
+metadata:
+  type: single_amount
+  unit: /1
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Connecticut annuity and pension subtraction rate for single, married filing separately, and head of household
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-701 (20)(B)(xxi)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
+    - title: 2024 Form CT-1040 Connecticut Resident Income Tax Return Instructions, Pension and Annuity Worksheet
+      href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=28
+    - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions, Line 48b
+      href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=10
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions, Line 48b
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=10
+brackets:
+  - threshold:
+      2019-01-01: 0
+    amount:
+      2019-01-01: 0.14
+      2020-01-01: 0.28
+      2021-01-01: 0.42
+      2022-01-01: 1
+  - threshold:
+      2019-01-01: 75_000
+    amount:
+      2019-01-01: 0
+      2024-01-01: 0.85
+  - threshold:
+      2024-01-01: 77_500
+    amount:
+      2024-01-01: 0.7
+  - threshold:
+      2024-01-01: 80_000
+    amount:
+      2024-01-01: 0.55
+  - threshold:
+      2024-01-01: 82_500
+    amount:
+      2024-01-01: 0.4
+  - threshold:
+      2024-01-01: 85_000
+    amount:
+      2024-01-01: 0.25
+  - threshold:
+      2024-01-01: 87_500
+    amount:
+      2024-01-01: 0.1
+  - threshold:
+      2024-01-01: 90_000
+    amount:
+      2024-01-01: 0.05
+  - threshold:
+      2024-01-01: 95_000
+    amount:
+      2024-01-01: 0.025
+  - threshold:
+      2024-01-01: 100_000
+    amount:
+      2024-01-01: 0

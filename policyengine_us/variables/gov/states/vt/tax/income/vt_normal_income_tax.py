@@ -31,7 +31,7 @@ class vt_normal_income_tax(Variable):
                 p.single.calc(income),
                 p.joint.calc(income),
                 p.separate.calc(income),
-                p.widow.calc(income),
+                p.surviving_spouse.calc(income),
                 p.head_of_household.calc(income),
             ],
         )
