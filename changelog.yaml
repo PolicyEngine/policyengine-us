@@ -10679,3 +10679,8 @@
     - Updated SSI 2025 non-blind SGA parameter value.
     - Updated SSI 2025 student income exclusion amount and cap parameter values.
   date: 2025-08-07 12:51:20
+- bump: patch
+  changes:
+    fixed:
+    - Fix Hawley rebate to get impacts in years other than 2025.
+  date: 2025-08-07 12:54:07
