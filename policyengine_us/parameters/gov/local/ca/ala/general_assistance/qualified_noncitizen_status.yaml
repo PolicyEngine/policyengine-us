@@ -3,15 +3,16 @@ values:
   1975-01-01:
     - REFUGEE
     - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
     - DEPORTATION_WITHHELD
     - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
     - LEGAL_PERMANENT_RESIDENT
-    - VICTIMS_OF_TRAFFICKING
     
 metadata:
   label: Alameda County General Relief qualified noncitizen statuses
   period: year
   unit: list
   reference:
-    - title: Alameda County Social Services Agency - General Assistance
-      href: https://www.alamedacountysocialservices.org/our-services/Work-and-Money/General-Assistance/index
+    - title: Alameda County GA-Regulations 
+      href: https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=21
