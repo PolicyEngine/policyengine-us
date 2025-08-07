@@ -1,0 +1,17 @@
+- name: Countable income higher than base amount, ineligible.
+  period: 2024-01
+  input:
+    ca_ala_general_assistance_countable_income: 100
+    ca_ala_general_assistance_base_amount: 90
+    in_ala: true
+  output:
+    ca_ala_general_assistance_income_eligible: false
+
+- name: Countable income lower than base amount, eligible.
+  period: 2024-01
+  input:
+    ca_ala_general_assistance_countable_income: 90
+    ca_ala_general_assistance_base_amount: 100
+    in_ala: true
+  output:
+    ca_ala_general_assistance_income_eligible: true
