@@ -37,19 +37,17 @@ def non_refundable_ss_credit_reform() -> Reform:
 
             # get bracket rates and thresholds
             p = parameters(period).gov.irs.income
-            bracket_tops = p.bracket.thresholds
-            bracket_rates = p.bracket.rates
             filing_status = tax_unit("filing_status", period)
 
             # find the highest bracket that applies to this income level
             highest_rate = 0
             bracket_bottom = 0
-            for i in range(1, len(list(bracket_rates.__iter__())) + 1):
+            for i in range(1, len(list(p.bracket.rates.__iter__())) + 1):
                 b = str(i)
-                bracket_top = bracket_tops[b][filing_status]
+                bracket_top = p.bracket.thresholds[b][filing_status]
                 # if income falls in this bracket, this is the marginal rate
                 if taxinc > bracket_bottom:
-                    highest_rate = bracket_rates[b]
+                    highest_rate = p.bracket.rates[b]
                 # if income is below this bracket top, we've found the highest applicable rate
                 if taxinc <= bracket_top:
                     break
