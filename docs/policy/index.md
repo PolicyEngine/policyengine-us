@@ -1,6 +1,6 @@
 # PolicyEngine US Policy Reference
 
-This reference provides comprehensive documentation of all tax and benefit programs modeled in PolicyEngine US. It is designed for institutional users including congressional staff, financial institutions, academic researchers, and policy analysts.
+This reference provides comprehensive documentation of all tax and benefit program rules in PolicyEngine US.
 
 ## Organization
 
@@ -55,26 +55,12 @@ Every parameter is traced to authoritative sources:
 
 ## Using This Reference
 
-### For Congressional Staff
-- [Scoring Methodology](../institutional/methodology/scoring) - Revenue and distributional analysis
-- [Legislative History](federal/legislative-timeline) - Major tax and benefit changes
-- [State Comparisons](state/conformity-patterns) - Federal conformity analysis
-
-### For Financial Institutions
-- [Stress Testing](../institutional/use-cases/financial-services/stress-testing) - Economic scenario modeling
-- [Client Impact Analysis](../institutional/use-cases/financial-services/client-advisory) - Tax planning applications
-
-### For Academic Researchers
-- [Methodological Appendix](../institutional/methodology/microsimulation-approach) - Model specification
-- [Replication Guide](../institutional/use-cases/academic-research/replication) - Research transparency
-- [Parameter Uncertainty](../institutional/methodology/uncertainty-quantification) - Confidence intervals
+### Navigation
+- Browse by federal agency (IRS, SSA, USDA, etc.)
+- Search for specific programs or parameters
+- View state-specific implementations
 
 ## Data Sources
-
-### Microdata
-- **Current Population Survey (CPS)**: Primary household survey
-- **Survey of Consumer Finances (SCF)**: Wealth supplementation
-- **Administrative Data**: Calibration to IRS Statistics of Income
 
 ### Parameters
 - **Legislative Texts**: Direct statutory values
@@ -88,7 +74,7 @@ When using PolicyEngine US in research:
 ```
 @software{policyengine2024,
   author = {{PolicyEngine}},
-  title = {PolicyEngine US: Open-Source Tax and Benefit Microsimulation},
+  title = {PolicyEngine US: Open-Source Tax and Benefit System},
   url = {https://github.com/PolicyEngine/policyengine-us},
   version = {0.800.0},
   year = {2024}

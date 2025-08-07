@@ -1,6 +1,6 @@
 # PolicyEngine US
 
-PolicyEngine US is a microsimulation model of the United States tax and benefit system.
-[PolicyEngine](https://policyengine.org) developed it upon the Python-based [OpenFisca](https://openfisca.org) framework.
+PolicyEngine US is a comprehensive implementation of the United States tax and benefit system rules.
+[PolicyEngine](https://policyengine.org) developed it using the Python-based [OpenFisca](https://openfisca.org) framework.
 
-Currently it implements most of the federal income tax code, as well as certain benefit programs like the Supplemental Nutrition Assistance Program and the National School Lunch Program.
+This documentation provides a complete reference for the federal income tax code and benefit programs including the Supplemental Nutrition Assistance Program, National School Lunch Program, and many others.

@@ -1,28 +1,10 @@
-# PolicyEngine US Variables Reference
+# PolicyEngine US Variables
 
-This reference documents all variables computed by PolicyEngine US, organized by government agency and program.
+This section contains 3032 variables.
 
-```{toctree}
-:maxdepth: 3
+## Categories
 
-```
-
-## Overview
-
-PolicyEngine US models 0 modules containing 0 variables.
-
-### Organization
-
-Variables are organized by:
-- **Agency**: The administering government agency (IRS, SSA, USDA, etc.)
-- **Program**: The specific program or tax provision
-- **Concept**: The type of calculation (eligibility, income, deduction, credit, etc.)
-
-### Variable Attributes
-
-Each variable includes:
-- **Label**: Human-readable name
-- **Unit**: USD for monetary values, otherwise unitless
-- **Entity**: Person, TaxUnit, SPMUnit, or Household
-- **Period**: YEAR, MONTH, WEEK, or ETERNITY
-- **References**: Legislative citations and regulatory sources
+- [Contrib](contrib/index.md) (46 variables)
+- [Gov](gov/index.md) (2506 variables)
+- [Household](household/index.md) (474 variables)
+- [Input](input/index.md) (6 variables)

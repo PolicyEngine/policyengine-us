@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide helps you get started with PolicyEngine US for microsimulation analysis.
+This guide helps you get started with PolicyEngine US for tax and benefit calculations.
 
 ## Installation
 

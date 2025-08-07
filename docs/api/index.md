@@ -53,41 +53,6 @@ Get detailed calculation trace for debugging.
 **Returns:**
 - dict: Nested structure showing all intermediate calculations
 
-### Microsimulation
-
-For population-level analysis using survey microdata.
-
-```python
-from policyengine_us import Microsimulation
-
-microsim = Microsimulation(
-    reform=dict,           # Optional policy changes
-    dataset="cps_2024",    # Survey dataset
-)
-```
-
-#### Key Methods
-
-##### `calculate(variable_name, period, map_to=None)`
-Calculate variable for entire population.
-
-**Parameters:**
-- `variable_name` (str): Variable to calculate
-- `period` (str or int): Time period
-- `map_to` (str): Optional entity aggregation
-
-**Returns:**
-- pandas.Series or MicroSeries: Population values with weights
-
-##### `calculate_dataframe(variables, period)`
-Calculate multiple variables efficiently.
-
-**Parameters:**
-- `variables` (list): Variable names
-- `period` (str or int): Time period
-
-**Returns:**
-- pandas.DataFrame: All requested variables
 
 ## Entity System
 

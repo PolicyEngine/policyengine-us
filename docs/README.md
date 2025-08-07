@@ -1,103 +1,150 @@
 # PolicyEngine US Documentation
 
-This directory contains comprehensive documentation for PolicyEngine US, including policy reference materials, API documentation, and contributing guides.
+This directory contains the documentation for PolicyEngine US, built using Jupyter Book 2.0 (MyST).
 
-## Viewing Documentation
+## Quick Start
 
-### Option 1: Build and View Locally
+### Building the Documentation
 
-1. **Set up environment** (Python 3.13 recommended):
-   ```bash
-   python3.13 -m venv .venv-docs
-   source .venv-docs/bin/activate
-   pip install -e ".[dev]"
-   ```
+```bash
+make documentation
+```
 
-2. **Build documentation**:
-   ```bash
-   make documentation
-   ```
-   
-   This will:
-   - Generate parameter documentation from YAML files
-   - Generate variable documentation from Python files
-   - Build the Jupyter Book HTML
-   - Generate a LaTeX/PDF journal paper
+This command will:
+1. Generate parameter documentation
+2. Generate variable documentation  
+3. Build the HTML site using MyST
+4. Add Plotly support
+5. Generate a LaTeX/PDF version
 
-3. **View in browser**:
-   ```bash
-   # macOS
-   open docs/_build/html/index.html
-   
-   # Linux  
-   xdg-open docs/_build/html/index.html
-   
-   # Windows
-   start docs/_build/html/index.html
-   ```
+### Viewing the Documentation
 
-### Option 2: View on GitHub Pages
+After building, you have several options to view the documentation:
 
-Once changes are pushed and merged, documentation is automatically built and published to:
-https://policyengine.github.io/policyengine-us/
+#### Option 1: MyST Development Server (Recommended)
+
+```bash
+cd docs
+myst start
+```
+
+Then open http://localhost:3001 in your browser.
+
+**Note**: The server runs in the foreground. To keep it running while you work, either:
+- Open a new terminal tab/window for other work
+- Run it in the background: `myst start &`
+- Use a terminal multiplexer like tmux or screen
+
+#### Option 2: View the Static Build
+
+The static HTML files are built with hashed filenames in `docs/_build/site/public/`. To find and open the main page:
+
+```bash
+# Find the main HTML file
+find docs/_build/site/public -name "*.html" -exec grep -l "PolicyEngine US" {} \; | head -1 | xargs open
+```
+
+#### Option 3: Simple HTTP Server
+
+Although the files are hashed, you can browse them with:
+
+```bash
+cd docs/_build/site/public
+python -m http.server 8000
+```
+
+Then navigate to http://localhost:8000 and click on the HTML files.
+
+### Viewing the PDF Documentation
+
+```bash
+open docs/_build/latex/policyengine_us_policy_rules.pdf
+```
 
 ## Documentation Structure
 
-```
-docs/
-├── _build/                    # Build output (git-ignored)
-│   ├── html/                 # HTML documentation
-│   └── latex/                # LaTeX/PDF output
-├── policy/                   # Policy reference documentation
-│   ├── federal/              # Federal programs
-│   │   ├── taxation/         # Tax credits and deductions
-│   │   └── transfers/        # Benefit programs
-│   └── state/                # State programs
-├── api/                      # API reference
-├── contributing/             # Contributing guides
-├── variables/                # Auto-generated variable reference
-├── parameters/               # Auto-generated parameter reference
-└── scripts/                  # Documentation generators
-```
+- **Policy Reference** - Comprehensive rules and parameters for all programs
+- **Program Demonstrations** - Interactive notebooks showing how select programs work
+- **Variables Reference** - Technical documentation of all variables
+- **Parameters Reference** - Technical documentation of all parameters
+- **API Documentation** - Programming interface reference
+- **Contributing** - Developer guidelines
 
-## Key Features
+## Development
 
-### 1. Policy Documentation
-Comprehensive documentation of tax and benefit programs in Atlanta Fed Policy Rules Database style:
-- Detailed eligibility criteria
-- Benefit calculation formulas
-- Legislative citations
-- Program interactions
-- State variations
+### Live Preview While Editing
 
-### 2. Auto-Generated References
-- **Variables**: All ~5000+ variables with metadata, units, and references
-- **Parameters**: All policy parameters with current values and history
+For development with live reload:
 
-### 3. Academic Output
-The documentation can be compiled into a journal-quality PDF paper:
 ```bash
-# After building docs
-cat docs/_build/latex/policyengine_us_policy_rules.tex
+cd docs
+myst start --watch
 ```
 
-To compile to PDF (requires LaTeX):
+This will automatically rebuild when you make changes to the documentation files.
+
+### Running in Background
+
+To run the server in the background and continue using your terminal:
+
 ```bash
-cd docs/_build/latex
-pdflatex policyengine_us_policy_rules.tex
+cd docs
+nohup myst start > myst.log 2>&1 &
+echo $! > myst.pid
 ```
 
-## Contributing to Documentation
+To stop the background server:
 
-See [Contributing Guide](contributing/documentation.md) for:
-- Writing style guidelines
-- Adding new policy documentation
-- Updating parameters
-- Building and testing locally
+```bash
+kill $(cat myst.pid)
+rm myst.pid
+```
 
-## Quick Links
+### Using tmux (Recommended for Development)
 
-- [Local Build Instructions](contributing/local-docs.md)
-- [Style Guide](contributing/style-guide.md)
-- [Policy Reference](policy/index.md)
-- [API Documentation](api/index.md)
+```bash
+# Start a new tmux session
+tmux new -s docs
+
+# Inside tmux, start the server
+cd docs
+myst start
+
+# Detach from tmux (Ctrl+B, then D)
+# The server keeps running in the background
+
+# To reattach later
+tmux attach -t docs
+
+# To kill the session when done
+tmux kill-session -t docs
+```
+
+## Requirements
+
+- Python 3.10+
+- MyST (`mystmd` package)
+- LaTeX (for PDF generation) - specifically `enumitem` and `fancyhdr` packages
+
+## Troubleshooting
+
+### "Module not found" errors in notebooks
+The notebooks use the PolicyEngine US API. Make sure you have installed the package:
+```bash
+pip install -e .
+```
+
+### LaTeX errors
+If you get LaTeX package errors, see [LATEX_SETUP.md](LATEX_SETUP.md) for installation instructions.
+
+### Port already in use
+If port 3001 is already in use, you can specify a different port:
+```bash
+myst start --port 3002
+```
+
+## Configuration
+
+- `myst.yml` - MyST configuration
+- `_toc.yml` - Table of contents structure
+- `_config.yml` - Legacy Jupyter Book config (kept for compatibility)
