@@ -1,0 +1,9 @@
+- bump: minor
+  changes:
+    added:
+    - Extended uprating factors through 2100 for long-term policy simulations
+    - IRS uprating factors now extend to 2100 using 2034-2035 growth rate
+    - SNAP uprating factors extended to 2100 using 2033-2034 growth rate  
+    - CPI-U extended to 2100 using 2034-2035 growth rate (2.336% annual)
+    - Chained CPI-U extended to 2100 using 2034-2035 growth rate (1.988% annual)
+    - CPI-W extended to 2100 using approximately 2.3% annual growth rate
