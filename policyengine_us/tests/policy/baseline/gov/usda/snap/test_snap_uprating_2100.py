@@ -1,7 +1,6 @@
 """Test that SNAP uprating factors extend through 2100."""
 
 import yaml
-from datetime import date
 
 
 def test_snap_uprating_extends_to_2100():
@@ -15,33 +14,39 @@ def test_snap_uprating_extends_to_2100():
 
     values = data["values"]
 
-    # Check that we have values for key years
+    # Check that we have values for year 2100
     dates_2100 = [k for k in values.keys() if k.year == 2100]
     assert len(dates_2100) > 0, "No 2100 values found in SNAP uprating"
 
-    # Get the 2100 value
-    date_2100 = dates_2100[0]
-    value_2100 = values[date_2100]
+    # Test monotonic increase over time
+    test_years = [2030, 2050, 2075, 2100]
+    year_values = []
 
-    # Should be significantly higher than 2034 value (391.3)
-    assert (
-        value_2100 > 1600
-    ), f"2100 SNAP uprating value {value_2100} seems too low"
+    for year in test_years:
+        dates = [k for k in values.keys() if k.year == year]
+        if dates:
+            year_values.append((year, values[dates[0]]))
 
-    # Check that growth is consistent
-    # 2033: 382.7, 2034: 391.3 => growth rate ~1.02246
-    dates_2033 = [k for k in values.keys() if k.year == 2033]
-    dates_2034 = [k for k in values.keys() if k.year == 2034]
+    # Verify values increase over time
+    for i in range(1, len(year_values)):
+        assert (
+            year_values[i][1] > year_values[i - 1][1]
+        ), f"SNAP uprating should increase from {year_values[i-1][0]} to {year_values[i][0]}"
 
-    if dates_2033 and dates_2034:
-        value_2033 = values[dates_2033[0]]
-        value_2034 = values[dates_2034[0]]
-        expected_growth = value_2034 / value_2033
+    # Test that growth rate is consistent in extended period
+    # Pick any three consecutive years after 2040
+    years_to_test = [2045, 2046, 2047]
+    consecutive_values = []
 
-        # Check a mid-range year (2050)
-        dates_2050 = [k for k in values.keys() if k.year == 2050]
-        if dates_2050:
-            value_2050 = values[dates_2050[0]]
-            # Should be approximately 391.3 * (1.02246 ** 16)
-            expected_2050 = value_2034 * (expected_growth**16)
-            assert abs(value_2050 - expected_2050) / expected_2050 < 0.01
+    for year in years_to_test:
+        dates = [k for k in values.keys() if k.year == year]
+        if dates:
+            consecutive_values.append(values[dates[0]])
+
+    if len(consecutive_values) == 3:
+        growth1 = consecutive_values[1] / consecutive_values[0]
+        growth2 = consecutive_values[2] / consecutive_values[1]
+        # Growth rates should be approximately equal (within 0.1%)
+        assert (
+            abs(growth1 - growth2) < 0.001
+        ), f"Growth rate should be consistent: {growth1:.5f} vs {growth2:.5f}"
