@@ -1,9 +1,14 @@
 - bump: minor
   changes:
     added:
-    - Extended uprating factors through 2100 for long-term policy simulations
+    - Extended all uprating factors through 2100 for long-term policy simulations
     - IRS uprating factors now extend to 2100 using 2034-2035 growth rate
-    - SNAP uprating factors extended to 2100 using 2033-2034 growth rate  
+    - SNAP uprating factors extended to 2100 using 2033-2034 growth rate (2.246% annual)
+    - SSA uprating factors extended to 2100 using 2034-2035 growth rate (2.26% annual)
+    - HHS poverty line uprating extended to 2100 using 2034-2035 growth rate (2.24% annual)
     - CPI-U extended to 2100 using 2034-2035 growth rate (2.336% annual)
     - Chained CPI-U extended to 2100 using 2034-2035 growth rate (1.988% annual)
     - CPI-W extended to 2100 using approximately 2.3% annual growth rate
+    - Added thousands separators to all values >= 1000 for readability
+    changed:
+    - Updated SSA 2025 value to reflect actual 2.5% COLA announced by SSA
