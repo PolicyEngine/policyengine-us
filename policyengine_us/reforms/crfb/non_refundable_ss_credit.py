@@ -39,19 +39,39 @@ def non_refundable_ss_credit_reform() -> Reform:
             p = parameters(period).gov.irs.income
             filing_status = tax_unit("filing_status", period)
 
-            # find the highest bracket that applies to this income level
-            highest_rate = 0
-            bracket_bottom = 0
-            for i in range(1, len(list(p.bracket.rates.__iter__())) + 1):
-                b = str(i)
-                bracket_top = p.bracket.thresholds[b][filing_status]
-                # if income falls in this bracket, this is the marginal rate
-                if taxinc > bracket_bottom:
-                    highest_rate = p.bracket.rates[b]
-                # if income is below this bracket top, we've found the highest applicable rate
-                if taxinc <= bracket_top:
-                    break
-                bracket_bottom = bracket_top
+            # Vectorized approach: determine the highest applicable rate for each household
+            # We'll check each bracket and keep the rate if income falls within it
+
+            # Start with the base rate (10%)
+            highest_rate = p.bracket.rates["1"]
+
+            # Get all bracket numbers
+            bracket_numbers = list(p.bracket.rates.__iter__())
+
+            # Process each bracket from lowest to highest
+            # The threshold is the upper bound of each bracket
+            prev_threshold = np.zeros_like(taxinc)
+
+            for bracket_num in bracket_numbers:
+                b = str(bracket_num)
+                rate = p.bracket.rates[b]
+
+                # Get the upper threshold for this bracket based on filing status
+                if b == "7":
+                    # The top bracket has no upper limit
+                    threshold = np.inf * np.ones_like(taxinc)
+                else:
+                    threshold = p.bracket.thresholds[b][filing_status]
+
+                # Update the rate for households with income in this bracket
+                # Income is in this bracket if it's > prev_threshold and <= threshold
+                in_bracket = (taxinc > prev_threshold) & (taxinc <= threshold)
+                highest_rate = where(in_bracket, rate, highest_rate)
+
+                # Store this threshold as the previous for next iteration
+                prev_threshold = where(
+                    threshold != np.inf, threshold, prev_threshold
+                )
 
             return highest_rate
 
