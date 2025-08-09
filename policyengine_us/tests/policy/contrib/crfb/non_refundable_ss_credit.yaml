@@ -1,0 +1,45 @@
+- name: Single person in the highest tax bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    highest_tax_rate: 0.37
+    ss_credit: 600
+
+- name: Single person in the highest tax bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 2_000
+    taxable_income: 200_000
+    filing_status: JOINT
+  output:
+    highest_tax_rate: 0.22
+    ss_credit: 440
+
+- name: Additional senior deduction repeal test
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    additional_senior_deduction_eligible_person: true
+    adjusted_gross_income: 10_000
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+
+- name: Reform not active
+  period: 2026
+  input:
+    additional_senior_deduction_eligible_person: true
+    adjusted_gross_income: 10_000
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 0
+  output:
+    taxable_income_deductions_if_itemizing: 6_000

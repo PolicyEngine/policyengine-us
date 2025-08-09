@@ -18,3 +18,6 @@ from .tax_employer_medicare_tax import (
 from .tax_employer_payroll_tax import (
     create_tax_employer_payroll_tax_reform,
 )
+from .non_refundable_ss_credit import (
+    create_non_refundable_ss_credit_reform,
+)
