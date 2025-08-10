@@ -1,0 +1,61 @@
+- name: New applicant, household size of 2 with $20_000 income.
+  period: 2023
+  input:
+    il_ccap_countable_income: 20_000
+    spm_unit_size: 2
+    il_ccap_enrolled: false
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: true
+    # income threshold: 19_720 * 2.25 = 44_370
+
+- name: New applicant, household size of 2 with $45_000 income.
+  period: 2023
+  input:
+    il_ccap_countable_income: 45_000
+    spm_unit_size: 2
+    il_ccap_enrolled: false
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: false
+    # income threshold: 19_720 * 2.25 = 44_370
+
+- name: Redetermined household size of 2 with $50_000 income.
+  period: 2023
+  input:
+    il_ccap_countable_income: 50_000
+    spm_unit_size: 2
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: true
+    # income threshold: 19_720 * 2.75 = 52_992.5
+
+- name: Redetermined household size of 2 with $53_000 income.
+  period: 2022-01
+  absolute_error_margin: 0.2
+  input:
+    il_ccap_countable_income: 53_000
+    spm_unit_size: 2
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    spm_unit_fpg: 15_25.83
+    il_ccap_income_eligible: false
+    # income threshold: 18_310 * 2.75 = 50_352.5
+
+- name: Redetermined household size of 2 with $55_000 income.
+  period: 2023
+  absolute_error_margin: 0.2
+  input:
+    il_ccap_countable_income: 55_000
+    spm_unit_size: 2
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    spm_unit_fpg: 19_720
+    il_ccap_income_eligible: false
+    # income threshold: 19_720 * 2.75 = 54_230

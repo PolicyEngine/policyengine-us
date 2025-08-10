@@ -1,0 +1,20 @@
+description: The Riverside Department of Community Action Partnership counts these income sources as countable income under the Sharing Households Assist Riverside's Energy program.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+    - alimony_income
+    - child_support_received
+    - pension_income
+    - unemployment_compensation
+    - social_security
+    - ssi 
+    - ca_tanf
+
+metadata:
+  unit: list
+  period: year
+  label: Riverside County SHARE countable income sources
+  reference:
+    - title: SHARE Program Guidelines
+      href: https://riversideca.gov/utilities/residents/assistance-programs/share-english

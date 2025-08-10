@@ -1,0 +1,51 @@
+- name: One person has a valid SSN card type, the other does not, senate finance rules
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [true, false]
+    filer_meets_ctc_identification_requirements: true
+
+- name: One person has a valid SSN card type, the other does not, senate finance rules, child status irrelevant
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+      person2:
+        ssn_card_type: NONE
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [true, false, false]
+    filer_meets_ctc_identification_requirements: true
+
+- name: Single person eligible
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+  output:
+    meets_ctc_identification_requirements: [true]
+    filer_meets_ctc_identification_requirements: true
+
+- name: Single person ineligible
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        ssn_card_type: NONE
+  output:
+    meets_ctc_identification_requirements: [false]
+    filer_meets_ctc_identification_requirements: false

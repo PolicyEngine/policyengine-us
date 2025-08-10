@@ -288,7 +288,7 @@
     ny_taxable_income: 27_900 
     ny_main_income_tax: 1_202
   output:
-    ny_supplemental_tax: 0
+    ny_supplemental_tax: 15.651
 
 - name: Unit test for 2028 separate filers
   absolute_error_margin: 0.1
@@ -300,4 +300,4 @@
     ny_taxable_income: 200_000
     ny_main_income_tax: 11_963.755
   output:
-    ny_supplemental_tax: 0
+    ny_supplemental_tax: 568

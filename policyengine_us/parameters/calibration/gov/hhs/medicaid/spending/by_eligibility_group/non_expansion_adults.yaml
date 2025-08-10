@@ -1,0 +1,111 @@
+description: States spends this amount on Medicaid for non-expansion population adults.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicaid spending for non-expansion adult enrollees
+  breakdown:
+    - state_code
+  reference:
+  - title: EXHIBIT 21. Medicaid Spending by State, Eligibility Group, and Dually Eligible Status | MACPAC 
+    href: https://www.macpac.gov/publication/medicaid-spending-by-state-category-and-source-of-funds/
+  # Spending by enrollment category was created by multiplying total Medicaid spending by state by the percent of spending on non-expansion adults.
+AK:
+  2022-01-01: 393_000_000
+AL:
+  2022-01-01: 840_000_000
+AR:
+  2022-01-01: 9_000_000
+AZ:
+  2022-01-01: 2_905_000_000
+CA:
+  2022-01-01: 14_439_000_000
+CO:
+  2022-01-01: 916_000_000
+CT:
+  2022-01-01: 1_127_000_000
+DC:
+  2022-01-01: 438_000_000
+DE:
+  2022-01-01: 501_000_000
+FL:
+  2022-01-01: 4_746_000_000
+GA:
+  2022-01-01: 2_345_000_000
+HI:
+  2022-01-01: 303_000_000
+IA:
+  2022-01-01: 766_000_000
+ID:
+  2022-01-01: 256_000_000
+IL:
+  2022-01-01: 611_000_000
+IN:
+  2022-01-01: 3_535_000_000
+KS:
+  2022-01-01: 483_000_000
+KY:
+  2022-01-01: 1_222_000_000
+LA:
+  2022-01-01: 697_000_000
+MA:
+  2022-01-01: 2_408_000_000
+MD:
+  2022-01-01: 1_998_000_000
+ME:
+  2022-01-01: 293_000_000
+MI:
+  2022-01-01: 2_133_000_000
+MN:
+  2022-01-01: 1_621_000_000
+MS:
+  2022-01-01: 623_000_000
+MO:
+  2022-01-01: 883_000_000
+MT:
+  2022-01-01: 206_000_000
+NC:
+  2022-01-01: 3_465_000_000
+ND:
+  2022-01-01: 82_000_000
+NE:
+  2022-01-01: 325_000_000
+NH:
+  2022-01-01: 100_000_000
+NJ:
+  2022-01-01: 1_567_000_000
+NM:
+  2022-01-01: 1_101_000_000
+NY:
+  2022-01-01: 6_845_000_000
+OH:
+  2022-01-01: 3_365_000_000
+OK:
+  2022-01-01: 761_000_000
+OR:
+  2022-01-01: 259_000_000
+PA:
+  2022-01-01: 2_558_000_000
+RI:
+  2022-01-01: 344_000_000
+SC:
+  2022-01-01: 1_175_000_000
+SD:
+  2022-01-01: 158_000_000
+TN:
+  2022-01-01: 2_296_000_000
+TX:
+  2022-01-01: 6_895_000_000
+UT:
+  2022-01-01: 423_000_000
+VA:
+  2022-01-01: 1_233_000_000
+VT:
+  2022-01-01: 73_160_000 # Values generated in calculate_vermont_spending_breakdown.py
+WA:
+  2022-01-01: 1_739_000_000
+WI:
+  2022-01-01: 2_862_000_000
+WV:
+  2022-01-01: 378_000_000
+WY:
+  2022-01-01: 93_000_000

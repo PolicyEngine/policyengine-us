@@ -1,0 +1,68 @@
+- name: Case 1, all members eligible for payment. 
+  period: 2023-01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3: 
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_size: 3
+
+- name: Case 2, two of the three members eligible for payment. 
+  period: 2023-01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3: 
+        il_tanf_payment_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_size: 2
+
+- name: Case 3, all members eligible for payment. 
+  period: 2023-01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: false
+      person3: 
+        il_tanf_payment_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_size: 1

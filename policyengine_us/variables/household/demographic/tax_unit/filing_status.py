@@ -22,16 +22,16 @@ class filing_status(Variable):
         is_separated = tax_unit.any(person("is_separated", period))
         return select(
             [
-                is_separated,
                 tax_unit("tax_unit_married", period),
                 tax_unit("surviving_spouse_eligible", period),
                 tax_unit("head_of_household_eligible", period),
+                is_separated,
             ],
             [
-                FilingStatus.SEPARATE,
                 FilingStatus.JOINT,
                 FilingStatus.SURVIVING_SPOUSE,
                 FilingStatus.HEAD_OF_HOUSEHOLD,
+                FilingStatus.SEPARATE,
             ],
             default=FilingStatus.SINGLE,
         )

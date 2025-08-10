@@ -3,10 +3,15 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
+  period: year
   label: Connecticut income tax rate head of household filers
   reference:
     - title: Connecticut General Statutes, Chapter 229, Sec. 12-700, (9), (B)
-      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700 
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700
+    - title: 2023 Form CT State Tax Developments, Income Tax # Announces the new rates for tax year 2024
+      href: https://portal.ct.gov/drs/miscellaneous-taxes/other-tax-page/state-tax-developments/2023-developments
+    - title: 2024 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=20
     - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions
       href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=20
     - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
@@ -18,12 +23,12 @@ brackets:
       2015-01-01: 0
     rate:
       2015-01-01: 0.03
-      2024-01-10: 0.02
+      2024-01-01: 0.02
   - threshold:
       2015-01-01: 16_000
     rate:
       2015-01-01: 0.05
-      2024-01-10: 0.045
+      2024-01-01: 0.045
   - threshold:
       2015-01-01: 80_000
     rate:

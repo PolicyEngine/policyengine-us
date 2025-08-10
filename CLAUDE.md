@@ -38,7 +38,7 @@ make documentation
 - View PR list: `gh pr list` 
 - View PR details: `gh pr view [PR-NUMBER]`
 - Contributing to PRs:
-  - After making code changes, run `make format` to ensure code meets style guidelines
+  - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
@@ -46,9 +46,13 @@ make documentation
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
 - **Formatting**: Line length 79 characters; use Black for formatting
 - **Types**: Use type hints; import ArrayLike from numpy.typing
-- **Variable Naming**: Use snake_case for variable names and function names
+- **Variable Naming**: Use snake_case for variable names and function names; use UPPER_CASE for constants
 - **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
 - **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
+- **Parameter Access**: Always use `p = parameters(period).gov.<program>` pattern and call parameters as `p.*` to make parameter tree origin clear
+- **Constants**: Use UPPERCASE only for constants defined in code, not for parameters from the parameter tree
+- **Income Combination**: Use `add(person, period, ["income1", "income2"])` instead of manual addition for combining income sources
+- **Negative Values**: Use `max_(value, 0)` to clip negative values to zero (prevents counterintuitive behavior in economic models)
 
 ## Additional Guidelines
 - Python >= 3.10, < 3.13
@@ -61,6 +65,7 @@ make documentation
 - Every PR needs a changelog entry in changelog_entry.yaml
 
 ## Common Patterns and Gotchas
+- **ALWAYS run `make format` before every commit** - this is mandatory and ensures consistent code style
 - Unit tests with scalar values can pass while vectorized microsimulation fails
 - When implementing a previously empty variable, be sure to check for dependent formulas
 - When using `defined_for`, ensure it's tested in microsimulation context
@@ -82,8 +87,29 @@ make documentation
 - Program takeup is assigned during microdata construction, not simulation time
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
+- When accessing yearly variables from month-level formulas, use `period.this_year`
+  - Example: `age = person("age", period.this_year)` to get the actual age, not age/12
+  - This is critical for variables like age that are defined per YEAR
+- When refactoring federal programs to state-specific implementations:
+  - Keep shared federal components (eligibility rules, age limits, etc.) if they're from federal regulations (CFR/USC)
+  - Check all dependencies before removing variables - use grep to find references
+  - Create integration tests to verify the refactoring works correctly
+- State programs should be self-contained with their own income calculations and eligibility rules
+  - Use state-specific variable names (e.g., `il_tanf_countable_income` not `tanf_countable_income`)
+  - This allows states to have different rules without affecting each other
+- **Labor Supply Response & Negative Earnings**: When dealing with income sources that can be negative (especially self-employment), use `max_(earnings, 0)` to prevent sign flips in economic responses. Negative total earnings should result in zero labor supply responses, not negative responses.
+- **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
 ## Testing Best Practices
+- **Test File Naming**:
+  - Name unit test files after the variable being tested (e.g., `household_income_decile.yaml`)
+  - Use `integration.yaml` for integration tests that test multiple variables together
+  - Do not use any other naming patterns for test files
+
+- **Test Formatting**:
+  - **ALWAYS use underscore thousands separators** in numeric values (e.g., `1_000`, `50_000`, not `1000`, `50000`)
+  - This applies to all numeric values in YAML tests including income, weights, thresholds, etc.
+
 - **Unit Tests**: 
   - Create tests in `variable.yaml` that test only the direct inputs to `variable.py`
   - Unit tests should focus on validating a single variable's logic in isolation

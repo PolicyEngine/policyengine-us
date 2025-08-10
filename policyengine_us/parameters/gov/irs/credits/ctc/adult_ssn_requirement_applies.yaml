@@ -1,0 +1,11 @@
+description: The IRS requires a Social Security Number for at least one of the adults in the household to qualify for the Child Tax Credit, if this is true.
+values:
+  2018-01-01: false
+  2025-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Child Tax Credit adult identification requirement applies
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

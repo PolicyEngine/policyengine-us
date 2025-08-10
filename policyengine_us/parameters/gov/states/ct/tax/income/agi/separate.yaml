@@ -1,9 +1,10 @@
 description: Connecticut provides separate filers a credit for this fraction of taxes, depending on their adjusted gross income.
 metadata:
-  type: single_amount 
+  type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
-  label: Connecticut AGI credit for separate filers 
+  period: year
+  label: Connecticut AGI credit for separate filers
   reference:
     - title: Connecticut General Statutes, Chapter 229, Sec. 12-703, (1), (I)
       href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-703
@@ -11,15 +12,17 @@ metadata:
       href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=23
     - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions
       href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=23
+    - title: 2024 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=23
 brackets:
-  - threshold: 
+  - threshold:
       2016-01-01: 12_000
     amount:
-      2016-01-01: 0.75    
-  - threshold: 
+      2016-01-01: 0.75
+  - threshold:
       2016-01-01: 15_000
     amount:
-      2016-01-01: 0.70
+      2016-01-01: 0.7
   - threshold:
       2016-01-01: 15_500
     amount:
@@ -27,7 +30,7 @@ brackets:
   - threshold:
       2016-01-01: 16_000
     amount:
-      2016-01-01: 0.60
+      2016-01-01: 0.6
   - threshold:
       2016-01-01: 16_500
     amount:
@@ -35,7 +38,7 @@ brackets:
   - threshold:
       2016-01-01: 17_000
     amount:
-      2016-01-01: 0.50
+      2016-01-01: 0.5
   - threshold:
       2016-01-01: 17_500
     amount:
@@ -43,7 +46,7 @@ brackets:
   - threshold:
       2016-01-01: 18_000
     amount:
-      2016-01-01: 0.40
+      2016-01-01: 0.4
   - threshold:
       2016-01-01: 18_500
     amount:
@@ -51,7 +54,7 @@ brackets:
   - threshold:
       2016-01-01: 20_000
     amount:
-      2016-01-01: 0.30
+      2016-01-01: 0.3
   - threshold:
       2016-01-01: 20_500
     amount:
@@ -59,7 +62,7 @@ brackets:
   - threshold:
       2016-01-01: 21_000
     amount:
-      2016-01-01: 0.20
+      2016-01-01: 0.2
   - threshold:
       2016-01-01: 21_500
     amount:
@@ -83,7 +86,7 @@ brackets:
   - threshold:
       2016-01-01: 27_000
     amount:
-      2016-01-01: 0.10
+      2016-01-01: 0.1
   - threshold:
       2016-01-01: 48_000
     amount:

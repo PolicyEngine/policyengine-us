@@ -272,7 +272,7 @@
     people:
       person1:
         age: 33
-        immigration_status: DACA_TPS
+        immigration_status: DACA_TPS #daca is eligible for PTC in CA, tps not anymore
         has_itin: false
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false

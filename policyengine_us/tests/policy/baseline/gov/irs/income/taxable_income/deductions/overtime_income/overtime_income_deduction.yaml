@@ -1,0 +1,39 @@
+- name: Ineligible cardholder present
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: false
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 0
+
+- name: AGI below phase out start
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 10_000
+
+- name: Fully phased out
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 1_000_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 0
+
+- name: Partially phased out
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 190_000
+    filing_status: JOINT
+  output:
+    overtime_income_deduction: 10_000

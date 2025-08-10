@@ -35,7 +35,7 @@
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 300
   output: # min(min(200, 1000 * 0.3) + (500 - 300), 1000 * 0.6)
-    charitable_deduction: 400
+    charitable_deduction: 600
 
 - name: 2021 filer 2
   period: 2021
@@ -45,13 +45,49 @@
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 600
   output: # min(min(200, 1000 * 0.3) + min(500 - 600, 0), 1000 * 0.6)
-    charitable_deduction: 200
+    charitable_deduction: 600
 
-- name: 2026 filer
+- name: No AGI
   period: 2026
   input:
-    charitable_cash_donations: 100
-    charitable_non_cash_donations: 400
-    positive_agi: 1_000
-  output: # min(min(400, 1000 * 0.3) + 100, 1000 * 0.5)
-    charitable_deduction: 400
+    charitable_cash_donations: 10_000
+    charitable_non_cash_donations: 30_000
+    positive_agi: 0
+  output:
+    charitable_deduction: 0
+
+- name: Charitable deduction with a 0.5% floor
+  period: 2026
+  input:
+    charitable_cash_donations: 10_000
+    charitable_non_cash_donations: 30_000
+    positive_agi: 200_000
+  output:
+    charitable_deduction: 39_000
+
+- name: Contributions below floor
+  period: 2026
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 300
+    positive_agi: 200_000
+  output:
+    charitable_deduction: 0
+
+- name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, partial cap
+  period: 2026
+  input:
+    charitable_cash_donations: 600
+    charitable_non_cash_donations: 12_000
+    positive_agi: 20_000
+  output:
+    charitable_deduction: 10_600
+
+- name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, full cap
+  period: 2026
+  input:
+    charitable_cash_donations: 3_000
+    charitable_non_cash_donations: 12_000
+    positive_agi: 20_000
+  output:
+    charitable_deduction: 12_000

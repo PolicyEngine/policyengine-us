@@ -1,0 +1,21 @@
+description: Illinois exempts this amount of child care expenses from the gross earned income under the Aid to the Aged, Blind or Disabled program, based on monthly hours worked.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: int
+  amount_unit: currency-USD
+  label: Illinois AABD child care expenses exemption amount
+  reference:
+  - title: Ill. Admin. Code tit. 89, § 113.125 - Recognized Employment Expenses (b)
+    href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.125
+
+brackets:
+  - threshold:
+      1991-01-01: 0
+    amount:
+      1991-01-01: 128
+  - threshold:
+      1991-01-01: 100
+    amount:
+      1991-01-01: 160

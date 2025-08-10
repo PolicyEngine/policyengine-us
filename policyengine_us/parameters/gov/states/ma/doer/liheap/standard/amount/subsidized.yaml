@@ -1,0 +1,106 @@
+description: Massachusetts provides the following Low Income Home Energy Assistance Program payment amount for subsidized housing applicants based on benefit level and utility category. 
+
+0:  
+  DELIVERABLE_FUEL:  
+    2021-10-01: 0  
+  UTILITY_AND_HEAT_IN_RENT:  
+    2021-10-01: 0  
+  NONE:
+    2021-10-01: 0
+1:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_605
+    2022-10-01: 1_120
+    2023-10-01: 1_365
+    2024-10-01: 1_050
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 1_068
+    2022-10-01: 770
+    2023-10-01: 1_015
+    2024-10-01: 718
+  NONE:
+    2021-10-01: 0
+2:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_466
+    2022-10-01: 986
+    2023-10-01: 1_201
+    2024-10-01: 924
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 939
+    2022-10-01: 678
+    2023-10-01: 893
+    2024-10-01: 631
+  NONE:
+    2021-10-01: 0
+3:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_344
+    2022-10-01: 867
+    2023-10-01: 1_057
+    2024-10-01: 813 
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 827
+    2022-10-01: 596
+    2023-10-01: 786
+    2024-10-01: 556
+  NONE:
+    2021-10-01: 0
+4:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_237
+    2022-10-01: 763
+    2023-10-01: 930
+    2024-10-01: 716    
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 727
+    2022-10-01: 525
+    2023-10-01: 692
+    2024-10-01: 489
+  NONE:
+    2021-10-01: 0
+5:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_237
+    2022-10-01: 763
+    2023-10-01: 930
+    2024-10-01: 716
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 727
+    2022-10-01: 525
+    2023-10-01: 692
+    2024-10-01: 489
+  NONE:
+    2021-10-01: 0
+6:
+  DELIVERABLE_FUEL: 
+    2021-10-01: 1_143
+    2022-10-01: 672
+    2023-10-01: 819
+    2024-10-01: 630
+  UTILITY_AND_HEAT_IN_RENT: 
+    2021-10-01: 640
+    2022-10-01: 462
+    2023-10-01: 609
+    2024-10-01: 430
+  NONE:
+    2021-10-01: 0
+    
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Massachusetts LIHEAP subsidized housing payment amount 
+  breakdown: 
+    - range(1,6) # benefit level
+    - ma_liheap_utility_category
+
+  reference:
+    - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf 
+    - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download 
+    - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+      href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
+    - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download

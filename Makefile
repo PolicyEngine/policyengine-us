@@ -24,11 +24,11 @@ documentation:
 	python policyengine_us/tools/add_plotly_to_book.py docs/_build
 build:
 	rm policyengine_us/data/storage/*.h5 | true
-	python setup.py sdist bdist_wheel
+	python -m build
 changelog:
 	build-changelog changelog.yaml --output changelog.yaml --update-last-date --start-from 0.0.1 --append-file changelog_entry.yaml
 	build-changelog changelog.yaml --org PolicyEngine --repo policyengine-us --output CHANGELOG.md --template .github/changelog_template.md
-	bump-version changelog.yaml setup.py
+	bump-version changelog.yaml pyproject.toml
 	rm changelog_entry.yaml || true
 	touch changelog_entry.yaml
 dashboard:
@@ -40,3 +40,9 @@ clear-storage:
 	rm -f policyengine_us/data/storage/*.csv.gz
 	rm -rf policyengine_us/data/storage/*cache
 
+# Add these targets to your existing Makefile
+
+# Run tests only for changed files
+test-changed:
+	@echo "Running tests for changed files..."
+	@python policyengine_us/tests/run_selective_tests.py --verbose --debug

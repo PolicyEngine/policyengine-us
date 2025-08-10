@@ -13,6 +13,7 @@ class la_refundable_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.income.credits.cdcc.refundable
         # determine LA cdcc amount
-        us_cdcc = tax_unit("cdcc", period)
+        # Louisiana matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
         us_agi = tax_unit("adjusted_gross_income", period)
         return us_cdcc * p.match.calc(us_agi, right=True)

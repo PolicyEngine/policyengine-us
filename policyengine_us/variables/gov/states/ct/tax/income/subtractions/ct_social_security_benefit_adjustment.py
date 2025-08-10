@@ -32,9 +32,7 @@ class ct_social_security_benefit_adjustment(Variable):
         p = parameters(
             period
         ).gov.states.ct.tax.income.subtractions.social_security
-        capped_social_security_portion = (
-            capped_social_security * p.rate.social_security
-        )
+        capped_social_security_portion = capped_social_security * p.rate
         # Part E (Line 18 from federal social security worksheet)
         gross_ss = tax_unit("tax_unit_social_security", period)
         adjusted_gross_social_security = gross_ss * p_irs.rate.additional

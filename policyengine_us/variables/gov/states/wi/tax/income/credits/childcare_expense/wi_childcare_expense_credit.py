@@ -15,6 +15,7 @@ class wi_childcare_expense_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        us_cdcc = tax_unit("cdcc", period)
+        # Wisconsin matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
         p = parameters(period).gov.states.wi.tax.income
         return us_cdcc * p.credits.childcare_expense.fraction

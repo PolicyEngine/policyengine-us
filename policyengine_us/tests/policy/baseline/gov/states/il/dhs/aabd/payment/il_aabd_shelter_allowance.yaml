@@ -1,0 +1,39 @@
+- name: Case 1, pays rent.  
+  period: 2022
+  input: 
+    rent: 1_000
+    housing_cost: 0
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 1_000
+
+- name: Case 2, pays high rent.  
+  period: 2022
+  input: 
+    rent: 11_000
+    housing_cost: 0
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 1_164 # 97 * 12
+
+- name: Case 3, lives in homestead property.  
+  period: 2022
+  input: 
+    rent: 0
+    housing_cost: 50
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 50
+
+- name: Case 4, pays high rent, size of 2.
+  period: 2022
+  input: 
+    rent: 11_000
+    housing_cost: 0
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 582 # 97 * 12 / 2

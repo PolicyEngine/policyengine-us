@@ -1,0 +1,62 @@
+- name: Case 1, no income.
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 0
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 0
+
+- name: Case 2, high income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 535_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 3_100
+
+- name: Case 2, $ 320,001 income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 320_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 2_250
+
+- name: Case 4, no income
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 0
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 0
+
+- name: Case 5, high income
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 535_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 3_350
+
+- name: Case 6, $275,001 income
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 275_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 1_690
+
+- name: Case 7, $335,001 income
+  period: 2024
+  input:
+    state_code: CT
+    ct_agi: 335_001
+    filing_status: SINGLE
+  output:
+    ct_income_tax_recapture: 2_770

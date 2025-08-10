@@ -1,0 +1,21 @@
+description: Maryland phases out itemized deductions for filers with federal adjusted gross income above these thresholds.
+metadata:
+  label: Maryland itemized deduction phase-out threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+      href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=166
+
+SINGLE:
+  2025-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 200_000
+JOINT:
+  2025-01-01: 200_000
+SEPARATE:
+  2025-01-01: 100_000
+SURVIVING_SPOUSE:
+  2025-01-01: 200_000

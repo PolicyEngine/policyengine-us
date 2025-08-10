@@ -1,0 +1,18 @@
+description: Illinois counts these utility cost types which entitle the applicant to a specific utility allowance.
+values:
+  2010-01-01:
+    - water_expense
+    - electricity_expense
+    - cooking_fuel_expense
+    - coal_expense
+    - fuel_oil_expense
+    - metered_gas_expense
+    - bottled_gas_expense
+
+metadata:
+  unit: list
+  period: month
+  label: IL AABD utility types
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.259 - AABD Fuel and Utility Allowances by Area
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.259

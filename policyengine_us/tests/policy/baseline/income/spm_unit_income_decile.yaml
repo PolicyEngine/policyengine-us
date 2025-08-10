@@ -1,0 +1,57 @@
+- name: Single person SPM unit with zero income should be in highest decile
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        spm_unit_oecd_equiv_net_income: 0
+        spm_unit_weight: 1
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    spm_unit_income_decile: 10
+
+- name: Single person SPM unit with negative income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        spm_unit_oecd_equiv_net_income: -1_000
+        spm_unit_weight: 1
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    spm_unit_income_decile: 10
+
+- name: Multi-person SPM unit income decile calculation, one spm unit
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+      adult2:
+        age: 32
+      child1:
+        age: 10
+    spm_units:
+      spm_unit1:
+        members: [adult1, adult2, child1]
+        spm_unit_oecd_equiv_net_income: 50_000
+        spm_unit_weight: 1_000
+    households:
+      household1:
+        members: [adult1, adult2, child1]
+        state_code: CA
+  output:
+    spm_unit_income_decile: 10

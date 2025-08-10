@@ -1,0 +1,23 @@
+- name: Case 1, area 1.  
+  period: 2022
+  input:
+    county_str: COOK_COUNTY_IL
+    state_code: IL
+  output:
+    il_aabd_area: AREA_1
+
+- name: Case 2, area 2.  
+  period: 2022
+  input:
+    county_str: LAKE_COUNTY_IL
+    state_code: IL
+  output:
+    il_aabd_area: AREA_2
+
+- name: Case 3, default in area 1.  
+  period: 2022
+  input:
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    il_aabd_area: AREA_1

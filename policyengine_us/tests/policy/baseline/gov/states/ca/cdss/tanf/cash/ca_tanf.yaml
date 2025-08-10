@@ -15,3 +15,20 @@
     ca_tanf_countable_income_recipient: 1
   output:
     ca_tanf: 999
+
+- name: Amount is prorated based on the immigration status of each individual.
+  period: 2023
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf_eligible: true
+        ca_tanf_maximum_payment: 1_000
+        ca_tanf_countable_income_recipient: 200
+  output:
+    ca_tanf: 400

@@ -1,0 +1,14 @@
+description: Illinois counts the following income sources as earned income under the Aid to the Aged, Blind or Disabled program.
+values:
+  2021-01-01:
+    - employment_income
+    - self_employment_income
+    - rental_income
+ 
+metadata:
+  unit: list
+  period: year
+  label: Illinois AABD earned income sources
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 113.112 - Earned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.112

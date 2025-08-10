@@ -1,0 +1,12 @@
+description: The US requires employers to pay qualified employees overtime for hours worked in excess of this value.
+metadata:
+  unit: hour
+  period: year
+  label: overtime weekly hours threshold
+  reference:
+    - title: 29 U.S. Code § 207
+      href: https://www.law.cornell.edu/uscode/text/29/207
+    - title: Department of Labor. Wage and Hour Division. 29 CFR Part 541
+      href: https://www.federalregister.gov/documents/2024/04/26/2024-08038/defining-and-delimiting-the-exemptions-for-executive-administrative-professional-outside-sales-and
+values:
+  2014-01-01: 40

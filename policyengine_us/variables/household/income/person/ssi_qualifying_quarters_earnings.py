@@ -10,3 +10,4 @@ class ssi_qualifying_quarters_earnings(Variable):
     )
     definition_period = YEAR
     reference = "https://secure.ssa.gov/poms.nsf/lnx/0500502135"
+    default_value = 40

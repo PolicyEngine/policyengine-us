@@ -1,0 +1,28 @@
+description: The Department of Agriculture exempts applicants who are within these age brackets from the Able-Bodied Adult Without Dependents (ABAWD) work requirements under the Supplemental Nutrition Assistance Program.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: USDA SNAP ABAWD work requirements work exempted age threshold
+  reference:
+    - title: 7 C.F.R. § 273.24 Time limit for able-bodied adults (c)(1)
+      href: https://www.law.cornell.edu/cfr/text/7/273.24#c_1
+    - title: SNAP Work Requirements
+      href: https://www.fns.usda.gov/snap/work-requirements
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+brackets:
+  - threshold:
+      2019-01-01: 0
+    amount: 
+      2019-01-01: true
+  - threshold: 
+      2019-01-01: 18
+    amount: 
+      2019-01-01: false
+  - threshold: 
+      2019-01-01: 55
+      2027-01-01: 65
+    amount: 
+      2019-01-01: true

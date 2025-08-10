@@ -10,6 +10,7 @@ class de_cdcc(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
+        # Delaware matches the federal credit taken
         expenses = tax_unit("cdcc", period)
         rate = parameters(period).gov.states.de.tax.income.credits.cdcc.match
         return expenses * rate

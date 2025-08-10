@@ -1,0 +1,140 @@
+description: The District of Columbia applies this amount as the full time copay for the first child, based on household income and poverty level ratio under the Child Care Subsidy Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: DC CCSP full-time copay amount for the first child
+  reference:
+    - title: DC CCSP copay scale
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf
+
+brackets:
+  - threshold:
+      2024-10-01: 0 
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 1.51
+    amount:
+      2024-10-01: 1.85
+  - threshold:
+      2024-10-01: 1.61
+    amount:
+      2024-10-01: 1.97
+  - threshold:
+      2024-10-01: 1.71 
+    amount:
+      2024-10-01: 3.13
+  - threshold:
+      2024-10-01: 1.81
+    amount:
+      2024-10-01: 3.3
+  - threshold:
+      2024-10-01: 1.91
+    amount:
+      2024-10-01: 3.48
+  - threshold:
+      2024-10-01: 2.01
+    amount:
+      2024-10-01: 4.87
+  - threshold:
+      2024-10-01: 2.11
+    amount:
+      2024-10-01: 5.1
+  - threshold:
+      2024-10-01: 2.21
+    amount:
+      2024-10-01: 5.33
+  - threshold:
+      2024-10-01: 2.31
+    amount:
+      2024-10-01: 6.95
+  - threshold:
+      2024-10-01: 2.41
+    amount:
+      2024-10-01: 7.24
+  - threshold:
+      2024-10-01: 2.51
+    amount:
+      2024-10-01: 7.53
+  - threshold:
+      2024-10-01: 2.61
+    amount:
+      2024-10-01: 7.82
+  - threshold:
+      2024-10-01: 2.71 
+    amount:
+      2024-10-01: 9.73
+  - threshold:
+      2024-10-01: 2.81
+    amount:
+      2024-10-01: 10.08
+  - threshold:
+      2024-10-01: 2.91
+    amount:
+      2024-10-01: 10.43
+  - threshold:
+      2024-10-01: 3.01
+    amount:
+      2024-10-01: 12.57
+  - threshold:
+      2024-10-01: 3.11
+    amount:
+      2024-10-01: 12.97
+  - threshold:
+      2024-10-01: 3.21
+    amount:
+      2024-10-01: 13.38
+  - threshold:
+      2024-10-01: 3.31
+    amount:
+      2024-10-01: 13.79
+  - threshold:
+      2024-10-01: 3.41
+    amount:
+      2024-10-01: 14.19
+  - threshold:
+      2024-10-01: 3.51
+    amount:
+      2024-10-01: 14.6
+  - threshold:
+      2024-10-01: 3.61
+    amount:
+      2024-10-01: 15
+  - threshold:
+      2024-10-01: 3.71 
+    amount:
+      2024-10-01: 15.41
+  - threshold:
+      2024-10-01: 3.81
+    amount:
+      2024-10-01: 15.81
+  - threshold:
+      2024-10-01: 3.91
+    amount:
+      2024-10-01: 16.22
+  - threshold:
+      2024-10-01: 4.01
+    amount:
+      2024-10-01: 16.62
+  - threshold:
+      2024-10-01: 4.11
+    amount:
+      2024-10-01: 17.03
+  - threshold:
+      2024-10-01: 4.21
+    amount:
+      2024-10-01: 17.43
+  - threshold:
+      2024-10-01: 4.31
+    amount:
+      2024-10-01: 17.84
+  - threshold:
+      2024-10-01: 4.41
+    amount:
+      2024-10-01: 18.25
+  - threshold:
+      2024-10-01: 4.51
+    amount:
+      2024-10-01: 18.65

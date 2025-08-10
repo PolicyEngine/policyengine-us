@@ -1,0 +1,20 @@
+description: The US classifies as exempt from overtime individuals employed in a "bona fide executive, administrative, or professional capacity" and other generally exempt occupations if they have a weekly salary level of or above this value.
+metadata:
+  unit: currency-USD
+  period: year
+  label: salary basis threshold
+  # Approximation of Secretary of Labor's requirement to update each 3 years
+  # "to reflect current earnings data".
+  uprating: gov.ssa.nawi
+  reference:
+    - title: 29 CFR § 541.600
+      href: https://www.law.cornell.edu/cfr/text/29/541.600 
+    - title: FLSA Exemption for Executive, Administrative, and Professional (EAP) Employees  Title 29 CFR Part 541
+      href: https://www.ecfr.gov/current/title-29/subtitle-B/chapter-V/subchapter-A/part-541  
+values:
+  2004-01-01: 455
+  2016-01-01: 913
+  2019-01-01: 684
+  2024-01-01: 844
+  2025-01-01: 1_128
+  2026-01-01: 1_128 # To start uprating in 2027.

@@ -3,7 +3,7 @@
   input:
     nm_cdcc_max_amount: 800
     state_code: NM
-    cdcc: 300
+    cdcc_potential: 300
     nm_cdcc_eligible: true
     income_tax_before_credits: 400
   output:
@@ -14,7 +14,7 @@
   input:
     nm_cdcc_max_amount: 300
     state_code: NM
-    cdcc: 200
+    cdcc_potential: 200
     nm_cdcc_eligible: true
     income_tax_before_credits: 0
   output:
@@ -25,7 +25,7 @@
   input:
     nm_cdcc_max_amount: 900
     state_code: NM
-    cdcc: 200
+    cdcc_potential: 200
     nm_cdcc_eligible: false
   output:
     nm_cdcc: 0
@@ -35,7 +35,7 @@
   input:
     nm_cdcc_max_amount: 900
     state_code: NM
-    cdcc: 200
+    cdcc_potential: 200
     income_tax_before_credits: 0
     nm_cdcc_eligible: true
   output:

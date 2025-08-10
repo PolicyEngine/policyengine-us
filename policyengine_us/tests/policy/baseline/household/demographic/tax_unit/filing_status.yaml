@@ -30,3 +30,21 @@
     head_of_household_eligible: true
   output:
     filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Single separated parent should count as a head of household
+  period: 2022
+  input:
+    people:
+      person1:
+        is_separated: true
+        age: 40
+      person2: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD

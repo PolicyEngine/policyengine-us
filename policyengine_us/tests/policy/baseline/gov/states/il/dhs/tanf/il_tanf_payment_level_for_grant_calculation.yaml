@@ -1,0 +1,99 @@
+- name: Case 1, all members eligible for payment. 
+  period: 2023-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3: 
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 2_071.67 # (14_580 + 2 * 5_140)/12
+    il_tanf_payment_level_for_grant_calculation: 621.5 # 2_071.67 * 0.3 
+
+- name: Case 2, one parent and one child eligible for payment. 
+  period: 2023-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3: 
+        il_tanf_payment_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 1_643.33 # (14_580 + 5_140)/12
+    il_tanf_payment_level_for_grant_calculation: 493 # 1_643.33 * 0.3
+
+- name: Case 3, only child eligible for payment. 
+  period: 2023-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: false
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3: 
+        il_tanf_payment_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 1_215 # 14_580/12
+    il_tanf_payment_level_for_grant_calculation: 273.38 # 1_215 * 0.3 * 0.75
+
+- name: Case 4, only parent eligible for payment. 
+  period: 2023-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: false
+      person3: 
+        il_tanf_payment_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_fpg: 1_215 # 14_580/12
+    il_tanf_payment_level_for_grant_calculation: 91.13 # 1_215 * 0.3 * 0.25

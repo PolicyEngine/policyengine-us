@@ -1,0 +1,30 @@
+description: New York applies the Child Tax Credit phase-out above these adjusted gross income thresholds by filing status.
+SINGLE:
+  2000-01-01: 0
+  2025-01-01: 75_000
+  2028-01-01: 0
+JOINT:
+  2000-01-01: 0
+  2025-01-01: 110_000
+  2028-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2000-01-01: 0
+  2025-01-01: 75_000
+  2028-01-01: 0
+SEPARATE:
+  2000-01-01: 0
+  2025-01-01: 55_000
+  2028-01-01: 0
+SURVIVING_SPOUSE:
+  2000-01-01: 0
+  2025-01-01: 110_000
+  2028-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: New York CTC post 2024 phase-out thresholds
+  reference:
+    - title: New York Senate Bill S.3009-C, Part C, Section 2, Tax Law Section 606(c-1)(1-a)(C)
+      href: https://assembly.state.ny.us/leg/?Text=Y&bn=S3009&default_fld=&leg_video=&term=2025

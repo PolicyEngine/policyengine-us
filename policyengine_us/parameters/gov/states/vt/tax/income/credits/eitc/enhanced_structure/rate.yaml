@@ -1,0 +1,21 @@
+description: Vermont enhanced EITC match rate based on number of child dependents.
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Vermont enhanced EITC rate
+  reference:
+    - title: S.51 (2025) - Vermont tax credit package, enhanced EITC for workers without children
+      href: https://legislature.vermont.gov/Documents/2026/Docs/BILLS/S-0051/S-0051%20As%20Passed%20by%20Both%20House%20and%20Senate%20Official.pdf#page=7
+    - title: Vermont Legislature S.51 Bill Status
+      href: https://legislature.vermont.gov/bill/status/2026/S.51
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 1.0  # 100% match for workers without children
+  - threshold:
+      2025-01-01: 1
+    amount:
+      2025-01-01: 0.38  # Standard match rate for workers with children

@@ -1,0 +1,7 @@
+- name: Income tax reduced by foreign tax credit
+  period: 2018
+  input:
+    income_tax_before_credits: 2_000
+    foreign_tax_credit: 300
+  output:
+    cdcc_credit_limit: 1_700

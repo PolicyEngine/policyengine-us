@@ -1,0 +1,15 @@
+description: Illinois counts these income sources as earned income under the Temporary Assistance for Needy Families program.
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+    - rental_income
+metadata:
+  unit: list
+  period: year
+  label: Illinois TANF earned income sources
+  reference:
+    - title: Ill. Admin. Code tit. 89, § 112.130 - Earned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.130
+    - title: Ill. Admin. Code tit. 89, § 112.147 - Income From Rental Property
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.147

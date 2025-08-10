@@ -8,9 +8,19 @@ values:
     - charitable_deduction_for_non_itemizers
     - standard_deduction
     - qualified_business_income_deduction
-  2022-01-01:
+  2025-01-01:
+    - charitable_deduction_for_non_itemizers
     - standard_deduction
     - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
+    - additional_senior_deduction
+    - auto_loan_interest_deduction
+  2029-01-01:
+    - qualified_business_income_deduction
+    - wagering_losses_deduction
+    - itemized_taxable_income_deductions
+
 metadata:
   unit: list
   period: year
