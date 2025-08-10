@@ -24,22 +24,26 @@ class ss_retirement_age_adjustment_factor(Variable):
         # Calculate months from FRA (negative if before, positive if after)
         months_from_fra = current_age_months - fra_months
 
-        p = parameters(period).gov.ssa.social_security.retirement_age_adjustment
+        p = parameters(
+            period
+        ).gov.ssa.social_security.retirement_age_adjustment
 
         # Early retirement - reduction (when months_from_fra < 0)
         months_early = abs(months_from_fra)
         is_early = months_from_fra < 0
 
         # First tier months: 5/9 of 1% per month
-        first_tier_months_limit = p.early_retirement.first_tier_months
+        first_tier_months_limit = p.early_retirement.first_tier.months
         first_tier_reduction = (
             min_(months_early, first_tier_months_limit)
-            * p.early_retirement.first_tier_rate
+            * p.early_retirement.first_tier.rate
         )
 
         # Beyond first tier: 5/12 of 1% per month
         beyond_first_tier = max_(0, months_early - first_tier_months_limit)
-        beyond_tier_reduction = beyond_first_tier * p.early_retirement.beyond_tier_rate
+        beyond_tier_reduction = (
+            beyond_first_tier * p.early_retirement.beyond_tier.rate
+        )
 
         total_reduction = first_tier_reduction + beyond_tier_reduction
         early_factor = max_(0, 1 - total_reduction)

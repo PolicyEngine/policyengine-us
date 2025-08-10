@@ -1,0 +1,14 @@
+description: Minimum age at which Social Security counts substantial earnings for AIME calculation.
+values:
+  1900-01-01: 22
+metadata:
+  unit: year
+  period: year
+  label: Minimum age for substantial earnings
+  reference:
+    - title: 42 U.S.C. § 415(b)(2)(B)(ii)
+      href: https://www.law.cornell.edu/uscode/text/42/415#b_2_B_ii
+    - title: 20 CFR § 404.211(b)
+      href: https://www.law.cornell.edu/cfr/text/20/404.211
+    - title: Social Security POMS RS 00605.022
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300605022

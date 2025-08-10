@@ -103,88 +103,70 @@
 - name: Full career with consistent high earnings
   period: 2024
   input:
-    people:
-      person_1:
-        age: 67  # Born 1957, at FRA
-        # Represents 45-year career from age 22 to 67
-        # Peak earning years
-        employment_income: 100_000  # Current year
+    age: 67  # Born 1957, at FRA
+    # Represents 45-year career from age 22 to 67
+    # Peak earning years
+    employment_income: 100_000  # Current year
   output:
-    person_1:
-      ss_covered_earnings_this_year: 100_000
-      # With full implementation, early years would be indexed up
-      # AIME would reflect 35 highest indexed years
-      ss_quarters_of_coverage: 4  # Current year quarters
+    ss_covered_earnings_this_year: 100_000
+    # With full implementation, early years would be indexed up
+    # AIME would reflect 35 highest indexed years
+    ss_quarters_of_coverage: 4  # Current year quarters
 
 - name: Worker with career gaps represented by current lower income
   period: 2024
   input:
-    people:
-      person_1:
-        age: 62  # Born 1962, eligible for early retirement
-        # Current moderate income represents career with gaps
-        employment_income: 75_000
+    age: 62  # Born 1962, eligible for early retirement
+    # Current moderate income represents career with gaps
+    employment_income: 75_000
   output:
-    person_1:
-      ss_covered_earnings_this_year: 75_000
-      ss_quarters_of_coverage: 4
-      # With full implementation, gaps would lower 35-year average
+    ss_covered_earnings_this_year: 75_000
+    ss_quarters_of_coverage: 4
+    # With full implementation, gaps would lower 35-year average
 
 - name: High earner at wage base cap
   period: 2024
   input:
-    people:
-      person_1:
-        age: 66  # Born 1958, near FRA
-        # Maximum SS wage base earnings
-        employment_income: 200_000  # Will be capped
+    age: 66  # Born 1958, near FRA
+    # Maximum SS wage base earnings
+    employment_income: 200_000  # Will be capped
   output:
-    person_1:
-      ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
-      ss_quarters_of_coverage: 4
-      # Maximum creditable earnings for SS
+    ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
+    ss_quarters_of_coverage: 4
+    # Maximum creditable earnings for SS
 
 - name: Self-employed worker with moderate income
   period: 2024
   input:
-    people:
-      person_1:
-        age: 64  # Born 1960
-        employment_income: 0
-        self_employment_income: 70_000
+    age: 64  # Born 1960
+    employment_income: 0
+    self_employment_income: 70_000
   output:
-    person_1:
-      ss_covered_earnings_this_year: 70_000
-      ss_quarters_of_coverage: 4
-      # Self-employment income counts for SS
+    ss_covered_earnings_this_year: 70_000
+    ss_quarters_of_coverage: 4
+    # Self-employment income counts for SS
 
 - name: Late career starter with high current earnings
   period: 2024
   input:
-    people:
-      person_1:
-        age: 70  # Born 1954, past FRA
-        # High current earnings but late start
-        employment_income: 100_000
+    age: 70  # Born 1954, past FRA
+    # High current earnings but late start
+    employment_income: 100_000
   output:
-    person_1:
-      ss_covered_earnings_this_year: 100_000
-      ss_quarters_of_coverage: 4
-      # With full implementation, fewer working years would lower AIME
+    ss_covered_earnings_this_year: 100_000
+    ss_quarters_of_coverage: 4
+    # With full implementation, fewer working years would lower AIME
 
 - name: Worker returning from disability
   period: 2024
   input:
-    people:
-      person_1:
-        age: 63  # Born 1961
-        # Moderate earnings after return
-        employment_income: 75_000
+    age: 63  # Born 1961
+    # Moderate earnings after return
+    employment_income: 75_000
   output:
-    person_1:
-      ss_covered_earnings_this_year: 75_000
-      ss_quarters_of_coverage: 4
-      # Disability period would affect AIME calculation
+    ss_covered_earnings_this_year: 75_000
+    ss_quarters_of_coverage: 4
+    # Disability period would affect AIME calculation
 
 - name: Two-earner household with different incomes
   period: 2024
@@ -200,24 +182,17 @@
       household_1:
         members: [spouse_1, spouse_2]
   output:
-    spouse_1:
-      ss_covered_earnings_this_year: 0  # Retired
-      ss_quarters_of_coverage: 0  # No current earnings
-    spouse_2:
-      ss_covered_earnings_this_year: 75_000
-      ss_quarters_of_coverage: 4
+    ss_covered_earnings_this_year: [0, 75_000]  # spouse_1: retired, spouse_2: working
+    ss_quarters_of_coverage: [0, 4]  # spouse_1: no earnings, spouse_2: 4 quarters
 
 - name: Maximum earner at wage base
   period: 2024
   input:
-    people:
-      person_1:
-        age: 67  # Born 1957, at FRA
-        # Earnings exceed wage base
-        employment_income: 300_000
+    age: 67  # Born 1957, at FRA
+    # Earnings exceed wage base
+    employment_income: 300_000
   output:
-    person_1:
-      ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
-      ss_quarters_of_coverage: 4
-      # Maximum creditable SS earnings
+    ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
+    ss_quarters_of_coverage: 4
+    # Maximum creditable SS earnings
 
