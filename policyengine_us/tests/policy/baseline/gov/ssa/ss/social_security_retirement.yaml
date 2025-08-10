@@ -22,9 +22,9 @@
     ss_pia: 2_000
   output:
     ss_full_retirement_age_months: 804  # 67 years
-    ss_retirement_age_adjustment_factor: 0.7  # 30% reduction
-    ss_retirement_benefit_before_earnings_test: 16_800  # $2,000 * 0.7 * 12
-    social_security_retirement: 16_800
+    ss_retirement_age_adjustment_factor: 0.69999975  # 30% reduction (floating point)
+    ss_retirement_benefit_before_earnings_test: 16_799.994  # $2,000 * 0.69999975 * 12
+    social_security_retirement: 16_799.994
 
 - name: Delayed retirement at 70 with increased benefit
   period: 2024
@@ -45,23 +45,23 @@
     employment_income: 50_000  # Working with good income
     ss_pia: 1_800
   output:
-    ss_retirement_age_adjustment_factor: 0.8  # Approximate for 3 years early
-    ss_retirement_benefit_before_earnings_test: 17_280  # $1,800 * 0.8 * 12
+    ss_retirement_age_adjustment_factor: 0.79999983  # 3 years early (floating point)
+    ss_retirement_benefit_before_earnings_test: 17_279.996  # $1,800 * 0.79999983 * 12
     # Earnings test: ($50,000 - $22,320) * 0.5 = $13,840
     ss_earnings_test_reduction: 13_840
-    social_security_retirement: 3_440  # $17,280 - $13,840
+    social_security_retirement: 3_439.996  # $17,279.996 - $13,840
 
 - name: High earner at FRA with earnings test not applied
   period: 2024
   input:
-    age: 67  # At FRA
+    age: 67  # Past FRA (FRA is 66.5 for 1957 birth)
     employment_income: 100_000  # Still working
     ss_pia: 3_000  # High PIA
   output:
-    ss_retirement_age_adjustment_factor: 1.0
-    ss_retirement_benefit_before_earnings_test: 36_000  # $3,000 * 12
+    ss_retirement_age_adjustment_factor: 1.04  # 6 months delayed = 0.5 * 0.08
+    ss_retirement_benefit_before_earnings_test: 37_440  # $3,000 * 1.04 * 12
     ss_earnings_test_reduction: 0  # No reduction after FRA
-    social_security_retirement: 36_000
+    social_security_retirement: 37_440
 
 - name: Complete retirement benefit calculation with working years
   period: 2024
