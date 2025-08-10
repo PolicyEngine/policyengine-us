@@ -3,7 +3,7 @@ metadata:
   unit: currency-USD
   period: year
   label: Maine dependents exemption phase-out start
-  propogate_metadata_to_children: true
+  propagate_metadata_to_children: true
   uprating: gov.irs.uprating
   reference:
     - title: Form 1040ME Schedule A (2024) - Worksheet for Dependent Exemption Tax Credit, Line 4
@@ -26,6 +26,7 @@ metadata:
       href: https://legislature.maine.gov/backend/App/services/getDocument.aspx?documentId=120256#page=311
   breakdown:
     - filing_status
+
 SINGLE:
   2018-01-01: 200_000
   2025-01-01: 100_000

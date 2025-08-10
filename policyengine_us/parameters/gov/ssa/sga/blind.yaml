@@ -1,0 +1,14 @@
+description: The Social Security Administration considers blind individuals earning more than this amount, net of impairment-related work expenses, to be engaging in Substantial Gainful Activity.
+
+values:
+  2025-01-01: 2_700
+metadata:
+  label: Blind Substantial Gainful Activity limit
+  unit: currency-USD
+  period: monthly
+  uprating: gov.ssa.uprating
+  reference:
+    - title: Substantial Gainful Activity
+      href: https://www.ssa.gov/oact/cola/sga.html
+    - title: 416.974. Evaluation guides if you are an employee (b)(2)(ii)(B)
+      href: https://www.ssa.gov/OP_Home/cfr20/416/416-0974.htm

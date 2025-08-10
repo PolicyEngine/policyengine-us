@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.367.0] - 2025-08-08 21:18:49
+
+### Added
+
+- Add new Medicaid immigration restrictions from OBBBA.
+
+## [1.366.2] - 2025-08-07 12:54:07
+
+### Fixed
+
+- Fix Hawley rebate to get impacts in years other than 2025.
+
+## [1.366.1] - 2025-08-07 12:51:20
+
+### Added
+
+- Blind SGA parameter & 2025 value
+
+### Changed
+
+- Updated SSI 2025 non-blind SGA parameter value.
+- Updated SSI 2025 student income exclusion amount and cap parameter values.
+
+## [1.366.0] - 2025-08-06 20:43:30
+
+### Added
+
+- 2025 Virginia income tax changes.
+
+## [1.365.2] - 2025-08-06 20:24:41
+
+### Fixed
+
+- Fix Maine Dependent Exemption Tax Credit.
+
+## [1.365.1] - 2025-08-06 20:20:25
+
+### Fixed
+
+- Edit the formula of ucgid_str to return the ucgid hierarchical codes.
+
 ## [1.365.0] - 2025-08-04 21:22:30
 
 ### Added
@@ -12547,6 +12588,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.367.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.2...1.367.0
+[1.366.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.1...1.366.2
+[1.366.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.0...1.366.1
+[1.366.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.2...1.366.0
+[1.365.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.1...1.365.2
+[1.365.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.0...1.365.1
 [1.365.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.364.0...1.365.0
 [1.364.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.363.1...1.364.0
 [1.363.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.363.0...1.363.1
