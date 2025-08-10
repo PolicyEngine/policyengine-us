@@ -12,13 +12,13 @@ class ss_covered_earnings_this_year(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        # For now, this is a simplified version
-        # In reality, this would be capped at the Social Security wage base
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
 
-        # TODO: Apply Social Security wage base cap
-        # TODO: Exclude certain types of income
+        total_earnings = employment_income + self_employment_income
 
-        return employment_income + self_employment_income
+        # Apply Social Security wage base cap
+        p = parameters(period).gov.ssa.social_security
+        wage_base = p.wage_base
 
+        return min_(total_earnings, wage_base)

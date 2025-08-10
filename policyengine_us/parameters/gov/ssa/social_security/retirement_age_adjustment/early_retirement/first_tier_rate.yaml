@@ -1,0 +1,13 @@
+description: The US SSA applies this monthly reduction rate for the first tier of early retirement (first 36 months before FRA).
+values:
+  # 5/9 of 1% per month = 0.00555556
+  1900-01-01: 0.00555556
+metadata:
+  unit: /1
+  period: month
+  label: Early retirement first tier reduction rate
+  reference:
+    - title: 42 U.S. Code § 402(q) - Reduction of old-age insurance benefits
+      href: https://www.law.cornell.edu/uscode/text/42/402#q
+    - title: SSA Early or Late Retirement
+      href: https://www.ssa.gov/OACT/quickcalc/early_late.html

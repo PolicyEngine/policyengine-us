@@ -1,0 +1,65 @@
+description: The US SSA determines full retirement age based on year of birth.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: month
+  label: Full retirement age in months by birth year
+  reference:
+    - title: 42 U.S. Code § 416(l) - Retirement age
+      href: https://www.law.cornell.edu/uscode/text/42/416#l
+    - title: SSA Full Retirement Age
+      href: https://www.ssa.gov/benefits/retirement/planner/agereduction.html
+
+brackets:
+  - threshold:
+      1900-01-01: 1900
+    amount:
+      1900-01-01: 780       # 65 years for those born before 1938
+  - threshold:
+      1900-01-01: 1938
+    amount:
+      1900-01-01: 782       # 65 years 2 months
+  - threshold:
+      1900-01-01: 1939
+    amount:
+      1900-01-01: 784       # 65 years 4 months
+  - threshold:
+      1900-01-01: 1940
+    amount:
+      1900-01-01: 786       # 65 years 6 months
+  - threshold:
+      1900-01-01: 1941
+    amount:
+      1900-01-01: 788       # 65 years 8 months
+  - threshold:
+      1900-01-01: 1942
+    amount:
+      1900-01-01: 790       # 65 years 10 months
+  - threshold:
+      1900-01-01: 1943
+    amount:
+      1900-01-01: 792       # 66 years for those born 1943-1954
+  - threshold:
+      1900-01-01: 1955
+    amount:
+      1900-01-01: 794       # 66 years 2 months
+  - threshold:
+      1900-01-01: 1956
+    amount:
+      1900-01-01: 796       # 66 years 4 months
+  - threshold:
+      1900-01-01: 1957
+    amount:
+      1900-01-01: 798       # 66 years 6 months
+  - threshold:
+      1900-01-01: 1958
+    amount:
+      1900-01-01: 800       # 66 years 8 months
+  - threshold:
+      1900-01-01: 1959
+    amount:
+      1900-01-01: 802       # 66 years 10 months
+  - threshold:
+      1900-01-01: 1960
+    amount:
+      1900-01-01: 804       # 67 years for those born 1960 and later

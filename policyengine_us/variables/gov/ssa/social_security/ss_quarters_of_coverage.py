@@ -21,10 +21,10 @@ class ss_quarters_of_coverage(Variable):
         total_earnings = employment_income + self_employment_income
 
         p = parameters(period).gov.ssa.social_security
-        threshold = p.quarters_of_coverage_threshold
 
         # Calculate quarters earned (maximum 4 per year)
-        quarters = np.floor(total_earnings / threshold).astype(int)
+        quarters = np.floor(
+            total_earnings / p.quarters_of_coverage_threshold
+        ).astype(int)
 
         return min_(quarters, 4)
-
