@@ -1,0 +1,87 @@
+# Tests for Primary Insurance Amount (PIA) calculation
+# Based on 2024 bend points: $1,174 and $7,078
+# Formula: 90% of first $1,174 + 32% of AIME between $1,174-$7,078 + 15% of AIME above $7,078
+
+- name: Zero AIME yields zero PIA
+  period: 2024
+  input:
+    ss_aime: 0
+  output:
+    ss_pia: 0
+
+- name: AIME below first bend point
+  period: 2024
+  input:
+    ss_aime: 1_000
+  output:
+    # 90% of $1,000 = $900
+    ss_pia: 900
+
+- name: AIME exactly at first bend point
+  period: 2024
+  input:
+    ss_aime: 1_174
+  output:
+    # 90% of $1,174 = $1,056.60
+    ss_pia: 1_056.60
+
+- name: AIME between bend points
+  period: 2024
+  input:
+    ss_aime: 4_000
+  output:
+    # 90% of $1,174 = $1,056.60
+    # 32% of ($4,000 - $1,174) = 32% of $2,826 = $904.32
+    # Total = $1,960.92, rounded down to nearest dime = $1,960.90
+    ss_pia: 1_960.90
+
+- name: AIME exactly at second bend point
+  period: 2024
+  input:
+    ss_aime: 7_078
+  output:
+    # 90% of $1,174 = $1,056.60
+    # 32% of ($7,078 - $1,174) = 32% of $5,904 = $1,889.28
+    # Total = $2,945.88, rounded down to nearest dime = $2,945.80
+    ss_pia: 2_945.80
+
+- name: AIME above second bend point
+  period: 2024
+  input:
+    ss_aime: 10_000
+  output:
+    # 90% of $1,174 = $1,056.60
+    # 32% of ($7,078 - $1,174) = 32% of $5,904 = $1,889.28
+    # 15% of ($10,000 - $7,078) = 15% of $2,922 = $438.30
+    # Total = $3,384.18, rounded down to nearest dime = $3,384.10
+    ss_pia: 3_384.10
+
+- name: Typical middle-income earner
+  period: 2024
+  input:
+    ss_aime: 3_500
+  output:
+    # 90% of $1,174 = $1,056.60
+    # 32% of ($3,500 - $1,174) = 32% of $2,326 = $744.32
+    # Total = $1,800.92, rounded down to nearest dime = $1,800.90
+    ss_pia: 1_800.90
+
+- name: Low earner
+  period: 2024
+  input:
+    ss_aime: 500
+  output:
+    # 90% of $500 = $450
+    ss_pia: 450
+
+- name: High earner
+  period: 2024
+  input:
+    ss_aime: 15_000
+  output:
+    # 90% of $1,174 = $1,056.60
+    # 32% of ($7,078 - $1,174) = 32% of $5,904 = $1,889.28
+    # 15% of ($15,000 - $7,078) = 15% of $7,922 = $1,188.30
+    # Total = $4,134.18, rounded down to nearest dime = $4,134.10
+    ss_pia: 4_134.10
+
