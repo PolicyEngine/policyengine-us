@@ -1,0 +1,11 @@
+- bump: minor
+  changes:
+    added:
+    - Initial implementation of Social Security benefit calculation infrastructure
+    - Social Security quarters of coverage calculation based on earnings thresholds
+    - Social Security full retirement age determination based on birth year
+    - Simplified Average Indexed Monthly Earnings (AIME) calculation
+    - Primary Insurance Amount (PIA) calculation with bend points and formula factors
+    - Social Security covered earnings tracking for current year
+    - Parameter files for quarters of coverage thresholds and PIA formula factors as a marginal rate scale
+    - Comprehensive unit tests for all Social Security calculation components

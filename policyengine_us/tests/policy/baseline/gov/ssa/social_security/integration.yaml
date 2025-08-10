@@ -1,0 +1,198 @@
+# Integration tests for Social Security benefit calculations
+# These test how multiple SS components work together
+
+- name: Worker age 62 with moderate earnings calculates PIA
+  period: 2024
+  input:
+    age: 62  # Born in 1962, FRA is 67
+    employment_income: 60_000
+    self_employment_income: 0
+  output:
+    # Earnings and coverage
+    ss_covered_earnings_this_year: 60_000
+    ss_quarters_of_coverage: 4  # $60,000 / $1,730 = 34.68, capped at 4
+    
+    # Retirement age
+    ss_full_retirement_age_months: 804  # 67 years for those born 1960+
+
+- name: Worker near retirement with higher earnings
+  period: 2024
+  input:
+    age: 66  # Born in 1958, FRA is 66 years 8 months
+    employment_income: 120_000
+    self_employment_income: 30_000
+  output:
+    # Combined earnings
+    ss_covered_earnings_this_year: 150_000
+    ss_quarters_of_coverage: 4  # Maximum 4 per year
+    
+    # FRA for 1958 birth year
+    ss_full_retirement_age_months: 800  # 66 years 8 months
+
+- name: Self-employed worker with high earnings
+  period: 2024
+  input:
+    age: 55  # Born in 1969, FRA is 67
+    employment_income: 0
+    self_employment_income: 400_000  # High self-employment income
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at wage base
+    ss_quarters_of_coverage: 4
+    ss_full_retirement_age_months: 804  # 67 years
+
+- name: Worker with high earnings at wage base
+  period: 2024
+  input:
+    age: 60  # Born in 1964, FRA is 67
+    employment_income: 500_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at wage base
+    ss_quarters_of_coverage: 4
+    ss_full_retirement_age_months: 804
+
+- name: Very high earner at maximum
+  period: 2024
+  input:
+    age: 50  # Born in 1974, FRA is 67
+    employment_income: 3_000_000  # Very high earnings
+    self_employment_income: 500_000
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at wage base
+    ss_quarters_of_coverage: 4
+    ss_full_retirement_age_months: 804
+
+- name: Worker with minimal earnings - one quarter of coverage
+  period: 2024
+  input:
+    age: 45
+    employment_income: 1_730  # Exactly one quarter threshold
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 1_730
+    ss_quarters_of_coverage: 1
+    ss_full_retirement_age_months: 804
+
+- name: Worker born before 1960 has different FRA
+  period: 2024
+  input:
+    age: 69  # Born in 1955, FRA is 66 years 2 months
+    employment_income: 50_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 50_000
+    ss_quarters_of_coverage: 4
+    ss_full_retirement_age_months: 794  # 66 years 2 months
+
+- name: Zero earnings yields zero benefits
+  period: 2024
+  input:
+    age: 65
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 0
+    ss_quarters_of_coverage: 0
+    ss_full_retirement_age_months: 802  # Born 1959: 66 years 10 months
+
+# Year-by-year earnings history tests
+# Note: These tests demonstrate how different career patterns would affect
+# Social Security benefits when full earnings history tracking is implemented.
+# Currently using simplified AIME calculation based on current earnings.
+
+- name: Full career with consistent high earnings
+  period: 2024
+  input:
+    age: 67  # Born 1957, at FRA
+    # Represents 45-year career from age 22 to 67
+    # Peak earning years
+    employment_income: 100_000  # Current year
+  output:
+    ss_covered_earnings_this_year: 100_000
+    # With full implementation, early years would be indexed up
+    # AIME would reflect 35 highest indexed years
+    ss_quarters_of_coverage: 4  # Current year quarters
+
+- name: Worker with career gaps represented by current lower income
+  period: 2024
+  input:
+    age: 62  # Born 1962, eligible for early retirement
+    # Current moderate income represents career with gaps
+    employment_income: 75_000
+  output:
+    ss_covered_earnings_this_year: 75_000
+    ss_quarters_of_coverage: 4
+    # With full implementation, gaps would lower 35-year average
+
+- name: High earner at wage base cap
+  period: 2024
+  input:
+    age: 66  # Born 1958, near FRA
+    # Maximum SS wage base earnings
+    employment_income: 200_000  # Will be capped
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
+    ss_quarters_of_coverage: 4
+    # Maximum creditable earnings for SS
+
+- name: Self-employed worker with moderate income
+  period: 2024
+  input:
+    age: 64  # Born 1960
+    employment_income: 0
+    self_employment_income: 70_000
+  output:
+    ss_covered_earnings_this_year: 70_000
+    ss_quarters_of_coverage: 4
+    # Self-employment income counts for SS
+
+- name: Late career starter with high current earnings
+  period: 2024
+  input:
+    age: 70  # Born 1954, past FRA
+    # High current earnings but late start
+    employment_income: 100_000
+  output:
+    ss_covered_earnings_this_year: 100_000
+    ss_quarters_of_coverage: 4
+    # With full implementation, fewer working years would lower AIME
+
+- name: Worker returning from disability
+  period: 2024
+  input:
+    age: 63  # Born 1961
+    # Moderate earnings after return
+    employment_income: 75_000
+  output:
+    ss_covered_earnings_this_year: 75_000
+    ss_quarters_of_coverage: 4
+    # Disability period would affect AIME calculation
+
+- name: Two-earner household with different incomes
+  period: 2024
+  input:
+    people:
+      spouse_1:
+        age: 68  # Born 1956, past FRA
+        employment_income: 0  # Retired
+      spouse_2:
+        age: 65  # Born 1959, near FRA
+        employment_income: 75_000  # Still working
+    households:
+      household_1:
+        members: [spouse_1, spouse_2]
+  output:
+    ss_covered_earnings_this_year: [0, 75_000]  # spouse_1: retired, spouse_2: working
+    ss_quarters_of_coverage: [0, 4]  # spouse_1: no earnings, spouse_2: 4 quarters
+
+- name: Maximum earner at wage base
+  period: 2024
+  input:
+    age: 67  # Born 1957, at FRA
+    # Earnings exceed wage base
+    employment_income: 300_000
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at 2024 wage base
+    ss_quarters_of_coverage: 4
+    # Maximum creditable SS earnings
+

@@ -1,0 +1,56 @@
+- name: No earnings
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 0
+
+- name: Employment income only
+  period: 2024
+  input:
+    employment_income: 50_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 50_000
+
+- name: Self-employment income only
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 30_000
+  output:
+    ss_covered_earnings_this_year: 30_000
+
+- name: Combined employment and self-employment income
+  period: 2024
+  input:
+    employment_income: 40_000
+    self_employment_income: 20_000
+  output:
+    ss_covered_earnings_this_year: 60_000
+
+- name: Earnings capped at wage base
+  period: 2024
+  input:
+    employment_income: 200_000  # Above 2024 wage base of $168,600
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 168_600
+
+- name: Combined earnings capped at wage base
+  period: 2024
+  input:
+    employment_income: 150_000
+    self_employment_income: 50_000
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at wage base
+
+- name: Test 2023 wage base
+  period: 2023
+  input:
+    employment_income: 180_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 160_200  # 2023 wage base
+

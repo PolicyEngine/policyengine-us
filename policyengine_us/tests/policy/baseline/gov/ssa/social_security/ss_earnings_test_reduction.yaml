@@ -1,0 +1,60 @@
+- name: No reduction - earnings below limit
+  period: 2024
+  input:
+    age: 64
+    employment_income: 20_000  # Below $22,320 limit
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 24_000
+  output:
+    ss_earnings_test_reduction: 0
+
+- name: Reduction for excess earnings under FRA
+  period: 2024
+  input:
+    age: 64  
+    employment_income: 50_000  # Well above $22,320 limit
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 24_000
+  output:
+    # Excess: $50,000 - $22,320 = $27,680
+    # Reduction: $27,680 * 0.5 = $13,840
+    ss_earnings_test_reduction: 13_840
+
+- name: Reduction capped at benefit amount
+  period: 2024
+  input:
+    age: 64
+    employment_income: 100_000  # Very high earnings
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 20_000
+  output:
+    # Excess: $100,000 - $22,320 = $77,680
+    # Reduction would be: $77,680 * 0.5 = $38,840
+    # But capped at benefit of $20,000
+    ss_earnings_test_reduction: 20_000
+
+- name: Year of FRA - higher limit and lower reduction rate
+  period: 2024
+  input:
+    age: 66.5  # Will turn 67 this year
+    employment_income: 80_000
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 30_000
+    ss_full_retirement_age_months: 804  # 67 years
+  output:
+    # Year of FRA limit: $59,520
+    # Excess: $80,000 - $59,520 = $20,480
+    # Reduction: $20,480 * 0.333333 = $6,826.67
+    ss_earnings_test_reduction: 6_826.66
+
+- name: No reduction after FRA
+  period: 2024
+  input:
+    age: 68  # Past FRA
+    employment_income: 200_000
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 40_000
+    ss_full_retirement_age_months: 804  # 67 years
+  output:
+    ss_earnings_test_reduction: 0
+
