@@ -14,21 +14,41 @@ class ss_aime(Variable):
     )
 
     def formula(person, period, parameters):
-        # Simplified AIME calculation for initial implementation
-        # TODO: Implement full 35-year earnings history tracking
-        # TODO: Implement wage indexing
-        # TODO: Select highest 35 years
+        # Check if we should use the full calculation
+        age = person("age", period)
 
-        # For now, just use current year earnings as a proxy
+        # For demonstration: simulate 35 years of earnings
+        # In production, this would access actual historical data
         current_earnings = person("ss_covered_earnings_this_year", period)
 
-        # AIME is based on 35 years of earnings divided by 420 months
-        # For this simplified version, we'll assume only current year earnings
-        # Real implementation needs historical earnings tracking
+        # Simplified approach: assume constant real earnings over career
+        # Adjust for typical career earnings pattern
+        not_working_age = age < 22
 
-        # If person has earnings, calculate simplified AIME
-        # This is just for making initial tests pass
+        # Calculate years of potential earnings
+        working_years = min_(age - 21, 35)
+        no_working_years = working_years <= 0
+
+        # For demonstration: assume current earnings represent mid-career level
+        # Apply a simple career earnings curve
+        # Use vectorized calculation for career earnings
+
+        # Simplified career curve calculation
+        # Average adjustment factor across career stages
+        # Early career (30%): average of 0.5 to 1.0 = 0.75
+        # Mid career (40%): 1.0
+        # Late career (30%): average of 1.0 to 1.1 = 1.05
+        # Weighted average: 0.3*0.75 + 0.4*1.0 + 0.3*1.05 = 0.94
+        average_adjustment = 0.94
+
+        total_indexed_earnings = (
+            current_earnings * working_years * average_adjustment
+        )
+
+        # AIME = total indexed earnings / 420 months
         MONTHS_IN_35_YEARS = 420
 
-        return current_earnings / MONTHS_IN_35_YEARS
+        aime = total_indexed_earnings / MONTHS_IN_35_YEARS
 
+        # Return 0 if not working age or no working years
+        return where(not_working_age | no_working_years, 0, aime)

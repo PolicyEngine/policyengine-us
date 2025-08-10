@@ -30,5 +30,27 @@
   output:
     ss_covered_earnings_this_year: 60_000
 
-# TODO: Add tests for wage base cap when implemented
-# TODO: Add tests for excluded income types when implemented
+- name: Earnings capped at wage base
+  period: 2024
+  input:
+    employment_income: 200_000  # Above 2024 wage base of $168,600
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 168_600
+
+- name: Combined earnings capped at wage base
+  period: 2024
+  input:
+    employment_income: 150_000
+    self_employment_income: 50_000
+  output:
+    ss_covered_earnings_this_year: 168_600  # Capped at wage base
+
+- name: Test 2023 wage base
+  period: 2023
+  input:
+    employment_income: 180_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 160_200  # 2023 wage base
+

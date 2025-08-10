@@ -1,0 +1,57 @@
+description: The US SSA delayed retirement credit rates by birth year.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  label: Delayed retirement credit rates by birth year
+  reference:
+    - title: 42 U.S. Code § 402(w)
+      href: https://www.law.cornell.edu/uscode/text/42/402#w
+    - title: SSA Delayed Retirement Credits
+      href: https://www.ssa.gov/OACT/quickcalc/early_late.html
+
+brackets:
+  - threshold:
+      1900-01-01: 1900
+    amount:
+      1900-01-01: 0.03      # Before 1925
+  - threshold:
+      1900-01-01: 1925
+    amount:
+      1900-01-01: 0.035     # 1925-1926
+  - threshold:
+      1900-01-01: 1927
+    amount:
+      1900-01-01: 0.04      # 1927-1928
+  - threshold:
+      1900-01-01: 1929
+    amount:
+      1900-01-01: 0.045     # 1929-1930
+  - threshold:
+      1900-01-01: 1931
+    amount:
+      1900-01-01: 0.05      # 1931-1932
+  - threshold:
+      1900-01-01: 1933
+    amount:
+      1900-01-01: 0.055     # 1933-1934
+  - threshold:
+      1900-01-01: 1935
+    amount:
+      1900-01-01: 0.06      # 1935-1936
+  - threshold:
+      1900-01-01: 1937
+    amount:
+      1900-01-01: 0.065     # 1937-1938
+  - threshold:
+      1900-01-01: 1939
+    amount:
+      1900-01-01: 0.07      # 1939-1940
+  - threshold:
+      1900-01-01: 1941
+    amount:
+      1900-01-01: 0.075     # 1941-1942
+  - threshold:
+      1900-01-01: 1943
+    amount:
+      1900-01-01: 0.08      # 1943 and later

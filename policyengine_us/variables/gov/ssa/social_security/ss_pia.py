@@ -24,4 +24,3 @@ class ss_pia(Variable):
         # SSA rounds down to nearest 10 cents (dime)
         # Source: https://www.ssa.gov/OACT/ProgData/retirebenefit1.html
         return np.floor(pia * 10) / 10
-
