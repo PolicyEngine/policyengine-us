@@ -13,20 +13,19 @@
   period: 2024
   input:
     age: 62
-    ss_covered_earnings_this_year: 60_000
-    # For simplicity in initial test, assuming this is their only year of earnings
-    # AIME = $60,000 / 420 months (35 years * 12)
+    employment_income:
+      2024-01-01: 60_000
+    # With only one year of earnings, AIME = $60,000 / 420 months (35 years * 12)
   output:
     ss_aime: 142.857  # $60,000 / 420 = 142.857...
 
-- name: Worker with current year earnings only (simplified)
+- name: Worker with current year earnings only
   period: 2024
   input:
     age: 62
-    # This simplified test only uses current year earnings
-    # Real AIME calculation requires 35-year earnings history
-    # AIME = $50,000 / 420 months
-    ss_covered_earnings_this_year: 50_000
+    employment_income:
+      2024-01-01: 50_000
+    # With only one year of earnings, AIME = $50,000 / 420 months
   output:
     ss_aime: 119.048  # $50,000 / 420 = 119.047...
 

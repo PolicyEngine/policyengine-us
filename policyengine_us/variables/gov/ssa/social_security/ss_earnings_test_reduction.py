@@ -38,16 +38,16 @@ class ss_earnings_test_reduction(Variable):
             total_earnings
             - where(
                 year_of_fra,
-                p.exempt_amount.year_of_fra,
-                p.exempt_amount.under_fra,
+                p.exempt_amount_year_of_fra,
+                p.exempt_amount_under_fra,
             ),
         )
 
         # Calculate reduction using appropriate rate
         reduction = excess_earnings * where(
             year_of_fra,
-            p.reduction_rate.year_of_fra,
-            p.reduction_rate.under_fra,
+            p.reduction_rate_year_of_fra,
+            p.reduction_rate_under_fra,
         )
 
         # Get the benefit amount to cap the reduction

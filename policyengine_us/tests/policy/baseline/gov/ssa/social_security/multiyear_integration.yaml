@@ -19,13 +19,13 @@
       2022-01-01: 80_000   # Age 65, working past 62
       2024-01-01: 30_000   # Age 67, part-time at FRA (no earnings test)
   output:
-    # Multi-year calculation results demonstrate period-spanning works
-    ss_aime: 2_350.0      # Career simulation: 30,000 * 35 * 0.94 / 420
-    ss_pia: 1_432.9       # PIA formula: 90% * 1,174 + 32% * (2,350-1,174) 
+    # Multi-year calculation with actual historical data
+    ss_aime: 1_449.12      # Based on 11 years of provided earnings history, indexed to age 60
+    ss_pia: 1_144.60       # PIA formula: 90% * 1,174 + 32% * (1,449.12-1,174) 
     ss_retirement_age_adjustment_factor: 1.04  # 4% delayed credit (6 months past FRA)  
     ss_covered_earnings_this_year: 30_000     # Current year earnings
-    # Final annual benefit: PIA * 12 * adjustment = 1,432.9 * 12 * 1.04
-    social_security_retirement: 17_882.592   # No earnings test past FRA
+    # Final annual benefit: PIA * 12 * adjustment = 1,144.60 * 12 * 1.04
+    social_security_retirement: 14_284.607   # No earnings test past FRA
 
 - name: Early retiree with 42-year career history
   period: 2024
@@ -45,10 +45,10 @@
       2023-01-01: 88_000   # Age 61 - last working year
       # Retired in 2024
   output:
-    # Multi-year format accepted, current simplified implementation returns 0
-    ss_aime: 0            # Simplified implementation limitation
-    ss_pia: 0             # Based on AIME calculation
-    social_security_retirement: 0  # No benefit with current implementation
+    # Multi-year calculation with actual historical data
+    ss_aime: 2_303.1982   # Based on 10 years of provided earnings history
+    ss_pia: 1_417.90      # Based on AIME calculation
+    social_security_retirement: 11_910.355  # Early retirement reduction applied
 
 - name: High earner approaching retirement
   period: 2024  
@@ -64,7 +64,7 @@
   output:
     # Working beneficiary under earnings test limit
     ss_covered_earnings_this_year: 20_000
-    social_security_retirement: 12_452.505  # Benefit with earnings under test limit
+    social_security_retirement: 11_478.172  # Benefit with earnings under test limit
 
 - name: Maximum benefit recipient 
   period: 2024
@@ -80,4 +80,4 @@
   output:
     # Delayed retirement with high lifetime earnings  
     ss_retirement_age_adjustment_factor: 1.32  # 32% delayed credit
-    social_security_retirement: 0  # Current simplified implementation limitation
+    social_security_retirement: 15_486.77  # Maximum benefit with delayed retirement

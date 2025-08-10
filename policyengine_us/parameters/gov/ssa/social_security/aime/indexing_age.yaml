@@ -1,0 +1,14 @@
+description: Age at which Social Security indexes wages for AIME calculation.
+values:
+  1900-01-01: 60
+metadata:
+  unit: year
+  period: year
+  label: Wage indexing age
+  reference:
+    - title: 42 U.S.C. § 415(b)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/415#b_3_A
+    - title: Social Security POMS RS 00605.020
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300605020
+    - title: SSA AIME Calculation
+      href: https://www.ssa.gov/OACT/COLA/aime.html
