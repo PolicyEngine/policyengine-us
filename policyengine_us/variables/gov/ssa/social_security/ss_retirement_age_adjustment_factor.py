@@ -32,20 +32,8 @@ class ss_retirement_age_adjustment_factor(Variable):
         months_early = abs(months_from_fra)
         is_early = months_from_fra < 0
 
-        # First tier months: 5/9 of 1% per month
-        first_tier_months_limit = p.early_retirement.first_tier.months
-        first_tier_reduction = (
-            min_(months_early, first_tier_months_limit)
-            * p.early_retirement.first_tier.rate
-        )
-
-        # Beyond first tier: 5/12 of 1% per month
-        beyond_first_tier = max_(0, months_early - first_tier_months_limit)
-        beyond_tier_reduction = (
-            beyond_first_tier * p.early_retirement.beyond_tier.rate
-        )
-
-        total_reduction = first_tier_reduction + beyond_tier_reduction
+        # Calculate total reduction using marginal rate scale
+        total_reduction = p.early_retirement.reduction_rates.calc(months_early)
         early_factor = max_(0, 1 - total_reduction)
 
         # Delayed retirement - credit (when months_from_fra > 0)
