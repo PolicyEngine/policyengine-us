@@ -1,0 +1,34 @@
+- name: No earnings
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 0
+
+- name: Employment income only
+  period: 2024
+  input:
+    employment_income: 50_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 50_000
+
+- name: Self-employment income only
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 30_000
+  output:
+    ss_covered_earnings_this_year: 30_000
+
+- name: Combined employment and self-employment income
+  period: 2024
+  input:
+    employment_income: 40_000
+    self_employment_income: 20_000
+  output:
+    ss_covered_earnings_this_year: 60_000
+
+# TODO: Add tests for wage base cap when implemented
+# TODO: Add tests for excluded income types when implemented

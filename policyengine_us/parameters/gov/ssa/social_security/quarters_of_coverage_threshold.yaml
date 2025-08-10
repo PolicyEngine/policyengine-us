@@ -1,0 +1,19 @@
+description: The US credits one Social Security quarter of coverage when a person earns at least this amount.
+values:
+  2020-01-01: 1_410
+  2021-01-01: 1_470
+  2022-01-01: 1_510
+  2023-01-01: 1_640
+  2024-01-01: 1_730
+  2025-01-01: 1_810
+metadata:
+  unit: currency-USD
+  period: year
+  label: Quarter of coverage threshold
+  uprating: gov.ssa.uprating
+  reference:
+    - title: Quarters of Coverage
+      href: https://www.ssa.gov/OACT/COLA/QC.html
+    - title: 42 USC 413(d)(2) - Quarter of coverage amount
+      href: https://www.law.cornell.edu/uscode/text/42/413#d_2
+

@@ -1,0 +1,39 @@
+# Tests for Average Indexed Monthly Earnings (AIME)
+# Using SSA example from: https://www.ssa.gov/OACT/ProgData/retirebenefit1.html
+
+- name: Person with no earnings history
+  period: 2024
+  input:
+    age: 62
+    ss_covered_earnings_this_year: 0
+  output:
+    ss_aime: 0
+
+- name: Simple case - constant earnings for one year
+  period: 2024
+  input:
+    age: 62
+    ss_covered_earnings_this_year: 60_000
+    # For simplicity in initial test, assuming this is their only year of earnings
+    # AIME = $60,000 / 420 months (35 years * 12)
+  output:
+    ss_aime: 142.857  # $60,000 / 420 = 142.857...
+
+- name: Worker with current year earnings only (simplified)
+  period: 2024
+  input:
+    age: 62
+    # This simplified test only uses current year earnings
+    # Real AIME calculation requires 35-year earnings history
+    # AIME = $50,000 / 420 months
+    ss_covered_earnings_this_year: 50_000
+  output:
+    ss_aime: 119.048  # $50,000 / 420 = 119.047...
+
+# Note: Full AIME calculation requires:
+# 1. Up to 35 years of earnings history
+# 2. Wage indexing to age 60
+# 3. Selection of highest 35 years
+# 4. Division by 420 months
+# These tests will be expanded once period-spanning is implemented
+

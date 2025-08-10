@@ -1,0 +1,84 @@
+- name: Born before 1938 - FRA is 65
+  period: 2024
+  input:
+    age: 87  # Born in 1937
+  output:
+    ss_full_retirement_age_months: 780  # 65 years * 12 months
+
+- name: Born in 1938 - FRA is 65 and 2 months
+  period: 2024
+  input:
+    age: 86  # Born in 1938
+  output:
+    ss_full_retirement_age_months: 782  # 65 years 2 months
+
+- name: Born in 1943 - FRA is 66
+  period: 2024
+  input:
+    age: 81  # Born in 1943
+  output:
+    ss_full_retirement_age_months: 792  # 66 years * 12 months
+
+- name: Born in 1954 - FRA is 66
+  period: 2024
+  input:
+    age: 70  # Born in 1954
+  output:
+    ss_full_retirement_age_months: 792  # 66 years * 12 months
+
+- name: Born in 1955 - FRA is 66 and 2 months
+  period: 2024
+  input:
+    age: 69  # Born in 1955
+  output:
+    ss_full_retirement_age_months: 794  # 66 years 2 months
+
+- name: Born in 1956 - FRA is 66 and 4 months
+  period: 2024
+  input:
+    age: 68  # Born in 1956
+  output:
+    ss_full_retirement_age_months: 796  # 66 years 4 months
+
+- name: Born in 1957 - FRA is 66 and 6 months
+  period: 2024
+  input:
+    age: 67  # Born in 1957
+  output:
+    ss_full_retirement_age_months: 798  # 66 years 6 months
+
+- name: Born in 1958 - FRA is 66 and 8 months
+  period: 2024
+  input:
+    age: 66  # Born in 1958
+  output:
+    ss_full_retirement_age_months: 800  # 66 years 8 months
+
+- name: Born in 1959 - FRA is 66 and 10 months
+  period: 2024
+  input:
+    age: 65  # Born in 1959
+  output:
+    ss_full_retirement_age_months: 802  # 66 years 10 months
+
+- name: Born in 1960 or later - FRA is 67
+  period: 2024
+  input:
+    age: 64  # Born in 1960
+  output:
+    ss_full_retirement_age_months: 804  # 67 years * 12 months
+
+- name: Born in 1962 - FRA is 67
+  period: 2024
+  input:
+    age: 62  # Born in 1962
+  output:
+    ss_full_retirement_age_months: 804  # 67 years * 12 months
+
+- name: Young person - FRA is 67
+  period: 2024
+  input:
+    age: 30  # Born in 1994
+  output:
+    ss_full_retirement_age_months: 804  # 67 years * 12 months
+
