@@ -33,8 +33,12 @@ class ss_retirement_age_adjustment_factor(Variable):
         is_early = months_from_fra < 0
 
         # Calculate total reduction using marginal rate scale
-        total_reduction = p.early_retirement.reduction_rates.calc(months_early)
-        early_factor = max_(0, 1 - total_reduction)
+        # The scale returns cumulative reduction amount (sum of marginal rates * amounts in each bracket)
+        total_reduction_amount = p.early_retirement.reduction_rates.calc(
+            months_early
+        )
+        # This gives us the total reduction as a percentage
+        early_factor = max_(0, 1 - total_reduction_amount)
 
         # Delayed retirement - credit (when months_from_fra > 0)
         years_delayed = months_from_fra / MONTHS_IN_YEAR
