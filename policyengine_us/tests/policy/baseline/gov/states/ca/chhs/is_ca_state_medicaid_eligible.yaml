@@ -1,0 +1,139 @@
+- name: Undocumented child eligible for CA state Medicaid in 2016
+  period: 2016
+  input:
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5  # Below Medicaid threshold
+    households:
+      household:
+        state_code: CA
+        members: [child]
+  output:
+    is_ca_state_medicaid_child_eligible:
+      - True
+    is_ca_state_medicaid_eligible:
+      - True
+
+- name: Undocumented child not eligible before 2016
+  period: 2015
+  input:
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+    households:
+      household:
+        state_code: CA
+        members: [child]
+  output:
+    is_ca_state_medicaid_child_eligible:
+      - False
+    is_ca_state_medicaid_eligible:
+      - False
+
+- name: Undocumented young adult eligible in 2020
+  period: 2020
+  input:
+    people:
+      young_adult:
+        age: 22
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.2
+    households:
+      household:
+        state_code: CA
+        members: [young_adult]
+  output:
+    is_ca_state_medicaid_young_adult_eligible:
+      - True
+    is_ca_state_medicaid_eligible:
+      - True
+
+- name: Undocumented older adult eligible in 2023
+  period: 2023
+  input:
+    people:
+      older_adult:
+        age: 55
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.0
+    households:
+      household:
+        state_code: CA
+        members: [older_adult]
+  output:
+    is_ca_state_medicaid_older_adult_eligible:
+      - True
+    is_ca_state_medicaid_eligible:
+      - True
+
+- name: Undocumented adult ages 26-49 eligible in 2024
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.3
+    households:
+      household:
+        state_code: CA
+        members: [adult]
+  output:
+    is_ca_state_medicaid_adult_eligible:
+      - True
+    is_ca_state_medicaid_eligible:
+      - True
+
+- name: Undocumented adult ages 26-49 not eligible in 2023
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.3
+    households:
+      household:
+        state_code: CA
+        members: [adult]
+  output:
+    is_ca_state_medicaid_adult_eligible:
+      - False
+    is_ca_state_medicaid_eligible:
+      - False
+
+- name: Citizen not eligible for CA state Medicaid (eligible for federal)
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.3
+    households:
+      household:
+        state_code: CA
+        members: [person]
+  output:
+    is_ca_state_medicaid_eligible:
+      - False  # Citizens are eligible for federal Medicaid
+
+- name: Non-CA resident not eligible
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.3
+    households:
+      household:
+        state_code: NY
+        members: [person]
+  output:
+    is_ca_state_medicaid_eligible:
+      - False

@@ -1,0 +1,18 @@
+description: Age range for California state-funded Medicaid child category.
+brackets:
+  - threshold:
+      2016-01-01: 0
+    amount:
+      2016-01-01: true
+  - threshold:
+      2016-01-01: 19
+    amount:
+      2016-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: California state-funded Medicaid child age range
+  reference:
+    - title: SB 75 - Health for All Children Act
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160SB75

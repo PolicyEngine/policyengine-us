@@ -1,0 +1,18 @@
+description: Age range for California state-funded Medicaid older adult category.
+brackets:
+  - threshold:
+      2022-05-01: 0
+    amount:
+      2022-05-01: false
+  - threshold:
+      2022-05-01: 50
+    amount:
+      2022-05-01: true
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: California state-funded Medicaid older adult age range
+  reference:
+    - title: AB 133 - Health for All Older Adults
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202120220AB133
