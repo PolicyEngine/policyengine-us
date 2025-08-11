@@ -3,7 +3,7 @@
   input:
     pr_is_tax_unit_dependent: true
     is_full_time_college_student: true 
-    pr_gross_income: 7_499
+    pr_gross_income_person: 7_499
     age: 25
     state_code: PR
   output:
@@ -14,7 +14,7 @@
   input:
     pr_is_tax_unit_dependent: true
     is_full_time_college_student: true 
-    pr_gross_income: 7_501
+    pr_gross_income_person: 7_501
     age: 20
     state_code: PR
   output:
@@ -25,7 +25,7 @@
   input:
     pr_is_tax_unit_dependent: true
     is_full_time_college_student: true 
-    pr_gross_income: 7_499
+    pr_gross_income_person: 7_499
     age: 26
     state_code: PR
   output:
@@ -36,7 +36,7 @@
   input:
     pr_is_tax_unit_dependent: true
     is_full_time_college_student: false 
-    pr_gross_income: 5_000
+    pr_gross_income_person: 5_000
     age: 18
     state_code: PR
   output:
@@ -47,7 +47,7 @@
   input:
     pr_is_tax_unit_dependent: false
     is_full_time_college_student: false 
-    pr_gross_income: 5_000
+    pr_gross_income_person: 5_000
     age: 30
     state_code: PR
   output:

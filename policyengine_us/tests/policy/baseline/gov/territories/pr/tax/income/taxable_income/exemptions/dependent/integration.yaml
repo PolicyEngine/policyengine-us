@@ -3,17 +3,17 @@
   input:
     people:
       person1:
-        pr_gross_income: 7_000
+        pr_gross_income_person: 7_000
         is_full_time_college_student: true
         pr_is_tax_unit_dependent: true
         age: 20
       person2:
-        pr_gross_income: 2_500
+        pr_gross_income_person: 2_500
         is_full_time_college_student: false
         pr_is_tax_unit_dependent: true
         age: 27
       person3:
-        pr_gross_income: 10_000
+        pr_gross_income_person: 10_000
         is_full_time_college_student: false
         pr_is_tax_unit_dependent: false
         age: 30
