@@ -12,5 +12,5 @@ class is_ca_state_medicaid_child_eligible(Variable):
         age = person("age", period)
         is_child = p.age_range.calc(age)
         is_eligible_period = p.eligible
-        
+
         return is_child & is_eligible_period

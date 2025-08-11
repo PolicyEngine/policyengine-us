@@ -12,5 +12,5 @@ class is_ca_state_medicaid_young_adult_eligible(Variable):
         age = person("age", period)
         is_young_adult = p.age_range.calc(age)
         is_eligible_period = p.eligible
-        
+
         return is_young_adult & is_eligible_period
