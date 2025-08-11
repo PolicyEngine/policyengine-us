@@ -114,4 +114,31 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CPI-U (February values, last projection year 2034)
+    extend_parameter_values(
+        parameters.gov.bls.cpi.cpi_u,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=2,
+        period_day=1,
+    )
+
+    # Chained CPI-U (February values, last projection year 2034)
+    extend_parameter_values(
+        parameters.gov.bls.cpi.c_cpi_u,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=2,
+        period_day=1,
+    )
+
+    # CPI-W (February values, last projection year 2034)
+    extend_parameter_values(
+        parameters.gov.bls.cpi.cpi_w,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=2,
+        period_day=1,
+    )
+
     return parameters

@@ -1386,62 +1386,12 @@ values:
   2033-08-01: 377.038 # 2033Q3: 384.9 * 309.141 / 315.587
   2033-11-01: 379.193 # 2033Q4: 387.1 * 309.141 / 315.587
   2034-02-01: 381.250 # 2034Q1: 389.2 * 309.141 / 315.587
-  2034-05-01: 383.405 # 2034Q2: 391.4 * 309.141 / 315.587
-  2034-08-01: 385.561 # 2034Q3: 393.6 * 309.141 / 315.587
-  2034-11-01: 387.716 # 2034Q4: 395.8 * 309.141 / 315.587
-  2035-02-01: 389.871 # 2035Q1: 398.0 * 309.141 / 315.587
-  2035-05-01: 392.026 # 2035Q2: 400.2 * 309.141 / 315.587
-  2035-08-01: 394.279 # 2035Q3: 402.5 * 309.141 / 315.587
-  2035-11-01: 396.434 # 2035Q4: 404.7 * 309.141 / 315.587
-  # Extended through 2100 using constant quarterly growth rate
-  # Average quarterly growth from 2034-2035: ~1.0057 (approximately 2.3% annual)
-  2036-02-01: 398.687
-  2036-05-01: 400.957
-  2036-08-01: 403.244
-  2036-11-01: 405.548
-  2037-02-01: 407.869
-  2037-05-01: 410.207
-  2037-08-01: 412.562
-  2037-11-01: 414.935
-  2038-02-01: 417.325
-  2038-05-01: 419.733
-  2038-08-01: 422.159
-  2038-11-01: 424.603
-  2039-02-01: 427.065
-  2039-05-01: 429.545
-  2039-08-01: 432.044
-  2039-11-01: 434.561
-  2040-02-01: 437.097
-  2040-05-01: 439.652
-  2040-08-01: 442.226
-  2040-11-01: 444.819
-  # Continue pattern through 2100 with ~2.3% annual growth
-  2045-02-01: 489.3
-  2050-02-01: 547.2
-  2055-02-01: 612.1
-  2060-02-01: 684.8
-  2065-02-01: 766.2
-  2070-02-01: 857.3
-  2075-02-01: 959.1
-  2080-02-01: 1_073.0
-  2085-02-01: 1_200.5
-  2090-02-01: 1_343.1
-  2095-02-01: 1_502.4
-  2100-02-01: 1_680.3
-
+  # Values for 2035-2100 are set programmatically in uprating_extensions.py
 metadata:
   unit: currency-USD
   label: CPI-W
   economy: false
   reference:
-    - title: BLS Data Viewer | Consumer Price Index for Urban Wage Earners and Clerical Workers (CPI-W)
-      href: https://beta.bls.gov/dataViewer/view/timeseries/CWUR0000SA0
-    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
-      # Source: https://www.cbo.gov/data/budget-economic-data#10
-      # Quarterly: Row 51
-      href: https://www.cbo.gov/system/files/2024-06/51135-2024-06-Economic-Projections.xlsx
-    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | January 2025
-      # Source: https://www.cbo.gov/data/budget-economic-data#10
+    - title: CBO | Economic and Budget Projections | January 2025
       # Quarterly: Row 51
       href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
-      

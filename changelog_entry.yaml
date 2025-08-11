@@ -1,9 +1,11 @@
 - bump: minor
   changes:
     added:
-    - Unified programmatic extension of uprating factors through 2100 for long-term policy simulations
-    - IRS, SNAP, SSA, and HHS uprating factors now extend dynamically based on growth rates from final years of projections
+    - Unified programmatic extension of all uprating factors through 2100 for long-term policy simulations
+    - IRS, SNAP, SSA, HHS, CPI-U, Chained CPI-U, and CPI-W now extend dynamically based on growth rates from final years of projections
+    - Single comprehensive test suite for all uprating extensions
     - Cleaner, more maintainable approach that avoids hardcoding future values in YAML files
     changed:
     - Updated SSA 2025 value to reflect actual 2.5% COLA announced by SSA
-    - Refactored uprating extensions from hardcoded YAML values to programmatic generation
+    - Refactored all uprating extensions from hardcoded YAML values to programmatic generation
+    - Consolidated individual uprating tests into a single comprehensive test file
