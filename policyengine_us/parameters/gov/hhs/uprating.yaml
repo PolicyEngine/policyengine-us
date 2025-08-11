@@ -14,86 +14,11 @@ values:
   2033-01-01: 383.9
   2034-01-01: 392.5
   2035-01-01: 401.3
-  # Extended through 2100 using constant growth rate from 2034-2035
-  # Growth rate: 401.3 / 392.5 = 1.02242...
-  2036-01-01: 410.3
-  2037-01-01: 419.5
-  2038-01-01: 428.9
-  2039-01-01: 438.5
-  2040-01-01: 448.3
-  2041-01-01: 458.4
-  2042-01-01: 468.6
-  2043-01-01: 479.1
-  2044-01-01: 489.9
-  2045-01-01: 500.8
-  2046-01-01: 512.1
-  2047-01-01: 523.5
-  2048-01-01: 535.3
-  2049-01-01: 547.3
-  2050-01-01: 559.5
-  2051-01-01: 572.1
-  2052-01-01: 584.9
-  2053-01-01: 598.0
-  2054-01-01: 611.4
-  2055-01-01: 625.1
-  2056-01-01: 639.1
-  2057-01-01: 653.5
-  2058-01-01: 668.1
-  2059-01-01: 683.1
-  2060-01-01: 698.4
-  2061-01-01: 714.0
-  2062-01-01: 730.0
-  2063-01-01: 746.4
-  2064-01-01: 763.1
-  2065-01-01: 780.2
-  2066-01-01: 797.7
-  2067-01-01: 815.5
-  2068-01-01: 833.8
-  2069-01-01: 852.5
-  2070-01-01: 871.6
-  2071-01-01: 891.1
-  2072-01-01: 911.1
-  2073-01-01: 931.5
-  2074-01-01: 952.4
-  2075-01-01: 973.7
-  2076-01-01: 995.5
-  2077-01-01: 1_017.9
-  2078-01-01: 1_040.7
-  2079-01-01: 1_064.0
-  2080-01-01: 1_087.8
-  2081-01-01: 1_112.2
-  2082-01-01: 1_137.1
-  2083-01-01: 1_162.6
-  2084-01-01: 1_188.6
-  2085-01-01: 1_215.2
-  2086-01-01: 1_242.4
-  2087-01-01: 1_270.3
-  2088-01-01: 1_298.7
-  2089-01-01: 1_327.9
-  2090-01-01: 1_357.6
-  2091-01-01: 1_388.1
-  2092-01-01: 1_419.2
-  2093-01-01: 1_451.0
-  2094-01-01: 1_483.6
-  2095-01-01: 1_516.9
-  2096-01-01: 1_550.9
-  2097-01-01: 1_585.7
-  2098-01-01: 1_621.3
-  2099-01-01: 1_657.6
-  2100-01-01: 1_694.8
+  # Values for 2036-2100 are set programmatically in uprating_extensions.py
 metadata:
-  unit: currency-USD
-  label: Poverty line uprating
   economy: false
+  unit: currency-USD
+  label: HHS uprating
   reference:
-    - title: 2025 Annual Update of the HHS Poverty Guidelines
-      href: https://www.govinfo.gov/app/details/FR-2025-01-17/2025-01377
-    - title: 2024 Annual Update of the HHS Poverty Guidelines
-      href: https://www.federalregister.gov/documents/2024/01/17/2024-00796/annual-update-of-the-hhs-poverty-guidelines
-    - title: CBO Budget and Economic Outlook | 2024 to 2034
-      # Feb 2024 Economic Projections | 2. Calendar Year | Row 51
-      href: https://www.cbo.gov/data/budget-economic-data#4
-    - title: CBO Budget and Economic Outlook | 2025 to 2035
-      # Feb 2024 Economic Projections | 2. Calendar Year | Row 51
-      href: https://www.cbo.gov/data/budget-economic-data#4
-
+    - title: CBO Economic Projections, February 2024.
+      href: https://www.cbo.gov/publication/59710
