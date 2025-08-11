@@ -8,4 +8,9 @@ class pr_agi_person(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR
-    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-a/30103/"
+    reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2"
+
+    def formula(person, period, parameters):
+        total_income = person("pr_gross_income_person", period)
+        alimony_paid = person("alimony_expense", period)
+        return max_(0, total_income - alimony_paid)

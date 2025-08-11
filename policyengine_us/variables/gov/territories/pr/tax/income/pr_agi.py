@@ -8,4 +8,6 @@ class pr_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR
-    reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-a/30103/"
+    reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2"
+
+    adds = ["pr_agi_person"]
