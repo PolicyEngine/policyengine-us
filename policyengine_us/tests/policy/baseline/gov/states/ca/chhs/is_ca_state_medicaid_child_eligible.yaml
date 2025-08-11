@@ -1,0 +1,38 @@
+- name: Child eligible after 2016
+  period: 2017
+  input:
+    people:
+      child:
+        age: 15
+    households:
+      household:
+        members: [child]
+  output:
+    is_ca_state_medicaid_child_eligible:
+      - True
+
+- name: Child not eligible before 2016
+  period: 2015
+  input:
+    people:
+      child:
+        age: 10
+    households:
+      household:
+        members: [child]
+  output:
+    is_ca_state_medicaid_child_eligible:
+      - False
+
+- name: 19-year-old not eligible for child program
+  period: 2020
+  input:
+    people:
+      adult:
+        age: 19
+    households:
+      household:
+        members: [adult]
+  output:
+    is_ca_state_medicaid_child_eligible:
+      - False

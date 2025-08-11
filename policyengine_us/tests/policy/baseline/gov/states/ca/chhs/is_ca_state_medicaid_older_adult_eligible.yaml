@@ -1,0 +1,38 @@
+- name: Older adult eligible after May 2022
+  period: 2022
+  input:
+    people:
+      older_adult:
+        age: 55
+    households:
+      household:
+        members: [older_adult]
+  output:
+    is_ca_state_medicaid_older_adult_eligible:
+      - True
+
+- name: Older adult not eligible before May 2022
+  period: 2021
+  input:
+    people:
+      older_adult:
+        age: 55
+    households:
+      household:
+        members: [older_adult]
+  output:
+    is_ca_state_medicaid_older_adult_eligible:
+      - False
+
+- name: 49-year-old not eligible for older adult program
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 49
+    households:
+      household:
+        members: [adult]
+  output:
+    is_ca_state_medicaid_older_adult_eligible:
+      - False
