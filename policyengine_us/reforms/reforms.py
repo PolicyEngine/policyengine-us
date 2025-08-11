@@ -101,6 +101,9 @@ from .additional_tax_bracket import (
 from .congress.hawley.awra import (
     create_american_worker_rebate_act_reform,
 )
+from .crfb import (
+    create_non_refundable_ss_credit_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -210,6 +213,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     afa_other_dependent_credit = create_afa_other_dependent_credit_reform(
         parameters, period
     )
+    non_refundable_ss_credit = create_non_refundable_ss_credit_reform(
+        parameters, period
+    )
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -265,6 +271,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_medicare_tax,
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
+        non_refundable_ss_credit,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,

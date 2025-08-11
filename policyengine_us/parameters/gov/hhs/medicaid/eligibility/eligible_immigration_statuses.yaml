@@ -1,0 +1,29 @@
+description: The United States limits Medicaid eligibility to these immigration statuses.
+values:
+  2018-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+
+  2026-10-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - CUBAN_HAITIAN_ENTRANT
+
+
+metadata:
+  label: Medicaid eligible immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: 42 USC § 1396b(v) - Medicaid eligibility for aliens
+      href: https://www.law.cornell.edu/uscode/text/42/1396b#v
+    - title: 8 USC § 1641 - Definition of qualified alien
+      href: https://www.law.cornell.edu/uscode/text/8/1641
+    - title: Health Provisions in the 2025 Federal Budget Reconciliation Bill | KFF
+      href: https://www.kff.org/tracking-the-medicaid-provisions-in-the-2025-budget-bill/
