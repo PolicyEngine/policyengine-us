@@ -9,4 +9,4 @@ class pr_exemptions(Variable):
     unit = USD
     reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30138/"
 
-    adds = "gov.territories.pr.tax.income.taxable_income.exemptions"
+    adds = "gov.territories.pr.tax.income.taxable_income.exemptions.sources"

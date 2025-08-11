@@ -9,4 +9,4 @@ class pr_deductions(Variable):
     reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"
     definition_period = YEAR
 
-    adds = "gov.territories.pr.tax.income.taxable_income.deductions"
+    adds = "gov.territories.pr.tax.income.taxable_income.deductions.sources"

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pr_net_taxxable_income(Variable):
+class pr_net_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico net taxxable income"
+    label = "Puerto Rico net taxable income"
     unit = USD
     definition_period = YEAR
 
