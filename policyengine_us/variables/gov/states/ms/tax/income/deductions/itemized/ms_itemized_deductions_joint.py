@@ -16,5 +16,5 @@ class ms_itemized_deductions_joint(Variable):
 
     def formula(person, period, parameters):
         deductions = person.tax_unit("ms_itemized_deductions_unit", period)
-        is_head = person("is_tax_unit_head", period)
-        return deductions * is_head
+        prorate_fraction = person("ms_prorate_fraction", period)
+        return deductions * prorate_fraction

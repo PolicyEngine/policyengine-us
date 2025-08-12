@@ -12,5 +12,5 @@ class ms_total_exemptions_joint(Variable):
 
     def formula(person, period, parameters):
         total_exemptions = person.tax_unit("ms_total_exemptions", period)
-        is_head = person("is_tax_unit_head", period)
-        return is_head * total_exemptions
+        prorate_fraction = person("ms_prorate_fraction", period)
+        return prorate_fraction * total_exemptions

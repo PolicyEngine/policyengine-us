@@ -16,5 +16,5 @@ class ms_standard_deduction_joint(Variable):
         # Then get the MS Standard Deduction part of the parameter tree.
         p = parameters(period).gov.states.ms.tax.income.deductions.standard
 
-        is_head = person("is_tax_unit_head", period)
-        return p.amount[filing_status] * is_head
+        prorate_fraction = person("ms_prorate_fraction", period)
+        return p.amount[filing_status] * prorate_fraction
