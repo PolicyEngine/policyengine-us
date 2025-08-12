@@ -75,10 +75,32 @@ def non_refundable_ss_credit_reform() -> Reform:
 
             return highest_rate
 
+    def modify_parameters(parameters):
+        parameters.gov.irs.credits.non_refundable.update(
+            start=instant("2026-01-01"),
+            stop=instant("2035-12-31"),
+            value=[
+                "foreign_tax_credit",
+                "cdcc",
+                "non_refundable_american_opportunity_credit",
+                "lifetime_learning_credit",
+                "savers_credit",
+                "residential_clean_energy_credit",
+                "energy_efficient_home_improvement_credit",
+                "elderly_disabled_credit",
+                "new_clean_vehicle_credit",
+                "used_clean_vehicle_credit",
+                "non_refundable_ctc",
+                "ss_credit",
+            ],
+        )
+        return parameters
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ss_credit)
             self.update_variable(highest_tax_rate)
+            self.modify_parameters(modify_parameters)
             self.neutralize_variable("additional_senior_deduction")
 
     return reform
