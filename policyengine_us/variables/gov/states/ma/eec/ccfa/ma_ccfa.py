@@ -1,0 +1,23 @@
+from policyengine_us.model_api import *
+
+
+class ma_ccfa_benefit(Variable):
+    value_type = float
+    entity = SPMUnit
+    unit = USD
+    label = (
+        "Massachusetts Child Care Financial Assistance (CCFA) benefit amount"
+    )
+    definition_period = MONTH
+    defined_for = "ma_ccfa_eligible"
+    reference = "Policy Guide"
+
+    def formula(spm_unit, period, parameters):
+        pre_subsidy_childcare_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
+        copay = spm_unit("ma_ccfa_copay", period)
+        max_reimbursement = spm_unit("ma_ccfa_maximum_reimbursement", period)
+        uncapped_benefit = max_(pre_subsidy_childcare_expenses - copay, 0)
+
+        return min_(uncapped_benefit, max_reimbursement)
