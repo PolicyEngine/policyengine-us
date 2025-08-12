@@ -17,7 +17,7 @@ class pr_is_tax_unit_dependent(Variable):
         age = person("age", period)
 
         # taxpayer is <21 years old OR >= 65 years old
-        age_eligible = (age < p.younger) | (age >= p.upper)
+        age_eligible = (age < p.younger) | (age >= p.older)
 
         # OR the taxpayer's mother or father
         parent_eligible = person("is_parent_of_filer_or_spouse", period)
