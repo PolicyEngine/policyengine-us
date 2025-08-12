@@ -43,3 +43,25 @@
     itemized_taxable_income_deductions: 0
   output:
     taxable_income_deductions_if_itemizing: 6_000
+
+- name: Test credit as part of the computation tree
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    highest_tax_rate: 0.37
+    ss_credit: 600
+    income_tax_non_refundable_credits: 600
+
+- name: Baseline test
+  period: 2026
+  input:
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    income_tax_non_refundable_credits: 0
