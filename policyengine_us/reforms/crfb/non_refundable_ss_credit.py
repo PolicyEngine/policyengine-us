@@ -101,7 +101,6 @@ def non_refundable_ss_credit_reform() -> Reform:
             self.update_variable(ss_credit)
             self.update_variable(highest_tax_rate)
             self.modify_parameters(modify_parameters)
-            self.neutralize_variable("additional_senior_deduction")
 
     return reform
 

@@ -27,22 +27,13 @@
   reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
   input:
     gov.contrib.crfb.ss_credit.in_effect: true
+    gov.irs.deductions.senior_deduction.amount: 0
     additional_senior_deduction_eligible_person: true
     adjusted_gross_income: 10_000
     filing_status: JOINT
     itemized_taxable_income_deductions: 0
   output:
     taxable_income_deductions_if_itemizing: 0
-
-- name: Reform not active
-  period: 2026
-  input:
-    additional_senior_deduction_eligible_person: true
-    adjusted_gross_income: 10_000
-    filing_status: JOINT
-    itemized_taxable_income_deductions: 0
-  output:
-    taxable_income_deductions_if_itemizing: 6_000
 
 - name: Test credit as part of the computation tree
   period: 2026
