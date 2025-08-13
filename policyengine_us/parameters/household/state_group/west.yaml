@@ -1,0 +1,24 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default states in the west region under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area west region states
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - NM
+    - AZ
+    - CO
+    - WY
+    - MT
+    - NV
+    - UT
+    - WA
+    - OR
+    - ID
+    - CA
+    - AK
+    - HI
