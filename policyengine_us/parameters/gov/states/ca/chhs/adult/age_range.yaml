@@ -1,0 +1,22 @@
+description: Age range for California state-funded Medicaid adult category.
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: false
+  - threshold:
+      2024-01-01: 26
+    amount:
+      2024-01-01: true
+  - threshold:
+      2024-01-01: 50
+    amount:
+      2024-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: California state-funded Medicaid adult age range
+  reference:
+    - title: SB 184 - Health for All Adults
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202120220SB184
