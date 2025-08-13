@@ -1,0 +1,21 @@
+- name: Basic case
+  period: 2024
+  input:
+    eitc: 2_000
+    uncapped_ssi: 1_000
+    pr_refundable_ctc_social_security_tax: 6_600
+    refundable_ctc: 2_800
+    ctc: 3_000
+  output:
+    pr_refundable_ctc: 3_000
+
+- name: Uncapped SSI below 0
+  period: 2024
+  input:
+    eitc: 1_000
+    uncapped_ssi: -1_000
+    pr_refundable_ctc_social_security_tax: 500
+    refundable_ctc: 2_000
+    ctc: 1_000
+  output:
+    pr_refundable_ctc: 1_000
