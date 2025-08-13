@@ -1,0 +1,66 @@
+- name: Eligible immigration status - Citizen
+  period: 2024
+  input:
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Eligible immigration status - Legal Permanent Resident
+  period: 2024
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Eligible immigration status - Refugee
+  period: 2024
+  input:
+    immigration_status: REFUGEE
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Eligible immigration status - Asylee
+  period: 2024
+  input:
+    immigration_status: ASYLEE
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Ineligible immigration status - DACA in non-covering state
+  period: 2024
+  input:
+    immigration_status: DACA_TPS
+    state_code_str: FL
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Ineligible immigration status - TPS
+  period: 2024
+  input:
+    immigration_status: TPS
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented in non-covering state
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code_str: FL
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented in covering state - California
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code_str: CA
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented in covering state - Illinois
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code_str: IL
+  output:
+    is_medicaid_immigration_status_eligible: true

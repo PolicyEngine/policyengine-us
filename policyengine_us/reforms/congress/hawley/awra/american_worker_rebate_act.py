@@ -93,8 +93,8 @@ def create_american_worker_rebate_act() -> Reform:
 
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
-            start=instant("2025-01-01"),
-            stop=instant("2025-12-31"),
+            start=instant("2024-01-01"),
+            stop=instant("2035-12-31"),
             value=[
                 "eitc",
                 "refundable_american_opportunity_credit",

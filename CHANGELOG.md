@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.370.1] - 2025-08-13 01:10:42
+
+### Fixed
+
+- Remove the senior deduction neutralization part of the CRFB SS credit.
+
+## [1.370.0] - 2025-08-12 19:49:31
+
+### Added
+
+- Add the CRFB SS credit to the net income tree.
+
+## [1.369.0] - 2025-08-11 01:53:29
+
+### Added
+
+- Head Start and Early Head Start programs payout.
+- Add HHS CPI-U data for 2022 and 2023.
+
+## [1.368.0] - 2025-08-10 22:52:19
+
+### Added
+
+- CRFB Nonrefundable Credit for Social Security Taxes.
+
+## [1.367.0] - 2025-08-08 21:18:49
+
+### Added
+
+- Add new Medicaid immigration restrictions from OBBBA.
+
+## [1.366.2] - 2025-08-07 12:54:07
+
+### Fixed
+
+- Fix Hawley rebate to get impacts in years other than 2025.
+
+## [1.366.1] - 2025-08-07 12:51:20
+
+### Added
+
+- Blind SGA parameter & 2025 value
+
+### Changed
+
+- Updated SSI 2025 non-blind SGA parameter value.
+- Updated SSI 2025 student income exclusion amount and cap parameter values.
+
 ## [1.366.0] - 2025-08-06 20:43:30
 
 ### Added
@@ -12565,6 +12613,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.0...1.370.1
+[1.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.369.0...1.370.0
+[1.369.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.368.0...1.369.0
+[1.368.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.367.0...1.368.0
+[1.367.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.2...1.367.0
+[1.366.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.1...1.366.2
+[1.366.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.0...1.366.1
 [1.366.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.2...1.366.0
 [1.365.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.1...1.365.2
 [1.365.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.365.0...1.365.1
