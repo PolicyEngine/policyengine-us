@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_ccfa_benefit(Variable):
+class ma_ccfa(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
