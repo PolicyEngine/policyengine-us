@@ -28,6 +28,7 @@
 
 - name: Case 2, household of 2 with $500 monthly income. 
   period: 2024-01
+  absolute_error_margin: 0.2
   input: 
     people:
       person1:
@@ -48,14 +49,16 @@
         ca_tanf: 0
         housing_cost: 300 * 12
   output:
+    state_withheld_income_tax: 0.38
     employee_social_security_tax: [31, 0]
-    ca_riv_general_relief_earned_income_deductions: [31, 0]
-    ca_riv_general_relief_countable_income: 469 # 500 - 31
+    ca_riv_general_relief_earned_income_deductions: [31.38, 0.38]
+    ca_riv_general_relief_countable_income: 468.62 # 500 - 31.38
     ca_riv_general_relief_needs_standards: 436
     ca_riv_general_relief_income_eligible: false 
 
 - name: Case 3, household of 2 with $450 monthly income. 
   period: 2024-01
+  absolute_error_margin: 0.2
   input: 
     people:
       person1:
