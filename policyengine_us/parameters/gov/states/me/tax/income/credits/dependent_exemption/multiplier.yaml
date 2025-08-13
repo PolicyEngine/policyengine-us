@@ -1,0 +1,22 @@
+description: Maine applies this age-based multiplier to the Dependent Exemption Tax Credit.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 1
+      2025-01-01: 2
+  - threshold:
+      2018-01-01: 6
+    amount:
+      2018-01-01: 1
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Maine Dependent Exemption Tax Credit multiplier
+  reference:  
+    # The multiplier was introduced for tax year 2025.
+    - title: Maine Fiscal Year 2025 to 2027 Budget Bill (LD 210)
+      href: https://legislature.maine.gov/backend/App/services/getDocument.aspx?documentId=120256#page=311

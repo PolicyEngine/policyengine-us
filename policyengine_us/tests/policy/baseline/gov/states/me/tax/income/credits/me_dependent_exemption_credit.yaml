@@ -4,7 +4,7 @@
     state_code: ME
     me_agi: 450_000
     filing_status: JOINT
-    tax_unit_dependents: 2
+    me_dependent_exemption_credit_amount_person: 600
   output:
     me_dependent_exemption_credit: 225
 
@@ -14,7 +14,7 @@
     state_code: ME
     me_agi: 449_500
     filing_status: JOINT
-    tax_unit_dependents: 2
+    me_dependent_exemption_credit_amount_person: 600
   output:
     me_dependent_exemption_credit: 225
 
@@ -24,7 +24,7 @@
     state_code: ME
     me_agi: 450_000
     filing_status: SINGLE
-    tax_unit_dependents: 1
+    me_dependent_exemption_credit_amount_person: 300
   output:
     me_dependent_exemption_credit: 0
 
@@ -34,7 +34,7 @@
     state_code: ME
     me_agi: 450_000
     filing_status: JOINT
-    tax_unit_dependents: 0
+    me_dependent_exemption_credit_amount_person: 0
   output:
     me_dependent_exemption_credit: 0
 
@@ -44,7 +44,7 @@
     state_code: ME
     me_agi: 190_000
     filing_status: SINGLE
-    tax_unit_dependents: 2
+    me_dependent_exemption_credit_amount_person: 600
   output:
     me_dependent_exemption_credit: 600
 
@@ -54,6 +54,86 @@
     state_code: ME
     me_agi: 220_000
     filing_status: SINGLE
-    tax_unit_dependents: 2
+    me_dependent_exemption_credit_amount_person: 600
   output:
     me_dependent_exemption_credit: 450
+
+- name: Head of Household filer with one older dependent, earning $110,000, gets $300 exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 8
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 110_000
+    households:
+      household:
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 300
+
+- name: Head of Household filer with one young dependent, earning $110,000, gets $600 exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 4
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 110_000
+    households:
+      household:
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 600
+
+- name: Head of Household filer with one young dependent, earning $132,500, gets $300 exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 4
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 132_500
+    households:
+      household:
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 300
+
+- name: Head of Household filer with one young dependent, earning $140,000, gets no exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 4
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 140_000
+    households:
+      household:
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0

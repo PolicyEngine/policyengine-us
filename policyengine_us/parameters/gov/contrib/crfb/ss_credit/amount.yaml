@@ -1,0 +1,18 @@
+description: The Committee for a Responsible Federal Budget proposes to replace the additional senior deduction with a nonrefundable credit of this amount to offset taxes from Social Security benefits.
+metadata:
+  unit: currency-USD
+  label: CRFB Social Security nonrefundable credit amount
+  period: year
+  breakdown:
+    - filing_status
+
+JOINT:
+  0000-01-01: 600
+SINGLE:
+  0000-01-01: 600
+SEPARATE:
+  0000-01-01: 600
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 600
+SURVIVING_SPOUSE:
+  0000-01-01: 600
