@@ -1,6 +1,7 @@
-description: Alameda county considers these statuses as qualified noncitizens under the General Relief Program.
+description: Alameda county considers these statuses as qualified immigration under the General Relief Program.
 values:
   1975-01-01:
+    - CITIZEN
     - REFUGEE
     - ASYLEE
     - CUBAN_HAITIAN_ENTRANT
@@ -10,7 +11,7 @@ values:
     - LEGAL_PERMANENT_RESIDENT
     
 metadata:
-  label: Alameda County General Relief qualified noncitizen statuses
+  label: Alameda County General Relief qualified immigration statuses
   period: year
   unit: list
   reference:

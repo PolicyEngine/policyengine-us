@@ -11,12 +11,5 @@ class ca_ala_general_assistance_immigration_status_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.local.ca.ala.general_assistance
         immigration_status = person("immigration_status", period)
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
         immigration_status_str = immigration_status.decode_to_str()
-        has_qualifying_status = np.isin(
-            immigration_status_str,
-            p.qualified_noncitizen_status,
-        )
-        return has_qualifying_status | is_citizen
+        return np.isin(immigration_status_str, p.qualified_immigration_status)

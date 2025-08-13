@@ -7,7 +7,7 @@ class ca_ala_general_assistance_base_amount(Variable):
     unit = USD
     label = "Alameda County General Assistance base amount"
     definition_period = MONTH
-    defined_for = "in_ala"
+    defined_for = "ca_ala_general_assistance_eligible_person"
     reference = "https://www.alamedacountysocialservices.org/our-services/Work-and-Money/General-Assistance/index"
 
     def formula(spm_unit, period, parameters):
@@ -16,12 +16,4 @@ class ca_ala_general_assistance_base_amount(Variable):
             "ca_ala_general_assistance_eligible_person", period
         )
         num_eligible = spm_unit.sum(eligible_persons)
-        # Determine if this is a couple case (2 eligible adults)
-        is_couple_case = num_eligible == 2
-        base_amount = where(
-            is_couple_case,
-            p.married,
-            p.single,
-        )
-        # Only return amount if at least one person is eligible
-        return where(num_eligible > 0, base_amount, 0)
+        return where(num_eligible == 2, p.married, p.single)
