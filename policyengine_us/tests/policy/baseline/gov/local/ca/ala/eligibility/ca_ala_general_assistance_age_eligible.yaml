@@ -1,0 +1,15 @@
+- name: Case 1, adult is eligible.
+  period: 2024
+  input: 
+    age: 30
+    in_ala: true
+  output:
+    ca_ala_general_assistance_age_eligible: true
+
+- name: Case 2, minor is ineligible.
+  period: 2024
+  input: 
+    age: 17
+    in_ala: true
+  output:
+    ca_ala_general_assistance_age_eligible: false

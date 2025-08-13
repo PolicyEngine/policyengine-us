@@ -1,0 +1,16 @@
+description: Alameda County accounts for these income sources when determining eligibility for the General Assistance program.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+    - social_security
+    - unemployment_compensation
+    - veterans_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Alameda County General Assistance income sources
+  reference:
+    - title: Alameda County GA-Regulations 
+      href: https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=29
