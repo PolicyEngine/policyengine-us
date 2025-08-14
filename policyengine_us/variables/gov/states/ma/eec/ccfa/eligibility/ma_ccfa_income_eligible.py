@@ -20,8 +20,8 @@ class ma_ccfa_income_eligible(Variable):
 
         income_limit = where(
             is_enrolled,
-            smi * p.continued_eligibility_rate,
-            smi * p.initial_eligibility_rate,
+            smi * p.new_applicants_rate,
+            smi * p.redetermination_rate,
         )
 
         return countable_income <= income_limit

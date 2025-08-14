@@ -7,7 +7,7 @@ class ma_ccfa_immigration_eligible(Variable):
     label = "Immigration status eligible for Massachusetts Child Care Financial Assistance (CCFA)"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/financial-assistance-policy-guide"
+    reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=26"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa

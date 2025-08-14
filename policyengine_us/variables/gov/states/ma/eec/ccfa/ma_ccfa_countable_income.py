@@ -10,6 +10,6 @@ class ma_ccfa_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = "Policy Guide Chapter 4.1"
+    reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=37"
 
     adds = "gov.states.ma.eec.ccfa.income.countable_income.sources"

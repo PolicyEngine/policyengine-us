@@ -10,13 +10,13 @@ class ma_ccfa(Variable):
     )
     definition_period = MONTH
     defined_for = "ma_ccfa_eligible"
-    reference = "Policy Guide"
+    reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
 
     def formula(spm_unit, period, parameters):
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        copay = spm_unit("ma_ccfa_copay", period)
+        copay = spm_unit("ma_ccfa_total_copay", period)
         max_reimbursement = spm_unit("ma_ccfa_maximum_reimbursement", period)
         uncapped_benefit = max_(pre_subsidy_childcare_expenses - copay, 0)
 
