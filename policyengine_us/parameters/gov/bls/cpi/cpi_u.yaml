@@ -1359,14 +1359,12 @@ values:
   2032-02-01: 372.7 # 2033 value.
   2033-02-01: 381.0 # 2034 value.
   2034-02-01: 389.6 # 2035 value.
-  2035-02-01: 398.7 # (indexed by applying 2035 indexing rate (389.6/381.0) and multiplying it by 389.6).
+  # Values for 2035-2100 are set programmatically in uprating_extensions.py
 metadata:
   unit: currency-USD
   label: CPI-U
   economy: false
   reference:
-    - title: BLS Data Viewer | Consumer Price Index for All Urban Consumers (CPI-U)
-      href: https://beta.bls.gov/dataViewer/view/timeseries/CUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 158

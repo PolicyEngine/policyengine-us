@@ -16,10 +16,11 @@ values:
   2033-01-01: 383.9
   2034-01-01: 392.5
   2035-01-01: 401.3
+  # Values for 2036-2100 are set programmatically in uprating_extensions.py
 metadata:
-  unit: currency-USD
-  label: Poverty line uprating
   economy: false
+  unit: currency-USD
+  label: HHS uprating
   reference:
     - title: 2025 Annual Update of the HHS Poverty Guidelines
       href: https://www.govinfo.gov/app/details/FR-2025-01-17/2025-01377
