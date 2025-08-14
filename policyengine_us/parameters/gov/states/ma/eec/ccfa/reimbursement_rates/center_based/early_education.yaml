@@ -1,0 +1,35 @@
+description: Massachusetts provides these reimbursement rates for center-based early education child care under the Child Care Financial Assistance program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Massachusetts CCFA center-based early education reimbursement rates
+  breakdown:
+    - ma_ccfa_region
+    - ma_ccfa_child_age_category
+  reference:
+    - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
+
+WESTERN_CENTRAL_AND_SOUTHEAST:
+  INFANT:
+    2024-07-01: 105
+  TODDLER:
+    2024-07-01: 82.5
+  PRESCHOOL:
+    2024-07-01: 58.9
+
+NORTHEAST:
+  INFANT:
+    2024-07-01: 110.25
+  TODDLER:
+    2024-07-01: 85.97
+  PRESCHOOL:
+    2024-07-01: 59.09
+
+METRO_AND_BOSTON_METRO:
+  INFANT:
+    2024-07-01: 121.31
+  TODDLER:
+    2024-07-01: 110.09
+  PRESCHOOL:
+    2024-07-01: 81.33
