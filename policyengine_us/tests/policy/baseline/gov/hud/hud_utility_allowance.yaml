@@ -4,6 +4,7 @@
     in_la: true
     is_sro: false
     bedrooms: 9 
+    tenant_pays_utilities: true
   output:
     hud_utility_allowance: 719 * 12
 
@@ -13,6 +14,7 @@
     in_la: true
     is_sro: true
     bedrooms: 3 
+    tenant_pays_utilities: true
   output:
     hud_utility_allowance: 179 * 12
 
@@ -22,6 +24,7 @@
     in_la: false
     is_sro: false
     bedrooms: 9 
+    tenant_pays_utilities: true
   output:
     hud_utility_allowance: 0
 
@@ -31,6 +34,7 @@
     in_la: true
     is_sro: false
     bedrooms: 4
+    tenant_pays_utilities: true
   output:
     hud_utility_allowance: 452 * 12
 
@@ -40,5 +44,16 @@
     in_la: true
     is_sro: false
     bedrooms: 0
+    tenant_pays_utilities: true
   output:
     hud_utility_allowance: 227 * 12
+
+- name: Tenant is not responsible for utility payments
+  period: 2023
+  input:
+    in_la: true
+    is_sro: false
+    bedrooms: 0
+    tenant_pays_utilities: false
+  output:
+    hud_utility_allowance: 0
