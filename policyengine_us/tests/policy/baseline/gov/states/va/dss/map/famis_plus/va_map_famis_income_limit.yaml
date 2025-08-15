@@ -1,0 +1,31 @@
+- name: If one person, the income limit is $20,850.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 1
+  output:
+    va_map_famis_income_limit: 20_850
+
+- name: If eight person, the income limit is $72,301.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 8
+  output:
+    va_map_famis_income_limit: 72_301
+
+- name: If ten person, the income limit is $87,003.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+  output:
+    va_map_famis_income_limit: 87_003
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: CO
+    spm_unit_size: 3
+  output:
+    va_map_famis_income_limit: 0

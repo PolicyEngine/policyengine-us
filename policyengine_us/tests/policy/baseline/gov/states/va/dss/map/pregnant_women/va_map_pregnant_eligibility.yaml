@@ -1,0 +1,35 @@
+- name: Is demographic eligible and income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_demographic_eligibility: true
+    va_map_pregnant_income_eligibility: true
+  output:
+    va_map_pregnant_eligibility: true
+
+- name: Is demographic eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_demographic_eligibility: true
+    va_map_pregnant_income_eligibility: false
+  output:
+    va_map_pregnant_eligibility: false
+
+- name: Is demographic eligible but not pregnant eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_demographic_eligibility: false
+    va_map_pregnant_income_eligibility: true
+  output:
+    va_map_pregnant_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: DC
+    va_map_pregnant_demographic_eligibility: true
+    va_map_pregnant_income_eligibility: true
+  output:
+    va_map_pregnant_eligibility: false
