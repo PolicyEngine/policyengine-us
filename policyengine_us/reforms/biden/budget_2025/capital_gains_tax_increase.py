@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_capital_gains_tax_increase() -> Reform:
@@ -141,15 +142,14 @@ def create_capital_gains_tax_increase() -> Reform:
 def create_capital_gains_tax_increase_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_capital_gains_tax_increase()
-
-    p = parameters(period).gov.contrib.biden.budget_2025.capital_gains
-
-    if p.active:
-        return create_capital_gains_tax_increase()
-    else:
-        return None
+    return create_reform_if_active(
+        parameters,
+        period,
+        "gov.contrib.biden.budget_2025.capital_gains",
+        "active",
+        create_capital_gains_tax_increase,
+        bypass,
+    )
 
 
 capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
