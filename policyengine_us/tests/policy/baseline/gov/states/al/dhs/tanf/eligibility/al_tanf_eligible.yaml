@@ -1,0 +1,83 @@
+- name: Unit with one TANF-eligible child and financial eligibility
+  period: 2022
+  input:
+    people:
+      person1:
+        al_tanf_eligible_child: false
+      person2:
+        al_tanf_eligible_child: true
+      person3:
+        al_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_tanf_financial_eligibility: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    al_tanf_eligible: true
+
+- name: Unit with one TANF-eligible child and financial ineligibility
+  period: 2022
+  input:
+    people:
+      person1:
+        al_tanf_eligible_child: false
+      person2:
+        al_tanf_eligible_child: true
+      person3:
+        al_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_tanf_financial_eligibility: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    al_tanf_eligible: false
+
+- name: Unit with no TANF-eligible child and financial eligibility
+  period: 2022
+  input:
+    people:
+      person1:
+        al_tanf_eligible_child: false
+      spouse:
+        al_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, spouse]
+        al_tanf_financial_eligibility: true
+    households:
+      household:
+        members: [person1, spouse]
+        state_code: AL
+  output:
+    al_tanf_eligible: false
+
+- name: Unit with two TANF-eligible children and financial eligibility
+  period: 2022
+  input:
+    people:
+      person1:
+        al_tanf_eligible_child: false
+      person2:
+        al_tanf_eligible_child: true
+      person3:
+        al_tanf_eligible_child: false
+      person4:
+        al_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_tanf_financial_eligibility: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    al_tanf_eligible: true
