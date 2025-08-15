@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.370.1] - 2025-08-13 01:10:42
+
+### Fixed
+
+- Remove the senior deduction neutralization part of the CRFB SS credit.
+
+## [1.370.0] - 2025-08-12 19:49:31
+
+### Added
+
+- Add the CRFB SS credit to the net income tree.
+
 ## [1.369.0] - 2025-08-11 01:53:29
 
 ### Added
@@ -12601,6 +12613,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.0...1.370.1
+[1.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.369.0...1.370.0
 [1.369.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.368.0...1.369.0
 [1.368.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.367.0...1.368.0
 [1.367.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.2...1.367.0
