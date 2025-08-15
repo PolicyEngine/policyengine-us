@@ -10,10 +10,10 @@ class ma_ccfa_eligible_child(Variable):
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=10"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ma.eec.ccfa.age_limits
-        age = person("age", period)
+        p = parameters(period).gov.states.ma.eec.ccfa.age_threshold
+        age = person("monthly_age", period)
         is_disabled = person("is_disabled", period)
-        age_limit = where(is_disabled, p.disabled_child, p.regular_child)
+        age_limit = where(is_disabled, p.disabled_child, p.child)
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period)
         immigration_eligible = person("ma_ccfa_immigration_eligible", period)

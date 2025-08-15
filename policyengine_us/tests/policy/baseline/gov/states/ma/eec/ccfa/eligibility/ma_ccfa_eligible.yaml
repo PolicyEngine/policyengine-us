@@ -1,0 +1,32 @@
+- name: Case 1, meet all requirements, eligible.
+  period: 2024-01
+  input:
+    ma_ccfa_eligible_child: true
+    ma_ccfa_income_eligible: true
+    ma_ccfa_asset_eligible: true
+    ma_ccfa_activity_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible: true
+
+- name: Case 2, ineligible due to no eligible child.
+  period: 2024-01
+  input:
+    ma_ccfa_eligible_child: false
+    ma_ccfa_income_eligible: true
+    ma_ccfa_asset_eligible: true
+    ma_ccfa_activity_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible: false
+
+- name: Case 3, ineligible due to activity.
+  period: 2024-01
+  input:
+    ma_ccfa_eligible_child: true
+    ma_ccfa_income_eligible: true
+    ma_ccfa_asset_eligible: true
+    ma_ccfa_activity_eligible: false
+    state_code: MA
+  output:
+    ma_ccfa_eligible: false

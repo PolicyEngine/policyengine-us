@@ -15,6 +15,3 @@ class ma_ccfa_reimbursement_ratio(Variable):
             "childcare_hours_per_day", period.this_year
         )
         return p.amount_ratio.calc(childcare_hours_per_day)
-
-
-# Only applies to center-based care early education, informal child care, and family child care

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_ccfa_center_based_school_age_reimbursement(Variable):
+class ma_ccfa_family_child_care_reimbursement(Variable):
     value_type = float
     entity = Person
-    label = "Massachusetts Child Care Financial Assistance (CCFA) center-based school age reimbursement amount per child"
+    label = "Massachusetts Child Care Financial Assistance (CCFA) family child care reimbursement amount per child"
     unit = USD
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
     definition_period = MONTH
@@ -13,13 +13,12 @@ class ma_ccfa_center_based_school_age_reimbursement(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ma.eec.ccfa.reimbursement_rates.center_based
+        ).gov.states.ma.eec.ccfa.reimbursement_rates.family_child_care
         region = person.household("ma_ccfa_region", period)
-        schedule_type = person("ma_ccfa_schedule_type", period)
-        age_category = person("ma_ccfa_child_age_category", period)
-        uncapped_payment_per_day = p.school_age[region][age_category][
-            schedule_type
-        ]
+        age = person("monthly_age", period)
+        uncapped_payment_per_day = where(
+            age >= p.age_threshold, p.older[region], p.younger[region]
+        )
         reimbursement_multiplier = person(
             "ma_ccfa_reimbursement_ratio", period
         )

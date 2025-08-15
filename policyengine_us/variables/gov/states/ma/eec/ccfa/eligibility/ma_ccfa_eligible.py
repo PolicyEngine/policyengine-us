@@ -7,7 +7,7 @@ class ma_ccfa_eligible(Variable):
     label = "Eligible for Massachusetts Child Care Financial Assistance (CCFA)"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = "EEC Financial Assistance Policy Guide Chapters 3-9"
+    reference = "https://www.mass.gov/doc/eecs-financial-assistance-procedures-manual-february-1-2022/download"
 
     def formula(spm_unit, period, parameters):
         # Check all eligibility criteria
@@ -18,19 +18,9 @@ class ma_ccfa_eligible(Variable):
         asset_eligible = spm_unit("ma_ccfa_asset_eligible", period)
         activity_eligible = spm_unit("ma_ccfa_activity_eligible", period)
 
-        # Special programs that bypass some requirements p42 service need
-        is_dta_related = spm_unit("ma_ccfa_dta_related_eligible", period)
-        is_dcf_related = spm_unit("ma_ccfa_dcf_related_eligible", period)
-        is_homeless = spm_unit.household("is_homeless", period)
-
-        # Standard eligibility or special program eligibility
-        standard_eligible = (
+        return (
             has_eligible_child
             & income_eligible
             & asset_eligible
             & activity_eligible
         )
-
-        special_eligible = is_dta_related | is_dcf_related | is_homeless
-
-        return standard_eligible | special_eligible
