@@ -1,0 +1,42 @@
+- name: Case 1, new applicants, income below threshold, eligible.
+  period: 2024-01
+  input:
+    ma_ccfa_countable_income: 6_060
+    spm_unit_size: 4
+    ma_ccfa_enrolled: false
+    state_code: MA
+  output:
+    ma_ccfa_income_eligible: true
+
+- name: Case 2, new applicants, income above threshold, ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    ma_ccfa_countable_income: 6_065
+    spm_unit_size: 4
+    ma_ccfa_enrolled: false
+    state_code: MA
+  output:
+    hhs_smi: 12_124.25
+    ma_ccfa_income_eligible: false
+
+- name: Case 3, existing applicants, income below threshold, eligible.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    ma_ccfa_countable_income: 10_300
+    spm_unit_size: 4
+    ma_ccfa_enrolled: true
+    state_code: MA
+  output:
+    ma_ccfa_income_eligible: true
+
+- name: Case 4, existing applicants, income above threshold, ineligible.
+  period: 2024-01
+  input:
+    ma_ccfa_countable_income: 10_310
+    spm_unit_size: 4
+    ma_ccfa_enrolled: true
+    state_code: MA
+  output:
+    ma_ccfa_income_eligible: false
