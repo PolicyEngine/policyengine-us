@@ -1,0 +1,128 @@
+description: New York State provides incentive of the following amount by project's category type as part of its Clean Heat program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York State Clean Heat program's incentives by the heat pump project's category type
+  reference:
+    - title: New York State Clean Heat Program Manual, CH&E, NGRID, NYSEG, O&R, RG&E (March 1, 2024) # (2.1.2)
+      href: https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf#page=19
+  breakdown:
+    - ny_clean_heat_utility_provider
+    - ny_clean_heat_heat_pump_category
+
+CH:
+  C2:
+    2024-03-01: 500
+  C2A:
+    2024-03-01: 700
+  C2B:
+    2024-03-01: 1_000
+  C2E:
+    2024-03-01: 500
+  C3:
+    2024-03-01: 2_000
+  C4:
+    2024-03-01: 70
+  C4A1:
+    2024-03-01: 70
+  C4A2:
+    2024-03-01: 80
+  C5A:
+    2024-03-01: 1_000
+  C5B:
+    2024-03-01: 1_000
+  C6:
+    2024-03-01: 70
+  C7:
+    2024-03-01: 150
+  C8:
+    2024-03-01: 1_000
+  C9:
+    2023-09-01: 0
+NG:
+  C2:
+    2024-03-01: 800
+  C2A:
+    2024-03-01: 1_000
+  C2B:
+    2024-03-01: 1_200
+  C2E:
+    2024-03-01: 800
+  C3:
+    2024-03-01: 1_500
+  C4:
+    2024-03-01: 70
+  C4A1:
+    2024-03-01: 70
+  C4A2:
+    2024-03-01: 80
+  C5A:
+    2024-03-01: 700
+  C5B:
+    2024-03-01: 800
+  C6:
+    2024-03-01: 70
+  C7:
+    2024-03-01: 100
+  C8:
+    2024-03-01: 900
+  C9:
+    2023-09-01: 0
+SEGRGE:
+  C2:
+    2024-03-01: 800
+  C2A:
+    2024-03-01: 1_000
+  C2B:
+    2024-03-01: 1_200
+  C2E:
+    2024-03-01: 800
+  C3:
+    2024-03-01: 1_500
+  C4:
+    2024-03-01: 70
+  C4A1:
+    2024-03-01: 70
+  C4A2:
+    2024-03-01: 80
+  C5A:
+    2024-03-01: 700
+  C5B:
+    2024-03-01: 800
+  C6:
+    2024-03-01: 70
+  C7:
+    2024-03-01: 100
+  C8:
+    2024-03-01: 900
+  C9:
+    2023-09-01: 0
+OR:
+  C2:
+    2024-03-01: 700
+  C2A:
+    2024-03-01: 1_000
+  C2B:
+    2024-03-01: 1_400
+  C2E:
+    2024-03-01: 700
+  C3:
+    2024-03-01: 2_000
+  C4:
+    2024-03-01: 70
+  C4A1:
+    2024-03-01: 70
+  C4A2:
+    2024-03-01: 80
+  C5A:
+    2024-03-01: 1_000
+  C5B:
+    2024-03-01: 1_100
+  C6:
+    2024-03-01: 70
+  C7:
+    2024-03-01: 150
+  C8:
+    2024-03-01: 1_000
+  C9:
+    2023-09-01: 0
