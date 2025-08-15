@@ -1,0 +1,23 @@
+- name: Case 1, region 1, school age full day for 10 days.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    age: 2
+    ma_ccfa_attending_days_per_month: 10
+    childcare_hours_per_day: 6
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 493.9
+
+- name: Case 2, region 1, school age full day for 10 days.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    age: 1
+    ma_ccfa_attending_days_per_month: 10
+    childcare_hours_per_day: 5
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 590.3 * 0.6
