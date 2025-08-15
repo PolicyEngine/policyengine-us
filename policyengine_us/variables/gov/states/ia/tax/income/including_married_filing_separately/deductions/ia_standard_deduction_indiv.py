@@ -33,6 +33,7 @@ class ia_standard_deduction_indiv(Variable):
                 fsvals.HEAD_OF_HOUSEHOLD,
                 fsvals.SURVIVING_SPOUSE,
             ],
+            default=fsvals.SINGLE,
         )
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)

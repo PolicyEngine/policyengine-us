@@ -15,19 +15,15 @@ class wv_income_tax_before_non_refundable_credits(Variable):
         taxable_income = tax_unit("wv_taxable_income", period)
         # Calculate for each of the filing statuses and return the appropriate one.
         p = parameters(period).gov.states.wv.tax.income.rates
-        return select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.SURVIVING_SPOUSE,
-            ],
-            [
-                p.single.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.joint.calc(taxable_income),
-                p.head.calc(taxable_income),
-                p.surviving_spouse.calc(taxable_income),
-            ],
+        filing_status_dict = {
+            "single": p.single,
+            "separate": p.separate,
+            "joint": p.joint,
+            "head_of_household": p.head,
+            "surviving_spouse": p.surviving_spouse,
+        }
+        return select_filing_status_value(
+            filing_status,
+            filing_status_dict,
+            taxable_income,
         )
