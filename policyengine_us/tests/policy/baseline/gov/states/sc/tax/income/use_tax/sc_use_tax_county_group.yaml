@@ -1,0 +1,30 @@
+- name: County is group 1
+  period: 2022
+  input:
+    county_str: ABBEVILLE_COUNTY_SC
+    state_code: SC
+  output:
+    sc_use_tax_county_group: GROUP1
+
+- name: County is group 2
+  period: 2022
+  input:
+    county_str: AIKEN_COUNTY_SC
+    state_code: SC
+  output:
+    sc_use_tax_county_group: GROUP2
+
+
+- name: County is group 3
+  period: 2022
+  input:
+    county_str: CHARLESTON_COUNTY_SC
+    state_code: SC
+  output:
+    sc_use_tax_county_group: GROUP3
+
+
+- name: Default is group 4
+  period: 2022
+  output:
+    sc_use_tax_county_group: GROUP4
