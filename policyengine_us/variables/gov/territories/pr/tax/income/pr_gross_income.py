@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class pr_gross_income(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Puerto Rico gross income"
     unit = USD
     definition_period = YEAR
