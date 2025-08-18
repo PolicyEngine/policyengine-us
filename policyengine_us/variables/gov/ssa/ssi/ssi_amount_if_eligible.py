@@ -8,14 +8,19 @@ class ssi_amount_if_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382#b"
+    defined_for = "is_ssi_eligible"
 
     def formula(person, period, parameters):
-        ssi = parameters(period).gov.ssa.ssi.amount
-        return (
-            where(
-                person("ssi_claim_is_joint", period),
-                ssi.couple,
-                ssi.individual,
-            )
-            * MONTHS_IN_YEAR
+        p = parameters(period).gov.ssa.ssi.amount
+        is_dependent = person("is_tax_unit_dependent", period)
+        head_or_spouse_amount = where(
+            person("ssi_claim_is_joint", period),
+            p.couple / 2,
+            p.individual,
         )
+        # Adults amount is based on whether it is a joint claim
+        # Dependents always use individual amount.
+        ssi_per_month = where(
+            is_dependent, p.individual, head_or_spouse_amount
+        )
+        return ssi_per_month * MONTHS_IN_YEAR
