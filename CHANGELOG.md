@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.370.2] - 2025-08-18 11:43:57
+
+### Fixed
+
+- Dropped requirement for us-data.
+
 ## [1.370.1] - 2025-08-13 01:10:42
 
 ### Fixed
@@ -12613,6 +12619,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.370.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.1...1.370.2
 [1.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.0...1.370.1
 [1.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.369.0...1.370.0
 [1.369.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.368.0...1.369.0
