@@ -10715,3 +10715,9 @@
     fixed:
     - Dropped requirement for us-data.
   date: 2025-08-18 11:43:57
+- bump: minor
+  changes:
+    fixed:
+    - Correct SSI benefit amount for dependent children to use individual rate.
+    - Fix SSI joint claim determination to properly identify eligible married couples.
+  date: 2025-08-18 14:16:48
