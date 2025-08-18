@@ -1,17 +1,17 @@
-- name: Total income greater than alimony
+- name: Joint
   period: 2024
   input:
-    pr_gross_income_person: 20_000
-    alimony_expense: 5_000
+    pr_agi: 20_000
+    filing_status: JOINT
     state_code: PR
   output:
-    pr_agi_person: 15_000
+    pr_agi_person: 10_000
 
-- name: Alimony greater than total income
+- name: Separate
   period: 2024
   input:
-    pr_gross_income_person: 5_000
-    alimony_expense: 10_000
+    pr_agi: 20_000
+    filing_status: SEPARATE
     state_code: PR
   output:
-    pr_agi_person: 0
+    pr_agi_person: 20_000
