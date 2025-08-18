@@ -7,6 +7,7 @@ class ca_ala_general_assistance_immigration_status_eligible(Variable):
     label = "Eligible for the Alameda County General Assistance due to immigration status"
     definition_period = MONTH
     defined_for = "in_ala"
+    reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=21"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.local.ca.ala.general_assistance

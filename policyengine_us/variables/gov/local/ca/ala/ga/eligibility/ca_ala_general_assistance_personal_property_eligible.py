@@ -5,9 +5,9 @@ class ca_ala_general_assistance_personal_property_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = MONTH
-    label = "Eligible for Alameda County General Assistance based on personal property value requirements"
+    label = "Meets property limit for Alameda County General Assistance"
     defined_for = "in_ala"
-    reference = "https://www.alamedacountysocialservices.org/our-services/Work-and-Money/General-Assistance/index"
+    reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=23"
 
     def formula(spm_unit, period, parameters):
         p = parameters(

@@ -7,7 +7,7 @@ class ca_ala_general_assistance_eligible_person(Variable):
     label = "Eligible person for Alameda County General Assistance"
     definition_period = MONTH
     defined_for = "in_ala"
-    reference = "https://www.alamedacountysocialservices.org/our-services/Work-and-Money/General-Assistance/index"
+    reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=19"
 
     def formula(person, period, parameters):
         age_eligible = person("ca_ala_general_assistance_age_eligible", period)
