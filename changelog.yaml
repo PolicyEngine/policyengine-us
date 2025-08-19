@@ -10721,3 +10721,18 @@
     - Correct SSI benefit amount for dependent children to use individual rate.
     - Fix SSI joint claim determination to properly identify eligible married couples.
   date: 2025-08-18 14:16:48
+- bump: minor
+  changes:
+    added:
+    - Unified programmatic extension of all uprating factors through 2100 for long-term
+      policy simulations
+    - IRS, SNAP, SSA, HHS, CPI-U, Chained CPI-U, and CPI-W now extend dynamically
+      based on growth rates from final years of projections
+    - Single comprehensive test suite for all uprating extensions
+    - Cleaner, more maintainable approach that avoids hardcoding future values in
+      YAML files
+    changed:
+    - Updated SSA 2025 value to reflect actual 2.5% COLA announced by SSA
+    - Refactored all uprating extensions from hardcoded YAML values to programmatic
+      generation
+  date: 2025-08-19 07:18:50
