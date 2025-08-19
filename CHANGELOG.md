@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.373.0] - 2025-08-19 07:41:21
+
+### Added
+
+- Refundable Additional Child Tax Credit (ACTC) for Puerto Rico.
+
 ## [1.372.0] - 2025-08-19 07:18:50
 
 ### Added
@@ -12640,6 +12646,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.373.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.372.0...1.373.0
 [1.372.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.371.0...1.372.0
 [1.371.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.2...1.371.0
 [1.370.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.1...1.370.2
