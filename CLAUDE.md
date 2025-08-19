@@ -136,6 +136,23 @@ make documentation
 - When updating parameters, verify both individual values and downstream impacts
 - Use descriptive changelog entries that reference authoritative sources for updates
 
+## Parameter Date Guidelines
+
+- **Program Year vs Calendar Year**: Many assistance programs operate on program years that don't align with calendar years
+  - SNAP fiscal year starts October 1st
+  - Tax parameters generally follow calendar year (January 1st)
+  - State benefit programs vary widely - verify each program's dates
+- **Finding Authoritative Dates**: Always seek official documentation for parameter effective dates:
+  - State agency announcements and press releases
+  - Program manuals and state plans
+  - Local Commissioners Memorandums (LCMs) or General Information System (GIS) messages
+  - Federal register notices for federal programs
+- **When Dates Are Unclear**: If exact dates cannot be verified:
+  - Document the uncertainty in comments
+  - Use the most conservative date
+  - Include references to where you searched for the information
+  - Consider historical patterns but verify for each year
+
 ## Regulatory Compliance Best Practices
 - Always cite specific regulation sections in variable reference and documentation
 - When implementing complex benefit calculations, clearly document the step-by-step process based on regulations
@@ -191,24 +208,25 @@ make documentation
   - Use breakdown patterns that match existing working examples in the codebase
   - See [GitHub issue #346](https://github.com/PolicyEngine/policyengine-core/issues/346) for more details
 
-## Entity Structures and Relationships
-- **Marital Units**: 
-  - Include exactly 1 person (if unmarried) or 2 people (if married)
-  - Do NOT include children or dependents
-  - Defined in entities.py as "An unmarried person, or a married and co-habiting couple"
-  - Used for calculations where spousal relationships matter (like SSI)
-  - `marital_unit.nb_persons()` will return 1 or 2, never more
+## Variable Implementation Best Practices
 
-- **SSI Income Attribution**:
-  - For married couples where both are SSI-eligible:
-    - Combined income is attributed to each spouse via `ssi_marital_earned_income` and `ssi_marital_unearned_income`
-    - These variables use `ssi_marital_both_eligible` to determine if combined income should be used
-    - When both eligible, each spouse receives the combined household income for SSI calculations
+- **Using defined_for**: Always use `defined_for` when there's a way to avoid calculating a variable if it doesn't meet some condition
+  - Improves performance by skipping unnecessary calculations
+  - Makes code clearer by showing preconditions
+  - Example: `defined_for = StateCode.NY` or `defined_for = "is_eligible_person"`
   
-- **SSI Spousal Deeming**:
-  - Only applies when one spouse is eligible and the other is ineligible
-  - If both are eligible, spousal deeming doesn't apply; instead income is combined through marital income variables
-
+- **New Program Implementation**: When adding a new benefit program:
+  - Ensure it captures all current input variables (those without a formula)
+  - File an issue if you notice a missing input variable that would be useful
+  - Check what household/person characteristics the program uses (age, disability, income sources, etc.)
+  - Verify all necessary inputs exist or create issues for missing ones
+  
+- **Entity Structures**:
+  - **Marital Units**: Include exactly 1 person (if unmarried) or 2 people (if married)
+    - Do NOT include children or dependents
+    - Defined in entities.py as "An unmarried person, or a married and co-habiting couple"
+    - `marital_unit.nb_persons()` will return 1 or 2, never more
+  
 - **Debugging Entity Relationships**:
   - When checking entity totals or sums, be aware of which entity level you're operating at
   - For variables that need to sum across units, use `entity.sum(variable)`

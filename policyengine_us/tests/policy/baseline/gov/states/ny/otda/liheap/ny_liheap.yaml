@@ -1,0 +1,142 @@
+- name: Single person in subsidized housing gets $21 benefit
+  period: 2025
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: NY
+    receives_housing_assistance: true
+  output:
+    ny_liheap: 21
+
+- name: Single person with heat included in rent gets $45 benefit
+  period: 2025
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: NY
+    heat_expense_included_in_rent: true
+  output:
+    ny_liheap: 45
+
+- name: Two person household with heat included in rent gets $50 benefit
+  period: 2025
+  input:
+    irs_gross_income: 30_000
+    spm_unit_size: 2
+    state_code: NY
+    heat_expense_included_in_rent: true
+  output:
+    ny_liheap: 50
+
+- name: Household with natural gas heating gets $400 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: NATURAL_GAS
+  output:
+    ny_liheap: 400
+
+- name: Household with electricity heating gets $400 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: ELECTRICITY
+  output:
+    ny_liheap: 400
+
+- name: Household with oil heating gets $900 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: OIL
+  output:
+    ny_liheap: 900
+
+- name: Household with propane heating gets $900 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: PROPANE
+  output:
+    ny_liheap: 900
+
+- name: Household with wood heating gets $635 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: WOOD
+  output:
+    ny_liheap: 635
+
+- name: Household with coal heating gets $635 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: COAL
+  output:
+    ny_liheap: 635
+
+- name: Elderly person gets additional $35 benefit
+  period: 2025
+  input:
+    irs_gross_income: 25_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: NATURAL_GAS
+    age: 65
+  output:
+    ny_liheap: 435
+
+- name: Household with young child gets additional $35 benefit
+  period: 2025
+  input:
+    irs_gross_income: 30_000
+    spm_unit_size: 2
+    state_code: NY
+    heating_fuel: ELECTRICITY
+    age: {0: 30, 1: 4}
+  output:
+    ny_liheap: 435
+
+- name: Disabled person gets additional $35 benefit
+  period: 2025
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: NATURAL_GAS
+    is_disabled: true
+  output:
+    ny_liheap: 435
+
+- name: Ineligible household gets no benefit
+  period: 2025
+  input:
+    irs_gross_income: 100_000
+    spm_unit_size: 1
+    state_code: NY
+    heating_fuel: NATURAL_GAS
+  output:
+    ny_liheap: 0
+
+- name: Non-NY household gets no benefit
+  period: 2025
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: CA
+    heating_fuel: NATURAL_GAS
+  output:
+    ny_liheap: 0

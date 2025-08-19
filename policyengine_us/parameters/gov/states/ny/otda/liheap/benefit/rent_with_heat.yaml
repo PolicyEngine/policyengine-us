@@ -1,0 +1,19 @@
+description: NY LIHEAP benefit amount for households with heat included in rent
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: NY LIHEAP rent with heat benefit
+  reference:
+    - title: NYS OTDA HEAP Program Benefits
+      href: https://otda.ny.gov/programs/heap/
+brackets:
+  - threshold:
+      2024-11-01: 1
+    amount:
+      2024-11-01: 45
+  - threshold:
+      2024-11-01: 2
+    amount:
+      2024-11-01: 50
