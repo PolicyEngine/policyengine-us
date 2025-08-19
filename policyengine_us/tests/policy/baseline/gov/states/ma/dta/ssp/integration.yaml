@@ -1,6 +1,6 @@
 - name: MA, one aged, one blind, full cost household, large leftover income (current offset logic)
   period: 2022
-  absolute_error_margin: 2
+  absolute_error_margin: 0.2
   input:
     people:
       person_1:
@@ -8,13 +8,13 @@
         ssi_countable_income: 17_000
         is_ssi_aged_blind_disabled: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         is_ssi_aged: true
       person_2:
         is_blind: true
         is_ssi_aged_blind_disabled: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
       # Possibly set ssi_countable_income: 0 for person_2 if needed
     marital_units:
       marital_unit:
@@ -28,7 +28,4 @@
         state_code: MA
         ma_state_living_arrangement: FULL_COST
   output:
-    # The code is returning about [1832.6, 1832.6].
-    # We'll set them to 1833 each, with an absolute_error_margin of 2
-    # so that it passes even if there's a minor rounding difference.
-    ma_state_supplement: [1_833, 1_833]
+    ma_state_supplement: [1_383.3, 1_383.3]
