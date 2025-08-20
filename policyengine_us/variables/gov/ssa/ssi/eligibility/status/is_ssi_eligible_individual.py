@@ -15,7 +15,4 @@ class is_ssi_eligible_individual(Variable):
             immigration_status == immigration_status.possible_values.CITIZEN
         )
 
-        return (
-            aged_blind_disabled
-            & (is_qualified_noncitizen | is_citizen)
-        )
+        return aged_blind_disabled & (is_qualified_noncitizen | is_citizen)
