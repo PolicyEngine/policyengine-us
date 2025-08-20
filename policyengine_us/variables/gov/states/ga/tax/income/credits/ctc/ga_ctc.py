@@ -20,11 +20,6 @@ class ga_ctc(Variable):
         ga_child_age_eligible = age < p.age_threshold
         eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
 
-        base_amount = eligible_children * p.amount
-        tax_before_nonref = tax_unit(
-            "ga_income_tax_before_non_refundable_credits", period
-        )
-
-        return min_(base_amount, tax_before_nonref)
+        return eligible_children * p.amount
 
 
