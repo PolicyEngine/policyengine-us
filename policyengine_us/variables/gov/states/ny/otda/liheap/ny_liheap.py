@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.utilities.heating_fuel import (
+    HeatingFuel,
+)
 
 
 class ny_liheap(Variable):
