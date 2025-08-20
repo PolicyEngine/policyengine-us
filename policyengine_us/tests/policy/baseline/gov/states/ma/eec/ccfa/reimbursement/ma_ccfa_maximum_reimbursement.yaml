@@ -1,4 +1,18 @@
-- name: Case 1, region 1, informal child care full day for 10 days.
+- name: Case 1, region 1, center based care school age full day for 10 days.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_child_age_category: SCHOOL_AGE
+    ma_ccfa_schedule_type: FULL_DAY
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_attending_days_per_month: 10
+    childcare_hours_per_day: 6
+    state_code: MA
+  output:
+    ma_ccfa_maximum_reimbursement: 496.9
+
+- name: Case 2, region 1, informal child care full day for 10 days.
   period: 2025-01
   absolute_error_margin: 0.2
   input:
@@ -10,16 +24,3 @@
     state_code: MA
   output:
     ma_ccfa_informal_child_care_reimbursement: 245.7
-
-- name: Case 2, region 1, informal child care full day for 10 days.
-  period: 2025-01
-  absolute_error_margin: 0.2
-  input:
-    county_str: BERKSHIRE_COUNTY_MA
-    ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
-    ma_ccfa_is_relative_home_care: false
-    ma_ccfa_attending_days_per_month: 10
-    childcare_hours_per_day: 5
-    state_code: MA
-  output:
-    ma_ccfa_informal_child_care_reimbursement: 173.3 * 0.6
