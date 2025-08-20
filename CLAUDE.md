@@ -143,7 +143,8 @@ make documentation
 - **"Greater of" policies**: When policies use "the greater/lesser of X or Y", consider whether to:
   - Implement the comparison directly in the formula, OR
   - Use parameters for specific thresholds if that's how the policy is actually written
-- Cross-check parameter values against authoritative external sources (gov websites, calculators)
+- Cross-check parameter values against authoritative external sources (statutes, regulations, official manuals)
+- **Prefer primary sources**: Use statutes/regulations over websites when available; file issues if only secondary sources found
 - Document the source, publication date, and effective dates in parameter metadata
 - Include both title and href for references to maintain traceability
 - Use multiple sources to validate complex parameters (e.g., tax brackets, benefit amounts)
