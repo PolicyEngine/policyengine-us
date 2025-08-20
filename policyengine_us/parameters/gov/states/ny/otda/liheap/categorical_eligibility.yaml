@@ -1,0 +1,14 @@
+description: New York provides Home Energy Assistance Program eligibility to households that are enrolled in these programs.
+values:
+  2024-11-01:
+    - snap
+    - tanf
+    - ssi
+metadata:
+  reference:
+    - title: NYS OTDA HEAP Program Eligibility
+      href: https://otda.ny.gov/programs/heap/
+    - title: Federal LIHEAP Statute Section 2605(b)(2)(A)
+      href: https://liheapch.acf.gov/legislation.htm
+  unit: list
+  label: NY HEAP categorical eligibility programs

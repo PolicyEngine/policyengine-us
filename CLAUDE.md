@@ -1,6 +1,7 @@
 # PolicyEngine US - Development Guide
 
 ## Build/Test/Lint Commands
+
 ```bash
 # Install dependencies
 make install
@@ -34,8 +35,9 @@ make documentation
 ```
 
 ## GitHub Workflow
+
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
-- View PR list: `gh pr list` 
+- View PR list: `gh pr list`
 - View PR details: `gh pr view [PR-NUMBER]`
 - Contributing to PRs:
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
@@ -43,6 +45,7 @@ make documentation
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
 ## Code Style Guidelines
+
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
 - **Formatting**: Line length 79 characters; use Black for formatting
 - **Types**: Use type hints; import ArrayLike from numpy.typing
@@ -56,6 +59,7 @@ make documentation
 - **Return Statements**: Avoid unnecessary variable assignment before return - use `return func(x, y)` instead of `result = func(x, y); return result`
 
 ## Additional Guidelines
+
 - Python >= 3.10, < 3.13
 - Use `where` not `if` and `max_`/`min_` not `max`/`min` for vectorization
 - For array comparisons use `(x >= min) & (x <= max)` not `min <= x <= max`
@@ -66,6 +70,7 @@ make documentation
 - Every PR needs a changelog entry in changelog_entry.yaml
 
 ## Common Patterns and Gotchas
+
 - **ALWAYS run `make format` before every commit** - this is mandatory and ensures consistent code style
 - Unit tests with scalar values can pass while vectorized microsimulation fails
 - When implementing a previously empty variable, be sure to check for dependent formulas
@@ -78,7 +83,7 @@ make documentation
 - In YAML tests, use `[val1, val2]` array syntax instead of hyphenated lists for output values
 - When updating test values, add detailed calculation steps in comments to document the derivation
 - For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead) due to parameter validation issues
-- Parameter file naming matters: make sure variables reference the exact parameter file name 
+- Parameter file naming matters: make sure variables reference the exact parameter file name
 - When refactoring from enum to numeric values, update all downstream dependencies consistently
 - Prefer parameter-driven calculations over hardcoded logic in formulas when possible
 - Use `bool` instead of `int` or `/1` in `rate_unit` for scale parameters when appropriate to avoid validation issues
@@ -102,6 +107,7 @@ make documentation
 - **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
 ## Testing Best Practices
+
 - **Test File Naming**:
   - Name unit test files after the variable being tested (e.g., `household_income_decile.yaml`)
   - Use `integration.yaml` for integration tests that test multiple variables together
@@ -111,7 +117,7 @@ make documentation
   - **ALWAYS use underscore thousands separators** in numeric values (e.g., `1_000`, `50_000`, not `1000`, `50000`)
   - This applies to all numeric values in YAML tests including income, weights, thresholds, etc.
 
-- **Unit Tests**: 
+- **Unit Tests**:
   - Create tests in `variable.yaml` that test only the direct inputs to `variable.py`
   - Unit tests should focus on validating a single variable's logic in isolation
   - Use simple inputs that test specific edge cases and logic branches
@@ -126,6 +132,7 @@ make documentation
   - Include edge cases that test interactions between different parts of the system
 
 ## Parameter Structure Best Practices
+
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
 - Document the source, publication date, and effective dates in parameter metadata
 - Include both title and href for references to maintain traceability
@@ -143,10 +150,10 @@ make documentation
 - **Start with the entity providing the benefit**: e.g., "New York provides..." or "The IRS allows..."
 - **Be specific about what the parameter represents**: benefit amount, threshold, rate, etc.
 - **Include context when helpful**: e.g., "...to households that heat primarily with oil"
-- **Spell out acronyms in descriptions**: Use full names in descriptions (e.g., "Low Income Home Energy Assistance Program" not "LIHEAP")
+- **Spell out acronyms in descriptions**: Use full names in descriptions (e.g., "Home Energy Assistance Program" not "HEAP")
   - Keep abbreviations in parameter labels for brevity
 - **Examples of good descriptions**:
-  - "New York provides this Low Income Home Energy Assistance Program benefit amount to households that heat primarily with natural gas."
+  - "New York provides this Home Energy Assistance Program benefit amount to households that heat primarily with natural gas."
   - "California allows this standard deduction for single filers."
   - "The IRS provides this earned income tax credit percentage for taxpayers with two qualifying children."
 - **Avoid**:

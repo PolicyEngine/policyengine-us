@@ -14,21 +14,26 @@ class ny_liheap_income_eligible(Variable):
     documentation = "Uses 60% of State Median Income as income limit per federal LIHEAP regulations"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.hhs.liheap
-        state_median_income = spm_unit("hhs_smi", period)
+        ny_p = parameters(period).gov.states.ny.otda.liheap
+
         # The income concept is not clearly defined, assuming IRS gross income
         income = add(spm_unit, period, ["irs_gross_income"])
-        smi_limit = state_median_income * p.smi_limit
+
+        # NY uses 60% SMI for most households, 150% FPG for 13+ person households
+        household_size = spm_unit("spm_unit_size", period)
+        state_median_income = spm_unit("hhs_smi", period)
+        fpl = spm_unit("spm_unit_fpg", period)
+
+        # For households with 13+ members, use 150% FPG; otherwise use 60% SMI
+        income_limit = where(
+            household_size >= 13,
+            fpl * ny_p.fpg_limit,  # 150% FPG
+            state_median_income * ny_p.smi_limit,  # 60% SMI
+        )
 
         # Check categorical eligibility through other programs
-        receives_snap = spm_unit("snap", period) > 0
-        receives_tanf = spm_unit("tanf", period) > 0
-        person = spm_unit.members
-        receives_ssi = spm_unit.sum(person("ssi", period)) > 0
-
-        return (
-            (income <= smi_limit)
-            | receives_snap
-            | receives_tanf
-            | receives_ssi
+        categorically_eligible = (
+            add(spm_unit, period, ny_p.categorical_eligibility) > 0
         )
+
+        return (income <= income_limit) | categorically_eligible
