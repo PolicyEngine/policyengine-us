@@ -23,4 +23,6 @@ class heating_fuel(Variable):
     definition_period = YEAR
     label = "Primary heating fuel type"
     documentation = "The primary fuel type used for heating the household"
-    reference = "https://www.eia.gov/consumption/residential/data/2020/hc/hc1.7.xlsx"
+    reference = (
+        "https://www.eia.gov/consumption/residential/data/2020/hc/hc1.7.xlsx"
+    )
