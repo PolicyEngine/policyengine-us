@@ -19,7 +19,7 @@ class nc_tanf_income_eligible(Variable):
 
         if household_size == 0:
             return False
-    
+
         need_standard_fraction = reduced_need_standard / household_size
         difference_threshold = monthly_allowed_difference * MONTHS_IN_YEAR
 

@@ -18,4 +18,4 @@ class nc_demographic_tanf_eligible(Variable):
 
         household_size = spm_unit("nc_tanf_household_size", period)
 
-        return spm_unit.any(is_child) & ( household_size > 0)
+        return spm_unit.any(is_child) & (household_size > 0)
