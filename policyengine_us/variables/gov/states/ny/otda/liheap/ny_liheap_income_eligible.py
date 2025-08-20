@@ -31,8 +31,8 @@ class ny_liheap_income_eligible(Variable):
             state_median_income * ny_p.smi_limit,  # 60% SMI
         )
 
-        # Check categorical eligibility through other programs
-        categorically_eligible = (
+        # Check categorical eligibility through other programs (if state uses it)
+        categorically_eligible = ny_p.uses_categorical_eligibility & (
             add(spm_unit, period, ny_p.categorical_eligibility) > 0
         )
 
