@@ -17,7 +17,7 @@ class ny_liheap_income_eligible(Variable):
         # NY HEAP program year starts November 2024
         if period.start.year < 2025:
             return False
-            
+
         p = parameters(period).gov.states.ny.otda.liheap
 
         # The income concept is not clearly defined, assuming IRS gross income

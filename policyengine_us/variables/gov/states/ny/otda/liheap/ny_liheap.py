@@ -21,7 +21,7 @@ class ny_liheap(Variable):
         # NY HEAP program year starts November 2024
         if period.start.year < 2025:
             return 0
-            
+
         p = parameters(period).gov.states.ny.otda.liheap.benefit
 
         # Check housing type
