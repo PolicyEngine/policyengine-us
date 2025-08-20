@@ -14,6 +14,10 @@ class ny_liheap_income_eligible(Variable):
     documentation = "Uses 60% of State Median Income as income limit per federal LIHEAP regulations"
 
     def formula(spm_unit, period, parameters):
+        # NY HEAP program year starts November 2024
+        if period.start.year < 2025:
+            return False
+            
         p = parameters(period).gov.states.ny.otda.liheap
 
         # The income concept is not clearly defined, assuming IRS gross income
