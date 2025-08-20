@@ -8,11 +8,14 @@
     ny_liheap_income_eligible: true
 
 - name: Single person household above 60% SMI is not eligible
-  period: 2024
+  period: 2025
   input:
     irs_gross_income: 80_000
     spm_unit_size: 1
     state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 0
   output:
     ny_liheap_income_eligible: false
 
@@ -26,11 +29,14 @@
     ny_liheap_income_eligible: true
 
 - name: Four person household above 60% SMI is not eligible
-  period: 2024
+  period: 2025
   input:
     irs_gross_income: 120_000
     spm_unit_size: 4
     state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 0
   output:
     ny_liheap_income_eligible: false
 
