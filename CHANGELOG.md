@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.374.0] - 2025-08-20 13:41:01
+
+### Added
+
+- California Alameda County General Assistance Program.
+
 ## [1.373.1] - 2025-08-19 21:31:19
 
 ### Fixed
@@ -12652,6 +12658,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.374.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.1...1.374.0
 [1.373.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.0...1.373.1
 [1.373.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.372.0...1.373.0
 [1.372.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.371.0...1.372.0
