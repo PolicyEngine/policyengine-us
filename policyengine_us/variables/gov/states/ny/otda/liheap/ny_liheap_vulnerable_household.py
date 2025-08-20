@@ -14,15 +14,13 @@ class ny_liheap_vulnerable_household(Variable):
         p = parameters(period).gov.states.ny.otda.liheap.vulnerable
         person = spm_unit.members
 
-        # Check for elderly members
         age = person("age", period)
-        has_elderly = spm_unit.any(age >= p.elderly_age_threshold)
-
-        # Check for young children
-        has_young_child = spm_unit.any(age < p.child_age_threshold)
-
-        # Check for disabled members
         is_disabled = person("is_disabled", period)
-        has_disabled = spm_unit.any(is_disabled)
 
-        return has_elderly | has_young_child | has_disabled
+        is_vulnerable = (
+            (age >= p.elderly_age_threshold)
+            | (age < p.child_age_threshold)
+            | is_disabled
+        )
+
+        return spm_unit.any(is_vulnerable)
