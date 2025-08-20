@@ -1,0 +1,11 @@
+description: Georgia provides a Child Tax Credit amount for children below this age.
+metadata:
+  unit: age
+  label: Georgia Child Tax Credit child age threshold
+  period: year
+  reference:
+    - title: House Bill 136 # Establishes the CTC for tax year 2026.
+      href: https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=2
+
+values:
+  2026-01-01: 6
