@@ -3,7 +3,7 @@
   input:
     state_code: NC
     nc_tanf_reduced_need_standard: 362 * 12
-    spm_unit_size: 1
+    nc_tanf_household_size: 1
   output:
     nc_tanf_income_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     state_code: NC
     nc_tanf_reduced_need_standard: 42 * 12
-    spm_unit_size: 2
+    nc_tanf_household_size: 2
   output:
     nc_tanf_income_eligible: false
 
@@ -21,6 +21,15 @@
   input:
     state_code: NC
     nc_tanf_reduced_need_standard: 72 * 12
-    spm_unit_size: 2
+    nc_tanf_household_size: 2
   output:
     nc_tanf_income_eligible: true
+
+- name: Household with eligible income but with 0 household size is ineligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 72 * 12
+    nc_tanf_household_size: 0
+  output:
+    nc_tanf_income_eligible: false

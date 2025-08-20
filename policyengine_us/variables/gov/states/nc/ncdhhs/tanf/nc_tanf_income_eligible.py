@@ -12,10 +12,14 @@ class nc_tanf_income_eligible(Variable):
         monthly_allowed_difference = parameters(
             period
         ).gov.states.nc.ncdhhs.tanf.need_standard.average_reduced_need_standard_thresold
-        household_size = spm_unit("spm_unit_size", period)
+        household_size = spm_unit("nc_tanf_household_size", period)
         reduced_need_standard = spm_unit(
             "nc_tanf_reduced_need_standard", period
         )
+
+        if household_size == 0:
+            return False
+    
         need_standard_fraction = reduced_need_standard / household_size
         difference_threshold = monthly_allowed_difference * MONTHS_IN_YEAR
 
