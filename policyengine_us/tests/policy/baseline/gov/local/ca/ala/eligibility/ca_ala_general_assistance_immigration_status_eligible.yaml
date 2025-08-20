@@ -1,0 +1,23 @@
+- name: Case 1, eligible.
+  period: 2024
+  input: 
+    in_ala: true
+    immigration_status: CITIZEN
+  output:
+    ca_ala_general_assistance_immigration_status_eligible: true
+
+- name: Case 2, ineligible.
+  period: 2024
+  input: 
+    in_ala: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ca_ala_general_assistance_immigration_status_eligible: false
+
+- name: Case 3, refugee eligible.
+  period: 2024
+  input: 
+    in_ala: true
+    immigration_status: REFUGEE
+  output:
+    ca_ala_general_assistance_immigration_status_eligible: true

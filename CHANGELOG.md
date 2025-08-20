@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.374.1] - 2025-08-20 14:15:57
+
+### Fixed
+
+- Fix charitable deduction floor amount parameter.
+- Fix non-cash charitable deduction ceiling.
+
+## [1.374.0] - 2025-08-20 13:41:01
+
+### Added
+
+- California Alameda County General Assistance Program.
+
+## [1.373.1] - 2025-08-19 21:31:19
+
+### Fixed
+
+- Fix AMT Phaseout Rate.
+
+## [1.373.0] - 2025-08-19 07:41:21
+
+### Added
+
+- Refundable Additional Child Tax Credit (ACTC) for Puerto Rico.
+
+## [1.372.0] - 2025-08-19 07:18:50
+
+### Added
+
+- Unified programmatic extension of all uprating factors through 2100 for long-term policy simulations
+- IRS, SNAP, SSA, HHS, CPI-U, Chained CPI-U, and CPI-W now extend dynamically based on growth rates from final years of projections
+- Single comprehensive test suite for all uprating extensions
+- Cleaner, more maintainable approach that avoids hardcoding future values in YAML files
+
+### Changed
+
+- Updated SSA 2025 value to reflect actual 2.5% COLA announced by SSA
+- Refactored all uprating extensions from hardcoded YAML values to programmatic generation
+
 ## [1.371.0] - 2025-08-18 14:16:48
 
 ### Fixed
@@ -12626,6 +12665,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.374.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.374.0...1.374.1
+[1.374.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.1...1.374.0
+[1.373.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.0...1.373.1
+[1.373.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.372.0...1.373.0
+[1.372.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.371.0...1.372.0
 [1.371.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.2...1.371.0
 [1.370.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.1...1.370.2
 [1.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.0...1.370.1

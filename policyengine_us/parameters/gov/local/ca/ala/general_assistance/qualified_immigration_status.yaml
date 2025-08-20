@@ -1,0 +1,17 @@
+description: Alameda county considers these statuses as qualified immigrants under the General Relief Program.
+values:
+  1975-01-01:
+    - CITIZEN
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - PAROLED_ONE_YEAR
+    - LEGAL_PERMANENT_RESIDENT
+    
+metadata:
+  label: Alameda County General Relief qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: Alameda County GA-Regulations 
+      href: https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=21
