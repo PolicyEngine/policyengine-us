@@ -14,7 +14,7 @@ class ny_liheap_income_eligible(Variable):
     documentation = "Uses 60% of State Median Income as income limit per federal LIHEAP regulations"
 
     def formula(spm_unit, period, parameters):
-        ny_p = parameters(period).gov.states.ny.otda.liheap
+        p = parameters(period).gov.states.ny.otda.liheap
 
         # The income concept is not clearly defined, assuming IRS gross income
         income = add(spm_unit, period, ["irs_gross_income"])
@@ -27,13 +27,13 @@ class ny_liheap_income_eligible(Variable):
         # For households with 13+ members, use 150% FPG; otherwise use 60% SMI
         income_limit = where(
             household_size >= 13,
-            fpl * ny_p.fpg_limit,  # 150% FPG
-            state_median_income * ny_p.smi_limit,  # 60% SMI
+            fpl * p.fpg_limit,  # 150% FPG
+            state_median_income * p.smi_limit,  # 60% SMI
         )
 
         # Check categorical eligibility through other programs (if state uses it)
-        categorically_eligible = ny_p.uses_categorical_eligibility & (
-            add(spm_unit, period, ny_p.categorical_eligibility) > 0
+        categorically_eligible = p.uses_categorical_eligibility & (
+            add(spm_unit, period, p.categorical_eligibility) > 0
         )
 
         return (income <= income_limit) | categorically_eligible
