@@ -75,10 +75,8 @@ class ny_liheap(Variable):
 
         # Only add supplement if there's a base benefit and not in subsidized housing
         # (subsidized housing gets fixed $21 with no supplement)
-        total_benefit = where(
+        return where(
             receives_housing_assistance,
             benefit,
             benefit + vulnerable_supplement,
         )
-
-        return total_benefit

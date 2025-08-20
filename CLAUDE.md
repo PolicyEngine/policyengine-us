@@ -53,6 +53,7 @@ make documentation
 - **Constants**: Use UPPERCASE only for constants defined in code, not for parameters from the parameter tree
 - **Income Combination**: Use `add(person, period, ["income1", "income2"])` instead of manual addition for combining income sources
 - **Negative Values**: Use `max_(value, 0)` to clip negative values to zero (prevents counterintuitive behavior in economic models)
+- **Return Statements**: Avoid unnecessary variable assignment before return - use `return func(x, y)` instead of `result = func(x, y); return result`
 
 ## Additional Guidelines
 - Python >= 3.10, < 3.13
@@ -142,14 +143,17 @@ make documentation
 - **Start with the entity providing the benefit**: e.g., "New York provides..." or "The IRS allows..."
 - **Be specific about what the parameter represents**: benefit amount, threshold, rate, etc.
 - **Include context when helpful**: e.g., "...to households that heat primarily with oil"
+- **Spell out acronyms in descriptions**: Use full names in descriptions (e.g., "Low Income Home Energy Assistance Program" not "LIHEAP")
+  - Keep abbreviations in parameter labels for brevity
 - **Examples of good descriptions**:
-  - "New York provides this LIHEAP benefit amount to households that heat primarily with natural gas."
+  - "New York provides this Low Income Home Energy Assistance Program benefit amount to households that heat primarily with natural gas."
   - "California allows this standard deduction for single filers."
   - "The IRS provides this earned income tax credit percentage for taxpayers with two qualifying children."
 - **Avoid**:
   - Passive voice: "This benefit is provided..."
   - Incomplete phrases: "NY LIHEAP oil benefit"
   - Ambiguous descriptions: "Benefit amount"
+  - Acronyms in descriptions: Use full names instead
 - **State tax parameters** are the best examples in the codebase - follow their pattern
 
 ## Parameter Date Guidelines
