@@ -11,14 +11,15 @@ class ny_liheap_vulnerable_household(Variable):
     documentation = "Household contains members 60+ years old, children under 6, or permanently disabled individuals"
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ny.otda.liheap.vulnerable
         person = spm_unit.members
 
-        # Check for elderly members (60+)
+        # Check for elderly members
         age = person("age", period)
-        has_elderly = spm_unit.any(age >= 60)
+        has_elderly = spm_unit.any(age >= p.elderly_age_threshold)
 
-        # Check for young children (under 6)
-        has_young_child = spm_unit.any(age < 6)
+        # Check for young children
+        has_young_child = spm_unit.any(age < p.child_age_threshold)
 
         # Check for disabled members
         is_disabled = person("is_disabled", period)

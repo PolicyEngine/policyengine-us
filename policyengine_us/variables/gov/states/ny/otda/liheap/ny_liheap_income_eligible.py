@@ -19,14 +19,14 @@ class ny_liheap_income_eligible(Variable):
         # The income concept is not clearly defined, assuming IRS gross income
         income = add(spm_unit, period, ["irs_gross_income"])
 
-        # NY uses 60% SMI for most households, 150% FPG for 13+ person households
+        # NY uses 60% SMI for most households, 150% FPG for large households
         household_size = spm_unit("spm_unit_size", period)
         state_median_income = spm_unit("hhs_smi", period)
         fpl = spm_unit("spm_unit_fpg", period)
 
-        # For households with 13+ members, use 150% FPG; otherwise use 60% SMI
+        # For large households, use FPG; otherwise use SMI
         income_limit = where(
-            household_size >= 13,
+            household_size >= p.large_household_size,
             fpl * p.fpg_limit,  # 150% FPG
             state_median_income * p.smi_limit,  # 60% SMI
         )
