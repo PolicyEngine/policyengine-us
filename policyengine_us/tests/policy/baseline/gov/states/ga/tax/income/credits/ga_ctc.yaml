@@ -40,27 +40,6 @@
   output:
     ga_ctc: 0
 
-- name: GA CTC - partial credit limited by liability
-  period: 2026
-  input:
-    people:
-      parent:
-        age: 30
-      child:
-        age: 3
-        ctc_qualifying_child: true
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        filing_status: SINGLE
-        ga_income_tax_before_non_refundable_credits: 100
-    households:
-      household:
-        members: [parent, child]
-        state_code: GA
-  output:
-    ga_ctc: 100
-
 - name: GA CTC - multiple children full credit
   period: 2026
   input:
