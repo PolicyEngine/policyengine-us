@@ -5,6 +5,7 @@ class nc_tanf_household_size(Variable):
     value_type = int
     entity = SPMUnit
     label = "NC TANF household size excludes SSI recipients"
+    reference = "https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf#page=2"
     definition_period = YEAR
     defined_for = StateCode.NC
 
