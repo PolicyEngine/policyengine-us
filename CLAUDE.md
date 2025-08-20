@@ -133,6 +133,16 @@ make documentation
 
 ## Parameter Structure Best Practices
 
+- **Parameterize all policy choices**: Every threshold, percentage, age limit, or policy option should be a parameter, not hardcoded
+- **State vs Federal parameters**: Don't assume states use federal maximums - create state-specific parameters for their actual choices
+- **Categorical eligibility**: When programs allow automatic eligibility based on other programs, use:
+  - A boolean parameter for whether the state uses categorical eligibility
+  - A list parameter for which programs grant categorical eligibility
+- **Document without speculation**: Describe what the policy does, not why (unless explicitly documented)
+- **File issues for uncertainty**: If unsure whether implementation matches policy specification, file an issue to investigate
+- **"Greater of" policies**: When policies use "the greater/lesser of X or Y", consider whether to:
+  - Implement the comparison directly in the formula, OR
+  - Use parameters for specific thresholds if that's how the policy is actually written
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
 - Document the source, publication date, and effective dates in parameter metadata
 - Include both title and href for references to maintain traceability
