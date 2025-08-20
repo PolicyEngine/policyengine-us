@@ -1,0 +1,55 @@
+- name: Case 1, eligible family.
+  period: 2025-01
+  input:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 50
+    spm_unit_pre_subsidy_childcare_expenses: 100
+    ma_ccfa_maximum_reimbursement: 200
+    state_code: MA
+  output:
+    ma_ccfa: 50
+
+- name: Case 2, eligible family.
+  period: 2025-01
+  input:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 50
+    spm_unit_pre_subsidy_childcare_expenses: 180
+    ma_ccfa_maximum_reimbursement: 100
+    state_code: MA
+  output:
+    ma_ccfa: 100
+
+- name: Case 3, integration test, family of 2, $1800 monthly income. 
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_800 * 12
+        weekly_hours_worked: 40
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: INFANT
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        ma_ccfa_attending_days_per_month: 10
+        childcare_hours_per_day: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_total_copay: 3.88
+    ma_ccfa_maximum_reimbursement: [0, 1_050]
+    ma_ccfa_eligible: true
+    ma_ccfa: 1_050

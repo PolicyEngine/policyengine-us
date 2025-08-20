@@ -25,7 +25,10 @@ class ma_ccfa_informal_child_care_reimbursement(Variable):
             "ma_ccfa_attending_days_per_month", period
         )
         care_provider_type = person("ma_ccfa_care_provider_type", period)
-        informal_child_care = care_provider_type == care_provider_type.possible_values.INFORMAL_CHILD_CARE
+        informal_child_care = (
+            care_provider_type
+            == care_provider_type.possible_values.INFORMAL_CHILD_CARE
+        )
         return (
             uncapped_payment_per_day
             * attending_days_per_month

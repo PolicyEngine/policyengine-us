@@ -20,13 +20,18 @@ class ma_ccfa_activity_eligible(Variable):
         age = person("monthly_age", period)
         work_exempt_age = age >= p.work_exempt_age
 
+        is_pregnant = person("is_pregnant", period)
         is_student = person("is_full_time_student", period)
         is_disabled = person("is_disabled", period)
 
         activity_eligible = (
-            meets_work_requirement | work_exempt_age | is_student | is_disabled
+            meets_work_requirement
+            | work_exempt_age
+            | is_pregnant
+            | is_student
+            | is_disabled
         )
         is_homeless = spm_unit.household("is_homeless", period)
         # All parents in household must meet requirements
         ineligible_parent = is_head_or_spouse & ~activity_eligible
-        return (spm_unit.sum(ineligible_parent) == 0) | (is_homeless)
+        return (spm_unit.sum(ineligible_parent) == 0) | is_homeless

@@ -13,7 +13,9 @@ class ma_ccfa_care_provider_type(Variable):
     value_type = Enum
     entity = Person
     possible_values = MassachusettsCCFACareProviderType
-    default_value = MassachusettsCCFACareProviderType.CENTER_BASED_CARE_SCHOOL_AGE
+    default_value = (
+        MassachusettsCCFACareProviderType.CENTER_BASED_CARE_SCHOOL_AGE
+    )
     definition_period = MONTH
     defined_for = StateCode.MA
     label = "Massachusetts Child Care Financial Assistance (CCFA) care provider type"

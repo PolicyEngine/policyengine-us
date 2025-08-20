@@ -1,20 +1,20 @@
 from policyengine_us.model_api import *
 
 
-class ma_ccsp_fee_level(Variable):
+class ma_ccfa_copay_level(Variable):
     value_type = int
     entity = SPMUnit
-    label = "MA CCSP fee level"
+    label = "MA CCSP copay level"
     definition_period = MONTH
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.copay.fee_level
-        income = spm_unit("ma_ccsp_countable_income", period)
+        income = spm_unit("ma_ccfa_countable_income", period)
         family_size = spm_unit("spm_unit_size", period)
-        capped_size = min_(family_size, 12)
-        fpg = spm_unit("spm_unit_fpg", period)
+        capped_size = np.clip(family_size, 2, 12)
+        fpg = spm_unit("ma_ccfa_fpg", period)
 
         # Calculate income as ratio of FPG
         income_ratio = income / fpg

@@ -12,8 +12,8 @@ class ma_ccfa_total_copay(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.copay.ratio
-        base_copay = spm_unit("ma_ccsp_base_copay", period)
-        eligible_child = spm_unit.member("ma_ccfa_eligible_child", period)
+        base_copay = spm_unit("ma_ccfa_base_copay", period)
+        eligible_child = spm_unit.members("ma_ccfa_eligible_child", period)
         num_children = spm_unit.sum(eligible_child)
 
         first_child_fee = (num_children >= 1) * (base_copay * p.first_child)

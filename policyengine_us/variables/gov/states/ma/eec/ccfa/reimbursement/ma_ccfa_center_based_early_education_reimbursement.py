@@ -24,7 +24,10 @@ class ma_ccfa_center_based_early_education_reimbursement(Variable):
             "ma_ccfa_attending_days_per_month", period
         )
         care_provider_type = person("ma_ccfa_care_provider_type", period)
-        center_based_early_education = care_provider_type == care_provider_type.possible_values.CENTER_BASED_CARE_EARLY_EDUCATION
+        center_based_early_education = (
+            care_provider_type
+            == care_provider_type.possible_values.CENTER_BASED_CARE_EARLY_EDUCATION
+        )
         return (
             uncapped_payment_per_day
             * attending_days_per_month
