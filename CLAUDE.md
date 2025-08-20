@@ -136,6 +136,22 @@ make documentation
 - When updating parameters, verify both individual values and downstream impacts
 - Use descriptive changelog entries that reference authoritative sources for updates
 
+## Parameter Description Guidelines
+
+- **Use active voice and complete sentences** for all parameter descriptions
+- **Start with the entity providing the benefit**: e.g., "New York provides..." or "The IRS allows..."
+- **Be specific about what the parameter represents**: benefit amount, threshold, rate, etc.
+- **Include context when helpful**: e.g., "...to households that heat primarily with oil"
+- **Examples of good descriptions**:
+  - "New York provides this LIHEAP benefit amount to households that heat primarily with natural gas."
+  - "California allows this standard deduction for single filers."
+  - "The IRS provides this earned income tax credit percentage for taxpayers with two qualifying children."
+- **Avoid**:
+  - Passive voice: "This benefit is provided..."
+  - Incomplete phrases: "NY LIHEAP oil benefit"
+  - Ambiguous descriptions: "Benefit amount"
+- **State tax parameters** are the best examples in the codebase - follow their pattern
+
 ## Parameter Date Guidelines
 
 - **Program Year vs Calendar Year**: Many assistance programs operate on program years that don't align with calendar years
