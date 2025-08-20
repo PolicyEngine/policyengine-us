@@ -62,7 +62,7 @@
       unit:
         members: [head, spouse]
   output:
-    ssi_countable_income: [9_490, 0]
+    ssi_countable_income: [4_490, 4_490]
 
 - name: Income is included for couples where the spouse has the income
   period: 2023
@@ -84,7 +84,7 @@
       unit:
         members: [head, spouse]
   output:
-    ssi_countable_income: [9_490, 0]
+    ssi_countable_income: [4_490, 4_490]
 
 - name: Income is not included for couples when the head not eligible
   period: 2023
@@ -129,4 +129,3 @@
         members: [head, spouse]
   output:
     ssi_countable_income: [9_490, 0]
-

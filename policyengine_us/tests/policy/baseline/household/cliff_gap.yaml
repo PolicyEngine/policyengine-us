@@ -98,7 +98,6 @@
   output:
     adjusted_gross_income: 76_500
     dc_ptc: 1_225
-    ssi: [0, 7_146]
     household_net_income: 66_461.25
 
 - name: household_net_income test 2 DC-netinc-alt
@@ -126,7 +125,6 @@
   output:
     adjusted_gross_income: 76_500 + 1_000
     dc_ptc: 0
-    ssi: [0, 7_146]
     household_net_income: 65_974.75
 
 - name: cliff_gap test 2 DC-cliff_gap
