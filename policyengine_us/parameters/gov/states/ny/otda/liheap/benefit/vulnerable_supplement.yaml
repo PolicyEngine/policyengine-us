@@ -1,10 +1,12 @@
-description: Additional NY LIHEAP benefit for households with vulnerable members (elderly 60+, disabled, or children under 6)
+description: New York provides an additional Home Energy Assistance Program benefit for households with vulnerable members.
+# NY HEAP program year starts November 1st
 values:
   2024-11-01: 35
+  2024-01-01: 0
 metadata:
   period: year
   unit: currency-USD
-  label: NY LIHEAP vulnerable household supplement
+  label: NY HEAP vulnerable household supplement
   reference:
     - title: NYS OTDA HEAP Program Benefits
       href: https://otda.ny.gov/programs/heap/

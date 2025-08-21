@@ -1,10 +1,12 @@
 description: New York provides this Home Energy Assistance Program benefit amount to households that heat primarily with coal.
+# NY HEAP program year starts November 1st
 values:
   2024-11-01: 635
+  2024-01-01: 0
 metadata:
   period: year
   unit: currency-USD
-  label: NY LIHEAP coal heating benefit
+  label: NY HEAP coal heating benefit
   reference:
     - title: NYS OTDA HEAP Program Benefits
       href: https://otda.ny.gov/programs/heap/

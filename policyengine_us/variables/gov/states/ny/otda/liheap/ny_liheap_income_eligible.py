@@ -20,6 +20,11 @@ class ny_liheap_income_eligible(Variable):
 
         p = parameters(period).gov.states.ny.otda.liheap
 
+        # Check immigration status - at least one member must be eligible
+        immigration_eligible = spm_unit.any(
+            "ny_liheap_immigration_eligible", period
+        )
+
         # The income concept is not clearly defined, assuming IRS gross income
         income = add(spm_unit, period, ["irs_gross_income"])
 
@@ -40,4 +45,5 @@ class ny_liheap_income_eligible(Variable):
             add(spm_unit, period, p.categorical_eligibility) > 0
         )
 
-        return (income <= income_limit) | categorically_eligible
+        # Must meet immigration status AND (income OR categorical eligibility)
+        return immigration_eligible & ((income <= income_limit) | categorically_eligible)
