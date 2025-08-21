@@ -19,15 +19,15 @@ class ny_liheap_vulnerable_supplement(Variable):
 
         # Check if household is vulnerable
         is_vulnerable = spm_unit("ny_liheap_vulnerable_household", period)
-        
+
         # Check if household gets subsidized housing (no supplement for them)
         receives_housing_assistance = spm_unit(
             "receives_housing_assistance", period
         )
-        
+
         # Only provide supplement if vulnerable and not in subsidized housing
         return where(
-            is_vulnerable & ~receives_housing_assistance, 
-            p.vulnerable_supplement, 
-            0
+            is_vulnerable & ~receives_housing_assistance,
+            p.vulnerable_supplement,
+            0,
         )

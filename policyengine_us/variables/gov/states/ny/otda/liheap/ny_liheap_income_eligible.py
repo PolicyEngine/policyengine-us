@@ -46,4 +46,6 @@ class ny_liheap_income_eligible(Variable):
         )
 
         # Must meet immigration status AND (income OR categorical eligibility)
-        return immigration_eligible & ((income <= income_limit) | categorically_eligible)
+        return immigration_eligible & (
+            (income <= income_limit) | categorically_eligible
+        )
