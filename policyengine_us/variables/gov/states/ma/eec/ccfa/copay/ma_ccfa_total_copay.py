@@ -11,6 +11,9 @@ class ma_ccfa_total_copay(Variable):
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=76"
 
     def formula(spm_unit, period, parameters):
+        # TAFDC recipients get free child care (no copay)
+        tafdc_eligible = spm_unit("ma_tafdc_eligible", period)
+
         p = parameters(period).gov.states.ma.eec.ccfa.copay.ratio
         base_copay = spm_unit("ma_ccfa_base_copay", period)
         eligible_child = spm_unit.members("ma_ccfa_eligible_child", period)
@@ -24,4 +27,9 @@ class ma_ccfa_total_copay(Variable):
             base_copay * p.additional_child
         )
 
-        return first_child_fee + second_child_fee + additional_children_fee
+        total_copay = (
+            first_child_fee + second_child_fee + additional_children_fee
+        )
+
+        # Return zero copay for TAFDC recipients
+        return where(tafdc_eligible, 0, total_copay)

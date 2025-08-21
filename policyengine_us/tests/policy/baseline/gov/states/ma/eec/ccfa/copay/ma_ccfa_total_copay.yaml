@@ -75,3 +75,30 @@
   output:
     ma_ccfa_total_copay: 112.35
     # 64.2 + 64.2*0.5 + 64.2*0.25
+
+- name: Case 4, TAFDC recipient with children has zero copay.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_000 * 12
+      person2:
+        age: 2
+        ma_ccfa_eligible_child: true
+      person3:
+        age: 4
+        ma_ccfa_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_tafdc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 0

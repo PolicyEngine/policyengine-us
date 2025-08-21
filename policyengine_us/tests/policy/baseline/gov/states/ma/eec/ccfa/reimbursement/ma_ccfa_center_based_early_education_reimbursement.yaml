@@ -2,8 +2,8 @@
   period: 2025-01
   absolute_error_margin: 0.2
   input:
+    age: 0.5
     county_str: BERKSHIRE_COUNTY_MA
-    ma_ccfa_child_age_category: INFANT
     ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
     ma_ccfa_attending_days_per_month: 10
     childcare_hours_per_day: 6
@@ -15,8 +15,8 @@
   period: 2025-01
   absolute_error_margin: 0.2
   input:
+    age: 1.0
     county_str: BERKSHIRE_COUNTY_MA
-    ma_ccfa_child_age_category: INFANT
     ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
     ma_ccfa_attending_days_per_month: 10
     childcare_hours_per_day: 5
@@ -28,8 +28,8 @@
   period: 2025-01
   absolute_error_margin: 0.2
   input:
+    age: 0.8
     county_str: BERKSHIRE_COUNTY_MA
-    ma_ccfa_child_age_category: INFANT
     ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
     ma_ccfa_attending_days_per_month: 10
     childcare_hours_per_day: 6

@@ -14,13 +14,20 @@ class ma_ccfa_eligible(Variable):
         has_eligible_child = (
             add(spm_unit, period, ["ma_ccfa_eligible_child"]) > 0
         )
+
+        # TAFDC recipients have categorical eligibility
+        tafdc_eligible = spm_unit("ma_tafdc_eligible", period)
+
+        # Regular eligibility criteria
         income_eligible = spm_unit("ma_ccfa_income_eligible", period)
         asset_eligible = spm_unit("ma_ccfa_asset_eligible", period)
         activity_eligible = spm_unit("ma_ccfa_activity_eligible", period)
 
-        return (
+        regular_eligible = (
             has_eligible_child
             & income_eligible
             & asset_eligible
             & activity_eligible
         )
+
+        return regular_eligible | tafdc_eligible
