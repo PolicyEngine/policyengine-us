@@ -1,0 +1,107 @@
+- name: GA CTC - full credit with sufficient liability
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_ctc: 250
+
+- name: GA CTC - no credit due to age (too old)
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 6
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_ctc: 0
+
+- name: GA CTC - multiple children full credit
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 32
+      child1:
+        age: 1
+        ctc_qualifying_child: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_ctc: 500
+
+- name: GA CTC - not available outside Georgia
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    ga_ctc: 0
+
+- name: GA CTC - no credit in 2025 (pre-enactment)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_low_income_credit: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_non_refundable_credits: 0
