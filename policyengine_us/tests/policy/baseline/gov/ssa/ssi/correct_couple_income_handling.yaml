@@ -112,8 +112,8 @@
     # "combine their earned income" BEFORE applying exclusions.
     
     ssi_marital_earned_income: [1_560, 1_560]  # CORRECT per 20 CFR § 416.1163
-    ssi_countable_income: [270, 0]  # Actual values on master
-    ssi: [8_220, 8_490]
+    ssi_countable_income: [135, 135]  # Actual values on master
+    ssi: [8_355, 8_355]
 
 - name: SSI couple both earning - must combine then calculate
   period: 2024
@@ -153,8 +153,8 @@
     # happens to be similar in this specific case.
     
     ssi_marital_earned_income: [1_560, 1_560]  # CORRECT: Combined per regulation
-    ssi_countable_income: [270, 0]
-    ssi: [8_220, 8_490]
+    ssi_countable_income: [135, 135]
+    ssi: [8_355, 8_355]
 
 - name: SSI couple with higher income - shows exclusion on combined amount
   period: 2024
@@ -222,5 +222,5 @@
     # Result: Couple gets MORE benefits than legally entitled to receive.
     
     ssi_marital_earned_income: [3_000, 3_000]  # CORRECT per regulation
-    ssi_countable_income: [990, 0]
-    ssi: [7_500, 8_490]
+    ssi_countable_income: [495, 495]
+    ssi: [7_995, 7_995]

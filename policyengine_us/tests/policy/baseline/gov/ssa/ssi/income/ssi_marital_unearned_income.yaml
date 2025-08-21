@@ -12,7 +12,7 @@
       unit:
         members: [head, spouse]
   output:
-    ssi_marital_unearned_income: [15, 15]
+    ssi_marital_unearned_income: [30, 30]
 
 - name: Unearned income is not combined if not both eligible
   period: 2023
@@ -44,7 +44,7 @@
       unit:
         members: [head, spouse]
   output:
-    ssi_marital_unearned_income: [5, 5]
+    ssi_marital_unearned_income: [10, 10]
 
 - name: Unearned income is shared if spouse has income
   period: 2023
@@ -60,4 +60,4 @@
       unit:
         members: [head, spouse]
   output:
-    ssi_marital_unearned_income: [5, 5]
+    ssi_marital_unearned_income: [10, 10]

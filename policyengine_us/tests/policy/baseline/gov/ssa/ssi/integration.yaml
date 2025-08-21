@@ -52,7 +52,7 @@
   output:
     # Eligibility variables
     is_ssi_aged_blind_disabled: [true, true, true, true, false]
-    is_ssi_eligible_individual: [true, true, true, true, false]
+    is_ssi_eligible_individual: [true, true, false, true, false]
     
     # Joint claim status
     ssi_claim_is_joint: [false, true, true, false, false]

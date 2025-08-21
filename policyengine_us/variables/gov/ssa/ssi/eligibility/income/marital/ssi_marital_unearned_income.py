@@ -13,6 +13,6 @@ class ssi_marital_unearned_income(Variable):
 
         return where(
             both_eligible,
-            person.marital_unit.sum(unearned_income) / 2,
+            person.marital_unit.sum(unearned_income),
             unearned_income,
         )
