@@ -70,7 +70,7 @@
   output:
     nc_tanf: 300
 
-- name: One adult and two children household with one SSI recepient receives $236 per month
+- name: One adult and two children household with one SSI recipient receives $236 per month
   period: 2024
   input:
     people:
@@ -93,7 +93,7 @@
   output:
     nc_tanf: 236 * 12
 
-- name: One adult and two children household with $400 monthly income and one SSI recepient receives $36 per month
+- name: One adult and two children household with $400 monthly income and one SSI recipient receives $36 per month
   period: 2024
   input:
     people:
@@ -116,7 +116,7 @@
   output:
     nc_tanf: 36 * 12
 
-- name: One adult and two children household with $400 monthly income and two SSI recepient receives $0 per month
+- name: One adult and two children household with $400 monthly income and two SSI recipient receives $0 per month
   period: 2024
   input:
     people:
@@ -140,7 +140,7 @@
   output:
     nc_tanf: 0
 
-- name: One adult and two children household with $330 monthly income and two SSI recepient receives $16 per month
+- name: One adult and two children household with $330 monthly income and two SSI recipient receives $16 per month
   period: 2024
   input:
     people:
