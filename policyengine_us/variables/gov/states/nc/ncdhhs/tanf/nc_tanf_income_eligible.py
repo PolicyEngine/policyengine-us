@@ -17,10 +17,10 @@ class nc_tanf_income_eligible(Variable):
             "nc_tanf_reduced_need_standard", period
         )
 
-        if household_size == 0:
-            return False
-
-        need_standard_fraction = reduced_need_standard / household_size
+        # Use vectorized where to handle zero household size
+        need_standard_fraction = where(
+            household_size > 0, reduced_need_standard / household_size, 0
+        )
         difference_threshold = monthly_allowed_difference * MONTHS_IN_YEAR
 
         return need_standard_fraction >= difference_threshold
