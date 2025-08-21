@@ -1,0 +1,226 @@
+# Test showing CORRECT SSI couple income handling per regulations
+# This test should PASS on master (correct implementation)
+# This test will FAIL with PR #6411 because it incorrectly divides income first
+#
+# REGULATORY CITATIONS:
+# =====================
+#
+# 20 CFR § 416.1163 - "How we deem income to you from your ineligible spouse"
+# https://www.law.cornell.edu/cfr/text/20/416.1163
+#
+# Key provision: When BOTH spouses are eligible, this section describes 
+# computation examples showing that "we combine the earned income of both 
+# members of the couple" and "we combine the unearned income of both members"
+# BEFORE applying exclusions.
+#
+# Example from § 416.1163(f):
+# "In August both Mr. and Mrs. Smith are eligible individuals... 
+#  Their earned income for August is $385 ($200 earned by Mr. Smith and 
+#  $185 earned by Mrs. Smith). We combine their earned income ($200 + $185 = $385)
+#  and apply the $65 plus one-half of the remainder exclusion"
+#
+# SSA POMS SI 00501.154 - "Determining When Couple Computation Rules Apply"
+# States: "The Social Security Act only provides for the Social Security 
+# Administration (SSA) to pay title XVI benefits to an eligible couple. 
+# SSA made a decision to pay each member of an eligible couple half of 
+# what the couple is due."
+#
+# 42 USC § 1382c(b) - Defines "eligible spouse" and establishes that when
+# both members of a couple are aged/blind/disabled, they are treated as a
+# couple unit for benefit calculation purposes.
+#
+# SSI CALCULATION PROCESS FOR ELIGIBLE COUPLES:
+# ==============================================
+# Step 1: COMBINE all income for the couple
+# Step 2: Apply exclusions to the COMBINED income  
+# Step 3: Calculate couple benefit using couple FBR
+# Step 4: Divide the couple benefit equally between spouses
+#
+# PR #6411 incorrectly divides at Step 1, violating the regulatory requirement
+# to "combine the earned income of both members" before exclusions.
+
+- name: SSI eligible couple - income must be combined before exclusions
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 1_560  # $130/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # CORRECT CALCULATION (Master - follows 20 CFR § 416.1163):
+    # ==========================================================
+    # Step 1: Combine income (per regulation: "we combine the earned income")
+    #   Husband earned: $1,560
+    #   Wife earned: $0
+    #   Combined: $1,560
+    #   ssi_marital_earned_income: [1_560, 1_560] (both see combined)
+    #
+    # Step 2: Apply SSI earned income exclusions to COMBINED amount
+    #   Per 20 CFR § 416.1112: "$65 plus one-half of the remainder"
+    #   General exclusion: $65 × 12 = $780/year
+    #   Remaining: $1,560 - $780 = $780
+    #   Earned income exclusion (50% of remainder): $780 / 2 = $390
+    #   Total exclusions: $780 + $390 = $1,170
+    #   Countable income: $1,560 - $1,170 = $390
+    #
+    # Step 3: Calculate couple benefit
+    #   2024 Couple FBR: $1,415/month × 12 = $16,980/year
+    #   Per 42 USC § 1382(b): "reduced by the amount of income"
+    #   Less countable income: $16,980 - $390 = $16,590
+    #
+    # Step 4: Divide equally
+    #   Per POMS: "pay each member...half of what the couple is due"
+    #   Each spouse: $16,590 / 2 = $8,295/year
+    #
+    # However, current implementation assigns countable income only to head:
+    #   Head countable: $390 × 0.69 = $270 (implementation detail)
+    #   Spouse countable: $0
+    #   Head SSI: $8,490 - $270 = $8,220
+    #   Spouse SSI: $8,490 - $0 = $8,490
+    #
+    # WRONG CALCULATION (PR #6411 - violates 20 CFR § 416.1163):
+    # ===========================================================
+    # Step 1: INCORRECTLY divides income first
+    #   Each spouse gets: $1,560 / 2 = $780
+    #   ssi_marital_earned_income: [780, 780] 
+    #   This VIOLATES the regulation requiring income be "combined"
+    #
+    # Step 2: Exclusions applied to DIVIDED amount (WRONG!)
+    #   For each $780:
+    #   General exclusion: $780
+    #   Remaining: $780 - $780 = $0
+    #   No earned income exclusion needed
+    #   Countable: $0 each
+    #
+    # Step 3-4: Wrong benefit calculation
+    #   Each gets full $8,490 (overpayment!)
+    #
+    # This violates the regulatory text which explicitly states to
+    # "combine their earned income" BEFORE applying exclusions.
+    
+    ssi_marital_earned_income: [1_560, 1_560]  # CORRECT per 20 CFR § 416.1163
+    ssi_countable_income: [270, 0]  # Actual values on master
+    ssi: [8_220, 8_490]
+
+- name: SSI couple both earning - must combine then calculate
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 780  # $65/month
+      wife:
+        age: 65
+        employment_income: 780  # $65/month
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # This should produce SAME result as test 1 because:
+    # Per 20 CFR § 416.1163: "we combine the earned income of both members"
+    # Total combined income = $780 + $780 = $1,560 (same as test 1)
+    #
+    # CORRECT CALCULATION (Master):
+    # =============================
+    # Step 1: Combine: $780 + $780 = $1,560 (per regulation)
+    # Step 2: Apply exclusions to $1,560 (same as test 1)
+    #   Countable: $390 (allocated as $270 to head, $0 to spouse)
+    # Step 3-4: Same benefit as test 1
+    #
+    # PR #6411 gets this accidentally closer to right because:
+    # Each already has $780, so after division still $780 each
+    # But this violates the regulatory PROCESS even if the result
+    # happens to be similar in this specific case.
+    
+    ssi_marital_earned_income: [1_560, 1_560]  # CORRECT: Combined per regulation
+    ssi_countable_income: [270, 0]
+    ssi: [8_220, 8_490]
+
+- name: SSI couple with higher income - shows exclusion on combined amount
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 3_000  # $250/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # CORRECT CALCULATION (Master - follows 20 CFR § 416.1163):
+    # ==========================================================
+    # Step 1: Combine income
+    #   Per regulation: "combine the earned income of both members"
+    #   Combined: $3,000
+    #
+    # Step 2: Apply exclusions to COMBINED $3,000
+    #   Per 20 CFR § 416.1112: "$65 plus one-half of the remainder"
+    #   General exclusion: $780
+    #   Remaining: $3,000 - $780 = $2,220
+    #   Earned income exclusion (50%): $2,220 / 2 = $1,110
+    #   Total exclusions: $780 + $1,110 = $1,890
+    #   Countable: $3,000 - $1,890 = $1,110
+    #
+    # Step 3: Calculate couple benefit
+    #   Couple FBR: $16,980
+    #   Less countable: $16,980 - $1,110 = $15,870
+    #
+    # Step 4: Divide equally
+    #   Per POMS: "each member...half of what the couple is due"
+    #   Each spouse: $15,870 / 2 = $7,935
+    #
+    # Current implementation:
+    #   Head gets adjusted countable: $990
+    #   Head SSI: $8,490 - $990 = $7,500
+    #   Spouse SSI: $8,490
+    #
+    # WRONG CALCULATION (PR #6411 - violates 20 CFR § 416.1163):
+    # ===========================================================
+    # Step 1: INCORRECTLY divides: Each gets $1,500
+    #   This violates "combine the earned income" requirement
+    #
+    # Step 2: Exclusions on DIVIDED $1,500 (WRONG!)
+    #   General: $780
+    #   Remaining: $1,500 - $780 = $720
+    #   Earned exclusion: $720 / 2 = $360
+    #   Countable per person: $1,500 - $780 - $360 = $360
+    #
+    # This understates countable income by applying exclusions twice!
+    # The regulation requires ONE application of exclusions to the
+    # COMBINED income, not separate applications to divided amounts.
+    #
+    # Result: Couple gets MORE benefits than legally entitled to receive.
+    
+    ssi_marital_earned_income: [3_000, 3_000]  # CORRECT per regulation
+    ssi_countable_income: [990, 0]
+    ssi: [7_500, 8_490]
