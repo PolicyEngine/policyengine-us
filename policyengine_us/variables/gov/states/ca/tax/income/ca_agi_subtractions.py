@@ -12,4 +12,9 @@ class ca_agi_subtractions(Variable):
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html"
     )
     defined_for = StateCode.CA
-    adds = "gov.states.ca.tax.income.agi.subtractions"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ca.tax.income.agi
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

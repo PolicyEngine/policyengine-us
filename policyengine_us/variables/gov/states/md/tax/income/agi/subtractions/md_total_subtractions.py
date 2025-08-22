@@ -8,4 +8,9 @@ class md_total_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
-    adds = "gov.states.md.tax.income.agi.subtractions.sources"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.md.tax.income.agi.subtractions
+        total_subtractions = add(tax_unit, period, p.sources)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)
