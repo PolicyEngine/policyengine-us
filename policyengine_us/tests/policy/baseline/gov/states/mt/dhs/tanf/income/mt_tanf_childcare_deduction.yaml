@@ -1,0 +1,84 @@
+- name: Case 1, no childcare expense, 0
+  period: 2023-01
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    is_child: true
+    childcare_expenses: 0 
+  output:
+    mt_tanf_childcare_deduction: 0
+
+- name: Case 2, some childcare expense.
+  period: 2023-01
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    is_child: true
+    childcare_expenses: 250*12
+  output:
+    mt_tanf_childcare_deduction: 200
+
+- name: Case 3, some childcare expense, but not a dependent.
+  period: 2023-01
+  input:
+    state_code: MT
+    is_tax_unit_dependent: false
+    is_child: true
+    childcare_expenses: 250*12 
+  output:
+    mt_tanf_childcare_deduction: 0
+
+- name: Case 4, some childcare expense, but not a child.
+  period: 2023-01
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    is_child: false
+    childcare_expenses: 250*12 
+  output:
+    mt_tanf_childcare_deduction: 0
+
+- name: Case 5, some childcare applies minimum.
+  period: 2023-01
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    is_child: true
+    childcare_expenses: 100*12 
+  output:
+    mt_tanf_childcare_deduction: 100
+
+- name: Integration test.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 40
+        employment_income: 36_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        childcare_expenses: 4_300
+      spm_unit2:
+        members: [person3, person4]
+        is_tanf_enrolled: false
+        childcare_expenses: 4_300
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_tanf_childcare_deduction: [2_400, 2_400]   # min(4300, 200*12)
