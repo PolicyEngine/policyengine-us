@@ -1,0 +1,14 @@
+description: Montana deducts up to this amount of dependent care expenses per child from countable income under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: Montana TANF monthly earned income childcare deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: TANF 602-1 Income Disregards
+      href: https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf
+value:
+  2018-01-01: 200
+  
