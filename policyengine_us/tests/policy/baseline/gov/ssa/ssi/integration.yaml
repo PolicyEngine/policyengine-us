@@ -56,3 +56,93 @@
     
     # Joint claim status
     ssi_claim_is_joint: [false, true, true, false, false]
+
+# Tests showing CORRECT SSI couple income handling per regulations
+# These tests verify compliance with 20 CFR § 416.1163 which requires
+# combining income BEFORE applying exclusions for eligible couples
+
+- name: SSI eligible couple - income must be combined before exclusions
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 1_560  # $130/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Per 20 CFR § 416.1163: "we combine the earned income of both members"
+    # Step 1: Combine income: $1,560 (both see combined)
+    # Step 2: Apply exclusions to COMBINED amount
+    # Step 3: Calculate couple benefit
+    # Step 4: Divide equally between spouses
+    ssi_marital_earned_income: [1_560, 1_560]  # CORRECT per 20 CFR § 416.1163
+    ssi_countable_income: [135, 135]
+    ssi: [8_355, 8_355]
+
+- name: SSI couple both earning - must combine then calculate
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 780  # $65/month
+      wife:
+        age: 65
+        employment_income: 780  # $65/month
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Per 20 CFR § 416.1163: "we combine the earned income of both members"
+    # Total combined income = $780 + $780 = $1,560
+    ssi_marital_earned_income: [1_560, 1_560]  # CORRECT: Combined per regulation
+    ssi_countable_income: [135, 135]
+    ssi: [8_355, 8_355]
+
+- name: SSI couple with higher income - shows exclusion on combined amount
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 3_000  # $250/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Per 20 CFR § 416.1163: "combine the earned income of both members"
+    # Combined: $3,000
+    # Apply exclusions to COMBINED $3,000
+    # Each spouse gets half of couple's countable income
+    ssi_marital_earned_income: [3_000, 3_000]  # CORRECT per regulation
+    ssi_countable_income: [495, 495]
+    ssi: [7_995, 7_995]
