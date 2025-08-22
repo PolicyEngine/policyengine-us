@@ -8,4 +8,3 @@ class us_govt_interest_person(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Interest on U.S. government obligations such as U.S. savings bonds, U.S. Treasury bills, and U.S. government certificates, allocated to each person."
-
