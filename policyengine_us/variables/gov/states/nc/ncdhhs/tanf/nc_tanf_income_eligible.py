@@ -6,7 +6,7 @@ class nc_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "North Carolina TANF income eligible"
     definition_period = YEAR
-    defined_for = StateCode.NC
+    defined_for = "nc_demographic_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         monthly_allowed_difference = parameters(
@@ -17,10 +17,7 @@ class nc_tanf_income_eligible(Variable):
             "nc_tanf_reduced_need_standard", period
         )
 
-        # Use vectorized where to handle zero household size
-        need_standard_fraction = where(
-            household_size > 0, reduced_need_standard / household_size, 0
-        )
+        need_standard_fraction = reduced_need_standard / household_size
         difference_threshold = monthly_allowed_difference * MONTHS_IN_YEAR
 
         return need_standard_fraction >= difference_threshold

@@ -4,6 +4,7 @@
     state_code: NC
     nc_tanf_reduced_need_standard: 362 * 12
     nc_tanf_household_size: 1
+    nc_demographic_tanf_eligible: true
   output:
     nc_tanf_income_eligible: true
 
@@ -22,6 +23,7 @@
     state_code: NC
     nc_tanf_reduced_need_standard: 72 * 12
     nc_tanf_household_size: 2
+    nc_demographic_tanf_eligible: true
   output:
     nc_tanf_income_eligible: true
 
