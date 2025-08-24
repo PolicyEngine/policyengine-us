@@ -1,0 +1,42 @@
+description: Montana counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2018-01-01:
+    - miscellaneous_income
+      # Adoption Subsidies
+      # Bureau of Indian Affairs GA
+      # TANF from other states
+      # Capital Gains
+      # Charitable Donations
+      # Contributions
+      # Gifts over $50
+      # Incentives
+      # Irregular/Infrequent income
+      # Loan Repayments
+      # Military Allowances
+      # Temporary Disability Insurance
+      # Trust Funds
+      # Vendor Payments
+      # Workers Compensation
+    - child_support_received
+    - alimony_income
+    - pension_income
+      # Annuity Payments
+      # Pension Payments 
+    - dividend_income
+    - interest_income
+    - rental_income
+      # Lease Income
+      # Rental Income
+    - unemployment_compensation
+    - social_security
+    - veterans_benefits
+      # Veteran Administration Payments
+      # Veterans Aid and Attendance
+
+metadata:
+  unit: list
+  period: year
+  label: Montana TANF unearned income sources
+  reference:
+    - title: TANF 501-1 Unearned Income
+      href: https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF501-1Jan012018.pdf
