@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_tanf_earned_income_after_disregard_person(Variable):
     value_type = float
     entity = Person
-    label = "MT Temporary Assistance for Needy Families (TANF) earned income after disregard per person"
+    label = "Montana Temporary Assistance for Needy Families (TANF) earned income after disregard per person"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -25,4 +25,3 @@ class mt_tanf_earned_income_after_disregard_person(Variable):
         )
 
         return max_(earnings_after_flat_exclusion - percentage_disregard, 0)
-    
