@@ -10773,3 +10773,14 @@
     fixed:
     - Fix pre-2024 NY CTC.
   date: 2025-08-21 21:00:04
+- bump: patch
+  changes:
+    fixed:
+    - Exclude SSI recipients from NC TANF household count.
+  date: 2025-08-25 02:14:31
+- bump: patch
+  changes:
+    fixed:
+    - Updated SSI-related test cases.
+    - Updated SSI-related variables.
+  date: 2025-08-25 13:09:42
