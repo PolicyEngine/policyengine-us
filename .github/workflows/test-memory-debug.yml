@@ -1,0 +1,260 @@
+name: Debug Test Memory Usage
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/profile_test_memory.py'
+      - '.github/workflows/test-memory-debug.yml'
+
+jobs:
+  profile-memory:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .[dev]
+          pip install psutil pyyaml
+      
+      - name: System information
+        run: |
+          echo "=== System Info ==="
+          nproc
+          free -h
+          df -h
+          ulimit -a
+      
+      - name: Profile test memory usage (sample)
+        run: |
+          # Profile a sample of tests to identify memory hogs
+          python scripts/profile_test_memory.py \
+            --path policyengine_us/tests/policy/baseline \
+            --limit 50 \
+            --verbose \
+            --output memory_profile_sample.json
+      
+      - name: Upload memory profile
+        uses: actions/upload-artifact@v3
+        with:
+          name: memory-profile-sample
+          path: memory_profile_sample.json
+      
+      - name: Create test chunks based on memory profile
+        run: |
+          python scripts/analyze_test_chunks.py \
+            --chunks 8 \
+            --output optimized_chunks.json
+      
+      - name: Upload chunk configuration
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-chunks
+          path: optimized_chunks.json
+
+  test-with-monitoring:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test_group:
+          - name: "IRS Tests"
+            path: "policyengine_us/tests/policy/baseline/gov/irs"
+          - name: "State Tests Sample"
+            path: "policyengine_us/tests/policy/baseline/gov/states/ca"
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .[dev]
+          pip install psutil
+      
+      - name: Increase swap space
+        run: |
+          sudo swapoff -a
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          echo "=== Memory after swap ==="
+          free -h
+      
+      - name: Monitor and run tests
+        run: |
+          # Create monitoring script
+          cat > monitor.py << 'EOF'
+          import psutil
+          import time
+          import sys
+          import subprocess
+          import threading
+          
+          max_memory = 0
+          memory_log = []
+          
+          def monitor_memory():
+              global max_memory, memory_log
+              while monitoring:
+                  mem = psutil.virtual_memory()
+                  used_gb = (mem.total - mem.available) / (1024**3)
+                  max_memory = max(max_memory, used_gb)
+                  memory_log.append({
+                      "time": time.time(),
+                      "used_gb": used_gb,
+                      "percent": mem.percent
+                  })
+                  time.sleep(1)
+          
+          monitoring = True
+          monitor_thread = threading.Thread(target=monitor_memory)
+          monitor_thread.start()
+          
+          # Run tests
+          start_time = time.time()
+          result = subprocess.run([
+              "policyengine-core", "test",
+              sys.argv[1],
+              "-c", "policyengine_us"
+          ], capture_output=True, text=True)
+          
+          monitoring = False
+          monitor_thread.join()
+          
+          duration = time.time() - start_time
+          
+          print(f"\n=== Test Results ===")
+          print(f"Exit code: {result.returncode}")
+          print(f"Duration: {duration:.2f} seconds")
+          print(f"Peak memory: {max_memory:.2f} GB")
+          print(f"Memory samples: {len(memory_log)}")
+          
+          if result.returncode != 0:
+              print(f"\n=== Error Output ===")
+              print(result.stderr)
+              
+              # Check if it was killed due to memory
+              if "Killed" in result.stderr or result.returncode == 137:
+                  print("\n⚠️  TEST WAS KILLED - LIKELY OUT OF MEMORY")
+                  print(f"Peak memory before kill: {max_memory:.2f} GB")
+          
+          sys.exit(result.returncode)
+          EOF
+          
+          python monitor.py "${{ matrix.test_group.path }}"
+      
+      - name: Memory analysis after tests
+        if: always()
+        run: |
+          echo "=== Final Memory State ==="
+          free -h
+          
+          # Check for memory leaks
+          if command -v dmesg &> /dev/null; then
+              echo "=== System Messages ==="
+              sudo dmesg | tail -20 | grep -i "memory\|kill\|oom" || true
+          fi
+
+  identify-problem-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .[dev]
+          pip install psutil pyyaml
+      
+      - name: Add swap space
+        run: |
+          sudo fallocate -l 12G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h
+      
+      - name: Find memory-intensive tests
+        run: |
+          cat > find_heavy_tests.py << 'EOF'
+          import os
+          import subprocess
+          import psutil
+          import json
+          from pathlib import Path
+          
+          # Test known problematic paths
+          suspect_paths = [
+              "policyengine_us/tests/policy/baseline/gov/states",
+              "policyengine_us/tests/policy/baseline/gov/irs/credits",
+              "policyengine_us/tests/policy/baseline/gov/hhs"
+          ]
+          
+          heavy_tests = []
+          
+          for base_path in suspect_paths:
+              if not os.path.exists(base_path):
+                  continue
+                  
+              # Find YAML files
+              for yaml_file in Path(base_path).rglob("*.yaml")[:10]:  # Sample 10 files
+                  print(f"Testing: {yaml_file}")
+                  
+                  # Get memory before
+                  mem_before = psutil.virtual_memory().used / (1024**3)
+                  
+                  # Run test
+                  result = subprocess.run(
+                      ["policyengine-core", "test", str(yaml_file), "-c", "policyengine_us"],
+                      capture_output=True,
+                      text=True,
+                      timeout=30
+                  )
+                  
+                  # Get memory after
+                  mem_after = psutil.virtual_memory().used / (1024**3)
+                  mem_used = mem_after - mem_before
+                  
+                  if mem_used > 0.5:  # More than 500MB
+                      heavy_tests.append({
+                          "file": str(yaml_file),
+                          "memory_gb": round(mem_used, 2),
+                          "success": result.returncode == 0
+                      })
+                      print(f"  ⚠️  High memory: {mem_used:.2f} GB")
+          
+          # Save results
+          with open("heavy_tests.json", "w") as f:
+              json.dump(heavy_tests, f, indent=2)
+          
+          print(f"\n=== Found {len(heavy_tests)} memory-intensive tests ===")
+          for test in sorted(heavy_tests, key=lambda x: x["memory_gb"], reverse=True):
+              print(f"  {test['file']}: {test['memory_gb']} GB")
+          EOF
+          
+          python find_heavy_tests.py || true
+      
+      - name: Upload heavy tests list
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: heavy-tests
+          path: heavy_tests.json

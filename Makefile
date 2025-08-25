@@ -8,11 +8,27 @@ test:
 	pytest policyengine_us/tests/ --maxfail=0
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
+
+# Optimized test commands with memory management
+test-optimized:
+	@echo "Running tests with memory optimization..."
+	pytest policyengine_us/tests/ --maxfail=0 --cleanup-frequency=5 --memory-limit=3000
+	python scripts/batch_test_runner.py --batch-size=20 --cleanup-frequency=3
+
+test-batch:
+	@echo "Running YAML tests in batches (memory efficient)..."
+	python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline --batch-size=20
 test-yaml-structural:
 	coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us 
 test-yaml-no-structural:
 	coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us
 	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
+
+# Memory-efficient version of structural tests
+test-yaml-no-structural-optimized:
+	@echo "Running baseline tests with memory optimization..."
+	python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline --batch-size=30 --cleanup-frequency=2
+	python scripts/batch_test_runner.py --path policyengine_us/tests/policy/reform --batch-size=30 --cleanup-frequency=2
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:

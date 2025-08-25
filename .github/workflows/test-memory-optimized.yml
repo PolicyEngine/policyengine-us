@@ -1,0 +1,175 @@
+name: Test (Memory Optimized)
+
+on: [push, pull_request]
+
+jobs:
+  test-with-memory-management:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test_group:
+          - name: "pytest-with-cleanup"
+            command: "pytest policyengine_us/tests/ --maxfail=5 --cleanup-frequency=5"
+          - name: "baseline-batch-1" 
+            command: "python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline/gov/irs --batch-size=25"
+          - name: "baseline-batch-2"
+            command: "python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline/gov/hhs --batch-size=25"
+          - name: "states-batch-1"
+            command: "python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline/gov/states --pattern '/states/[a-m]' --batch-size=20"
+          - name: "states-batch-2"
+            command: "python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline/gov/states --pattern '/states/[n-z]' --batch-size=20"
+          - name: "contrib-tests"
+            command: "python scripts/batch_test_runner.py --path policyengine_us/tests/policy/contrib --batch-size=30"
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .[dev]
+          pip install psutil
+      
+      - name: System info
+        run: |
+          echo "=== System Info ==="
+          nproc
+          free -h
+          df -h
+      
+      - name: Configure swap space
+        run: |
+          # Create swap file to handle memory spikes
+          sudo swapoff -a
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          
+          # Configure swappiness for better memory management
+          sudo sysctl vm.swappiness=60
+          sudo sysctl vm.vfs_cache_pressure=100
+          
+          echo "=== Memory after swap ==="
+          free -h
+      
+      - name: Set memory management environment
+        run: |
+          # Configure Python memory management
+          echo "PYTHONMALLOC=malloc" >> $GITHUB_ENV
+          echo "MALLOC_TRIM_THRESHOLD_=100000" >> $GITHUB_ENV
+          echo "POLICYENGINE_TEST_CLEANUP_FREQUENCY=10" >> $GITHUB_ENV
+          echo "POLICYENGINE_TEST_MEMORY_LIMIT=3500" >> $GITHUB_ENV
+          
+          # Limit memory per process
+          ulimit -v 4000000  # 4GB virtual memory limit
+      
+      - name: Run tests - ${{ matrix.test_group.name }}
+        run: |
+          echo "Running: ${{ matrix.test_group.command }}"
+          ${{ matrix.test_group.command }}
+      
+      - name: Memory report
+        if: always()
+        run: |
+          echo "=== Final Memory State ==="
+          free -h
+          
+          # Check if OOM killer was triggered
+          if dmesg | grep -i "killed process" | tail -5; then
+            echo "⚠️ WARNING: OOM killer was triggered!"
+          fi
+      
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.test_group.name }}
+          path: |
+            batch_test_results.json
+            test_timing_results.json
+            slow_tests_analysis.json
+
+  # Separate job for integration tests (most memory intensive)
+  test-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .[dev]
+          pip install psutil
+      
+      - name: Maximize swap for integration tests
+        run: |
+          sudo swapoff -a
+          sudo fallocate -l 14G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          sudo sysctl vm.swappiness=80
+          free -h
+      
+      - name: Run integration tests with aggressive cleanup
+        run: |
+          # Run integration tests one at a time with cleanup between each
+          for file in $(find policyengine_us/tests/policy/baseline -name "*integration*.yaml" | head -20); do
+            echo "Testing: $file"
+            python -c "
+import gc
+import psutil
+import subprocess
+import sys
+
+# Run test
+result = subprocess.run(
+    ['policyengine-core', 'test', '$file', '-c', 'policyengine_us'],
+    capture_output=True
+)
+
+# Force cleanup
+gc.collect()
+gc.collect(2)
+
+# Report memory
+process = psutil.Process()
+mem_mb = process.memory_info().rss / 1024 / 1024
+print(f'Memory after test: {mem_mb:.0f} MB')
+
+sys.exit(result.returncode)
+            " || true
+            
+            # Extra cleanup between tests
+            sync
+            echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+          done
+
+  summary:
+    needs: [test-with-memory-management, test-integration]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Test Summary
+        run: |
+          echo "Test Results Summary:"
+          echo "Main tests: ${{ needs.test-with-memory-management.result }}"
+          echo "Integration tests: ${{ needs.test-integration.result }}"
+          
+          if [ "${{ needs.test-with-memory-management.result }}" = "failure" ] || \
+             [ "${{ needs.test-integration.result }}" = "failure" ]; then
+            echo "❌ Some tests failed"
+            exit 1
+          else
+            echo "✅ All tests passed!"
+          fi

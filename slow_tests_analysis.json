@@ -1,0 +1,357 @@
+{
+  "total_files": 1951,
+  "very_slow": [
+    "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/deductions/nm_medical_care_expense_deduction.yaml",
+    "policyengine_us/tests/policy/baseline/gov/states/il/tax/income/exemptions/il_personal_exemption_eligibility_status.yaml",
+    "policyengine_us/tests/policy/baseline/gov/states/nc/ncdhhs/tanf/integration.yaml",
+    "policyengine_us/tests/policy/baseline/gov/states/nc/ncdhhs/scca/integration.yaml",
+    "policyengine_us/tests/policy/baseline/gov/states/co/tax/income/additions/federal_deduction/co_federal_deduction_addback.yaml",
+    "policyengine_us/tests/policy/baseline/gov/irs/credits/ctc/integration.yaml",
+    "policyengine_us/tests/policy/baseline/gov/states/mi/tax/income/credits/homestead_property_tax/integration.yaml"
+  ],
+  "top_30": [
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/deductions/nm_medical_care_expense_deduction.yaml",
+      "num_tests": 40,
+      "max_people": 0,
+      "total_calculations": 40,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 13.06,
+      "slowness_score": 65.0,
+      "estimated_seconds": 81.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/il/tax/income/exemptions/il_personal_exemption_eligibility_status.yaml",
+      "num_tests": 32,
+      "max_people": 0,
+      "total_calculations": 32,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 10.92,
+      "slowness_score": 53.0,
+      "estimated_seconds": 69.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nc/ncdhhs/tanf/integration.yaml",
+      "num_tests": 12,
+      "max_people": 14,
+      "total_calculations": 12,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 9.24,
+      "slowness_score": 53.0,
+      "estimated_seconds": 69.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nc/ncdhhs/scca/integration.yaml",
+      "num_tests": 25,
+      "max_people": 6,
+      "total_calculations": 25,
+      "has_multiple_years": false,
+      "complex_variables": [],
+      "file_size_kb": 18.84,
+      "slowness_score": 51.5,
+      "estimated_seconds": 67.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/co/tax/income/additions/federal_deduction/co_federal_deduction_addback.yaml",
+      "num_tests": 30,
+      "max_people": 0,
+      "total_calculations": 30,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 8.81,
+      "slowness_score": 50.0,
+      "estimated_seconds": 66.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/irs/credits/ctc/integration.yaml",
+      "num_tests": 13,
+      "max_people": 11,
+      "total_calculations": 37,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 12.46,
+      "slowness_score": 48.5,
+      "estimated_seconds": 64.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/mi/tax/income/credits/homestead_property_tax/integration.yaml",
+      "num_tests": 20,
+      "max_people": 2,
+      "total_calculations": 122,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 11.51,
+      "slowness_score": 45.0,
+      "estimated_seconds": 61.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/co/tax/income/credits/ctc/co_ctc.yaml",
+      "num_tests": 26,
+      "max_people": 2,
+      "total_calculations": 27,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 8.42,
+      "slowness_score": 44.0,
+      "estimated_seconds": 60.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/aca/eligibility/sbn_los_angeles.yaml",
+      "num_tests": 24,
+      "max_people": 5,
+      "total_calculations": 33,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 17.51,
+      "slowness_score": 43.0,
+      "estimated_seconds": 59.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ca/tax/income/credits/earned_income/ca_eitc_integration.yaml",
+      "num_tests": 17,
+      "max_people": 5,
+      "total_calculations": 18,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 7.02,
+      "slowness_score": 42.5,
+      "estimated_seconds": 58.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ny/tax/income/ny_supplemental_tax.yaml",
+      "num_tests": 24,
+      "max_people": 0,
+      "total_calculations": 24,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 9.56,
+      "slowness_score": 41.0,
+      "estimated_seconds": 57.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ca/cdss/tanf/cash/eligibility/ca_tanf_maximum_payment.yaml",
+      "num_tests": 24,
+      "max_people": 0,
+      "total_calculations": 24,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 6.7,
+      "slowness_score": 41.0,
+      "estimated_seconds": 57.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/mi/tax/income/deductions/integration.yaml",
+      "num_tests": 3,
+      "max_people": 3,
+      "total_calculations": 57,
+      "has_multiple_years": true,
+      "complex_variables": [
+        "mi_retirement_benefits_deduction_tier_three_ss_exempt_retired",
+        "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired",
+        "mi_expanded_retirement_benefits_deduction_eligible",
+        "mi_expanded_retirement_benefits_deduction",
+        "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people",
+        "mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people",
+        "mi_retirement_benefits_deduction_tier_one",
+        "mi_retirement_benefits_deduction_tier_three_eligible",
+        "mi_retirement_benefits_deduction_tier_three",
+        "mi_retirement_benefits_deduction_tier_one_eligible"
+      ],
+      "file_size_kb": 7.09,
+      "slowness_score": 39.5,
+      "estimated_seconds": 55.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/co/cdhs/tanf/co_tanf_integration.yaml",
+      "num_tests": 2,
+      "max_people": 14,
+      "total_calculations": 2,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 1.99,
+      "slowness_score": 38.0,
+      "estimated_seconds": 54.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/mo/tax/income/deductions/mo_pension_and_ss_or_ssd_deduction/integration_tests/mo_pension_and_ss_or_ssd.yaml",
+      "num_tests": 12,
+      "max_people": 6,
+      "total_calculations": 53,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 12.88,
+      "slowness_score": 37.0,
+      "estimated_seconds": 53.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/id/tax/income/id_income_tax_before_non_refundable_credits.yaml",
+      "num_tests": 21,
+      "max_people": 0,
+      "total_calculations": 21,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 5.02,
+      "slowness_score": 36.5,
+      "estimated_seconds": 52.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/md/tax/income/credits/poverty_line/integration.yaml",
+      "num_tests": 1,
+      "max_people": 13,
+      "total_calculations": 1,
+      "has_multiple_years": true,
+      "complex_variables": [
+        "md_poverty_line_credit"
+      ],
+      "file_size_kb": 1.03,
+      "slowness_score": 36.5,
+      "estimated_seconds": 52.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ny/tax/income/credits/ny_ctc_post_2024_phase_out.yaml",
+      "num_tests": 20,
+      "max_people": 3,
+      "total_calculations": 38,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 10.06,
+      "slowness_score": 35.0,
+      "estimated_seconds": 51.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/rebates/low_income_comprehensive/nm_low_income_comprehensive_tax_rebate.yaml",
+      "num_tests": 20,
+      "max_people": 0,
+      "total_calculations": 20,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 5.81,
+      "slowness_score": 35.0,
+      "estimated_seconds": 51.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/mo/tax/income/deductions/mo_pension_and_ss_or_ssd_deduction/mo_pension_and_ss_or_ssd_deduction_section_a.yaml",
+      "num_tests": 20,
+      "max_people": 0,
+      "total_calculations": 20,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 7.66,
+      "slowness_score": 35.0,
+      "estimated_seconds": 51.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/local/ny/nyc/tax/income/credits/household/nyc_household_credit.yaml",
+      "num_tests": 20,
+      "max_people": 0,
+      "total_calculations": 20,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 5.51,
+      "slowness_score": 35.0,
+      "estimated_seconds": 51.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ny/tax/income/credits/ny_ctc.yaml",
+      "num_tests": 19,
+      "max_people": 3,
+      "total_calculations": 28,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 7.53,
+      "slowness_score": 33.5,
+      "estimated_seconds": 49.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nj/tax/income/exemptions/nj_blind_or_disabled_exemption.yaml",
+      "num_tests": 18,
+      "max_people": 0,
+      "total_calculations": 18,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 5.09,
+      "slowness_score": 32.0,
+      "estimated_seconds": 48.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/exemptions/nm_blind_and_aged_exemption.yaml",
+      "num_tests": 18,
+      "max_people": 0,
+      "total_calculations": 18,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 5.59,
+      "slowness_score": 32.0,
+      "estimated_seconds": 48.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/nc/ncdhhs/scca/nc_scca_fpg_rate.yaml",
+      "num_tests": 18,
+      "max_people": 4,
+      "total_calculations": 18,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 7.97,
+      "slowness_score": 32.0,
+      "estimated_seconds": 48.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/de/tax/income/integration.yaml",
+      "num_tests": 8,
+      "max_people": 6,
+      "total_calculations": 28,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 8.0,
+      "slowness_score": 31.0,
+      "estimated_seconds": 47.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ia/tax/income/ia_integration.yaml",
+      "num_tests": 8,
+      "max_people": 6,
+      "total_calculations": 48,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 12.64,
+      "slowness_score": 31.0,
+      "estimated_seconds": 47.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/mt/tax/income/integration.yaml",
+      "num_tests": 8,
+      "max_people": 6,
+      "total_calculations": 28,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 6.34,
+      "slowness_score": 31.0,
+      "estimated_seconds": 47.0
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/is_medicaid_eligible.yaml",
+      "num_tests": 17,
+      "max_people": 1,
+      "total_calculations": 20,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 3.92,
+      "slowness_score": 30.5,
+      "estimated_seconds": 46.5
+    },
+    {
+      "path": "policyengine_us/tests/policy/baseline/gov/states/ny/tax/income/credits/ny_ctc_post_2024_base.yaml",
+      "num_tests": 17,
+      "max_people": 4,
+      "total_calculations": 17,
+      "has_multiple_years": true,
+      "complex_variables": [],
+      "file_size_kb": 6.16,
+      "slowness_score": 30.5,
+      "estimated_seconds": 46.5
+    }
+  ]
+}
