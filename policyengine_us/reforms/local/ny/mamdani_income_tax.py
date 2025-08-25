@@ -20,10 +20,42 @@ def create_nyc_mamdani_income_tax() -> Reform:
             excess_income = max_(taxable_income - threshold, 0)
             return excess_income * rate
 
+    class nyc_income_tax_before_credits(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "NYC income tax before credits"
+        unit = USD
+        definition_period = YEAR
+        defined_for = "in_nyc"
+
+        def formula(tax_unit, period, parameters):
+            taxable_income = tax_unit("nyc_taxable_income", period)
+            filing_status = tax_unit("filing_status", period)
+            filing_statuses = filing_status.possible_values
+            rates = parameters(period).gov.local.ny.nyc.tax.income.rates
+            regular_tax = select(
+                [
+                    filing_status == filing_statuses.SINGLE,
+                    filing_status == filing_statuses.JOINT,
+                    filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
+                    filing_status == filing_statuses.SURVIVING_SPOUSE,
+                    filing_status == filing_statuses.SEPARATE,
+                ],
+                [
+                    rates.single.calc(taxable_income),
+                    rates.joint.calc(taxable_income),
+                    rates.head_of_household.calc(taxable_income),
+                    rates.surviving_spouse.calc(taxable_income),
+                    rates.separate.calc(taxable_income),
+                ],
+            )
+            mamdani_tax = add(tax_unit, period, ["nyc_mamdani_income_tax"])
+            return regular_tax + mamdani_tax
+    
     class reform(Reform):
         def apply(self):
             self.update_variable(nyc_mamdani_income_tax)
-
+            self.update_variable(nyc_income_tax_before_credits)
     return reform
 
 
