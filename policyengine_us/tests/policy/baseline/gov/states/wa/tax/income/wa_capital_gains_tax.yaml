@@ -1,3 +1,39 @@
+- name: Washington capital gains tax returns zero in 2020 (not in effect)
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 30
+        long_term_capital_gains: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: WA
+  output:
+    wa_capital_gains_tax: 0
+
+- name: Washington capital gains tax returns zero in 2021 (not in effect)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 30
+        long_term_capital_gains: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: WA
+  output:
+    wa_capital_gains_tax: 0
+
 - name: Capital gains tax is 7% above a $250,000 deduction and capped charitable deduction above an exemption.
   period: 2022
   absolute_error_margin: 0
