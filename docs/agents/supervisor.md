@@ -66,11 +66,73 @@ Run Test Creator and Rules Engineer in parallel, both working from documents onl
   - Integration tests pass
   - Unit tests pass
 
-#### 5. Phase 4: Iteration (if needed)
-If Verifier finds issues:
-- Create specific fix requests for appropriate agents
-- DO NOT reveal why fixes are needed (e.g., don't tell Rules Engineer that tests failed)
-- Example: "Rules Engineer: Please verify the income deduction calculation in section 3.2.1 of the manual"
+#### 5. Phase 4: Iteration (CRITICAL - Often Multiple Rounds Required)
+
+The verification and iteration phase is typically NOT a one-time process. Expect multiple rounds of fixes and re-verification until all issues are resolved.
+
+##### Iteration Workflow:
+1. **Verifier identifies issues** (usually multiple)
+2. **Supervisor triages issues** by agent responsibility
+3. **Agents fix in isolation** (parallel when possible)
+4. **Re-merge and re-verify** until all tests pass
+
+##### Managing Iterations Without Breaking Isolation:
+
+**Round 1 Example:**
+```
+Verifier finds:
+- Parameter value incorrect (Rules Engineer)
+- Missing test case (Test Creator)  
+- Calculation logic error (Rules Engineer)
+
+Supervisor creates isolated fix requests:
+→ To Rules Engineer: "Review standard deduction values in Table 3.1 of manual"
+→ To Test Creator: "Add test case for elderly disabled household per section 4.2"
+→ To Rules Engineer: "Verify shelter deduction cap per 7 CFR 273.9(d)(6)"
+```
+
+**Round 2 Example:**
+```
+After Round 1 fixes, Verifier finds:
+- Edge case not handled (Rules Engineer)
+- Test calculation error (Test Creator)
+
+Supervisor continues:
+→ To Rules Engineer: "Handle zero-income case per regulation 5.1.3"
+→ To Test Creator: "Recalculate expected value using formula in Appendix A"
+```
+
+##### Maintaining Isolation During Iterations:
+
+```bash
+# Rules Engineer fixes in their worktree
+cd ../pe-<program>-rules
+git pull origin feature/<program>-rules
+# Make fixes based on supervisor's document references
+git commit -m "Fix standard deduction per manual Table 3.1"
+git push
+
+# Test Creator fixes in their worktree  
+cd ../pe-<program>-tests
+git pull origin feature/<program>-tests
+# Add missing test based on supervisor's document references
+git commit -m "Add elderly disabled test per section 4.2"
+git push
+
+# Supervisor re-merges for next verification round
+git checkout feature/<program>-verify
+git reset --hard origin/master  # Clean slate
+git merge feature/<program>-docs
+git merge feature/<program>-rules  # With new fixes
+git merge feature/<program>-tests  # With new fixes
+```
+
+##### Key Rules for Iterations:
+- **NEVER** tell Rules Engineer what test values failed
+- **NEVER** tell Test Creator how implementation works
+- **ALWAYS** reference documents, not other agents' work
+- **EXPECT** 3-5 iteration rounds for complex programs
+- **TRACK** all iterations in audit log
 
 ## Communication Templates
 
@@ -152,16 +214,75 @@ Maintain a status file at `docs/agents/status/<program>.md`:
 - Parameters created: [COUNT]
 - Variables created: [COUNT]
 
-## Verification
+## Verification Iterations
+
+### Round 1
 - Started: [DATE]
 - Issues found: [COUNT]
-- Resolution status: [DETAILS]
+- Issues by agent:
+  - Rules Engineer: [COUNT] issues
+  - Test Creator: [COUNT] issues
+  - Document Collector: [COUNT] issues
+- Fix requests sent: [DATE]
+- Fixes completed: [DATE]
+
+### Round 2
+- Started: [DATE]
+- Issues found: [COUNT]
+- Issues by agent:
+  - Rules Engineer: [COUNT] issues
+  - Test Creator: [COUNT] issues
+- Fix requests sent: [DATE]
+- Fixes completed: [DATE]
+
+### Round 3
+- Started: [DATE]
+- Issues found: 0
+- Status: ALL TESTS PASSING ✓
+
+## Iteration Summary
+- Total rounds: 3
+- Total issues fixed: [COUNT]
+- Final verification: [DATE]
 
 ## Audit Trail
 - No test data shared with Rules Engineer: ✓
 - No implementation shared with Test Creator: ✓
 - All agents worked from documents only: ✓
+- Isolation maintained through all iterations: ✓
 ```
+
+## Iteration Management Best Practices
+
+### 1. Batch Issues by Agent
+Group all issues for each agent together to minimize context switching:
+```
+Rules Engineer Round 1 Fixes:
+1. Update parameter X per document Y
+2. Fix calculation Z per regulation A
+3. Add edge case handling per section B
+```
+
+### 2. Prioritize Critical Issues
+Fix calculation errors before documentation issues:
+- Priority 1: Wrong calculations or missing rules
+- Priority 2: Missing test coverage
+- Priority 3: Documentation or style issues
+
+### 3. Track Fix Complexity
+Monitor which issues require multiple attempts:
+```
+Issue: Shelter deduction calculation
+- Round 1: Fixed cap application
+- Round 2: Fixed order of operations
+- Round 3: Resolved ✓
+```
+
+### 4. Learn from Iterations
+Document common issues for future programs:
+- Frequent parameter misreadings
+- Common calculation errors
+- Typical missing test cases
 
 ## Success Criteria
 

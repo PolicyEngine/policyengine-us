@@ -125,20 +125,70 @@ Verifier works on the merged branch:
 - Checks references
 - **Can now see both tests and implementation together**
 
-### Phase 5: Iteration (if needed)
+### Phase 5: Iteration (Multiple Rounds Expected)
 
-If Verifier finds issues:
+The development process is inherently iterative. Expect 3-5 rounds of verification and fixes for complex programs.
+
+#### Iteration Round Structure:
 
 ```bash
-# For Rules Engineer fixes
-git checkout feature/<program>-rules
-git cherry-pick <specific-fix-commit>
-# Or supervisor provides specific instructions without test details
+# Round 1: Initial Verification
+git checkout feature/<program>-verify
+git merge --no-ff feature/<program>-docs
+git merge --no-ff feature/<program>-rules  
+git merge --no-ff feature/<program>-tests
+# Verifier finds 15 issues
 
-# For Test Creator fixes  
-git checkout feature/<program>-tests
-git cherry-pick <specific-fix-commit>
-# Or supervisor provides specific instructions without implementation details
+# Round 1: Fixes
+cd ../pe-<program>-rules
+# Rules Engineer fixes 10 issues based on document references
+git add -A && git commit -m "Round 1: Fix parameter values and calculation logic"
+git push
+
+cd ../pe-<program>-tests  
+# Test Creator fixes 5 issues based on document references
+git add -A && git commit -m "Round 1: Add missing test cases and fix calculations"
+git push
+
+# Round 2: Re-verification
+git checkout feature/<program>-verify
+git reset --hard origin/master
+git merge --no-ff feature/<program>-docs
+git merge --no-ff feature/<program>-rules  # Updated
+git merge --no-ff feature/<program>-tests  # Updated
+# Verifier finds 3 issues
+
+# Round 2: Fixes
+cd ../pe-<program>-rules
+# Rules Engineer fixes remaining issues
+git add -A && git commit -m "Round 2: Handle edge cases"
+git push
+
+# Round 3: Final Verification
+git checkout feature/<program>-verify
+git reset --hard origin/master
+git merge --no-ff feature/<program>-docs
+git merge --no-ff feature/<program>-rules  # Final
+git merge --no-ff feature/<program>-tests  # Final
+# Verifier confirms: ALL TESTS PASS ✓
+```
+
+#### Maintaining Isolation During Iterations:
+
+Each agent continues working in their isolated worktree:
+- Rules Engineer never sees test expectations, even during fixes
+- Test Creator never sees implementation, even during fixes
+- Supervisor translates issues into document-based fix requests
+
+#### Example Fix Request Translation:
+
+```markdown
+❌ WRONG (breaks isolation):
+"The test expects $450 but implementation returns $500"
+
+✅ CORRECT (maintains isolation):
+"Review the shelter deduction calculation in 7 CFR 273.9(d)(6)(ii), 
+particularly the order of applying the cap versus the 50% calculation"
 ```
 
 ## Information Flow Control

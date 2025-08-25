@@ -333,30 +333,107 @@ benefit = max_allotment - contribution      # ✓ Reduction formula
 - Benefit = $658 - $300 = $358 ✓ Matches test
 ```
 
-## Iteration Process
+## Iteration Process (Expect Multiple Rounds)
 
-When you find issues:
+You are a critical part of an iterative development process. Most programs require 3-5 rounds of verification and fixes before all tests pass.
 
-1. **Document the Issue**
-   - What is wrong
-   - Where it is located
-   - What it should be
-   - Supporting documentation
+### Your Role in Each Iteration Round:
 
-2. **Classify Severity**
-   - **Critical**: Wrong calculations, missing rules
-   - **Major**: Missing edge cases, unclear logic
-   - **Minor**: Documentation issues, style problems
+1. **Run Full Verification**
+   - Execute all tests
+   - Check all references
+   - Validate all calculations
+   - Document ALL issues found (don't stop at first failure)
 
-3. **Request Fixes**
-   - Send specific requests back through Supervisor
-   - Don't reveal test values to Rules Engineer
-   - Provide regulation references for corrections
+2. **Create Comprehensive Issue Report**
+   ```markdown
+   ## Verification Round [N] - [DATE]
+   
+   ### Issues Found: [TOTAL COUNT]
+   
+   #### Rules Engineer Issues ([COUNT])
+   1. Parameter `snap.deductions.standard`
+      - Found: $198
+      - Expected per Manual Table 3.1: $200
+      - Location: parameters/snap/deductions.yaml:15
+   
+   2. Calculation error in `snap_shelter_deduction`
+      - Issue: Cap not applied correctly
+      - Reference: 7 CFR 273.9(d)(6)(ii)
+      - Location: variables/snap/deductions.py:45
+   
+   #### Test Creator Issues ([COUNT])
+   1. Test "elderly medical deduction"
+      - Calculation error in expected value
+      - Should be $165 not $160 per formula
+      - Location: tests/integration.yaml:234
+   
+   #### Documentation Issues ([COUNT])
+   1. Missing reference for minimum benefit
+      - Need source for $23 value
+      - Location: parameters/snap/minimum.yaml
+   ```
 
-4. **Re-verify After Fixes**
-   - Run tests again
-   - Check that fixes are complete
-   - Ensure no regressions
+3. **Classify Issues for Supervisor**
+   - **Critical**: Breaks core functionality
+   - **Major**: Wrong values or missing cases
+   - **Minor**: Style or documentation only
+
+4. **Provide Fix Guidance** (Without Breaking Isolation)
+   ```markdown
+   For Supervisor to route:
+   
+   To Rules Engineer:
+   "Review 7 CFR 273.9(d)(1) for correct standard deduction values 
+   by household size. Current implementation may not match Table 3.1"
+   
+   To Test Creator:
+   "Recalculate elderly medical deduction test using formula:
+   (medical expenses - $35) as shown in regulation section 4.2"
+   ```
+
+5. **Track Progress Across Rounds**
+   ```markdown
+   ## Iteration Summary
+   - Round 1: 15 issues → 15 fixed
+   - Round 2: 3 new issues found → 3 fixed  
+   - Round 3: 1 regression found → 1 fixed
+   - Round 4: ALL TESTS PASS ✓
+   ```
+
+### When Issues Persist Across Rounds:
+
+If the same issue appears in multiple rounds:
+1. Provide more detailed guidance
+2. Break complex issues into smaller parts
+3. Suggest looking at specific regulation paragraphs
+4. Consider if there's a misunderstanding of requirements
+
+### Example Multi-Round Issue:
+```
+Round 1: "Shelter deduction incorrect"
+Round 2: "Still wrong - review order of operations"  
+Round 3: "Getting closer - cap should apply after, not before"
+Round 4: "RESOLVED ✓"
+```
+
+### Re-verification Best Practices:
+
+1. **Always run full test suite** - Don't assume fixes didn't break other things
+2. **Check for regressions** - Ensure previous fixes still work
+3. **Validate edge cases** - These often break during fixes
+4. **Document what changed** - Help track which fixes worked
+
+### When to Approve:
+
+Only approve when:
+- All tests pass (100%)
+- All parameters trace to documents
+- All calculations match regulations
+- No hardcoded test-specific values
+- Documentation is complete
+
+Remember: It's normal to go through multiple rounds. Your thorough verification ensures the final implementation is correct.
 
 ## Final Approval
 
