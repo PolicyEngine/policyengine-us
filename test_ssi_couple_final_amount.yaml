@@ -1,0 +1,150 @@
+# Integration test demonstrating PR #6411 gives wrong SSI amounts
+# Tests the FINAL SSI benefit from raw inputs
+#
+# According to regulations (20 CFR 416.1163):
+# 1. Combine couple's income
+# 2. Apply exclusions to combined income
+# 3. Subtract from couple FBR
+# 4. Divide result by 2 for each spouse's payment
+
+- name: SSI couple with one earner - final benefit test
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 12_000  # $1,000/month earned
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Correct calculation per regulations:
+    # Combined earned: $12,000
+    # Exclusions: $65*12 = $780, then half of remainder
+    # Countable: $12,000 - $780 - ($12,000-$780)/2 = $5,610
+    # Couple FBR 2024: $1,415*12 = $16,980
+    # Couple benefit: $16,980 - $5,610 = $11,370
+    # Each spouse: $11,370 / 2 = $5,685
+    
+    # With PR #6411 (incorrect):
+    # Each spouse gets $6,000 earned (divided first)
+    # Exclusions per person: $6,000 - $780 - ($6,000-$780)/2 = $2,610
+    # Each spouse benefit: $16,980/2 - $2,610 = $8,490 - $2,610 = $5,880
+    # This is WRONG - they get too much!
+    
+    ssi: [5_880, 5_880]  # Wrong! Should be [5_685, 5_685]
+
+- name: SSI couple with higher earnings - shows larger error
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 24_000  # $2,000/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Correct calculation:
+    # Combined: $24,000
+    # Countable: $24,000 - $780 - ($24,000-$780)/2 = $11,610
+    # Couple benefit: $16,980 - $11,610 = $5,370
+    # Each: $5,370 / 2 = $2,685
+    
+    # With PR (wrong):
+    # Each gets $12,000
+    # Countable each: $12,000 - $780 - ($12,000-$780)/2 = $5,610
+    # Each benefit: $8,490 - $5,610 = $2,880
+    # Overpaying by $195 per person!
+    
+    ssi: [2_880, 2_880]  # Wrong! Should be [2_685, 2_685]
+
+- name: SSI couple both earning - critical test case
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 6_000
+      wife:
+        age: 65
+        employment_income: 6_000
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # This case should give SAME result as one spouse earning $12,000
+    # because regulations say to COMBINE income first
+    #
+    # Correct: Combined $12,000, same as test 1
+    # Should get: [5_685, 5_685]
+    #
+    # But with PR, they each already have their income
+    # So calculation matches test 1's wrong answer
+    
+    ssi: [5_880, 5_880]  # Wrong! Should be [5_685, 5_685]
+
+- name: SSI couple with unearned income only
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        interest_income: 3_000
+        dividend_income: 3_000  # Total $6,000 unearned
+      wife:
+        age: 65
+        interest_income: 0
+        dividend_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Correct calculation:
+    # Combined unearned: $6,000
+    # General exclusion: $20*12 = $240
+    # Countable: $6,000 - $240 = $5,760
+    # Couple benefit: $16,980 - $5,760 = $11,220
+    # Each: $11,220 / 2 = $5,610
+    
+    # With PR (wrong):
+    # Each gets $3,000 unearned
+    # Countable each: $3,000 - $240 = $2,760
+    # Each benefit: $8,490 - $2,760 = $5,730
+    # Overpaying by $120 per person
+    
+    ssi: [5_730, 5_730]  # Wrong! Should be [5_610, 5_610]

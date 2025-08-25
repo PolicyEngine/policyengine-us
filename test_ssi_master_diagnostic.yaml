@@ -1,0 +1,30 @@
+# Diagnostic to understand current master behavior
+
+- name: Check master SSI calculation - case 1
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 1_200
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    is_ssi_aged_blind_disabled: [true, true]
+    is_ssi_eligible_spouse: [false, true]  # Check spouse designation
+    is_ssi_eligible_individual: [true, false]  # Only head is individual
+    ssi_claim_is_joint: [true, true]
+    ssi_marital_earned_income: [1_200, 1_200]  # Combined
+    ssi_countable_income: [210, 0]  # See who gets counted
+    ssi: [8_400, 8_490]  # Actual values

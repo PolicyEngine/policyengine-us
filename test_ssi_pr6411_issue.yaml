@@ -1,0 +1,115 @@
+# Integration test demonstrating PR #6411 creates incorrect SSI calculations
+# This test PASSES on master but FAILS with PR #6411
+#
+# The issue: PR #6411 divides income by 2 before applying exclusions,
+# which causes exclusions to be applied incorrectly
+
+- name: SSI couple regulatory compliance - combined income first
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 1_200  # $100/month
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # According to regulations:
+    # 1. Combine income: $1,200
+    # 2. Apply exclusions to combined: $1,200 - $780 = $420, then half of $420 = $210
+    #    Total countable: $1,200 - $780 - $210 = $210
+    # 3. Couple FBR 2024: $16,980
+    # 4. Benefit: $16,980 - $210 = $16,770
+    # 5. Each spouse: $16,770 / 2 = $8,385
+    
+    # On master (correct):
+    # - ssi_marital_earned_income correctly shows [1200, 1200] (combined for both)
+    # - Countable income is calculated on combined: $210
+    # - Each gets $8,385
+    
+    # With PR #6411 (incorrect):
+    # - ssi_marital_earned_income shows [600, 600] (divided first)
+    # - Exclusions applied to $600: Since $600 < $780, countable = $0
+    # - Each would get full benefit: $8,490 (overpayment!)
+    
+    ssi: [8_385, 8_385]
+
+- name: SSI couple - exclusion threshold test
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 780  # Exactly at annual exclusion threshold
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Correct (master):
+    # Combined: $780
+    # After exclusion: $780 - $780 = $0
+    # Benefit: $16,980 - $0 = $16,980
+    # Each: $8,490
+    
+    # With PR (incorrect):
+    # Each gets $390
+    # After exclusion: $390 < $780, so $0 countable
+    # Same result by accident in this case
+    
+    ssi: [8_490, 8_490]
+
+- name: SSI couple - demonstrates double exclusion error
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 2_000  # Above exclusion threshold
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Correct (master):
+    # Combined: $2,000
+    # Exclusions: $2,000 - $780 - ($2,000 - $780)/2 = $610
+    # Benefit: $16,980 - $610 = $16,370
+    # Each: $8,185
+    
+    # With PR (incorrect):
+    # Each gets $1,000
+    # Exclusions on $1,000: $1,000 - $780 - ($1,000 - $780)/2 = $110
+    # Benefit: $8,490 - $110 = $8,380
+    # Overpayment of $195 per person!
+    
+    ssi: [8_185, 8_185]

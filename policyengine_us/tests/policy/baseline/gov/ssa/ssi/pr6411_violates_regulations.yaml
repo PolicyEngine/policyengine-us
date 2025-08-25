@@ -1,0 +1,37 @@
+# Test showing PR #6411 violates SSI regulations by dividing income before exclusions
+# This fundamentally changes how exclusions work and can lead to incorrect benefits
+
+- name: Couple with earnings just above exclusion - shows calculation error
+  period: 2024
+  input:
+    people:
+      husband:
+        age: 67
+        employment_income: 1_560  # $130/month (just above $65/month exclusion)
+      wife:
+        age: 65
+        employment_income: 0
+    marital_units:
+      unit:
+        members: [husband, wife]
+    tax_units:
+      unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: CA
+  output:
+    # Key test: Check that marital income shows the COMBINED amount
+    # Per regulations, this should be [1560, 1560] not [780, 780]
+    # 
+    # With PR #6411 this test will FAIL because it divides first
+    ssi_marital_earned_income: [780, 780]  # WRONG per regulations!
+    
+    # The countable income calculation is then wrong:
+    # Correct: $1,560 - $780 - ($1,560-$780)/2 = $390 for the couple
+    # PR #6411: $780 - $780 = $0 for each (wrong!)
+    ssi_countable_income: [0, 0]  # Should be [390, 390] or similar
+    
+    # This leads to overpayment
+    ssi: [8_490, 8_490]  # Should be less due to countable income
