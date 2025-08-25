@@ -47,7 +47,7 @@ git worktree add ../pe-<program>-rules feature/<program>-rules
    - Receives: Document files via supervisor (copied to their worktree)
    - Creates: Parameters and variables with unit tests
 
-4. **Verifier**
+4. **Reviewer** (acting as verifier)
    - Works in: Main repository after merge
    - Branch: `feature/<program>-verify`
    - Can see: Everything after supervisor merges
@@ -114,12 +114,12 @@ git merge --no-ff feature/<program>-docs
 git merge --no-ff feature/<program>-rules  
 git merge --no-ff feature/<program>-tests
 
-# Now Verifier can see everything and validate
+# Now Reviewer can see everything and validate
 ```
 
 ### Phase 4: Verification
 
-Verifier works on the merged branch:
+Reviewer works on the merged branch:
 - Validates documentation compliance
 - Runs all tests
 - Checks references
@@ -137,7 +137,7 @@ git checkout feature/<program>-verify
 git merge --no-ff feature/<program>-docs
 git merge --no-ff feature/<program>-rules  
 git merge --no-ff feature/<program>-tests
-# Verifier finds 15 issues
+# Reviewer finds 15 issues
 
 # Round 1: Fixes
 cd ../pe-<program>-rules
@@ -156,7 +156,7 @@ git reset --hard origin/master
 git merge --no-ff feature/<program>-docs
 git merge --no-ff feature/<program>-rules  # Updated
 git merge --no-ff feature/<program>-tests  # Updated
-# Verifier finds 3 issues
+# Reviewer finds 3 issues
 
 # Round 2: Fixes
 cd ../pe-<program>-rules
@@ -170,7 +170,7 @@ git reset --hard origin/master
 git merge --no-ff feature/<program>-docs
 git merge --no-ff feature/<program>-rules  # Final
 git merge --no-ff feature/<program>-tests  # Final
-# Verifier confirms: ALL TESTS PASS ✓
+# Reviewer confirms: ALL TESTS PASS ✓
 ```
 
 #### Maintaining Isolation During Iterations:
@@ -200,7 +200,7 @@ particularly the order of applying the cap versus the 50% calculation"
 | Document Collector | Program requirements | Tests, Implementation |
 | Test Creator | Documents only | Implementation, Parameters |
 | Rules Engineer | Documents only | Integration tests, Expected values |
-| Verifier | Everything (after merge) | N/A |
+| Reviewer | Everything (after merge) | N/A |
 
 ### Supervisor's Role in Isolation
 
@@ -251,7 +251,7 @@ Supervisor maintains audit log:
 
 ## Phase 3: Verification
 - Branches merged: 2024-01-10 15:30
-- Verifier started: 2024-01-10 15:35
+- Reviewer started: 2024-01-10 15:35
 - Issues found: 3
 - All issues resolved: 2024-01-10 17:00
 ```
@@ -309,7 +309,7 @@ This workflow ensures that:
 - Test Creator never sees implementation until verification
 - Rules Engineer never sees expected test values until verification
 - Both work from the same authoritative documents
-- Verifier validates everything works together correctly
+- Reviewer validates everything works together correctly
 - Complete audit trail proves isolation was maintained
 
 The physical separation through git worktrees makes it technically impossible for agents to violate isolation rules.

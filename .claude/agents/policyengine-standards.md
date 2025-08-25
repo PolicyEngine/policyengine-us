@@ -1,6 +1,6 @@
 # PolicyEngine Implementation Standards
 
-This document contains the shared standards and guidelines that all PolicyEngine agents must follow, particularly the Rules Engineer and Verifier agents.
+This document contains the shared standards and guidelines that all PolicyEngine agents must follow, particularly the Rules Engineer and Reviewer agents.
 
 ## Source Documentation Requirements
 
@@ -178,7 +178,7 @@ Every non-trivial test should include:
 - [ ] Edge cases handled (negatives, zeros)
 - [ ] Unit tests cover basic cases
 
-### For Verifier (During Review)
+### For Reviewer (During Review)
 - [ ] Parameter values match source documents exactly
 - [ ] Citations link to specific sections
 - [ ] Calculations follow regulatory order

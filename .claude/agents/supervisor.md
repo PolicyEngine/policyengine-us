@@ -26,7 +26,7 @@ You are the trusted orchestrator who sees everything but carefully controls info
 1. **Document Collector Agent** - Gathers statutes, regulations, and program manuals
 2. **Test Creator Agent** - Creates integration tests based on documents
 3. **Rules Engineer Agent** - Implements parameters and variables with unit tests
-4. **Verifier Agent** - Validates references, logic, and runs all tests
+4. **Reviewer Agent** - Validates references, logic, and runs all tests (acting as verifier)
 
 ## Critical Principles
 
@@ -77,8 +77,8 @@ Run Test Creator and Rules Engineer in parallel, both working from documents onl
   git merge --no-ff feature/<program>-rules
   git merge --no-ff feature/<program>-tests
   ```
-- Provide Verifier with merged code
-- Verifier validates:
+- Provide Reviewer with merged code
+- Reviewer validates:
   - All references trace to documents
   - Parameter values match sources
   - Integration tests pass
@@ -89,7 +89,7 @@ Run Test Creator and Rules Engineer in parallel, both working from documents onl
 The verification and iteration phase is typically NOT a one-time process. Expect multiple rounds of fixes and re-verification until all issues are resolved.
 
 ##### Iteration Workflow:
-1. **Verifier identifies issues** (usually multiple)
+1. **Reviewer identifies issues** (usually multiple)
 2. **Supervisor triages issues** by agent responsibility
 3. **Agents fix in isolation** (parallel when possible)
 4. **Re-merge and re-verify** until all tests pass
@@ -98,7 +98,7 @@ The verification and iteration phase is typically NOT a one-time process. Expect
 
 **Round 1 Example:**
 ```
-Verifier finds:
+Reviewer finds:
 - Parameter value incorrect (Rules Engineer)
 - Missing test case (Test Creator)  
 - Calculation logic error (Rules Engineer)
@@ -111,7 +111,7 @@ Supervisor creates isolated fix requests:
 
 **Round 2 Example:**
 ```
-After Round 1 fixes, Verifier finds:
+After Round 1 fixes, Reviewer finds:
 - Edge case not handled (Rules Engineer)
 - Test calculation error (Test Creator)
 
@@ -194,9 +194,9 @@ Requirements:
 DO NOT look at any integration tests.
 ```
 
-### Starting Verifier
+### Starting Reviewer (as Verifier)
 ```
-Verify the implementation of [PROGRAM NAME] meets all requirements.
+Using the reviewer agent, verify the implementation of [PROGRAM NAME] meets all requirements.
 
 Check:
 1. Every parameter value traces to a document with citation
@@ -305,7 +305,7 @@ Document common issues for future programs:
 ## Final Responsibilities
 
 ### Create Changelog Entry
-Once the Verifier approves the implementation, create `changelog_entry.yaml`:
+Once the Reviewer approves the implementation, create `changelog_entry.yaml`:
 
 ```yaml
 - bump: minor  # or major/patch as appropriate
@@ -346,7 +346,7 @@ For updates to existing programs:
 
 ## Final PR Creation
 
-Once Verifier confirms all requirements are met:
+Once Reviewer confirms all requirements are met:
 
 ```bash
 git checkout -b feature/<program>-final

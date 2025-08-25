@@ -12,16 +12,15 @@ For implementing new programs with maximum accuracy:
 - **document_collector.md** - Gathers authoritative sources
 - **test_creator.md** - Creates tests from documentation (in isolation)
 - **rules_engineer.md** - Implements from documentation (in isolation)
-- **verifier.md** - Validates merged implementation
 
 See **workflow.md** for detailed technical implementation of the multi-agent system.
 
 ### Standalone Agents
-- **policyengine-reviewer.md** - Unified reviewer for all PolicyEngine PRs
+- **reviewer.md** - Reviews all PolicyEngine code
   - Verifies source documentation
   - Checks vectorization
   - Validates test quality
-  - Can also act as verifier in multi-agent system
+  - Acts as verifier in multi-agent system
 
 ### Shared Resources
 - **policyengine-standards.md** - Core standards all agents follow
@@ -39,7 +38,7 @@ Use the `policyengine-reviewer` agent to review any PolicyEngine PR.
 1. Start with the `supervisor` agent
 2. Follow the multi-agent workflow in `workflow.md`
 3. Maintain isolation between test creator and rules engineer
-4. Use verifier (or policyengine-reviewer in verifier mode) for validation
+4. Use reviewer for validation
 
 ## Key Principles
 
