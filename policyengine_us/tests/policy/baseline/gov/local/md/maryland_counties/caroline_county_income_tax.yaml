@@ -49,7 +49,7 @@
     county_str: CAROLINE_COUNTY_MD
     md_taxable_income: 50_000
   output:
-    # 50,000 * 0.032 = 1,600 (using 2021 rate)
+    # 50,000 * 0.032 = 1,600 (using 2024 rate)
     md_local_income_tax_before_credits: 1_600
 
 - name: Caroline County income tax - $100,000 income (2025)
@@ -60,6 +60,6 @@
     county_str: CAROLINE_COUNTY_MD
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.032 = 3,200 (using 2021 rate)
+    # 100,000 * 0.032 = 3,200 (using 2024 rate)
     md_local_income_tax_before_credits: 3_200
 

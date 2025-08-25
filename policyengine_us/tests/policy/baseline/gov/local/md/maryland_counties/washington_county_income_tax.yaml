@@ -16,8 +16,8 @@
     county_str: WASHINGTON_COUNTY_MD
     md_taxable_income: 50_000
   output:
-    # 50,000 * 0.03 = 1,500
-    md_local_income_tax_before_credits: 1_500
+    # 50,000 * 0.0295 = 1,475
+    md_local_income_tax_before_credits: 1_475
 
 - name: Washington County income tax - $100,000 income (2024)
   period: 2024
@@ -27,5 +27,5 @@
     county_str: WASHINGTON_COUNTY_MD
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.03 = 3,000
-    md_local_income_tax_before_credits: 3_000
+    # 100,000 * 0.0295 = 2,950
+    md_local_income_tax_before_credits: 2_950
