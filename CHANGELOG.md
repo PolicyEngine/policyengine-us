@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.376.3] - 2025-08-25 13:09:42
+
+### Fixed
+
+- Updated SSI-related test cases.
+- Updated SSI-related variables.
+
 ## [1.376.2] - 2025-08-25 02:14:31
 
 ### Fixed
@@ -12690,6 +12697,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.376.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.2...1.376.3
 [1.376.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.1...1.376.2
 [1.376.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.0...1.376.1
 [1.376.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.375.0...1.376.0
