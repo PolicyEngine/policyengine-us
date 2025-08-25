@@ -10,8 +10,13 @@ class co_state_supplement(Variable):
 
     def formula(person, period, parameters):
         income = person("ssi_countable_income", period)
+        both_eligible = person("ssi_marital_both_eligible", period)
         ssi = person("ssi", period)
-        total_countable_income = ssi + income
+        # The SSI variable assigns SSI to one member of the marital unit if both are eligible
+        marital_ssi = where(
+            both_eligible, person.marital_unit.sum(ssi) / 2, ssi
+        )
+        total_countable_income = marital_ssi + income
         p = parameters(period).gov.states.co.ssa.state_supplement
         grant_standard = p.grant_standard * MONTHS_IN_YEAR
         return max_(0, grant_standard - total_countable_income)
