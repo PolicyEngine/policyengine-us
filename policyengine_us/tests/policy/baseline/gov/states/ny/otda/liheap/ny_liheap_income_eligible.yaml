@@ -1,0 +1,80 @@
+- name: Single person household below 60% SMI is eligible
+  period: 2025
+  input:
+    irs_gross_income: 30_000
+    spm_unit_size: 1
+    state_code: NY
+  output:
+    ny_liheap_income_eligible: true
+
+- name: Single person household above 60% SMI is not eligible
+  period: 2025
+  input:
+    irs_gross_income: 80_000
+    spm_unit_size: 1
+    state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 0
+  output:
+    ny_liheap_income_eligible: false
+
+- name: Four person household below 60% SMI is eligible
+  period: 2025
+  input:
+    irs_gross_income: 70_000
+    spm_unit_size: 4
+    state_code: NY
+  output:
+    ny_liheap_income_eligible: true
+
+- name: Four person household above 60% SMI is not eligible
+  period: 2025
+  input:
+    irs_gross_income: 120_000
+    spm_unit_size: 4
+    state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 0
+  output:
+    ny_liheap_income_eligible: false
+
+- name: Household receiving SNAP is categorically eligible
+  period: 2025
+  input:
+    irs_gross_income: 100_000
+    spm_unit_size: 2
+    state_code: NY
+    snap: 200
+  output:
+    ny_liheap_income_eligible: true
+
+- name: Household receiving SSI is categorically eligible
+  period: 2025
+  input:
+    irs_gross_income: 100_000
+    spm_unit_size: 1
+    state_code: NY
+    ssi: 100
+  output:
+    ny_liheap_income_eligible: true
+
+- name: Household receiving TANF is categorically eligible
+  period: 2025
+  input:
+    irs_gross_income: 100_000
+    spm_unit_size: 3
+    state_code: NY
+    tanf: 300
+  output:
+    ny_liheap_income_eligible: true
+
+- name: Non-NY household is not eligible
+  period: 2025
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: CA
+  output:
+    ny_liheap_income_eligible: false

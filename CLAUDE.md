@@ -1,6 +1,7 @@
 # PolicyEngine US - Development Guide
 
 ## Build/Test/Lint Commands
+
 ```bash
 # Install dependencies
 make install
@@ -34,8 +35,9 @@ make documentation
 ```
 
 ## GitHub Workflow
+
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
-- View PR list: `gh pr list` 
+- View PR list: `gh pr list`
 - View PR details: `gh pr view [PR-NUMBER]`
 - Contributing to PRs:
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
@@ -43,6 +45,7 @@ make documentation
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
 ## Code Style Guidelines
+
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
 - **Formatting**: Line length 79 characters; use Black for formatting
 - **Types**: Use type hints; import ArrayLike from numpy.typing
@@ -53,8 +56,10 @@ make documentation
 - **Constants**: Use UPPERCASE only for constants defined in code, not for parameters from the parameter tree
 - **Income Combination**: Use `add(person, period, ["income1", "income2"])` instead of manual addition for combining income sources
 - **Negative Values**: Use `max_(value, 0)` to clip negative values to zero (prevents counterintuitive behavior in economic models)
+- **Return Statements**: Avoid unnecessary variable assignment before return - use `return func(x, y)` instead of `result = func(x, y); return result`
 
 ## Additional Guidelines
+
 - Python >= 3.10, < 3.13
 - Use `where` not `if` and `max_`/`min_` not `max`/`min` for vectorization
 - For array comparisons use `(x >= min) & (x <= max)` not `min <= x <= max`
@@ -65,6 +70,7 @@ make documentation
 - Every PR needs a changelog entry in changelog_entry.yaml
 
 ## Common Patterns and Gotchas
+
 - **ALWAYS run `make format` before every commit** - this is mandatory and ensures consistent code style
 - Unit tests with scalar values can pass while vectorized microsimulation fails
 - When implementing a previously empty variable, be sure to check for dependent formulas
@@ -77,7 +83,7 @@ make documentation
 - In YAML tests, use `[val1, val2]` array syntax instead of hyphenated lists for output values
 - When updating test values, add detailed calculation steps in comments to document the derivation
 - For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead) due to parameter validation issues
-- Parameter file naming matters: make sure variables reference the exact parameter file name 
+- Parameter file naming matters: make sure variables reference the exact parameter file name
 - When refactoring from enum to numeric values, update all downstream dependencies consistently
 - Prefer parameter-driven calculations over hardcoded logic in formulas when possible
 - Use `bool` instead of `int` or `/1` in `rate_unit` for scale parameters when appropriate to avoid validation issues
@@ -101,6 +107,7 @@ make documentation
 - **Module Refactoring**: When splitting large variable files, create individual files for each variable with comprehensive unit tests. Follow existing patterns like CTC module structure.
 
 ## Testing Best Practices
+
 - **Test File Naming**:
   - Name unit test files after the variable being tested (e.g., `household_income_decile.yaml`)
   - Use `integration.yaml` for integration tests that test multiple variables together
@@ -110,7 +117,7 @@ make documentation
   - **ALWAYS use underscore thousands separators** in numeric values (e.g., `1_000`, `50_000`, not `1000`, `50000`)
   - This applies to all numeric values in YAML tests including income, weights, thresholds, etc.
 
-- **Unit Tests**: 
+- **Unit Tests**:
   - Create tests in `variable.yaml` that test only the direct inputs to `variable.py`
   - Unit tests should focus on validating a single variable's logic in isolation
   - Use simple inputs that test specific edge cases and logic branches
@@ -125,7 +132,19 @@ make documentation
   - Include edge cases that test interactions between different parts of the system
 
 ## Parameter Structure Best Practices
-- Cross-check parameter values against authoritative external sources (gov websites, calculators)
+
+- **Parameterize all policy choices**: Every threshold, percentage, age limit, or policy option should be a parameter, not hardcoded
+- **State vs Federal parameters**: Don't assume states use federal maximums - create state-specific parameters for their actual choices
+- **Categorical eligibility**: When programs allow automatic eligibility based on other programs, use:
+  - A boolean parameter for whether the state uses categorical eligibility
+  - A list parameter for which programs grant categorical eligibility
+- **Document without speculation**: Describe what the policy does, not why (unless explicitly documented)
+- **File issues for uncertainty**: If unsure whether implementation matches policy specification, file an issue to investigate
+- **"Greater of" policies**: When policies use "the greater/lesser of X or Y", consider whether to:
+  - Implement the comparison directly in the formula, OR
+  - Use parameters for specific thresholds if that's how the policy is actually written
+- Cross-check parameter values against authoritative external sources (statutes, regulations, official manuals)
+- **Prefer primary sources**: Use statutes/regulations over websites when available; file issues if only secondary sources found
 - Document the source, publication date, and effective dates in parameter metadata
 - Include both title and href for references to maintain traceability
 - Use multiple sources to validate complex parameters (e.g., tax brackets, benefit amounts)
@@ -135,6 +154,42 @@ make documentation
 - Consider interactions between parameters when updating values
 - When updating parameters, verify both individual values and downstream impacts
 - Use descriptive changelog entries that reference authoritative sources for updates
+
+## Parameter Description Guidelines
+
+- **Use active voice and complete sentences** for all parameter descriptions
+- **Start with the entity providing the benefit**: e.g., "New York provides..." or "The IRS allows..."
+- **Be specific about what the parameter represents**: benefit amount, threshold, rate, etc.
+- **Include context when helpful**: e.g., "...to households that heat primarily with oil"
+- **Spell out acronyms in descriptions**: Use full names in descriptions (e.g., "Home Energy Assistance Program" not "HEAP")
+  - Keep abbreviations in parameter labels for brevity
+- **Examples of good descriptions**:
+  - "New York provides this Home Energy Assistance Program benefit amount to households that heat primarily with natural gas."
+  - "California allows this standard deduction for single filers."
+  - "The IRS provides this earned income tax credit percentage for taxpayers with two qualifying children."
+- **Avoid**:
+  - Passive voice: "This benefit is provided..."
+  - Incomplete phrases: "NY LIHEAP oil benefit"
+  - Ambiguous descriptions: "Benefit amount"
+  - Acronyms in descriptions: Use full names instead
+- **State tax parameters** are the best examples in the codebase - follow their pattern
+
+## Parameter Date Guidelines
+
+- **Program Year vs Calendar Year**: Many assistance programs operate on program years that don't align with calendar years
+  - SNAP fiscal year starts October 1st
+  - Tax parameters generally follow calendar year (January 1st)
+  - State benefit programs vary widely - verify each program's dates
+- **Finding Authoritative Dates**: Always seek official documentation for parameter effective dates:
+  - State agency announcements and press releases
+  - Program manuals and state plans
+  - Local Commissioners Memorandums (LCMs) or General Information System (GIS) messages
+  - Federal register notices for federal programs
+- **When Dates Are Unclear**: If exact dates cannot be verified:
+  - Document the uncertainty in comments
+  - Use the most conservative date
+  - Include references to where you searched for the information
+  - Consider historical patterns but verify for each year
 
 ## Regulatory Compliance Best Practices
 - Always cite specific regulation sections in variable reference and documentation
@@ -191,24 +246,25 @@ make documentation
   - Use breakdown patterns that match existing working examples in the codebase
   - See [GitHub issue #346](https://github.com/PolicyEngine/policyengine-core/issues/346) for more details
 
-## Entity Structures and Relationships
-- **Marital Units**: 
-  - Include exactly 1 person (if unmarried) or 2 people (if married)
-  - Do NOT include children or dependents
-  - Defined in entities.py as "An unmarried person, or a married and co-habiting couple"
-  - Used for calculations where spousal relationships matter (like SSI)
-  - `marital_unit.nb_persons()` will return 1 or 2, never more
+## Variable Implementation Best Practices
 
-- **SSI Income Attribution**:
-  - For married couples where both are SSI-eligible:
-    - Combined income is attributed to each spouse via `ssi_marital_earned_income` and `ssi_marital_unearned_income`
-    - These variables use `ssi_marital_both_eligible` to determine if combined income should be used
-    - When both eligible, each spouse receives the combined household income for SSI calculations
+- **Using defined_for**: Always use `defined_for` when there's a way to avoid calculating a variable if it doesn't meet some condition
+  - Improves performance by skipping unnecessary calculations
+  - Makes code clearer by showing preconditions
+  - Example: `defined_for = StateCode.NY` or `defined_for = "is_eligible_person"`
   
-- **SSI Spousal Deeming**:
-  - Only applies when one spouse is eligible and the other is ineligible
-  - If both are eligible, spousal deeming doesn't apply; instead income is combined through marital income variables
-
+- **New Program Implementation**: When adding a new benefit program:
+  - Ensure it captures all current input variables (those without a formula)
+  - File an issue if you notice a missing input variable that would be useful
+  - Check what household/person characteristics the program uses (age, disability, income sources, etc.)
+  - Verify all necessary inputs exist or create issues for missing ones
+  
+- **Entity Structures**:
+  - **Marital Units**: Include exactly 1 person (if unmarried) or 2 people (if married)
+    - Do NOT include children or dependents
+    - Defined in entities.py as "An unmarried person, or a married and co-habiting couple"
+    - `marital_unit.nb_persons()` will return 1 or 2, never more
+  
 - **Debugging Entity Relationships**:
   - When checking entity totals or sums, be aware of which entity level you're operating at
   - For variables that need to sum across units, use `entity.sum(variable)`

@@ -1,0 +1,22 @@
+description: New York provides this Home Energy Assistance Program benefit amount to households with heat included in their rent, based on household size.
+# NY HEAP program year starts November 1st
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: NY HEAP rent with heat benefit
+  reference:
+    - title: NYS OTDA HEAP Program Benefits
+      href: https://otda.ny.gov/programs/heap/
+brackets:
+  - threshold:
+      2024-11-01: 1
+    amount:
+      2024-11-01: 45
+      2024-01-01: 0
+  - threshold:
+      2024-11-01: 2
+    amount:
+      2024-11-01: 50
+      2024-01-01: 0
