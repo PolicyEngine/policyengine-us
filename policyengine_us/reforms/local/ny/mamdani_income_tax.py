@@ -20,7 +20,6 @@ def create_nyc_mamdani_income_tax() -> Reform:
             excess_income = max_(taxable_income - threshold, 0)
             return excess_income * rate
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(nyc_mamdani_income_tax)
