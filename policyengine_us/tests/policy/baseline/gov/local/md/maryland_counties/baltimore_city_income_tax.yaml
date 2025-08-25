@@ -1,0 +1,32 @@
+- name: Baltimore City income tax - no income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Baltimore City
+    md_taxable_income: 0
+  output:
+    md_local_income_tax_before_credits: 0
+
+- name: Baltimore City income tax - $50,000 income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Baltimore City
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.032 = 1,600
+    md_local_income_tax_before_credits: 1_600
+
+- name: Baltimore City income tax - $100,000 income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Baltimore City
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.032 = 3,200
+    md_local_income_tax_before_credits: 3_200
+

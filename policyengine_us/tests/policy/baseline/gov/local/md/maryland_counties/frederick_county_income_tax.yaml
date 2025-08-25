@@ -1,0 +1,83 @@
+- name: Frederick County income tax - no income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: SINGLE
+    md_taxable_income: 0
+  output:
+    md_local_income_tax_before_credits: 0
+
+- name: Frederick County income tax - $15,000 income (first bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: SINGLE
+    md_taxable_income: 15_000
+  output:
+    # 15,000 * 0.0225 = 337.50
+    md_local_income_tax_before_credits: 338
+
+- name: Frederick County income tax - $35,000 income (second bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: SINGLE
+    md_taxable_income: 35_000
+  output:
+    # First 25,000 * 0.0225 = 562.50
+    # Next 10,000 * 0.0275 = 275
+    # Total: 837.50
+    md_local_income_tax_before_credits: 838
+
+- name: Frederick County income tax - $75,000 income (third bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: SINGLE
+    md_taxable_income: 75_000
+  output:
+    # First 25,000 * 0.0225 = 562.50
+    # Next 25,000 * 0.0275 = 687.50
+    # Next 25,000 * 0.0296 = 740
+    # Total: 1,990
+    md_local_income_tax_before_credits: 1_990
+
+- name: Frederick County income tax - $200,000 income (fourth bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: SINGLE
+    md_taxable_income: 200_000
+  output:
+    # First 25,000 * 0.0225 = 562.50
+    # Next 25,000 * 0.0275 = 687.50
+    # Next 100,000 * 0.0296 = 2,960
+    # Next 50,000 * 0.032 = 1,600
+    # Total: 5,810
+    md_local_income_tax_before_credits: 5_810
+
+
+- name: Frederick County income tax - married filing jointly (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Frederick County
+    filing_status: JOINT
+    md_taxable_income: 150_000
+  output:
+    # First 25,000 * 0.0225 = 562.50
+    # Next 75,000 * 0.0275 = 2,062.50
+    # Next 50,000 * 0.0296 = 1,480
+    # Total: 4,105
+    md_local_income_tax_before_credits: 4_105
