@@ -9,7 +9,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
         label = "Zohran Mamdani NYC income tax"
         unit = USD
         definition_period = YEAR
-        defined_for = "nyc_mamdani_income_tax_eligible"
+        defined_for = "in_nyc"
 
         def formula(person, period, parameters):
             p = parameters(period).gov.local.ny.mamdani_income_tax
@@ -20,22 +20,10 @@ def create_nyc_mamdani_income_tax() -> Reform:
             excess_income = max_(taxable_income - threshold, 0)
             return excess_income * rate
 
-    class nyc_mamdani_income_tax_eligible(Variable):
-        value_type = bool
-        entity = Person
-        label = "Eligible for Zohran Mamdani NYC income tax"
-        definition_period = YEAR
-        defined_for = StateCode.NY
-
-        def formula(person, period, parameters):
-            # Only applies to NYC residents
-            household = person.household
-            return household("state_code", period) == StateCode.NY
 
     class reform(Reform):
         def apply(self):
             self.update_variable(nyc_mamdani_income_tax)
-            self.update_variable(nyc_mamdani_income_tax_eligible)
 
     return reform
 
