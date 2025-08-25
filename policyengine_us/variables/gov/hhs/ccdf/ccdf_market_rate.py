@@ -30,5 +30,6 @@ class ccdf_market_rate(Variable):
                 duration_of_care == durations_of_care.HOURLY,
             ],
             [1, days_per_week, days_per_week, hours_per_week],
+            default=0,
         )
         return rate_per_period * periods_per_week * WEEKS_IN_YEAR

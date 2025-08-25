@@ -27,14 +27,13 @@ class section_22_income(Variable):
                 num_qualifying_individuals == 1,
                 num_qualifying_individuals == 2,
                 filing_status == filing_status.possible_values.SEPARATE,
-                True,
             ],
             [
                 elderly_disabled.amount.one_qualified,
                 elderly_disabled.amount.two_qualified,
                 elderly_disabled.amount.separate,
-                0,
             ],
+            default=0,
         )
 
         # Limitations on under-65s
