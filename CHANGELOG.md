@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.377.0] - 2025-08-25 18:03:27
+
+### Fixed
+
+- Fixed IL AABD integration tests.
+
+## [1.376.4] - 2025-08-25 13:45:00
+
+### Fixed
+
+- Tenant pays rent variable for HUD utility allowance calculation.
+
 ## [1.376.3] - 2025-08-25 13:09:42
 
 ### Fixed
@@ -12697,6 +12709,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.377.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.4...1.377.0
+[1.376.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.3...1.376.4
 [1.376.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.2...1.376.3
 [1.376.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.1...1.376.2
 [1.376.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.0...1.376.1
