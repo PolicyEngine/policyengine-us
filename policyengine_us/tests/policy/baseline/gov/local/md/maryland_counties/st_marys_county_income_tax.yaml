@@ -3,7 +3,7 @@
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 0
   output:
     md_local_income_tax_before_credits: 0
@@ -13,29 +13,29 @@
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 50_000
   output:
-    # 50,000 * 0.03 = 1,500
-    md_local_income_tax_before_credits: 1_500
+    # 50,000 * 0.0317 = 1,585
+    md_local_income_tax_before_credits: 1_585
 
 - name: St. Mary's County income tax - $100,000 income (2024)
   period: 2024
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.03 = 3,000
-    md_local_income_tax_before_credits: 3_000
+    # 100,000 * 0.0317 = 3,170
+    md_local_income_tax_before_credits: 3_170
 
 - name: St. Mary's County income tax - no income (2025)
   period: 2025
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 0
   output:
     md_local_income_tax_before_credits: 0
@@ -45,19 +45,19 @@
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 50_000
   output:
-    # 50,000 * 0.032 = 1,600
-    md_local_income_tax_before_credits: 1_600
+    # 50,000 * 0.031 = 1,550
+    md_local_income_tax_before_credits: 1_550
 
 - name: St. Mary's County income tax - $100,000 income (2025)
   period: 2025
   absolute_error_margin: 1
   input:
     state_code_str: MD
-    county_str: St. Mary's County
+    county_str: ST_MARY_S_COUNTY_MD
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.032 = 3,200
-    md_local_income_tax_before_credits: 3_200
+    # 100,000 * 0.031 = 3,100
+    md_local_income_tax_before_credits: 3_100
