@@ -1,148 +1,54 @@
-# Multi-Agent Development System for PolicyEngine-US
+# PolicyEngine Agent System
 
 ## Overview
 
-This directory contains instructions for a multi-agent development system designed to ensure accurate, well-tested implementation of government benefit programs. The system uses isolated development with multiple specialized agents to prevent contamination between test creation and implementation.
+This directory contains specialized agents for PolicyEngine development. These agents ensure accurate implementation of government benefit programs through isolated development and comprehensive review.
 
-## Key Innovation: Isolation Through Separation
+## Available Agents
 
-The core principle is that **tests and implementation are developed in complete isolation**:
-- Test creators never see the implementation
-- Rules engineers never see the test expectations
-- Both work from the same authoritative documents
-- Only the verifier sees everything, after development is complete
+### Multi-Agent Development System
+For implementing new programs with maximum accuracy:
+- **supervisor.md** - Orchestrates isolated development workflow
+- **document_collector.md** - Gathers authoritative sources
+- **test_creator.md** - Creates tests from documentation (in isolation)
+- **rules_engineer.md** - Implements from documentation (in isolation)
+- **verifier.md** - Validates merged implementation
 
-This prevents "teaching to the test" and ensures genuine implementation from first principles.
+See **workflow.md** for detailed technical implementation of the multi-agent system.
 
-## The Agents
+### Standalone Agents
+- **policyengine-reviewer.md** - Unified reviewer for all PolicyEngine PRs
+  - Verifies source documentation
+  - Checks vectorization
+  - Validates test quality
+  - Can also act as verifier in multi-agent system
 
-### 1. Supervisor Agent (`supervisor.md`)
-- Orchestrates the entire process
-- Manages information flow between agents
-- Ensures isolation is maintained
-- Creates and manages git branches/worktrees
+### Shared Resources
+- **policyengine-standards.md** - Core standards all agents follow
+  - Source citation requirements
+  - Vectorization rules
+  - Common pitfalls
+  - Testing standards
 
-### 2. Document Collector Agent (`document_collector.md`)
-- Gathers statutes, regulations, and program manuals
-- Creates authoritative documentation package
-- Works in isolated branch: `feature/<program>-docs`
+## Quick Start
 
-### 3. Test Creator Agent (`test_creator.md`)
-- Creates integration tests from documents only
-- Never sees implementation code
-- Works in isolated branch: `feature/<program>-tests`
-- Produces the "answer key" for validation
+### For Regular PR Review
+Use the `policyengine-reviewer` agent to review any PolicyEngine PR.
 
-### 4. Rules Engineer Agent (`rules_engineer.md`)
-- Implements parameters and variables from documents
-- Uses Test-Driven Development with own unit tests
-- Never sees integration test expectations
-- Works in isolated branch: `feature/<program>-rules`
+### For New Program Implementation
+1. Start with the `supervisor` agent
+2. Follow the multi-agent workflow in `workflow.md`
+3. Maintain isolation between test creator and rules engineer
+4. Use verifier (or policyengine-reviewer in verifier mode) for validation
 
-### 5. Verifier Agent (`verifier.md`)
-- First point where tests and implementation meet
-- Validates everything matches documentation
-- Runs all tests and checks references
-- Works on merged branch: `feature/<program>-verify`
+## Key Principles
 
-## Workflow
+1. **Source Authority**: Statutes > Regulations > Websites
+2. **Isolation**: Tests and implementation developed separately
+3. **Vectorization**: No if-elif-else with household data
+4. **Documentation**: Every value traces to primary source
+5. **Testing**: Document calculations with regulation references
 
-See `workflow.md` for detailed technical implementation.
+## Note
 
-### Quick Start
-
-1. **Supervisor** creates isolated branches and worktrees
-2. **Document Collector** gathers all program documentation
-3. **Test Creator** and **Rules Engineer** work in parallel:
-   - Both receive documents only
-   - Neither can see the other's work
-   - Complete isolation via separate worktrees
-4. **Supervisor** merges all branches for verification
-5. **Verifier** validates the complete implementation
-6. If issues found, **Supervisor** routes fixes without breaking isolation
-
-## Directory Structure
-
-```
-docs/agents/
-├── README.md              # This file
-├── supervisor.md          # Supervisor agent instructions
-├── document_collector.md  # Document collector instructions
-├── test_creator.md        # Test creator instructions
-├── rules_engineer.md      # Rules engineer instructions
-├── verifier.md           # Verifier instructions
-├── workflow.md           # Technical workflow details
-└── sources/              # Program documentation (created by agents)
-    └── <program>/        # Documents for each program
-```
-
-## Example Usage
-
-To implement a new program (e.g., SNAP):
-
-```bash
-# Supervisor sets up isolation
-git checkout -b feature/snap-docs
-git checkout -b feature/snap-tests
-git checkout -b feature/snap-rules
-
-# Create isolated worktrees
-git worktree add ../pe-snap-docs feature/snap-docs
-git worktree add ../pe-snap-tests feature/snap-tests
-git worktree add ../pe-snap-rules feature/snap-rules
-
-# Each agent works in their isolated environment
-# Document Collector works in ../pe-snap-docs/
-# Test Creator works in ../pe-snap-tests/
-# Rules Engineer works in ../pe-snap-rules/
-
-# After completion, merge for verification
-git checkout -b feature/snap-verify
-git merge feature/snap-docs feature/snap-tests feature/snap-rules
-
-# Verifier validates on merged branch
-```
-
-## Benefits
-
-1. **Accuracy**: Implementation based on regulations, not test expectations
-2. **Completeness**: Independent test creation ensures all cases covered
-3. **Traceability**: Every line of code traces to documentation
-4. **Quality**: Multiple validation points catch errors
-5. **Audit Trail**: Complete record of isolated development
-
-## Principles
-
-- **No Contamination**: Agents cannot see each other's work during development
-- **Document-Driven**: All development based on authoritative sources
-- **Test-First**: Rules engineer uses TDD with unit tests
-- **Independent Validation**: Test creator provides independent check
-- **Comprehensive Verification**: Verifier ensures everything aligns
-
-## Getting Started
-
-1. Read `supervisor.md` to understand orchestration
-2. Review `workflow.md` for technical details
-3. Each agent should only read their specific instruction file
-4. Maintain strict isolation throughout development
-
-## Important Notes
-
-- This system requires discipline to maintain isolation
-- The Supervisor must never share test values with Rules Engineer
-- The Supervisor must never share implementation with Test Creator
-- Physical isolation through git worktrees prevents accidental contamination
-- All communication between agents goes through the Supervisor
-
-## Success Metrics
-
-A successful implementation will have:
-- ✅ All tests passing without the implementation ever seeing them during development
-- ✅ All parameter values traceable to documentation
-- ✅ Complete test coverage of documented scenarios
-- ✅ No hardcoded values or test-specific logic
-- ✅ Full audit trail showing isolation was maintained
-
-## Contact
-
-For questions or improvements to this multi-agent system, please file an issue or PR.
+These agents are designed for PolicyEngine's rule engine implementation. They focus on accurate transcription of laws and regulations into code, not scientific research or analysis.
