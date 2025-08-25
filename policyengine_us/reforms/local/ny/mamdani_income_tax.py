@@ -51,11 +51,12 @@ def create_nyc_mamdani_income_tax() -> Reform:
             )
             mamdani_tax = add(tax_unit, period, ["nyc_mamdani_income_tax"])
             return regular_tax + mamdani_tax
-    
+
     class reform(Reform):
         def apply(self):
             self.update_variable(nyc_mamdani_income_tax)
             self.update_variable(nyc_income_tax_before_credits)
+
     return reform
 
 
