@@ -22,8 +22,8 @@
     taxable_income: 1_000_000
     filing_status: JOINT
   output:
-    regular_tax_before_credits: 323_310
-    income_tax_main_rates: 323_310
+    regular_tax_before_credits: 291_360
+    income_tax_main_rates: 291_360
 
 - name: Additional tax bracket is applied, taxable income is below the threshold.
   period: 2027
@@ -49,5 +49,5 @@
     taxable_income: 600_000
     filing_status: JOINT
   output:
-    regular_tax_before_credits: 166_046
-    income_tax_main_rates: 166_046
+    regular_tax_before_credits: 147_196
+    income_tax_main_rates: 147_196

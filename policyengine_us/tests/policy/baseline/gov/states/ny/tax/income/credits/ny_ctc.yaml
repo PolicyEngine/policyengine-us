@@ -126,9 +126,9 @@
         state_code: NY
   output:
     refundable_ctc: 0
-    non_refundable_ctc: 2_000
+    non_refundable_ctc: 2_200
     income_tax_before_credits: 0
-    ctc: 2_000 # $1,000 for the calculation as pre-TCJA values apply
+    ctc: 2_200 # $1,000 for the calculation as pre-TCJA values apply
     ctc_value: 0
     ny_ctc: 1_000  # Updated CTC: $1,000 for child age 0
 
@@ -149,10 +149,10 @@
         members: [parent, child]
         state_code: NY
   output:
-    refundable_ctc: 1_250
-    non_refundable_ctc: 750
-    ctc: 2_000
-    ctc_value: 2_000
+    refundable_ctc: 1_562.50
+    non_refundable_ctc: 637.5
+    ctc: 2_200
+    ctc_value: 2_200
     ny_ctc: 1_000 # Updated CTC: $1,000 for child age 0
 
 # Updated CTC Tests for 2025-2027 Rules

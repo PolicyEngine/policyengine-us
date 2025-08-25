@@ -1,0 +1,53 @@
+- name: Ineligible cardholder present
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: false
+
+- name: Ineligible cardholder present, but not head or spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: true
+
+- name: Ineligible cardholder not present
+  period: 2025
+  input:
+    people:
+      person1:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tip_income_deduction_ssn_requirement_met: true

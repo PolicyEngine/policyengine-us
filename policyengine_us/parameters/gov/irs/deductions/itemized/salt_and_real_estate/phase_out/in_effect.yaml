@@ -1,0 +1,13 @@
+description: The SALT deduction is phased out based on adjusted gross income, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: SALT deduction phase out in effect
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+values:
+  0000-01-01: false
+  2025-01-01: true
+  2030-01-01: false

@@ -1,0 +1,39 @@
+- name: Contributions are higher than maximum deduction
+  period: 2024
+  input:
+    pr_agi_person: 10_000
+    traditional_ira_contributions: 3_001
+    roth_ira_contributions: 2_000
+    state_code: PR
+  output:
+    pr_retirement_deduction: 5_000
+
+- name: Contributions are lower than maximum deduction
+  period: 2024
+  input:
+    pr_agi_person: 1_300
+    traditional_ira_contributions: 500
+    roth_ira_contributions: 300
+    state_code: PR
+  output:
+    pr_retirement_deduction: 800
+
+- name: Contributions are lower than AGI
+  period: 2024
+  input:
+    pr_agi_person: 4_000
+    traditional_ira_contributions: 500
+    roth_ira_contributions: 301
+    state_code: PR
+  output:
+    pr_retirement_deduction: 801
+
+- name: Contributions are higher than AGI
+  period: 2024
+  input:
+    pr_agi_person: 4_000
+    traditional_ira_contributions: 5000
+    roth_ira_contributions: 3000
+    state_code: PR
+  output:
+    pr_retirement_deduction: 4_000

@@ -47,3 +47,109 @@
         living_arrangements_allow_for_food_preparation: false
   output:
     ca_state_supplement_payment_standard: 2_639
+
+- name: Case A ,single disabled parent with non eligible dependent child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 1_206.94
+
+- name: Case A1, single disabled parent with a disabled child. 
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 2_271.21 # 1206.94 + 1064.27
+
+- name: Case A2, single healthy parent with a disabled child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 1_064.27
+
+- name: Case B ,joint filers, one of them is disabled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 22
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 1_206.94
+
+- name: Case B1 ,joint filers, both of them are disabled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 22
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 2_057.83

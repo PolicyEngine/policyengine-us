@@ -1,0 +1,22 @@
+description: The tax rebate, proposed by the American Worker Rebate Act, phases out the rebate for filers with adjusted gross income above this threshold, based on filing status.
+
+metadata:
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  period: year
+  label: American Worker Rebate Act phase-out start
+  reference:
+    - title: American Worker Rebate Act
+      href: https://www.hawley.senate.gov/wp-content/uploads/2025/07/Hawley-American-Worker-Rebate-Act-Bill-Text.pdf#page=4
+
+SINGLE:
+  0000-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 112_500
+JOINT:
+  0000-01-01: 150_000
+SURVIVING_SPOUSE:
+  0000-01-01: 75_000
+SEPARATE:
+  0000-01-01: 75_000 

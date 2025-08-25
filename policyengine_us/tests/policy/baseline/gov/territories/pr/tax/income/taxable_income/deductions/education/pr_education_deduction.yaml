@@ -1,0 +1,17 @@
+- name: Contribution smaller than maximum
+  period: 2024
+  input:
+    investment_in_529_plan: 1_300
+    pr_education_deduction_beneficiary_count: 3
+    state_code: PR
+  output:
+    pr_education_deduction: 1_300
+
+- name: Contribution larger than maximum
+  period: 2024
+  input:
+    investment_in_529_plan: 5_000
+    pr_education_deduction_beneficiary_count: 4
+    state_code: PR
+  output:
+    pr_education_deduction: 2_000

@@ -1,0 +1,129 @@
+- name: No veteran status - zero credit
+  period: 2025
+  input:
+    is_veteran: false
+    adjusted_gross_income: 20_000
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Veteran with low AGI - full credit amount
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 20_000  # Below $25,000 threshold
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran at full credit threshold boundary
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 24_999  # Just below $25,000 threshold
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran just above full credit threshold
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_050  # $50 above threshold, triggers first increment
+  output:
+    # ceil(50/100) = 1 increment, $250 - (1 * $5) = $245
+    vt_veteran_tax_credit: 245
+
+- name: Veteran at exact increment boundary
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_200  # Exactly 2 increments above threshold
+  output:
+    # ceil(200/100) = 2 increments, $250 - (2 * $5) = $240
+    vt_veteran_tax_credit: 240
+
+- name: Veteran with moderate income reduction
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 27_000  # $2,000 above threshold
+  output:
+    # ceil(2000/100) = 20 increments, $250 - (20 * $5) = $150
+    vt_veteran_tax_credit: 150
+
+- name: Veteran near phaseout boundary
+  period: 2025
+  input:
+    is_veteran: true
+    adjusted_gross_income: 29_950  # $50 below $30,000 threshold
+  output:
+    # ceil(4950/100) = 50 increments, $250 - (50 * $5) = $0 (max reduction reached)
+    vt_veteran_tax_credit: 0
+
+- name: Veteran above partial credit threshold - no credit
+  period: 2025
+  input:
+    is_veteran: true
+    adjusted_gross_income: 35_000  # Above $30,000 threshold
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Before 2025 - no credit regardless of veteran status and income
+  period: 2024
+  input:
+    is_veteran: true
+    adjusted_gross_income: 15_000  # Low income but before effective date
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Veteran with zero AGI - full credit
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 0
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Multiple veterans in tax unit
+  period: 2025
+  input:
+    people:
+      veteran1:
+        is_veteran: true
+      veteran2:
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [veteran1, veteran2]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [veteran1, veteran2]
+        state_code: VT
+  output:
+    # Credit applies per tax unit, not per veteran
+    vt_veteran_tax_credit: 250
+
+- name: Mixed household with one veteran
+  period: 2025
+  input:
+    people:
+      veteran:
+        is_veteran: true
+      non_veteran:
+        is_veteran: false
+    tax_units:
+      tax_unit:
+        members: [veteran, non_veteran]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [veteran, non_veteran]
+        state_code: VT
+  output:
+    # Credit applies if any member is veteran
+    vt_veteran_tax_credit: 250

@@ -1,0 +1,21 @@
+- name: Check default county in CA.
+  period: 2022
+  input:
+    state_code: CA
+  output: 
+    first_county_in_state: ALAMEDA_COUNTY_CA
+    county: ALAMEDA_COUNTY_CA
+
+- name: Check default county in MA.
+  period: 2022
+  input:
+    state_code: MA
+  output: 
+    first_county_in_state: BARNSTABLE_COUNTY_MA
+
+- name: Check default county in DC.
+  period: 2022
+  input:
+    state_code: DC
+  output: 
+    first_county_in_state: DISTRICT_OF_COLUMBIA_DC

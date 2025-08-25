@@ -1,0 +1,16 @@
+description: Montana allows married couples to file separately on the same tax return, if this is true.
+metadata:
+  label: Montana married filing separately on same return allowed
+  period: year
+  unit: bool
+  reference:
+    - title: MT Code, Income Tax - Deductions, § 42-15-322 Repealed in 2024
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.15.322
+    - title: Montana 67th Legislature || SENATE BILL NO. 399 || Section 3 (8)
+      href: https://leg.mt.gov/bills/2021/SB0399/SB0399_3.pdf#page=31
+    - title: Montana Individual Income Tax Return (Form 2) 2024
+      href: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf
+
+values:
+  2021-01-01: true
+  2024-01-01: false

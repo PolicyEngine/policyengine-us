@@ -53,9 +53,6 @@ from .harris.capital_gains import (
 from .tax_exempt.tax_exempt_reform import (
     create_tax_exempt_reform,
 )
-from .salt_phase_out.salt_phase_out_reform import (
-    create_salt_phase_out_reform,
-)
 from .state_dependent_exemptions import (
     create_repeal_state_dependent_exemptions_reform,
 )
@@ -93,22 +90,16 @@ from .congress.afa import (
 )
 
 from .reconciliation import (
-    create_reconciled_qbid_reform,
-    create_reconciled_pease_reform,
-    create_reconciled_tip_and_overtime_exempt_reform,
-    create_reconciled_auto_loan_interest_ald_reform,
-    create_ctc_ssn_reform,
-    create_reconciled_additional_senior_standard_deduction_reform,
     create_reconciled_ssn_for_llc_and_aoc_reform,
-    create_aca_ptc_immigration_status_reform,
-    create_reconciliation_qbid_with_floor_reform,
-    create_reconciliation_cdcc_reform,
-    create_reconciled_medicaid_work_requirement_reform,
-    create_reconciled_snap_abawd_work_requirement_reform,
-    create_reconciled_charitable_deduction_reform,
+)
+from .states.mi.surtax import (
+    create_mi_surtax_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
+)
+from .congress.hawley.awra import (
+    create_american_worker_rebate_act_reform,
 )
 
 from policyengine_core.reforms import Reform
@@ -182,7 +173,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
-    salt_phase_out = create_salt_phase_out_reform(parameters, period)
     repeal_state_dependent_exemptions = (
         create_repeal_state_dependent_exemptions_reform(parameters, period)
     )
@@ -220,50 +210,20 @@ def create_structural_reforms_from_parameters(parameters, period):
     afa_other_dependent_credit = create_afa_other_dependent_credit_reform(
         parameters, period
     )
-    reconciled_qbid = create_reconciled_qbid_reform(parameters, period)
-    reconciled_pease = create_reconciled_pease_reform(parameters, period)
-    reconciled_tip_and_overtime_exempt = (
-        create_reconciled_tip_and_overtime_exempt_reform(parameters, period)
-    )
-    reconciled_auto_loan_interest_ald = (
-        create_reconciled_auto_loan_interest_ald_reform(parameters, period)
-    )
-    ctc_ssn = create_ctc_ssn_reform(parameters, period)
-    reconciled_additional_senior_standard_deduction = (
-        create_reconciled_additional_senior_standard_deduction_reform(
-            parameters, period
-        )
-    )
 
-    ctc_ssn = create_ctc_ssn_reform(parameters, period)
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
-    )
-    aca_ptc_immigration_status = create_aca_ptc_immigration_status_reform(
-        parameters, period
-    )
-    reconciliation_qbid_with_floor = (
-        create_reconciliation_qbid_with_floor_reform(parameters, period)
     )
     ctc_additional_bracket = create_ctc_additional_bracket_reform(
         parameters, period
     )
-    reconciliation_cdcc = create_reconciliation_cdcc_reform(parameters, period)
-
     additional_tax_bracket = create_additional_tax_bracket_reform(
         parameters, period
     )
-    reconciled_medicaid_work_requirement = (
-        create_reconciled_medicaid_work_requirement_reform(parameters, period)
-    )
+    mi_surtax = create_mi_surtax_reform(parameters, period)
 
-    reconciled_snap_abawd_work_requirement = (
-        create_reconciled_snap_abawd_work_requirement_reform(
-            parameters, period
-        )
-    )
-    reconciled_charitable_deduction = (
-        create_reconciled_charitable_deduction_reform(parameters, period)
+    american_worker_rebate_act = create_american_worker_rebate_act_reform(
+        parameters, period
     )
 
     reforms = [
@@ -292,7 +252,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_dependent_exemptions,
         harris_capital_gains,
         tip_income_tax_exempt,
-        salt_phase_out,
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
         abolish_snap_deductions,
@@ -306,21 +265,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_medicare_tax,
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
-        reconciled_qbid,
-        reconciled_pease,
-        reconciled_tip_and_overtime_exempt,
-        reconciled_auto_loan_interest_ald,
-        ctc_ssn,
-        reconciled_additional_senior_standard_deduction,
         reconciled_ssn_for_llc_and_aoc,
-        aca_ptc_immigration_status,
-        reconciliation_qbid_with_floor,
         ctc_additional_bracket,
-        reconciliation_cdcc,
+        mi_surtax,
         additional_tax_bracket,
-        reconciled_medicaid_work_requirement,
-        reconciled_snap_abawd_work_requirement,
-        reconciled_charitable_deduction,
+        american_worker_rebate_act,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
