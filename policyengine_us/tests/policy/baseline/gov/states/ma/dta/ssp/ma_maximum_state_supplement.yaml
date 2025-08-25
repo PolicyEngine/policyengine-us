@@ -1,7 +1,7 @@
 # File: policyengine_us/tests/policy/baseline/gov/ssa/state_supplement/maximum_state_supplement.yaml
 # Explanation:
 #   - We explicitly mark each person as SSI-eligible by setting:
-#       is_ssi_eligible_individual: true
+#       is_ssi_eligible: true
 #       meets_ssi_resource_test: true
 #       is_ssi_aged_blind_disabled: true
 #       (and the appropriate is_blind / is_disabled / is_ssi_aged)
@@ -19,7 +19,7 @@
         is_tax_unit_spouse: false
         # needed for maximum_state_supplement to not be 0:
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         # ensures the person is recognized as ABD (Aged/Blind/Disabled):
         is_ssi_aged_blind_disabled: true
     households:
@@ -43,14 +43,14 @@
         age: 67
         is_tax_unit_spouse: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_ssi_aged: true
       spouse2:
         age: 70
         is_tax_unit_spouse: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_ssi_aged: true
     households:
@@ -75,7 +75,7 @@
         age: 67
         is_tax_unit_spouse: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_ssi_aged: true
       person_2:
@@ -83,7 +83,7 @@
         is_blind: true
         is_tax_unit_spouse: true
         meets_ssi_resource_test: true
-        is_ssi_eligible_individual: true
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
     households:
       household:
