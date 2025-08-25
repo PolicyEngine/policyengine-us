@@ -1,0 +1,31 @@
+- name: Garrett County income tax - no income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Garrett County
+    md_taxable_income: 0
+  output:
+    md_local_income_tax_before_credits: 0
+
+- name: Garrett County income tax - $50,000 income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Garrett County
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0265 = 1,325
+    md_local_income_tax_before_credits: 1_325
+
+- name: Garrett County income tax - $100,000 income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: Garrett County
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0265 = 2,650
+    md_local_income_tax_before_credits: 2_650
