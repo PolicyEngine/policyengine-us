@@ -10794,3 +10794,8 @@
     fixed:
     - Fixed IL AABD integration tests.
   date: 2025-08-25 18:03:27
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative subtractions from acting as additions.
+  date: 2025-08-25 19:37:04
