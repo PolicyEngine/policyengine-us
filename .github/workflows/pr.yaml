@@ -53,10 +53,24 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run selective tests
+      - name: Run selective tests (or all tests for memory fix PR)
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
+        run: |
+          # Temporarily run all tests for memory fix PR to verify the fix works
+          if [[ "${{ github.head_ref }}" == "fix/memory-test-issues" ]]; then
+            echo "Running ALL tests for memory fix PR verification..."
+            echo "Installing psutil for memory monitoring..."
+            uv pip install psutil --system
+            echo "Testing contrib tests with isolation..."
+            uv run python scripts/test_contrib_isolated.py --timeout-minutes 10
+            echo "Testing baseline tests with phased isolation..."
+            uv run python scripts/test_baseline_phased.py --fast-timeout 60 --slow-timeout 600
+            echo "Testing other Python tests..."
+            uv run pytest policyengine_us/tests/ --maxfail=0
+          else
+            uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
+          fi
       - name: Build package
         run: uv build
