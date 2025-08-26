@@ -10789,3 +10789,13 @@
     fixed:
     - Tenant pays rent variable for HUD utility allowance calculation.
   date: 2025-08-25 13:45:00
+- bump: minor
+  changes:
+    fixed:
+    - Fixed IL AABD integration tests.
+  date: 2025-08-25 18:03:27
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative subtractions from acting as additions.
+  date: 2025-08-25 19:37:04

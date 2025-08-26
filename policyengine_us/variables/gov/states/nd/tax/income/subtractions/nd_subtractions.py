@@ -14,4 +14,11 @@ class nd_subtractions(Variable):
         "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=14"
     )
     defined_for = StateCode.ND
-    adds = "gov.states.nd.tax.income.taxable_income.subtractions.sources"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.nd.tax.income.taxable_income.subtractions
+        total_subtractions = add(tax_unit, period, p.sources)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)
