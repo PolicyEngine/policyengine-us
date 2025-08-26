@@ -53,24 +53,33 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run selective tests (or all tests for memory fix PR)
+      - name: Run comprehensive tests
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
-          # Temporarily run all tests for memory fix PR to verify the fix works
-          if [[ "${{ github.head_ref }}" == "fix/memory-test-issues" ]]; then
-            echo "Running ALL tests for memory fix PR verification..."
-            echo "Installing psutil for memory monitoring..."
-            uv pip install psutil --system
-            echo "Testing baseline tests with batched execution (cleanup every 50 tests)..."
-            uv run python scripts/test_baseline_batched.py --batch-size 50
-            echo "Testing other Python tests..."
-            uv run pytest policyengine_us/tests/ --maxfail=0
-            echo "Testing contrib tests with isolation (cleanup after each test)..."
-            uv run python scripts/test_contrib_isolated.py --timeout-minutes 10
-          else
-            uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
-          fi
+          echo "Running comprehensive test suite..."
+          
+          # Test 1: Policy baseline tests (individual states for memory safety)
+          echo "=== Testing policy/baseline folder (individual states) ==="
+          uv run python scripts/test_baseline_batched.py
+          
+          # Test 2: Policy contrib tests (in folder-based batches)
+          echo "=== Testing policy/contrib folder ==="
+          uv run python scripts/test_contrib_batched.py
+          
+          # Test 3: Policy reform tests
+          echo "=== Testing policy/reform folder ==="
+          uv run policyengine-core test policyengine_us/tests/policy/reform -c policyengine_us
+          
+          # Test 4: Variables tests (gov/states/vt/tax/income)
+          echo "=== Testing variables folder ==="
+          uv run policyengine-core test policyengine_us/tests/variables -c policyengine_us
+          
+          # Test 5: Other Python tests (code_health, microsimulation, utilities)
+          echo "=== Testing other Python folders ==="
+          uv run pytest policyengine_us/tests/code_health --maxfail=0
+          uv run pytest policyengine_us/tests/microsimulation --maxfail=0
+          uv run pytest policyengine_us/tests/utilities --maxfail=0
       - name: Build package
         run: uv build
