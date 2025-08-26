@@ -1,0 +1,452 @@
+# Idaho LIHEAP Edge Cases and Boundary Condition Tests
+# Testing income thresholds, seasonal boundaries, and special scenarios
+# Based on Idaho LIHEAP documentation and federal regulations 45 CFR Part 96
+
+# Income Boundary Tests - Testing exactly at and $1 above/below thresholds
+# 60% SMI Monthly Limits: 1P=$2,530, 2P=$3,309, 3P=$4,087, 4P=$4,866, 5P=$5,644, 6P=$6,423
+
+- name: Single person - income exactly $1 below threshold
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_348  # $2,529/month * 12 = $30,348 ($1 below limit)
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # $1 below income threshold - should be eligible
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Single person - income exactly $1 above threshold  
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_372  # $2,531/month * 12 = $30,372 ($1 above limit)
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # $1 above income threshold - should be ineligible
+    id_liheap_income_eligible: false
+    id_liheap_eligible: false
+
+- name: Four person household - income exactly $1 below threshold
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 29_000
+      parent2:
+        age: 33
+        employment_income: 29_391  # Total $58,391 ($1 below $58,392 limit)
+      child1:
+        age: 10
+      child2:
+        age: 7
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # $1 below income threshold for 4 people - should be eligible  
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Four person household - income exactly $1 above threshold
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 29_000
+      parent2:
+        age: 33
+        employment_income: 29_393  # Total $58,393 ($1 above $58,392 limit)
+      child1:
+        age: 10
+      child2:
+        age: 7
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # $1 above income threshold for 4 people - should be ineligible
+    id_liheap_income_eligible: false
+    id_liheap_eligible: false
+
+# Seasonal Boundary Tests - October 1 through March 31 for heating assistance
+
+- name: Seasonal heating - last day of eligibility (March 31)
+  period: 2025-03-31  # Last day of heating season
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # March 31 is still within heating season (October 1 - March 31)
+    id_liheap_seasonal_heating_eligible: true
+
+- name: Seasonal heating - first day outside eligibility (April 1)
+  period: 2025-04-01  # First day outside heating season
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # April 1 is outside heating season - no seasonal heating assistance
+    id_liheap_seasonal_heating_eligible: false
+
+- name: Seasonal heating - first day of eligibility (October 1)
+  period: 2024-10-01  # First day of heating season
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # October 1 is first day of heating season eligibility
+    id_liheap_seasonal_heating_eligible: true
+
+- name: Seasonal heating - last day outside eligibility (September 30)
+  period: 2024-09-30  # Last day outside heating season
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # September 30 is still outside heating season
+    id_liheap_seasonal_heating_eligible: false
+
+# Zero Income Edge Cases
+
+- name: Zero income household - should be eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65  # Elderly for priority
+        employment_income: 0
+        social_security: 0
+        # No income sources
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Zero income is well below threshold - should be eligible
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+    id_liheap_priority_group: true  # Elderly
+
+# Mixed Income Types
+
+- name: Mixed income sources - social security and employment
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 68  # Elderly
+        employment_income: 15_000  # Part-time work
+        social_security: 14_000   # Total $29,000 < $30,360 limit
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Combined income sources under threshold
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+- name: Mixed income with disability benefits
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 12_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Multiple income sources under threshold, disabled priority
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+# Crisis Assistance Restrictions - Once per 12 months
+
+- name: Crisis assistance - eligible for first time in 12 months
+  period: 2025-06
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        # No previous crisis assistance in last 12 months
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # First crisis assistance request in 12 months - eligible
+    id_liheap_crisis_eligible: true
+
+- name: Weatherization income boundary - 200% FPL threshold
+  period: 2025-08
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 31_200  # Approximately 200% FPL for 1 person in 2025
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Right at 200% FPL threshold for weatherization
+    id_liheap_weatherization_income_eligible: true
+    id_liheap_weatherization_eligible: true
+
+- name: Weatherization income above threshold
+  period: 2025-08
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 35_000  # Above 200% FPL threshold
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Above 200% FPL - not eligible for weatherization
+    id_liheap_weatherization_income_eligible: false
+    id_liheap_weatherization_eligible: false
+
+# Priority Age Boundary Tests - Children under 6, elderly 60+
+
+- name: Child exactly age 5 - priority eligible
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 35_000
+      child1:
+        age: 5  # Exactly 5, still under 6
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+  output:
+    # Age 5 is under 6 - qualifies for priority
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+- name: Child exactly age 6 - no longer priority
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 35_000
+      child1:
+        age: 6  # Exactly 6, no longer under 6
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+  output:
+    # Age 6 is not under 6 - does not qualify for child priority
+    id_liheap_eligible: true
+    id_liheap_priority_group: false
+
+- name: Person exactly age 60 - elderly priority boundary
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60  # At elderly threshold
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Age 60 qualifies as elderly for priority (threshold typically 60 or 65)
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+# Benefit Amount Edge Cases
+
+- name: Very low heating costs - minimum benefit applies
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Even with low heating costs, minimum benefit of $75 applies
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Minimum benefit
+
+- name: Very high heating costs - maximum benefit limit
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 20_000
+      parent2:
+        age: 38
+        employment_income: 15_000
+      child1:
+        age: 4  # Priority child
+      child2:
+        age: 8
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # Even with very high costs, benefit capped at maximum
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 1_242  # Maximum seasonal benefit
+
+# Categorical Eligibility Edge Cases
+
+- name: Multiple categorical programs - still only counts as categorically eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 9_600  # SSI recipient
+        employment_income: 50_000  # High income but categorically eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        snap: 300  # Also receives SNAP
+        # Both SSI and SNAP participation
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Multiple categorical programs - still eligible despite high income
+    id_liheap_categorically_eligible: true
+    id_liheap_eligible: true
+
+- name: Former benefit recipient - not categorically eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000  # Above income limits
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        # No current SNAP/TANF/SSI participation
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Former recipient without current benefits - not eligible
+    id_liheap_categorically_eligible: false
+    id_liheap_income_eligible: false
+    id_liheap_eligible: false

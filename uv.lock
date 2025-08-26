@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10, <3.14"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -1244,12 +1244,11 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
-version = "1.366.2"
+version = "1.374.1"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
     { name = "policyengine-core" },
-    { name = "policyengine-us-data" },
     { name = "tqdm" },
 ]
 
@@ -1270,27 +1269,10 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "policyengine-core", specifier = ">=3.19.0" },
-    { name = "policyengine-us-data", specifier = ">=1.17.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 provides-extras = ["dev"]
-
-[[package]]
-name = "policyengine-us-data"
-version = "1.17.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "microdf-python" },
-    { name = "policyengine-core" },
-    { name = "policyengine-us" },
-    { name = "requests" },
-    { name = "tqdm" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/ed/16/3f68f123903fe9a2e0746e0f2a82344d1b9250c1a3ff471a3a43b465725b/policyengine_us_data-1.17.0.tar.gz", hash = "sha256:e692232d826b2f9c99e36d2625dce55e8025d3d669cd4425465bc671993fd003", size = 2775357, upload-time = "2025-01-24T11:21:10.686Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/d5/ce7498ee87669cc72fefc35e1b2f77221ea61f397742c08c1e57f1aa74fe/policyengine_us_data-1.17.0-py3-none-any.whl", hash = "sha256:66d6bdd608d3a2f0051a621cce7d61fc8cab799a3725e7fe72725d65ac9b8a3a", size = 463194, upload-time = "2025-01-24T11:21:09.159Z" },
-]
 
 [[package]]
 name = "prompt-toolkit"

@@ -1,0 +1,58 @@
+# Unit tests for Idaho LIHEAP weatherization eligibility
+
+- name: Unit test - Idaho LIHEAP weatherization eligible at 200% FPL
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        id_liheap_income: 4_500  # Monthly income at ~200% FPL for family of 4
+        federal_poverty_guideline: 31_200  # 2024 FPG for 4-person family
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+      person3:
+        age: 8
+        state_code: ID
+      person4:
+        age: 5
+        state_code: ID
+  output:
+    id_liheap_weatherization_eligible: true
+
+- name: Unit test - Idaho LIHEAP weatherization ineligible over 200% FPL
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_liheap_income: 3_000  # Monthly income over 200% FPL for 2 people
+        federal_poverty_guideline: 21_240  # 2024 FPG for 2-person family
+    people:
+      person1:
+        age: 45
+        state_code: ID
+      person2:
+        age: 43
+        state_code: ID
+  output:
+    id_liheap_weatherization_eligible: false
+
+- name: Unit test - Idaho LIHEAP weatherization eligible single person
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_liheap_income: 2_800  # Monthly income under 200% FPL for 1 person
+        federal_poverty_guideline: 15_060  # 2024 FPG for 1-person family
+    people:
+      person1:
+        age: 55
+        state_code: ID
+  output:
+    id_liheap_weatherization_eligible: true

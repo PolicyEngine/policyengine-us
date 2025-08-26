@@ -1,0 +1,477 @@
+# Idaho LIHEAP Integration Tests
+# Based on Idaho Department of Health and Welfare documentation
+# Program Year: Federal Fiscal Year 2025 (October 1, 2024 - September 30, 2025)
+# Source: 45 CFR Part 96, Subpart H and Idaho LIHEAP State Plan
+
+# Income Eligibility Tests - 60% State Median Income Standard
+# Monthly Gross Income Limits for FY 2025:
+# 1 Person: $2,530, 2 People: $3,309, 3 People: $4,087
+# 4 People: $4,866, 5 People: $5,644, 6 People: $6,423
+
+- name: Single person household - income eligible at limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_360  # $2,530 monthly * 12 = $30,360 annually
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Income exactly at 60% SMI limit for 1 person
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Two person household - income eligible below limit
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 20_000
+      adult2:
+        age: 38
+        employment_income: 15_000
+    households:
+      household1:
+        members: [adult1, adult2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [adult1, adult2]
+  output:
+    # Combined income $35,000 < $39,708 limit (2 people)
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Three person household - income eligible at limit
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 25_000
+      parent2:
+        age: 30
+        employment_income: 24_044  # Total exactly at $49,044 (3 people limit)
+      child1:
+        age: 8
+    households:
+      household1:
+        members: [parent1, parent2, child1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1]
+  output:
+    # Income exactly at 60% SMI limit for 3 people ($4,087 * 12 = $49,044)
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Four person household - income ineligible above limit
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000
+      parent2:
+        age: 33
+        employment_income: 30_000  # Total $60,000 > $58,392 limit
+      child1:
+        age: 10
+      child2:
+        age: 6
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # Income above 60% SMI limit for 4 people ($4,866 * 12 = $58,392)
+    id_liheap_income_eligible: false
+    id_liheap_eligible: false
+
+- name: Five person household - income eligible below limit
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 35_000
+      parent2:
+        age: 36
+        employment_income: 25_000
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 4
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2, child3]
+  output:
+    # Income $60,000 < $67,728 limit for 5 people ($5,644 * 12)
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+- name: Six person household - income eligible at limit
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 42
+        employment_income: 38_000
+      parent2:
+        age: 40
+        employment_income: 39_076  # Total exactly at $77,076 (6 people limit)
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 10
+      child4:
+        age: 6
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2, child3, child4]
+  output:
+    # Income exactly at 60% SMI limit for 6 people ($6,423 * 12 = $77,076)
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true
+
+# Automatic Qualification Tests via SNAP/TANF/SSI
+# Per documentation: "Households are automatically qualified if they participate in SNAP, TANF, or SSI"
+
+- name: Household with SNAP participation - automatically qualified regardless of income
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 45
+        employment_income: 80_000  # Well above normal LIHEAP income limits
+      child1:
+        age: 12
+    households:
+      household1:
+        members: [adult1, child1]
+        state_code: ID
+        snap: 200  # Receives SNAP benefits
+    spm_units:
+      spm_unit1:
+        members: [adult1, child1]
+  output:
+    # Automatically qualified via SNAP participation despite high income
+    id_liheap_categorically_eligible: true
+    id_liheap_eligible: true
+
+- name: Household with TANF participation - automatically qualified
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 50_000  # Above income limits but has TANF
+      child1:
+        age: 3
+      child2:
+        age: 1
+    households:
+      household1:
+        members: [parent1, child1, child2]
+        state_code: ID
+        tanf: 400  # Receives TANF benefits
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1, child2]
+  output:
+    # Automatically qualified via TANF participation
+    id_liheap_categorically_eligible: true
+    id_liheap_eligible: true
+
+- name: Household with SSI participation - automatically qualified
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 67
+        is_disabled: true
+        ssi: 9_600  # $800/month SSI
+        employment_income: 25_000  # Additional income above limits
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Automatically qualified via SSI participation despite total income above limits
+    id_liheap_categorically_eligible: true
+    id_liheap_eligible: true
+
+# Priority Groups Testing
+# Per documentation: Priority given to households with children under 6, elderly (60+), or disabled members
+
+- name: Household with child under 6 - eligible for priority
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 35_000
+      child1:
+        age: 4  # Under 6, qualifies for priority
+    households:
+      household1:
+        members: [parent1, child1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1]
+  output:
+    # Has child under 6, qualifies for priority group
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+- name: Household with elderly member - eligible for priority
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65  # Elderly, qualifies for priority
+        social_security: 18_000
+        employment_income: 15_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Has elderly member (65+), qualifies for priority group
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+- name: Household with disabled member - eligible for priority
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 25_000
+      person2:
+        age: 48
+        employment_income: 20_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+  output:
+    # Has disabled member, qualifies for priority group
+    id_liheap_eligible: true
+    id_liheap_priority_group: true
+
+# Seasonal Heating Assistance Tests
+# Per documentation: October 1 - March 31, minimum $75, maximum $1,242
+
+- name: Eligible household in heating season - minimum benefit
+  period: 2025-01  # January, within October-March heating season
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000  # Income eligible for 1 person
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Eligible for seasonal heating assistance with minimum benefit
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Minimum benefit per documentation
+
+- name: Eligible household in heating season - maximum benefit scenario
+  period: 2025-02  # February, within heating season
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 25_000
+      parent2:
+        age: 33
+        employment_income: 15_000
+      child1:
+        age: 8
+      child2:
+        age: 4  # Under 6, priority group
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # Large household with high heating costs and priority member
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 1_242  # Maximum benefit per documentation
+
+# Crisis Heating Assistance Tests  
+# Per documentation: Year-round availability, maximum $1,500, once per 12 months
+
+- name: Crisis heating assistance - summer emergency
+  period: 2025-07  # July, outside regular heating season
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 28_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Crisis assistance available year-round, higher maximum than seasonal
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 800  # Based on actual crisis need, up to $1,500 max
+
+- name: Crisis heating assistance - maximum benefit
+  period: 2025-09  # September, outside heating season
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 20_000
+      child1:
+        age: 2  # Under 6, priority
+      child2:
+        age: 8
+    households:
+      household1:
+        members: [parent1, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, child1, child2]
+  output:
+    # Crisis assistance capped at maximum of $1,500
+    id_liheap_crisis_eligible: true  
+    id_liheap_crisis_heating_amount: 1_500  # Maximum crisis benefit per documentation
+
+# Weatherization Program Tests
+# Per documentation: Uses 200% FPL instead of 60% SMI, year-round availability
+
+- name: Weatherization program - eligible at 200% FPL
+  period: 2025-05  # May, outside heating season but weatherization available year-round
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 35_000  # Above regular LIHEAP limits but under 200% FPL for 1 person
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Weatherization uses higher income threshold (200% FPL vs 60% SMI)
+    id_liheap_weatherization_income_eligible: true
+    id_liheap_weatherization_eligible: true
+
+- name: Weatherization program - family of 4 under 200% FPL
+  period: 2025-11  # November, year-round availability
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 35_000
+      parent2:
+        age: 36
+        employment_income: 25_000
+      child1:
+        age: 12
+      child2:
+        age: 9
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2]
+  output:
+    # Family income $60,000 under 200% FPL for 4 people (approximately $62,400 in 2025)
+    id_liheap_weatherization_income_eligible: true
+    id_liheap_weatherization_eligible: true
+
+# Non-eligible scenarios to verify program limits
+
+- name: Income too high - no categorical eligibility
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000  # Well above 60% SMI limits
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        # No SNAP, TANF, or SSI participation
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Income too high and no categorical eligibility
+    id_liheap_income_eligible: false
+    id_liheap_categorically_eligible: false
+    id_liheap_eligible: false
+
+- name: Out of state - not Idaho resident
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000  # Would be income eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: WA  # Washington, not Idaho
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Must be Idaho resident to be eligible
+    id_liheap_eligible: false

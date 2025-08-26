@@ -1,0 +1,83 @@
+# Unit tests for Idaho LIHEAP seasonal heating benefit
+
+- name: Unit test - Idaho LIHEAP seasonal benefit during heating season (October)
+  period: 2024-10  # October - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_liheap_eligible: true
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+  output:
+    id_liheap_seasonal_benefit: 75  # Minimum benefit during heating season
+
+- name: Unit test - Idaho LIHEAP seasonal benefit during heating season (January)
+  period: 2024-01  # January - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_liheap_eligible: true
+    people:
+      person1:
+        age: 30
+        state_code: ID
+      person2:
+        age: 28
+        state_code: ID
+      person3:
+        age: 5
+        state_code: ID
+  output:
+    id_liheap_seasonal_benefit: 75  # Minimum benefit during heating season
+
+- name: Unit test - Idaho LIHEAP seasonal benefit during heating season (March)
+  period: 2024-03  # March - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_liheap_eligible: true
+    people:
+      person1:
+        age: 65
+        state_code: ID
+  output:
+    id_liheap_seasonal_benefit: 75  # Minimum benefit during heating season
+
+- name: Unit test - Idaho LIHEAP seasonal benefit outside heating season (June)
+  period: 2024-06  # June - not heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_liheap_eligible: true
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+  output:
+    id_liheap_seasonal_benefit: 0  # No benefit outside heating season
+
+- name: Unit test - Idaho LIHEAP seasonal benefit ineligible household during heating season
+  period: 2024-12  # December - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_liheap_eligible: false  # Not eligible
+    people:
+      person1:
+        age: 35
+        state_code: ID
+  output:
+    id_liheap_seasonal_benefit: 0  # No benefit if not eligible

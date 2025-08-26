@@ -1,0 +1,175 @@
+# Idaho LIHEAP Seasonal Heating Payment Tests
+# Testing seasonal heating assistance payment amounts
+# Season: October 1 - March 31, Minimum: $75, Maximum: $1,242
+
+- name: Minimum benefit scenario - low heating costs
+  period: 2025-01  # January - within heating season
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Even with low heating costs, minimum benefit applies
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Minimum per documentation
+
+- name: Moderate benefit - average household heating costs
+  period: 2025-02  # February - within heating season
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 8
+      child2:
+        age: 12
+    households:
+      household1:
+        members: [parent1, child1, child2]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [parent1, child1, child2]
+  output:
+    # Moderate heating assistance for 3 person household
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Moderate benefit amount
+
+- name: Maximum benefit scenario - large family high heating costs
+  period: 2025-01  # January - within heating season
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 22_000
+      parent2:
+        age: 38
+        employment_income: 15_000
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 4  # Under 6 - priority group
+      child4:
+        age: 1  # Under 6 - priority group
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [parent1, parent2, child1, child2, child3, child4]
+  output:
+    # Large family with high heating costs and priority children
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Maximum benefit per documentation
+
+- name: Elderly household with moderate costs - priority benefit
+  period: 2025-03  # March - still within heating season
+  input:
+    people:
+      person1:
+        age: 72  # Elderly - priority group
+        social_security: 18_000
+      person2:
+        age: 68  # Elderly - priority group
+        social_security: 14_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1, person2]
+  output:
+    # Elderly couple with priority status
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Higher benefit for elderly priority
+
+- name: Disabled person living alone - priority benefit
+  period: 2025-12  # December - within heating season
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        ssi: 9_600  # SSI makes them categorically eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Disabled person with priority status
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Priority benefit amount
+
+- name: Outside heating season - no seasonal benefit
+  period: 2025-07  # July - outside October-March season
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Outside heating season - no seasonal heating assistance
+    id_liheap_seasonal_heating_eligible: false
+    id_liheap_seasonal_heating_amount: 0
+
+- name: Income eligible but no heating expense - still gets minimum
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Eligible household gets minimum even without reported heating costs
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Minimum benefit
+
+- name: Very high income via categorical eligibility - benefit varies by need
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 45_000  # Above income limits
+        ssi: 9_600  # $800/month SSI - categorically eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Categorically eligible via SSI, benefit based on need
+    id_liheap_seasonal_heating_eligible: true
+    id_liheap_seasonal_heating_amount: 75  # Based on heating need despite high income

@@ -1,0 +1,77 @@
+# Unit tests for Idaho LIHEAP categorical eligibility
+
+- name: Unit test - Idaho LIHEAP categorically eligible via SNAP
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 300  # Receiving SNAP benefits
+        tanf: 0
+        ssi: 0
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+  output:
+    id_liheap_categorical_eligible: true
+
+- name: Unit test - Idaho LIHEAP categorically eligible via TANF
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 400  # Receiving TANF benefits
+        ssi: 0
+    people:
+      person1:
+        age: 25
+        state_code: ID
+      person2:
+        age: 23
+        state_code: ID
+      person3:
+        age: 2
+        state_code: ID
+  output:
+    id_liheap_categorical_eligible: true
+
+- name: Unit test - Idaho LIHEAP categorically eligible via SSI
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        ssi: 600  # Receiving SSI benefits
+    people:
+      person1:
+        age: 70
+        state_code: ID
+  output:
+    id_liheap_categorical_eligible: true
+
+- name: Unit test - Idaho LIHEAP not categorically eligible
+  period: 2024-10
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # Not receiving any qualifying benefits
+        tanf: 0
+        ssi: 0
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+  output:
+    id_liheap_categorical_eligible: false

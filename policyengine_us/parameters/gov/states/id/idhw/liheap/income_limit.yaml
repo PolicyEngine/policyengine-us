@@ -1,0 +1,31 @@
+description: Idaho LIHEAP gross monthly income limits by household size (60% of State Median Income)
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    - title: Idaho Low Income Home Energy Assistance Program State Plan Federal Fiscal Year 2025
+      href: https://healthandwelfare.idaho.gov/services-programs/idaho-careline/energy-assistance
+    - title: 45 CFR 96.85 - Income eligibility limits
+      href: https://www.ecfr.gov/current/title-45/section-96.85
+  label: Idaho LIHEAP income limits by household size
+
+# Monthly income limits for FY 2025 based on 60% SMI
+# Idaho SMI 4-person household: $97,325 (2024-10-01)
+# 60% of SMI: $58,395 annually
+# Household size adjustments per HHS formula
+
+one_person:
+  2024-10-01: 2_530  # 52% of $97,325 * 0.6 / 12
+two_person:
+  2024-10-01: 3_309  # 68% of $97,325 * 0.6 / 12  
+three_person:
+  2024-10-01: 4_087  # 84% of $97,325 * 0.6 / 12
+four_person:
+  2024-10-01: 4_866  # 100% of $97,325 * 0.6 / 12
+five_person:
+  2024-10-01: 5_644  # 116% of $97,325 * 0.6 / 12
+six_person:
+  2024-10-01: 6_423  # 132% of $97,325 * 0.6 / 12
+seven_person:
+  2024-10-01: 7_201  # 148% of $97,325 * 0.6 / 12
+# For sizes 8+, Idaho uses 150% Federal Poverty Guidelines
