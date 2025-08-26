@@ -36,13 +36,8 @@ def run_batch_isolated(test_dirs, timeout_seconds):
     Run a batch of test directories in an isolated subprocess.
     Runs entire directories together to avoid repeat initialization.
     """
-    # Detect the right Python executable
-    import os
-
-    if os.path.exists("/opt/miniconda3/envs/policyengine/bin/python"):
-        python_exe = "/opt/miniconda3/envs/policyengine/bin/python"
-    else:
-        python_exe = sys.executable
+    # Use the current Python executable (works with uv run, conda, etc.)
+    python_exe = sys.executable
 
     # Convert to list of directory strings
     test_dirs_list = [str(d) for d in test_dirs]

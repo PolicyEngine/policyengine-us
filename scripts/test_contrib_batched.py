@@ -55,10 +55,8 @@ def run_test_batch(test_files: List[str], batch_name: str) -> Dict[str, Any]:
         for test_file in test_files:
             f.write(f"{test_file}\n")
 
-    # Use the correct Python environment
-    python_exe = "/opt/miniconda3/envs/policyengine/bin/python"
-    if not os.path.exists(python_exe):
-        python_exe = sys.executable
+    # Use the current Python executable (works with uv run, conda, etc.)
+    python_exe = sys.executable
 
     # Run tests
     cmd = [

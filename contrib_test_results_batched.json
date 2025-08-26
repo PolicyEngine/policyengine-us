@@ -1,0 +1,233 @@
+{
+  "timestamp": "2025-08-26T14:48:11.628134",
+  "summary": {
+    "total_files": 53,
+    "total_batches": 25,
+    "successful_batches": 25,
+    "failed_batches": 0,
+    "total_time": 1810.227926,
+    "categories": {
+      "root": 3,
+      "reconciliation": 1,
+      "ubi_center": 1,
+      "snap_ea": 1,
+      "state_dependent_exemptions": 1,
+      "crfb": 4,
+      "snap": 2,
+      "taxsim": 9,
+      "federal": 3,
+      "ctc": 2,
+      "tax_exempt": 1,
+      "treasury": 1,
+      "additional_tax_bracket": 1,
+      "congress": 11,
+      "eitc": 1,
+      "states": 6,
+      "local": 1,
+      "deductions": 1,
+      "harris": 3
+    }
+  },
+  "batch_results": [
+    {
+      "batch_name": "additional_tax_bracket",
+      "num_tests": 1,
+      "elapsed_time": 40.417187,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/additional_tax_bracket/additional_tax_bracket_reform.yaml ....\n\n============================== 4 passed in 9.62s ===============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "congress_batch_1_of_4",
+      "num_tests": 3,
+      "elapsed_time": 99.772011,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 19 items\n\npolicyengine_us/tests/policy/contrib/congress/afa/afa_other_dependent_credit.yaml ...........\npolicyengine_us/tests/policy/contrib/congress/american_family_act_with_baby_bonus.yaml ..\npolicyengine_us/tests/policy/contrib/congress/golden/fisc_act.yaml ......\n\n============================= 19 passed in 46.56s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "congress_batch_2_of_4",
+      "num_tests": 3,
+      "elapsed_time": 71.390777,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 19 items\n\npolicyengine_us/tests/policy/contrib/congress/hawley/awra/american_worker_rebate_act.yaml .......\npolicyengine_us/tests/policy/contrib/congress/romney/family_security_act/remove_head_of_household.yaml ..\npolicyengine_us/tests/policy/contrib/congress/romney/family_security_act_2024/ctc/family_security_act_2024_ctc.yaml ..........\n\n============================= 19 passed in 27.59s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "congress_batch_3_of_4",
+      "num_tests": 3,
+      "elapsed_time": 70.034676,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 10 items\n\npolicyengine_us/tests/policy/contrib/congress/romney/family_security_act_2024/eitc/family_security_act_2024_eitc.yaml ....\npolicyengine_us/tests/policy/contrib/congress/tlaib/boost/boost_middle_class_tax_credit.yaml .....\npolicyengine_us/tests/policy/contrib/congress/tlaib/end_child_poverty_act/ecpa_filer_credit.yaml .\n\n============================= 10 passed in 26.33s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "congress_batch_4_of_4",
+      "num_tests": 2,
+      "elapsed_time": 76.579605,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 6 items\n\npolicyengine_us/tests/policy/contrib/congress/tlaib/end_child_poverty_act/integration.yaml ....\npolicyengine_us/tests/policy/contrib/congress/wftca.yaml ..\n\n============================== 6 passed in 29.53s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "crfb",
+      "num_tests": 4,
+      "elapsed_time": 160.404666,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 9 items\n\npolicyengine_us/tests/policy/contrib/crfb/non_refundable_ss_credit.yaml ......\npolicyengine_us/tests/policy/contrib/crfb/tax_employer_all_payroll_tax.yaml .\npolicyengine_us/tests/policy/contrib/crfb/tax_employer_medicare_tax.yaml .\npolicyengine_us/tests/policy/contrib/crfb/tax_employer_social_security_tax.yaml .\n\n========================= 9 passed in 73.90s (0:01:13) =========================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "ctc",
+      "num_tests": 2,
+      "elapsed_time": 85.321976,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 9 items\n\npolicyengine_us/tests/policy/contrib/ctc/ctc_additional_bracket.yaml .....\npolicyengine_us/tests/policy/contrib/ctc/ctc_older_child_supplement.yaml ....\n\n============================== 9 passed in 32.80s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "deductions",
+      "num_tests": 1,
+      "elapsed_time": 62.356226,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/deductions/salt/limit_salt_deduction_to_property_taxes.yaml ....\n\n============================== 4 passed in 20.69s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "eitc",
+      "num_tests": 1,
+      "elapsed_time": 43.325485,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 5 items\n\npolicyengine_us/tests/policy/contrib/eitc/halve_joint_eitc_phase_out_rate.yaml .....\n\n============================== 5 passed in 10.16s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "federal",
+      "num_tests": 3,
+      "elapsed_time": 102.590332,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 7 items\n\npolicyengine_us/tests/policy/contrib/federal/abolish_federal_income_tax.yaml ...\npolicyengine_us/tests/policy/contrib/federal/abolish_payroll_tax.yaml ..\npolicyengine_us/tests/policy/contrib/federal/reported_state_income_tax.yaml ..\n\n============================== 7 passed in 40.85s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "harris",
+      "num_tests": 3,
+      "elapsed_time": 66.128354,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 19 items\n\npolicyengine_us/tests/policy/contrib/harris/capital_gains/harris_capital_gains.yaml ....\npolicyengine_us/tests/policy/contrib/harris/lift/middle_class_tax_credit.yaml .....\npolicyengine_us/tests/policy/contrib/harris/rent_relief_act/rent_relief_tax_credit.yaml ..........\n\n============================= 19 passed in 25.03s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "local",
+      "num_tests": 1,
+      "elapsed_time": 36.3167,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/local/nyc/stc/nyc_school_tax_credit_with_phase_out.yaml ....\n\n============================== 4 passed in 7.13s ===============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "reconciliation",
+      "num_tests": 1,
+      "elapsed_time": 40.800151,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 5 items\n\npolicyengine_us/tests/policy/contrib/reconciliation/reconciled_ssn_for_llc_and_aoc.yaml .....\n\n============================== 5 passed in 7.05s ===============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "root",
+      "num_tests": 3,
+      "elapsed_time": 67.843421,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 5 items\n\npolicyengine_us/tests/policy/contrib/dc_kccatc.yaml ..\npolicyengine_us/tests/policy/contrib/dc_single_joint_threshold_ratio.yaml ..\npolicyengine_us/tests/policy/contrib/reported_state_income_tax.yaml .\n\n============================== 5 passed in 25.72s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "snap",
+      "num_tests": 2,
+      "elapsed_time": 50.264318,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/snap/abolish_snap_deductions.yaml ..\npolicyengine_us/tests/policy/contrib/snap/abolish_snap_net_income_test.yaml ..\n\n============================== 4 passed in 16.66s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "snap_ea",
+      "num_tests": 1,
+      "elapsed_time": 56.825239,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 1 item\n\npolicyengine_us/tests/policy/contrib/snap_ea/snap_ca_ea_reform.yaml .\n\n============================== 1 passed in 20.05s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "state_dependent_exemptions",
+      "num_tests": 1,
+      "elapsed_time": 57.469165,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/state_dependent_exemptions/repeal_state_dependent_exemptions.yaml ....\n\n============================== 4 passed in 13.98s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "states_batch_1_of_2",
+      "num_tests": 5,
+      "elapsed_time": 241.572901,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 46 items\n\npolicyengine_us/tests/policy/contrib/states/dc/property_tax/dc_property_tax_credit.yaml ...............\npolicyengine_us/tests/policy/contrib/states/mi/mi_surtax.yaml ........\npolicyengine_us/tests/policy/contrib/states/mn/walz/mn_walz_hf1938.yaml ....\npolicyengine_us/tests/policy/contrib/states/mt/ctc/mt_ctc.yaml ........\npolicyengine_us/tests/policy/contrib/states/ny/ny_working_families_tax_credit.yaml ...........\n\n======================== 46 passed in 88.32s (0:01:28) =========================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "states_batch_2_of_2",
+      "num_tests": 1,
+      "elapsed_time": 58.100336,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 3 items\n\npolicyengine_us/tests/policy/contrib/states/or/rebate/or_rebate_state_tax_exempt.yaml ...\n\n============================== 3 passed in 19.16s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "tax_exempt",
+      "num_tests": 1,
+      "elapsed_time": 76.009416,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/tax_exempt/tax_exempt_reform.yaml ....\n\n============================== 4 passed in 24.28s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "taxsim_batch_1_of_3",
+      "num_tests": 3,
+      "elapsed_time": 40.551104,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/taxsim/misc/capital_gains.yaml .\npolicyengine_us/tests/policy/contrib/taxsim/misc/ctc.yaml ..\npolicyengine_us/tests/policy/contrib/taxsim/misc/eitc_2021_childless.yaml .\n\n============================== 4 passed in 7.87s ===============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "taxsim_batch_2_of_3",
+      "num_tests": 3,
+      "elapsed_time": 57.092237,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 7 items\n\npolicyengine_us/tests/policy/contrib/taxsim/misc/general.yaml .....\npolicyengine_us/tests/policy/contrib/taxsim/misc/qualified_dividends.yaml .\npolicyengine_us/tests/policy/contrib/taxsim/misc/sch_r.yaml .\n\n============================== 7 passed in 17.22s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "taxsim_batch_3_of_3",
+      "num_tests": 3,
+      "elapsed_time": 31.196383,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 96 items\n\npolicyengine_us/tests/policy/contrib/taxsim/taxsim_v10.yaml ................................\npolicyengine_us/tests/policy/contrib/taxsim/taxsim_v11.yaml ................................\npolicyengine_us/tests/policy/contrib/taxsim/taxsim_v13.yaml ................................\n\n============================== 96 passed in 5.98s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "treasury",
+      "num_tests": 1,
+      "elapsed_time": 45.303565,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 4 items\n\npolicyengine_us/tests/policy/contrib/treasury/repeal_dependent_exemptions.yaml ....\n\n============================== 4 passed in 10.48s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "batch_name": "ubi_center",
+      "num_tests": 1,
+      "elapsed_time": 72.561695,
+      "success": true,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0\nrootdir: /Users/ziminghua/vscode/policyengine-us\nconfigfile: pyproject.toml\ncollected 3 items\n\npolicyengine_us/tests/policy/contrib/ubi_center/flat_tax.yaml ...\n\n============================== 3 passed in 20.76s ==============================\n",
+      "stderr": ""
+    }
+  ]
+}
