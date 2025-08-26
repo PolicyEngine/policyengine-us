@@ -8,23 +8,8 @@
    chmod +x .claude/claude_code_hook.sh
    ```
 
-2. **Set Agent Environment Variable**
-   When starting each agent session, set:
-   ```bash
-   # For Test Creator
-   export CLAUDE_AGENT=test_creator
-   
-   # For Rules Engineer
-   export CLAUDE_AGENT=rules_engineer
-   
-   # For Document Collector
-   export CLAUDE_AGENT=document_collector
-   
-   # For Supervisor/Reviewer (no restrictions)
-   export CLAUDE_AGENT=supervisor
-   ```
-
-3. **Work in Designated Worktrees**
+2. **Work in Designated Worktrees**
+   The hook automatically detects which agent you are based on your worktree:
    ```bash
    # Test Creator works here
    cd ../pe-<program>-tests

@@ -24,21 +24,23 @@ check_path_access() {
     return 0
 }
 
-# Detect which agent based on worktree location
-if [[ "$CURRENT_DIR" =~ "pe-.*-tests" ]] || [[ "$CLAUDE_AGENT" == "test_creator" ]]; then
+# Detect which agent based on worktree location (primary method)
+# The agent type is inferred from which worktree we're in
+if [[ "$CURRENT_DIR" =~ "pe-.*-tests" ]]; then
     AGENT="Test Creator"
     FORBIDDEN="pe-.*-rules|rules_engineer|/variables/|/parameters/"
     
-elif [[ "$CURRENT_DIR" =~ "pe-.*-rules" ]] || [[ "$CLAUDE_AGENT" == "rules_engineer" ]]; then
+elif [[ "$CURRENT_DIR" =~ "pe-.*-rules" ]]; then
     AGENT="Rules Engineer"
     FORBIDDEN="pe-.*-tests|test_creator|/tests/.*integration|integration.*\.yaml"
     
-elif [[ "$CLAUDE_AGENT" == "document_collector" ]]; then
+elif [[ "$CURRENT_DIR" =~ "pe-.*-docs" ]]; then
     AGENT="Document Collector"
-    FORBIDDEN="pe-.*-tests|pe-.*-rules|test_creator|rules_engineer"
+    FORBIDDEN="pe-.*-tests|pe-.*-rules|test_creator|rules_engineer|/variables/|/parameters/|/tests/"
     
 else
-    # Supervisor or reviewer can access everything
+    # Main repo - could be supervisor/reviewer or just regular development
+    # Without explicit agent marking, we can't enforce isolation here
     exit 0
 fi
 
