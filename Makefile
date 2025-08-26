@@ -19,7 +19,12 @@ test-batch:
 	@echo "Running YAML tests in batches (memory efficient)..."
 	python scripts/batch_test_runner.py --path policyengine_us/tests/policy/baseline --batch-size=20
 test-yaml-structural:
-	coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us 
+	@echo "Running contrib tests with memory isolation to prevent OOM errors..."
+	@if [ -f scripts/test_contrib_isolated.py ]; then \
+		python scripts/test_contrib_isolated.py --timeout-minutes 10; \
+	else \
+		coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us; \
+	fi 
 test-yaml-no-structural:
 	coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us
 	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
