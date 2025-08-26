@@ -348,22 +348,22 @@ def main(batch_size=None):
     print("\n" + "=" * 80)
     print("FINAL TEST SUMMARY")
     print("=" * 80)
-    print(f"Total tests: {len(all_test_files)}")
-    print(f"✓ Passed: {all_stats['passed']}")
+    print(f"Total test files: {len(all_test_files)}")
+    print(f"✓ Passed: {all_stats['passed']} tests")
     print(f"✗ Failed: {all_stats['failed']}")
     print(f"⏱ Timeouts: {all_stats['timeouts']}")
     print(f"❌ Errors: {all_stats['errors']}")
 
+    total_tests = all_stats["passed"] + all_stats["failed"] + all_stats["timeouts"] + all_stats["errors"]
     success_rate = (
-        (all_stats["passed"] / len(all_test_files) * 100)
-        if all_test_files
-        else 0
+        (all_stats["passed"] / total_tests * 100) if total_tests > 0 else 0
     )
     print(f"\nSuccess rate: {success_rate:.1f}%")
 
     # No longer saving results to JSON file
 
-    return all_stats["passed"] == len(all_test_files)
+    # Return success if all tests passed (no failures, timeouts, or errors)
+    return all_stats["failed"] == 0 and all_stats["timeouts"] == 0 and all_stats["errors"] == 0
 
 
 if __name__ == "__main__":
