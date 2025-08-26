@@ -9,12 +9,14 @@ metadata:
       href: "https://services.marylandcomptroller.gov/taxes/en/maryland-income-tax-rates-and-brackets"
 brackets:
   - threshold:
-      2024-01-01: 0
+      2021-01-01: 0
     rate:
-      2024-01-01: 0.027
+      2021-01-01: 0.0281
+      2023-01-01: 0.027
   - threshold:
-      2024-01-01: 50_000
+      2021-01-01: 50_000
     rate:
+      2021-01-01: 0.0281
       2024-01-01: 0.0281
       2025-01-01: 0.0294
   - threshold:

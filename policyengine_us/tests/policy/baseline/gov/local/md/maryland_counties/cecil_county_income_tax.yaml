@@ -1,3 +1,57 @@
+- name: Cecil County income tax - no income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 0
+  output:
+    md_local_income_tax_before_credits: 0
+
+- name: Cecil County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.03 = 1,500
+    md_local_income_tax_before_credits: 1_500
+
+- name: Cecil County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.03 = 3,000
+    md_local_income_tax_before_credits: 3_000
+
+- name: Cecil County income tax - $50,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.028 = 1,400
+    md_local_income_tax_before_credits: 1_400
+
+- name: Cecil County income tax - $100,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.028 = 2,800
+    md_local_income_tax_before_credits: 2_800
+
 - name: Cecil County income tax - no income (2024)
   period: 2024
   absolute_error_margin: 1

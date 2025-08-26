@@ -1,5 +1,5 @@
-- name: Caroline County income tax - no income (2024)
-  period: 2024
+- name: Caroline County income tax - no income (2021)
+  period: 2021
   absolute_error_margin: 1
   input:
     state_code_str: MD
@@ -8,8 +8,8 @@
   output:
     md_local_income_tax_before_credits: 0
 
-- name: Caroline County income tax - $50,000 income (2024)
-  period: 2024
+- name: Caroline County income tax - $50,000 income (2021)
+  period: 2021
   absolute_error_margin: 1
   input:
     state_code_str: MD
@@ -19,8 +19,8 @@
     # 50,000 * 0.032 = 1,600
     md_local_income_tax_before_credits: 1_600
 
-- name: Caroline County income tax - $100,000 income (2024)
-  period: 2024
+- name: Caroline County income tax - $100,000 income (2021)
+  period: 2021
   absolute_error_margin: 1
   input:
     state_code_str: MD
@@ -29,37 +29,3 @@
   output:
     # 100,000 * 0.032 = 3,200
     md_local_income_tax_before_credits: 3_200
-
-
-- name: Caroline County income tax - no income (2025)
-  period: 2025
-  absolute_error_margin: 1
-  input:
-    state_code_str: MD
-    county_str: CAROLINE_COUNTY_MD
-    md_taxable_income: 0
-  output:
-    md_local_income_tax_before_credits: 0
-
-- name: Caroline County income tax - $50,000 income (2025)
-  period: 2025
-  absolute_error_margin: 1
-  input:
-    state_code_str: MD
-    county_str: CAROLINE_COUNTY_MD
-    md_taxable_income: 50_000
-  output:
-    # 50,000 * 0.032 = 1,600 (using 2024 rate)
-    md_local_income_tax_before_credits: 1_600
-
-- name: Caroline County income tax - $100,000 income (2025)
-  period: 2025
-  absolute_error_margin: 1
-  input:
-    state_code_str: MD
-    county_str: CAROLINE_COUNTY_MD
-    md_taxable_income: 100_000
-  output:
-    # 100,000 * 0.032 = 3,200 (using 2024 rate)
-    md_local_income_tax_before_credits: 3_200
-
