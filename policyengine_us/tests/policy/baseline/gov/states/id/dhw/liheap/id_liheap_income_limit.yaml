@@ -1,0 +1,227 @@
+- name: Income limit for single person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 2_530.42 * 12  # Annual limit for 1 person
+
+- name: Income limit for two person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 3_309.00 * 12  # Annual limit for 2 people
+      - 3_309.00 * 12
+
+- name: Income limit for three person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 4_087.58 * 12  # Annual limit for 3 people
+      - 4_087.58 * 12
+      - 4_087.58 * 12
+
+- name: Income limit for four person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 4_866.25 * 12  # Annual limit for 4 people
+      - 4_866.25 * 12
+      - 4_866.25 * 12
+      - 4_866.25 * 12
+
+- name: Income limit for five person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2, child3]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 5_644.83 * 12  # Annual limit for 5 people
+      - 5_644.83 * 12
+      - 5_644.83 * 12
+      - 5_644.83 * 12
+      - 5_644.83 * 12
+
+- name: Income limit for six person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 6_423.42 * 12  # Annual limit for 6 people
+      - 6_423.42 * 12
+      - 6_423.42 * 12
+      - 6_423.42 * 12
+      - 6_423.42 * 12
+      - 6_423.42 * 12
+
+- name: Income limit for seven person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 4
+      child5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4, child5]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 6_569.42 * 12  # Annual limit for 7 people
+      - 6_569.42 * 12
+      - 6_569.42 * 12
+      - 6_569.42 * 12
+      - 6_569.42 * 12
+      - 6_569.42 * 12
+      - 6_569.42 * 12
+
+- name: Income limit for eight person household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 4
+      child5:
+        age: 2
+      child6:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4, child5, child6]
+        state_code: ID
+  output:
+    id_liheap_income_limit:
+      - 6_590.00 * 12  # Annual limit for 8 people (150% FPG)
+      - 6_590.00 * 12
+      - 6_590.00 * 12
+      - 6_590.00 * 12
+      - 6_590.00 * 12
+      - 6_590.00 * 12
+      - 6_590.00 * 12
+      - 6_590.00 * 12

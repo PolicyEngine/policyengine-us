@@ -1,0 +1,116 @@
+- name: Minimum heating assistance benefit
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_gross_income: 2_400 * 12  # Just under limit
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        heating_cooling_expense: 500  # Some heating expense
+  output:
+    id_liheap_heating_assistance:
+      - 75  # Minimum benefit
+
+- name: Maximum heating assistance benefit for very low income
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+      child1:
+        age: 4
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+        snap: 0
+        spm_unit_gross_income: 1_000 * 12  # Very low income
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: ID
+        heating_cooling_expense: 2_000  # High heating expense
+  output:
+    id_liheap_heating_assistance:
+      - 1_242  # Maximum benefit
+      - 0
+      - 0
+      - 0
+
+- name: No benefit when not eligible
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_gross_income: 5_000 * 12  # Over income limit
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        heating_cooling_expense: 1_000
+  output:
+    id_liheap_heating_assistance:
+      - 0  # No benefit when not eligible
+
+- name: Benefit limited by actual heating expense
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_gross_income: 1_000 * 12  # Very low income
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        heating_cooling_expense: 50  # Very low actual expense
+  output:
+    id_liheap_heating_assistance:
+      - 50  # Limited by actual expense, even though eligible for more
+
+- name: Priority household receives benefit
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      toddler:
+        age: 3  # Under 6, priority household
+    spm_units:
+      spm_unit:
+        members: [parent, toddler]
+        snap: 0
+        spm_unit_gross_income: 3_000 * 12
+    households:
+      household:
+        members: [parent, toddler]
+        state_code: ID
+        heating_cooling_expense: 800
+  output:
+    id_liheap_heating_assistance:
+      - 800  # Gets full actual expense (under max)
+      - 0

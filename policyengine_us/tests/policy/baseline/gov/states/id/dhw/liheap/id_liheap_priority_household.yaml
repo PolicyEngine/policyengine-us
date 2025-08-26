@@ -1,0 +1,114 @@
+- name: Household with child under 6 is priority
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4  # Under 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_liheap_priority_household:
+      - True
+      - True
+
+- name: Household with elderly person is priority
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67  # Over 65
+      person2:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_liheap_priority_household:
+      - True
+      - True
+
+- name: Household with disabled person is priority
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: True
+      person2:
+        age: 40
+        is_disabled: False
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_liheap_priority_household:
+      - True
+      - True
+
+- name: Household with no priority factors
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: False
+      person2:
+        age: 40
+        is_disabled: False
+      child:
+        age: 10  # Over 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child]
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: ID
+  output:
+    id_liheap_priority_household:
+      - False
+      - False
+      - False
+
+- name: Multiple priority factors - elderly and young child
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      grandparent:
+        age: 70  # Elderly
+      parent:
+        age: 35
+      toddler:
+        age: 2  # Under 6
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, toddler]
+    households:
+      household:
+        members: [grandparent, parent, toddler]
+        state_code: ID
+  output:
+    id_liheap_priority_household:
+      - True
+      - True
+      - True

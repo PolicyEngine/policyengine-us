@@ -1,0 +1,133 @@
+- name: Basic LIHEAP benefit calculation
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_gross_income: 2_000 * 12
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        heating_cooling_expense: 600
+  output:
+    id_liheap:
+      - 600  # Gets actual expense amount
+
+- name: LIHEAP with both heating and crisis assistance
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        spm_unit_gross_income: 2_500 * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        heating_cooling_expense: 1_000
+  output:
+    id_liheap_heating_assistance:
+      - 1_000
+      - 0
+    # Crisis assistance would be calculated separately
+    # Total LIHEAP would include both components
+
+- name: SNAP recipient gets LIHEAP benefit
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200 * 12  # Receiving SNAP
+        spm_unit_gross_income: 3_000 * 12  # Would be over income without SNAP
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        heating_cooling_expense: 400
+  output:
+    id_liheap_eligible:
+      - True
+    id_liheap:
+      - 400  # Gets benefit due to SNAP eligibility
+
+- name: Large family LIHEAP calculation
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 32
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 5  # Under 6 - priority
+      child4:
+        age: 3  # Under 6 - priority
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        snap: 0
+        spm_unit_gross_income: 5_000 * 12  # Under limit for 6 people
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: ID
+        heating_cooling_expense: 1_500
+  output:
+    id_liheap_priority_household:
+      - True
+      - True
+      - True
+      - True
+      - True
+      - True
+    id_liheap:
+      - 1_242  # Maximum heating benefit
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+
+- name: No LIHEAP for non-Idaho resident
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_gross_income: 1_000 * 12
+    households:
+      household:
+        members: [person1]
+        state_code: WY  # Not Idaho
+        heating_cooling_expense: 500
+  output:
+    id_liheap:
+      - 0  # No benefit for non-Idaho resident
