@@ -88,8 +88,6 @@ def run_test_batch(test_files: List[str], batch_name: str) -> Dict[str, Any]:
     if os.path.exists(test_list_file):
         os.remove(test_list_file)
 
-    # Memory cleanup is now done at Makefile level
-
     return {
         "batch_name": batch_name,
         "num_tests": len(test_files),
@@ -142,7 +140,7 @@ def main():
             print(
                 f"✅ Folder {batch_name} passed in {result['elapsed_time']:.2f}s"
             )
-        
+
         # Clean up memory after each batch
         gc.collect()
 

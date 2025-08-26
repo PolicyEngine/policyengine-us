@@ -290,15 +290,22 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
             if "stdout" in batch_results and batch_results["stdout"]:
                 # Extract failed test names from output
                 import re
-                failed_tests = re.findall(r"FAILED (.*\.yaml.*?) -", batch_results["stdout"])
+
+                failed_tests = re.findall(
+                    r"FAILED (.*\.yaml.*?) -", batch_results["stdout"]
+                )
                 if failed_tests:
                     print(f"Failed tests in {dir_name}:")
-                    for test in failed_tests[:10]:  # Show first 10 failed tests
+                    for test in failed_tests[
+                        :10
+                    ]:  # Show first 10 failed tests
                         print(f"  - {test}")
             # Show stderr if available
             if "stderr" in batch_results and batch_results["stderr"]:
                 print("Error details:")
-                print(batch_results["stderr"][:500])  # First 500 chars of error
+                print(
+                    batch_results["stderr"][:500]
+                )  # First 500 chars of error
         elif batch_results["status"] == "timeout":
             timeouts += test_count
             print(f"\n⏱️ TIMEOUT: {dir_path} exceeded 20 minutes")
@@ -314,11 +321,9 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
         print(
             f"  Running total: ✓ {passed} | ✗ {failed} | ⏱ {timeouts} | ❌ {errors}"
         )
-        
+
         # Clean up memory after each batch
         gc.collect()
-
-    # Memory cleanup is now done at Makefile level after each major test group
 
     return detailed_results, {
         "passed": passed,
@@ -371,16 +376,23 @@ def main(batch_size=None):
     print(f"⏱ Timeouts: {all_stats['timeouts']}")
     print(f"❌ Errors: {all_stats['errors']}")
 
-    total_tests = all_stats["passed"] + all_stats["failed"] + all_stats["timeouts"] + all_stats["errors"]
+    total_tests = (
+        all_stats["passed"]
+        + all_stats["failed"]
+        + all_stats["timeouts"]
+        + all_stats["errors"]
+    )
     success_rate = (
         (all_stats["passed"] / total_tests * 100) if total_tests > 0 else 0
     )
     print(f"\nSuccess rate: {success_rate:.1f}%")
 
-    # No longer saving results to JSON file
-
     # Return success if all tests passed (no failures, timeouts, or errors)
-    return all_stats["failed"] == 0 and all_stats["timeouts"] == 0 and all_stats["errors"] == 0
+    return (
+        all_stats["failed"] == 0
+        and all_stats["timeouts"] == 0
+        and all_stats["errors"] == 0
+    )
 
 
 if __name__ == "__main__":
