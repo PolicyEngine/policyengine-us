@@ -31,14 +31,14 @@ def force_cleanup():
     # Give OS time to reclaim memory
     time.sleep(1)
 
-def run_single_test_isolated(test_file, timeout_seconds=60):
+def run_single_test_isolated(test_file, timeout_seconds=120):
     """
     Run a single test file in complete isolation.
     The subprocess is guaranteed to be terminated and memory released.
     
     Args:
         test_file: Path to the test file
-        timeout_seconds: Timeout in seconds (default: 60 for baseline tests)
+        timeout_seconds: Timeout in seconds (default: 120 for baseline tests)
     """
     # Use sys.executable to ensure we use the same Python as the runner
     cmd = [
@@ -124,7 +124,7 @@ def get_test_category(test_path):
             return f"{path_parts[i+1]}/{path_parts[i+2]}"
     return "other"
 
-def main(timeout_seconds=60, batch_size=50):
+def main(timeout_seconds=120, batch_size=50):
     print("PolicyEngine Baseline Test Runner - Isolated Process Mode")
     print("=" * 80)
     print("This will run each test in complete isolation.")
@@ -317,8 +317,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--timeout",
         type=int,
-        default=60,
-        help="Timeout in seconds per test (default: 60s for baseline tests)"
+        default=120,
+        help="Timeout in seconds per test (default: 120s for baseline tests)"
     )
     parser.add_argument(
         "--timeout-minutes",

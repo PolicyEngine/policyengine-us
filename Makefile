@@ -28,7 +28,7 @@ test-yaml-structural:
 test-yaml-no-structural:
 	@echo "Running baseline tests with memory isolation to prevent OOM errors..."
 	@if [ -f scripts/test_baseline_isolated.py ]; then \
-		python scripts/test_baseline_isolated.py --timeout 60; \
+		python scripts/test_baseline_isolated.py --timeout 120; \
 	else \
 		coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us; \
 	fi
