@@ -274,7 +274,6 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
             f"\n[Batch {batch_idx}/{len(valid_batches)}] Running {dir_name}/ ({test_count} test files)"
         )
         print(f"  Directory: {dir_path}")
-        print(f"  Memory before: {get_memory_usage():.1f} MB")
 
         # Run single parent directory - ensures single initialization
         batch_results = run_batch_isolated([dir_path], timeout_per_batch)
