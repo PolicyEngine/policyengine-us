@@ -19,10 +19,10 @@ class il_liheap_base_payment(Variable):
 
         # For renters with heat included in rent, provide minimum cash benefit
         # For others, benefit based on actual heating expenses up to maximum
+        capped_heating_expenses = min_(heating_expenses, p.max)
+
         return where(
             heat_in_rent,
-            p.minimum,  # Fixed minimum for heat included in rent
-            min_(
-                heating_expenses, p.maximum
-            ),  # Based on actual expenses, up to maximum
+            p.min,  # Fixed minimum for heat included in rent
+            capped_heating_expenses,  # Based on actual expenses, up to maximum
         )

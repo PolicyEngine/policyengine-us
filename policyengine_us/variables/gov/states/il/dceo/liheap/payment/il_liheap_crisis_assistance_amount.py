@@ -10,4 +10,4 @@ class il_liheap_crisis_assistance_amount(Variable):
     defined_for = "il_liheap_eligible_for_crisis_assistance"
     reference = "https://dceo.illinois.gov/communityservices/utilitybillassistance.html"
 
-    adds = ["gov.states.il.dceo.liheap.payment.crisis_amount.maximum"]
+    adds = ["gov.states.il.dceo.liheap.payment.crisis_amount.max"]

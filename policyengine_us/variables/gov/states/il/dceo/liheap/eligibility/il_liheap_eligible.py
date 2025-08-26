@@ -18,7 +18,7 @@ class il_liheap_eligible(Variable):
         income = add(spm_unit, period, ["irs_gross_income"])
 
         # If heat is included in rent, rent must exceed threshold percentage of income
-        rent_threshold = income * p.rent_threshold_rate
+        rent_threshold = income * p.rent_rate
         rent_threshold_met = rent > rent_threshold
 
         return ~heat_in_rent | rent_threshold_met
