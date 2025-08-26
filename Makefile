@@ -9,6 +9,21 @@ test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
 
+test-isolated:
+	@echo "Running ALL tests with memory isolation..."
+	pytest policyengine_us/tests/ --maxfail=0
+	@if [ -f scripts/test_contrib_isolated.py ]; then \
+		echo "Running contrib tests with isolation..."; \
+		python scripts/test_contrib_isolated.py --timeout-minutes 10; \
+	fi
+	@if [ -f scripts/test_baseline_phased.py ]; then \
+		echo "Running baseline tests with phased isolation..."; \
+		python scripts/test_baseline_phased.py --fast-timeout 60 --slow-timeout 600; \
+	fi
+	@echo "Running reform tests..."
+	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
+	coverage xml -i
+
 # Optimized test commands with memory management
 test-optimized:
 	@echo "Running tests with memory optimization..."
