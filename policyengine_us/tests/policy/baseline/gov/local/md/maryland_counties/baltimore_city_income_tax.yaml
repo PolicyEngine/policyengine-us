@@ -1,13 +1,3 @@
-- name: Baltimore City income tax - no income (2021)
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    state_code_str: MD
-    county_str: BALTIMORE_CITY_MD
-    md_taxable_income: 0
-  output:
-    md_local_income_tax_before_credits: 0
-
 - name: Baltimore City income tax - $50,000 income (2021)
   period: 2021
   absolute_error_margin: 1

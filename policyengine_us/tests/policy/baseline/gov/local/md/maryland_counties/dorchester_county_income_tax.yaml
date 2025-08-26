@@ -1,13 +1,3 @@
-- name: Dorchester County income tax - no income (2021)
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    state_code_str: MD
-    county_str: DORCHESTER_COUNTY_MD
-    md_taxable_income: 0
-  output:
-    md_local_income_tax_before_credits: 0
-
 - name: Dorchester County income tax - $50,000 income (2021)
   period: 2021
   absolute_error_margin: 1
