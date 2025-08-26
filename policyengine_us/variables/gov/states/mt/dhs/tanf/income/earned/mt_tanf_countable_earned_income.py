@@ -8,8 +8,6 @@ class mt_tanf_countable_earned_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MT
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF502.12.23.pdf"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF502.12.23.pdf"
 
     adds = ["mt_tanf_earned_income_after_disregard_person"]
