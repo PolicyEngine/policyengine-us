@@ -11,17 +11,18 @@ test:
 
 test-isolated:
 	@echo "Running ALL tests with memory isolation..."
+	@if [ -f scripts/test_baseline_batched.py ]; then \
+		echo "Running baseline tests with batched execution..."; \
+		python scripts/test_baseline_batched.py --batch-size 50; \
+	fi
+	@echo "Running other Python tests..."
 	pytest policyengine_us/tests/ --maxfail=0
+	@echo "Running reform tests..."
+	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
 	@if [ -f scripts/test_contrib_isolated.py ]; then \
 		echo "Running contrib tests with isolation..."; \
 		python scripts/test_contrib_isolated.py --timeout-minutes 10; \
 	fi
-	@if [ -f scripts/test_baseline_phased.py ]; then \
-		echo "Running baseline tests with phased isolation..."; \
-		python scripts/test_baseline_phased.py --fast-timeout 60 --slow-timeout 600; \
-	fi
-	@echo "Running reform tests..."
-	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
 	coverage xml -i
 
 # Optimized test commands with memory management
