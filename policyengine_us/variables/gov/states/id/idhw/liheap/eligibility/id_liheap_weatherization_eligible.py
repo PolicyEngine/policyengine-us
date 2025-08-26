@@ -15,10 +15,4 @@ class id_liheap_weatherization_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Weatherization uses 200% Federal Poverty Level, not 60% SMI
-        income = spm_unit("id_liheap_income", period)
-        fpg_monthly = spm_unit("spm_unit_fpg", period.this_year) / 12
-
-        # 200% of Federal Poverty Guidelines
-        weatherization_income_limit = fpg_monthly * 2.0
-
-        return income <= weatherization_income_limit
+        return spm_unit("id_liheap_weatherization_income_eligible", period)

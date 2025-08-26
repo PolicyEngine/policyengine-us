@@ -17,6 +17,14 @@ class id_liheap_income(Variable):
     ]
 
     def formula(spm_unit, period, parameters):
-        # Use IRS gross income (like other LIHEAP implementations) and convert to monthly
-        annual_income = add(spm_unit, period.this_year, ["irs_gross_income"])
-        return annual_income / 12
+        # Calculate monthly income from employment and other sources
+        # Employment income is annual, so divide by 12
+        employment = add(spm_unit, period, ["employment_income"]) / 12
+        self_employment = add(spm_unit, period, ["self_employment_income"]) / 12
+        
+        # These are already monthly
+        social_security = add(spm_unit, period, ["social_security"])
+        ssi = add(spm_unit, period, ["ssi"])
+
+        # Return total monthly income
+        return employment + self_employment + social_security + ssi

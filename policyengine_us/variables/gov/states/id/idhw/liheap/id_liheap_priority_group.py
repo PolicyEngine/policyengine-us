@@ -20,13 +20,15 @@ class id_liheap_priority_group(Variable):
         elderly_age_threshold = p.elderly
 
         # Check for children under 6
-        person_ages = spm_unit.members("age", period.start.year)
+        # Age is defined per year, so use the year containing this month
+        year_str = str(period.start.year)
+        person_ages = spm_unit.members("age", year_str)
         has_young_child = (person_ages < child_age_threshold).any()
 
         # Check for elderly members (60+ or 65+)
         has_elderly = (person_ages >= elderly_age_threshold).any()
 
         # Check for disabled members
-        has_disabled = spm_unit.members("is_disabled", period.start.year).any()
+        has_disabled = spm_unit.members("is_disabled", period).any()
 
         return has_young_child | has_elderly | has_disabled

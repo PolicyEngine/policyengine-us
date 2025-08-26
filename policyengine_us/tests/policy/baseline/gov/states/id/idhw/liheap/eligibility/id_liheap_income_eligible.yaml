@@ -3,13 +3,13 @@
 - name: Unit test - Idaho LIHEAP income eligible for 1 person household
   period: 2024-10
   input:
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_total_income_reported: 30_000  # Annual income, monthly: $2,500 under limit of $2,530
     people:
       person1:
         age: 30
+        employment_income: 30_000  # Annual income, monthly: $2,500 under limit of $2,530
+    spm_units:
+      spm_unit:
+        members: [person1]
     households:
       household:
         members: [person1]
@@ -20,15 +20,16 @@
 - name: Unit test - Idaho LIHEAP income ineligible for 2 person household over limit
   period: 2024-10
   input:
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_total_income_reported: 42_000  # Annual income, monthly: $3,500 over limit of $3,309
     people:
       person1:
         age: 35
+        employment_income: 21_000
       person2:
         age: 33
+        employment_income: 21_000  # Total $42,000, monthly: $3,500 over limit of $3,309
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
