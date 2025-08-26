@@ -284,10 +284,27 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
         elif batch_results["status"] == "failed":
             passed += batch_results["passed"]
             failed += batch_results["failed"]
+            # Show which batch failed
+            print(f"\n❌ FAILED: {dir_path}")
+            # Show test output to see what failed
+            if "stdout" in batch_results and batch_results["stdout"]:
+                # Extract failed test names from output
+                import re
+                failed_tests = re.findall(r"FAILED (.*\.yaml.*?) -", batch_results["stdout"])
+                if failed_tests:
+                    print(f"Failed tests in {dir_name}:")
+                    for test in failed_tests[:10]:  # Show first 10 failed tests
+                        print(f"  - {test}")
+            # Show stderr if available
+            if "stderr" in batch_results and batch_results["stderr"]:
+                print("Error details:")
+                print(batch_results["stderr"][:500])  # First 500 chars of error
         elif batch_results["status"] == "timeout":
             timeouts += test_count
+            print(f"\n⏱️ TIMEOUT: {dir_path} exceeded 20 minutes")
         else:
             errors += test_count
+            print(f"\n❌ ERROR: {dir_path}")
 
         # Store results
         detailed_results[dir_path] = batch_results
