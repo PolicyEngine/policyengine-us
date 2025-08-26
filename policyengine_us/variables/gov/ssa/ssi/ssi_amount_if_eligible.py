@@ -8,7 +8,6 @@ class ssi_amount_if_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382#b"
-    defined_for = "is_ssi_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ssa.ssi.amount

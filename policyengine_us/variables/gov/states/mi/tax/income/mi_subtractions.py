@@ -14,4 +14,8 @@ class mi_subtractions(Variable):
     )
     defined_for = StateCode.MI
 
-    adds = "gov.states.mi.tax.income.subtractions"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.mi.tax.income
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

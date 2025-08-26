@@ -10773,3 +10773,45 @@
     fixed:
     - Fix pre-2024 NY CTC.
   date: 2025-08-21 21:00:04
+- bump: patch
+  changes:
+    fixed:
+    - Exclude SSI recipients from NC TANF household count.
+  date: 2025-08-25 02:14:31
+- bump: patch
+  changes:
+    fixed:
+    - Updated SSI-related test cases.
+    - Updated SSI-related variables.
+  date: 2025-08-25 13:09:42
+- bump: patch
+  changes:
+    fixed:
+    - Tenant pays rent variable for HUD utility allowance calculation.
+  date: 2025-08-25 13:45:00
+- bump: minor
+  changes:
+    fixed:
+    - Fixed IL AABD integration tests.
+  date: 2025-08-25 18:03:27
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative subtractions from acting as additions.
+  date: 2025-08-25 19:37:04
+- bump: minor
+  changes:
+    added:
+    - Multi-agent development system for accurate program implementation
+    - Supervisor agent for orchestrating isolated development workflow
+    - Document collector agent for gathering authoritative sources
+    - Test creator agent for building tests from documentation
+    - Rules engineer agent for TDD-based implementation
+    - Verifier agent for comprehensive validation
+    - Shared PolicyEngine standards document for consistency
+  date: 2025-08-26 15:31:43
+- bump: minor
+  changes:
+    added:
+    - Add a state non-refundable credits variable.
+  date: 2025-08-26 19:32:44
