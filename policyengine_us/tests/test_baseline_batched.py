@@ -297,6 +297,9 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
         print(
             f"  Running total: ✓ {passed} | ✗ {failed} | ⏱ {timeouts} | ❌ {errors}"
         )
+        
+        # Clean up memory after each batch
+        gc.collect()
 
     # Memory cleanup is now done at Makefile level after each major test group
 

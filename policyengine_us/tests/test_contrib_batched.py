@@ -142,6 +142,9 @@ def main():
             print(
                 f"✅ Folder {batch_name} passed in {result['elapsed_time']:.2f}s"
             )
+        
+        # Clean up memory after each batch
+        gc.collect()
 
     # Summary
     print("\n" + "=" * 60)
