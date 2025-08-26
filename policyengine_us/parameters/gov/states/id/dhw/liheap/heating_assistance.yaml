@@ -1,0 +1,25 @@
+description: Idaho LIHEAP heating assistance benefit amounts
+metadata:
+  reference:
+    - title: LIHEAP Clearinghouse - Idaho Profile
+      href: https://liheapch.acf.gov/profiles/Idaho.htm
+    - title: Idaho Department of Health and Welfare - Home Heating Assistance
+      href: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/
+
+min:
+  description: Minimum heating assistance benefit amount
+  metadata:
+    unit: currency-USD
+    period: year
+    label: Minimum heating assistance
+  values:
+    "2025-01-01": 75
+
+max:
+  description: Maximum heating assistance benefit amount
+  metadata:
+    unit: currency-USD
+    period: year
+    label: Maximum heating assistance
+  values:
+    "2025-01-01": 1_242

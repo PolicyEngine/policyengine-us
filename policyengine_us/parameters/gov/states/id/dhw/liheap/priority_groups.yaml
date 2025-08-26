@@ -1,0 +1,21 @@
+description: Idaho LIHEAP priority group definitions
+metadata:
+  reference:
+    - title: Idaho Department of Health and Welfare - Home Heating Assistance
+      href: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/
+
+child_age_threshold:
+  description: Age threshold for young children in priority households
+  metadata:
+    unit: year
+    label: Child age threshold for priority
+  values:
+    "2025-01-01": 6
+
+elderly_age_threshold:
+  description: Age threshold for elderly in priority households
+  metadata:
+    unit: year
+    label: Elderly age threshold for priority
+  values:
+    "2025-01-01": 65
