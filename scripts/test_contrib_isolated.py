@@ -37,8 +37,9 @@ def run_single_test_isolated(test_file, timeout_seconds=None):
         test_file: Path to the test file
         timeout_seconds: Timeout in seconds, or None for no timeout
     """
+    # Use sys.executable to ensure we use the same Python as the runner
     cmd = [
-        "/opt/miniconda3/envs/policyengine/bin/python",
+        sys.executable,
         "-m",
         "policyengine_core.scripts.policyengine_command",
         "test",
