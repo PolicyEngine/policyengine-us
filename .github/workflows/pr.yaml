@@ -63,10 +63,10 @@ jobs:
             echo "Running ALL tests for memory fix PR verification..."
             echo "Installing psutil for memory monitoring..."
             uv pip install psutil --system
-            echo "Testing contrib tests with isolation..."
+            echo "Testing contrib tests with isolation (cleanup after each test)..."
             uv run python scripts/test_contrib_isolated.py --timeout-minutes 10
-            echo "Testing baseline tests with phased isolation..."
-            uv run python scripts/test_baseline_phased.py --fast-timeout 60 --slow-timeout 600
+            echo "Testing baseline tests with batched execution (cleanup every 50 tests)..."
+            uv run python scripts/test_baseline_batched.py --batch-size 50
             echo "Testing other Python tests..."
             uv run pytest policyengine_us/tests/ --maxfail=0
           else
