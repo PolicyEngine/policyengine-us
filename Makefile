@@ -26,8 +26,10 @@ test-yaml-structural:
 		coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us; \
 	fi 
 test-yaml-no-structural:
-	@echo "Running baseline tests with memory isolation to prevent OOM errors..."
-	@if [ -f scripts/test_baseline_isolated.py ]; then \
+	@echo "Running baseline tests with phased memory isolation..."
+	@if [ -f scripts/test_baseline_phased.py ]; then \
+		python scripts/test_baseline_phased.py --fast-timeout 60 --slow-timeout 600; \
+	elif [ -f scripts/test_baseline_isolated.py ]; then \
 		python scripts/test_baseline_isolated.py --timeout 120; \
 	else \
 		coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us; \
