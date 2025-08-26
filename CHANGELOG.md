@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.379.0] - 2025-08-26 19:32:44
+
+### Added
+
+- Add a state non-refundable credits variable.
+
+## [1.378.0] - 2025-08-26 15:31:43
+
+### Added
+
+- Multi-agent development system for accurate program implementation
+- Supervisor agent for orchestrating isolated development workflow
+- Document collector agent for gathering authoritative sources
+- Test creator agent for building tests from documentation
+- Rules engineer agent for TDD-based implementation
+- Verifier agent for comprehensive validation
+- Shared PolicyEngine standards document for consistency
+
 ## [1.377.1] - 2025-08-25 19:37:04
 
 ### Fixed
@@ -12715,6 +12733,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.378.0...1.379.0
+[1.378.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.1...1.378.0
 [1.377.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.0...1.377.1
 [1.377.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.4...1.377.0
 [1.376.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.3...1.376.4

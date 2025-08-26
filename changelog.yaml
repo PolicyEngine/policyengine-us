@@ -10799,3 +10799,19 @@
     fixed:
     - Avoid negative subtractions from acting as additions.
   date: 2025-08-25 19:37:04
+- bump: minor
+  changes:
+    added:
+    - Multi-agent development system for accurate program implementation
+    - Supervisor agent for orchestrating isolated development workflow
+    - Document collector agent for gathering authoritative sources
+    - Test creator agent for building tests from documentation
+    - Rules engineer agent for TDD-based implementation
+    - Verifier agent for comprehensive validation
+    - Shared PolicyEngine standards document for consistency
+  date: 2025-08-26 15:31:43
+- bump: minor
+  changes:
+    added:
+    - Add a state non-refundable credits variable.
+  date: 2025-08-26 19:32:44
