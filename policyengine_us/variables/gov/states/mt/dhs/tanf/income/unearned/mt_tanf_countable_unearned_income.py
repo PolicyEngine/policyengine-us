@@ -18,9 +18,4 @@ class mt_tanf_countable_unearned_income(Variable):
             spm_unit, period, ["mt_tanf_gross_unearned_income"]
         )
 
-        # Should this rule be modeled here?
-        # Child support is excluded when:
-        # 1. A household is required to turn the child support over to CSED; and
-        # 2. A child support arrearage is paid in a one-time payment because it is considered a lump sum.
-
         return max_(0, total_unearned_income)
