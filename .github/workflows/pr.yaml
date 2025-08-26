@@ -57,6 +57,7 @@ jobs:
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
+          PYTHONUNBUFFERED: 1
         run: |
           echo "Running comprehensive test suite..."
           

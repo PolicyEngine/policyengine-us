@@ -382,14 +382,16 @@ def main(batch_size=None):
     This approach runs entire parent directories to minimize initialization overhead.
     """
     print(
-        "PolicyEngine Baseline Test Runner - Optimized Parent Directory Batching"
+        "PolicyEngine Baseline Test Runner - Optimized Parent Directory Batching",
+        flush=True
     )
-    print("=" * 80)
+    print("=" * 80, flush=True)
     print(
-        "Strategy: Run parent directories to ensure single initialization per batch"
+        "Strategy: Run parent directories to ensure single initialization per batch",
+        flush=True
     )
-    print("Memory management: Automatic cleanup when usage exceeds thresholds")
-    print("=" * 80)
+    print("Memory management: Automatic cleanup when usage exceeds thresholds", flush=True)
+    print("=" * 80, flush=True)
 
     # Find all baseline test files
     baseline_path = Path("policyengine_us/tests/policy/baseline")
