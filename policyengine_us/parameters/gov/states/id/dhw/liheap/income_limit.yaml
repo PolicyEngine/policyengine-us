@@ -1,0 +1,61 @@
+description: Idaho LIHEAP monthly income limits by household size
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    - title: Eastern Idaho Community Action Partnership - Energy Assistance
+      href: https://www.eicap.org/our-programs/family-services/energy-assistance-winter-heating-program/
+    - title: Idaho Department of Health and Welfare - Home Heating Assistance
+      href: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/
+  label: Idaho LIHEAP income limits
+  documentation: Income limits use 60% of State Median Income for households 1-7, and 150% of Federal Poverty Guidelines for households 8+
+
+brackets:
+  - threshold:
+      1:
+        "2025-01-01": 0
+    amount:
+      1:
+        "2025-01-01": 2_530.42
+  - threshold:
+      2:
+        "2025-01-01": 0
+    amount:
+      2:
+        "2025-01-01": 3_309.00
+  - threshold:
+      3:
+        "2025-01-01": 0
+    amount:
+      3:
+        "2025-01-01": 4_087.58
+  - threshold:
+      4:
+        "2025-01-01": 0
+    amount:
+      4:
+        "2025-01-01": 4_866.25
+  - threshold:
+      5:
+        "2025-01-01": 0
+    amount:
+      5:
+        "2025-01-01": 5_644.83
+  - threshold:
+      6:
+        "2025-01-01": 0
+    amount:
+      6:
+        "2025-01-01": 6_423.42
+  - threshold:
+      7:
+        "2025-01-01": 0
+    amount:
+      7:
+        "2025-01-01": 6_569.42
+  - threshold:
+      8:
+        "2025-01-01": 0
+    amount:
+      8:
+        "2025-01-01": 6_590.00
