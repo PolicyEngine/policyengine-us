@@ -8,7 +8,6 @@ Tests are organized by subdirectory for better organization.
 
 import os
 import sys
-import json
 import subprocess
 import gc
 from pathlib import Path
@@ -69,50 +68,43 @@ def run_test_batch(test_files: List[str], batch_name: str) -> Dict[str, Any]:
         "policyengine_us",
     ]
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
-
-    elapsed_time = (datetime.now() - start_time).total_seconds()
+    # Set timeout to 40 minutes per folder
+    try:
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=2400
+        )
+        elapsed_time = (datetime.now() - start_time).total_seconds()
+        success = result.returncode == 0
+        stdout = result.stdout
+        stderr = result.stderr
+    except subprocess.TimeoutExpired:
+        elapsed_time = 2400
+        success = False
+        stdout = ""
+        stderr = f"Tests timed out after 40 minutes"
+        print(f"⏱️  Timeout: {batch_name} exceeded 40-minute limit")
 
     # Clean up
     if os.path.exists(test_list_file):
         os.remove(test_list_file)
 
-    # Force garbage collection
-    gc.collect()
+    # Memory cleanup is now done at Makefile level
 
     return {
         "batch_name": batch_name,
         "num_tests": len(test_files),
         "elapsed_time": elapsed_time,
-        "success": result.returncode == 0,
-        "stdout": result.stdout,
-        "stderr": result.stderr,
+        "success": success,
+        "stdout": stdout,
+        "stderr": stderr,
     }
 
 
 def get_batch_size(category: str) -> int:
     """Get batch size based on category."""
-    # Categories with complex/slow tests get smaller batches
-    BATCH_SIZES = {
-        "congress": 3,  # Golden tests are very complex
-        "taxsim": 3,  # Tax simulation comparisons are intensive
-        "harris": 5,  # Complex policy reforms
-        "states": 5,  # State-specific calculations
-        "crfb": 5,  # Complex fiscal reforms
-        "treasury": 5,  # Treasury analysis tests
-        "federal": 8,  # Federal policy tests
-        "reconciliation": 8,  # Budget reconciliation tests
-        "snap": 10,  # SNAP policy tests
-        "snap_ea": 10,  # SNAP EA tests
-        "eitc": 10,  # EITC tests
-        "ctc": 10,  # CTC tests
-        "deductions": 10,  # Deduction tests
-        "local": 10,  # Local policy tests
-        "ubi_center": 10,  # UBI tests
-    }
-
-    # Default batch size for unknown categories
-    return BATCH_SIZES.get(category, 10)
+    # Run all files in a folder together as one batch
+    # Return a very large number so we never split folders
+    return 999999  # Effectively unlimited - run entire folder at once
 
 
 def main():
@@ -127,40 +119,29 @@ def main():
         f"Found {total_files} test files in {len(test_categories)} categories"
     )
 
-    for category, count in sorted(test_categories.items()):
-        batch_size = get_batch_size(category)
-        print(f"  {category}: {len(count)} tests (batch size: {batch_size})")
+    for category, test_files in sorted(test_categories.items()):
+        print(f"  {category}: {len(test_files)} tests")
 
     all_results = []
     failed_tests = []
 
-    # Process each category
+    # Process each category (folder) as a single batch
     for category in sorted(test_categories.keys()):
         test_files = test_categories[category]
-        batch_size = get_batch_size(category)
+        batch_name = category
 
-        # Split category into batches if needed
-        for i in range(0, len(test_files), batch_size):
-            batch_files = test_files[i : i + batch_size]
-            batch_num = i // batch_size + 1
-            total_batches = (len(test_files) + batch_size - 1) // batch_size
+        # Run entire folder as one batch
+        result = run_test_batch(test_files, batch_name)
+        all_results.append(result)
 
-            if total_batches > 1:
-                batch_name = f"{category}_batch_{batch_num}_of_{total_batches}"
-            else:
-                batch_name = category
-
-            result = run_test_batch(batch_files, batch_name)
-            all_results.append(result)
-
-            if not result["success"]:
-                failed_tests.extend([(batch_name, f) for f in batch_files])
-                print(f"❌ Batch {batch_name} FAILED")
-                print("STDERR:", result["stderr"][:500])
-            else:
-                print(
-                    f"✅ Batch {batch_name} passed in {result['elapsed_time']:.2f}s"
-                )
+        if not result["success"]:
+            failed_tests.extend([(batch_name, f) for f in test_files])
+            print(f"❌ Folder {batch_name} FAILED")
+            print("STDERR:", result["stderr"][:500])
+        else:
+            print(
+                f"✅ Folder {batch_name} passed in {result['elapsed_time']:.2f}s"
+            )
 
     # Summary
     print("\n" + "=" * 60)
@@ -184,29 +165,7 @@ def main():
         if len(failed_tests) > 10:
             print(f"  ... and {len(failed_tests) - 10} more")
 
-    # Save results to JSON
-    results_file = "contrib_test_results_batched.json"
-    with open(results_file, "w") as f:
-        json.dump(
-            {
-                "timestamp": datetime.now().isoformat(),
-                "summary": {
-                    "total_files": total_files,
-                    "total_batches": total_batches,
-                    "successful_batches": successful_batches,
-                    "failed_batches": total_batches - successful_batches,
-                    "total_time": total_time,
-                    "categories": {
-                        k: len(v) for k, v in test_categories.items()
-                    },
-                },
-                "batch_results": all_results,
-            },
-            f,
-            indent=2,
-        )
-
-    print(f"\nDetailed results saved to {results_file}")
+    # No longer saving results to JSON file
 
     # Exit with appropriate code
     sys.exit(0 if successful_batches == total_batches else 1)

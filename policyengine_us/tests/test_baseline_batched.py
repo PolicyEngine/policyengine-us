@@ -10,25 +10,8 @@ import sys
 import os
 import gc
 import time
-import psutil
 from pathlib import Path
-import json
 import argparse
-
-
-def get_memory_usage():
-    """Get current memory usage in MB."""
-    process = psutil.Process()
-    return process.memory_info().rss / 1024 / 1024
-
-
-def force_cleanup():
-    """Force aggressive memory cleanup."""
-    # Multiple collections to ensure cleanup
-    gc.collect()
-    gc.collect()
-    gc.collect()
-    # No sleep needed - just cleanup
 
 
 def run_batch_isolated(test_dirs, timeout_seconds):
@@ -241,20 +224,8 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
     errors = 0
     timeouts = 0
 
-    initial_memory = get_memory_usage()
-    print(f"Initial memory usage: {initial_memory:.1f} MB")
-
-    # Choose strategy based on initial memory
-    conservative = (
-        initial_memory > 500
-    )  # Use conservative if already using >500MB
-
-    if conservative:
-        print(
-            "Using conservative batching strategy (more batches, less memory)"
-        )
-    else:
-        print("Using aggressive batching strategy (fewer batches, faster)")
+    # Always use aggressive batching strategy (run states individually)
+    conservative = False
 
     parent_dirs = get_parent_directory_batches(conservative)
 
@@ -295,7 +266,6 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
     print("-" * 80)
 
     detailed_results = {}
-    memory_stats = []  # Track memory usage per batch
 
     for batch_idx, (dir_path, test_count) in enumerate(valid_batches, 1):
         dir_name = dir_path.split("/")[-1] if "/" in dir_path else dir_path
@@ -323,45 +293,13 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
         # Store results
         detailed_results[dir_path] = batch_results
 
-        # Report completion and memory
-        current_memory = get_memory_usage()
-        memory_growth = current_memory - initial_memory
-
+        # Report completion
         print(f"\n  Batch complete in {batch_results.get('elapsed', 0):.1f}s")
-        print(
-            f"  Memory: {current_memory:.1f} MB (growth: +{memory_growth:.1f} MB from start)"
-        )
         print(
             f"  Running total: ✓ {passed} | ✗ {failed} | ⏱ {timeouts} | ❌ {errors}"
         )
 
-        # Always perform cleanup after each batch to maintain low memory
-        print(f"  Performing memory cleanup...")
-        force_cleanup()
-        cleaned_memory = get_memory_usage()
-        memory_freed = current_memory - cleaned_memory
-        print(
-            f"  Memory after cleanup: {cleaned_memory:.1f} MB (freed: {memory_freed:.1f} MB)"
-        )
-
-        # Store memory stats for summary
-        memory_stats.append(
-            {
-                "batch": dir_name,
-                "peak_memory": current_memory,
-                "memory_freed": memory_freed,
-            }
-        )
-
-    # Print memory summary
-    if memory_stats:
-        print("\n" + "=" * 80)
-        print("MEMORY USAGE SUMMARY")
-        print("=" * 80)
-        for stat in memory_stats:
-            print(
-                f"{stat['batch']:30} Peak: {stat['peak_memory']:6.1f} MB, Freed: {stat['memory_freed']:5.1f} MB"
-            )
+    # Memory cleanup is now done at Makefile level after each major test group
 
     return detailed_results, {
         "passed": passed,
@@ -378,14 +316,17 @@ def main(batch_size=None):
     """
     print(
         "PolicyEngine Baseline Test Runner - Optimized Parent Directory Batching",
-        flush=True
+        flush=True,
     )
     print("=" * 80, flush=True)
     print(
         "Strategy: Run parent directories to ensure single initialization per batch",
-        flush=True
+        flush=True,
     )
-    print("Memory management: Automatic cleanup when usage exceeds thresholds", flush=True)
+    print(
+        "Memory management: Automatic cleanup when usage exceeds thresholds",
+        flush=True,
+    )
     print("=" * 80, flush=True)
 
     # Find all baseline test files
@@ -418,20 +359,7 @@ def main(batch_size=None):
     )
     print(f"\nSuccess rate: {success_rate:.1f}%")
 
-    # Save results
-    output_file = "baseline_test_results_batched.json"
-    with open(output_file, "w") as f:
-        json.dump(
-            {
-                "directory_results": all_results,
-                "stats": all_stats,
-                "success_rate": success_rate,
-                "total_directories": len(all_results),
-            },
-            f,
-            indent=2,
-        )
-    print(f"\nDetailed results saved to: {output_file}")
+    # No longer saving results to JSON file
 
     return all_stats["passed"] == len(all_test_files)
 

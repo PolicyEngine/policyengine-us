@@ -53,34 +53,15 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run comprehensive tests
+      - name: Run comprehensive tests (TEMPORARY - full test suite for this PR)
         env:
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running comprehensive test suite..."
-          
-          # Test 1: Policy baseline tests (individual states for memory safety)
-          echo "=== Testing policy/baseline folder (individual states) ==="
-          uv run python scripts/test_baseline_batched.py
-          
-          # Test 2: Policy contrib tests (in folder-based batches)
-          echo "=== Testing policy/contrib folder ==="
-          uv run python scripts/test_contrib_batched.py
-          
-          # Test 3: Policy reform tests
-          echo "=== Testing policy/reform folder ==="
-          uv run policyengine-core test policyengine_us/tests/policy/reform -c policyengine_us
-          
-          # Test 4: Variables tests (gov/states/vt/tax/income)
-          echo "=== Testing variables folder ==="
-          uv run policyengine-core test policyengine_us/tests/variables -c policyengine_us
-          
-          # Test 5: Other Python tests (code_health, microsimulation, utilities)
-          echo "=== Testing other Python folders ==="
-          uv run pytest policyengine_us/tests/code_health --maxfail=0
-          uv run pytest policyengine_us/tests/microsimulation --maxfail=0
-          uv run pytest policyengine_us/tests/utilities --maxfail=0
+          echo "Running full test suite with memory optimization..."
+          echo "After merge, this will revert to selective testing"
+          echo ""
+          uv run make test-yaml-no-structural
+          uv run make test-yaml-structural
+          uv run make test-other
       - name: Build package
         run: uv build
