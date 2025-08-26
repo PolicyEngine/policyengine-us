@@ -136,57 +136,40 @@ def main(timeout_seconds=None):
     
     for i, test_file in enumerate(test_files, 1):
         rel_path = str(test_file).replace("policyengine_us/tests/policy/contrib/", "")
-        print(f"[{i}/{len(test_files)}] Testing: {rel_path}")
-        print(f"  Memory before test: {get_memory_usage():.1f} MB")
+        print(f"[{i}/{len(test_files)}] Testing: {rel_path}", end="", flush=True)
         
         # Run test in complete isolation
         result = run_single_test_isolated(test_file, timeout_seconds)
         results[str(test_file)] = result
         
-        # Print result
-        if result["status"] == "passed":
-            status_symbol = "✓"
-        elif result["status"] == "failed":
-            status_symbol = "✗"
-        elif result["status"] == "timeout":
-            status_symbol = "⏱"
-        else:
-            status_symbol = "❌"
-            
-        print(f"  {status_symbol} Status: {result['status'].upper()}")
-        print(f"  Time: {result['elapsed']}s")
-        print(f"  Memory after test: {result['memory_after']:.1f} MB")
-        
+        # Print result on same line
         if result["status"] == "passed":
             passed += 1
+            print(f" ✓ PASSED ({result['elapsed']}s)")
         elif result["status"] == "failed":
             failed += 1
+            print(f" ✗ FAILED ({result['elapsed']}s)")
             if result.get("error"):
-                print(f"  Error preview: {result['error'][:100]}...")
+                print(f"    Error: {result['error'][:100]}...")
         elif result["status"] == "timeout":
             timeouts += 1
-            print(f"  Test timed out after {timeout_seconds} seconds")
+            print(f" ⏱ TIMEOUT (exceeded {timeout_seconds}s)")
         else:
             errors += 1
+            print(f" ❌ ERROR ({result['elapsed']}s)")
             if result.get("error"):
-                print(f"  Error: {result['error']}")
+                print(f"    Error: {result['error'][:100]}...")
         
-        # CRITICAL: Force memory cleanup after each test
-        print(f"  Forcing memory cleanup...")
+        # Force memory cleanup after each test (but don't print unless there's an issue)
         force_cleanup()
-        
         current_memory = get_memory_usage()
-        print(f"  Memory after cleanup: {current_memory:.1f} MB")
         
-        # If memory is growing too much, do extra cleanup
+        # If memory is growing too much, do extra cleanup and report it
         if current_memory > initial_memory + 500:  # If we've grown by 500MB
-            print(f"  ⚠️  Memory growth detected. Performing aggressive cleanup...")
+            print(f"  ⚠️  Memory at {current_memory:.1f} MB. Performing cleanup...")
             for _ in range(5):
                 gc.collect()
                 time.sleep(1)
-            print(f"  Memory after aggressive cleanup: {get_memory_usage():.1f} MB")
-        
-        print()  # Empty line between tests
     
     # Summary
     print("=" * 80)

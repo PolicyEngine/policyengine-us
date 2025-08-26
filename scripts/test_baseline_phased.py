@@ -143,51 +143,42 @@ def run_test_phase(test_files, phase_name, timeout_seconds, batch_size=50):
     for i, test_file in enumerate(test_files, 1):
         rel_path = str(test_file).replace("policyengine_us/tests/policy/baseline/", "")
         
-        # Print progress at batch boundaries
-        if i == 1 or i % batch_size == 0 or i == len(test_files):
-            print(f"\n[{phase_name}] Processing tests {i} to {min(i+batch_size-1, len(test_files))}")
-            print(f"  Memory: {get_memory_usage():.1f} MB")
-            print(f"  Status: ✓ {passed} | ✗ {failed} | ⏱ {timeouts} | ❌ {errors}")
+        # Always print which test we're running (like the old version)
+        print(f"[{i}/{len(test_files)}] Testing: {rel_path}", end="", flush=True)
         
         # Run test
         result = run_single_test_isolated(test_file, timeout_seconds)
         results[str(test_file)] = result
         
-        # Update counters
+        # Update counters and show result
         if result["status"] == "passed":
             passed += 1
+            print(f" ✓ PASSED ({result['elapsed']}s)")
         elif result["status"] == "failed":
             failed += 1
+            print(f" ✗ FAILED ({result['elapsed']}s)")
+            if result.get("error"):
+                print(f"    Error: {result['error'][:100]}...")
         elif result["status"] == "timeout":
             timeouts += 1
+            print(f" ⏱ TIMEOUT (exceeded {timeout_seconds}s)")
         else:
             errors += 1
-        
-        # Print details for problematic tests
-        if result["status"] != "passed":
-            status_symbols = {
-                "failed": "✗",
-                "timeout": "⏱",
-                "error": "❌"
-            }
-            symbol = status_symbols.get(result["status"], "?")
-            
-            display_path = rel_path if len(rel_path) <= 60 else "..." + rel_path[-57:]
-            print(f"  [{i}/{len(test_files)}] {display_path}: {symbol} ({result['elapsed']}s)")
-            
-            if result["status"] == "timeout":
-                print(f"    Note: Test exceeded {timeout_seconds}s timeout")
+            print(f" ❌ ERROR ({result['elapsed']}s)")
+            if result.get("error"):
+                print(f"    Error: {result['error'][:100]}...")
         
         # Cleanup after slow or problematic tests
         if result["elapsed"] > 10 or result["status"] in ["timeout", "error"]:
             force_cleanup()
         
-        # Periodic cleanup
+        # Periodic cleanup and status update
         if i % batch_size == 0:
             force_cleanup()
             current_memory = get_memory_usage()
+            print(f"\n[Progress] {i}/{len(test_files)} tests complete | Memory: {current_memory:.1f} MB | ✓ {passed} | ✗ {failed} | ⏱ {timeouts} | ❌ {errors}")
             if current_memory > initial_memory + 500:
-                print(f"  ⚠️  Memory growth detected. Aggressive cleanup...")
+                print(f"  Performing memory cleanup...")
                 for _ in range(3):
                     gc.collect()
                     time.sleep(0.5)
