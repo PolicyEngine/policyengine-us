@@ -104,8 +104,9 @@ def categorize_tests(test_files):
     """
     slow_patterns = [
         "states/ny",  # New York tests are confirmed to be slow/memory-intensive
-        # Add more patterns only after confirming they're actually slow
-        # For now, being conservative - only NY is confirmed slow
+        "states/ca",  # California tests are slow
+        "states/co",  # Colorado tests are slow
+        "states/nc",  # North Carolina tests are slow
     ]
     
     fast_tests = []
