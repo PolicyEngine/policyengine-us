@@ -1,0 +1,70 @@
+# Unit tests for Idaho LIHEAP total benefit
+
+- name: Unit test - Idaho LIHEAP total benefit during heating season
+  period: 2024-11  # November - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        id_liheap_seasonal_benefit: 75  # Seasonal benefit
+        id_liheap_crisis_benefit: 0    # No crisis benefit
+    people:
+      person1:
+        age: 35
+        state_code: ID
+      person2:
+        age: 33
+        state_code: ID
+      person3:
+        age: 8
+        state_code: ID
+  output:
+    id_liheap_benefit: 75  # Total = seasonal benefit
+
+- name: Unit test - Idaho LIHEAP total benefit outside heating season
+  period: 2024-07  # July - not heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_liheap_seasonal_benefit: 0  # No seasonal benefit
+        id_liheap_crisis_benefit: 0   # No crisis benefit
+    people:
+      person1:
+        age: 40
+        state_code: ID
+      person2:
+        age: 38
+        state_code: ID
+  output:
+    id_liheap_benefit: 0  # No benefits available
+
+- name: Unit test - Idaho LIHEAP total benefit with both seasonal and crisis
+  period: 2024-12  # December - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_liheap_seasonal_benefit: 75   # Seasonal benefit
+        id_liheap_crisis_benefit: 500    # Crisis benefit
+    people:
+      person1:
+        age: 70
+        state_code: ID
+  output:
+    id_liheap_benefit: 575  # Total = seasonal + crisis
+
+- name: Unit test - Idaho LIHEAP total benefit single person household
+  period: 2024-01  # January - heating season
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_liheap_seasonal_benefit: 75  # Seasonal benefit
+        id_liheap_crisis_benefit: 0    # No crisis benefit
+    people:
+      person1:
+        age: 25
+        state_code: ID
+  output:
+    id_liheap_benefit: 75  # Total = seasonal benefit only

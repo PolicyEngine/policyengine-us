@@ -1,0 +1,190 @@
+# Idaho LIHEAP Crisis Heating Payment Tests
+# Testing crisis heating assistance payment amounts
+# Available year-round, Maximum: $1,500, Response within 48 hours
+
+- name: Summer crisis - utility shutoff notice
+  period: 2025-07  # July - outside regular heating season
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 28_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Crisis assistance available outside heating season
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Amount to cover past due balance
+
+- name: Crisis with large past due balance - maximum benefit
+  period: 2025-09  # September - outside heating season
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 20_000
+      child1:
+        age: 3  # Under 6 - priority
+      child2:
+        age: 8
+    households:
+      household1:
+        members: [parent1, child1, child2]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [parent1, child1, child2]
+  output:
+    # Crisis benefit capped at maximum despite higher need
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Maximum crisis benefit
+
+- name: Crisis during heating season - additional to seasonal benefit
+  period: 2025-01  # January - within heating season
+  input:
+    people:
+      person1:
+        age: 60  # Elderly - priority
+        social_security: 18_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Crisis assistance even during heating season
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Cover crisis need
+
+- name: Elderly person in crisis - priority processing
+  period: 2025-05  # May - outside heating season
+  input:
+    people:
+      person1:
+        age: 75  # Elderly - priority
+        social_security: 16_000
+        employment_income: 8_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Elderly person gets priority crisis processing
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Amount needed for crisis
+
+- name: Family with young children - crisis priority
+  period: 2025-06  # June - outside heating season
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 22_000
+      child1:
+        age: 2  # Under 6 - priority
+      child2:
+        age: 5  # Under 6 - priority
+    households:
+      household1:
+        members: [parent1, child1, child2]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [parent1, child1, child2]
+  output:
+    # Family with young children gets priority crisis assistance
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Amount needed
+
+- name: Low fuel situation - bulk fuel crisis
+  period: 2025-04  # April - outside heating season
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 26_000
+      person2:
+        age: 52
+        employment_income: 18_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: ID
+        bulk_fuel_supply_low: true  # Less than 48 hours of fuel
+        fuel_needed_cost: 750
+    spm_units:
+      smp_unit1:
+        members: [person1, person2]
+  output:
+    # Bulk fuel crisis situation
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750  # Cost of needed fuel
+
+- name: Disabled person in crisis - priority processing
+  period: 2025-08  # August - outside heating season
+  input:
+    people:
+      person1:
+        age: 42
+        is_disabled: true
+        employment_income: 10_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Disabled person gets priority crisis assistance
+    id_liheap_crisis_eligible: true
+    id_liheap_crisis_heating_amount: 750
+
+- name: No crisis situation - not eligible for crisis assistance
+  period: 2025-07
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        # No shut-off notice or fuel shortage
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # No crisis situation - not eligible for crisis assistance
+    id_liheap_crisis_eligible: false
+    id_liheap_crisis_heating_amount: 0
+
+- name: Crisis but received assistance within 12 months - not eligible
+  period: 2025-06
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_000
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      smp_unit1:
+        members: [person1]
+  output:
+    # Received crisis assistance within 12 months - not eligible again
+    id_liheap_crisis_eligible: false
+    id_liheap_crisis_heating_amount: 0

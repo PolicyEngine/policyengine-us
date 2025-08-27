@@ -1,0 +1,28 @@
+description: Idaho LIHEAP weatherization income limits (200% Federal Poverty Level)
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    - title: Idaho Low Income Home Energy Assistance Program State Plan Federal Fiscal Year 2025
+      href: https://healthandwelfare.idaho.gov/services-programs/idaho-careline/energy-assistance
+    - title: 45 CFR 96.83 - Low-Income Home Energy Assistance Program authorization
+      href: https://www.ecfr.gov/current/title-45/section-96.83
+  label: Idaho LIHEAP weatherization income limits
+
+# Monthly income limits for FY 2025 based on 200% FPL
+one_person:
+  2024-10-01: 2_600
+two_person:
+  2024-10-01: 3_520
+three_person:
+  2024-10-01: 4_433
+four_person:
+  2024-10-01: 5_350
+five_person:
+  2024-10-01: 6_267
+six_person:
+  2024-10-01: 7_183
+seven_person:
+  2024-10-01: 8_100
+eight_plus_person:
+  2024-10-01: 8_100  # Additional amounts per person beyond 7

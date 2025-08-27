@@ -1,0 +1,15 @@
+description: Idaho LIHEAP priority group age thresholds
+metadata:
+  unit: year
+  period: year
+  reference:
+    - title: Idaho Low Income Home Energy Assistance Program State Plan Federal Fiscal Year 2025
+      href: https://healthandwelfare.idaho.gov/services-programs/idaho-careline/energy-assistance
+    - title: 45 CFR 96.82 - Required assurances
+      href: https://www.ecfr.gov/current/title-45/section-96.82
+  label: Idaho LIHEAP priority group age thresholds
+
+child:
+  2024-10-01: 6  # Children under age 6
+elderly:
+  2024-10-01: 60  # Elderly members typically age 60 or 65+

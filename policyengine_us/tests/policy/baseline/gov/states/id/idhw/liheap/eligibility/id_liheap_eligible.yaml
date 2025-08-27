@@ -1,0 +1,144 @@
+# Idaho LIHEAP Eligibility Tests
+# Testing the main eligibility variable that combines all eligibility criteria
+# Based on Idaho LIHEAP documentation and federal LIHEAP regulations
+
+- name: Income eligible single person - basic eligibility
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 25_000  # Under monthly limit for 1 person
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Basic income eligibility for Idaho resident - 25k/12 = 2083 < 2530 limit
+    id_liheap_eligible: true
+
+- name: Categorically eligible via SNAP - high income but still eligible  
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000  # Above income limits
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        snap: 150  # SNAP participation makes categorically eligible
+  output:
+    # Categorically eligible despite high income
+    id_liheap_eligible: true
+
+- name: Income too high and no categorical eligibility
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000  # Well above limits - 80k/12 = 6667 > 2530 limit
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        # No SNAP, TANF, or SSI
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Not eligible - income too high and no categorical eligibility
+    id_liheap_eligible: false
+
+- name: Out of state resident - not eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000  # Would be income eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: CA  # California, not Idaho
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Must be Idaho resident
+    id_liheap_eligible: false
+
+- name: Large family income eligible
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000
+      parent2:
+        age: 33
+        employment_income: 25_000
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 4  # Under 6 - priority group
+    households:
+      household1:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: ID
+        # 5 person household, income $55,000/12 = 4583 < 5644 limit
+    spm_units:
+      spm_unit1:
+        members: [parent1, parent2, child1, child2, child3]
+  output:
+    # Large family under income limits with priority child
+    id_liheap_eligible: true
+
+- name: Elderly person income eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70  # Elderly - priority group
+        social_security: 20_000
+        employment_income: 8_000  # Total $28,000/12 = 2333 < 2530 limit
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Elderly person under income limits
+    id_liheap_eligible: true
+
+- name: Disabled person with SSI - categorically eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        employment_income: 35_000  # Would exceed income limits alone
+        ssi: 9_600  # $800/month SSI - makes categorically eligible
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit1:
+        members: [person1]
+  output:
+    # Categorically eligible via SSI despite higher total income
+    id_liheap_eligible: true

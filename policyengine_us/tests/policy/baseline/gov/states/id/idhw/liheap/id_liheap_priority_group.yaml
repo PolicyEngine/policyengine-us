@@ -1,0 +1,44 @@
+# Unit tests for Idaho LIHEAP priority group identification
+
+- name: Unit test - Idaho LIHEAP priority group with child under 6
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 28
+        is_disabled: false
+      person3:
+        age: 4  # Child under 6
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_liheap_priority_group: true
+
+- name: Unit test - Idaho LIHEAP not priority group
+  period: 2024-10
+  input:
+    people:
+      person1:
+        age: 35  # Not elderly
+        is_disabled: false  # Not disabled
+      person2:
+        age: 33
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_liheap_priority_group: false
