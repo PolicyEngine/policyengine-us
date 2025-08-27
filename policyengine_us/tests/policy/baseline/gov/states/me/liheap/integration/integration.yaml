@@ -212,9 +212,19 @@
 - name: Household with young children, vulnerable population
   period: 2025
   input:
-    spm_unit_size: 4
-    age: [30, 28, 5, 2]  # Parents with young children
-    irs_gross_income: 55_000
+    people:
+      head:
+        age: 30
+        irs_gross_income: 55_000
+      spouse:
+        age: 28
+      child_1:
+        age: 5
+      child_2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child_1, child_2]
     state_code: ME
   output:
     me_liheap_income_eligible: true
