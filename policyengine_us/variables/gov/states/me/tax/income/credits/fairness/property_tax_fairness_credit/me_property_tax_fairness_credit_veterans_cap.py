@@ -15,4 +15,4 @@ class me_property_tax_fairness_credit_veterans_cap(Variable):
         ).gov.states.me.tax.income.credits.fairness.property_tax
         base_cap = tax_unit("me_property_tax_fairness_credit_base_cap", period)
         has_veteran = tax_unit.any(tax_unit.members("is_veteran", period))
-        return is_veteran * base_cap * p.veterans_matched
+        return has_veteran * base_cap * p.veterans_matched
