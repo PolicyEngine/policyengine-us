@@ -62,7 +62,6 @@ class TestUCGIDHierarchical:
         is_in_us = ucgid_enum.matches_hierarchy("0100000US")
         assert is_in_us == True
 
-
     def test_ucgid_microsimulation_input_override(self):
         """Test setting UCGID input for all households in a microsimulation."""
         microsim = Microsimulation()
