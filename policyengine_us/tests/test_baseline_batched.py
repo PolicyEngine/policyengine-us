@@ -131,16 +131,8 @@ def get_parent_directory_batches(conservative=False):
         # More batches, less memory per batch
         # Each directory listed explicitly to avoid overlap
         return [
-            # Slow/complex states run separately
-            f"{baseline}/gov/states/ny",  # ~43 tests, complex
-            f"{baseline}/gov/states/nc",  # ~30 tests, complex
-            f"{baseline}/gov/states/ca",  # ~89 tests, many files
-            f"{baseline}/gov/states/ma",  # ~72 tests, complex
-            # Other states grouped by size/complexity
-            f"{baseline}/gov/states/il",  # ~60 tests
-            f"{baseline}/gov/states/pa",  # Medium state
-            f"{baseline}/gov/states/tx",  # Large state
-            f"{baseline}/gov/states",  # All remaining states
+            # Run all states together
+            f"{baseline}/gov/states",  # All states together
             # Federal agencies (each separately for memory safety)
             f"{baseline}/gov/irs",  # ~162 tests
             f"{baseline}/gov/usda",  # ~63 tests
@@ -161,13 +153,11 @@ def get_parent_directory_batches(conservative=False):
             f"{baseline}/income",  # ~1 test
         ]
     else:
-        # Aggressive mode - run all states alphabetically
-        # Since we're running states individually, no need to separate slow ones
+        # Aggressive mode - run all states together in one batch
         batches = []
 
-        # Get all state directories and run them alphabetically
-        all_states = get_all_state_directories()
-        batches.extend(sorted(all_states))  # Alphabetical order
+        # Run ALL states as one single batch
+        batches.append(f"{baseline}/gov/states")  # All states together
 
         # Federal agencies
         batches.extend(
@@ -187,7 +177,6 @@ def get_parent_directory_batches(conservative=False):
                 f"{baseline}/gov/tax",  # ~1 test
                 # Individual files that are directly in parent directories
                 f"{baseline}/gov/abolitions.yaml",  # Single file directly in gov/
-                f"{baseline}/gov/states/state_filing_status_if_married_filing_separately_on_same_return.yaml",  # Single file in states/
             ]
         )
 
@@ -224,7 +213,7 @@ def run_tests_in_batches(test_files, batch_size=None, timeout_per_batch=1200):
     errors = 0
     timeouts = 0
 
-    # Always use aggressive batching strategy (run states individually)
+    # Always use aggressive batching strategy (run all states together)
     conservative = False
 
     parent_dirs = get_parent_directory_batches(conservative)
