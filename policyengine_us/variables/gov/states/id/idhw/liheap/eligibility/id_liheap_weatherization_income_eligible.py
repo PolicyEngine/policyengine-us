@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from numpy import select
 
 
 class id_liheap_weatherization_income_eligible(Variable):
@@ -18,10 +17,13 @@ class id_liheap_weatherization_income_eligible(Variable):
         # Weatherization uses 200% FPL instead of 60% SMI
         income = spm_unit("id_liheap_income", period)
 
-        # Use simplified 200% FPL monthly limits by household size
+        # Get income limits from parameters
         household_size = spm_unit.nb_persons()
+        p = parameters(
+            period
+        ).gov.states.id.idhw.liheap.weatherization_income_limit
 
-        # Approximate 200% FPL monthly limits for 2025
+        # Use 200% FPL monthly limits by household size from parameters
         fpl_200_monthly = select(
             [
                 household_size == 1,
@@ -30,16 +32,18 @@ class id_liheap_weatherization_income_eligible(Variable):
                 household_size == 4,
                 household_size == 5,
                 household_size == 6,
+                household_size == 7,
             ],
             [
-                2_600,  # 1 person
-                3_520,  # 2 people
-                4_433,  # 3 people
-                5_350,  # 4 people
-                6_267,  # 5 people
-                7_183,  # 6 people
+                p.one_person,
+                p.two_person,
+                p.three_person,
+                p.four_person,
+                p.five_person,
+                p.six_person,
+                p.seven_person,
             ],
-            default=8_100,  # 7+ people
+            default=p.eight_plus_person,  # 8+ people
         )
 
         return income <= fpl_200_monthly

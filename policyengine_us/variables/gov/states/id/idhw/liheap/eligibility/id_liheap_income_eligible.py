@@ -44,9 +44,8 @@ class id_liheap_income_eligible(Variable):
                 p.six_person,
                 p.seven_person,
             ],
-            # Default for sizes 8+: use 150% FPG monthly
-            # For now, use a fixed amount for 8+ people
-            default=7_500,  # Approximate 150% FPG monthly for 8+
+            # For sizes 8+: use 150% FPG monthly from parameters
+            default=p.eight_plus_person,
         )
 
         return income <= income_limit

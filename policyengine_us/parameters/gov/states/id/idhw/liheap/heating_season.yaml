@@ -1,0 +1,20 @@
+description: Idaho LIHEAP heating season months
+metadata:
+  reference:
+    - title: Idaho Low Income Home Energy Assistance Program State Plan Federal Fiscal Year 2025
+      href: https://healthandwelfare.idaho.gov/services-programs/idaho-careline/energy-assistance
+  label: Idaho LIHEAP heating season
+
+start_month:
+  description: Starting month of heating season (October)
+  metadata:
+    unit: /1
+  values:
+    2024-10-01: 10
+  
+end_month:
+  description: Ending month of heating season (March)
+  metadata:
+    unit: /1
+  values:
+    2024-10-01: 3

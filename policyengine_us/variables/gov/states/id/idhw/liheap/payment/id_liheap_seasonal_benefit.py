@@ -17,7 +17,12 @@ class id_liheap_seasonal_benefit(Variable):
     def formula(spm_unit, period, parameters):
         # Seasonal heating assistance is available October 1 - March 31
         month = period.start.month
-        is_heating_season = (month >= 10) | (month <= 3)
+        heating_season = parameters(
+            period
+        ).gov.states.id.idhw.liheap.heating_season
+        is_heating_season = (month >= heating_season.start_month) | (
+            month <= heating_season.end_month
+        )
 
         # Must be eligible for LIHEAP
         eligible = spm_unit("id_liheap_eligible", period)

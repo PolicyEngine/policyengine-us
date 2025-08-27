@@ -20,8 +20,10 @@ class id_liheap_income(Variable):
         # Calculate monthly income from employment and other sources
         # Employment income is annual, so divide by 12
         employment = add(spm_unit, period, ["employment_income"]) / 12
-        self_employment = add(spm_unit, period, ["self_employment_income"]) / 12
-        
+        self_employment = (
+            add(spm_unit, period, ["self_employment_income"]) / 12
+        )
+
         # These are already monthly
         social_security = add(spm_unit, period, ["social_security"])
         ssi = add(spm_unit, period, ["ssi"])
