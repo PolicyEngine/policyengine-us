@@ -1,0 +1,38 @@
+- name: Adult eligible after 2024
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 35
+    households:
+      household:
+        members: [adult]
+  output:
+    is_ca_state_medicaid_adult_eligible:
+      - True
+
+- name: Adult not eligible before 2024
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 35
+    households:
+      household:
+        members: [adult]
+  output:
+    is_ca_state_medicaid_adult_eligible:
+      - False
+
+- name: 50-year-old not eligible for adult program
+  period: 2024
+  input:
+    people:
+      older_adult:
+        age: 50
+    households:
+      household:
+        members: [older_adult]
+  output:
+    is_ca_state_medicaid_adult_eligible:
+      - False
