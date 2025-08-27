@@ -45,4 +45,7 @@ class income_adjusted_part_b_premium(Variable):
             ],
         )
 
-        return base + irmaa_amount
+        # IRMAA amounts are monthly, multiply by 12 to get annual
+        # Base is already annual
+        annual_irmaa = irmaa_amount * 12
+        return base + annual_irmaa

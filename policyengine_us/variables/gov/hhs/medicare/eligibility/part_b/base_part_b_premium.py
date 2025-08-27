@@ -12,4 +12,5 @@ class base_part_b_premium(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicare.part_b
-        return p.base_premium
+        # base_premium is a monthly amount, multiply by 12 for annual
+        return p.base_premium * 12
