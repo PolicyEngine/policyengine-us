@@ -3,7 +3,8 @@
   input:
     age: 65
     filing_status: SURVIVING_SPOUSE
-    employment_income: 80_000
+    adjusted_gross_income: 80_000
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 185
@@ -13,7 +14,8 @@
   input:
     age: 65
     filing_status: JOINT
-    employment_income: 266_001
+    adjusted_gross_income: 266_001
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 370
@@ -23,7 +25,8 @@
   input:
     age: 65
     filing_status: SINGLE
-    employment_income: 500_000
+    adjusted_gross_income: 500_000
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 628.9
@@ -33,7 +36,8 @@
   input:
     age: 65
     filing_status: SURVIVING_SPOUSE
-    employment_income: 106_002
+    adjusted_gross_income: 106_002
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 259
@@ -43,7 +47,8 @@
   input:
     age: 65
     filing_status: JOINT
-    employment_income: 200_000
+    adjusted_gross_income: 200_000
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 185
@@ -53,7 +58,8 @@
   input:
     age: 65
     filing_status: JOINT
-    employment_income: 1_000_000
+    adjusted_gross_income: 1_000_000
+    tax_exempt_interest_income: 0
     is_medicare_eligible: true
   output:
     income_adjusted_part_b_premium: 628.9

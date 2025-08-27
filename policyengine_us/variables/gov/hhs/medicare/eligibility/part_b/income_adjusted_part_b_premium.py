@@ -8,12 +8,17 @@ class income_adjusted_part_b_premium(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "is_medicare_eligible"
+    reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
+    documentation = "Medicare Part B premium adjusted for income (IRMAA). Based on modified adjusted gross income from 2 years prior."
 
     def formula(person, period, parameters):
 
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
-        income = tax_unit("employment_income", period)
+        # Medicare Part B IRMAA is based on MAGI: AGI + tax-exempt interest
+        agi = tax_unit("adjusted_gross_income", period)
+        tax_exempt_interest = tax_unit("tax_exempt_interest_income", period)
+        income = agi + tax_exempt_interest
         base = person("base_part_b_premium", period)
 
         # Build boolean masks for each status
