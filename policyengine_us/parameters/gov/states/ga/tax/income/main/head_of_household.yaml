@@ -13,57 +13,62 @@ metadata:
       href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20-d-1/
     - title: House Bill 1015 (AS PASSED HOUSE AND SENATE), SECTION 1. (a.1)(1)
       href: https://www.legis.ga.gov/legislation/66260
-
+    - title: Georgia Department of Revenue 2023 Individual Income Tax 500 and 500EZ
+      href: https://taxsim.nber.org/historical_state_tax_forms/GA/2023/2023_IT-511_Individual_Income_Tax_Booklet.pdf#page=65
+    - title: Georgia Department of Revenue 2022 Individual Income Tax 500 and 500EZ
+      href: https://taxsim.nber.org/historical_state_tax_forms/GA/2022/2022%20IT-511_Individual_Income_Tax_%20Booklet.pdf#page=56
+    - title: Georgia Department of Revenue Individual Income Tax 500 and 500EZ historical documents
+      href: https://dor.georgia.gov/it-511-individual-income-tax-instruction-booklet
 brackets:
   - threshold:
-      2022-01-01: 0
+      2021-01-01: 0
     rate:
-      2022-01-01: 0.01
+      2021-01-01: 0.01
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
       2027-01-01: 0.0509
       2028-01-01: 0.0499
   - threshold:
-      2022-01-01: 1_000
+      2021-01-01: 1_000
     rate:
-      2022-01-01: 0.02
+      2021-01-01: 0.02
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
       2027-01-01: 0.0509
       2028-01-01: 0.0499
   - threshold:
-      2022-01-01: 3_000
+      2021-01-01: 3_000
     rate:
-      2022-01-01: 0.03
+      2021-01-01: 0.03
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
       2027-01-01: 0.0509
       2028-01-01: 0.0499
   - threshold:
-      2022-01-01: 5_000
+      2021-01-01: 5_000
     rate:
-      2022-01-01: 0.04
+      2021-01-01: 0.04
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
       2027-01-01: 0.0509
       2028-01-01: 0.0499
   - threshold:
-      2022-01-01: 7_000
+      2021-01-01: 7_000
     rate:
-      2022-01-01: 0.05
+      2021-01-01: 0.05
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
       2027-01-01: 0.0509
       2028-01-01: 0.0499
   - threshold:
-      2022-01-01: 10_000
+      2021-01-01: 10_000
     rate:
-      2022-01-01: 0.0575
+      2021-01-01: 0.0575
       2024-01-01: 0.0539
       2025-01-01: 0.0529
       2026-01-01: 0.0519
