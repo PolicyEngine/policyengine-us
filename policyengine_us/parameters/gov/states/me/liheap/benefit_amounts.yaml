@@ -5,7 +5,7 @@ benefit_min:
   values:
     2025-08-01: 88
   metadata:
-    period: year
+    period: 1
     unit: currency-USD
     label: Maine LIHEAP minimum benefit
     reference:
@@ -17,7 +17,7 @@ benefit_max:
   values:
     2025-08-01: 1_012
   metadata:
-    period: year
+    period: 1
     unit: currency-USD
     label: Maine LIHEAP maximum benefit
     reference:
@@ -29,7 +29,7 @@ crisis_max:
   values:
     2025-11-01: 800
   metadata:
-    period: year
+    period: 1
     unit: currency-USD
     label: Maine LIHEAP crisis assistance maximum
     reference:

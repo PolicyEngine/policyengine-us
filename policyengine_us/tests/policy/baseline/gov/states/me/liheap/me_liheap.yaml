@@ -93,7 +93,7 @@
 - name: No crisis assistance outside winter period
   period: 2025-07  # July
   input:
-    smp_unit_size: 4
+    spm_unit_size: 4
     irs_gross_income: 50_000
     state_code: ME
     me_liheap_eligible: true

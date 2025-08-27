@@ -25,8 +25,8 @@ class me_liheap_crisis_payment(Variable):
         # "Benefits vary inversely with income within eligibility range"
         # "Households at lower income levels receive higher benefit amounts"
 
-        income = spm_unit("me_liheap_income", period)
-        household_size = spm_unit("spm_unit_size", period)
+        income = spm_unit("me_liheap_income", period.this_year)
+        household_size = spm_unit("spm_unit_size", period.this_year)
 
         # Get income threshold for household size
         p_thresholds = parameters(

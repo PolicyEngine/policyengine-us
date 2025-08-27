@@ -109,7 +109,7 @@
 - name: Non-Maine resident should not be income eligible
   period: 2025
   input:
-    smp_unit_size: 4
+    spm_unit_size: 4
     me_liheap_income: 50_000
     state_code: CA  # California
   output:

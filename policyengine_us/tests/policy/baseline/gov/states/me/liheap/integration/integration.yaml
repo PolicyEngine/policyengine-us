@@ -216,16 +216,19 @@
       head:
         age: 30
         irs_gross_income: 55_000
+        state_code: ME
       spouse:
         age: 28
+        state_code: ME
       child_1:
         age: 5
+        state_code: ME
       child_2:
         age: 2
+        state_code: ME
     spm_units:
       spm_unit:
         members: [head, spouse, child_1, child_2]
-    state_code: ME
   output:
     me_liheap_income_eligible: true
     me_liheap_eligible: true

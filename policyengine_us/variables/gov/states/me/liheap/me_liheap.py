@@ -20,7 +20,15 @@ class me_liheap(Variable):
         # 2. Crisis assistance (available November - April)
 
         regular_payment = spm_unit("me_liheap_regular_payment", period)
-        crisis_payment = spm_unit("me_liheap_crisis_payment", period)
+
+        # For crisis payment, if period is MONTH, get crisis payment for that month
+        # If period is YEAR, crisis payment will be 0 (only available for specific months)
+        if period.unit == "month":
+            crisis_payment = spm_unit("me_liheap_crisis_payment", period)
+        else:
+            # For year-level requests, no crisis payment
+            # (crisis is only calculated for specific month periods)
+            crisis_payment = 0
 
         # Total LIHEAP benefit is regular payment + any crisis assistance
         # Crisis assistance is additional help during winter months

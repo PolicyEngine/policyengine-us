@@ -15,13 +15,13 @@ class me_liheap_crisis_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Must be LIHEAP eligible first
-        liheap_eligible = spm_unit("me_liheap_eligible", period)
+        liheap_eligible = spm_unit("me_liheap_eligible", period.this_year)
 
         # Crisis assistance is available November 1 - April 30
         # Based on documentation: "Energy Crisis Intervention Program (ECIP): November 1, 2025 through April 30, 2026"
-        
+
         current_month = period.start.month
-        
+
         # Crisis period spans across calendar year: November through April
         # November (11), December (12), January (1), February (2), March (3), April (4)
         in_crisis_period = (current_month >= 11) | (current_month <= 4)
