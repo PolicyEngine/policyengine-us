@@ -1,0 +1,148 @@
+- name: Eligible household receives benefit within documented range
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [88, 1_012]  # Within documented min/max range
+
+- name: Very low income household receives higher benefit
+  period: 2025
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 12_000  # Very low income
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [400, 1_012]  # Expect higher benefit
+
+- name: Higher income eligible household receives lower benefit
+  period: 2025
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 45_000  # Near upper limit
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [88, 300]  # Expect lower benefit
+
+- name: Ineligible household receives no benefit
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 80_000  # Over income limit
+    state_code: ME
+    me_liheap_eligible: false
+  output:
+    me_liheap: 0
+
+- name: Non-Maine resident receives no benefit
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: CA  # California
+    me_liheap_eligible: false
+  output:
+    me_liheap: 0
+
+- name: Minimum benefit case
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 35_000  # Near upper limit for size 1
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [88, 200]  # Should include minimum $88
+
+- name: Maximum benefit case
+  period: 2025
+  input:
+    spm_unit_size: 6
+    irs_gross_income: 5_000  # Very low income, large household
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [600, 1_012]  # Should approach maximum $1,012
+
+- name: Zero income case
+  period: 2025
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 0
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [500, 1_012]  # High benefit for zero income
+
+- name: Crisis assistance available in winter
+  period: 2025-01  # January
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_eligible: true
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap: [88, 1_012]
+    me_liheap_crisis_payment: [0, 800]  # Additional crisis benefit available
+
+- name: No crisis assistance outside winter period
+  period: 2025-07  # July
+  input:
+    smp_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_eligible: true
+    me_liheap_crisis_eligible: false
+  output:
+    me_liheap: [88, 1_012]
+    me_liheap_crisis_payment: 0
+
+- name: Vulnerable household priority - elderly
+  period: 2025
+  input:
+    spm_unit_size: 1
+    age: 75
+    irs_gross_income: 30_000
+    state_code: ME
+    me_liheap_eligible: true
+    me_liheap_vulnerable_household: true
+  output:
+    me_liheap: [200, 1_012]  # Higher priority benefit
+
+- name: Vulnerable household priority - young children
+  period: 2025
+  input:
+    spm_unit_size: 4
+    age: [35, 32, 4, 1]  # Family with young children
+    irs_gross_income: 45_000
+    state_code: ME
+    me_liheap_eligible: true
+    me_liheap_vulnerable_household: true
+  output:
+    me_liheap: [200, 800]  # Priority benefit for vulnerable household
+
+- name: Large household receives appropriate benefit
+  period: 2025
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 70_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [200, 1_012]  # Large household factor
+
+- name: Regular heating assistance only - no crisis
+  period: 2025-05  # May - outside crisis period
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 40_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap: [88, 1_012]  # Only regular assistance
+    me_liheap_crisis_payment: 0
