@@ -2,7 +2,7 @@
   period: 2024
   input:
     state_code: NC
-    spm_unit_size: 1
+    nc_tanf_household_size: 1
   output:
     nc_tanf_need_standard: 362 * 12
 
@@ -10,7 +10,7 @@
   period: 2024
   input:
     state_code: NC
-    spm_unit_size: 2
+    nc_tanf_household_size: 2
   output:
     nc_tanf_need_standard: 472 * 12
 
@@ -18,7 +18,7 @@
   period: 2024
   input:
     state_code: NC
-    spm_unit_size: 14
+    nc_tanf_household_size: 14
   output:
     nc_tanf_need_standard: 1042 * 12
 
@@ -26,6 +26,6 @@
   period: 2024
   input:
     state_code: NC
-    spm_unit_size: 16
+    nc_tanf_household_size: 16
   output:
     nc_tanf_need_standard: 1_142 * 12

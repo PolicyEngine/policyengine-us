@@ -9,4 +9,8 @@ class il_base_income_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
 
-    adds = "gov.states.il.tax.income.base.subtractions"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.il.tax.income.base
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)
