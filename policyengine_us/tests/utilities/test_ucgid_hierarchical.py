@@ -62,39 +62,6 @@ class TestUCGIDHierarchical:
         is_in_us = ucgid_enum.matches_hierarchy("0100000US")
         assert is_in_us == True
 
-    def test_ucgid_str_variable(self):
-        """Test the UCGID string variable functionality."""
-        simulation = Microsimulation()
-        ucgid_str_values = simulation.calculate("ucgid_str", "2024")
-
-        # The UCGID string variable should return a string representation
-        ucgid_str = ucgid_str_values.iloc[0]
-        assert type(ucgid_str) == str
-        assert (
-            ucgid_str.startswith("0100000US")
-            | ucgid_str.startswith("0400000US")
-            | ucgid_str.startswith("5001800US")
-        )
-
-        # Create a basic simulation to test with specific input values
-        from policyengine_us import Simulation
-
-        simulation = Simulation(
-            situation={
-                "people": {"person": {}},
-                "households": {"household": {"members": ["person"]}},
-            }
-        )
-
-        # Set a specific UCGID value for testing (CA_23)
-        simulation.set_input("ucgid", 2024, UCGID.CA_23)
-
-        # Calculate the ucgid_str value
-        ucgid_str_values = simulation.calculate("ucgid_str", 2024)
-        ucgid_str = ucgid_str_values[0]
-
-        # Verify it contains all three hierarchical codes
-        assert ucgid_str == "5001800US0623,0400000US06,0100000US"
 
     def test_ucgid_microsimulation_input_override(self):
         """Test setting UCGID input for all households in a microsimulation."""
@@ -113,9 +80,3 @@ class TestUCGIDHierarchical:
         after_values = ucgid_after.values
         assert all(val == "CA_23" for val in after_values)
         assert len(set(after_values)) == 1
-
-        # Test that ucgid_str now returns hierarchical codes for all households
-        ucgid_str_values = microsim.calculate("ucgid_str", 2024)
-        expected_str = "5001800US0623,0400000US06,0100000US"
-        str_values = ucgid_str_values.values
-        assert all(str_val == expected_str for str_val in str_values)

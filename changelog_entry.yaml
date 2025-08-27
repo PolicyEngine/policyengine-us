@@ -1,0 +1,4 @@
+- bump: minor
+  changes:
+    removed:
+      - Remove formula from ucgid_str variable, reverting it to a simple string input variable without enum dependency
