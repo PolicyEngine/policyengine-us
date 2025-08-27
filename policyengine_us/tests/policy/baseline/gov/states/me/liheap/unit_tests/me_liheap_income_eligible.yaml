@@ -1,0 +1,44 @@
+- name: Income eligible - household size 1, under threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income: 30_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Income eligible - household size 1, at threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income: 36_836
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Income ineligible - household size 1, over threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income: 37_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+
+- name: Income eligible - household size 4, under threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 60_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Income ineligible - household size 4, over threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 75_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
