@@ -4,7 +4,35 @@ description: Review and fix issues in an existing PR, addressing GitHub comments
 
 # Reviewing PR: $ARGUMENTS
 
-Orchestrate agents to review, validate, and fix issues in PR #$ARGUMENTS, addressing all GitHub review comments.
+## Determining Which PR to Review
+
+First, determine which PR to review based on the arguments:
+
+```bash
+# If no arguments provided, use current branch's PR
+if [ -z "$ARGUMENTS" ]; then
+    CURRENT_BRANCH=$(git branch --show-current)
+    PR_NUMBER=$(gh pr list --head "$CURRENT_BRANCH" --json number --jq '.[0].number')
+    if [ -z "$PR_NUMBER" ]; then
+        echo "No PR found for current branch $CURRENT_BRANCH"
+        exit 1
+    fi
+# If argument is a number, use it directly
+elif [[ "$ARGUMENTS" =~ ^[0-9]+$ ]]; then
+    PR_NUMBER=$ARGUMENTS
+# Otherwise, search for PR by description/title
+else
+    PR_NUMBER=$(gh pr list --search "$ARGUMENTS" --json number,title --jq '.[0].number')
+    if [ -z "$PR_NUMBER" ]; then
+        echo "No PR found matching: $ARGUMENTS"
+        exit 1
+    fi
+fi
+
+echo "Reviewing PR #$PR_NUMBER"
+```
+
+Orchestrate agents to review, validate, and fix issues in PR #$PR_NUMBER, addressing all GitHub review comments.
 
 ## ⚠️ CRITICAL: Agent Usage is MANDATORY
 
@@ -17,12 +45,12 @@ Orchestrate agents to review, validate, and fix issues in PR #$ARGUMENTS, addres
 **If you find yourself using Edit, Write, or MultiEdit directly, STOP and invoke the appropriate agent instead.**
 
 ## Phase 1: PR Analysis
-First, gather context about the PR and review comments:
+After determining PR_NUMBER above, gather context about the PR and review comments:
 
 ```bash
-gh pr view $ARGUMENTS --comments
-gh pr checks $ARGUMENTS  # Note: CI runs on draft PRs too!
-gh pr diff $ARGUMENTS
+gh pr view $PR_NUMBER --comments
+gh pr checks $PR_NUMBER  # Note: CI runs on draft PRs too!
+gh pr diff $PR_NUMBER
 ```
 
 Document findings:
@@ -135,7 +163,7 @@ For each issue identified:
 
 1. **Read current implementation**
    ```bash
-   git checkout pr/$ARGUMENTS
+   gh pr checkout $PR_NUMBER
    ```
 
 2. **Apply agent-generated fixes**
@@ -164,7 +192,7 @@ For each GitHub comment:
 
 3. **Post response on GitHub**
    ```bash
-   gh pr comment $ARGUMENTS --body "Addressed: [explanation of fix]"
+   gh pr comment $PR_NUMBER --body "Addressed: [explanation of fix]"
    ```
 
 ## Phase 6: CI Validation
@@ -186,7 +214,7 @@ Invoke ci-fixer to ensure all checks pass:
 
 2. **Monitor CI**
    ```bash
-   gh pr checks $ARGUMENTS --watch
+   gh pr checks $PR_NUMBER --watch
    ```
 
 3. **Fix any CI failures**
@@ -202,7 +230,7 @@ Invoke rules-reviewer for final validation:
 
 Post summary comment:
 ```bash
-gh pr comment $ARGUMENTS --body "## Summary of Changes
+gh pr comment $PR_NUMBER --body "## Summary of Changes
 
 ### Issues Addressed
 ✅ Fixed hard-coded values in [files]
@@ -225,21 +253,26 @@ All identified issues have been addressed. The implementation now:
 
 ## Command Options
 
+### Usage Examples
+- `/review-pr` - Review PR for current branch
+- `/review-pr 6444` - Review PR #6444
+- `/review-pr "Idaho LIHEAP"` - Search for and review PR by title/description
+
 ### Quick Fix Mode
-`/review-pr $ARGUMENTS --quick`
+`/review-pr [PR] --quick`
 - Only fix CI failures
 - Skip comprehensive review
 - Focus on getting checks green
 
 ### Deep Review Mode  
-`/review-pr $ARGUMENTS --deep`
+`/review-pr [PR] --deep`
 - Run all validators
 - Generate comprehensive tests
 - Full documentation enhancement
 - Cross-program validation
 
 ### Comment Only Mode
-`/review-pr $ARGUMENTS --comments-only`
+`/review-pr [PR] --comments-only`
 - Only address GitHub review comments
 - Skip additional validation
 - Faster turnaround
@@ -297,4 +330,4 @@ Before starting, confirm:
 - [ ] I will generate tests even if current tests pass
 - [ ] I will commit after each agent phase
 
-Start with Phase 1: Analyze PR #$ARGUMENTS and review comments.
+Start with determining which PR to review, then proceed to Phase 1: Analyze the PR and review comments.
