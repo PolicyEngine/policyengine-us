@@ -1,0 +1,100 @@
+description: Maine LIHEAP income eligibility thresholds based on 60% State Median Income for the 2025-2026 program year. These thresholds represent the maximum annual gross household income for eligibility.
+
+size_1:
+  description: Income threshold for 1-person household
+  values:
+    2025-08-01: 36_836
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 1 person
+
+size_2:
+  description: Income threshold for 2-person household  
+  values:
+    2025-08-01: 48_170
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 2 persons
+
+size_3:
+  description: Income threshold for 3-person household
+  values:
+    2025-08-01: 59_504
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 3 persons
+
+size_4:
+  description: Income threshold for 4-person household
+  values:
+    2025-08-01: 70_839
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 4 persons
+
+size_5:
+  description: Income threshold for 5-person household
+  values:
+    2025-08-01: 82_173
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 5 persons
+
+size_6:
+  description: Income threshold for 6-person household
+  values:
+    2025-08-01: 93_507
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 6 persons
+
+size_7:
+  description: Income threshold for 7-person household
+  values:
+    2025-08-01: 95_632
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 7 persons
+
+size_8:
+  description: Income threshold for 8-person household
+  values:
+    2025-08-01: 97_757
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 8 persons
+
+size_9:
+  description: Income threshold for 9-person household
+  values:
+    2025-08-01: 99_882
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 9 persons
+
+size_10:
+  description: Income threshold for 10-person household
+  values:
+    2025-08-01: 102_008
+  metadata:
+    period: year
+    unit: currency-USD
+    label: Maine LIHEAP threshold - 10 persons
+
+metadata:
+  reference:
+    - title: HEAP Income Eligibility (2025-2026)
+      href: https://www.mainehousing.org/charts/HEAP-Income-Elibility
+    - title: 42 U.S.C. § 8624(b)(2)(A) - Income eligibility requirements
+      href: https://www.law.cornell.edu/uscode/text/42/8624
+    - title: Maine LIHEAP Income Eligibility Guidelines
+      href: docs/agents/sources/me-liheap/income_eligibility_guidelines.md
