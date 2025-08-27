@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/startup.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$1\" == *\".claude/\"* ]]; then cd .claude && ./protect-submodule.sh; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$1\" == *\".claude/\"* ]]; then cd .claude && ./protect-submodule.sh; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
