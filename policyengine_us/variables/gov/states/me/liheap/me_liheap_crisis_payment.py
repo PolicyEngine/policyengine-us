@@ -5,7 +5,7 @@ class me_liheap_crisis_payment(Variable):
     value_type = float
     entity = SPMUnit
     label = "Maine LIHEAP crisis assistance payment"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.ME
     reference = [
         "docs/agents/sources/me-liheap/benefit_calculation.md",

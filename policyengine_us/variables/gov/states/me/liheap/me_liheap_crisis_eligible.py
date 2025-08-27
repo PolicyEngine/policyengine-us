@@ -5,7 +5,7 @@ class me_liheap_crisis_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Maine LIHEAP crisis assistance"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.ME
     reference = [
         "https://www.mainehousing.org/programs-services/energy/energydetails/liheap",
