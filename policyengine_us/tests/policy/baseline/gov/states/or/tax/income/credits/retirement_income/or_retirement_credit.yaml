@@ -3,11 +3,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: false
+        or_retirement_credit_eligible_person: false
         taxable_pension_income: 1_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: false
+        or_retirement_credit_eligible_person: false
         taxable_pension_income: 1_000
         social_security: 0
     tax_units:
@@ -28,11 +28,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 1_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 900
         social_security: 0
     tax_units:
@@ -53,11 +53,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 2_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 3_000
         social_security: 0
     tax_units:
@@ -78,11 +78,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 9_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 6_001
         social_security: 0
     tax_units:
@@ -103,11 +103,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 9_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 6_001
         social_security: 0
     tax_units:
@@ -128,11 +128,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 9_000
         social_security: 500
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 6_001
         social_security: 1_000
     tax_units:
@@ -153,11 +153,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 1_000
         social_security: 12_000
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 0
         social_security: 5_000
     tax_units:
@@ -178,11 +178,11 @@
   input:
     people:
       person1:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 1_000
         social_security: 0
       person2:
-        or_retirement_credit_eligible: true
+        or_retirement_credit_eligible_person: true
         taxable_pension_income: 0
         social_security: 0
     tax_units:

@@ -14,6 +14,8 @@ class ImmigrationStatus(Enum):
         "Deferred Action for Childhood Arrivals or Temporary Protected Status"
     )
     UNDOCUMENTED = "Undocumented"
+    DACA = "Deferred Action for Childhood Arrivals"
+    TPS = "Temporary Protected Status"
 
 
 class immigration_status(Variable):

@@ -1,0 +1,47 @@
+- name: Case 1, size of 2, annual income $36000, full time. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_countable_income: 3_000
+    dc_ccsp_is_full_time: true
+    dc_ccsp_attending_days_per_month: 10
+    dc_ccsp_is_youngest_child: true
+    spm_unit_size: 2
+  output:
+    dc_ccsp_first_child_copay: 19.7
+
+- name: Case 2, size of 3, annual income $36000. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_countable_income: 3_000
+    dc_ccsp_is_full_time: true
+    dc_ccsp_attending_days_per_month: 10
+    dc_ccsp_is_youngest_child: true
+    spm_unit_size: 3
+  output:
+    dc_ccsp_first_child_copay: 0
+
+- name: Case 3, size of 2, not the youngest child. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_countable_income: 3_000
+    dc_ccsp_is_full_time: true
+    dc_ccsp_attending_days_per_month: 10
+    dc_ccsp_is_youngest_child: false
+    spm_unit_size: 2
+  output:
+    dc_ccsp_first_child_copay: 0
+
+- name: Case 4, size of 2, annual income $36000, part time. 
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    dc_ccsp_countable_income: 3_000
+    dc_ccsp_is_full_time: false
+    dc_ccsp_attending_days_per_month: 10
+    dc_ccsp_is_youngest_child: true
+    spm_unit_size: 2
+  output:
+    dc_ccsp_first_child_copay: 9.8

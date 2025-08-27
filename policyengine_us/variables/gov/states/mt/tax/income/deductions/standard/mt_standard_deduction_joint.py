@@ -17,7 +17,7 @@ class mt_standard_deduction_joint(Variable):
 
         filing_status = person.tax_unit("filing_status", period)
 
-        if p.applies:
+        if p.state_specific_deduction_applies:
             # ── Pre-2024 MT-specific calculation ───────────────────────────────
             agi = add(person.tax_unit, period, ["mt_agi"])
             floor = p.floor[filing_status]

@@ -1,0 +1,11 @@
+description: The IRS floors the charitable deduction at this percentage of adjusted gross income.
+metadata:
+  unit: /1
+  period: year
+  label: Charitable donation floor amount
+  reference:
+    - title: 26 U.S. Code § 170 - Charitable, etc., contributions and gifts (b)(1)(H)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/170
+
+values:
+  2026-01-01: 0.005

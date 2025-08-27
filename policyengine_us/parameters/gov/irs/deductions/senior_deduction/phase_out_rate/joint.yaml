@@ -1,0 +1,20 @@
+description: The IRS phases the senior deduction out at this percentage of adjusted gross income for joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Senior deduction joint filers phase out rate
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+brackets:
+  - threshold:
+      2025-01-01: 0
+    rate:
+      2025-01-01: 0
+  - threshold:
+      2025-01-01: 150_000
+    rate:
+      2025-01-01: 0.06

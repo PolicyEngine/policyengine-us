@@ -1,0 +1,41 @@
+description: The IRS phases out the SALT deduction out for filers with adjusted gross income above this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: SALT deduction phase out threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+
+SINGLE:
+  2025-01-01: 500_000
+  2026-01-01: 505_000
+  2027-01-01: 510_050
+  2028-01-01: 515_151
+  2029-01-01: 520_302
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 500_000
+  2026-01-01: 505_000
+  2027-01-01: 510_050
+  2028-01-01: 515_151
+  2029-01-01: 520_302
+JOINT:
+  2025-01-01: 500_000
+  2026-01-01: 505_000
+  2027-01-01: 510_050
+  2028-01-01: 515_151
+  2029-01-01: 520_302
+SURVIVING_SPOUSE:
+  2025-01-01: 500_000
+  2026-01-01: 505_000
+  2027-01-01: 510_050
+  2028-01-01: 515_151
+  2029-01-01: 520_302
+SEPARATE:
+  2025-01-01: 250_000
+  2026-01-01: 252_500
+  2027-01-01: 255_025
+  2028-01-01: 257_575
+  2029-01-01: 260_151

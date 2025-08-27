@@ -52,3 +52,58 @@
         state_code: VT
   output:
     vt_military_retirement_pay_exclusion: 4_000
+
+# S.51 (2025) tests for new income-based exemption system
+- name: S.51 - Full exemption below $125k AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 25_000
+
+- name: S.51 - Partial exemption at $150k AGI (50% of military pay)
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 10_000
+
+- name: S.51 - No exemption above $175k AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 0

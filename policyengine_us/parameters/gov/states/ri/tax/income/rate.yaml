@@ -14,6 +14,9 @@ metadata:
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-tax-tables_web.pdf#page=1
     - title: Rhode Island Income Tax Law - Section 44-30-2.6. - Rhode Island taxable income (c)(2)(A)
       href: https://law.justia.com/codes/rhode-island/2022/title-44/chapter-44-30/part-i/section-44-30-2-6/
+    - title: Rhode Island Tax Rate Schedule - 2024
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+
 brackets:
   - threshold:
       0000-01-01: 0
@@ -24,6 +27,7 @@ brackets:
         2021-01-01: 66_200
         2022-01-01: 68_200
         2023-01-01: 73_450
+        2024-01-01: 77_450
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -36,6 +40,7 @@ brackets:
         2021-01-01: 150_550
         2022-01-01: 155_050
         2023-01-01: 166_950
+        2024-01-01: 176_050
       uprating:
         parameter: gov.irs.uprating
         rounding:

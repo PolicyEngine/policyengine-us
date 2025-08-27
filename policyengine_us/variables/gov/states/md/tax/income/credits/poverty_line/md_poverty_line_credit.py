@@ -31,11 +31,9 @@ class md_poverty_line_credit(Variable):
         # (2)    an amount equal to 5% of the eligible low income taxpayer’s
         # earned income, as defined under § 32(c)(2) of the Internal Revenue
         # Code.
-        rate = parameters(
-            period
-        ).gov.states.md.tax.income.credits.poverty_line.earned_income_share
+        p = parameters(period).gov.states.md.tax.income.credits.poverty_line
         earnings = tax_unit("tax_unit_earned_income", period)
-        earnings_portion = earnings * rate
+        earnings_portion = earnings * p.earned_income_share
         amount_if_eligible = min_(
             tax_after_non_refundable_eitc, earnings_portion
         )

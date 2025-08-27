@@ -1,0 +1,54 @@
+- name: Case 1, age 13, not disabled, ineligible.
+  period: 2022
+  input:
+    age: 13
+    is_disabled: false
+    is_tax_unit_dependent: true
+    dc_ccsp_immigration_status_eligible_person: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible_child: false
+
+- name: Case 2, age 12, not disabled, eligible.
+  period: 2022
+  input:
+    age: 12
+    is_disabled: false
+    is_tax_unit_dependent: true
+    dc_ccsp_immigration_status_eligible_person: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: Case 3, age 18, disabled, eligible.
+  period: 2022
+  input:
+    age: 18
+    is_disabled: true
+    is_tax_unit_dependent: true
+    dc_ccsp_immigration_status_eligible_person: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible_child: true
+
+- name: Case 4, age 19, disabled, ineligible.
+  period: 2022
+  input:
+    age: 19
+    is_disabled: true
+    is_tax_unit_dependent: true
+    dc_ccsp_immigration_status_eligible_person: true
+    state_code: DC
+  output:
+    dc_ccsp_eligible_child: false
+
+- name: Case 5, ineligible due to immigration status.
+  period: 2022
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    dc_ccsp_immigration_status_eligible_person: false
+    state_code: DC
+  output:
+    dc_ccsp_eligible_child: false

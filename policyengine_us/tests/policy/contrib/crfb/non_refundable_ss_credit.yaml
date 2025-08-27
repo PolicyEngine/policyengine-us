@@ -1,0 +1,82 @@
+- name: Single person in the highest tax bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    highest_tax_rate: 0.37
+    ss_credit: 600
+
+- name: Single person in the highest tax bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 2_000
+    taxable_income: 200_000
+    filing_status: JOINT
+  output:
+    highest_tax_rate: 0.22
+    ss_credit: 440
+
+- name: Additional senior deduction repeal test
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.irs.deductions.senior_deduction.amount: 0
+    additional_senior_deduction_eligible_person: true
+    adjusted_gross_income: 10_000
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 0
+  output:
+    taxable_income_deductions_if_itemizing: 0
+
+- name: Test credit as part of the computation tree
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    highest_tax_rate: 0.37
+    ss_credit: 600
+    income_tax_non_refundable_credits: 600
+
+- name: Baseline test
+  period: 2026
+  input:
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    income_tax_non_refundable_credits: 0
+
+- name: Test credit as part of the computation tree
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.irs.social_security.taxability.rate.base: 0.85
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE: 0
+    gov.irs.social_security.taxability.threshold.base.main.JOINT: 0
+    gov.irs.social_security.taxability.threshold.base.main.HEAD_OF_HOUSEHOLD: 0
+    gov.irs.social_security.taxability.threshold.base.main.SEPARATE: 0
+    gov.irs.social_security.taxability.threshold.base.main.SURVIVING_SPOUSE: 0
+    people: 
+      person1:
+        social_security: 5_000
+        irs_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    highest_tax_rate: 0.1
+    taxable_social_security: 4_250
+    ss_credit: 425
+    income_tax_non_refundable_credits: 425

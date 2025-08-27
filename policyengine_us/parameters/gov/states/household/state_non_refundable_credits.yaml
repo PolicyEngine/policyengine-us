@@ -1,0 +1,40 @@
+description: All state non-refundable credits.
+values:
+  0000-01-01:
+    - al_non_refundable_credits  # Alabama.
+    - ar_non_refundable_credits  # Arkansas.
+    - az_non_refundable_credits  # Arizona.
+    - co_non_refundable_credits  # Colorado.
+    - ct_non_refundable_credits  # Connecticut.
+    - dc_non_refundable_credits  # District of Columbia.
+    - de_non_refundable_credits  # Delaware.
+    - ga_non_refundable_credits  # Georgia.
+    - hi_non_refundable_credits  # Hawaii.
+    - id_non_refundable_credits  # Idaho.
+    - ky_non_refundable_credits  # Kentucky.
+    - la_non_refundable_credits  # Louisiana.
+    - ma_non_refundable_credits  # Massachusetts.
+    - md_non_refundable_credits  # Maryland.
+    - me_non_refundable_credits  # Maine.
+    - mi_non_refundable_credits  # Michigan.
+    - mo_non_refundable_credits  # Missouri.
+    - ms_non_refundable_credits  # Mississippi.
+    - mt_non_refundable_credits  # Montana.
+    - nc_non_refundable_credits  # North Carolina.
+    - nj_non_refundable_credits  # New Jersey.
+    - nm_non_refundable_credits  # New Mexico.
+    - ny_non_refundable_credits  # New York.
+    - nyc_non_refundable_credits  # New York City.
+    - oh_non_refundable_credits  # Ohio.
+    - or_non_refundable_credits  # Oregon.
+    - ri_non_refundable_credits  # Rhode Island.
+    - sc_non_refundable_credits  # South Carolina.
+    - ut_non_refundable_credits  # Utah.
+    - va_non_refundable_credits  # Virginia.
+    - vt_non_refundable_credits  # Vermont.
+    - wv_non_refundable_credits  # West Virginia.
+
+metadata:
+  unit: list
+  period: year
+  label: State non-refundable credits

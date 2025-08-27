@@ -27,7 +27,6 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
-from policyengine_us_data import DATASETS, CPS_2024
 
 from typing import Annotated
 
@@ -36,6 +35,8 @@ COUNTRY_DIR = Path(__file__).parent
 
 CURRENT_YEAR = 2024
 DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
+
+DEFAULT_DATASET = "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -131,7 +132,6 @@ class Simulation(CoreSimulation):
     default_role = "member"
     default_calculation_period = CURRENT_YEAR
     default_input_period = CURRENT_YEAR
-    datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
@@ -198,17 +198,25 @@ class Microsimulation(CoreMicrosimulation):
 
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
-    default_dataset = CPS_2024
+    default_dataset = DEFAULT_DATASET
     default_dataset_year = CURRENT_YEAR
     default_role = "member"
     default_calculation_period = CURRENT_YEAR
     default_input_period = CURRENT_YEAR
-    datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
             kwargs.pop("start_instant", DEFAULT_START_DATE)
         )
+
+        dataset = kwargs.get("dataset")
+        if (
+            dataset is not None
+            and isinstance(dataset, str)
+            and "cps_2023" in dataset
+        ):
+            self.default_input_period = 2023
+
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
@@ -272,7 +280,7 @@ class Microsimulation(CoreMicrosimulation):
 class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
     entities = {entity.key: entity for entity in entities}
-    default_dataset = CPS_2024
+    default_dataset = DEFAULT_DATASET
     default_roles = dict(
         tax_unit="member",
         spm_unit="member",

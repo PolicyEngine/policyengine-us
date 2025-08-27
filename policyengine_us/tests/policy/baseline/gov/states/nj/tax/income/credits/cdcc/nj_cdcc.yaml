@@ -3,7 +3,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 20_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 500
 
@@ -12,7 +12,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 40_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 400
 
@@ -21,7 +21,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 40_000
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
     nj_cdcc: 800
 
@@ -30,7 +30,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 70_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 300
 
@@ -39,7 +39,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 80_000
-    cdcc: 1_500
+    cdcc_potential: 1_500
   output:
     nj_cdcc: 450
 
@@ -48,7 +48,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 100_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 200
 
@@ -57,7 +57,7 @@
   input:
     state_code: NJ
     nj_taxable_income: 130_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 100
 
@@ -66,6 +66,6 @@
   input:
     state_code: NJ
     nj_taxable_income: 160_000
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     nj_cdcc: 0

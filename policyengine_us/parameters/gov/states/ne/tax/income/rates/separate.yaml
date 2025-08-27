@@ -9,7 +9,7 @@ brackets:
         2021-01-01: 3_340
         2022-01-01: 3_440
         2023-01-01: 3_700
-        2024-01-01: 3_000
+        2024-01-01: 3_900
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -22,7 +22,7 @@ brackets:
         2021-01-01: 19_990
         2022-01-01: 20_590
         2023-01-01: 22_170
-        2024-01-01: 18_000
+        2024-01-01: 23_370
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -37,7 +37,7 @@ brackets:
         2021-01-01: 32_210
         2022-01-01: 33_180
         2023-01-01: 35_730
-        2024-01-01: 29_000
+        2024-01-01: 37_670
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -69,3 +69,6 @@ metadata:
     href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf#page=9
   - title: Nebraska Revised Statute | chapter 77 | §2715.03
     href: https://www.nebraskalegislature.gov/laws/statutes.php?statute=77-2715.03
+  # Includes inflation adjusted 2024 brackets
+  - title: Nebraska Tax Rate Chronologies
+    href: https://revenue.nebraska.gov/sites/default/files/doc/research/chronology/4-607table1_0.pdf

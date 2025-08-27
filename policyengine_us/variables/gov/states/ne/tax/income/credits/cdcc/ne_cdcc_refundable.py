@@ -24,5 +24,6 @@ class ne_cdcc_refundable(Variable):
         increments = np.ceil(excess / increment)
         total_match_reduction_amount = increments * reduction_per_increment
         match = max_(max_match_percentage - total_match_reduction_amount, 0)
-        us_cdcc = tax_unit("cdcc", period)
+        # Nebraska matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
         return us_cdcc * match

@@ -1,0 +1,17 @@
+description: Puerto Rico accounts for the following unearned income sources, under the earned income tax credit. 
+values:
+  2023-01-01: 
+  - interest_income
+  - dividend_income
+  - rental_income
+  - capital_gains
+  - child_support_received
+metadata:
+  unit: list
+  period: year
+  label: Puerto Rico earned income credit unearned income sources
+  reference:
+    - title: P.R. Laws tit. 13, § 30211 (6)(e)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=4

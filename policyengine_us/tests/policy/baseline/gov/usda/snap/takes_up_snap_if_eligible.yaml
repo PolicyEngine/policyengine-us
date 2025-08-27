@@ -1,0 +1,13 @@
+- name: Seed above takeup rate
+  period: 2022
+  input:
+    snap_take_up_seed: 0.9
+  output:
+    takes_up_snap_if_eligible: false
+
+- name: Seed below takeup rate
+  period: 2022
+  input:
+    snap_take_up_seed: 0.8
+  output:
+    takes_up_snap_if_eligible: true

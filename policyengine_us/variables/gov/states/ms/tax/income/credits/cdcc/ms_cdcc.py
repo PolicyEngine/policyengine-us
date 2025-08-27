@@ -11,6 +11,7 @@ class ms_cdcc(Variable):
     reference = "https://legiscan.com/MS/text/HB1671/id/2767768"
 
     def formula(tax_unit, period, parameters):
+        # Mississippi matches the federal credit taken
         cdcc = tax_unit("cdcc", period)
         p = parameters(period).gov.states.ms.tax.income.credits.cdcc
         return p.match * cdcc

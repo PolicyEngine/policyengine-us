@@ -3,7 +3,7 @@
   input:
     ma_tafdc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
+    weekly_hours_worked: 10
     monthly_age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -14,7 +14,7 @@
   input:
     ma_tafdc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
+    weekly_hours_worked: 10
     monthly_age: 1
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -25,7 +25,7 @@
   input:
     ma_tafdc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 10
+    weekly_hours_worked: 10
     monthly_age: 2
     pre_subsidy_childcare_expenses: 30
   output:
@@ -36,7 +36,7 @@
   input:
     ma_tafdc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked_before_lsr: 60
+    weekly_hours_worked: 60
     monthly_age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -47,7 +47,7 @@
   input: 
     people:
       person1:
-        weekly_hours_worked_before_lsr: 60
+        weekly_hours_worked: 60
       person2:
         ma_tafdc_eligible_dependent: true
         age: 12

@@ -1,0 +1,39 @@
+- name: Is demographic eligible, income eligible and resource eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_gac_eligible_child: true
+    dc_gac_income_eligible: true
+    dc_tanf_resources_eligible: true
+  output:
+    dc_gac_eligible: true
+
+- name: Is demographic eligible, income eligible but not resource eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_gac_eligible_child: true
+    dc_gac_income_eligible: true
+    dc_tanf_resources_eligible: false
+  output:
+    dc_gac_eligible: false
+
+- name: Is demographic eligible, resource eligible but not income eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_gac_eligible_child: true
+    dc_gac_income_eligible: false
+    dc_tanf_resources_eligible: true
+  output:
+    dc_gac_eligible: false
+
+- name: Is resource eligible, income eligible but not demographic eligible.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_gac_eligible_child: false
+    dc_gac_income_eligible: true
+    dc_tanf_resources_eligible: true
+  output:
+    dc_gac_eligible: false

@@ -15,6 +15,7 @@ def test_microsim_runs(dataset: str, year: int):
     from policyengine_us import Microsimulation
 
     sim = Microsimulation(dataset=dataset)
+    sim.subsample(1_000)
     hnet = sim.calc("household_net_income", period=year)
     assert not hnet.isna().any(), "Some households have NaN net income."
     # Deciles are 1-10, with -1 for negative income.

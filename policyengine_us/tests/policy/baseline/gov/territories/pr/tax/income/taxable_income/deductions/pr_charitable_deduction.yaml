@@ -1,0 +1,19 @@
+- name: More charitable contributions than income
+  period: 2024
+  input:
+    charitable_cash_donations: 20_000
+    charitable_non_cash_donations: 1_000
+    pr_agi: 10_000
+    state_code: PR
+  output:
+    pr_charitable_deduction: 5000
+
+- name: More income than charitable contributions 
+  period: 2024
+  input:
+    charitable_cash_donations: 1_000
+    charitable_non_cash_donations: 500
+    pr_agi: 50_000
+    state_code: PR
+  output:
+    pr_charitable_deduction: 1_500

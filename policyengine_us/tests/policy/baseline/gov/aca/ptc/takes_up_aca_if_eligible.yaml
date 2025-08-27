@@ -1,0 +1,13 @@
+- name: Seed above takeup rate
+  period: 2025
+  input:
+    aca_take_up_seed: 0.7
+  output:
+    takes_up_aca_if_eligible: false
+
+- name: Seed below takeup rate
+  period: 2025
+  input:
+    aca_take_up_seed: 0.6
+  output:
+    takes_up_aca_if_eligible: true

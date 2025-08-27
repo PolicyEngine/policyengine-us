@@ -3,6 +3,11 @@ metadata:
   unit: currency-USD
   period: year
   label: Maine dependent exemption credit amount
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
   reference:
     - title: §5219-SS. Dependent exemption tax credit (1) 
       href: https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html
@@ -20,5 +25,8 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_a_dwnldff.pdf#page=1
     - title: Form 1040ME Schedule A (2018) Line 8
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040me_a_d.pdf#page=1
+    - title: Maine Fiscal Year 2025 to 2027 Budget Bill (LD 210)
+      href: https://legislature.maine.gov/backend/App/services/getDocument.aspx?documentId=120256#page=311
 values:
   2018-01-01: 300
+  2025-01-01: 300 # Inflation adjustment begins in 2025

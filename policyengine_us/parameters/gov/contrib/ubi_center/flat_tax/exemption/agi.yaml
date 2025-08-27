@@ -1,0 +1,17 @@
+description: The following amount is exempt under the flat AGI tax structure, based on filing status.
+metadata:
+  breakdown: 
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: Flat tax on AGI exemption amount
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+JOINT:
+  0000-01-01: 0
+SEPARATE:
+  0000-01-01: 0
+SINGLE:
+  0000-01-01: 0
+SURVIVING_SPOUSE:
+  0000-01-01: 0

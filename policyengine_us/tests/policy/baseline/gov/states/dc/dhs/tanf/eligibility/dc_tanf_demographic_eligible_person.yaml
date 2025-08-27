@@ -39,3 +39,14 @@
     state_code: DC
   output:
     dc_tanf_demographic_eligible_person: true
+
+- name: Is ineligible for TANF due to not related to head or spouse.
+  period: 2022-01
+  input:
+    age: 17
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    is_related_to_head_or_spouse: false
+    state_code: DC
+  output:
+    dc_tanf_demographic_eligible_person: false

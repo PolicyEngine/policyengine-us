@@ -1,0 +1,15 @@
+- name: Not eligible
+  period: 2024
+  input:
+    age: 75
+    state_code: PR
+  output:
+    pr_retirement_deduction_eligibility: False
+
+- name: Eligible
+  period: 2024
+  input:
+    age: 74
+    state_code: PR
+  output:
+    pr_retirement_deduction_eligibility: True

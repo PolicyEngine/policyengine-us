@@ -12,9 +12,14 @@ class dc_tanf_immigration_status_eligible_person(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
+        p = parameters(period).gov.states.dc.dhs
         immigration_status = person("immigration_status", period)
+        immigration_status_str = immigration_status.decode_to_str()
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
+        )
+        qualified_noncitizen = np.isin(
+            immigration_status_str,
+            p.qualified_noncitizen_statuses,
         )
         return qualified_noncitizen | is_citizen

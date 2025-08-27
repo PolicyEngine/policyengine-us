@@ -14,17 +14,20 @@ class is_medicaid_eligible(Variable):
     def formula(person, period, parameters):
         category = person("medicaid_category", period)
         categorically_eligible = category != category.possible_values.NONE
-        istatus = person("immigration_status", period)
-        undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        state = person.household("state_code_str", period)
-        p = parameters(period).gov.hhs.medicaid.eligibility
-        state_covers_undocumented = p.undocumented_immigrant[state].astype(
-            bool
-        )
-        immigration_status_eligible = (
-            ~undocumented | undocumented & state_covers_undocumented
+        immigration_status_eligible = person(
+            "is_medicaid_immigration_status_eligible", period
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
+        p = parameters(period).gov.hhs.medicaid.eligibility
+        if p.work_requirements.applies:
+            work_requirement_eligible = person(
+                "medicaid_work_requirement_eligible", period
+            )
+            return (
+                categorically_eligible
+                & immigration_status_eligible
+                & work_requirement_eligible
+            ) | ca_ffyp_eligible
         return (
             categorically_eligible & immigration_status_eligible
         ) | ca_ffyp_eligible
