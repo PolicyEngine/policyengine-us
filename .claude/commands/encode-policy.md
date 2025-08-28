@@ -7,13 +7,13 @@ description: Orchestrates multi-agent workflow to implement new government benef
 Coordinate the multi-agent workflow to implement $ARGUMENTS as a complete, production-ready government benefit program.
 
 ## Phase 0: Issue and PR Setup
-Invoke issue-manager agent to:
+Invoke @issue-manager agent to:
 - Search for existing issue or create new one for $ARGUMENTS
 - Create draft PR immediately for early visibility
 - Return issue number and PR URL for tracking
 
 ## Phase 0.5: Variable Naming Convention
-Invoke naming-coordinator agent to:
+Invoke @naming-coordinator agent to:
 - Analyze existing naming patterns in the codebase
 - Establish variable naming convention for $ARGUMENTS
 - Post naming decisions to GitHub issue for all agents to reference
@@ -21,7 +21,7 @@ Invoke naming-coordinator agent to:
 **Quality Gate**: Naming convention must be posted before proceeding to ensure consistency across parallel development.
 
 ## Phase 1: Document Collection
-Invoke document-collector agent to gather official $ARGUMENTS documentation and post to the GitHub issue.
+Invoke @document-collector agent to gather official $ARGUMENTS documentation and post to the GitHub issue.
 
 **Quality Gate**: Documentation must include:
 - Official program guidelines or state plan
@@ -31,8 +31,8 @@ Invoke document-collector agent to gather official $ARGUMENTS documentation and 
 
 ## Phase 2: Parallel Development (SIMULTANEOUS)
 After documentation is ready, invoke BOTH agents IN PARALLEL:
-- test-creator: Create integration tests from documentation only
-- rules-engineer: Implement rules from documentation (will internally use parameter-architect if needed)
+- @test-creator: Create integration tests from documentation only
+- @rules-engineer: Implement rules from documentation (will internally use @parameter-architect if needed)
 
 **CRITICAL**: These must run simultaneously in separate conversations to maintain isolation. Neither can see the other's work.
 
@@ -41,7 +41,7 @@ After documentation is ready, invoke BOTH agents IN PARALLEL:
 - test-creator: Use only existing PolicyEngine variables, test realistic calculations
 
 ## Phase 2.5: Branch Integration
-Invoke integration-agent to:
+Invoke @integration-agent to:
 - Merge test and implementation branches
 - Fix basic integration issues (entity mismatches, naming)
 - Verify tests can run with implementation
@@ -55,23 +55,23 @@ Invoke integration-agent to:
 
 ### Step 1: Edge Case Testing
 
-- edge-case-generator: Generate comprehensive boundary tests
+- @edge-case-generator: Generate comprehensive boundary tests
 - Commit generated tests before proceeding
 
 ### Step 2: Cross-Program Validation
 
-- cross-program-validator: Check interactions with other benefits
+- @cross-program-validator: Check interactions with other benefits
 - Fix any cliff effects or integration issues found
 - Commit fixes before proceeding
 
 ### Step 3: Documentation Enhancement
 
-- documentation-enricher: Add examples and regulatory citations
+- @documentation-enricher: Add examples and regulatory citations
 - Commit documentation improvements
 
 ### Step 4: Performance Optimization
 
-- performance-optimizer: Vectorize and optimize calculations
+- @performance-optimizer: Vectorize and optimize calculations
 - Run tests to ensure no regressions
 - Commit optimizations
 
@@ -84,7 +84,7 @@ Invoke integration-agent to:
 - Fully vectorized, no performance issues
 
 ## Phase 4: Implementation Validation
-Invoke implementation-validator agent to check for:
+Invoke @implementation-validator agent to check for:
 - Hard-coded values in variables
 - Placeholder or incomplete implementations
 - Federal/state parameter organization
@@ -94,7 +94,7 @@ Invoke implementation-validator agent to check for:
 **Quality Gate**: Must pass ALL critical validations before proceeding
 
 ## Phase 5: Review
-Invoke rules-reviewer to validate the complete implementation against documentation.
+Invoke @rules-reviewer to validate the complete implementation against documentation.
 
 **Review Criteria**:
 - Accuracy to source documents
@@ -103,9 +103,9 @@ Invoke rules-reviewer to validate the complete implementation against documentat
 - Edge case handling
 
 ## Phase 6: CI Fix & PR Finalization
-**CRITICAL: ALWAYS invoke ci-fixer agent - do NOT manually fix issues**
+**CRITICAL: ALWAYS invoke @ci-fixer agent - do NOT manually fix issues**
 
-Invoke ci-fixer agent to:
+Invoke @ci-fixer agent to:
 - Find the draft PR created in Phase 0
 - Merge test-creator and rules-engineer branches
 - Monitor CI pipeline for ALL failures
@@ -150,15 +150,15 @@ Invoke ci-fixer agent to:
 - Edit files
 
 **Start Implementation**:
-1. Phase 0: Invoke issue-manager agent
-2. Phase 0.5: Invoke naming-coordinator agent to establish naming conventions
-3. Phase 1: Invoke document-collector agent for $ARGUMENTS  
-4. Phase 2: Invoke test-creator AND rules-engineer in parallel
-5. Phase 2.5: Invoke integration-agent to merge branches
-6. Phase 3: Invoke fix agents sequentially (edge-case, cross-program, etc.)
-7. Phase 4: Invoke implementation-validator to check for issues
-8. Phase 5: Invoke rules-reviewer for final validation
-9. Phase 6: Invoke ci-fixer to handle CI pipeline
+1. Phase 0: Invoke @issue-manager agent
+2. Phase 0.5: Invoke @naming-coordinator agent to establish naming conventions
+3. Phase 1: Invoke @document-collector agent for $ARGUMENTS  
+4. Phase 2: Invoke @test-creator AND @rules-engineer in parallel
+5. Phase 2.5: Invoke @integration-agent to merge branches
+6. Phase 3: Invoke fix agents sequentially (@edge-case-generator, @cross-program-validator, etc.)
+7. Phase 4: Invoke @implementation-validator to check for issues
+8. Phase 5: Invoke @rules-reviewer for final validation
+9. Phase 6: Invoke @ci-fixer to handle CI pipeline
 
 **CRITICAL**: You MUST complete ALL phases. Do NOT skip any phases - they are ALL REQUIRED:
 - Phase 2.5 ensures branches work together

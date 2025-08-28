@@ -174,17 +174,17 @@ Your task is complete when:
 
 ### Can be invoked by other agents for:
 
-1. **rules-engineer** needs intermediate variable names:
+1. **@rules-engineer** needs intermediate variable names:
    - "I need to create a variable for countable income"
-   - naming-coordinator returns: `az_liheap_countable_income`
+   - @naming-coordinator returns: `az_liheap_countable_income`
 
-2. **parameter-architect** needs parameter paths:
+2. **@parameter-architect** needs parameter paths:
    - "I need parameter names for income limits by household size"
-   - naming-coordinator returns: `gov.states.az.des.liheap.income_limits.{size}`
+   - @naming-coordinator returns: `gov.states.az.des.liheap.income_limits.{size}`
 
-3. **test-creator** needs test scenario names:
+3. **@test-creator** needs test scenario names:
    - "I need names for edge case test files"
-   - naming-coordinator returns: `az_liheap_edge_cases.yaml`
+   - @naming-coordinator returns: `az_liheap_edge_cases.yaml`
 
 ### Quick Lookup Mode
 
@@ -202,10 +202,10 @@ grep -r "az_liheap_countable_income" policyengine_us/variables/
 
 ## Important Notes
 
-- **Initial setup**: Runs AFTER issue-manager but BEFORE document-collector
+- **Initial setup**: Runs AFTER @issue-manager but BEFORE @document-collector
 - **On-demand**: Can be invoked by any agent needing naming decisions
 - The naming convention becomes the contract for all subsequent agents
-- Both test-creator and rules-engineer will read this from the issue
-- Integration-agent will use this to detect and fix naming mismatches
+- Both @test-creator and @rules-engineer will read this from the issue
+- @integration-agent will use this to detect and fix naming mismatches
 
 Remember: Consistent naming prevents integration issues and makes the codebase maintainable.
