@@ -70,15 +70,19 @@ jobs:
       - name: Run non-structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
-        run: uv run make test-yaml-no-structural
+        run: |
+          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
-        run: uv run make test-yaml-structural
+        run: |
+          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
-        run: uv run make test-other
+        run: |
+          uv run coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
       - name: Produce combined coverage repository
         run: uv run make coverage
       - uses: codecov/codecov-action@v4
