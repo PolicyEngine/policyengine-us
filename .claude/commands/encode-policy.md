@@ -32,9 +32,9 @@ After documentation is ready, invoke BOTH agents IN PARALLEL:
 - rules-engineer: ZERO hard-coded values, complete implementations only
 - test-creator: Use only existing PolicyEngine variables, test realistic calculations
 
-## Phase 3: Auto-Enhancement (SEQUENTIAL)
+## Phase 3: Enhancement & Fixes (SEQUENTIAL)
 
-After initial implementation, invoke enhancement agents SEQUENTIALLY to avoid merge conflicts:
+**REQUIRED**: These agents fix common issues. Invoke them SEQUENTIALLY:
 
 ### Step 1: Edge Case Testing
 
@@ -133,9 +133,14 @@ Invoke ci-fixer agent to:
 - Edit files
 
 **Start Implementation**:
-1. Begin with Phase 0: Invoke issue-manager agent
-2. Then Phase 1: Invoke document-collector agent for $ARGUMENTS
-3. Continue through ALL phases
-4. ALWAYS complete with Phase 6: Invoke ci-fixer agent
+1. Phase 0: Invoke issue-manager agent
+2. Phase 1: Invoke document-collector agent for $ARGUMENTS  
+3. Phase 2: Invoke test-creator AND rules-engineer in parallel
+4. Phase 3: Invoke enhancement agents sequentially (edge-case, cross-program, etc.)
+5. Phase 4: Invoke implementation-validator to check for issues
+6. Phase 5: Invoke rules-reviewer for final validation
+7. Phase 6: Invoke ci-fixer to merge branches and fix CI
+
+**CRITICAL**: You MUST complete ALL phases. Do NOT skip enhancement/validation phases even if initial implementation looks good. These agents catch and fix issues that aren't immediately visible.
 
 If any agent fails, report the failure but DO NOT attempt to fix it yourself.
