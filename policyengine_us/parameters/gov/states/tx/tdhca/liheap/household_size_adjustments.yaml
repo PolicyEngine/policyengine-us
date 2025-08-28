@@ -45,7 +45,7 @@ ten_person:
     2024-01-01: 1.96  # 196% of maximum - applies to households with 10+ members
 metadata:
   unit: /1
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP household size adjustments
   reference:
     - title: 45 CFR 96.85 - Benefit levels for household eligible households

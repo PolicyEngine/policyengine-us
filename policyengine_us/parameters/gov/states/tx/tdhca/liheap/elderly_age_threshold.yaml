@@ -21,7 +21,7 @@ values:
   2024-01-01: 60  # Age 60 and above qualifies as elderly for priority status
 metadata:
   unit: year
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP elderly age threshold
   reference:
     - title: 42 U.S.C. 8624(b)(2)(B) - Priority for elderly households

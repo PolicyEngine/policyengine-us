@@ -23,7 +23,7 @@ values:
   2024-01-01: 6  # Children under age 6 qualify household for priority status
 metadata:
   unit: year
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP child age threshold
   reference:
     - title: 42 U.S.C. 8624(b)(2)(B) - Priority for households with young children

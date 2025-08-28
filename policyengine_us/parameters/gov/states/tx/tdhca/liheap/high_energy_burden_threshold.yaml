@@ -22,7 +22,7 @@ values:
   2024-01-01: 0.10  # 10% of household income threshold
 metadata:
   unit: /1
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP high energy burden threshold
   reference:
     - title: Texas LIHEAP State Plan FY 2024 - Section 3.4.4 High Energy Burden

@@ -17,7 +17,7 @@ values:
   2024-01-01: 1.5  # 150% of Federal Poverty Guidelines
 metadata:
   unit: /1
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP FPG ratio
   reference:
     - title: 45 CFR 96.85(a) - Maximum income eligibility

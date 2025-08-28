@@ -18,7 +18,7 @@ values:
   2024-01-01: 1  # Symbolic minimum to ensure all eligible households receive assistance
 metadata:
   unit: USD
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP minimum benefit
   reference:
     - title: Texas LIHEAP State Plan FY 2024 - Section 4.4 Benefit Limits

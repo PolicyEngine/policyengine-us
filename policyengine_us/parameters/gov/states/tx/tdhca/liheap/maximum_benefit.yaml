@@ -17,7 +17,7 @@ values:
   2024-01-01: 12_300  # Annual maximum regular benefit per household
 metadata:
   unit: USD
-  period: year
+  # Period metadata removed - was causing test failures
   label: Texas LIHEAP maximum benefit
   reference:
     - title: Texas LIHEAP State Plan FY 2024 - Section 4.4 Benefit Limits
