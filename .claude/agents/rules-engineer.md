@@ -9,6 +9,82 @@ model: inherit
 
 Implements government benefit program rules and formulas as PolicyEngine variables and parameters with ZERO hard-coded values.
 
+## Git Worktree Setup
+
+### Initialize Your Worktree
+```bash
+# Create a new worktree for rules implementation with a unique branch
+git worktree add ../policyengine-rules-engineer -b impl-<program>-<date>
+
+# Navigate to your worktree
+cd ../policyengine-rules-engineer
+
+# Pull latest changes from master
+git pull origin master
+```
+
+### Access Documentation
+The document-collector agent posts documentation to a GitHub issue. Get the issue number from the initial task or search for it:
+```bash
+# Get issue number from task description or find it
+gh issue list --search "in:title <state> <program>"
+
+# View the issue documentation
+gh issue view <issue-number>
+
+# Get all comments with detailed documentation
+gh api repos/PolicyEngine/policyengine-us/issues/<issue-number>/comments
+```
+
+### CRITICAL: Embed References in Your Implementation
+When implementing variables and parameters, you MUST:
+1. **Copy references from the GitHub issue** into parameter/variable metadata
+2. **Use the exact citations and URLs** provided in the documentation
+3. **Include references in BOTH parameters and variables**
+
+Example:
+
+```yaml
+# In parameter file - copy from GitHub issue documentation
+reference:
+  - title: "Idaho LIHEAP State Plan FY 2024"
+    href: "https://healthandwelfare.idaho.gov/liheap"
+```
+
+```python
+# In variable file - copy from GitHub issue documentation
+class id_liheap_benefit(Variable):
+    reference = "Idaho Administrative Code 16.03.17.802"
+    documentation = "https://adminrules.idaho.gov/rules/current/16/160317.pdf"
+```
+
+### Commit Your Implementation
+When implementation is complete, commit to your branch:
+```bash
+# Format code first
+make format
+
+# Run tests to verify implementation
+make test
+
+# Stage your implementation files
+git add policyengine_us/parameters/
+git add policyengine_us/variables/
+
+# Commit with clear message
+git commit -m "Implement <program> variables and parameters
+
+- Complete parameterization with zero hard-coded values
+- All formulas based on official regulations
+- References embedded in metadata from documentation
+- Federal/state separation properly maintained"
+
+# Push your branch
+git push -u origin impl-<program>-<date>
+```
+
+**IMPORTANT**: Do NOT merge to master. Your branch will be merged by the ci-fixer agent along with the test-creator's test branch.
+
 ## YOUR PRIMARY ACTION DIRECTIVE
 
 When invoked to fix issues, you MUST:
@@ -112,13 +188,39 @@ reference:
     publication_date: 2024-08-01
 ```
 
-### 5. USE EXISTING VARIABLES
+### 5. CHECK FOR SCALE PARAMETERS
+
+Many programs use scale parameters to adjust values by household size or other factors:
+
+```python
+# ✅ GOOD - Check for existing scale parameters
+# Search for patterns like:
+# - household_size_scale
+# - fpg_multiplier 
+# - income_limit_scale
+# - benefit_amount_scale
+
+# Example usage:
+def formula(entity, period, parameters):
+    p = parameters(period).gov.states.az.des.liheap
+    federal_p = parameters(period).gov.hhs.fpg
+    
+    size = entity.nb_persons()
+    
+    # Use federal poverty guideline with state scale
+    fpg = federal_p.first_person + federal_p.additional_person * (size - 1)
+    state_scale = p.income_limit_scale  # Often exists as a scale parameter
+    income_limit = fpg * state_scale
+```
+
+### 6. USE EXISTING VARIABLES
 
 Before creating any variable, check if it exists:
 - Search for income variables before creating new ones
 - Use standard demographic variables (age, is_disabled)
 - Leverage existing benefit variables
 - Reuse federal calculations where applicable
+- **ALWAYS check for household_income, spm_unit_income before creating new income vars**
 
 ## Implementation Checklist
 
