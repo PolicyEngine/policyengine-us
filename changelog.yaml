@@ -10824,3 +10824,14 @@
     - /review-pr command for reviewing and fixing PRs with mandatory agent usage
     - Comprehensive documentation for agent coordination and testing
   date: 2025-08-28 02:26:40
+- bump: minor
+  changes:
+    added:
+    - Enhanced multi-agent system for autonomous benefit program implementations
+    - New agents for issue management, naming coordination, and branch integration
+    - Improved workflow documentation with @ syntax for agent invocation
+    changed:
+    - Updated agent workflow to establish naming conventions before parallel development
+    - Modified CI fixer to work with existing draft PRs
+    - Enhanced test creator and rules engineer to work in separate git worktrees
+  date: 2025-08-28 03:53:01
