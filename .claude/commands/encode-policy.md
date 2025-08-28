@@ -94,32 +94,6 @@ Invoke ci-fixer to:
 - Complete test coverage
 - Proper documentation
 
-## Expected Review Cycles
-
-### Current Paradigm (Single Reviewer)
-- **Initial Review**: 3-5 comments on hard-coding, parameters, organization
-- **Second Review**: 1-2 comments on missed edge cases
-- **Third Review**: Minor documentation updates
-- **Total**: 3 review cycles, 4-8 total comments
-
-### With Enhanced Agents + Auto-Enhancers (This Workflow)
-- **Initial Review**: 0 comments expected (auto-merge capable)
-- **Total**: 0 review cycles, 0 comments (70% probability)
-- **Fallback**: 1 review cycle, 1 comment for policy clarifications (30% probability)
-- **80% CI**: [0-2 comments]
-
-### Alternative: Multiple Specialized Reviewers
-**Option A: Domain Expert + Code Quality**
-- Domain Expert: Validates accuracy to regulations (1-2 comments)
-- Code Reviewer: Checks patterns and style (1-2 comments)
-- **Total**: 1-2 review cycles, 2-4 total comments
-
-**Option B: Full Review Board**
-- Parameter Reviewer: Validates all parameters against sources (0-1 comments)
-- Test Reviewer: Checks test coverage and realism (0-1 comments)
-- Implementation Reviewer: Validates formula accuracy (0-1 comments)
-- Integration Reviewer: Checks cross-program interactions (0-1 comments)
-- **Total**: 1 review cycle, 0-4 total comments (parallel reviews)
 
 ## Anti-Patterns This Workflow Prevents
 
