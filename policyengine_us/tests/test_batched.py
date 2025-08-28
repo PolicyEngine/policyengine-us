@@ -48,11 +48,13 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
     """
     # Special handling for contrib tests - each folder is its own batch
     if "contrib" in str(base_path):
-        # Get all subdirectories
-        subdirs = [item for item in base_path.iterdir() if item.is_dir()]
+        # Get all subdirectories and sort them alphabetically
+        subdirs = sorted(
+            [item for item in base_path.iterdir() if item.is_dir()]
+        )
 
-        # Get root level YAML files
-        root_files = list(base_path.glob("*.yaml"))
+        # Get root level YAML files and sort them
+        root_files = sorted(list(base_path.glob("*.yaml")))
 
         # Create one batch per subdirectory
         batches = []
@@ -65,6 +67,10 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
             batches.append(root_batch)
 
         return batches
+
+    # Special handling for reform tests - run all together in one batch
+    if "reform" in str(base_path):
+        return [[str(base_path)]]
 
     # Special handling for baseline tests with 2 batches
     if "baseline" in str(base_path) and num_batches == 2:
