@@ -49,6 +49,16 @@ Invoke @integration-agent to:
 
 **Why Critical**: The next phases need to work on integrated code to catch real issues.
 
+## Phase 2.6: Pre-Push Validation
+Invoke @pr-pusher agent to:
+- Ensure changelog entry exists
+- Run formatters (black, isort)
+- Fix any linting issues
+- Run local tests for quick validation
+- Push branch and report initial CI status
+
+**Quality Gate**: Branch must be properly formatted and have changelog before continuing.
+
 ## Phase 3: Required Fixes and Validations (SEQUENTIAL)
 
 **MANDATORY**: These agents fix critical issues. Invoke them SEQUENTIALLY:
@@ -155,10 +165,11 @@ Invoke @ci-fixer agent to:
 3. Phase 1: Invoke @document-collector agent for $ARGUMENTS  
 4. Phase 2: Invoke @test-creator AND @rules-engineer in parallel
 5. Phase 2.5: Invoke @integration-agent to merge branches
-6. Phase 3: Invoke fix agents sequentially (@edge-case-generator, @cross-program-validator, etc.)
-7. Phase 4: Invoke @implementation-validator to check for issues
-8. Phase 5: Invoke @rules-reviewer for final validation
-9. Phase 6: Invoke @ci-fixer to handle CI pipeline
+6. Phase 2.6: Invoke @pr-pusher to validate and push branch
+7. Phase 3: Invoke fix agents sequentially (@edge-case-generator, @cross-program-validator, etc.)
+8. Phase 4: Invoke @implementation-validator to check for issues
+9. Phase 5: Invoke @rules-reviewer for final validation
+10. Phase 6: Invoke @ci-fixer to handle CI pipeline
 
 **CRITICAL**: You MUST complete ALL phases. Do NOT skip any phases - they are ALL REQUIRED:
 - Phase 2.5 ensures branches work together
