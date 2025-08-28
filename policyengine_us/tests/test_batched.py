@@ -133,94 +133,74 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     print(f"    Running {batch_name}...")
     print(f"    Paths: {len(test_paths)} items")
+    print(f"    Command: policyengine-core test on {len(test_paths)} paths")
     print()
 
-    # Use Popen with process group for better control
-    process = subprocess.Popen(
-        cmd,
-        stdout=None,  # Inherit stdout for real-time output
-        stderr=None,  # Inherit stderr
-        text=True,
-        # Create new process group on Unix-like systems
-        preexec_fn=os.setsid if os.name != "nt" else None,
-    )
-
     try:
-        # Wait for process with timeout
-        returncode = process.wait(timeout=1800)  # 30 minutes
+        # Run with captured output to avoid potential hang from output handling
+        # But still use a timeout for safety
+        result = subprocess.run(
+            cmd,
+            capture_output=True,  # Capture instead of real-time display
+            text=True,
+            timeout=1800,  # 30 minutes timeout
+        )
 
         elapsed = time.time() - start_time
-        print(f"\n    Batch completed in {elapsed:.1f}s")
 
+        # Parse output for test results
+        output_lines = result.stdout.split("\n") if result.stdout else []
+        stderr_lines = result.stderr.split("\n") if result.stderr else []
+
+        # Look for pytest summary line
+        passed_count = 0
+        failed_count = 0
+        for line in output_lines:
+            if "passed" in line and "failed" not in line:
+                # Try to extract number of passed tests
+                import re
+
+                match = re.search(r"(\d+) passed", line)
+                if match:
+                    passed_count = int(match.group(1))
+            if "failed" in line:
+                match = re.search(r"(\d+) failed", line)
+                if match:
+                    failed_count = int(match.group(1))
+
+        # Print summary
+        if passed_count > 0 or failed_count > 0:
+            print(f"    Results: {passed_count} passed, {failed_count} failed")
+
+        # If there were failures, show which files failed
+        if result.returncode != 0:
+            print("\n    Failed test files:")
+            for line in output_lines:
+                if "FAILED" in line and ".yaml" in line:
+                    # Extract just the file path
+                    parts = line.split()
+                    for part in parts:
+                        if ".yaml" in part:
+                            print(f"      - {part}")
+                            break
+
+        print(f"\n    Batch completed in {elapsed:.1f}s")
         return {
             "elapsed": elapsed,
-            "status": "passed" if returncode == 0 else "failed",
+            "status": "passed" if result.returncode == 0 else "failed",
         }
 
     except subprocess.TimeoutExpired:
         elapsed = time.time() - start_time
-        print(f"\n    ⚠️  Process timeout after {elapsed:.1f}s, terminating...")
-
-        # Try graceful termination first
-        if os.name != "nt":
-            # On Unix, kill the entire process group
-            try:
-                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-            except ProcessLookupError:
-                pass
-        else:
-            # On Windows, just terminate the process
-            process.terminate()
-
-        # Wait a bit for graceful shutdown
-        try:
-            returncode = process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            # Force kill if still running
-            print("    Force killing process...")
-            if os.name != "nt":
-                try:
-                    os.killpg(os.getpgid(process.pid), signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
-            else:
-                process.kill()
-            process.wait()
-            returncode = -9
-
-        # If tests ran for less than 20 minutes, they probably completed
-        # and it's just a cleanup hang
-        if elapsed < 1200:  # 20 minutes
-            print(
-                f"\n    Tests likely completed before timeout (ran {elapsed:.1f}s)"
-            )
-            print("    (Process was killed due to post-test hang)")
-            # Assume success if we saw tests complete in output
-            return {
-                "elapsed": elapsed,
-                "status": "passed",  # Optimistic
-            }
-        else:
-            return {
-                "elapsed": elapsed,
-                "status": "timeout",
-            }
-
+        print(f"\n    ⏱️ Timeout after {elapsed:.1f}s")
+        print("    (Process killed due to timeout)")
+        return {
+            "elapsed": elapsed,
+            "status": "timeout",
+        }
     except Exception as e:
         elapsed = time.time() - start_time
         print(f"\n    ❌ Error: {str(e)[:100]}")
-
-        # Clean up process
-        try:
-            process.terminate()
-            process.wait(timeout=5)
-        except:
-            try:
-                process.kill()
-                process.wait()
-            except:
-                pass
-
         return {
             "elapsed": elapsed,
             "status": "error",
