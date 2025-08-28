@@ -51,7 +51,9 @@ def run_batch_isolated(test_files, batch_name, timeout_seconds):
         failed_count = 0
         current_test = None
 
-        for line in process.stdout:
+        for line in iter(process.stdout.readline, ""):
+            if not line:
+                break
             output_lines.append(line)
 
             # Show which test file is being run
@@ -83,7 +85,17 @@ def run_batch_isolated(test_files, batch_name, timeout_seconds):
                 if match:
                     failed_count = int(match.group(1))
 
-        process.wait(timeout=timeout_seconds)
+            # If we see the pytest summary, tests are done - kill process
+            if "====" in line and ("passed" in line or "failed" in line):
+                print("    Tests completed, terminating process...")
+                process.terminate()
+                break
+
+        try:
+            process.wait(timeout=timeout_seconds)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            raise
 
         elapsed = time.time() - start_time
         output = "".join(output_lines)
@@ -144,9 +156,12 @@ def main():
         parts = str(yaml_file).split("/")
         if len(parts) > 5:  # Has a subfolder under contrib
             folder_name = parts[4]
-            if folder_name not in folder_files:
-                folder_files[folder_name] = []
-            folder_files[folder_name].append(str(yaml_file))
+        else:  # Files directly in contrib folder
+            folder_name = "_root"  # Special name for files in contrib root
+
+        if folder_name not in folder_files:
+            folder_files[folder_name] = []
+        folder_files[folder_name].append(str(yaml_file))
 
     if not folder_files:
         print("No contrib test files found")
@@ -163,7 +178,10 @@ def main():
         f"\nFound {total_files} test files in {len(sorted_folders)} folders:"
     )
     for folder in sorted_folders:
-        print(f"  {folder}: {len(folder_files[folder])} files")
+        if folder == "_root":
+            print(f"  (root contrib): {len(folder_files[folder])} files")
+        else:
+            print(f"  {folder}: {len(folder_files[folder])} files")
 
     # Split folders into two batches (keeping all files from same folder together)
     midpoint = len(sorted_folders) // 2
@@ -184,7 +202,7 @@ def main():
     )
     print(f"  {', '.join(batch1_folders)}")
     batch1_results = run_batch_isolated(
-        batch1_files, "Batch 1", timeout_seconds=2400
+        batch1_files, "Batch 1", timeout_seconds=1800  # 30 minutes
     )
 
     gc.collect()
@@ -194,8 +212,11 @@ def main():
     )
     print(f"  {', '.join(batch2_folders)}")
     batch2_results = run_batch_isolated(
-        batch2_files, "Batch 2", timeout_seconds=2400
+        batch2_files, "Batch 2", timeout_seconds=1800  # 30 minutes
     )
+
+    # Clean up memory after batch 2
+    gc.collect()
 
     all_failed_tests = []
 

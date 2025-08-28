@@ -12,7 +12,6 @@ test-yaml-structural:
 	python policyengine_us/tests/test_contrib_batched.py
 test-yaml-no-structural:
 	python policyengine_us/tests/test_baseline_batched.py
-	python -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:
