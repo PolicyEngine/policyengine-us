@@ -86,7 +86,7 @@ class tx_liheap_high_energy_burden(Variable):
         # Use the same income calculation as tx_liheap_income for consistency
         # Convert monthly income to annual for comparison with annual utility expense
         income = spm_unit("tx_liheap_income", period) * 12
-        
+
         # utility_expense is a YEAR variable, so we need to access the year period
         utility_expense = spm_unit("utility_expense", period.this_year)
 
