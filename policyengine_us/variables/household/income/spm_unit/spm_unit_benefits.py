@@ -33,6 +33,10 @@ class spm_unit_benefits(Variable):
             # Paid at the same time as the Alaska Permanent Fund Dividend,
             # which is part of IRS gross income.
             "ak_energy_relief",
+            # LIHEAP programs
+            "az_liheap",
+            "ma_liheap",
+            "dc_liheap_payment",
             # Contributed.
             "basic_income",
             "ny_drive_clean_rebate",

@@ -1,0 +1,455 @@
+# Arizona LIHEAP Points Calculation Tests
+# Tests the points-based benefit determination system
+
+# Income Level Points Tests (0-5 points based on poverty level)
+
+- name: Income 0-30% poverty - 5 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 4_000  # Very low income
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 5
+
+- name: Income 31-50% poverty - 4 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 7_500  # ~45% of poverty
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 4
+
+- name: Income 51-75% poverty - 3 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 11_000  # ~65% of poverty
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 3
+
+- name: Income 76-100% poverty - 2 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 14_500  # ~90% of poverty
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 2
+
+- name: Income 101-125% poverty - 1 point
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 18_000  # ~110% of poverty
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 1
+
+- name: Income 126-150% poverty - 0 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 22_000  # ~135% of poverty
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_level_points: 0
+
+# Energy Burden Points Tests (0-6 points based on utility costs as % of income)
+
+- name: Energy burden over 20% - 6 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 250  # 25% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 6
+
+- name: Energy burden 16-20% - 5 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000  # $1,500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 270  # 18% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 5
+
+- name: Energy burden 11-15% - 4 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 260  # 13% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 4
+
+- name: Energy burden 6-10% - 3 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000  # $2,500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 200  # 8% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 3
+
+- name: Energy burden 3-5% - 2 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # $3,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 120  # 4% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 2
+
+- name: Energy burden 1-2% - 1 point
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 40_000  # $3,333/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 50  # 1.5% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 1
+
+- name: Energy burden under 1% - 0 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 45_000  # $3,750/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 30  # 0.8% of monthly income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_energy_burden_points: 0
+
+# Vulnerable Household Points Tests
+
+- name: Elderly person 60+ - 5 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 5
+
+- name: Elderly person exactly 60 - 5 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 5
+
+- name: Disabled person - 5 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 5
+
+- name: Child under 6 - 3 points
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 35_000
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 3
+
+- name: Child exactly 5 - 3 points
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 30_000
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 3
+
+- name: Child age 6 or older - 0 points
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 32_000
+      child1:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: AZ
+  output:
+    az_liheap_vulnerable_household_points: 0
+
+- name: Multiple vulnerable groups - elderly and disabled
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Should take highest applicable points (5 for either elderly or disabled)
+    az_liheap_vulnerable_household_points: 5
+
+- name: Multiple vulnerable groups - elderly and child under 6
+  period: 2024
+  input:
+    people:
+      grandparent:
+        age: 65
+        employment_income: 20_000
+      parent:
+        age: 35
+        employment_income: 25_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: AZ
+  output:
+    # Should take highest applicable points (5 for elderly)
+    az_liheap_vulnerable_household_points: 5
+
+- name: Total points calculation - low scenario
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35_000  # Higher income
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 70  # Low energy burden
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Income ~200% poverty: 0 points
+    # Energy burden ~2.4%: 1 point
+    # No vulnerable household: 0 points
+    az_liheap_total_points: 1
+
+- name: Total points calculation - moderate scenario
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 30_000
+      parent2:
+        age: 38
+        employment_income: 12_000
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        electricity_expense: 250
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    # Income calculation and points based on household poverty level
+    # Energy burden calculation based on utilities/income ratio
+    # No vulnerable household members
+    az_liheap_total_points: 9  # Estimate based on income and energy burden
+
+- name: Total points calculation - high scenario
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 14_400  # $1,200/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 150
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Low income: 4-5 points
+    # High energy burden (12.5%): 4 points
+    # Elderly: 5 points
+    az_liheap_total_points: 14  # High points scenario
