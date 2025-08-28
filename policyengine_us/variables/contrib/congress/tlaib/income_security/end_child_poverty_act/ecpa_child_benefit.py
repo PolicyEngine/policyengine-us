@@ -22,7 +22,6 @@ class ecpa_child_benefit(Variable):
         age_limit = p.child_benefit.age_limit
         is_eligible = age < age_limit
 
-        monthly_amount = p.child_benefit.amount_per_month
-        annual_amount = monthly_amount * MONTHS_IN_YEAR
+        annual_amount = p.child_benefit.amount
 
         return is_eligible * annual_amount

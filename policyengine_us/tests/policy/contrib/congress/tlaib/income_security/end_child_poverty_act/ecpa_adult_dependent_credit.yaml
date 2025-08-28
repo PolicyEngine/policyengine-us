@@ -1,5 +1,5 @@
 - name: Adult dependent 18 or over receives credit
-  period: 2025
+  period: 2026
   input:
     people:
       dependent:
@@ -13,10 +13,10 @@
         members: [parent, dependent]
   output:
     ecpa_adult_dependent_credit:
-      2025: [700, 0]
+      2026: [700, 0]
 
 - name: Non-dependent adult does not receive credit
-  period: 2025
+  period: 2026
   input:
     people:
       adult:
@@ -24,10 +24,10 @@
         is_tax_unit_dependent: false
   output:
     ecpa_adult_dependent_credit:
-      2025: 0
+      2026: 0
 
 - name: Child under 18 does not receive adult dependent credit
-  period: 2025
+  period: 2026
   input:
     people:
       child:
@@ -35,10 +35,10 @@
         is_tax_unit_dependent: true
   output:
     ecpa_adult_dependent_credit:
-      2025: 0
+      2026: 0
 
 - name: Multiple adult dependents each receive credit
-  period: 2025
+  period: 2026
   input:
     people:
       parent:
@@ -55,7 +55,7 @@
         members: [parent, dependent1, dependent2]
   output:
     ecpa_adult_dependent_credit:
-      2025: [0, 700, 700]
+      2026: [0, 700, 700]
 
 - name: No credit in 2024
   period: 2024

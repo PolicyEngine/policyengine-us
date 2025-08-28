@@ -1,5 +1,5 @@
 - name: Single filer below threshold owes no tax
-  period: 2025
+  period: 2026
   input:
     people:
       filer:
@@ -11,10 +11,10 @@
         adjusted_gross_income: 25_000
   output:
     boost_tax:
-      2025: 0
+      2026: 0
 
 - name: Single filer above threshold owes tax
-  period: 2025
+  period: 2026
   input:
     people:
       filer:
@@ -26,10 +26,10 @@
         adjusted_gross_income: 40_000  # 10,000 above 30,000 threshold
   output:
     boost_tax:
-      2025: 250  # 10,000 * 0.025
+      2026: 250  # 10,000 * 0.025
 
 - name: Joint filers below threshold owe no tax
-  period: 2025
+  period: 2026
   input:
     people:
       head:
@@ -43,10 +43,10 @@
         adjusted_gross_income: 50_000
   output:
     boost_tax:
-      2025: 0
+      2026: 0
 
 - name: Joint filers above threshold owe tax
-  period: 2025
+  period: 2026
   input:
     people:
       head:
@@ -60,10 +60,10 @@
         adjusted_gross_income: 100_000  # 40,000 above 60,000 threshold
   output:
     boost_tax:
-      2025: 1_000  # 40,000 * 0.025
+      2026: 1_000  # 40,000 * 0.025
 
 - name: Head of household above threshold owes tax
-  period: 2025
+  period: 2026
   input:
     people:
       head:
@@ -77,10 +77,10 @@
         adjusted_gross_income: 50_000  # 20,000 above 30,000 threshold
   output:
     boost_tax:
-      2025: 500  # 20,000 * 0.025
+      2026: 500  # 20,000 * 0.025
 
 - name: High income single filer owes substantial tax
-  period: 2025
+  period: 2026
   input:
     people:
       filer:
@@ -92,7 +92,7 @@
         adjusted_gross_income: 130_000  # 100,000 above 30,000 threshold
   output:
     boost_tax:
-      2025: 2_500  # 100,000 * 0.025
+      2026: 2_500  # 100,000 * 0.025
 
 - name: No tax in 2024
   period: 2024
@@ -109,8 +109,8 @@
     boost_tax:
       2024: 0
 
-- name: No tax after 2025
-  period: 2026
+- name: No tax after 2026
+  period: 2027
   input:
     people:
       filer:
@@ -122,4 +122,4 @@
         adjusted_gross_income: 50_000
   output:
     boost_tax:
-      2026: 0
+      2027: 0

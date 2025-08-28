@@ -1,5 +1,5 @@
 - name: Family with baby, children, and adults receives all benefits
-  period: 2025
+  period: 2026
   input:
     people:
       baby:
@@ -23,25 +23,25 @@
   output:
     # Baby Bonus
     baby_bonus:
-      2025: [2_000, 0, 0, 0, 0, 0]  # Only baby gets bonus
+      2026: [2_000, 0, 0, 0, 0, 0]  # Only baby gets bonus
     # ECPA Child Benefit  
     ecpa_child_benefit:
-      2025: [4_716, 4_716, 4_716, 0, 0, 0]  # All children under 19
+      2026: [5_630, 5_630, 5_630, 0, 0, 0]  # All children under 19
     # ECPA Adult Dependent Credit
     ecpa_adult_dependent_credit:
-      2025: [0, 0, 0, 0, 0, 700]  # Only adult dependent
+      2026: [0, 0, 0, 0, 0, 700]  # Only adult dependent
     # BOOST Payment
     boost_payment:
-      2025: [0, 0, 0, 3_000, 3_000, 3_000]  # Adults 19-67
+      2026: [0, 0, 0, 3_000, 3_000, 3_000]  # Adults 19-67
     # ECPA Filer Credit (at tax unit level)
     ecpa_filer_credit:
-      2025: 1_150  # 1,400 - (5,000 * 0.05)
+      2026: 1_150  # 1,400 - (5,000 * 0.05)
     # BOOST Tax (at tax unit level)
     boost_tax:
-      2025: 0  # Below 60,000 threshold for joint
+      2026: 0  # Below 60,000 threshold for joint
 
 - name: Single parent with high income
-  period: 2025
+  period: 2026
   input:
     people:
       parent:
@@ -56,22 +56,22 @@
   output:
     # No baby bonus (child too old)
     baby_bonus:
-      2025: [0, 0]
+      2026: [0, 0]
     # Child benefit
     ecpa_child_benefit:
-      2025: [0, 4_716]
+      2026: [0, 5_630]
     # BOOST payment for parent
     boost_payment:
-      2025: [3_000, 0]
+      2026: [3_000, 0]
     # ECPA filer credit fully phased out
     ecpa_filer_credit:
-      2025: 0  # 700 - (60,000 * 0.05) = -2,300, max to 0
+      2026: 0  # 700 - (60,000 * 0.05) = -2,300, max to 0
     # BOOST tax on high income
     boost_tax:
-      2025: 1_250  # (80,000 - 30,000) * 0.025
+      2026: 1_250  # (80,000 - 30,000) * 0.025
 
 - name: Senior couple with adult dependent
-  period: 2025
+  period: 2026
   input:
     people:
       senior1:
@@ -89,25 +89,25 @@
   output:
     # No baby bonus
     baby_bonus:
-      2025: [0, 0, 0]
+      2026: [0, 0, 0]
     # No child benefit (all adults)
     ecpa_child_benefit:
-      2025: [0, 0, 0]
+      2026: [0, 0, 0]
     # Adult dependent credit
     ecpa_adult_dependent_credit:
-      2025: [0, 0, 700]
+      2026: [0, 0, 700]
     # BOOST payment only for adult dependent (seniors too old)
     boost_payment:
-      2025: [0, 0, 3_000]
+      2026: [0, 0, 3_000]
     # No filer credit (seniors over 64)
     ecpa_filer_credit:
-      2025: 0
+      2026: 0
     # No BOOST tax (below threshold)
     boost_tax:
-      2025: 0
+      2026: 0
 
 - name: Young adult living alone
-  period: 2025
+  period: 2026
   input:
     people:
       young_adult:
@@ -120,19 +120,19 @@
   output:
     # No baby bonus
     baby_bonus:
-      2025: 0
+      2026: 0
     # No child benefit (19 or over)
     ecpa_child_benefit:
-      2025: 0
+      2026: 0
     # Not a dependent
     ecpa_adult_dependent_credit:
-      2025: 0
+      2026: 0
     # Gets BOOST payment
     boost_payment:
-      2025: 3_000
+      2026: 3_000
     # Gets filer credit
     ecpa_filer_credit:
-      2025: 700  # No phase-out
+      2026: 700  # No phase-out
     # No BOOST tax (below threshold)
     boost_tax:
-      2025: 0
+      2026: 0

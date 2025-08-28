@@ -1,35 +1,35 @@
 - name: Baby under 1 receives bonus
-  period: 2025
+  period: 2026
   input:
     people:
       child:
         age: 0
   output:
     baby_bonus:
-      2025: 2_000
+      2026: 2_000
 
 - name: Child exactly 1 year old does not receive bonus
-  period: 2025
+  period: 2026
   input:
     people:
       child:
         age: 1
   output:
     baby_bonus:
-      2025: 0
+      2026: 0
 
 - name: Child over 1 does not receive bonus
-  period: 2025
+  period: 2026
   input:
     people:
       child:
         age: 5
   output:
     baby_bonus:
-      2025: 0
+      2026: 0
 
 - name: Multiple children under 1 each receive bonus
-  period: 2025
+  period: 2026
   input:
     people:
       twin1:
@@ -40,7 +40,7 @@
         age: 30
   output:
     baby_bonus:
-      2025: [2_000, 2_000, 0]
+      2026: [2_000, 2_000, 0]
 
 - name: No bonus in 2024
   period: 2024
@@ -52,12 +52,12 @@
     baby_bonus:
       2024: 0
 
-- name: No bonus after 2025
-  period: 2026
+- name: No bonus after 2026
+  period: 2027
   input:
     people:
       child:
         age: 0
   output:
     baby_bonus:
-      2026: 0
+      2027: 0
