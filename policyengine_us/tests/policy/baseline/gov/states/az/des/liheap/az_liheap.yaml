@@ -1,0 +1,38 @@
+- name: Household receives maximum LIHEAP benefit
+  period: 2024
+  input:
+    state_code: AZ
+    az_liheap_eligible: true
+    az_liheap_total_points: 20
+  output:
+    az_liheap_base_benefit: 640
+
+- name: Household receives minimum LIHEAP benefit
+  period: 2024
+  input:
+    state_code: AZ
+    az_liheap_eligible: true
+    az_liheap_total_points: 2
+  output:
+    az_liheap_base_benefit: 160
+
+- name: Household with medium points gets correct benefit
+  period: 2024
+  input:
+    state_code: AZ
+    az_liheap_eligible: true
+    az_liheap_total_points: 10
+  output:
+    az_liheap_base_benefit: 380
+
+- name: Final benefit limited by actual energy costs
+  period: 2024
+  input:
+    state_code: AZ
+    az_liheap_eligible: true
+    az_liheap_base_benefit: 500
+    heating_cooling_expense: 200
+    electricity_expense: 100
+    gas_expense: 0
+  output:
+    az_liheap: 300

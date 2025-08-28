@@ -1,0 +1,161 @@
+# Arizona LIHEAP Integration Tests
+# Complete end-to-end test scenarios
+
+- name: Single elderly on Social Security - Maximum benefit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 14_400  # $1,200/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 150  # 12.5% of income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_eligible: true
+    az_liheap_income_eligible: true
+    # Income level: ~96% FPL = 2 points
+    # Energy burden: 12.5% = 4 points
+    # Elderly: 5 points
+    # Total: 11 points = $380
+    az_liheap_total_points: 11
+    az_liheap: 150  # Limited to actual costs
+
+- name: Family of 4 with young child
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 25_000
+      parent2:
+        age: 33
+        employment_income: 17_000  # Total $42,000 = $3,500/month
+      child1:
+        age: 4  # Child under 6
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        electricity_expense: 250  # ~7% of income
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: AZ
+  output:
+    az_liheap_eligible: true
+    # Income: ~125% FPL = 1 point
+    # Energy burden: 7% = 3 points
+    # Child under 6: 3 points
+    # Total: 7 points = $240
+    az_liheap_total_points: 7
+    az_liheap: 240
+
+- name: Disabled adult on SSI - High benefit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 10_800  # $900/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 100  # ~11% of income
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_eligible: true
+    # Income: ~72% FPL = 3 points
+    # Energy burden: 11% = 4 points
+    # Disabled: 5 points
+    # Total: 12 points = $470
+    az_liheap_total_points: 12
+    az_liheap: 100  # Limited to actual costs
+
+- name: Working couple medium income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 30_000
+      person2:
+        age: 40
+        employment_income: 30_000  # Total $60,000 = $5,000/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        electricity_expense: 300  # 6% of income
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_liheap_eligible: true  # Under 60% SMI for 2 people
+    # Income: ~250% FPL = 0 points
+    # Energy burden: 6% = 3 points
+    # No vulnerable: 0 points
+    # Total: 3 points = $160
+    az_liheap_total_points: 3
+    az_liheap: 160
+
+- name: SNAP recipient family - Categorically eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 18_000
+      parent2:
+        age: 30
+        employment_income: 6_000  # Total $24,000
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        snap: 3_600  # Receiving SNAP
+        electricity_expense: 180  # 9% of income
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    az_liheap_categorical_eligible: true
+    az_liheap_eligible: true
+    # Income: ~95% FPL = 2 points
+    # Energy burden: 9% = 3 points
+    # Child under 6: 3 points
+    # Total: 8 points = $300
+    az_liheap_total_points: 8
+    az_liheap: 180  # Limited to actual costs
+
+- name: High income household - Not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000  # Above $2,944/month limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 200
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: false
+    az_liheap_eligible: false
+    az_liheap: 0

@@ -1,0 +1,277 @@
+# Arizona LIHEAP Benefit Amount Tests
+# Tests the benefit matrix based on total points
+
+- name: Benefit for 0-3 points - $160
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 50  # Low energy burden
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # High income, low energy burden, no vulnerable = 0-3 points
+    az_liheap: 160
+
+- name: Benefit for 4-5 points - $190
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 140  # Moderate energy burden
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Moderate income and energy burden = 4-5 points
+    az_liheap: 190
+
+- name: Benefit for 6-7 points - $240
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+      child1:
+        age: 4  # Child under 6 = 3 points
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        electricity_expense: 120
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: AZ
+  output:
+    # Moderate income + child under 6 = 6-7 points
+    az_liheap: 240
+
+- name: Benefit for 8-9 points - $300
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 35_000
+      parent2:
+        age: 36
+        employment_income: 7_000
+      child1:
+        age: 3  # Child under 6 = 3 points
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        electricity_expense: 250
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    # Family scenario with child = 8-9 points
+    az_liheap: 300
+
+- name: Benefit for 10-11 points - $380
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 62  # Elderly = 5 points
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 200
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Elderly with moderate income and energy burden = 10-11 points
+    az_liheap: 380
+
+- name: Benefit for 12-13 points - $470
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true  # Disabled = 5 points
+        ssi: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 180
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Disabled with low income and high energy burden = 12-13 points
+    az_liheap: 470
+
+- name: Benefit for 14-15 points - $560
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68  # Elderly = 5 points
+        social_security: 13_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 220
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Elderly with very low income and high energy burden = 14-15 points
+    az_liheap: 560
+
+- name: Benefit for 16+ points - $640
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72  # Elderly = 5 points
+        social_security: 10_800  # Very low income = 5 points
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 250  # High energy burden = 6 points
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Maximum points scenario = 16+ points
+    az_liheap: 640
+
+- name: Maximum benefit with disabled and high burden
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true  # 5 points
+        ssi: 10_000  # Very low income
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 300  # Very high energy burden
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap: 640
+
+- name: Benefit for exactly 3 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 100  # Low energy burden
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Should receive minimum benefit
+    az_liheap: 160
+
+- name: Benefit for exactly 4 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 150
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # At 4 points threshold
+    az_liheap: 190
+
+- name: Benefit for exactly 16 points
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65  # Elderly = 5 points
+        social_security: 8_000  # Very low income = 5 points
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 250  # Very high burden = 6 points
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Exactly 16 points
+    az_liheap: 640
+
+- name: Zero benefit when not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000  # Above income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 200
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_eligible: false
+    az_liheap: 0
+
+- name: Crisis assistance maximum $500
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 300
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Crisis assistance has separate $500 maximum
+    # This test assumes crisis flag exists
+    az_liheap_crisis_assistance: 500

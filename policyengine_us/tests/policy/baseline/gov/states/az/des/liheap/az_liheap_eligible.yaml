@@ -1,0 +1,282 @@
+# Arizona LIHEAP Eligibility Tests
+# Based on 60% State Median Income limits
+# Reference: Arizona DES LIHEAP documentation
+
+- name: Single person below income limit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # $2,500/month, below $2,944 limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Single person exactly at income limit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 35_328  # $2,944/month, exactly at limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Single person above income limit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000  # $3,333/month, above $2,944 limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: false
+    az_liheap_eligible: false
+
+- name: Two person household below income limit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Combined income $45,000/year = $3,750/month, below $3,850 limit
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Three person household at income limit
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 40_000
+      parent2:
+        age: 33
+        employment_income: 17_072  # Total $57,072/year = $4,756/month
+      child1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Four person household above income limit
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 42
+        employment_income: 50_000
+      parent2:
+        age: 40
+        employment_income: 30_000
+      child1:
+        age: 12
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: AZ
+  output:
+    # Combined $80,000/year = $6,667/month, above $5,662 limit
+    az_liheap_income_eligible: false
+    az_liheap_eligible: false
+
+- name: Five person household below limit
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 60_000
+      parent2:
+        age: 43
+        employment_income: 18_000
+      child1:
+        age: 15
+      child2:
+        age: 12
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: AZ
+  output:
+    # Combined $78,000/year = $6,500/month, below $6,568 limit
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Six person household exactly at limit
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 50_000
+      parent2:
+        age: 36
+        employment_income: 34_072  # Total $84,072/year = $7,006/month
+      child1:
+        age: 14
+      child2:
+        age: 12
+      child3:
+        age: 9
+      child4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: SNAP recipient categorically eligible despite high income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000  # Above single person limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # Receives SNAP benefits
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: false  # Over income limit
+    az_liheap_categorical_eligible: true  # But categorically eligible via SNAP
+    az_liheap_eligible: true
+
+- name: TANF recipient categorically eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 45_000  # May be over limit
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        tanf: 300  # Receives TANF benefits
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: AZ
+  output:
+    az_liheap_categorical_eligible: true
+    az_liheap_eligible: true
+
+- name: Mixed income sources - Social Security and employment
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 12_000
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Total $30,000/year = $2,500/month, below limit
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: SSI recipient below income limit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_liheap_income_eligible: true
+    az_liheap_eligible: true
+
+- name: Non-Arizona resident not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA  # Not Arizona resident
+  output:
+    az_liheap_eligible: false
