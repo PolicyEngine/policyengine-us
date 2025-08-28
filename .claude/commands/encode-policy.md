@@ -26,12 +26,33 @@ After documentation is ready, invoke BOTH agents IN PARALLEL:
 - rules-engineer: ZERO hard-coded values, complete implementations only
 - test-creator: Use only existing PolicyEngine variables, test realistic calculations
 
-## Phase 3: Auto-Enhancement (PARALLEL)
-After initial implementation, invoke enhancement agents IN PARALLEL:
+## Phase 3: Auto-Enhancement (SEQUENTIAL)
+
+After initial implementation, invoke enhancement agents SEQUENTIALLY to avoid merge conflicts:
+
+### Step 1: Edge Case Testing
+
 - edge-case-generator: Generate comprehensive boundary tests
+- Commit generated tests before proceeding
+
+### Step 2: Cross-Program Validation
+
 - cross-program-validator: Check interactions with other benefits
+- Fix any cliff effects or integration issues found
+- Commit fixes before proceeding
+
+### Step 3: Documentation Enhancement
+
 - documentation-enricher: Add examples and regulatory citations
+- Commit documentation improvements
+
+### Step 4: Performance Optimization
+
 - performance-optimizer: Vectorize and optimize calculations
+- Run tests to ensure no regressions
+- Commit optimizations
+
+**Why Sequential**: Each enhancement builds on the previous work and modifying the same files in parallel would cause conflicts.
 
 **Quality Requirements**:
 - All edge cases covered
