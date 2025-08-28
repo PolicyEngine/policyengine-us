@@ -15,10 +15,12 @@ class tx_liheap_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Check income eligibility
         income_eligible = spm_unit("tx_liheap_income_eligible", period)
-        
+
         # Check categorical eligibility (through SNAP, TANF, or SSI)
         # Need to get a month from the year period to check categorical eligibility
-        categorical_eligible = spm_unit("tx_liheap_categorical_eligible", period.first_month)
+        categorical_eligible = spm_unit(
+            "tx_liheap_categorical_eligible", period.first_month
+        )
 
         # Check if household has utility expenses
         has_utility_expense = spm_unit("utility_expense", period) > 0

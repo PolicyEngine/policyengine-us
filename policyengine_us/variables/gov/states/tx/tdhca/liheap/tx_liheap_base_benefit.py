@@ -20,14 +20,21 @@ class tx_liheap_base_benefit(Variable):
         # Map household size to adjustment factor
         # Using select to handle different household sizes
         size_names = [
-            "one_person", "two_person", "three_person", "four_person",
-            "five_person", "six_person", "seven_person", "eight_person",
-            "nine_person", "ten_person"
+            "one_person",
+            "two_person",
+            "three_person",
+            "four_person",
+            "five_person",
+            "six_person",
+            "seven_person",
+            "eight_person",
+            "nine_person",
+            "ten_person",
         ]
-        
+
         # Cap household size at 10 (maximum defined in adjustments)
         capped_size = min_(size, 10)
-        
+
         # Get adjustment factor based on household size
         adjustment_factor = select(
             [capped_size == i for i in range(1, 11)],
@@ -43,7 +50,7 @@ class tx_liheap_base_benefit(Variable):
                 p.household_size_adjustments.nine_person,
                 p.household_size_adjustments.ten_person,
             ],
-            default=p.household_size_adjustments.ten_person  # For 10+ person households
+            default=p.household_size_adjustments.ten_person,  # For 10+ person households
         )
 
         # Calculate base benefit using adjustment factor and maximum benefit

@@ -12,7 +12,7 @@ class tx_liheap_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tx.tdhca.liheap
-        
+
         # Get household monthly income (average over the year)
         monthly_income = spm_unit("tx_liheap_income", period.first_month)
         annual_income = monthly_income * 12
