@@ -19,5 +19,7 @@ class mt_tanf_countable_income(Variable):
             ],
         )
 
-        childcare_deduction = spm_unit("mt_tanf_childcare_deduction", period)
+        childcare_deduction = spm_unit(
+            "mt_tanf_dependent_care_deduction", period
+        )
         return max_(income_sources - childcare_deduction, 0)
