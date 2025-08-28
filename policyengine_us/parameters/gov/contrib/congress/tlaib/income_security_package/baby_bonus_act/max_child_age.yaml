@@ -1,0 +1,10 @@
+description: Maximum age of qualifying child for baby bonus eligibility
+# Note: The Baby Bonus Act does not technically limit the benefit to children under 1
+# since it could be claimed later, however this is how PolicyEngine models this program
+metadata:
+  unit: year
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: Maximum child age for baby bonus
+values:
+  2025-01-01: 1

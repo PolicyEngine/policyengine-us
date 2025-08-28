@@ -1,0 +1,123 @@
+- name: Single filer age 19-64 receives full credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_000
+  output:
+    ecpa_filer_credit:
+      2025: 700
+
+- name: Joint filers receive higher credit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 33
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 30_000
+  output:
+    ecpa_filer_credit:
+      2025: 1_400
+
+- name: Credit phases out above threshold for single filer
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_000  # 4,000 above 20,000 threshold
+  output:
+    ecpa_filer_credit:
+      2025: 500  # 700 - (4,000 * 0.05)
+
+- name: Credit phases out for joint filers
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000  # 10,000 above 40,000 threshold
+  output:
+    ecpa_filer_credit:
+      2025: 900  # 1,400 - (10,000 * 0.05)
+
+- name: Credit fully phases out at high income
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000  # 30,000 above threshold
+  output:
+    ecpa_filer_credit:
+      2025: 0  # 700 - (30,000 * 0.05) = -800, max to 0
+
+- name: Filer under 19 not eligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    ecpa_filer_credit:
+      2025: 0
+
+- name: Filer 65 or over not eligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    ecpa_filer_credit:
+      2025: 0
+
+- name: No credit in 2024
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_000
+  output:
+    ecpa_filer_credit:
+      2024: 0

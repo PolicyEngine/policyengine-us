@@ -1,0 +1,13 @@
+description: Baby bonus payment amount provided to qualifying pregnant persons or eligible parents with a qualifying child
+metadata:
+  unit: currency-USD
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: Baby bonus amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
+values:
+  2025-01-01: 2_000

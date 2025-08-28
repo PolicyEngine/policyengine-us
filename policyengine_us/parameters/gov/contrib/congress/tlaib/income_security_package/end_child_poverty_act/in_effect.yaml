@@ -1,0 +1,10 @@
+description: The End Child Poverty Act is in effect when this is true
+metadata:
+  unit: bool
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: End Child Poverty Act in effect
+values:
+  0000-01-01: false
+  2025-01-01: true
+  2025-12-31: false

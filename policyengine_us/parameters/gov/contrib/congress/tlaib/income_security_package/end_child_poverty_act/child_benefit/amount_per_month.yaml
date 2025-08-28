@@ -1,0 +1,14 @@
+description: Monthly child benefit amount under End Child Poverty Act
+# Calculated as (poverty guideline - current average monthly child benefit) / 12
+metadata:
+  unit: currency-USD
+  period: month
+  # reference: placeholder - bill not yet introduced
+  label: ECPA child benefit monthly amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
+values:
+  2025-01-01: 393

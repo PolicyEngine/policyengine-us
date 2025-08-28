@@ -1,0 +1,65 @@
+- name: Child under 19 receives full benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 10
+  output:
+    ecpa_child_benefit:
+      2025: 4_716  # 393 * 12
+
+- name: Child exactly 18 receives benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 18
+  output:
+    ecpa_child_benefit:
+      2025: 4_716
+
+- name: Adult 19 or over does not receive child benefit
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 19
+  output:
+    ecpa_child_benefit:
+      2025: 0
+
+- name: Multiple children each receive benefit
+  period: 2025
+  input:
+    people:
+      child1:
+        age: 5
+      child2:
+        age: 10
+      child3:
+        age: 15
+      parent:
+        age: 40
+  output:
+    ecpa_child_benefit:
+      2025: [4_716, 4_716, 4_716, 0]
+
+- name: No benefit in 2024
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+  output:
+    ecpa_child_benefit:
+      2024: 0
+
+- name: No benefit after 2025
+  period: 2026
+  input:
+    people:
+      child:
+        age: 10
+  output:
+    ecpa_child_benefit:
+      2026: 0

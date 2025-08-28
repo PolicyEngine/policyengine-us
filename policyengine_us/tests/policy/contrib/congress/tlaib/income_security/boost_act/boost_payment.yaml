@@ -1,0 +1,87 @@
+- name: Adult age 19-67 receives full payment
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 30
+  output:
+    boost_payment:
+      2025: 3_000  # 250 * 12
+
+- name: Adult exactly 19 is eligible
+  period: 2025
+  input:
+    people:
+      young_adult:
+        age: 19
+  output:
+    boost_payment:
+      2025: 3_000
+
+- name: Adult exactly 67 is eligible
+  period: 2025
+  input:
+    people:
+      older_adult:
+        age: 67
+  output:
+    boost_payment:
+      2025: 3_000
+
+- name: Child under 19 not eligible
+  period: 2025
+  input:
+    people:
+      child:
+        age: 18
+  output:
+    boost_payment:
+      2025: 0
+
+- name: Adult over 67 not eligible
+  period: 2025
+  input:
+    people:
+      senior:
+        age: 68
+  output:
+    boost_payment:
+      2025: 0
+
+- name: Multiple eligible adults each receive payment
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 25
+      adult2:
+        age: 35
+      adult3:
+        age: 45
+      child:
+        age: 10
+      senior:
+        age: 70
+  output:
+    boost_payment:
+      2025: [3_000, 3_000, 3_000, 0, 0]
+
+- name: No payment in 2024
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+  output:
+    boost_payment:
+      2024: 0
+
+- name: No payment after 2025
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 30
+  output:
+    boost_payment:
+      2026: 0
