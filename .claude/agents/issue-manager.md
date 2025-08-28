@@ -125,13 +125,68 @@ esac
 gh issue edit <issue-number> --add-label "implementation-tracking"
 ```
 
-### Step 4: Return Issue Information
-Return a structured response:
+### Step 4: Create Draft PR (If New Issue)
+
+If a new issue was created, immediately create a draft PR:
+
+```bash
+# Only if we created a new issue
+if [ "$ISSUE_ACTION" == "created_new" ]; then
+  # Create integration branch
+  git checkout -b integration/<program>-<date>
+  
+  # Create initial commit (small placeholder file)
+  echo "# <State> <Program> Implementation" > .implementation_<program>.md
+  git add .implementation_<program>.md
+  git commit -m "Initial commit for <State> <Program> implementation
+
+  Starting implementation of <State> <Program>.
+  Documentation and parallel development will follow."
+  
+  # Push branch
+  git push -u origin integration/<program>-<date>
+  
+  # Create draft PR linked to issue
+  gh pr create --draft \
+    --title "Implement <State> <Program>" \
+    --body "## Summary
+Work in progress implementation of <State> <Program>.
+
+Fixes #<issue-number>
+
+## Status
+- [ ] Documentation collected
+- [ ] Parameters created
+- [ ] Variables implemented  
+- [ ] Tests written
+- [ ] CI passing
+
+## Branches
+This PR will integrate:
+- \`test-<program>-<date>\`: Test suite (pending)
+- \`impl-<program>-<date>\`: Implementation (pending)
+
+---
+*This is a draft PR created automatically. Implementation work is in progress.*" \
+    --base master
+    
+  # Get PR number for reference
+  PR_NUMBER=$(gh pr view --json number -q .number)
+fi
 ```
+
+### Step 5: Return Issue and PR Information
+
+Return a structured response:
+
+```text
 ISSUE_FOUND: <true/false>
 ISSUE_NUMBER: <number>
 ISSUE_URL: https://github.com/PolicyEngine/policyengine-us/issues/<number>
 ISSUE_ACTION: <"found_existing" | "created_new">
+PR_NUMBER: <number-if-created>
+PR_URL: <url-if-created>
+INTEGRATION_BRANCH: integration/<program>-<date>
 ```
 
 ## Usage by Other Agents

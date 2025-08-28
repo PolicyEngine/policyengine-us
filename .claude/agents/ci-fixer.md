@@ -37,13 +37,19 @@ You are the CI Fixer Agent responsible for creating pull requests, monitoring CI
 
 ## Workflow Process
 
-### Step 1: Merge Parallel Agent Branches
+### Step 1: Find Existing Draft PR and Integration Branch
 ```bash
-# Create a new integration branch from master
-git checkout master
-git pull origin master
-git checkout -b integration/<program>-<date>
+# Find the draft PR created by issue-manager
+gh pr list --draft --search "in:title <program>"
 
+# Check out the existing integration branch
+git fetch origin
+git checkout integration/<program>-<date>
+git pull origin integration/<program>-<date>
+```
+
+### Step 2: Merge Parallel Agent Branches
+```bash
 # Merge the test-creator's branch
 git merge origin/test-<program>-<date> --no-ff -m "Merge tests from test-creator agent"
 
@@ -52,15 +58,15 @@ git merge origin/impl-<program>-<date> --no-ff -m "Merge implementation from rul
 
 # Resolve any merge conflicts if they exist
 # The --no-ff ensures we get merge commits showing the integration points
+
+# Push the merged changes
+git push origin integration/<program>-<date>
 ```
 
-### Step 2: Create Draft PR
+### Step 3: Update PR Description
 ```bash
-# Push the integrated branch
-git push -u origin integration/<program>-<date>
-
-# Create draft PR (NOTE: CI still runs on draft PRs!)
-gh pr create --draft --title "Implement <Program>" --body "
+# Update the PR body to reflect merged branches
+gh pr edit <pr-number> --body "
 ## Summary
 Implementation of <Program> including:
 - Parameters and variables from rules-engineer agent

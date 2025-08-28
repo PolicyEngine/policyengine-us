@@ -59,6 +59,30 @@ git push -u origin test-<program>-<date>
 
 **IMPORTANT**: Do NOT merge to master. Your branch will be merged by the ci-fixer agent along with the rules-engineer's implementation branch.
 
+## Test File Naming Conventions
+
+### CRITICAL: Follow These Exact Naming Rules
+
+```
+policyengine_us/tests/policy/baseline/gov/states/[state]/[agency]/[program]/
+├── [variable_name].yaml       # Unit test for specific variable
+├── [another_variable].yaml    # Another unit test
+└── integration.yaml           # Integration test for complete flow
+```
+
+**Examples:**
+```
+✅ CORRECT:
+- az_liheap_eligible.yaml     # Unit test for eligibility variable
+- az_liheap_benefit.yaml      # Unit test for benefit variable
+- integration.yaml            # Integration test (NOT az_liheap_integration.yaml)
+
+❌ WRONG:
+- az_liheap_integration.yaml  # Should be just "integration.yaml"
+- test_az_liheap.yaml         # Wrong naming pattern
+- liheap_tests.yaml           # Wrong naming pattern
+```
+
 ## Critical Requirements
 
 ### 1. USE ONLY EXISTING VARIABLES
