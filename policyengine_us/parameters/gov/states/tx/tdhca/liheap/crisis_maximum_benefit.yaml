@@ -24,7 +24,7 @@ values:
   2024-01-01: 2_400  # Annual maximum crisis assistance per household
 metadata:
   unit: USD
-  # Period metadata removed - was causing test failures
+  period: year
   label: Texas LIHEAP crisis maximum benefit
   reference:
     - title: 42 U.S.C. 8624(c) - Crisis intervention requirements

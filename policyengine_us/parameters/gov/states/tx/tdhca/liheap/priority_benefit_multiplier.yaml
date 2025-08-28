@@ -19,7 +19,7 @@ values:
   2024-01-01: 1.2  # 20% increase for priority group households
 metadata:
   unit: /1
-  # Period metadata removed - was causing test failures
+  period: year
   label: Texas LIHEAP priority benefit multiplier
   reference:
     - title: 42 U.S.C. 8624(b)(2) - Priority for vulnerable households
