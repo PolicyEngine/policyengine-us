@@ -57,19 +57,19 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Testing Memory Fix Option A - Non-structural YAML tests"
+          echo "Running non-structural YAML tests..."
           uv run make test-yaml-no-structural
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Testing Memory Fix Option A - Structural YAML tests"
+          echo "Running structural YAML tests..."
           uv run make test-yaml-structural
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Testing Memory Fix Option A - Python-based tests"
+          echo "Running Python-based tests..."
           uv run make test-other
       - name: Build package
         run: uv build
