@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+      - Memory exhaustion errors in GitHub Actions with two-batch test runners
+      - Test hanging issues with early termination on completion
