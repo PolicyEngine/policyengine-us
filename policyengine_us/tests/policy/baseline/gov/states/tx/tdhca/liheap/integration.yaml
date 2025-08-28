@@ -14,6 +14,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -41,6 +42,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -70,6 +72,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [parent1, parent2, child1]
@@ -95,6 +98,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -136,6 +140,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 200  # Receives SNAP benefits
     households:
       household:
@@ -170,6 +175,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [parent1, parent2, child1, child2, child3, child4]
@@ -198,6 +204,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -224,6 +231,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1, person2]
@@ -266,6 +274,7 @@
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3, child1, child2, child3, child4, child5]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [adult1, adult2, adult3, child1, child2, child3, child4, child5]
@@ -295,6 +304,7 @@
     spm_units:
       spm_unit:
         members: [parent1, child1, child2]
+        utility_expense: 1_200  # Standard utility expense for testing
         tanf: 300  # Receives TANF
     households:
       household:
@@ -321,6 +331,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -344,6 +355,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -368,6 +380,7 @@
     spm_units:
       spm_unit:
         members: [parent1, child1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [parent1, child1]

@@ -12,6 +12,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 0  # No categorical programs
         tanf: 0
     households:
@@ -33,6 +34,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 200  # But receives SNAP
     households:
       household:
@@ -53,6 +55,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 250  # And receives SNAP
     households:
       household:
@@ -96,6 +99,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -117,6 +121,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        utility_expense: 1_200  # Standard utility expense for testing
         tanf: 300
     households:
       household:
@@ -137,6 +142,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 0
         tanf: 0
     households:
@@ -186,6 +192,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 150  # But receives SNAP
     households:
       household:
@@ -208,6 +215,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
         snap: 0
     households:
       household:

@@ -12,6 +12,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -31,6 +32,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -72,6 +74,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1, person2]
@@ -98,6 +101,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [parent1, parent2, child1]
@@ -155,6 +159,7 @@
     spm_units:
       spm_unit:
         members: [adult1, adult2, child1, child2, child3]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [adult1, adult2, child1, child2, child3]
@@ -187,6 +192,7 @@
     spm_units:
       spm_unit:
         members: [adult1, adult2, child1, child2, child3, child4]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [adult1, adult2, child1, child2, child3, child4]
@@ -245,6 +251,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
@@ -266,6 +273,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [person1]
