@@ -76,7 +76,7 @@ class tx_liheap(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "42 U.S.C. 8621-8630 - Low-Income Home Energy Assistance Act",
-        "Texas Administrative Code Title 10, Part 1, Chapter 5, Subchapter A"
+        "Texas Administrative Code Title 10, Part 1, Chapter 5, Subchapter A",
     ]
     defined_for = StateCode.TX
 
@@ -84,7 +84,7 @@ class tx_liheap(Variable):
         # Get regular benefit per State Plan Section 4
         # Annual assistance based on household size and priority status
         regular_benefit = spm_unit("tx_liheap_regular_benefit", period)
-        
+
         # Get crisis benefit per State Plan Section 5
         # Emergency assistance for immediate energy threats
         crisis_benefit = spm_unit("tx_liheap_crisis_benefit", period)

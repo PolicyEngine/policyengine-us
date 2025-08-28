@@ -59,7 +59,7 @@ class tx_liheap_income_eligible(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "45 CFR 96.85 - Income eligibility for LIHEAP assistance",
-        "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+        "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines",
     ]
     defined_for = StateCode.TX
 

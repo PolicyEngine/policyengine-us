@@ -68,7 +68,7 @@ class tx_liheap_base_benefit(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "45 CFR 96.85 - Benefit levels for LIHEAP",
-        "Texas Administrative Code Title 10, Part 1, Chapter 5, Subchapter A"
+        "Texas Administrative Code Title 10, Part 1, Chapter 5, Subchapter A",
     ]
     defined_for = StateCode.TX
 
@@ -86,7 +86,7 @@ class tx_liheap_base_benefit(Variable):
         # Optimized adjustment factor lookup using a single parameter access
         # and vectorized array indexing
         adjustments = p.household_size_adjustments
-        
+
         # Create array of adjustment factors (more efficient than select)
         # Index 0 is unused (no 0-person households), indices 1-10 map to sizes
         factors = [
@@ -102,14 +102,14 @@ class tx_liheap_base_benefit(Variable):
             adjustments.nine_person,
             adjustments.ten_person,
         ]
-        
+
         # Use select for vectorized lookup - more efficient with pre-built array
         # This avoids multiple comparisons and is faster for large datasets
         # Create conditions dynamically based on max_size parameter
         conditions = [capped_size == i for i in range(1, int(max_size) + 1)]
         adjustment_factor = select(
             conditions,
-            factors[1:int(max_size) + 1],  # Skip index 0, use up to max_size
+            factors[1 : int(max_size) + 1],  # Skip index 0, use up to max_size
             default=factors[int(max_size)],  # For edge cases, use max factor
         )
 

@@ -45,7 +45,7 @@ class tx_liheap_eligible(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "42 U.S.C. 8624 - LIHEAP Eligibility Requirements",
-        "45 CFR 96.85 - Income eligibility for LIHEAP"
+        "45 CFR 96.85 - Income eligibility for LIHEAP",
     ]
     defined_for = StateCode.TX
 

@@ -79,7 +79,7 @@ class tx_liheap_income(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "45 CFR 96.85(b) - Income to be counted",
-        "Texas Administrative Code Title 10, Chapter 5, Section 5.308"
+        "Texas Administrative Code Title 10, Chapter 5, Section 5.308",
     ]
     defined_for = StateCode.TX
     unit = USD
@@ -87,39 +87,39 @@ class tx_liheap_income(Variable):
     def formula(spm_unit, period, parameters):
         # Access parameters
         p = parameters(period).gov.states.tx.tdhca.liheap
-        
+
         # Get all people in the SPM unit per 45 CFR 96.85(b)
         person = spm_unit.members
-        
+
         # Get annual period once for all annual income sources
         annual_period = period.this_year
-        
+
         # Combine all annual income sources in a single operation
         # This reduces the number of person() calls and improves performance
         annual_income_sources = [
-            "employment_income",           # 45 CFR 96.85(b)(1)
-            "self_employment_income",      # 45 CFR 96.85(b)(2)
-            "social_security",             # 45 CFR 96.85(b)(3)
-            "ssi",                         # 45 CFR 96.85(b)(4)
-            "unemployment_compensation",   # 45 CFR 96.85(b)(5)
-            "veterans_benefits",           # 45 CFR 96.85(b)(6)
-            "workers_compensation",        # 45 CFR 96.85(b)(7)
-            "taxable_pension_income",      # 45 CFR 96.85(b)(8)
+            "employment_income",  # 45 CFR 96.85(b)(1)
+            "self_employment_income",  # 45 CFR 96.85(b)(2)
+            "social_security",  # 45 CFR 96.85(b)(3)
+            "ssi",  # 45 CFR 96.85(b)(4)
+            "unemployment_compensation",  # 45 CFR 96.85(b)(5)
+            "veterans_benefits",  # 45 CFR 96.85(b)(6)
+            "workers_compensation",  # 45 CFR 96.85(b)(7)
+            "taxable_pension_income",  # 45 CFR 96.85(b)(8)
         ]
-        
+
         # Calculate total annual income from all sources efficiently
         total_annual_income = 0
         for source in annual_income_sources:
             income = person(source, annual_period)
             total_annual_income += spm_unit.sum(income)
-        
+
         # Convert annual to monthly once
         months_in_year = p.months_in_year
         total_monthly_from_annual = total_annual_income / months_in_year
-        
+
         # TANF benefits per State Plan Section 3.2
         # Already calculated as monthly amount
         tanf = spm_unit("tanf", period)
-        
+
         # Calculate total monthly income per State Plan formula
         return total_monthly_from_annual + tanf

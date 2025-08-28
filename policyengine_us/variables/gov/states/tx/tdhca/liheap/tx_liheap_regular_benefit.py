@@ -74,7 +74,7 @@ class tx_liheap_regular_benefit(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "42 U.S.C. 8624(f) - Priority households",
-        "Texas Administrative Code Title 10, Part 1, Chapter 5, Section 5.307"
+        "Texas Administrative Code Title 10, Part 1, Chapter 5, Section 5.307",
     ]
     defined_for = StateCode.TX
 

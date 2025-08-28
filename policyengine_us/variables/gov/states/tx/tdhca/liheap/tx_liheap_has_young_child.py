@@ -22,5 +22,5 @@ class tx_liheap_has_young_child(Variable):
         # Check if any member is under child age threshold
         # Use min_ to avoid .any() which breaks vectorization
         min_age = spm_unit.min(age)
-        
+
         return min_age < p.child_age_threshold

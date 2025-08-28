@@ -75,7 +75,7 @@ class tx_liheap_high_energy_burden(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "42 U.S.C. 8622(2)(C) - Energy burden of low-income households",
-        "DOE Low-Income Energy Affordability Data (LEAD) Tool"
+        "DOE Low-Income Energy Affordability Data (LEAD) Tool",
     ]
     defined_for = StateCode.TX
 

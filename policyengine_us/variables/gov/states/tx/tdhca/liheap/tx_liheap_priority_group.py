@@ -82,23 +82,23 @@ class tx_liheap_priority_group(Variable):
     reference = [
         "https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf",
         "42 U.S.C. 8624(b)(2)(B) - Priority for vulnerable households",
-        "Texas Administrative Code Title 10, Chapter 5, Section 5.306"
+        "Texas Administrative Code Title 10, Chapter 5, Section 5.306",
     ]
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
         # Check all priority group criteria per 42 U.S.C. 8624(b)(2)(B)
         # Federal law requires priority for vulnerable populations
-        
+
         # Elderly households per State Plan Section 3.4.1
         has_elderly = spm_unit("tx_liheap_has_elderly_member", period)
-        
+
         # Disabled households per State Plan Section 3.4.2
         has_disabled = spm_unit("tx_liheap_has_disabled_member", period)
-        
+
         # Households with young children per State Plan Section 3.4.3
         has_young_child = spm_unit("tx_liheap_has_young_child", period)
-        
+
         # High energy burden households per State Plan Section 3.4.4
         high_energy_burden = spm_unit("tx_liheap_high_energy_burden", period)
 
