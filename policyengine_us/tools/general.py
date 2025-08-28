@@ -3,7 +3,7 @@ from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
 from pathlib import Path
 import pandas as pd
-from policyengine_us.typing import Formula
+from policyengine_us.typing_api import Formula
 
 USD = "currency-USD"
 

@@ -1,0 +1,251 @@
+# Texas LIHEAP Income Calculation Tests
+# Tests household income calculation for LIHEAP eligibility
+# Includes all countable income sources
+
+- name: Single employment income
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # $2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 2_000  # Monthly income
+
+- name: Single self-employment income
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 18_000  # $1,500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_500
+
+- name: Social Security income only
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 21_600  # $1,800/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_800
+
+- name: SSI income only
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 10_800  # $900/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 900
+
+- name: Mixed income sources - all counted
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 12_000  # $1,000/month
+        self_employment_income: 6_000  # $500/month
+        social_security: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Total: $22,800/year = $1,900/month
+    tx_liheap_income: 1_900
+
+- name: Two person household - combined income
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # $2,000/month
+      person2:
+        age: 33
+        employment_income: 12_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Combined: $36,000/year = $3,000/month
+    tx_liheap_income: 3_000
+
+- name: Family with children - parent income only counts
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 30_000  # $2,500/month
+      parent2:
+        age: 38
+        employment_income: 18_000  # $1,500/month
+      child1:
+        age: 12
+        employment_income: 0  # Child has no income
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    # Parent income: $48,000/year = $4,000/month
+    tx_liheap_income: 4_000
+
+- name: Three generation household
+  period: 2025-02
+  input:
+    people:
+      grandparent:
+        age: 70
+        social_security: 15_000  # $1,250/month
+      parent:
+        age: 45
+        employment_income: 36_000  # $3,000/month
+      child:
+        age: 15
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: TX
+  output:
+    # Combined: $51,000/year = $4,250/month
+    tx_liheap_income: 4_250
+
+- name: Zero income household
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 0
+
+- name: Disabled person with SSI and work income
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        ssi: 9_600  # $800/month
+        employment_income: 7_200  # $600/month part-time
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Combined: $16,800/year = $1,400/month
+    tx_liheap_income: 1_400
+
+- name: Large household - all income combined
+  period: 2025-02
+  input:
+    people:
+      adult1:
+        age: 45
+        employment_income: 30_000  # $2,500/month
+      adult2:
+        age: 43
+        employment_income: 25_000  # $2,083/month
+      adult3:
+        age: 68
+        social_security: 18_000  # $1,500/month
+      teen1:
+        age: 17
+        employment_income: 3_600  # $300/month part-time
+      child1:
+        age: 14
+      child2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, teen1, child1, child2]
+    households:
+      household:
+        members: [adult1, adult2, adult3, teen1, child1, child2]
+        state_code: TX
+  output:
+    # Total: $76,600/year = $6,383/month
+    tx_liheap_income: 6_383
+
+- name: Self-employed with mixed income
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 38
+        self_employment_income: 25_000  # $2,083/month
+        employment_income: 5_000  # $417/month side job
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Combined: $30,000/year = $2,500/month
+    tx_liheap_income: 2_500

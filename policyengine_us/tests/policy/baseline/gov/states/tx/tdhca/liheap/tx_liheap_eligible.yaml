@@ -1,0 +1,220 @@
+# Texas LIHEAP Overall Eligibility Tests
+# Tests combined eligibility through income OR categorical eligibility
+# Must be either income-eligible OR categorically eligible through SNAP/TANF/SSI
+
+- name: Income eligible only - eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000  # Below income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # No categorical programs
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_categorical_eligible: false
+    tx_liheap_eligible: true  # Income eligible
+
+- name: Categorically eligible only - eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_000  # Over income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # But receives SNAP
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false  # Over income
+    tx_liheap_categorical_eligible: true  # SNAP recipient
+    tx_liheap_eligible: true  # Categorically eligible
+
+- name: Both income and categorically eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 15_000  # Under income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 250  # And receives SNAP
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_categorical_eligible: true
+    tx_liheap_eligible: true  # Eligible both ways
+
+- name: Neither income nor categorically eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_000  # Over income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # No categorical programs
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_categorical_eligible: false
+    tx_liheap_eligible: false  # Not eligible
+
+- name: SSI recipient over income limit - eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        employment_income: 15_000
+        ssi: 12_000  # Total $27k, over $23,475 limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false  # Over income
+    tx_liheap_categorical_eligible: true  # SSI recipient
+    tx_liheap_eligible: true  # Categorically eligible
+
+- name: TANF family at income limit
+  period: 2025-02
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 31_725  # At 2-person limit
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 300
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true  # At limit = eligible
+    tx_liheap_categorical_eligible: true  # TANF recipient
+    tx_liheap_eligible: true  # Eligible both ways
+
+- name: Zero income no categorical - eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true  # Zero income is eligible
+    tx_liheap_categorical_eligible: false
+    tx_liheap_eligible: true
+
+- name: High income family no categorical - ineligible
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 50_000
+      parent2:
+        age: 38
+        employment_income: 45_000
+      child1:
+        age: 12
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false  # Way over income limit
+    tx_liheap_categorical_eligible: false
+    tx_liheap_eligible: false
+
+- name: Elderly SNAP recipient - eligible with priority
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 70  # Elderly priority
+        social_security: 25_000  # Over income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 150  # But receives SNAP
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_categorical_eligible: true
+    tx_liheap_priority_group: true  # Elderly
+    tx_liheap_eligible: true
+
+- name: Disabled person exactly at income limit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 23_475  # Exactly at limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_categorical_eligible: false
+    tx_liheap_priority_group: true  # Disabled
+    tx_liheap_eligible: true

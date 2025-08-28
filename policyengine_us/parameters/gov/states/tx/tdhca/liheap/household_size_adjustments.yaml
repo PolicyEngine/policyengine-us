@@ -1,0 +1,39 @@
+description: Texas uses these adjustment factors for LIHEAP benefits based on household size per 45 CFR 96.85.
+one_person:
+  values:
+    2024-01-01: 0.52
+two_person:
+  values:
+    2024-01-01: 0.68
+three_person:
+  values:
+    2024-01-01: 0.84
+four_person:
+  values:
+    2024-01-01: 1.00
+five_person:
+  values:
+    2024-01-01: 1.16
+six_person:
+  values:
+    2024-01-01: 1.32
+seven_person:
+  values:
+    2024-01-01: 1.48
+eight_person:
+  values:
+    2024-01-01: 1.64
+nine_person:
+  values:
+    2024-01-01: 1.80
+ten_person:
+  values:
+    2024-01-01: 1.96
+metadata:
+  unit: /1
+  period: year
+  label: Texas LIHEAP household size adjustments
+  reference:
+    - title: 45 CFR 96.85 - LIHEAP Household Size Adjustments
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-B/part-96/section-96.85
+      publication_date: 2023-01-01

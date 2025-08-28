@@ -6,7 +6,7 @@ from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.general import *
 from pathlib import Path
-from policyengine_us.typing import *
+from policyengine_us.typing_api import *
 import warnings
 from policyengine_us.tools.cloning import get_stored_variables
 
