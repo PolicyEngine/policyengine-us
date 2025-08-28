@@ -282,7 +282,7 @@ def main():
     print(f"PolicyEngine Test Runner")
     print("=" * 60)
     print(f"Test path: {test_path}")
-    print(f"Number of batches: {args.batches}")
+    print(f"Requested batches: {args.batches}")
 
     # Count total tests
     total_tests = count_yaml_files(test_path)
@@ -290,7 +290,12 @@ def main():
 
     # Split into batches
     batches = split_into_batches(test_path, args.batches)
-    print(f"Created {len(batches)} batch(es)")
+    if len(batches) != args.batches:
+        print(
+            f"Actual batches: {len(batches)} (optimized for {total_tests} files)"
+        )
+    else:
+        print(f"Actual batches: {len(batches)}")
     print("=" * 60)
 
     # Run batches
