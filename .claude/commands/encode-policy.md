@@ -12,6 +12,14 @@ Invoke issue-manager agent to:
 - Create draft PR immediately for early visibility
 - Return issue number and PR URL for tracking
 
+## Phase 0.5: Variable Naming Convention
+Invoke naming-coordinator agent to:
+- Analyze existing naming patterns in the codebase
+- Establish variable naming convention for $ARGUMENTS
+- Post naming decisions to GitHub issue for all agents to reference
+
+**Quality Gate**: Naming convention must be posted before proceeding to ensure consistency across parallel development.
+
 ## Phase 1: Document Collection
 Invoke document-collector agent to gather official $ARGUMENTS documentation and post to the GitHub issue.
 
@@ -32,9 +40,18 @@ After documentation is ready, invoke BOTH agents IN PARALLEL:
 - rules-engineer: ZERO hard-coded values, complete implementations only
 - test-creator: Use only existing PolicyEngine variables, test realistic calculations
 
-## Phase 3: Enhancement & Fixes (SEQUENTIAL)
+## Phase 2.5: Branch Integration
+Invoke integration-agent to:
+- Merge test and implementation branches
+- Fix basic integration issues (entity mismatches, naming)
+- Verify tests can run with implementation
+- Prepare unified codebase for validation
 
-**REQUIRED**: These agents fix common issues. Invoke them SEQUENTIALLY:
+**Why Critical**: The next phases need to work on integrated code to catch real issues.
+
+## Phase 3: Required Fixes and Validations (SEQUENTIAL)
+
+**MANDATORY**: These agents fix critical issues. Invoke them SEQUENTIALLY:
 
 ### Step 1: Edge Case Testing
 
@@ -134,13 +151,19 @@ Invoke ci-fixer agent to:
 
 **Start Implementation**:
 1. Phase 0: Invoke issue-manager agent
-2. Phase 1: Invoke document-collector agent for $ARGUMENTS  
-3. Phase 2: Invoke test-creator AND rules-engineer in parallel
-4. Phase 3: Invoke enhancement agents sequentially (edge-case, cross-program, etc.)
-5. Phase 4: Invoke implementation-validator to check for issues
-6. Phase 5: Invoke rules-reviewer for final validation
-7. Phase 6: Invoke ci-fixer to merge branches and fix CI
+2. Phase 0.5: Invoke naming-coordinator agent to establish naming conventions
+3. Phase 1: Invoke document-collector agent for $ARGUMENTS  
+4. Phase 2: Invoke test-creator AND rules-engineer in parallel
+5. Phase 2.5: Invoke integration-agent to merge branches
+6. Phase 3: Invoke fix agents sequentially (edge-case, cross-program, etc.)
+7. Phase 4: Invoke implementation-validator to check for issues
+8. Phase 5: Invoke rules-reviewer for final validation
+9. Phase 6: Invoke ci-fixer to handle CI pipeline
 
-**CRITICAL**: You MUST complete ALL phases. Do NOT skip enhancement/validation phases even if initial implementation looks good. These agents catch and fix issues that aren't immediately visible.
+**CRITICAL**: You MUST complete ALL phases. Do NOT skip any phases - they are ALL REQUIRED:
+- Phase 2.5 ensures branches work together
+- Phase 3 fixes critical issues (NOT optional enhancements)
+- Phase 4-5 validate correctness
+- Phase 6 ensures CI passes
 
 If any agent fails, report the failure but DO NOT attempt to fix it yourself.
