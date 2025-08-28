@@ -54,5 +54,6 @@ jobs:
         run: make test-yaml-structural
       - name: Run Python-based tests
         run: make test-other
-      - name: Build package
-        run: uv build
+      - name: Produce combined coverage repository
+        run: make coverage
+      - uses: codecov/codecov-action@v4
