@@ -10,7 +10,6 @@ import os
 import gc
 import time
 import argparse
-import signal
 from pathlib import Path
 from typing import List, Dict
 
@@ -119,10 +118,18 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     start_time = time.time()
 
-    # Build command
+    # Build command using coverage run (like master branch does)
+    # This avoids the hanging issue with direct policyengine-core test
+    coverage_file = f".coverage.batch_{batch_name.lower().replace(' ', '_')}"
     cmd = (
         [
             python_exe,
+            "-m",
+            "coverage",
+            "run",
+            "-a",
+            "--branch",
+            f"--data-file={coverage_file}",
             "-m",
             "policyengine_core.scripts.policyengine_command",
             "test",
@@ -133,56 +140,19 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     print(f"    Running {batch_name}...")
     print(f"    Paths: {len(test_paths)} items")
-    print(f"    Command: policyengine-core test on {len(test_paths)} paths")
+    print(f"    Coverage file: {coverage_file}")
     print()
 
     try:
-        # Run with captured output to avoid potential hang from output handling
-        # But still use a timeout for safety
+        # Run with real-time output (coverage run should handle cleanup better)
         result = subprocess.run(
             cmd,
-            capture_output=True,  # Capture instead of real-time display
+            capture_output=False,  # Show real-time output
             text=True,
-            timeout=1800,  # 30 minutes timeout
+            timeout=2400,  # 40 minutes timeout (generous for safety)
         )
 
         elapsed = time.time() - start_time
-
-        # Parse output for test results
-        output_lines = result.stdout.split("\n") if result.stdout else []
-        stderr_lines = result.stderr.split("\n") if result.stderr else []
-
-        # Look for pytest summary line
-        passed_count = 0
-        failed_count = 0
-        for line in output_lines:
-            if "passed" in line and "failed" not in line:
-                # Try to extract number of passed tests
-                import re
-
-                match = re.search(r"(\d+) passed", line)
-                if match:
-                    passed_count = int(match.group(1))
-            if "failed" in line:
-                match = re.search(r"(\d+) failed", line)
-                if match:
-                    failed_count = int(match.group(1))
-
-        # Print summary
-        if passed_count > 0 or failed_count > 0:
-            print(f"    Results: {passed_count} passed, {failed_count} failed")
-
-        # If there were failures, show which files failed
-        if result.returncode != 0:
-            print("\n    Failed test files:")
-            for line in output_lines:
-                if "FAILED" in line and ".yaml" in line:
-                    # Extract just the file path
-                    parts = line.split()
-                    for part in parts:
-                        if ".yaml" in part:
-                            print(f"      - {part}")
-                            break
 
         print(f"\n    Batch completed in {elapsed:.1f}s")
         return {
