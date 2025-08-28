@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.381.1] - 2025-08-28 14:57:49
+
+### Added
+
+- Memory-optimized test execution scripts for baseline and contrib tests
+- Batch processing with periodic memory cleanup to prevent OOM errors
+
+### Fixed
+
+- Python path detection in test scripts for compatibility across environments
+
 ## [1.381.0] - 2025-08-28 03:53:01
 
 ### Added
@@ -12757,6 +12768,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.381.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.0...1.381.1
 [1.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.380.0...1.381.0
 [1.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.379.0...1.380.0
 [1.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.378.0...1.379.0

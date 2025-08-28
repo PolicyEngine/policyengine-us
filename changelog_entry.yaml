@@ -1,7 +1,0 @@
-- bump: patch
-  changes:
-    added:
-    - Memory-optimized test execution scripts for baseline and contrib tests
-    - Batch processing with periodic memory cleanup to prevent OOM errors
-    fixed:
-    - Python path detection in test scripts for compatibility across environments
