@@ -6,7 +6,7 @@
     is_child: true
     childcare_expenses: 0 
   output:
-    mt_tanf_childcare_deduction: 0
+    mt_tanf_dependent_care_deduction: 0
 
 - name: Case 2, some childcare expense.
   period: 2023-01
@@ -16,7 +16,7 @@
     is_child: true
     childcare_expenses: 250*12
   output:
-    mt_tanf_childcare_deduction: 200
+    mt_tanf_dependent_care_deduction: 200
 
 - name: Case 3, some childcare expense, but not a dependent.
   period: 2023-01
@@ -26,7 +26,7 @@
     is_child: true
     childcare_expenses: 250*12 
   output:
-    mt_tanf_childcare_deduction: 0
+    mt_tanf_dependent_care_deduction: 0
 
 - name: Case 4, some childcare expense, but not a child.
   period: 2023-01
@@ -36,7 +36,7 @@
     is_child: false
     childcare_expenses: 250*12 
   output:
-    mt_tanf_childcare_deduction: 0
+    mt_tanf_dependent_care_deduction: 0
 
 - name: Case 5, some childcare applies minimum.
   period: 2023-01
@@ -46,7 +46,7 @@
     is_child: true
     childcare_expenses: 100*12 
   output:
-    mt_tanf_childcare_deduction: 100
+    mt_tanf_dependent_care_deduction: 100
 
 - name: Integration test.
   period: 2023
@@ -81,4 +81,4 @@
         members: [person1, person2, person3, person4]
         state_code: MT
   output:
-    mt_tanf_childcare_deduction: [2_400, 2_400]   # min(4300, 200*12)
+    mt_tanf_dependent_care_deduction: [2_400, 2_400]   # min(4300, 200*12)
