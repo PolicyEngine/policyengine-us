@@ -25,7 +25,6 @@
   output:
     tx_liheap_income_eligible: true  # <= operator means exactly at threshold is eligible
     tx_liheap_eligible: true
-  notes: Tests <= vs < comparison at threshold
 
 - name: Income one dollar below 150% FPL threshold
   period: 2025
@@ -44,7 +43,6 @@
   output:
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Ensures income just below threshold passes
 
 - name: Income one dollar above 150% FPL threshold
   period: 2025
@@ -64,7 +62,6 @@
     tx_liheap_income_eligible: false
     tx_liheap_eligible: false
     tx_liheap_regular_benefit: 0
-  notes: Ensures income just above threshold fails
 
 - name: Income exactly at 150% FPL - family of 4
   period: 2025
@@ -90,7 +87,6 @@
   output:
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Tests threshold for larger household size
 
 # ====================================================================
 # HOUSEHOLD SIZE EXTREME EDGE CASES
@@ -114,7 +110,6 @@
   output:
     tx_liheap_eligible: true
     tx_liheap_base_benefit: 6_396  # 0.52 adjustment factor * $12,300 max
-  notes: Tests minimum household size adjustment
 
 - name: Household size 10 - maximum defined adjustment
   period: 2025
@@ -152,7 +147,6 @@
     tx_liheap_eligible: true
     tx_liheap_priority_group: true  # Has child under 6
     tx_liheap_base_benefit: 24_108  # 1.96 adjustment factor * $12,300
-  notes: Tests maximum defined household size adjustment
 
 - name: Household size 20 - extreme size beyond defined adjustments
   period: 2025
@@ -214,7 +208,6 @@
     tx_liheap_eligible: true
     tx_liheap_priority_group: true  # Has child under 6
     tx_liheap_base_benefit: 24_108  # Uses 10-person adjustment (cap at 10)
-  notes: Tests handling of unusually large households beyond defined adjustments
 
 - name: Household size 8 - testing exact adjustment
   period: 2025
@@ -247,7 +240,6 @@
   output:
     tx_liheap_eligible: true
     tx_liheap_base_benefit: 20_172  # 1.64 adjustment factor * $12,300
-  notes: Tests specific household size 8 adjustment
 
 # ====================================================================
 # ZERO AND NEGATIVE INCOME SCENARIOS
@@ -274,7 +266,6 @@
     tx_liheap_income_eligible: true  # Zero income is eligible
     tx_liheap_eligible: true
     tx_liheap_regular_benefit: 6_396  # Gets base benefit with 1-person adjustment
-  notes: Ensures zero income doesn't cause division errors
 
 - name: Negative self-employment income
   period: 2025
@@ -295,7 +286,6 @@
     tx_liheap_income: 1_250  # (20,000 - 5,000) / 12
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Tests handling of negative self-employment income
 
 - name: All income sources zero
   period: 2025
@@ -324,7 +314,6 @@
     tx_liheap_income: 0
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Tests all zero income sources
 
 # ====================================================================
 # PRIORITY GROUP COMBINATIONS
@@ -356,7 +345,6 @@
     tx_liheap_high_energy_burden: true
     tx_liheap_priority_group: true
     tx_liheap_eligible: true
-  notes: Tests household with all priority characteristics
 
 - name: Elderly exactly at age threshold (60)
   period: 2025
@@ -375,7 +363,6 @@
   output:
     tx_liheap_has_elderly_member: true
     tx_liheap_priority_group: true
-  notes: Tests >= comparison for elderly age threshold
 
 - name: Child exactly at age threshold (6)
   period: 2025
@@ -396,7 +383,6 @@
   output:
     tx_liheap_has_young_child: false  # Age 6 is not under 6
     tx_liheap_priority_group: false
-  notes: Tests < comparison for child age threshold
 
 - name: Child one day before turning 6
   period: 2025
@@ -417,7 +403,6 @@
   output:
     tx_liheap_has_young_child: true
     tx_liheap_priority_group: true
-  notes: Tests child just under age threshold
 
 - name: Energy burden exactly at 10% threshold
   period: 2025
@@ -437,7 +422,6 @@
   output:
     tx_liheap_high_energy_burden: true  # >= 10% is high burden
     tx_liheap_priority_group: true
-  notes: Tests >= comparison for energy burden threshold
 
 # ====================================================================
 # MAXIMUM BENEFIT SCENARIOS
@@ -470,7 +454,6 @@
     tx_liheap_priority_group: true
     tx_liheap_eligible: true
     tx_liheap_regular_benefit: 12_300  # Maximum benefit cap
-  notes: Tests maximum benefit cap application
 
 - name: Minimum benefit amount
   period: 2025
@@ -489,7 +472,6 @@
   output:
     tx_liheap_eligible: true
     tx_liheap_regular_benefit: 1  # At least minimum benefit of $1
-  notes: Tests minimum benefit floor
 
 # ====================================================================
 # CRISIS ASSISTANCE EDGE CASES
@@ -514,7 +496,6 @@
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 2_400  # Capped at maximum
-  notes: Tests crisis benefit maximum cap
 
 - name: Crisis benefit with zero utility expense
   period: 2025
@@ -534,7 +515,6 @@
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 0  # No utility expense = no crisis benefit
-  notes: Tests crisis benefit with no utility costs
 
 - name: Crisis benefit exactly at utility expense
   period: 2025
@@ -554,7 +534,6 @@
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 1_500  # Equal to utility expense
-  notes: Tests crisis benefit equals actual need when below max
 
 # ====================================================================
 # CATEGORICAL ELIGIBILITY EDGE CASES
@@ -580,7 +559,6 @@
     tx_liheap_income_eligible: false
     tx_liheap_categorical_eligible: true
     tx_liheap_eligible: true  # Categorically eligible despite income
-  notes: Tests categorical eligibility overrides income test
 
 - name: SSI recipient with zero reported SSI
   period: 2025
@@ -601,7 +579,6 @@
     tx_liheap_income_eligible: false
     tx_liheap_categorical_eligible: false  # No SSI = not categorical
     tx_liheap_eligible: false
-  notes: Tests SSI categorical requires positive SSI amount
 
 - name: TANF with exactly $1 benefit
   period: 2025
@@ -624,7 +601,6 @@
     tx_liheap_income_eligible: false
     tx_liheap_categorical_eligible: true  # Even $1 TANF counts
     tx_liheap_eligible: true
-  notes: Tests minimal TANF benefit triggers categorical eligibility
 
 - name: Multiple categorical programs
   period: 2025
@@ -647,7 +623,6 @@
   output:
     tx_liheap_categorical_eligible: true  # Multiple programs
     tx_liheap_eligible: true
-  notes: Tests multiple categorical eligibility sources
 
 # ====================================================================
 # MONTH/YEAR PERIOD INTERACTIONS
@@ -670,7 +645,6 @@
         state_code: TX
   output:
     tx_liheap_income: 2_000  # 24,000 / 12
-  notes: Tests annual to monthly conversion
 
 - name: Mixed period income sources
   period: 2025-06
@@ -690,7 +664,6 @@
         state_code: TX
   output:
     tx_liheap_income: 1_700  # (12,000 + 6,000)/12 + 200
-  notes: Tests mixed annual and monthly income
 
 - name: December period test
   period: 2025-12
@@ -709,7 +682,6 @@
   output:
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Tests year-end period calculations
 
 - name: January period test with prior year income
   period: 2025-01
@@ -728,7 +700,6 @@
   output:
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
-  notes: Tests year-start period calculations
 
 # ====================================================================
 # BENEFIT CALCULATION EDGE CASES
@@ -754,7 +725,6 @@
     tx_liheap_base_benefit: 6_396  # 0.52 * 12,300
     # Priority multiplier would be 1.2, so 6,396 * 1.2 = 7,675.20
     tx_liheap_regular_benefit: 7_675  # With priority multiplier
-  notes: Tests priority benefit multiplier calculation
 
 - name: Benefit clipping at maximum
   period: 2025
@@ -795,7 +765,6 @@
     tx_liheap_base_benefit: 24_108  # 1.96 * 12,300 for 10-person
     # With priority multiplier: 24,108 * 1.2 = 28,929.60
     tx_liheap_regular_benefit: 12_300  # Clipped at maximum
-  notes: Tests benefit clipping when calculated amount exceeds maximum
 
 - name: Benefit clipping at minimum
   period: 2025
@@ -815,7 +784,6 @@
     # Base benefit would be very low due to high income
     # But clipped at minimum of $1
     tx_liheap_regular_benefit: 1
-  notes: Tests benefit clipping at minimum when calculated amount is below floor
 
 # ====================================================================
 # ROUNDING AND PRECISION EDGE CASES
@@ -838,7 +806,6 @@
         state_code: TX
   output:
     tx_liheap_income_eligible: true  # Should round appropriately
-  notes: Tests income comparison with decimal amounts
 
 - name: Benefit calculation with fractional adjustment
   period: 2025
@@ -858,7 +825,6 @@
         state_code: TX
   output:
     tx_liheap_base_benefit: 8_364  # 0.68 * 12,300 = 8,364
-  notes: Tests fractional adjustment factor calculation
 
 # ====================================================================
 # EMPTY OR NULL SCENARIOS
@@ -878,7 +844,6 @@
         state_code: TX
   output:
     tx_liheap_eligible: false  # Should handle gracefully
-  notes: Tests handling of empty household
 
 - name: All income sources null/missing
   period: 2025
@@ -897,4 +862,3 @@
   output:
     tx_liheap_income: 0  # Should default to 0
     tx_liheap_income_eligible: true
-  notes: Tests handling of missing income variables
