@@ -1,39 +1,58 @@
-description: Texas uses these adjustment factors for LIHEAP benefits based on household size per 45 CFR 96.85.
+description: >
+  Texas uses these adjustment factors to scale LIHEAP benefits based on household size,
+  recognizing economies of scale in home energy costs. The factors multiply the maximum
+  benefit amount to determine each household's base benefit. A 4-person household serves
+  as the baseline (1.00 factor), with smaller households receiving proportionally less
+  and larger households receiving more. These adjustments ensure equitable distribution
+  while acknowledging that energy costs don't increase linearly with household size.
+  
+  Example calculations:
+  - 1-person household: $12,300 × 0.52 = $6,396 base benefit
+  - 4-person household: $12,300 × 1.00 = $12,300 base benefit  
+  - 8-person household: $12,300 × 1.64 = $20,172 base benefit (capped at maximum)
+  
+  The factors increase by approximately 16% for each additional household member,
+  reflecting the incremental energy usage of additional occupants.
 one_person:
   values:
-    2024-01-01: 0.52
+    2024-01-01: 0.52  # 52% of maximum benefit for single-person households
 two_person:
   values:
-    2024-01-01: 0.68
+    2024-01-01: 0.68  # 68% of maximum - recognizes shared heating/cooling costs
 three_person:
   values:
-    2024-01-01: 0.84
+    2024-01-01: 0.84  # 84% of maximum
 four_person:
   values:
-    2024-01-01: 1.00
+    2024-01-01: 1.00  # Baseline household size - receives full maximum amount
 five_person:
   values:
-    2024-01-01: 1.16
+    2024-01-01: 1.16  # 116% of maximum - exceeds max, will be capped
 six_person:
   values:
-    2024-01-01: 1.32
+    2024-01-01: 1.32  # 132% of maximum - exceeds max, will be capped
 seven_person:
   values:
-    2024-01-01: 1.48
+    2024-01-01: 1.48  # 148% of maximum - exceeds max, will be capped
 eight_person:
   values:
-    2024-01-01: 1.64
+    2024-01-01: 1.64  # 164% of maximum - exceeds max, will be capped
 nine_person:
   values:
-    2024-01-01: 1.80
+    2024-01-01: 1.80  # 180% of maximum - exceeds max, will be capped
 ten_person:
   values:
-    2024-01-01: 1.96
+    2024-01-01: 1.96  # 196% of maximum - applies to households with 10+ members
 metadata:
   unit: /1
   period: year
   label: Texas LIHEAP household size adjustments
   reference:
-    - title: 45 CFR 96.85 - LIHEAP Household Size Adjustments
+    - title: 45 CFR 96.85 - Benefit levels for household eligible households
       href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-B/part-96/section-96.85
       publication_date: 2023-01-01
+    - title: Texas LIHEAP State Plan FY 2024 - Benefit Matrix
+      href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
+      publication_date: 2023-10-01
+    - title: Texas Administrative Code Title 10, Chapter 5, Subchapter A
+      href: https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=10&pt=1&ch=5&sch=A

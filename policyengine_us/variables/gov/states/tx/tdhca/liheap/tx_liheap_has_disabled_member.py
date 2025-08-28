@@ -18,4 +18,8 @@ class tx_liheap_has_disabled_member(Variable):
         is_disabled = person("is_disabled", period)
 
         # Check if any member is disabled
-        return spm_unit.any(is_disabled)
+        # Use sum to avoid .any() which breaks vectorization
+        # If sum > 0, at least one member is disabled
+        disabled_count = spm_unit.sum(is_disabled)
+        
+        return disabled_count > 0

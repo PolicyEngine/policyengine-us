@@ -23,9 +23,11 @@ class tx_liheap_categorical_eligible(Variable):
         receives_tanf = tanf > 0
 
         # Check SSI receipt for any member
+        # Use sum to avoid .any() which breaks vectorization
         person = spm_unit.members
         ssi = person("ssi", period.this_year)
-        receives_ssi = spm_unit.any(ssi > 0)
+        total_ssi = spm_unit.sum(ssi)
+        receives_ssi = total_ssi > 0
 
         # Categorically eligible if receiving any of these programs
         return receives_snap | receives_tanf | receives_ssi

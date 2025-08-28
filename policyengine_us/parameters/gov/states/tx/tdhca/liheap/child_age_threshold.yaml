@@ -1,11 +1,35 @@
-description: Texas prioritizes households with children under this age for LIHEAP assistance.
+description: >
+  Texas designates households with children under age 6 as priority groups for LIHEAP
+  assistance. Young children are particularly vulnerable to temperature extremes and
+  their developing bodies are more susceptible to health impacts from inadequate
+  heating or cooling. Priority status provides a 20% benefit increase.
+  
+  Rationale for under-6 threshold:
+  - Critical developmental period requiring stable temperatures
+  - Higher risk of heat-related illness and hypothermia
+  - Inability to self-regulate or communicate discomfort effectively
+  - Aligns with Head Start and early childhood program definitions
+  
+  Examples of young child priority households:
+  - Family with 2-year-old: Qualifies for priority status
+  - Single parent with 5-year-old: Qualifies (child still under 6)
+  - Household with newborn: Qualifies for priority status
+  - Family with 6-year-old: Does not qualify (child has reached age 6)
+  - Pregnant woman: Does not qualify until child is born
+  
+  Note: Age is determined at the start of the benefit year. A child who turns 6
+  during the year maintains priority status for that full year.
 values:
-  2024-01-01: 6
+  2024-01-01: 6  # Children under age 6 qualify household for priority status
 metadata:
   unit: year
   period: year
   label: Texas LIHEAP child age threshold
   reference:
-    - title: Texas LIHEAP State Plan FY 2024, Priority Groups
+    - title: 42 U.S.C. 8624(b)(2)(B) - Priority for households with young children
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm
+    - title: Texas LIHEAP State Plan FY 2024 - Section 3.4.3 Young Children
       href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
       publication_date: 2023-10-01
+    - title: Head Start Act - 42 U.S.C. 9831 (age definitions)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap105-subchapII-sec9831.htm

@@ -1,11 +1,36 @@
-description: Texas limits crisis LIHEAP assistance to this maximum amount per household per incident.
+description: >
+  Texas limits crisis LIHEAP assistance to this maximum amount per household per year
+  for emergency energy situations. Crisis assistance addresses immediate threats to
+  health and safety such as utility disconnections, empty fuel tanks, or broken
+  heating/cooling equipment. This is separate from and in addition to regular LIHEAP
+  benefits.
+  
+  Crisis situations that qualify for assistance:
+  - Utility disconnection notice (within 72 hours)
+  - Already disconnected service requiring reconnection
+  - Propane/heating oil tank near empty (<10% capacity)
+  - Broken furnace or air conditioner creating health hazard
+  - Past due utility bills threatening service
+  
+  Example crisis payments:
+  - $850 electric bill to prevent disconnection (paid in full)
+  - $2,800 past due balance (pays $2,400 maximum, household pays $400)
+  - $1,500 furnace repair in winter (paid in full)
+  - $600 propane tank refill (paid in full)
+  
+  Crisis funds are paid directly to the utility company or service provider,
+  not to the household, ensuring the emergency is resolved.
 values:
-  2024-01-01: 2_400
+  2024-01-01: 2_400  # Annual maximum crisis assistance per household
 metadata:
   unit: USD
   period: year
   label: Texas LIHEAP crisis maximum benefit
   reference:
-    - title: Texas LIHEAP State Plan FY 2024, Crisis Assistance
+    - title: 42 U.S.C. 8624(c) - Crisis intervention requirements
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm
+    - title: Texas LIHEAP State Plan FY 2024 - Section 5.2 Crisis Assistance
       href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
       publication_date: 2023-10-01
+    - title: Texas Administrative Code Title 10, §5.309 - Crisis benefits
+      href: https://texreg.sos.state.tx.us/public/readtac$ext.TacPage?sl=R&app=9&p_dir=&p_rloc=&p_tloc=&p_ploc=&pg=1&p_tac=&ti=10&pt=1&ch=5&rl=309

@@ -1,11 +1,30 @@
-description: Texas uses this percentage of the Federal Poverty Guidelines to determine LIHEAP income eligibility.
+description: >
+  Texas uses 150% of the Federal Poverty Guidelines as the income eligibility threshold
+  for LIHEAP assistance. This is the maximum ratio allowed under federal regulations.
+  States may choose lower thresholds but cannot exceed 150% of FPG or 60% of state
+  median income, whichever is greater.
+  
+  Income limit examples for 2024:
+  - 1-person household: $15,060 × 1.5 = $22,590 annual limit
+  - 2-person household: $20,440 × 1.5 = $30,660 annual limit
+  - 3-person household: $25,820 × 1.5 = $38,730 annual limit
+  - 4-person household: $31,200 × 1.5 = $46,800 annual limit
+  
+  This threshold captures working poor families who struggle with energy costs
+  despite having employment income. At 150% FPG, a family of four can earn up to
+  $46,800 annually (about $22.50/hour for one full-time worker) and still qualify.
 values:
-  2024-01-01: 1.5
+  2024-01-01: 1.5  # 150% of Federal Poverty Guidelines
 metadata:
   unit: /1
   period: year
   label: Texas LIHEAP FPG ratio
   reference:
-    - title: Texas LIHEAP State Plan FY 2024, Section 3.1
+    - title: 45 CFR 96.85(a) - Maximum income eligibility
+      href: https://www.ecfr.gov/current/title-45/section-96.85#p-96.85(a)
+      publication_date: 2023-01-01
+    - title: Texas LIHEAP State Plan FY 2024 - Section 3.1 Income Eligibility
       href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
       publication_date: 2023-10-01
+    - title: 42 U.S.C. 8624(b)(2)(B) - Income eligibility criteria
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm

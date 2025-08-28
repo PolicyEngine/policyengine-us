@@ -18,6 +18,7 @@ class tx_liheap_has_elderly_member(Variable):
         age = person("age", period)
 
         # Check if any member is at or above elderly threshold
-        is_elderly = age >= p.elderly_age_threshold
-
-        return spm_unit.any(is_elderly)
+        # Use max_ to avoid .any() which breaks vectorization
+        max_age = spm_unit.max(age)
+        
+        return max_age >= p.elderly_age_threshold

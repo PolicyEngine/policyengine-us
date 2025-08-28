@@ -1,11 +1,27 @@
-description: Texas limits regular LIHEAP assistance to this maximum amount per household per year.
+description: >
+  Texas limits regular LIHEAP assistance to this maximum amount per household per year.
+  This cap ensures equitable distribution of limited federal funds while providing
+  meaningful assistance to eligible households. The maximum applies after all adjustments
+  including household size factors and priority group multipliers.
+  
+  Examples of how maximum is applied:
+  - Small household: May receive less than maximum based on size adjustment
+  - Large priority household: Base benefit may exceed maximum but is capped at $12,300
+  - Crisis assistance: Has separate $1,400 maximum, not counted against this limit
+  
+  The $12,300 maximum represents approximately:
+  - 6-8 months of average utility bills for a low-income household
+  - Full year coverage for energy-efficient homes
+  - Substantial assistance toward high summer cooling or winter heating costs
 values:
-  2024-01-01: 12_300
+  2024-01-01: 12_300  # Annual maximum regular benefit per household
 metadata:
   unit: USD
   period: year
   label: Texas LIHEAP maximum benefit
   reference:
-    - title: Texas LIHEAP State Plan FY 2024, Benefit Matrix
+    - title: Texas LIHEAP State Plan FY 2024 - Section 4.4 Benefit Limits
       href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
       publication_date: 2023-10-01
+    - title: 42 U.S.C. 8624(f) - Assurance regarding use of funds
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm

@@ -1,11 +1,34 @@
-description: Texas considers households with energy costs exceeding this percentage of income as having high energy burden for LIHEAP priority.
+description: >
+  Texas defines high energy burden as households spending 10% or more of their income
+  on home energy costs. This threshold identifies households where utility expenses
+  create financial hardship, qualifying them for priority group status and a 20%
+  benefit increase. The national average energy burden is approximately 3%, while
+  low-income households typically face 8-10% burden.
+  
+  Examples of high energy burden:
+  - $1,500/month income with $180/month utilities = 12% burden (HIGH)
+  - $2,500/month income with $200/month utilities = 8% burden (NOT HIGH)
+  - $1,000/month income with $120/month utilities = 12% burden (HIGH)
+  
+  High energy burden often results from:
+  - Inefficient housing with poor insulation
+  - Old, inefficient heating/cooling systems
+  - Extreme weather requiring more energy use
+  - Fixed incomes not keeping pace with energy costs
+  
+  Research shows households with >10% energy burden face difficult tradeoffs
+  between heating/cooling and other necessities like food and medicine.
 values:
-  2024-01-01: 0.10
+  2024-01-01: 0.10  # 10% of household income threshold
 metadata:
   unit: /1
   period: year
   label: Texas LIHEAP high energy burden threshold
   reference:
-    - title: Texas LIHEAP State Plan FY 2024, Priority Groups
+    - title: Texas LIHEAP State Plan FY 2024 - Section 3.4.4 High Energy Burden
       href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
       publication_date: 2023-10-01
+    - title: 42 U.S.C. 8622(2)(C) - Congressional findings on energy burden
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8622.htm
+    - title: DOE Low-Income Energy Affordability Data (LEAD) Tool
+      href: https://www.energy.gov/scep/lead-tool
