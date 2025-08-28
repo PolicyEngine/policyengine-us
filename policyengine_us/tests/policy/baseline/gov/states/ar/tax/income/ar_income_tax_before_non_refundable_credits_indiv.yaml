@@ -76,4 +76,13 @@
     state_code: AR
   output:
     # 100_000 * 0.047 - 153.7 = 4546.3
-    ar_income_tax_before_non_refundable_credits_indiv: 4546.3
+    ar_income_tax_before_non_refundable_credits_indiv: 4396.7
+
+- name: AR income tax rates - taxable income over income threshold
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 120_000
+    state_code: AR
+  output:
+    ar_income_tax_before_non_refundable_credits_indiv: 4507.1
