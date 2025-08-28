@@ -44,7 +44,28 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
     """
     Split test directories into specified number of batches.
     Special handling for baseline tests to separate states.
+    Special handling for contrib tests to divide by folder count.
     """
+    # Special handling for contrib tests - each folder is its own batch
+    if "contrib" in str(base_path):
+        # Get all subdirectories
+        subdirs = [item for item in base_path.iterdir() if item.is_dir()]
+
+        # Get root level YAML files
+        root_files = list(base_path.glob("*.yaml"))
+
+        # Create one batch per subdirectory
+        batches = []
+        for subdir in subdirs:
+            batches.append([str(subdir)])
+
+        # If there are root files, group them together in their own batch
+        if root_files:
+            root_batch = [str(file) for file in root_files]
+            batches.append(root_batch)
+
+        return batches
+
     # Special handling for baseline tests with 2 batches
     if "baseline" in str(base_path) and num_batches == 2:
         states_path = base_path / "gov" / "states"
