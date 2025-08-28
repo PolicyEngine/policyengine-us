@@ -37,18 +37,47 @@ You are the CI Fixer Agent responsible for creating pull requests, monitoring CI
 
 ## Workflow Process
 
-### Step 1: Create Draft PR
+### Step 1: Find Existing Draft PR and Integration Branch
 ```bash
-# Push current branch
-git push -u origin feature/<program-name>
+# Find the draft PR created by issue-manager
+gh pr list --draft --search "in:title <program>"
 
-# Create draft PR (NOTE: CI still runs on draft PRs!)
-gh pr create --draft --title "Implement <Program>" --body "
+# Check out the existing integration branch
+git fetch origin
+git checkout integration/<program>-<date>
+git pull origin integration/<program>-<date>
+```
+
+### Step 2: Merge Parallel Agent Branches
+```bash
+# Merge the test-creator's branch
+git merge origin/test-<program>-<date> --no-ff -m "Merge tests from test-creator agent"
+
+# Merge the rules-engineer's branch  
+git merge origin/impl-<program>-<date> --no-ff -m "Merge implementation from rules-engineer agent"
+
+# Resolve any merge conflicts if they exist
+# The --no-ff ensures we get merge commits showing the integration points
+
+# Push the merged changes
+git push origin integration/<program>-<date>
+```
+
+### Step 3: Update PR Description
+```bash
+# Update the PR body to reflect merged branches
+gh pr edit <pr-number> --body "
 ## Summary
 Implementation of <Program> including:
-- Parameters and variables
-- Integration tests
-- Documentation
+- Parameters and variables from rules-engineer agent
+- Integration tests from test-creator agent
+- Documentation from document-collector agent
+
+## Branch Integration
+This PR merges work from parallel agent branches:
+- \`test-<program>-<date>\`: Comprehensive test suite
+- \`impl-<program>-<date>\`: Variable and parameter implementation
+- Integrated into: \`integration/<program>-<date>\`
 
 ## Test Results
 - [ ] All tests passing
@@ -181,11 +210,33 @@ Your task is complete when:
 3. ✅ No merge conflicts
 4. ✅ PR marked as ready for review
 5. ✅ Summary of fixes documented
+6. ✅ Cleanup completed (see below)
+
+## Final Cleanup
+
+### Working References File
+After all CI checks pass and before marking PR ready:
+1. **Verify** all references from `working_references.md` are now embedded in parameter/variable metadata
+2. **Delete** the `working_references.md` file from the repository root
+3. **Commit** with message: "Clean up working references - all citations now in metadata"
+
+```bash
+# Verify references are embedded (spot check a few)
+grep -r "reference:" policyengine_us/parameters/
+grep -r "reference =" policyengine_us/variables/
+
+# Remove working file
+rm working_references.md
+git add -u
+git commit -m "Clean up working references - all citations now in metadata"
+git push
+```
 
 ## Important Notes
 
 - **Never** mark PR ready if CI is failing
 - **Always** run `make format` before pushing
+- **Always** clean up `working_references.md` after references are embedded
 - **Document** all fixes applied in commits
 - **Test locally** when possible before pushing
 - **Be patient** - CI can take several minutes
