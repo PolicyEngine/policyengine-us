@@ -134,34 +134,120 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     print(f"    Paths: {len(test_paths)} items")
     print()
 
+    # Use Popen for more control over process lifecycle
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,  # Line buffered
+    )
+
     try:
-        # Run with real-time output and timeout protection
-        result = subprocess.run(
-            cmd,
-            capture_output=False,  # Show real-time output
-            text=True,
-            timeout=1800,  # 30 minutes timeout
-        )
+        test_completed = False
+        test_passed = False
+        output_lines = []
+
+        # Monitor output line by line
+        while True:
+            line = process.stdout.readline()
+            if not line:
+                # No more output, check if process is done
+                poll_result = process.poll()
+                if poll_result is not None:
+                    # Process terminated
+                    break
+                # Process still running but no output
+                time.sleep(0.1)
+                continue
+
+            # Print line in real-time
+            print(line, end="")
+            output_lines.append(line)
+
+            # Detect pytest completion
+            # Look for patterns like "====== 5638 passed in 491.24s ======"
+            # or "====== 2 failed, 5636 passed in 500s ======"
+            import re
+
+            if re.search(r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+", line):
+                test_completed = True
+                # Check if tests passed (no failures mentioned or 0 failed)
+                if "failed" not in line or "0 failed" in line:
+                    test_passed = True
+                else:
+                    test_passed = False
+
+                print(f"\n    Tests completed, terminating process...")
+
+                # Give 5 seconds grace period for cleanup
+                time.sleep(5)
+
+                # Terminate the process
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    # Force kill if it won't terminate
+                    print(f"    Force killing process...")
+                    process.kill()
+                    process.wait()
+                break
+
+        # If we didn't detect completion, wait for process with timeout
+        if not test_completed:
+            try:
+                # Wait up to 30 minutes total
+                elapsed = time.time() - start_time
+                remaining_timeout = max(1800 - elapsed, 1)
+                process.wait(timeout=remaining_timeout)
+            except subprocess.TimeoutExpired:
+                print(f"\n    ⏱️ Timeout - terminating process...")
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+
+                elapsed = time.time() - start_time
+                return {
+                    "elapsed": elapsed,
+                    "status": "timeout",
+                }
 
         elapsed = time.time() - start_time
 
-        print(f"\n    Batch completed in {elapsed:.1f}s")
-        return {
-            "elapsed": elapsed,
-            "status": "passed" if result.returncode == 0 else "failed",
-        }
+        if test_completed:
+            print(f"\n    Batch completed in {elapsed:.1f}s")
+            return {
+                "elapsed": elapsed,
+                "status": "passed" if test_passed else "failed",
+            }
+        else:
+            # Process ended without detecting test completion
+            returncode = process.poll()
+            print(f"\n    Batch completed in {elapsed:.1f}s")
+            return {
+                "elapsed": elapsed,
+                "status": "passed" if returncode == 0 else "failed",
+            }
 
-    except subprocess.TimeoutExpired:
-        elapsed = time.time() - start_time
-        print(f"\n    ⏱️ Timeout after {elapsed:.1f}s")
-        print("    (Process killed due to timeout)")
-        return {
-            "elapsed": elapsed,
-            "status": "timeout",
-        }
     except Exception as e:
         elapsed = time.time() - start_time
         print(f"\n    ❌ Error: {str(e)[:100]}")
+
+        # Clean up process if still running
+        try:
+            process.terminate()
+            process.wait(timeout=5)
+        except:
+            try:
+                process.kill()
+                process.wait()
+            except:
+                pass
+
         return {
             "elapsed": elapsed,
             "status": "error",
