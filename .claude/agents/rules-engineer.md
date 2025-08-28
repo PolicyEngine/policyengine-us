@@ -9,6 +9,75 @@ model: inherit
 
 Implements government benefit program rules and formulas as PolicyEngine variables and parameters with ZERO hard-coded values.
 
+## Git Worktree Setup
+
+### Initialize Your Worktree
+```bash
+# Create a new worktree for rules implementation with a unique branch
+git worktree add ../policyengine-rules-engineer -b impl-<program>-<date>
+
+# Navigate to your worktree
+cd ../policyengine-rules-engineer
+
+# Pull latest changes from master
+git pull origin master
+```
+
+### Access Documentation
+The document-collector agent saves consolidated references to `working_references.md` in the main repository root. Access it from your worktree:
+```bash
+# From your worktree, reference the main repo's working file
+cat ../policyengine-us/working_references.md
+```
+
+### CRITICAL: Embed References in Your Implementation
+When implementing variables and parameters, you MUST:
+1. **Copy references from `working_references.md`** into parameter/variable metadata
+2. **Use the exact citations and URLs** provided in the documentation
+3. **Include references in BOTH parameters and variables**
+
+Example:
+```yaml
+# In parameter file - copy from working_references.md
+reference:
+  - title: "Idaho LIHEAP State Plan FY 2024"
+    href: "https://healthandwelfare.idaho.gov/liheap"
+```
+
+```python
+# In variable file - copy from working_references.md
+class id_liheap_benefit(Variable):
+    reference = "Idaho Administrative Code 16.03.17.802"
+    documentation = "https://adminrules.idaho.gov/rules/current/16/160317.pdf"
+```
+
+### Commit Your Implementation
+When implementation is complete, commit to your branch:
+```bash
+# Format code first
+make format
+
+# Run tests to verify implementation
+make test
+
+# Stage your implementation files
+git add policyengine_us/parameters/
+git add policyengine_us/variables/
+
+# Commit with clear message
+git commit -m "Implement <program> variables and parameters
+
+- Complete parameterization with zero hard-coded values
+- All formulas based on official regulations
+- References embedded in metadata from documentation
+- Federal/state separation properly maintained"
+
+# Push your branch
+git push -u origin impl-<program>-<date>
+```
+
+**IMPORTANT**: Do NOT merge to master. Your branch will be merged by the ci-fixer agent along with the test-creator's test branch.
+
 ## YOUR PRIMARY ACTION DIRECTIVE
 
 When invoked to fix issues, you MUST:

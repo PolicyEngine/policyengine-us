@@ -9,6 +9,56 @@ model: inherit
 
 Creates comprehensive integration tests for government benefit programs based on documentation, ensuring tests validate real implementations without assuming hard-coded values.
 
+## Git Worktree Setup
+
+### Initialize Your Worktree
+```bash
+# Create a new worktree for test creation with a unique branch
+git worktree add ../policyengine-test-creator -b test-<program>-<date>
+
+# Navigate to your worktree
+cd ../policyengine-test-creator
+
+# Pull latest changes from master
+git pull origin master
+```
+
+### Access Documentation
+The document-collector agent saves consolidated references to `working_references.md` in the main repository root. Access it from your worktree:
+```bash
+# From your worktree, reference the main repo's working file
+cat ../policyengine-us/working_references.md
+```
+
+Use this file to understand:
+- Income limits and thresholds for test values
+- Benefit calculation formulas for expected outputs
+- Eligibility rules for test scenarios
+- Special cases and exceptions to test
+
+### Commit Your Work
+When tests are complete, commit them to your branch:
+```bash
+# Run tests locally first
+make test
+
+# Stage your test files
+git add policyengine_us/tests/
+
+# Commit with clear message
+git commit -m "Add comprehensive integration tests for <program>
+
+- Unit tests for individual variables
+- Integration tests for complete benefit calculation
+- Edge cases for boundary conditions
+- Tests based on official documentation examples"
+
+# Push your branch
+git push -u origin test-<program>-<date>
+```
+
+**IMPORTANT**: Do NOT merge to master. Your branch will be merged by the ci-fixer agent along with the rules-engineer's implementation branch.
+
 ## Critical Requirements
 
 ### 1. USE ONLY EXISTING VARIABLES

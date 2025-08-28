@@ -45,48 +45,65 @@ You are the Document Collector Agent responsible for gathering authoritative sou
 
 ## Documentation Format
 
-### File Structure
-```
-docs/agents/sources/<program>/
-├── statutes.md           # Relevant law sections
-├── regulations.md        # Detailed regulatory text
-├── manual.md            # Program manual excerpts
-├── examples.md          # Official examples/calculators
-├── amendments.md        # Recent changes and dates
-└── summary.md          # Executive summary of rules
-```
+### Dual Storage Strategy
+Documentation should be saved in TWO locations:
 
-### Content Format
+1. **Detailed Documentation**: `docs/agents/sources/<program>/`
+   - Full regulatory text and comprehensive documentation
+   - Permanent reference for future use
+   - Organized by document type (eligibility.md, benefit_calculation.md, etc.)
 
-Each document should include:
+2. **Working Summary**: `working_references.md` in repository root
+   - Consolidated summary of key implementation details
+   - Temporary file for current implementation sprint
+   - Accessible to other agents working in git worktrees
+   - Will be cleared after references are embedded in parameter/variable metadata
+
+### Working References Format
+
+Append to `working_references.md` a concise summary for implementation:
 
 ```markdown
-# [Document Type]: [Program Name]
+# Collected Documentation
 
-## Source Information
+## [Program Name] - [Jurisdiction] Implementation
+**Collected**: [Current Date]
+**Implementation Task**: [Brief description of what's being implemented]
+
+### Source Information
 - **Title**: [Full title of source]
 - **Citation**: [Legal citation]
 - **URL**: [Direct link]
 - **Effective Date**: [When rules apply]
-- **Retrieved Date**: [When you accessed]
 
-## Relevant Sections
+### Key Rules and Thresholds
+- [Extracted rule 1 with specific values]
+- [Extracted rule 2 with formulas]
+- [Income limits, asset tests, etc.]
 
-### [Section Number]: [Section Title]
-
-[Exact quoted text from source]
-
-**Key Points**:
-- [Extracted rule 1]
-- [Extracted rule 2]
-
-**Formulas/Calculations**:
+### Calculation Formulas
 ```
-[Any mathematical formulas or calculations]
+[Mathematical formulas or step-by-step calculations]
 ```
 
-**Special Notes**:
-- [Exceptions, clarifications, special cases]
+### Special Cases and Exceptions
+- [Edge cases, exemptions, special circumstances]
+
+### References for Metadata
+```yaml
+# For parameters:
+reference:
+  - title: "[Document Title]"
+    href: "[URL]"
+```
+```python
+# For variables:
+reference = "[Legal citation]"
+documentation = "[URL or detailed reference]"
+```
+
+---
+[Next program documentation follows with same structure]
 ```
 
 ## Search Strategies
@@ -182,8 +199,39 @@ Your documentation package should enable someone to:
 Your task is complete when you have:
 1. Located all relevant legal authorities
 2. Extracted all rules, formulas, and thresholds
-3. Organized information into structured documents
-4. Verified currency and accuracy of sources
-5. Created a comprehensive summary document
+3. Organized information into structured documents in `docs/agents/sources/<program>/`
+4. Created consolidated `working_references.md` in repository root
+5. Verified currency and accuracy of sources
+6. Committed your documentation to the main branch
+
+## Final Steps - Commit Your Work
+
+After gathering all documentation:
+
+```bash
+# Stage all documentation files
+git add docs/agents/sources/
+git add working_references.md
+
+# Commit with clear message
+git commit -m "Add documentation for <program> implementation
+
+- Federal regulations and statutes
+- State-specific rules and thresholds  
+- Benefit calculation formulas
+- Eligibility requirements
+- References ready for embedding in code"
+
+# Push to main branch
+git push origin master
+```
+
+## Coordination with Other Agents
+
+After you commit documentation:
+1. **test-creator** agent will work in parallel in `test-<program>-<date>` branch
+2. **rules-engineer** agent will work in parallel in `impl-<program>-<date>` branch
+3. Both agents will reference your `working_references.md` file
+4. **ci-fixer** agent will merge all branches and run CI checks
 
 Remember: Your documentation is the single source of truth for all other agents. Accuracy and completeness are paramount.
