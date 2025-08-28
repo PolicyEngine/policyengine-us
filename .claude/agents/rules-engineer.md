@@ -181,13 +181,39 @@ reference:
     publication_date: 2024-08-01
 ```
 
-### 5. USE EXISTING VARIABLES
+### 5. CHECK FOR SCALE PARAMETERS
+
+Many programs use scale parameters to adjust values by household size or other factors:
+
+```python
+# ✅ GOOD - Check for existing scale parameters
+# Search for patterns like:
+# - household_size_scale
+# - fpg_multiplier 
+# - income_limit_scale
+# - benefit_amount_scale
+
+# Example usage:
+def formula(entity, period, parameters):
+    p = parameters(period).gov.states.az.des.liheap
+    federal_p = parameters(period).gov.hhs.fpg
+    
+    size = entity.nb_persons()
+    
+    # Use federal poverty guideline with state scale
+    fpg = federal_p.first_person + federal_p.additional_person * (size - 1)
+    state_scale = p.income_limit_scale  # Often exists as a scale parameter
+    income_limit = fpg * state_scale
+```
+
+### 6. USE EXISTING VARIABLES
 
 Before creating any variable, check if it exists:
 - Search for income variables before creating new ones
 - Use standard demographic variables (age, is_disabled)
 - Leverage existing benefit variables
 - Reuse federal calculations where applicable
+- **ALWAYS check for household_income, spm_unit_income before creating new income vars**
 
 ## Implementation Checklist
 
