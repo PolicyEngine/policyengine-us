@@ -6,8 +6,14 @@ description: Orchestrates multi-agent workflow to implement new government benef
 
 Coordinate the multi-agent workflow to implement $ARGUMENTS as a complete, production-ready government benefit program.
 
+## Phase 0: Issue and PR Setup
+Invoke issue-manager agent to:
+- Search for existing issue or create new one for $ARGUMENTS
+- Create draft PR immediately for early visibility
+- Return issue number and PR URL for tracking
+
 ## Phase 1: Document Collection
-Invoke document-collector agent to gather official $ARGUMENTS documentation.
+Invoke document-collector agent to gather official $ARGUMENTS documentation and post to the GitHub issue.
 
 **Quality Gate**: Documentation must include:
 - Official program guidelines or state plan
@@ -79,20 +85,25 @@ Invoke rules-reviewer to validate the complete implementation against documentat
 - Proper parameter usage
 - Edge case handling
 
-## Phase 6: CI Fix & PR Creation
-Invoke ci-fixer to:
-- Create draft PR with complete implementation
-- Monitor CI pipeline for failures
-- Fix any failing tests, linting, or formatting issues
-- Address parameter validation errors
-- Iterate until all CI checks pass
+## Phase 6: CI Fix & PR Finalization
+**CRITICAL: ALWAYS invoke ci-fixer agent - do NOT manually fix issues**
+
+Invoke ci-fixer agent to:
+- Find the draft PR created in Phase 0
+- Merge test-creator and rules-engineer branches
+- Monitor CI pipeline for ALL failures
+- Fix failing tests, linting, formatting automatically
+- Address any entity-level issues in tests
+- Fix parameter validation errors
+- Clean up working_references.md
+- Iterate until ALL CI checks pass
 - Mark PR as ready for review
 
 **Success Metrics**:
-- All CI checks passing
-- Zero hard-coded values
-- Complete test coverage
-- Proper documentation
+- All CI checks passing (tests, lint, format)
+- Test and implementation branches merged
+- PR marked ready (not draft)
+- Clean commit history showing agent work
 
 
 ## Anti-Patterns This Workflow Prevents
@@ -107,8 +118,24 @@ Invoke ci-fixer to:
 8. **Performance issues**: Performance-optimizer ensures vectorization
 9. **Review delays**: Most issues caught and fixed automatically
 
-## Start Implementation
+## Execution Instructions
 
-Begin with Phase 1: Use Task tool to invoke document-collector agent for $ARGUMENTS.
+**YOUR ROLE**: You are an orchestrator ONLY. You must:
+1. Invoke agents using the Task tool
+2. Wait for their completion
+3. Check quality gates
+4. Proceed to next phase
 
-Then proceed through each phase, ensuring quality gates are met before advancing.
+**YOU MUST NOT**:
+- Write any code yourself
+- Fix any issues manually
+- Run tests directly
+- Edit files
+
+**Start Implementation**:
+1. Begin with Phase 0: Invoke issue-manager agent
+2. Then Phase 1: Invoke document-collector agent for $ARGUMENTS
+3. Continue through ALL phases
+4. ALWAYS complete with Phase 6: Invoke ci-fixer agent
+
+If any agent fails, report the failure but DO NOT attempt to fix it yourself.
