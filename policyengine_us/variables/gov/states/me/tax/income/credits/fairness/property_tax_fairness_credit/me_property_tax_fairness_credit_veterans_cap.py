@@ -23,5 +23,7 @@ class me_property_tax_fairness_credit_veterans_cap(Variable):
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_veteran = person("is_veteran", period)
-        has_veteran_head_or_spouse = tax_unit.any(is_head_or_spouse & is_veteran)
+        has_veteran_head_or_spouse = tax_unit.any(
+            is_head_or_spouse & is_veteran
+        )
         return has_veteran_head_or_spouse * base_cap * p.veterans_matched
