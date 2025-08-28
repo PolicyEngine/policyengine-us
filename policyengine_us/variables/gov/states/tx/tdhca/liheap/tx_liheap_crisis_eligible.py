@@ -11,14 +11,9 @@ class tx_liheap_crisis_eligible(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Must meet basic eligibility requirements
-        eligible = spm_unit("tx_liheap_eligible", period)
-
-        # Crisis situations include utility shutoff notice or emergency repair needs
-        # Since we can't determine actual crisis from available data,
-        # we assume crisis eligibility for priority households with high energy burden
-        high_energy_burden = spm_unit("tx_liheap_high_energy_burden", period)
-        is_priority = spm_unit("tx_liheap_priority_group", period)
-
-        # Crisis eligible if eligible and has high burden or is priority group
-        return eligible & (high_energy_burden | is_priority)
+        # Crisis assistance is available to all LIHEAP-eligible households
+        # who face an energy-related emergency (shutoff notice, broken equipment, etc.)
+        # Since we can't determine actual crisis situations from available data,
+        # we assume all eligible households could potentially qualify for crisis assistance
+        # if they presented with an emergency situation
+        return spm_unit("tx_liheap_eligible", period)

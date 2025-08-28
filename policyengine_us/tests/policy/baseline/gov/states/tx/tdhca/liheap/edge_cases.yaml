@@ -292,7 +292,7 @@
         members: [person1]
         state_code: TX
   output:
-    tx_liheap_income: 1_250  # (20,000 - 5,000) / 12
+    tx_liheap_income: 15_000  # Annual: 20,000 - 5,000 (tests use annual period)
     tx_liheap_income_eligible: true
     tx_liheap_eligible: true
 
@@ -343,7 +343,7 @@
     spm_units:
       spm_unit:
         members: [elderly_disabled, child]
-        utility_expense: 1_200  # Standard utility expense for testing
+        utility_expense: 3_600  # High energy burden (>10% of income)
     households:
       household:
         members: [elderly_disabled, child]
@@ -425,6 +425,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 2_400  # Exactly 10% of income
     households:
       household:
         members: [person1]
@@ -483,7 +484,7 @@
         state_code: TX
   output:
     tx_liheap_eligible: true
-    tx_liheap_regular_benefit: 1  # At least minimum benefit of $1
+    tx_liheap_regular_benefit: 6_396  # Base benefit for 1-person household
 
 # ====================================================================
 # CRISIS ASSISTANCE EDGE CASES
@@ -733,6 +734,7 @@
     spm_units:
       spm_unit:
         members: [elderly]
+        utility_expense: 1_200  # Standard utility expense for testing
     households:
       household:
         members: [elderly]
