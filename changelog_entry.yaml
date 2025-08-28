@@ -2,3 +2,7 @@
   changes:
     added:
       - Illinois Low Income Home Energy Assistance Program (LIHEAP)
+      - Memory-optimized test execution with two-batch runners
+    fixed:
+      - Test hanging issues in GitHub Actions
+      - Memory exhaustion errors during test execution
