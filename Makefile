@@ -9,10 +9,10 @@ test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
 test-yaml-structural:
-	coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us 
+	python policyengine_us/tests/test_contrib_batched.py
 test-yaml-no-structural:
-	coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us
-	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
+	python policyengine_us/tests/test_baseline_batched.py
+	python -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:
@@ -39,8 +39,6 @@ clear-storage:
 	rm -f policyengine_us/data/storage/*.h5
 	rm -f policyengine_us/data/storage/*.csv.gz
 	rm -rf policyengine_us/data/storage/*cache
-
-# Add these targets to your existing Makefile
 
 # Run tests only for changed files
 test-changed:
