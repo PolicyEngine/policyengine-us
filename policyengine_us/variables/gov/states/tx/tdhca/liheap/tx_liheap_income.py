@@ -111,7 +111,8 @@ class tx_liheap_income(Variable):
             total_annual_income += spm_unit.sum(income)
         
         # Convert annual to monthly once
-        total_monthly_from_annual = total_annual_income / 12
+        months_in_year = p.months_in_year
+        total_monthly_from_annual = total_annual_income / months_in_year
         
         # TANF benefits per State Plan Section 3.2
         # Already calculated as monthly amount

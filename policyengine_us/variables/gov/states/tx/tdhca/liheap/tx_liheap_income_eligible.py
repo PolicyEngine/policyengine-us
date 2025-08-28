@@ -69,7 +69,8 @@ class tx_liheap_income_eligible(Variable):
         # Get household monthly income per Texas State Plan Section 3.2
         # Income calculated as 12-month average for annual determination
         monthly_income = spm_unit("tx_liheap_income", period.first_month)
-        annual_income = monthly_income * 12
+        months_in_year = p.months_in_year
+        annual_income = monthly_income * months_in_year
 
         # Get household size for FPG determination
         size = spm_unit.nb_persons()

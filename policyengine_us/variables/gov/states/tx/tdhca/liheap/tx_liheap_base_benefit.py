@@ -78,9 +78,10 @@ class tx_liheap_base_benefit(Variable):
         # Get household size per 45 CFR 96.82
         size = spm_unit.nb_persons()
 
-        # Cap household size at 10 per State Plan Benefit Matrix
-        # Households with more than 10 members use the 10-person factor
-        capped_size = min_(size, 10)
+        # Cap household size per State Plan Benefit Matrix
+        # Households with more than max members use the max-person factor
+        max_size = p.max_household_size_for_adjustment
+        capped_size = min_(size, max_size)
 
         # Optimized adjustment factor lookup using a single parameter access
         # and vectorized array indexing
@@ -104,10 +105,12 @@ class tx_liheap_base_benefit(Variable):
         
         # Use select for vectorized lookup - more efficient with pre-built array
         # This avoids multiple comparisons and is faster for large datasets
+        # Create conditions dynamically based on max_size parameter
+        conditions = [capped_size == i for i in range(1, int(max_size) + 1)]
         adjustment_factor = select(
-            [capped_size == i for i in range(1, 11)],
-            factors[1:],  # Skip index 0
-            default=adjustments.ten_person,  # For edge cases
+            conditions,
+            factors[1:int(max_size) + 1],  # Skip index 0, use up to max_size
+            default=factors[int(max_size)],  # For edge cases, use max factor
         )
 
         # Calculate base benefit using adjustment factor and maximum benefit
