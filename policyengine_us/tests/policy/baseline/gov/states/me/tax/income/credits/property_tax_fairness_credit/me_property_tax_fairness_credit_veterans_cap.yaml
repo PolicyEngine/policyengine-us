@@ -1,10 +1,52 @@
-- name: Case 1, veterans does not effect in 2022 
+# Tests for Maine Property Tax Fairness Credit Veterans Cap
+# This credit provides an additional cap match for veteran households
+
+- name: Veterans cap does not apply in 2022
   period: 2022
   input:
     state_code: ME
     filing_status: SINGLE
     me_property_tax_fairness_credit_base_cap: 100
-    age_head: 66
-    age_spouse: 65
+    veterans_benefits: 0
   output:
     me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Single filer, head is veteran - gets veterans cap match in 2024
+  period: 2024
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    veterans_benefits: 1_000  # Any positive amount makes them a veteran
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 1_000  # Base cap * 1.0 match
+
+- name: Single filer, head is not veteran - no veterans cap in 2024
+  period: 2024
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    veterans_benefits: 0
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Zero base cap means zero veterans cap even with veteran in 2024
+  period: 2024
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 0
+    veterans_benefits: 1_000
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: High base cap with veteran gets full match in 2024
+  period: 2024
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 5_000
+    veterans_benefits: 1_000
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 5_000  # Base cap * 1.0 match
