@@ -100,7 +100,8 @@ class tx_liheap_crisis_benefit(Variable):
 
         # Get utility expenses as proxy for crisis amount needed
         # In practice, would be actual emergency amount (past due, repair cost, etc.)
-        utility_expense = spm_unit("utility_expense", period)
+        # utility_expense is a YEAR variable, so we need to access the year period
+        utility_expense = spm_unit("utility_expense", period.this_year)
 
         # Crisis benefit is limited to actual need or maximum per State Plan Section 5.2
         # Maximum crisis assistance is $1,400 per household per year
