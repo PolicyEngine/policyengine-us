@@ -1,4 +1,5 @@
 - bump: patch
   changes:
     fixed:
-      - Test workflow configuration to investigate ubi_center test hanging issue
+      - Fixed GitHub Actions test hanging issue by adding PYTHONUNBUFFERED=1 and switching to uv run commands
+      - Updated Makefile to generate coverage data for all test targets
