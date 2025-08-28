@@ -180,6 +180,7 @@ fi
 ## Common Issues and Fixes
 
 ### Changelog Validation Errors
+
 ```yaml
 # Correct format:
 - bump: patch|minor|major
@@ -189,18 +190,21 @@ fi
 ```
 
 ### Import Order Issues
+
 ```bash
 # Fix with isort
 isort . --profile black --line-length 79
 ```
 
 ### Black Formatting
+
 ```bash
 # Always use 79 char line length for PolicyEngine
 black . -l 79
 ```
 
 ### Unused Imports
+
 ```bash
 # Remove with autoflake
 autoflake --remove-all-unused-imports --in-place -r .
