@@ -92,6 +92,7 @@ class tx_liheap_income(Variable):
         person = spm_unit.members
 
         # Get annual period once for all annual income sources
+        # period is MONTH, so we need to get the year that contains this month
         annual_period = period.this_year
 
         # Combine all annual income sources in a single operation
