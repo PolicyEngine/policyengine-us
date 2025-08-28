@@ -319,10 +319,9 @@ def main():
         if result["status"] != "passed":
             all_failed = True
 
-        # Memory cleanup between batches (except after last batch)
-        if i < len(batches):
-            print("  Cleaning up memory...")
-            gc.collect()
+        # Memory cleanup after each batch
+        print("  Cleaning up memory...")
+        gc.collect()
 
     # Final summary
     print("\n" + "=" * 60)
