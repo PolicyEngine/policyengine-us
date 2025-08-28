@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.380.0] - 2025-08-28 02:26:40
+
+### Added
+
+- Multi-agent system for autonomous code review and implementation
+- 13 specialized agents for validation, implementation, and enhancement
+- /encode-policy command for implementing new government programs with TDD
+- /review-pr command for reviewing and fixing PRs with mandatory agent usage
+- Comprehensive documentation for agent coordination and testing
+
 ## [1.379.0] - 2025-08-26 19:32:44
 
 ### Added
@@ -12733,6 +12743,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.379.0...1.380.0
 [1.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.378.0...1.379.0
 [1.378.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.1...1.378.0
 [1.377.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.0...1.377.1

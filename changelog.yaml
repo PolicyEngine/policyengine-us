@@ -10815,3 +10815,12 @@
     added:
     - Add a state non-refundable credits variable.
   date: 2025-08-26 19:32:44
+- bump: minor
+  changes:
+    added:
+    - Multi-agent system for autonomous code review and implementation
+    - 13 specialized agents for validation, implementation, and enhancement
+    - /encode-policy command for implementing new government programs with TDD
+    - /review-pr command for reviewing and fixing PRs with mandatory agent usage
+    - Comprehensive documentation for agent coordination and testing
+  date: 2025-08-28 02:26:40
