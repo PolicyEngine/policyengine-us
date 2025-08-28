@@ -337,7 +337,6 @@
       household:
         members: [elderly_disabled, child]
         state_code: TX
-        utility_expense: 3_600  # High energy burden (>10% of income)
   output:
     tx_liheap_has_elderly_member: true
     tx_liheap_has_disabled_member: true
@@ -356,6 +355,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 3_600  # High energy burden (>10% of income)
     households:
       household:
         members: [person1]
@@ -418,7 +418,6 @@
       household:
         members: [person1]
         state_code: TX
-        utility_expense: 2_400  # Exactly 10% of income
   output:
     tx_liheap_high_energy_burden: true  # >= 10% is high burden
     tx_liheap_priority_group: true
@@ -446,6 +445,7 @@
     spm_units:
       spm_unit:
         members: [elderly, disabled, child1, child2]
+        utility_expense: 2_400  # Exactly 10% of income
     households:
       household:
         members: [elderly, disabled, child1, child2]
@@ -488,11 +488,11 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 5_000  # High utility costs
     households:
       household:
         members: [person1]
         state_code: TX
-        utility_expense: 5_000  # High utility costs
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 2_400  # Capped at maximum
@@ -507,11 +507,11 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 0
     households:
       household:
         members: [person1]
         state_code: TX
-        utility_expense: 0
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 0  # No utility expense = no crisis benefit
@@ -526,11 +526,11 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_500  # Below crisis max
     households:
       household:
         members: [person1]
         state_code: TX
-        utility_expense: 1_500  # Below crisis max
   output:
     tx_liheap_crisis_eligible: true
     tx_liheap_crisis_benefit: 1_500  # Equal to utility expense
@@ -550,6 +550,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        utility_expense: 1_500  # Below crisis max
         snap: 1  # Minimal SNAP benefit
     households:
       household:

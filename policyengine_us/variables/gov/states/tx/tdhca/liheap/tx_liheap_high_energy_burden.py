@@ -83,7 +83,8 @@ class tx_liheap_high_energy_burden(Variable):
         p = parameters(period).gov.states.tx.tdhca.liheap
 
         # Get household income and utility expenses per State Plan Section 3.4.4
-        income = spm_unit("household_income", period)
+        # Use spm_unit_net_income as proxy for total household income
+        income = spm_unit("spm_unit_net_income", period)
         utility_expense = spm_unit("utility_expense", period)
 
         # Calculate energy burden ratio per 42 U.S.C. 8622(2)(C)
