@@ -63,7 +63,8 @@ class tx_liheap_eligible(Variable):
 
         # Check if household has utility expenses per Texas State Plan Section 2.3
         # Must have heating or cooling costs to qualify for assistance
-        has_utility_expense = spm_unit("utility_expense", period) > 0
+        # utility_expense is a YEAR variable, so we need to access the year period
+        has_utility_expense = spm_unit("utility_expense", period.this_year) > 0
 
         # Eligible if either income eligible OR categorically eligible, AND has utility expenses
         # Per 42 U.S.C. 8624(b)(2): "The State may not exclude households...solely on the basis of income"
