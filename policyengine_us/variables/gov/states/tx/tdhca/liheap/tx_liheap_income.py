@@ -85,6 +85,9 @@ class tx_liheap_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
+        # Access parameters
+        p = parameters(period).gov.states.tx.tdhca.liheap
+        
         # Get all people in the SPM unit per 45 CFR 96.85(b)
         person = spm_unit.members
         
