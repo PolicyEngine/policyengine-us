@@ -9,12 +9,12 @@ test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
 test-yaml-structural:
-	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
+	coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
 test-yaml-no-structural:
-	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
-	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
+	coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+	coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
 test-other:
-	pytest policyengine_us/tests/ --maxfail=0
+	coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
 coverage:
 	coverage combine
 	coverage xml -i
