@@ -37,26 +37,22 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 10  # Need full history for git diff
-      - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.13
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: uv sync --dev
+      - name: Install package
+        run: uv pip install -e ".[dev]" --system
       - name: Turn off default branching
         shell: bash
-        run: ./update_itemization.sh
-      - name: Run selective tests
-        env:
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
+        run: bash ./update_itemization.sh
+      - name: Run non-structural YAML tests
+        run: make test-yaml-no-structural
+      - name: Run structural YAML tests
+        run: make test-yaml-structural
+      - name: Run Python-based tests
+        run: make test-other
       - name: Build package
         run: uv build
