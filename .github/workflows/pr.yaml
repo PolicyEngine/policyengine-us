@@ -53,10 +53,23 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run selective tests
+      - name: Run non-structural YAML tests
         env:
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Testing Memory Fix Option A - Non-structural YAML tests"
+          uv run make test-yaml-no-structural
+      - name: Run structural YAML tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Testing Memory Fix Option A - Structural YAML tests"
+          uv run make test-yaml-structural
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Testing Memory Fix Option A - Python-based tests"
+          uv run make test-other
       - name: Build package
         run: uv build
