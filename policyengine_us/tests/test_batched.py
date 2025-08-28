@@ -118,18 +118,10 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     start_time = time.time()
 
-    # Build command using coverage run (like master branch does)
-    # This avoids the hanging issue with direct policyengine-core test
-    coverage_file = f".coverage.batch_{batch_name.lower().replace(' ', '_')}"
+    # Build command - direct policyengine-core with timeout protection
     cmd = (
         [
             python_exe,
-            "-m",
-            "coverage",
-            "run",
-            "-a",
-            "--branch",
-            f"--data-file={coverage_file}",
             "-m",
             "policyengine_core.scripts.policyengine_command",
             "test",
@@ -140,16 +132,15 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     print(f"    Running {batch_name}...")
     print(f"    Paths: {len(test_paths)} items")
-    print(f"    Coverage file: {coverage_file}")
     print()
 
     try:
-        # Run with real-time output (coverage run should handle cleanup better)
+        # Run with real-time output and timeout protection
         result = subprocess.run(
             cmd,
             capture_output=False,  # Show real-time output
             text=True,
-            timeout=2400,  # 40 minutes timeout (generous for safety)
+            timeout=1800,  # 30 minutes timeout
         )
 
         elapsed = time.time() - start_time
