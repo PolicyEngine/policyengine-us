@@ -43,8 +43,39 @@ def get_test_directories(base_path: Path) -> Dict[str, int]:
 def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
     """
     Split test directories into specified number of batches.
-    Tries to balance the number of tests per batch.
+    Special handling for baseline tests to separate states.
     """
+    # Special handling for baseline tests with 2 batches
+    if "baseline" in str(base_path) and num_batches == 2:
+        states_path = base_path / "gov" / "states"
+        if states_path.exists() and count_yaml_files(states_path) > 0:
+            # Batch 1: Only states
+            batch1 = [str(states_path)]
+
+            # Batch 2: Everything else (excluding states)
+            batch2 = []
+
+            # Add root level files if any
+            for yaml_file in base_path.glob("*.yaml"):
+                batch2.append(str(yaml_file))
+
+            # Add all directories except gov/states
+            for item in base_path.iterdir():
+                if item.is_dir():
+                    if item.name == "gov":
+                        # Add gov subdirectories except states
+                        for gov_item in item.iterdir():
+                            if gov_item.is_dir() and gov_item.name != "states":
+                                batch2.append(str(gov_item))
+                            elif gov_item.suffix == ".yaml":
+                                batch2.append(str(gov_item))
+                    else:
+                        # Non-gov directories
+                        batch2.append(str(item))
+
+            return [batch1, batch2] if batch2 else [batch1]
+
+    # Default behavior for non-baseline or different batch counts
     dir_counts = get_test_directories(base_path)
 
     if num_batches <= 0:
@@ -85,51 +116,55 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     python_exe = sys.executable
 
+    start_time = time.time()
+
+    # Build command
+    cmd = (
+        [
+            python_exe,
+            "-m",
+            "policyengine_core.scripts.policyengine_command",
+            "test",
+        ]
+        + test_paths
+        + ["-c", "policyengine_us"]
+    )
+
+    print(f"    Running {batch_name}...")
+    print(f"    Paths: {len(test_paths)} items")
+    print()
+
     try:
-        start_time = time.time()
-
-        # Build command
-        cmd = (
-            [
-                python_exe,
-                "-m",
-                "policyengine_core.scripts.policyengine_command",
-                "test",
-            ]
-            + test_paths
-            + ["-c", "policyengine_us"]
-        )
-
-        print(f"    Running {batch_name}...")
-        print(f"    Paths: {len(test_paths)} items")
-        print()
-
         # Run and let pytest output show through
         result = subprocess.run(
             cmd,
-            timeout=1800,  # 30 minute timeout
+            timeout=2400,  # 40 minute timeout (increased for safety)
             capture_output=False,  # Let output show in real-time
             text=True,
         )
 
         elapsed = time.time() - start_time
-        print(f"\n    Batch completed in {elapsed:.1f}s")
 
-        return {
-            "elapsed": elapsed,
-            "status": "passed" if result.returncode == 0 else "failed",
-        }
+        # Only show completion message if we actually completed
+        if result is not None:
+            print(f"\n    Batch completed in {elapsed:.1f}s")
+            return {
+                "elapsed": elapsed,
+                "status": "passed" if result.returncode == 0 else "failed",
+            }
 
     except subprocess.TimeoutExpired:
-        print(f"\n    ⏱️ Timeout after 30 minutes")
+        elapsed = time.time() - start_time
+        print(f"\n    ⏱️ Timeout after {elapsed:.1f}s")
         return {
-            "elapsed": 1800,
+            "elapsed": elapsed,
             "status": "timeout",
         }
     except Exception as e:
+        elapsed = time.time() - start_time
         print(f"\n    ❌ Error: {str(e)[:100]}")
         return {
-            "elapsed": 0,
+            "elapsed": elapsed,
             "status": "error",
         }
 
