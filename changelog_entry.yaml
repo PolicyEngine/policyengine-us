@@ -1,5 +1,4 @@
 - bump: patch
   changes:
     fixed:
-      - Fixed GitHub Actions test hanging issue by adding PYTHONUNBUFFERED=1 and switching to uv run commands
-      - Updated Makefile to generate coverage data for all test targets
+      - Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and uv virtual environment
