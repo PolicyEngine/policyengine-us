@@ -4,19 +4,20 @@ from policyengine_us.model_api import *
 class ga_surplus_tax_rebate(Variable):
     """
     Georgia surplus tax rebate - a one-time tax rebate for tax year 2022.
-    
+
     This rebate was authorized under Georgia Code § 48-7-20.2 as part of the
     state's distribution of budget surplus funds to taxpayers. The rebate was
     issued only for tax year 2022 and varied by filing status:
-    
+
     - Single/Separate filers: $250
     - Head of Household: $375
     - Joint/Surviving Spouse: $500
-    
+
     The rebate amount is set to $0 for all years after 2022, reflecting its
     one-time nature. This rebate was automatically distributed to eligible
     taxpayers who filed a 2022 Georgia tax return.
     """
+
     value_type = float
     entity = TaxUnit
     label = "Georgia surplus tax rebate"
