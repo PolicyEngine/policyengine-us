@@ -1,6 +1,6 @@
 - bump: patch
   changes:
     fixed:
-      - Fixed GitHub Actions workflows with modular test execution using reusable workflows
-      - Improved coverage collection by using separate coverage files for each test suite
-      - Enhanced memory cleanup in test_batched.py for better subprocess handling
+      - Fixed coverage collection in GitHub Actions by creating test_batched_coverage.py for in-process test execution
+      - Added coverage summary display in GitHub Actions and PR comments
+      - Maintained memory management through batching while enabling proper coverage tracking

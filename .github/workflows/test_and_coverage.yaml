@@ -35,21 +35,21 @@ jobs:
           PYTHONUNBUFFERED: 1
           COVERAGE_FILE: .coverage.baseline
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.baseline policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+          uv run python -m coverage run --branch --data-file=.coverage.baseline policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/baseline --batches 2
           
       - name: Run non-structural YAML tests (reform)
         env:
           PYTHONUNBUFFERED: 1
           COVERAGE_FILE: .coverage.reform
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.reform policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
+          uv run python -m coverage run --branch --data-file=.coverage.reform policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/reform --batches 1
           
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
           COVERAGE_FILE: .coverage.contrib
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.contrib policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
+          uv run python -m coverage run --branch --data-file=.coverage.contrib policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/contrib
           
       - name: Run Python-based tests
         env:
@@ -64,10 +64,51 @@ jobs:
           COVERAGE_FILE=.coverage uv run coverage combine .coverage.* || echo "No coverage files to combine"
           uv run coverage xml -i
           
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
-        if: github.event_name == 'push'
-        
+      - name: Generate coverage summary
+        run: |
+          # Generate coverage report for variables only
+          echo "Generating coverage summary..."
+          COVERAGE_OUTPUT=$(uv run coverage report --include="policyengine_us/variables/*" || echo "No coverage data")
+          
+          # Extract total coverage percentage
+          TOTAL_COVERAGE=$(echo "$COVERAGE_OUTPUT" | grep "TOTAL" | awk '{print $NF}' || echo "0%")
+          
+          # Write to GitHub Actions summary (visible in Actions tab)
+          echo "## 📊 Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total Coverage: $TOTAL_COVERAGE**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Show files with low coverage
+          echo "### Files with Coverage < 80%:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "$COVERAGE_OUTPUT" | awk '$NF ~ /%/ {gsub("%","",$NF); if($NF+0 < 80 && $1 != "TOTAL") print $1, $NF"%"}' | head -20 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          
+          # Also output to logs for visibility
+          echo "Total Coverage: $TOTAL_COVERAGE"
+          
+      - name: Post coverage to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get coverage from previous step
+            const fs = require('fs');
+            const coverageOutput = await exec.getExecOutput('uv', ['run', 'coverage', 'report', '--include=policyengine_us/variables/*']);
+            const lines = coverageOutput.stdout.split('\n');
+            const totalLine = lines.find(line => line.includes('TOTAL'));
+            const coverage = totalLine ? totalLine.split(/\s+/).pop() : 'N/A';
+            
+            // Post simple comment to PR
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📊 **Coverage Summary**: ${coverage} coverage of variables`
+            });
+        continue-on-error: true
+          
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
