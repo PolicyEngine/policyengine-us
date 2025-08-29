@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixed:
+      - Fixed GitHub Actions workflows to use `python -m coverage` instead of `coverage` directly to resolve command not found errors
+      - Aligned PR and push workflows to use identical test commands for consistency
+      - Updated both workflows to use Python 3.13

@@ -57,19 +57,19 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests..."
-          uv run make test-yaml-no-structural
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running structural YAML tests..."
-          uv run make test-yaml-structural
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
+          uv run python -m coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
+      - name: Produce combined coverage report
+        run: uv run make coverage
       - name: Build package
         run: uv build

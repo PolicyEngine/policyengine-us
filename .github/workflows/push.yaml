@@ -32,7 +32,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
       - name: Install dependencies
         run: uv pip install -e ".[dev]" --system
       - name: Install dependencies
@@ -59,7 +59,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -71,18 +71,18 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
-          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
+          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
+          uv run python -m coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
       - name: Produce combined coverage repository
         run: uv run make coverage
       - uses: codecov/codecov-action@v4
@@ -97,7 +97,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install package
