@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    added:
+      - congressional_district_geoid variable to replace the congressional district portion of the removed UCGID concept
+    removed:
+      - Remove ucgid and ucgid_str variables and their associated tests as they are no longer needed
