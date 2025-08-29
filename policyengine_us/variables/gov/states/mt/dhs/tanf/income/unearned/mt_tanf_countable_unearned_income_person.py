@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class mt_tanf_countable_unearned_income(Variable):
+class mt_tanf_countable_unearned_income_person(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     label = "Montana Temporary Assistance for Needy Families (TANF) countable unearned income"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MT
 
-    adds = ["mt_tanf_countable_unearned_income_person"]
+    adds = "gov.states.mt.dhs.tanf.income.sources.unearned"
