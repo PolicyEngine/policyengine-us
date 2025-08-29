@@ -30,26 +30,58 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
         
-      - name: Run non-structural YAML tests (baseline)
+      - name: Run baseline tests - states only
         env:
           PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage.baseline
+          PYTHONGC: "100,10,10"  # Aggressive garbage collection
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.baseline policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/baseline --batches 2
+          # Run state tests separately to manage memory
+          uv run coverage run --branch --data-file=.coverage.baseline.states -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline/gov/states -c policyengine_us
+          
+      - name: Run baseline tests - federal and other
+        env:
+          PYTHONUNBUFFERED: 1
+          PYTHONGC: "100,10,10"  # Aggressive garbage collection
+        run: |
+          # Run all non-state baseline tests (exclude states directory)
+          uv run coverage run --branch --data-file=.coverage.baseline.federal \
+            -m policyengine_core.scripts.policyengine_command test \
+            policyengine_us/tests/policy/baseline/calcfunctions \
+            policyengine_us/tests/policy/baseline/contrib \
+            policyengine_us/tests/policy/baseline/household \
+            policyengine_us/tests/policy/baseline/income \
+            policyengine_us/tests/policy/baseline/parameters \
+            policyengine_us/tests/policy/baseline/gov/aca \
+            policyengine_us/tests/policy/baseline/gov/doe \
+            policyengine_us/tests/policy/baseline/gov/ed \
+            policyengine_us/tests/policy/baseline/gov/fcc \
+            policyengine_us/tests/policy/baseline/gov/hhs \
+            policyengine_us/tests/policy/baseline/gov/hud \
+            policyengine_us/tests/policy/baseline/gov/irs \
+            policyengine_us/tests/policy/baseline/gov/local \
+            policyengine_us/tests/policy/baseline/gov/simulation \
+            policyengine_us/tests/policy/baseline/gov/ssa \
+            policyengine_us/tests/policy/baseline/gov/tax \
+            policyengine_us/tests/policy/baseline/gov/territories \
+            policyengine_us/tests/policy/baseline/gov/usda \
+            policyengine_us/tests/policy/baseline/gov/abolitions.yaml \
+            -c policyengine_us
           
       - name: Run non-structural YAML tests (reform)
         env:
           PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage.reform
+          PYTHONGC: "100,10,10"  # Aggressive garbage collection
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.reform policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/reform --batches 1
+          # Run reform tests directly with coverage
+          uv run coverage run --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
           
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage.contrib
+          PYTHONGC: "100,10,10"  # Aggressive garbage collection
         run: |
-          uv run python -m coverage run --branch --data-file=.coverage.contrib policyengine_us/tests/test_batched_coverage.py policyengine_us/tests/policy/contrib
+          # Run contrib tests directly with coverage
+          uv run coverage run --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us
           
       - name: Run Python-based tests
         env:
@@ -60,8 +92,8 @@ jobs:
           
       - name: Produce combined coverage report
         run: |
-          # Combine all parallel coverage files
-          COVERAGE_FILE=.coverage uv run coverage combine .coverage.* || echo "No coverage files to combine"
+          # Combine all parallel coverage files (including baseline.states and baseline.federal)
+          uv run coverage combine .coverage.* || echo "No coverage files to combine"
           uv run coverage xml -i
           
       - name: Generate coverage summary

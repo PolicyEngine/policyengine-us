@@ -1,6 +1,6 @@
 - bump: patch
   changes:
     fixed:
-      - Fixed coverage collection in GitHub Actions by creating test_batched_coverage.py for in-process test execution
+      - Fixed coverage collection in GitHub Actions by running tests directly with coverage instead of through subprocess scripts
+      - Split baseline tests into separate workflow steps (states vs federal) to manage memory usage
       - Added coverage summary display in GitHub Actions and PR comments
-      - Maintained memory management through batching while enabling proper coverage tracking
