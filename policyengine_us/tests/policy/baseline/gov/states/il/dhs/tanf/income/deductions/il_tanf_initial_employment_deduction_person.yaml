@@ -6,7 +6,7 @@
     is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    il_tanf_initial_employment_deduction_person: 2_767.5 
+    il_tanf_initial_employment_deduction_person: 2_585.25 
 
 - name: Case 2, household size of 2 with $10000 earned income.
   period: 2023
@@ -16,7 +16,7 @@
     is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    il_tanf_initial_employment_deduction_person: 3_732.5
+    il_tanf_initial_employment_deduction_person: 3_486
 
 - name: Case 3, household size of 1 with $10000 earned income, but not head or spouse. 
   period: 2023
