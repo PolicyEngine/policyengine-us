@@ -10869,3 +10869,8 @@
     - Remove ucgid and ucgid_str variables and their associated tests as they are
       no longer needed
   date: 2025-08-29 16:29:36
+- bump: minor
+  changes:
+    fixed:
+    - Illinois TANF FPG calculation adjustments.
+  date: 2025-08-29 20:56:57
