@@ -1,7 +1,6 @@
 - bump: patch
   changes:
     fixed:
-      - Fixed GitHub Actions workflows by using system Python installation with `uv pip install -e ".[dev]" --system`
-      - Aligned PR and push workflows to use identical test commands for consistency
-      - Updated both workflows to use Python 3.13
-      - Added pytest>=8.3.0 to dev dependencies to ensure test runner is available
+      - Fixed GitHub Actions workflows with modular test execution using reusable workflows
+      - Improved coverage collection by using separate coverage files for each test suite
+      - Enhanced memory cleanup in test_batched.py for better subprocess handling
