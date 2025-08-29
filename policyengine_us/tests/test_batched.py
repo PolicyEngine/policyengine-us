@@ -156,22 +156,26 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     env["PYTHONUNBUFFERED"] = "1"
     # Use malloc trim to release memory back to OS (Linux only)
     env["MALLOC_TRIM_THRESHOLD_"] = "131072"  # 128KB
-    
+
     # Check if we're running under coverage
-    running_under_coverage = "COVERAGE_RUN" in os.environ or "COVERAGE_FILE" in os.environ
-    
+    running_under_coverage = (
+        "COVERAGE_RUN" in os.environ or "COVERAGE_FILE" in os.environ
+    )
+
     if running_under_coverage:
-        print(f"    DEBUG: Coverage detected! COVERAGE_FILE={os.environ.get('COVERAGE_FILE', 'not set')}")
-    
+        print(
+            f"    DEBUG: Coverage detected! COVERAGE_FILE={os.environ.get('COVERAGE_FILE', 'not set')}"
+        )
+
     # Build command - with or without coverage
     if running_under_coverage:
         # Pass coverage settings to subprocess
         if "COVERAGE_FILE" in os.environ:
             env["COVERAGE_FILE"] = os.environ["COVERAGE_FILE"]
-        
+
         # Run tests with coverage in subprocess
         coverage_file = os.environ.get("COVERAGE_FILE", ".coverage")
-        
+
         cmd = (
             [
                 python_exe,
@@ -204,7 +208,9 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     print(f"    Running {batch_name}...")
     print(f"    Paths: {len(test_paths)} items")
     if running_under_coverage:
-        print(f"    DEBUG: Running with coverage, command: {' '.join(cmd[:6])}...")
+        print(
+            f"    DEBUG: Running with coverage, command: {' '.join(cmd[:6])}..."
+        )
     print()
 
     # Use Popen for more control over process lifecycle
