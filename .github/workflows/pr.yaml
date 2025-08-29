@@ -33,7 +33,7 @@ jobs:
       - name: Build changelog
         run: make changelog
   Test:
-    uses: ./.github/workflows/test-and-coverage.yml
+    uses: ./.github/workflows/test_and_coverage.yaml
     with:
       python-version: '3.13'
       
