@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.381.2] - 2025-08-29 01:04:56
+
+### Fixed
+
+- Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and uv virtual environment
+
 ## [1.381.1] - 2025-08-28 14:57:49
 
 ### Added
@@ -12768,6 +12774,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.381.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.1...1.381.2
 [1.381.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.0...1.381.1
 [1.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.380.0...1.381.0
 [1.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.379.0...1.380.0
