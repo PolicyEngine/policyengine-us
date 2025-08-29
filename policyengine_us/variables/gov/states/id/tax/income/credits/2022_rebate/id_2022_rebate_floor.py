@@ -8,4 +8,4 @@ class id_2022_rebate_floor(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    adds = "gov.states.id.tax.income.credits.2022_rebate.floor"
+    adds = ["gov.states.id.tax.income.credits.2022_rebate.floor"]
