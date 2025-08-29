@@ -63,9 +63,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          uv sync --all-extras
-          uv pip install coverage pytest
+        run: uv pip install -e ".[dev]" --system
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
@@ -73,20 +71,20 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
-          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
+          python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
+          python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
+          python -m coverage run -a --branch policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          uv run python -m coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
+          python -m coverage run -a --branch -m pytest policyengine_us/tests/ --maxfail=0
       - name: Produce combined coverage repository
-        run: uv run make coverage
+        run: make coverage
       - uses: codecov/codecov-action@v4
   Publish:
     runs-on: ubuntu-latest
