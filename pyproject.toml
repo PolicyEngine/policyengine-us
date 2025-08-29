@@ -44,3 +44,17 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
 
+[tool.coverage.run]
+branch = true
+data_file = ".coverage"
+source = ["policyengine_us"]
+parallel = false
+append = true
+
+[tool.coverage.report]
+skip_covered = true
+show_missing = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
