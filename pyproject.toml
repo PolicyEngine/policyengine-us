@@ -34,6 +34,7 @@ build-backend = "hatchling.build"
 [project.optional-dependencies]
 dev = [
     "coverage>=7.9.2",
+    "pytest>=8.3.0",
     "furo>=2024.8.6",
     "jupyter-book>=1.0.4.post1",
     "setuptools>=80.9.0",
