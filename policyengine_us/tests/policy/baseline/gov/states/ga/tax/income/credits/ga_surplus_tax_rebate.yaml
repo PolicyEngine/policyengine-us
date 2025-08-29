@@ -21,3 +21,27 @@
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     ga_surplus_tax_rebate: 375
+
+- name: Surviving spouse filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: Separate filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: SEPARATE
+  output:
+    ga_surplus_tax_rebate: 250
+
+- name: Rebate not available in 2023
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: SINGLE
+  output:
+    ga_surplus_tax_rebate: 0
