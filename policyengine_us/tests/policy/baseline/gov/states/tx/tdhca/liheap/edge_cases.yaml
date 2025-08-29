@@ -1,0 +1,885 @@
+# Texas LIHEAP Edge Case Tests
+# Auto-generated edge case tests for comprehensive coverage
+# Generated on: 2025-01-28
+# Coverage: Boundary conditions, extreme values, error cases
+
+# ====================================================================
+# INCOME BOUNDARY EDGE CASES
+# Testing exact thresholds and one-dollar differences
+# ====================================================================
+
+- name: Income exactly at 150% FPL threshold - single person
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475  # Exactly at 150% FPL for 1 person
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true  # <= operator means exactly at threshold is eligible
+    tx_liheap_eligible: true
+
+- name: Income one dollar below 150% FPL threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_474  # One dollar below threshold
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+- name: Income one dollar above 150% FPL threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_476  # One dollar above threshold
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_eligible: false
+    tx_liheap_regular_benefit: 0
+
+- name: Income exactly at 150% FPL - family of 4
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 28_350  # Part of exact threshold
+      parent2:
+        age: 33
+        employment_income: 28_350  # Together = $56,700 (150% FPL for 4)
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+# ====================================================================
+# HOUSEHOLD SIZE EXTREME EDGE CASES
+# Testing minimum, maximum, and extreme household sizes
+# ====================================================================
+
+- name: Single person household - minimum size
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_base_benefit: 6_396  # 0.52 adjustment factor * $12,300 max
+
+- name: Household size 10 - maximum defined adjustment
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 50_000
+      adult2:
+        age: 38
+      adult3:
+        age: 35
+      adult4:
+        age: 33
+      child1:
+        age: 15
+      child2:
+        age: 13
+      child3:
+        age: 11
+      child4:
+        age: 9
+      child5:
+        age: 7
+      child6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, child1, child2, child3, child4, child5, child6]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, child1, child2, child3, child4, child5, child6]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true  # Has child under 6
+    tx_liheap_base_benefit: 24_108  # 1.96 adjustment factor * $12,300
+
+- name: Household size 20 - extreme size beyond defined adjustments
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 80_000
+      adult2:
+        age: 38
+      adult3:
+        age: 36
+      adult4:
+        age: 34
+      adult5:
+        age: 32
+      adult6:
+        age: 30
+      adult7:
+        age: 28
+      adult8:
+        age: 26
+      child1:
+        age: 16
+      child2:
+        age: 15
+      child3:
+        age: 14
+      child4:
+        age: 13
+      child5:
+        age: 12
+      child6:
+        age: 11
+      child7:
+        age: 10
+      child8:
+        age: 9
+      child9:
+        age: 8
+      child10:
+        age: 7
+      child11:
+        age: 6
+      child12:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, 
+                  child1, child2, child3, child4, child5, child6, child7, child8,
+                  child9, child10, child11, child12]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8,
+                  child1, child2, child3, child4, child5, child6, child7, child8,
+                  child9, child10, child11, child12]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true  # Has child under 6
+    tx_liheap_base_benefit: 24_108  # Uses 10-person adjustment (cap at 10)
+
+- name: Household size 8 - testing exact adjustment
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 40_000
+      adult2:
+        age: 38
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+      child6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_base_benefit: 20_172  # 1.64 adjustment factor * $12,300
+
+# ====================================================================
+# ZERO AND NEGATIVE INCOME SCENARIOS
+# Testing edge cases with zero or negative income
+# ====================================================================
+
+- name: Zero income household
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 0
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 0
+    tx_liheap_income_eligible: true  # Zero income is eligible
+    tx_liheap_eligible: true
+    tx_liheap_regular_benefit: 6_396  # Gets base benefit with 1-person adjustment
+
+- name: Negative self-employment income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        self_employment_income: -5_000  # Business loss
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 15_000  # Annual: 20,000 - 5,000 (tests use annual period)
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+- name: All income sources zero
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        self_employment_income: 0
+        social_security: 0
+        ssi: 0
+        unemployment_compensation: 0
+        veterans_benefits: 0
+        workers_compensation: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 0
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+# ====================================================================
+# PRIORITY GROUP COMBINATIONS
+# Testing multiple priority factors
+# ====================================================================
+
+- name: All priority factors present
+  period: 2025
+  input:
+    people:
+      elderly_disabled:
+        age: 65  # Elderly (60+)
+        is_disabled: true  # Disabled
+        employment_income: 10_000
+      child:
+        age: 3  # Under 6
+    spm_units:
+      spm_unit:
+        members: [elderly_disabled, child]
+        utility_expense: 3_600  # High energy burden (>10% of income)
+    households:
+      household:
+        members: [elderly_disabled, child]
+        state_code: TX
+  output:
+    tx_liheap_has_elderly_member: true
+    tx_liheap_has_disabled_member: true
+    tx_liheap_has_young_child: true
+    tx_liheap_high_energy_burden: true
+    tx_liheap_priority_group: true
+    tx_liheap_eligible: true
+
+- name: Elderly exactly at age threshold (60)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60  # Exactly at elderly threshold
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 3_600  # High energy burden (>10% of income)
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_has_elderly_member: true
+    tx_liheap_priority_group: true
+
+- name: Child exactly at age threshold (6)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 6  # Exactly at threshold (not under 6)
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_liheap_has_young_child: false  # Age 6 is not under 6
+    tx_liheap_priority_group: false
+
+- name: Child one day before turning 6
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5  # Under 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_liheap_has_young_child: true
+    tx_liheap_priority_group: true
+
+- name: Energy burden exactly at 10% threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # $2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 2_400  # Exactly 10% of income
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_high_energy_burden: true  # >= 10% is high burden
+    tx_liheap_priority_group: true
+
+# ====================================================================
+# MAXIMUM BENEFIT SCENARIOS
+# Testing benefit caps and maximum amounts
+# ====================================================================
+
+- name: Maximum regular benefit - priority household
+  period: 2025
+  input:
+    people:
+      elderly:
+        age: 70
+        employment_income: 5_000  # Very low income
+      disabled:
+        age: 45
+        is_disabled: true
+        employment_income: 0
+      child1:
+        age: 3
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [elderly, disabled, child1, child2]
+        utility_expense: 2_400  # Exactly 10% of income
+    households:
+      household:
+        members: [elderly, disabled, child1, child2]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+    tx_liheap_eligible: true
+    tx_liheap_regular_benefit: 12_300  # Maximum benefit cap
+
+- name: Minimum benefit amount
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_474  # Just under threshold
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_regular_benefit: 6_396  # Base benefit for 1-person household
+
+# ====================================================================
+# CRISIS ASSISTANCE EDGE CASES
+# Testing crisis benefit calculations and limits
+# ====================================================================
+
+- name: Crisis benefit at maximum
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 5_000  # High utility costs
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_crisis_eligible: true
+    tx_liheap_crisis_benefit: 2_400  # Capped at maximum
+
+- name: Crisis benefit with zero utility expense
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_crisis_eligible: true
+    tx_liheap_crisis_benefit: 0  # No utility expense = no crisis benefit
+
+- name: Crisis benefit exactly at utility expense
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_500  # Below crisis max
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_crisis_eligible: true
+    tx_liheap_crisis_benefit: 1_500  # Equal to utility expense
+
+# ====================================================================
+# CATEGORICAL ELIGIBILITY EDGE CASES
+# Testing interactions with other programs
+# ====================================================================
+
+- name: SNAP recipient over income limit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000  # Over 150% FPL
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_500  # Below crisis max
+        snap: 1  # Minimal SNAP benefit
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_categorical_eligible: true
+    tx_liheap_eligible: true  # Categorically eligible despite income
+
+- name: SSI recipient with zero reported SSI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        ssi: 0  # No SSI income reported
+        employment_income: 25_000  # Over limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_categorical_eligible: false  # No SSI = not categorical
+    tx_liheap_eligible: false
+
+- name: TANF with exactly $1 benefit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000  # Over limit
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        utility_expense: 1_200  # Standard utility expense for testing
+        tanf: 1  # Minimal TANF
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: false
+    tx_liheap_categorical_eligible: true  # Even $1 TANF counts
+    tx_liheap_eligible: true
+
+- name: Multiple categorical programs
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 500
+        employment_income: 30_000  # Over limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+        snap: 100
+        tanf: 50
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_categorical_eligible: true  # Multiple programs
+    tx_liheap_eligible: true
+
+# ====================================================================
+# MONTH/YEAR PERIOD INTERACTIONS
+# Testing period conversion and calculations
+# ====================================================================
+
+- name: Monthly income exactly at annual/12
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # Annual
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 2_000  # 24,000 / 12
+
+- name: Mixed period income sources
+  period: 2025-06
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000  # Annual
+        social_security: 6_000  # Annual
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 200  # Monthly
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_700  # (12,000 + 6,000)/12 + 200
+
+- name: December period test
+  period: 2025-12
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475  # Annual at threshold
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+- name: January period test with prior year income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475  # Annual
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true
+    tx_liheap_eligible: true
+
+# ====================================================================
+# BENEFIT CALCULATION EDGE CASES
+# Testing complex benefit calculation scenarios
+# ====================================================================
+
+- name: Priority multiplier exactly doubles benefit
+  period: 2025
+  input:
+    people:
+      elderly:
+        age: 65
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [elderly]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [elderly]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+    tx_liheap_base_benefit: 6_396  # 0.52 * 12,300
+    # Priority multiplier would be 1.2, so 6,396 * 1.2 = 7,675.20
+    tx_liheap_regular_benefit: 7_675  # With priority multiplier
+
+- name: Benefit clipping at maximum
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 65
+        is_disabled: true
+        employment_income: 1_000
+      adult2:
+        age: 63
+        is_disabled: true
+      child1:
+        age: 3
+      child2:
+        age: 4
+      child3:
+        age: 5
+      child4:
+        age: 10
+      child5:
+        age: 11
+      child6:
+        age: 12
+      child7:
+        age: 13
+      child8:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+    tx_liheap_base_benefit: 24_108  # 1.96 * 12,300 for 10-person
+    # With priority multiplier: 24,108 * 1.2 = 28,929.60
+    tx_liheap_regular_benefit: 12_300  # Clipped at maximum
+
+- name: Benefit clipping at minimum
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475  # At income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Base benefit would be very low due to high income
+    # But clipped at minimum of $1
+    tx_liheap_regular_benefit: 1
+
+# ====================================================================
+# ROUNDING AND PRECISION EDGE CASES
+# Testing floating point and rounding edge cases
+# ====================================================================
+
+- name: Income calculation with penny precision
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475.49  # Just under threshold with cents
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income_eligible: true  # Should round appropriately
+
+- name: Benefit calculation with fractional adjustment
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+      person2:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_liheap_base_benefit: 8_364  # 0.68 * 12,300 = 8,364
+
+# ====================================================================
+# EMPTY OR NULL SCENARIOS
+# Testing graceful handling of missing data
+# ====================================================================
+
+- name: Empty household (error handling)
+  period: 2025
+  input:
+    people: {}
+    spm_units:
+      spm_unit:
+        members: []
+    households:
+      household:
+        members: []
+        state_code: TX
+  output:
+    tx_liheap_eligible: false  # Should handle gracefully
+
+- name: All income sources null/missing
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        # No income variables defined
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 0  # Should default to 0
+    tx_liheap_income_eligible: true

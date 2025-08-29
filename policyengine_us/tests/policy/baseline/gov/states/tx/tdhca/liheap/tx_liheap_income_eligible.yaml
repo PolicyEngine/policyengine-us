@@ -1,0 +1,285 @@
+# Texas LIHEAP Income Eligibility Tests
+# Tests income eligibility at 150% Federal Poverty Level
+# Based on 2025 income limits from TDHCA
+
+- name: Single person - well below income limit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000  # Well below $23,475 limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_250
+    tx_liheap_income_threshold: 1_956  # Monthly limit for 1 person
+    tx_liheap_income_eligible: true
+
+- name: Single person - exactly at income limit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_475  # Exactly at annual limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_956
+    tx_liheap_income_threshold: 1_956
+    tx_liheap_income_eligible: true  # At limit = eligible
+
+- name: Single person - one dollar over limit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 23_476  # $1 over limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 1_956  # Rounds to same monthly
+    tx_liheap_income_threshold: 1_956
+    tx_liheap_income_eligible: false  # Over = ineligible
+
+- name: Two person household - under limit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 28
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $30,000 annual / 12 = $2,500 monthly
+    # Limit for 2: $31,725 annual = $2,644 monthly
+    tx_liheap_income: 2_500
+    tx_liheap_income_threshold: 2_644
+    tx_liheap_income_eligible: true
+
+- name: Three person household - exactly at limit
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000
+      parent2:
+        age: 33
+        employment_income: 9_975
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: TX
+  output:
+    # $39,975 annual / 12 = $3,331.25 monthly
+    tx_liheap_income: 3_331
+    tx_liheap_income_threshold: 3_331
+    tx_liheap_income_eligible: true
+
+- name: Four person household - over limit
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 35_000
+      parent2:
+        age: 38
+        employment_income: 20_000
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    # $55,000 annual / 12 = $4,583 monthly
+    # Limit for 4: $48,225 annual = $4,019 monthly
+    tx_liheap_income: 4_583
+    tx_liheap_income_threshold: 4_019
+    tx_liheap_income_eligible: false
+
+- name: Five person household - under limit
+  period: 2025-02
+  input:
+    people:
+      adult1:
+        age: 35
+        employment_income: 30_000
+      adult2:
+        age: 33
+        employment_income: 20_000
+      child1:
+        age: 12
+      child2:
+        age: 10
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3]
+        state_code: TX
+  output:
+    # $50,000 annual / 12 = $4,167 monthly
+    # Limit for 5: $56,475 annual = $4,706 monthly
+    tx_liheap_income: 4_167
+    tx_liheap_income_threshold: 4_706
+    tx_liheap_income_eligible: true
+
+- name: Six person household - at limit
+  period: 2025-02
+  input:
+    people:
+      adult1:
+        age: 40
+        employment_income: 40_000
+      adult2:
+        age: 38
+        employment_income: 24_725
+      child1:
+        age: 15
+      child2:
+        age: 13
+      child3:
+        age: 11
+      child4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3, child4]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3, child4]
+        state_code: TX
+  output:
+    # $64,725 annual / 12 = $5,394 monthly
+    # Limit for 6: $64,725 annual = $5,394 monthly
+    tx_liheap_income: 5_394
+    tx_liheap_income_threshold: 5_394
+    tx_liheap_income_eligible: true
+
+- name: Eight person household - over limit
+  period: 2025-02
+  input:
+    people:
+      adult1:
+        age: 45
+        employment_income: 50_000
+      adult2:
+        age: 43
+        employment_income: 40_000
+      adult3:
+        age: 70
+        social_security: 15_000
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [adult1, adult2, adult3, child1, child2, child3, child4, child5]
+        state_code: TX
+  output:
+    # $105,000 annual / 12 = $8,750 monthly
+    # Limit for 8: $81,225 annual = $6,769 monthly
+    tx_liheap_income: 8_750
+    tx_liheap_income_threshold: 6_769
+    tx_liheap_income_eligible: false
+
+- name: Zero income - eligible
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_income: 0
+    tx_liheap_income_threshold: 1_956
+    tx_liheap_income_eligible: true
+
+- name: Mixed income sources - all counted
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 10_000
+        self_employment_income: 5_000
+        social_security: 7_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Total: $22,000 annual / 12 = $1,833 monthly
+    tx_liheap_income: 1_833
+    tx_liheap_income_threshold: 1_956
+    tx_liheap_income_eligible: true

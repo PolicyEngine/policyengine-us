@@ -1,0 +1,8 @@
+- bump: minor
+  changes:
+    added:
+    - Texas Low Income Home Energy Assistance Program (LIHEAP) implementation
+    - Eligibility determination based on 150% FPL income threshold
+    - Support for priority groups (elderly, disabled, children under 6)
+    - Regional benefit variations for different Texas counties
+    - Comprehensive tests for all LIHEAP components

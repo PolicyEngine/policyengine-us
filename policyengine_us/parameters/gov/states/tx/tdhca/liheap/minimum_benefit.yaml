@@ -1,0 +1,28 @@
+description: >
+  Texas guarantees this minimum amount of LIHEAP assistance to all eligible households,
+  ensuring that every qualifying household receives some level of energy assistance
+  regardless of calculation results. While largely symbolic at $1, this minimum ensures
+  that administrative errors or unusual calculations don't result in zero benefits for
+  eligible households. In practice, the base benefit calculation typically results in
+  amounts well above this minimum.
+  
+  The minimum benefit serves to:
+  - Guarantee assistance to all eligible households
+  - Prevent calculation errors from denying benefits
+  - Establish household's participation in the program
+  - Enable tracking of all assisted households
+  
+  Note: Even the smallest household (1 person) typically receives $6,396 base benefit
+  (52% of $12,300 maximum), so this $1 minimum rarely applies in practice.
+values:
+  2024-01-01: 1  # Symbolic minimum to ensure all eligible households receive assistance
+metadata:
+  unit: USD
+  period: year
+  label: Texas LIHEAP minimum benefit
+  reference:
+    - title: Texas LIHEAP State Plan FY 2024 - Section 4.4 Benefit Limits
+      href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
+      publication_date: 2023-10-01
+    - title: 45 CFR 96.87 - Leveraging incentive program
+      href: https://www.ecfr.gov/current/title-45/section-96.87

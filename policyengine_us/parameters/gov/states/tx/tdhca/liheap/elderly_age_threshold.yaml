@@ -1,0 +1,33 @@
+description: >
+  Texas designates households with members aged 60 or older as priority groups for
+  LIHEAP assistance. Elderly individuals face increased health risks from extreme
+  temperatures and often live on fixed incomes that cannot adjust to rising energy
+  costs. Priority status provides a 20% benefit increase and ensures service during
+  funding shortages.
+  
+  Rationale for 60+ threshold:
+  - Aligns with federal Older Americans Act definition
+  - Recognizes increased vulnerability to temperature extremes
+  - Accounts for higher medical equipment energy needs
+  - Addresses fixed income constraints of retirees
+  
+  Examples of elderly priority households:
+  - 65-year-old living alone: Qualifies for priority status
+  - Couple ages 58 and 61: Qualifies (one member is 60+)
+  - Multi-generational home with 70-year-old grandparent: Qualifies
+  - 59-year-old disabled veteran: Does not qualify for elderly priority
+    (but may qualify for disability priority)
+values:
+  2024-01-01: 60  # Age 60 and above qualifies as elderly for priority status
+metadata:
+  unit: year
+  period: year
+  label: Texas LIHEAP elderly age threshold
+  reference:
+    - title: 42 U.S.C. 8624(b)(2)(B) - Priority for elderly households
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm
+    - title: Texas LIHEAP State Plan FY 2024 - Section 3.4.1 Elderly Households
+      href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
+      publication_date: 2023-10-01
+    - title: Older Americans Act - 42 U.S.C. 3002(40)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap35-subchapI-sec3002.htm

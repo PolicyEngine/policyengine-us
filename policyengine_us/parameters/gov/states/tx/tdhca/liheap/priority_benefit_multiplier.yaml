@@ -1,0 +1,31 @@
+description: >
+  Texas provides a 20% benefit increase (1.2 multiplier) to households in priority groups,
+  ensuring vulnerable populations receive additional assistance. Priority households include
+  those with elderly members (60+), disabled members, young children (under 6), or high
+  energy burden (>10% of income). This multiplier is applied to the base benefit amount
+  before maximum limits are enforced.
+  
+  Example calculations:
+  - Non-priority single person: $6,396 base × 1.0 = $6,396 final
+  - Priority elderly person: $6,396 base × 1.2 = $7,675 final
+  - Priority family of 4: $12,300 base × 1.2 = $14,760 (capped at $12,300 max)
+  
+  The 20% increase recognizes that priority households often face:
+  - Higher energy needs due to medical equipment
+  - Greater health risks from extreme temperatures
+  - Fixed incomes that can't adjust to rising energy costs
+  - Higher usage due to being home more often
+values:
+  2024-01-01: 1.2  # 20% increase for priority group households
+metadata:
+  unit: /1
+  period: year
+  label: Texas LIHEAP priority benefit multiplier
+  reference:
+    - title: 42 U.S.C. 8624(b)(2) - Priority for vulnerable households
+      href: https://www.govinfo.gov/content/pkg/USCODE-2022-title42/html/USCODE-2022-title42-chap94-subchapII-sec8624.htm
+    - title: Texas LIHEAP State Plan FY 2024 - Section 4.3 Priority Groups
+      href: https://www.tdhca.texas.gov/sites/default/files/2023-10/FY2024-LIHEAP-State-Plan.pdf
+      publication_date: 2023-10-01
+    - title: Texas Administrative Code Title 10, §5.306 - Priority households
+      href: https://texreg.sos.state.tx.us/public/readtac$ext.TacPage?sl=R&app=9&p_dir=&p_rloc=&p_tloc=&p_ploc=&pg=1&p_tac=&ti=10&pt=1&ch=5&rl=306

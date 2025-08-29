@@ -1,0 +1,254 @@
+# Texas LIHEAP Priority Group Tests
+# Tests determination of priority groups for benefit calculation
+# Priority groups: elderly (60+), disabled, households with children under 6
+
+- name: Elderly person - priority group
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 60  # Exactly at elderly threshold
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Person age 59 - not elderly priority
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 59  # Just below elderly threshold
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: false
+
+- name: Very elderly person - priority group
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 85
+        social_security: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Disabled person - priority group
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Non-disabled person - no priority
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: false
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: false
+
+- name: Household with child age 5 - priority group
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 25_000
+      child1:
+        age: 5  # At threshold for child priority
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Household with child age 6 - not priority
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 25_000
+      child1:
+        age: 6  # Just above threshold
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: false
+
+- name: Household with infant - priority group
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 20_000
+      child1:
+        age: 1  # Infant - definitely priority
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Multiple priority factors - elderly and disabled
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 65  # Elderly
+        is_disabled: true  # And disabled
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true
+
+- name: Family with multiple priority factors
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 35
+        is_disabled: true  # Disabled parent
+        employment_income: 15_000
+      parent2:
+        age: 33
+        employment_income: 10_000
+      child1:
+        age: 3  # Young child
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true  # Both disabled and child under 6
+
+- name: Household with elderly and young child
+  period: 2025-02
+  input:
+    people:
+      grandparent:
+        age: 70  # Elderly
+        social_security: 15_000
+      parent:
+        age: 35
+        employment_income: 25_000
+      child:
+        age: 4  # Child under 6
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true  # Both elderly and child under 6
+
+- name: Middle-aged couple with teenage children - no priority
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 30_000
+        is_disabled: false
+      parent2:
+        age: 43
+        employment_income: 20_000
+        is_disabled: false
+      child1:
+        age: 16
+      child2:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: false  # No priority characteristics
+
+- name: Single disabled elderly person with SSI
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 68  # Elderly
+        is_disabled: true  # Disabled
+        ssi: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_priority_group: true  # Multiple priority factors

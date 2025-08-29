@@ -1,0 +1,346 @@
+# Texas LIHEAP Regular Benefit Amount Tests
+# Tests calculation of regular (non-crisis) benefit amounts
+# Base benefit range: $200 - $1,000
+# Adjusted by household size using SMI percentages
+
+- name: Single person - zero income maximum benefit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_regular_benefit: 1_000  # Maximum base benefit
+
+- name: Single person - 50% of FPL
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 7_825  # 50% of $15,650 FPL
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # Very low income, high benefit
+    tx_liheap_regular_benefit: 800
+
+- name: Single person - 100% of FPL
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_650  # 100% of FPL
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # Moderate income, moderate benefit
+    tx_liheap_regular_benefit: 500
+
+- name: Single person - 150% of FPL (at limit)
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 23_475  # 150% of FPL (limit)
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # At income limit, minimum benefit
+    tx_liheap_regular_benefit: 200
+
+- name: Two person household - SMI adjustment 68%
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 28
+        employment_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # $20k income (95% of 2-person FPL), SMI 68%
+    tx_liheap_regular_benefit: 450
+
+- name: Three person household - SMI adjustment 84%
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 15_000
+      parent2:
+        age: 33
+        employment_income: 10_000
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # $25k income (93% of 3-person FPL), SMI 84%
+    tx_liheap_regular_benefit: 500
+
+- name: Four person household - SMI baseline 100%
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 20_000
+      parent2:
+        age: 38
+        employment_income: 10_000
+      child1:
+        age: 12
+      child2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # $30k income (93% of 4-person FPL), SMI 100%
+    tx_liheap_regular_benefit: 550
+
+- name: Five person household - SMI adjustment 116%
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 25_000
+      parent2:
+        age: 33
+        employment_income: 15_000
+      child1:
+        age: 13
+      child2:
+        age: 11
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # $40k income (103% of 5-person FPL), SMI 116%
+    tx_liheap_regular_benefit: 600
+
+- name: Six person household - SMI adjustment 132%
+  period: 2025-02
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 30_000
+      parent2:
+        age: 38
+        employment_income: 18_000
+      child1:
+        age: 15
+      child2:
+        age: 13
+      child3:
+        age: 11
+      child4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    # $48k income (105% of 6-person FPL), SMI 132%
+    tx_liheap_regular_benefit: 700
+
+- name: Priority group - elderly bonus
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 65  # Elderly priority
+        social_security: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true
+    # Low income + priority = higher benefit
+    tx_liheap_regular_benefit: 750
+
+- name: Priority group - disabled bonus
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true
+    # Very low income + disabled priority
+    tx_liheap_regular_benefit: 900
+
+- name: Priority group - young child bonus
+  period: 2025-02
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 18_000
+      child:
+        age: 2  # Under 6 priority
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true
+    # Low income + priority child
+    tx_liheap_regular_benefit: 650
+
+- name: Multiple priority factors - maximum priority
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 70  # Elderly
+        is_disabled: true  # And disabled
+        ssi: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_priority_group: true
+    # Multiple priority + very low income
+    tx_liheap_regular_benefit: 950
+
+- name: Ineligible household - no benefit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_000  # Over limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: false
+    tx_liheap_regular_benefit: 0
+
+- name: Categorical eligibility - moderate benefit
+  period: 2025-02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 26_000  # Over income limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        utility_expense: 1_200  # Standard utility expense for testing
+        snap: 200  # But receives SNAP
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_liheap_eligible: true
+    tx_liheap_categorical_eligible: true
+    # Categorically eligible, higher income = lower benefit
+    tx_liheap_regular_benefit: 250
