@@ -1,0 +1,22 @@
+description: Idaho provides the following minimum special seasonal rebate amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Idaho special seasonal rebate floor
+  reference:
+    - title: Idaho Statutes 63-3024B (4)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024b/
+
+SINGLE:
+  2022-01-01: 300
+JOINT:
+  2022-01-01: 600
+SEPARATE:
+  2022-01-01: 300
+SURVIVING_SPOUSE:
+  2022-01-01: 300
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 300
