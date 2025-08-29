@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.381.3] - 2025-08-29 06:00:04
+
+### Added
+
+- Fix Maine Property Tax Fairness Credit Veteran Cap.
+
+## [1.381.2] - 2025-08-29 01:04:56
+
+### Fixed
+
+- Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and uv virtual environment
+
+## [1.381.1] - 2025-08-28 14:57:49
+
+### Added
+
+- Memory-optimized test execution scripts for baseline and contrib tests
+- Batch processing with periodic memory cleanup to prevent OOM errors
+
+### Fixed
+
+- Python path detection in test scripts for compatibility across environments
+
+## [1.381.0] - 2025-08-28 03:53:01
+
+### Added
+
+- Enhanced multi-agent system for autonomous benefit program implementations
+- New agents for issue management, naming coordination, and branch integration
+- Improved workflow documentation with @ syntax for agent invocation
+
+### Changed
+
+- Updated agent workflow to establish naming conventions before parallel development
+- Modified CI fixer to work with existing draft PRs
+- Enhanced test creator and rules engineer to work in separate git worktrees
+
+## [1.380.0] - 2025-08-28 02:26:40
+
+### Added
+
+- Multi-agent system for autonomous code review and implementation
+- 13 specialized agents for validation, implementation, and enhancement
+- /encode-policy command for implementing new government programs with TDD
+- /review-pr command for reviewing and fixing PRs with mandatory agent usage
+- Comprehensive documentation for agent coordination and testing
+
 ## [1.379.0] - 2025-08-26 19:32:44
 
 ### Added
@@ -12733,6 +12780,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.381.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.2...1.381.3
+[1.381.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.1...1.381.2
+[1.381.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.0...1.381.1
+[1.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.380.0...1.381.0
+[1.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.379.0...1.380.0
 [1.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.378.0...1.379.0
 [1.378.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.1...1.378.0
 [1.377.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.0...1.377.1

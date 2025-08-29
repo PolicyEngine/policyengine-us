@@ -10815,3 +10815,42 @@
     added:
     - Add a state non-refundable credits variable.
   date: 2025-08-26 19:32:44
+- bump: minor
+  changes:
+    added:
+    - Multi-agent system for autonomous code review and implementation
+    - 13 specialized agents for validation, implementation, and enhancement
+    - /encode-policy command for implementing new government programs with TDD
+    - /review-pr command for reviewing and fixing PRs with mandatory agent usage
+    - Comprehensive documentation for agent coordination and testing
+  date: 2025-08-28 02:26:40
+- bump: minor
+  changes:
+    added:
+    - Enhanced multi-agent system for autonomous benefit program implementations
+    - New agents for issue management, naming coordination, and branch integration
+    - Improved workflow documentation with @ syntax for agent invocation
+    changed:
+    - Updated agent workflow to establish naming conventions before parallel development
+    - Modified CI fixer to work with existing draft PRs
+    - Enhanced test creator and rules engineer to work in separate git worktrees
+  date: 2025-08-28 03:53:01
+- bump: patch
+  changes:
+    added:
+    - Memory-optimized test execution scripts for baseline and contrib tests
+    - Batch processing with periodic memory cleanup to prevent OOM errors
+    fixed:
+    - Python path detection in test scripts for compatibility across environments
+  date: 2025-08-28 14:57:49
+- bump: patch
+  changes:
+    fixed:
+    - Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and
+      uv virtual environment
+  date: 2025-08-29 01:04:56
+- bump: patch
+  changes:
+    added:
+    - Fix Maine Property Tax Fairness Credit Veteran Cap.
+  date: 2025-08-29 06:00:04
