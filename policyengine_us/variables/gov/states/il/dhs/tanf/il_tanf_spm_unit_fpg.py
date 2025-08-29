@@ -1,15 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class il_tanf_assistance_unit_fpg(Variable):
+class il_tanf_spm_unit_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Illinois TANF assistance unit's federal poverty guideline"
+    label = "Illinois TANF spm unit's federal poverty guideline"
     definition_period = MONTH
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        n = spm_unit("il_tanf_assistance_unit_size", period)
+        n = spm_unit("spm_unit_size", period)
         state_group = spm_unit.household("state_group_str", period)
         p_fpg = parameters(period).gov.hhs.fpg
         year = period.start.year
