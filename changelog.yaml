@@ -10843,3 +10843,14 @@
     fixed:
     - Python path detection in test scripts for compatibility across environments
   date: 2025-08-28 14:57:49
+- bump: patch
+  changes:
+    fixed:
+    - Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and
+      uv virtual environment
+  date: 2025-08-29 01:04:56
+- bump: patch
+  changes:
+    added:
+    - Fix Maine Property Tax Fairness Credit Veteran Cap.
+  date: 2025-08-29 06:00:04
