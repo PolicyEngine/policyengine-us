@@ -1,58 +1,46 @@
 - name: Alabama district 1
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 1
-        congressional_district_geoid: 101
+    state_fips: 1
+    congressional_district_geoid: 101
   output:
     congressional_district_geoid: 101
 
 - name: Alabama district 7
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 1
-        congressional_district_geoid: 107
+    state_fips: 1
+    congressional_district_geoid: 107
   output:
     congressional_district_geoid: 107
 
 - name: North Carolina district 1
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 37
-        congressional_district_geoid: 3701
+    state_fips: 37
+    congressional_district_geoid: 3701
   output:
     congressional_district_geoid: 3701
 
 - name: California district 52
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 6
-        congressional_district_geoid: 652
+    state_fips: 6
+    congressional_district_geoid: 652
   output:
     congressional_district_geoid: 652
 
 - name: Delaware at-large district
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 10
-        congressional_district_geoid: 1001
+    state_fips: 10
+    congressional_district_geoid: 1001
   output:
     congressional_district_geoid: 1001
 
 - name: Default value
   period: 2024
   input:
-    households:
-      household:
-        state_fips: 6
+    state_fips: 6
   output:
     congressional_district_geoid: 0
