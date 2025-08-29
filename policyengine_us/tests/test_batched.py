@@ -10,6 +10,7 @@ import os
 import gc
 import time
 import argparse
+import re
 from pathlib import Path
 from typing import List, Dict
 
@@ -145,20 +146,65 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
     start_time = time.time()
 
-    # Build command - direct policyengine-core with timeout protection
-    cmd = (
-        [
-            python_exe,
-            "-m",
-            "policyengine_core.scripts.policyengine_command",
-            "test",
-        ]
-        + test_paths
-        + ["-c", "policyengine_us"]
-    )
+    # Set environment variables to improve memory management
+    env = os.environ.copy()
+    # Disable Python bytecode caching to reduce memory usage
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    # Run garbage collection more aggressively (threshold-based)
+    env["PYTHONGC"] = "400,10,10"  # Lower thresholds for more frequent GC
+    # Unbuffered output for better real-time monitoring
+    env["PYTHONUNBUFFERED"] = "1"
+    # Use malloc trim to release memory back to OS (Linux only)
+    env["MALLOC_TRIM_THRESHOLD_"] = "131072"  # 128KB
+    
+    # Check if we're running under coverage
+    running_under_coverage = "COVERAGE_RUN" in os.environ or "COVERAGE_FILE" in os.environ
+    
+    if running_under_coverage:
+        print(f"    DEBUG: Coverage detected! COVERAGE_FILE={os.environ.get('COVERAGE_FILE', 'not set')}")
+    
+    # Build command - with or without coverage
+    if running_under_coverage:
+        # Pass coverage settings to subprocess
+        if "COVERAGE_FILE" in os.environ:
+            env["COVERAGE_FILE"] = os.environ["COVERAGE_FILE"]
+        
+        # Run tests with coverage in subprocess
+        coverage_file = os.environ.get("COVERAGE_FILE", ".coverage")
+        
+        cmd = (
+            [
+                python_exe,
+                "-m",
+                "coverage",
+                "run",
+                "--parallel-mode",  # Create separate coverage files for parallel runs
+                "--branch",
+                "--data-file=" + coverage_file,
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
+                "test",
+            ]
+            + test_paths
+            + ["-c", "policyengine_us"]
+        )
+    else:
+        # Build command - direct policyengine-core without coverage
+        cmd = (
+            [
+                python_exe,
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
+                "test",
+            ]
+            + test_paths
+            + ["-c", "policyengine_us"]
+        )
 
     print(f"    Running {batch_name}...")
     print(f"    Paths: {len(test_paths)} items")
+    if running_under_coverage:
+        print(f"    DEBUG: Running with coverage, command: {' '.join(cmd[:6])}...")
     print()
 
     # Use Popen for more control over process lifecycle
@@ -168,6 +214,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         stderr=subprocess.STDOUT,
         text=True,
         bufsize=1,  # Line buffered
+        env=env,  # Use our custom environment
     )
 
     try:

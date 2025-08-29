@@ -33,48 +33,21 @@ jobs:
       - name: Build changelog
         run: make changelog
   Test:
+    uses: ./.github/workflows/test-and-coverage.yml
+    with:
+      python-version: '3.13'
+      
+  Build:
     runs-on: ubuntu-latest
+    needs: Test
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 10  # Need full history for git diff
-      - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.13
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: uv sync --all-extras
-      - name: Turn off default branching
-        shell: bash
-        run: ./update_itemization.sh
-      - name: Run non-structural YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage
-        run: |
-          uv run python -m coverage run -a --branch --data-file=.coverage policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline --batches 2
-          uv run python -m coverage run -a --branch --data-file=.coverage policyengine_us/tests/test_batched.py policyengine_us/tests/policy/reform --batches 1
-      - name: Run structural YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage
-        run: |
-          uv run python -m coverage run -a --branch --data-file=.coverage policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-          COVERAGE_FILE: .coverage
-        run: |
-          uv run python -m coverage run -a --branch --data-file=.coverage -m pytest policyengine_us/tests/ --maxfail=0
-      - name: Produce combined coverage report
-        run: |
-          uv run coverage combine || echo "No parallel coverage files to combine"
-          uv run coverage xml -i
       - name: Build package
         run: uv build
