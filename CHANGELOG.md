@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.383.0] - 2025-08-29 16:29:36
+
+### Added
+
+- congressional_district_geoid variable to replace the congressional district portion of the removed UCGID concept
+
 ## [1.382.0] - 2025-08-29 14:50:10
 
 ### Added
@@ -12787,6 +12793,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.382.0...1.383.0
 [1.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.3...1.382.0
 [1.381.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.2...1.381.3
 [1.381.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.1...1.381.2
