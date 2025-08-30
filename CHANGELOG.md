@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.385.0] - 2025-08-30 16:08:36
+
+### Added
+
+- Adjust the IED calculation to use FPG adjusted in March.
+
 ## [1.384.0] - 2025-08-29 20:56:57
 
 ### Fixed
@@ -12799,6 +12805,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.384.0...1.385.0
 [1.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.383.0...1.384.0
 [1.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.382.0...1.383.0
 [1.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.3...1.382.0
