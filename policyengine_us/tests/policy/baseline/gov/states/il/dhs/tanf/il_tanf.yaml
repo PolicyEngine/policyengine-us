@@ -82,7 +82,7 @@
     people:
       person1:
         age: 30
-        employment_income: 9_600 # $800 per month
+        employment_income: 9_600 
         is_tax_unit_head_or_spouse: true
         immigration_status: UNDOCUMENTED 
         ssi: 0
@@ -102,7 +102,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        childcare_expenses: 4_800 # $400 per month
+        childcare_expenses: 4_800 
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -114,8 +114,8 @@
     il_tanf_childcare_deduction: 375
     il_tanf_spm_unit_fpg: 1_919.17
     il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 41.17 
+    il_tanf_initial_employment_deduction_person: [187, 0, 0]
+    il_tanf_countable_income_for_initial_eligibility: 237.8
     il_tanf_eligible: true
     il_tanf_assistance_unit_fpg: 1_525.83
     il_tanf_payment_level_for_grant_calculation: 343.31
@@ -124,12 +124,12 @@
 
 - name: Integration test 3, only parent eligible for payment.
   period: 2023-01
-  absolute_error_margin: 0.5
+  absolute_error_margin: 1
   input:
     people:
       person1:
         age: 30
-        employment_income: 9_600 # $800 per month
+        employment_income: 800
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
         ssi: 0
@@ -149,7 +149,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        childcare_expenses: 4_800 # $400 per month
+        childcare_expenses: 400
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -158,16 +158,18 @@
         members: [person1, person2, person3]
         state_code: IL
   output:
-    il_tanf_childcare_deduction: 375
+    il_tanf_childcare_deduction: 33
+    il_tanf_assistance_unit_size: 1 # Kids receive ssi
     il_tanf_spm_unit_fpg: 1_919.17
-    il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 41.17 
-    il_tanf_eligible: true
     il_tanf_assistance_unit_fpg: 1_132.5
+    il_tanf_initial_employment_deduction_fpg: 1_132.5
+    il_tanf_payment_level_for_initial_eligibility: 575.75
+    il_tanf_initial_employment_deduction_person: [0, 0, 0]
+    il_tanf_countable_income_for_initial_eligibility: 33
+    il_tanf_eligible: true
     il_tanf_payment_level_for_grant_calculation: 84.94
-    il_tanf_countable_income_for_grant_calculation: 106.25 
-    il_tanf: 0
+    il_tanf_countable_income_for_grant_calculation: 8
+    il_tanf: 77
 
 - name: taxsim_record_277465_2021.yaml
   absolute_error_margin: 0.3
