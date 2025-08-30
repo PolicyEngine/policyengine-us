@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    changed:
+      - Simplified test workflows by creating a common reusable test.yaml workflow.
+      - Standardized Python version to 3.13 for most CI jobs.
+      - Removed duplicate test configuration between PR and push workflows.
