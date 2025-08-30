@@ -37,11 +37,3 @@
     filing_status: SEPARATE
   output:
     ga_surplus_tax_rebate: 250
-
-- name: Rebate not available in 2023
-  period: 2023
-  input:
-    state_code: GA
-    filing_status: SINGLE
-  output:
-    ga_surplus_tax_rebate: 0

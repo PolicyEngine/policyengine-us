@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 
 
 class ga_surplus_tax_rebate(Variable):
-
     value_type = float
     entity = TaxUnit
     label = "Georgia surplus tax rebate"
