@@ -122,7 +122,7 @@
 
 - name: Integration test 3, only parent eligible for payment.
   period: 2023-01
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -163,7 +163,7 @@
     il_tanf_payment_level_for_initial_eligibility: 339.75
     il_tanf_initial_employment_deduction_person: [226.5, 0, 0]
     il_tanf_countable_income_for_initial_eligibility: 540.5
-    il_tanf_eligible: true
+    il_tanf_eligible: false
     il_tanf_payment_level_for_grant_calculation: 84.94
     il_tanf_countable_income_for_grant_calculation: 191.75
     il_tanf: 0
