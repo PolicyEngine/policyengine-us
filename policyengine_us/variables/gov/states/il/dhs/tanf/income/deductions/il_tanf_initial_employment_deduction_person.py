@@ -20,8 +20,7 @@ class il_tanf_initial_employment_deduction_person(Variable):
         payment_level = person.spm_unit(
             "il_tanf_payment_level_for_initial_eligibility", period
         )
-
-        initial_employment_deduction = p.rate * fpg - payment_level
+        initial_employment_deduction = max_(p.rate * fpg - payment_level, 0)
         is_employed = gross_earned_income > 0
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         ied_eligible_person = is_employed & is_head_or_spouse

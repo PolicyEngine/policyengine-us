@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class il_tanf_initial_employment_deduction_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Illinois TANF assistance unit's federal poverty guideline"
+    label = "Illinois TANF federal poverty guidelines for the initial employment deduction"
     definition_period = MONTH
     defined_for = StateCode.IL
 
