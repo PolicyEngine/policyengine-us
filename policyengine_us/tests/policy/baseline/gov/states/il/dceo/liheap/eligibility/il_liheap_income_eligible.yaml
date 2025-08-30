@@ -1,0 +1,58 @@
+- name: Single person below 60% SMI is eligible
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 25_000
+    # smi and fpg computed automatically from household size
+  output:
+    il_liheap_income_eligible: true
+
+- name: Single person above 60% SMI but below 200% FPG is eligible
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 28_000  
+    # Person below 200% FPG so should be eligible
+  output:
+    il_liheap_income_eligible: true
+
+- name: Family of 4 below income limits is eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        irs_gross_income: 30_000
+      parent2:
+        irs_gross_income: 15_000
+      child1:
+        age: 10
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: IL
+    # smi and fpg computed automatically from spm_unit_size
+  output:
+    il_liheap_income_eligible: true
+
+- name: High income household not eligible
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 100_000
+    # High income above both limits
+  output:
+    il_liheap_income_eligible: false
+
+- name: Income exactly at 200% FPG is eligible
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 30_120  # Exactly 200% of FPG
+    # Exactly at 200% FPG limit
+  output:
+    il_liheap_income_eligible: true

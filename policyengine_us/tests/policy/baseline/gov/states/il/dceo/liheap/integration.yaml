@@ -1,0 +1,149 @@
+- name: Senior citizen with disability priority group
+  period: 2024
+  input:
+    people:
+      senior:
+        age: 65
+        is_disabled: true
+        social_security: 12_000
+        irs_gross_income: 12_000
+        rent: 6_000
+        heating_expense_person: 800
+    tax_units:
+      tax_unit:
+        members: [senior]
+    spm_units:
+      spm_unit:
+        members: [senior]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [senior]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true
+    il_liheap_eligible: true
+    il_liheap_base_payment: 800  # Based on heating expenses
+    il_liheap: 800  # Base payment only (no crisis assistance)
+
+- name: Family with young children priority group
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 25_000
+        irs_gross_income: 25_000
+        rent: 12_000
+        heating_expense_person: 900  # Half of family heating costs
+      parent2:
+        age: 28
+        employment_income: 20_000
+        irs_gross_income: 20_000
+        heating_expense_person: 900  # Half of family heating costs
+      child1:
+        age: 4  # Under 5 - priority group
+        heating_expense_person: 0
+      child2:
+        age: 2  # Under 5 - priority group
+        heating_expense_person: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true  # 45k total income eligible
+    il_liheap_eligible: true
+    il_liheap_base_payment: 1_800  # Based on heating expenses
+    il_liheap: 1_800  # Base payment only (no crisis assistance)
+
+- name: Renter with heat included must meet rent threshold
+  period: 2024
+  input:
+    people:
+      renter:
+        age: 35
+        employment_income: 24_000
+        irs_gross_income: 24_000
+        rent: 8_000  # 33.3% of income
+        heating_expense_person: 1_200  # Irrelevant for heat included
+    tax_units:
+      tax_unit:
+        members: [renter]
+    spm_units:
+      spm_unit:
+        members: [renter]
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [renter]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true  # 24k < 60% of 50k (30k)
+    il_liheap_eligible: true  # Rent (8k) > 30% of income (7.2k)
+    il_liheap_base_payment: 315  # Fixed minimum for heat included
+    il_liheap: 315  # Base payment only (no crisis assistance)
+
+- name: Renter with heat included but low rent not eligible
+  period: 2024
+  input:
+    people:
+      renter:
+        age: 40
+        employment_income: 28_000
+        irs_gross_income: 28_000
+        rent: 7_000  # 25% of income
+        heating_expense_person: 1_000  # Irrelevant for heat included
+    tax_units:
+      tax_unit:
+        members: [renter]
+    spm_units:
+      spm_unit:
+        members: [renter]
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [renter]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true  # 28k < 60% of 50k (30k)
+    il_liheap_eligible: false  # Rent (7k) <= 30% of income (8.4k)
+    il_liheap: 0
+
+- name: High income household not eligible
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 45
+        employment_income: 50_000
+        irs_gross_income: 50_000
+        rent: 24_000
+        heating_expense_person: 1_250  # Half of family heating costs
+      adult2:
+        age: 43
+        employment_income: 45_000
+        irs_gross_income: 45_000
+        heating_expense_person: 1_250  # Half of family heating costs
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: false  # 95k > 60% of 70k (42k) and > 200% of 20.4k (40.8k)
+    il_liheap_eligible: false
+    il_liheap: 0

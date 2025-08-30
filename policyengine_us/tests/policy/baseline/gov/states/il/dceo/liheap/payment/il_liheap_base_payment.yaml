@@ -1,0 +1,83 @@
+- name: Heat not included in rent - benefit based on heating expenses
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        heating_expense_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_liheap_base_payment: 1_000  # Heating expenses within range
+
+- name: Heat not included in rent - expenses exceed maximum
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        heating_expense_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_liheap_base_payment: 2_075  # Capped at maximum
+
+- name: Heat included in rent - minimum cash benefit
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        heating_expense_person: 500  # Irrelevant when heat included
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_liheap_base_payment: 315  # Fixed minimum for heat included in rent
+
+- name: Heat not included in rent - low heating expenses get actual amount
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        heating_expense_person: 200
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_liheap_base_payment: 200  # Gets actual heating expenses
