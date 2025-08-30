@@ -1,0 +1,12 @@
+description: Riverside County limits General Relief to filers with property value below this amount.
+
+values:
+  2020-01-01: 500
+
+metadata:
+  label: Riverside County General Relief property value limit
+  unit: currency-USD
+  period: year
+  reference:
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.22

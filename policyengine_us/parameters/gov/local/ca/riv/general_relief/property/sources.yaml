@@ -1,0 +1,14 @@
+description: Riverside County counts these sources as countable property under General Relief.
+values:
+  2020-01-01:
+    - spm_unit_cash_assets
+    - ca_riv_general_relief_countable_vehicle_value
+    - personal_property
+
+metadata:
+  unit: list
+  period: year
+  label: Riverside County General Relief property
+  reference: 
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.22

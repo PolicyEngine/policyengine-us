@@ -1,0 +1,21 @@
+description: Riverside County provides up to this housing benefit amount based on household size under General Relief. 
+metadata:
+  unit: currency-USD
+  breakdown:
+    - range(1,6)
+  period: month
+  label: Riverside County General Relief housing needs standard
+  reference:
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.29
+      
+1:
+  2020-01-01: 223
+2: 
+  2020-01-01: 257
+3:
+  2020-01-01: 287
+4:
+  2020-01-01: 324
+5: 
+  2020-01-01: 358

@@ -1,0 +1,16 @@
+description: Riverside County deducts these mandatory wage deductions from earned income under General Relief.
+values:
+  2020-01-01:
+    - state_withheld_income_tax
+    - employee_social_security_tax
+    - employee_medicare_tax
+    - additional_medicare_tax
+    - traditional_ira_contributions
+
+metadata:
+  unit: list
+  period: year
+  label: Riverside County General Relief earned income deductions
+  reference: 
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.20

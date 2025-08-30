@@ -1,0 +1,20 @@
+description: Riverside County counts these income sources as unearned income under General Relief.
+values:
+  2020-01-01:
+    - farm_income
+    - interest_income
+    - social_security
+    - ca_state_disability_insurance
+    - unemployment_compensation
+    - veterans_benefits
+    # assistance from other programs
+    # benefits from life insurance or burial payments
+    # loans and grants
+    # voluntary support
+metadata:
+  unit: list
+  period: year
+  label: Riverside County General Relief unearned income sources
+  reference: 
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.18

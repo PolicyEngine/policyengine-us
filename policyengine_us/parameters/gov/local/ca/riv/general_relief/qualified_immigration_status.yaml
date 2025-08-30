@@ -1,0 +1,19 @@
+description: Riverside County considers these statuses as qualified immigrants under General Relief.
+values:
+  1975-01-01:
+    - CITIZEN
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    - LEGAL_PERMANENT_RESIDENT
+    
+metadata:
+  label: Riverside County General Relief qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.16
