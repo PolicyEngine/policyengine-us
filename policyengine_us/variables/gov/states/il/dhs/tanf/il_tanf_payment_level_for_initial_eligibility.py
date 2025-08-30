@@ -12,6 +12,6 @@ class il_tanf_payment_level_for_initial_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dhs.tanf.payment_level
-        fpg = spm_unit("il_tanf_spm_unit_fpg", period)
+        fpg = spm_unit("il_tanf_assistance_unit_fpg", period)
 
         return p.rate * fpg

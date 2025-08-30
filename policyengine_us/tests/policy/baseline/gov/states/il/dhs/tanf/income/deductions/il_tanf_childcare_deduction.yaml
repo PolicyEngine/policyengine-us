@@ -4,7 +4,7 @@
     state_code: IL
     is_tax_unit_dependent: true
     monthly_age: 1 
-    childcare_expenses: 0 
+    spm_unit_pre_subsidy_childcare_expenses: 0 
   output:
     il_tanf_childcare_deduction: 0
 
@@ -14,7 +14,7 @@
     state_code: IL
     is_tax_unit_dependent: true
     monthly_age: 1 
-    childcare_expenses: 250 * 12
+    spm_unit_pre_subsidy_childcare_expenses: 250 * 12
   output:
     il_tanf_childcare_deduction: 200 * 12
 
@@ -24,7 +24,7 @@
     state_code: IL
     is_tax_unit_dependent: true
     monthly_age: 2
-    childcare_expenses: 250 * 12
+    spm_unit_pre_subsidy_childcare_expenses: 250 * 12
   output:
     il_tanf_childcare_deduction: 175
 
@@ -34,6 +34,6 @@
     state_code: IL
     is_tax_unit_dependent: false
     monthly_age: 15 
-    childcare_expenses: 250 * 12 
+    spm_unit_pre_subsidy_childcare_expenses: 250 * 12 
   output:
     il_tanf_childcare_deduction: 0
