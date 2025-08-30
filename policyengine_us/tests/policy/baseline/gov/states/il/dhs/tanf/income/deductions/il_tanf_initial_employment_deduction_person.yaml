@@ -64,3 +64,55 @@
     # 358 * 7 (Mar - Sep) (IED FPG adjusted in Mar)
     # 333 * 3 (Oct - Dec) (Payment level adjusted in October)
     il_tanf_initial_employment_deduction_person: [4_147, 0, 0]
+
+- name: 2024 january test
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [311, 0, 0]
+
+- name: 2025 monthly test
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [323, 0, 0]
