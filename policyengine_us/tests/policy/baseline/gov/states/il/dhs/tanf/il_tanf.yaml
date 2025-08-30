@@ -55,7 +55,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        childcare_expenses: 4_800 # $400 per month
+        spm_unit_pre_subsidy_childcare_expenses: 4_800 # $400 per month
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -101,7 +101,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        childcare_expenses: 4_800 
+        spm_unit_pre_subsidy_childcare_expenses: 4_800 
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -127,7 +127,7 @@
     people:
       person1:
         age: 30
-        employment_income: 800
+        employment_income: 9_600
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
         ssi: 0
@@ -147,7 +147,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        childcare_expenses: 400
+        spm_unit_pre_subsidy_childcare_expenses: 400
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -161,12 +161,12 @@
     il_tanf_assistance_unit_fpg: 1_132.5
     il_tanf_initial_employment_deduction_fpg: 1_132.5
     il_tanf_payment_level_for_initial_eligibility: 339.75
-    il_tanf_initial_employment_deduction_person: [66.67, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 0
+    il_tanf_initial_employment_deduction_person: [226.5, 0, 0]
+    il_tanf_countable_income_for_initial_eligibility: 540.5
     il_tanf_eligible: true
     il_tanf_payment_level_for_grant_calculation: 84.94
-    il_tanf_countable_income_for_grant_calculation: 8
-    il_tanf: 77
+    il_tanf_countable_income_for_grant_calculation: 191.75
+    il_tanf: 0
 
 - name: taxsim_record_277465_2021.yaml
   absolute_error_margin: 0.3
@@ -175,7 +175,7 @@
     people:
       person1:
         age: 23
-        employment_income: 3600
+        employment_income: 3_600
         il_aabd_gross_unearned_income: 0
         social_security: 0
         is_pregnant: true
