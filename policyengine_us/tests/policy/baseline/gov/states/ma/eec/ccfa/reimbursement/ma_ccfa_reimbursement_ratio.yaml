@@ -1,0 +1,31 @@
+- name: Case 1, in 2024, 6 hours per day, part time.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 6
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
+
+- name: Case 2, in 2024, 7 hours per day, full time.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 7
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 3, in 2025, 6 hours per day, full time.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 1
+
+- name: Case 4, in 2025, 5 hours per day, part time.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 5
+    state_code: MA
+  output:
+    ma_ccfa_reimbursement_ratio: 0.6
