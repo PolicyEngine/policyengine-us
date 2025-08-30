@@ -1,0 +1,22 @@
+description: Georgia provides a surplus tax rebate of this amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Georgia surplus tax rebate amount
+  reference:
+    - title: 2024 CODE OF GEORGIA, Title 48, Article 2, Section 48-7-20.2 (b)(1)(B)
+      href: https://law.justia.com/codes/georgia/title-48/chapter-7/article-2/section-48-7-20-2/
+
+JOINT:
+  2022-01-01: 500
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 375
+SURVIVING_SPOUSE:
+  2022-01-01: 500
+SINGLE:
+  2022-01-01: 250
+SEPARATE:
+  2022-01-01: 250
