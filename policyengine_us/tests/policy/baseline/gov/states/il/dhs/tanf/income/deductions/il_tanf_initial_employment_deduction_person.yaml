@@ -1,22 +1,21 @@
 - name: Case 1, household size of 1 with $10000 earned income. 
   period: 2023
   input:
-    spm_unit_size: 1
+    il_tanf_assistance_unit_size: 1
     il_tanf_gross_earned_income: 10_000
     is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    il_tanf_initial_employment_deduction_person: 2_585.25 
+    il_tanf_initial_employment_deduction_person: 2_874
 
 - name: Case 2, household size of 2 with $10000 earned income.
   period: 2023
   input:
-    spm_unit_size: 2
+    il_tanf_assistance_unit_size: 2
     il_tanf_gross_earned_income: 10_000
-    is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    il_tanf_initial_employment_deduction_person: 3_486
+    il_tanf_initial_employment_deduction_person: 5_409
 
 - name: Case 3, household size of 1 with $10000 earned income, but not head or spouse. 
   period: 2023
@@ -37,3 +36,31 @@
     state_code: IL
   output:
     il_tanf_initial_employment_deduction_person: 2_000
+
+- name: Integration test, lagged fpg for IED 
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # 322.75 * 2 (Jan / Feb)
+    # 358 * 7 (Mar - Sep) (IED FPG adjusted in Mar)
+    # 333 * 3 (Oct - Dec) (Payment level adjusted in October)
+    il_tanf_initial_employment_deduction_person: [4_147, 0, 0]

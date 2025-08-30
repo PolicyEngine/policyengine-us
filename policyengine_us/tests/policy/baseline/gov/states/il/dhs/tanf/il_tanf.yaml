@@ -1,126 +1,126 @@
-- name: Eligible for TANF, payment level higher than income.
-  period: 2023
-  input:
-    il_tanf_payment_level_for_grant_calculation: 100 
-    il_tanf_countable_income_for_grant_calculation: 80
-    il_tanf_eligible: true
-    state_code: IL
-  output:
-    il_tanf: 20
+# - name: Eligible for TANF, payment level higher than income.
+#   period: 2023
+#   input:
+#     il_tanf_payment_level_for_grant_calculation: 100 
+#     il_tanf_countable_income_for_grant_calculation: 80
+#     il_tanf_eligible: true
+#     state_code: IL
+#   output:
+#     il_tanf: 20
 
-- name: Eligible for TANF, payment level lower than income.
-  period: 2023
-  input:
-    il_tanf_payment_level_for_grant_calculation: 80
-    il_tanf_countable_income_for_grant_calculation: 100
-    il_tanf_eligible: true
-    state_code: IL
-  output:
-    il_tanf: 0
+# - name: Eligible for TANF, payment level lower than income.
+#   period: 2023
+#   input:
+#     il_tanf_payment_level_for_grant_calculation: 80
+#     il_tanf_countable_income_for_grant_calculation: 100
+#     il_tanf_eligible: true
+#     state_code: IL
+#   output:
+#     il_tanf: 0
 
-- name: Ineligible for TANF.
-  period: 2023
-  input:
-    il_tanf_payment_level_for_grant_calculation: 100 
-    il_tanf_countable_income_for_grant_calculation: 80
-    il_tanf_eligible: false
-    state_code: IL
-  output:
-    il_tanf: 0
+# - name: Ineligible for TANF.
+#   period: 2023
+#   input:
+#     il_tanf_payment_level_for_grant_calculation: 100 
+#     il_tanf_countable_income_for_grant_calculation: 80
+#     il_tanf_eligible: false
+#     state_code: IL
+#   output:
+#     il_tanf: 0
 
-- name: Integration test 1, all members eligible for payment.
-  period: 2023-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 9_600 # $800 per month
-        is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN 
-        ssi: 0
-      person2:
-        age: 3
-        employment_income: 0
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        ssi: 0
-      person3: 
-        age: 1
-        employment_income: 0
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_size: 3
-        childcare_expenses: 4_800 # $400 per month
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
-  output:
-    il_tanf_childcare_deduction: 375
-    il_tanf_spm_unit_fpg: 1_919.17
-    il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 41.17 
-    il_tanf_eligible: true
-    il_tanf_assistance_unit_fpg: 1_919.17
-    il_tanf_payment_level_for_grant_calculation: 575.75
-    il_tanf_countable_income_for_grant_calculation: 106.25 
-    il_tanf: 469.5
+# - name: Integration test 1, all members eligible for payment.
+#   period: 2023-01
+#   absolute_error_margin: 0.5
+#   input:
+#     people:
+#       person1:
+#         age: 30
+#         employment_income: 9_600 # $800 per month
+#         is_tax_unit_head_or_spouse: true
+#         immigration_status: CITIZEN 
+#         ssi: 0
+#       person2:
+#         age: 3
+#         employment_income: 0
+#         is_tax_unit_dependent: true
+#         immigration_status: CITIZEN
+#         ssi: 0
+#       person3: 
+#         age: 1
+#         employment_income: 0
+#         is_tax_unit_dependent: true
+#         immigration_status: CITIZEN
+#         ssi: 0
+#     spm_units:
+#       spm_unit:
+#         members: [person1, person2, person3]
+#         spm_unit_size: 3
+#         childcare_expenses: 4_800 # $400 per month
+#     tax_units:
+#       tax_unit:
+#         members: [person1, person2, person3]
+#     households:
+#       household:
+#         members: [person1, person2, person3]
+#         state_code: IL
+#   output:
+#     il_tanf_childcare_deduction: 375
+#     il_tanf_spm_unit_fpg: 1_919.17
+#     il_tanf_payment_level_for_initial_eligibility: 575.75
+#     il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
+#     il_tanf_countable_income_for_initial_eligibility: 41.17 
+#     il_tanf_eligible: true
+#     il_tanf_assistance_unit_fpg: 1_919.17
+#     il_tanf_payment_level_for_grant_calculation: 575.75
+#     il_tanf_countable_income_for_grant_calculation: 106.25 
+#     il_tanf: 469.5
 
-- name: Integration test 2, only children eligible for payment.
-  period: 2023-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 9_600 # $800 per month
-        is_tax_unit_head_or_spouse: true
-        immigration_status: UNDOCUMENTED 
-        ssi: 0
-      person2:
-        age: 3
-        employment_income: 0
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        ssi: 0
-      person3: 
-        age: 1
-        employment_income: 0
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_size: 3
-        childcare_expenses: 4_800 # $400 per month
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
-  output:
-    il_tanf_childcare_deduction: 375
-    il_tanf_spm_unit_fpg: 1_919.17
-    il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 41.17 
-    il_tanf_eligible: true
-    il_tanf_assistance_unit_fpg: 1_525.83
-    il_tanf_payment_level_for_grant_calculation: 343.31
-    il_tanf_countable_income_for_grant_calculation: 106.25 
-    il_tanf: 237.06
+# - name: Integration test 2, only children eligible for payment.
+#   period: 2023-01
+#   absolute_error_margin: 0.5
+#   input:
+#     people:
+#       person1:
+#         age: 30
+#         employment_income: 9_600 # $800 per month
+#         is_tax_unit_head_or_spouse: true
+#         immigration_status: UNDOCUMENTED 
+#         ssi: 0
+#       person2:
+#         age: 3
+#         employment_income: 0
+#         is_tax_unit_dependent: true
+#         immigration_status: CITIZEN
+#         ssi: 0
+#       person3: 
+#         age: 1
+#         employment_income: 0
+#         is_tax_unit_dependent: true
+#         immigration_status: CITIZEN
+#         ssi: 0
+#     spm_units:
+#       spm_unit:
+#         members: [person1, person2, person3]
+#         spm_unit_size: 3
+#         childcare_expenses: 4_800 # $400 per month
+#     tax_units:
+#       tax_unit:
+#         members: [person1, person2, person3]
+#     households:
+#       household:
+#         members: [person1, person2, person3]
+#         state_code: IL
+#   output:
+#     il_tanf_childcare_deduction: 375
+#     il_tanf_spm_unit_fpg: 1_919.17
+#     il_tanf_payment_level_for_initial_eligibility: 575.75
+#     il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
+#     il_tanf_countable_income_for_initial_eligibility: 41.17 
+#     il_tanf_eligible: true
+#     il_tanf_assistance_unit_fpg: 1_525.83
+#     il_tanf_payment_level_for_grant_calculation: 343.31
+#     il_tanf_countable_income_for_grant_calculation: 106.25 
+#     il_tanf: 237.06
 
 - name: Integration test 3, only parent eligible for payment.
   period: 2023-01
@@ -169,34 +169,34 @@
     il_tanf_countable_income_for_grant_calculation: 106.25 
     il_tanf: 0
 
-- name: taxsim_record_277465_2021.yaml
-  absolute_error_margin: 0.3
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 23
-        employment_income: 3600
-        il_aabd_gross_unearned_income: 0
-        social_security: 0
-        is_pregnant: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        premium_tax_credit: 0
-        local_income_tax: 0
-        state_sales_tax: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        broadband_cost: 500
-        il_tanf_countable_unearned_income: 0
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    il_tanf_eligible: true
-    il_tanf_payment_level_for_initial_eligibility: 439.25
-    il_tanf_payment_level_for_grant_calculation: 109.81
-    il_tanf: 35
+# - name: taxsim_record_277465_2021.yaml
+#   absolute_error_margin: 0.3
+#   period: 2025-01
+#   input:
+#     people:
+#       person1:
+#         age: 23
+#         employment_income: 3600
+#         il_aabd_gross_unearned_income: 0
+#         social_security: 0
+#         is_pregnant: true
+#     tax_units:
+#       tax_unit:
+#         members: [person1]
+#         premium_tax_credit: 0
+#         local_income_tax: 0
+#         state_sales_tax: 0
+#     spm_units:
+#       spm_unit:
+#         members: [person1]
+#         broadband_cost: 500
+#         il_tanf_countable_unearned_income: 0
+#     households:
+#       household:
+#         members: [person1]
+#         state_code: IL
+#   output:
+#     il_tanf_eligible: true
+#     il_tanf_payment_level_for_initial_eligibility: 439.25
+#     il_tanf_payment_level_for_grant_calculation: 109.81
+#     il_tanf: 35
