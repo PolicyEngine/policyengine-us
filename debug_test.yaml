@@ -1,0 +1,11 @@
+- name: Simple debug test for benefit calculation
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 30_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_regular_payment: 259
+    me_liheap: 259
