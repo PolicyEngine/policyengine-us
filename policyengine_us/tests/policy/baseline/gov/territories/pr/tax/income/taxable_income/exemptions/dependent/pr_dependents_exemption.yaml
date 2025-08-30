@@ -1,0 +1,60 @@
+- name: No eligible dependents
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_eligible_dependent_for_exemption: false
+      person2:
+        pr_eligible_dependent_for_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR 
+  output:
+    pr_dependents_exemption: 0
+
+- name: Eligible dependents in married filing separate household
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_eligible_dependent_for_exemption: true
+      person2:
+        pr_eligible_dependent_for_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR 
+  output:
+    pr_dependents_exemption: 1_250
+
+- name: Eligible dependents in joint household
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_eligible_dependent_for_exemption: true
+      person2:
+        pr_eligible_dependent_for_exemption: false
+      person3: 
+        pr_eligible_dependent_for_exemption: true
+      person4:
+        pr_eligible_dependent_for_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PR 
+  output:
+    pr_dependents_exemption: 5_000
