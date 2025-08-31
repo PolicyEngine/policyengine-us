@@ -65,7 +65,6 @@
         state_code: IL
   output:
     il_tanf_childcare_deduction: 375
-    il_tanf_spm_unit_fpg: 1_919.17
     il_tanf_payment_level_for_initial_eligibility: 575.75
     il_tanf_initial_employment_deduction_person: [383.83, 0, 0]
     il_tanf_countable_income_for_initial_eligibility: 41.17 
@@ -112,10 +111,9 @@
         state_code: IL
   output:
     il_tanf_childcare_deduction: 375
-    il_tanf_spm_unit_fpg: 1_919.17
-    il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [187, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 237.8
+    il_tanf_payment_level_for_initial_eligibility: 457.75
+    il_tanf_initial_employment_deduction_person: [305.17, 0, 0]
+    il_tanf_countable_income_for_initial_eligibility: 119.83
     il_tanf_eligible: true
     il_tanf_assistance_unit_fpg: 1_525.83
     il_tanf_payment_level_for_grant_calculation: 343.31
@@ -124,12 +122,12 @@
 
 - name: Integration test 3, only parent eligible for payment.
   period: 2023-01
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 30
-        employment_income: 800
+        employment_income: 9_600
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
         ssi: 0
@@ -160,16 +158,15 @@
   output:
     il_tanf_childcare_deduction: 33
     il_tanf_assistance_unit_size: 1 # Kids receive ssi
-    il_tanf_spm_unit_fpg: 1_919.17
     il_tanf_assistance_unit_fpg: 1_132.5
     il_tanf_initial_employment_deduction_fpg: 1_132.5
-    il_tanf_payment_level_for_initial_eligibility: 575.75
-    il_tanf_initial_employment_deduction_person: [0, 0, 0]
-    il_tanf_countable_income_for_initial_eligibility: 33
-    il_tanf_eligible: true
+    il_tanf_payment_level_for_initial_eligibility: 339.75
+    il_tanf_initial_employment_deduction_person: [226.5, 0, 0]
+    il_tanf_countable_income_for_initial_eligibility: 540.5
+    il_tanf_eligible: false
     il_tanf_payment_level_for_grant_calculation: 84.94
-    il_tanf_countable_income_for_grant_calculation: 8
-    il_tanf: 77
+    il_tanf_countable_income_for_grant_calculation: 191.75
+    il_tanf: 0
 
 - name: taxsim_record_277465_2021.yaml
   absolute_error_margin: 0.3
@@ -178,7 +175,7 @@
     people:
       person1:
         age: 23
-        employment_income: 3600
+        employment_income: 3_600
         il_aabd_gross_unearned_income: 0
         social_security: 0
         is_pregnant: true
