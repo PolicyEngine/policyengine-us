@@ -23,11 +23,11 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         filing_jointly = joint & ~filing_separately
-        max_amount = where(filing_jointly, p.max_amount * 2, p.max_amount)
+        max_amount = where(filing_jointly, p.max_amount * p.joint_multiplier, p.max_amount)
         excess = max_(income - p.reduction.start, 0)
         increments = np.ceil(excess / p.reduction.increment)
         reduction_amount = where(
-            filing_jointly, p.reduction.amount * 2, p.reduction.amount
+            filing_jointly, p.reduction.amount * p.joint_multiplier, p.reduction.amount
         )
         total_reduction_amount = increments * reduction_amount
         # Attribute the maximum amount to each spouse equally when married filing jointly
