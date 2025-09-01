@@ -1,0 +1,17 @@
+- name: Floor over rate
+  period: 2022
+  input:
+    id_income_tax_before_non_refundable_credits: 1_000
+    state_code: ID
+    id_2022_rebate_floor: 300
+  output:
+    id_2022_rebate: 300
+
+- name: Rate over floor
+  period: 2022
+  input:
+    id_income_tax_before_non_refundable_credits: 1_000
+    state_code: ID
+    id_2022_rebate_floor: 0
+  output:
+    id_2022_rebate: 120

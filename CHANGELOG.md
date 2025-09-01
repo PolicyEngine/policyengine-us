@@ -5,6 +5,226 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.386.0] - 2025-08-31 11:40:22
+
+### Added
+
+- Adjust the IED calculation to use FPG adjusted in March.
+
+## [1.385.1] - 2025-08-30 18:43:46
+
+### Added
+
+- Georgia surplus tax rebate.
+
+### Fixed
+
+- Backdate the Georgia tax rates to 2021.
+
+## [1.385.0] - 2025-08-30 16:08:36
+
+### Added
+
+- Adjust the IED calculation to use FPG adjusted in March.
+
+## [1.384.0] - 2025-08-29 20:56:57
+
+### Fixed
+
+- Illinois TANF FPG calculation adjustments.
+
+## [1.383.0] - 2025-08-29 16:29:36
+
+### Added
+
+- congressional_district_geoid variable to replace the congressional district portion of the removed UCGID concept
+
+## [1.382.0] - 2025-08-29 14:50:10
+
+### Added
+
+- Idaho 2022 rebate.
+- Idaho special seasonal rebate.
+
+## [1.381.3] - 2025-08-29 06:00:04
+
+### Added
+
+- Fix Maine Property Tax Fairness Credit Veteran Cap.
+
+## [1.381.2] - 2025-08-29 01:04:56
+
+### Fixed
+
+- Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and uv virtual environment
+
+## [1.381.1] - 2025-08-28 14:57:49
+
+### Added
+
+- Memory-optimized test execution scripts for baseline and contrib tests
+- Batch processing with periodic memory cleanup to prevent OOM errors
+
+### Fixed
+
+- Python path detection in test scripts for compatibility across environments
+
+## [1.381.0] - 2025-08-28 03:53:01
+
+### Added
+
+- Enhanced multi-agent system for autonomous benefit program implementations
+- New agents for issue management, naming coordination, and branch integration
+- Improved workflow documentation with @ syntax for agent invocation
+
+### Changed
+
+- Updated agent workflow to establish naming conventions before parallel development
+- Modified CI fixer to work with existing draft PRs
+- Enhanced test creator and rules engineer to work in separate git worktrees
+
+## [1.380.0] - 2025-08-28 02:26:40
+
+### Added
+
+- Multi-agent system for autonomous code review and implementation
+- 13 specialized agents for validation, implementation, and enhancement
+- /encode-policy command for implementing new government programs with TDD
+- /review-pr command for reviewing and fixing PRs with mandatory agent usage
+- Comprehensive documentation for agent coordination and testing
+
+## [1.379.0] - 2025-08-26 19:32:44
+
+### Added
+
+- Add a state non-refundable credits variable.
+
+## [1.378.0] - 2025-08-26 15:31:43
+
+### Added
+
+- Multi-agent development system for accurate program implementation
+- Supervisor agent for orchestrating isolated development workflow
+- Document collector agent for gathering authoritative sources
+- Test creator agent for building tests from documentation
+- Rules engineer agent for TDD-based implementation
+- Verifier agent for comprehensive validation
+- Shared PolicyEngine standards document for consistency
+
+## [1.377.1] - 2025-08-25 19:37:04
+
+### Fixed
+
+- Avoid negative subtractions from acting as additions.
+
+## [1.377.0] - 2025-08-25 18:03:27
+
+### Fixed
+
+- Fixed IL AABD integration tests.
+
+## [1.376.4] - 2025-08-25 13:45:00
+
+### Fixed
+
+- Tenant pays rent variable for HUD utility allowance calculation.
+
+## [1.376.3] - 2025-08-25 13:09:42
+
+### Fixed
+
+- Updated SSI-related test cases.
+- Updated SSI-related variables.
+
+## [1.376.2] - 2025-08-25 02:14:31
+
+### Fixed
+
+- Exclude SSI recipients from NC TANF household count.
+
+## [1.376.1] - 2025-08-21 21:00:04
+
+### Fixed
+
+- Fix pre-2024 NY CTC.
+
+## [1.376.0] - 2025-08-21 17:38:20
+
+### Added
+
+- Added 2018 medicaid income limits for parents.
+
+## [1.375.0] - 2025-08-21 08:05:30
+
+### Added
+
+- Georgia 2026 CTC.
+- Georgia CDCC Match 2025.
+
+## [1.374.1] - 2025-08-20 14:15:57
+
+### Fixed
+
+- Fix charitable deduction floor amount parameter.
+- Fix non-cash charitable deduction ceiling.
+
+## [1.374.0] - 2025-08-20 13:41:01
+
+### Added
+
+- California Alameda County General Assistance Program.
+
+## [1.373.1] - 2025-08-19 21:31:19
+
+### Fixed
+
+- Fix AMT Phaseout Rate.
+
+## [1.373.0] - 2025-08-19 07:41:21
+
+### Added
+
+- Refundable Additional Child Tax Credit (ACTC) for Puerto Rico.
+
+## [1.372.0] - 2025-08-19 07:18:50
+
+### Added
+
+- Unified programmatic extension of all uprating factors through 2100 for long-term policy simulations
+- IRS, SNAP, SSA, HHS, CPI-U, Chained CPI-U, and CPI-W now extend dynamically based on growth rates from final years of projections
+- Single comprehensive test suite for all uprating extensions
+- Cleaner, more maintainable approach that avoids hardcoding future values in YAML files
+
+### Changed
+
+- Updated SSA 2025 value to reflect actual 2.5% COLA announced by SSA
+- Refactored all uprating extensions from hardcoded YAML values to programmatic generation
+
+## [1.371.0] - 2025-08-18 14:16:48
+
+### Fixed
+
+- Correct SSI benefit amount for dependent children to use individual rate.
+- Fix SSI joint claim determination to properly identify eligible married couples.
+
+## [1.370.2] - 2025-08-18 11:43:57
+
+### Fixed
+
+- Dropped requirement for us-data.
+
+## [1.370.1] - 2025-08-13 01:10:42
+
+### Fixed
+
+- Remove the senior deduction neutralization part of the CRFB SS credit.
+
+## [1.370.0] - 2025-08-12 19:49:31
+
+### Added
+
+- Add the CRFB SS credit to the net income tree.
+
 ## [1.369.0] - 2025-08-11 01:53:29
 
 ### Added
@@ -12601,6 +12821,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.1...1.386.0
+[1.385.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.0...1.385.1
+[1.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.384.0...1.385.0
+[1.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.383.0...1.384.0
+[1.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.382.0...1.383.0
+[1.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.3...1.382.0
+[1.381.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.2...1.381.3
+[1.381.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.1...1.381.2
+[1.381.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.381.0...1.381.1
+[1.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.380.0...1.381.0
+[1.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.379.0...1.380.0
+[1.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.378.0...1.379.0
+[1.378.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.1...1.378.0
+[1.377.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.377.0...1.377.1
+[1.377.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.4...1.377.0
+[1.376.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.3...1.376.4
+[1.376.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.2...1.376.3
+[1.376.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.1...1.376.2
+[1.376.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.376.0...1.376.1
+[1.376.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.375.0...1.376.0
+[1.375.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.374.1...1.375.0
+[1.374.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.374.0...1.374.1
+[1.374.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.1...1.374.0
+[1.373.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.373.0...1.373.1
+[1.373.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.372.0...1.373.0
+[1.372.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.371.0...1.372.0
+[1.371.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.2...1.371.0
+[1.370.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.1...1.370.2
+[1.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.370.0...1.370.1
+[1.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.369.0...1.370.0
 [1.369.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.368.0...1.369.0
 [1.368.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.367.0...1.368.0
 [1.367.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.366.2...1.367.0

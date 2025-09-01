@@ -12,8 +12,8 @@ class nc_tanf_need_standard(Variable):
     def formula(spm_unit, period, parameters):
         # Get the relevant part of the parameter tree.
         p = parameters(period).gov.states.nc.ncdhhs.tanf.need_standard
-        # Get number of people in SPM unit.
-        household_size = spm_unit("spm_unit_size", period)
+        # Get number of eligible people in SPM unit.
+        household_size = spm_unit("nc_tanf_household_size", period)
         # Get household size list
         household_size_list = list(map(int, (p.main)))
         # Get the maximum number of people defined in the tables.

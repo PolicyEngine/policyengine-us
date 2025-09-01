@@ -10,6 +10,7 @@
     # 2019 1BR payment standard.
     # https://sfmohcd.org/sites/default/files/Documents/MOH/Asset%20Management/2019%20AMI_RentLimits-HMFA.pdf
     pha_payment_standard: 2_748 * 12
+    tenant_pays_utilities: true
   output:
     housing_assistance: 400 * 12
 
@@ -34,6 +35,7 @@
         is_sro: false
         members: [parent1, parent2, dependent1, dependent2]
         in_la: true
+        tenant_pays_utilities: true
   output:
     ami: 98_200
     pha_payment_standard: 41_580 # 3_465 * 12

@@ -7,7 +7,7 @@ class ma_maximum_state_supplement(Variable):
     label = "Massachusetts maximum State Supplement payment amount"
     unit = USD
     definition_period = YEAR
-    defined_for = "is_ssi_eligible_individual"
+    defined_for = "is_ssi_eligible"
 
     def formula(person, period, parameters):
         """
