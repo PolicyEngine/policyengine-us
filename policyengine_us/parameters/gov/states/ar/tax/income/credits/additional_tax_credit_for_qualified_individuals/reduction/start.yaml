@@ -12,6 +12,8 @@ metadata:
   label: Arkansas additional tax credit for qualified individuals reduction start
   unit: currency-USD
   period: year
+  # The adjustment is based on net available general revenue forecast provided to the Joint Committee on Economic and Tax Policy
+  # see: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-5/section-26-51-501/ (f)
   
 values:
   2022-01-01: 24_300
