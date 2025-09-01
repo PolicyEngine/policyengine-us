@@ -21,13 +21,17 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
             period
         ).gov.states.ar.tax.income.credits.additional_tax_credit_for_qualified_individuals
         filing_status = person.tax_unit("filing_status", period)
-        max_amount = p.max_amount[filing_status]
+        joint = filing_status == filing_status.possible_values.JOINT
+        filing_jointly = joint & ~filing_separately
+        max_amount = where(
+            filing_jointly, p.max_amount * 2, p.max_amount
+        )
         excess = max_(income - p.reduction.start, 0)
         increments = np.ceil(excess / p.reduction.increment)
-        total_reduction_amount = increments * p.reduction.amount
+        reduction_amount = where(filing_jointly, p.reduction.amount * 2, p.reduction.amount)
+        total_reduction_amount = increments * reduction_amount
         # Attribute the maximum amount to each spouse equally when married filing jointly
-        joint = filing_status == filing_status.possible_values.JOINT
-        divisor = where(joint, 2, 1)
+        divisor = where(filing_jointly, 2, 1)
         total_credit = max_(max_amount - total_reduction_amount, 0) / divisor
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return total_credit * head_or_spouse

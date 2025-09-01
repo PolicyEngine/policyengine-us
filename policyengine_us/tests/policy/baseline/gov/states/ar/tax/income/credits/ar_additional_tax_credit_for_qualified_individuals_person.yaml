@@ -1,0 +1,21 @@
+- name: Joint household with taxable income above the threshold
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 30_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: 0
