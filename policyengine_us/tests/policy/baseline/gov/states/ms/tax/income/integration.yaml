@@ -25,9 +25,9 @@
     ms_total_exemptions_joint: [15_000, 0, 0]
     ms_total_exemptions: 15_000
     ms_taxable_income_indiv: [13_200, 8_200, 0]
-    ms_taxable_income_joint: [21_400, 0, 0]
+    ms_taxable_income_joint: [3_400, 18_000, 0]
     ms_income_tax_before_credits_indiv: [390, 158, 0]
-    ms_income_tax_before_credits_joint: [800, 0, 0]
+    ms_income_tax_before_credits_joint: [0, 630, 0]
     ms_files_separately: true
     ms_agi: [23_000, 18_000, 0]
     ms_income_tax: 548
@@ -144,12 +144,12 @@
         state_fips: 28  # MS
   output:  # expected results from patched TAXSIM35 2024-03-09 version
     ms_agi: [301_764.53, 8_030, 0, 0, 0, 0] # TAXSIM 301764.54 + 8030 = 309794.54
-    ms_taxable_income_joint: [287_194.53, 0, 0, 0, 0, 0] #TAXSIM 279164 + 8030 = 287194.54
+    ms_taxable_income_joint: [279_164.53, 8_030, 0, 0, 0, 0] #TAXSIM 279164 + 8030 = 287194.54
     ms_deductions_joint: [4_600, 0, 0, 0, 0, 0]
     ms_total_exemptions_joint: [18000,0,0,0,0,0]
     # ms_income_tax_before_credits_joint: [14089.727, 0, 0, 0, 0, 0]
     # ms_income_tax_before_credits_indiv: [14253.227, 0, 0, 0, 0, 0]
-    ms_income_tax: 14_089.727 # TAXSIM 13819.73
+    ms_income_tax: 13_839.427 # TAXSIM 13819.73
 
 - name: Tax unit with taxsimid 90168 in i21.its.csv and i21.ots.csv
   absolute_error_margin: 0.01
@@ -193,4 +193,37 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_fips: 28  # MS
   output:  # expected results from patched TAXSIM35 2024-04-15 version
-    ms_income_tax: 3_053
+    ms_income_tax: 2_783
+
+- name: 950-MS.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 29492.0
+      person2:
+        age: 40
+        employment_income: 11307.0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 28
+  output:
+    ms_agi: [29492.0, 11307.0]
+    ms_files_separately: false
+    ms_total_exemptions_joint: [12_000, 0]
+    ms_taxable_income_joint: [12_892, 11_307]
+    ms_income_tax: 197
