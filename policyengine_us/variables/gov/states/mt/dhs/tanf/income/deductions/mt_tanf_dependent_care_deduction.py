@@ -17,15 +17,15 @@ class mt_tanf_dependent_care_deduction(Variable):
             period
         ).gov.states.mt.dhs.tanf.income.deductions.dependent_care
         person = spm_unit.members
-        
+
         is_dependent = person("is_tax_unit_dependent", period)
         is_child = person("is_child", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
-        is_eligible_person = is_dependent & (is_child | is_incapable_of_self_care)
-        
-        dependent_expenses = spm_unit(
-            "childcare_expenses", period
+        is_eligible_person = is_dependent & (
+            is_child | is_incapable_of_self_care
         )
+
+        dependent_expenses = spm_unit("childcare_expenses", period)
         dependent_deduction_person = p.amount.value * is_eligible_person
         total_dependent_deduction = spm_unit.sum(dependent_deduction_person)
 
