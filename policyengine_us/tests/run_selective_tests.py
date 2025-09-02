@@ -57,7 +57,6 @@ class SelectiveTestRunner:
             },
         ]
 
-
     def get_changed_files(self) -> Set[str]:
         """Get list of changed files compared to base branch."""
         try:
@@ -252,7 +251,6 @@ class SelectiveTestRunner:
                     test_path = match.expand(pattern["test_pattern"])
                     test_paths.add(test_path)
 
-
             # Special handling for test files themselves
             # Skip the test runner script itself
             if file.endswith("run_selective_tests.py"):
@@ -284,7 +282,9 @@ class SelectiveTestRunner:
 
         # Remove redundant paths - keep the most specific (deepest) paths
         deduplicated_paths = set()
-        sorted_paths = sorted(existing_test_paths, key=lambda x: x.count(os.sep), reverse=True)  # Sort by depth, deepest first
+        sorted_paths = sorted(
+            existing_test_paths, key=lambda x: x.count(os.sep), reverse=True
+        )  # Sort by depth, deepest first
 
         for path in sorted_paths:
             # Check if this path is a subdirectory of any path already in deduplicated_paths
@@ -294,7 +294,7 @@ class SelectiveTestRunner:
                 if path.startswith(existing_path + os.sep):
                     is_subdirectory = True
                     break
-            
+
             if not is_subdirectory:
                 # Check if any existing paths are subdirectories of this path (they should be removed)
                 paths_to_remove = set()
@@ -303,7 +303,7 @@ class SelectiveTestRunner:
                         # The existing path is more specific, keep it instead
                         is_subdirectory = True
                         break
-                
+
                 if not is_subdirectory:
                     deduplicated_paths.add(path)
 
@@ -359,8 +359,12 @@ class SelectiveTestRunner:
                     include_patterns.append("policyengine_us/reforms/**/*.py")
                     include_patterns.append("policyengine_us/reforms/*.py")
                 elif "tests/policy/contrib/" in test_path:
-                    include_patterns.append("policyengine_us/parameters/contrib/**/*.py")
-                    include_patterns.append("policyengine_us/parameters/contrib/*.py")
+                    include_patterns.append(
+                        "policyengine_us/parameters/contrib/**/*.py"
+                    )
+                    include_patterns.append(
+                        "policyengine_us/parameters/contrib/*.py"
+                    )
 
             pytest_args = [
                 sys.executable,
@@ -402,7 +406,6 @@ class SelectiveTestRunner:
         result = subprocess.run(pytest_args)
 
         return result.returncode
-
 
 
 def main():
@@ -472,7 +475,6 @@ def main():
             if result.returncode == 0:
                 print(f"  origin/master: exists (use --base-branch master)")
         print()
-
 
     # Get changed files
     if args.files:
