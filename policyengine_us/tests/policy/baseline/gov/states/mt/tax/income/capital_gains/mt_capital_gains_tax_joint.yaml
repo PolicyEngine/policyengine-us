@@ -2,6 +2,7 @@
   period: 2024
   input:
     long_term_capital_gains: 1_000
+    mt_taxable_income_joint: 1_000
     mt_capital_gains_tax_applicable_threshold_joint: 0
     filing_status: SINGLE
     state_code: MT
@@ -12,6 +13,7 @@
   period: 2024
   input:
     long_term_capital_gains: 1_000
+    mt_taxable_income_joint: 1_000
     mt_capital_gains_tax_applicable_threshold_joint: 2_000
     filing_status: SEPARATE
     state_code: MT
@@ -23,6 +25,7 @@
   period: 2024
   input:
     long_term_capital_gains: 3_000
+    mt_taxable_income_joint: 3_000
     mt_capital_gains_tax_applicable_threshold_joint: 2_000
     filing_status: SEPARATE
     state_code: MT
@@ -33,8 +36,42 @@
   period: 2023
   input:
     long_term_capital_gains: 3_000
+    mt_taxable_income_joint: 3_000
     mt_capital_gains_tax_applicable_threshold_joint: 2_000
     filing_status: JOINT
     state_code: MT
   output:
     mt_capital_gains_tax_joint: 0 
+
+- name: Taxable income below LTCG and below higher rate threshold
+  period: 2024
+  input:
+    long_term_capital_gains: 3_000
+    mt_taxable_income_joint: 1_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 30
+
+- name: Taxable income below LTCG and above higher rate threshold
+  period: 2024
+  input:
+    long_term_capital_gains: 10_000
+    mt_taxable_income_joint: 3_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 101
+
+- name: Taxable above above LTCG and above higher rate threshold
+  period: 2024
+  input:
+    long_term_capital_gains: 10_000
+    mt_taxable_income_joint: 12_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 410
