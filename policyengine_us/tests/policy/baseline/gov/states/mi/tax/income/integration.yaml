@@ -138,3 +138,39 @@
         state_fips: 26  # MI
   output:  # expected results from patched TAXSIM35 2024-03-21 version
     mi_income_tax: 2263.98
+
+- name: taxsim_record_25759_2024.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 0.0
+        long_term_capital_gains: -3810357
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26
+  output:
+    mi_household_resources: 0
+    mi_home_heating_credit: 441
+    mi_income_tax: -441
