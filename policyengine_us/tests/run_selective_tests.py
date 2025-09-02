@@ -346,6 +346,30 @@ class SelectiveTestRunner:
                 )
                 return 1
 
+            # Only track coverage for files in the same directories as the tests
+            include_patterns = []
+            for test_path in test_paths:
+                # Convert test path to variable path
+                # e.g., policyengine_us/tests/policy/baseline/gov/local/ca -> policyengine_us/variables/gov/local/ca/**/*.py
+                if "tests/policy/baseline/" in test_path:
+                    var_path = test_path.replace(
+                        "tests/policy/baseline/", "variables/"
+                    )
+                    # Use **/*.py for recursive matching
+                    include_patterns.append(f"{var_path}/**/*.py")
+                    # Also include files directly in the directory
+                    include_patterns.append(f"{var_path}/*.py")
+                elif "tests/policy/reform/" in test_path:
+                    include_patterns.append("policyengine_us/reforms/**/*.py")
+                    include_patterns.append("policyengine_us/reforms/*.py")
+                elif "tests/policy/contrib/" in test_path:
+                    include_patterns.append(
+                        "policyengine_us/parameters/contrib/**/*.py"
+                    )
+                    include_patterns.append(
+                        "policyengine_us/parameters/contrib/*.py"
+                    )
+
             pytest_args = [
                 sys.executable,
                 "-m",
@@ -353,12 +377,22 @@ class SelectiveTestRunner:
                 "run",
                 "-a",
                 "--branch",
-                "-m",
-                "policyengine_core.scripts.policyengine_command",
-                "test",
-                "-c",
-                "policyengine_us",
             ]
+
+            # Add --include flag to only track relevant files
+            if include_patterns:
+                include_pattern = ",".join(include_patterns)
+                pytest_args.extend(["--include", include_pattern])
+
+            pytest_args.extend(
+                [
+                    "-m",
+                    "policyengine_core.scripts.policyengine_command",
+                    "test",
+                    "-c",
+                    "policyengine_us",
+                ]
+            )
         else:
             pytest_args = [
                 "policyengine-core",
