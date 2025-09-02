@@ -13,7 +13,7 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
         filing_separately = person.tax_unit("ar_files_separately", period)
         income_joint = person("ar_taxable_income_joint", period)
         income_indiv = person("ar_taxable_income_indiv", period)
-        # When filing separartely, the credit is calculated based on individual income
+        # When filing separately, the credit is calculated based on individual income
         income = where(
             filing_separately, income_indiv, person.tax_unit.sum(income_joint)
         )
@@ -23,14 +23,15 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         filing_jointly = joint & ~filing_separately
+        multiplier = where(filing_jointly, p.joint_multiplier, 1)
         max_amount = where(
-            filing_jointly, p.max_amount * p.joint_multiplier, p.max_amount
+            filing_jointly, p.max_amount * multiplier, p.max_amount
         )
         excess = max_(income - p.reduction.start, 0)
         increments = np.ceil(excess / p.reduction.increment)
         reduction_amount = where(
             filing_jointly,
-            p.reduction.amount * p.joint_multiplier,
+            p.reduction.amount * multiplier,
             p.reduction.amount,
         )
         total_reduction_amount = increments * reduction_amount
