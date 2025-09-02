@@ -288,6 +288,10 @@ class SelectiveTestRunner:
                             test_paths.add(comp_pattern["test_pattern"])
 
             # Special handling for test files themselves
+            # Skip the test runner script itself
+            if file.endswith("run_selective_tests.py"):
+                continue
+
             if "tests" in file and file.endswith(".py"):
                 # Add the directory containing the test file
                 test_dir = os.path.dirname(file)
@@ -332,20 +336,38 @@ class SelectiveTestRunner:
         # Construct pytest command
         if with_coverage:
             # Use coverage to run the tests
-            # We need to use sys.executable to ensure coverage runs in the same Python environment
+            # Try to find coverage in PATH first, fall back to python -m coverage
+            import shutil
             import sys
-            pytest_args = [
-                sys.executable, "-m",
-                "coverage",
-                "run",
-                "-a",
-                "--branch",
-                "-m",
-                "policyengine_core.scripts.policyengine_command",
-                "test",
-                "-c",
-                "policyengine_us",
-            ]
+
+            if shutil.which("coverage"):
+                # coverage is in PATH, use it directly
+                pytest_args = [
+                    "coverage",
+                    "run",
+                    "-a",
+                    "--branch",
+                    "-m",
+                    "policyengine_core.scripts.policyengine_command",
+                    "test",
+                    "-c",
+                    "policyengine_us",
+                ]
+            else:
+                # Fall back to python -m coverage
+                pytest_args = [
+                    sys.executable,
+                    "-m",
+                    "coverage",
+                    "run",
+                    "-a",
+                    "--branch",
+                    "-m",
+                    "policyengine_core.scripts.policyengine_command",
+                    "test",
+                    "-c",
+                    "policyengine_us",
+                ]
         else:
             pytest_args = [
                 "policyengine-core",
