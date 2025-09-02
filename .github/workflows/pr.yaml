@@ -27,9 +27,9 @@ jobs:
         with:
           python-version: 3.13
       - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
-      - name: Install dependencies
-        run: uv pip install "yaml-changelog>=0.1.7" --system
+        run: |
+          uv pip install -e . --system
+          uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
         run: make changelog
   Test:
@@ -49,7 +49,11 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+        run: |
+          # Install core package and its dependencies
+          uv pip install -e . --system
+          # Install only coverage for testing (not docs dependencies)
+          uv pip install coverage --system
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh

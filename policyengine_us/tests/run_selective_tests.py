@@ -57,36 +57,6 @@ class SelectiveTestRunner:
             },
         ]
 
-        # Additional patterns for specific components within gov
-        self.component_patterns = [
-            # IRS components
-            {
-                "file_pattern": r"gov/irs/credits/ctc",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/irs/credits/ctc",
-            },
-            {
-                "file_pattern": r"gov/irs/credits/earned_income",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/irs/credits/earned_income",
-            },
-            # USDA components
-            {
-                "file_pattern": r"gov/usda/snap",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/usda/snap",
-            },
-            {
-                "file_pattern": r"gov/usda/wic",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/usda/wic",
-            },
-            # HHS components
-            {
-                "file_pattern": r"gov/hhs/medicaid",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/hhs/medicaid",
-            },
-            {
-                "file_pattern": r"gov/hhs/tanf",
-                "test_pattern": r"policyengine_us/tests/policy/baseline/gov/hhs/tanf",
-            },
-        ]
 
     def get_changed_files(self) -> Set[str]:
         """Get list of changed files compared to base branch."""
@@ -282,10 +252,6 @@ class SelectiveTestRunner:
                     test_path = match.expand(pattern["test_pattern"])
                     test_paths.add(test_path)
 
-                    # Also check for more specific component patterns
-                    for comp_pattern in self.component_patterns:
-                        if re.search(comp_pattern["file_pattern"], file):
-                            test_paths.add(comp_pattern["test_pattern"])
 
             # Special handling for test files themselves
             # Skip the test runner script itself
@@ -316,37 +282,36 @@ class SelectiveTestRunner:
                             break
                     path_obj = path_obj.parent
 
-        # Remove redundant paths (subdirectories of paths already included)
+        # Remove redundant paths - keep the most specific (deepest) paths
         deduplicated_paths = set()
-        sorted_paths = sorted(existing_test_paths)
+        sorted_paths = sorted(existing_test_paths, key=lambda x: x.count(os.sep), reverse=True)  # Sort by depth, deepest first
 
         for path in sorted_paths:
             # Check if this path is a subdirectory of any path already in deduplicated_paths
             is_subdirectory = False
             for existing_path in deduplicated_paths:
-                if (
-                    path.startswith(existing_path + os.sep)
-                    or path == existing_path
-                ):
+                # If this path is inside an existing path, skip it
+                if path.startswith(existing_path + os.sep):
                     is_subdirectory = True
                     break
-
+            
             if not is_subdirectory:
-                # Also remove any existing paths that are subdirectories of this new path
+                # Check if any existing paths are subdirectories of this path (they should be removed)
                 paths_to_remove = set()
                 for existing_path in deduplicated_paths:
                     if existing_path.startswith(path + os.sep):
-                        paths_to_remove.add(existing_path)
-
-                deduplicated_paths -= paths_to_remove
-                deduplicated_paths.add(path)
+                        # The existing path is more specific, keep it instead
+                        is_subdirectory = True
+                        break
+                
+                if not is_subdirectory:
+                    deduplicated_paths.add(path)
 
         return deduplicated_paths
 
     def run_tests(
         self,
         test_paths: Set[str],
-        verbose: bool = False,
         with_coverage: bool = False,
     ) -> int:
         """Run pytest on specified test paths."""
@@ -381,18 +346,21 @@ class SelectiveTestRunner:
             include_patterns = []
             for test_path in test_paths:
                 # Convert test path to variable path
-                # e.g., policyengine_us/tests/policy/baseline/gov/local/ca -> policyengine_us/variables/gov/local/ca/*
+                # e.g., policyengine_us/tests/policy/baseline/gov/local/ca -> policyengine_us/variables/gov/local/ca/**/*.py
                 if "tests/policy/baseline/" in test_path:
                     var_path = test_path.replace(
                         "tests/policy/baseline/", "variables/"
                     )
+                    # Use **/*.py for recursive matching
+                    include_patterns.append(f"{var_path}/**/*.py")
+                    # Also include files directly in the directory
                     include_patterns.append(f"{var_path}/*.py")
                 elif "tests/policy/reform/" in test_path:
+                    include_patterns.append("policyengine_us/reforms/**/*.py")
                     include_patterns.append("policyengine_us/reforms/*.py")
                 elif "tests/policy/contrib/" in test_path:
-                    include_patterns.append(
-                        "policyengine_us/parameters/contrib/*.py"
-                    )
+                    include_patterns.append("policyengine_us/parameters/contrib/**/*.py")
+                    include_patterns.append("policyengine_us/parameters/contrib/*.py")
 
             pytest_args = [
                 sys.executable,
@@ -435,52 +403,11 @@ class SelectiveTestRunner:
 
         return result.returncode
 
-    def run_all_tests(self) -> int:
-        """Run all tests (fallback option)."""
-        print("Running all tests...")
-        result = subprocess.run(["pytest", "policyengine_us/tests"])
-        return result.returncode
-
-    def generate_test_plan(
-        self, changed_files: Set[str]
-    ) -> Dict[str, List[str]]:
-        """Generate a detailed test plan showing which tests will run for which files."""
-        test_plan = {}
-
-        for file in changed_files:
-            if not (
-                file.endswith(".py")
-                or file.endswith(".yaml")
-                or file.endswith(".yml")
-            ):
-                continue
-
-            file_tests = []
-
-            # Check against regex patterns
-            for pattern in self.test_patterns:
-                match = re.search(pattern["file_pattern"], file)
-                if match:
-                    test_path = match.expand(pattern["test_pattern"])
-                    file_tests.append(test_path)
-
-            if file_tests:
-                test_plan[file] = file_tests
-
-        return test_plan
 
 
 def main():
     parser = argparse.ArgumentParser(
         description="Run only relevant tests based on changed files"
-    )
-    parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Run all tests regardless of changes",
-    )
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Verbose output"
     )
     parser.add_argument(
         "--base-branch",
@@ -546,8 +473,6 @@ def main():
                 print(f"  origin/master: exists (use --base-branch master)")
         print()
 
-    if args.all:
-        sys.exit(runner.run_all_tests())
 
     # Get changed files
     if args.files:
@@ -595,12 +520,10 @@ def main():
 
     if args.plan:
         # Show test plan
-        test_plan = runner.generate_test_plan(changed_files)
         print("\nTest execution plan:")
-        for file, tests in test_plan.items():
-            print(f"\n{file}:")
-            for test in tests:
-                print(f"  → {test}")
+        test_paths = runner.map_files_to_tests(changed_files)
+        for path in sorted(test_paths):
+            print(f"  → {path}")
         sys.exit(0)
 
     # Map to test paths and run tests
@@ -611,11 +534,7 @@ def main():
         print("Consider running all tests with --all flag.")
         sys.exit(0)
 
-    sys.exit(
-        runner.run_tests(
-            test_paths, verbose=args.verbose, with_coverage=args.coverage
-        )
-    )
+    sys.exit(runner.run_tests(test_paths, with_coverage=args.coverage))
 
 
 if __name__ == "__main__":
