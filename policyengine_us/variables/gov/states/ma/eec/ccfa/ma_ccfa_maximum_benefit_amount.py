@@ -5,9 +5,7 @@ class ma_ccfa_maximum_benefit_amount(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = (
-        "Massachusetts Child Care Financial Assistance (CCFA) maximum benefit amount"
-    )
+    label = "Massachusetts Child Care Financial Assistance (CCFA) maximum benefit amount"
     definition_period = MONTH
     defined_for = "ma_ccfa_eligible"
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"

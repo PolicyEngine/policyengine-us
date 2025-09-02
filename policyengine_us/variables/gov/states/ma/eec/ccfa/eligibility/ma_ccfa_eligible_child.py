@@ -16,6 +16,8 @@ class ma_ccfa_eligible_child(Variable):
         age_limit = where(is_disabled, p.disabled_child, p.child)
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period)
-        immigration_eligible = person("ma_ccfa_immigration_status_eligible", period)
+        immigration_eligible = person(
+            "ma_ccfa_immigration_status_eligible", period
+        )
 
         return age_eligible & is_dependent & immigration_eligible

@@ -14,7 +14,9 @@ class ma_ccfa_informal_child_care_reimbursement(Variable):
         p = parameters(
             period
         ).gov.states.ma.eec.ccfa.reimbursement_rates.informal_child_care
-        is_relative_home_care = person("ma_ccfa_is_in_relatives_home_care", period)
+        is_relative_home_care = person(
+            "ma_ccfa_is_in_relatives_home_care", period
+        )
         uncapped_payment_per_day = where(
             is_relative_home_care, p.relative_home, p.child_home
         )
