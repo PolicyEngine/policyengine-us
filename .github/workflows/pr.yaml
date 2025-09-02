@@ -85,5 +85,17 @@ jobs:
             echo "✅ All files have 100% coverage!"
           fi
           
+          # Generate XML for Codecov
+          coverage xml
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+          flags: unittests
+          name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
       - name: Build package
         run: uv build

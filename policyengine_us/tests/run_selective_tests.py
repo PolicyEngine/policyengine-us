@@ -319,6 +319,7 @@ class SelectiveTestRunner:
         test_paths: Set[str],
         verbose: bool = False,
         with_coverage: bool = False,
+        changed_files: Set[str] = None,
     ) -> int:
         """Run pytest on specified test paths."""
         if not test_paths:
@@ -346,29 +347,39 @@ class SelectiveTestRunner:
                 )
                 return 1
 
-            # Only track coverage for files in the same directories as the tests
+            # Only track coverage for the specific files that changed in the PR
             include_patterns = []
-            for test_path in test_paths:
-                # Convert test path to variable path
-                # e.g., policyengine_us/tests/policy/baseline/gov/local/ca -> policyengine_us/variables/gov/local/ca/**/*.py
-                if "tests/policy/baseline/" in test_path:
-                    var_path = test_path.replace(
-                        "tests/policy/baseline/", "variables/"
-                    )
-                    # Use **/*.py for recursive matching
-                    include_patterns.append(f"{var_path}/**/*.py")
-                    # Also include files directly in the directory
-                    include_patterns.append(f"{var_path}/*.py")
-                elif "tests/policy/reform/" in test_path:
-                    include_patterns.append("policyengine_us/reforms/**/*.py")
-                    include_patterns.append("policyengine_us/reforms/*.py")
-                elif "tests/policy/contrib/" in test_path:
-                    include_patterns.append(
-                        "policyengine_us/parameters/contrib/**/*.py"
-                    )
-                    include_patterns.append(
-                        "policyengine_us/parameters/contrib/*.py"
-                    )
+            if changed_files:
+                # Only include Python files that were actually changed (excluding test directories)
+                changed_py_files = [
+                    f
+                    for f in changed_files
+                    if f.endswith(".py") and "/tests/" not in f
+                ]
+                if changed_py_files:
+                    include_patterns = changed_py_files
+            else:
+                # Fallback to directory-based patterns if no changed files provided
+                for test_path in test_paths:
+                    # Convert test path to variable path
+                    if "tests/policy/baseline/" in test_path:
+                        var_path = test_path.replace(
+                            "tests/policy/baseline/", "variables/"
+                        )
+                        include_patterns.append(f"{var_path}/**/*.py")
+                        include_patterns.append(f"{var_path}/*.py")
+                    elif "tests/policy/reform/" in test_path:
+                        include_patterns.append(
+                            "policyengine_us/reforms/**/*.py"
+                        )
+                        include_patterns.append("policyengine_us/reforms/*.py")
+                    elif "tests/policy/contrib/" in test_path:
+                        include_patterns.append(
+                            "policyengine_us/parameters/contrib/**/*.py"
+                        )
+                        include_patterns.append(
+                            "policyengine_us/parameters/contrib/*.py"
+                        )
 
             pytest_args = [
                 sys.executable,
@@ -589,7 +600,10 @@ def main():
 
     sys.exit(
         runner.run_tests(
-            test_paths, verbose=args.verbose, with_coverage=args.coverage
+            test_paths,
+            verbose=args.verbose,
+            with_coverage=args.coverage,
+            changed_files=changed_files if args.coverage else None,
         )
     )
 
