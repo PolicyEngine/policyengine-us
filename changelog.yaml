@@ -10891,3 +10891,9 @@
     added:
     - Adjust the IED calculation to use FPG adjusted in March.
   date: 2025-08-31 11:40:22
+- bump: patch
+  changes:
+    fixes:
+    - Optimally allocate the Mississippi taxable income for married couples filing
+      jointly.
+  date: 2025-09-01 22:58:34
