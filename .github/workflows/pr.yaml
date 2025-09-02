@@ -49,9 +49,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          uv sync --dev
-          uv run pip install coverage
+        run: uv pip install -e ".[dev]" --system
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
@@ -62,17 +60,17 @@ jobs:
           GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
           echo "Running selective tests based on changed files..."
-          uv run python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
+          python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
       - name: Generate coverage report
         if: always()
         run: |
-          uv run coverage report
-          uv run coverage xml
+          coverage report
+          coverage xml
       - name: Check coverage threshold
         if: always()
         run: |
           echo "Checking coverage threshold..."
-          uv run coverage report --fail-under=100
+          coverage report --fail-under=100
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
