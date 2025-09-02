@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.387.0] - 2025-09-02 15:09:34
+
+### Added
+
+- Arkansas additional tax credit for qualified individuals.
+
+### Fixed
+
+- Arkansas 2024 income tax rates.
+
 ## [1.386.1] - 2025-09-01 22:58:34
 
 ## [1.386.0] - 2025-08-31 11:40:22
@@ -12823,6 +12833,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.387.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.386.1...1.387.0
 [1.386.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.386.0...1.386.1
 [1.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.1...1.386.0
 [1.385.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.0...1.385.1
