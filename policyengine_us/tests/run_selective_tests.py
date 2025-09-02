@@ -316,7 +316,29 @@ class SelectiveTestRunner:
                             break
                     path_obj = path_obj.parent
 
-        return existing_test_paths
+        # Remove redundant paths (subdirectories of paths already included)
+        deduplicated_paths = set()
+        sorted_paths = sorted(existing_test_paths)
+        
+        for path in sorted_paths:
+            # Check if this path is a subdirectory of any path already in deduplicated_paths
+            is_subdirectory = False
+            for existing_path in deduplicated_paths:
+                if path.startswith(existing_path + os.sep) or path == existing_path:
+                    is_subdirectory = True
+                    break
+            
+            if not is_subdirectory:
+                # Also remove any existing paths that are subdirectories of this new path
+                paths_to_remove = set()
+                for existing_path in deduplicated_paths:
+                    if existing_path.startswith(path + os.sep):
+                        paths_to_remove.add(existing_path)
+                
+                deduplicated_paths -= paths_to_remove
+                deduplicated_paths.add(path)
+        
+        return deduplicated_paths
 
     def run_tests(
         self,
@@ -336,38 +358,32 @@ class SelectiveTestRunner:
         # Construct pytest command
         if with_coverage:
             # Use coverage to run the tests
-            # Try to find coverage in PATH first, fall back to python -m coverage
-            import shutil
             import sys
-
-            if shutil.which("coverage"):
-                # coverage is in PATH, use it directly
-                pytest_args = [
-                    "coverage",
-                    "run",
-                    "-a",
-                    "--branch",
-                    "-m",
-                    "policyengine_core.scripts.policyengine_command",
-                    "test",
-                    "-c",
-                    "policyengine_us",
-                ]
-            else:
-                # Fall back to python -m coverage
-                pytest_args = [
-                    sys.executable,
-                    "-m",
-                    "coverage",
-                    "run",
-                    "-a",
-                    "--branch",
-                    "-m",
-                    "policyengine_core.scripts.policyengine_command",
-                    "test",
-                    "-c",
-                    "policyengine_us",
-                ]
+            
+            # First check if coverage is importable
+            try:
+                import coverage
+                print(f"Coverage version: {coverage.__version__}")
+            except ImportError as e:
+                print(f"ERROR: Coverage module not found: {e}")
+                print("Please ensure coverage is installed: pip install coverage")
+                return 1
+            
+            # Since we're already running under 'uv run python', we can use python -m coverage
+            # which will work in the same environment
+            pytest_args = [
+                sys.executable,
+                "-m",
+                "coverage",
+                "run",
+                "-a",
+                "--branch",
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
+                "test",
+                "-c",
+                "policyengine_us",
+            ]
         else:
             pytest_args = [
                 "policyengine-core",
