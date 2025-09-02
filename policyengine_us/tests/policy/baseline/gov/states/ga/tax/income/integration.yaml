@@ -1,0 +1,28 @@
+- name: Filer with negative income should have no subtractions
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 0.0
+        short_term_capital_gains: -3000000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 13
+  output:
+    ga_subtractions: 0
+    ga_income_tax: 0

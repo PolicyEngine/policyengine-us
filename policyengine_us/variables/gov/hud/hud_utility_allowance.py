@@ -13,6 +13,7 @@ class hud_utility_allowance(Variable):
         # LA County, only one for now. As of 2023-07-01.
         "https://www.lacda.org/docs/librariesprovider25/public-documents/utility-allowance/utility-allownce-2022.pdf",
     )
+    defined_for = "tenant_pays_utilities"
 
     def formula(household, period, parameters):
         household_bedrooms = household("bedrooms", period)
