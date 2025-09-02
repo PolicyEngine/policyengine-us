@@ -314,7 +314,12 @@ class SelectiveTestRunner:
 
         return existing_test_paths
 
-    def run_tests(self, test_paths: Set[str], verbose: bool = False) -> int:
+    def run_tests(
+        self,
+        test_paths: Set[str],
+        verbose: bool = False,
+        with_coverage: bool = False,
+    ) -> int:
         """Run pytest on specified test paths."""
         if not test_paths:
             print("No relevant tests found for changed files.")
@@ -325,7 +330,26 @@ class SelectiveTestRunner:
             print(f"  - {path}")
 
         # Construct pytest command
-        pytest_args = ["policyengine-core", "test", "-c", "policyengine_us"]
+        if with_coverage:
+            # Use coverage to run the tests
+            pytest_args = [
+                "coverage",
+                "run",
+                "-a",
+                "--branch",
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
+                "test",
+                "-c",
+                "policyengine_us",
+            ]
+        else:
+            pytest_args = [
+                "policyengine-core",
+                "test",
+                "-c",
+                "policyengine_us",
+            ]
 
         # Add test paths
         pytest_args.extend(sorted(test_paths))
@@ -408,6 +432,11 @@ def main():
         "--debug",
         action="store_true",
         help="Show debug information about git state",
+    )
+    parser.add_argument(
+        "--coverage",
+        action="store_true",
+        help="Run tests with coverage measurement",
     )
 
     args = parser.parse_args()
@@ -508,7 +537,11 @@ def main():
         print("Consider running all tests with --all flag.")
         sys.exit(0)
 
-    sys.exit(runner.run_tests(test_paths, verbose=args.verbose))
+    sys.exit(
+        runner.run_tests(
+            test_paths, verbose=args.verbose, with_coverage=args.coverage
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -53,23 +53,30 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run non-structural YAML tests
+      - name: Run selective tests based on changed files
         env:
           PYTHONUNBUFFERED: 1
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
-          echo "Running non-structural YAML tests..."
-          uv run make test-yaml-no-structural
-      - name: Run structural YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
+          echo "Running selective tests based on changed files..."
+          uv run python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
+      - name: Generate coverage report
+        if: always()
         run: |
-          echo "Running structural YAML tests..."
-          uv run make test-yaml-structural
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
+          uv run coverage report
+          uv run coverage xml
+      - name: Check coverage threshold
+        if: always()
         run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
+          echo "Checking coverage threshold..."
+          uv run coverage report --fail-under=100
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+          verbose: true
       - name: Build package
         run: uv build
