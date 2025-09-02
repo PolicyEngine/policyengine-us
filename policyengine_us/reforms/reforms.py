@@ -103,6 +103,7 @@ from .congress.hawley.awra import (
 )
 from .crfb import (
     create_non_refundable_ss_credit_reform,
+    create_senior_deduction_extension_reform,
 )
 
 from policyengine_core.reforms import Reform
@@ -216,6 +217,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     non_refundable_ss_credit = create_non_refundable_ss_credit_reform(
         parameters, period
     )
+    senior_deduction_extension = create_senior_deduction_extension_reform(
+        parameters, period
+    )
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -272,6 +276,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
         non_refundable_ss_credit,
+        senior_deduction_extension,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
