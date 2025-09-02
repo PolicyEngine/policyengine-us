@@ -75,12 +75,12 @@ def create_senior_deduction_extension_reform(
         return senior_deduction_extension_reform()
 
     # 2. If boolean in extension.yaml is set to true
-    parameter = parameters.gov.contrib.crfb.senior_deduction
+    parameter = parameters.gov.contrib.crfb.senior_deduction_extension
     current_period = period_(period)
     reform_active = False
 
     for i in range(5):
-        if parameter(current_period).extension:
+        if parameter(current_period).applies:
             # If in any of the next five years, the boolean is true,
             # set the boolean reform_active to true, and stop the check,
             # i.e., assume the reform is active in all subsequent years.
