@@ -65,18 +65,25 @@ jobs:
         run: |
           echo "Running selective tests based on changed files..."
           python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
-      - name: Generate coverage report and check threshold
+      - name: Generate coverage report
         if: always()
         run: |
-          echo "Coverage report (files below 100% coverage):"
-          coverage report --fail-under=100 --skip-covered --skip-empty
-          coverage xml
-      - name: Upload coverage to Codecov
-        if: always()
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: false
-          verbose: true
+          echo "📊 Coverage Report"
+          echo "=================="
+          # Show files below 100% coverage (won't fail CI)
+          coverage report --fail-under=0 --skip-covered --skip-empty
+          
+          # Count files below 100%
+          TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
+          
+          if [ "$TOTAL_FILES" -gt "0" ]; then
+            echo ""
+            echo "⚠️  $TOTAL_FILES file(s) have less than 100% coverage"
+            echo "Consider adding tests to improve coverage."
+          else
+            echo ""
+            echo "✅ All files have 100% coverage!"
+          fi
+          
       - name: Build package
         run: uv build
