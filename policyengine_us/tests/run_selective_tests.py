@@ -332,7 +332,10 @@ class SelectiveTestRunner:
         # Construct pytest command
         if with_coverage:
             # Use coverage to run the tests
+            # We need to use sys.executable to ensure coverage runs in the same Python environment
+            import sys
             pytest_args = [
+                sys.executable, "-m",
                 "coverage",
                 "run",
                 "-a",
