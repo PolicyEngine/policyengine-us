@@ -24,7 +24,7 @@ class ma_ccfa_center_based_school_age_reimbursement(Variable):
             "ma_ccfa_reimbursement_ratio", period
         )
         attending_days_per_month = person(
-            "ma_ccfa_attending_days_per_month", period
+            "childcare_attending_days_per_month", period
         )
         care_provider_type = person("ma_ccfa_care_provider_type", period)
         center_based_school_age = (

@@ -4,7 +4,7 @@
     age: 5
     is_disabled: false
     is_tax_unit_dependent: true
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
     state_code: MA
   output:
     ma_ccfa_eligible_child: true
@@ -15,7 +15,7 @@
     age: 13
     is_disabled: false
     is_tax_unit_dependent: true
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
     state_code: MA
   output:
     ma_ccfa_eligible_child: false
@@ -26,7 +26,7 @@
     age: 13
     is_disabled: true
     is_tax_unit_dependent: true
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
     state_code: MA
   output:
     ma_ccfa_eligible_child: true
@@ -37,7 +37,7 @@
     age: 16
     is_disabled: true
     is_tax_unit_dependent: true
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
     state_code: MA
   output:
     ma_ccfa_eligible_child: false

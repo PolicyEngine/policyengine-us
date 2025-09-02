@@ -10,7 +10,7 @@ class ma_ccfa_income_eligible(Variable):
     reference = "https://www.mass.gov/doc/financial-assistance-policy-guide"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.eec.ccfa.income.income_limits
+        p = parameters(period).gov.states.ma.eec.ccfa.income.smi_rate
 
         countable_income = spm_unit("ma_ccfa_countable_income", period)
         smi = spm_unit("hhs_smi", period)
@@ -20,7 +20,7 @@ class ma_ccfa_income_eligible(Variable):
 
         income_limit = where(
             is_enrolled,
-            smi * p.redetermination_rate,
-            smi * p.new_applicants_rate,
+            smi * p.redetermination,
+            smi * p.new_applicants,
         )
         return countable_income <= income_limit

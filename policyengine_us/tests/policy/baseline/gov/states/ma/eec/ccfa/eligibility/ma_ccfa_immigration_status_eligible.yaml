@@ -4,7 +4,7 @@
     immigration_status: CITIZEN
     state_code: MA
   output:
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
 
 - name: Case 2, qualified alien, eligible.
   period: 2025-01
@@ -12,7 +12,7 @@
     immigration_status: REFUGEE
     state_code: MA
   output:
-    ma_ccfa_immigration_eligible: true
+    ma_ccfa_immigration_status_eligible: true
 
 - name: Case 3, undocumented, ineligible.
   period: 2025-01
@@ -20,4 +20,4 @@
     immigration_status: UNDOCUMENTED
     state_code: MA
   output:
-    ma_ccfa_immigration_eligible: false
+    ma_ccfa_immigration_status_eligible: false

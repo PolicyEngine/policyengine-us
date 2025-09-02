@@ -13,25 +13,33 @@ class ma_ccfa_activity_eligible(Variable):
         p = parameters(period).gov.states.ma.eec.ccfa.activity_requirements
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
+        
+        # Individual activity requirements
         hours_worked = person("weekly_hours_worked", period.this_year)
         meets_work_requirement = hours_worked >= p.weekly_hours
-
+        
         age = person("monthly_age", period)
         work_exempt_age = age >= p.work_exempt_age
-
-        is_pregnant = person("is_pregnant", period)
+        
         is_student = person("is_full_time_student", period)
-        is_disabled = person("is_disabled", period)
-
-        activity_eligible = (
+        
+        individually_eligible = (
             meets_work_requirement
             | work_exempt_age
-            | is_pregnant
             | is_student
-            | is_disabled
         )
+        
+        # Family-level exemptions
+        is_pregnant = person("is_pregnant", period)
+        is_disabled = person("is_disabled", period)
+        parent_exempt = is_head_or_spouse & (is_pregnant | is_disabled)
+        family_exempt = spm_unit.any(parent_exempt)
+        
         is_homeless = spm_unit.household("is_homeless", period)
-        # All parents in household must meet requirements
-        ineligible_parent = is_head_or_spouse & ~activity_eligible
-        return (spm_unit.sum(ineligible_parent) == 0) | is_homeless
+        
+        # All parents must meet requirements unless family is exempt
+        all_parents_eligible = spm_unit.sum(
+            is_head_or_spouse & ~individually_eligible
+        ) == 0
+        
+        return all_parents_eligible | family_exempt | is_homeless

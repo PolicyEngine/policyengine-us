@@ -15,7 +15,8 @@ class ma_ccfa_eligible(Variable):
             add(spm_unit, period, ["ma_ccfa_eligible_child"]) > 0
         )
 
-        # TAFDC recipients have categorical eligibility
+        # TAFDC recipients have categorical eligibility Section 10.05(3)(a)&(b)
+        # https://regulations.justia.com/states/massachusetts/606-cmr/title-606-cmr-10-00/section-10-05/
         tafdc_eligible = spm_unit("ma_tafdc_eligible", period)
 
         # Regular eligibility criteria

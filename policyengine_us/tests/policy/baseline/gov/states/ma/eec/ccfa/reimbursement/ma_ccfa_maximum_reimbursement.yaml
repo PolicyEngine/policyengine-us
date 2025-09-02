@@ -6,7 +6,7 @@
     ma_ccfa_child_age_category: SCHOOL_AGE
     ma_ccfa_schedule_type: FULL_DAY
     ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
-    ma_ccfa_attending_days_per_month: 10
+    childcare_attending_days_per_month: 10
     childcare_hours_per_day: 6
     state_code: MA
   output:
@@ -18,8 +18,8 @@
   input:
     county_str: BERKSHIRE_COUNTY_MA
     ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
-    ma_ccfa_is_relative_home_care: true
-    ma_ccfa_attending_days_per_month: 10
+    ma_ccfa_is_in_relatives_home_care: true
+    childcare_attending_days_per_month: 10
     childcare_hours_per_day: 6
     state_code: MA
   output:

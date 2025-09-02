@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_ccfa_copay_level(Variable):
     value_type = int
     entity = SPMUnit
-    label = "MA CCSP copay level"
+    label = "Massachusetts CCSP copay level"
     definition_period = MONTH
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_ccfa_immigration_eligible(Variable):
+class ma_ccfa_immigration_status_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Immigration status eligible for Massachusetts Child Care Financial Assistance (CCFA)"

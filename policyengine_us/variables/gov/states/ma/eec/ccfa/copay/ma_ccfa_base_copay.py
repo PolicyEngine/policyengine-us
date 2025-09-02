@@ -22,6 +22,6 @@ class ma_ccfa_base_copay(Variable):
         # Step 3: Calculate fee on income above poverty
         income = spm_unit("ma_ccfa_countable_income", period)
         fpg = spm_unit("ma_ccfa_fpg", period)
-        income_above_poverty = max_(income - fpg, 0)
+        income_above_poverty_level = max_(income - fpg, 0)
 
-        return income_above_poverty * fee_percentage
+        return income_above_poverty_level * fee_percentage
