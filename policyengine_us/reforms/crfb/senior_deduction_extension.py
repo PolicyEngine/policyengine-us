@@ -15,14 +15,17 @@ def senior_deduction_extension_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov
             year = period.start.year
-            
+
             # Get the standard deductions list from the parameter
             deductions_list = list(p.irs.deductions.deductions_if_itemizing)
-            
+
             # If we're past 2028 and senior deduction is not already in the list, add it
-            if year >= 2029 and "additional_senior_deduction" not in deductions_list:
+            if (
+                year >= 2029
+                and "additional_senior_deduction" not in deductions_list
+            ):
                 deductions_list.append("additional_senior_deduction")
-            
+
             # Calculate total deductions
             return add(tax_unit, period, deductions_list)
 
@@ -36,14 +39,19 @@ def senior_deduction_extension_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov
             year = period.start.year
-            
+
             # Get the standard deductions list from the parameter
-            deductions_list = list(p.irs.deductions.deductions_if_not_itemizing)
-            
+            deductions_list = list(
+                p.irs.deductions.deductions_if_not_itemizing
+            )
+
             # If we're past 2028 and senior deduction is not already in the list, add it
-            if year >= 2029 and "additional_senior_deduction" not in deductions_list:
+            if (
+                year >= 2029
+                and "additional_senior_deduction" not in deductions_list
+            ):
                 deductions_list.append("additional_senior_deduction")
-            
+
             # Calculate total deductions
             return add(tax_unit, period, deductions_list)
 
