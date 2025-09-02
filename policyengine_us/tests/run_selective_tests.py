@@ -319,25 +319,28 @@ class SelectiveTestRunner:
         # Remove redundant paths (subdirectories of paths already included)
         deduplicated_paths = set()
         sorted_paths = sorted(existing_test_paths)
-        
+
         for path in sorted_paths:
             # Check if this path is a subdirectory of any path already in deduplicated_paths
             is_subdirectory = False
             for existing_path in deduplicated_paths:
-                if path.startswith(existing_path + os.sep) or path == existing_path:
+                if (
+                    path.startswith(existing_path + os.sep)
+                    or path == existing_path
+                ):
                     is_subdirectory = True
                     break
-            
+
             if not is_subdirectory:
                 # Also remove any existing paths that are subdirectories of this new path
                 paths_to_remove = set()
                 for existing_path in deduplicated_paths:
                     if existing_path.startswith(path + os.sep):
                         paths_to_remove.add(existing_path)
-                
+
                 deduplicated_paths -= paths_to_remove
                 deduplicated_paths.add(path)
-        
+
         return deduplicated_paths
 
     def run_tests(
@@ -359,18 +362,38 @@ class SelectiveTestRunner:
         if with_coverage:
             # Use coverage to run the tests
             import sys
-            
+
             # First check if coverage is importable
             try:
                 import coverage
+
                 print(f"Coverage version: {coverage.__version__}")
             except ImportError as e:
                 print(f"ERROR: Coverage module not found: {e}")
-                print("Please ensure coverage is installed: pip install coverage")
+                print(
+                    "Please ensure coverage is installed: pip install coverage"
+                )
                 return 1
-            
+
             # Since we're already running under 'uv run python', we can use python -m coverage
             # which will work in the same environment
+            # Only track coverage for files in the same directories as the tests
+            include_patterns = []
+            for test_path in test_paths:
+                # Convert test path to variable path
+                # e.g., policyengine_us/tests/policy/baseline/gov/local/ca -> policyengine_us/variables/gov/local/ca/*
+                if "tests/policy/baseline/" in test_path:
+                    var_path = test_path.replace(
+                        "tests/policy/baseline/", "variables/"
+                    )
+                    include_patterns.append(f"{var_path}/*.py")
+                elif "tests/policy/reform/" in test_path:
+                    include_patterns.append("policyengine_us/reforms/*.py")
+                elif "tests/policy/contrib/" in test_path:
+                    include_patterns.append(
+                        "policyengine_us/parameters/contrib/*.py"
+                    )
+
             pytest_args = [
                 sys.executable,
                 "-m",
@@ -378,12 +401,22 @@ class SelectiveTestRunner:
                 "run",
                 "-a",
                 "--branch",
-                "-m",
-                "policyengine_core.scripts.policyengine_command",
-                "test",
-                "-c",
-                "policyengine_us",
             ]
+
+            # Add --include flag to only track relevant files
+            if include_patterns:
+                include_pattern = ",".join(include_patterns)
+                pytest_args.extend(["--include", include_pattern])
+
+            pytest_args.extend(
+                [
+                    "-m",
+                    "policyengine_core.scripts.policyengine_command",
+                    "test",
+                    "-c",
+                    "policyengine_us",
+                ]
+            )
         else:
             pytest_args = [
                 "policyengine-core",

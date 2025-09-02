@@ -61,16 +61,12 @@ jobs:
         run: |
           echo "Running selective tests based on changed files..."
           python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
-      - name: Generate coverage report
+      - name: Generate coverage report and check threshold
         if: always()
         run: |
-          coverage report
+          echo "Coverage report (files below 100% coverage):"
+          coverage report --fail-under=100 --skip-covered --skip-empty
           coverage xml
-      - name: Check coverage threshold
-        if: always()
-        run: |
-          echo "Checking coverage threshold..."
-          coverage report --fail-under=100
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
