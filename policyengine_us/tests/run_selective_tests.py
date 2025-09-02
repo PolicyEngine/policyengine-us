@@ -289,6 +289,11 @@ class SelectiveTestRunner:
 
             # Special handling for test files themselves
             if "tests" in file and file.endswith(".py"):
+                # Skip test infrastructure files that shouldn't trigger all tests
+                if file.endswith(
+                    ("run_selective_tests.py", "test_batched.py")
+                ):
+                    continue
                 # Add the directory containing the test file
                 test_dir = os.path.dirname(file)
                 if test_dir:
