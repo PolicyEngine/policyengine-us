@@ -288,5 +288,5 @@
         members: [person1, person2]
         state_fips: 30
   output:
-    mt_capital_gains_tax_joint: 59
+    mt_capital_gains_tax_joint: [59, 0]
     mt_income_tax: [59, 0]
