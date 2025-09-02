@@ -14,8 +14,18 @@ class mt_capital_gains_tax_joint(Variable):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
         # the tax for capital gains comes into effect after 2024
         if p.in_effect:
+            # Line instructions from the 2024 Montana Individual Income Tax Return Form 2
+            # https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=2
+            # Line 1
+            taxable_income = person("mt_taxable_income_joint", period)
+            # Line 2
             capital_gains = person("long_term_capital_gains", period)
+            # Line 3
+            lesser_of_cg_and_taxable_income = min_(capital_gains, taxable_income)
+            # Line 4
+            excess_over_taxable_income = max_(taxable_income - lesser_of_cg_and_taxable_income, 0)
             filing_status = person.tax_unit("filing_status", period)
+            # Line 5
             applicable_threshold = person(
                 "mt_capital_gains_tax_applicable_threshold_joint", period
             )
@@ -53,21 +63,25 @@ class mt_capital_gains_tax_joint(Variable):
                     p.rates.head_of_household.amounts[-1],
                 ],
             )
-            # Calculate taxes
+            # Line 6
+            excess_over_threshold =  max_(applicable_threshold - excess_over_taxable_income, 0)
+            # Line 7
             capital_gains_below_threshold = min_(
-                applicable_threshold, capital_gains
+                excess_over_threshold, lesser_of_cg_and_taxable_income
             )
-            capital_gains_above_threshold = max_(
-                capital_gains - applicable_threshold, 0
-            )
-
+            # Line 8
             lower_capital_gains_tax = (
                 capital_gains_below_threshold * lower_rate
             )
-            higher_capital_gains_tax = (
-                capital_gains_above_threshold * higher_rate
+            # Line 9
+            income_above_threshold = max_(
+                lesser_of_cg_and_taxable_income - excess_over_threshold, 0
             )
-
+            # Line 10
+            higher_capital_gains_tax = (
+                income_above_threshold * higher_rate
+            )
+            # Line 11
             return lower_capital_gains_tax + higher_capital_gains_tax
 
         return 0

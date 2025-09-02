@@ -252,3 +252,41 @@
   output:
     mt_files_separately: false
     mt_income_tax: 76_963
+
+- name: taxsim_record_29826_2024.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 77
+        employment_income: 0.0
+        qualified_dividend_income: 1804.41835
+        long_term_capital_gains: 19594.1835
+        taxable_interest_income: 1242.1687
+        is_tax_unit_head: true
+      person2:
+        age: 77
+        employment_income: 0.0
+        qualified_dividend_income: 1804.41835
+        long_term_capital_gains: 19594.1835
+        taxable_interest_income: 1242.1687
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    mt_capital_gains_tax_joint: 59
+    mt_income_tax: [59, 0]
