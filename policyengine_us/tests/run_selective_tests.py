@@ -20,9 +20,9 @@ class SelectiveTestRunner:
 
         # Define regex patterns for matching files to tests
         self.test_patterns = [
-            # Rule 1: Match gov folders (excluding states) to their test directories
+            # Rule 1: Match gov folders (excluding states and contrib) to their test directories
             {
-                "file_pattern": r"policyengine_us/(parameters|variables)/gov/(?!states/)([^/]+)",
+                "file_pattern": r"policyengine_us/(parameters|variables)/gov/(?!states/|contrib/)([^/]+)",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/\2",
             },
             # Rule 2: Match state-specific changes to state tests
@@ -35,7 +35,12 @@ class SelectiveTestRunner:
                 "file_pattern": r"policyengine_us/(parameters|variables)/gov/local/([^/]+)",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/local/\2",
             },
-            # Match reforms to reform tests
+            # Match reforms in specific organization folders to their contrib test folders
+            {
+                "file_pattern": r"policyengine_us/reforms/([^/]+)/",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
+            },
+            # Match general reforms to reform tests
             {
                 "file_pattern": r"policyengine_us/reforms/",
                 "test_pattern": r"policyengine_us/tests/policy/reform",
@@ -44,6 +49,11 @@ class SelectiveTestRunner:
             {
                 "file_pattern": r"policyengine_us/parameters/contrib/",
                 "test_pattern": r"policyengine_us/tests/policy/contrib",
+            },
+            # Match gov/contrib parameters to their specific contrib subfolder tests
+            {
+                "file_pattern": r"policyengine_us/parameters/gov/contrib/([^/]+)/",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
             },
             # Match household variables to household tests
             {
