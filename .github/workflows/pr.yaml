@@ -86,7 +86,7 @@ jobs:
           fi
           
           # Generate XML for Codecov
-          coverage xml
+          coverage xml || echo "No coverage data to generate XML report."
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
