@@ -10929,3 +10929,11 @@
     added:
     - Illinois Low Income Home Energy Assistance Program (LIHEAP)
   date: 2025-09-02 23:14:24
+- bump: patch
+  changes:
+    changed:
+    - Removed coverage tracking from push.yaml workflow to speed up master branch
+      builds.
+    - Implemented selective test runner and coverage test for PR workflow to only
+      test changed files.
+  date: 2025-09-03 17:02:51

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.389.1] - 2025-09-03 17:02:51
+
+### Changed
+
+- Removed coverage tracking from push.yaml workflow to speed up master branch builds.
+- Implemented selective test runner and coverage test for PR workflow to only test changed files.
+
 ## [1.389.0] - 2025-09-02 23:14:24
 
 ### Added
@@ -12863,6 +12870,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.389.0...1.389.1
 [1.389.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.388.0...1.389.0
 [1.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.3...1.388.0
 [1.387.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.2...1.387.3

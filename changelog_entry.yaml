@@ -1,5 +1,0 @@
-- bump: patch
-  changes:
-    changed:
-      - Removed coverage tracking from push.yaml workflow to speed up master branch builds.
-      - Implemented selective test runner and coverage test for PR workflow to only test changed files.
