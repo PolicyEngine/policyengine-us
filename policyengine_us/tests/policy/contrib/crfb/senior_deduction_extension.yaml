@@ -1,6 +1,6 @@
 - name: Integration test - senior deduction included in taxable income deductions when itemizing in 2029
   period: 2029
-  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension_reform_object
+  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
   input:
     gov.contrib.crfb.senior_deduction_extension.applies: true
     people:
@@ -31,7 +31,7 @@
 
 - name: Integration test - senior deduction included in taxable income deductions when not itemizing in 2029
   period: 2029
-  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension_reform_object
+  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
   input:
     gov.contrib.crfb.senior_deduction_extension.applies: true
     people:
@@ -53,13 +53,10 @@
   output:
     additional_senior_deduction: 12_000
     # Total deductions when not itemizing should include:
-    # itemized_taxable_income_deductions: calculated based on state/local taxes
+    # standard_deduction: 38_300 (joint filing in 2029, includes additional standard deduction for seniors)
     # qualified_business_income_deduction: 5_000
-    # wagering_losses_deduction: 0
     # additional_senior_deduction: 12_000 (from extension)
-    # Note: In 2029, standard deduction is not used; uses itemized_taxable_income_deductions instead
-    # FIXME: Should be 30_922.7983 but reform not applying to non-itemizing case
-    taxable_income_deductions_if_not_itemizing: 18_922.7983
+    taxable_income_deductions_if_not_itemizing: 55_300
 
 - name: Integration test - no senior deduction in 2029 without extension
   period: 2029
@@ -88,9 +85,9 @@
     # Without extension, senior deduction is calculated but NOT included in deductions for 2029
     taxable_income_deductions_if_itemizing: 35_000
 
-- name: Integration test - extension continues working in 2040
-  period: 2040
-  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension_reform_object
+- name: Integration test - extension continues working in 2035
+  period: 2035
+  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
   input:
     gov.contrib.crfb.senior_deduction_extension.applies: true
     people:
@@ -110,10 +107,8 @@
   output:
     additional_senior_deduction: 6_000
     # Total deductions should include:
-    # itemized_taxable_income_deductions: calculated based on state/local taxes
+    # basic_standard_deduction: 19_600 (single filing in 2035)
+    # additional_standard_deduction: 2_450 (single senior aged deduction in 2035)
     # qualified_business_income_deduction: 2_000
-    # wagering_losses_deduction: 0
     # additional_senior_deduction: 6_000 (from extension)
-    # Note: In 2040, standard deduction is not used; uses itemized_taxable_income_deductions instead
-    # FIXME: Should be 15_715.8893 but reform not applying to non-itemizing case
-    taxable_income_deductions_if_not_itemizing: 9_715.8893
+    taxable_income_deductions_if_not_itemizing: 30_050
