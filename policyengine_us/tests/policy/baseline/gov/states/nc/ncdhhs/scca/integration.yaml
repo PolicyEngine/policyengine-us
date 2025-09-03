@@ -98,7 +98,7 @@
   output:
     nc_scca_parent_fee: 215
     nc_scca_market_rate: [0, 0, 323]
-    nc_scca: 323
+    nc_scca: 108
 
 - name: Family of four (2 children, ages 0 & 1), no disabilities, monthly income below FPL.
   period: 2024-01
@@ -130,7 +130,7 @@
         state_code: NC
   output:
     nc_scca_parent_fee: 520
-    nc_scca: 1_912
+    nc_scca: 1_392
 
 - name: Family of four (2 children, ages 0 & 3), no disabilities, monthly income below FPL.
   period: 2024-01
@@ -161,7 +161,7 @@
         county_str: ALAMANCE_COUNTY_NC
         state_code: NC
   output:
-    nc_scca: 1_800
+    nc_scca: 1_280
 
 - name: No childcare expenses
   period: 2025-01
@@ -180,7 +180,7 @@
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        nc_scca_countable_income: 2000
+        nc_scca_countable_income: 2_000
         members: [person1, child1, child2]
         spm_unit_pre_subsidy_childcare_expenses: 0
     households:

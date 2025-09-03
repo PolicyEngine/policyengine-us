@@ -26,7 +26,7 @@
         county_str: ALAMANCE_COUNTY_NC
         state_code: NC
   output:
-    nc_scca_maximum_net_payment: 1_280
+    nc_scca_maximum_payment: 1_280
 
 - name: Case 2, no children, no benefit.
   period: 2024-01
@@ -48,7 +48,7 @@
         county_str: ALAMANCE_COUNTY_NC
         state_code: NC
   output:
-    nc_scca_maximum_net_payment: 0
+    nc_scca_maximum_payment: 0
 
 - name: Case 3, family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
   period: 2023-01
@@ -74,4 +74,4 @@
         county_str: ALAMANCE_COUNTY_NC
         state_code: NC
   output:
-    nc_scca_maximum_net_payment: 108
+    nc_scca_maximum_payment: 108
