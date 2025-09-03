@@ -1,0 +1,29 @@
+- name: Cannot be negative
+  period: 2024
+  input:
+    net_capital_gains: -2_000
+    state_code: MI
+    health_insurance_premiums: 0
+    above_the_line_deductions: 1_000
+  output:
+    mi_household_resources: 0
+
+- name: Reduced to 0
+  period: 2024
+  input:
+    net_capital_gains: 2_000
+    state_code: MI
+    health_insurance_premiums: 3_000
+    above_the_line_deductions: 1_000
+  output:
+    mi_household_resources: 0
+
+- name: Partially reduced
+  period: 2024
+  input:
+    net_capital_gains: 10_000
+    state_code: MI
+    health_insurance_premiums: 3_000
+    above_the_line_deductions: 1_000
+  output:
+    mi_household_resources: 6_000

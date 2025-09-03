@@ -1,0 +1,45 @@
+- name: Case 1, there is a child in the household, ineligible.
+  period: 2024-01
+  input: 
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 64
+        employment_income: 0
+      person3:
+        age: 17
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_riv_general_relief_eligible: false
+
+- name: Case 2, no income, no property, default immigration status, eligible.
+  period: 2024-01
+  input: 
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 64
+        employment_income: 0
+      person3:
+        age: 18
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_riv_general_relief_eligible: true

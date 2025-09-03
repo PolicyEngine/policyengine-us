@@ -10897,3 +10897,48 @@
     - Optimally allocate the Mississippi taxable income for married couples filing
       jointly.
   date: 2025-09-01 22:58:34
+- bump: minor
+  changes:
+    added:
+    - Arkansas additional tax credit for qualified individuals.
+    fixed:
+    - Arkansas 2024 income tax rates.
+  date: 2025-09-02 15:09:34
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 18:08:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 19:32:13
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana 2024 capital gains tax.
+  date: 2025-09-02 19:45:27
+- bump: minor
+  changes:
+    added:
+    - California Riverside County General Relief Program.
+  date: 2025-09-02 22:52:24
+- bump: minor
+  changes:
+    added:
+    - Illinois Low Income Home Energy Assistance Program (LIHEAP)
+  date: 2025-09-02 23:14:24
+- bump: patch
+  changes:
+    changed:
+    - Removed coverage tracking from push.yaml workflow to speed up master branch
+      builds.
+    - Implemented selective test runner and coverage test for PR workflow to only
+      test changed files.
+  date: 2025-09-03 17:02:51
+- bump: minor
+  changes:
+    added:
+    - CRFB tax employer payroll tax reform with configurable percentage parameter
+  date: 2025-09-03 17:50:49
