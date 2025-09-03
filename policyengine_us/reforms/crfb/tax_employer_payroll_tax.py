@@ -58,11 +58,18 @@ def tax_employer_payroll_tax_reform() -> Reform:
             for source in sources:
                 # Add positive values only - losses are deducted later.
                 total += not_dependent * max_(0, add(person, period, [source]))
-            return (
-                total
-                + person("employer_social_security_tax", period)
-                + person("employer_medicare_tax", period)
+
+            # Get the percentage of employer payroll tax to include
+            p = parameters(period).gov.contrib.crfb.tax_employer_payroll_tax
+
+            # Apply percentage to employer payroll taxes
+            employer_payroll_tax = add(
+                person,
+                period,
+                ["employer_social_security_tax", "employer_medicare_tax"],
             )
+            taxable_employer_payroll_tax = p.percentage * employer_payroll_tax
+            return total + taxable_employer_payroll_tax
 
     # Create a reform object applies the method
     # It inherits the Reform class
