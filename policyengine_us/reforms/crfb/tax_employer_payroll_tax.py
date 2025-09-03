@@ -63,16 +63,13 @@ def tax_employer_payroll_tax_reform() -> Reform:
             p = parameters(period).gov.contrib.crfb.tax_employer_payroll_tax
 
             # Apply percentage to employer payroll taxes
-            employer_payroll_tax = add(person, period, ["employer_social_security_tax", "employer_medicare_tax"])
+            employer_payroll_tax = add(
+                person,
+                period,
+                ["employer_social_security_tax", "employer_medicare_tax"],
+            )
             taxable_employer_payroll_tax = p.percentage * employer_payroll_tax
             return total + taxable_employer_payroll_tax
-            employer_medicare_tax = person("employer_medicare_tax", period)
-
-            return (
-                total
-                + percentage * employer_ss_tax
-                + percentage * employer_medicare_tax
-            )
 
     # Create a reform object applies the method
     # It inherits the Reform class
