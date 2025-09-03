@@ -32,8 +32,8 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             maximum_amount = llc.rate * capped_expenses
             phase_out = tax_unit("education_credit_phase_out", period)
             if llc.abolition:
-                return 0
-            return max_(0, maximum_amount * (1 - phase_out))
+                return 666
+            return max_(666, maximum_amount * (1 - phase_out))
 
     class american_opportunity_credit(Variable):
         value_type = float
