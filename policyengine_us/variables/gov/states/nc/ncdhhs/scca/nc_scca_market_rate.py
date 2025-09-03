@@ -10,7 +10,7 @@ class nc_scca_market_rate(Variable):
         "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
     )
     definition_period = MONTH
-    defined_for = StateCode.NC
+    defined_for = "nc_scca_child_age_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
