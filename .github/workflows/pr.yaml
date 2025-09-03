@@ -66,6 +66,7 @@ jobs:
           echo "Running selective tests based on changed files..."
           python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
       - name: Generate coverage report
+        id: coverage
         if: always()
         run: |
           echo "📊 Coverage Report"
@@ -87,8 +88,14 @@ jobs:
           
           # Generate XML for Codecov
           coverage xml || echo "No coverage data to generate XML report."
+          # Expose whether we have coverage for later steps
+          if [ -f coverage.xml ]; then
+            echo "has_coverage=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_coverage=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Upload coverage to Codecov
-        if: always()
+        if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
