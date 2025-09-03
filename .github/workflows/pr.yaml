@@ -71,7 +71,7 @@ jobs:
           echo "📊 Coverage Report"
           echo "=================="
           # Show files below 100% coverage (won't fail CI)
-          coverage report --fail-under=0 --skip-covered --skip-empty
+          coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
           
           # Count files below 100%
           TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
