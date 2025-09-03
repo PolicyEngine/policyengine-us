@@ -61,10 +61,11 @@ def tax_employer_payroll_tax_reform() -> Reform:
 
             # Get the percentage of employer payroll tax to include
             p = parameters(period).gov.contrib.crfb.tax_employer_payroll_tax
-            percentage = p.percentage
 
             # Apply percentage to employer payroll taxes
-            employer_ss_tax = person("employer_social_security_tax", period)
+            employer_payroll_tax = add(person, period, ["employer_social_security_tax", "employer_medicare_tax"])
+            taxable_employer_payroll_tax = p.percentage * employer_payroll_tax
+            return total + taxable_employer_payroll_tax
             employer_medicare_tax = person("employer_medicare_tax", period)
 
             return (
