@@ -20,9 +20,9 @@ class SelectiveTestRunner:
 
         # Define regex patterns for matching files to tests
         self.test_patterns = [
-            # Rule 1: Match gov folders (excluding states) to their test directories
+            # Rule 1: Match gov folders (excluding states and contrib) to their test directories
             {
-                "file_pattern": r"policyengine_us/(parameters|variables)/gov/(?!states/)([^/]+)",
+                "file_pattern": r"policyengine_us/(parameters|variables)/gov/(?!states/|contrib/)([^/]+)",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/\2",
             },
             # Rule 2: Match state-specific changes to state tests
@@ -35,7 +35,12 @@ class SelectiveTestRunner:
                 "file_pattern": r"policyengine_us/(parameters|variables)/gov/local/([^/]+)",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/local/\2",
             },
-            # Match reforms to reform tests
+            # Match reforms in specific organization folders to their contrib test folders
+            {
+                "file_pattern": r"policyengine_us/reforms/([^/]+)/",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
+            },
+            # Match general reforms to reform tests
             {
                 "file_pattern": r"policyengine_us/reforms/",
                 "test_pattern": r"policyengine_us/tests/policy/reform",
@@ -44,6 +49,11 @@ class SelectiveTestRunner:
             {
                 "file_pattern": r"policyengine_us/parameters/contrib/",
                 "test_pattern": r"policyengine_us/tests/policy/contrib",
+            },
+            # Match gov/contrib parameters to their specific contrib subfolder tests
+            {
+                "file_pattern": r"policyengine_us/parameters/gov/contrib/([^/]+)/",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
             },
             # Match household variables to household tests
             {
@@ -289,11 +299,6 @@ class SelectiveTestRunner:
 
             # Special handling for test files themselves
             if "tests" in file and file.endswith(".py"):
-                # Skip test infrastructure files that shouldn't trigger all tests
-                if file.endswith(
-                    ("run_selective_tests.py", "test_batched.py")
-                ):
-                    continue
                 # Add the directory containing the test file
                 test_dir = os.path.dirname(file)
                 if test_dir:
@@ -319,13 +324,7 @@ class SelectiveTestRunner:
 
         return existing_test_paths
 
-    def run_tests(
-        self,
-        test_paths: Set[str],
-        verbose: bool = False,
-        with_coverage: bool = False,
-        changed_files: Set[str] = None,
-    ) -> int:
+    def run_tests(self, test_paths: Set[str], verbose: bool = False) -> int:
         """Run pytest on specified test paths."""
         if not test_paths:
             print("No relevant tests found for changed files.")
@@ -336,86 +335,7 @@ class SelectiveTestRunner:
             print(f"  - {path}")
 
         # Construct pytest command
-        if with_coverage:
-            # Use coverage to run the tests
-            import sys
-
-            # First check if coverage is importable
-            try:
-                import coverage
-
-                print(f"Coverage version: {coverage.__version__}")
-            except ImportError as e:
-                print(f"ERROR: Coverage module not found: {e}")
-                print(
-                    "Please ensure coverage is installed: pip install coverage"
-                )
-                return 1
-
-            # Only track coverage for the specific files that changed in the PR
-            include_patterns = []
-            if changed_files:
-                # Only include Python files that were actually changed (excluding test directories)
-                changed_py_files = [
-                    f
-                    for f in changed_files
-                    if f.endswith(".py") and "/tests/" not in f
-                ]
-                if changed_py_files:
-                    include_patterns = changed_py_files
-            else:
-                # Fallback to directory-based patterns if no changed files provided
-                for test_path in test_paths:
-                    # Convert test path to variable path
-                    if "tests/policy/baseline/" in test_path:
-                        var_path = test_path.replace(
-                            "tests/policy/baseline/", "variables/"
-                        )
-                        include_patterns.append(f"{var_path}/**/*.py")
-                        include_patterns.append(f"{var_path}/*.py")
-                    elif "tests/policy/reform/" in test_path:
-                        include_patterns.append(
-                            "policyengine_us/reforms/**/*.py"
-                        )
-                        include_patterns.append("policyengine_us/reforms/*.py")
-                    elif "tests/policy/contrib/" in test_path:
-                        include_patterns.append(
-                            "policyengine_us/parameters/contrib/**/*.py"
-                        )
-                        include_patterns.append(
-                            "policyengine_us/parameters/contrib/*.py"
-                        )
-
-            pytest_args = [
-                sys.executable,
-                "-m",
-                "coverage",
-                "run",
-                "-a",
-                "--branch",
-            ]
-
-            # Add --include flag to only track relevant files
-            if include_patterns:
-                include_pattern = ",".join(include_patterns)
-                pytest_args.extend(["--include", include_pattern])
-
-            pytest_args.extend(
-                [
-                    "-m",
-                    "policyengine_core.scripts.policyengine_command",
-                    "test",
-                    "-c",
-                    "policyengine_us",
-                ]
-            )
-        else:
-            pytest_args = [
-                "policyengine-core",
-                "test",
-                "-c",
-                "policyengine_us",
-            ]
+        pytest_args = ["policyengine-core", "test", "-c", "policyengine_us"]
 
         # Add test paths
         pytest_args.extend(sorted(test_paths))
@@ -498,11 +418,6 @@ def main():
         "--debug",
         action="store_true",
         help="Show debug information about git state",
-    )
-    parser.add_argument(
-        "--coverage",
-        action="store_true",
-        help="Run tests with coverage measurement",
     )
 
     args = parser.parse_args()
@@ -603,14 +518,7 @@ def main():
         print("Consider running all tests with --all flag.")
         sys.exit(0)
 
-    sys.exit(
-        runner.run_tests(
-            test_paths,
-            verbose=args.verbose,
-            with_coverage=args.coverage,
-            changed_files=changed_files if args.coverage else None,
-        )
-    )
+    sys.exit(runner.run_tests(test_paths, verbose=args.verbose))
 
 
 if __name__ == "__main__":
