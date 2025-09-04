@@ -1,0 +1,159 @@
+- name: Full employer payroll tax inclusion (100%)
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
+    people:
+      person1:
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # With $50,000 income:
+    # Employer SS tax: $50,000 * 0.062 = $3,100
+    # Employer Medicare tax: $50,000 * 0.0145 = $725
+    # Total employer tax: $3,825
+    employer_social_security_tax: [3_100]
+    employer_medicare_tax: [725]
+    # IRS gross income should include 100% of employer taxes
+    irs_gross_income: [53_825]  # $50,000 + $3,825
+
+- name: Half employer payroll tax inclusion (50%)
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.5
+    people:
+      person1:
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    employer_social_security_tax: [3_100]
+    employer_medicare_tax: [725]
+    # IRS gross income should include 50% of employer taxes
+    # $50,000 + ($3,825 * 0.5) = $50,000 + $1,912.50
+    irs_gross_income: [51_912.5]
+
+- name: Quarter employer payroll tax inclusion (25%)
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.25
+    people:
+      person1:
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # With $100,000 income:
+    # Employer SS tax: $100,000 * 0.062 = $6,200
+    # Employer Medicare tax: $100,000 * 0.0145 = $1,450
+    # Total employer tax: $7,650
+    employer_social_security_tax: [6_200]
+    employer_medicare_tax: [1_450]
+    # IRS gross income should include 25% of employer taxes
+    # $100,000 + ($7,650 * 0.25) = $100,000 + $1,912.50
+    irs_gross_income: [101_912.5]
+
+- name: No employer payroll tax inclusion (0%)
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.0
+    people:
+      person1:
+        employment_income: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # With $75,000 income:
+    # Employer SS tax: $75,000 * 0.062 = $4,650
+    # Employer Medicare tax: $75,000 * 0.0145 = $1,087.50
+    employer_social_security_tax: [4_650]
+    employer_medicare_tax: [1_087.5]
+    # IRS gross income should not include any employer taxes with 0%
+    irs_gross_income: [75_000]
+
+- name: Three-quarters employer payroll tax inclusion (75%)
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.75
+    people:
+      person1:
+        employment_income: 60_000
+      person2:
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Person 1: $60,000 income
+    # Employer SS tax: $60,000 * 0.062 = $3,720
+    # Employer Medicare tax: $60,000 * 0.0145 = $870
+    # Person 2: $40,000 income
+    # Employer SS tax: $40,000 * 0.062 = $2,480
+    # Employer Medicare tax: $40,000 * 0.0145 = $580
+    employer_social_security_tax: [3_720, 2_480]
+    employer_medicare_tax: [870, 580]
+    # IRS gross income should include 75% of employer taxes
+    # Person 1: $60,000 + (($3,720 + $870) * 0.75) = $60,000 + $3,442.50
+    # Person 2: $40,000 + (($2,480 + $580) * 0.75) = $40,000 + $2,295
+    irs_gross_income: [63_442.5, 42_295]
+
+- name: High earner with partial inclusion at Social Security wage cap
+  period: 2024
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.6
+    people:
+      person1:
+        employment_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # With $200,000 income (above SS wage cap of $168,600 for 2024):
+    # Employer SS tax: $168,600 * 0.062 = $10,453.20
+    # Employer Medicare tax: $200,000 * 0.0145 = $2,900
+    # Total employer tax: $13,353.20
+    employer_social_security_tax: [10_453.2]
+    employer_medicare_tax: [2_900]
+    # IRS gross income should include 60% of employer taxes
+    # $200,000 + ($13,353.20 * 0.6) = $200,000 + $8,011.92
+    irs_gross_income: [208_011.92]
