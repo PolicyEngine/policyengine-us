@@ -2,6 +2,11 @@ description: Minnesota phases the child and working families tax credit out over
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   label: Minnesota child and working families tax credit joint phase-out threshold
   reference:
   - title: 2024 Schedule M1CWFC, Minnesota Child and Working Family Credits
