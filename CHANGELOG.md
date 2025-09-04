@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.391.0] - 2025-09-04 09:30:12
+
+### Added
+
+- North Carolina Subsidized Child Care Assistance (SCCA) maximum payment variable.
+
+### Fixed
+
+- North Carolina Subsidized Child Care Assistance (SCCA) formula.
+
 ## [1.390.1] - 2025-09-04 09:23:57
 
 ### Fixed
@@ -12882,6 +12892,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.390.1...1.391.0
 [1.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.390.0...1.390.1
 [1.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.389.1...1.390.0
 [1.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.389.0...1.389.1
