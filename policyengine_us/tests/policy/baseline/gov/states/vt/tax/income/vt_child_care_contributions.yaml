@@ -1,0 +1,41 @@
+- name: In 2024, only 50% of the self-employment income is counted towards the child care contributions
+  period: 2024
+  input:
+    self_employment_income: 10_000
+    state_code: VT
+  output:
+    vt_child_care_contributions: 5.5
+
+- name: In 2025, all of the self-employment income is counted towards the child care contributions
+  period: 2025
+  input:
+    self_employment_income: 10_000
+    state_code: VT
+  output:
+    vt_child_care_contributions: 11
+
+- name: Only self-employment income is taxed
+  period: 2025
+  input:
+    self_employment_income: 0
+    employment_income: 10_000
+    state_code: VT
+  output:
+    vt_child_care_contributions: 0
+
+- name: Mixed income
+  period: 2025
+  input:
+    self_employment_income: 1_000
+    employment_income: 10_000
+    state_code: VT
+  output:
+    vt_child_care_contributions: 1.1
+
+- name: Negative self-employment income
+  period: 2024
+  input:
+    self_employment_income: -10_000
+    state_code: VT
+  output:
+    vt_child_care_contributions: 0
