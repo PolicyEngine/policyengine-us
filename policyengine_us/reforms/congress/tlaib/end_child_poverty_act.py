@@ -152,12 +152,17 @@ def create_end_child_poverty_act() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs.credits
-            previous_credits = add(tax_unit, period, p.refundable)
+            # Get list of refundable credits, but exclude EITC and CTC
+            refundable_credits = [
+                credit for credit in p.refundable 
+                if credit not in ["eitc", "refundable_ctc"]
+            ]
+            other_credits = add(tax_unit, period, refundable_credits)
             filer_credit = tax_unit("ecpa_filer_credit", period)
             adult_dependent_credit = tax_unit(
                 "ecpa_adult_dependent_credit", period
             )
-            return filer_credit + adult_dependent_credit + previous_credits
+            return filer_credit + adult_dependent_credit + other_credits
 
     class reform(Reform):
         def apply(self):
@@ -167,8 +172,8 @@ def create_end_child_poverty_act() -> Reform:
             self.update_variable(ecpa_child_benefit)
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
-            self.neutralize_variable("eitc")
-            self.neutralize_variable("ctc")
+            # Don't neutralize EITC and CTC - they're excluded from federal credits
+            # but remain available for state conformity calculations
 
     return reform
 
