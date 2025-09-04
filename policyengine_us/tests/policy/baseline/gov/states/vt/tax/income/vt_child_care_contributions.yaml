@@ -4,7 +4,7 @@
     self_employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 55
+    vt_child_care_contributions: 5.5
 
 - name: In 2025, all of the self-employment income is counted towards the child care contributions
   period: 2025
@@ -12,7 +12,7 @@
     self_employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 110
+    vt_child_care_contributions: 11
 
 - name: Only self-employment income is taxed
   period: 2025
@@ -30,4 +30,4 @@
     employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 11
+    vt_child_care_contributions: 1.1

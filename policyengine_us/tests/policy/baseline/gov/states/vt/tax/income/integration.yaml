@@ -5,8 +5,8 @@
     people:
       person1:
         age: 40
-        employment_income: 50000.0
-        self_employment_income: 110000
+        employment_income: 50_000
+        self_employment_income: 110_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -24,4 +24,4 @@
         members: [person1]
         state_fips: 50
   output:
-    vt_income_tax: 7902.64
+    vt_income_tax: 7_963
