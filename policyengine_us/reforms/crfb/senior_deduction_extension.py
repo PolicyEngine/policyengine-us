@@ -25,6 +25,7 @@ def create_senior_deduction_extension() -> Reform:
                 "standard_deduction",
                 "qualified_business_income_deduction",
                 "additional_senior_deduction",
+                "charitable_deduction_for_non_itemizers",
             ],
         )
 
