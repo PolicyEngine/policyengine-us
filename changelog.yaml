@@ -10954,3 +10954,23 @@
     fixed:
     - North Carolina Subsidized Child Care Assistance (SCCA) formula.
   date: 2025-09-04 09:30:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child tax credit amount and phase-out thresholds uprating.
+  date: 2025-09-04 20:41:18
+- bump: minor
+  changes:
+    added:
+    - Vermont child care contributions.
+  date: 2025-09-04 22:44:50
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted New York CTC calculations pre 2025.
+  date: 2025-09-05 09:29:37
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted run_selective_tests.py to improve test discovery.
+  date: 2025-09-05 09:32:44

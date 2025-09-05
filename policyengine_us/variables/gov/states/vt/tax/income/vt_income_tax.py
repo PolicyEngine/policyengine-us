@@ -8,5 +8,8 @@ class vt_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VT
-    adds = ["vt_income_tax_before_refundable_credits"]
+    adds = [
+        "vt_income_tax_before_refundable_credits",
+        "vt_child_care_contributions",
+    ]
     subtracts = ["vt_refundable_credits"]
