@@ -1,0 +1,32 @@
+- name: 1 eligible dependent, 1 noneligible dependent
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 7_000
+        is_full_time_college_student: true
+        pr_is_tax_unit_dependent: true
+        age: 20
+      person2:
+        pr_gross_income_person: 2_500
+        is_full_time_college_student: false
+        pr_is_tax_unit_dependent: true
+        age: 27
+      person3:
+        pr_gross_income_person: 10_000
+        is_full_time_college_student: false
+        pr_is_tax_unit_dependent: false
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PR 
+  output:
+    pr_exemptions_is_eligible_nonstudent: [false, false, false]
+    pr_exemptions_is_eligible_student: [true, false, false]
+    pr_eligible_dependent_for_exemption: [true, false, false]
+    pr_dependents_exemption: 1_250
