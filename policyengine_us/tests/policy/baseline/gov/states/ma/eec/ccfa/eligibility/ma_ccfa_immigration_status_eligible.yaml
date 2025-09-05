@@ -1,0 +1,23 @@
+- name: Case 1, citizen, eligible.
+  period: 2025-01
+  input:
+    immigration_status: CITIZEN
+    state_code: MA
+  output:
+    ma_ccfa_immigration_status_eligible: true
+
+- name: Case 2, qualified alien, eligible.
+  period: 2025-01
+  input:
+    immigration_status: REFUGEE
+    state_code: MA
+  output:
+    ma_ccfa_immigration_status_eligible: true
+
+- name: Case 3, undocumented, ineligible.
+  period: 2025-01
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: MA
+  output:
+    ma_ccfa_immigration_status_eligible: false
