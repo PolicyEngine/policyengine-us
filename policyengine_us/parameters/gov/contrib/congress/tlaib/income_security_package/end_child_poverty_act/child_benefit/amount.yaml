@@ -1,0 +1,13 @@
+description: Annual child benefit amount under End Child Poverty Act
+metadata:
+  unit: currency-USD
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: ECPA child benefit amount
+  uprating:
+    parameter: gov.bls.cpi.cpi_w
+    rounding:
+      type: nearest
+      interval: 10
+values:
+  2026-01-01: 5_630
