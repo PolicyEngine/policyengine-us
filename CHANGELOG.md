@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.393.0] - 2025-09-05 09:29:37
+
+### Fixed
+
+- Adjusted New York CTC calculations pre 2025.
+
 ## [1.392.0] - 2025-09-04 22:44:50
 
 ### Added
@@ -12904,6 +12910,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.392.0...1.393.0
 [1.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.391.1...1.392.0
 [1.391.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.391.0...1.391.1
 [1.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.390.1...1.391.0
