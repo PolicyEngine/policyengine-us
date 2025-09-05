@@ -9,7 +9,7 @@
   period: 2022
   input:
     is_ebb_eligible: true
-    broadband_cost_after_lifeline: 20 * 12
+    broadband_expense_after_lifeline: 20 * 12
   output:
     ebb: 20 * 12
 
@@ -22,7 +22,7 @@
     spm_units:
       spm_unit:
         is_ebb_eligible: true
-        broadband_cost_after_lifeline: 100 * 12
+        broadband_expense_after_lifeline: 100 * 12
         members: person
     households:
       household:
