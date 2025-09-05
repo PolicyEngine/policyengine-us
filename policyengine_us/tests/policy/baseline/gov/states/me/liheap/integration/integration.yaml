@@ -1,0 +1,236 @@
+- name: Household size 1, income $30_000, eligible for regular heating assistance
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 30_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_regular_payment: [88, 1_012]  # Within documented min/max range
+    me_liheap: [88, 1_012]
+
+- name: Household size 1, income $37_000, at eligibility threshold (approx 60% SMI)
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 36_836  # 12-month income limit from documentation
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Household size 1, income $37_000, over eligibility threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 37_000  # Slightly over 12-month limit
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+    me_liheap_eligible: false
+    me_liheap: 0
+
+- name: Household size 4, income $60_000, eligible household
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_regular_payment: [88, 1_012]
+    me_liheap: [88, 1_012]
+
+- name: Household size 4, income at eligibility threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 70_839  # 12-month income limit for size 4
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Household size 4, income over eligibility threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 71_000  # Over 12-month limit for size 4
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+    me_liheap_eligible: false
+    me_liheap: 0
+
+- name: Large household size 8, income eligible
+  period: 2025
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 90_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Large household size 8, at income threshold
+  period: 2025
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 97_757  # 12-month income limit for size 8
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Maximum household size from guidelines, size 10
+  period: 2025
+  input:
+    spm_unit_size: 10
+    irs_gross_income: 100_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Maximum household size at threshold, size 10
+  period: 2025
+  input:
+    spm_unit_size: 10
+    irs_gross_income: 102_008  # 12-month income limit for size 10
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Very low income household, size 2, should receive higher benefit
+  period: 2025
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 15_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    # Expect higher benefit for very low income household
+    me_liheap: [200, 1_012]
+
+- name: Higher income eligible household, should receive lower benefit
+  period: 2025
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 45_000  # Near upper limit for size 2
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    # Expect lower benefit for higher income within eligibility
+    me_liheap: [88, 400]
+
+- name: Crisis assistance eligibility test, winter period
+  period: 2025-01  # January, within November-April crisis period
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 40_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_crisis_eligible: true
+    me_liheap_crisis_payment: [0, 800]  # Crisis benefit up to $800
+
+- name: Crisis assistance ineligible, outside winter period
+  period: 2025-07  # July, outside November-April crisis period
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 40_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_crisis_eligible: false
+    me_liheap_crisis_payment: 0
+
+- name: Non-Maine resident, should be ineligible
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: CA  # California resident
+  output:
+    me_liheap_income_eligible: false
+    me_liheap_eligible: false
+    me_liheap: 0
+
+- name: Edge case - household size 6, at SMI calculation transition
+  period: 2025
+  input:
+    spm_unit_size: 6
+    irs_gross_income: 93_507  # At 12-month limit for size 6
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Edge case - household size 7, uses extended formula
+  period: 2025
+  input:
+    spm_unit_size: 7
+    irs_gross_income: 94_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+
+- name: Zero income household should be eligible and receive maximum benefit
+  period: 2025
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 0
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    # Expect maximum benefit for zero income
+    me_liheap: [500, 1_012]
+
+- name: Single elderly person, vulnerable population priority
+  period: 2025
+  input:
+    spm_unit_size: 1
+    age: 70
+    irs_gross_income: 25_000
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_vulnerable_household: true
+    # Should receive priority due to age
+    me_liheap: [200, 1_012]
+
+- name: Household with young children, vulnerable population
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        irs_gross_income: 55_000
+        state_code: ME
+      spouse:
+        age: 28
+        state_code: ME
+      child_1:
+        age: 5
+        state_code: ME
+      child_2:
+        age: 2
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child_1, child_2]
+  output:
+    me_liheap_income_eligible: true
+    me_liheap_eligible: true
+    me_liheap_vulnerable_household: true
+    # Should receive priority due to young children
