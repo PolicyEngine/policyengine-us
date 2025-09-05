@@ -1,0 +1,33 @@
+description: Puerto Rico includes this base amount as tax on income.
+brackets:
+  - threshold: 
+      2012-12-31: 0
+    amount:
+      2012-12-31: 0
+  - threshold:
+      2012-12-31: 9_000
+    amount:
+      2012-12-31: 0
+  - threshold:
+      2012-12-31: 25_000
+    amount:
+      2012-12-31: 1_120
+  - threshold:
+      2012-12-31: 41_500
+    amount:
+      2012-12-31: 3_430
+  - threshold:
+      2012-12-31: 61_500
+    amount:
+      2012-12-31: 8_430
+metadata:
+  amount_unit: currency_USD
+  threshold_unit: currency_USD
+  type: single_amount
+  label: Puerto Rico tax base amount
+  period: year
+  reference:
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=19
+    - title: P.R. Laws tit. 13, § 30061 (a)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1004/subchapter-a/30061/
