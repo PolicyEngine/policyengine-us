@@ -5,6 +5,111 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.395.1] - 2025-09-05 20:35:09
+
+### Fixed
+
+- Add the qualified business income deduction to the list of additions in South Carolina.
+
+## [1.395.0] - 2025-09-05 15:45:41
+
+### Added
+
+- Reform to extend senior deduction beyond 2028.
+
+## [1.394.0] - 2025-09-05 09:32:44
+
+### Fixed
+
+- Adjusted run_selective_tests.py to improve test discovery.
+
+## [1.393.0] - 2025-09-05 09:29:37
+
+### Fixed
+
+- Adjusted New York CTC calculations pre 2025.
+
+## [1.392.0] - 2025-09-04 22:44:50
+
+### Added
+
+- Vermont child care contributions.
+
+## [1.391.1] - 2025-09-04 20:41:18
+
+### Fixed
+
+- Minnesota child tax credit amount and phase-out thresholds uprating.
+
+## [1.391.0] - 2025-09-04 09:30:12
+
+### Added
+
+- North Carolina Subsidized Child Care Assistance (SCCA) maximum payment variable.
+
+### Fixed
+
+- North Carolina Subsidized Child Care Assistance (SCCA) formula.
+
+## [1.390.1] - 2025-09-04 09:23:57
+
+### Fixed
+
+- Fix the deductions if not itemizing list.
+
+## [1.390.0] - 2025-09-03 17:50:49
+
+### Added
+
+- CRFB tax employer payroll tax reform with configurable percentage parameter
+
+## [1.389.1] - 2025-09-03 17:02:51
+
+### Changed
+
+- Removed coverage tracking from push.yaml workflow to speed up master branch builds.
+- Implemented selective test runner and coverage test for PR workflow to only test changed files.
+
+## [1.389.0] - 2025-09-02 23:14:24
+
+### Added
+
+- Illinois Low Income Home Energy Assistance Program (LIHEAP)
+
+## [1.388.0] - 2025-09-02 22:52:24
+
+### Added
+
+- California Riverside County General Relief Program.
+
+## [1.387.3] - 2025-09-02 19:45:27
+
+### Fixed
+
+- Adjust the Montana 2024 capital gains tax.
+
+## [1.387.2] - 2025-09-02 19:32:13
+
+### Fixed
+
+- Apply a floor to the Michigan household resources.
+
+## [1.387.1] - 2025-09-02 18:08:37
+
+### Fixed
+
+- Apply a floor to the Michigan household resources.
+
+## [1.387.0] - 2025-09-02 15:09:34
+
+### Added
+
+- Arkansas additional tax credit for qualified individuals.
+
+### Fixed
+
+- Arkansas 2024 income tax rates.
+
 ## [1.386.1] - 2025-09-01 22:58:34
 
 ## [1.386.0] - 2025-08-31 11:40:22
@@ -12823,6 +12928,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.395.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.395.0...1.395.1
+[1.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.394.0...1.395.0
+[1.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.393.0...1.394.0
+[1.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.392.0...1.393.0
+[1.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.391.1...1.392.0
+[1.391.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.391.0...1.391.1
+[1.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.390.1...1.391.0
+[1.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.390.0...1.390.1
+[1.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.389.1...1.390.0
+[1.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.389.0...1.389.1
+[1.389.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.388.0...1.389.0
+[1.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.3...1.388.0
+[1.387.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.2...1.387.3
+[1.387.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.1...1.387.2
+[1.387.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.387.0...1.387.1
+[1.387.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.386.1...1.387.0
 [1.386.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.386.0...1.386.1
 [1.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.1...1.386.0
 [1.385.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.385.0...1.385.1

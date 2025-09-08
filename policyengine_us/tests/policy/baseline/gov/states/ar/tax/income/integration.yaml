@@ -154,3 +154,46 @@
     ar_income_tax_before_non_refundable_credits_indiv: [6_502, 0]
     ar_files_separately: false
     ar_income_tax: 6_415
+
+- name: 4448-AR.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 0.0
+        qualified_dividend_income: 10068.2195
+        long_term_capital_gains: 28857.3535
+        taxable_interest_income: 4218.7285
+        is_tax_unit_head: true
+      person2:
+        age: 25
+        employment_income: 0.0
+        qualified_dividend_income: 10068.2195
+        long_term_capital_gains: 28857.3535
+        taxable_interest_income: 4218.7285
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 5
+  output:
+    ar_income_tax: 1_085

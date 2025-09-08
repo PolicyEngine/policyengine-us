@@ -10897,3 +10897,91 @@
     - Optimally allocate the Mississippi taxable income for married couples filing
       jointly.
   date: 2025-09-01 22:58:34
+- bump: minor
+  changes:
+    added:
+    - Arkansas additional tax credit for qualified individuals.
+    fixed:
+    - Arkansas 2024 income tax rates.
+  date: 2025-09-02 15:09:34
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 18:08:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 19:32:13
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana 2024 capital gains tax.
+  date: 2025-09-02 19:45:27
+- bump: minor
+  changes:
+    added:
+    - California Riverside County General Relief Program.
+  date: 2025-09-02 22:52:24
+- bump: minor
+  changes:
+    added:
+    - Illinois Low Income Home Energy Assistance Program (LIHEAP)
+  date: 2025-09-02 23:14:24
+- bump: patch
+  changes:
+    changed:
+    - Removed coverage tracking from push.yaml workflow to speed up master branch
+      builds.
+    - Implemented selective test runner and coverage test for PR workflow to only
+      test changed files.
+  date: 2025-09-03 17:02:51
+- bump: minor
+  changes:
+    added:
+    - CRFB tax employer payroll tax reform with configurable percentage parameter
+  date: 2025-09-03 17:50:49
+- bump: patch
+  changes:
+    fixed:
+    - Fix the deductions if not itemizing list.
+  date: 2025-09-04 09:23:57
+- bump: minor
+  changes:
+    added:
+    - North Carolina Subsidized Child Care Assistance (SCCA) maximum payment variable.
+    fixed:
+    - North Carolina Subsidized Child Care Assistance (SCCA) formula.
+  date: 2025-09-04 09:30:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child tax credit amount and phase-out thresholds uprating.
+  date: 2025-09-04 20:41:18
+- bump: minor
+  changes:
+    added:
+    - Vermont child care contributions.
+  date: 2025-09-04 22:44:50
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted New York CTC calculations pre 2025.
+  date: 2025-09-05 09:29:37
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted run_selective_tests.py to improve test discovery.
+  date: 2025-09-05 09:32:44
+- bump: minor
+  changes:
+    added:
+    - Reform to extend senior deduction beyond 2028.
+  date: 2025-09-05 15:45:41
+- bump: patch
+  changes:
+    fixed:
+    - Add the qualified business income deduction to the list of additions in South
+      Carolina.
+  date: 2025-09-05 20:35:09
