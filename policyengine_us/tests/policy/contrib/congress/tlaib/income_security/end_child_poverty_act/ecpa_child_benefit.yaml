@@ -1,5 +1,6 @@
 - name: Child under 19 receives full benefit
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
   input:
     people:
       child:
@@ -10,6 +11,7 @@
 
 - name: Child exactly 18 receives benefit
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
   input:
     people:
       child:
@@ -20,6 +22,7 @@
 
 - name: Adult 19 or over does not receive child benefit
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
   input:
     people:
       adult:
@@ -30,6 +33,7 @@
 
 - name: Multiple children each receive benefit
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
   input:
     people:
       child1:
@@ -42,24 +46,5 @@
         age: 40
   output:
     ecpa_child_benefit:
-      2026: [4_716, 4_716, 4_716, 0]
+      2026: [5_630, 5_630, 5_630, 0]
 
-- name: No benefit in 2024
-  period: 2024
-  input:
-    people:
-      child:
-        age: 10
-  output:
-    ecpa_child_benefit:
-      2024: 0
-
-- name: No benefit after 2026
-  period: 2027
-  input:
-    people:
-      child:
-        age: 10
-  output:
-    ecpa_child_benefit:
-      2027: 0

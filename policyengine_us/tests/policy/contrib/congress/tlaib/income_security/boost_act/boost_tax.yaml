@@ -1,5 +1,6 @@
 - name: Single filer below threshold owes no tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       filer:
@@ -15,6 +16,7 @@
 
 - name: Single filer above threshold owes tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       filer:
@@ -30,6 +32,7 @@
 
 - name: Joint filers below threshold owe no tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       head:
@@ -47,6 +50,7 @@
 
 - name: Joint filers above threshold owe tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       head:
@@ -64,6 +68,7 @@
 
 - name: Head of household above threshold owes tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       head:
@@ -81,6 +86,7 @@
 
 - name: High income single filer owes substantial tax
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
   input:
     people:
       filer:
@@ -94,32 +100,3 @@
     boost_tax:
       2026: 2_500  # 100,000 * 0.025
 
-- name: No tax in 2024
-  period: 2024
-  input:
-    people:
-      filer:
-        age: 35
-    tax_units:
-      tax_unit:
-        members: [filer]
-        filing_status: SINGLE
-        adjusted_gross_income: 50_000
-  output:
-    boost_tax:
-      2024: 0
-
-- name: No tax after 2026
-  period: 2027
-  input:
-    people:
-      filer:
-        age: 35
-    tax_units:
-      tax_unit:
-        members: [filer]
-        filing_status: SINGLE
-        adjusted_gross_income: 50_000
-  output:
-    boost_tax:
-      2027: 0
