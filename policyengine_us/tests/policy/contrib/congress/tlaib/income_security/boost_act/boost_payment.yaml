@@ -1,6 +1,6 @@
 - name: Adult age 19-67 receives full payment
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       adult:
@@ -11,7 +11,7 @@
 
 - name: Adult exactly 19 is eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       young_adult:
@@ -22,7 +22,7 @@
 
 - name: Adult exactly 67 is eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       older_adult:
@@ -33,7 +33,7 @@
 
 - name: Child under 19 not eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       child:
@@ -44,7 +44,7 @@
 
 - name: Adult over 67 not eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       senior:
@@ -55,7 +55,7 @@
 
 - name: Multiple eligible adults each receive payment
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       adult1:

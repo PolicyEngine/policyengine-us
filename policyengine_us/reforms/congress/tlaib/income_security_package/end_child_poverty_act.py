@@ -4,80 +4,95 @@ from policyengine_us.model_api import *
 def create_end_child_poverty_act() -> Reform:
     class ecpa_adult_dependent_credit(Variable):
         value_type = float
-        entity = TaxUnit
+        entity = Person
         definition_period = YEAR
+        label = "End Child Poverty Act adult dependent credit"
         unit = USD
-        label = "End Child Poverty Act Adult Dependent Credit"
+        documentation = (
+            "Credit for adult dependents under the End Child Poverty Act"
+        )
+        reference = "placeholder - bill not yet introduced"
 
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
+        def formula(person, period, parameters):
             p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit
-            # Adult dependent credit.
-            dependent = person("is_tax_unit_dependent", period)
-            adult = person("age", period) >= p.min_age
-            return p.amount * tax_unit.sum(adult & dependent)
+            ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
+
+            age = person("age", period)
+            min_age = p.adult_dependent_credit.min_age
+            is_dependent = person("is_tax_unit_dependent", period)
+
+            is_eligible = (age >= min_age) & is_dependent
+
+            amount = p.adult_dependent_credit.amount
+
+            return is_eligible * amount
 
     class ecpa_filer_credit(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
+        label = "End Child Poverty Act filer credit"
         unit = USD
-        label = "End Child Poverty Act Filer Credit"
-        reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
+        documentation = "Filer credit under the End Child Poverty Act for eligible tax filers"
+        reference = "placeholder - bill not yet introduced"
 
         def formula(tax_unit, period, parameters):
-            # Filer credit.
-            # Define eligibility based on age.
-            age_head = tax_unit("age_head", period)
-            age_spouse = tax_unit("age_spouse", period)
             p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit
+            ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
-            head_qualifies = (age_head >= p.eligibility.min_age) & (
-                age_head <= p.eligibility.max_age
-            )
-            spouse_qualifies = (age_spouse >= p.eligibility.min_age) & (
-                age_spouse <= p.eligibility.max_age
-            )
-            filer_credit_eligible = head_qualifies | spouse_qualifies
-            # Get maximum amount.
+            person = tax_unit.members
+            age = person("age", period)
+            min_age = p.filer_credit.eligibility.min_age
+            max_age = p.filer_credit.eligibility.max_age
+
+            is_head = person("is_tax_unit_head", period)
+            is_spouse = person("is_tax_unit_spouse", period)
+            is_filer = is_head | is_spouse
+
+            is_eligible_age = (age >= min_age) & (age < max_age)
+            is_eligible_filer = is_filer & is_eligible_age
+
+            has_eligible_filer = tax_unit.any(is_eligible_filer)
+
             filing_status = tax_unit("filing_status", period)
-            max_filer_credit = p.amount[filing_status]
-            # Phase out.
+            amount = p.filer_credit.amount[filing_status]
+
             agi = tax_unit("adjusted_gross_income", period)
-            phase_out_start = p.phase_out.start[filing_status]
-            excess = max_(agi - phase_out_start, 0)
-            reduction = excess * p.phase_out.rate
-            # Compute final amount.
-            return filer_credit_eligible * max_(
-                max_filer_credit - reduction, 0
-            )
+            phase_out_start = p.filer_credit.phase_out.start[filing_status]
+            phase_out_rate = p.filer_credit.phase_out.rate
+
+            excess_agi = max_(agi - phase_out_start, 0)
+            phase_out = excess_agi * phase_out_rate
+
+            credit = max_(amount - phase_out, 0)
+
+            return has_eligible_filer * credit
 
     class ecpa_child_benefit(Variable):
         value_type = float
-        entity = TaxUnit
+        entity = Person
         definition_period = YEAR
-        label = "End Child Poverty Act Child Benefit"
+        label = "End Child Poverty Act child benefit"
         unit = USD
+        documentation = (
+            "Universal child benefit under the End Child Poverty Act"
+        )
+        reference = "placeholder - bill not yet introduced"
 
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            dependent = person("is_tax_unit_dependent", period)
-            age = person("age", period)
-            p_ecpa = parameters(
+        def formula(person, period, parameters):
+            p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.end_child_poverty_act.child_benefit
-            age_eligible = age < p_ecpa.age_limit
-            eligible_dependent = dependent & age_eligible
-            total_dependents = tax_unit.sum(eligible_dependent)
-            state_group = tax_unit.household("state_group_str", period)
-            p_fpg = parameters(period).gov.hhs.fpg
-            amount = p_fpg.additional_person[state_group]
+            ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
-            return total_dependents * amount
+            age = person("age", period)
+            age_limit = p.child_benefit.age_limit
+            is_eligible = age < age_limit
+
+            annual_amount = p.child_benefit.amount
+
+            return is_eligible * annual_amount
 
     class household_benefits(Variable):
         value_type = float
@@ -152,12 +167,20 @@ def create_end_child_poverty_act() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs.credits
-            previous_credits = add(tax_unit, period, p.refundable)
+            # Get list of refundable credits, but exclude EITC and CTC
+            refundable_credits = [
+                credit
+                for credit in p.refundable
+                if credit not in ["eitc", "refundable_ctc"]
+            ]
+            other_credits = add(tax_unit, period, refundable_credits)
             filer_credit = tax_unit("ecpa_filer_credit", period)
-            adult_dependent_credit = tax_unit(
-                "ecpa_adult_dependent_credit", period
+            # Sum person-level adult dependent credits
+            person = tax_unit.members
+            adult_dependent_credit = tax_unit.sum(
+                person("ecpa_adult_dependent_credit", period)
             )
-            return filer_credit + adult_dependent_credit + previous_credits
+            return filer_credit + adult_dependent_credit + other_credits
 
     class reform(Reform):
         def apply(self):
@@ -167,8 +190,8 @@ def create_end_child_poverty_act() -> Reform:
             self.update_variable(ecpa_child_benefit)
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
-            self.neutralize_variable("eitc")
-            self.neutralize_variable("ctc")
+            # Don't neutralize EITC and CTC - they're excluded from federal credits
+            # but remain available for state conformity calculations
 
     return reform
 
@@ -179,7 +202,9 @@ def create_end_child_poverty_act_reform(
     if bypass:
         return create_end_child_poverty_act()
 
-    p = parameters(period).gov.contrib.congress.tlaib.end_child_poverty_act
+    p = parameters(
+        period
+    ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
     if p.in_effect:
         return create_end_child_poverty_act()

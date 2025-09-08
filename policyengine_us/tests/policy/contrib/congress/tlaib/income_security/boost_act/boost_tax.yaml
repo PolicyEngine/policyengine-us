@@ -1,6 +1,6 @@
 - name: Single filer below threshold owes no tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       filer:
@@ -16,7 +16,7 @@
 
 - name: Single filer above threshold owes tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       filer:
@@ -32,7 +32,7 @@
 
 - name: Joint filers below threshold owe no tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       head:
@@ -50,7 +50,7 @@
 
 - name: Joint filers above threshold owe tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       head:
@@ -68,7 +68,7 @@
 
 - name: Head of household above threshold owes tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       head:
@@ -86,7 +86,7 @@
 
 - name: High income single filer owes substantial tax
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
   input:
     people:
       filer:

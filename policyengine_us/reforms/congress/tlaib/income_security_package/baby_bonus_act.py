@@ -1,59 +1,30 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
 
 
-def create_boost_act() -> Reform:
-    class boost_payment(Variable):
+def create_baby_bonus_act() -> Reform:
+    class baby_bonus(Variable):
         value_type = float
         entity = Person
         definition_period = YEAR
-        label = "BOOST Act payment"
+        label = "Baby Bonus Act payment"
         unit = USD
         documentation = (
-            "Monthly payments under the BOOST Act for eligible adults"
+            "One-time payment for newborns under the Baby Bonus Act"
         )
         reference = "placeholder - bill not yet introduced"
 
         def formula(person, period, parameters):
             p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.income_security_package.boost_act
+            ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
             age = person("age", period)
-            min_age = p.min_age
-            max_age = p.max_age
+            max_age = p.max_child_age
+            is_eligible_child = age < max_age
 
-            is_eligible = (age >= min_age) & (age <= max_age)
+            amount = p.amount
 
-            monthly_amount = p.amount
-            annual_amount = monthly_amount * MONTHS_IN_YEAR
-
-            return is_eligible * annual_amount
-
-    class boost_tax(Variable):
-        value_type = float
-        entity = TaxUnit
-        definition_period = YEAR
-        label = "BOOST Act supplemental tax"
-        unit = USD
-        documentation = "Supplemental tax on AGI to fund the BOOST Act"
-        reference = "placeholder - bill not yet introduced"
-
-        def formula(tax_unit, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.congress.tlaib.income_security_package.boost_act
-
-            agi = tax_unit("adjusted_gross_income", period)
-            filing_status = tax_unit("filing_status", period)
-
-            threshold = p.tax.threshold[filing_status]
-            rate = p.tax.rate
-
-            excess_agi = max_(agi - threshold, 0)
-            tax = excess_agi * rate
-
-            return tax
+            return is_eligible_child * amount
 
     class household_benefits(Variable):
         value_type = float
@@ -77,7 +48,7 @@ def create_boost_act() -> Reform:
             "basic_income",
             "spm_unit_capped_housing_subsidy",
             "household_state_benefits",
-            "boost_payment",
+            "baby_bonus",
         ]
 
     class spm_unit_benefits(Variable):
@@ -111,7 +82,7 @@ def create_boost_act() -> Reform:
                 # Contributed.
                 "basic_income",
                 "ny_drive_clean_rebate",
-                "boost_payment",
+                "baby_bonus",
             ]
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
                 BENEFITS.append("aca_ptc")
@@ -119,42 +90,27 @@ def create_boost_act() -> Reform:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
             return add(spm_unit, period, BENEFITS)
 
-    class income_tax(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "federal income tax"
-        unit = USD
-        definition_period = YEAR
-        adds = [
-            "income_tax_before_refundable_credits",
-            "income_tax_refundable_credits",
-            "income_tax_non_refundable_credits",
-            "boost_tax",
-        ]
-
     class reform(Reform):
         def apply(self):
-            self.update_variable(boost_payment)
-            self.update_variable(boost_tax)
+            self.update_variable(baby_bonus)
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
-            self.update_variable(income_tax)
 
     return reform
 
 
-def create_boost_act_reform(parameters, period, bypass: bool = False):
+def create_baby_bonus_act_reform(parameters, period, bypass: bool = False):
     if bypass:
-        return create_boost_act()
+        return create_baby_bonus_act()
 
     p = parameters(
         period
-    ).gov.contrib.congress.tlaib.income_security_package.boost_act
+    ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
     if p.in_effect:
-        return create_boost_act()
+        return create_baby_bonus_act()
     else:
         return None
 
 
-boost_act = create_boost_act_reform(None, None, bypass=True)
+baby_bonus_act = create_baby_bonus_act_reform(None, None, bypass=True)
