@@ -7,6 +7,7 @@ class meets_snap_abawd_work_requirements(Variable):
     label = "Person is eligible for SNAP benefits via Able-Bodied Adult Without Dependents (ABAWD) work requirements"
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/7/273.24"
+    defined_for = "is_tax_unit_head_or_spouse"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.abawd

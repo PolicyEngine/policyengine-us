@@ -9,6 +9,7 @@ class meets_snap_general_work_requirements(Variable):
     )
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/7/273.7"
+    defined_for = "is_tax_unit_head_or_spouse"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
