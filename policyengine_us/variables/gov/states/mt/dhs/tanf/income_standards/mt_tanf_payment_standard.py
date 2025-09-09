@@ -15,4 +15,4 @@ class mt_tanf_payment_standard(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mt.dhs.tanf.income_standards
         fpg = spm_unit("mt_tanf_assistance_unit_fpg", period)
-        return fpg * p.payment_fpg_rate / 12
+        return fpg * p.payment_fpg_rate

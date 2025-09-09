@@ -1,12 +1,12 @@
-description: Montana applies this percentage to the federal poverty guideline (FPG) to determine the Montana TANF payment standard for a household, based on household size.
+description: Montana applies this percentage of federal poverty level as payment standard under the Temporary Assistance for Needy Families program.
 
 values:
-2023-07-01: .35
+2023-07-01: 0.35
 
 metadata:
   unit: /1
   period: month
-  label: Montana TANF Payment Calculation Rate (FPG)
+  label: Montana TANF payment standard fpg rate
   reference: 
     - title: Temporary Assistance for Needy Families (TANF) State Plan - Income Standards, p.10
     - href: https://dphhs.mt.gov/assets/hcsd/TANF/TANFStatePlan.pdf#page=10
