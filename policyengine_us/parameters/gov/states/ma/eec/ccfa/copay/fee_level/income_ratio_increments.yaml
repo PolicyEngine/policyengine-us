@@ -6,11 +6,13 @@ metadata:
   breakdown:
     - range(1,13)
   reference:
-    - title: EEC Financial Assistance Parent Fee Table
-      href: https://www.mass.gov/doc/parent-fee-chart-fy2025/download
-
+    - title: EEC Financial Assistance Parent Fee Table FY2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025
+# Can't find official documentation for FY2024, assuming the same as FY2025
 # Increment value for each household size
 # Each fee level adds this increment to the base (1.0 = 100% FPG)
+0:
+  2023-10-01: 1  # Not used (min family size is 2)
 1:
   2023-10-01: 1  # Not used (min family size is 2)
 2:
