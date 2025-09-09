@@ -10985,3 +10985,9 @@
     - Add the qualified business income deduction to the list of additions in South
       Carolina.
   date: 2025-09-05 20:35:09
+- bump: patch
+  changes:
+    fixed:
+    - Social Security taxation formula now uses a separate parameter for combined
+      income calculation instead of incorrectly reusing the base taxation rate
+  date: 2025-09-09 22:03:48
