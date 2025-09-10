@@ -25,10 +25,6 @@ class meets_snap_abawd_work_requirements(Variable):
         is_parent = person("is_parent", period)
         has_child = person.spm_unit.any(is_dependent & is_qualifying_child)
         exempt_parent = is_parent & has_child
-        # Exempted from the general work requirements
-        meets_snap_general_work_requirements = person(
-            "meets_snap_general_work_requirements", period
-        )
         # Pregnant
         is_pregnant = person("is_pregnant", period)
         # Homeless
@@ -46,7 +42,6 @@ class meets_snap_abawd_work_requirements(Variable):
             | working_age_exempt
             | is_disabled
             | exempt_parent
-            | meets_snap_general_work_requirements
             | is_pregnant
             | is_abawd_work_requirements_exempt_state
         )

@@ -16,4 +16,7 @@ class snap_earned_income_deduction(Variable):
         deduction_rate = parameters(
             period
         ).gov.usda.snap.income.deductions.earned_income
-        return spm_unit("snap_earned_income", period) * deduction_rate
+        # Only apply deduction to earned income from eligible members
+        # Per 273.11(c)(1), no earned income deduction for work requirement failures
+        eligible_earned_income = spm_unit("snap_earned_income", period)
+        return eligible_earned_income * deduction_rate

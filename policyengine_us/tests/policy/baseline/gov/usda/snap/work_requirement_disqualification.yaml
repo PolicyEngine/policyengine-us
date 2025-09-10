@@ -1,0 +1,117 @@
+- name: Work requirement failure income counted in full
+  period: 2024-01
+  input:
+    people:
+      eligible_adult:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      disqualified_adult:
+        age: 25
+        employment_income: 24_000  # $2,000/month
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+        is_snap_ineligible_student: false
+    spm_units:
+      spm_unit:
+        members: [eligible_adult, disqualified_adult]
+        snap_emergency_allotment: 0
+    households:
+      household:
+        members: [eligible_adult, disqualified_adult]
+        state_code: CA
+  output:
+    # Disqualified member's income counted in full
+    snap_work_disqualified_earned_income: 2_000
+    # Eligible member's income  
+    snap_earned_income: 1_000
+    # Total gross income includes both
+    snap_gross_income: 3_000
+    # Earned income deduction only on eligible member's income (20% of $1,000)
+    snap_earned_income_deduction: 200
+    # Unit size excludes disqualified member
+    snap_unit_size: 1
+    # Proration factor for deductions (1 eligible / 2 total)
+    snap_deduction_proration_factor: 0.5
+
+- name: Deductions prorated with work requirement failure
+  period: 2024-01
+  input:
+    people:
+      eligible_adult:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      disqualified_adult:
+        age: 25
+        employment_income: 0
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+        is_snap_ineligible_student: false
+    spm_units:
+      spm_unit:
+        members: [eligible_adult, disqualified_adult]
+        housing_cost:
+          2024-01: 1_200
+        childcare_expenses: 7_200  # $600/month
+        snap_emergency_allotment: 0
+    households:
+      household:
+        members: [eligible_adult, disqualified_adult]
+        state_code: CA
+  output:
+    # Deductions are prorated by eligible members share
+    snap_dependent_care_deduction: 300  # $600 * 0.5
+    # Proration factor (1 eligible / 2 total)
+    snap_deduction_proration_factor: 0.5
+
+- name: Three person household with one work requirement failure
+  period: 2024-01
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 18_000  # $1,500/month
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+        child_support_expense: 3_600  # $300/month for this person
+      adult2:
+        age: 35
+        employment_income: 12_000  # $1,000/month
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+        child_support_expense: 3_600  # $300/month for this person
+      disqualified_adult:
+        age: 25
+        employment_income: 24_000  # $2,000/month
+        social_security: 6_000  # $500/month
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+        is_snap_ineligible_student: false
+        child_support_expense: 3_600  # $300/month for this person
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, disqualified_adult]
+        snap_emergency_allotment: 0
+    households:
+      household:
+        members: [adult1, adult2, disqualified_adult]
+        state_code: NY
+  output:
+    # Eligible members' earned income
+    snap_earned_income: 2_500  # $1,500 + $1,000
+    # Disqualified member's income (all counted)
+    snap_work_disqualified_earned_income: 2_000
+    snap_work_disqualified_unearned_income: 500
+    # Total gross income
+    snap_gross_income: 5_000  # $2,500 eligible + $2,000 disqualified earned + $500 disqualified unearned
+    # Earned income deduction only on eligible income
+    snap_earned_income_deduction: 500  # 20% of $2,500
+    # Child support deduction prorated (2/3 of $900)
+    snap_child_support_deduction: 600
+    # Unit size (excludes disqualified)
+    snap_unit_size: 2
+    # Proration factor (2 eligible / 3 total)
+    snap_deduction_proration_factor: 0.6666666666666666

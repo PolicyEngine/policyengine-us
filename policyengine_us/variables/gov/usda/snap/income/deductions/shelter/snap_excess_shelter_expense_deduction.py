@@ -25,7 +25,10 @@ class snap_excess_shelter_expense_deduction(Variable):
         housing_cost = add(
             spm_unit, period, ["snap_utility_allowance", "housing_cost"]
         )
-        uncapped_ded = max_(housing_cost - subtracted_income, 0)
+        # Per 273.11(c)(1), only eligible members' share of expenses count as deductions
+        proration_factor = spm_unit("snap_deduction_proration_factor", period)
+        prorated_housing_cost = housing_cost * proration_factor
+        uncapped_ded = max_(prorated_housing_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
         state_group = spm_unit.household("snap_region_str", period)
         ded_cap = p.cap[state_group]

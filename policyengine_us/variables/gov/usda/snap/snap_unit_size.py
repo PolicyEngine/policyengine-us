@@ -12,7 +12,7 @@ class snap_unit_size(Variable):
         person = spm_unit.members
         ineligible_student = person("is_snap_ineligible_student", period)
         ineligible_students = spm_unit.sum(ineligible_student)
-
+        
         eligible_adult = person("meets_snap_work_requirements_person", period)
         ineligible_adult = ~eligible_adult & ~ineligible_student
         ineligible_adults = spm_unit.sum(ineligible_adult)

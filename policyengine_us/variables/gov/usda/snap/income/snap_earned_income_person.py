@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class snap_earned_income_person(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     definition_period = MONTH
     label = "SNAP earned income person"
     documentation = "Earned income per person for calculating the SNAP earned income deduction"
