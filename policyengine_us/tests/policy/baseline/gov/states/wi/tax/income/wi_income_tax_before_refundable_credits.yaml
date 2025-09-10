@@ -3,7 +3,7 @@
   period: 2021
   input:
     wi_income_tax_before_credits: 800
-    wi_nonrefundable_credits: 600
+    wi_non_refundable_credits: 600
     state_code: WI
   output:
     wi_income_tax_before_refundable_credits: 200
@@ -13,7 +13,7 @@
   period: 2022
   input:
     wi_income_tax_before_credits: 800
-    wi_nonrefundable_credits: 900
+    wi_non_refundable_credits: 900
     state_code: WI
   output:
     wi_income_tax_before_refundable_credits: 0
