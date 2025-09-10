@@ -2,7 +2,7 @@
   period: 2021
   input:
     ks_income_tax_before_credits: 900
-    ks_nonrefundable_credits: 850
+    ks_non_refundable_credits: 850
     state_code: KS
   output:
     ks_income_tax_before_refundable_credits: 900 - 850
@@ -11,7 +11,7 @@
   period: 2021
   input:
     ks_income_tax_before_credits: 900
-    ks_nonrefundable_credits: 950
+    ks_non_refundable_credits: 950
     state_code: KS
   output:
     ks_income_tax_before_refundable_credits: 0

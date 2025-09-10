@@ -2,7 +2,7 @@
   period: 2021
   input:
     nd_income_tax_before_credits: 900
-    nd_nonrefundable_credits: 850
+    nd_non_refundable_credits: 850
     state_code: ND
   output:
     nd_income_tax_before_refundable_credits: 900 - 850
@@ -11,7 +11,7 @@
   period: 2022
   input:
     nd_income_tax_before_credits: 900
-    nd_nonrefundable_credits: 950
+    nd_non_refundable_credits: 950
     state_code: ND
   output:
     nd_income_tax_before_refundable_credits: 0
@@ -20,7 +20,7 @@
   period: 2023
   input:
     nd_income_tax_before_credits: 900
-    nd_nonrefundable_credits: 950
+    nd_non_refundable_credits: 950
     state_code: ND
   output:
     nd_income_tax_before_refundable_credits: 0

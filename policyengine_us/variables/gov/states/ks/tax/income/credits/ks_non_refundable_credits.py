@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ks_nonrefundable_credits(Variable):
+class ks_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Kansas nonrefundable income tax credits"
