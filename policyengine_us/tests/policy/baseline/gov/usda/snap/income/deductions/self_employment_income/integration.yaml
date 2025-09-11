@@ -4,20 +4,19 @@
     people:
       person1:
         self_employment_income: 3_000
-        is_snap_unit_eligible_person: true
+        snap_self_employment_income_expense: 1_000
       person2: 
         employment_income: 1_000
-        is_snap_unit_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_self_employment_income_expense: 1_000
     households:
       household:
         members: [person1, person2]
         state_code: AK
   output:
     snap_self_employment_expense_deduction: 1_500
+    snap_earned_income_person: [1_500, 1_000]
     snap_earned_income_deduction: 500
 
 - name: Integration test, Louisiana only allows for a deduction of actual expenses
@@ -26,18 +25,16 @@
     people:
       person1:
         self_employment_income: 3_000
-        is_snap_unit_eligible_person: true
       person2: 
         employment_income: 1_000
-        is_snap_unit_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_self_employment_income_expense: 0
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
     snap_self_employment_expense_deduction: 0
+    snap_earned_income_person: [3_000, 1_000]
     snap_earned_income_deduction: 800
