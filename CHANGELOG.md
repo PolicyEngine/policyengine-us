@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.397.2] - 2025-09-11 01:02:51
+
+### Fixed
+
+- Michigan integration test.
+
+## [1.397.1] - 2025-09-10 23:55:47
+
+### Fixed
+
+- Refactor the CTC phase-in relevant earnings.
+
+## [1.397.0] - 2025-09-10 10:36:26
+
+### Added
+
+- Include missing non-refundable credits in state non-refundable credits list.
+
+## [1.396.0] - 2025-09-09 23:54:52
+
+### Added
+
+- Michigan 2024 home heating credit rate.
+
+## [1.395.2] - 2025-09-09 22:03:48
+
+### Fixed
+
+- Social Security taxation formula now uses a separate parameter for combined income calculation instead of incorrectly reusing the base taxation rate
+
 ## [1.395.1] - 2025-09-05 20:35:09
 
 ### Fixed
@@ -12928,6 +12958,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.397.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.1...1.397.2
+[1.397.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.0...1.397.1
+[1.397.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.396.0...1.397.0
+[1.396.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.395.2...1.396.0
+[1.395.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.395.1...1.395.2
 [1.395.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.395.0...1.395.1
 [1.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.394.0...1.395.0
 [1.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.393.0...1.394.0

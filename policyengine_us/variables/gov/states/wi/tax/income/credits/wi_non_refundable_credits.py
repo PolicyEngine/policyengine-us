@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wi_nonrefundable_credits(Variable):
+class wi_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Wisconsin nonrefundable credits"

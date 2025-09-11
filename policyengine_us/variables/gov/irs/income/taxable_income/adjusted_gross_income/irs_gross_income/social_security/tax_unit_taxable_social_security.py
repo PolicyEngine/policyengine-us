@@ -14,11 +14,10 @@ class tax_unit_taxable_social_security(Variable):
         p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
-        # The legislation directs the usage an income definition that is
+        # The legislation directs the usage of an income definition that is
         # a particularly modified AGI, plus half of gross Social Security
-        # payments. We assume that the 'half' here is the same underlying
-        # parameter as the lower taxability marginal rate (also 50% in the
-        # baseline), and that they would be mechanically the same parameter.
+        # payments. Per IRC Section 86(b)(1), this fraction is always 0.5
+        # and is handled by the combined_income_ss_fraction parameter.
 
         combined_income = tax_unit(
             "tax_unit_combined_income_for_social_security_taxability", period

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ne_nonrefundable_credits(Variable):
+class ne_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "NE nonrefundable income tax credits"
