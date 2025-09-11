@@ -21,7 +21,7 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
         # To claim aged or disabled credit, filers also have to maintain a household for family members
         # and provide more than one-half of the family member’s support for the year
         support_payment_ratio = person(
-            "share_of_care_and_support_costs_paid_by_tax_filer", period
+            "share_of_care_and_support_expense_paid_by_tax_filer", period
         )
         payment_eligible = support_payment_ratio > p.support_fraction_threshold
         return (age_eligible | disabled_eligible) & payment_eligible

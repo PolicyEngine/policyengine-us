@@ -7,5 +7,3 @@ class phone_expense(Variable):
     label = "Phone expense"
     unit = USD
     definition_period = YEAR
-
-    adds = ["phone_cost"]  # For compatibility
