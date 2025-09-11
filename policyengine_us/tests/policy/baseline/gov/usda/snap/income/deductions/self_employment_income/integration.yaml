@@ -4,8 +4,10 @@
     people:
       person1:
         self_employment_income: 3_000
+        is_snap_unit_eligible_person: true
       person2: 
         employment_income: 1_000
+        is_snap_unit_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -24,8 +26,10 @@
     people:
       person1:
         self_employment_income: 3_000
+        is_snap_unit_eligible_person: true
       person2: 
         employment_income: 1_000
+        is_snap_unit_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]

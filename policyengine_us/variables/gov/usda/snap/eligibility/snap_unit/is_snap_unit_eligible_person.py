@@ -13,7 +13,7 @@ class is_snap_unit_eligible_person(Variable):
             "meets_snap_work_requirements_person", period
         )
         immigration_status_eligible = person(
-            "snap_immigration_status_eligible", period
+            "snap_immigration_status_eligible_person", period
         )
 
         return (

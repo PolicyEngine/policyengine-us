@@ -1,0 +1,26 @@
+- name: Case 1, meets all requirement to be eligible.
+  period: 2024
+  input:
+    is_snap_ineligible_student: false
+    meets_snap_work_requirements_person: true
+    snap_immigration_status_eligible_person: true
+  output:
+    is_snap_unit_eligible_person: true
+
+- name: Case 2, ineligible due to work requirement.
+  period: 2024
+  input:
+    is_snap_ineligible_student: false
+    meets_snap_work_requirements_person: false
+    snap_immigration_status_eligible_person: true
+  output:
+    is_snap_unit_eligible_person: false
+
+- name: Case 3, ineligible due to student status.
+  period: 2024
+  input:
+    is_snap_ineligible_student: true
+    meets_snap_work_requirements_person: true
+    snap_immigration_status_eligible_person: true
+  output:
+    is_snap_unit_eligible_person: false

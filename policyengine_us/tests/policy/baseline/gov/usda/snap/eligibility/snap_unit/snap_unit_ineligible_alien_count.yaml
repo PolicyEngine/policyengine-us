@@ -1,0 +1,47 @@
+- name: Case 1, one ineligible alien.
+  period: 2024
+  input:
+    people: 
+      person1:
+        snap_immigration_status_eligible_person: false
+      person2:
+        snap_immigration_status_eligible_person: true
+      person3:
+        snap_immigration_status_eligible_person: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+  output:
+    snap_unit_ineligible_alien_count: 1
+
+- name: Case 2, two ineligible aliens.
+  period: 2024
+  input:
+    people: 
+      person1:
+        snap_immigration_status_eligible_person: true
+      person2:
+        snap_immigration_status_eligible_person: false
+      person3:
+        snap_immigration_status_eligible_person: false
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+  output:
+    snap_unit_ineligible_alien_count: 2
+
+- name: Case 3, no ineligible alien.
+  period: 2024
+  input:
+    people: 
+      person1:
+        snap_immigration_status_eligible_person: true
+      person2:
+        snap_immigration_status_eligible_person: true
+      person3:
+        snap_immigration_status_eligible_person: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+  output:
+    snap_unit_ineligible_alien_count: 0

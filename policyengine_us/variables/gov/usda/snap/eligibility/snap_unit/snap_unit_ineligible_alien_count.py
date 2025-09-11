@@ -11,7 +11,7 @@ class snap_unit_ineligible_alien_count(Variable):
 
     def formula(spm_unit, period, parameters):
         immigration_status_eligible = spm_unit.members(
-            "snap_immigration_status_eligible", period
+            "snap_immigration_status_eligible_person", period
         )
 
         return spm_unit.sum(~immigration_status_eligible)

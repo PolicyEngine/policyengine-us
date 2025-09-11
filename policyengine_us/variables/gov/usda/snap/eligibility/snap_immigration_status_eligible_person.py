@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class snap_immigration_status_eligible(Variable):
+class snap_immigration_status_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the SNAP based on immigration status"
