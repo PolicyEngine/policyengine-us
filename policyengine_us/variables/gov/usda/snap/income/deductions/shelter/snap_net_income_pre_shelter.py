@@ -19,13 +19,11 @@ class snap_net_income_pre_shelter(Variable):
         percent of monthly household income after all other applicable
         deductions have been allowed.
         """
-        income = spm_unit("snap_gross_income", period)
-        all_deductions = parameters(
-            period
-        ).gov.usda.snap.income.deductions.allowed
+        income = spm_unit("snap_gross_income_pre_proration", period)
+        p = parameters(period).gov.usda.snap.income.deductions
         deductions_except_shelter = [
             deduction
-            for deduction in all_deductions
+            for deduction in p.allowed
             if deduction != "snap_excess_shelter_expense_deduction"
         ]
         deduction_value = add(spm_unit, period, deductions_except_shelter)

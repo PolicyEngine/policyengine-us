@@ -7,17 +7,12 @@ class snap_gross_income(Variable):
     definition_period = MONTH
     label = "SNAP gross income"
     documentation = "Gross income for calculating SNAP eligibility"
-    reference = "https://www.law.cornell.edu/uscode/text/7/2014#d"
+    reference = "https://www.law.cornell.edu/cfr/text/7/273.11#c"
     unit = USD
 
-    adds = [
-        "snap_earned_income", 
-        "snap_unearned_income",
-        # Income from work requirement disqualified members (273.11(c)(1))
-        # must be counted in full
-        "snap_work_disqualified_earned_income",
-        "snap_work_disqualified_unearned_income"
-    ]
-    # Only child support can be subtracted when computing gross income,
-    # and only in certain states.
-    subtracts = ["snap_child_support_gross_income_deduction"]
+    def formula(spm_unit, period, parameters):
+        gross_income_pre_prorated = spm_unit(
+            "snap_gross_income_pre_proration", period
+        )
+        proration_factor = spm_unit("snap_proration_factor", period)
+        return gross_income_pre_prorated * proration_factor

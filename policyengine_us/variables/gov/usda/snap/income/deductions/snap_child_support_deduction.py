@@ -19,7 +19,4 @@ class snap_child_support_deduction(Variable):
         gross_income_deduction = spm_unit(
             "snap_child_support_gross_income_deduction", period
         )
-        # Per 273.11(c)(1), only eligible members' share of expenses count as deductions
-        proration_factor = spm_unit("snap_deduction_proration_factor", period)
-        prorated_child_support = child_support * proration_factor
-        return max_(prorated_child_support - gross_income_deduction, 0)
+        return max_(child_support - gross_income_deduction, 0)
