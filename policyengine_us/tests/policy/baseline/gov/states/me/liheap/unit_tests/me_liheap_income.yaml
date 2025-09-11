@@ -1,0 +1,23 @@
+- name: Maine LIHEAP income calculation - basic case
+  period: 2025
+  input:
+    irs_gross_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_income: 50_000
+
+- name: Maine LIHEAP income calculation - zero income
+  period: 2025
+  input:
+    irs_gross_income: 0
+    state_code: ME
+  output:
+    me_liheap_income: 0
+
+- name: Maine LIHEAP income calculation - high income
+  period: 2025
+  input:
+    irs_gross_income: 100_000
+    state_code: ME
+  output:
+    me_liheap_income: 100_000
