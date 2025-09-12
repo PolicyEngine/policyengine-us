@@ -1,0 +1,26 @@
+- name: Case 1, ineligible alien count is the same as spm unit size.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    snap_unit_prorate_people_count: 3
+    spm_unit_size: 3
+  output:
+    snap_prorate_fraction: 1
+
+- name: Case 2, ineligible alien count is less than spm unit size.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    snap_unit_prorate_people_count: 2
+    spm_unit_size: 3
+  output:
+    snap_prorate_fraction: 0.67
+
+- name: Case 3, ineligible alien count is zero.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    snap_unit_prorate_people_count: 0
+    spm_unit_size: 3
+  output:
+    snap_prorate_fraction: 0

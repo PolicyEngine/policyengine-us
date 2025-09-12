@@ -14,8 +14,12 @@ class snap_child_support_gross_income_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
         child_support = add(spm_unit, period, ["child_support_expense"])
+        # Exclude ineligible members' share per SNAP proration rules (result always >= 0 since prorate_fraction < spm_unit_size)
+        prorate_fraction = spm_unit("snap_prorate_fraction", period.this_year)
+        spm_unit_size = spm_unit("spm_unit_size", period)
+        child_support_after_proration = child_support * (
+            1 - prorate_fraction / spm_unit_size
+        )
         state = spm_unit.household("state_code_str", period)
-        is_deductible = parameters(
-            period
-        ).gov.usda.snap.income.deductions.child_support[state]
-        return is_deductible * child_support
+        p = parameters(period).gov.usda.snap.income.deductions
+        return p.child_support[state] * child_support_after_proration
