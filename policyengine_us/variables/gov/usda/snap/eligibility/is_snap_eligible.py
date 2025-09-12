@@ -23,7 +23,7 @@ class is_snap_eligible(Variable):
         )
         person = spm_unit.members
         eligible_person_present = spm_unit.any(
-            person("is_snap_unit_eligible_person", period)
+            person("is_snap_demographic_eligible_person", period)
         )
         return (
             normal_eligibility | categorical_eligibility

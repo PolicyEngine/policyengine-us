@@ -12,3 +12,13 @@
     child_support_expense: 100
   output:
     snap_child_support_gross_income_deduction: 100
+
+- name: With prorate fraction, Alaska.
+  period: 2022
+  input:
+    state_code: AK
+    child_support_expense: 100 
+    snap_prorate_fraction: 0.24
+    spm_unit_size: 4
+  output:
+    snap_child_support_gross_income_deduction: 94 # 100 * (1 - 0.24 / 4)

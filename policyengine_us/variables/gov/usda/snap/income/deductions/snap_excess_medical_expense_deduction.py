@@ -19,7 +19,13 @@ class snap_excess_medical_expense_deduction(Variable):
         elderly = person("is_usda_elderly", period)
         disabled = person("is_usda_disabled", period)
         moop = person("medical_out_of_pocket_expenses", period)
-        elderly_disabled_moop = spm_unit.sum(moop * (elderly | disabled))
+        # Exclude ineligible members' share per SNAP proration rules (result always >= 0 since prorate_fraction < spm_unit_size)
+        prorate_fraction = spm_unit("snap_prorate_fraction", period.this_year)
+        spm_unit_size = spm_unit("spm_unit_size", period)
+        moop_after_proration = moop * (1 - prorate_fraction / spm_unit_size)
+        elderly_disabled_moop = spm_unit.sum(
+            moop_after_proration * (elderly | disabled)
+        )
         p = parameters(
             period
         ).gov.usda.snap.income.deductions.excess_medical_expense

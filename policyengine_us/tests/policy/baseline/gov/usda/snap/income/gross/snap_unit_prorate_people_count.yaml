@@ -12,7 +12,7 @@
       spm_unit1:
         members: [person1, person2, person3]
   output:
-    snap_unit_ineligible_alien_count: 1
+    snap_unit_prorate_people_count: 1
 
 - name: Case 2, two ineligible aliens.
   period: 2024
@@ -28,7 +28,7 @@
       spm_unit1:
         members: [person1, person2, person3]
   output:
-    snap_unit_ineligible_alien_count: 2
+    snap_unit_prorate_people_count: 2
 
 - name: Case 3, no ineligible alien.
   period: 2024
@@ -44,4 +44,4 @@
       spm_unit1:
         members: [person1, person2, person3]
   output:
-    snap_unit_ineligible_alien_count: 0
+    snap_unit_prorate_people_count: 0

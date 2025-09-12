@@ -10,9 +10,7 @@ class snap_gross_income(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/7/273.11#c"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
-        gross_income_pre_prorated = spm_unit(
-            "snap_gross_income_pre_proration", period
-        )
-        proration_factor = spm_unit("snap_proration_factor", period)
-        return gross_income_pre_prorated * proration_factor
+    adds = ["snap_earned_income", "snap_unearned_income"]
+    # Only child support can be subtracted when computing gross income,
+    # and only in certain states.
+    subtracts = ["snap_child_support_gross_income_deduction"]

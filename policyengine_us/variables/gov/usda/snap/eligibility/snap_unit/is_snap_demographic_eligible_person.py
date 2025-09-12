@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_snap_unit_eligible_person(Variable):
+class is_snap_demographic_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person in SNAP unit based on demographics"

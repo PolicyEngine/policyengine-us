@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_self_employment_income_expense(Variable):
     value_type = float
     entity = Person
-    label = "All self-employment income expenses for the SNAP self-employment deduction"
+    label = "Self-employment income expenses per person for the SNAP self-employment deduction"
     unit = USD
     definition_period = YEAR
 

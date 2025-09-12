@@ -13,3 +13,13 @@
     snap_child_support_gross_income_deduction: 0
   output:
     snap_child_support_deduction: 500
+
+- name: With prorate fraction, prorate deduction.
+  period: 2022
+  input:
+    child_support_expense: 500
+    snap_child_support_gross_income_deduction: 0
+    snap_prorate_fraction: 0.8
+    spm_unit_size: 4
+  output:
+    snap_child_support_deduction: 400 # 500 * (1 - 0.8 / 4)

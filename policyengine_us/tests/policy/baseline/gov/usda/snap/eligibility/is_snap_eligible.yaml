@@ -107,7 +107,7 @@
     meets_snap_net_income_test: true
     meets_snap_asset_test: true
     meets_snap_categorical_eligibility: false
-    is_snap_unit_eligible_person: false
+    is_snap_demographic_eligible_person: false
   output:
     is_snap_eligible: false
 
@@ -118,6 +118,6 @@
     meets_snap_net_income_test: true
     meets_snap_asset_test: true
     meets_snap_categorical_eligibility: false
-    is_snap_unit_eligible_person: true
+    is_snap_demographic_eligible_person: true
   output:
     is_snap_eligible: true

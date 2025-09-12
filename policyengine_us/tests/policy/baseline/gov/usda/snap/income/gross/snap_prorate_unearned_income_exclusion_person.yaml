@@ -1,0 +1,19 @@
+- name: Case 1, not an prorate person, no exclusion income.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    is_snap_prorate_person: false
+    snap_unearned_income_person: 200
+    snap_prorate_fraction: 0.3
+  output:
+    snap_prorate_unearned_income_exclusion_person: 0
+
+- name: Case 2, prorate person.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    is_snap_prorate_person: true
+    snap_unearned_income_person: 200
+    snap_prorate_fraction: 0.3
+  output:
+    snap_prorate_unearned_income_exclusion_person: 60
