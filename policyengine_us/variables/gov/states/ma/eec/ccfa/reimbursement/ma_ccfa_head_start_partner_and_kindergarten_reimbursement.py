@@ -14,23 +14,4 @@ class ma_ccfa_head_start_partner_and_kindergarten_reimbursement(Variable):
         p = parameters(period).gov.states.ma.eec.ccfa.reimbursement_rates
         region = person.household("ma_ccfa_region", period)
         schedule_type = person("ma_ccfa_schedule_type", period)
-        uncapped_payment_per_day = p.head_start_partner_and_kindergarten[
-            region
-        ][schedule_type]
-        reimbursement_multiplier = person(
-            "ma_ccfa_reimbursement_ratio", period
-        )
-        attending_days_per_month = person(
-            "childcare_attending_days_per_month", period
-        )
-        care_provider_type = person("ma_ccfa_care_provider_type", period)
-        head_start_partner_and_kindergarten = (
-            care_provider_type
-            == care_provider_type.possible_values.HEAD_START_PARTNER_AND_KINDERGARTEN
-        )
-        return (
-            uncapped_payment_per_day
-            * attending_days_per_month
-            * reimbursement_multiplier
-            * head_start_partner_and_kindergarten
-        )
+        return p.head_start_partner_and_kindergarten[region][schedule_type]

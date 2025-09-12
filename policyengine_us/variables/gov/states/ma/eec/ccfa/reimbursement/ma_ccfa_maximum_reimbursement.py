@@ -10,10 +10,14 @@ class ma_ccfa_maximum_reimbursement(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
 
-    adds = [
-        "ma_ccfa_center_based_early_education_reimbursement",
-        "ma_ccfa_center_based_school_age_reimbursement",
-        "ma_ccfa_head_start_partner_and_kindergarten_reimbursement",
-        "ma_ccfa_informal_child_care_reimbursement",
-        "ma_ccfa_family_child_care_reimbursement",
-    ]
+    def formula(person, period, parameters):
+        daily_payment = person("ma_ccfa_uncapped_daily_payment", period)
+        reimbursement_multiplier = person(
+            "ma_ccfa_reimbursement_ratio", period
+        )
+        attending_days_per_month = person(
+            "childcare_attending_days_per_month", period.this_year
+        )
+        return (
+            daily_payment * reimbursement_multiplier * attending_days_per_month
+        )

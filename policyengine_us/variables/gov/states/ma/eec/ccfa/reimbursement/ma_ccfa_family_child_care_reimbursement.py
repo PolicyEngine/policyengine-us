@@ -16,23 +16,6 @@ class ma_ccfa_family_child_care_reimbursement(Variable):
         ).gov.states.ma.eec.ccfa.reimbursement_rates.family_child_care
         region = person.household("ma_ccfa_region", period)
         age = person("monthly_age", period)
-        uncapped_payment_per_day = where(
+        return where(
             age >= p.age_threshold, p.older[region], p.younger[region]
-        )
-        reimbursement_multiplier = person(
-            "ma_ccfa_reimbursement_ratio", period
-        )
-        attending_days_per_month = person(
-            "childcare_attending_days_per_month", period
-        )
-        care_provider_type = person("ma_ccfa_care_provider_type", period)
-        family_care = (
-            care_provider_type
-            == care_provider_type.possible_values.FAMILY_CHILD_CARE
-        )
-        return (
-            uncapped_payment_per_day
-            * attending_days_per_month
-            * reimbursement_multiplier
-            * family_care
         )

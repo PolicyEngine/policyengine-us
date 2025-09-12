@@ -18,9 +18,10 @@ class ma_ccfa_income_eligible(Variable):
         # Initial eligibility at 50% SMI, continued at 85% SMI
         is_enrolled = spm_unit("ma_ccfa_enrolled", period)
 
-        income_limit = where(
+        smi_limit = where(
             is_enrolled,
-            smi * p.redetermination,
-            smi * p.new_applicants,
+            p.redetermination,
+            p.new_applicants,
         )
+        income_limit = smi * smi_limit
         return countable_income <= income_limit

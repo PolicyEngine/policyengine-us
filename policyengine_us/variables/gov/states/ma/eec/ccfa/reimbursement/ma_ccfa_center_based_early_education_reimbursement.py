@@ -16,21 +16,4 @@ class ma_ccfa_center_based_early_education_reimbursement(Variable):
         ).gov.states.ma.eec.ccfa.reimbursement_rates.center_based
         region = person.household("ma_ccfa_region", period)
         age_category = person("ma_ccfa_child_age_category", period)
-        uncapped_payment_per_day = p.early_education[region][age_category]
-        reimbursement_multiplier = person(
-            "ma_ccfa_reimbursement_ratio", period
-        )
-        attending_days_per_month = person(
-            "childcare_attending_days_per_month", period
-        )
-        care_provider_type = person("ma_ccfa_care_provider_type", period)
-        center_based_early_education = (
-            care_provider_type
-            == care_provider_type.possible_values.CENTER_BASED_CARE_EARLY_EDUCATION
-        )
-        return (
-            uncapped_payment_per_day
-            * attending_days_per_month
-            * reimbursement_multiplier
-            * center_based_early_education
-        )
+        return p.early_education[region][age_category]

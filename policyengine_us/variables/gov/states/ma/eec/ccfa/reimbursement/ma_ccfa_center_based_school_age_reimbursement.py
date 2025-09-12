@@ -17,23 +17,4 @@ class ma_ccfa_center_based_school_age_reimbursement(Variable):
         region = person.household("ma_ccfa_region", period)
         schedule_type = person("ma_ccfa_schedule_type", period)
         age_category = person("ma_ccfa_child_age_category", period)
-        uncapped_payment_per_day = p.school_age[region][age_category][
-            schedule_type
-        ]
-        reimbursement_multiplier = person(
-            "ma_ccfa_reimbursement_ratio", period
-        )
-        attending_days_per_month = person(
-            "childcare_attending_days_per_month", period
-        )
-        care_provider_type = person("ma_ccfa_care_provider_type", period)
-        center_based_school_age = (
-            care_provider_type
-            == care_provider_type.possible_values.CENTER_BASED_CARE_SCHOOL_AGE
-        )
-        return (
-            uncapped_payment_per_day
-            * attending_days_per_month
-            * reimbursement_multiplier
-            * center_based_school_age
-        )
+        return p.school_age[region][age_category][schedule_type]
