@@ -13,7 +13,7 @@ class childcare_expenses(Variable):
             spm_unit, period, ["pre_subsidy_childcare_expenses"]
         )
         # States where we model childcare subsidies.
-        STATES_WITH_CHILD_CARE_SUBSIDIES = ["CA", "CO", "NE"]
+        STATES_WITH_CHILD_CARE_SUBSIDIES = ["CA", "CO", "NE", "MA"]
         subsidy_variables = [
             i.lower() + "_child_care_subsidies"
             for i in STATES_WITH_CHILD_CARE_SUBSIDIES

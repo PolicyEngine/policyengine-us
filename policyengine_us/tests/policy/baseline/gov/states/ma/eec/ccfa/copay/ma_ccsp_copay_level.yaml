@@ -1,0 +1,44 @@
+- name: Case 1, family of 2, $1700 income.
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_700
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 1
+
+- name: Case 2, family of 2, $1800 income.
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_800
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 2
+
+- name: Case 3, family of 4, $3000 income.
+  period: 2025-01
+  input:
+    spm_unit_size: 4
+    ma_ccfa_countable_income: 3_000
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 3
+
+- name: Case 4, family of 13, $10,000 income.
+  period: 2025-01
+  input:
+    spm_unit_size: 13
+    ma_ccfa_countable_income: 10_000
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 11
+
+- name: Case 5, family of 2, $8,000 income.
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 8_000
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 28
