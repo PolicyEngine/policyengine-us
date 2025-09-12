@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class tx_tanf_income_limit(Variable):
+class tx_one_time_tanf_income_limit(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Texas TANF income limit"
+    label = "One Time Texas TANF income limit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,5 +14,5 @@ class tx_tanf_income_limit(Variable):
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
-        p = parameters(period).gov.states.tx.tanf
-        return p.monthly_income_limit.calc(size) * MONTHS_IN_YEAR
+        p = parameters(period).gov.states.tx.tanf.one_time_tanf
+        return p.one_time_monthly_income_limit.calc(size) * MONTHS_IN_YEAR
