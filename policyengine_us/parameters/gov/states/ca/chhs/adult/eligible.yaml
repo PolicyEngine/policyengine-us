@@ -1,0 +1,11 @@
+description: California state-funded Medicaid eligibility for adults ages 26-49 regardless of immigration status.
+values:
+  2023-12-31: false
+  2024-01-01: true
+metadata:
+  label: California state-funded Medicaid adult eligibility
+  period: year
+  unit: bool
+  reference:
+    - title: SB 184 - Health for All Adults
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202120220SB184

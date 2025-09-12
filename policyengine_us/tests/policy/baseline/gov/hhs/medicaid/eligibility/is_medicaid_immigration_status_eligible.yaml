@@ -49,7 +49,7 @@
   output:
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented in covering state - California
+- name: Ineligble for federal Medicaid CA #but eligible for state funded Medicaid
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
@@ -57,10 +57,10 @@
   output:
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented in covering state - Illinois
+- name: Ineligble for federal Medicaid IL #but eligible for state funded Medicaid
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
     state_code_str: IL
   output:
-    is_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
