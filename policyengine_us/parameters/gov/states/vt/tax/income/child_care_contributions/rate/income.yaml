@@ -1,0 +1,16 @@
+description: Vermont applies a child care contributions tax to this percentage of the self-employment.
+values:
+  2024-01-01: 0.5
+  2025-01-01: 1
+metadata:
+  unit: /1
+  period: year
+  label: Vermont child care contributions income rate
+  reference:
+    # The Child Care Contributions are taxes starting in July of 2024. 
+    # For the first year, only half of the annual self-employment income is counted towards the child care contributions.
+    - title: 2024 Vermont Income Tax Return Booklet, Child Care Contributions Worksheet
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=12
+    # The rate is only implicitly mentioned in the legal code.
+    - title: Vermont Statutes Title 32, Chapter 246, § 10552 (d)
+      href: https://legislature.vermont.gov/statutes/fullchapter/32/246

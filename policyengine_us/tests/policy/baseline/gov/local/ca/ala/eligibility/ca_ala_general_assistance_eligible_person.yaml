@@ -1,0 +1,35 @@
+- name: Case 1, eligible person.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 500
+    immigration_status: CITIZEN
+    in_ala: true
+  output:
+    ca_ala_general_assistance_eligible_person: true
+
+- name: Case 2, ineligible due to receive ssi.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 100
+    personal_property: 500
+    immigration_status: CITIZEN
+    in_ala: true
+  output:
+    ca_ala_general_assistance_eligible_person: false
+
+- name: Case 3, ineligible due to not a head or spouse.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: false
+    ssi: 0
+    personal_property: 500
+    immigration_status: CITIZEN
+    in_ala: true
+  output:
+    ca_ala_general_assistance_eligible_person: false

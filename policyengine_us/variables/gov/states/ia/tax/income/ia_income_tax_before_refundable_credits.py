@@ -17,7 +17,7 @@ class ia_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         tax_before = tax_unit("ia_income_tax_before_credits", period)
-        nonref_credits = tax_unit("ia_nonrefundable_credits", period)
+        nonref_credits = tax_unit("ia_non_refundable_credits", period)
         is_tax_exempt = tax_unit("ia_is_tax_exempt", period)
         tax_after = ~is_tax_exempt * max_(0, tax_before - nonref_credits)
         tax_reduced = tax_unit("ia_reduced_tax", period)

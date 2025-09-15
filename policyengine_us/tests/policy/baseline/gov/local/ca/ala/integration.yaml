@@ -1,0 +1,75 @@
+- name: Case 1, both people are eligible, with $1000 monthly income, receive 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 1000 * 12
+        ssi: 0
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_ala: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_ala_general_assistance_base_amount: 548
+    ca_ala_general_assistance_countable_income: 1_000
+    ca_ala_general_assistance: 0
+
+- name: Case 2, only one people is eligible, with $300 monthly income. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 300 * 12
+        ssi: 0
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_ala: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_ala_general_assistance_base_amount: 336
+    ca_ala_general_assistance_countable_income: 300
+    ca_ala_general_assistance: 36
+
+- name: Case 3, both people are ineligible. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        ssi: 50
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_ala: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_ala_general_assistance_base_amount: 0
+    ca_ala_general_assistance: 0

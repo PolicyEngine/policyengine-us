@@ -14,5 +14,10 @@ class vt_subtractions(Variable):
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(i), (C)(iv), (B)(vi), (B)(ii), (B)(iv)
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf",
     )
+
     # Get parameter list
-    adds = "gov.states.vt.tax.income.agi.subtractions"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.vt.tax.income.agi
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

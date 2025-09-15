@@ -1,0 +1,150 @@
+- name: Joint household with taxable income above the threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 30_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: 0
+
+- name: Joint household with taxable income below the phase out threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 23_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: [60, 60]
+
+- name: Joint household with taxable income above the phase out threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 26_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: [40, 40]
+
+- name: No credit for dependents
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 26_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: [40, 40, 0]
+
+- name: Single person
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 26_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: 50
+
+- name: Married filing separately, one person with income above threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 26_200
+      person2:
+        ar_taxable_income_indiv: 30_000
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: [40, 0]
+
+- name: Married filing separately, both receive the credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 26_200
+      person2:
+        ar_taxable_income_indiv: 10_000
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals_person: [40, 60]
