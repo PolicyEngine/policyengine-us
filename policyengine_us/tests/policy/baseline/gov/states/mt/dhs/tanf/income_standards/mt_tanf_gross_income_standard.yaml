@@ -1,51 +1,35 @@
-- name: Case 1, lower net standard
-  period: 2023-01
+- name: Case 1, AU size 1
+  period: 2024-01
+  absolute_error_margin: 0.3  
   input:
     state_code: MT
-    mt_tanf_net_income_standard: 800
-    gov.states.mt.dhs.tanf.income_standards.net_to_gross_rate: 1.85
+    mt_tanf_assistance_unit_size: 1
   output:
-    mt_tanf_gross_income_standard: 1480.0  # 800 * 1.85
+    mt_tanf_gross_income_standard: 859
 
-- name: Case 2, higher net standard
-  period: 2023-01
+- name: Case 2, AU size 8
+  period: 2024-01
+  absolute_error_margin: 0.3
   input:
     state_code: MT
-    mt_tanf_net_income_standard: 1200
-    gov.states.mt.dhs.tanf.income_standards.net_to_gross_rate: 1.85
+    mt_tanf_assistance_unit_size: 8
   output:
-    mt_tanf_gross_income_standard: 2220.0  # 1200 * 1.85
+    mt_tanf_gross_income_standard: 2_979
 
-- name: Case 3, zero net income
-  period: 2023-01
+- name: Case 3, AU size 25 - capped
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 25
+  output:
+    mt_tanf_gross_income_standard: 6_613
+
+- name: Case 4, zero net income
+  period: 2024-01
+  absolute_error_margin: 0.3  
   input:
     state_code: MT
     mt_tanf_net_income_standard: 0
-    gov.states.mt.dhs.tanf.income_standards.net_to_gross_rate: 1.85
   output:
     mt_tanf_gross_income_standard: 0.0
-
-- name: Case 4, integration test
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 8
-    spm_units:
-      spm_unit1:
-        members: [person1]
-        mt_tanf_net_income_standard: 1000
-      spm_unit2:
-        members: [person2]
-        mt_tanf_net_income_standard: 1200
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-    gov.states.mt.dhs.tanf.income_standards.net_to_gross_rate: 1.85
-  output:
-    # spm_unit1: 1000 * 1.85 = 1850
-    # spm_unit2: 1200 * 1.85 = 2220
-    mt_tanf_gross_income_standard: [1850.0, 2220.0]

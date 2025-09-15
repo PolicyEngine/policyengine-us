@@ -1,0 +1,46 @@
+- name: Case 1, assistance unit size 1 in 2023.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_assistance_unit_size: 1
+    state_code: MT
+  output:
+    # first 6 months use previous year FPG (1,132.5), next 6 months use current year FPG (1,215.0)
+    mt_tanf_assistance_unit_fpg: 6*1132.5 + 6*1215.0 # = 14_085
+
+- name: Case 2, assistance unit size 3 in 2023.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_assistance_unit_size: 3
+    state_code: MT
+  output:
+    mt_tanf_assistance_unit_fpg: 14_085 + 2 * (6 * 393.33 + 6 * 428.33)
+
+- name: Case 3, assistance unit size 1 in 2023-01.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_assistance_unit_size: 1
+    state_code: MT
+  output:
+    mt_tanf_assistance_unit_fpg: 1_132.5  # 13_590 / 12
+
+- name: Case 4, assistance unit size 3 in 2023-01.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_assistance_unit_size: 3
+    state_code: MT
+  output:
+    mt_tanf_assistance_unit_fpg: 1_919.1 # (13_590 + 2 * 4_720)/12
+
+- name: Case 5, assistance unit capped size in 2023-01.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_assistance_unit_size: 25
+    state_code: MT
+  output:
+    # capped at 20-person household, monthly FPG = (13,590 + 19 * 4,720) / 12
+    mt_tanf_assistance_unit_fpg: 8_605.8

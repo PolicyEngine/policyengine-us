@@ -1,53 +1,35 @@
-- name: Case 1, lower AU FPG
-  period: 2023-01
+- name: Case 1, AU size 1
+  period: 2024-01
+  absolute_error_margin: 0.4
   input:
     state_code: MT
-    mt_tanf_assistance_unit_fpg: 1215
-    gov.states.mt.dhs.tanf.income_standards.payment_fpg_rate: 0.35
+    mt_tanf_assistance_unit_size: 1
   output:
-    mt_tanf_payment_standard: 425.25  # 1215 * 0.35
+    mt_tanf_payment_standard: 425
 
-- name: Case 2, higher AU FPG
-  period: 2023-01
+- name: Case 2, AU size 8
+  period: 2024-01
+  absolute_error_margin: 0.4 
   input:
     state_code: MT
-    mt_tanf_assistance_unit_fpg: 1644
-    gov.states.mt.dhs.tanf.income_standards.payment_fpg_rate: 0.35
+    mt_tanf_assistance_unit_size: 8
   output:
-    mt_tanf_payment_standard: 575.40  # 1644 * 0.35
+    mt_tanf_payment_standard: 1_475
 
-- name: Case 3, zero AU FPG
-  period: 2023-01
+- name: Case 3, AU size 25 - capped
+  period: 2024-01
+  absolute_error_margin: 0.4 
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 25
+  output:
+    mt_tanf_payment_standard: 3_274
+
+- name: Case 4, zero AU FPG
+  period: 2024-01
+  absolute_error_margin: 0.4
   input:
     state_code: MT
     mt_tanf_assistance_unit_fpg: 0
-    gov.states.mt.dhs.tanf.income_standards.payment_fpg_rate: 0.35
   output:
     mt_tanf_payment_standard: 0
-
-- name: Case 4, integration test
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 40
-      person2:
-        age: 12
-      person3:
-        age: 7
-    spm_units:
-      spm_unit1:
-        members: [person1]
-        mt_tanf_assistance_unit_fpg: 1215
-      spm_unit2:
-        members: [person2, person3]
-        mt_tanf_assistance_unit_fpg: 1644
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: MT
-    gov.states.mt.dhs.tanf.income_standards.payment_fpg_rate: 0.35
-  output:
-    # spm_unit1: 1215 * 0.35 = 425.25
-    # spm_unit2: 1644 * 0.35 = 575.40
-    mt_tanf_payment_standard: [425.25, 575.40]
