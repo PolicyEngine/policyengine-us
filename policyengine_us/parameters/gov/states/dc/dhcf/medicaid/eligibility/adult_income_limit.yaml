@@ -1,0 +1,16 @@
+description: Income limit for adults (21+) as percentage of Federal Poverty Level
+metadata:
+  unit: /100
+  period: year
+  label: DC Medicaid/Alliance income limit for adults
+  reference:
+    - title: DC Health Care Alliance
+      href: https://dhcf.dc.gov/node/1796971
+    - title: Alliance and ICP Program Changes (2025)
+      href: https://dhcf.dc.gov/alliance
+    - title: Fiscal Year 2026 Budget Support Act of 2025 (Bill 26-260)
+      href: https://lims.dccouncil.gov/Legislation/B26-0260
+
+values:
+  2021-01-01: 2.15  # 215% FPL - current Alliance limit
+  2026-01-01: 1.38  # 138% FPL - new limit effective October 1, 2025 (modeled as 2026)

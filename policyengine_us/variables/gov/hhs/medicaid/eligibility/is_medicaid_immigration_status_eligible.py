@@ -23,13 +23,17 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         # Special handling for undocumented immigrants in states that cover them
+        # DC now handles its own undocumented coverage through dc_medicaid_eligible
         undocumented = (
             immigration_status
             == immigration_status.possible_values.UNDOCUMENTED
         )
         state = person.household("state_code_str", period)
-        state_covers_undocumented = p.undocumented_immigrant[state].astype(
-            bool
+        # Exclude DC from federal undocumented handling
+        state_covers_undocumented = np.where(
+            state == "DC",
+            False,  # DC handles its own
+            p.undocumented_immigrant[state].astype(bool)
         )
         undocumented_eligible = undocumented & state_covers_undocumented
 

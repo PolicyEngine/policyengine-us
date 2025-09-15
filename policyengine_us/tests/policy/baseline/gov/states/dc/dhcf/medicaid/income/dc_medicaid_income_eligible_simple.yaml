@@ -1,0 +1,60 @@
+# Minimal unit tests with just medicaid_income_level input
+- name: Adult at 100% FPL eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true  # Under 215% FPL
+
+- name: Adult at 250% FPL not eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 2.5  # 250% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false  # Over 215% FPL
+
+- name: Adult at 100% FPL eligible in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true  # Under 138% FPL
+
+- name: Adult at 150% FPL not eligible in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.5  # 150% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false  # Over 138% FPL
+
+- name: Child at 300% FPL eligible
+  period: 2026
+  input:
+    age: 10
+    is_pregnant: false
+    medicaid_income_level: 3.0  # 300% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true  # Under 324% FPL for children
+
+- name: Pregnant woman at 300% FPL eligible
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: true
+    medicaid_income_level: 3.0  # 300% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true  # Under 324% FPL for pregnant women

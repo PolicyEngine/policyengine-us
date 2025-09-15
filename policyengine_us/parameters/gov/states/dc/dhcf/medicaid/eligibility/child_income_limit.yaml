@@ -1,0 +1,11 @@
+description: Income limit for children (0-20) as percentage of Federal Poverty Level
+metadata:
+  unit: /100
+  period: year
+  label: DC Medicaid/Alliance income limit for children
+  reference:
+    - title: DC Health Care Alliance
+      href: https://dhcf.dc.gov/alliance
+
+values:
+  2021-01-01: 3.24  # 324% FPL - no change mentioned

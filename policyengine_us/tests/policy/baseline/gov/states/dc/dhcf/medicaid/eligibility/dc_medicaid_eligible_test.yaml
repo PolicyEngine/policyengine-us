@@ -1,0 +1,48 @@
+# Minimal unit tests for overall DC Medicaid eligibility
+- name: Eligible - all criteria met
+  period: 2025
+  input:
+    age: 25
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    medicaid_income_level: 1.0  # 100% FPL
+    medicaid_category: NONE  # Not federally eligible
+    state_code: DC
+  output:
+    dc_medicaid_eligible: true
+
+- name: Not eligible - income too high
+  period: 2025
+  input:
+    age: 25
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    medicaid_income_level: 2.5  # 250% FPL
+    medicaid_category: NONE  # Not federally eligible
+    state_code: DC
+  output:
+    dc_medicaid_eligible: false
+
+- name: Not eligible - age too high in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    medicaid_income_level: 1.0  # 100% FPL
+    medicaid_category: NONE  # Not federally eligible
+    state_code: DC
+  output:
+    dc_medicaid_eligible: false
+
+- name: Eligible - grandfathered by age
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    dc_medicaid_enrolled: true  # Grandfathered
+    medicaid_income_level: 1.0  # 100% FPL
+    medicaid_category: NONE  # Not federally eligible
+    state_code: DC
+  output:
+    dc_medicaid_eligible: true
