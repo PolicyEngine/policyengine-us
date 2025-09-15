@@ -15,7 +15,9 @@ class dc_medicaid_eligible(Variable):
     def formula(person, period, parameters):
         # DC-specific eligibility for those not covered by federal Medicaid
         # This includes undocumented immigrants and others through the Alliance program
-        immigration_eligible = person("dc_medicaid_immigration_eligible", period)
+        immigration_eligible = person(
+            "dc_medicaid_immigration_eligible", period
+        )
         income_eligible = person("dc_medicaid_income_eligible", period)
         age_eligible = person("dc_medicaid_age_eligible", period)
 

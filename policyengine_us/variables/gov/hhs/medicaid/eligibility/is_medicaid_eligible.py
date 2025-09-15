@@ -22,9 +22,7 @@ class is_medicaid_eligible(Variable):
         # Check for DC-specific Medicaid eligibility
         state = person.household("state_code_str", period)
         dc_medicaid_eligible = np.where(
-            state == "DC",
-            person("dc_medicaid_eligible", period),
-            False
+            state == "DC", person("dc_medicaid_eligible", period), False
         )
 
         p = parameters(period).gov.hhs.medicaid.eligibility
@@ -33,10 +31,16 @@ class is_medicaid_eligible(Variable):
                 "medicaid_work_requirement_eligible", period
             )
             return (
-                categorically_eligible
-                & immigration_status_eligible
-                & work_requirement_eligible
-            ) | ca_ffyp_eligible | dc_medicaid_eligible
+                (
+                    categorically_eligible
+                    & immigration_status_eligible
+                    & work_requirement_eligible
+                )
+                | ca_ffyp_eligible
+                | dc_medicaid_eligible
+            )
         return (
-            categorically_eligible & immigration_status_eligible
-        ) | ca_ffyp_eligible | dc_medicaid_eligible
+            (categorically_eligible & immigration_status_eligible)
+            | ca_ffyp_eligible
+            | dc_medicaid_eligible
+        )

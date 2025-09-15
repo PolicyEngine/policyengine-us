@@ -33,7 +33,7 @@ class is_medicaid_immigration_status_eligible(Variable):
         state_covers_undocumented = np.where(
             state == "DC",
             False,  # DC handles its own
-            p.undocumented_immigrant[state].astype(bool)
+            p.undocumented_immigrant[state].astype(bool),
         )
         undocumented_eligible = undocumented & state_covers_undocumented
 

@@ -26,13 +26,16 @@ class dc_medicaid_age_eligible(Variable):
 
         # If max_age is set to a finite value (after 10/1/2025), apply the restriction
         import numpy as np
+
         if not np.isinf(max_age_new_applicants):
             # People over 26 can stay enrolled if already in the program
             # but new applicants over 26 cannot enroll
             age_eligible = (
                 (age <= max_age_new_applicants)
                 | is_pregnant
-                | (is_currently_enrolled & (age >= 26))  # Only grandfather those over 26
+                | (
+                    is_currently_enrolled & (age >= 26)
+                )  # Only grandfather those over 26
             )
         else:
             # Before 10/1/2025, no age restriction (inf means no limit)
