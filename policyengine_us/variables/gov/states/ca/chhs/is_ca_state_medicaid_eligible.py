@@ -11,7 +11,7 @@ class is_ca_state_medicaid_eligible(Variable):
         "https://www.chcf.org/publication/medi-cal-expansion-undocumented-adults/",
     ]
     defined_for = StateCode.CA
-    defined_for = StateCode.CA
+
 
     def formula(person, period, parameters):
         # Check if person meets federal Medicaid category requirements (age and income)

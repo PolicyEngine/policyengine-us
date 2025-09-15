@@ -61,7 +61,7 @@
     immigration_status: UNDOCUMENTED
     state_code_str: CA
   output:
-    is_medicaid_eligible: flase
+    is_medicaid_eligible: false
 
 - name: Ineligible undocumented immigrant due to state rules in colorado
   period: 2022
