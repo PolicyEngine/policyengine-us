@@ -1,0 +1,39 @@
+- name: Single person household in contiguous states
+  period: 2024
+  input:
+    household_size: 1
+    state_code: CA
+  output:
+    household_fpg: 15_060
+
+- name: Family of 4 in contiguous states
+  period: 2024
+  input:
+    household_size: 4
+    state_code: NY
+  output:
+    household_fpg: 31_200
+
+- name: Family of 2 in Alaska
+  period: 2024
+  input:
+    household_size: 2
+    state_code: AK
+  output:
+    household_fpg: 25_480
+
+- name: Family of 3 in Hawaii
+  period: 2024
+  input:
+    household_size: 3
+    state_code: HI
+  output:
+    household_fpg: 31_470
+
+- name: Large family of 8 in contiguous states
+  period: 2024
+  input:
+    household_size: 8
+    state_code: TX
+  output:
+    household_fpg: 53_000
