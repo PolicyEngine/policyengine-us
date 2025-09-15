@@ -1,0 +1,10 @@
+- name: Basic test
+  period: 2024
+  input:
+    pr_american_opportunity_credit_eligibility: true
+    is_eligible_for_american_opportunity_credit: true
+    qualified_tuition_expenses: 5_000
+    education_credit_phase_out: 
+    state_code: PR
+  output:
+    pr_american_opportunity_credit: 400

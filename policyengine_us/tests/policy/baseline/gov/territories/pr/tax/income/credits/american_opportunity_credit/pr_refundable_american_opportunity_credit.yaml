@@ -1,0 +1,17 @@
+- name: Basic test
+  period: 2024
+  input:
+    pr_american_opportunity_credit: 1_000
+    pr_american_opportunity_credit_eligibility: true
+    state_code: PR
+  output:
+    pr_refundable_american_opportunity_credit: 400
+
+- name: Not eligible
+  period: 2024
+  input:
+    pr_american_opportunity_credit: 1_000
+    pr_american_opportunity_credit_eligibility: false
+    state_code: PR
+  output:
+    pr_refundable_american_opportunity_credit: 0
