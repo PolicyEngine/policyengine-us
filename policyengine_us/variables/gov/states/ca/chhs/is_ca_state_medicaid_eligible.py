@@ -12,7 +12,6 @@ class is_ca_state_medicaid_eligible(Variable):
     ]
     defined_for = StateCode.CA
 
-
     def formula(person, period, parameters):
         # Check if person meets federal Medicaid category requirements (age and income)
         category = person("medicaid_category", period)

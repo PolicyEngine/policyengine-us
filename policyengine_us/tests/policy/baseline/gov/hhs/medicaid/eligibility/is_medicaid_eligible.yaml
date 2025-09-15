@@ -89,7 +89,7 @@
     immigration_status: UNDOCUMENTED
     ca_ffyp_eligible: false
   output:
-    is_medicaid_eligible: true
+    is_medicaid_eligible: false
 
 - name: Eligible via California FFYP program
   period: 2022
