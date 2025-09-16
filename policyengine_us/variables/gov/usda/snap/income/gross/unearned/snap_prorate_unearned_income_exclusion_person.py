@@ -14,6 +14,6 @@ class snap_prorate_unearned_income_exclusion_person(Variable):
     def formula(person, period, parameters):
         unearned_income = person("snap_unearned_income_person", period)
         prorate_fraction = person.spm_unit(
-            "snap_prorate_fraction", period.this_year
+            "snap_ineligible_members_fraction", period.this_year
         )
         return unearned_income * prorate_fraction

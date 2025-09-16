@@ -16,7 +16,7 @@ class snap_child_support_deduction_person(Variable):
         # Apply proration only for ineligible members
         is_prorate_person = person("is_snap_prorate_person", period.this_year)
         prorate_fraction = person.spm_unit(
-            "snap_prorate_fraction", period.this_year
+            "snap_ineligible_members_fraction", period.this_year
         )
 
         # Ineligible members get their income reduced by prorate_fraction

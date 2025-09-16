@@ -23,12 +23,10 @@ class snap_individual_utility_allowance(Variable):
         )
 
         # Apply proration for ineligible members per 7 CFR 273.11(c)
-        prorate_fraction = spm_unit("snap_prorate_fraction", period.this_year)
-        spm_unit_size = spm_unit("spm_unit_size", period)
-        prorate_reduction = where(
-            spm_unit_size > 0, 1 - prorate_fraction / spm_unit_size, 1
+        prorate_factor = spm_unit(
+            "snap_eligible_share_of_expense", period.this_year
         )
-        sum_prorated = sum_of_individual_allowances * prorate_reduction
+        sum_prorated = sum_of_individual_allowances * prorate_factor
 
         return where(
             allowance_type == allowance_types.IUA,

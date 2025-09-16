@@ -28,11 +28,9 @@ class snap_housing_cost(Variable):
 
         # Apply proration to SPMUnit-level costs
         # Person-level costs are already prorated in snap_housing_cost_person
-        prorate_fraction = spm_unit("snap_prorate_fraction", period.this_year)
-        spm_unit_size = spm_unit("spm_unit_size", period)
-        prorate_reduction = where(
-            spm_unit_size > 0, 1 - prorate_fraction / spm_unit_size, 1
+        prorate_factor = spm_unit(
+            "snap_eligible_share_of_expense", period.this_year
         )
 
         # Apply proration only to SPMUnit-level costs (person-level already prorated)
-        return person_level_costs + (spm_level_costs * prorate_reduction)
+        return person_level_costs + (spm_level_costs * prorate_factor)

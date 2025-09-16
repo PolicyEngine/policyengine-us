@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class snap_prorate_fraction(Variable):
+class snap_ineligible_members_fraction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SNAP proration factor"
-    documentation = "Factor for prorating income and deductions based on ineligible members count"
+    label = "SNAP ineligible members fraction"
+    documentation = "Fraction of household members who are ineligible for SNAP (used in proration calculations)"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/7/273.11#c_3"
 

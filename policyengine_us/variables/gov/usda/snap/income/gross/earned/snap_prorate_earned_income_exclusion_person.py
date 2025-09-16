@@ -14,6 +14,6 @@ class snap_prorate_earned_income_exclusion_person(Variable):
     def formula(person, period, parameters):
         earned_income = person("snap_earned_income_person", period)
         prorate_fraction = person.spm_unit(
-            "snap_prorate_fraction", period.this_year
+            "snap_ineligible_members_fraction", period.this_year
         )
         return earned_income * prorate_fraction
