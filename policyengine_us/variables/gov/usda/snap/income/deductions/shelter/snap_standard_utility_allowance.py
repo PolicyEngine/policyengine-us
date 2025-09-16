@@ -32,4 +32,5 @@ class snap_standard_utility_allowance(Variable):
             sua,
         )
 
+        # No proration needed - already using snap_unit_size which excludes ineligible members
         return where(allowance_type == allowance_types.SUA, sua, 0)

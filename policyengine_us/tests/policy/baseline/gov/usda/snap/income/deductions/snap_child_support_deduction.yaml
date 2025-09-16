@@ -1,25 +1,45 @@
 - name: 0 out if gross income deduction is present
   period: 2022
   input:
-    child_support_expense: 500
-    snap_child_support_gross_income_deduction: 500
+    people:
+      person1:
+        child_support_expense: 500
+        snap_child_support_gross_income_deduction_person: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
   output:
     snap_child_support_deduction: 0
 
 - name: Otherwise, full deduction
   period: 2022
   input:
-    child_support_expense: 500
-    snap_child_support_gross_income_deduction: 0
+    people:
+      person1:
+        child_support_expense: 500
+        snap_child_support_gross_income_deduction_person: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
   output:
     snap_child_support_deduction: 500
 
-- name: With prorate fraction, prorate deduction.
+- name: With prorate fraction, prorate deduction - person level test
   period: 2022
   input:
-    child_support_expense: 500
-    snap_child_support_gross_income_deduction: 0
-    snap_prorate_fraction: 0.8
-    spm_unit_size: 4
+    people:
+      person1:
+        child_support_expense: 500
+        is_snap_prorate_person: false
+      person2:
+        child_support_expense: 100
+        is_snap_prorate_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 0.5
   output:
-    snap_child_support_deduction: 400 # 500 * (1 - 0.8 / 4)
+    snap_child_support_deduction_person:
+      - 500  # person1: eligible, full deduction
+      - 50   # person2: ineligible, 100 - (100 * 0.5)
+    snap_child_support_deduction: 550

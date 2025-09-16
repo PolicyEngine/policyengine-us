@@ -1,0 +1,63 @@
+- name: Household with one ineligible member gets SUA based on eligible member count
+  period: 2022-01
+  input:
+    people:
+      person1:
+        rent: 3_600  # $300/month
+        is_snap_prorate_person: false
+        is_snap_demographic_eligible_person: true
+      person2:
+        rent: 1_200  # $100/month
+        is_snap_prorate_person: true
+        is_snap_demographic_eligible_person: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 0.5
+        snap_net_income_pre_shelter: 800
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        snap_utility_region_str: CA
+  output:
+    # Housing costs are prorated at person level
+    snap_housing_cost_person:
+      - 300  # person1: eligible, full amount
+      - 50   # person2: ineligible, 100 - (100 * 0.5) = 50
+    snap_housing_cost: 350
+
+    # snap_unit_size should be 1 (only person1 is eligible)
+    snap_unit_size: 1
+
+    # SUA is based on snap_unit_size=1, so household gets 1-person SUA rate
+    # CA SUA for 1-person household in 2022-01
+    # Then: Total shelter = 350 + SUA_for_1_person
+    # Deduction = Total - (0.5 * 800) = Total - 400
+    snap_excess_shelter_expense_deduction: 437  # Actual value based on CA 1-person SUA
+
+- name: Shelter deduction with no proration (all eligible members)
+  period: 2022-01
+  input:
+    people:
+      person1:
+        rent: 3_600  # $300/month
+        is_snap_prorate_person: false
+      person2:
+        rent: 1_200  # $100/month
+        is_snap_prorate_person: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 0
+        snap_net_income_pre_shelter: 800
+        snap_utility_allowance: 200
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    snap_housing_cost: 400  # 300 + 100 (no proration)
+    # Total shelter: 400 + 200 = 600
+    # Minus 50% of net income: 600 - 400 = 200
+    snap_excess_shelter_expense_deduction: 200

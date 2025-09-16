@@ -22,18 +22,14 @@ class snap_excess_shelter_expense_deduction(Variable):
             "snap_net_income_pre_shelter", period
         )
         subtracted_income = p.income_share_disregard * net_income_pre_shelter
-        housing_cost = add(
-            spm_unit, period, ["snap_utility_allowance", "housing_cost"]
-        )
-        # Exclude ineligible members' share per SNAP proration rules (result always >= 0 since prorate_fraction < spm_unit_size)
-        prorate_fraction = spm_unit("snap_prorate_fraction", period.this_year)
-        spm_unit_size = spm_unit("spm_unit_size", period)
-        housing_cost_after_proration = housing_cost * (
-            1 - prorate_fraction / spm_unit_size
-        )
-        uncapped_ded = max_(
-            housing_cost_after_proration - subtracted_income, 0
-        )
+        # Use snap_housing_cost which already includes person-level proration
+        housing_cost_with_proration = spm_unit("snap_housing_cost", period)
+        # Utility allowance is already prorated at source (in SUA/LUA/IUA calculations)
+        utility_allowance = spm_unit("snap_utility_allowance", period)
+
+        total_shelter_cost = housing_cost_with_proration + utility_allowance
+
+        uncapped_ded = max_(total_shelter_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
         state_group = spm_unit.household("snap_region_str", period)
         ded_cap = p.cap[state_group]
@@ -48,7 +44,7 @@ class snap_excess_shelter_expense_deduction(Variable):
         homeless_deduction = p.homeless.deduction * p.homeless.available[state]
         return where(
             spm_unit.household("is_homeless", period)
-            & (housing_cost > 0)
+            & (total_shelter_cost > 0)
             & (homeless_deduction > non_homeless_shelter_deduction),
             homeless_deduction,
             non_homeless_shelter_deduction,

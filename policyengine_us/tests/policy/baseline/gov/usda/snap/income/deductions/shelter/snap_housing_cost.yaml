@@ -1,0 +1,74 @@
+- name: Housing cost with proration for ineligible member
+  period: 2022-01
+  input:
+    people:
+      person1:
+        rent: 6_000  # $500/month
+        real_estate_taxes: 2_400  # $200/month
+        is_snap_prorate_person: false
+      person2:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_prorate_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 0.5
+        mortgage_payments: 4_800  # $400/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person:
+      - 700  # person1: (500 + 200) - 0 = 700
+      - 175  # person2: (250 + 100) - (350 * 0.5) = 175
+    snap_housing_cost: 1_287.5  # 700 + 175 + (550 * 0.75) = 875 + 412.5
+
+- name: Housing cost with no ineligible members
+  period: 2022-01
+  input:
+    people:
+      person1:
+        rent: 6_000  # $500/month
+        real_estate_taxes: 2_400  # $200/month
+        is_snap_prorate_person: false
+      person2:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_prorate_person: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 0
+        mortgage_payments: 4_800  # $400/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person:
+      - 700  # person1: (500 + 200) - 0 = 700
+      - 350  # person2: (250 + 100) - 0 = 350
+    snap_housing_cost: 1_600  # 700 + 350 + 400 + 100 + 50
+
+- name: Housing cost with all ineligible members
+  period: 2022-01
+  input:
+    people:
+      person1:
+        rent: 6_000  # $500/month
+        real_estate_taxes: 2_400  # $200/month
+        is_snap_prorate_person: true
+      person2:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_prorate_person: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_prorate_fraction: 1
+        mortgage_payments: 4_800  # $400/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person:
+      - 0  # person1: (500 + 200) - (700 * 1) = 0
+      - 0  # person2: (250 + 100) - (350 * 1) = 0
+    snap_housing_cost: 275  # 0 + 0 + (550 * 0.5) where 0.5 = 1 - 1/2
