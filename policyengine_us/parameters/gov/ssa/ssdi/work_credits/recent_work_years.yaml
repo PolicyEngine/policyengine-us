@@ -1,0 +1,14 @@
+description: The Social Security Administration requires half of work credits to be earned within this many recent years for Social Security Disability Insurance eligibility.
+
+values:
+  1975-01-01: 10
+
+metadata:
+  unit: year
+  period: year
+  label: SSA SSDI recent work years requirement
+  reference:
+    - title: Social Security Administration - How You Earn Credits
+      href: https://www.ssa.gov/benefits/retirement/planner/credits.html
+    - title: 42 U.S. Code § 423(c)(1)(B) - Recent work requirements
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B

@@ -1,0 +1,54 @@
+- name: PIA calculation with AIME below first bend point
+  period: 2024
+  input:
+    ssdi_aime: 12_000  # $1,000/month
+  output:
+    # Monthly: $1,000 * 0.9 = $900
+    ssdi_pia: 900
+
+- name: PIA calculation with AIME at first bend point
+  period: 2024
+  input:
+    ssdi_aime: 14_088  # $1,174/month (first bend point)
+  output:
+    # Monthly: $1,174 * 0.9 = $1,056.60
+    ssdi_pia: 1_056.6
+
+- name: PIA calculation with AIME between bend points
+  period: 2024
+  input:
+    ssdi_aime: 36_000  # $3,000/month
+  output:
+    # Monthly calculation:
+    # First portion: $1,174 * 0.9 = $1,056.60
+    # Second portion: ($3,000 - $1,174) * 0.32 = $1,826 * 0.32 = $584.32
+    # Total monthly: $1,056.60 + $584.32 = $1,640.92
+    # Rounded down to nearest $0.10: $1,640.90
+    ssdi_pia: 1_640.9
+
+- name: PIA calculation with AIME above second bend point
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    ssdi_aime: 96_000  # $8,000/month
+  output:
+    # Monthly calculation:
+    # First portion: $1,174 * 0.9 = $1,056.60
+    # Second portion: ($7,078 - $1,174) * 0.32 = $5,904 * 0.32 = $1,889.28
+    # Third portion: ($8,000 - $7,078) * 0.15 = $922 * 0.15 = $138.30
+    # Total monthly: $1,056.60 + $1,889.28 + $138.30 = $3,084.18
+    # Rounded down to nearest $0.10: $3,084.10
+    ssdi_pia: 3_084.1
+
+- name: PIA calculation at second bend point
+  period: 2024
+  input:
+    ssdi_aime: 84_936  # $7,078/month (second bend point)
+  output:
+    # Monthly calculation:
+    # First portion: $1,174 * 0.9 = $1,056.60
+    # Second portion: ($7,078 - $1,174) * 0.32 = $5,904 * 0.32 = $1,889.28
+    # Third portion: $0
+    # Total monthly: $1,056.60 + $1,889.28 = $2,945.88
+    # Rounded down to nearest $0.10: $2,945.80
+    ssdi_pia: 2_945.8

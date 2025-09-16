@@ -1,0 +1,12 @@
+description: The Social Security Administration requires a waiting period of this many months after disability onset before Social Security Disability Insurance benefits begin.
+
+values:
+  1975-01-01: 5
+
+metadata:
+  unit: month
+  period: month
+  label: SSDI waiting period
+  reference:
+    - title: 42 U.S. Code § 423(c)(2) - Waiting period for disability benefits
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_2

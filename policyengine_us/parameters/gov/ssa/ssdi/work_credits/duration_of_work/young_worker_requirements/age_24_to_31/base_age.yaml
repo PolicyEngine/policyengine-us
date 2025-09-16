@@ -1,0 +1,13 @@
+description: Base age for calculating graduated credit requirements (age 21)
+
+values:
+  1975-01-01: 21
+
+metadata:
+  unit: year
+  label: SSDI young worker base age for credit calculation
+  reference:
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii
+    - title: SSA - Disability Benefits
+      href: https://www.ssa.gov/benefits/disability/qualify.html

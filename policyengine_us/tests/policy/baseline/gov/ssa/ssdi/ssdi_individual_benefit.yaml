@@ -1,0 +1,50 @@
+- name: Eligible person receives full PIA after waiting period
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    is_ssdi_eligible: true
+    ssdi_aime: 60_000  # $5,000/month
+    ssdi_months_waiting: 5  # Completed 5-month waiting period
+  output:
+    # PIA calculation for $5,000/month AIME:
+    # First: $1,174 * 0.9 = $1,056.60
+    # Second: ($5,000 - $1,174) * 0.32 = $1,224.32
+    # Total monthly: $2,280.92, rounded down to $2,280.90
+    ssdi_pia: 2_280.9
+    ssdi_individual_benefit: 2_280.9
+
+- name: Eligible but still in waiting period
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    is_ssdi_eligible: true
+    ssdi_aime: 60_000
+    ssdi_months_waiting: 3  # Only 3 months, need 5
+  output:
+    ssdi_pia: 2_280.9
+    ssdi_individual_benefit: 0
+
+- name: Not eligible receives no benefit
+  period: 2024
+  input:
+    is_ssdi_eligible: false
+    ssdi_aime: 60_000
+    ssdi_months_waiting: 6
+  output:
+    ssdi_individual_benefit: 0
+
+- name: High earner at maximum benefit level
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    is_ssdi_eligible: true
+    ssdi_aime: 120_000  # $10,000/month
+    ssdi_months_waiting: 5
+  output:
+    # PIA calculation for $10,000/month:
+    # First: $1,174 * 0.9 = $1,056.60
+    # Second: ($7,078 - $1,174) * 0.32 = $1,889.28
+    # Third: ($10,000 - $7,078) * 0.15 = $438.30
+    # Total monthly: $3,384.18, rounded down to $3,384.10
+    ssdi_pia: 3_384.1
+    ssdi_individual_benefit: 3_384.1

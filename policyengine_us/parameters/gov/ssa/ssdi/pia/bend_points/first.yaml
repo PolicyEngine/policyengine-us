@@ -1,0 +1,14 @@
+description: The Social Security Administration uses this first bend point in the Primary Insurance Amount calculation formula for Social Security Disability Insurance benefits.
+
+values:
+  2024-01-01: 1_174
+
+metadata:
+  unit: USD
+  period: month
+  label: SSA SSDI PIA first bend point
+  reference:
+    - title: Social Security Administration - Benefit Formula Bend Points
+      href: https://www.ssa.gov/oact/cola/bendpoints.html
+    - title: 42 U.S. Code § 415(a)(1)(A) - Primary insurance amount formula
+      href: https://www.law.cornell.edu/uscode/text/42/415#a_1_A
