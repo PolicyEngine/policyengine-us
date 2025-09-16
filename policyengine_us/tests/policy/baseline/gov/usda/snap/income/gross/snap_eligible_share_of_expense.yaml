@@ -1,0 +1,83 @@
+- name: All household members are eligible - full expense is deductible
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_eligible_share_of_expense: 1.0
+    snap_ineligible_members_fraction: 0
+
+- name: One ineligible member in household of three
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_eligible_share_of_expense: 0.889  # 1 - (1/3)/3 = 1 - 1/9 = 8/9
+    snap_ineligible_members_fraction: 0.333
+
+- name: Two ineligible members in household of three
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_eligible_share_of_expense: 0.778  # 1 - (2/3)/3 = 1 - 2/9 = 7/9
+    snap_ineligible_members_fraction: 0.667
+
+- name: All members ineligible - no deductible expense
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_eligible_share_of_expense: 0.667  # 1 - (3/3)/3 = 1 - 1/3 = 2/3
+    snap_ineligible_members_fraction: 1.0

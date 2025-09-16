@@ -13,7 +13,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 0.5
+        snap_ineligible_members_fraction: 0.5
         snap_net_income_pre_shelter: 800
         has_heating_cooling_expense: true
     households:
@@ -50,7 +50,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 0
+        snap_ineligible_members_fraction: 0
         snap_net_income_pre_shelter: 800
         snap_utility_allowance: 200
     households:

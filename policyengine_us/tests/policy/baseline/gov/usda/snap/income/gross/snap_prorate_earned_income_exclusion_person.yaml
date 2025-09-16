@@ -4,7 +4,7 @@
   input:
     is_snap_prorate_person: false
     snap_earned_income_person: 200
-    snap_prorate_fraction: 0.3
+    snap_ineligible_members_fraction: 0.3
   output:
     snap_prorate_earned_income_exclusion_person: 0
 
@@ -14,6 +14,6 @@
   input:
     is_snap_prorate_person: true
     snap_earned_income_person: 200
-    snap_prorate_fraction: 0.3
+    snap_ineligible_members_fraction: 0.3
   output:
     snap_prorate_earned_income_exclusion_person: 60

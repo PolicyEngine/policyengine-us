@@ -13,7 +13,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 0.5
+        snap_ineligible_members_fraction: 0.5
         mortgage_payments: 4_800  # $400/month
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month
@@ -38,7 +38,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 0
+        snap_ineligible_members_fraction: 0
         mortgage_payments: 4_800  # $400/month
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month
@@ -63,7 +63,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 1
+        snap_ineligible_members_fraction: 1
         mortgage_payments: 4_800  # $400/month
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month

@@ -70,7 +70,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_prorate_fraction: 0.5
+        snap_ineligible_members_fraction: 0.5
         has_usda_elderly_disabled: true
   output:
     snap_housing_cost_person:
