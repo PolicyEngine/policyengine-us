@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.398.1] - 2025-09-15 22:28:43
+
+### Fixed
+
+- Remove the self-employment income deduction from the SNAP deductions list.
+
 ## [1.398.0] - 2025-09-11 11:13:17
 
 ### Added
@@ -12964,6 +12970,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.398.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.398.0...1.398.1
 [1.398.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.2...1.398.0
 [1.397.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.1...1.397.2
 [1.397.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.0...1.397.1
