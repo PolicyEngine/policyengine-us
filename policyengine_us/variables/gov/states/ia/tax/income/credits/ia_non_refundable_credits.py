@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ia_nonrefundable_credits(Variable):
+class ia_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Iowa nonrefundable income tax credits"

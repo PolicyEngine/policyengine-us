@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_nonrefundable_credits(Variable):
+class il_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Illinois non-refundable credits"
