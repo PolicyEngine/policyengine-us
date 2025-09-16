@@ -21,13 +21,13 @@ class snap_housing_cost_person(Variable):
             "is_snap_ineligible_member_based_on_immigration_status",
             period.this_year,
         )
-        prorate_fraction = person.spm_unit(
+        prorated_exclusion = person.spm_unit(
             "snap_ineligible_members_fraction", period.this_year
         )
 
-        # Ineligible members get their housing costs reduced by prorate_fraction
+        # Ineligible members get their housing costs reduced by prorated_exclusion
         prorated_exclusion = where(
-            ineligible_person, total_person_housing * prorate_fraction, 0
+            ineligible_person, total_person_housing * prorated_exclusion, 0
         )
 
         return total_person_housing - prorated_exclusion

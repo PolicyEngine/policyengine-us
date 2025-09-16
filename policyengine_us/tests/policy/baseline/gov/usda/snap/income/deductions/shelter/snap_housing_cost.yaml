@@ -21,7 +21,7 @@
     snap_housing_cost_person:
       - 700  # person1: (500 + 200) - 0 = 700
       - 175  # person2: (250 + 100) - (350 * 0.5) = 175
-    snap_housing_cost: 1_287.5  # 700 + 175 + (550 * 0.75) = 875 + 412.5
+    snap_housing_cost: 1_287.5  # 700 + 175 + (550 * 0.75) = 875 + 412.5, where 0.75 = 1 - 0.5²
 
 - name: Housing cost with no ineligible members
   period: 2022-01
@@ -71,4 +71,4 @@
     snap_housing_cost_person:
       - 0  # person1: (500 + 200) - (700 * 1) = 0
       - 0  # person2: (250 + 100) - (350 * 1) = 0
-    snap_housing_cost: 275  # 0 + 0 + (550 * 0.5) where 0.5 = 1 - 1/2
+    snap_housing_cost: 0  # 0 + 0 + (550 * 0) where 0 = 1 - 1²

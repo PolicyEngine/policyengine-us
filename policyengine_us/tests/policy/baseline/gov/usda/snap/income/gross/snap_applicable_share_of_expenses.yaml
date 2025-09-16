@@ -37,7 +37,7 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    snap_applicable_share_of_expenses: 0.889  # 1 - (1/3)/3 = 1 - 1/9 = 8/9
+    snap_applicable_share_of_expenses: 0.889  # 1 - (1/3)² = 1 - 1/9 = 8/9
     snap_ineligible_members_fraction: 0.333
 
 - name: Two ineligible members in household of three
@@ -58,7 +58,7 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    snap_applicable_share_of_expenses: 0.778  # 1 - (2/3)/3 = 1 - 2/9 = 7/9
+    snap_applicable_share_of_expenses: 0.556  # 1 - (2/3)² = 1 - 4/9 = 5/9
     snap_ineligible_members_fraction: 0.667
 
 - name: All members ineligible - no deductible expense
@@ -79,5 +79,5 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    snap_applicable_share_of_expenses: 0.667  # 1 - (3/3)/3 = 1 - 1/3 = 2/3
+    snap_applicable_share_of_expenses: 0.0  # 1 - (3/3)² = 1 - 1 = 0
     snap_ineligible_members_fraction: 1.0

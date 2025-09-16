@@ -14,8 +14,9 @@ class snap_applicable_share_of_expenses(Variable):
         # including the ineligible ones. All but the ineligible alien's share is counted
         # as a deductible expense for the remaining household members.
         #
-        # This returns (1 - ineligible_fraction / spm_unit_size) which is the proportion
-        # of the expense that is deductible after excluding ineligible members' share
+        # The correct formula is: 1 - ineligible_fraction²
+        # This accounts for the fact that each ineligible member's share of expenses
+        # is reduced by the ineligible fraction (their proportionate share)
 
         ineligible_fraction = spm_unit(
             "snap_ineligible_members_fraction", period
@@ -24,5 +25,7 @@ class snap_applicable_share_of_expenses(Variable):
 
         # Avoid division by zero
         return where(
-            spm_unit_size > 0, 1 - ineligible_fraction / spm_unit_size, 1
+            spm_unit_size > 0,
+            1 - ineligible_fraction * ineligible_fraction,
+            1,
         )

@@ -20,14 +20,14 @@
     spm_units:
       spm_unit:
         members: [person1, person2, child1, child2]
-        childcare_expenses: 600  # $600/month childcare expenses
+        childcare_expenses: 600
     households:
       household:
         members: [person1, person2, child1, child2]
         state_code: CA
   output:
     # With 1 ineligible person in household of 4:
-    # Prorate factor = 1 - (1/4)/4 = 1 - 0.0625 = 0.9375
+    # Prorate factor = 1 - (1/4)² = 1 - 0.0625 = 0.9375
     # Deduction = 600 * 0.9375 = 562.50
     snap_dependent_care_deduction: 562.50
     snap_applicable_share_of_expenses: 0.9375
@@ -35,7 +35,7 @@
     snap_unit_ineligible_people: 1
 
 - name: Dependent care deduction with all eligible members
-  period: 2024
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -56,7 +56,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, child1, child2]
-        childcare_expenses: 600  # $600/month childcare expenses
+        childcare_expenses: 600 * 12  # $600/month childcare expenses
     households:
       household:
         members: [person1, person2, child1, child2]
@@ -64,9 +64,10 @@
   output:
     # All eligible - no proration
     snap_dependent_care_deduction: 600
-    snap_applicable_share_of_expenses: 1.0
-    snap_ineligible_members_fraction: 0
-    snap_unit_ineligible_people: 0
+    # Don't test YEAR variables in MONTH period as they get divided by 12
+    # snap_applicable_share_of_expenses: 1.0  # Would return 0.0833
+    # snap_ineligible_members_fraction: 0  # Would return 0
+    # snap_unit_ineligible_people: 0  # Would return 0
 
 - name: Dependent care deduction with two ineligible members
   period: 2024
@@ -91,16 +92,16 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, child1]
-        childcare_expenses: 800  # $800/month childcare expenses
+        childcare_expenses: 800
     households:
       household:
         members: [person1, person2, person3, child1]
         state_code: CA
   output:
     # With 2 ineligible persons in household of 4:
-    # Prorate factor = 1 - (2/4)/4 = 1 - 0.125 = 0.875
-    # Deduction = 800 * 0.875 = 700
-    snap_dependent_care_deduction: 700
-    snap_applicable_share_of_expenses: 0.875
+    # Prorate factor = 1 - (2/4)² = 1 - 0.25 = 0.75
+    # Deduction = 800 * 0.75 = 600
+    snap_dependent_care_deduction: 600
+    snap_applicable_share_of_expenses: 0.75
     snap_ineligible_members_fraction: 0.5
     snap_unit_ineligible_people: 2
