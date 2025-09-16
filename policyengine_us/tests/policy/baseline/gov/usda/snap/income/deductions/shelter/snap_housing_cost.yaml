@@ -5,11 +5,11 @@
       person1:
         rent: 6_000  # $500/month
         real_estate_taxes: 2_400  # $200/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
       person2:
         rent: 3_000  # $250/month
         real_estate_taxes: 1_200  # $100/month
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -30,11 +30,11 @@
       person1:
         rent: 6_000  # $500/month
         real_estate_taxes: 2_400  # $200/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
       person2:
         rent: 3_000  # $250/month
         real_estate_taxes: 1_200  # $100/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -55,11 +55,11 @@
       person1:
         rent: 6_000  # $500/month
         real_estate_taxes: 2_400  # $200/month
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
       person2:
         rent: 3_000  # $250/month
         real_estate_taxes: 1_200  # $100/month
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
     spm_units:
       spm_unit:
         members: [person1, person2]

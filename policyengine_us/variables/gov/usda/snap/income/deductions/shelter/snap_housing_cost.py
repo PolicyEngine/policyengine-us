@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_housing_cost(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SNAP housing cost with proration"
+    label = "SNAP prorated housing cost"
     unit = USD
     documentation = "Total housing costs for SNAP with proration applied to all shelter expenses per 7 CFR 273.11(c)"
     definition_period = MONTH
@@ -29,7 +29,7 @@ class snap_housing_cost(Variable):
         # Apply proration to SPMUnit-level costs
         # Person-level costs are already prorated in snap_housing_cost_person
         prorate_factor = spm_unit(
-            "snap_eligible_share_of_expense", period.this_year
+            "snap_applicable_share_of_expenses", period.this_year
         )
 
         # Apply proration only to SPMUnit-level costs (person-level already prorated)

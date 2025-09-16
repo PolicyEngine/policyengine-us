@@ -2,7 +2,7 @@
   period: 2024-01
   absolute_error_margin: 0.5
   input:
-    is_snap_prorate_person: false
+    is_snap_ineligible_member_based_on_immigration_status: false
     snap_earned_income_person: 200
     snap_ineligible_members_fraction: 0.3
   output:
@@ -12,7 +12,7 @@
   period: 2024-01
   absolute_error_margin: 0.5
   input:
-    is_snap_prorate_person: true
+    is_snap_ineligible_member_based_on_immigration_status: true
     snap_earned_income_person: 200
     snap_ineligible_members_fraction: 0.3
   output:

@@ -23,11 +23,12 @@ class snap_excess_shelter_expense_deduction(Variable):
         )
         subtracted_income = p.income_share_disregard * net_income_pre_shelter
         # Use snap_housing_cost which already includes person-level proration
-        housing_cost_with_proration = spm_unit("snap_housing_cost", period)
-        # Utility allowance is already prorated at source (in SUA/LUA/IUA calculations)
-        utility_allowance = spm_unit("snap_utility_allowance", period)
-
-        total_shelter_cost = housing_cost_with_proration + utility_allowance
+        # Combine housing cost and utility allowance
+        total_shelter_cost = add(
+            spm_unit,
+            period,
+            ["snap_housing_cost", "snap_utility_allowance"],
+        )
 
         uncapped_ded = max_(total_shelter_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.

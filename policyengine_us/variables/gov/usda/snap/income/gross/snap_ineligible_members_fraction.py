@@ -14,9 +14,7 @@ class snap_ineligible_members_fraction(Variable):
         # including the ineligible ones. All but the ineligible alien's share is counted
         # as a deductible expense for the remaining household members.
 
-        prorate_people_count = spm_unit(
-            "snap_unit_prorate_people_count", period
-        )
+        prorate_people_count = spm_unit("snap_unit_ineligible_people", period)
         total_size = spm_unit("spm_unit_size", period)
         # Avoid division by zero
         return where(total_size > 0, prorate_people_count / total_size, 0)

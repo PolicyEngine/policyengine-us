@@ -14,6 +14,6 @@ class snap_dependent_care_deduction(Variable):
         childcare_expenses = spm_unit("childcare_expenses", period)
         # Exclude ineligible members' share per SNAP proration rules
         prorate_factor = spm_unit(
-            "snap_eligible_share_of_expense", period.this_year
+            "snap_applicable_share_of_expenses", period.this_year
         )
         return childcare_expenses * prorate_factor

@@ -20,7 +20,10 @@ class snap_medical_out_of_pocket_expenses(Variable):
         moop = person("medical_out_of_pocket_expenses", period)
 
         # Apply proration for ineligible members
-        is_prorate_person = person("is_snap_prorate_person", period.this_year)
+        is_prorate_person = person(
+            "is_snap_ineligible_member_based_on_immigration_status",
+            period.this_year,
+        )
         prorate_fraction = person.spm_unit(
             "snap_ineligible_members_fraction", period.this_year
         )

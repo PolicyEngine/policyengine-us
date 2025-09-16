@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class snap_eligible_share_of_expense(Variable):
+class snap_applicable_share_of_expenses(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SNAP eligible share of expense"
+    label = "SNAP applicable share of expenses"
     documentation = "Share of household expense that is deductible for SNAP after excluding ineligible members' portion"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/7/273.11#c_3"

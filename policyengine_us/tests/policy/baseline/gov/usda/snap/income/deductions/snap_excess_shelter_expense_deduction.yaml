@@ -63,10 +63,10 @@
     people:
       person1:
         rent: 4_800  # $400/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
       person2:
         rent: 2_400  # $200/month
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
     spm_units:
       spm_unit:
         members: [person1, person2]

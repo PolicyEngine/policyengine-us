@@ -17,7 +17,7 @@
         members: [person1, person2, person3]
   output:
     snap_ineligible_members_fraction: 1
-    snap_unit_prorate_people_count: 3
+    snap_unit_ineligible_people: 3
 
 - name: Two of three members are ineligible aliens
   period: 2024
@@ -38,7 +38,7 @@
         members: [person1, person2, person3]
   output:
     snap_ineligible_members_fraction: 0.67
-    snap_unit_prorate_people_count: 2
+    snap_unit_ineligible_people: 2
 
 - name: All household members are US citizens
   period: 2024
@@ -59,4 +59,4 @@
         members: [person1, person2, person3]
   output:
     snap_ineligible_members_fraction: 0
-    snap_unit_prorate_people_count: 0
+    snap_unit_ineligible_people: 0

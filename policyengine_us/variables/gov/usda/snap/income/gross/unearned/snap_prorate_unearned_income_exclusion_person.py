@@ -9,7 +9,7 @@ class snap_prorate_unearned_income_exclusion_person(Variable):
     documentation = "Amount of unearned income excluded per person due to SNAP proration rules for ineligible household members"
     reference = "https://www.law.cornell.edu/cfr/text/7/273.9#b_1"
     unit = USD
-    defined_for = "is_snap_prorate_person"
+    defined_for = "is_snap_ineligible_member_based_on_immigration_status"
 
     def formula(person, period, parameters):
         unearned_income = person("snap_unearned_income_person", period)

@@ -30,10 +30,10 @@
     people:
       person1:
         child_support_expense: 500
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
       person2:
         child_support_expense: 100
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
     spm_units:
       spm_unit:
         members: [person1, person2]

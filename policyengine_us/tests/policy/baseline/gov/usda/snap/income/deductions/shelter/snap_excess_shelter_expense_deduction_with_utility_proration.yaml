@@ -4,11 +4,11 @@
     people:
       person1:
         rent: 3_600  # $300/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
         is_snap_demographic_eligible_person: true
       person2:
         rent: 1_200  # $100/month
-        is_snap_prorate_person: true
+        is_snap_ineligible_member_based_on_immigration_status: true
         is_snap_demographic_eligible_person: false
     spm_units:
       spm_unit:
@@ -43,10 +43,10 @@
     people:
       person1:
         rent: 3_600  # $300/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
       person2:
         rent: 1_200  # $100/month
-        is_snap_prorate_person: false
+        is_snap_ineligible_member_based_on_immigration_status: false
     spm_units:
       spm_unit:
         members: [person1, person2]

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_housing_cost_person(Variable):
     value_type = float
     entity = Person
-    label = "SNAP housing cost per person with proration"
+    label = "SNAP prorated housing cost for each person"
     unit = USD
     documentation = "Housing costs at person level with proration for ineligible members (rent and real estate taxes)"
     definition_period = MONTH
@@ -17,14 +17,17 @@ class snap_housing_cost_person(Variable):
         )
 
         # Apply proration only for ineligible members
-        is_prorate_person = person("is_snap_prorate_person", period.this_year)
+        ineligible_person = person(
+            "is_snap_ineligible_member_based_on_immigration_status",
+            period.this_year,
+        )
         prorate_fraction = person.spm_unit(
             "snap_ineligible_members_fraction", period.this_year
         )
 
         # Ineligible members get their housing costs reduced by prorate_fraction
-        prorate_exclusion = where(
-            is_prorate_person, total_person_housing * prorate_fraction, 0
+        prorated_exclusion = where(
+            ineligible_person, total_person_housing * prorate_fraction, 0
         )
 
-        return total_person_housing - prorate_exclusion
+        return total_person_housing - prorated_exclusion
