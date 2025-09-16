@@ -1,0 +1,54 @@
+- name: Basic AGI calculation before aggregation
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 50_000
+        mt_additions: 1_000
+        mt_subtractions: 5_500
+    households:
+      household:
+        state_code: MT
+        members: [person1]
+  output:
+    # 50,000 + 1,000 - 5,500 = 45,500
+    mt_agi_before_aggregation: 45_500
+
+- name: AGI with social security adjustment (2023)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 40_000
+        mt_additions: 0
+        mt_subtractions: 2_000
+        taxable_social_security: 5_000
+        mt_taxable_social_security: 3_000
+    households:
+      household:
+        state_code: MT
+        members: [person1]
+  output:
+    # 40,000 + 0 - 2,000 = 38,000
+    # SS adjustment: 3,000 - 5,000 = -2,000
+    # Total: 38,000 - 2,000 = 36,000
+    mt_agi_before_aggregation: 36_000
+
+- name: Negative AGI gets clamped to zero
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 2_000
+        mt_additions: 0
+        mt_subtractions: 5_500
+    households:
+      household:
+        state_code: MT
+        members: [person1]
+  output:
+    # 2,000 + 0 - 5,500 = -3,500, clamped to 0
+    mt_agi_before_aggregation: 0

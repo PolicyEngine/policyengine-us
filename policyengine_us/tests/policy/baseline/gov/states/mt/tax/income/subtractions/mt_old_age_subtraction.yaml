@@ -13,3 +13,27 @@
     state_code: MT
   output: 
     mt_old_age_subtraction: 5_500
+
+- name: MT joint filers both over 65 receive double old age subtraction
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 71
+        adjusted_gross_income_person: 44_500
+      spouse2:
+        age: 78
+        adjusted_gross_income_person: 44_500
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MT
+        members: [spouse1, spouse2]
+  output:
+    # Each over-65 spouse gets $5,500 subtraction
+    mt_old_age_subtraction: [5_500, 5_500]
+    mt_subtractions: [5_500, 5_500]
