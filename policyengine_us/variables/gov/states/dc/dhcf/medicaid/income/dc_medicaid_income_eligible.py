@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_medicaid_income_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "DC Medicaid income eligible"
+    label = "Meets DC Medicaid income eligibility"
     definition_period = YEAR
     defined_for = StateCode.DC
     reference = [

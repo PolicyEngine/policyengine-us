@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class is_medicaid_immigration_status_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Person is eligible for Medicaid due to immigration status"
+    label = "Has eligible immigration status for Medicaid"
     definition_period = YEAR
     reference = [
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
