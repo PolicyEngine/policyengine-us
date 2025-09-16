@@ -22,10 +22,6 @@ class is_ca_state_medicaid_eligible(Variable):
             "is_medicaid_immigration_status_eligible", period
         )
 
-        # Get state
-        state = person.household("state_code_str", period)
-        is_ca = state == "CA"
-
         # Check age-specific eligibility for CA state-funded program (regardless of immigration status)
         is_child_eligible = person(
             "is_ca_state_medicaid_child_eligible", period
@@ -47,9 +43,4 @@ class is_ca_state_medicaid_eligible(Variable):
             | is_older_adult_eligible
         )
 
-        return (
-            is_ca
-            & categorically_eligible
-            & not_federally_eligible
-            & age_eligible
-        )
+        return categorically_eligible & not_federally_eligible & age_eligible

@@ -6,6 +6,7 @@ class is_ca_state_medicaid_child_eligible(Variable):
     entity = Person
     label = "California state-funded Medicaid child eligible"
     definition_period = YEAR
+    defined_for = StateCode.CA
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.chhs.child

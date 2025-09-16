@@ -6,6 +6,7 @@ class is_ca_state_medicaid_young_adult_eligible(Variable):
     entity = Person
     label = "California state-funded Medicaid young adult eligible"
     definition_period = YEAR
+    defined_for = StateCode.CA
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.chhs.young_adult
