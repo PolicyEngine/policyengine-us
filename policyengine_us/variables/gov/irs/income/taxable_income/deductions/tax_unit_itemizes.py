@@ -30,7 +30,8 @@ class tax_unit_itemizes(Variable):
             )
             return where(
                 tax_liability_if_itemizing == tax_liability_if_not_itemizing,
-                state_tax_liability_if_itemizing < state_tax_liability_if_not_itemizing,
+                state_tax_liability_if_itemizing
+                < state_tax_liability_if_not_itemizing,
                 tax_liability_if_itemizing < tax_liability_if_not_itemizing,
             )
         else:
