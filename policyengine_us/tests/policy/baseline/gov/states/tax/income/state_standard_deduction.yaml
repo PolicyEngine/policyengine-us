@@ -1,0 +1,43 @@
+- name: Federal standard deduction adopted for Connecticut
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    age_head: 30
+  output:
+    standard_deduction: 13_850
+    state_standard_deduction: 13_850
+
+- name: Federal standard deduction adopted for Utah married couple
+  period: 2023
+  input:
+    state_code: UT
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 33
+  output:
+    standard_deduction: 27_700
+    state_standard_deduction: 27_700
+
+- name: State-specific deduction for Georgia
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: SINGLE
+    age_head: 30
+    adjusted_gross_income: 50_000
+  output:
+    ga_standard_deduction: 5_400
+    state_standard_deduction: 5_400
+
+- name: State-specific deduction for New York
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    adjusted_gross_income: 100_000
+  output:
+    ny_standard_deduction: 16_050
+    state_standard_deduction: 16_050

@@ -22,22 +22,23 @@ class tax_unit_itemizes(Variable):
             tax_liability_if_not_itemizing = tax_unit(
                 "tax_liability_if_not_itemizing", period
             )
-            state_tax_liability_if_itemizing = tax_unit(
-                "state_tax_liability_if_itemizing", period
+            state_standard_deduction = tax_unit(
+                "state_standard_deduction", period
             )
-            state_tax_liability_if_not_itemizing = tax_unit(
-                "state_tax_liability_if_not_itemizing", period
+            state_itemized_deductions = tax_unit(
+                "state_itemized_deductions", period
             )
             # Use a small tolerance for floating-point comparison due to floating point imprecision
             tolerance = 0.0001
             federal_tax_equal = (
-                abs(tax_liability_if_itemizing - tax_liability_if_not_itemizing) 
+                abs(
+                    tax_liability_if_itemizing - tax_liability_if_not_itemizing
+                )
                 <= tolerance
             )
             return where(
                 federal_tax_equal,
-                state_tax_liability_if_itemizing
-                < state_tax_liability_if_not_itemizing,
+                state_standard_deduction < state_itemized_deductions,
                 tax_liability_if_itemizing < tax_liability_if_not_itemizing,
             )
         else:

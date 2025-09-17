@@ -1,0 +1,69 @@
+- name: Federal itemized deductions adopted for Connecticut
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    age_head: 30
+    # Set the individual federal deduction components directly
+    charitable_deduction: 5_000
+    interest_deduction: 8_000
+    salt_deduction: 10_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 23_000
+
+- name: Federal itemized deductions adopted for Georgia
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    # Set the individual federal deduction components directly
+    charitable_deduction: 10_000
+    interest_deduction: 15_000
+    salt_deduction: 10_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 35_000
+
+- name: State-specific itemized deductions for New York
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    age_head: 35
+    adjusted_gross_income: 80_000
+    # NY has its own calculation that we set directly
+    ny_itemized_deductions: 15_000
+  output:
+    state_itemized_deductions: 15_000
+
+- name: Federal itemized deductions adopted for Utah
+  period: 2023
+  input:
+    state_code: UT
+    filing_status: JOINT
+    age_head: 45
+    age_spouse: 43
+    charitable_deduction: 7_500
+    interest_deduction: 12_000
+    salt_deduction: 8_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 27_500
+
+- name: New Mexico uses federal itemized deductions through its own implementation
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    charitable_deduction: 4_000
+    interest_deduction: 9_000
+    salt_deduction: 7_000
+  output:
+    # NM uses federal itemized deductions via nm_itemized_deductions
+    total_itemized_taxable_income_deductions: 20_000
+    nm_itemized_deductions: 20_000
+    state_itemized_deductions: 20_000

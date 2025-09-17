@@ -27,7 +27,7 @@ values:
     # North Dakota adopts federal deductions.
     - ne_itemized_deductions  # Nebraska
     # New Jersey doesn't have a conventional itemized deduction system.
-    # New Mexico adopts federal itemized deductions with a separate salt addback structure.
+    - nm_itemized_deductions  # New Mexico adopts federal itemized deductions
     - ny_itemized_deductions  # New York
     # Ohio doesn't have a conventional itemized deduction system.
     - ok_itemized_deductions  # Oklahoma
