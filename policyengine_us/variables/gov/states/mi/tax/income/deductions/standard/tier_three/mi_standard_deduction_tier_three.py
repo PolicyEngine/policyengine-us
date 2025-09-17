@@ -43,7 +43,6 @@ class mi_standard_deduction_tier_three(Variable):
         )
         total_reductions = total_person_reductions + mi_personal_exemptions
         # Line 6: subtract line 5 from line 1
-        print(base_amount, total_reductions)
         standard_deduction_tier_three = max_(base_amount - total_reductions, 0)
         # Worksheet 3.3: Retirement and Pension Benefits Subtraction for Section D of Form 4884
         if p.retirement_benefits.expanded.availability:
