@@ -13,7 +13,7 @@ class mt_tanf_earned_income_after_disregard_person(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        gross_earnings = person("mt_tanf_gross_earned_income", period)
+        gross_earnings = person("mt_tanf_gross_earned_income_person", period)
         p = parameters(period).gov.states.mt.dhs.tanf.income.deductions
 
         earnings_after_flat_exclusion = max_(

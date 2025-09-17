@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: MT
-    mt_tanf_gross_earned_income: 0
+    mt_tanf_gross_earned_income_person: 0
   output:
     mt_tanf_earned_income_after_disregard_person: 0
 
@@ -10,7 +10,7 @@
   period: 2023-01
   input:
     state_code: MT
-    mt_tanf_gross_earned_income: 500
+    mt_tanf_gross_earned_income_person: 500
   output:
     mt_tanf_earned_income_after_disregard_person: 225  #(500 - 200)*0.75
 

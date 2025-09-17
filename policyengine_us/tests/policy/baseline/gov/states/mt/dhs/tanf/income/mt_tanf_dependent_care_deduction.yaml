@@ -3,7 +3,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: true
+    mt_tanf_eligible_child: true
     childcare_expenses: 0 
   output:
     mt_tanf_dependent_care_deduction: 0
@@ -13,7 +13,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: true
+    mt_tanf_eligible_child: true
     childcare_expenses: 250*12
   output:
     mt_tanf_dependent_care_deduction: 200
@@ -23,7 +23,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: false
-    is_child: true
+    mt_tanf_eligible_child: true
     childcare_expenses: 250*12 
   output:
     mt_tanf_dependent_care_deduction: 0
@@ -33,7 +33,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: false
+    mt_tanf_eligible_child: false
     childcare_expenses: 250*12 
   output:
     mt_tanf_dependent_care_deduction: 0
@@ -43,7 +43,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: true
+    mt_tanf_eligible_child: true
     childcare_expenses: 100*12 
   output:
     mt_tanf_dependent_care_deduction: 100
@@ -53,7 +53,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: false
+    mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
     childcare_expenses: 250*12
   output:
@@ -64,7 +64,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: false
-    is_child: false
+    mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
     childcare_expenses: 250*12
   output:
@@ -75,7 +75,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: false
+    mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
     childcare_expenses: 0
   output:
@@ -86,7 +86,7 @@
   input:
     state_code: MT
     is_tax_unit_dependent: true
-    is_child: false
+    mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
     childcare_expenses: 100*12
   output:

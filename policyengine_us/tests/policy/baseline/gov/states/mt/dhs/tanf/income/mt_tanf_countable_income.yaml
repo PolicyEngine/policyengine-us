@@ -3,7 +3,7 @@
   input:
     state_code: MT
     mt_tanf_countable_earned_income: 0
-    mt_tanf_countable_unearned_income: 0
+    mt_tanf_gross_unearned_income: 0
     mt_tanf_dependent_care_deduction: 0
   output:
     mt_tanf_dependent_care_deduction: 0
@@ -13,7 +13,7 @@
   input:
     state_code: MT
     mt_tanf_countable_earned_income: 4_020
-    mt_tanf_countable_unearned_income: 0
+    mt_tanf_gross_unearned_income: 0
     mt_tanf_dependent_care_deduction: 1_000
   output:
     mt_tanf_countable_income: 3_020
@@ -23,7 +23,7 @@
   input:
     state_code: MT
     mt_tanf_countable_earned_income: 500
-    mt_tanf_countable_unearned_income: 0
+    mt_tanf_gross_unearned_income: 0
     mt_tanf_dependent_care_deduction: 1_000
   output:
     mt_tanf_countable_income: 0

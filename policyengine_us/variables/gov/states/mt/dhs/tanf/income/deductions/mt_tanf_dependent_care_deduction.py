@@ -19,7 +19,7 @@ class mt_tanf_dependent_care_deduction(Variable):
         person = spm_unit.members
 
         is_dependent = person("is_tax_unit_dependent", period)
-        is_child = person("is_child", period)
+        is_child = person("mt_tanf_eligible_child", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
         is_eligible_person = is_dependent & (
             is_child | is_incapable_of_self_care
