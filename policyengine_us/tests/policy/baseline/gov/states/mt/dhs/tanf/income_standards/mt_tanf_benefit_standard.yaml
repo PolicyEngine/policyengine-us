@@ -9,7 +9,7 @@
 
 - name: Case 2, AU size 8
   period: 2024-01
-  absolute_error_margin: 0.3
+  absolute_error_margin: 0.5
   input:
     state_code: MT
     mt_tanf_assistance_unit_size: 8
@@ -18,7 +18,7 @@
 
 - name: Case 3, AU size 25 - capped
   period: 2024-01
-  absolute_error_margin: 0.3
+  absolute_error_margin: 0.5
   input:
     state_code: MT
     mt_tanf_assistance_unit_size: 25

@@ -1,0 +1,27 @@
+- name: Income below benefit standard, passes benefit standard test
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_benefit_standard: 859
+    mt_tanf_countable_income: 500
+  output:
+    mt_tanf_benefit_standard_eligible: True
+  
+- name: Income equal to benefit standard, passes benefit standard test
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_benefit_standard: 859
+    mt_tanf_countable_income: 859
+  output:
+    mt_tanf_benefit_standard_eligible: True
+
+- name: Income above benefit standard, Fails benefit standard test
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_benefit_standard: 859
+    mt_tanf_countable_income: 900
+  output:
+    mt_tanf_benefit_standard_eligible: False
+  

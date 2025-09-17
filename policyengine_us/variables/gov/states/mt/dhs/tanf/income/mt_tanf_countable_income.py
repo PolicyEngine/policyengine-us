@@ -15,11 +15,11 @@ class mt_tanf_countable_income(Variable):
             period,
             [
                 "mt_tanf_countable_earned_income",
-                "mt_tanf_countable_unearned_income",
+                "mt_tanf_gross_unearned_income",
             ],
         )
 
-        childcare_deduction = spm_unit(
+        dependent_care_deduction = spm_unit(
             "mt_tanf_dependent_care_deduction", period
         )
-        return max_(income_sources - childcare_deduction, 0)
+        return max_(income_sources - dependent_care_deduction, 0)
