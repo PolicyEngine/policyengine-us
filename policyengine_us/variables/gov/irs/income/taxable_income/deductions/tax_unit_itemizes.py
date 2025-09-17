@@ -22,9 +22,15 @@ class tax_unit_itemizes(Variable):
             tax_liability_if_not_itemizing = tax_unit(
                 "tax_liability_if_not_itemizing", period
             )
+            state_tax_liability_if_itemizing = tax_unit(
+                "state_tax_liability_if_itemizing", period
+            )
+            state_tax_liability_if_not_itemizing = tax_unit(
+                "state_tax_liability_if_not_itemizing", period
+            )
             return where(
                 tax_liability_if_itemizing == tax_liability_if_not_itemizing,
-                itemized_deductions > standard_deduction,
+                state_tax_liability_if_itemizing < state_tax_liability_if_not_itemizing,
                 tax_liability_if_itemizing < tax_liability_if_not_itemizing,
             )
         else:

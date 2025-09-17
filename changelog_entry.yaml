@@ -1,4 +1,4 @@
 - bump: patch
   changes:
     fixed:
-    - Default itemization to be based on deductions rather than tax liability when liability is equal.
+    - Default itemization to be based on state taxes when federal tax liability is equal.

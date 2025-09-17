@@ -2,8 +2,8 @@
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    standard_deduction: 14_000
-    itemized_taxable_income_deductions: 11_000
+    state_tax_liability_if_itemizing: 14_000
+    state_tax_liability_if_not_itemizing: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 1_000
   output:
@@ -13,30 +13,30 @@
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    standard_deduction: 14_000
-    itemized_taxable_income_deductions: 11_000
+    state_tax_liability_if_itemizing: 14_000
+    state_tax_liability_if_not_itemizing: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 11_000
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on deduction amount
+- name: When tax liability is equal, itemization is based on state taxes
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    standard_deduction: 14_000
-    itemized_taxable_income_deductions: 11_000
+    state_tax_liability_if_itemizing: 14_000
+    state_tax_liability_if_not_itemizing: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
     tax_unit_itemizes: False
 
-- name: When tax liability is equal, itemization is based on deduction amount, unit itemizes
+- name: When tax liability is equal, itemization is based on state taxes, unit itemizes
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    standard_deduction: 14_000
-    itemized_taxable_income_deductions: 16_000
+    state_tax_liability_if_itemizing: 14_000
+    state_tax_liability_if_not_itemizing: 16_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
@@ -46,8 +46,8 @@
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: false
-    standard_deduction: 20_000
-    itemized_taxable_income_deductions: 16_000
+    state_tax_liability_if_itemizing: 20_000
+    state_tax_liability_if_not_itemizing: 16_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 9_000
   output:
