@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.399.1] - 2025-09-17 17:11:17
+
+### Fixed
+
+- New Jersey other retirement income exclusion calculation.
+
+## [1.399.0] - 2025-09-17 15:33:26
+
+### Added
+
+- Puerto Rico exemptions.
+
 ## [1.398.1] - 2025-09-15 22:28:43
 
 ### Fixed
@@ -12970,6 +12982,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.399.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.399.0...1.399.1
+[1.399.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.398.1...1.399.0
 [1.398.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.398.0...1.398.1
 [1.398.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.2...1.398.0
 [1.397.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.397.1...1.397.2
