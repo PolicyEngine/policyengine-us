@@ -18,9 +18,9 @@
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month
   output:
-    snap_housing_cost_person:
-      - 700  # person1: (500 + 200) - 0 = 700
-      - 175  # person2: (250 + 100) - (350 * 0.5) = 175
+    snap_housing_cost_person: [700, 175]
+    # person1: (500 + 200) - 0 = 700
+    # person2: (250 + 100) - (350 * 0.5) = 175
     snap_housing_cost: 1_287.5  # 700 + 175 + (550 * 0.75) = 875 + 412.5, where 0.75 = 1 - 0.5²
 
 - name: Housing cost with no ineligible members
@@ -43,9 +43,9 @@
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month
   output:
-    snap_housing_cost_person:
-      - 700  # person1: (500 + 200) - 0 = 700
-      - 350  # person2: (250 + 100) - 0 = 350
+    snap_housing_cost_person: [700, 350]
+    # person1: (500 + 200) - 0 = 700
+    # person2: (250 + 100) - 0 = 350
     snap_housing_cost: 1_600  # 700 + 350 + 400 + 100 + 50
 
 - name: Housing cost with all ineligible members
@@ -68,7 +68,139 @@
         homeowners_insurance: 1_200  # $100/month
         homeowners_association_fees: 600  # $50/month
   output:
-    snap_housing_cost_person:
-      - 0  # person1: (500 + 200) - (700 * 1) = 0
-      - 0  # person2: (250 + 100) - (350 * 1) = 0
+    snap_housing_cost_person: [0, 0]
     snap_housing_cost: 0  # 0 + 0 + (550 * 0) where 0 = 1 - 1²
+
+- name: Three-person household with one ineligible member
+  period: 2022-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person2:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person3:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_ineligible_members_fraction: 0.333
+        mortgage_payments: 6_000  # $500/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person: [400, 400, 266.667]
+    # person1: (300 + 100) - 0 = 400
+    # person2: (300 + 100) - 0 = 400
+    # person3: (300 + 100) - (400 * 0.333) = 266.8
+    snap_housing_cost: 1_644.52  # 400 + 400 + 266.667 + (650 * 0.889) = 1066.667 + 577.85
+    # where 0.889 = 1 - (1/3)² = 1 - 1/9 = 8/9
+
+- name: Three-person household with two ineligible members
+  period: 2022-01
+  absolute_error_margin: 0.6
+  input:
+    people:
+      person1:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person2:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+      person3:
+        rent: 3_600  # $300/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_ineligible_members_fraction: 0.667
+        mortgage_payments: 6_000  # $500/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person: [400, 133.3, 133.3]
+    # person1: (300 + 100) - 0 = 400
+    # person2: (300 + 100) - (400 * 0.667) = 133.3
+    # person3: (300 + 100) - (400 * 0.667) = 133.3
+    snap_housing_cost: 1_027.71  # 400 + 133.3 + 133.3 + (650 * 5/9) = 666.6 + 361.1
+    # where 0.556 = 1 - (0.667)² = 1 - 4/9 = 5/9
+
+- name: Four-person household with one ineligible member
+  period: 2022-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person2:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person3:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person4:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap_ineligible_members_fraction: 0.25
+        mortgage_payments: 7_200  # $600/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person: [350, 350, 350, 262.5]
+    # person1-3: (250 + 100) - 0 = 350 each
+    # person4: (250 + 100) - (350 * 0.25) = 262.5
+    snap_housing_cost: 2_015.625  # 350 + 350 + 350 + 262.5 + (750 * 0.9375) = 1312.5 + 703.125
+    # where 0.9375 = 1 - (1/4)² = 1 - 1/16 = 15/16
+
+- name: Four-person household with three ineligible members
+  period: 2022-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person2:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+      person3:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+      person4:
+        rent: 3_000  # $250/month
+        real_estate_taxes: 1_200  # $100/month
+        is_snap_ineligible_member_based_on_immigration_status: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap_ineligible_members_fraction: 0.75
+        mortgage_payments: 7_200  # $600/month
+        homeowners_insurance: 1_200  # $100/month
+        homeowners_association_fees: 600  # $50/month
+  output:
+    snap_housing_cost_person: [350, 87.5, 87.5, 87.5]
+    # person1: (250 + 100) - 0 = 350
+    # person2-4: (250 + 100) - (350 * 0.75) = 87.5 each
+    snap_housing_cost: 940.625  # 350 + 87.5 + 87.5 + 87.5 + (750 * 0.4375) = 612.5 + 328.125
+    # where 0.4375 = 1 - (3/4)² = 1 - 9/16 = 7/16
