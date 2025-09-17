@@ -28,8 +28,14 @@ class tax_unit_itemizes(Variable):
             state_tax_liability_if_not_itemizing = tax_unit(
                 "state_tax_liability_if_not_itemizing", period
             )
+            # Use a small tolerance for floating-point comparison due to floating point imprecision
+            tolerance = 0.0001
+            federal_tax_equal = (
+                abs(tax_liability_if_itemizing - tax_liability_if_not_itemizing) 
+                <= tolerance
+            )
             return where(
-                tax_liability_if_itemizing == tax_liability_if_not_itemizing,
+                federal_tax_equal,
                 state_tax_liability_if_itemizing
                 < state_tax_liability_if_not_itemizing,
                 tax_liability_if_itemizing < tax_liability_if_not_itemizing,
