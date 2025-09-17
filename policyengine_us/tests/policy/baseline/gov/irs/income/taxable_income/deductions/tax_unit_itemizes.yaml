@@ -2,8 +2,8 @@
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_tax_liability_if_itemizing: 14_000
-    state_tax_liability_if_not_itemizing: 11_000
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 1_000
   output:
@@ -13,43 +13,45 @@
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_tax_liability_if_itemizing: 14_000
-    state_tax_liability_if_not_itemizing: 11_000
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 11_000
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on state taxes
+- name: When tax liability is equal, itemization is based on state deductions
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_tax_liability_if_itemizing: 14_000
-    state_tax_liability_if_not_itemizing: 11_000
-    tax_liability_if_itemizing: 10_000
-    tax_liability_if_not_itemizing: 10_000
-  output:
-    tax_unit_itemizes: False
-
-- name: When tax liability is equal, itemization is based on state taxes, unit itemizes
-  period: 2024
-  input:
-    gov.simulation.branch_to_determine_itemization: true
-    state_tax_liability_if_itemizing: 14_000
-    state_tax_liability_if_not_itemizing: 16_000
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
     tax_unit_itemizes: True
 
+- name: When tax liability is equal, itemization is based on state deductions, unit itemizes
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 16_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 10_000
+  output:
+    tax_unit_itemizes: False
+
 - name: Without branching, itemization is based on deduction amount
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: false
-    state_tax_liability_if_itemizing: 20_000
-    state_tax_liability_if_not_itemizing: 16_000
+    state_itemized_deductions: 20_000
+    state_standard_deduction: 16_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 9_000
+    standard_deduction: 16_000
+    itemized_taxable_income_deductions: 13_000
   output:
     tax_unit_itemizes: False
 
@@ -101,7 +103,7 @@
     tax_liability_if_not_itemizing: 0
     itemized_taxable_income_deductions: 401
     standard_deduction: 21_900
-    state_tax_liability_if_itemizing: 252.2
-    state_tax_liability_if_not_itemizing: 0
+    state_itemized_deductions: 401
+    state_standard_deduction: 21_900
     tax_unit_itemizes: False
     sc_income_tax: 0
