@@ -208,3 +208,40 @@
   output:
     nm_low_income_comprehensive_tax_rebate: 520
 
+- name: 2024 integration test 
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 76
+        employment_income: 0.0
+        is_tax_unit_head: true
+      person2:
+        age: 2
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    nm_low_income_comprehensive_tax_rebate: 583
