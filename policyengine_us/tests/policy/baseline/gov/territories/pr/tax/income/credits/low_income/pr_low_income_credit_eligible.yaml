@@ -17,7 +17,6 @@
         state_code: PR
   output:  
     pr_low_income_credit_eligible: true
-
 - name: Two ineligible people
   absolute_error_margin: 0.01
   period: 2024
@@ -37,7 +36,6 @@
         state_code: PR
   output:  
     pr_low_income_credit_eligible: false
-
 - name: One person eligible
   absolute_error_margin: 0.01
   period: 2024
@@ -57,7 +55,6 @@
         state_code: PR
   output:  
     pr_low_income_credit_eligible: true
-
 - name: One person age eligible but income ineligible
   absolute_error_margin: 0.01
   period: 2024
