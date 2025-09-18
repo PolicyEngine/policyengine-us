@@ -53,6 +53,10 @@ class state_standard_deduction(Variable):
                 "indiv": "ms_standard_deduction_indiv",
                 "joint": "ms_standard_deduction_joint",
             },
+            "KY": {
+                "indiv": "ky_standard_deduction_indiv",
+                "joint": "ky_standard_deduction_joint",
+            },
         }
 
         # Calculate maximum standard deductions for applicable states

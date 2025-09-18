@@ -163,3 +163,16 @@
   output:
     # Should take the maximum (joint in this case)
     state_standard_deduction: 4_600
+
+- name: Kentucky standard deduction maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: KY
+    filing_status: SEPARATE
+    age_head: 41
+    # Set up scenario where individual calculation is higher
+    ky_standard_deduction_indiv: 3_400
+    ky_standard_deduction_joint: 2_650
+  output:
+    # Should take the maximum (individual in this case)
+    state_standard_deduction: 3_400
