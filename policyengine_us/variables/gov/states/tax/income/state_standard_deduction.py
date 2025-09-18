@@ -38,7 +38,7 @@ class state_standard_deduction(Variable):
                 "joint": "mt_standard_deduction_joint",
             },
             "IA": {
-                "indiv": "ia_standard_deduction_indiv", 
+                "indiv": "ia_standard_deduction_indiv",
                 "joint": "ia_standard_deduction_joint",
             },
             "DE": {
