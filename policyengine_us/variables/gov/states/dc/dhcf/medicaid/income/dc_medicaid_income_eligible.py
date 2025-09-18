@@ -18,20 +18,23 @@ class dc_medicaid_income_eligible(Variable):
 
         age = person("age", period)
         is_pregnant = person("is_pregnant", period)
-        is_child = age <= 20
+        child_max_age = p.child_max_age
+        is_child = age <= child_max_age
 
         # Different income limits based on category
         # NOTE: NO grandfathering for income - if income exceeds new limit,
         # person will be disenrolled regardless of current enrollment status
-        if is_pregnant:
-            # Pregnant women up to 324% FPL regardless of immigration status
-            income_limit = p.pregnant_income_limit
-        elif is_child:
-            # Children 0-20: higher limit (unchanged from current)
-            income_limit = p.child_income_limit
-        else:
-            # Adults 21+: Changes from 215% to 138% FPL on 10/1/2025
-            # No grandfathering - those over 138% FPL will lose coverage
-            income_limit = p.adult_income_limit
+
+        income_limit = select(
+            [
+                is_pregnant,  # Pregnant women up to 324% FPL regardless of immigration status
+                is_child,  # Children 0-20: higher limit (unchanged from current)
+            ],
+            [
+                p.pregnant_income_limit,
+                p.child_income_limit,
+            ],
+            default=p.adult_income_limit,  # Adults 21+: Changes from 215% to 138% FPL on 10/1/2025
+        )
 
         return medicaid_income_level <= income_limit
