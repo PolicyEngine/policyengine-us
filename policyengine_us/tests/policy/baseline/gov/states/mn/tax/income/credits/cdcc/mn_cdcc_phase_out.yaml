@@ -1,0 +1,44 @@
+- name: Income below phaseout threshold
+  period: 2024
+  input:
+    mn_cdcc_dependent_count: 3
+    adjusted_gross_income: 50_000
+    state_code: MN
+  output:
+    mn_cdcc_phase_out: 1_200
+
+- name: Income above phaseout threshold, 3 dependents
+  period: 2024
+  input:
+    mn_cdcc_dependent_count: 3
+    adjusted_gross_income: 80_000
+    state_code: MN
+  output:
+    mn_cdcc_phase_out: 320.5
+
+- name: Income above phaseout threshold, no dependents
+  period: 2024
+  input:
+    mn_cdcc_dependent_count: 0
+    adjusted_gross_income: 80_000
+    state_code: MN
+  output:
+    mn_cdcc_phase_out: 0
+
+- name: Income above phaseout threshold, 3 dependents, fully phased out
+  period: 2024
+  input:
+    mn_cdcc_dependent_count: 3
+    adjusted_gross_income: 300_000
+    state_code: MN
+  output:
+    mn_cdcc_phase_out: 0
+
+- name: Income below phaseout threshold, one dependent
+  period: 2024
+  input:
+    mn_cdcc_dependent_count: 1
+    adjusted_gross_income: 50_000
+    state_code: MN
+  output:
+    mn_cdcc_phase_out: 600
