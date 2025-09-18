@@ -10,7 +10,7 @@ values:
     - de_itemized_deductions  # Delaware
     # Georgia adopts federal itemized deductions
     - hi_itemized_deductions  # Hawaii
-    - ia_itemized_deductions  # Iowa
+    # Iowa allows for a married filing separately structure which requires two separate itemized deductions.
     - id_itemized_deductions  # Idaho
     # Illinois doesn't have deductions.
     - ks_itemized_deductions  # Kansas

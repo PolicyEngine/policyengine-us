@@ -83,3 +83,57 @@
     mt_itemized_deductions_for_federal_itemization_indiv: 2_000
     mt_itemized_deductions_for_federal_itemization_joint: 4_000
     state_itemized_deductions: 4_000
+
+- name: Montana maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    # Set up scenario where joint calculation is higher
+    mt_itemized_deductions_for_federal_itemization_indiv: 8_000
+    mt_itemized_deductions_for_federal_itemization_joint: 12_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 12_000
+
+- name: Montana maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: SEPARATE
+    age_head: 35
+    # Set up scenario where individual calculation is higher
+    mt_itemized_deductions_for_federal_itemization_indiv: 15_000
+    mt_itemized_deductions_for_federal_itemization_joint: 10_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 15_000
+
+- name: Iowa maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: JOINT
+    age_head: 42
+    age_spouse: 40
+    # Set up scenario where joint calculation is higher
+    ia_itemized_deductions_indiv: 6_000
+    ia_itemized_deductions_joint: 9_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 9_000
+
+- name: Iowa maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: SEPARATE
+    age_head: 45
+    # Set up scenario where individual calculation is higher
+    ia_itemized_deductions_indiv: 11_000
+    ia_itemized_deductions_joint: 7_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 11_000

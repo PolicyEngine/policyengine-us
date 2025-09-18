@@ -30,26 +30,30 @@ class state_itemized_deductions(Variable):
             parameters(period).gov.states.household.state_itemized_deductions,
         )
 
-        # Special handling for Montana: take the larger of individual vs joint itemization
-        is_montana = state_code == "MT"
-        mt_itemized_indiv = add(
-            tax_unit,
-            period,
-            ["mt_itemized_deductions_for_federal_itemization_indiv"],
-        )
-        mt_itemized_joint = add(
-            tax_unit,
-            period,
-            ["mt_itemized_deductions_for_federal_itemization_joint"],
-        )
-        mt_itemized_deductions = np.maximum(
-            mt_itemized_indiv, mt_itemized_joint
-        )
+        # Special handling for states that need individual vs joint itemization maximum
+        STATES_WITH_INDIVIDUAL_JOINT_MAXIMUM = {
+            "MT": {
+                "indiv": "mt_itemized_deductions_for_federal_itemization_indiv",
+                "joint": "mt_itemized_deductions_for_federal_itemization_joint",
+            },
+            "IA": {
+                "indiv": "ia_itemized_deductions_indiv",
+                "joint": "ia_itemized_deductions_joint",
+            },
+        }
 
-        # Use Montana-specific logic for MT, otherwise use base state-specific deductions
-        state_specific = where(
-            is_montana, mt_itemized_deductions, state_specific_base
-        )
+        # Calculate maximum itemized deductions for applicable states
+        state_specific_with_max = state_specific_base
+        for state, variables in STATES_WITH_INDIVIDUAL_JOINT_MAXIMUM.items():
+            is_state = state_code == state
+            indiv_deductions = add(tax_unit, period, [variables["indiv"]])
+            joint_deductions = add(tax_unit, period, [variables["joint"]])
+            max_deductions = np.maximum(indiv_deductions, joint_deductions)
+            state_specific_with_max = where(
+                is_state, max_deductions, state_specific_with_max
+            )
+
+        state_specific = state_specific_with_max
 
         # Check if the state adopts federal itemized deductions
         uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES)

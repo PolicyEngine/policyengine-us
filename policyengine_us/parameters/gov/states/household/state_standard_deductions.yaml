@@ -10,7 +10,7 @@ values:
     - de_standard_deduction  # Delaware
     - ga_standard_deduction  # Georgia
     - hi_standard_deduction  # Hawaii
-    - ia_standard_deduction  # Iowa
+    # Iowa allows for a married filing separately structure which requires two separate standard deductions.
     # Idaho adopts federal standard deduction.
     # Illinois doesn't have a standard deduction.
     # Indiana doesn't have deductions (taxes AGI directly).
