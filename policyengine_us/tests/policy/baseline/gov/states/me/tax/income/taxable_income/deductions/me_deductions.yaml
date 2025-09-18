@@ -28,6 +28,7 @@
     me_deduction_phaseout_percentage: 0.40
     standard_deduction: 10_000
     me_itemized_deductions_pre_phaseout: 15_000
+    tax_unit_itemizes: true
   output:
     tax_liability_if_itemizing: 0
     tax_liability_if_not_itemizing: 0
