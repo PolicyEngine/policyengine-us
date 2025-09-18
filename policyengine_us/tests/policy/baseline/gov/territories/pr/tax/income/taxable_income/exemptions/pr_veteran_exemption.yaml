@@ -1,0 +1,37 @@
+- name: Two eligible veterans filing jointly
+  period: 2024
+  input:
+    people:
+      person1:
+        is_veteran: true
+      person2:
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: PR
+        members: [person1, person2]
+  output:  
+    pr_veteran_exemption: [1_500, 1_500]
+
+- name: One eligible veteran and one ineligible veteran filing jointly
+  period: 2024
+  input:
+    people:
+      person1:
+        is_veteran: true
+      person2:
+        is_veteran: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: PR
+        members: [person1, person2]
+  output:  
+    pr_veteran_exemption: [1_500, 0]

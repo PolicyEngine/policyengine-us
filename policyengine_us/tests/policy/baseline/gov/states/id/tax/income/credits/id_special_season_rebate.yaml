@@ -1,0 +1,17 @@
+- name: Floor over rate
+  period: 2022
+  input:
+    id_income_tax_before_non_refundable_credits: 1_000
+    state_code: ID
+    filing_status: SINGLE
+  output:
+    id_special_season_rebate: 300
+
+- name: Rate over floor
+  period: 2022
+  input:
+    id_income_tax_before_non_refundable_credits: 10_000
+    state_code: ID
+    filing_status: SINGLE
+  output:
+    id_special_season_rebate: 1_000

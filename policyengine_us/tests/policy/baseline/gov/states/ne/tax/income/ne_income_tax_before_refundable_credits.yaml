@@ -3,7 +3,7 @@
   input:
     income_tax_before_credits: 1_000
     ne_income_tax_before_credits: 900
-    ne_nonrefundable_credits: 850
+    ne_non_refundable_credits: 850
     state_code: NE
   output:
     ne_income_tax_before_refundable_credits: 900 - 850
@@ -13,7 +13,7 @@
   input:
     income_tax_before_credits: 1_000
     ne_income_tax_before_credits: 900
-    ne_nonrefundable_credits: 950
+    ne_non_refundable_credits: 950
     state_code: NE
   output:
     ne_income_tax_before_refundable_credits: 0
@@ -23,7 +23,7 @@
   input:
     income_tax_before_credits: 20
     ne_income_tax_before_credits: 900
-    ne_nonrefundable_credits: 850
+    ne_non_refundable_credits: 850
     state_code: NE
   output:
     ne_income_tax_before_refundable_credits: 20

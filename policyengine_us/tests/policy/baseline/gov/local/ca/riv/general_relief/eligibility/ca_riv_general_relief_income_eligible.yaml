@@ -1,0 +1,17 @@
+- name: Case 1, eligible.
+  period: 2024-01
+  input: 
+    in_riv: true
+    ca_riv_general_relief_countable_income: 90
+    ca_riv_general_relief_needs_standards: 100
+  output: 
+    ca_riv_general_relief_income_eligible: true
+
+- name: Case 2, ineligible.
+  period: 2024-01
+  input: 
+    in_riv: true
+    ca_riv_general_relief_countable_income: 101
+    ca_riv_general_relief_needs_standards: 100
+  output: 
+    ca_riv_general_relief_income_eligible: false

@@ -10815,3 +10815,219 @@
     added:
     - Add a state non-refundable credits variable.
   date: 2025-08-26 19:32:44
+- bump: minor
+  changes:
+    added:
+    - Multi-agent system for autonomous code review and implementation
+    - 13 specialized agents for validation, implementation, and enhancement
+    - /encode-policy command for implementing new government programs with TDD
+    - /review-pr command for reviewing and fixing PRs with mandatory agent usage
+    - Comprehensive documentation for agent coordination and testing
+  date: 2025-08-28 02:26:40
+- bump: minor
+  changes:
+    added:
+    - Enhanced multi-agent system for autonomous benefit program implementations
+    - New agents for issue management, naming coordination, and branch integration
+    - Improved workflow documentation with @ syntax for agent invocation
+    changed:
+    - Updated agent workflow to establish naming conventions before parallel development
+    - Modified CI fixer to work with existing draft PRs
+    - Enhanced test creator and rules engineer to work in separate git worktrees
+  date: 2025-08-28 03:53:01
+- bump: patch
+  changes:
+    added:
+    - Memory-optimized test execution scripts for baseline and contrib tests
+    - Batch processing with periodic memory cleanup to prevent OOM errors
+    fixed:
+    - Python path detection in test scripts for compatibility across environments
+  date: 2025-08-28 14:57:49
+- bump: patch
+  changes:
+    fixed:
+    - Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and
+      uv virtual environment
+  date: 2025-08-29 01:04:56
+- bump: patch
+  changes:
+    added:
+    - Fix Maine Property Tax Fairness Credit Veteran Cap.
+  date: 2025-08-29 06:00:04
+- bump: minor
+  changes:
+    added:
+    - Idaho 2022 rebate.
+    - Idaho special seasonal rebate.
+  date: 2025-08-29 14:50:10
+- bump: minor
+  changes:
+    added:
+    - congressional_district_geoid variable to replace the congressional district
+      portion of the removed UCGID concept
+    removed:
+    - Remove ucgid and ucgid_str variables and their associated tests as they are
+      no longer needed
+  date: 2025-08-29 16:29:36
+- bump: minor
+  changes:
+    fixed:
+    - Illinois TANF FPG calculation adjustments.
+  date: 2025-08-29 20:56:57
+- bump: minor
+  changes:
+    added:
+    - Adjust the IED calculation to use FPG adjusted in March.
+  date: 2025-08-30 16:08:36
+- bump: patch
+  changes:
+    added:
+    - Georgia surplus tax rebate.
+    fixed:
+    - Backdate the Georgia tax rates to 2021.
+  date: 2025-08-30 18:43:46
+- bump: minor
+  changes:
+    added:
+    - Adjust the IED calculation to use FPG adjusted in March.
+  date: 2025-08-31 11:40:22
+- bump: patch
+  changes:
+    fixes:
+    - Optimally allocate the Mississippi taxable income for married couples filing
+      jointly.
+  date: 2025-09-01 22:58:34
+- bump: minor
+  changes:
+    added:
+    - Arkansas additional tax credit for qualified individuals.
+    fixed:
+    - Arkansas 2024 income tax rates.
+  date: 2025-09-02 15:09:34
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 18:08:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 19:32:13
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana 2024 capital gains tax.
+  date: 2025-09-02 19:45:27
+- bump: minor
+  changes:
+    added:
+    - California Riverside County General Relief Program.
+  date: 2025-09-02 22:52:24
+- bump: minor
+  changes:
+    added:
+    - Illinois Low Income Home Energy Assistance Program (LIHEAP)
+  date: 2025-09-02 23:14:24
+- bump: patch
+  changes:
+    changed:
+    - Removed coverage tracking from push.yaml workflow to speed up master branch
+      builds.
+    - Implemented selective test runner and coverage test for PR workflow to only
+      test changed files.
+  date: 2025-09-03 17:02:51
+- bump: minor
+  changes:
+    added:
+    - CRFB tax employer payroll tax reform with configurable percentage parameter
+  date: 2025-09-03 17:50:49
+- bump: patch
+  changes:
+    fixed:
+    - Fix the deductions if not itemizing list.
+  date: 2025-09-04 09:23:57
+- bump: minor
+  changes:
+    added:
+    - North Carolina Subsidized Child Care Assistance (SCCA) maximum payment variable.
+    fixed:
+    - North Carolina Subsidized Child Care Assistance (SCCA) formula.
+  date: 2025-09-04 09:30:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child tax credit amount and phase-out thresholds uprating.
+  date: 2025-09-04 20:41:18
+- bump: minor
+  changes:
+    added:
+    - Vermont child care contributions.
+  date: 2025-09-04 22:44:50
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted New York CTC calculations pre 2025.
+  date: 2025-09-05 09:29:37
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted run_selective_tests.py to improve test discovery.
+  date: 2025-09-05 09:32:44
+- bump: minor
+  changes:
+    added:
+    - Reform to extend senior deduction beyond 2028.
+  date: 2025-09-05 15:45:41
+- bump: patch
+  changes:
+    fixed:
+    - Add the qualified business income deduction to the list of additions in South
+      Carolina.
+  date: 2025-09-05 20:35:09
+- bump: patch
+  changes:
+    fixed:
+    - Social Security taxation formula now uses a separate parameter for combined
+      income calculation instead of incorrectly reusing the base taxation rate
+  date: 2025-09-09 22:03:48
+- bump: minor
+  changes:
+    added:
+    - Michigan 2024 home heating credit rate.
+  date: 2025-09-09 23:54:52
+- bump: minor
+  changes:
+    added:
+    - Include missing non-refundable credits in state non-refundable credits list.
+  date: 2025-09-10 10:36:26
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the CTC phase-in relevant earnings.
+  date: 2025-09-10 23:55:47
+- bump: patch
+  changes:
+    fixed:
+    - Michigan integration test.
+  date: 2025-09-11 01:02:51
+- bump: minor
+  changes:
+    added:
+    - Refactor the CTC phase-in relevant earnings.
+  date: 2025-09-11 11:13:17
+- bump: patch
+  changes:
+    fixed:
+    - Remove the self-employment income deduction from the SNAP deductions list.
+  date: 2025-09-15 22:28:43
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico exemptions.
+  date: 2025-09-17 15:33:26
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey other retirement income exclusion calculation.
+  date: 2025-09-17 17:11:17

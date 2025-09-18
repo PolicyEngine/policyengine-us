@@ -1,0 +1,21 @@
+- name: 2023 test, spm unit fpg fog should higher due to March adjustment for IL TANF IED
+  period: 2023-01
+  absolute_error_margin: 1
+  input:
+    il_tanf_assistance_unit_size: 1
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_tanf_initial_employment_deduction_fpg: 1_133
+    spm_unit_fpg: 1_215
+
+- name: 2024 test, IL TANF IED fpg should match 2023 spm unit fpg
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    il_tanf_assistance_unit_size: 1
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_tanf_initial_employment_deduction_fpg: 1_215
+    spm_unit_fpg: 1_255
