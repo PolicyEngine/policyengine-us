@@ -7,7 +7,7 @@ values:
     - ca_itemized_deductions  # California
     # Connecticut adopts federal itemized deductions
     - dc_itemized_deductions  # DC
-    - de_itemized_deductions  # Delaware
+    - de_itemized_deductions_unit  # Delaware
     # Georgia adopts federal itemized deductions
     - hi_itemized_deductions  # Hawaii
     # Iowa allows for a married filing separately structure which requires two separate itemized deductions.
@@ -21,7 +21,7 @@ values:
     - me_itemized_deductions_pre_phaseout  # Maine phases out deductions after choosing itemization.
     - mn_itemized_deductions  # Minnesota
     - mo_itemized_deductions  # Missouri
-    - ms_itemized_deductions  # Mississippi
+    - ms_itemized_deductions_unit  # Mississippi
     # Montana allows for a married filing separately structure which requires two separate itemized deductions.
     - nc_itemized_deductions  # North Carolina
     # North Dakota adopts federal deductions.

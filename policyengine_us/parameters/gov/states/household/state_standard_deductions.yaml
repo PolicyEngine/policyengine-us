@@ -2,12 +2,12 @@ description: All state standard deduction variables.
 values:
   0000-01-01:
     - al_standard_deduction  # Alabama
-    - ar_standard_deduction  # Arkansas
+    # Arkansas allows for a married filing separately structure which requires two separate standard deductions.
     - az_standard_deduction  # Arizona
     - ca_standard_deduction  # California
     # Connecticut adopts federal standard deduction
     - dc_standard_deduction  # DC
-    - de_standard_deduction  # Delaware
+    # Delaware allows for a married filing separately structure which requires two separate standard deductions.
     - ga_standard_deduction  # Georgia
     - hi_standard_deduction  # Hawaii
     # Iowa allows for a married filing separately structure which requires two separate standard deductions.

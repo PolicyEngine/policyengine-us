@@ -137,3 +137,44 @@
   output:
     # Should take the maximum (individual in this case)
     state_itemized_deductions: 11_000
+
+- name: Delaware maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: JOINT
+    age_head: 38
+    age_spouse: 35
+    # Set up scenario where joint calculation is higher
+    de_itemized_deductions_indv: 4_500
+    de_itemized_deductions_joint: 8_200
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 8_200
+
+- name: Delaware maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: SEPARATE
+    age_head: 42
+    # Set up scenario where individual calculation is higher
+    de_itemized_deductions_indv: 12_500
+    de_itemized_deductions_joint: 9_800
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 12_500
+
+- name: Arkansas maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: AR
+    filing_status: JOINT
+    age_head: 46
+    age_spouse: 44
+    # Set up scenario where joint calculation is higher
+    ar_itemized_deductions_indiv: 3_800
+    ar_itemized_deductions_joint: 7_600
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 7_600

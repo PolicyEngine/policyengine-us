@@ -37,8 +37,16 @@ class state_itemized_deductions(Variable):
                 "joint": "mt_itemized_deductions_for_federal_itemization_joint",
             },
             "IA": {
-                "indiv": "ia_itemized_deductions_indiv",
+                "indiv": "ia_itemized_deductions_indiv", 
                 "joint": "ia_itemized_deductions_joint",
+            },
+            "DE": {
+                "indiv": "de_itemized_deductions_indv",
+                "joint": "de_itemized_deductions_joint",
+            },
+            "AR": {
+                "indiv": "ar_itemized_deductions_indiv",
+                "joint": "ar_itemized_deductions_joint",
             },
         }
 
