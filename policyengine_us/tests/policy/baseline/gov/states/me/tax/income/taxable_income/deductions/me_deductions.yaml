@@ -20,7 +20,6 @@
   output:
     me_deductions: 2_500
 
-
 - name: Maine deduction is itemized deductions minus phaseout.
   period: 2022
   absolute_error_margin: 0
@@ -30,4 +29,8 @@
     standard_deduction: 10_000
     me_itemized_deductions_pre_phaseout: 15_000
   output:
+    tax_liability_if_itemizing: 0
+    tax_liability_if_not_itemizing: 0
+    state_standard_deduction: 10_000
+    state_itemized_deductions: 15_000
     me_deductions: 9_000
