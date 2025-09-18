@@ -1,0 +1,68 @@
+- name: CA state Medicaid provides value for eligible child
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: CA
+        members: [child]
+    people:
+      child:
+        age: 10
+        is_ca_state_medicaid_child_eligible: true
+        immigration_status: UNDOCUMENTED
+  output:
+    ca_state_medicaid: [3_258.31]  # Average child Medicaid cost in CA
+
+- name: CA state Medicaid provides value for eligible young adult
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: CA
+        members: [young_adult]
+    people:
+      young_adult:
+        age: 20
+        is_ca_state_medicaid_young_adult_eligible: true
+        immigration_status: UNDOCUMENTED
+  output:
+    ca_state_medicaid: [6_439.11]  # Average expansion adult Medicaid cost in CA
+
+- name: CA state Medicaid included in healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    households:
+      household:
+        state_code: CA
+        members: [child]
+    people:
+      child:
+        age: 10
+        is_ca_state_medicaid_child_eligible: true
+        immigration_status: UNDOCUMENTED
+  output:
+    healthcare_benefit_value: 3_258.31  # CA state Medicaid cost
+
+- name: Both federal and CA state Medicaid can exist together
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: CA
+        members: [parent, child]
+    people:
+      parent:
+        age: 30
+        is_medicaid_eligible: true
+      child:
+        age: 10
+        is_ca_state_medicaid_child_eligible: true
+        immigration_status: UNDOCUMENTED
+  output:
+    medicaid: [6_439.11, 0]  # Only parent gets federal Medicaid
+    ca_state_medicaid: [0, 3_258.31]  # Only child gets CA state Medicaid
+    healthcare_benefit_value: 9_697.42  # Both combined at household level
