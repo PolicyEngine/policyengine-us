@@ -28,11 +28,18 @@ class dc_medicaid_cost_if_enrolled(Variable):
         is_child = age < 19
         is_aged_disabled = is_disabled | (age >= 65)
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
-        is_expansion_adult = ~is_child & ~is_aged_disabled & ~is_non_expansion_adult
+        is_expansion_adult = (
+            ~is_child & ~is_aged_disabled & ~is_non_expansion_adult
+        )
 
         # Determine the group
         group = select(
-            [is_aged_disabled, is_child, is_non_expansion_adult, is_expansion_adult],
+            [
+                is_aged_disabled,
+                is_child,
+                is_non_expansion_adult,
+                is_expansion_adult,
+            ],
             [
                 MedicaidGroup.AGED_DISABLED,
                 MedicaidGroup.CHILD,
@@ -49,8 +56,12 @@ class dc_medicaid_cost_if_enrolled(Variable):
         aged_spend = p.spending.by_eligibility_group.aged[state]
         disabled_spend = p.spending.by_eligibility_group.disabled[state]
         child_spend = p.spending.by_eligibility_group.child[state]
-        expansion_adult_spend = p.spending.by_eligibility_group.expansion_adults[state]
-        non_expansion_adult_spend = p.spending.by_eligibility_group.non_expansion_adults[state]
+        expansion_adult_spend = (
+            p.spending.by_eligibility_group.expansion_adults[state]
+        )
+        non_expansion_adult_spend = (
+            p.spending.by_eligibility_group.non_expansion_adults[state]
+        )
 
         aged_enroll = p.enrollment.aged[state]
         disabled_enroll = p.enrollment.disabled[state]

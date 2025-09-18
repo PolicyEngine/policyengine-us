@@ -25,14 +25,10 @@ class is_medicaid_eligible(Variable):
                 "medicaid_work_requirement_eligible", period
             )
             return (
-                (
-                    categorically_eligible
-                    & immigration_status_eligible
-                    & work_requirement_eligible
-                )
-                | ca_ffyp_eligible
-            )
+                categorically_eligible
+                & immigration_status_eligible
+                & work_requirement_eligible
+            ) | ca_ffyp_eligible
         return (
-            (categorically_eligible & immigration_status_eligible)
-            | ca_ffyp_eligible
-        )
+            categorically_eligible & immigration_status_eligible
+        ) | ca_ffyp_eligible
