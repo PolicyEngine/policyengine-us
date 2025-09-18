@@ -3,123 +3,243 @@ brackets:
   - threshold:
       2021-01-01: -.inf
     amount:
-      2021-01-01: 325
-      2023-01-01: 352
-      2024-01-01: 364
+      values:
+        2021-01-01: 325
+        2023-01-01: 352
+        2024-01-01: 364
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 1_000
     amount:
-      2021-01-01: 405
-      2023-01-01: 438
-      2024-01-01: 454
+      values:
+        2021-01-01: 405
+        2023-01-01: 438
+        2024-01-01: 454
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold:
       2021-01-01: 7_500
     amount:
-      2021-01-01: 390
-      2023-01-01: 422
-      2024-01-01: 437
+      values:
+        2021-01-01: 390
+        2023-01-01: 422
+        2024-01-01: 437
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold:
       2021-01-01: 8_000
     amount:
-      2021-01-01: 375
-      2023-01-01: 406
-      2024-01-01: 420
+      values:
+        2021-01-01: 375
+        2023-01-01: 406
+        2024-01-01: 420
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 9_000
     amount: 
-      2021-01-01: 340
-      2023-01-01: 368
-      2024-01-01: 381
+      values:
+        2021-01-01: 340
+        2023-01-01: 368
+        2024-01-01: 381
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 10_000
     amount: 
-      2021-01-01: 275
-      2023-01-01: 298
-      2024-01-01: 308
+      values:
+        2021-01-01: 275
+        2023-01-01: 298
+        2024-01-01: 308
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 11_500
     amount: 
-      2021-01-01: 235
-      2023-01-01: 254
-      2024-01-01: 263
+      values:
+        2021-01-01: 235
+        2023-01-01: 254
+        2024-01-01: 263
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 13_000
     amount: 
-      2021-01-01: 220
-      2023-01-01: 238
-      2024-01-01: 246
+      values:
+        2021-01-01: 220
+        2023-01-01: 238
+        2024-01-01: 246
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 14_500
     amount: 
-      2021-01-01: 185
-      2023-01-01: 200
-      2024-01-01: 207
+      values:
+        2021-01-01: 185
+        2023-01-01: 200
+        2024-01-01: 207
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 16_500
     amount: 
-      2021-01-01: 165
-      2023-01-01: 179
-      2024-01-01: 185
+      values:
+        2021-01-01: 165
+        2023-01-01: 179
+        2024-01-01: 185
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 18_000
     amount: 
-      2021-01-01: 145
-      2023-01-01: 157
-      2024-01-01: 162
+      values:
+        2021-01-01: 145
+        2023-01-01: 157
+        2024-01-01: 162
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 19_500
     amount: 
-      2021-01-01: 140
-      2023-01-01: 151
-      2024-01-01: 157
+      values:
+        2021-01-01: 140
+        2023-01-01: 151
+        2024-01-01: 157
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 23_000
     amount: 
-      2021-01-01: 120
-      2023-01-01: 130
-      2024-01-01: 134
+      values:
+        2021-01-01: 120
+        2023-01-01: 130
+        2024-01-01: 134
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 24_500
     amount: 
-      2021-01-01: 115
-      2023-01-01: 124
-      2024-01-01: 129
+      values:
+        2021-01-01: 115
+        2023-01-01: 124
+        2024-01-01: 129
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 26_000
     amount: 
-      2021-01-01: 105
-      2023-01-01: 114
-      2024-01-01: 117
+      values:
+        2021-01-01: 105
+        2023-01-01: 114
+        2024-01-01: 117
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 27_500
     amount: 
-      2021-01-01: 100
-      2023-01-01: 108
-      2024-01-01: 112
+      values:
+        2021-01-01: 100
+        2023-01-01: 108
+        2024-01-01: 112
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 29_500
     amount: 
-      2021-01-01: 80
-      2023-01-01: 87
-      2024-01-01: 89
+      values:
+        2021-01-01: 80
+        2023-01-01: 87
+        2024-01-01: 89
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 31_000
     amount: 
-      2021-01-01: 65
-      2023-01-01: 70
-      2024-01-01: 72
+      values:
+        2021-01-01: 65
+        2023-01-01: 70
+        2024-01-01: 72
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 32_500
     amount: 
-      2021-01-01: 50
-      2023-01-01: 54
-      2024-01-01: 56
+      values:
+        2021-01-01: 50
+        2023-01-01: 54
+        2024-01-01: 56
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 34_000
     amount: 
-      2021-01-01: 40
-      2023-01-01: 43
-      2024-01-01: 44
+      values:
+        2021-01-01: 40
+        2023-01-01: 43
+        2024-01-01: 44
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
   - threshold: 
       2021-01-01: 36_000
     amount: 
