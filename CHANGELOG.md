@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.400.1] - 2025-09-18 16:41:32
+
+### Fixed
+
+- Minnesota CDCC structure.
+
 ## [1.400.0] - 2025-09-18 16:40:36
 
 ### Added
@@ -12988,6 +12994,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.400.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.0...1.400.1
 [1.400.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.399.1...1.400.0
 [1.399.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.399.0...1.399.1
 [1.399.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.398.1...1.399.0
