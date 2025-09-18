@@ -1,0 +1,51 @@
+- name: DC Medicaid adult cost if enrolled
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    dc_medicaid_enrolled: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 7_472.53  # DC-specific cost for expansion adults
+
+- name: DC Medicaid child cost if enrolled
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 8
+    dc_medicaid_enrolled: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 4_621.95  # DC-specific cost for children
+
+- name: DC Medicaid pregnant woman cost if enrolled
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 25
+    is_pregnant: true
+    dc_medicaid_enrolled: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 7_551.72  # DC-specific cost for non-expansion adults (pregnant)
+
+- name: DC Medicaid elderly person cost if enrolled
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    dc_medicaid_enrolled: true
+    is_ssi_recipient_for_medicaid: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 33_295.08  # DC-specific cost for aged/disabled
+
+- name: DC Medicaid young adult cost if enrolled
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 19
+    dc_medicaid_enrolled: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 7_472.53  # DC-specific cost for expansion adults (young adult 19+)
