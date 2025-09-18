@@ -67,3 +67,19 @@
     total_itemized_taxable_income_deductions: 20_000
     nm_itemized_deductions: 20_000
     state_itemized_deductions: 20_000
+
+- name: Montana check for individual vs joint itemization
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    charitable_deduction: 4_000
+    interest_deduction: 9_000
+    salt_deduction: 7_000
+  output:
+    # NM uses federal itemized deductions via nm_itemized_deductions
+    total_itemized_taxable_income_deductions: 20_000
+    mt_itemized_deductions_for_federal_itemization_indiv: 2_000
+    mt_itemized_deductions_for_federal_itemization_joint: 4_000
+    state_itemized_deductions: 4_000

@@ -41,3 +41,16 @@
   output:
     ny_standard_deduction: 16_050
     state_standard_deduction: 16_050
+
+- name: State-specific deduction for Montana
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    adjusted_gross_income: 20_000
+  output:
+    mt_standard_deduction_indiv: 2_460
+    mt_standard_deduction_joint: 4_920
+    state_standard_deduction: 4_920

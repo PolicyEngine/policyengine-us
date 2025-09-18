@@ -29,9 +29,21 @@ class state_standard_deduction(Variable):
             period,
             parameters(period).gov.states.household.state_standard_deductions,
         )
-
-        # Get the current state
         state_code = tax_unit.household("state_code_str", period)
+        # Special handling for Montana: take the larger of individual vs joint standard deduction
+        is_montana = state_code == "MT"
+        mt_standard_deduction_indiv = add(
+            tax_unit, period, ["mt_standard_deduction_indiv"]
+        )
+        mt_standard_deduction_joint = add(
+            tax_unit, period, ["mt_standard_deduction_joint"]
+        )
+        mt_standard_deduction = np.maximum(
+            mt_standard_deduction_indiv, mt_standard_deduction_joint
+        )
+        state_specific = where(
+            is_montana, mt_standard_deduction, state_specific
+        )
 
         # Check if the state adopts federal standard deduction
         uses_federal = np.isin(state_code, FEDERAL_STANDARD_DEDUCTION_STATES)
