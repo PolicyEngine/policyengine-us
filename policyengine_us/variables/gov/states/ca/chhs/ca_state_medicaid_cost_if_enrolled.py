@@ -13,7 +13,9 @@ class ca_state_medicaid_cost_if_enrolled(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "is_ca_state_medicaid_eligible"
-    reference = "https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/Medi-Cal-Programs-for-People-with-Medicare.aspx"
+    reference = [
+        "https://www.chcf.org/resource/medi-cal-facts-figures-almanac/",
+    ]
 
     def formula(person, period, parameters):
         # Reuse the exact same cost calculation as federal Medicaid
