@@ -13,7 +13,7 @@ class md_tanf_gross_earned_income_deduction(Variable):
         # Get TANF enrollment status.
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         # Get earned income for the SPM unit.
-        earned_income = add(spm_unit, period, ["earned_income"])
+        earned_income = add(spm_unit, period, ["employment_income"])
         # Determine if the SPM unit has any self-employment income.
         self_employment_income = add(
             spm_unit, period, ["self_employment_income"]
