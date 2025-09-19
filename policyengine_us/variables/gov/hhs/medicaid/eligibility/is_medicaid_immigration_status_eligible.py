@@ -18,11 +18,22 @@ class is_medicaid_immigration_status_eligible(Variable):
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()
 
-        # Check if immigration status is in the eligible list for federal Medicaid
-        # State-specific coverage for undocumented immigrants is now handled
-        # by separate state program variables (e.g., is_ca_state_medicaid_eligible)
+        # Check if immigration status is in the eligible list
         eligible_immigration_status = np.isin(
             immigration_status_str, p.eligible_immigration_statuses
         )
 
-        return eligible_immigration_status
+        # Special handling for undocumented immigrants in states that cover them
+        # Note: CA uses a separate state program (is_ca_state_medicaid_eligible)
+        # but other states may cover undocumented immigrants through regular Medicaid
+        undocumented = (
+            immigration_status
+            == immigration_status.possible_values.UNDOCUMENTED
+        )
+        state = person.household("state_code_str", period)
+        state_covers_undocumented = p.undocumented_immigrant[state].astype(
+            bool
+        )
+        undocumented_eligible = undocumented & state_covers_undocumented
+
+        return eligible_immigration_status | undocumented_eligible
