@@ -11041,3 +11041,14 @@
     fixed:
     - Minnesota CDCC structure.
   date: 2025-09-18 16:41:32
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization to be based on state deductions when federal tax liability
+      is equal.
+    - Compute state itemized and standard deductions for states that adopt the federal
+      itemized and standard deductions.
+    - Account for the married filing separately structure in the state itemized and
+      standard deductions.
+    - Adopt a parallel Montana federal tax deduction for federal itemization purposes.
+  date: 2025-09-19 20:09:46
