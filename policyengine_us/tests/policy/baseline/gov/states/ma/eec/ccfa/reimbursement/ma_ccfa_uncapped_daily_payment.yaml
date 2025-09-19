@@ -1,0 +1,8 @@
+- name: Case 1.
+  period: 2024-01
+  input: 
+    ma_ccfa_center_based_early_education_reimbursement: 105
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 105

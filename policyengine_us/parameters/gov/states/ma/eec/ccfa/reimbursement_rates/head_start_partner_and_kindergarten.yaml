@@ -1,0 +1,55 @@
+description: Massachusetts provides these reimbursement rates for head start partner and kindergarten child care under the Child Care Financial Assistance program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Massachusetts CCFA head start partner and kindergarten reimbursement rates
+  breakdown:
+    - ma_ccfa_region
+    - ma_ccfa_schedule_type
+  reference:
+    - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download#page=2
+    - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download#page=2
+
+WESTERN_CENTRAL_AND_SOUTHEAST:
+  BEFORE_ONLY:
+    2023-07-01: 10.88
+    2024-07-01: 11.04
+  AFTER_ONLY:
+    2023-07-01: 32.34
+    2024-07-01: 32.83
+  BEFORE_AND_AFTER:
+    2023-07-01: 43.21
+    2024-07-01: 43.87
+  FULL_DAY:
+    2023-07-01: 57.23
+    2024-07-01: 58.09
+
+NORTHEAST:
+  BEFORE_ONLY:
+    2023-07-01: 11.42
+    2024-07-01: 12.04
+  AFTER_ONLY:
+    2023-07-01: 34.1
+    2024-07-01: 34.61
+  BEFORE_AND_AFTER:
+    2023-07-01: 45.51
+    2024-07-01: 46.2
+  FULL_DAY:
+    2023-07-01: 57.99
+    2024-07-01: 59.09
+
+METRO_AND_BOSTON_METRO:
+  BEFORE_ONLY:
+    2023-07-01: 15.6
+    2024-07-01: 15.83
+  AFTER_ONLY:
+    2023-07-01: 46.83
+    2024-07-01: 47.53
+  BEFORE_AND_AFTER:
+    2023-07-01: 62.43
+    2024-07-01: 63.36
+  FULL_DAY:
+    2023-07-01: 80.13
+    2024-07-01: 81.33
