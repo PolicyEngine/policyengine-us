@@ -15,7 +15,7 @@
     mt_old_age_subtraction: 5_500
 
 - name: MT joint filers both over 65 receive double old age subtraction
-  absolute_error_margin: 1
+  absolute_error_margin: 0.9
   period: 2024
   input:
     people:

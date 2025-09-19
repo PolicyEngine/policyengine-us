@@ -1,4 +1,4 @@
-- name: Basic AGI calculation before aggregation
+- name: Basic AGI calculation at person level
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -13,7 +13,7 @@
         members: [person1]
   output:
     # 50,000 + 1,000 - 5,500 = 45,500
-    mt_agi_before_aggregation: 45_500
+    mt_agi: 45_500
 
 - name: AGI with social security adjustment (2023)
   absolute_error_margin: 0.01
@@ -34,7 +34,7 @@
     # 40,000 + 0 - 2,000 = 38,000
     # SS adjustment: 3,000 - 5,000 = -2,000
     # Total: 38,000 - 2,000 = 36,000
-    mt_agi_before_aggregation: 36_000
+    mt_agi: 36_000
 
 - name: Negative AGI gets clamped to zero
   absolute_error_margin: 0.01
@@ -51,4 +51,4 @@
         members: [person1]
   output:
     # 2,000 + 0 - 5,500 = -3,500, clamped to 0
-    mt_agi_before_aggregation: 0
+    mt_agi: 0

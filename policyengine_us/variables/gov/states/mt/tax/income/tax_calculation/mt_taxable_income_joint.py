@@ -16,11 +16,10 @@ class mt_taxable_income_joint(Variable):
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
 
-        # For joint filers, sum the AGI at tax unit level to properly apply both spouses' subtractions
-        # This uses mt_agi_before_aggregation which already includes:
-        # - Federal AGI + additions - subtractions
-        # - Social security adjustment for 2021-2023
-        total_agi = add(person.tax_unit, period, ["mt_agi_before_aggregation"])
+        # For joint filers, use mt_agi_joint which pools income and subtractions
+        # at tax unit level before applying them. This ensures subtractions from
+        # one spouse can offset income from the other spouse.
+        total_agi = person.tax_unit("mt_agi_joint", period)
 
         standard_deduction = add(
             person.tax_unit, period, ["mt_standard_deduction_joint"]
