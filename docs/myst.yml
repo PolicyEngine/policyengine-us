@@ -1,0 +1,14 @@
+# MyST-NB configuration for PolicyEngine US documentation
+version: 1
+project:
+  title: PolicyEngine US documentation
+  authors:
+    - name: PolicyEngine Team
+  copyright: "2023"
+  github: https://github.com/policyengine/policyengine-us
+  
+site:
+  template: book-theme
+  title: PolicyEngine US
+  options:
+    logo: main_logo.png
