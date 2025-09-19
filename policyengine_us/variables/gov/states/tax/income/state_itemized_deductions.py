@@ -55,7 +55,7 @@ class state_itemized_deductions(Variable):
             is_state = state_code == state
             indiv_deductions = add(tax_unit, period, [variables["indiv"]])
             joint_deductions = add(tax_unit, period, [variables["joint"]])
-            max_deductions = np.maximum(indiv_deductions, joint_deductions)
+            max_deductions = max_(indiv_deductions, joint_deductions)
             state_specific_base = where(
                 is_state, max_deductions, state_specific_base
             )
