@@ -1,0 +1,35 @@
+- name: Low income earner at $10,000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 10_000
+  output:
+    ny_paid_family_leave_tax: 37.30  # $10,000 × 0.00373
+
+- name: Middle income earner at $50,000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 50_000
+  output:
+    ny_paid_family_leave_tax: 186.50  # $50,000 × 0.00373
+
+- name: High income earner at $100,000 - should hit cap
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 100_000
+  output:
+    ny_paid_family_leave_tax: 333.25  # Capped at maximum contribution (would be $373 uncapped)
+
+- name: Outside New York state - should return 0
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    irs_employment_income: 50_000
+  output:
+    ny_paid_family_leave_tax: 0  # Not in NY, so no NY PFL tax
