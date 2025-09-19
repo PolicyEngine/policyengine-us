@@ -51,17 +51,14 @@ class state_itemized_deductions(Variable):
         }
 
         # Calculate maximum itemized deductions for applicable states
-        state_specific_with_max = state_specific_base
         for state, variables in STATES_WITH_INDIVIDUAL_JOINT_MAXIMUM.items():
             is_state = state_code == state
             indiv_deductions = add(tax_unit, period, [variables["indiv"]])
             joint_deductions = add(tax_unit, period, [variables["joint"]])
             max_deductions = np.maximum(indiv_deductions, joint_deductions)
-            state_specific_with_max = where(
-                is_state, max_deductions, state_specific_with_max
+            state_specific_base = where(
+                is_state, max_deductions, state_specific_base
             )
-
-        state_specific = state_specific_with_max
 
         # Check if the state adopts federal itemized deductions
         uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES)
@@ -74,4 +71,4 @@ class state_itemized_deductions(Variable):
         )
 
         # Return federal itemized deductions for states that adopt them, otherwise state-specific
-        return where(uses_federal, federal_itemized, state_specific)
+        return where(uses_federal, federal_itemized, state_specific_base)

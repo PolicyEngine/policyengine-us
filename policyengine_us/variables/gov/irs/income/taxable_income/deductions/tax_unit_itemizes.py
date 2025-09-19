@@ -26,12 +26,12 @@ class tax_unit_itemizes(Variable):
                 "state_itemized_deductions", period
             )
             # Use a small tolerance for floating-point comparison due to floating point imprecision
-            tolerance = 0.0001
+            TOLERANCE = 0.0001
             federal_tax_equal = (
-                abs(
+                np.abs(
                     tax_liability_if_itemizing - tax_liability_if_not_itemizing
                 )
-                <= tolerance
+                <= TOLERANCE
             )
             return where(
                 federal_tax_equal,

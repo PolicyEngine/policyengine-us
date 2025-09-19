@@ -60,17 +60,14 @@ class state_standard_deduction(Variable):
         }
 
         # Calculate maximum standard deductions for applicable states
-        state_specific_with_max = state_specific
         for state, variables in STATES_WITH_INDIVIDUAL_JOINT_MAXIMUM.items():
             is_state = state_code == state
             indiv_deductions = add(tax_unit, period, [variables["indiv"]])
             joint_deductions = add(tax_unit, period, [variables["joint"]])
             max_deductions = np.maximum(indiv_deductions, joint_deductions)
-            state_specific_with_max = where(
-                is_state, max_deductions, state_specific_with_max
+            state_specific = where(
+                is_state, max_deductions, state_specific
             )
-
-        state_specific = state_specific_with_max
 
         # Check if the state adopts federal standard deduction
         uses_federal = np.isin(state_code, FEDERAL_STANDARD_DEDUCTION_STATES)
