@@ -37,6 +37,7 @@ class mt_capital_gains_tax_indiv(Variable):
                     p.rates.surviving_spouse.amounts[0],
                     p.rates.head_of_household.amounts[0],
                 ],
+                default=p.rates.single.amounts[0],
             )
             higher_rate = select(
                 [
@@ -51,6 +52,7 @@ class mt_capital_gains_tax_indiv(Variable):
                     p.rates.surviving_spouse.amounts[-1],
                     p.rates.head_of_household.amounts[-1],
                 ],
+                default=p.rates.single.amounts[-1],
             )
             # Calculate taxes
             capital_gains_below_threshold = min_(

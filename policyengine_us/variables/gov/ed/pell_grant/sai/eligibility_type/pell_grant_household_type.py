@@ -33,4 +33,5 @@ class pell_grant_household_type(Variable):
                 PellGrantHouseholdType.INDEPENDENT_SINGLE,
                 PellGrantHouseholdType.INDEPENDENT_NOT_SINGLE,
             ],
+            default=PellGrantHouseholdType.INDEPENDENT_SINGLE,
         )

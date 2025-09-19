@@ -23,4 +23,5 @@ class age_group(Variable):
                 person("is_senior", period),
             ],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
+            default=AgeGroup.WORKING_AGE,
         )

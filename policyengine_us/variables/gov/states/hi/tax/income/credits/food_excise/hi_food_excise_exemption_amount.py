@@ -21,22 +21,8 @@ class hi_food_excise_exemption_amount(Variable):
         #   for this program.
         # Determine amount per exemption based on income and filing status
         filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-        amount_per_exemption = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.amount.single.calc(income),
-                p.amount.joint.calc(income),
-                p.amount.head_of_household.calc(income),
-                p.amount.separate.calc(income),
-                p.amount.surviving_spouse.calc(income),
-            ],
+        amount_per_exemption = select_filing_status_value(
+            filing_status, p.amount, income
         )
         exemptions = tax_unit("exemptions_count", period)
         if p.minor_child.in_effect:
