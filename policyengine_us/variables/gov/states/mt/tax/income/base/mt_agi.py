@@ -10,33 +10,29 @@ class mt_agi(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        # Calculate Montana AGI at person level
-        # Start with federal AGI
-        federal_agi = person("adjusted_gross_income_person", period)
-
-        # Add Montana additions
+        agi = person("adjusted_gross_income_person", period)
         additions = person("mt_additions", period)
-
-        # Subtract Montana subtractions
         subtractions = person("mt_subtractions", period)
+        reduced_agi = max_(agi + additions - subtractions, 0)
+        # Montana taxable social security benefits can be either addition or subtraction
+        # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
 
-        # Calculate base Montana AGI
-        reduced_agi = max_(federal_agi + additions - subtractions, 0)
-
-        # Apply social security adjustment if applicable (2021-2023)
         p = parameters(period).gov.states.mt.tax.income.social_security
         if p.applies:
-            # 2021-2023: apply social security adjustment
+            # 2023 and before: apply lines 21-24 adjustment for social security
             taxable_ss = person("taxable_social_security", period)
             mt_taxable_ss = person("mt_taxable_social_security", period)
-            ss_adjustment = mt_taxable_ss - taxable_ss
-            person_mt_agi = max_(reduced_agi + ss_adjustment, 0)
+            adjusted_mt_ss_difference = mt_taxable_ss - taxable_ss
+            tax_unit_mt_agi = max_(reduced_agi + adjusted_mt_ss_difference, 0)
         else:
-            # 2024 and after: no social security adjustment
-            person_mt_agi = reduced_agi
+            # 2024 and after: no longer apply the social security adjustment
+            tax_unit_mt_agi = reduced_agi
 
-        # Allocate any dependent net_income to tax unit head
+        # in all years
+        # allocate any dependent net_income to tax unit head
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * person_mt_agi)
+        sum_dep_net_income = person.tax_unit.sum(
+            is_dependent * tax_unit_mt_agi
+        )
         is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * person_mt_agi + is_head * sum_dep_net_income
+        return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income

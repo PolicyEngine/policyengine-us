@@ -12,7 +12,7 @@ class mt_agi_joint(Variable):
 
     def formula(tax_unit, period, parameters):
         # Pool federal AGI at tax unit level
-        federal_agi = add(tax_unit, period, ["adjusted_gross_income_person"])
+        agi = add(tax_unit, period, ["adjusted_gross_income_person"])
 
         # Pool Montana additions at tax unit level
         additions = add(tax_unit, period, ["mt_additions"])
@@ -22,16 +22,22 @@ class mt_agi_joint(Variable):
         subtractions = add(tax_unit, period, ["mt_subtractions"])
 
         # Apply pooled subtractions to pooled income
-        mt_agi = max_(federal_agi + additions - subtractions, 0)
+        reduced_agi = max_(agi + additions - subtractions, 0)
 
-        # Apply social security adjustment if applicable (2021-2023)
+        # Montana taxable social security benefits can be either addition or subtraction
+        # if mt_taxable_social_security - taxable_social_security > 0, then addition, else subtraction
+
         p = parameters(period).gov.states.mt.tax.income.social_security
         if p.applies:
+            # 2023 and before: apply lines 21-24 adjustment for social security
             taxable_ss = add(tax_unit, period, ["taxable_social_security"])
             mt_taxable_ss = add(
                 tax_unit, period, ["mt_taxable_social_security"]
             )
-            ss_adjustment = mt_taxable_ss - taxable_ss
-            return max_(mt_agi + ss_adjustment, 0)
+            adjusted_mt_ss_difference = mt_taxable_ss - taxable_ss
+            tax_unit_mt_agi = max_(reduced_agi + adjusted_mt_ss_difference, 0)
         else:
-            return mt_agi
+            # 2024 and after: no longer apply the social security adjustment
+            tax_unit_mt_agi = reduced_agi
+
+        return tax_unit_mt_agi
