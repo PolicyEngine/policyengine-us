@@ -1,0 +1,54 @@
+- name: Eligible non-student dependent 
+  period: 2022
+  input:
+    state_code: AL
+    is_tax_unit_dependent: true
+    age: 17
+    is_full_time_student: false
+    immigration_status: CITIZEN
+  output:
+    al_tanf_eligible_child: true
+
+- name: Age not eligible non-student dependent 
+  period: 2022
+  input:
+    state_code: AL
+    is_tax_unit_dependent: true
+    age: 18
+    is_full_time_student: false
+    immigration_status: CITIZEN
+  output:
+    al_tanf_eligible_child: false
+
+- name: Immigration status ineligible
+  period: 2022
+  input:
+    state_code: AL
+    is_tax_unit_dependent: true
+    age: 17
+    is_full_time_student: false
+    immigration_status: UNDOCUMENTED
+  output:
+    al_tanf_eligible_child: false
+
+- name: Eligible student dependent 
+  period: 2022
+  input:
+    state_code: AL
+    is_tax_unit_dependent: true
+    age: 18
+    is_full_time_student: true
+    immigration_status: CITIZEN
+  output:
+    al_tanf_eligible_child: true
+
+- name: Not a dependent
+  period: 2022
+  input:
+    state_code: AL
+    is_tax_unit_dependent: false
+    age: 18
+    is_full_time_student: true
+    immigration_status: CITIZEN
+  output:
+    al_tanf_eligible_child: false
