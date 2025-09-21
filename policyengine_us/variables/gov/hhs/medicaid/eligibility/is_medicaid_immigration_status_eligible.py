@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class is_medicaid_immigration_status_eligible(Variable):
@@ -24,8 +23,6 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         # Special handling for undocumented immigrants in states that cover them
-        # Note: CA uses a separate state program (is_ca_state_medicaid_eligible)
-        # but other states may cover undocumented immigrants through regular Medicaid
         undocumented = (
             immigration_status
             == immigration_status.possible_values.UNDOCUMENTED
