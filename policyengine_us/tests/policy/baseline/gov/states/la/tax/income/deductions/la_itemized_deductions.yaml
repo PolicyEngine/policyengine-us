@@ -33,11 +33,13 @@
     state_code: LA
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
-    taxable_income_deductions_if_itemizing: 30_000
+    itemized_taxable_income_deductions: 30_000
+    qualified_business_income_deduction: 1_000
     tax_unit_itemizes: true
   output:
     la_itemized_deductions: 17_450
     #30_000-12_550
+    # QBID does not affect the state itemized deductions 
 
 - name: 2021 Louisiana deduction given Single status, with federal itemized deductions 10_000
   period: 2021
@@ -45,7 +47,7 @@
     state_code: LA
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
-    taxable_income_deductions_if_itemizing: 10_000
+    itemized_taxable_income_deductions: 10_000
     tax_unit_itemizes: true
   output:
     la_itemized_deductions: 0

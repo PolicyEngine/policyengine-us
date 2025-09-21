@@ -53,12 +53,15 @@
         tax_unit_itemizes: false
         medical_expense_deduction: 500
         charitable_deduction: 10_000
+        standard_deduction: 5_000
     households:
       household:
         members: [person1]
         state_code: ME
   output:
-    me_itemized_deductions_pre_phaseout: 0
+    me_itemized_deductions_pre_phaseout: 11_500
+    me_deductions: 5_000
+    
 
 - name: Maine itemized deduction is capped.
   period: 2022

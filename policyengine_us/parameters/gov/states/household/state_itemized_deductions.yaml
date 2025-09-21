@@ -7,27 +7,27 @@ values:
     - ca_itemized_deductions  # California
     # Connecticut adopts federal itemized deductions
     - dc_itemized_deductions  # DC
-    - de_itemized_deductions  # Delaware
+    - de_itemized_deductions_unit  # Delaware
     # Georgia adopts federal itemized deductions
     - hi_itemized_deductions  # Hawaii
-    - ia_itemized_deductions  # Iowa
+    # Iowa allows for a married filing separately structure which requires two separate itemized deductions.
     - id_itemized_deductions  # Idaho
     # Illinois doesn't have deductions.
     - ks_itemized_deductions  # Kansas
-    - ky_itemized_deductions  # Kentucky
+    - ky_itemized_deductions_unit  # Kentucky
     - la_itemized_deductions  # Louisiana
     # Massachusetts doesn't have deductions in a standard form.
     - md_itemized_deductions  # Maryland
     - me_itemized_deductions_pre_phaseout  # Maine phases out deductions after choosing itemization.
     - mn_itemized_deductions  # Minnesota
     - mo_itemized_deductions  # Missouri
-    - ms_itemized_deductions  # Mississippi
-    - mt_itemized_deductions  # Montana
+    - ms_itemized_deductions_unit  # Mississippi
+    # Montana allows for a married filing separately structure which requires two separate itemized deductions.
     - nc_itemized_deductions  # North Carolina
     # North Dakota adopts federal deductions.
     - ne_itemized_deductions  # Nebraska
     # New Jersey doesn't have a conventional itemized deduction system.
-    # New Mexico adopts federal itemized deductions with a separate salt addback structure.
+    - nm_itemized_deductions  # New Mexico adopts federal itemized deductions
     - ny_itemized_deductions  # New York
     # Ohio doesn't have a conventional itemized deduction system.
     - ok_itemized_deductions  # Oklahoma
