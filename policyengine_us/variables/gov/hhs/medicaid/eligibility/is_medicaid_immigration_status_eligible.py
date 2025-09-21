@@ -36,4 +36,12 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
         undocumented_eligible = undocumented & state_covers_undocumented
 
-        return eligible_immigration_status | undocumented_eligible
+        ca_eligible_regardless_of_immigration_status = person(
+            "is_ca_medicaid_immigration_status_eligible", period
+        )
+
+        return (
+            eligible_immigration_status
+            | undocumented_eligible
+            | ca_eligible_regardless_of_immigration_status
+        )

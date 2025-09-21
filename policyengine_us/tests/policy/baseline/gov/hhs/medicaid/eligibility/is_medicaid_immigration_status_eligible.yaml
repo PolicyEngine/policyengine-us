@@ -54,6 +54,6 @@
   input:
     immigration_status: UNDOCUMENTED
     state_code_str: CA
+    is_ca_medicaid_immigration_status_eligible: true
   output:
-    is_medicaid_immigration_status_eligible: false
-
+    is_medicaid_immigration_status_eligible: true
