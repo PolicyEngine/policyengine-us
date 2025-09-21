@@ -5,7 +5,7 @@
     is_pregnant: false
     state_code: CA
   output:
-    is_ca_medicaid_immigration_status_eligible: True
+    is_ca_medicaid_immigration_status_eligible: true
 
 - name: In 2020, adults over 50 are ineligible
   period: 2020
@@ -14,7 +14,7 @@
     is_pregnant: false
     state_code: CA
   output:
-    is_ca_medicaid_immigration_status_eligible: False
+    is_ca_medicaid_immigration_status_eligible: false
 
 - name: In 2020, adults over 26 are ineligible
   period: 2020
@@ -23,7 +23,7 @@
     is_pregnant: false
     state_code: CA
   output:
-    is_ca_medicaid_immigration_status_eligible: False
+    is_ca_medicaid_immigration_status_eligible: false
 
 - name: Pregnant adults are eligible
   period: 2020
@@ -32,7 +32,7 @@
     is_pregnant: true
     state_code: CA
   output:
-    is_ca_medicaid_immigration_status_eligible: True
+    is_ca_medicaid_immigration_status_eligible: true
 
 - name: In 2024, adults over 26 are ineligible
   period: 2024
@@ -41,4 +41,4 @@
     is_pregnant: false
     state_code: CA
   output:
-    is_ca_medicaid_immigration_status_eligible: True
+    is_ca_medicaid_immigration_status_eligible: true

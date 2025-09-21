@@ -30,30 +30,40 @@
   period: 2024
   input:
     immigration_status: DACA_TPS
-    state_code_str: FL
+    state_code: FL
   output:
     is_medicaid_immigration_status_eligible: false
 
-- name: Ineligible immigration status - TPS
+- name: Eligible regardless of immigration status CA
   period: 2024
   input:
     immigration_status: TPS
+    state_code: CA
   output:
-    is_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: true
 
 - name: Undocumented in non-covering state
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
-    state_code_str: FL
+    state_code: FL
   output:
     is_medicaid_immigration_status_eligible: false
 
-- name: Ineligble for federal Medicaid CA #but eligible for state funded Medicaid
+- name: Eligible for federal Medicaid CA 
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
-    state_code_str: CA
+    state_code: CA
     is_ca_medicaid_immigration_status_eligible: true
   output:
     is_medicaid_immigration_status_eligible: true
+
+- name: Ineligible for federal Medicaid CA 
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+    is_ca_medicaid_immigration_status_eligible: false
+  output:
+    is_medicaid_immigration_status_eligible: false
