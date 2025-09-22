@@ -1,0 +1,23 @@
+- name: Case 1, Households having resources not exceeding $3,000 are eligible.
+  period: 2021-01
+  input:
+    state_code: MT
+    mt_tanf_countable_resources: 2_000
+  output:
+    mt_tanf_resources_eligible: true
+
+- name: Case 2, Households having resources exceeding $3,000 are not eligible.
+  period: 2021-01
+  input:
+    state_code: MT
+    mt_tanf_countable_resources: 4_000
+  output:
+    mt_tanf_resources_eligible: false
+
+- name: Case 3, Households with $0 resources are eligible.
+  period: 2021-01
+  input:
+    state_code: MT
+    mt_tanf_countable_resources: 0
+  output:
+    mt_tanf_resources_eligible: true

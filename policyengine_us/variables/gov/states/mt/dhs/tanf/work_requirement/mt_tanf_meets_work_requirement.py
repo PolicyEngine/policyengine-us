@@ -6,8 +6,10 @@ class mt_tanf_meets_work_requirements(Variable):
     entity = SPMUnit
     label = "Work requirement satisfied for Montana Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
-    reference = ("https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.103" # 62,
-                 "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf")
+    reference = (
+        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.103"  # 62,
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf"
+    )
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
