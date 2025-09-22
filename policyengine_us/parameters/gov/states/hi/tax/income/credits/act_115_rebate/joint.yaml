@@ -1,0 +1,20 @@
+description: Hawaii provides this ACT 115 rebate amount for joint filers, based on federal adjusted gross income.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  type: single_amount
+  label: Hawaii ACT 115 Rebate joint amount
+  reference:
+    - title: 
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=21
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 300
+  - threshold:
+      2021-01-01: 200_000
+    amount:
+      2021-01-01: 100
