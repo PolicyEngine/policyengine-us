@@ -1,5 +1,6 @@
 - bump: minor
   changes:
     added:
-    - Puerto Rico exemptions.
-    
+      - Separated Social Security taxation parameters to match each statutory percentage independently
+    changed:
+      - Refactored Social Security taxation formula to use properly separated parameters per IRC Section 86

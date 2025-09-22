@@ -11021,3 +11021,34 @@
     fixed:
     - Remove the self-employment income deduction from the SNAP deductions list.
   date: 2025-09-15 22:28:43
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico exemptions.
+  date: 2025-09-17 15:33:26
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey other retirement income exclusion calculation.
+  date: 2025-09-17 17:11:17
+- bump: minor
+  changes:
+    added:
+    - New Mexico 2024 low income tax rebate amounts.
+  date: 2025-09-18 16:40:36
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota CDCC structure.
+  date: 2025-09-18 16:41:32
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization to be based on state deductions when federal tax liability
+      is equal.
+    - Compute state itemized and standard deductions for states that adopt the federal
+      itemized and standard deductions.
+    - Account for the married filing separately structure in the state itemized and
+      standard deductions.
+    - Adopt a parallel Montana federal tax deduction for federal itemization purposes.
+  date: 2025-09-19 20:09:46
