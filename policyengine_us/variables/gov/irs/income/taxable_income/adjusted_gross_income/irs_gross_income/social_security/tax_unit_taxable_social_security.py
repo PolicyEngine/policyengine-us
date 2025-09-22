@@ -76,11 +76,10 @@ class tax_unit_taxable_social_security(Variable):
             [
                 under_first_threshold,
                 under_second_threshold,
-                True,
             ],
             [
                 0,
                 amount_if_under_second_threshold,
-                amount_if_over_second_threshold,
             ],
+            default=amount_if_over_second_threshold,
         )
