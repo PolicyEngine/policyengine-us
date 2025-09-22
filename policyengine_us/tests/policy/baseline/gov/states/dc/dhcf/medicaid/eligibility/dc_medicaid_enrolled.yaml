@@ -1,0 +1,14 @@
+- name: Default not enrolled
+  period: 2025
+  input:
+    state_code: DC
+  output:
+    dc_medicaid_enrolled: false  # Default value
+
+- name: Currently enrolled person
+  period: 2025
+  input:
+    state_code: DC
+    dc_medicaid_enrolled: true
+  output:
+    dc_medicaid_enrolled: true  # Input value maintained

@@ -1,0 +1,112 @@
+# Integration tests for DC Medicaid with healthcare benefit value
+- name: Single DC Medicaid enrollee household healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED  # DC Medicaid is for immigrants not eligible for federal
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    dc_medicaid_cost: 7_472.53
+    healthcare_benefit_value: 7_472.53
+
+- name: Family with DC Medicaid enrollees healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED
+      child:
+        age: 10
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    dc_medicaid_cost: [7_472.53, 4_621.95]
+    healthcare_benefit_value: 12_094.48
+
+- name: Mixed eligibility - DC Medicaid parent and regular Medicaid child
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED  # Only eligible for DC Medicaid
+      child:
+        age: 10
+        dc_medicaid_enrolled: false
+        immigration_status: CITIZEN  # Eligible for regular Medicaid
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    dc_medicaid_cost: [7_472.53, 0]
+    healthcare_benefit_value: 12_094.48  # Parent gets DC Medicaid, child gets regular Medicaid
+
+- name: DC Medicaid disabled person healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 50
+        is_ssi_recipient_for_medicaid: true
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    dc_medicaid_cost: 33_295.08
+    healthcare_benefit_value: 33_295.08
+
+- name: DC Medicaid pregnant woman healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 25
+        is_pregnant: true
+        dc_medicaid_enrolled: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    dc_medicaid_cost: 7_551.72  # Non-expansion adult rate for pregnant women
+    healthcare_benefit_value: 7_551.72
+
+- name: No DC Medicaid enrollment - not eligible for regular Medicaid
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        dc_medicaid_enrolled: false
+        medicaid_income_level: 3.0  # Too high for Medicaid
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    dc_medicaid_cost: 0
+    healthcare_benefit_value: 0
