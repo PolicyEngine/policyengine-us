@@ -280,6 +280,90 @@ def create_income_security_package() -> Reform:
 
             return add(tax_unit, period, COMPONENTS)
 
+    # Neutralize federal EITC when ECPA is in effect
+    class eitc(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "federal earned income tax credit"
+        unit = USD
+        documentation = "Earned Income Tax Credit"
+        defined_for = "eitc_eligible"
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+
+            # If ECPA is in effect, federal EITC is zero
+            if p.end_child_poverty_act.in_effect:
+                return 0
+
+            # Otherwise calculate normally
+            takes_up_eitc = tax_unit("takes_up_eitc", period)
+            maximum = tax_unit("eitc_maximum", period)
+            phased_in = tax_unit("eitc_phased_in", period)
+            reduction = tax_unit("eitc_reduction", period)
+            limitation = max_(0, maximum - reduction)
+            return min_(phased_in, limitation) * takes_up_eitc
+
+    # Neutralize federal refundable CTC when ECPA is in effect
+    class refundable_ctc(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "federal refundable child tax credit"
+        unit = USD
+        documentation = "Refundable portion of the Child Tax Credit"
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+
+            # If ECPA is in effect, federal refundable CTC is zero
+            if p.end_child_poverty_act.in_effect:
+                return 0
+
+            # Otherwise calculate normally
+            ctc = parameters(period).gov.irs.credits.ctc
+
+            maximum_amount = tax_unit("ctc_refundable_maximum", period)
+            total_ctc = tax_unit("ctc", period)
+
+            if ctc.refundable.fully_refundable:
+                reduction = tax_unit("ctc_phase_out", period)
+                reduced_max_amount = max_(0, maximum_amount - reduction)
+                return min_(reduced_max_amount, total_ctc)
+
+            maximum_refundable_ctc = min_(maximum_amount, total_ctc)
+
+            phase_in = tax_unit("ctc_phase_in", period)
+            limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
+            ctc_capped_by_tax = min_(total_ctc, limiting_tax)
+            ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
+            amount_ctc_would_increase = (
+                ctc_capped_by_increased_tax - ctc_capped_by_tax
+            )
+            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+
+    # Neutralize federal non-refundable CTC when ECPA is in effect
+    class non_refundable_ctc(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "federal non-refundable child tax credit"
+        unit = USD
+        documentation = "Non-refundable portion of the Child Tax Credit"
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+
+            # If ECPA is in effect, federal non-refundable CTC is zero
+            if p.end_child_poverty_act.in_effect:
+                return 0
+
+            # Otherwise calculate normally
+            ctc = tax_unit("ctc", period)
+            refundable = tax_unit("refundable_ctc", period)
+            return ctc - refundable
+
     class reform(Reform):
         def apply(self):
             # Variables are always updated, but their formulas check in_effect
@@ -292,9 +376,11 @@ def create_income_security_package() -> Reform:
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
             self.update_variable(income_tax)
-            # Note: ECPA is designed to replace EITC and CTC
-            # The ecpa_filer_credit and ecpa_adult_dependent_credit
-            # are separate from income_tax_refundable_credits
+
+            # ECPA replaces federal EITC and CTC but preserves them for state references
+            self.update_variable(eitc)
+            self.update_variable(refundable_ctc)
+            self.update_variable(non_refundable_ctc)
 
     return reform
 
