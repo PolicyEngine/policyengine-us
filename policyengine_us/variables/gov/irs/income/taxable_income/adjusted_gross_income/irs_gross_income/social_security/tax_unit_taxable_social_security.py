@@ -52,11 +52,11 @@ class tax_unit_taxable_social_security(Variable):
         # Tier 1: Between base and adjusted base thresholds
         # Per IRC §86(a)(1), "the amount determined under paragraph (1)"
         # Taxable amount is lesser of:
-        # - tier1_benefit_cap * SS benefits [§86(a)(1)(A)]
-        # - tier1_excess * excess over base [§86(a)(1)(B)]
+        # - base.benefit_cap * SS benefits [§86(a)(1)(A)]
+        # - base.excess * excess over base [§86(a)(1)(B)]
         amount_under_paragraph_1 = min_(
-            p.rate.tier1_benefit_cap * gross_ss,
-            p.rate.tier1_excess * combined_income_excess,
+            p.rate.base.benefit_cap * gross_ss,
+            p.rate.base.excess * combined_income_excess,
         )
 
         # Tier 2: Above adjusted base threshold
@@ -65,15 +65,15 @@ class tax_unit_taxable_social_security(Variable):
         # - "one-half of the difference between the adjusted base amount and the base amount"
         bracket_amount = min_(
             amount_under_paragraph_1,
-            p.rate.tier1_bracket * (adjusted_base_amount - base_amount),
+            p.rate.additional.bracket * (adjusted_base_amount - base_amount),
         )
 
         # Per IRC §86(a)(2), the lesser of:
         # (A) 85% of excess over adjusted base + bracket amount, or
         # (B) 85% of social security benefits
         amount_if_over_second_threshold = min_(
-            p.rate.tier2_excess * excess_over_adjusted_base + bracket_amount,
-            p.rate.tier2_benefit_cap * gross_ss,
+            p.rate.additional.excess * excess_over_adjusted_base + bracket_amount,
+            p.rate.additional.benefit_cap * gross_ss,
         )
 
         return select(
