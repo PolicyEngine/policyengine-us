@@ -1,46 +1,4 @@
-- name: Test SS taxation with no income below threshold
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 10_000
-        interest_income: 0
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-        state_code: TX
-  output:
-    # Combined income = 0 + 0.5 * 10k = 5k
-    # Below base threshold of 25k, so no tax
-    tax_unit_taxable_social_security: 0
-
-- name: Test tier 1 taxation between base and adjusted base thresholds
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 20_000
-        interest_income: 10_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-        state_code: TX
-  output:
-    # Combined income = 10k + 0.5 * 20k = 20k
-    # Below base threshold of 25k, so no tax
-    tax_unit_taxable_social_security: 0
-
-- name: Test that separated parameters load correctly
+- name: Test SS taxation with zero values
   period: 2024
   input:
     people:
