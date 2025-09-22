@@ -19,10 +19,13 @@ class me_deductions(Variable):
 
         # Get the relevant deduction amount (Line 6).
         # Either itemized deduction or federal standard deduction.
-        max_deduction = max_(
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        standard_deduction = tax_unit("standard_deduction", period)
+        larger_deduction = max_(
             tax_unit("me_itemized_deductions_pre_phaseout", period),
-            tax_unit("standard_deduction", period),
+            standard_deduction,
         )
+        max_deduction = where(itemizes, larger_deduction, standard_deduction)
 
         # Calculate the phaseout amount (Line 7).
         phaseout_amount = max_deduction * phaseout_percent
