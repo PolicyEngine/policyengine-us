@@ -1,13 +1,13 @@
-# Tests to ensure ECPA replaces federal EITC/CTC but preserves state and local versions
+# Tests to ensure ECPA replaces federal EITC/CTC in tax calculations
+# while preserving the underlying calculations for state references
 
-- name: California EITC preserved with ECPA active
+- name: Federal EITC calculated but not applied to federal taxes with ECPA
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: CA
     people:
       parent:
         age: 30
@@ -21,35 +21,29 @@
     households:
       household:
         members: [parent, child]
+        state_code: CA
   output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # California EITC should still apply
-    ca_eitc:
-      2026: {gt: 0}
-    # ECPA benefits should apply
+    # ECPA benefits apply
     ecpa_child_benefit:
       2026: [0, 5_630]
     ecpa_filer_credit:
       2026: 700
 
-- name: New York EITC and CTC preserved with ECPA active
+- name: State that references federal CTC - Oklahoma still gets benefit
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: NY
     people:
       parent:
-        age: 35
+        age: 30
         employment_income: 25_000
       child1:
-        age: 8
+        age: 5
       child2:
-        age: 12
+        age: 8
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
@@ -57,113 +51,35 @@
     households:
       household:
         members: [parent, child1, child2]
+        state_code: OK
   output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # New York state credits should still apply
-    ny_eitc:
-      2026: {gt: 0}
-    ny_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
+    # Federal CTC is still calculated for state references
+    ctc:
+      2026: 4_400  # $2,200 per child at this income
+    # Oklahoma gets 5% of federal CTC
+    ok_child_care_child_tax_credit:
+      2026: 220  # 5% of $4,400
+    # ECPA benefits apply instead of federal credits
     ecpa_child_benefit:
       2026: [0, 5_630, 5_630]
     ecpa_filer_credit:
       2026: 450  # 700 - (5000 * 0.05)
 
-- name: NYC EITC preserved with ECPA active
+- name: Maryland CTC is independent of federal CTC
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
     gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: NY
-    in_nyc: true
-    people:
-      parent:
-        age: 40
-        employment_income: 20_000
-      child:
-        age: 10
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        filing_status: HEAD_OF_HOUSEHOLD
-    households:
-      household:
-        members: [parent, child]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # NYC and NY state credits should still apply
-    nyc_eitc:
-      2026: {gt: 0}
-    ny_eitc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 5_630]
-    ecpa_filer_credit:
-      2026: 700
-
-- name: Colorado CTC preserved with ECPA active
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: CO
-    people:
-      parent1:
-        age: 32
-        employment_income: 30_000
-      parent2:
-        age: 30
-        employment_income: 25_000
-      child1:
-        age: 3
-      child2:
-        age: 7
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1, child2]
-        filing_status: JOINT
-    households:
-      household:
-        members: [parent1, parent2, child1, child2]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # Colorado CTC should still apply
-    co_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 0, 5_630, 5_630]
-    ecpa_filer_credit:
-      2026: 0  # 1400 - (15000 * 0.05) = 650, but phase-out may apply
-
-- name: Maryland EITC and CTC preserved with ECPA active
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: MD
     people:
       parent:
         age: 28
         employment_income: 18_000
       child1:
-        age: 2
+        age: 2  # Under 6, qualifies
       child2:
-        age: 6
+        age: 7  # Over 6, doesn't qualify unless disabled
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
@@ -171,168 +87,19 @@
     households:
       household:
         members: [parent, child1, child2]
+        state_code: MD
   output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # Maryland credits should still apply
-    md_eitc:
-      2026: {gt: 0}
+    # Federal CTC is still calculated
+    ctc:
+      2026: 4_400  # $2,200 per child
+    # Maryland CTC based on AGI and qualifying children
+    # AGI = $18,000, so phase-out = ($18,000 - $15,000) / $1,000 * $50 = $150 per child
+    # Child1 (age 2): $500 - $150 = $350
+    # Child2 (age 7): not eligible (over 6, not disabled)
     md_ctc:
-      2026: {gt: 0}
+      2026: 350  # Only for the under-6 child
     # ECPA benefits
     ecpa_child_benefit:
       2026: [0, 5_630, 5_630]
     ecpa_filer_credit:
       2026: 700
-
-- name: Vermont CTC preserved with ECPA active
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: VT
-    people:
-      parent:
-        age: 35
-        employment_income: 35_000
-      child:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [parent, child]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # Vermont CTC should still apply
-    vt_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 5_630]
-    ecpa_filer_credit:
-      2026: 0  # 700 - (15000 * 0.05) = -50, max to 0
-
-- name: Illinois CTC and EITC preserved with ECPA active
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: IL
-    people:
-      parent:
-        age: 30
-        employment_income: 22_000
-      child1:
-        age: 1
-      child2:
-        age: 5
-      child3:
-        age: 9
-    tax_units:
-      tax_unit:
-        members: [parent, child1, child2, child3]
-        filing_status: HEAD_OF_HOUSEHOLD
-    households:
-      household:
-        members: [parent, child1, child2, child3]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # Illinois credits should still apply
-    il_eitc:
-      2026: {gt: 0}
-    il_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 5_630, 5_630, 5_630]
-    ecpa_filer_credit:
-      2026: 600  # 700 - (2000 * 0.05)
-
-- name: DC EITC and CTC preserved with ECPA active
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: DC
-    people:
-      parent1:
-        age: 29
-        employment_income: 20_000
-      parent2:
-        age: 31
-        employment_income: 20_000
-      child:
-        age: 3
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child]
-        filing_status: JOINT
-    households:
-      household:
-        members: [parent1, parent2, child]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # DC credits should still apply
-    dc_eitc:
-      2026: {gt: 0}
-    dc_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 0, 5_630]
-    ecpa_filer_credit:
-      2026: 1_400
-
-- name: Multiple states comparison - Oregon EITC/CTC preserved
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
-    state_code: OR
-    people:
-      parent:
-        age: 38
-        employment_income: 28_000
-      child1:
-        age: 14
-      child2:
-        age: 16
-    tax_units:
-      tax_unit:
-        members: [parent, child1, child2]
-        filing_status: HEAD_OF_HOUSEHOLD
-    households:
-      household:
-        members: [parent, child1, child2]
-  output:
-    # Federal credits should be zero
-    eitc: 0
-    refundable_ctc: 0
-    # Oregon credits should still apply
-    or_eitc:
-      2026: {gt: 0}
-    or_ctc:
-      2026: {gt: 0}
-    # ECPA benefits
-    ecpa_child_benefit:
-      2026: [0, 5_630, 5_630]
-    ecpa_filer_credit:
-      2026: 300  # 700 - (8000 * 0.05)

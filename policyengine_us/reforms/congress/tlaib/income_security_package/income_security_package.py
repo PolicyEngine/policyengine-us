@@ -18,13 +18,13 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
-            max_age = p.max_child_age
-            is_eligible_child = age < max_age
+            is_eligible_child = age < p.max_child_age
 
-            amount = p.amount
-
-            return is_eligible_child * amount
+            return is_eligible_child * p.amount
 
     class boost_payment(Variable):
         value_type = float
@@ -42,14 +42,13 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
-            min_age = p.min_age
-            max_age = p.max_age
+            is_eligible = (age >= p.min_age) & (age <= p.max_age)
 
-            is_eligible = (age >= min_age) & (age <= max_age)
-
-            monthly_amount = p.amount
-            annual_amount = monthly_amount * MONTHS_IN_YEAR
+            annual_amount = p.amount * MONTHS_IN_YEAR
 
             return is_eligible * annual_amount
 
@@ -67,15 +66,15 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
 
+            if not p.in_effect:
+                return 0
+
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
 
-            threshold = p.tax.threshold[filing_status]
-            rate = p.tax.rate
+            excess_agi = max_(agi - p.tax.threshold[filing_status], 0)
 
-            excess_agi = max_(agi - threshold, 0)
-
-            return excess_agi * rate
+            return excess_agi * p.tax.rate
 
     class ecpa_child_benefit(Variable):
         value_type = float
@@ -93,13 +92,13 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
-            age_limit = p.child_benefit.age_limit
-            is_eligible = age < age_limit
+            is_eligible = age < p.child_benefit.age_limit
 
-            annual_amount = p.child_benefit.amount
-
-            return is_eligible * annual_amount
+            return is_eligible * p.child_benefit.amount
 
     class ecpa_adult_dependent_credit(Variable):
         value_type = float
@@ -117,15 +116,17 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
-            min_age = p.adult_dependent_credit.min_age
             is_dependent = person("is_tax_unit_dependent", period)
 
-            is_eligible = (age >= min_age) & is_dependent
+            is_eligible = (
+                age >= p.adult_dependent_credit.min_age
+            ) & is_dependent
 
-            amount = p.adult_dependent_credit.amount
-
-            return is_eligible * amount
+            return is_eligible * p.adult_dependent_credit.amount
 
     class ecpa_filer_credit(Variable):
         value_type = float
@@ -141,16 +142,19 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
+            if not p.in_effect:
+                return 0
+
             person = tax_unit.members
             age = person("age", period)
-            min_age = p.filer_credit.eligibility.min_age
-            max_age = p.filer_credit.eligibility.max_age
 
             is_head = person("is_tax_unit_head", period)
             is_spouse = person("is_tax_unit_spouse", period)
             is_filer = is_head | is_spouse
 
-            is_eligible_age = (age >= min_age) & (age < max_age)
+            is_eligible_age = (age >= p.filer_credit.eligibility.min_age) & (
+                age < p.filer_credit.eligibility.max_age
+            )
             is_eligible_filer = is_filer & is_eligible_age
 
             has_eligible_filer = tax_unit.any(is_eligible_filer)
@@ -159,11 +163,10 @@ def create_income_security_package() -> Reform:
             amount = p.filer_credit.amount[filing_status]
 
             agi = tax_unit("adjusted_gross_income", period)
-            phase_out_start = p.filer_credit.phase_out.start[filing_status]
-            phase_out_rate = p.filer_credit.phase_out.rate
-
-            excess_agi = max_(agi - phase_out_start, 0)
-            phase_out = excess_agi * phase_out_rate
+            excess_agi = max_(
+                agi - p.filer_credit.phase_out.start[filing_status], 0
+            )
+            phase_out = excess_agi * p.filer_credit.phase_out.rate
 
             credit = max_(amount - phase_out, 0)
 
@@ -177,7 +180,9 @@ def create_income_security_package() -> Reform:
         definition_period = YEAR
 
         def formula(household, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
 
             # Base benefits list
             BENEFITS = [
@@ -216,7 +221,9 @@ def create_income_security_package() -> Reform:
         unit = USD
 
         def formula(spm_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
 
             BENEFITS = [
                 "social_security",
@@ -266,7 +273,9 @@ def create_income_security_package() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
 
             COMPONENTS = [
                 "income_tax_before_refundable_credits",
@@ -280,89 +289,70 @@ def create_income_security_package() -> Reform:
 
             return add(tax_unit, period, COMPONENTS)
 
-    # Neutralize federal EITC when ECPA is in effect
-    class eitc(Variable):
+    class income_tax_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
-        label = "federal earned income tax credit"
+        label = "federal refundable income tax credits"
         unit = USD
-        documentation = "Earned Income Tax Credit"
-        defined_for = "eitc_eligible"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
 
-            # If ECPA is in effect, federal EITC is zero
+            CREDITS = [
+                "american_opportunity_credit_refundable",
+                "premium_tax_credit",
+                "lifetime_learning_credit_refundable",
+                "cdcc_refundable",
+                "recovery_rebate_credit",
+                "qualified_sick_leave_self_employed_credit",
+                "qualified_family_leave_equivalent_credit",
+                "local_income_tax_refundable_credits",
+            ]
+
+            # Add EITC and refundable CTC only if ECPA is NOT in effect
+            if not p.end_child_poverty_act.in_effect:
+                CREDITS.extend(["eitc", "refundable_ctc"])
+
+            # Add ECPA credits if in effect
             if p.end_child_poverty_act.in_effect:
-                return 0
+                CREDITS.append("ecpa_filer_credit")
 
-            # Otherwise calculate normally
-            takes_up_eitc = tax_unit("takes_up_eitc", period)
-            maximum = tax_unit("eitc_maximum", period)
-            phased_in = tax_unit("eitc_phased_in", period)
-            reduction = tax_unit("eitc_reduction", period)
-            limitation = max_(0, maximum - reduction)
-            return min_(phased_in, limitation) * takes_up_eitc
+            return add(tax_unit, period, CREDITS)
 
-    # Neutralize federal refundable CTC when ECPA is in effect
-    class refundable_ctc(Variable):
+    class income_tax_non_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
-        label = "federal refundable child tax credit"
+        label = "federal non-refundable income tax credits"
         unit = USD
-        documentation = "Refundable portion of the Child Tax Credit"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
 
-            # If ECPA is in effect, federal refundable CTC is zero
+            CREDITS = [
+                "foreign_tax_credit",
+                "retirement_savings_credit",
+                "residential_clean_energy_credit",
+                "american_opportunity_credit_non_refundable",
+                "lifetime_learning_credit_non_refundable",
+                "non_refundable_ctc",
+                "other_dependent_credit",
+                "cdcc",
+                "electric_vehicle_credit",
+                "district_of_columbia_non_refundable_credits",
+                "education_credit_phase_out",
+            ]
+
+            # Remove non_refundable_ctc if ECPA is in effect
             if p.end_child_poverty_act.in_effect:
-                return 0
+                CREDITS.remove("non_refundable_ctc")
 
-            # Otherwise calculate normally
-            ctc = parameters(period).gov.irs.credits.ctc
-
-            maximum_amount = tax_unit("ctc_refundable_maximum", period)
-            total_ctc = tax_unit("ctc", period)
-
-            if ctc.refundable.fully_refundable:
-                reduction = tax_unit("ctc_phase_out", period)
-                reduced_max_amount = max_(0, maximum_amount - reduction)
-                return min_(reduced_max_amount, total_ctc)
-
-            maximum_refundable_ctc = min_(maximum_amount, total_ctc)
-
-            phase_in = tax_unit("ctc_phase_in", period)
-            limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
-            ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-            ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
-            amount_ctc_would_increase = (
-                ctc_capped_by_increased_tax - ctc_capped_by_tax
-            )
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-
-    # Neutralize federal non-refundable CTC when ECPA is in effect
-    class non_refundable_ctc(Variable):
-        value_type = float
-        entity = TaxUnit
-        definition_period = YEAR
-        label = "federal non-refundable child tax credit"
-        unit = USD
-        documentation = "Non-refundable portion of the Child Tax Credit"
-
-        def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
-
-            # If ECPA is in effect, federal non-refundable CTC is zero
-            if p.end_child_poverty_act.in_effect:
-                return 0
-
-            # Otherwise calculate normally
-            ctc = tax_unit("ctc", period)
-            refundable = tax_unit("refundable_ctc", period)
-            return ctc - refundable
+            return add(tax_unit, period, CREDITS)
 
     class reform(Reform):
         def apply(self):
@@ -376,11 +366,8 @@ def create_income_security_package() -> Reform:
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
             self.update_variable(income_tax)
-
-            # ECPA replaces federal EITC and CTC but preserves them for state references
-            self.update_variable(eitc)
-            self.update_variable(refundable_ctc)
-            self.update_variable(non_refundable_ctc)
+            self.update_variable(income_tax_refundable_credits)
+            self.update_variable(income_tax_non_refundable_credits)
 
     return reform
 
