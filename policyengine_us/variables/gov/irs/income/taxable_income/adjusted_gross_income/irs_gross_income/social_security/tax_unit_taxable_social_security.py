@@ -59,9 +59,6 @@ class tax_unit_taxable_social_security(Variable):
             p.rate.tier1_excess * combined_income_excess,
         )
 
-        # This is what gets included for tier 1 (between thresholds)
-        amount_if_under_second_threshold = amount_under_paragraph_1
-
         # Tier 2: Above adjusted base threshold
         # Per IRC §86(a)(2)(A)(ii), the lesser of:
         # - "the amount determined under paragraph (1)" (calculated above)
@@ -78,6 +75,7 @@ class tax_unit_taxable_social_security(Variable):
             p.rate.tier2_excess * excess_over_adjusted_base + bracket_amount,
             p.rate.tier2_benefit_cap * gross_ss,
         )
+
         return select(
             [
                 under_first_threshold,
@@ -85,7 +83,7 @@ class tax_unit_taxable_social_security(Variable):
             ],
             [
                 0,
-                amount_if_under_second_threshold,
+                amount_under_paragraph_1,
             ],
             default=amount_if_over_second_threshold,
         )
