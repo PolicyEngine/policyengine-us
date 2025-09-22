@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.401.0] - 2025-09-22 18:07:07
+
+### Added
+
+- Separated Social Security taxation parameters to match each statutory percentage independently
+
+### Changed
+
+- Refactored Social Security taxation formula to use properly separated parameters per IRC Section 86
+
 ## [1.400.2] - 2025-09-19 20:09:46
 
 ### Fixed
@@ -13003,6 +13013,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.2...1.401.0
 [1.400.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.1...1.400.2
 [1.400.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.0...1.400.1
 [1.400.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.399.1...1.400.0
