@@ -1,0 +1,35 @@
+- name: Ineligible joint filer
+  period: 2021
+  input:
+    adjusted_gross_income: 400_000
+    tax_unit_is_joint: true
+    state_code: IL
+  output:
+    il_income_tax_rebate_eligible: false
+
+- name: Eligible joint filer
+  period: 2021
+  input:
+    adjusted_gross_income: 399_999
+    tax_unit_is_joint: true
+    state_code: IL
+  output:
+    il_income_tax_rebate_eligible: true
+
+- name: Ineligible non-joint filer
+  period: 2021
+  input:
+    adjusted_gross_income: 200_000
+    tax_unit_is_joint: false
+    state_code: IL
+  output:
+    il_income_tax_rebate_eligible: false
+
+- name: Eligible non-joint filer
+  period: 2021
+  input:
+    adjusted_gross_income: 199_999
+    tax_unit_is_joint: false
+    state_code: IL
+  output:
+    il_income_tax_rebate_eligible: true

@@ -15,11 +15,12 @@ class hi_act_115_rebate(Variable):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         federal_agi = tax_unit("adjusted_gross_income", period)
-        return select([
-            filing_status == statuses.JOINT,
-            filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            filing_status == statuses.SEPARATE,
-            filing_status == statuses.SURVIVING_SPOUSE,
+        return select(
+            [
+                filing_status == statuses.JOINT,
+                filing_status == statuses.HEAD_OF_HOUSEHOLD,
+                filing_status == statuses.SEPARATE,
+                filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.joint.calc(federal_agi),
