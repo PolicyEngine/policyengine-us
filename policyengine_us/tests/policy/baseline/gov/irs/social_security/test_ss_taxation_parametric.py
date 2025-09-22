@@ -23,20 +23,13 @@ class TestCurrentSSFormula:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 15_000,
-                        "employment_income": 0
+                        "employment_income": 0,
                     }
                 },
-                "tax_units": {
-                    "tax_unit": {
-                        "members": ["person"]
-                    }
-                },
+                "tax_units": {"tax_unit": {"members": ["person"]}},
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
             }
         )
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
@@ -50,20 +43,13 @@ class TestCurrentSSFormula:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 20_000,
-                        "employment_income": 20_000
+                        "employment_income": 20_000,
                     }
                 },
-                "tax_units": {
-                    "tax_unit": {
-                        "members": ["person"]
-                    }
-                },
+                "tax_units": {"tax_unit": {"members": ["person"]}},
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
             }
         )
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
@@ -79,20 +65,13 @@ class TestCurrentSSFormula:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 30_000,
-                        "employment_income": 100_000
+                        "employment_income": 100_000,
                     }
                 },
-                "tax_units": {
-                    "tax_unit": {
-                        "members": ["person"]
-                    }
-                },
+                "tax_units": {"tax_unit": {"members": ["person"]}},
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
             }
         )
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
@@ -122,7 +101,7 @@ class TestParametricReforms:
             },
             "gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE": {
                 "2026-01-01": 0
-            }
+            },
         }
 
         reform = Reform.from_dict(reform_dict, country_id="us")
@@ -133,22 +112,19 @@ class TestParametricReforms:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 30_000,
-                        "employment_income": 0
+                        "employment_income": 0,
                     }
                 },
                 "tax_units": {
                     "tax_unit": {
                         "members": ["person"],
-                        "filing_status": "SINGLE"
+                        "filing_status": "SINGLE",
                     }
                 },
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
-            }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
+            },
         )
 
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
@@ -156,8 +132,9 @@ class TestParametricReforms:
 
         # This SHOULD pass but currently fails
         expected = 0.85 * gross_ss[0]
-        assert abs(taxable_ss[0] - expected) < 1, \
-            f"Expected {expected:.0f} but got {taxable_ss[0]:.0f}"
+        assert (
+            abs(taxable_ss[0] - expected) < 1
+        ), f"Expected {expected:.0f} but got {taxable_ss[0]:.0f}"
 
     def test_flat_100_percent_taxation_should_work(self):
         """
@@ -177,7 +154,7 @@ class TestParametricReforms:
             },
             "gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE": {
                 "2026-01-01": 0
-            }
+            },
         }
 
         reform = Reform.from_dict(reform_dict, country_id="us")
@@ -188,30 +165,28 @@ class TestParametricReforms:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 30_000,
-                        "employment_income": 0
+                        "employment_income": 0,
                     }
                 },
                 "tax_units": {
                     "tax_unit": {
                         "members": ["person"],
-                        "filing_status": "SINGLE"
+                        "filing_status": "SINGLE",
                     }
                 },
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
-            }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
+            },
         )
 
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
         gross_ss = sim.calculate("tax_unit_social_security", 2026)
 
         # Should tax 100% of benefits
-        assert abs(taxable_ss[0] - gross_ss[0]) < 1, \
-            f"Expected {gross_ss[0]:.0f} but got {taxable_ss[0]:.0f}"
+        assert (
+            abs(taxable_ss[0] - gross_ss[0]) < 1
+        ), f"Expected {gross_ss[0]:.0f} but got {taxable_ss[0]:.0f}"
 
     def test_flat_50_percent_taxation_should_work(self):
         """
@@ -231,7 +206,7 @@ class TestParametricReforms:
             },
             "gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE": {
                 "2026-01-01": 0
-            }
+            },
         }
 
         reform = Reform.from_dict(reform_dict, country_id="us")
@@ -242,22 +217,19 @@ class TestParametricReforms:
                     "person": {
                         "age": 70,
                         "social_security_retirement": 30_000,
-                        "employment_income": 0
+                        "employment_income": 0,
                     }
                 },
                 "tax_units": {
                     "tax_unit": {
                         "members": ["person"],
-                        "filing_status": "SINGLE"
+                        "filing_status": "SINGLE",
                     }
                 },
                 "households": {
-                    "household": {
-                        "members": ["person"],
-                        "state_code": "FL"
-                    }
-                }
-            }
+                    "household": {"members": ["person"], "state_code": "FL"}
+                },
+            },
         )
 
         taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2026)
@@ -265,8 +237,9 @@ class TestParametricReforms:
 
         # Should tax exactly 50% of benefits
         expected = 0.5 * gross_ss[0]
-        assert abs(taxable_ss[0] - expected) < 1, \
-            f"Expected {expected:.0f} but got {taxable_ss[0]:.0f}"
+        assert (
+            abs(taxable_ss[0] - expected) < 1
+        ), f"Expected {expected:.0f} but got {taxable_ss[0]:.0f}"
 
 
 if __name__ == "__main__":

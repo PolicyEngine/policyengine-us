@@ -42,9 +42,9 @@ class tax_unit_taxable_social_security(Variable):
         # Special case: If both thresholds are 0 and rates are equal,
         # this is a flat tax on all benefits
         is_flat_tax = (
-            (base_amount == 0) &
-            (adjusted_base_amount == 0) &
-            (p.rate.base == p.rate.additional)
+            (base_amount == 0)
+            & (adjusted_base_amount == 0)
+            & (p.rate.base == p.rate.additional)
         )
 
         # For flat tax case, apply the rate directly to gross benefits
