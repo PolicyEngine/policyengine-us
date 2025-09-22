@@ -2,6 +2,9 @@
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
     people:
       child:
         age: 10
@@ -13,6 +16,9 @@
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
     people:
       child:
         age: 18
@@ -24,6 +30,9 @@
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
     people:
       adult:
         age: 19
@@ -35,6 +44,9 @@
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
     people:
       child1:
         age: 5

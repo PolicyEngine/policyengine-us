@@ -177,21 +177,36 @@ def create_income_security_package() -> Reform:
         definition_period = YEAR
 
         def formula(household, period, parameters):
-            existing = household(
-                "household_benefits", period, baseline_variables_only=True
-            )
-            baby_bonus_amount = add(household, period, ["baby_bonus"])
-            boost_payment_amount = add(household, period, ["boost_payment"])
-            ecpa_child_benefit_amount = add(
-                household, period, ["ecpa_child_benefit"]
-            )
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
 
-            return (
-                existing
-                + baby_bonus_amount
-                + boost_payment_amount
-                + ecpa_child_benefit_amount
-            )
+            # Base benefits list
+            BENEFITS = [
+                "social_security",
+                "ssi",
+                "snap",
+                "wic",
+                "free_school_meals",
+                "reduced_price_school_meals",
+                "spm_unit_broadband_subsidy",
+                "tanf",
+                "high_efficiency_electric_home_rebate",
+                "residential_efficiency_electrification_rebate",
+                "unemployment_compensation",
+                # Contributed.
+                "basic_income",
+                "spm_unit_capped_housing_subsidy",
+                "household_state_benefits",
+            ]
+
+            # Add benefits based on what's in effect
+            if p.baby_bonus_act.in_effect:
+                BENEFITS.append("baby_bonus")
+            if p.boost_act.in_effect:
+                BENEFITS.append("boost_payment")
+            if p.end_child_poverty_act.in_effect:
+                BENEFITS.append("ecpa_child_benefit")
+
+            return add(household, period, BENEFITS)
 
     class spm_unit_benefits(Variable):
         value_type = float
@@ -201,21 +216,47 @@ def create_income_security_package() -> Reform:
         unit = USD
 
         def formula(spm_unit, period, parameters):
-            existing = spm_unit(
-                "spm_unit_benefits", period, baseline_variables_only=True
-            )
-            baby_bonus_amount = add(spm_unit, period, ["baby_bonus"])
-            boost_payment_amount = add(spm_unit, period, ["boost_payment"])
-            ecpa_child_benefit_amount = add(
-                spm_unit, period, ["ecpa_child_benefit"]
-            )
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
 
-            return (
-                existing
-                + baby_bonus_amount
-                + boost_payment_amount
-                + ecpa_child_benefit_amount
-            )
+            BENEFITS = [
+                "social_security",
+                "ssi",
+                "ma_state_supplement",  # Massachusetts benefits
+                # California programs.
+                "ca_cvrp",  # California Clean Vehicle Rebate Project.
+                # Colorado programs.
+                "co_ccap_subsidy",
+                "co_state_supplement",
+                "co_oap",
+                "snap",
+                "wic",
+                "free_school_meals",
+                "reduced_price_school_meals",
+                "spm_unit_broadband_subsidy",
+                "spm_unit_energy_subsidy",
+                "tanf",
+                "high_efficiency_electric_home_rebate",
+                "residential_efficiency_electrification_rebate",
+                "unemployment_compensation",
+                # Contributed.
+                "basic_income",
+                "ny_drive_clean_rebate",
+            ]
+
+            # Add benefits based on what's in effect
+            if p.baby_bonus_act.in_effect:
+                BENEFITS.append("baby_bonus")
+            if p.boost_act.in_effect:
+                BENEFITS.append("boost_payment")
+            if p.end_child_poverty_act.in_effect:
+                BENEFITS.append("ecpa_child_benefit")
+
+            if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
+                BENEFITS.append("aca_ptc")
+            if not parameters(period).gov.hud.abolition:
+                BENEFITS.append("spm_unit_capped_housing_subsidy")
+
+            return add(spm_unit, period, BENEFITS)
 
     class income_tax(Variable):
         value_type = float
@@ -225,38 +266,23 @@ def create_income_security_package() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            existing = tax_unit(
-                "income_tax", period, baseline_variables_only=True
-            )
-            boost_tax_amount = tax_unit("boost_tax", period)
-            return existing + boost_tax_amount
+            p = parameters(period).gov.contrib.congress.tlaib.income_security_package
 
-    class income_tax_refundable_credits(Variable):
-        value_type = float
-        entity = TaxUnit
-        definition_period = YEAR
-        label = "federal refundable income tax credits"
-        unit = USD
-
-        def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.irs.credits
-            # Get list of refundable credits, but exclude EITC and CTC
-            refundable_credits = [
-                credit
-                for credit in p.refundable
-                if credit not in ["eitc", "refundable_ctc"]
+            COMPONENTS = [
+                "income_tax_before_refundable_credits",
+                "income_tax_refundable_credits",
+                "income_tax_non_refundable_credits",
             ]
-            other_credits = add(tax_unit, period, refundable_credits)
-            filer_credit = tax_unit("ecpa_filer_credit", period)
-            # Sum person-level adult dependent credits
-            person = tax_unit.members
-            adult_dependent_credit = tax_unit.sum(
-                person("ecpa_adult_dependent_credit", period)
-            )
-            return filer_credit + adult_dependent_credit + other_credits
+
+            # Only add boost_tax if BOOST Act is in effect
+            if p.boost_act.in_effect:
+                COMPONENTS.append("boost_tax")
+
+            return add(tax_unit, period, COMPONENTS)
 
     class reform(Reform):
         def apply(self):
+            # Variables are always updated, but their formulas check in_effect
             self.update_variable(baby_bonus)
             self.update_variable(boost_payment)
             self.update_variable(boost_tax)
@@ -266,7 +292,9 @@ def create_income_security_package() -> Reform:
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
             self.update_variable(income_tax)
-            self.update_variable(income_tax_refundable_credits)
+            # Note: ECPA is designed to replace EITC and CTC
+            # The ecpa_filer_credit and ecpa_adult_dependent_credit
+            # are separate from income_tax_refundable_credits
 
     return reform
 
@@ -276,6 +304,9 @@ def create_income_security_package_reform(
 ):
     if bypass:
         return create_income_security_package()
+
+    if parameters is None or period is None:
+        return None
 
     # Check if any of the three acts are in effect
     p = parameters(period).gov.contrib.congress.tlaib.income_security_package
