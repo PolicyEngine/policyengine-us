@@ -16,7 +16,9 @@ class mt_taxable_social_security(Variable):
         # line 1 total net SS amount
         social_security = person("social_security", period)
         # Line 2 SS multiplied by the base rate
-        social_security_benefits_fraction = social_security * p_irs.base.benefit_cap
+        social_security_benefits_fraction = (
+            social_security * p_irs.base.benefit_cap
+        )
         # line 3: irs_gross_income - taxable_social_security
         taxable_ss = person("taxable_social_security", period)
         gross_income = person("irs_gross_income", period)
@@ -62,14 +64,17 @@ class mt_taxable_social_security(Variable):
         capped_reduced_income = min_(
             income_reduced_by_subtractions_and_threshold, amount_lower
         )
-        minimum_tax_threshold_fraction = capped_reduced_income * p_irs.base.excess
+        minimum_tax_threshold_fraction = (
+            capped_reduced_income * p_irs.base.excess
+        )
         # line 16
         smaller_fraction = min_(
             minimum_tax_threshold_fraction, social_security_benefits_fraction
         )
         # line 17 & 18 ## line_13*0.85 + line_16
         adjusted_tax_amount = (
-            minimum_tax_threshold * p_irs.additional.benefit_cap + smaller_fraction
+            minimum_tax_threshold * p_irs.additional.benefit_cap
+            + smaller_fraction
         )
         # line 19 ## line_1*0.85
         adjusted_taxable_amount = social_security * p_irs.additional.excess
