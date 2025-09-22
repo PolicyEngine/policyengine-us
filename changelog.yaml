@@ -11052,3 +11052,12 @@
       standard deductions.
     - Adopt a parallel Montana federal tax deduction for federal itemization purposes.
   date: 2025-09-19 20:09:46
+- bump: minor
+  changes:
+    added:
+    - Separated Social Security taxation parameters to match each statutory percentage
+      independently
+    changed:
+    - Refactored Social Security taxation formula to use properly separated parameters
+      per IRC Section 86
+  date: 2025-09-22 18:07:07
