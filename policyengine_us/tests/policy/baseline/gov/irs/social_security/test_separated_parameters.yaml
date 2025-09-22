@@ -1,0 +1,67 @@
+- name: Verify separated SS taxation parameters work correctly for single filer above adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # With income of 50k + 0.5 * 40k = 70k combined income:
+    # - First 25k: no tax
+    # - Next 9k (25k to 34k): 50% rate = 4_500
+    # - Above 34k (36k excess): 85% rate = 30_600
+    # - But capped at 85% of benefits = 34_000
+    # Total = min(4_500 + 30_600, 34_000) = 34_000
+    tax_unit_taxable_social_security: 34_000
+
+- name: Test tier 1 taxation between base and adjusted base thresholds
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Combined income = 10k + 0.5 * 20k = 20k
+    # Below base threshold of 25k, so no tax
+    tax_unit_taxable_social_security: 0
+
+- name: Test tier 1 taxation just above base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Combined income = 20k + 0.5 * 20k = 30k
+    # Excess over base (25k) = 5k
+    # Taxable = min(0.5 * 5k, 0.5 * 20k) = min(2_500, 10_000) = 2_500
+    tax_unit_taxable_social_security: 2_500

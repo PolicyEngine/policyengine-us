@@ -39,18 +39,6 @@ class tax_unit_taxable_social_security(Variable):
             p.threshold.adjusted_base.main[filing_status],
         )
 
-        # Special case: If both thresholds are 0 and rates are equal,
-        # this is a flat tax on all benefits
-        is_flat_tax = (
-            (base_amount == 0)
-            & (adjusted_base_amount == 0)
-            & (p.rate.base == p.rate.additional)
-        )
-
-        # For flat tax case, apply the rate directly to gross benefits
-        if is_flat_tax.any():
-            return where(is_flat_tax, p.rate.base * gross_ss, 0)
-
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
 
