@@ -1,6 +1,6 @@
 - name: Adult dependent 18 or over receives credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       dependent:
@@ -18,7 +18,7 @@
 
 - name: Non-dependent adult does not receive credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       adult:
@@ -30,7 +30,7 @@
 
 - name: Child under 18 does not receive adult dependent credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -42,7 +42,7 @@
 
 - name: Multiple adult dependents each receive credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       parent:

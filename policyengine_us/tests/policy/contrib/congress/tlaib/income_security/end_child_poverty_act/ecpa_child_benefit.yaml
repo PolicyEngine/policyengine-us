@@ -1,6 +1,6 @@
 - name: Child under 19 receives full benefit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -11,7 +11,7 @@
 
 - name: Child exactly 18 receives benefit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -22,7 +22,7 @@
 
 - name: Adult 19 or over does not receive child benefit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       adult:
@@ -33,7 +33,7 @@
 
 - name: Multiple children each receive benefit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child1:

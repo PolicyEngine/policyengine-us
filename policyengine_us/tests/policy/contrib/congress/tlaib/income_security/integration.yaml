@@ -1,9 +1,6 @@
 - name: Family with baby, children, and adults receives all benefits
   period: 2026
-  reforms: 
-    - policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       baby:
@@ -46,10 +43,7 @@
 
 - name: Single parent with high income
   period: 2026
-  reforms: 
-    - policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       parent:
@@ -80,10 +74,7 @@
 
 - name: Senior couple with adult dependent
   period: 2026
-  reforms: 
-    - policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       senior1:
@@ -120,10 +111,7 @@
 
 - name: Young adult living alone
   period: 2026
-  reforms: 
-    - policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
-    - policyengine_us.reforms.congress.tlaib.income_security_package.boost_act.boost_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       young_adult:

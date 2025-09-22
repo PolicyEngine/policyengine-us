@@ -1,6 +1,6 @@
 - name: Baby under 1 receives bonus
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -11,7 +11,7 @@
 
 - name: Child exactly 1 year old does not receive bonus
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -22,7 +22,7 @@
 
 - name: Child over 1 does not receive bonus
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       child:
@@ -33,7 +33,7 @@
 
 - name: Multiple children under 1 each receive bonus
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.baby_bonus_act.baby_bonus_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       twin1:

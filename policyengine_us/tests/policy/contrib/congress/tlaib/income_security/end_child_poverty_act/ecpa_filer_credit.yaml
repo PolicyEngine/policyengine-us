@@ -1,6 +1,6 @@
 - name: Single filer age 19-64 receives full credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       filer:
@@ -16,7 +16,7 @@
 
 - name: Joint filers receive higher credit
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       head:
@@ -34,7 +34,7 @@
 
 - name: Credit phases out above threshold for single filer
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       filer:
@@ -50,7 +50,7 @@
 
 - name: Credit phases out for joint filers
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       head:
@@ -68,7 +68,7 @@
 
 - name: Credit fully phases out at high income
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       filer:
@@ -84,7 +84,7 @@
 
 - name: Filer under 19 not eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       filer:
@@ -100,7 +100,7 @@
 
 - name: Filer 65 or over not eligible
   period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.end_child_poverty_act.end_child_poverty_act
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     people:
       filer:
