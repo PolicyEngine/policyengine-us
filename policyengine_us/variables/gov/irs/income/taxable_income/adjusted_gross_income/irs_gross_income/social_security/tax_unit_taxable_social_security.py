@@ -49,16 +49,28 @@ class tax_unit_taxable_social_security(Variable):
             0, combined_income - adjusted_base_amount
         )
 
-        amount_if_under_second_threshold = p.rate.base * min_(
-            combined_income_excess, gross_ss
+        # Tier 1: Between base and adjusted base thresholds
+        # Taxable amount is lesser of:
+        # - tier1_benefit_cap * SS benefits
+        # - tier1_excess * excess over base
+        amount_if_under_second_threshold = min_(
+            p.rate.tier1_benefit_cap * gross_ss,
+            p.rate.tier1_excess * combined_income_excess
         )
+
+        # Tier 2: Above adjusted base threshold
+        # Sum of:
+        # (1) tier1_bracket rate applied to the range between thresholds
+        # (2) tier2_excess rate applied to excess over adjusted base
+        # But capped at tier2_benefit_cap * gross_ss
+        bracket_amount = min_(
+            p.rate.tier1_bracket * (adjusted_base_amount - base_amount),
+            p.rate.tier1_bracket * gross_ss
+        )
+
         amount_if_over_second_threshold = min_(
-            p.rate.additional * excess_over_adjusted_base
-            + min_(
-                amount_if_under_second_threshold,
-                p.rate.base * (adjusted_base_amount - base_amount),
-            ),
-            p.rate.additional * gross_ss,
+            p.rate.tier2_excess * excess_over_adjusted_base + bracket_amount,
+            p.rate.tier2_benefit_cap * gross_ss
         )
         return select(
             [
