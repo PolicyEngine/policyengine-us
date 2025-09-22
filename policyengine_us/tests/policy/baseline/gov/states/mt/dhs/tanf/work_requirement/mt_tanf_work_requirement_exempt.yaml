@@ -1,0 +1,29 @@
+- name: Case 1, Family of 4 with a child and an SSI recipient.
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      person3: 
+        age: 0.5
+        is_tax_unit_dependent: true
+      person4: 
+        age: 65
+        ssi: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_tanf_work_requirement_exempt: [false, false, true, true]
