@@ -33,6 +33,7 @@ class ia_standard_deduction_indiv(Variable):
                 fsvals.HEAD_OF_HOUSEHOLD,
                 fsvals.SURVIVING_SPOUSE,
             ],
+            default=fsvals.SINGLE,
         )
         p = parameters(period).gov.states.ia.tax.income.deductions.standard
 
