@@ -72,7 +72,8 @@ class tax_unit_taxable_social_security(Variable):
         # (A) 85% of excess over adjusted base + bracket amount, or
         # (B) 85% of social security benefits
         amount_if_over_second_threshold = min_(
-            p.rate.additional.excess * excess_over_adjusted_base + bracket_amount,
+            p.rate.additional.excess * excess_over_adjusted_base
+            + bracket_amount,
             p.rate.additional.benefit_cap * gross_ss,
         )
 
