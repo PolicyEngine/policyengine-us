@@ -21,7 +21,7 @@ def test_flat_85_percent_ss_taxation():
 
     # Test with various SS benefit amounts
     test_cases = [
-        (10_000, 8_500),   # 85% of 10k
+        (10_000, 8_500),  # 85% of 10k
         (20_000, 17_000),  # 85% of 20k
         (40_000, 34_000),  # 85% of 40k
         (50_000, 42_500),  # 85% of 50k
@@ -44,7 +44,9 @@ def test_flat_85_percent_ss_taxation():
         sim.set_input("interest_income", 2024, 0, entity_id=person_id)
 
         # Calculate taxable SS
-        taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2024)[person_id]
+        taxable_ss = sim.calculate("tax_unit_taxable_social_security", 2024)[
+            person_id
+        ]
 
         # Check that it equals 85% of benefits
         assert abs(taxable_ss - expected_taxable) < 1, (
