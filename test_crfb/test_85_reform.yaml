@@ -1,0 +1,32 @@
+- name: Test 85% SS taxation reform
+  period: 2026
+  reforms:
+    - gov.irs.social_security.taxability.rate.base:
+        2026-01-01: 0.85
+    - gov.irs.social_security.taxability.rate.additional:
+        2026-01-01: 0.85
+    - gov.irs.social_security.taxability.threshold.base.main.SINGLE:
+        2026-01-01: 0
+    - gov.irs.social_security.taxability.threshold.base.main.JOINT:
+        2026-01-01: 0
+    - gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE:
+        2026-01-01: 0
+    - gov.irs.social_security.taxability.threshold.adjusted_base.main.JOINT:
+        2026-01-01: 0
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 30_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: FL
+  output:
+    tax_unit_social_security: 30_000
+    tax_unit_combined_income_for_social_security_taxability: 15_000  # Half of SS
+    tax_unit_taxable_social_security: 25_500  # Should be 85% of 30k

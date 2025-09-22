@@ -1,0 +1,83 @@
+- name: Test flat 85% Social Security taxation with zero thresholds
+  period: 2026
+  reforms:
+    gov.irs.social_security.taxability.rate.base:
+      2026-01-01: 0.85
+    gov.irs.social_security.taxability.rate.additional:
+      2026-01-01: 0.85
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE:
+      2026-01-01: 0
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE:
+      2026-01-01: 0
+  input:
+    people:
+      person:
+        age: 70
+        social_security_retirement: 30_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: FL
+  output:
+    tax_unit_taxable_social_security: 25_500  # 85% of 30,000
+
+- name: Test flat 100% Social Security taxation with zero thresholds
+  period: 2026
+  reforms:
+    gov.irs.social_security.taxability.rate.base:
+      2026-01-01: 1.0
+    gov.irs.social_security.taxability.rate.additional:
+      2026-01-01: 1.0
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE:
+      2026-01-01: 0
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE:
+      2026-01-01: 0
+  input:
+    people:
+      person:
+        age: 70
+        social_security_retirement: 30_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: FL
+  output:
+    tax_unit_taxable_social_security: 30_000  # 100% of 30,000
+
+- name: Test flat 50% Social Security taxation with zero thresholds
+  period: 2026
+  reforms:
+    gov.irs.social_security.taxability.rate.base:
+      2026-01-01: 0.5
+    gov.irs.social_security.taxability.rate.additional:
+      2026-01-01: 0.5
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE:
+      2026-01-01: 0
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE:
+      2026-01-01: 0
+  input:
+    people:
+      person:
+        age: 70
+        social_security_retirement: 30_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: FL
+  output:
+    tax_unit_taxable_social_security: 15_000  # 50% of 30,000
