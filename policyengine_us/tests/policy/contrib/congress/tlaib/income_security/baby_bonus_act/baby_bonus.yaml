@@ -1,4 +1,4 @@
-- name: Baby under 1 receives bonus
+- name: Baby born in 2026 under age 1 receives bonus
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
@@ -8,12 +8,28 @@
     people:
       child:
         age: 0
+        birth_year: 2026
   output:
     baby_bonus:
       2026: 2_000
 
-- name: Child exactly 1 year old does not receive bonus
+- name: Child born in 2025 (before eligibility) does not receive bonus
   period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      child:
+        age: 0
+        birth_year: 2025
+  output:
+    baby_bonus:
+      2026: 0
+
+- name: Child born in 2026 does not receive bonus in 2027
+  period: 2027
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
     gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
@@ -22,25 +38,12 @@
     people:
       child:
         age: 1
+        birth_year: 2026
   output:
     baby_bonus:
-      2026: 0
+      2027: 0  # Only paid in birth year (2026)
 
-- name: Child over 1 does not receive bonus
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
-    people:
-      child:
-        age: 5
-  output:
-    baby_bonus:
-      2026: 0
-
-- name: Multiple children under 1 each receive bonus
+- name: Multiple children born in 2026 each receive bonus
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
@@ -50,10 +53,28 @@
     people:
       twin1:
         age: 0
+        birth_year: 2026
       twin2:
         age: 0
+        birth_year: 2026
       parent:
         age: 30
+        birth_year: 1996
   output:
     baby_bonus:
       2026: [2_000, 2_000, 0]
+
+- name: Child born in 2027 also eligible
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      child:
+        age: 0
+        birth_year: 2027
+  output:
+    baby_bonus:
+      2027: 2_049  # Uprated from $2,000 in 2026

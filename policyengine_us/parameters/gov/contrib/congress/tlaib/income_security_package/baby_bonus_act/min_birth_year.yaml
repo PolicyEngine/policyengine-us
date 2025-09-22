@@ -1,0 +1,15 @@
+description: Minimum birth year for Baby Bonus Act eligibility
+metadata:
+  unit: year
+  period: year
+  label: Minimum birth year for Baby Bonus eligibility
+  reference: placeholder - bill not yet introduced
+  notes:
+    - The bill allows payment for children born in this year and after, and does not
+      specifically limit payment to the birth year (could technically be claimed after).
+      However, for our modeling purposes, we simplify by paying out during the birth year only.
+    - The bill also allows payment during pregnancy (e.g., a payment could be sent in late 2026
+      for a child expected to be born in early 2027). For simplicity, we model the payment
+      as occurring when the child is born, in their birth year.
+values:
+  2026-01-01: 2026

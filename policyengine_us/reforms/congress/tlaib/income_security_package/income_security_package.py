@@ -21,10 +21,15 @@ def create_income_security_package() -> Reform:
             if not p.in_effect:
                 return 0
 
-            age = person("age", period)
-            is_eligible_child = age < p.max_child_age
+            # Baby bonus is for those born in 2026 and after, paid in their birth year
+            birth_year = person("birth_year", period)
+            min_birth_year = p.min_birth_year
+            current_year = period.start.year
 
-            return is_eligible_child * p.amount
+            # Payment only in the birth year for those born 2026+
+            is_eligible = (birth_year >= min_birth_year) & (birth_year == current_year)
+
+            return is_eligible * p.amount
 
     class boost_payment(Variable):
         value_type = float
