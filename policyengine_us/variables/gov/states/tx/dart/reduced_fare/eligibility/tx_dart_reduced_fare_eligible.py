@@ -15,7 +15,7 @@ class tx_dart_reduced_fare_eligible(Variable):
 
     def formula(person, period, parameters):
         # Eligible due to age
-        age_eligible = person("tx_dart_age_eligible", period)
+        age_eligible = person("tx_dart_reduced_fare_age_eligible", period)
         # Disability
         is_disabled = person("is_disabled", period)
         # Veteran
@@ -28,7 +28,7 @@ class tx_dart_reduced_fare_eligible(Variable):
         # 2. Discount GoPass program (for assistance program recipients)
         # We combine them here since they provide identical benefits
         enrolled_eligible = person(
-            "tx_dart_enrolled_in_applicable_programs", period
+            "tx_dart_reduced_ride_program_eligible", period
         )
 
         return (

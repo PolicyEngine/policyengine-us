@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class tx_dart_free_ride_eligible(Variable):
+class tx_dart_free_ride_eligible_young_child(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for Dallas Area Rapid Transit (DART) Free Ride program"
+    label = "Eligible young child for Dallas Area Rapid Transit (DART) Free Ride program"
     definition_period = YEAR
     defined_for = StateCode.TX
     reference = (
