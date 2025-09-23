@@ -27,7 +27,9 @@ def create_income_security_package() -> Reform:
             current_year = period.start.year
 
             # Payment only in the birth year for those born 2026+
-            is_eligible = (birth_year >= min_birth_year) & (birth_year == current_year)
+            is_eligible = (birth_year >= min_birth_year) & (
+                birth_year == current_year
+            )
 
             return is_eligible * p.amount
 
@@ -361,16 +363,6 @@ def create_income_security_package() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            # TEMPORARY: Setting in_effect to true for notebook functionality
-            # TODO: This should be handled in the notebook per standard pattern
-            def modify_parameters(parameters):
-                p = parameters.gov.contrib.congress.tlaib.income_security_package
-                p.baby_bonus_act.in_effect.update(period="2026-01-01", value=True)
-                p.boost_act.in_effect.update(period="2026-01-01", value=True)
-                p.end_child_poverty_act.in_effect.update(period="2026-01-01", value=True)
-                return parameters
-            self.modify_parameters(modify_parameters)
-
             # Variables are always updated, but their formulas check in_effect
             self.update_variable(baby_bonus)
             self.update_variable(boost_payment)
