@@ -49,9 +49,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          # Install core package and its dependencies
-          uv pip install -e . --system
+        run: uv sync --dev
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
@@ -60,18 +58,18 @@ jobs:
           PYTHONUNBUFFERED: 1
         run: |
           echo "Running non-structural YAML tests..."
-          make test-yaml-no-structural
+          uv run make test-yaml-no-structural
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
           echo "Running structural YAML tests..."
-          make test-yaml-structural
+          uv run make test-yaml-structural
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
           echo "Running Python-based tests..."
-          make test-other
+          uv run make test-other
       - name: Build package
         run: uv build
