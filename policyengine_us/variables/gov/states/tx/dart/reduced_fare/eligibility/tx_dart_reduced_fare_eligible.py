@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class tx_dart_reduced_fare_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program"
+    label = (
+        "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program"
+    )
     definition_period = YEAR
     defined_for = StateCode.TX
     reference = (
