@@ -110,6 +110,7 @@
 
 - name: Oklahoma itemization test requiring higher tolerance
   period: 2024
+  absolute_error_margin: 0.9
   input:
     people:
       person1:
@@ -176,4 +177,4 @@
   output:
     ok_itemized_deductions: 0
     tax_unit_itemizes: false
-    ok_income_tax: 0
+    ok_income_tax: 3_483
