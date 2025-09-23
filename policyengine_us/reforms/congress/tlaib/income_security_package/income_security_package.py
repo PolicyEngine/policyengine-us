@@ -308,26 +308,28 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package
 
-            CREDITS = [
-                "american_opportunity_credit_refundable",
-                "premium_tax_credit",
-                "lifetime_learning_credit_refundable",
-                "cdcc_refundable",
-                "recovery_rebate_credit",
-                "qualified_sick_leave_self_employed_credit",
-                "qualified_family_leave_equivalent_credit",
-                "local_income_tax_refundable_credits",
-            ]
+            # Get standard refundable credits from parameters
+            if p.end_child_poverty_act.in_effect:
+                # When ECPA is in effect, exclude EITC and refundable CTC
+                standard_credits = parameters(period).gov.irs.credits.refundable
+                CREDITS = [c for c in standard_credits if c not in ["eitc", "refundable_ctc"]]
+            else:
+                # Use all standard refundable credits
+                CREDITS = parameters(period).gov.irs.credits.refundable
 
-            # Add EITC and refundable CTC only if ECPA is NOT in effect
-            if not p.end_child_poverty_act.in_effect:
-                CREDITS.extend(["eitc", "refundable_ctc"])
+            base_credits = add(tax_unit, period, CREDITS) if CREDITS else 0
 
             # Add ECPA credits if in effect
             if p.end_child_poverty_act.in_effect:
-                CREDITS.append("ecpa_filer_credit")
-
-            return add(tax_unit, period, CREDITS)
+                # Add filer credit
+                ecpa_filer = tax_unit("ecpa_filer_credit", period)
+                # Add adult dependent credits (sum from person level)
+                person = tax_unit.members
+                ecpa_adult_dep = person("ecpa_adult_dependent_credit", period)
+                total_ecpa_adult_dep = tax_unit.sum(ecpa_adult_dep)
+                return base_credits + ecpa_filer + total_ecpa_adult_dep
+            else:
+                return base_credits
 
     class income_tax_non_refundable_credits(Variable):
         value_type = float

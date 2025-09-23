@@ -60,7 +60,7 @@
       2026: [0, 0, 0, 0, 700]  # Adult dependent gets credit
 
     ecpa_filer_credit:
-      2026: 0  # Phased out at $50k income
+      2026: 900  # $1,400 - ($50k - $40k) * 0.05 = $900
 
     boost_payment:
       2026: [3_000, 3_000, 0, 0, 0]  # $250/month for adults 19-67
@@ -70,7 +70,7 @@
 
     # Verify federal credits are NOT in refundable credits
     income_tax_refundable_credits:
-      2026: 700  # Only ECPA adult dependent credit (no EITC/CTC)
+      2026: 1_600  # ECPA filer credit ($900) + adult dependent credit ($700)
 
 - name: Maine single parent with Income Security Package
   period: 2026
@@ -124,7 +124,7 @@
 
     # Federal refundable credits exclude EITC/CTC but include ECPA
     income_tax_refundable_credits:
-      2026: 575  # Only ECPA filer credit
+      2026: 450  # Only ECPA filer credit
 
 - name: Oklahoma family below BOOST tax threshold
   period: 2026
@@ -288,11 +288,11 @@
       2027: [0, 0, 5_760, 5_760, 5_760]  # All children, uprated
 
     ecpa_filer_credit:
-      2027: 1_434.5  # Uprated and both spouses get it
+      2027: 1_435  # Uprated for 2027
 
     boost_payment:
       2027: [3_072, 3_072, 0, 0, 0]  # Both parents get BOOST (ages 32 and 30, uprated)
 
     # No federal EITC/CTC in refundable credits
     income_tax_refundable_credits:
-      2027: 717  # Only ECPA filer credit
+      2027: 1_435  # Only ECPA filer credit
