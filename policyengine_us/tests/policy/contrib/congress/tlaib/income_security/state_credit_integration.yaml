@@ -63,7 +63,7 @@
       2026: 900  # $1,400 - ($50k - $40k) * 0.05 = $900
 
     boost_payment:
-      2026: [3_000, 3_000, 0, 0, 0]  # $250/month for adults 19-67
+      2026: [3_000, 3_000, 0, 0, 3_000]  # $250/month for adults 19-67 (includes adult dependent)
 
     boost_tax:
       2026: 0  # No tax at $50k income (threshold is higher)
