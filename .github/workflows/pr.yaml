@@ -52,57 +52,26 @@ jobs:
         run: |
           # Install core package and its dependencies
           uv pip install -e . --system
-          # Install only coverage for testing (not docs dependencies)
-          uv pip install coverage --system
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run selective tests based on changed files
+      - name: Run non-structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
-          echo "Running selective tests based on changed files..."
-          python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
-      - name: Generate coverage report
-        id: coverage
-        if: always()
+          echo "Running non-structural YAML tests..."
+          make test-yaml-no-structural
+      - name: Run structural YAML tests
+        env:
+          PYTHONUNBUFFERED: 1
         run: |
-          echo "📊 Coverage Report"
-          echo "=================="
-          # Show files below 100% coverage (won't fail CI)
-          coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
-          
-          # Count files below 100%
-          TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
-          
-          if [ "$TOTAL_FILES" -gt "0" ]; then
-            echo ""
-            echo "⚠️  $TOTAL_FILES file(s) have less than 100% coverage"
-            echo "Consider adding tests to improve coverage."
-          else
-            echo ""
-            echo "✅ All files have 100% coverage!"
-          fi
-          
-          # Generate XML for Codecov
-          coverage xml || echo "No coverage data to generate XML report."
-          # Expose whether we have coverage for later steps
-          if [ -f coverage.xml ]; then
-            echo "has_coverage=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_coverage=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Upload coverage to Codecov
-        if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: false
-          flags: unittests
-          name: codecov-umbrella
-          token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
+          echo "Running structural YAML tests..."
+          make test-yaml-structural
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          make test-other
       - name: Build package
         run: uv build

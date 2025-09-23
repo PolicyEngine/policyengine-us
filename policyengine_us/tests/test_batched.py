@@ -79,17 +79,20 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
             # Batch 1: Only states
             batch1 = [str(states_path)]
 
-            # Batch 2: Everything else (excluding states)
+            # Batch 2: Everything else (excluding states, household, and contrib)
             batch2 = []
 
             # Add root level files if any
             for yaml_file in base_path.glob("*.yaml"):
                 batch2.append(str(yaml_file))
 
-            # Add all directories except gov/states
+            # Add all directories except gov/states, household, and contrib
             for item in base_path.iterdir():
                 if item.is_dir():
-                    if item.name == "gov":
+                    # Skip household and contrib directories (they'll be run separately)
+                    if item.name in ["household", "contrib"]:
+                        continue
+                    elif item.name == "gov":
                         # Add gov subdirectories except states
                         for gov_item in item.iterdir():
                             if gov_item.is_dir() and gov_item.name != "states":
@@ -97,7 +100,7 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
                             elif gov_item.suffix == ".yaml":
                                 batch2.append(str(gov_item))
                     else:
-                        # Non-gov directories
+                        # Other non-gov directories
                         batch2.append(str(item))
 
             return [batch1, batch2] if batch2 else [batch1]
