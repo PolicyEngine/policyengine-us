@@ -11077,3 +11077,9 @@
     fixed:
     - Reform tests related to social security taxation.
   date: 2025-09-23 22:47:11
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Oklahoma child care/ child tax credit to use the actual CTC value,
+      not the potential.
+  date: 2025-09-23 22:49:31
