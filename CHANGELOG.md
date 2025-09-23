@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.402.2] - 2025-09-23 22:47:11
+
+### Fixed
+
+- Reform tests related to social security taxation.
+
 ## [1.402.1] - 2025-09-22 21:29:46
 
 ### Fixed
@@ -13025,6 +13031,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.402.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.1...1.402.2
 [1.402.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.0...1.402.1
 [1.402.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.401.0...1.402.0
 [1.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.2...1.401.0
