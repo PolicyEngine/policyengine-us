@@ -47,7 +47,8 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
     Special handling for contrib tests to divide by folder count.
     """
     # Special handling for contrib tests - each folder is its own batch
-    if "contrib" in str(base_path):
+    # Only apply to policy/contrib (structural tests), not baseline/contrib
+    if str(base_path).endswith("policy/contrib"):
         # Get all subdirectories and sort them alphabetically
         subdirs = sorted(
             [item for item in base_path.iterdir() if item.is_dir()]
