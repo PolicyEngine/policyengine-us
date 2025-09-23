@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class in_harris(Variable):
+class in_hr(Variable):
     value_type = bool
     entity = Household
     definition_period = YEAR

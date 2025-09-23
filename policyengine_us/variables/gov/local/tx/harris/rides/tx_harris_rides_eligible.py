@@ -7,7 +7,7 @@ class tx_harris_rides_eligible(Variable):
     definition_period = YEAR
     label = "Harris County RIDES eligibility"
     reference = "https://rides.harriscountytx.gov/Registration/Registration-Information"
-    defined_for = "in_harris"
+    defined_for = "in_hr"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.local.tx.harris.rides
