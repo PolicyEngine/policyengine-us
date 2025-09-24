@@ -171,11 +171,9 @@
   period: 2023
   input:
     state_code: AR
-    filing_status: JOINT
     ar_agi_joint: 90_000
     ar_agi_indiv: 70_000
   output:
-    adjusted_gross_income: 90_000
     # Arkansas will calculate both ar_agi_indiv and ar_agi_joint
     # and use the maximum for state_agi
     state_agi: 90_000  # Maximum of the two
@@ -185,11 +183,9 @@
   period: 2023
   input:
     state_code: DE
-    filing_status: JOINT
     de_agi_joint: 60_000
     de_agi_indiv: 80_000
   output:
-    adjusted_gross_income: 80_000
     # Delaware will calculate both de_agi_indiv and de_agi_joint
     # and use the maximum for state_agi
     state_agi: 80_000  # Maximum of the two
