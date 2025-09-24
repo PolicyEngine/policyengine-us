@@ -31,7 +31,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_agi: [9_100, 1_600, 0]
+    mt_agi_indiv: [9_100, 1_600, 0]
 
 - name: Test if mt_taxable_social_security works in formula 
   period: 2021
@@ -66,4 +66,4 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_agi: [9_200, 1_600, 0]
+    mt_agi_indiv: [9_200, 1_600, 0]
