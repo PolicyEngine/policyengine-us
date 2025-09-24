@@ -9,6 +9,7 @@ class mt_tanf_is_working(Variable):
     reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf"
     defined_for = StateCode.MT
 
+    # only check the head and spouse
     def formula(person, period, parameters):
         p = parameters(
             period

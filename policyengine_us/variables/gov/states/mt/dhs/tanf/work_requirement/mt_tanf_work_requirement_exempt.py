@@ -10,16 +10,8 @@ class mt_tanf_work_requirement_exempt(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        # (1) Eligible children who are not the head of an assistance unit can be exempt
-        # do I need to model this rule:
-        # a minor parent who is not the head of a household or the spouse of the head of the household;
-        eligible_child = person("mt_tanf_eligible_child", period) & ~person(
-            "is_tax_unit_head", period
-        )
+        # look for more rules about work requirement exemption
+        eligible_child = person("mt_tanf_eligible_child", period)
 
-        # (2) Members receiving SSI are exempt
-        receives_ssi = person("ssi", period) > 0
 
-        # (3) Ineligible aliens (non-citizens who are not eligible for TANF) are exempt
-
-        return eligible_child | receives_ssi
+        return eligible_child

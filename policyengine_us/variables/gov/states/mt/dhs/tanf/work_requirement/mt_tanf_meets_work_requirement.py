@@ -16,7 +16,7 @@ class mt_tanf_meets_work_requirements(Variable):
         person = spm_unit.members
         is_working = person("mt_tanf_is_working", period)
         work_requirement_exempt = person(
-            "mt_tanf_work_requirement_exempt", period
+            "mt_tanf_is_eligible_child", period
         )
 
         meets_work_requirements = is_working | work_requirement_exempt
