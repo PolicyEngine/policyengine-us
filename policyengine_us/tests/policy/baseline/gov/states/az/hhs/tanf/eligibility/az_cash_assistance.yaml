@@ -1,0 +1,31 @@
+- name: The eligible family without shelter cost receives cash assistance under low payment standard
+  period: 2024-01
+  absolute_error_margin: 3
+  #have rounding errors with the 23% when calculating payment standard
+  input:
+    az_payment_standard_threshold: 218
+    az_tanf_earned_income: 147
+    az_hhs_tanf_eligible: true
+  output:
+    az_cash_assistance: 71
+
+- name: The eligible family without shelter cost receives cash assistance under low payment standard
+  period: 2023-01
+  absolute_error_margin: 3
+  input:
+    az_payment_standard_threshold: 175
+    az_tanf_earned_income: 147
+    az_hhs_tanf_eligible: true
+  output:
+    az_cash_assistance: 28
+
+- name: The family earns above payment standard threshold, therefore gets no cash assistance
+  period: 2023-01
+  absolute_error_margin: 3
+  input:
+    az_payment_standard_threshold: 175
+    az_tanf_earned_income: 1_000
+    az_hhs_tanf_eligible: true
+  output:
+    az_cash_assistance: 0
+

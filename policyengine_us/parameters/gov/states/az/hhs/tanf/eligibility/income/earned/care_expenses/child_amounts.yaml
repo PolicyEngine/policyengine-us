@@ -1,0 +1,20 @@
+description: Arizona sets different thresholds for the amount of care expense disregard for children under different age for payment standard eligibility test.
+metadata:
+  type: single_amount
+  label: Arizona Cash Assistance care expense income subtraction threshold for children under or over age threshold
+  period: month
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
+      href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/Dependent_Care_Amount_for_CA.html#wwpID0E0HO0HA
+
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 200
+  - threshold:
+      2022-10-01: 2
+    amount:
+      2022-10-01: 175
