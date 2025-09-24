@@ -1,0 +1,43 @@
+- name: Calvert County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CALVERT_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.03 = 1,500
+    md_local_income_tax_before_credits: 1_500
+
+- name: Calvert County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CALVERT_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.03 = 3,000
+    md_local_income_tax_before_credits: 3_000
+
+- name: Calvert County income tax - $50,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CALVERT_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.032 = 1,600
+    md_local_income_tax_before_credits: 1_600
+
+- name: Calvert County income tax - $100,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CALVERT_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.032 = 3,200
+    md_local_income_tax_before_credits: 3_200
