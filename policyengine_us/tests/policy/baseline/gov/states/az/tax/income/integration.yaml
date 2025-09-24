@@ -1,0 +1,33 @@
+- name: taxsim_record_92799_2024.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 81
+        employment_income: 0.0
+        rent: 17139.244
+        taxable_interest_income: 2640.1775
+        is_tax_unit_head: true
+      person2:
+        age: 73
+        employment_income: 0.0
+        taxable_interest_income: 2640.1775
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 4
+  output:
+    az_income_tax: -51.0
