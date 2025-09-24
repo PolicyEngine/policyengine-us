@@ -1,8 +1,20 @@
 description: New Hampshire taxes interest and dividends at this rate.
+# NOTE: NBER's historical state tax forms archive has directory structure
+# suggesting forms from 1990-2008 and 2020-2025, but only 3 forms
+# actually exist on their server (2020-2022). NH DRA forms are available
+# from 2017-2023. For forms prior to 2017, NH DRA requires direct contact
+# (Forms@dra.nh.gov or 603-230-5001). RSA 77 amendments from 1977 (561:1)
+# and 1981 mention rate changes but specific historical rates are not
+# documented in current statutes. Following TAXSIM's implementation for
+# pre-2017 values in the absence of other sources.
+#
+# Historical rate sourced from TAXSIM 35 (http://taxsim.nber.org/taxsim35/):
+# - 1977-2022: 5% rate (TAXSIM source code line 21262)
 values:
-  2021-01-01: 0.05
+  1977-01-01: 0.05
   2023-01-01: 0.04
   2024-01-01: 0.03
+  2025-01-01: 0.0
 
 metadata:
   unit: /1
@@ -15,8 +27,21 @@ metadata:
       href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-1.htm
     - title: New Hampshire Statutes - TITLE V - CHAPTER 77 - Section 77:4
       href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-4.htm
-    - title: 2021 New Hampshire DP-10 Form
+    # NH DRA forms available from 2017-2023
+    - title: 2023 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2023_pro.pdf#page=4
+    - title: 2022 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2022-print.pdf#page=4
+    - title: 2021 New Hampshire DP-10 Form (Line 10 - Tax Rate)
       href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2021-print.pdf#page=4
+    - title: 2020 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2020-print.pdf#page=4
+    - title: 2019 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2019-print.pdf#page=4
+    - title: 2018 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2018-print.pdf#page=4
+    - title: 2017 New Hampshire DP-10 Form (Line 10 - Tax Rate)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2017-print.pdf#page=4
     - title: 2022 New Hampshire DP-10 Form Instructions Line 10
       href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-instructions-2022.pdf#page=4   
     - title: 2023 New Hampshire DP-10 Form Instructions Line 10

@@ -41,6 +41,7 @@ make documentation
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
   - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
+- **GitHub CLI Dollar Sign Issue**: When creating PRs/issues with `gh` command, escape dollar signs with backslashes (e.g., `\$2,400`) or use single quotes for the entire string. Otherwise, shell interprets `$2` as an empty variable, turning `$2,400` into `,400`.
 
 ## Code Style Guidelines
 - **Imports**: Use absolute imports from policyengine_us.model_api for Variables
@@ -213,3 +214,40 @@ make documentation
   - When checking entity totals or sums, be aware of which entity level you're operating at
   - For variables that need to sum across units, use `entity.sum(variable)`
   - Use `entity.nb_persons()` to count people in an entity
+
+## TAXSIM Comparison Guidelines
+- **Location**: TAXSIM source code is maintained at https://github.com/policyengine/taxsim in Fortran (`.f` files)
+- **State Mapping**: States are numbered in TAXSIM (e.g., New Hampshire is state 30)
+- **Key Differences to Note**:
+  - TAXSIM often floors taxable income at zero: `max(agi-exemptions,0.0d0)`
+  - PolicyEngine may allow negative taxable income values when they appear on actual tax forms
+  - Always document intentional differences in implementation
+- **Data Array Mapping in TAXSIM**:
+  - `data(7)`: Number of personal exemptions (1 for single, 2 for joint)
+  - `data(9)`: Count of taxpayers age 65+
+  - `data(10)`: Count of blind exemptions
+  - `data(12)`: Dividend income
+  - `data(14)`: Interest income
+- **When Comparing**: Always check both the calculation logic AND parameter values across years
+
+## Source Document Verification Requirements
+- **⚠️ CRITICAL: ALWAYS VERIFY SOURCE DOCUMENTS BEFORE CITING ⚠️**
+  - NEVER cite a document without first downloading and reading it
+  - NEVER guess page numbers or line numbers - always verify exact locations
+  - NEVER assume document URLs work - many government sites have access restrictions
+  - This verification is FUNDAMENTAL to PolicyEngine's credibility and accuracy
+- **When Adding Historical Parameters**:
+  1. First locate the actual tax forms/instructions for that year
+  2. Download and open the PDF to verify it's accessible
+  3. Read the specific sections that contain the parameter values
+  4. Note exact page numbers and line numbers from the actual document
+  5. Only then add the reference with verified page numbers
+- **Alternative Sources**: When official sites block access:
+  - Tax form archives (e.g., TAXSIM's form collection at taxsim.nber.org)
+  - Academic repositories that preserve historical tax documents
+  - Always prefer official sources when available
+- **Citation Format**: Include specific page numbers and sections:
+  ```yaml
+  - title: 2020 New Hampshire DP-10 Form (Line 6 - Base Exemptions)
+    href: https://actual-verified-url.pdf#page=3
+  ```
