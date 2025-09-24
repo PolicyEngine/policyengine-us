@@ -1,0 +1,35 @@
+- name: taxsim_record_22242_2024.yaml (Property Tax Fairness Credit Debug)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 0.0
+        qualified_dividend_income: 95.39
+        rent: 7_957.51
+        taxable_interest_income: 328.40
+        is_tax_unit_head: true
+      person2:
+        age: 77
+        employment_income: 0.0
+        qualified_dividend_income: 95.39
+        taxable_interest_income: 328.40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 23
+  output:
+    me_income_tax: -1_370

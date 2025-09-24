@@ -15,7 +15,7 @@ class ne_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         itax_before_credits = tax_unit("ne_income_tax_before_credits", period)
-        nonrefundable_credits = tax_unit("ne_nonrefundable_credits", period)
+        nonrefundable_credits = tax_unit("ne_non_refundable_credits", period)
         ne_amount = max_(0, itax_before_credits - nonrefundable_credits)
         # remaining calculations follow the Federal Tax Liability Worksheet
         ne_additions = tax_unit("ne_additions", period)

@@ -13,4 +13,8 @@ class ok_agi_subtractions(Variable):
     )
     defined_for = StateCode.OK
 
-    adds = "gov.states.ok.tax.income.agi.subtractions.subtractions"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ok.tax.income.agi.subtractions
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

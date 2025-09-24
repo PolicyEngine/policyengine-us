@@ -14,11 +14,10 @@ class tax_unit_taxable_social_security(Variable):
         p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
-        # The legislation directs the usage an income definition that is
+        # The legislation directs the usage of an income definition that is
         # a particularly modified AGI, plus half of gross Social Security
-        # payments. We assume that the 'half' here is the same underlying
-        # parameter as the lower taxability marginal rate (also 50% in the
-        # baseline), and that they would be mechanically the same parameter.
+        # payments. Per IRC Section 86(b)(1), this fraction is always 0.5
+        # and is handled by the combined_income_ss_fraction parameter.
 
         combined_income = tax_unit(
             "tax_unit_combined_income_for_social_security_taxability", period
@@ -50,26 +49,42 @@ class tax_unit_taxable_social_security(Variable):
             0, combined_income - adjusted_base_amount
         )
 
-        amount_if_under_second_threshold = p.rate.base * min_(
-            combined_income_excess, gross_ss
+        # Tier 1: Between base and adjusted base thresholds
+        # Per IRC §86(a)(1), "the amount determined under paragraph (1)"
+        # Taxable amount is lesser of:
+        # - base.benefit_cap * SS benefits [§86(a)(1)(A)]
+        # - base.excess * excess over base [§86(a)(1)(B)]
+        amount_under_paragraph_1 = min_(
+            p.rate.base.benefit_cap * gross_ss,
+            p.rate.base.excess * combined_income_excess,
         )
+
+        # Tier 2: Above adjusted base threshold
+        # Per IRC §86(a)(2)(A)(ii), the lesser of:
+        # - "the amount determined under paragraph (1)" (calculated above)
+        # - "one-half of the difference between the adjusted base amount and the base amount"
+        bracket_amount = min_(
+            amount_under_paragraph_1,
+            p.rate.additional.bracket * (adjusted_base_amount - base_amount),
+        )
+
+        # Per IRC §86(a)(2), the lesser of:
+        # (A) 85% of excess over adjusted base + bracket amount, or
+        # (B) 85% of social security benefits
         amount_if_over_second_threshold = min_(
-            p.rate.additional * excess_over_adjusted_base
-            + min_(
-                amount_if_under_second_threshold,
-                p.rate.base * (adjusted_base_amount - base_amount),
-            ),
-            p.rate.additional * gross_ss,
+            p.rate.additional.excess * excess_over_adjusted_base
+            + bracket_amount,
+            p.rate.additional.benefit_cap * gross_ss,
         )
+
         return select(
             [
                 under_first_threshold,
                 under_second_threshold,
-                True,
             ],
             [
                 0,
-                amount_if_under_second_threshold,
-                amount_if_over_second_threshold,
+                amount_under_paragraph_1,
             ],
+            default=amount_if_over_second_threshold,
         )

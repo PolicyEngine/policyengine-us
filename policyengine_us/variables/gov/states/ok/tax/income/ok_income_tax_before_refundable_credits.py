@@ -15,5 +15,5 @@ class ok_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         itax_before_credits = tax_unit("ok_income_tax_before_credits", period)
-        nonrefundable_credits = tax_unit("ok_nonrefundable_credits", period)
+        nonrefundable_credits = tax_unit("ok_non_refundable_credits", period)
         return max_(0, itax_before_credits - nonrefundable_credits)

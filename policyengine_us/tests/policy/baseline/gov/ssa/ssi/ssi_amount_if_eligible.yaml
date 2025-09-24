@@ -1,0 +1,105 @@
+- name: Case A, single disabled parent with non eligible dependent child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_amount_if_eligible: [967, 967]
+
+- name: Case B, joint filers, one of them is disabled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 22
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_amount_if_eligible: [967, 967]
+
+- name: Case B1, joint filers, both of them are disabled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        is_disabled: true
+        is_tax_unit_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_amount_if_eligible: [725, 725]
+
+- name: Case C, two adults, one eligible and the other ineligible, and a eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+      person3:
+        age: 5
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    ssi_amount_if_eligible: [967, 967, 967]
+
+- name: Case C1, joint filers, both head and spouse eligible, and a eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        is_disabled: true
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    ssi_amount_if_eligible: [725, 725, 967]

@@ -1,0 +1,88 @@
+- name: Case 1, household of 2 with no income. 
+  period: 2024-01
+  input: 
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 438.5 
+    # 436 + 30/12 
+    ## $30 annual special needs amount
+
+- name: Case 2, household of 2 with $500 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input: 
+    people:
+      person1:
+        age: 30
+        employment_income: 500 * 12
+        ssi: 0
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    state_withheld_income_tax: 0.38
+    ca_riv_general_relief_earned_income_deductions: [38.63, 0.38]
+    ca_riv_general_relief_countable_income: 461.37 # 500 - 38.63
+    ca_riv_general_relief_needs_standards: 436
+    ca_riv_general_relief_income_eligible: false 
+
+- name: Case 3, household of 2 with $450 monthly income. 
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input: 
+    people:
+      person1:
+        age: 30
+        employment_income: 450 * 12
+        ssi: 0
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    ca_riv_general_relief_earned_income_deductions: [34.43, 0]
+    ca_riv_general_relief_countable_income: 415.57 # 450 - 34.43
+    ca_riv_general_relief_needs_standards: 436
+    ca_riv_general_relief_income_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief_special_needs_amount: 2.5
+    ca_riv_general_relief: 22.93
+    # 436 + 2.5 - 415.57

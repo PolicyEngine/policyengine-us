@@ -9,4 +9,8 @@ class de_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    adds = "gov.states.de.tax.income.subtractions.subtractions"
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.de.tax.income.subtractions
+        total_subtractions = add(person, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

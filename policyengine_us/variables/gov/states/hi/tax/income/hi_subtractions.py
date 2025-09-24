@@ -9,4 +9,9 @@ class hi_subtractions(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
-    adds = "gov.states.hi.tax.income.subtractions.subtractions"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.hi.tax.income.subtractions
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

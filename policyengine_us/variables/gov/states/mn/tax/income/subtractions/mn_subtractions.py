@@ -14,4 +14,9 @@ class mn_subtractions(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
     )
     defined_for = StateCode.MN
-    adds = "gov.states.mn.tax.income.subtractions.sources"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.mn.tax.income.subtractions
+        total_subtractions = add(tax_unit, period, p.sources)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

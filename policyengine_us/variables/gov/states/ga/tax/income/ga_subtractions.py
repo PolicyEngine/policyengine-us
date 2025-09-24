@@ -12,4 +12,9 @@ class ga_subtractions(Variable):
         "https://www.zillionforms.com/2021/I2122607361.PDF#page14"
     )
     defined_for = StateCode.GA
-    adds = "gov.states.ga.tax.income.subtractions.subtractions"
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ga.tax.income.subtractions
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

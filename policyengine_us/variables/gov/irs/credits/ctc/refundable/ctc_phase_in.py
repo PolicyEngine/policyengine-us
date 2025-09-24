@@ -10,16 +10,8 @@ class ctc_phase_in(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
     def formula(tax_unit, period, parameters):
-
         ctc = parameters(period).gov.irs.credits.ctc
-
-        earnings = tax_unit("tax_unit_earned_income", period)
-        earnings_over_threshold = max_(
-            0, earnings - ctc.refundable.phase_in.threshold
-        )
-        relevant_earnings = (
-            earnings_over_threshold * ctc.refundable.phase_in.rate
-        )
+        relevant_earnings = tax_unit("ctc_phase_in_relevant_earnings", period)
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
         # would increase if [tax liability] increased by tax_increase", where tax_increase is the greater of:
         # - the phase-in amount

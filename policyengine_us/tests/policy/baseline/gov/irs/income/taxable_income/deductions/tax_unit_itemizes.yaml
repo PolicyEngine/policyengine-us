@@ -1,0 +1,180 @@
+- name: When branching, itemization is based on tax liability
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 1_000
+  output:
+    tax_unit_itemizes: False
+
+- name: When branching, itemization is based on tax liability, unit does not itemize
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 11_000
+  output:
+    tax_unit_itemizes: True
+
+- name: When tax liability is equal, itemization is based on state deductions
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 11_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 10_000
+  output:
+    tax_unit_itemizes: True
+
+- name: When tax liability is equal, itemization is based on state deductions, unit itemizes
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: true
+    state_itemized_deductions: 14_000
+    state_standard_deduction: 16_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 10_000
+  output:
+    tax_unit_itemizes: False
+
+- name: Without branching, itemization is based on deduction amount
+  period: 2024
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    state_itemized_deductions: 20_000
+    state_standard_deduction: 16_000
+    tax_liability_if_itemizing: 10_000
+    tax_liability_if_not_itemizing: 9_000
+    standard_deduction: 16_000
+    itemized_taxable_income_deductions: 13_000
+  output:
+    tax_unit_itemizes: False
+
+- name: Integration test which fails without tolerance in the itemization choice
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 47
+        employment_income: 0.0
+        taxable_interest_income: 31428.572
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person3:
+        age: 11
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 19
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 45
+  output:
+    tax_liability_if_itemizing: 0
+    tax_liability_if_not_itemizing: 0
+    itemized_taxable_income_deductions: 401
+    standard_deduction: 21_900
+    state_itemized_deductions: 401
+    state_standard_deduction: 21_900
+    tax_unit_itemizes: False
+    sc_income_tax: 0
+
+- name: Oklahoma itemization test requiring higher tolerance
+  period: 2024
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        qualified_dividend_income: 94610.219
+        is_tax_unit_head: true
+      person2:
+        age: 2
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person3:
+        age: 8
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 12
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 40
+  output:
+    ok_itemized_deductions: 0
+    tax_unit_itemizes: false
+    ok_income_tax: 3_483

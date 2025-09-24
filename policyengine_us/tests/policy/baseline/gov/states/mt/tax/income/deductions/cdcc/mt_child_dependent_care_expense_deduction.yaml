@@ -4,7 +4,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_401
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_200
@@ -15,7 +15,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_401
-    mt_agi: 20_000 #Partial reduction needed
+    mt_agi_indiv: 20_000 #Partial reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 700
@@ -25,7 +25,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_401
-    mt_agi: 30_000 #Full reduction needed
+    mt_agi_indiv: 30_000 #Full reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -36,7 +36,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_601
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_800
@@ -47,7 +47,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_601
-    mt_agi: 22_000 #Partial reduction needed
+    mt_agi_indiv: 22_000 #Partial reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 800
@@ -57,7 +57,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_601
-    mt_agi: 35_000 #Full reduction needed
+    mt_agi_indiv: 35_000 #Full reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -68,7 +68,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_801
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 2_400
@@ -79,7 +79,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_801
-    mt_agi: 24_000 #Partial reduction needed
+    mt_agi_indiv: 24_000 #Partial reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 900
@@ -89,7 +89,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 4_801
-    mt_agi: 34_000 #Full reduction needed
+    mt_agi_indiv: 34_000 #Full reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -99,7 +99,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_000
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_000
@@ -109,7 +109,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_000
-    mt_agi: 30_000 #Full reduction
+    mt_agi_indiv: 30_000 #Full reduction
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -119,7 +119,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_000
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_500
@@ -130,7 +130,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_000
-    mt_agi: 24_000 #Full reduction
+    mt_agi_indiv: 24_000 #Full reduction
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -141,7 +141,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_000
-    mt_agi: 18_000 #No reduction needed
+    mt_agi_indiv: 18_000 #No reduction needed
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 2_000
@@ -152,7 +152,7 @@
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_000
-    mt_agi: 26_000 #Full reduction
+    mt_agi_indiv: 26_000 #Full reduction
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
@@ -164,10 +164,10 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 10_000
+        mt_agi_indiv: 10_000
       person2:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 8_000
+        mt_agi_indiv: 8_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -187,10 +187,10 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 10_000
+        mt_agi_indiv: 10_000
       person2:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 8_000
+        mt_agi_indiv: 8_000
       person3:
         is_tax_unit_head_or_spouse: false
     tax_units:

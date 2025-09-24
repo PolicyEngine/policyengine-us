@@ -53,22 +53,27 @@ class ssi_countable_income(Variable):
             period,
         )
 
-        # Add any spousal deemed income
+        # Check if both spouses are eligible
+        both_eligible = person("ssi_marital_both_eligible", period)
+
+        # Add spousal deemed income (only relevant when one spouse is ineligible)
         spousal_deemed = person(
             "ssi_income_deemed_from_ineligible_spouse", period
         )
 
-        # If this person is the spouse whose income is being deemed away, do not double-count it
-        # (has_donated_income ensures a spouse who "gave" their income to the other doesn't keep it)
-        has_donated_income = (
-            person.marital_unit.sum(spousal_deemed) > spousal_deemed
-        )
+        # Check if person is eligible (either as individual OR as eligible spouse)
+        is_eligible_individual = person("is_ssi_eligible_individual", period)
+        is_eligible_spouse = person("is_ssi_eligible_spouse", period)
+        is_eligible = is_eligible_individual | is_eligible_spouse
 
-        # Only apply countable income for an SSI-eligible individual
-        is_eligible = person("is_ssi_eligible_individual", period)
-
+        # Calculate final countable income
         return where(
-            has_donated_income | ~is_eligible,
+            ~is_eligible,
             0,
-            personal_countable + spousal_deemed,
+            where(
+                both_eligible,
+                personal_countable / 2,  # Each eligible spouse gets half
+                personal_countable
+                + spousal_deemed,  # Single or with ineligible spouse
+            ),
         )

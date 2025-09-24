@@ -10,4 +10,8 @@ class ia_subtractions_consolidated(Variable):
     reference = "https://www.legis.iowa.gov/docs/code/422.7.pdf"
     defined_for = StateCode.IA
 
-    adds = "gov.states.ia.tax.income.taxable_income.subtractions"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ia.tax.income.taxable_income
+        total_subtractions = add(tax_unit, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)
