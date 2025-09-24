@@ -24,7 +24,7 @@ class tanf(Variable):
 
         # Sum all state TANF programs
         # Each state has its own implementation in the states/ folder
-        STATES_WITH_TANF = ["ca", "co", "dc", "ny"]
+        STATES_WITH_TANF = ["ca", "co", "dc", "ny", "il", "nc"]
         return add(
             spm_unit, period, [f"{state}_tanf" for state in STATES_WITH_TANF]
         )
