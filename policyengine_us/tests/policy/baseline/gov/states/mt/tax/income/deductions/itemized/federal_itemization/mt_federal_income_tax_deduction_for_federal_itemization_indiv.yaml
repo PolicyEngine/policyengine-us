@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        mt_ag_indiv: 500
+        mt_agi_indiv: 500
       person2:
-        mt_ag_indiv: 500
+        mt_agi_indiv: 500
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -23,9 +23,9 @@
   input:
     people:
       person1:
-        mt_ag_indiv: 100
+        mt_agi_indiv: 100
       person2:
-        mt_ag_indiv: 900
+        mt_agi_indiv: 900
     tax_units:
       tax_unit:
         members: [person1, person2]
