@@ -49,6 +49,7 @@ Check all variable files for:
 - Placeholder implementations
 - Missing parameter references
 - Improper vectorization patterns
+- Redundant or overcomplicated conditions
 
 ### Phase 2: Parameter Audit
 Verify parameter files have:
@@ -83,8 +84,29 @@ Validate that:
 
 # Examples of violations:
 if age >= 65:  # Flag: 65 should be parameter
-benefit * 0.5   # Flag: 0.5 should be parameter  
+benefit * 0.5   # Flag: 0.5 should be parameter
 month >= 10     # Flag: 10 should be parameter
+```
+
+### Redundant Condition Detection
+```python
+# Check for overcomplicated or redundant conditions
+# Flag unnecessary complexity that could be simplified
+
+# Examples of redundant conditions:
+~p.calc(age) & (age < max_age)  # Flag: If checking age < 5, just use age < 5
+(x > 0) & (x <= 100) & (x > 0)  # Flag: Duplicate condition x > 0
+eligible & (eligible | other)     # Flag: Simplifies to just eligible
+
+# Examples of overengineered solutions:
+# Using complex parameter calc when simple comparison would work:
+(age < 15) & ~p.child.calc(age)  # Flag: If just checking < 5, use age < threshold
+
+# Inverting results unnecessarily:
+~(~eligible)  # Flag: Simplifies to eligible
+
+# Multiple boolean operations when one would suffice:
+(condition1 | condition2) & (condition1 | condition3)  # May simplify to condition1 | (condition2 & condition3)
 ```
 
 ### Parameter Organization Check

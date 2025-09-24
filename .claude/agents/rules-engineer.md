@@ -91,11 +91,18 @@ When invoked to fix issues, you MUST:
 
 ### 1. NO HARD-CODED VALUES - EVERYTHING MUST BE PARAMETERIZED
 
+**⚠️ CRITICAL: NEVER INTRODUCE NEW HARD-CODED NUMERIC VALUES**
+When fixing issues or refactoring code, you MUST NOT introduce ANY numeric literals except:
+- 0, 1, -1 for basic mathematical operations
+- Array indices ONLY when accessing known structures from parameters
+
 ❌ **AUTOMATIC REJECTION - Hard-coded values**:
 ```python
 return where(eligible & crisis, p.maximum * 0.5, 0)  # Hard-coded 0.5
 in_heating_season = (month >= 10) | (month <= 3)     # Hard-coded months
 benefit = min_(75, calculated_amount)                # Hard-coded 75
+age < 15  # Hard-coded age threshold - NEVER DO THIS
+return (age < 5) & eligible  # Hard-coded 5 - UNACCEPTABLE
 ```
 
 ✅ **REQUIRED - Everything parameterized**:
@@ -108,7 +115,16 @@ in_season = (month >= p_season.start_month) | (month <= p_season.end_month)
 
 min_amount = parameters(period).path.to.program.minimum_amount
 benefit = max_(min_amount, calculated_amount)
+
+# For age thresholds - get from parameters
+max_age = p.age_threshold.thresholds[-1]  # Get last threshold
+return (age < max_age) & eligible
+
+# Or use parameter calc methods
+return p.age_bracket.calc(age)
 ```
+
+**VALIDATION**: After making ANY code changes, mentally scan for numeric literals. If you see ANY number other than 0, 1, -1 that isn't coming from a parameter, STOP and fix it.
 
 ### 2. NO PLACEHOLDER IMPLEMENTATIONS
 
