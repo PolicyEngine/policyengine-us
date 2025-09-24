@@ -11072,3 +11072,30 @@
     fixed:
     - Connecticut and Montana federal social security tax parameter dependencies.
   date: 2025-09-22 21:29:46
+- bump: patch
+  changes:
+    fixed:
+    - Reform tests related to social security taxation.
+  date: 2025-09-23 22:47:11
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Oklahoma child care/ child tax credit to use the actual CTC value,
+      not the potential.
+  date: 2025-09-23 22:49:31
+- bump: minor
+  changes:
+    added:
+    - Update SNAP parameters for FY 2026 Cost-of-Living Adjustments.
+  date: 2025-09-23 22:51:10
+- bump: patch
+  changes:
+    fixed:
+    - Increase the tolerance for itemization comparison.
+  date: 2025-09-24 00:54:25
+- bump: patch
+  changes:
+    fixed:
+    - Montana married filing jointly subtractions allocation issue.
+    - Rename mt_agi to mt_agi_indiv.
+  date: 2025-09-24 15:23:57

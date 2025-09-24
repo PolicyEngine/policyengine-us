@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.403.2] - 2025-09-24 15:23:57
+
+### Fixed
+
+- Montana married filing jointly subtractions allocation issue.
+- Rename mt_agi to mt_agi_indiv.
+
+## [1.403.1] - 2025-09-24 00:54:25
+
+### Fixed
+
+- Increase the tolerance for itemization comparison.
+
+## [1.403.0] - 2025-09-23 22:51:10
+
+### Added
+
+- Update SNAP parameters for FY 2026 Cost-of-Living Adjustments.
+
+## [1.402.3] - 2025-09-23 22:49:31
+
+### Fixed
+
+- Adjust the Oklahoma child care/ child tax credit to use the actual CTC value, not the potential.
+
+## [1.402.2] - 2025-09-23 22:47:11
+
+### Fixed
+
+- Reform tests related to social security taxation.
+
 ## [1.402.1] - 2025-09-22 21:29:46
 
 ### Fixed
@@ -13025,6 +13056,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.1...1.403.2
+[1.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.0...1.403.1
+[1.403.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.3...1.403.0
+[1.402.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.2...1.402.3
+[1.402.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.1...1.402.2
 [1.402.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.0...1.402.1
 [1.402.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.401.0...1.402.0
 [1.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.2...1.401.0
