@@ -28,7 +28,7 @@ class tx_dart_reduced_fare_eligible(Variable):
         # 2. Discount GoPass program (for assistance program recipients)
         # We combine them here since they provide identical benefits
         enrolled_eligible = person(
-            "tx_dart_reduced_ride_program_eligible", period
+            "tx_dart_reduced_fare_program_eligible", period
         )
 
         return (

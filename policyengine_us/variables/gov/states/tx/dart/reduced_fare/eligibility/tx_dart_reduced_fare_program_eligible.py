@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class tx_dart_reduced_ride_program_eligible(Variable):
+class tx_dart_reduced_fare_program_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for Dallas Area Rapid Transit (DART) Reduce Fare program due to qualifying program enrollment"
+    label = "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program due to qualifying program enrollment"
     definition_period = YEAR
     defined_for = StateCode.TX
     reference = "https://www.dart.org/fare/general-fares-and-overview/discount-gopass-tap-card"
