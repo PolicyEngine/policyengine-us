@@ -20,6 +20,7 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    needs: Test
     steps:
       - uses: actions/checkout@v4
         with:
