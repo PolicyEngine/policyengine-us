@@ -14,13 +14,20 @@ def create_fisc_act() -> Reform:
 
         def formula(person, period, parameters):
             # Calculate the base amount
+
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
+            weeks_pregnant = person("weeks_pregnant", period)
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
-            eligible_dependent = (age < p.child_age_limit) & is_dependent
-            return p.amount.base.calc(age) * eligible_dependent
+
+            # Child eligibility
+            eligible_child = (age < p.child_age_limit) & is_dependent
+            child_credit = p.amount.base.calc(age) * eligible_child
+            eligible_pregnancy = weeks_pregnant >= p.pregnancy_weeks_limit
+            pregnancy_credit = eligible_pregnancy * p.amount.pregnancy
+            return child_credit + pregnancy_credit
 
     class family_income_supplement_credit(Variable):
         value_type = float
@@ -38,6 +45,7 @@ def create_fisc_act() -> Reform:
             # A joint bonus is applied to the base amount
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
+
             base_amount = add(
                 tax_unit,
                 period,
