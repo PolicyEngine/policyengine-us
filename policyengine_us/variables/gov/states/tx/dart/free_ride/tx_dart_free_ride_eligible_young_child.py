@@ -15,9 +15,5 @@ class tx_dart_free_ride_eligible_young_child(Variable):
         p = parameters(period).gov.states.tx.dart.reduced_fare.age_threshold
         age = person("age", period)
         # Under 5 years old - children under 5 ride free
-        # The child parameter scale returns false for ages < 5 (meaning free ride)
-        # and true for ages 5-14 (meaning reduced fare)
-        # The calc returns false for both under 5 AND 15+, so we need to check age is in child range
-        # Get the upper age limit from the last threshold in the parameter
-        max_child_age = p.child.thresholds[-1]
-        return (age < max_child_age) & ~p.child.calc(age)
+        # The first threshold in the child parameter is 5 (the age when reduced fare starts)
+        return age < p.child.thresholds[1]
