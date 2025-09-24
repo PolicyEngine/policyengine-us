@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - Don't publish to PyPI on push without passing tests.
