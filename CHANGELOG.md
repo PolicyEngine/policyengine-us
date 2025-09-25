@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.405.0] - 2025-09-25 20:33:35
+
+### Fixed
+
+- Adjust the `state_agi` variable to reflect states that adopt federal AGI.
+
 ## [1.404.1] - 2025-09-25 20:18:49
 
 ### Fixed
@@ -13073,6 +13079,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.405.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.1...1.405.0
 [1.404.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.0...1.404.1
 [1.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.2...1.404.0
 [1.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.1...1.403.2
