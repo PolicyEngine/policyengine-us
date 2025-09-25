@@ -1,0 +1,48 @@
+description: Texas applies this monthly copayment amount for each additional child in care based on household income as a percentage of State Median Income under the Child Care Services program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS monthly copayment for each additional child
+  reference:
+    - title: Child Care Assistance Information for Parents # Panhandle
+      href: https://wspanhandle.com/child-care/for-parents/
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 15
+  - threshold:
+      2024-10-01: 0.20
+    amount:
+      2024-10-01: 30
+  - threshold:
+      2024-10-01: 0.30
+    amount:
+      2024-10-01: 45
+  - threshold:
+      2024-10-01: 0.40
+    amount:
+      2024-10-01: 60
+  - threshold:
+      2024-10-01: 0.50
+    amount:
+      2024-10-01: 70
+  - threshold:
+      2024-10-01: 0.60
+    amount:
+      2024-10-01: 80
+  - threshold:
+      2024-10-01: 0.70
+    amount:
+      2024-10-01: 85
+  - threshold:
+      2024-10-01: 0.75
+    amount:
+      2024-10-01: 90
+  - threshold:
+      2024-10-01: 0.80
+    amount:
+      2024-10-01: 100

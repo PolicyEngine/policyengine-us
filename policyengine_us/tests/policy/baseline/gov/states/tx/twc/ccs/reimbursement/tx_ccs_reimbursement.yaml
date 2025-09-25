@@ -1,0 +1,78 @@
+- name: LCCC REG Infant Full Time reimbursement
+  period: 2025-01
+  input:
+    age: 0  # Infant
+    is_disabled: false
+    state_code: TX
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_child_age_category: INFANT
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+  output:
+    tx_ccs_eligible_child: true
+    # Rate is 46.80 per day * 10 days = 468.00
+    tx_ccs_reimbursement: 468.00
+
+- name: Relative None Toddler Part Time reimbursement
+  period: 2025-01
+  input:
+    age: 2  # Toddler
+    is_disabled: false
+    state_code: TX
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: NONE
+    tx_ccs_child_age_category: TODDLER
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+  output:
+    tx_ccs_eligible_child: true
+    # Rate is 11.00 per day * 10 days = 110.00
+    tx_ccs_reimbursement: 110.00
+
+- name: LCCH TRS4 Preschool Full Time reimbursement
+  period: 2025-01
+  input:
+    age: 4  # Preschool
+    is_disabled: false
+    state_code: TX
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: TRS4
+    tx_ccs_child_age_category: PRESCHOOL
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+  output:
+    tx_ccs_eligible_child: true
+    # Rate is 42.63 per day * 10 days = 426.30
+    tx_ccs_reimbursement: 426.30
+
+- name: RCCH TRS2 School Age Blended reimbursement
+  period: 2025-01
+  input:
+    age: 8  # School age
+    is_disabled: false
+    state_code: TX
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_child_age_category: SCHOOL_AGE
+    tx_ccs_care_schedule: BLENDED
+    childcare_attending_days_per_month: 10
+  output:
+    tx_ccs_eligible_child: true
+    # Rate is 30.69 per day * 10 days = 306.90
+    tx_ccs_reimbursement: 306.90
+
+- name: Ineligible child (age 14) gets no reimbursement
+  period: 2025-01
+  input:
+    age: 14  # Too old
+    is_disabled: false
+    state_code: TX
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_child_age_category: SCHOOL_AGE
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+  output:
+    tx_ccs_eligible_child: false
+    tx_ccs_reimbursement: 0
