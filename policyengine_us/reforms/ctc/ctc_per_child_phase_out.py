@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 import numpy as np
 
+
 def create_ctc_per_child_phase_out() -> Reform:
     class ctc_phase_out(Variable):
         value_type = float
@@ -26,12 +27,13 @@ def create_ctc_per_child_phase_out() -> Reform:
             increments = np.ceil(excess / p.increment)
             reduction_amount = p.amount * qualifying_children
             return increments * reduction_amount
-    
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_phase_out)
 
     return reform
+
 
 def create_ctc_per_child_phase_out_reform(
     parameters, period, bypass: bool = False
@@ -45,6 +47,7 @@ def create_ctc_per_child_phase_out_reform(
         return create_ctc_per_child_phase_out()
     else:
         return None
+
 
 ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
     None, None, bypass=True
