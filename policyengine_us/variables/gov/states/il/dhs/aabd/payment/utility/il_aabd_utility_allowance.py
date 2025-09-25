@@ -18,21 +18,22 @@ class il_aabd_utility_allowance(Variable):
         p = parameters(period).gov.states.il.dhs.aabd.payment
         size = spm_unit("spm_unit_size", period)
         capped_size = clip(size, 1, 19)
-        area = spm_unit.household("il_aabd_area", period)
-        # Households may have more than one applicable utility allowance type
-        total_allowance = sum(
-            [
-                where(
-                    spm_unit(expense, period) > 0,
-                    min(
-                        spm_unit(expense, period),
-                        p.utility[expense.replace("_expense", "")][area][
-                            capped_size
-                        ],
-                    ),
-                    0,
-                )
-                for expense in p.utility.utility_types
-            ]
-        )
+        area_str = spm_unit.household("il_aabd_area", period).decode_to_str()
+
+        # Sum allowances for all applicable utility types
+        total_allowance = 0
+        for expense in p.utility.utility_types:
+            expense_amount = spm_unit(expense, period)
+            utility_type = expense.replace("_expense", "")
+
+            # Access parameter using decoded string
+            allowance_amount = p.utility[utility_type][area_str][capped_size]
+
+            utility_allowance = where(
+                expense_amount > 0,
+                min_(expense_amount, allowance_amount),
+                0,
+            )
+            total_allowance += utility_allowance
+
         return total_allowance
