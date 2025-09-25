@@ -7,3 +7,6 @@ from .ctc_additional_bracket import (
 from .ctc_per_child_phase_out import (
     create_ctc_per_child_phase_out_reform,
 )
+from .ctc_per_child_phase_in import (
+    create_ctc_per_child_phase_in_reform,
+)

@@ -89,7 +89,6 @@
 - name: Counterfactual - same scenario without reform active
   period: 2024
   input:
-    gov.contrib.ctc.per_child_phase_out.in_effect: false
     adjusted_gross_income: 201_000
     ctc_phase_out_threshold: 200_000
     ctc_qualifying_children: 3
