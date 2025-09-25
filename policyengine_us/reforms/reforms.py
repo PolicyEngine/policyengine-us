@@ -105,6 +105,9 @@ from .crfb import (
     create_non_refundable_ss_credit_reform,
     create_senior_deduction_extension_reform,
 )
+from .ctc import (
+    create_ctc_per_child_phase_out_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -235,6 +238,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
+    ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -282,6 +288,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         mi_surtax,
         additional_tax_bracket,
         american_worker_rebate_act,
+        ctc_per_child_phase_out,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
