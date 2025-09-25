@@ -11099,3 +11099,10 @@
     - Montana married filing jointly subtractions allocation issue.
     - Rename mt_agi to mt_agi_indiv.
   date: 2025-09-24 15:23:57
+- bump: minor
+  changes:
+    added:
+    - Texas Dallas Area Rapid Transit (DART) reduced fare program.
+    fixed:
+    - Don't publish to PyPI on push without passing tests.
+  date: 2025-09-25 08:20:22
