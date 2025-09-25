@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.404.1] - 2025-09-25 20:18:49
+
+### Fixed
+
+- Improved test batching to avoid memory issues and reduce test duplication.
+- Split baseline tests into separate batches for household and contrib folders.
+
+## [1.404.0] - 2025-09-25 08:20:22
+
+### Added
+
+- Texas Dallas Area Rapid Transit (DART) reduced fare program.
+
+### Fixed
+
+- Don't publish to PyPI on push without passing tests.
+
+## [1.403.2] - 2025-09-24 15:23:57
+
+### Fixed
+
+- Montana married filing jointly subtractions allocation issue.
+- Rename mt_agi to mt_agi_indiv.
+
 ## [1.403.1] - 2025-09-24 00:54:25
 
 ### Fixed
@@ -13049,6 +13073,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.404.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.0...1.404.1
+[1.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.2...1.404.0
+[1.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.1...1.403.2
 [1.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.0...1.403.1
 [1.403.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.3...1.403.0
 [1.402.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.2...1.402.3
