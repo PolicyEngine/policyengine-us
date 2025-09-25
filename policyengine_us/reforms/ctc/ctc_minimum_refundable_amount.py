@@ -54,7 +54,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
                 return min_(reduced_max_amount, total_ctc)
 
             maximum_refundable_ctc = min_(total_amount, total_ctc)
-
+            print(maximum_refundable_ctc)
             phase_in = tax_unit("ctc_phase_in", period)
             limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
@@ -63,7 +63,8 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             )
             amount_ctc_would_increase = (
                 ctc_capped_by_increased_tax - ctc_capped_by_tax
-            )
+            ) + minimum_amount
+            print(amount_ctc_would_increase)
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
     class reform(Reform):
