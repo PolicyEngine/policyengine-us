@@ -14,7 +14,7 @@ class mt_pre_dependent_exemption_taxable_income_indiv(Variable):
     )
 
     def formula(person, period, parameters):
-        mt_agi = person("mt_agi", period)
+        mt_agi = person("mt_agi_indiv", period)
         exemptions = person("mt_personal_exemptions_indiv", period)
         deductions = person("mt_deductions_indiv", period)
         return max_(mt_agi - exemptions - deductions, 0)

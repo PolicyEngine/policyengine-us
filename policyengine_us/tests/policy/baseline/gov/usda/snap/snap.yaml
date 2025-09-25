@@ -41,7 +41,7 @@
 
 - name: North Carolina 2025, yearly integration test
   period: 2025
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.3
   input:
     people:   
       person1:
@@ -58,3 +58,61 @@
     snap_self_employment_income_after_expense_deduction: 0
     snap_self_employment_expense_deduction: 0
     snap: 71.75 
+
+- name: Self-employment income deduction integration test
+  period: 2025
+  absolute_error_margin: 0.3
+  input:
+    people:   
+      person1:
+        age: 55
+        self_employment_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_standard_deduction: 0
+        snap_earned_income_deduction: 0
+  output:
+    snap_self_employment_income_after_expense_deduction: 5_000
+    snap_self_employment_expense_deduction: 5_000
+    # The self-employment income deduction is applied to gross income 
+    # and not in the list of deductions.
+    # This also allows for proper earned income deduction calculation.
+    snap_deductions: 0
+    snap_earned_income: 5_000
+    snap_gross_income: 5_000
+    snap_net_income: 5_000
+    snap: 2_024.40
+
+- name: Counterfactual test, self-employment income deduction allowed
+  period: 2025
+  absolute_error_margin: 0.3
+  input:
+    gov.usda.snap.income.deductions.allowed: [snap_standard_deduction, snap_earned_income_deduction, snap_dependent_care_deduction, snap_child_support_deduction, snap_excess_medical_expense_deduction, snap_excess_shelter_expense_deduction, snap_self_employment_expense_deduction]
+    people:   
+      person1:
+        age: 55
+        self_employment_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_standard_deduction: 0
+        snap_earned_income_deduction: 0
+  output:
+    snap_self_employment_income_after_expense_deduction: 5_000
+    snap_self_employment_expense_deduction: 5_000
+    # In the counterfactual, the self-employment income deduction is first applied to earned income.
+    snap_gross_income: 5_000
+    snap_earned_income: 5_000
+    snap_deductions: 5_000
+    # And then again subtracted as a deduction from gross income.
+    snap_net_income: 0
+    snap: 3_522

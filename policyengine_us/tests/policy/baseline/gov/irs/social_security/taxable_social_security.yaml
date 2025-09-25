@@ -1,0 +1,71 @@
+- name: Test SS taxation with zero values
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        interest_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # No income = no taxable SS
+    tax_unit_taxable_social_security: 0
+
+- name: Test flat 85% SS taxation with minimal parametric reform
+  period: 2024
+  input:
+    # These 3 parameter changes achieve flat 85% taxation
+    gov.irs.social_security.taxability.combined_income_ss_fraction: 1.0
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE: 0
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE: 0
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        interest_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # With thresholds at 0 and fraction at 1.0:
+    # Combined income = 0 + 1.0 * 20k = 20k
+    # Excess over base (0) = 20k
+    # Excess over adjusted (0) = 20k
+    # Since both thresholds are 0, we're in tier 2
+    # tier2_taxable = min(0.85 * 20k + 0, 0.85 * 20k) = 17_000
+    tax_unit_taxable_social_security: 17_000
+
+- name: Test flat 85% taxation with higher benefits
+  period: 2024
+  input:
+    gov.irs.social_security.taxability.combined_income_ss_fraction: 1.0
+    gov.irs.social_security.taxability.threshold.base.main.SINGLE: 0
+    gov.irs.social_security.taxability.threshold.adjusted_base.main.SINGLE: 0
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        interest_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 85% of 40_000 = 34_000
+    tax_unit_taxable_social_security: 34_000

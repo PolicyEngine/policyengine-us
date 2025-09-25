@@ -34,8 +34,6 @@ class ia_standard_deduction_indiv(Variable):
                 fsvals.SURVIVING_SPOUSE,
             ],
         )
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
         p = parameters(period).gov.states.ia.tax.income.deductions.standard
 
         if p.applies_federal:

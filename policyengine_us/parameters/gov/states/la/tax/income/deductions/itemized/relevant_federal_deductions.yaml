@@ -1,7 +1,7 @@
 description: Louisiana subtracts from adjusted gross income the excess of these relevant federal deductions over the standard deduction, based on year.
 values:
   2021-01-01: 
-    - taxable_income_deductions_if_itemizing
+    - itemized_taxable_income_deductions
   2022-01-01: 
     - medical_expense_deduction
 

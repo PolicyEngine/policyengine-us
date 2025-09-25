@@ -1,0 +1,141 @@
+- name: Child under 5 gets free ride benefit (full monthly pass value)
+  period: 2025
+  input:
+    state_code: TX
+    age: 3
+  output:
+    tx_dart_benefit_person: 1_512  # $126 * 12 months
+
+- name: Senior gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 68
+  output:
+    tx_dart_benefit_person: 756  # ($126 - $63) * 12 months
+
+- name: Child age 10 gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 10
+  output:
+    tx_dart_benefit_person: 756
+
+- name: Disabled person gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 45
+    is_disabled: true
+  output:
+    tx_dart_benefit_person: 756
+
+- name: Veteran gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_veteran: true
+  output:
+    tx_dart_benefit_person: 756
+
+- name: Student gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 20
+    is_full_time_student: true
+  output:
+    tx_dart_benefit_person: 756
+
+- name: SNAP recipient gets reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 40
+    snap: 300
+  output:
+    tx_dart_benefit_person: 756
+
+- name: Non-eligible adult gets no benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_disabled: false
+    is_veteran: false
+    is_full_time_student: false
+    snap: 0
+    medicaid: 0
+    chip: 0
+    tanf: 0
+    wic: 0
+    is_medicare_eligible: false
+  output:
+    tx_dart_benefit_person: 0
+
+- name: Family with toddler and senior
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      parent2:
+        age: 33
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      toddler:
+        age: 2
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      senior:
+        age: 70
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, toddler, senior]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, toddler, senior]
+        state_code: TX
+  output:
+    tx_dart_benefit_person: [0, 0, 1_512, 756]
+
+- name: Family on TANF with child under 5
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      older_child:
+        age: 8
+      toddler:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, older_child, toddler]
+        tanf: 400
+    households:
+      household:
+        members: [parent, older_child, toddler]
+        state_code: TX
+  output:
+    tx_dart_benefit_person: [756, 756, 1_512]  # Parents get reduced fare, toddler gets free ride (higher benefit)
