@@ -34,23 +34,16 @@ class state_agi(Variable):
 
         # Special handling for states that have separate individual and joint AGI calculations
         # Arkansas and Delaware use different AGI calculations based on filing status
-        STATES_WITH_INDIVIDUAL_JOINT_AGI = {
-            "AR": {
-                "indiv": "ar_agi_indiv",
-                "joint": "ar_agi_joint",
-            },
-            "DE": {
-                "indiv": "de_agi_indiv",
-                "joint": "de_agi_joint",
-            },
-        }
+        STATES_WITH_INDIVIDUAL_JOINT_AGI = ["AR", "DE"]
 
         # Calculate maximum AGI for states with individual/joint distinction
         # This ensures we use the higher of the two calculations
-        for state, variables in STATES_WITH_INDIVIDUAL_JOINT_AGI.items():
+        for state in STATES_WITH_INDIVIDUAL_JOINT_AGI:
             is_state = state_code == state
-            indiv_agi = add(tax_unit, period, [variables["indiv"]])
-            joint_agi = add(tax_unit, period, [variables["joint"]])
+            indiv_var = f"{state.lower()}_agi_indiv"
+            joint_var = f"{state.lower()}_agi_joint"
+            indiv_agi = add(tax_unit, period, [indiv_var])
+            joint_agi = add(tax_unit, period, [joint_var])
             max_agi = max_(indiv_agi, joint_agi)
             state_specific_base = where(is_state, max_agi, state_specific_base)
 
