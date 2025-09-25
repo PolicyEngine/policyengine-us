@@ -1,0 +1,71 @@
+- name: Non-joint tax unit receives single amount
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_is_joint: false
+  output:
+    co_tabor_cash_back: 750
+
+- name: Joint tax unit receives joint amount
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_is_joint: true
+  output:
+    co_tabor_cash_back: 1_500
+
+- name: Single filer receives single amount
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: SINGLE
+  output:
+    co_tabor_cash_back: 750
+
+- name: Joint filer receives joint amount
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: JOINT
+  output:
+    co_tabor_cash_back: 1_500
+
+- name: Married filing separately receives single amount
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+  output:
+    co_tabor_cash_back: 750
+
+- name: No cash back outside Colorado - non-joint
+  period: 2021
+  input:
+    state_code: CA
+    tax_unit_is_joint: false
+  output:
+    co_tabor_cash_back: 0
+
+- name: No cash back outside Colorado - joint
+  period: 2021
+  input:
+    state_code: NY
+    tax_unit_is_joint: true
+  output:
+    co_tabor_cash_back: 0
+
+- name: Head of household receives single amount
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    co_tabor_cash_back: 750
+
+- name: Surviving spouse receives single amount
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: SURVIVING_SPOUSE
+  output:
+    co_tabor_cash_back: 750

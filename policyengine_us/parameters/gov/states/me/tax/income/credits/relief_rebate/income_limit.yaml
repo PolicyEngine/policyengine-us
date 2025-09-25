@@ -1,0 +1,21 @@
+description: Maine provides a relief rebate for filers with adjusted gross income below this threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine Relief Rebate income limit
+  reference:
+    - title: State of Maine, Office of Governor Mills, Relief Checks
+      href: https://www.maine.gov/governor/mills/relief-checks
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2021-01-01: 100_000
+JOINT:
+  2021-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 150_000
+SURVIVING_SPOUSE:
+  2021-01-01: 100_000
+SEPARATE:
+  2021-01-01: 100_000

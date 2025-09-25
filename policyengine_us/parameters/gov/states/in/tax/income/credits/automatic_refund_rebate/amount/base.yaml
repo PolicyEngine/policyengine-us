@@ -1,0 +1,12 @@
+description: Indiana provides a base automatic refund rebate of this amount.
+values:
+  2020-01-01: 125
+metadata:
+  unit: currency-USD
+  period: year
+  label: Indiana base automatic refund rebate amount
+  reference:
+    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-2
+    # The actual rebate amount is based on the excess reserves and the number of eligible taxpayers
+    # https://www.in.gov/dor/files/ib110.pdf
+      href: https://law.justia.com/codes/indiana/2022/title-4/article-10/chapter-22/section-4-10-22-2/
