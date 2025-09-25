@@ -1,0 +1,10 @@
+- name: Adjusted gross income below the threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 0
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 0
