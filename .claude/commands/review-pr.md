@@ -120,12 +120,20 @@ YOU MUST INVOKE THESE AGENTS - DO NOT FIX DIRECTLY:
 
 3. Then invoke rules-engineer (REQUIRED for code changes):
    "Refactor all variables to use the new parameters created by parameter-architect.
-    Fix all hard-coded values in: [list files]"
+    Fix all hard-coded values in: [list files]
+    CRITICAL: Do NOT introduce any new hard-coded numeric values - all values must come from parameters"
 
-4. Then invoke reference-validator:
+4. **CRITICAL RE-VALIDATION STEP**:
+   Invoke implementation-validator:
+   "Re-validate all files modified by rules-engineer for any new hard-coded values or issues.
+    Check specifically for numeric literals that should be parameters."
+
+   If validation fails: Return to step 3 to fix issues before proceeding.
+
+5. Then invoke reference-validator:
    "Add proper references to all new parameters created"
 
-5. ONLY AFTER all agents complete: Commit changes
+6. ONLY AFTER all validation passes: Commit changes
 ```
 
 ### Step 2: Add Missing Tests (MANDATORY)
@@ -137,26 +145,35 @@ REQUIRED - Must generate tests even if none were failing:
     Test edge cases for: [list all new parameters]"
 
 2. Invoke test-creator:
-   "Create integration tests for the refactored Idaho LIHEAP implementation.
+   "Create integration tests for the refactored implementation.
     Include tests for all new parameter files created."
 
-3. VERIFY tests pass before committing
-4. Commit test additions
+3. **VALIDATION**: Run tests locally to verify they pass
+   ```bash
+   make test
+   ```
+
+4. Commit test additions only if all tests pass
 ```
 
 ### Step 3: Enhance Documentation
 1. **documentation-enricher**: Add examples and references to updated code
-2. Commit documentation improvements
+2. **VALIDATION**: Check no code changes introduced (documentation only)
+3. Commit documentation improvements
 
 ### Step 4: Optimize Performance (if needed)
 1. **performance-optimizer**: Vectorize and optimize calculations
-2. Run tests to ensure no regressions
-3. Commit optimizations
+2. **CRITICAL RE-VALIDATION**:
+   - Re-run implementation-validator on optimized code
+   - Ensure no hard-coded values introduced during optimization
+   - Run all tests to ensure no regressions
+3. Commit optimizations only if validation passes
 
 ### Step 5: Validate Integrations
 1. **cross-program-validator**: Check benefit interactions
 2. Fix any cliff effects or integration issues found
-3. Commit integration fixes
+3. **RE-VALIDATION**: Run implementation-validator on any fixes
+4. Commit integration fixes only if validation passes
 
 ## Phase 4: Apply Fixes
 For each issue identified:
