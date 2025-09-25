@@ -28,22 +28,22 @@
   output:
     mt_tanf_meets_work_requirements: true
 
-- name: Case 2, Two-Parent Household, SSI member is exempt.
+- name: Case 2, Two-Parent Household, eligible children are exempt.
   period: 2023-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
-        age: 58
+        age: 30
         is_tax_unit_head_or_spouse: true
         weekly_hours_worked: 35
       person2:
-        age: 61
+        age: 30
         is_tax_unit_head_or_spouse: true
-        ssi: 9_000
+        weekly_hours_worked: 35
       person3: 
         age: 0.5
-        is_tax_unit_dependent: true
+        mt_tanf_eligible_child: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]

@@ -16,18 +16,40 @@ class mt_tanf_is_working(Variable):
         ).gov.states.mt.dhs.tanf.work_requirement.required_hours
         weekly_hours_worked = person("weekly_hours_worked", period.this_year)
         age = person("monthly_age", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+
         # For single parent with a child under 6, work 27 hours pr week
         # For single parent with a child at 6 or older, work 33 hours pr week
         spm_unit = person.spm_unit
         is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
         youngest_age = spm_unit.sum(is_youngest_member * age)
+        is_incapable_of_self_care = person("is_incapable_of_self_care", period)
+
         single_parent_requirement = (
-            weekly_hours_worked >= p.single_parent.amount.calc(youngest_age)
+            sum(
+                where(
+                    (is_head_or_spouse & ~is_incapable_of_self_care),
+                    weekly_hours_worked
+                    < p.single_parent.amount.calc(youngest_age),
+                    0,
+                )
+            )
+            == 0
         )
-        # For two-parent household, all work-eligible adults must individually meet the 33-hour/week requirement
+
+        # For two-parent household, work-eligible heads of the household must individually meet the 33-hour/week requirement
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        two_parent_requirement = weekly_hours_worked >= p.two_parents.amount
+        two_parent_requirement = (
+            sum(
+                where(
+                    is_head_or_spouse,
+                    weekly_hours_worked < p.two_parents.amount,
+                    0,
+                )
+            )
+            == 0
+        )
 
         # Treat households with an incapacitated parent as a single parent household
         is_two_parent_unit = (spm_unit.sum(is_head_or_spouse) > 1) & (

@@ -15,9 +15,7 @@ class mt_tanf_meets_work_requirements(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         is_working = person("mt_tanf_is_working", period)
-        work_requirement_exempt = person(
-            "mt_tanf_is_eligible_child", period
-        )
-
+        print("is_working", is_working)
+        work_requirement_exempt = person("mt_tanf_eligible_child", period)
         meets_work_requirements = is_working | work_requirement_exempt
         return spm_unit.sum(~meets_work_requirements) == 0

@@ -14,5 +14,5 @@ class mt_tanf_basic_eligibility_requirements(Variable):
             add(spm_unit, period, ["mt_tanf_demographic_eligible_person"]) > 0
         )
         income_eligible = spm_unit("mt_tanf_income_eligible", period)
-        # resources_eligible = spm_unit("mt_tanf_resources_eligible", period)
-        return demographic_eligible & income_eligible  # & resources_eligible
+        resources_eligible = spm_unit("mt_tanf_resources_eligible", period)
+        return demographic_eligible & income_eligible & resources_eligible
