@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+      - Improved test batching to avoid memory issues and reduce test duplication.
+      - Split baseline tests into separate batches for household and contrib folders.
