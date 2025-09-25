@@ -11106,3 +11106,9 @@
     fixed:
     - Don't publish to PyPI on push without passing tests.
   date: 2025-09-25 08:20:22
+- bump: patch
+  changes:
+    fixed:
+    - Improved test batching to avoid memory issues and reduce test duplication.
+    - Split baseline tests into separate batches for household and contrib folders.
+  date: 2025-09-25 20:18:49
