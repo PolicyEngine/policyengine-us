@@ -245,8 +245,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(
         parameters, period
     )
-    ctc_minimum_refundable_amount = create_ctc_minimum_refundable_amount_reform(
-        parameters, period
+    ctc_minimum_refundable_amount = (
+        create_ctc_minimum_refundable_amount_reform(parameters, period)
     )
 
     reforms = [

@@ -23,7 +23,9 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         entity = TaxUnit
         label = "refundable CTC"
         unit = USD
-        documentation = "The portion of the Child Tax Credit that is refundable."
+        documentation = (
+            "The portion of the Child Tax Credit that is refundable."
+        )
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
@@ -46,17 +48,20 @@ def create_ctc_minimum_refundable_amount() -> Reform:
                 return min_(reduced_max_amount, total_ctc)
 
             maximum_refundable_ctc = min_(maximum_amount, total_ctc)
-            minimum_refundable_ctc = add(tax_unit, period, ["ctc_minimum_refundable_amount"])
+            minimum_refundable_ctc = add(
+                tax_unit, period, ["ctc_minimum_refundable_amount"]
+            )
             phase_in = tax_unit("ctc_phase_in", period)
             phase_in_with_minimum = max_(phase_in, minimum_refundable_ctc)
             limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-            ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in_with_minimum)
+            ctc_capped_by_increased_tax = min_(
+                total_ctc, limiting_tax + phase_in_with_minimum
+            )
             amount_ctc_would_increase = (
                 ctc_capped_by_increased_tax - ctc_capped_by_tax
             )
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-
 
     class reform(Reform):
         def apply(self):
