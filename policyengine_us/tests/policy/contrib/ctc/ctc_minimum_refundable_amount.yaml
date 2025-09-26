@@ -23,7 +23,7 @@
     ctc_minimum_refundable_amount: [0, 800]
     refundable_ctc: 800
 
-- name: Integration test - no earnings, minimum amount should apply
+- name: Integration test - CTC over phase-in
   period: 2024
   reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
   input:
@@ -34,7 +34,7 @@
       person1:
         age: 40
         is_tax_unit_head: true
-        employment_income: 100_000
+        employment_income: 30_000
       child1:
         age: 5
         ctc_qualifying_child: true
@@ -47,5 +47,7 @@
   output:
     ctc_refundable_maximum: 1_700
     ctc: 2_000
+    ctc_phase_out: 0
     ctc_minimum_refundable_amount: [0, 800]
-    refundable_ctc: 800
+    ctc_phase_in: 4_125
+    refundable_ctc: 1_190
