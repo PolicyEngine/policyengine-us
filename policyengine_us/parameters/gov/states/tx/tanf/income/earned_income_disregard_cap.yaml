@@ -1,0 +1,10 @@
+description: Texas TANF earned income disregard monthly cap
+metadata:
+  label: Texas TANF earned income disregard cap
+  unit: currency-USD
+  period: month
+  reference:
+    - title: Texas Works Handbook A-1340, Income Limits
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+values:
+  2024-01-01: 1_400  # Cap of $1,400 per month
