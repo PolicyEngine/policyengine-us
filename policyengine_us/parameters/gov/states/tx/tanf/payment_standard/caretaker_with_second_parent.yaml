@@ -1,0 +1,72 @@
+description: Texas TANF maximum grant for caretaker cases with second parent
+metadata:
+  label: Texas TANF caretaker with second parent maximum grant
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  reference:
+    - title: Texas Works Handbook C-110, TANF
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+      description: Revision 24-4, effective October 1, 2024
+brackets:
+  - threshold:
+      2024-10-01: 2
+    amount:
+      2024-10-01: 245
+  - threshold:
+      2024-10-01: 3
+    amount:
+      2024-10-01: 405
+  - threshold:
+      2024-10-01: 4
+    amount:
+      2024-10-01: 455
+  - threshold:
+      2024-10-01: 5
+    amount:
+      2024-10-01: 528
+  - threshold:
+      2024-10-01: 6
+    amount:
+      2024-10-01: 578
+  - threshold:
+      2024-10-01: 7
+    amount:
+      2024-10-01: 649
+  - threshold:
+      2024-10-01: 8
+    amount:
+      2024-10-01: 699
+  - threshold:
+      2024-10-01: 9
+    amount:
+      2024-10-01: 785
+  - threshold:
+      2024-10-01: 10
+    amount:
+      2024-10-01: 835
+  - threshold:
+      2024-10-01: 11
+    amount:
+      2024-10-01: 920
+  - threshold:
+      2024-10-01: 12
+    amount:
+      2024-10-01: 972
+  - threshold:
+      2024-10-01: 13
+    amount:
+      2024-10-01: 1_056
+  - threshold:
+      2024-10-01: 14
+    amount:
+      2024-10-01: 1_107
+  - threshold:
+      2024-10-01: 15
+    amount:
+      2024-10-01: 1_192
+  - threshold:
+      2024-10-01: 16
+    amount:
+      2024-10-01: 1_277

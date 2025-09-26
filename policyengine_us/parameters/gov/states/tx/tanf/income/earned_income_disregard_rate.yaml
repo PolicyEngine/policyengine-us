@@ -1,0 +1,9 @@
+description: Texas TANF earned income disregard rate (90% for 4 months in 12-month period)
+metadata:
+  label: Texas TANF earned income disregard rate
+  unit: /1
+  reference:
+    - title: Texas Works Handbook A-1340, Income Limits
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+values:
+  2024-01-01: 0.9  # 90% of earnings disregarded

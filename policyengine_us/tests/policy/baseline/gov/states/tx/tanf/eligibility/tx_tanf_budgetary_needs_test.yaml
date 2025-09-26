@@ -1,0 +1,26 @@
+- name: Passes budgetary needs test with low income
+  period: 2025-01
+  input:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_countable_income: 100
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: true  # 369 - 100 = 269 > 0.50
+
+- name: Fails budgetary needs test with income just below 50 cents unmet need
+  period: 2025-01
+  input:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_countable_income: 368.60
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: false  # 369 - 368.60 = 0.40 < 0.50
+
+- name: Passes with exactly 50 cents unmet need
+  period: 2025-01
+  input:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_countable_income: 368.50
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: true  # 369 - 368.50 = 0.50

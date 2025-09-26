@@ -1,0 +1,66 @@
+- name: Single parent with one child eligible for Texas TANF
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_parent: true
+        employment_income: 0
+      child:
+        age: 10
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 9_600  # $800 × 12 months
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_tanf_eligible:
+      spm_unit: true
+
+- name: Household exceeding resource limit not eligible
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_parent: true
+        employment_income: 0
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 13_200  # $1,100 × 12 months
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_tanf_eligible:
+      spm_unit: false
+
+- name: Household with high income not eligible
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_parent: true
+        employment_income: 2_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 2_400  # $200 × 12 months
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_tanf_eligible:
+      spm_unit: false

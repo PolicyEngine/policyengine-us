@@ -1,0 +1,15 @@
+- name: Eligible for OTTANF receives $1000
+  period: 2025
+  input:
+    tx_ottanf_eligible: true
+    state_code: TX
+  output:
+    tx_ottanf: 1_000
+
+- name: Not eligible for OTTANF receives nothing
+  period: 2025
+  input:
+    tx_ottanf_eligible: false
+    state_code: TX
+  output:
+    tx_ottanf: 0

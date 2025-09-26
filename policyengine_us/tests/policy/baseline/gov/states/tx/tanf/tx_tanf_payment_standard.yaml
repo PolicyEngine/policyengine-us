@@ -1,0 +1,107 @@
+- name: Non-caretaker single person
+  period: 2025-01
+  input:
+    people:
+      person:
+        age: 30
+        is_parent: false
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type:
+      spm_unit: NON_CARETAKER
+    tx_tanf_assistance_unit_size:
+      spm_unit: 0
+    tx_tanf_payment_standard:
+      spm_unit: 0
+
+- name: Single parent with one child - caretaker without second parent
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_parent: true
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type:
+      spm_unit: CARETAKER_WITHOUT_SECOND_PARENT
+    tx_tanf_assistance_unit_size:
+      spm_unit: 2
+    tx_tanf_payment_standard:
+      spm_unit: 320
+
+- name: Two parents with one child - caretaker with second parent
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 30
+        is_parent: true
+      parent2:
+        age: 29
+        is_parent: true
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type:
+      spm_unit: CARETAKER_WITH_SECOND_PARENT
+    tx_tanf_assistance_unit_size:
+      spm_unit: 3
+    tx_tanf_payment_standard:
+      spm_unit: 405
+
+- name: Large family with two parents and five children
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        is_parent: true
+      parent2:
+        age: 34
+        is_parent: true
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type:
+      spm_unit: CARETAKER_WITH_SECOND_PARENT
+    tx_tanf_assistance_unit_size:
+      spm_unit: 7
+    tx_tanf_payment_standard:
+      spm_unit: 649
