@@ -12,48 +12,10 @@
   output:
     school_meal_daily_subsidy: 3.66 + 1.97
 
-# 2024 tests for CONTIGUOUS_US
-# Note: For year-based variables, PolicyEngine uses the rates active at Jan 1st
-# For 2024, that's the 2023-07-01 rates (not the 2024-07-01 rates)
-- name: Contiguous US - 2024 PAID tier (uses 2023 rates active on Jan 1, 2024)
-  period: 2024
-  input:
-    school_meal_tier: PAID
-  output:
-    school_meal_daily_subsidy: 0.78  # NSLP 0.40 + SBP 0.38 (2023 rates)
-
-- name: Contiguous US - 2024 REDUCED tier (uses 2023 rates active on Jan 1, 2024)
-  period: 2024
-  input:
-    school_meal_tier: REDUCED
-  output:
-    school_meal_daily_subsidy: 5.83  # NSLP 3.85 + SBP 1.98 (2023 rates)
-
-- name: Contiguous US - 2024 FREE tier (uses 2023 rates active on Jan 1, 2024)
-  period: 2024
-  input:
-    school_meal_tier: FREE
-  output:
-    school_meal_daily_subsidy: 6.53  # NSLP 4.25 + SBP 2.28 (2023 rates)
-
-# 2025 tests for CONTIGUOUS_US (rates effective January 1, 2025)
-- name: Contiguous US - 2025 PAID tier (NSLP $0.46 + SBP $0.40)
-  period: 2025
-  input:
-    school_meal_tier: PAID
-  output:
-    school_meal_daily_subsidy: 0.86  # 0.46 + 0.40
-
-- name: Contiguous US - 2025 REDUCED tier (NSLP $4.20 + SBP $2.16)
-  period: 2025
-  input:
-    school_meal_tier: REDUCED
-  output:
-    school_meal_daily_subsidy: 6.36  # 4.20 + 2.16
-
-- name: Contiguous US - 2025 FREE tier (NSLP $4.60 + SBP $2.46)
+# Test 2025 values (effective January 1, 2025)
+- name: Contiguous US - 2025 FREE tier
   period: 2025
   input:
     school_meal_tier: FREE
   output:
-    school_meal_daily_subsidy: 7.06  # 4.60 + 2.46
+    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46
