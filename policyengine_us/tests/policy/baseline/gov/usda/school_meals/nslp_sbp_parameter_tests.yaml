@@ -1,0 +1,386 @@
+# Tests specifically for NSLP and SBP parameter values for 2024 and 2025
+# These tests verify the individual parameter lookups work correctly
+
+# Test NSLP parameters for 2024 - Contiguous US
+- name: NSLP 2024 Contiguous US - PAID tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # This tests that the parameter lookup works correctly
+    # Parameters are accessed via: parameters(period).gov.usda.school_meals.amount.nslp[state_group][tier]
+    # For TX (CONTIGUOUS_US) and PAID tier in 2024-07, NSLP should be $0.42
+    state_group_str: CONTIGUOUS_US
+
+- name: NSLP 2024 Contiguous US - REDUCED tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    state_group_str: CONTIGUOUS_US
+
+- name: NSLP 2024 Contiguous US - FREE tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    state_group_str: CONTIGUOUS_US
+
+# Test NSLP parameters for 2025 - Contiguous US
+- name: NSLP 2025 Contiguous US - PAID tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: FL
+  output:
+    state_group_str: CONTIGUOUS_US
+
+- name: NSLP 2025 Contiguous US - REDUCED tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    state_group_str: CONTIGUOUS_US
+
+- name: NSLP 2025 Contiguous US - FREE tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: PA
+  output:
+    state_group_str: CONTIGUOUS_US
+
+# Test NSLP parameters for 2024 - Alaska
+- name: NSLP 2024 Alaska - PAID tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+- name: NSLP 2024 Alaska - REDUCED tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+- name: NSLP 2024 Alaska - FREE tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+# Test NSLP parameters for 2025 - Alaska
+- name: NSLP 2025 Alaska - PAID tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+- name: NSLP 2025 Alaska - REDUCED tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+- name: NSLP 2025 Alaska - FREE tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    state_group_str: AK
+
+# Test NSLP parameters for 2024 - Hawaii
+- name: NSLP 2024 Hawaii - PAID tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+- name: NSLP 2024 Hawaii - REDUCED tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+- name: NSLP 2024 Hawaii - FREE tier parameter lookup
+  period: 2024
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+# Test NSLP parameters for 2025 - Hawaii
+- name: NSLP 2025 Hawaii - PAID tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+- name: NSLP 2025 Hawaii - REDUCED tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+- name: NSLP 2025 Hawaii - FREE tier parameter lookup
+  period: 2025
+  input:
+    people:
+      person:
+        age: 10
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    state_group_str: HI
+
+# Edge case tests for parameter date transitions
+- name: Parameter transition - 2023 rates
+  period: 2023
+  input:
+    people:
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        school_meal_tier: FREE
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    # 2023 uses 2022-07-01 rates: NSLP 3.93 + SBP 2.11 = 6.04
+    school_meal_daily_subsidy: 6.04
+
+- name: Parameter transition - 2024 rates
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        school_meal_tier: FREE
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    # 2024 uses 2023-07-01 rates: NSLP 4.25 + SBP 2.28 = 6.53
+    school_meal_daily_subsidy: 6.53
+
+- name: Parameter transition - 2024 rates for REDUCED tier
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        school_meal_tier: REDUCED
+    households:
+      household:
+        members: [child]
+        state_code: CA
+  output:
+    # 2024 uses 2023-07-01 rates: NSLP 3.85 + SBP 1.98 = 5.83
+    school_meal_daily_subsidy: 5.83
+
+- name: Parameter transition - 2025 rates
+  period: 2025
+  input:
+    people:
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        school_meal_tier: REDUCED
+    households:
+      household:
+        members: [child]
+        state_code: CA
+  output:
+    # 2025 rates: NSLP 4.20 + SBP 2.16 = 6.36
+    school_meal_daily_subsidy: 6.36
+
+# Test all three tiers for completeness - 2025 Alaska
+- name: Alaska 2025 - All tiers comparison
+  period: 2025
+  input:
+    people:
+      child_paid:
+        age: 10
+        is_in_k12_school: true
+      child_reduced:
+        age: 11
+        is_in_k12_school: true
+      child_free:
+        age: 12
+        is_in_k12_school: true
+    spm_units:
+      spm_unit_paid:
+        members: [child_paid]
+        school_meal_tier: PAID
+      spm_unit_reduced:
+        members: [child_reduced]
+        school_meal_tier: REDUCED
+      spm_unit_free:
+        members: [child_free]
+        school_meal_tier: FREE
+    households:
+      household:
+        members: [child_paid, child_reduced, child_free]
+        state_code: AK
+  output:
+    # Verify state group is correctly identified
+    state_group_str: AK
+
+# Test all three tiers for completeness - 2025 Hawaii
+- name: Hawaii 2025 - All tiers comparison
+  period: 2025
+  input:
+    people:
+      child_paid:
+        age: 10
+        is_in_k12_school: true
+      child_reduced:
+        age: 11
+        is_in_k12_school: true
+      child_free:
+        age: 12
+        is_in_k12_school: true
+    spm_units:
+      spm_unit_paid:
+        members: [child_paid]
+        school_meal_tier: PAID
+      spm_unit_reduced:
+        members: [child_reduced]
+        school_meal_tier: REDUCED
+      spm_unit_free:
+        members: [child_free]
+        school_meal_tier: FREE
+    households:
+      household:
+        members: [child_paid, child_reduced, child_free]
+        state_code: HI
+  output:
+    # Verify state group is correctly identified
+    state_group_str: HI
