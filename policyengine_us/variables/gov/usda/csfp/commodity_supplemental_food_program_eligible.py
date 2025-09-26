@@ -19,5 +19,7 @@ class commodity_supplemental_food_program_eligible(Variable):
         tx_income_eligible = person("tx_dta_csfp_income_eligible", period)
         state_code = person.household("state_code", period)
         in_tx = state_code == StateCode.TX
-        income_eligible = where(in_tx, tx_income_eligible, federal_income_eligible)
+        income_eligible = where(
+            in_tx, tx_income_eligible, federal_income_eligible
+        )
         return age_eligible & income_eligible
