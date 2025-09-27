@@ -1,0 +1,20 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Houston area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Houston area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - AUSTIN_COUNTY_TX
+    - BRAZORIA_COUNTY_TX
+    - CHAMBERS_COUNTY_TX
+    - FORT_BEND_COUNTY_TX
+    - GALVESTON_COUNTY_TX
+    - HARRIS_COUNTY_TX
+    - LIBERTY_COUNTY_TX
+    - MONTGOMERY_COUNTY_TX
+    - WALLER_COUNTY_TX

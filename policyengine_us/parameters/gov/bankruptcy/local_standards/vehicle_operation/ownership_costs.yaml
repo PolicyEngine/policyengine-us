@@ -1,0 +1,16 @@
+description: The IRS limits the ownership costs to this amount, based on the number of owned vehicle, under the chapter 7 bankruptcy means test. 
+
+1:
+  2024-01-01: 619
+2:
+  2024-01-01: 1_238
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Chapter 7 Bankruptcy ownership costs limit
+  breakdown:
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation

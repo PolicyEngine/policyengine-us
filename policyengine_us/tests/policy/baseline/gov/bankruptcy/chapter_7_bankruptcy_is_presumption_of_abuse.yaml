@@ -1,0 +1,39 @@
+- name: Case 1, total_disposable_income less than 9075, no abuse.
+  period: 2024-01
+  input:
+    chapter_7_bankruptcy_adjusted_monthly_income: 2_000
+    chapter_7_bankruptcy_total_deductions: 1_900
+    chapter_7_bankruptcy_nonpriority_unsecured_debt: 0
+  output:
+    chapter_7_bankruptcy_is_presumption_of_abuse: false 
+    # (2000 - 1900)*60 = 6000 < 9075
+
+- name: Case 2, total_disposable_income higher than 15150, has abuse.
+  period: 2024-01
+  input:
+    chapter_7_bankruptcy_adjusted_monthly_income: 2_000
+    chapter_7_bankruptcy_total_deductions: 1_700
+    chapter_7_bankruptcy_nonpriority_unsecured_debt: 0
+  output:
+    chapter_7_bankruptcy_is_presumption_of_abuse: true
+    # (2000-1700)*60 = 18000 > 15150
+
+- name: Case 3, total_disposable_income in between, and enough to pay 25% of nonpriority unsecured debt.
+  period: 2024-01
+  input:
+    chapter_7_bankruptcy_adjusted_monthly_income: 2_000
+    chapter_7_bankruptcy_total_deductions: 1_750
+    chapter_7_bankruptcy_nonpriority_unsecured_debt: 1_000 
+  output:
+    chapter_7_bankruptcy_is_presumption_of_abuse: true
+    # (2000-1750)*60 = 15000 is higher than 1000*25% 
+
+- name: Case 4, total_disposable_income in between, and not enough to pay 25% of nonpriority unsecured debt.
+  period: 2024-01
+  input:
+    chapter_7_bankruptcy_adjusted_monthly_income: 2_000
+    chapter_7_bankruptcy_total_deductions: 1_750
+    chapter_7_bankruptcy_nonpriority_unsecured_debt: 61_000
+  output:
+    chapter_7_bankruptcy_is_presumption_of_abuse: false
+    # (2000-1750)*60 = 15000 is less than 61000*25% = 15250
