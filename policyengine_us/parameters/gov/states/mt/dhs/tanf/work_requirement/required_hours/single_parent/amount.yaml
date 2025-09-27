@@ -1,0 +1,20 @@
+description: Montana requires this amount of weekly working hours under the Temporary Assistance for Needy Families program, based on youngest child age.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: int
+  period: week
+  label: Montana TANF single parent weekly working hours
+  reference:
+    - title: TANF 705-1 Participation Hours # Single-Parent Household Work Activity Requirements
+      href: https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf
+
+brackets:
+  - threshold:
+      2023-06-01: 0
+    amount:
+      2023-06-01: 27
+  - threshold:
+      2023-06-01: 6
+    amount:
+      2023-06-01: 33
