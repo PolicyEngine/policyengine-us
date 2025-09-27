@@ -1,0 +1,19 @@
+description: Massachusetts considers these statuses as qualified immigrants for the Child Care Financial Assistance program.
+values:
+  1975-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - ASYLEE
+    - REFUGEE
+    - PAROLED_ONE_YEAR
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    
+
+metadata:
+  label: Massachusetts CCFA qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: Massachusetts CCFA Policy Manual
+      href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=111

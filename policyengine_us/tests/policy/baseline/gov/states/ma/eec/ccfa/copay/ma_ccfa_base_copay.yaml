@@ -1,0 +1,31 @@
+- name: Case 1, family of 2, $1700 income.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_700
+    state_code: MA
+  output:
+    ma_ccfa_base_copay: 0
+
+- name: Case 2, family of 2, $1800 income.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_800
+    state_code: MA
+  output:
+    ma_ccfa_base_copay: 3.88
+    # (1800 - 1703)*0.04
+
+- name: Case 3, family of 4, $3800 income.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 4
+    ma_ccfa_countable_income: 3_800
+    state_code: MA
+  output:
+    ma_ccfa_base_copay: 64.2
+    # (3800 - 2600)*0.0535
