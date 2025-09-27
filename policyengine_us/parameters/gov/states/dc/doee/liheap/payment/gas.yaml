@@ -1,6 +1,16 @@
 description: The District of Columbia provides up to this payment amount under the Low-Income Home Energy Assistance Program (LIHEAP) for filers ho heat primarily with gas.
 
-MULTI_FAMILY: 
+MULTI_FAMILY:
+  0:
+    1:
+      2023-10-01: 0
+    2:
+      2023-10-01: 0
+    3:
+      2023-10-01: 0
+    4:
+      2023-10-01: 0
+
   1:
     1: 
       2023-10-01: 1_045
@@ -101,7 +111,17 @@ MULTI_FAMILY:
     4: 
       2023-10-01: 675
 
-SINGLE_FAMILY: 
+SINGLE_FAMILY:
+  0:
+    1:
+      2023-10-01: 0
+    2:
+      2023-10-01: 0
+    3:
+      2023-10-01: 0
+    4:
+      2023-10-01: 0
+
   1:
     1: 
       2023-10-01: 1_277
@@ -207,9 +227,9 @@ metadata:
   period: year
   unit: currency-USD
   label: DC LIHEAP Gas payment
-  breakdown: 
+  breakdown:
   - dc_liheap_housing_type
-  - range(1,11) # income level
+  - range(0,11) # income level
   - range(1,5) # household size
   reference:
     - title: DOEE Regular Benefits Table for FY 2024
