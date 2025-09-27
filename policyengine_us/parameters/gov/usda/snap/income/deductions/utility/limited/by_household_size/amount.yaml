@@ -1,5 +1,7 @@
 description: States that define Supplemental Nutrition Assistance Program limited utility allowances by household size set these allowance values.
 NC:
+  0:
+    2023-10-01: 0
   1:
     2023-10-01: 371
     2024-10-01: 382
@@ -38,7 +40,7 @@ metadata:
   breakdown:
     # Add a more comprehensive breakdown criterion once more states are added  
     - [NC]
-    - range(1, 10)
+    - range(0, 11)
   reference:
     - title: SNAP Screener Compiled State SNAP Data
       href: https://www.snapscreener.com/data

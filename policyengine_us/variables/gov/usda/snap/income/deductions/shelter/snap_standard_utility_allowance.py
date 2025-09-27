@@ -14,9 +14,9 @@ class snap_standard_utility_allowance(Variable):
         allowance_type = spm_unit("snap_utility_allowance_type", period)
         allowance_types = allowance_type.possible_values
         region = spm_unit.household("snap_utility_region_str", period)
-        spm_size = spm_unit("spm_unit_size", period)
+        size = spm_unit("snap_unit_size", period)
         MAX_SPM_SIZE = 10
-        capped_size = min_(MAX_SPM_SIZE, spm_size)
+        capped_size = min_(MAX_SPM_SIZE, size)
         sua_household_size_dependent = spm_unit(
             "snap_standard_utility_allowance_by_household_size", period
         )
@@ -32,4 +32,5 @@ class snap_standard_utility_allowance(Variable):
             sua,
         )
 
+        # No proration needed - already using snap_unit_size which excludes ineligible members
         return where(allowance_type == allowance_types.SUA, sua, 0)

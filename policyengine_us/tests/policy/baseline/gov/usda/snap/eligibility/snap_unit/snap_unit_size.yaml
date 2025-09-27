@@ -1,13 +1,13 @@
-- name: Household with one ineligible studnet
+- name: Case 1, one ineligible person.
   period: 2022
   input:
     people: 
       person1:
-        is_snap_ineligible_student: false
+        is_snap_demographic_eligible_person: true
       person2:
-        is_snap_ineligible_student: false
+        is_snap_demographic_eligible_person: true
       person3:
-        is_snap_ineligible_student: true
+        is_snap_demographic_eligible_person: false
     spm_units:
       spm_unit1:
         members: [person1, person2, person3]
@@ -15,16 +15,16 @@
   output:
     snap_unit_size: 2
 
-- name: Everybody eligible
+- name: Case 2, all members eligible.
   period: 2022
   input:
     people: 
       person1:
-        is_snap_ineligible_student: false
+        is_snap_demographic_eligible_person: true
       person2:
-        is_snap_ineligible_student: false
+        is_snap_demographic_eligible_person: true
       person3:
-        is_snap_ineligible_student: false
+        is_snap_demographic_eligible_person: true
     spm_units:
       spm_unit1:
         members: [person1, person2, person3]
@@ -32,16 +32,16 @@
   output:
     snap_unit_size: 3
 
-- name: No eligible people
+- name: Case 3, no eligible people.
   period: 2022
   input:
     people: 
       person1:
-        is_snap_ineligible_student: true
+        is_snap_demographic_eligible_person: false
       person2:
-        is_snap_ineligible_student: true
+        is_snap_demographic_eligible_person: false
       person3:
-        is_snap_ineligible_student: true
+        is_snap_demographic_eligible_person: false
     spm_units:
       spm_unit1:
         members: [person1, person2, person3]
