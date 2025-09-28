@@ -26,7 +26,8 @@ class is_lifeline_income_eligible(Variable):
         tx_p = parameters(period).gov.states.tx.uct.lifeline
 
         # Use state-specific limit where applicable, otherwise federal (135%)
-        # Convert to float32 to match fpg_ratio dtype for consistent comparison
+        # Convert to float32 to match fpg_ratio dtype for comparison
+        # Without this, float32(1.35) > float64(1.35) due to precision differences
         fpg_limit = np.where(is_tx, tx_p.fpg_limit, p.fpg_limit).astype(
             np.float32
         )
