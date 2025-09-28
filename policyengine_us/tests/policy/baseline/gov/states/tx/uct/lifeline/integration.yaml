@@ -1,0 +1,251 @@
+- name: Texas Lifeline complete flow - low income eligible household
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 1.35  # Below 135% federal threshold and 150% Texas threshold
+        broadband_cost: 600  # $50/month
+        phone_cost: 360      # $30/month
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Income eligibility checks
+    is_lifeline_eligible: true         # Federal eligibility
+
+    # Total Lifeline benefit includes Texas supplement
+    # Base: $9.25/month, TX supplement: $3.50/month = $12.75/month
+    # Annual: $12.75 * 12 = $153
+    lifeline: 153
+
+- name: Texas household at exactly 150% FPG threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_870  # Exactly 150% of FPG for 1 person
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 1.50  # Exactly at Texas threshold
+        broadband_cost: 480  # $40/month
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true
+    lifeline: 153  # ($9.25 + $3.50) * 12
+
+- name: Texas household just above 150% FPG threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 22_000  # Just above 150% of FPG
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 1.51  # Above Texas threshold
+        broadband_cost: 480
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true          # Federal limit is 135%, Texas is 150%
+    lifeline: 153                       # Still gets benefit via federal eligibility
+
+- name: Texas household with SNAP - categorically eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # Above income limits
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # Receives SNAP
+        fcc_fpg_ratio: 2.0  # Above income thresholds
+        broadband_cost: 720  # $60/month
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true          # But categorically eligible via SNAP
+    lifeline: 153                       # Full benefit with supplement
+
+- name: Texas family of four below income threshold
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 25_000
+      parent2:
+        age: 33
+        employment_income: 10_000
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        fcc_fpg_ratio: 0.9  # Well below thresholds
+        broadband_cost: 600
+        phone_cost: 300
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true
+    lifeline: 153  # One benefit per SPM unit with TX supplement
+
+- name: Texas elderly person with SSI - categorically eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # Annual SSI
+    spm_units:
+      spm_unit:
+        members: [person1]
+        broadband_cost: 480
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true  # SSI makes them categorically eligible
+    lifeline: 153
+
+- name: Texas disabled person with Medicaid
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        medicaid: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        broadband_cost: 600
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true  # Medicaid makes them eligible
+    lifeline: 153
+
+- name: Texas rural tribal land household gets both supplements
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 1.2
+        broadband_cost: 1_200  # $100/month
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        is_rural: true
+        is_on_tribal_land: true
+  output:
+    is_lifeline_eligible: true
+    # Base: $9.25 + Rural Tribal: $25 + TX: $3.50 = $37.75/month
+    lifeline: 453  # $37.75 * 12
+
+- name: Texas household with costs below benefit cap
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 1.0
+        broadband_cost: 60  # Only $5/month
+        phone_cost: 36      # Only $3/month
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true
+    # Actual costs ($96) are less than max benefit ($153)
+    lifeline: 96  # Limited to actual costs
+
+- name: Texas household with zero telecom costs
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fcc_fpg_ratio: 0.7
+        broadband_cost: 0
+        phone_cost: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_lifeline_eligible: true
+    lifeline: 0  # No costs to offset
+
+
+- name: Two SPM units in Texas household - both eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+      person2:
+        age: 65
+        employment_income: 8_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        fcc_fpg_ratio: 0.8
+        broadband_cost: 300
+        phone_cost: 150
+      spm_unit2:
+        members: [person2]
+        fcc_fpg_ratio: 0.6
+        broadband_cost: 300
+        phone_cost: 150
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Each SPM unit is evaluated separately
+    is_lifeline_eligible: [true, true]
+    # Each could receive up to $153 (with TX supplement)
+    lifeline: [153, 153]

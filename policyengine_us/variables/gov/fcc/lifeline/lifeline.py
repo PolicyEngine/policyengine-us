@@ -37,8 +37,10 @@ class lifeline(Variable):
             base_amount
             + is_rural_tribal * p.fcc.lifeline.amount.rural_tribal_supplement
         )
-        tx_supplement = spm_unit("tx_lifeline_supplement", period)
-        max_amount = (max_monthly_amount + tx_supplement) * MONTHS_IN_YEAR
+        # Get TX supplement for the specific month (now properly defined as MONTH period)
+        tx_supplement = spm_unit("tx_lifeline_supplement", period.first_month)
+        max_monthly_amount = max_monthly_amount + tx_supplement
+        max_amount = max_monthly_amount * MONTHS_IN_YEAR
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
         )

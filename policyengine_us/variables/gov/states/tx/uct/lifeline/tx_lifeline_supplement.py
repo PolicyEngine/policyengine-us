@@ -6,10 +6,8 @@ class tx_lifeline_supplement(Variable):
     entity = SPMUnit
     label = "Texas Lifeline supplement amount"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.TX
-    reference = (
-        "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
-    )
+    reference = "https://www.law.cornell.edu/regulations/texas/16-Tex-Admin-Code-SS-26-412"
 
     adds = ["gov.states.tx.uct.lifeline.supplement"]
