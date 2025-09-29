@@ -11,7 +11,7 @@ class tx_ccs(Variable):
 
     def formula(spm_unit, period, parameters):
         copay = spm_unit("tx_ccs_copay", period)
-        maximum_payment = add(spm_unit, period, ["tx_ccs_reimbursement"])
+        maximum_payment = add(spm_unit, period, ["tx_ccs_payment_rate"])
         pre_subsidy_childcare_expense = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )

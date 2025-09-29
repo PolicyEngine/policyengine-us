@@ -7,8 +7,7 @@ class tx_ccs_eligible(Variable):
     label = "Texas CCS eligible"
     definition_period = MONTH
     reference = (
-        "http://txrules.elaws.us/rule/title40_chapter809",
-        "https://www.twc.texas.gov/programs/child-care",
+        "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
     )
     defined_for = StateCode.TX
 

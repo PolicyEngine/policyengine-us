@@ -6,7 +6,7 @@ class tx_ccs_eligible_child(Variable):
     entity = Person
     label = "Texas CCS eligible child"
     definition_period = MONTH
-    reference = "http://txrules.elaws.us/rule/title40_chapter809_sec.809.41"
+    reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
     defined_for = StateCode.TX
 
     def formula(person, period, parameters):
@@ -14,5 +14,9 @@ class tx_ccs_eligible_child(Variable):
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period)
         age_limit = where(is_disabled, p.disabled_child, p.child)
-
-        return age < age_limit
+        age_eligible = age < age_limit
+        is_dependent = person("is_tax_unit_dependent", period)
+        immigration_status_eligible = person(
+            "tx_ccs_immigration_status_eligible_person", period
+        )
+        return age_eligible & is_dependent & immigration_status_eligible

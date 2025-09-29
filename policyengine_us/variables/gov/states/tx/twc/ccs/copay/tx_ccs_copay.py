@@ -7,7 +7,7 @@ class tx_ccs_copay(Variable):
     unit = USD
     label = "Texas Child Care Services (CCS) copayment"
     definition_period = MONTH
-    reference = "https://www.twc.texas.gov/programs/child-care-services"
+    reference = "https://wspanhandle.com/child-care/for-parents/"
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
@@ -24,6 +24,7 @@ class tx_ccs_copay(Variable):
         )
 
         # Calculate copayment based on income bracket
+        # Use Panhandle Region's value
         first_child_fee = p.first_child_fee.calc(income_to_smi_ratio)
         additional_child_fee = p.additional_child_fee.calc(income_to_smi_ratio)
 

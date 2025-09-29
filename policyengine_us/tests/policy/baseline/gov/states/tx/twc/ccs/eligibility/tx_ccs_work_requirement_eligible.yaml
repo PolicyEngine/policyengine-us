@@ -83,3 +83,24 @@
         state_code: TX
   output:
     tx_ccs_work_requirement_eligible: false
+
+- name: Single parent working 0 hours, but in school, eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true

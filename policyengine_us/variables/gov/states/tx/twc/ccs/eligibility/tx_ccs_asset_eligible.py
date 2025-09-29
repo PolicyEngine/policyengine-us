@@ -6,7 +6,7 @@ class tx_ccs_asset_eligible(Variable):
     entity = SPMUnit
     label = "Texas CCS asset eligible"
     definition_period = MONTH
-    reference = "http://txrules.elaws.us/rule/title40_chapter809_sec.809.41"
+    reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):

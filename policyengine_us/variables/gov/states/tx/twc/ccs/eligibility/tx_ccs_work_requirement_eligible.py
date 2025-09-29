@@ -14,30 +14,24 @@ class tx_ccs_work_requirement_eligible(Variable):
 
         # Get work hours for tax unit heads and spouses in the SPM unit
         person = spm_unit.members
-        is_tax_unit_head_or_spouse = person(
-            "is_tax_unit_head_or_spouse", period
-        )
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         work_hours = person("weekly_hours_worked", period.this_year)
-        parent_work_hours = where(is_tax_unit_head_or_spouse, work_hours, 0)
-
-        # Count number of parents (tax unit heads and spouses)
-        num_parents = spm_unit.sum(is_tax_unit_head_or_spouse)
-
+        parent_work_hours = where(is_head_or_spouse, work_hours, 0)
         # Sum total work hours
         total_work_hours = spm_unit.sum(parent_work_hours)
-
         # Check requirements based on number of parents
-        single_parent = num_parents == 1
-        two_parent = num_parents >= 2
-
-        single_parent_eligible = single_parent & (
-            total_work_hours >= p.single_parent
+        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
+        single_parent_requirement = total_work_hours >= p.single_parent
+        two_parent_requirement = total_work_hours >= p.two_parent
+        is_working = where(
+            is_two_parent_unit,
+            two_parent_requirement,
+            single_parent_requirement,
         )
-        two_parent_eligible = two_parent & (total_work_hours >= p.two_parent)
+        # Enroll in education program satisfied work requirement
+        is_full_time_student = person("is_full_time_student", period)
 
-        # If no parents, not eligible
-        no_parents = num_parents == 0
-
-        return where(
-            no_parents, False, single_parent_eligible | two_parent_eligible
+        meets_work_requirements = (
+            is_working | is_full_time_student | ~is_head_or_spouse
         )
+        return spm_unit.sum(~meets_work_requirements) == 0

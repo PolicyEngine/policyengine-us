@@ -8,7 +8,7 @@
       child1:
         age: 3
         is_disabled: false
-        tx_ccs_reimbursement: 500  # Monthly reimbursement rate
+        tx_ccs_payment_rate: 500  # Monthly reimbursement rate
     spm_units:
       spm_unit:
         members: [parent1, child1]
@@ -33,11 +33,11 @@
       child1:
         age: 5
         is_disabled: false
-        tx_ccs_reimbursement: 600  # Monthly reimbursement for child1
+        tx_ccs_payment_rate: 600  # Monthly reimbursement for child1
       child2:
         age: 2
         is_disabled: false
-        tx_ccs_reimbursement: 700  # Monthly reimbursement for child2
+        tx_ccs_payment_rate: 700  # Monthly reimbursement for child2
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
@@ -62,15 +62,15 @@
       child1:
         age: 8
         is_disabled: false
-        tx_ccs_reimbursement: 400
+        tx_ccs_payment_rate: 400
       child2:
         age: 5
         is_disabled: false
-        tx_ccs_reimbursement: 450
+        tx_ccs_payment_rate: 450
       child3:
         age: 2
         is_disabled: false
-        tx_ccs_reimbursement: 500
+        tx_ccs_payment_rate: 500
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
@@ -93,7 +93,7 @@
       child1:
         age: 6
         is_disabled: false
-        tx_ccs_reimbursement: 200  # Low reimbursement rate
+        tx_ccs_payment_rate: 200  # Low reimbursement rate
     spm_units:
       spm_unit:
         members: [parent1, child1]
@@ -116,7 +116,7 @@
       child1:
         age: 4
         is_disabled: false
-        tx_ccs_reimbursement: 500
+        tx_ccs_payment_rate: 500
     spm_units:
       spm_unit:
         members: [parent1, child1]

@@ -1,52 +1,103 @@
-- name: Child under 13 is age eligible
+- name: Young child who is dependent and citizen is eligible
   period: 2024-01
   input:
     people:
-      person:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
         age: 5
         is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
     households:
       household:
-        members: [person]
+        members: [parent, child]
         state_code: TX
   output:
-    tx_ccs_eligible_child: true
+    tx_ccs_eligible_child: [false, true]
 
-- name: Child age 13 is not age eligible
+- name: Child age 13 is not age eligible even if dependent and citizen
   period: 2024-01
   input:
     people:
-      person:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child:
         age: 13
         is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
     households:
       household:
-        members: [person]
+        members: [parent, child]
         state_code: TX
   output:
-    tx_ccs_eligible_child: false
+    tx_ccs_eligible_child: [false, false]
 
-- name: Disabled child age 15 is age eligible
+- name: Disabled child age 15 who is dependent and citizen is eligible
   period: 2024-01
   input:
     people:
-      person:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child:
         age: 15
         is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
     households:
       household:
-        members: [person]
+        members: [parent, child]
         state_code: TX
   output:
-    tx_ccs_eligible_child: true
+    tx_ccs_eligible_child: [false, true]
 
 - name: Disabled child age 19 is not age eligible
   period: 2024-01
   input:
     people:
-      person:
+      parent:
+        age: 45
+        is_tax_unit_dependent: false
+      child:
         age: 19
         is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible_child: [false, false]
+
+- name: Young child who is not a dependent is not eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 10
+        is_disabled: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person]
     households:
       household:
         members: [person]
@@ -54,16 +105,68 @@
   output:
     tx_ccs_eligible_child: false
 
-- name: Infant is age eligible
+- name: Dependent child with lawful permanent resident status is eligible
   period: 2024-01
   input:
     people:
-      person:
-        age: 0
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 8
         is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
     households:
       household:
-        members: [person]
+        members: [parent, child]
         state_code: TX
   output:
-    tx_ccs_eligible_child: true
+    tx_ccs_eligible_child: [false, true]
+
+- name: Dependent child with undocumented status is not eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible_child: [false, false]
+
+- name: Infant dependent with citizen status is eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+        is_tax_unit_dependent: false
+      infant:
+        age: 0
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    tx_ccs_eligible_child: [false, true]

@@ -10,4 +10,4 @@ class tx_ccs_countable_income(Variable):
     unit = USD
     defined_for = StateCode.TX
 
-    adds = ["employment_income", "self_employment_income"]
+    adds = "gov.states.tx.twc.ccs.income.sources"
