@@ -21,9 +21,9 @@ class pr_american_opportunity_credit_eligibility(Variable):
         agi = tax_unit("pr_agi", period)
         filing_status = tax_unit("filing_status", period)
         agi_limit = where(
-            filing_status == filing_status.possible_values.SINGLE,
-            p.single,
+            filing_status == filing_status.possible_values.JOINT,
             p.joint,
+            p.non_joint,
         )
         agi_eligibility = agi < agi_limit
         return not_separate & agi_eligibility

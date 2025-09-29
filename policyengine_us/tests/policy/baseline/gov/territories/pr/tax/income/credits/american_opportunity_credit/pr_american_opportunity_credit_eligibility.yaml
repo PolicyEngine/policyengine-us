@@ -1,4 +1,4 @@
-- name: Not elibible due to high AGI, Joint
+- name: Not eligible due to high AGI, Joint
   period: 2024
   input:
     filing_status: JOINT
@@ -7,7 +7,7 @@
   output:
     pr_american_opportunity_credit_eligibility: false
 
-- name: Not elibible due to high AGI, Single
+- name: Not eligible due to high AGI, Single
   period: 2024
   input:
     filing_status: SINGLE
@@ -16,7 +16,7 @@
   output:
     pr_american_opportunity_credit_eligibility: false
 
-- name: Not elibible due to filing status
+- name: Not eligible due to filing status
   period: 2024
   input:
     filing_status: SEPARATE
