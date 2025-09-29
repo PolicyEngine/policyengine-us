@@ -4,7 +4,29 @@
     pr_american_opportunity_credit_eligibility: true
     is_eligible_for_american_opportunity_credit: true
     qualified_tuition_expenses: 5_000
-    education_credit_phase_out: 
+    education_credit_phase_out: 0.1
     state_code: PR
   output:
-    pr_american_opportunity_credit: 400
+    pr_american_opportunity_credit: 2_250
+
+- name: Not eligible, education requirements
+  period: 2024
+  input:
+    pr_american_opportunity_credit_eligibility: true
+    is_eligible_for_american_opportunity_credit: false
+    qualified_tuition_expenses: 5_000
+    education_credit_phase_out: 0.1
+    state_code: PR
+  output:
+    pr_american_opportunity_credit: 0
+
+- name: Eligible case
+  period: 2024
+  input:
+    pr_american_opportunity_credit_eligibility: true
+    is_eligible_for_american_opportunity_credit: true
+    qualified_tuition_expenses: 2_000
+    education_credit_phase_out: 0.9
+    state_code: PR
+  output:
+    pr_american_opportunity_credit: 200

@@ -1,0 +1,35 @@
+- name: Not elibible due to high AGI, Joint
+  period: 2024
+  input:
+    filing_status: JOINT
+    pr_agi: 180_000
+    state_code: PR
+  output:
+    pr_american_opportunity_credit_eligibility: false
+
+- name: Not elibible due to high AGI, Single
+  period: 2024
+  input:
+    filing_status: SINGLE
+    pr_agi: 90_000
+    state_code: PR
+  output:
+    pr_american_opportunity_credit_eligibility: false
+
+- name: Not elibible due to filing status
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    pr_agi: 60_000
+    state_code: PR
+  output:
+    pr_american_opportunity_credit_eligibility: false
+
+- name: Eligible
+  period: 2024
+  input:
+    filing_status: JOINT
+    pr_agi: 179_000
+    state_code: PR
+  output:
+    pr_american_opportunity_credit_eligibility: true

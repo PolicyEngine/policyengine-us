@@ -15,13 +15,9 @@ class pr_american_opportunity_credit_eligibility(Variable):
             period
         ).gov.territories.pr.tax.income.credits.american_opportunity_credit.agi_limit
 
-        # status not married filing separately
         filing_status = tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
 
-        # not a dependent
-
-        # AGI limit: don't file if single > 90k or joint > 180k
         agi = tax_unit("pr_agi", period)
         filing_status = tax_unit("filing_status", period)
         agi_limit = where(
