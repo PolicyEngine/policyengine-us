@@ -1,0 +1,118 @@
+- name: Adjusted gross income below the threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 0
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 0
+
+- name: Single child - no phase out
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 200_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_out: 0
+
+- name: Single child - partial phase out at $1,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 201_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_out: 50
+
+- name: Single child - partial phase out at $1,500 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 201_500
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_out: 100
+
+- name: Three children - no phase out at threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 200_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 0
+
+- name: Three children - partial phase out at $1,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 201_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 150
+
+- name: Three children - partial phase out at $2,500 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 202_500
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 450
+
+- name: Two children - large phase out at $10,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 210_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_out: 1_000
+
+- name: Counterfactual - same scenario without reform active
+  period: 2024
+  input:
+    adjusted_gross_income: 201_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_out: 50
+
+- name: Edge case - exactly at increment boundary
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 202_000
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_out: 200
+
+- name: Edge case - one dollar over increment boundary
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    adjusted_gross_income: 202_001
+    ctc_phase_out_threshold: 200_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_out: 300

@@ -11,3 +11,11 @@
     school_meal_tier: FREE
   output:
     school_meal_daily_subsidy: 3.66 + 1.97
+
+# Test 2025 values (effective January 1, 2025)
+- name: Contiguous US - 2025 FREE tier
+  period: 2025
+  input:
+    school_meal_tier: FREE
+  output:
+    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46

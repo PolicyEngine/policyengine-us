@@ -11106,3 +11106,26 @@
     fixed:
     - Don't publish to PyPI on push without passing tests.
   date: 2025-09-25 08:20:22
+- bump: patch
+  changes:
+    fixed:
+    - Improved test batching to avoid memory issues and reduce test duplication.
+    - Split baseline tests into separate batches for household and contrib folders.
+  date: 2025-09-25 20:18:49
+- bump: minor
+  changes:
+    fixed:
+    - Adjust the `state_agi` variable to reflect states that adopt federal AGI.
+  date: 2025-09-25 20:33:35
+- bump: minor
+  changes:
+    added:
+    - School meal subsidies 2024 and 2025 parameter updates.
+  date: 2025-09-26 15:55:30
+- bump: minor
+  changes:
+    added:
+    - CTC per child phase-in reform.
+    - CTC minimum refundable amount reform.
+    - CTC per child phase-out reform.
+  date: 2025-09-27 17:53:20
