@@ -18,9 +18,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
-            if not p.in_effect:
-                return 0
-
             # Baby bonus is for those born in 2026 and after, paid in their birth year
             birth_year = person("birth_year", period)
             min_birth_year = p.min_birth_year
@@ -49,9 +46,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
 
-            if not p.in_effect:
-                return 0
-
             age = person("age", period)
             is_eligible = (age >= p.min_age) & (age <= p.max_age)
 
@@ -72,9 +66,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
-
-            if not p.in_effect:
-                return 0
 
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
@@ -99,9 +90,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
-            if not p.in_effect:
-                return 0
-
             age = person("age", period)
             is_eligible = age < p.child_benefit.age_limit
 
@@ -122,9 +110,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
-
-            if not p.in_effect:
-                return 0
 
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
@@ -148,9 +133,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
-
-            if not p.in_effect:
-                return 0
 
             person = tax_unit.members
             age = person("age", period)
@@ -367,14 +349,13 @@ def create_income_security_package() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            # Add new variables for the Income Security Package
-            self.add_variable(baby_bonus_act_payment)
-            self.add_variable(boost_act_payment)
-            self.add_variable(boost_act_tax)
-            self.add_variable(ecpa_child_benefit)
-            self.add_variable(ecpa_adult_dependent_credit)
-            self.add_variable(ecpa_filer_credit)
-            # Update existing variables that need modification
+            # Update all variables for the Income Security Package
+            self.update_variable(baby_bonus_act_payment)
+            self.update_variable(boost_act_payment)
+            self.update_variable(boost_act_tax)
+            self.update_variable(ecpa_child_benefit)
+            self.update_variable(ecpa_adult_dependent_credit)
+            self.update_variable(ecpa_filer_credit)
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
             self.update_variable(income_tax)
