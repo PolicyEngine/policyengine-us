@@ -311,8 +311,14 @@ def create_income_security_package() -> Reform:
             # Get standard refundable credits from parameters
             if p.end_child_poverty_act.in_effect:
                 # When ECPA is in effect, exclude EITC and refundable CTC
-                standard_credits = parameters(period).gov.irs.credits.refundable
-                CREDITS = [c for c in standard_credits if c not in ["eitc", "refundable_ctc"]]
+                standard_credits = parameters(
+                    period
+                ).gov.irs.credits.refundable
+                CREDITS = [
+                    c
+                    for c in standard_credits
+                    if c not in ["eitc", "refundable_ctc"]
+                ]
             else:
                 # Use all standard refundable credits
                 CREDITS = parameters(period).gov.irs.credits.refundable
