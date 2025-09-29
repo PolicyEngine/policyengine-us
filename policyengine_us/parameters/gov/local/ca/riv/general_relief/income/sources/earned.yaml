@@ -1,0 +1,15 @@
+description: Riverside County counts these income sources as earned income under General Relief.
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+    - rental_income  # Income In-Kind
+    # interests in real or individual property
+    # training payments or work allowance
+metadata:
+  unit: list
+  period: year
+  label: Riverside County General Relief earned income sources
+  reference: 
+    # The program manual is not publicly available
+    - title: General Assistance Eligibility p.18

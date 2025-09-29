@@ -59,6 +59,9 @@ from .state_dependent_exemptions import (
 from .ctc import (
     create_ctc_older_child_supplement_reform,
     create_ctc_additional_bracket_reform,
+    create_ctc_per_child_phase_in_reform,
+    create_ctc_per_child_phase_out_reform,
+    create_ctc_minimum_refundable_amount_reform,
 )
 from .snap import (
     create_abolish_snap_deductions_reform,
@@ -103,7 +106,9 @@ from .congress.hawley.awra import (
 )
 from .crfb import (
     create_non_refundable_ss_credit_reform,
+    create_senior_deduction_extension_reform,
 )
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -216,6 +221,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     non_refundable_ss_credit = create_non_refundable_ss_credit_reform(
         parameters, period
     )
+    senior_deduction_extension = create_senior_deduction_extension_reform(
+        parameters, period
+    )
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -230,6 +238,15 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
+    )
+    ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
+        parameters, period
+    )
+    ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(
+        parameters, period
+    )
+    ctc_minimum_refundable_amount = (
+        create_ctc_minimum_refundable_amount_reform(parameters, period)
     )
 
     reforms = [
@@ -272,11 +289,15 @@ def create_structural_reforms_from_parameters(parameters, period):
         tax_employer_payroll_tax,
         afa_other_dependent_credit,
         non_refundable_ss_credit,
+        senior_deduction_extension,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
         additional_tax_bracket,
         american_worker_rebate_act,
+        ctc_per_child_phase_out,
+        ctc_per_child_phase_in,
+        ctc_minimum_refundable_amount,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

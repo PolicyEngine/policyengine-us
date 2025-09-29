@@ -27,9 +27,9 @@ jobs:
         with:
           python-version: 3.13
       - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
-      - name: Install dependencies
-        run: uv pip install "yaml-changelog>=0.1.7" --system
+        run: |
+          uv pip install -e . --system
+          uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
         run: make changelog
   Test:
@@ -49,14 +49,60 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: uv sync --dev
+        run: |
+          # Install core package and its dependencies
+          uv pip install -e . --system
+          # Install only coverage for testing (not docs dependencies)
+          uv pip install coverage --system
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
-      - name: Run selective tests
+      - name: Run selective tests based on changed files
         env:
+          PYTHONUNBUFFERED: 1
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-        run: uv run python policyengine_us/tests/run_selective_tests.py --verbose --debug
+        run: |
+          echo "Running selective tests based on changed files..."
+          python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
+      - name: Generate coverage report
+        id: coverage
+        if: always()
+        run: |
+          echo "📊 Coverage Report"
+          echo "=================="
+          # Show files below 100% coverage (won't fail CI)
+          coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
+
+          # Count files below 100%
+          TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
+
+          if [ "$TOTAL_FILES" -gt "0" ]; then
+            echo ""
+            echo "⚠️  $TOTAL_FILES file(s) have less than 100% coverage"
+            echo "Consider adding tests to improve coverage."
+          else
+            echo ""
+            echo "✅ All files have 100% coverage!"
+          fi
+
+          # Generate XML for Codecov
+          coverage xml || echo "No coverage data to generate XML report."
+          # Expose whether we have coverage for later steps
+          if [ -f coverage.xml ]; then
+            echo "has_coverage=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_coverage=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Upload coverage to Codecov
+        if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+          flags: unittests
+          name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
       - name: Build package
         run: uv build
