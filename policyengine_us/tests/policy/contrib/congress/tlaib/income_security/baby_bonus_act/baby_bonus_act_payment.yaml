@@ -10,7 +10,7 @@
         age: 0
         birth_year: 2026
   output:
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: 2_000
 
 - name: Child born in 2025 (before eligibility) does not receive bonus
@@ -25,7 +25,7 @@
         age: 0
         birth_year: 2025
   output:
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: 0
 
 - name: Child born in 2026 does not receive bonus in 2027
@@ -40,7 +40,7 @@
         age: 1
         birth_year: 2026
   output:
-    baby_bonus:
+    baby_bonus_act_payment:
       2027: 0  # Only paid in birth year (2026)
 
 - name: Multiple children born in 2026 each receive bonus
@@ -61,7 +61,7 @@
         age: 30
         birth_year: 1996
   output:
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [2_000, 2_000, 0]
 
 - name: Child born in 2027 also eligible
@@ -76,5 +76,5 @@
         age: 0
         birth_year: 2027
   output:
-    baby_bonus:
+    baby_bonus_act_payment:
       2027: 2_049  # Uprated from $2,000 in 2026

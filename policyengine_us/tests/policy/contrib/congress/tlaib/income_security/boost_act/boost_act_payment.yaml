@@ -1,4 +1,4 @@
-- name: Single filer below threshold owes no tax
+- name: Adult age 19-67 receives full payment
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
@@ -6,18 +6,13 @@
     gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
     gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
     people:
-      filer:
+      adult:
         age: 30
-    tax_units:
-      tax_unit:
-        members: [filer]
-        filing_status: SINGLE
-        adjusted_gross_income: 25_000
   output:
-    boost_tax:
-      2026: 0
+    boost_act_payment:
+      2026: 3_000  # 250 * 12
 
-- name: Single filer above threshold owes tax
+- name: Adult exactly 19 is eligible
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
@@ -25,95 +20,72 @@
     gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
     gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
     people:
-      filer:
+      young_adult:
+        age: 19
+  output:
+    boost_act_payment:
+      2026: 3_000
+
+- name: Adult exactly 67 is eligible
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      older_adult:
+        age: 67
+  output:
+    boost_act_payment:
+      2026: 3_000
+
+- name: Child under 19 not eligible
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      child:
+        age: 18
+  output:
+    boost_act_payment:
+      2026: 0
+
+- name: Adult over 67 not eligible
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      senior:
+        age: 68
+  output:
+    boost_act_payment:
+      2026: 0
+
+- name: Multiple eligible adults each receive payment
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      adult1:
+        age: 25
+      adult2:
         age: 35
-    tax_units:
-      tax_unit:
-        members: [filer]
-        filing_status: SINGLE
-        adjusted_gross_income: 40_000  # 10,000 above 30,000 threshold
-  output:
-    boost_tax:
-      2026: 250  # 10,000 * 0.025
-
-- name: Joint filers below threshold owe no tax
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
-    people:
-      head:
-        age: 40
-      spouse:
-        age: 38
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        filing_status: JOINT
-        adjusted_gross_income: 50_000
-  output:
-    boost_tax:
-      2026: 0
-
-- name: Joint filers above threshold owe tax
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
-    people:
-      head:
+      adult3:
         age: 45
-      spouse:
-        age: 43
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        filing_status: JOINT
-        adjusted_gross_income: 100_000  # 40,000 above 60,000 threshold
-  output:
-    boost_tax:
-      2026: 1_000  # 40,000 * 0.025
-
-- name: Head of household above threshold owes tax
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
-    people:
-      head:
-        age: 35
       child:
         age: 10
-    tax_units:
-      tax_unit:
-        members: [head, child]
-        filing_status: HEAD_OF_HOUSEHOLD
-        adjusted_gross_income: 50_000  # 20,000 above 30,000 threshold
+      senior:
+        age: 70
   output:
-    boost_tax:
-      2026: 500  # 20,000 * 0.025
-
-- name: High income single filer owes substantial tax
-  period: 2026
-  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
-  input:
-    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
-    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
-    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
-    people:
-      filer:
-        age: 50
-    tax_units:
-      tax_unit:
-        members: [filer]
-        filing_status: SINGLE
-        adjusted_gross_income: 130_000  # 100,000 above 30,000 threshold
-  output:
-    boost_tax:
-      2026: 2_500  # 100,000 * 0.025
+    boost_act_payment:
+      2026: [3_000, 3_000, 3_000, 0, 0]

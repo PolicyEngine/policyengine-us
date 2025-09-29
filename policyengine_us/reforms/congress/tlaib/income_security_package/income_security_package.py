@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 def create_income_security_package() -> Reform:
-    class baby_bonus(Variable):
+    class baby_bonus_act_payment(Variable):
         value_type = float
         entity = Person
         definition_period = YEAR
@@ -33,7 +33,7 @@ def create_income_security_package() -> Reform:
 
             return is_eligible * p.amount
 
-    class boost_payment(Variable):
+    class boost_act_payment(Variable):
         value_type = float
         entity = Person
         definition_period = YEAR
@@ -59,7 +59,7 @@ def create_income_security_package() -> Reform:
 
             return is_eligible * annual_amount
 
-    class boost_tax(Variable):
+    class boost_act_tax(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
@@ -212,9 +212,9 @@ def create_income_security_package() -> Reform:
 
             # Add benefits based on what's in effect
             if p.baby_bonus_act.in_effect:
-                BENEFITS.append("baby_bonus")
+                BENEFITS.append("baby_bonus_act_payment")
             if p.boost_act.in_effect:
-                BENEFITS.append("boost_payment")
+                BENEFITS.append("boost_act_payment")
             if p.end_child_poverty_act.in_effect:
                 BENEFITS.append("ecpa_child_benefit")
 
@@ -259,9 +259,9 @@ def create_income_security_package() -> Reform:
 
             # Add benefits based on what's in effect
             if p.baby_bonus_act.in_effect:
-                BENEFITS.append("baby_bonus")
+                BENEFITS.append("baby_bonus_act_payment")
             if p.boost_act.in_effect:
-                BENEFITS.append("boost_payment")
+                BENEFITS.append("boost_act_payment")
             if p.end_child_poverty_act.in_effect:
                 BENEFITS.append("ecpa_child_benefit")
 
@@ -284,17 +284,18 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package
 
-            COMPONENTS = [
-                "income_tax_before_refundable_credits",
-                "income_tax_refundable_credits",
-                "income_tax_non_refundable_credits",
-            ]
+            # Start with income tax after non-refundable credits
+            base_tax = tax_unit("income_tax_before_refundable_credits", period)
 
-            # Only add boost_tax if BOOST Act is in effect
+            # Subtract refundable credits
+            refundable_credits = tax_unit("income_tax_refundable_credits", period)
+
+            # Add BOOST tax if in effect
+            boost_tax = 0
             if p.boost_act.in_effect:
-                COMPONENTS.append("boost_tax")
+                boost_tax = tax_unit("boost_act_tax", period)
 
-            return add(tax_unit, period, COMPONENTS)
+            return base_tax - refundable_credits + boost_tax
 
     class income_tax_refundable_credits(Variable):
         value_type = float
@@ -319,23 +320,18 @@ def create_income_security_package() -> Reform:
                     for c in standard_credits
                     if c not in ["eitc", "refundable_ctc"]
                 ]
-            else:
-                # Use all standard refundable credits
-                CREDITS = parameters(period).gov.irs.credits.refundable
+                base_credits = add(tax_unit, period, CREDITS) if CREDITS else 0
 
-            base_credits = add(tax_unit, period, CREDITS) if CREDITS else 0
-
-            # Add ECPA credits if in effect
-            if p.end_child_poverty_act.in_effect:
-                # Add filer credit
+                # Add ECPA credits
                 ecpa_filer = tax_unit("ecpa_filer_credit", period)
-                # Add adult dependent credits (sum from person level)
                 person = tax_unit.members
                 ecpa_adult_dep = person("ecpa_adult_dependent_credit", period)
                 total_ecpa_adult_dep = tax_unit.sum(ecpa_adult_dep)
                 return base_credits + ecpa_filer + total_ecpa_adult_dep
             else:
-                return base_credits
+                # Use all standard refundable credits
+                CREDITS = parameters(period).gov.irs.credits.refundable
+                return add(tax_unit, period, CREDITS)
 
     class income_tax_non_refundable_credits(Variable):
         value_type = float

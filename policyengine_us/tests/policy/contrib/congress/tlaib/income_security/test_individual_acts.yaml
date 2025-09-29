@@ -17,10 +17,10 @@
         adjusted_gross_income: 35_000
   output:
     # Baby gets bonus (Baby Bonus Act is in effect)
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [2_000, 0]
     # No BOOST payment (BOOST Act not in effect)
-    boost_payment:
+    boost_act_payment:
       2026: [0, 0]
     # No ECPA child benefit (ECPA not in effect)
     ecpa_child_benefit:
@@ -29,7 +29,7 @@
     ecpa_filer_credit:
       2026: 0
     # No BOOST tax (BOOST Act not in effect)
-    boost_tax:
+    boost_act_tax:
       2026: 0
 
 - name: Only BOOST Act in effect
@@ -51,10 +51,10 @@
         adjusted_gross_income: 35_000
   output:
     # No baby bonus (Baby Bonus Act not in effect)
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [0, 0]
     # Parent gets BOOST payment (BOOST Act is in effect)
-    boost_payment:
+    boost_act_payment:
       2026: [0, 3_000]
     # No ECPA child benefit (ECPA not in effect)
     ecpa_child_benefit:
@@ -63,7 +63,7 @@
     ecpa_filer_credit:
       2026: 0
     # BOOST tax applies (BOOST Act is in effect)
-    boost_tax:
+    boost_act_tax:
       2026: 125  # (35,000 - 30,000) * 0.025
 
 - name: Only End Child Poverty Act in effect
@@ -85,10 +85,10 @@
         adjusted_gross_income: 20_000
   output:
     # No baby bonus (Baby Bonus Act not in effect)
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [0, 0]
     # No BOOST payment (BOOST Act not in effect)
-    boost_payment:
+    boost_act_payment:
       2026: [0, 0]
     # Baby gets ECPA child benefit (ECPA is in effect)
     ecpa_child_benefit:
@@ -97,7 +97,7 @@
     ecpa_filer_credit:
       2026: 700  # No phase-out at this income
     # No BOOST tax (BOOST Act not in effect)
-    boost_tax:
+    boost_act_tax:
       2026: 0
 
 - name: All three acts in effect
@@ -119,10 +119,10 @@
         adjusted_gross_income: 35_000
   output:
     # Baby gets bonus
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [2_000, 0]
     # Parent gets BOOST payment
-    boost_payment:
+    boost_act_payment:
       2026: [0, 3_000]
     # Baby gets ECPA child benefit
     ecpa_child_benefit:
@@ -131,7 +131,7 @@
     ecpa_filer_credit:
       2026: 0  # 700 - (15,000 * 0.05) = -50, max to 0
     # BOOST tax applies
-    boost_tax:
+    boost_act_tax:
       2026: 125  # (35,000 - 30,000) * 0.025
 
 - name: Two acts in effect (Baby Bonus + ECPA)
@@ -153,10 +153,10 @@
         adjusted_gross_income: 20_000
   output:
     # Baby gets bonus
-    baby_bonus:
+    baby_bonus_act_payment:
       2026: [2_000, 0]
     # No BOOST payment
-    boost_payment:
+    boost_act_payment:
       2026: [0, 0]
     # Baby gets ECPA benefit
     ecpa_child_benefit:
@@ -165,5 +165,5 @@
     ecpa_filer_credit:
       2026: 700
     # No BOOST tax
-    boost_tax:
+    boost_act_tax:
       2026: 0
