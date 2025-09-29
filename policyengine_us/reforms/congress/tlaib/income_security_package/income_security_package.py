@@ -270,7 +270,9 @@ def create_income_security_package() -> Reform:
             base_tax = tax_unit("income_tax_before_refundable_credits", period)
 
             # Subtract refundable credits
-            refundable_credits = tax_unit("income_tax_refundable_credits", period)
+            refundable_credits = tax_unit(
+                "income_tax_refundable_credits", period
+            )
 
             # Add BOOST tax if in effect
             boost_tax = 0
