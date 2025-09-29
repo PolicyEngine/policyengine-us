@@ -367,13 +367,14 @@ def create_income_security_package() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            # Variables are always updated, but their formulas check in_effect
-            self.update_variable(baby_bonus)
-            self.update_variable(boost_payment)
-            self.update_variable(boost_tax)
-            self.update_variable(ecpa_child_benefit)
-            self.update_variable(ecpa_adult_dependent_credit)
-            self.update_variable(ecpa_filer_credit)
+            # Add new variables for the Income Security Package
+            self.add_variable(baby_bonus_act_payment)
+            self.add_variable(boost_act_payment)
+            self.add_variable(boost_act_tax)
+            self.add_variable(ecpa_child_benefit)
+            self.add_variable(ecpa_adult_dependent_credit)
+            self.add_variable(ecpa_filer_credit)
+            # Update existing variables that need modification
             self.update_variable(household_benefits)
             self.update_variable(spm_unit_benefits)
             self.update_variable(income_tax)
