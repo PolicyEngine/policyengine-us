@@ -20,12 +20,9 @@ def create_income_security_package() -> Reform:
 
             # Baby bonus is for those born in 2026 and after, paid in their birth year
             birth_year = person("birth_year", period)
-            min_birth_year = p.min_birth_year
-            current_year = period.start.year
 
             # Payment only in the birth year for those born 2026+
-            is_eligible = (birth_year >= min_birth_year) & (
-                birth_year == current_year
+            is_eligible = birth_year >= p.min_birth_year
             )
 
             return is_eligible * p.amount
@@ -139,7 +136,7 @@ def create_income_security_package() -> Reform:
 
             is_head = person("is_tax_unit_head", period)
             is_spouse = person("is_tax_unit_spouse", period)
-            is_filer = is_head | is_spouse
+            is_head_or_spouse = is_head | is_spouse
 
             is_eligible_age = (age >= p.filer_credit.eligibility.min_age) & (
                 age < p.filer_credit.eligibility.max_age
@@ -157,7 +154,7 @@ def create_income_security_package() -> Reform:
             )
             phase_out = excess_agi * p.filer_credit.phase_out.rate
 
-            credit = max_(amount - phase_out, 0)
+            phased_out_amount = max_(amount - phase_out, 0)
 
             return has_eligible_filer * credit
 
@@ -275,11 +272,12 @@ def create_income_security_package() -> Reform:
             )
 
             # Add BOOST tax if in effect
-            boost_tax = 0
+            reduced_tax = base_tax - refundable_credits
             if p.boost_act.in_effect:
                 boost_tax = tax_unit("boost_act_tax", period)
+                return reduced_tax + boost_tax
 
-            return base_tax - refundable_credits + boost_tax
+            return reduced_tax
 
     class income_tax_refundable_credits(Variable):
         value_type = float
@@ -294,11 +292,11 @@ def create_income_security_package() -> Reform:
             ).gov.contrib.congress.tlaib.income_security_package
 
             # Get standard refundable credits from parameters
-            if p.end_child_poverty_act.in_effect:
-                # When ECPA is in effect, exclude EITC and refundable CTC
-                standard_credits = parameters(
+            base_credits = parameters(
                     period
                 ).gov.irs.credits.refundable
+            if p.end_child_poverty_act.in_effect:
+                # When ECPA is in effect, exclude EITC and refundable CTC
                 CREDITS = [
                     c
                     for c in standard_credits
@@ -308,14 +306,9 @@ def create_income_security_package() -> Reform:
 
                 # Add ECPA credits
                 ecpa_filer = tax_unit("ecpa_filer_credit", period)
-                person = tax_unit.members
-                ecpa_adult_dep = person("ecpa_adult_dependent_credit", period)
-                total_ecpa_adult_dep = tax_unit.sum(ecpa_adult_dep)
+                ecpa_credit = add(tax_unit, period, ['ecpa_adult_dependent_credit'])
                 return base_credits + ecpa_filer + total_ecpa_adult_dep
-            else:
-                # Use all standard refundable credits
-                CREDITS = parameters(period).gov.irs.credits.refundable
-                return add(tax_unit, period, CREDITS)
+            return add(tax_unit, period, base_credits)
 
     class income_tax_non_refundable_credits(Variable):
         value_type = float
