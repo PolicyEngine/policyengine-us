@@ -14,28 +14,21 @@ class tx_tanf_countable_resources(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Get all resource types
-        # Using cash_assets which includes checking and savings
-        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        # Countable resources = liquid resources + excess vehicle value
+        # Household must have countable resources ≤ $1,000 to be eligible
 
-        # Convert annual to monthly
-        monthly_cash_assets = cash_assets / MONTHS_IN_YEAR
+        # Liquid resources (cash, checking, savings)
+        cash_assets = spm_unit("spm_unit_cash_assets", period)
 
-        # Get vehicle values
-        # Note: Using simplified approach - full implementation would track individual vehicles
-        vehicle_assets = (
-            spm_unit("spm_unit_vehicle_net_value", period.this_year)
-            / MONTHS_IN_YEAR
+        # Vehicle resources (apply vehicle exemption: one automobile up to $4,650)
+        # Use annual vehicle value for calculation, then convert to monthly
+        vehicle_value = spm_unit.household(
+            "household_vehicles_value", period.this_year
+        )
+        p = parameters(period).gov.states.tx.tanf.resources
+        countable_vehicle_value = (
+            max_(vehicle_value - p.vehicle_exemption, 0) / MONTHS_IN_YEAR
         )
 
-        # Apply vehicle exemptions
-        p = parameters(period).gov.states.tx.tanf.resources
-        primary_exemption = p.vehicle_exemption_primary
-
-        # Simplified: Apply primary vehicle exemption
-        countable_vehicle_value = max_(vehicle_assets - primary_exemption, 0)
-
-        # Sum all countable resources
-        total_resources = monthly_cash_assets + countable_vehicle_value
-
-        return total_resources
+        # Total countable resources (cash already monthly, vehicle converted to monthly)
+        return cash_assets + countable_vehicle_value

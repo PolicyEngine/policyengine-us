@@ -14,6 +14,4 @@ class tx_ottanf(Variable):
         p = parameters(period).gov.states.tx.tanf.ottanf
 
         # One-time payment of $1,000
-        payment_amount = p.payment_amount
-
-        return payment_amount
+        return p.payment_amount

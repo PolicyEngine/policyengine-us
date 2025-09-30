@@ -13,11 +13,13 @@ class tx_tanf_payment_standard(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
+        # Payment standard (maximum benefit amount) varies by household size and caretaker type
+
         size = spm_unit("tx_tanf_assistance_unit_size", period)
         caretaker_type = spm_unit("tx_tanf_caretaker_type", period)
         p = parameters(period).gov.states.tx.tanf.payment_standard
 
-        # Get payment standard based on caretaker type
+        # Determine caretaker type
         non_caretaker = (
             caretaker_type == caretaker_type.possible_values.NON_CARETAKER
         )
@@ -30,21 +32,13 @@ class tx_tanf_payment_standard(Variable):
             == caretaker_type.possible_values.CARETAKER_WITH_SECOND_PARENT
         )
 
-        # Calculate payment standard for each type
-        non_caretaker_amount = p.non_caretaker.calc(size)
-        caretaker_without_second_amount = (
-            p.caretaker_without_second_parent.calc(size)
-        )
-        caretaker_with_second_amount = p.caretaker_with_second_parent.calc(
-            size
-        )
-
+        # Select payment standard based on caretaker type
         return select(
             [non_caretaker, caretaker_without_second, caretaker_with_second],
             [
-                non_caretaker_amount,
-                caretaker_without_second_amount,
-                caretaker_with_second_amount,
+                p.non_caretaker.calc(size),
+                p.caretaker_without_second_parent.calc(size),
+                p.caretaker_with_second_parent.calc(size),
             ],
             default=0,
         )

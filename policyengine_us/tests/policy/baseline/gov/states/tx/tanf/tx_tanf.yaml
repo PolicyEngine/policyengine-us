@@ -1,106 +1,89 @@
-- name: Single parent with one child receives TANF
+- name: Case 1, single parent with no income receives full grant.
   period: 2025-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_parent: true
         employment_income: 0
-      child:
+      person2:
         age: 10
-        is_full_time_student: true
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_cash_assets: 6_000  # $500 × 12 months
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        is_tanf_enrolled: false
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: TX
   output:
-    tx_tanf_payment_standard:
-      spm_unit: 320  # Caretaker without second parent, size 2
-    tx_tanf:
-      spm_unit: 320
+    tx_tanf: 320
 
-- name: Two parents with two children
+- name: Case 2, benefit reduced by countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+        employment_income: 3_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf: 232.90
+
+- name: Case 3, minimum grant applied.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+        employment_income: 3_720
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf: 192.70
+
+- name: Case 4, ineligible household receives zero.
   period: 2025-01
   input:
     people:
-      parent1:
+      person1:
         age: 30
         is_parent: true
-        employment_income: 0
-      parent2:
-        age: 29
-        is_parent: true
-        employment_income: 0
-      child1:
-        age: 10
-      child2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [parent1, parent2, child1, child2]
-        spm_unit_cash_assets: 6_000  # $500 × 12 months
-    households:
-      household:
-        members: [parent1, parent2, child1, child2]
-        state_code: TX
-  output:
-    tx_tanf_payment_standard:
-      spm_unit: 455  # Caretaker with second parent, size 4
-    tx_tanf:
-      spm_unit: 455
-
-- name: Benefit reduced by countable income
-  period: 2025-01
-  input:
-    people:
-      parent:
-        age: 30
-        is_parent: true
-        employment_income: 200
-      child:
+        employment_income: 24_000
+      person2:
         age: 10
     spm_units:
       spm_unit:
-        members: [parent, child]
-        spm_unit_cash_assets: 6_000  # $500 × 12 months
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        is_tanf_enrolled: false
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: TX
   output:
-    tx_tanf_payment_standard:
-      spm_unit: 320
-    tx_tanf_countable_income:
-      spm_unit: 200
-    tx_tanf:
-      spm_unit: 120  # 320 - 200
-
-- name: Minimum grant applied when calculated benefit is below $10
-  period: 2025-01
-  input:
-    people:
-      parent:
-        age: 30
-        is_parent: true
-        employment_income: 315
-      child:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-        spm_unit_cash_assets: 6_000  # $500 × 12 months
-    households:
-      household:
-        members: [parent, child]
-        state_code: TX
-  output:
-    tx_tanf_payment_standard:
-      spm_unit: 320
-    tx_tanf_countable_income:
-      spm_unit: 315
-    tx_tanf:
-      spm_unit: 10  # Minimum grant since 320 - 315 = 5 < 10
+    tx_tanf: 0

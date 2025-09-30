@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class tx_tanf_eligible_child(Variable):
+class tx_tanf_age_eligible_child(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible child for Texas Temporary Assistance for Needy Families (TANF) based on demographics"
+    label = "Age-eligible child for Texas TANF based on demographics"
     definition_period = MONTH
     reference = (
         "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-220-tanf",

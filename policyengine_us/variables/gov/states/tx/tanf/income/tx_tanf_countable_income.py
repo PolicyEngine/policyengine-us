@@ -13,13 +13,7 @@ class tx_tanf_countable_income(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
-        countable_earned = spm_unit("tx_tanf_countable_earned_income", period)
-        countable_unearned = spm_unit(
-            "tx_tanf_countable_unearned_income", period
-        )
-
-        # Total countable income after all deductions
-        total_income = countable_earned + countable_unearned
-
-        return total_income
+    adds = [
+        "tx_tanf_countable_earned_income",
+        "tx_tanf_countable_unearned_income",
+    ]

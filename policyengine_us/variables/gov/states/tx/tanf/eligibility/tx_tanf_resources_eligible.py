@@ -15,6 +15,5 @@ class tx_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         countable_resources = spm_unit("tx_tanf_countable_resources", period)
         p = parameters(period).gov.states.tx.tanf.resources
-        resource_limit = p.resource_limit
 
-        return countable_resources <= resource_limit
+        return countable_resources <= p.resource_limit

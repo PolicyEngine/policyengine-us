@@ -10,17 +10,10 @@ class tx_tanf_budgetary_needs_test(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Applies to households not receiving TANF in last 4 months (applicants)
-        # For simplicity, assuming all are applicants
+        # Budgetary needs test applies to applicants (not receiving TANF in last 4 months)
+        # Household passes if budgetary needs > countable income
 
-        size = spm_unit("tx_tanf_assistance_unit_size", period)
+        budgetary_needs = spm_unit("tx_tanf_budgetary_needs", period)
         countable_income = spm_unit("tx_tanf_countable_income", period)
-        p = parameters(period).gov.states.tx.tanf.payment_standard
 
-        budgetary_needs = p.budgetary_needs.calc(size)
-
-        # Calculate unmet need
-        unmet_need = budgetary_needs - countable_income
-
-        # Ineligible if unmet need is less than 50 cents
-        return unmet_need >= 0.50
+        return budgetary_needs > countable_income

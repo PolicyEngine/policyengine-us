@@ -1,0 +1,80 @@
+- name: Case 1, single parent with low income eligible and receives full grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+        employment_income: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_countable_income: 0
+    tx_tanf_income_eligible: true
+    tx_tanf_resources_eligible: true
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 320
+    tx_tanf: 320
+
+- name: Case 2, household with earnings and child care expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+        employment_income: 3_000
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 6_000
+        childcare_expenses: 2_400
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_eligible: true
+    tx_tanf: 320
+
+- name: Case 3, two parent household exceeds resource limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+      person2:
+        age: 29
+        is_parent: true
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 15_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_resources_eligible: false
+    tx_tanf_eligible: false
+    tx_tanf: 0

@@ -20,16 +20,22 @@ class tx_tanf_caretaker_type(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
+        # Caretaker type determines payment standard amount
+        # Based on number of parents included in certified group
+
         person = spm_unit.members
-        is_parent = person("is_parent", period)
+        eligible_parent = person("tx_tanf_eligible_parent", period)
         eligible_child = person("tx_tanf_eligible_child", period)
 
-        # Count parents and eligible children
-        parent_count = spm_unit.sum(is_parent)
+        # Count payment-eligible parents and children
+        parent_count = spm_unit.sum(eligible_parent)
         has_eligible_child = spm_unit.any(eligible_child)
 
-        # Determine caretaker type based on parent count
-        non_caretaker = ~has_eligible_child
+        # Determine caretaker type
+        # Non-caretaker: No parents in certified group (child-only cases)
+        # Caretaker without second: One parent in certified group
+        # Caretaker with second: Two or more parents in certified group
+        non_caretaker = has_eligible_child & (parent_count == 0)
         caretaker_without_second = has_eligible_child & (parent_count == 1)
         caretaker_with_second = has_eligible_child & (parent_count >= 2)
 

@@ -14,18 +14,16 @@ class tx_tanf_eligible(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        non_financial_eligible = spm_unit(
-            "tx_tanf_non_financial_eligible", period
-        )
-        income_eligible = spm_unit("tx_tanf_income_eligible", period)
-        resources_eligible = spm_unit("tx_tanf_resources_eligible", period)
-        meets_work_requirements = spm_unit(
-            "tx_tanf_meets_work_requirements", period
+        person = spm_unit.members
+
+        # Must have at least one eligible child in certified group
+        # (eligible child already includes immigration and SSI checks)
+        has_eligible_child = spm_unit.any(
+            person("tx_tanf_eligible_child", period)
         )
 
-        return (
-            non_financial_eligible
-            & income_eligible
-            & resources_eligible
-            & meets_work_requirements
-        )
+        # Financial eligibility
+        income_eligible = spm_unit("tx_tanf_income_eligible", period)
+        resources_eligible = spm_unit("tx_tanf_resources_eligible", period)
+
+        return has_eligible_child & income_eligible & resources_eligible

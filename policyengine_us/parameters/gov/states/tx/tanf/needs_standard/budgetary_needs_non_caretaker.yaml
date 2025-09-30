@@ -1,15 +1,24 @@
-description: Texas TANF budgetary needs (100% of payment standard) for applicant test
+description: Texas TANF budgetary needs amount for non-caretaker cases represents the monthly amount needed by the certified group to pay for food, clothing, housing, utilities, and incidental expenses.
+
 metadata:
-  label: Texas TANF budgetary needs standard
+  label: Texas TANF budgetary needs standard (non-caretaker)
   type: single_amount
-  threshold_unit: person
+  threshold_unit: int
   amount_unit: currency-USD
   period: month
   reference:
     - title: Texas Works Handbook C-110, TANF
       href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
-      description: Budgetary needs is 100% of the payment standard
+    - title: 1 Tex. Admin. Code § 372.2 (2) - Definitions
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-2
+    - title: 1 Tex. Admin. Code § 372.408 (a)(1) - Income Eligibility
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-408
+
 brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
   - threshold:
       2024-10-01: 1
     amount:

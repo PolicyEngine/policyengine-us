@@ -2,14 +2,19 @@ description: Texas TANF maximum grant for caretaker cases without second parent
 metadata:
   label: Texas TANF caretaker without second parent maximum grant
   type: single_amount
-  threshold_unit: person
+  threshold_unit: int
   amount_unit: currency-USD
   period: month
   reference:
     - title: Texas Works Handbook C-110, TANF
       href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
-      description: Revision 24-4, effective October 1, 2024
+    - title: 1 Tex. Admin. Code § 372.1505 (a) - Calculating Benefits
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-1505
 brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
   - threshold:
       2024-10-01: 1
     amount:

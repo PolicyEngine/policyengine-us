@@ -22,17 +22,10 @@ class tx_tanf(Variable):
         calculated_benefit = max_(payment_standard - countable_income, 0)
 
         # Apply minimum grant rule
-        minimum_grant = p.minimum_grant
-
-        # Debug: Check if the calculated benefit is being computed correctly
-        # This will help us understand what's happening
-
         # If calculated benefit is positive but less than minimum, use minimum
         # If calculated benefit is zero, remain zero
-        benefit_amount = where(
-            (calculated_benefit > 0) & (calculated_benefit < minimum_grant),
-            minimum_grant,
+        return where(
+            (calculated_benefit > 0) & (calculated_benefit < p.minimum_grant),
+            p.minimum_grant,
             calculated_benefit,
         )
-
-        return benefit_amount
