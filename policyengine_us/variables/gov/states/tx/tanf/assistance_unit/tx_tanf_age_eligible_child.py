@@ -16,12 +16,10 @@ class tx_tanf_age_eligible_child(Variable):
         p = parameters(period).gov.states.tx.tanf.age_threshold
         age = person("monthly_age", period)
         is_dependent = person("is_tax_unit_dependent", period)
-        is_secondary_school_student = person(
-            "is_in_secondary_school", period.this_year
-        )
+        is_full_time_student = person("is_full_time_student", period)
 
         age_eligible = where(
-            is_secondary_school_student,
+            is_full_time_student,
             age < p.student_dependent,
             age < p.minor_child,
         )

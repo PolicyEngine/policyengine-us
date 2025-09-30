@@ -4,30 +4,31 @@ from policyengine_us.model_api import *
 class tx_ottanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Income eligible for Texas One-Time TANF"
+    label = "Meets Texas OTTANF income test"
     definition_period = MONTH
-    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy"
+    reference = (
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2420-eligibility-requirements",
+        "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-802",
+    )
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Income must be at or below 200% of Federal Poverty Level
-        household_income = add(
+        # OTTANF income test: gross income ≤ 200% of Federal Poverty Level
+        # Per handbook: "Do not allow any income deductions"
+        # Uses simple gross income (no work expense, no disregards, no deductions)
+
+        # Gross income = all earned + unearned income (no deductions)
+        gross_income = add(
             spm_unit,
             period,
-            ["employment_income", "self_employment_income", "unearned_income"],
+            ["tx_tanf_gross_earned_income", "tx_tanf_gross_unearned_income"],
         )
 
-        # Get FPL for household size
-        household_size = spm_unit("spm_unit_size", period)
-        fpg = parameters(period).gov.hhs.fpg
-        poverty_guideline = fpg.first_person + fpg.additional_person * max_(
-            0, household_size - 1
-        )
+        # Get FPL for household
+        poverty_guideline = spm_unit("tx_tanf_fpg", period)
 
-        # Get OTTANF income limit percentage
+        # OTTANF income limit: 200% of FPL
         p = parameters(period).gov.states.tx.tanf.ottanf
-        income_limit_percentage = p.income_limit_percentage
+        income_limit = poverty_guideline * p.income_limit_percentage
 
-        income_limit = poverty_guideline * income_limit_percentage
-
-        return household_income <= income_limit
+        return gross_income <= income_limit

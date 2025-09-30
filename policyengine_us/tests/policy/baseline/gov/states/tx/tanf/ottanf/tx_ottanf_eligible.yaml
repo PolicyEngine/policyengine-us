@@ -1,0 +1,152 @@
+- name: Case 1, meets all eligibility requirements.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: false
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_ottanf_crisis_criteria: true
+        tx_ottanf_income_eligible: true
+        tx_ottanf_resources_eligible: true
+        tx_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: true
+    # Has eligible child (true) AND crisis (true) AND income (true) AND resources (true) AND citizenship (true) AND not receiving TANF (true) → Eligible
+
+- name: Case 2, fails crisis criteria.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: false
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_ottanf_crisis_criteria: false
+        tx_ottanf_income_eligible: true
+        tx_ottanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: false
+    # No crisis → Not eligible
+
+- name: Case 3, fails income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: false
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_ottanf_crisis_criteria: true
+        tx_ottanf_income_eligible: false
+        tx_ottanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: false
+    # Income too high → Not eligible
+
+- name: Case 4, fails immigration requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        tx_tanf_eligible_child: false
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_ottanf_crisis_criteria: true
+        tx_ottanf_income_eligible: true
+        tx_ottanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: false
+    # Not all members immigration eligible → Not eligible
+
+- name: Case 5, no eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_ottanf_crisis_criteria: true
+        tx_ottanf_income_eligible: true
+        tx_ottanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: false
+    # No eligible child → Not eligible
+
+- name: Case 6, fails resources test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: false
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_ottanf_crisis_criteria: true
+        tx_ottanf_income_eligible: true
+        tx_ottanf_resources_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: false
+    # Resources too high → Not eligible

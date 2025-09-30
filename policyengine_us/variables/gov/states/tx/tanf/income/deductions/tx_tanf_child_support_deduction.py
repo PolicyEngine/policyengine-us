@@ -18,4 +18,4 @@ class tx_tanf_child_support_deduction(Variable):
         p = parameters(period).gov.states.tx.tanf.income
         child_support = spm_unit("child_support_received", period)
 
-        return min_(child_support, p.child_support_deduction)
+        return min_(child_support, p.deductions.child_support)

@@ -31,7 +31,7 @@ class tx_tanf_dependent_care_deduction(Variable):
 
         p = parameters(period).gov.states.tx.tanf.income
         max_per_person = where(
-            eligible_for_deduction, p.child_care_deduction.calc(age), 0
+            eligible_for_deduction, p.deductions.dependent_care.calc(age), 0
         )
         total_max_deduction = spm_unit.sum(max_per_person)
 

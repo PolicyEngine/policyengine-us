@@ -22,3 +22,13 @@
     state_code: TX
   output:
     tx_tanf_eligible_child: false
+
+- name: Case 4, child is undocumented.
+  period: 2025-01
+  input:
+    age: 10
+    ssi: 0
+    immigration_status: UNDOCUMENTED
+    state_code: TX
+  output:
+    tx_tanf_eligible_child: false

@@ -1,16 +1,20 @@
 from policyengine_us.model_api import *
 
 
-class tanf_fpg(Variable):
+class tx_tanf_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = "TANF federal poverty guideline"
+    label = "Texas TANF federal poverty guideline"
     unit = USD
-    documentation = "The federal poverty guideline used to determine TANF eligibility and benefits."
+    documentation = "The federal poverty guideline used to determine Texas TANF eligibility and benefits."
     definition_period = MONTH
+    reference = (
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits",
+    )
+    defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        n = spm_unit("spm_unit_size", period)
+        n = spm_unit("tx_tanf_assistance_unit_size", period)
         state_group = spm_unit.household("state_group_str", period.this_year)
         year = period.start.year
         month = period.start.month

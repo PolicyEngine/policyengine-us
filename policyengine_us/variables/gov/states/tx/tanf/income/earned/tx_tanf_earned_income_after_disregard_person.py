@@ -19,7 +19,7 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
         p = parameters(period).gov.states.tx.tanf.income
 
         # Step 1: Subtract work expense deduction ($120, not to exceed earnings)
-        work_expense = min_(p.work_expense_deduction, gross_earned)
+        work_expense = min_(p.deductions.work_expense, gross_earned)
         after_work_expense = max_(gross_earned - work_expense, 0)
 
         # Step 2: Apply appropriate earned income disregard
@@ -29,7 +29,7 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
 
         # For applicants (not enrolled): 1/3 disregard
         applicant_disregard = (
-            after_work_expense * p.applicant_earned_income_fraction
+            after_work_expense * p.disregards.applicant_fraction
         )
         after_applicant_disregard = max_(
             after_work_expense - applicant_disregard, 0
@@ -38,10 +38,11 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
         # For continuing recipients (enrolled): 90% disregard (capped at $1,400)
         # Note: This disregard is limited to 4 months per 12-month period (not yet implemented)
         potential_recipient_disregard = (
-            after_work_expense * p.earned_income_disregard_rate
+            after_work_expense * p.disregards.continuing_recipient_rate
         )
         actual_recipient_disregard = min_(
-            potential_recipient_disregard, p.earned_income_disregard_cap
+            potential_recipient_disregard,
+            p.disregards.continuing_recipient_cap,
         )
         after_recipient_disregard = max_(
             after_work_expense - actual_recipient_disregard, 0
