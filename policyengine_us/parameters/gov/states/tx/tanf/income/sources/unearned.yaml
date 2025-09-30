@@ -1,0 +1,26 @@
+description: Texas counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2000-01-01:
+    - social_security
+    - ssi
+    - disability_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - farm_income
+    - farm_rent_income
+    - capital_gains
+    - miscellaneous_income
+
+metadata:
+  unit: list
+  period: year
+  label: Texas TANF unearned income sources
+  reference:
+    - title: Texas Works Handbook - A-1340 Income Limits
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+    - title: 1 TAC § 372.601 - Types of Income
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-601

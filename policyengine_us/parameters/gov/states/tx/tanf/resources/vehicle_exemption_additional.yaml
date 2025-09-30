@@ -1,10 +1,13 @@
-description: Texas TANF vehicle exemption for additional vehicles
-metadata:
-  label: Texas TANF additional vehicle exemption
-  unit: currency-USD
-  reference:
-    - title: Texas Works Handbook A-1238, Vehicles
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1238-vehicles
-      description: Based on search results indicating $8,700 exemption for additional vehicles
+description: Texas exempts up to this value for additional vehicles in Temporary Assistance for Needy Families (TANF) resource calculations.
 values:
-  2024-01-01: 8_700
+  2000-01-01: 8_700
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Texas TANF additional vehicle exemption
+  reference:
+    - title: Texas Works Handbook - A-1238 Vehicles
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1238-vehicles
+    - title: 1 TAC § 372.313 - Resources That Do Not Count
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-313

@@ -1,10 +1,13 @@
-description: Texas TANF earned income disregard monthly cap
+description: Texas limits the Temporary Assistance for Needy Families (TANF) earned income disregard to this amount per month for 4 months in a 12-month period.
+values:
+  2000-01-01: 1_400
+
 metadata:
-  label: Texas TANF earned income disregard cap
   unit: currency-USD
   period: month
+  label: Texas TANF earned income disregard cap
   reference:
-    - title: Texas Works Handbook A-1340, Income Limits
+    - title: Texas Works Handbook - A-1340 Income Limits
       href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
-values:
-  2024-01-01: 1_400  # Cap of $1,400 per month
+    - title: 1 TAC § 372.605 - Income Exclusions and Disregards
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-605

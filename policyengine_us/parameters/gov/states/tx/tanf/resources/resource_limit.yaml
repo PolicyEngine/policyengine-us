@@ -1,11 +1,13 @@
-description: Texas TANF resource limit
-metadata:
-  label: Texas TANF resource limit
-  unit: currency-USD
-  reference:
-    - title: Texas Works Handbook A-1220, Limits
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1220-limits
-    - title: Texas Works Handbook A-2420, Eligibility Requirements
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2420-eligibility-requirements
+description: Texas limits countable resources to this amount for Temporary Assistance for Needy Families (TANF) eligibility.
 values:
-  2024-01-01: 1_000
+  2000-01-01: 1_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Texas TANF resource limit
+  reference:
+    - title: Texas Works Handbook - A-1220 Limits
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1220-limits
+    - title: 1 TAC § 372.311 - Resource Eligibility
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-311

@@ -10,15 +10,13 @@ class tx_tanf_recognizable_needs_test(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Part B test for all households
         size = spm_unit("tx_tanf_assistance_unit_size", period)
         countable_income = spm_unit("tx_tanf_countable_income", period)
         p = parameters(period).gov.states.tx.tanf.payment_standard
 
-        recognizable_needs = p.recognizable_needs.calc(size)
+        budgetary_needs = p.budgetary_needs.calc(size)
+        recognizable_needs = budgetary_needs * p.recognizable_needs_rate
 
-        # Calculate unmet need
         unmet_need = recognizable_needs - countable_income
 
-        # Eligible if unmet need is one cent or more
         return unmet_need >= 0.01

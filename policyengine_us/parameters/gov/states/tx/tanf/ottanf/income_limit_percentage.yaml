@@ -1,9 +1,13 @@
-description: Texas OTTANF income limit as percentage of Federal Poverty Level
-metadata:
-  label: Texas OTTANF income limit percentage
-  unit: /1
-  reference:
-    - title: Texas Works Handbook A-2410, General Policy
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy
+description: Texas limits One-Time Temporary Assistance for Needy Families (OTTANF) income to this percentage of the Federal Poverty Level.
 values:
-  2024-01-01: 2.0  # 200% of FPL
+  2000-01-01: 2.0
+
+metadata:
+  unit: /1
+  period: year
+  label: Texas OTTANF income limit percentage
+  reference:
+    - title: Texas Works Handbook - A-2410 General Policy
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy
+    - title: 1 TAC § 372.701 - One-Time TANF (OTTANF)
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-701

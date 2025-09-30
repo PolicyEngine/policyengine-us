@@ -1,10 +1,13 @@
-description: Texas TANF minimum grant amount
-metadata:
-  label: Texas TANF minimum grant
-  unit: currency-USD
-  period: month
-  reference:
-    - title: Texas Works Handbook A-1340, Income Limits
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+description: Texas provides this minimum Temporary Assistance for Needy Families (TANF) grant amount when the calculated benefit is positive but below this threshold.
 values:
   2024-10-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Texas TANF minimum grant
+  reference:
+    - title: Texas Works Handbook - A-1340 Income Limits
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+    - title: 1 TAC § 372.605 - Income Exclusions and Disregards
+      href: https://www.law.cornell.edu/regulations/texas/1-TAC-372-605

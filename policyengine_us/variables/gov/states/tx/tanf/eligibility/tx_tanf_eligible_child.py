@@ -4,21 +4,26 @@ from policyengine_us.model_api import *
 class tx_tanf_eligible_child(Variable):
     value_type = bool
     entity = Person
-    label = "Texas TANF eligible child"
+    label = "Eligible child for Texas Temporary Assistance for Needy Families (TANF) based on demographics"
     definition_period = MONTH
     reference = (
-        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-220-tanf"
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-220-tanf",
+        "https://www.law.cornell.edu/regulations/texas/1-TAC-372-307",
     )
     defined_for = StateCode.TX
 
     def formula(person, period, parameters):
-        age = person("age", period.this_year)
-        is_full_time_student = person("is_full_time_student", period)
+        p = parameters(period).gov.states.tx.tanf.age_threshold
+        age = person("monthly_age", period)
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_secondary_school_student = person(
+            "is_in_secondary_school", period.this_year
+        )
 
-        # Child under 18
-        under_18 = age < 18
+        age_eligible = where(
+            is_secondary_school_student,
+            age < p.student_dependent,
+            age < p.minor_child,
+        )
 
-        # Or 18 and a full-time student expected to graduate before turning 19
-        student_18 = (age == 18) & is_full_time_student
-
-        return under_18 | student_18
+        return age_eligible & is_dependent
