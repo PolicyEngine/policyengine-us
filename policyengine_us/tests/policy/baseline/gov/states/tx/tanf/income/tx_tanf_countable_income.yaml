@@ -1,0 +1,39 @@
+- name: Case 1, only earned income.
+  period: 2025-01
+  input:
+    tx_tanf_countable_earned_income: 100
+    tx_tanf_countable_unearned_income: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_income: 100
+    # Earned (100) + unearned (0) = 100
+
+- name: Case 2, only unearned income.
+  period: 2025-01
+  input:
+    tx_tanf_countable_earned_income: 0
+    tx_tanf_countable_unearned_income: 200
+    state_code: TX
+  output:
+    tx_tanf_countable_income: 200
+    # Earned (0) + unearned (200) = 200
+
+- name: Case 3, both earned and unearned income.
+  period: 2025-01
+  input:
+    tx_tanf_countable_earned_income: 150
+    tx_tanf_countable_unearned_income: 75
+    state_code: TX
+  output:
+    tx_tanf_countable_income: 225
+    # Earned (150) + unearned (75) = 225
+
+- name: Case 4, no income.
+  period: 2025-01
+  input:
+    tx_tanf_countable_earned_income: 0
+    tx_tanf_countable_unearned_income: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_income: 0
+    # Earned (0) + unearned (0) = 0

@@ -1,0 +1,55 @@
+- name: Case 1, no child support received.
+  period: 2025-01
+  input:
+    child_support_received: 0
+    state_code: TX
+  output:
+    tx_tanf_child_support_deduction: 0
+    # No child support → no deduction
+
+- name: Case 2, child support below $75 cap.
+  period: 2025-01
+  input:
+    child_support_received: 600  # $50/month
+    state_code: TX
+  output:
+    tx_tanf_child_support_deduction: 50
+    # 600 / 12 = 50, below $75 cap → deduct full $50
+
+- name: Case 3, child support exceeds $75 cap.
+  period: 2025-01
+  input:
+    child_support_received: 1_200  # $100/month
+    state_code: TX
+  output:
+    tx_tanf_child_support_deduction: 75
+    # 1,200 / 12 = 100, exceeds $75 cap → deduct only $75
+
+- name: Case 4, child support exactly at $75 cap.
+  period: 2025-01
+  input:
+    child_support_received: 900  # $75/month
+    state_code: TX
+  output:
+    tx_tanf_child_support_deduction: 75
+    # 900 / 12 = 75, equals cap → deduct $75
+
+- name: Case 5, multiple people with child support per household cap.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        child_support_received: 600  # $50/month
+      person2:
+        child_support_received: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_child_support_deduction: 75
+    # Person1: 50 + Person2: 50 = 100 total
+    # Per-household cap of $75 → deduct only $75

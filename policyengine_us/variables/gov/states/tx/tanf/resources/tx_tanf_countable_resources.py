@@ -17,18 +17,15 @@ class tx_tanf_countable_resources(Variable):
         # Countable resources = liquid resources + excess vehicle value
         # Household must have countable resources ≤ $1,000 to be eligible
 
-        # Liquid resources (cash, checking, savings)
-        cash_assets = spm_unit("spm_unit_cash_assets", period)
+        # Liquid resources (cash, checking, savings) - stocks use period.this_year
+        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
 
         # Vehicle resources (apply vehicle exemption: one automobile up to $4,650)
-        # Use annual vehicle value for calculation, then convert to monthly
         vehicle_value = spm_unit.household(
             "household_vehicles_value", period.this_year
         )
         p = parameters(period).gov.states.tx.tanf.resources
-        countable_vehicle_value = (
-            max_(vehicle_value - p.vehicle_exemption, 0) / MONTHS_IN_YEAR
-        )
+        countable_vehicle_value = max_(vehicle_value - p.vehicle_exemption, 0)
 
-        # Total countable resources (cash already monthly, vehicle converted to monthly)
+        # Total countable resources (no period conversion - resources are stocks)
         return cash_assets + countable_vehicle_value
