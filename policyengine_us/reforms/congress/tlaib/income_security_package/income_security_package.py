@@ -288,19 +288,21 @@ def create_income_security_package() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            # Exclude non_refundable_ctc as it's replaced by ECPA
-            CREDITS = [
-                "foreign_tax_credit",
-                "retirement_savings_credit",
-                "residential_clean_energy_credit",
-                "american_opportunity_credit_non_refundable",
-                "lifetime_learning_credit_non_refundable",
-                "other_dependent_credit",
-                "cdcc",
-                "electric_vehicle_credit",
-                "district_of_columbia_non_refundable_credits",
-                "education_credit_phase_out",
-            ]
+            # Get the base list of non-refundable credits from parameters
+            p = parameters(period).gov.irs.credits
+            base_credits = list(p.non_refundable)
+
+            # Check if ECPA is active
+            ecpa_params = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
+            ecpa_active = ecpa_params.in_effect
+
+            # If ECPA is active, remove non_refundable_ctc from the list
+            if ecpa_active:
+                CREDITS = [c for c in base_credits if c != "non_refundable_ctc"]
+            else:
+                CREDITS = base_credits
 
             return add(tax_unit, period, CREDITS)
 
