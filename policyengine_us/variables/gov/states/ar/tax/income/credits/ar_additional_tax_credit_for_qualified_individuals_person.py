@@ -12,7 +12,7 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
     def formula(person, period, parameters):
         filing_separately = person.tax_unit("ar_files_separately", period)
         income_joint = person("ar_taxable_income_joint", period)
-        income_indiv = person("ar_taxable_income_indiv", period)
+        income_indiv = person("ar_net_taxable_income_joint", period)
         # When filing separately, the credit is calculated based on individual income
         income = where(
             filing_separately, income_indiv, person.tax_unit.sum(income_joint)
