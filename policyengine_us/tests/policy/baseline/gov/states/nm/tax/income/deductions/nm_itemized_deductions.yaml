@@ -1,0 +1,47 @@
+- name: New Mexico adopts federal itemized deductions
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    age_head: 35
+    charitable_deduction: 5_000
+    interest_deduction: 8_000
+    salt_deduction: 10_000
+    medical_expense_deduction: 2_000
+  output:
+    # Federal itemized deductions total
+    total_itemized_taxable_income_deductions: 25_000
+    # NM uses federal itemized deductions
+    nm_itemized_deductions: 25_000
+    # Should flow through to state_itemized_deductions
+    state_itemized_deductions: 25_000
+
+- name: New Mexico itemized deductions for married couple
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: JOINT
+    age_head: 45
+    age_spouse: 43
+    charitable_deduction: 10_000
+    interest_deduction: 15_000
+    salt_deduction: 10_000
+  output:
+    total_itemized_taxable_income_deductions: 35_000
+    nm_itemized_deductions: 35_000
+    state_itemized_deductions: 35_000
+
+- name: New Mexico itemized deductions for head of household
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    charitable_deduction: 3_000
+    interest_deduction: 7_000
+    salt_deduction: 8_000
+    medical_expense_deduction: 1_500
+  output:
+    total_itemized_taxable_income_deductions: 19_500
+    nm_itemized_deductions: 19_500
+    state_itemized_deductions: 19_500

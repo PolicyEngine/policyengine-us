@@ -1,0 +1,24 @@
+- name: Separate filers are ineligible in 2021
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_cdcc_eligible: False
+
+- name: Separate joint filers are eligible in 2021
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: MN
+  output:
+    mn_cdcc_eligible: True
+
+- name: Separate filers are eligible in 2024`
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_cdcc_eligible: True
+

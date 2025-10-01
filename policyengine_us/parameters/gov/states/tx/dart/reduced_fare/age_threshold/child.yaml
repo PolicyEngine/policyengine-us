@@ -1,0 +1,23 @@
+description: Dallas Area Rapid Transit (DART) provides the Reduced Fare Program to applicants who are within these age brackets.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: DART Reduced Fare Program child age threshold
+  reference:
+    - title: Dallas Area Rapid Transit (DART) Reduced Fare GoPass Tap Card
+      href: https://www.dart.org/fare/general-fares-and-overview/reduced-fares#college
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount: 
+      2021-01-01: false
+  - threshold: 
+      2021-01-01: 5 # Children under 5 years old ride for free
+    amount: 
+      2021-01-01: true
+  - threshold: 
+      2021-01-01: 15
+    amount: 
+      2021-01-01: false

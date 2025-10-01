@@ -1,0 +1,44 @@
+- name: In 2020, children under 19 are eligible
+  period: 2020
+  input:
+    age: 18
+    is_pregnant: false
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: In 2020, adults over 50 are ineligible
+  period: 2020
+  input:
+    age: 50
+    is_pregnant: false
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: In 2020, adults over 26 are ineligible
+  period: 2020
+  input:
+    age: 26
+    is_pregnant: false
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Pregnant adults are eligible
+  period: 2020
+  input:
+    age: 26
+    is_pregnant: true
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: In 2024, adults over 26 are ineligible
+  period: 2024
+  input:
+    age: 26
+    is_pregnant: false
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true

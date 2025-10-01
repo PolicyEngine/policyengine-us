@@ -21,7 +21,4 @@ class ms_taxable_income_joint(Variable):
             period,
             ["ms_deductions_joint", "ms_total_exemptions_joint"],
         )
-        head = person("is_tax_unit_head", period)
-        taxable_income = agi - deductions_and_exemptions
-        # Attribute taxable income to the head
-        return person.tax_unit.sum(taxable_income) * head
+        return agi - deductions_and_exemptions

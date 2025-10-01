@@ -38,7 +38,7 @@ class ny_ctc_pre_2024(Variable):
                 if isinstance(ctc_parameter, Parameter):
                     ctc_parameter.update(
                         start=instant("2017-01-01"),
-                        stop=instant("2026-01-01"),
+                        stop=instant("2035-01-01"),
                         value=ctc_parameter("2017-01-01"),
                     )
             # Delete all arrays from pre-TCJA CTC branch.
@@ -55,9 +55,21 @@ class ny_ctc_pre_2024(Variable):
                 period,
                 maximum_ctc * meets_ny_minimum_age,
             )
+            # Get maximum federal CTC from pre-TCJA rules
             max_federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
-            ctc_phase_in = pre_tcja_ctc.tax_unit("ctc_phase_in", period)
-            federal_ctc = min_(max_federal_ctc, ctc_phase_in)
+
+            # Limit by actual tax liability (for non-refundable portion)
+            limiting_tax = pre_tcja_ctc.tax_unit(
+                "ctc_limiting_tax_liability", period
+            )
+            non_refundable_ctc = min_(max_federal_ctc, limiting_tax)
+
+            # Get refundable portion (requires earned income)
+            refundable_ctc = pre_tcja_ctc.tax_unit("refundable_ctc", period)
+
+            # Total federal CTC they can actually claim
+            federal_ctc = non_refundable_ctc + refundable_ctc
+
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )

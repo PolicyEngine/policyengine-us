@@ -1,0 +1,178 @@
+- name: Federal standard deduction adopted for Connecticut
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    age_head: 30
+  output:
+    standard_deduction: 13_850
+    state_standard_deduction: 13_850
+
+- name: Federal standard deduction adopted for Utah married couple
+  period: 2023
+  input:
+    state_code: UT
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 33
+  output:
+    standard_deduction: 27_700
+    state_standard_deduction: 27_700
+
+- name: State-specific deduction for Georgia
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: SINGLE
+    age_head: 30
+    adjusted_gross_income: 50_000
+  output:
+    ga_standard_deduction: 5_400
+    state_standard_deduction: 5_400
+
+- name: State-specific deduction for New York
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    adjusted_gross_income: 100_000
+  output:
+    ny_standard_deduction: 16_050
+    state_standard_deduction: 16_050
+
+- name: State-specific deduction for Montana
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    adjusted_gross_income: 20_000
+  output:
+    mt_standard_deduction_indiv: 2_460
+    mt_standard_deduction_joint: 4_920
+    state_standard_deduction: 4_920
+
+- name: Montana standard deduction maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: JOINT
+    age_head: 45
+    age_spouse: 43
+    # Set up scenario where joint calculation is higher
+    mt_standard_deduction_indiv: 3_000
+    mt_standard_deduction_joint: 5_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_standard_deduction: 5_000
+
+- name: Montana standard deduction maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: SEPARATE
+    age_head: 35
+    # Set up scenario where individual calculation is higher
+    mt_standard_deduction_indiv: 8_000
+    mt_standard_deduction_joint: 6_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_standard_deduction: 8_000
+
+- name: Iowa standard deduction maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: JOINT
+    age_head: 42
+    age_spouse: 40
+    # Set up scenario where joint calculation is higher
+    ia_standard_deduction_indiv: 2_500
+    ia_standard_deduction_joint: 4_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_standard_deduction: 4_000
+
+- name: Iowa standard deduction maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: SEPARATE
+    age_head: 38
+    # Set up scenario where individual calculation is higher
+    ia_standard_deduction_indiv: 7_000
+    ia_standard_deduction_joint: 5_500
+  output:
+    # Should take the maximum (individual in this case)
+    state_standard_deduction: 7_000
+
+- name: Delaware standard deduction maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 37
+    # Set up scenario where joint calculation is higher
+    de_standard_deduction_indv: 3_200
+    de_standard_deduction_joint: 6_400
+  output:
+    # Should take the maximum (joint in this case)
+    state_standard_deduction: 6_400
+
+- name: Delaware standard deduction maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: SEPARATE
+    age_head: 45
+    # Set up scenario where individual calculation is higher
+    de_standard_deduction_indv: 8_500
+    de_standard_deduction_joint: 7_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_standard_deduction: 8_500
+
+- name: Arkansas standard deduction maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: AR
+    filing_status: JOINT
+    age_head: 44
+    age_spouse: 41
+    # Set up scenario where joint calculation is higher
+    ar_standard_deduction_indiv: 2_340
+    ar_standard_deduction_joint: 4_680
+  output:
+    # Should take the maximum (joint in this case)
+    state_standard_deduction: 4_680
+
+- name: Mississippi standard deduction maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: MS
+    filing_status: JOINT
+    age_head: 39
+    age_spouse: 36
+    # Set up scenario where joint calculation is higher
+    ms_standard_deduction_indiv: 2_300
+    ms_standard_deduction_joint: 4_600
+  output:
+    # Should take the maximum (joint in this case)
+    state_standard_deduction: 4_600
+
+- name: Kentucky standard deduction maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: KY
+    filing_status: SEPARATE
+    age_head: 41
+    # Set up scenario where individual calculation is higher
+    ky_standard_deduction_indiv: 3_400
+    ky_standard_deduction_joint: 2_650
+  output:
+    # Should take the maximum (individual in this case)
+    state_standard_deduction: 3_400

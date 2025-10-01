@@ -1,0 +1,180 @@
+- name: Federal itemized deductions adopted for Connecticut
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    age_head: 30
+    # Set the individual federal deduction components directly
+    charitable_deduction: 5_000
+    interest_deduction: 8_000
+    salt_deduction: 10_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 23_000
+
+- name: Federal itemized deductions adopted for Georgia
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    # Set the individual federal deduction components directly
+    charitable_deduction: 10_000
+    interest_deduction: 15_000
+    salt_deduction: 10_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 35_000
+
+- name: State-specific itemized deductions for New York
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    age_head: 35
+    adjusted_gross_income: 80_000
+    # NY has its own calculation that we set directly
+    ny_itemized_deductions: 15_000
+  output:
+    state_itemized_deductions: 15_000
+
+- name: Federal itemized deductions adopted for Utah
+  period: 2023
+  input:
+    state_code: UT
+    filing_status: JOINT
+    age_head: 45
+    age_spouse: 43
+    charitable_deduction: 7_500
+    interest_deduction: 12_000
+    salt_deduction: 8_000
+  output:
+    # State should use sum of federal itemized deduction components
+    state_itemized_deductions: 27_500
+
+- name: New Mexico uses federal itemized deductions through its own implementation
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    charitable_deduction: 4_000
+    interest_deduction: 9_000
+    salt_deduction: 7_000
+  output:
+    # NM uses federal itemized deductions via nm_itemized_deductions
+    total_itemized_taxable_income_deductions: 20_000
+    nm_itemized_deductions: 20_000
+    state_itemized_deductions: 20_000
+
+- name: Montana check for individual vs joint itemization
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    charitable_deduction: 4_000
+    interest_deduction: 9_000
+    salt_deduction: 7_000
+  output:
+    # NM uses federal itemized deductions via nm_itemized_deductions
+    total_itemized_taxable_income_deductions: 20_000
+    mt_itemized_deductions_for_federal_itemization_indiv: 2_000
+    mt_itemized_deductions_for_federal_itemization_joint: 4_000
+    state_itemized_deductions: 4_000
+
+- name: Montana maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    # Set up scenario where joint calculation is higher
+    mt_itemized_deductions_for_federal_itemization_indiv: 8_000
+    mt_itemized_deductions_for_federal_itemization_joint: 12_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 12_000
+
+- name: Montana maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: MT
+    filing_status: SEPARATE
+    age_head: 35
+    # Set up scenario where individual calculation is higher
+    mt_itemized_deductions_for_federal_itemization_indiv: 15_000
+    mt_itemized_deductions_for_federal_itemization_joint: 10_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 15_000
+
+- name: Iowa maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: JOINT
+    age_head: 42
+    age_spouse: 40
+    # Set up scenario where joint calculation is higher
+    ia_itemized_deductions_indiv: 6_000
+    ia_itemized_deductions_joint: 9_000
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 9_000
+
+- name: Iowa maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: IA
+    filing_status: SEPARATE
+    age_head: 45
+    # Set up scenario where individual calculation is higher
+    ia_itemized_deductions_indiv: 11_000
+    ia_itemized_deductions_joint: 7_000
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 11_000
+
+- name: Delaware maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: JOINT
+    age_head: 38
+    age_spouse: 35
+    # Set up scenario where joint calculation is higher
+    de_itemized_deductions_indv: 4_500
+    de_itemized_deductions_joint: 8_200
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 8_200
+
+- name: Delaware maximum logic - individual higher
+  period: 2023
+  input:
+    state_code: DE
+    filing_status: SEPARATE
+    age_head: 42
+    # Set up scenario where individual calculation is higher
+    de_itemized_deductions_indv: 12_500
+    de_itemized_deductions_joint: 9_800
+  output:
+    # Should take the maximum (individual in this case)
+    state_itemized_deductions: 12_500
+
+- name: Arkansas maximum logic - joint higher
+  period: 2023
+  input:
+    state_code: AR
+    filing_status: JOINT
+    age_head: 46
+    age_spouse: 44
+    # Set up scenario where joint calculation is higher
+    ar_itemized_deductions_indiv: 3_800
+    ar_itemized_deductions_joint: 7_600
+  output:
+    # Should take the maximum (joint in this case)
+    state_itemized_deductions: 7_600

@@ -2,20 +2,20 @@ description: All state standard deduction variables.
 values:
   0000-01-01:
     - al_standard_deduction  # Alabama
-    - ar_standard_deduction  # Arkansas
+    # Arkansas allows for a married filing separately structure which requires two separate standard deductions.
     - az_standard_deduction  # Arizona
     - ca_standard_deduction  # California
     # Connecticut adopts federal standard deduction
     - dc_standard_deduction  # DC
-    - de_standard_deduction  # Delaware
+    # Delaware allows for a married filing separately structure which requires two separate standard deductions.
     - ga_standard_deduction  # Georgia
     - hi_standard_deduction  # Hawaii
-    - ia_standard_deduction  # Iowa
+    # Iowa allows for a married filing separately structure which requires two separate standard deductions.
     # Idaho adopts federal standard deduction.
     # Illinois doesn't have a standard deduction.
     # Indiana doesn't have deductions (taxes AGI directly).
     - ks_standard_deduction  # Kansas
-    - ky_standard_deduction  # Kentucky
+    # Kentucky allows for a married filing separately structure which requires two separate standard deductions.
     - la_standard_deduction  # Louisiana
     # Massachusetts doesn't have deductions in a standard form.
     - md_standard_deduction  # Maryland
@@ -23,8 +23,8 @@ values:
     - mi_standard_deduction  # Michigan
     - mn_standard_deduction  # Minnesota
     # Missouri adopts federal standard deduction
-    - ms_standard_deduction  # Mississippi
-    - mt_standard_deduction  # Montana
+    # Mississippi allows for a married filing separately structure which requires two separate standard deductions.
+    # Montana allows for a married filing separately structure which requires two separate standard deductions.
     - nc_standard_deduction  # North Carolina
     # North Dakota adopts federal deductions.
     - ne_standard_deduction  # Nebraska

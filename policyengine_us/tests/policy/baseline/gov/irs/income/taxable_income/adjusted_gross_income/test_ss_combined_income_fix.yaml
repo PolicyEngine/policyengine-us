@@ -1,0 +1,21 @@
+- name: Test combined income calculation uses separate parameter
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Combined income should be 30_000 + 0.5 * 20_000 = 40_000
+    # (using the default 0.5 fraction from the new parameter)
+    tax_unit_combined_income_for_social_security_taxability: 40_000
