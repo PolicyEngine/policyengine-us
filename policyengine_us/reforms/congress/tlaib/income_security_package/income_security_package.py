@@ -336,7 +336,9 @@ def create_income_security_package() -> Reform:
 
             # If ECPA is active, remove non_refundable_ctc from the list
             if ecpa_active:
-                CREDITS = [c for c in base_credits if c != "non_refundable_ctc"]
+                CREDITS = [
+                    c for c in base_credits if c != "non_refundable_ctc"
+                ]
             else:
                 CREDITS = base_credits
 
