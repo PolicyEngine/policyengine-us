@@ -1,0 +1,15 @@
+- name: unit test 1 - eligible 
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 2_220  # $185 * 12 months
+
+- name: unit test 2 - not eligible 
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: false
+  output:
+    base_part_b_premium: 0
