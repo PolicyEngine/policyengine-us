@@ -165,6 +165,10 @@ def create_income_security_package() -> Reform:
         definition_period = YEAR
 
         def formula(household, period, parameters):
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
+
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -181,10 +185,15 @@ def create_income_security_package() -> Reform:
                 "basic_income",
                 "spm_unit_capped_housing_subsidy",
                 "household_state_benefits",
-                "baby_bonus_act_payment",
-                "boost_act_payment",
-                "ecpa_child_benefit",
             ]
+
+            # Add Income Security Package benefits if active
+            if p.baby_bonus_act.in_effect:
+                BENEFITS.append("baby_bonus_act_payment")
+            if p.boost_act.in_effect:
+                BENEFITS.append("boost_act_payment")
+            if p.end_child_poverty_act.in_effect:
+                BENEFITS.append("ecpa_child_benefit")
 
             return add(household, period, BENEFITS)
 
@@ -196,6 +205,10 @@ def create_income_security_package() -> Reform:
         unit = USD
 
         def formula(spm_unit, period, parameters):
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
+
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -219,10 +232,15 @@ def create_income_security_package() -> Reform:
                 # Contributed.
                 "basic_income",
                 "ny_drive_clean_rebate",
-                "baby_bonus_act_payment",
-                "boost_act_payment",
-                "ecpa_child_benefit",
             ]
+
+            # Add Income Security Package benefits if active
+            if p.baby_bonus_act.in_effect:
+                BENEFITS.append("baby_bonus_act_payment")
+            if p.boost_act.in_effect:
+                BENEFITS.append("boost_act_payment")
+            if p.end_child_poverty_act.in_effect:
+                BENEFITS.append("ecpa_child_benefit")
 
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
                 BENEFITS.append("aca_ptc")
@@ -251,10 +269,14 @@ def create_income_security_package() -> Reform:
                 "income_tax_refundable_credits", period
             )
 
-            # Add BOOST tax
             reduced_tax = base_tax - refundable_credits
-            boost_tax = tax_unit("boost_act_tax", period)
-            return reduced_tax + boost_tax
+
+            # Add BOOST tax only if active
+            if p.boost_act.in_effect:
+                boost_tax = tax_unit("boost_act_tax", period)
+                return reduced_tax + boost_tax
+            else:
+                return reduced_tax
 
     class income_tax_refundable_credits(Variable):
         value_type = float
@@ -264,21 +286,35 @@ def create_income_security_package() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            # Get standard refundable credits, excluding EITC and refundable CTC (replaced by ECPA)
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
+
+            # Get standard refundable credits, excluding EITC and refundable CTC if ECPA is active
             standard_credits = parameters(period).gov.irs.credits.refundable
-            CREDITS = [
-                c
-                for c in standard_credits
-                if c not in ["eitc", "refundable_ctc"]
-            ]
+
+            if p.in_effect:
+                # ECPA replaces EITC and refundable CTC
+                CREDITS = [
+                    c
+                    for c in standard_credits
+                    if c not in ["eitc", "refundable_ctc"]
+                ]
+            else:
+                # Use all standard credits
+                CREDITS = list(standard_credits)
+
             base_credits = add(tax_unit, period, CREDITS) if CREDITS else 0
 
-            # Add ECPA credits
-            ecpa_filer = tax_unit("ecpa_filer_credit", period)
-            ecpa_adult_dep = add(
-                tax_unit, period, ["ecpa_adult_dependent_credit"]
-            )
-            return base_credits + ecpa_filer + ecpa_adult_dep
+            # Add ECPA credits only if active
+            if p.in_effect:
+                ecpa_filer = tax_unit("ecpa_filer_credit", period)
+                ecpa_adult_dep = add(
+                    tax_unit, period, ["ecpa_adult_dependent_credit"]
+                )
+                return base_credits + ecpa_filer + ecpa_adult_dep
+            else:
+                return base_credits
 
     class income_tax_non_refundable_credits(Variable):
         value_type = float
