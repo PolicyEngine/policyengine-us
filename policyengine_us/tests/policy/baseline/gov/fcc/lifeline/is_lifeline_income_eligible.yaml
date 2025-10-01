@@ -1,0 +1,47 @@
+- name: Below federal 135% FPG limit - eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.35
+    state_code: CA  # Any non-Texas state
+  output:
+    is_lifeline_income_eligible: true
+
+- name: Above federal 135% but below Texas 150% in non-Texas state - not eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.4
+    state_code: CA
+  output:
+    is_lifeline_income_eligible: false
+
+- name: Above federal 135% but below Texas 150% in Texas - eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.4
+    state_code: TX
+  output:
+    is_lifeline_income_eligible: true
+
+- name: At exactly Texas 150% limit in Texas - eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.5
+    state_code: TX
+  output:
+    is_lifeline_income_eligible: true
+
+- name: Above Texas 150% limit in Texas - not eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.51
+    state_code: TX
+  output:
+    is_lifeline_income_eligible: false
+
+- name: At federal 135% limit in California - eligible
+  period: 2025
+  input:
+    fcc_fpg_ratio: 1.35
+    state_code: CA
+  output:
+    is_lifeline_income_eligible: true

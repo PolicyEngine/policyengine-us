@@ -24,7 +24,6 @@ class is_lifeline_eligible(Variable):
             np.any(tribal_lifeline_programs),
             np.any(non_tribal_lifeline_programs),
         )
-        fpg_ratio = spm_unit("fcc_fpg_ratio", period)
-        fpg_limit = p.fpg_limit
-        fpg_eligible = fpg_ratio <= fpg_limit
-        return categorically_eligible | fpg_eligible
+        # Use the new unified income eligibility variable
+        income_eligible = spm_unit("is_lifeline_income_eligible", period)
+        return categorically_eligible | income_eligible
