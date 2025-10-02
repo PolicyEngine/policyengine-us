@@ -1,0 +1,127 @@
+- name: Case 1, single parent of one with no earnings gets maximum benefit.
+  period: 2023
+  absolute_error_margin: .8
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        mt_tanf_meets_work_requirements: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_tanf: (575.1667 * 6) + (534.0417 * 6) # derived from FPG from 2022 first 6 months, and FPG from 2023 last 6 months
+  
+- name: Case 2, single parent of one with earnings gets the difference of the standard payment and countable income.
+  period: 2023-01
+  absolute_error_margin: .9
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 9_000
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        childcare_expenses: 2400
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_tanf_payment_standard: 534
+    mt_tanf_gross_earned_income: 750
+    mt_tanf_countable_earned_income: 750 - 200 - ((750 - 200) * .25) # = 412 income minus cash work expense and cash percent disregard
+    mt_tanf_assistance_unit_size: 2
+    mt_tanf_assistance_unit_fpg: 1132 + 393 * (2 - 1) # = 1525
+    mt_tanf_countable_income: 412 - 200 # = 212 income minus dependent care deduction
+    mt_tanf_benefit_standard: 1525 * .3 # = 457.5
+    mt_tanf_net_income_standard: 457.5 / .785 # = 583
+    mt_tanf_gross_income_standard: 583 * 1.85 # = 1078
+    mt_tanf_gross_income: 750
+    mt_tanf_payment_standard_eligible: true
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_gmi_eligible: true
+    mt_tanf_income_eligible: true
+    mt_tanf_resources_eligible: true
+    mt_tanf_meets_work_requirements: true
+    mt_tanf_eligible: true
+    mt_tanf: 534 - 212 # 534 is derived from FPG from 2022 since january < july
+
+- name: Case 3, household is ineligible due to income being too high.
+  period: 2023-01
+  absolute_error_margin: .9
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12_000
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_tanf_assistance_unit_size: 2
+    mt_tanf_assistance_unit_fpg: 1132 + 393 * (2 - 1) # = 1525
+    mt_tanf_payment_standard: 534
+    mt_tanf_gross_earned_income: 1_000
+    mt_tanf_countable_earned_income: 1_000 - 200 - ((1_000 - 200) * .25) # income minus cash work expense and cash percent disregard
+    mt_tanf_payment_standard_eligible: false
+    mt_tanf_benefit_standard_eligible: false
+    mt_tanf_gmi_eligible: true
+    mt_tanf_income_eligible: false
+    mt_tanf_resources_eligible: true
+    mt_tanf_meets_work_requirements: true
+    mt_tanf_eligible: false
+    mt_tanf: 0
+
+- name: Case 4, household is ineligible due to missing work requirement.
+  period: 2023-01
+  absolute_error_margin: .9
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12_000
+        weekly_hours_worked: 10
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MT
+  output:
+    mt_tanf_assistance_unit_size: 2
+    mt_tanf_assistance_unit_fpg: 1132 + 393 * (2 - 1) # = 1525
+    mt_tanf_payment_standard: 534
+    mt_tanf_income_eligible: false
+    mt_tanf_resources_eligible: true
+    mt_tanf_meets_work_requirements: false
+    mt_tanf_eligible: false
+    mt_tanf: 0

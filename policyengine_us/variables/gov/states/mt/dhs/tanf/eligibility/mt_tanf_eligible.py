@@ -12,10 +12,18 @@ class mt_tanf_eligible(Variable):
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
-        meets_basic_eligibility_requirements = spm_unit(
-            "mt_tanf_basic_eligibility_requirements", period
+        demographic_eligible = (
+            add(spm_unit, period, ["mt_tanf_demographic_eligible_person"]) > 0
         )
+        income_eligible = spm_unit("mt_tanf_income_eligible", period)
+        resources_eligible = spm_unit("mt_tanf_resources_eligible", period)
+
         meets_work_requirements = spm_unit(
             "mt_tanf_meets_work_requirements", period
         )
-        return meets_basic_eligibility_requirements & meets_work_requirements
+        return (
+            demographic_eligible
+            & meets_work_requirements
+            & income_eligible
+            & resources_eligible
+        )

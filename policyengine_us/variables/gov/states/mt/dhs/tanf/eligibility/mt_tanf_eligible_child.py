@@ -6,7 +6,7 @@ class mt_tanf_eligible_child(Variable):
     entity = Person
     definition_period = MONTH
     label = "Eligible child for Montana TANF based on demographics"
-    reference = "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.208"  # 35
+    reference = "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.103"  # 35
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):

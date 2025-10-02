@@ -17,7 +17,6 @@ class mt_tanf_is_working(Variable):
         age = person("monthly_age", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         spm_unit = person.spm_unit
-        is_incapable_of_self_care = person("is_incapable_of_self_care", period)
         is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
         youngest_age = spm_unit.sum(is_youngest_member * age)
 
@@ -26,7 +25,7 @@ class mt_tanf_is_working(Variable):
         single_parent_requirement = (
             sum(
                 where(
-                    (is_head_or_spouse & ~is_incapable_of_self_care),
+                    is_head_or_spouse,
                     weekly_hours_worked
                     < p.single_parent.amount.calc(youngest_age),
                     0,
@@ -47,10 +46,7 @@ class mt_tanf_is_working(Variable):
             == 0
         )
 
-        # Treat households with an incapacitated parent as a single parent household
-        is_two_parent_unit = (spm_unit.sum(is_head_or_spouse) > 1) & (
-            spm_unit.sum(is_incapable_of_self_care) == 0
-        )
+        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
 
         return where(
             is_two_parent_unit,
