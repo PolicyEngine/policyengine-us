@@ -37,7 +37,7 @@ def create_ctc_per_child_phase_in_reform(
     if bypass:
         return create_ctc_per_child_phase_in()
 
-    p = parameters.gov.contrib.ctc.per_child_phase_out
+    p = parameters.gov.contrib.ctc.per_child_phase_in
 
     reform_active = False
     current_period = period_(period)

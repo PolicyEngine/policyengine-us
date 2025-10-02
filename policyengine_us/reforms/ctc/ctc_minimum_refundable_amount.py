@@ -41,8 +41,10 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             ctc = parameters(period).gov.irs.credits.ctc
 
             maximum_amount = tax_unit("ctc_refundable_maximum", period)
+            print(maximum_amount)
 
             total_ctc = tax_unit("ctc", period)
+            print(total_ctc)
 
             if ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_phase_out", period)
@@ -50,11 +52,14 @@ def create_ctc_minimum_refundable_amount() -> Reform:
                 return min_(reduced_max_amount, total_ctc)
 
             maximum_refundable_ctc = min_(maximum_amount, total_ctc)
+            print(maximum_refundable_ctc)
             minimum_refundable_ctc = add(
                 tax_unit, period, ["ctc_minimum_refundable_amount"]
             )
             phase_in = tax_unit("ctc_phase_in", period)
+            print(phase_in)
             phase_in_with_minimum = max_(phase_in, minimum_refundable_ctc)
+            print(phase_in_with_minimum)
             limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(
