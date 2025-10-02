@@ -27,4 +27,3 @@ class ctc_arpa_max_addition(Variable):
             tax_unit, period, ["ctc_child_individual_maximum_arpa"]
         )
         return ctc_child_maximum_arpa - ctc_child_maximum_base
- 
