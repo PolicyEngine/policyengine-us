@@ -1,0 +1,53 @@
+- name: If married, income of both head and spouse will be counted.
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_tax_unit_head: true
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      parent2:
+        is_tax_unit_spouse: true
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      child:
+        is_child: true
+        va_map_earned_income: 500
+        va_map_unearned_income: 500
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+    families:
+      family:
+        members: [parent1, parent2, child]
+        is_married: true
+  output:
+    va_map_abd_income: 4_000
+
+- name: If not married, only count the head's income.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      person2:
+        is_tax_unit_spouse: false
+        va_map_earned_income: 1_000
+        va_map_unearned_income: 1_000
+      child:
+        is_child: true
+        va_map_earned_income: 500
+        va_map_unearned_income: 500
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: VA
+    families:
+      family:
+        members: [person1, person2, child]
+        is_married: false
+  output:
+    va_map_abd_income: 2_000

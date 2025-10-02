@@ -1,0 +1,35 @@
+- name: Is age eligible and income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_famis_age_eligibility: true
+    va_map_famis_income_eligibility: true
+  output:
+    va_map_famis_eligibility: true
+
+- name: Is age eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_famis_age_eligibility: true
+    va_map_famis_income_eligibility: false
+  output:
+    va_map_famis_eligibility: false
+
+- name: Is income eligible but not age eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_famis_age_eligibility: false
+    va_map_famis_income_eligibility: true
+  output:
+    va_map_famis_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: CT
+    va_map_famis_age_eligibility: true
+    va_map_famis_income_eligibility: true
+  output:
+    va_map_famis_eligibility: false
