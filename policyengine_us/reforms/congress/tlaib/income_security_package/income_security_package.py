@@ -24,7 +24,9 @@ def create_income_security_package() -> Reform:
             age = person("age", period)
 
             # Payment only in the birth year for those born 2026+
-            is_eligible = (birth_year >= p.min_birth_year) & (age < p.age_limit)
+            is_eligible = (birth_year >= p.min_birth_year) & (
+                age < p.age_limit
+            )
 
             return is_eligible * p.amount
 
