@@ -21,9 +21,37 @@ coverage:
 	coverage combine
 	coverage xml -i
 documentation:
-	jb clean docs
-	jb build docs
-	python policyengine_us/tools/add_plotly_to_book.py docs/_build
+	rm -rf docs/_build
+	rm -rf docs/policy/parameters/*
+	rm -rf docs/variables/*
+	python docs/scripts/generate_docs.py
+	cd docs && myst build --site
+	python policyengine_us/tools/add_plotly_to_book.py docs/_build/site
+	python docs/scripts/generate_latex_paper.py
+
+documentation-install-latex:
+	@echo "Checking for required LaTeX packages..."
+	@if ! kpsewhich enumitem.sty > /dev/null 2>&1; then \
+		echo "Installing enumitem LaTeX package..."; \
+		echo "Please run: sudo tlmgr install enumitem"; \
+		echo "Or install full MacTeX from https://www.tug.org/mactex/"; \
+		exit 1; \
+	else \
+		echo "✓ enumitem.sty found"; \
+	fi
+	@if ! kpsewhich fancyhdr.sty > /dev/null 2>&1; then \
+		echo "Installing fancyhdr LaTeX package..."; \
+		echo "Please run: sudo tlmgr install fancyhdr"; \
+		exit 1; \
+	else \
+		echo "✓ fancyhdr.sty found"; \
+	fi
+	@echo "All required LaTeX packages are installed!"
+
+documentation-with-latex-check: documentation-install-latex documentation
+
+serve-docs:
+	cd docs && myst start
 build:
 	rm policyengine_us/data/storage/*.h5 | true
 	python -m build
