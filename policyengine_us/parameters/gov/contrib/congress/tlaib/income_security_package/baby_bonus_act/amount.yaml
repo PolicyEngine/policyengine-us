@@ -1,0 +1,13 @@
+description: Representative Rashida Tlaib's Baby Bonus Act provides this payment amount to qualifying pregnant persons or eligible parents with a qualifying child.
+metadata:
+  unit: currency-USD
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: Baby bonus amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
+values:
+  2026-01-01: 2_000
