@@ -1,0 +1,26 @@
+- name: Ineligible
+  period: 2021
+  input:
+    me_relief_rebate_eligible: false
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 0
+
+- name: Ineligible, head and spouse
+  period: 2021
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 2
+    state_code: ME
+  output:
+    me_relief_rebate: 1_700
+
+- name: Ineligible, head only
+  period: 2021
+  input:
+    me_relief_rebate_eligible: true
+    head_spouse_count: 1
+    state_code: ME
+  output:
+    me_relief_rebate: 850

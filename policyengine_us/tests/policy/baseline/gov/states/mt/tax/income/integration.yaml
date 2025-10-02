@@ -102,6 +102,7 @@
       tax_unit:
         members: [person1, person2]
         aca_ptc: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -139,6 +140,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         local_income_tax: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -176,6 +178,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         aca_ptc: 0  # not in TAXSIM35
+        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]

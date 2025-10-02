@@ -5,6 +5,18 @@ values:
   - ma_child_and_family_credit_or_dependent_care_credit
   - ma_senior_circuit_breaker
   - ma_covid_19_essential_employee_premium_pay_program
+  2021-01-01:
+  - ma_eitc
+  - ma_child_and_family_credit_or_dependent_care_credit
+  - ma_senior_circuit_breaker
+  - ma_covid_19_essential_employee_premium_pay_program
+  - ma_taxpayer_refund_rebate
+  2022-01-01:
+  - ma_eitc
+  - ma_child_and_family_credit_or_dependent_care_credit
+  - ma_senior_circuit_breaker
+  - ma_covid_19_essential_employee_premium_pay_program
 metadata:
   unit: list
+  period: year
   label: Massachusetts refundable tax credits

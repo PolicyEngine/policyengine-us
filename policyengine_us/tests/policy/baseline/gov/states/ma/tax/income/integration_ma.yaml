@@ -23,6 +23,7 @@
       tax_unit:
         members: [person1]
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1]
@@ -87,6 +88,7 @@
       tax_unit:
         members: [person1]
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1]
@@ -121,6 +123,7 @@
       tax_unit:
         members: [person1]
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1]
@@ -151,6 +154,7 @@
       tax_unit:
         members: [person1]
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1]
@@ -198,6 +202,7 @@
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1, person2, person3]
@@ -262,6 +267,7 @@
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
         aca_ptc: 0  # not in TAXSIM35
+        ma_taxpayer_refund_rebate: 0
     households:
       household:
         members: [person1, person2, person3]

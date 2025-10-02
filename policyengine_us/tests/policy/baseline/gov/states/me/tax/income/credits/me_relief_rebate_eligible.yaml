@@ -1,0 +1,35 @@
+- name: Single, income below threshold
+  period: 2021
+  input:
+    adjusted_gross_income: 99_999
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_relief_rebate_eligible: true
+
+- name: Single, income above threshold
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_relief_rebate_eligible: false
+
+- name: Joint, income below threshold
+  period: 2021
+  input:
+    adjusted_gross_income: 199_999
+    filing_status: JOINT
+    state_code: ME
+  output:
+    me_relief_rebate_eligible: true
+
+- name: Joint, income above threshold
+  period: 2021
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+    me_relief_rebate_eligible: false
