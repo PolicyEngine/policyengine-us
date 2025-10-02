@@ -1,0 +1,55 @@
+- name: Family of 1, no member(s) with disabilities, income of 0k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 0 * 12 # "Monthly Gross Earned Income"
+        members: [person_1]
+    households:
+      household:
+        state_code_str: NY
+        region_str: NY_NYC
+  output:
+    snap_earnings_deduction: 0  # "Deduction on Gross Earned Income"
+    snap_standard_deduction: 177*12  # "Standard Deduction based on household size"
+    snap_sua: 852*12 # "SUA Level Amount"
+    snap_net_income: 0 # "Monthly Net SNAP Income"
+    snap_max_benefit: 250*12 # "Thrifty Food Plan amount for H.H. size"
+    snap: 250*12  
+        snap: 250 * 12  # "Potential SNAP Allotment"
+#reference:
+  #- name: Benefits Plus SNAP Calculator
+  #- href: https://bplc.cssny.org/benefit_tools/snap_calculator
+
+
+
+- name: Family of 1, no member(s) with disabilities, income of 12k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 1000 * 12 # "Monthly Gross Earned Income"
+        members: [person_1]
+    households:
+      household:
+        state_code_str: NY
+        region_str: NY_NYC
+  output:
+    snap_earnings_deduction: 200  # "Deduction on Gross Earned Income"
+    snap_standard_deduction: 177*12  # "Standard Deduction based on household size"
+    snap_sua: 852*12 # "SUA Level Amount"
+    snap_net_income: 82.5 # "Monthly Net SNAP Income"
+    snap_max_benefit: 250*12 # "Thrifty Food Plan amount for H.H. size"
+    snap: 225*12  
+        snap: 225 * 12  # "Potential SNAP Allotment"
+#reference:
+  #- name: Benefits Plus SNAP Calculator
+  #- href: https://bplc.cssny.org/benefit_tools/snap_calculator
