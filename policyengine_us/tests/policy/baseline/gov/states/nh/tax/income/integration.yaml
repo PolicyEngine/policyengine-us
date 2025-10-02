@@ -1,0 +1,275 @@
+# 2020 Test Cases
+- name: Single filer with interest income in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        interest_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: 2_600  # 5,000 - 2,400
+    nh_income_tax_before_refundable_credits: 130  # 2,600 * 0.05
+
+- name: Joint filers with dividends in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 50
+        dividend_income: 8_000
+      person2:
+        age: 48
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_base_exemption: 4_800
+    nh_taxable_income: 3_200  # 8,000 - 4,800
+    nh_income_tax_before_refundable_credits: 160  # 3,200 * 0.05
+
+- name: Single senior with old age exemption in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 70
+        interest_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_old_age_exemption: 1_200
+    nh_taxable_income: 2_400  # 6,000 - 2,400 - 1,200
+    nh_income_tax_before_refundable_credits: 120  # 2,400 * 0.05
+
+- name: Blind filer with additional exemption in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        interest_income: 4_000
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_blind_exemption: 1_200
+    nh_taxable_income: 400  # 4,000 - 2,400 - 1,200
+    nh_income_tax_before_refundable_credits: 20  # 400 * 0.05
+
+- name: Disabled filer under 65 with exemption in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 55
+        interest_income: 5_500
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_disabled_exemption: 1_200
+    nh_taxable_income: 1_900  # 5,500 - 2,400 - 1,200
+    nh_income_tax_before_refundable_credits: 95  # 1,900 * 0.05
+
+- name: No tax due to low income in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: -400  # 2,000 - 2,400 = -400
+    nh_income_tax_before_refundable_credits: 0  # Tax is 0 on negative income
+
+# Historical Test Cases
+- name: Single filer with interest income in 1980 (pre-1981 rules)
+  period: 1980
+  input:
+    people:
+      person1:
+        age: 45
+        interest_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 600
+    nh_taxable_income: 4_400  # 5,000 - 600
+    nh_income_tax_before_refundable_credits: 220  # 4,400 * 0.05
+
+- name: Joint filers with dividends in 1990 (1981-1994 rules)
+  period: 1990
+  input:
+    people:
+      person1:
+        age: 50
+        dividend_income: 8_000
+      person2:
+        age: 48
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: 5_600  # 8,000 - 2,400
+    nh_income_tax_before_refundable_credits: 280  # 5,600 * 0.05
+
+- name: Single senior with old age exemption in 1985 (1981-1994 rules)
+  period: 1985
+  input:
+    people:
+      person1:
+        age: 70
+        interest_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 1_200
+    nh_old_age_exemption: 1_200
+    nh_taxable_income: 3_600  # 6,000 - 1,200 - 1,200
+    nh_income_tax_before_refundable_credits: 180  # 3,600 * 0.05
+
+- name: Single filer with interest income in 2000 (post-1995 rules)
+  period: 2000
+  input:
+    people:
+      person1:
+        age: 45
+        interest_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: 2_600  # 5,000 - 2,400
+    nh_income_tax_before_refundable_credits: 130  # 2,600 * 0.05
+
+- name: Elderly couple in 1978 (pre-1981 rules)
+  period: 1978
+  input:
+    people:
+      person1:
+        age: 70
+        interest_income: 3_000
+      person2:
+        age: 68
+        dividend_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_base_exemption: 1_200  # 600 * 2
+    nh_old_age_exemption: 1_200  # 600 * 2
+    nh_taxable_income: 2_600  # 5,000 - 1,200 - 1,200
+    nh_income_tax_before_refundable_credits: 130  # 2,600 * 0.05
+
+- name: Tax phase-out in 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: 7_600  # 10,000 - 2,400
+    nh_income_tax_before_refundable_credits: 228  # 7,600 * 0.03
+
+- name: Tax repeal in 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_400
+    nh_taxable_income: 7_600  # 10,000 - 2,400
+    nh_income_tax_before_refundable_credits: 0  # 7,600 * 0.0
