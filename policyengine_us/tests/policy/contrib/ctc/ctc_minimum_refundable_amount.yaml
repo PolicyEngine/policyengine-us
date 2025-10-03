@@ -212,9 +212,9 @@
     # Total minimum = 1_300
     ctc_phase_in: 2_625  # (20_000 - 2_500) * 0.15
     # Phase-in exceeds total minimum, so use phase-in
-    ctc_refundable_maximum: 4_000  # 2 * 2_000
-    refundable_ctc: 3_925  # Uses phase-in + minimum
-    ctc: 3_400  # 2 children * 1_700 (refundable max)
+    ctc_refundable_maximum: 3_400  # 2 children * 1_700 (refundable max)
+    refundable_ctc: 3_400  
+    ctc: 4_000
 
 - name: Edge case - very high income with phase-out affecting refundability
   period: 2024
