@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.407.4] - 2025-10-02 21:05:58
+
+### Added
+
+- CTC reform integration tests.
+
+### Fixed
+
+- Typo in the ctc per child phase-in reform and
+- Minimum refundable CTC reform logic.
+
+## [1.407.3] - 2025-10-01 16:40:26
+
+### Fixed
+
+- Include partnership/S-corp income and farm income in Alabama gross income.
+
 ## [1.407.2] - 2025-09-30 19:59:15
 
 ### Fixed
@@ -13105,6 +13122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.407.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.3...1.407.4
+[1.407.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.2...1.407.3
 [1.407.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.1...1.407.2
 [1.407.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.0...1.407.1
 [1.407.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.406.0...1.407.0

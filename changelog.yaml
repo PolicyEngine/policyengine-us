@@ -11139,3 +11139,16 @@
     fixed:
     - Apply the 5 year look back to the CTC reforms.
   date: 2025-09-30 19:59:15
+- bump: patch
+  changes:
+    fixed:
+    - Include partnership/S-corp income and farm income in Alabama gross income.
+  date: 2025-10-01 16:40:26
+- bump: patch
+  changes:
+    added:
+    - CTC reform integration tests.
+    fixed:
+    - Typo in the ctc per child phase-in reform and
+    - Minimum refundable CTC reform logic.
+  date: 2025-10-02 21:05:58

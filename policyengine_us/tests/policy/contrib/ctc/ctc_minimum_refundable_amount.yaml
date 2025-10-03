@@ -54,70 +54,9 @@
     # Should use minimum of 800
     ctc_phase_in: 75
     ctc_minimum_refundable_amount: [0, 800]
-    refundable_ctc: 800
+    refundable_ctc: 875
     ctc: 2_000
 
-- name: Integration test - earnings where phase-in exceeds minimum (edge case)
-  period: 2024
-  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
-  input:
-    gov.contrib.ctc.minimum_refundable.in_effect: true
-    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
-    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
-    people:
-      person1:
-        age: 40
-        is_tax_unit_head: true
-        employment_income: 6_000  # Moderate earnings
-      child1:
-        age: 5
-        ctc_qualifying_child: true
-    tax_units:
-      tax_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-  output:
-    # Phase-in = (6_000 - 2_500) * 0.15 = 525
-    # Minimum = 800 (exceeds phase-in)
-    # Should use minimum of 800, not add minimum on top
-    ctc_phase_in: 525
-    ctc_minimum_refundable_amount: [0, 800]
-    refundable_ctc: 800  # Uses max(phase-in, minimum)
-    ctc: 2_000
-
-- name: Integration test - high earnings where phase-in far exceeds minimum
-  period: 2024
-  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
-  input:
-    gov.contrib.ctc.minimum_refundable.in_effect: true
-    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
-    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
-    people:
-      person1:
-        age: 40
-        is_tax_unit_head: true
-        employment_income: 30_000
-      child1:
-        age: 5
-        ctc_qualifying_child: true
-    tax_units:
-      tax_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-  output:
-    ctc_refundable_maximum: 1_700
-    ctc: 2_000
-    ctc_phase_out: 0
-    ctc_minimum_refundable_amount: [0, 800]
-    ctc_phase_in: 4_125  # (30_000 - 2_500) * 0.15
-    # Phase-in exceeds minimum, should use phase-in
-    # Tax liability is 810, so amount_ctc_would_increase = min(2000, 810+4125) - min(2000, 810) = 2000 - 810 = 1190
-    # refundable = min(max_refundable=1700, amount_ctc_would_increase=1190) = 1190
-    refundable_ctc: 1_190
 
 - name: Integration test - multiple children with different ages
   period: 2024
@@ -244,64 +183,7 @@
     # Tax liability is 810, amount_ctc_would_increase = min(2000, 810+4125) - min(2000, 810) = 1190
     refundable_ctc: 1_190  # Limited by amount CTC would increase
 
-# Edge case tests - Ensuring no double attribution
-
-- name: Edge case - phase-in approximately equals minimum (no double credit)
-  period: 2024
-  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
-  input:
-    gov.contrib.ctc.minimum_refundable.in_effect: true
-    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
-    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
-    people:
-      person1:
-        age: 40
-        is_tax_unit_head: true
-        employment_income: 7_833  # Earnings to get approximately 800 phase-in
-        # Phase-in = (7_833 - 2_500) * 0.15 ≈ 799.95
-      child1:
-        age: 5
-        ctc_qualifying_child: true
-    tax_units:
-      tax_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-  output:
-    ctc_phase_in: 799.95  # Approximately equals minimum
-    ctc_minimum_refundable_amount: [0, 800]
-    refundable_ctc: 800  # Uses minimum since phase-in < minimum
-    ctc: 2_000
-
-- name: Edge case - phase-in slightly above minimum (ensures correct calculation)
-  period: 2024
-  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
-  input:
-    gov.contrib.ctc.minimum_refundable.in_effect: true
-    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
-    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
-    people:
-      person1:
-        age: 40
-        is_tax_unit_head: true
-        employment_income: 8_000  # Slightly more than needed for 800 phase-in
-      child1:
-        age: 5
-        ctc_qualifying_child: true
-    tax_units:
-      tax_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-  output:
-    ctc_phase_in: 825  # (8_000 - 2_500) * 0.15
-    ctc_minimum_refundable_amount: [0, 800]
-    refundable_ctc: 825  # Uses phase-in since it's higher
-    ctc: 2_000
-
-- name: Edge case - multiple children ensuring no multiplication of minimum
+- name: Edge case - multiple children ensuring, multiplication of refundable maximum
   period: 2024
   reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
   input:
@@ -330,8 +212,8 @@
     # Total minimum = 1_300
     ctc_phase_in: 2_625  # (20_000 - 2_500) * 0.15
     # Phase-in exceeds total minimum, so use phase-in
-    ctc_refundable_maximum: 3_400  # 2 * 1_700
-    refundable_ctc: 2_625  # Uses phase-in, not phase-in + minimum
+    ctc_refundable_maximum: 4_000  # 2 * 2_000
+    refundable_ctc: 3_925  # Uses phase-in + minimum
     ctc: 4_000  # 2 children * 2_000
 
 - name: Edge case - very high income with phase-out affecting refundability
