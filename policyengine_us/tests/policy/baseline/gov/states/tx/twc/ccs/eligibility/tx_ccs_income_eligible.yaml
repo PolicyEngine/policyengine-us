@@ -1,0 +1,65 @@
+- name: Family below 85% SMI is income eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000  # Annual income
+      child1:
+        age: 5
+      child2:
+        age: 7
+      child3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        spm_unit_size: 4
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: TX
+  output:
+    tx_ccs_income_eligible: true
+
+- name: Family above 85% SMI is not income eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000  # Annual income
+      child1:
+        age: 5
+      child2:
+        age: 7
+      child3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        spm_unit_size: 4
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: TX
+  output:
+    tx_ccs_income_eligible: false
+
+- name: Single person below 85% SMI is income eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 40_000  # Annual income - adjusted to be below 85% SMI
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_size: 1
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_ccs_income_eligible: true
