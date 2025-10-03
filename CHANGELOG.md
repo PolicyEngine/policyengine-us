@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.408.0] - 2025-10-03 08:08:20
+
+### Added
+
+- Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+
 ## [1.407.4] - 2025-10-02 21:05:58
 
 ### Added
@@ -13122,6 +13128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.4...1.408.0
 [1.407.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.3...1.407.4
 [1.407.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.2...1.407.3
 [1.407.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.1...1.407.2
