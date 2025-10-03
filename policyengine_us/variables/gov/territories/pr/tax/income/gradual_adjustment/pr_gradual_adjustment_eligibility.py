@@ -11,11 +11,7 @@ class pr_gradual_adjustment_eligibility(Variable):
     reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=3"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.gradual_adjustment
-        net_taxable_income = tax_unit(
-            "pr_net_taxable_income", period
-        )
+        p = parameters(period).gov.territories.pr.tax.income.gradual_adjustment
+        net_taxable_income = tax_unit("pr_net_taxable_income", period)
 
         return net_taxable_income > p.threshold
