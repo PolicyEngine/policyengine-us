@@ -1,0 +1,39 @@
+- name: Case 1, earned income with no dependent care deduction.
+  period: 2025-01
+  input:
+    tx_tanf_earned_income_after_disregard_person: 200
+    tx_tanf_dependent_care_deduction: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_earned_income: 200
+    # 200 - 0 = 200
+
+- name: Case 2, earned income with partial dependent care deduction.
+  period: 2025-01
+  input:
+    tx_tanf_earned_income_after_disregard_person: 200
+    tx_tanf_dependent_care_deduction: 150
+    state_code: TX
+  output:
+    tx_tanf_countable_earned_income: 50
+    # 200 - 150 = 50
+
+- name: Case 3, dependent care deduction exceeds earned income.
+  period: 2025-01
+  input:
+    tx_tanf_earned_income_after_disregard_person: 100
+    tx_tanf_dependent_care_deduction: 200
+    state_code: TX
+  output:
+    tx_tanf_countable_earned_income: 0
+    # max(100 - 200, 0) = 0
+
+- name: Case 4, no earned income.
+  period: 2025-01
+  input:
+    tx_tanf_earned_income_after_disregard_person: 0
+    tx_tanf_dependent_care_deduction: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_earned_income: 0
+    # 0 - 0 = 0

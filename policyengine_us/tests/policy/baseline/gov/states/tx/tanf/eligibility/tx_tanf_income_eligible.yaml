@@ -1,0 +1,69 @@
+- name: Case 1, applicant passes both tests.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: true
+    tx_tanf_recognizable_needs_test: true
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: true
+    # Applicant: passes budgetary (true) AND recognizable (true) → Eligible
+
+- name: Case 2, applicant passes budgetary but fails recognizable.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: true
+    tx_tanf_recognizable_needs_test: false
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: false
+    # Applicant: passes budgetary (true) but fails recognizable (false) → Not eligible
+    # Must pass BOTH tests
+
+- name: Case 3, applicant fails budgetary but passes recognizable.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: false
+    tx_tanf_recognizable_needs_test: true
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: false
+    # Applicant: fails budgetary (false) even though passes recognizable (true) → Not eligible
+    # Must pass BOTH tests
+
+- name: Case 4, applicant fails both tests.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: false
+    tx_tanf_recognizable_needs_test: false
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: false
+    # Applicant: fails both tests → Not eligible
+
+- name: Case 5, continuing recipient passes recognizable test.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: false
+    tx_tanf_recognizable_needs_test: true
+    is_tanf_enrolled: true
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: true
+    # Continuing: only needs to pass recognizable test (true) → Eligible
+    # Budgetary test result doesn't matter for continuing recipients
+
+- name: Case 6, continuing recipient fails recognizable test.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs_test: true
+    tx_tanf_recognizable_needs_test: false
+    is_tanf_enrolled: true
+    state_code: TX
+  output:
+    tx_tanf_income_eligible: false
+    # Continuing: fails recognizable test (false) → Not eligible
+    # Even though budgetary is true, it's not checked for continuing recipients

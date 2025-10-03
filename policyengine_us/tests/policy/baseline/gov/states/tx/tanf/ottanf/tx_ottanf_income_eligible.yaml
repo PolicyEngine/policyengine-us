@@ -1,0 +1,87 @@
+- name: Case 1, income well below 200% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_income_eligible: true
+    # Gross income: 12,000 / 12 = 1,000/month
+    # FPL for 2 (2025): ~1,255/month
+    # 200% FPL: 2,510/month
+    # 1,000 < 2,510 → Pass
+
+- name: Case 2, income at 200% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+        employment_income: 30_120
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ottanf_income_eligible: true
+    # Gross income: 30,120 / 12 = 2,510/month
+    # FPL for 1: ~1,255/month
+    # 200% FPL: 2,510/month
+    # 2,510 <= 2,510 → Pass
+
+- name: Case 3, income above 200% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 36_000  # $3,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ottanf_income_eligible: false
+    # Gross income above 200% FPL → Fail
+
+- name: Case 4, no deductions applied for OTTANF.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 30_000  # $2,500/month
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        childcare_expenses: 2_400  # $200/month - NOT deducted for OTTANF
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_income_eligible: true
+    # Gross income: 2,500/month (childcare NOT deducted)
+    # 200% FPL for 2: ~2,510/month
+    # 2,500 < 2,510 → Pass
+    # Note: Regular TANF would deduct childcare, OTTANF does NOT

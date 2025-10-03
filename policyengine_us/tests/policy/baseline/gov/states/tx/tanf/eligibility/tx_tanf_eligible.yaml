@@ -1,0 +1,123 @@
+- name: Case 1, meets all eligibility requirements.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_income_eligible: true
+        tx_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_eligible: true
+    # Has eligible child (true) AND income eligible (true) AND resources eligible (true) → Eligible
+
+- name: Case 2, fails income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_income_eligible: false
+        tx_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_eligible: false
+    # Has eligible child (true) but fails income test (false) → Not eligible
+
+- name: Case 3, fails resources test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_income_eligible: true
+        tx_tanf_resources_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_eligible: false
+    # Has eligible child (true) and income eligible (true) but fails resources test (false) → Not eligible
+
+- name: Case 4, no eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_income_eligible: true
+        tx_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_eligible: false
+    # No eligible child (false) even though passes financial tests → Not eligible
+    # Must have at least one eligible child
+
+- name: Case 5, fails all tests.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_income_eligible: false
+        tx_tanf_resources_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_eligible: false
+    # Fails all three requirements → Not eligible
+
+- name: Case 6, multiple eligible children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        tx_tanf_eligible_child: true
+      person2:
+        age: 8
+        tx_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tx_tanf_income_eligible: true
+        tx_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_eligible: true
+    # Multiple eligible children AND passes financial tests → Eligible

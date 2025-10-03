@@ -1,0 +1,102 @@
+- name: Case 1, only earned income after work expense.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tx_tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_dependent_care_deduction: 0
+        tx_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_income_for_budgetary_needs_test: 280
+    # Earned: 400 - 120 work expense = 280
+    # No dependent care deduction, no unearned income
+    # Total: 280
+
+- name: Case 2, earned income with dependent care deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tx_tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_dependent_care_deduction: 150
+        tx_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_income_for_budgetary_needs_test: 130
+    # Earned: 400 - 120 work expense = 280
+    # After dependent care: 280 - 150 = 130
+    # Total: 130
+
+- name: Case 3, earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tx_tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_dependent_care_deduction: 100
+        tx_tanf_countable_unearned_income: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_income_for_budgetary_needs_test: 380
+    # Earned: 400 - 120 work expense = 280
+    # After dependent care: 280 - 100 = 180
+    # Plus unearned: 180 + 200 = 380
+
+- name: Case 4, dependent care exceeds earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tx_tanf_gross_earned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_dependent_care_deduction: 300
+        tx_tanf_countable_unearned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_income_for_budgetary_needs_test: 100
+    # Earned: 200 - 120 work expense = 80
+    # After dependent care: max(80 - 300, 0) = 0
+    # Plus unearned: 0 + 100 = 100
+
+- name: Case 5, no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tx_tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tx_tanf_dependent_care_deduction: 0
+        tx_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_income_for_budgetary_needs_test: 0
+    # No earned or unearned income → 0
