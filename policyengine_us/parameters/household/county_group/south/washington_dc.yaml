@@ -1,0 +1,35 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Washington DC area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Washington DC area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - DISTRICT_OF_COLUMBIA_DC
+    - CALVERT_COUNTY_MD
+    - CHARLES_COUNTY_MD
+    - FREDERICK_COUNTY_MD
+    - MONTGOMERY_COUNTY_MD
+    - PRINCE_GEORGE_COUNTY_MD
+    - ARLINGTON_COUNTY_VA
+    - CLARKE_COUNTY_VA
+    - CULPEPER_COUNTY_VA
+    - FAIRFAX_COUNTY_VA
+    - FAUQUIER_COUNTY_VA
+    - LOUDOUN_COUNTY_VA
+    - PRINCE_WILLIAM_COUNTY_VA
+    - RAPPAHANNOCK_COUNTY_VA
+    - SPOTSYLVANIA_COUNTY_VA
+    - STAFFORD_COUNTY_VA
+    - WARREN_COUNTY_VA
+    - ALEXANDRIA_CITY_VA
+    - FAIRFAX_CITY_VA
+    - FALLS_CHURCH_CITY_VA
+    - FREDERICKSBURG_CITY_VA
+    # - MANASSAS_CITY_VA ## We don't have this county in county_enum.py
+    - MANASSAS_PARK_CITY_VA
+    - JEFFERSON_COUNTY_WV
