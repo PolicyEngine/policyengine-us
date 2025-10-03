@@ -1,0 +1,10 @@
+- name: Case 1, region 1, full day.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: HEAD_START_PARTNER_AND_KINDERGARTEN
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_head_start_partner_and_kindergarten_reimbursement: 58.09
