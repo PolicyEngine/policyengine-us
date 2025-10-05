@@ -1,8 +1,0 @@
-- bump: minor
-  changes:
-    changed:
-      - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth rate of 4.3%
-      - Replace CRS references with IRS Revenue Procedures in ACA premium tax credit parameters
-      - Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
-    added:
-      - New benchmark_premium_uprating parameter based on KFF historical SLCSP data (2014-2025)

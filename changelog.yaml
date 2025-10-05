@@ -11162,3 +11162,15 @@
     fixed:
     - Vectorization of the CTC refundable maximum reform.
   date: 2025-10-04 04:24:45
+- bump: minor
+  changes:
+    added:
+    - New benchmark_premium_uprating parameter based on KFF historical SLCSP data
+      (2014-2025)
+    changed:
+    - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth
+      rate of 4.3%
+    - Replace CRS references with IRS Revenue Procedures in ACA premium tax credit
+      parameters
+    - Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+  date: 2025-10-05 21:01:54
