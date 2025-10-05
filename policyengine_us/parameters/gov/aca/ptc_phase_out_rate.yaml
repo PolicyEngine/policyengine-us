@@ -13,13 +13,15 @@ metadata:
       # "The budget reconciliation measure, enacted on August 16, 2022, extends
       # the ARPA provision that expanded eligibility for and the amount of the
       # PTC for three years to sunset at the end of tax year 2025."
+    - title: IRS Revenue Procedure 2025-25 - 2026 Premium Tax Credit Percentages
+      href: https://www.irs.gov/pub/irs-drop/rp-25-25.pdf
 brackets:
   - threshold:
       2015-01-01: 0
     amount:
       2015-01-01: 0.02
       2021-01-01: 0
-      2026-01-01: 0.02
+      2026-01-01: 0.021
   - threshold:
       2015-01-01: 1.33
       2021-01-01: null
@@ -27,34 +29,34 @@ brackets:
     amount:
       2015-01-01: 0.03
       2021-01-01: null
-      2026-01-01: 0.03
+      2026-01-01: 0.0314
   - threshold:
       2015-01-01: 1.50
     amount:
       2015-01-01: 0.04
       2021-01-01: 0.0
-      2026-01-01: 0.04
+      2026-01-01: 0.0419
   - threshold:
       2015-01-01: 2.00
     amount:
       2015-01-01: 0.063
       2021-01-01: 0.02
-      2026-01-01: 0.063
+      2026-01-01: 0.066
   - threshold:
       2015-01-01: 2.50
     amount:
       2015-01-01: 0.0805
       2021-01-01: 0.04
-      2026-01-01: 0.0805
+      2026-01-01: 0.0844
   - threshold:
       2015-01-01: 3.00
     amount:
       2015-01-01: 0.095
       2021-01-01: 0.06
-      2026-01-01: 0.095
+      2026-01-01: 0.0996
   - threshold:
       2015-01-01: 4.00
     amount:
       2015-01-01: 0.095
       2021-01-01: 0.085
-      2026-01-01: 0.095
+      2026-01-01: 0.0996
