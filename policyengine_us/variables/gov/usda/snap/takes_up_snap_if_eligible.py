@@ -4,10 +4,11 @@ from policyengine_us.model_api import *
 class takes_up_snap_if_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Whether a random eligible SPM unit does not claim SNAP"
+    label = "Whether an eligible SPM unit claims SNAP"
+    documentation = (
+        "Generated stochastically in the dataset using take-up rates. "
+        "No formula - purely deterministic rules engine."
+    )
     definition_period = YEAR
-
-    def formula(spm_unit, period, parameters):
-        seed = spm_unit("snap_take_up_seed", period)
-        takeup_rate = parameters(period).gov.usda.snap.takeup_rate
-        return seed < takeup_rate
+    # For policy calculator (non-dataset), defaults to True (full take-up assumption)
+    default_value = True
