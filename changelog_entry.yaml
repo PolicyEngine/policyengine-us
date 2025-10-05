@@ -1,4 +1,6 @@
-- bump: patch
+- bump: minor
   changes:
-    fixed:
-      - Update 2026 ACA Premium Tax Credit contribution caps to match IRS Revenue Procedure 2025-25
+    changed:
+      - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth rate of 4.3%
+    added:
+      - New benchmark_premium_uprating parameter based on KFF historical SLCSP data (2014-2025)
