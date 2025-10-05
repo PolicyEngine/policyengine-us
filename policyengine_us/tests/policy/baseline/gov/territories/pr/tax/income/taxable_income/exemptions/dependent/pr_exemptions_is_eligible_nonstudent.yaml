@@ -1,0 +1,26 @@
+- name: Eligible dependent
+  period: 2024
+  input:
+    pr_is_tax_unit_dependent: true
+    pr_gross_income_person: 2_499 
+    state_code: PR
+  output:
+    pr_exemptions_is_eligible_nonstudent: true
+
+- name: Noneligible dependent
+  period: 2024
+  input:
+    pr_is_tax_unit_dependent: true
+    pr_gross_income_person: 2_501
+    state_code: PR
+  output:
+    pr_exemptions_is_eligible_nonstudent: false
+
+- name: Noneligible person
+  period: 2024
+  input:
+    pr_is_tax_unit_dependent: false
+    pr_gross_income_person: 2_000
+    state_code: PR
+  output:
+    pr_exemptions_is_eligible_nonstudent: false

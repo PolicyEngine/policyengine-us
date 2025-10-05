@@ -12,5 +12,5 @@ class ca_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         itax = tax_unit("ca_income_tax_before_credits", period)
-        nonrefundable_credits = tax_unit("ca_nonrefundable_credits", period)
+        nonrefundable_credits = tax_unit("ca_non_refundable_credits", period)
         return max_(0, itax - nonrefundable_credits)
