@@ -141,10 +141,10 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
-    # ACA benchmark premium uprating (January values, last projection year 2035)
+    # ACA benchmark premium uprating (January values, last projection year 2025)
     extend_parameter_values(
         parameters.gov.aca.benchmark_premium_uprating,
-        last_projected_year=2035,
+        last_projected_year=2025,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
