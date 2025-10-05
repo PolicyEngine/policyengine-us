@@ -19,17 +19,5 @@ values:
   2023-01-01: 456
   2024-01-01: 477
   2025-01-01: 497
-
-  # Future projections at 4.3% annual growth
-  # Based on 2023-2025 average growth rate
-  2026-01-01: 518.36  # 497 * 1.043
-  2027-01-01: 540.65  # 518.36 * 1.043
-  2028-01-01: 563.90  # 540.65 * 1.043
-  2029-01-01: 588.15  # 563.90 * 1.043
-  2030-01-01: 613.44  # 588.15 * 1.043
-  2031-01-01: 640.02  # 613.44 * 1.043
-  2032-01-01: 667.54  # 640.02 * 1.043
-  2033-01-01: 696.25  # 667.54 * 1.043
-  2034-01-01: 726.21  # 696.25 * 1.043
-  2035-01-01: 757.44  # 726.21 * 1.043
-  # Values for 2036-2100 are set programmatically in uprating_extensions.py
+  # Values for 2026-2100 are set programmatically in uprating_extensions.py
+  # based on 2024-2025 growth rate
