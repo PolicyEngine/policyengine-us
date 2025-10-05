@@ -11061,3 +11061,116 @@
     - Refactored Social Security taxation formula to use properly separated parameters
       per IRC Section 86
   date: 2025-09-22 18:07:07
+- bump: minor
+  changes:
+    added:
+    - California state-funded Medicaid eligibility for undocumented immigrants with
+      age-based phase-in from 2016-2024.
+  date: 2025-09-22 20:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut and Montana federal social security tax parameter dependencies.
+  date: 2025-09-22 21:29:46
+- bump: patch
+  changes:
+    fixed:
+    - Reform tests related to social security taxation.
+  date: 2025-09-23 22:47:11
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Oklahoma child care/ child tax credit to use the actual CTC value,
+      not the potential.
+  date: 2025-09-23 22:49:31
+- bump: minor
+  changes:
+    added:
+    - Update SNAP parameters for FY 2026 Cost-of-Living Adjustments.
+  date: 2025-09-23 22:51:10
+- bump: patch
+  changes:
+    fixed:
+    - Increase the tolerance for itemization comparison.
+  date: 2025-09-24 00:54:25
+- bump: patch
+  changes:
+    fixed:
+    - Montana married filing jointly subtractions allocation issue.
+    - Rename mt_agi to mt_agi_indiv.
+  date: 2025-09-24 15:23:57
+- bump: minor
+  changes:
+    added:
+    - Texas Dallas Area Rapid Transit (DART) reduced fare program.
+    fixed:
+    - Don't publish to PyPI on push without passing tests.
+  date: 2025-09-25 08:20:22
+- bump: patch
+  changes:
+    fixed:
+    - Improved test batching to avoid memory issues and reduce test duplication.
+    - Split baseline tests into separate batches for household and contrib folders.
+  date: 2025-09-25 20:18:49
+- bump: minor
+  changes:
+    fixed:
+    - Adjust the `state_agi` variable to reflect states that adopt federal AGI.
+  date: 2025-09-25 20:33:35
+- bump: minor
+  changes:
+    added:
+    - School meal subsidies 2024 and 2025 parameter updates.
+  date: 2025-09-26 15:55:30
+- bump: minor
+  changes:
+    added:
+    - CTC per child phase-in reform.
+    - CTC minimum refundable amount reform.
+    - CTC per child phase-out reform.
+  date: 2025-09-27 17:53:20
+- bump: patch
+  changes:
+    added:
+    - NY CTC 2027 bug fix.
+  date: 2025-09-30 19:58:04
+- bump: patch
+  changes:
+    fixed:
+    - Apply the 5 year look back to the CTC reforms.
+  date: 2025-09-30 19:59:15
+- bump: patch
+  changes:
+    fixed:
+    - Include partnership/S-corp income and farm income in Alabama gross income.
+  date: 2025-10-01 16:40:26
+- bump: patch
+  changes:
+    added:
+    - CTC reform integration tests.
+    fixed:
+    - Typo in the ctc per child phase-in reform and
+    - Minimum refundable CTC reform logic.
+  date: 2025-10-02 21:05:58
+- bump: minor
+  changes:
+    added:
+    - Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+  date: 2025-10-03 08:08:20
+- bump: patch
+  changes:
+    fixed:
+    - Vectorization of the CTC refundable maximum reform.
+  date: 2025-10-04 04:24:45
+- bump: minor
+  changes:
+    added:
+    - New benchmark_premium_uprating parameter based on KFF historical SLCSP data
+      (2014-2025)
+    changed:
+    - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth
+      rate of 4.3%
+    - Replace CRS references with IRS Revenue Procedures in ACA premium tax credit
+      parameters
+    - Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+  date: 2025-10-05 21:01:54

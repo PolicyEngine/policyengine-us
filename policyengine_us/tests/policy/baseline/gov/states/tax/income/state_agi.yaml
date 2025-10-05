@@ -1,0 +1,191 @@
+- name: Colorado adopts federal AGI
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 30
+    employment_income: 50_000
+  output:
+    adjusted_gross_income: 50_000
+    state_agi: 50_000
+
+- name: Michigan adopts federal AGI
+  period: 2023
+  input:
+    state_code: MI
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 33
+    employment_income: 80_000
+  output:
+    adjusted_gross_income: 80_000
+    state_agi: 80_000
+
+- name: Minnesota adopts federal AGI
+  period: 2023
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    age_head: 45
+    employment_income: 60_000
+  output:
+    adjusted_gross_income: 60_000
+    state_agi: 60_000
+
+- name: North Carolina adopts federal AGI
+  period: 2023
+  input:
+    state_code: NC
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    employment_income: 120_000
+  output:
+    adjusted_gross_income: 120_000
+    state_agi: 120_000
+
+- name: North Dakota adopts federal AGI
+  period: 2023
+  input:
+    state_code: ND
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 35
+    employment_income: 45_000
+  output:
+    adjusted_gross_income: 45_000
+    state_agi: 45_000
+
+- name: South Carolina adopts federal AGI
+  period: 2023
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    age_head: 28
+    employment_income: 65_000
+  output:
+    adjusted_gross_income: 65_000
+    state_agi: 65_000
+
+# States with their own AGI calculations
+- name: California uses state-specific AGI
+  period: 2023
+  input:
+    state_code: CA
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 38
+    employment_income: 150_000
+  output:
+    adjusted_gross_income: 150_000
+    ca_agi: 150_000
+    state_agi: 150_000
+
+- name: New York uses state-specific AGI
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    age_head: 32
+    employment_income: 80_000
+  output:
+    adjusted_gross_income: 80_000
+    ny_agi: 80_000
+    state_agi: 80_000
+
+- name: Georgia uses state-specific AGI
+  period: 2023
+  input:
+    state_code: GA
+    filing_status: JOINT
+    age_head: 45
+    age_spouse: 43
+    employment_income: 95_000
+  output:
+    adjusted_gross_income: 95_000
+    ga_agi: 95_000
+    state_agi: 95_000
+
+- name: Massachusetts uses state-specific AGI
+  period: 2023
+  input:
+    state_code: MA
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 38
+    employment_income: 70_000
+  output:
+    adjusted_gross_income: 70_000
+    ma_agi: 70_000
+    state_agi: 70_000
+
+- name: Virginia uses state-specific AGI
+  period: 2023
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    age_head: 29
+    employment_income: 55_000
+  output:
+    adjusted_gross_income: 55_000
+    va_agi: 55_000
+    state_agi: 55_000
+
+- name: Illinois uses state-specific base income
+  period: 2023
+  input:
+    state_code: IL
+    filing_status: JOINT
+    age_head: 50
+    age_spouse: 48
+    employment_income: 130_000
+  output:
+    adjusted_gross_income: 130_000
+    il_base_income: 130_000
+    state_agi: 130_000
+
+- name: Pennsylvania uses state-specific eligibility income
+  period: 2023
+  input:
+    state_code: PA
+    filing_status: SINGLE
+    age_head: 35
+    employment_income: 60_000
+  output:
+    adjusted_gross_income: 60_000
+    pa_eligibility_income: 60_000
+    state_agi: 60_000
+
+# Edge case - Texas has no state income tax
+- name: Texas has no state AGI (no state income tax)
+  period: 2023
+  input:
+    state_code: TX
+    filing_status: SINGLE
+    age_head: 30
+    employment_income: 75_000
+  output:
+    adjusted_gross_income: 75_000
+    state_agi: 0  # No state AGI variables for Texas
+
+# Arkansas with individual/joint AGI logic
+- name: Arkansas uses maximum of individual and joint AGI
+  period: 2023
+  input:
+    state_code: AR
+    ar_agi_joint: 90_000
+    ar_agi_indiv: 70_000
+  output:
+    # Arkansas will calculate both ar_agi_indiv and ar_agi_joint
+    # and use the maximum for state_agi
+    state_agi: 90_000  # Maximum of the two
+
+# Delaware with individual/joint AGI logic
+- name: Delaware uses maximum of individual and joint AGI
+  period: 2023
+  input:
+    state_code: DE
+    de_agi_joint: 60_000
+    de_agi_indiv: 80_000
+  output:
+    # Delaware will calculate both de_agi_indiv and de_agi_joint
+    # and use the maximum for state_agi
+    state_agi: 80_000  # Maximum of the two

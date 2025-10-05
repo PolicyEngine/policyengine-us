@@ -35,7 +35,9 @@ class ct_social_security_benefit_adjustment(Variable):
         capped_social_security_portion = capped_social_security * p.rate
         # Part E (Line 18 from federal social security worksheet)
         gross_ss = tax_unit("tax_unit_social_security", period)
-        adjusted_gross_social_security = gross_ss * p_irs.rate.additional
+        adjusted_gross_social_security = (
+            gross_ss * p_irs.rate.additional.excess
+        )
         # Part F
         reduced_taxable_social_security = max_(
             adjusted_gross_social_security - capped_social_security_portion,

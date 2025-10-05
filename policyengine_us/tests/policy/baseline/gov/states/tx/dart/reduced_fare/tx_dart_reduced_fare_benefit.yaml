@@ -1,0 +1,145 @@
+- name: Eligible senior receives annual benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 68
+  output:
+    tx_dart_reduced_fare_benefit: 756  # ($126 - $63) * 12 months
+
+- name: Eligible child receives annual benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 10
+  output:
+    tx_dart_reduced_fare_benefit: 756
+
+- name: Eligible disabled person receives benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 45
+    is_disabled: true
+  output:
+    tx_dart_reduced_fare_benefit: 756
+
+- name: Eligible veteran receives benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_veteran: true
+  output:
+    tx_dart_reduced_fare_benefit: 756
+
+- name: Eligible student receives benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 20
+    is_full_time_student: true
+  output:
+    tx_dart_reduced_fare_benefit: 756
+
+- name: SNAP recipient receives benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 40
+    snap: 300
+  output:
+    tx_dart_reduced_fare_benefit: 756
+
+- name: Non-eligible adult receives no benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_disabled: false
+    is_veteran: false
+    is_full_time_student: false
+    snap: 0
+    medicaid: 0
+    chip: 0
+    tanf: 0
+    wic: 0
+    is_medicare_eligible: false
+  output:
+    tx_dart_reduced_fare_benefit: 0
+
+- name: Child under 5 not eligible for reduced fare benefit
+  period: 2025
+  input:
+    state_code: TX
+    age: 3
+    snap: 0
+    medicaid: 0
+    chip: 0
+    tanf: 0
+    wic: 0
+    is_medicare_eligible: false
+  output:
+    tx_dart_reduced_fare_benefit: 0
+
+- name: Family with mixed eligibility receives appropriate benefits
+  period: 2025
+  input:
+    people:
+      veteran_parent:
+        age: 35
+        is_veteran: true
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      spouse:
+        age: 33
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      child:
+        age: 12
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+      senior:
+        age: 68
+        is_veteran: false
+        is_medicare_eligible: false
+        medicaid: 0
+        chip: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [veteran_parent, spouse, child, senior]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [veteran_parent, spouse, child, senior]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_benefit: [756, 0, 756, 756]
+
+- name: Household on TANF all members receive benefit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 400
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_benefit: [756, 756]

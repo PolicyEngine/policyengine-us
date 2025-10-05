@@ -1,0 +1,144 @@
+- name: Earnings below threshold - no phase-in
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 2_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 0
+
+- name: Earnings exactly at threshold - no phase-in
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 2_500
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 0
+
+- name: Single child - earnings $1,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 3_500
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 150
+
+- name: Single child - earnings $5,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 7_500
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 750
+
+- name: Two children - earnings $1,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 3_500
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 300
+
+- name: Two children - earnings $5,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 7_500
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 1_500
+
+- name: Three children - earnings $2,000 above threshold
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 4_500
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_in_relevant_earnings: 900
+
+- name: Four children - high earnings scenario
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 10_000
+    ctc_qualifying_children: 4
+  output:
+    ctc_phase_in_relevant_earnings: 4_500
+
+- name: Edge case - earnings $1 above threshold with one child
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 2_501
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 0.15
+
+- name: Edge case - earnings $1 above threshold with three children
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 2_501
+    ctc_qualifying_children: 3
+  output:
+    ctc_phase_in_relevant_earnings: 0.45
+
+- name: Counterfactual - same scenario without reform active
+  period: 2024
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: false
+    tax_unit_earned_income: 3_500
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 150
+
+- name: Large earnings scenario - $50,000 with single child
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 50_000
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 7_125
+
+- name: Large earnings scenario - $50,000 with two children
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    tax_unit_earned_income: 50_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 14_250
+
+- name: Large earnings scenario - $50,000 with two children, reform not active
+  period: 2024
+  input:
+    tax_unit_earned_income: 50_000
+    ctc_qualifying_children: 2
+  output:
+    ctc_phase_in_relevant_earnings: 7_125
+
+- name: Large earnings scenario - $50,000 with one child, reform not active
+  period: 2024
+  input:
+    tax_unit_earned_income: 50_000
+    ctc_qualifying_children: 1
+  output:
+    ctc_phase_in_relevant_earnings: 7_125
