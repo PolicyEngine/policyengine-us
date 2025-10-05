@@ -8,6 +8,15 @@ description: Review an existing PR and post findings to GitHub (does not make co
 
 Use `/fix-pr` to apply fixes automatically.
 
+## Important: Avoiding Duplicate Reviews
+
+**Before posting**, check if you already have an active review on this PR. If you do AND there are no replies from others:
+- Delete your old comments
+- Post a single updated review
+- DO NOT create multiple review comments
+
+Only post additional reviews if others have engaged with your previous review.
+
 ## Determining Which PR to Review
 
 First, determine which PR to review based on the arguments:
@@ -121,7 +130,40 @@ Aggregate all issues into structured format:
 }
 ```
 
-## Phase 4: Post GitHub Review
+## Phase 4: Check for Existing Reviews
+
+**IMPORTANT**: Before posting a new review, check if you already have an active review:
+
+```bash
+# Check for existing reviews from you (Claude)
+EXISTING_REVIEWS=$(gh api "/repos/{owner}/{repo}/pulls/$PR_NUMBER/reviews" \
+  --jq '[.[] | select(.user.login == "MaxGhenis") | {id: .id, state: .state, submitted_at: .submitted_at}]')
+
+# Check if there are any comments/replies from others since your last review
+LATEST_REVIEW_TIME=$(echo "$EXISTING_REVIEWS" | jq -r '.[0].submitted_at // empty')
+
+if [ -n "$LATEST_REVIEW_TIME" ]; then
+  # Check for comments after your review
+  COMMENTS_AFTER=$(gh api "/repos/{owner}/{repo}/issues/$PR_NUMBER/comments" \
+    --jq "[.[] | select(.created_at > \"$LATEST_REVIEW_TIME\" and .user.login != \"MaxGhenis\")]")
+
+  if [ -z "$COMMENTS_AFTER" ] || [ "$COMMENTS_AFTER" == "[]" ]; then
+    echo "Existing review found with no replies from others"
+    echo "STRATEGY: Delete old comments and post single updated review"
+
+    # Delete old comment-only reviews/comments
+    gh api "/repos/{owner}/{repo}/issues/$PR_NUMBER/comments" \
+      --jq '.[] | select(.user.login == "MaxGhenis") | .id' | \
+      while read comment_id; do
+        gh api --method DELETE "/repos/{owner}/{repo}/issues/comments/$comment_id"
+      done
+  else
+    echo "Others have replied to your review - will add new review"
+  fi
+fi
+```
+
+## Phase 5: Post GitHub Review
 
 Post the review using GitHub CLI:
 
@@ -152,7 +194,7 @@ gh api \
   - Incorrect implementations
   - Missing required documentation
 
-## Phase 5: Post Summary Comment
+## Phase 6: Post Summary Comment
 
 Add a comprehensive summary as a regular comment:
 

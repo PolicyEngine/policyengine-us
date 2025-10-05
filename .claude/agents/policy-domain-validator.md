@@ -61,27 +61,73 @@ existing_patterns = [
 
 ### 3. Hard-Coded Value Detection
 
-**Patterns to Flag:**
-```python
-# Numeric literals that should be parameters
-suspicious_patterns = [
-    r'\b0\.\d+\b',  # Decimals like 0.5, 0.33
-    r'\b\d{2,}\b',   # Numbers >= 10 (except common like 12 for months)
-    r'return \d+',   # Direct numeric returns
-    r'= \d+\.?\d*[^)]',  # Numeric assignments not in function calls
-    r'\* \d+\.?\d*',  # Multiplication by literals
-    r'/ \d+\.?\d*',   # Division by literals (except 12 for monthly)
-]
+**Acceptable Hard-Coded Values (Don't Flag):**
 
-# Exceptions (OK to have literals)
-ok_literals = [
-    'range(', 'np.array([', 'np.zeros(', 'np.ones(',
-    '== 0', '> 0', '< 0', '>= 0', '<= 0',  # Zero comparisons
-    '== 1', '== 2',  # Small integer comparisons
-    '/ 12',  # Monthly conversion
-    '* 12',  # Annual conversion
-]
-```
+1. **Bootstrapping values** - values needed to access parameters:
+   ```python
+   if month >= 10:  # ✅ OK - needed to determine which FPG snapshot to use
+       instant_str = f"{year}-10-01"
+   ```
+
+2. **Mathematical baselines** - representing 100%, starting at 1, etc:
+   ```python
+   income_ratio - 1  # ✅ OK - means "income above 100% FPG"
+   fee_level = 1 + ...  # ✅ OK - fee levels start at 1
+   ```
+
+3. **Structural constants** from external systems:
+   ```python
+   min_(size, 12)  # ✅ OK - FPG tables only go to 12 people
+   range(1, 13)  # ✅ OK - 12 months in a year
+   ```
+
+4. **Derived from parameter structure**:
+   ```python
+   num_children - 2  # ✅ OK - reflects parameter structure (first, second, additional)
+   ```
+
+5. **Period conversions** (use framework constants):
+   ```python
+   / MONTHS_IN_YEAR  # ✅ CORRECT - use framework constant
+   * MONTHS_IN_YEAR  # ✅ CORRECT - use framework constant
+   / 12  # ❌ HARD-CODED - use MONTHS_IN_YEAR instead
+   * 12  # ❌ HARD-CODED - use MONTHS_IN_YEAR instead
+   ```
+   Note: MONTHS_IN_YEAR is imported from model_api
+
+6. **Comparisons and zero-checks**:
+   ```python
+   == 0, > 0, >= 1, == 1, == 2  # ✅ OK
+   max_(0, value)  # ✅ OK - prevent negative
+   ```
+
+**Problematic Hard-Coded Values (DO Flag):**
+
+1. **Policy-specific thresholds** that could change:
+   ```python
+   if income < 50000:  # ❌ Should be parameter
+   ```
+
+2. **Percentages/rates** from regulations:
+   ```python
+   benefit = income * 0.65  # ❌ Should be parameter
+   ```
+
+3. **Age limits** specific to programs:
+   ```python
+   if age < 18:  # ❌ Should be parameter (unless universal definition)
+   ```
+
+4. **Benefit amounts**:
+   ```python
+   return 1000  # ❌ Should be parameter
+   ```
+
+**When in Doubt:**
+- If the value appears in regulations → parameter
+- If the value could differ across states → parameter
+- If it's a mathematical constant or structural limit → OK to hard-code
+- If it's needed to bootstrap parameter access → OK to hard-code
 
 ### 4. Reference Validation
 
@@ -168,6 +214,49 @@ p = parameters(period).gov.hhs.liheap
 child_age = p.child_age_limit
 elderly_age = p.elderly_age_limit
 ```
+
+### 9. Vectorization Rules
+
+**IMPORTANT: `if` statements are context-dependent**
+
+`if` statements are **FINE** for scalar values:
+- ✅ Period attributes: `if period.start.month >= 10:`
+- ✅ Parameter values: `if parameters(period).threshold > 0:`
+- ✅ Scalar calculations: `if year >= 2024:`
+
+`if` statements are **PROBLEMATIC** for vectorized arrays:
+- ❌ Person/household data: `if income > 1000:` (use `where(income > 1000, ...)`)
+- ❌ Array checks: `if income.any():` (prevents vectorization)
+- ❌ Conditional on arrays: `if eligible:` where `eligible` is an array
+
+**Correct Pattern:**
+```python
+# BAD - if on vectorized data
+def formula(person, period, parameters):
+    income = person("income", period)
+    if income > 10000:  # ❌ income is an array!
+        return 100
+    else:
+        return 0
+
+# GOOD - where() for vectorized data
+def formula(person, period, parameters):
+    income = person("income", period)
+    return where(income > 10000, 100, 0)  # ✅
+
+# ALSO GOOD - if on scalar period data
+def formula(person, period, parameters):
+    month = period.start.month  # scalar value
+    if month >= 10:  # ✅ month is a scalar!
+        param = parameters(f"{year}-10-01")
+    else:
+        param = parameters(f"{year-1}-10-01")
+```
+
+**When Validating:**
+- Don't flag `if` statements on `period.start.*`, `year`, `month`, or parameter values
+- DO flag `if` statements on person/household/entity calculations
+- Look for context: is the value being tested a scalar or an array?
 
 ## Validation Process
 
