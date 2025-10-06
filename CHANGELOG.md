@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.410.0] - 2025-10-06 14:13:11
+
+### Added
+
+- Massachusetts Child Care Financial Assistance (CCFA).
+
+## [1.409.0] - 2025-10-05 21:01:54
+
+### Added
+
+- New benchmark_premium_uprating parameter based on KFF historical SLCSP data (2014-2025)
+
+### Changed
+
+- Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth rate of 4.3%
+- Replace CRS references with IRS Revenue Procedures in ACA premium tax credit parameters
+- Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+
+## [1.408.1] - 2025-10-04 04:24:45
+
+### Fixed
+
+- Vectorization of the CTC refundable maximum reform.
+
 ## [1.408.0] - 2025-10-03 08:08:20
 
 ### Added
@@ -13128,6 +13152,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
+[1.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.1...1.409.0
+[1.408.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.0...1.408.1
 [1.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.4...1.408.0
 [1.407.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.3...1.407.4
 [1.407.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.2...1.407.3

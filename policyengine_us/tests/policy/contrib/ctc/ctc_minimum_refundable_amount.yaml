@@ -212,9 +212,9 @@
     # Total minimum = 1_300
     ctc_phase_in: 2_625  # (20_000 - 2_500) * 0.15
     # Phase-in exceeds total minimum, so use phase-in
-    ctc_refundable_maximum: 4_000  # 2 * 2_000
-    refundable_ctc: 3_925  # Uses phase-in + minimum
-    ctc: 4_000  # 2 children * 2_000
+    ctc_refundable_maximum: 3_400  # 2 children * 1_700 (refundable max)
+    refundable_ctc: 3_400  
+    ctc: 4_000
 
 - name: Edge case - very high income with phase-out affecting refundability
   period: 2024
@@ -245,3 +245,33 @@
     ctc_phase_out: 2_500
     ctc: 0  # Fully phased out (2_000 - 2_500 = 0, capped at 0)
     refundable_ctc: 0  # No CTC left to be refundable
+
+- name: Vectorization check
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        employment_income: 0  
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1, child1, child2]
+  output:
+    ctc_child_individual_maximum: [0, 2_000, 2_000]
+    ctc_child_individual_maximum_arpa: [0, 0, 0]
+    ctc_qualifying_children: 2
+    refundable_ctc: 1_600

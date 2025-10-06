@@ -1,0 +1,10 @@
+- name: Case 1, informal child care in relative home.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: INFORMAL_CHILD_CARE
+    state_code: MA
+    ma_ccfa_is_in_relatives_home_care: true
+  output:
+    ma_ccfa_informal_child_care_reimbursement: 24.57

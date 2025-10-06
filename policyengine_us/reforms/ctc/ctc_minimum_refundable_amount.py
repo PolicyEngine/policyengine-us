@@ -74,13 +74,13 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             # Use either normal or ARPA CTC maximums.
             individual_max = person("ctc_child_individual_maximum", period)
             arpa_max = person("ctc_child_individual_maximum_arpa", period)
-            child_amount = individual_max + arpa_max
+            child_amount = tax_unit.sum(individual_max + arpa_max)
             ctc = parameters(period).gov.irs.credits.ctc
             qualifying_children = tax_unit("ctc_qualifying_children", period)
             refundable_max = (
                 ctc.refundable.individual_max * qualifying_children
             )
-            return tax_unit.sum(min_(child_amount, refundable_max))
+            return min_(child_amount, refundable_max)
 
     class non_refundable_ctc(Variable):
         value_type = float
