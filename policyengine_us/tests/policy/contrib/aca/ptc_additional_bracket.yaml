@@ -1,81 +1,67 @@
 - name: Single filer at 250% FPL - uses baseline value
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 37_500
+    aca_magi_fraction: 2.5
   output:
     aca_ptc_phase_out_rate: 0.04
 
 - name: Single filer at 300% FPL - uses baseline value
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 45_000
+    aca_magi_fraction: 3.0
   output:
     aca_ptc_phase_out_rate: 0.06
 
 - name: Single filer at 400% FPL - linear increase to 10%
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 60_000
+    aca_magi_fraction: 4.0
   output:
     aca_ptc_phase_out_rate: 0.10
 
 - name: Single filer at 500% FPL - linear increase to 14%
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 75_000
+    aca_magi_fraction: 5.0
   output:
     aca_ptc_phase_out_rate: 0.14
 
 - name: Single filer at 600% FPL - linear increase to 18%
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 90_000
+    aca_magi_fraction: 6.0
   output:
     aca_ptc_phase_out_rate: 0.18
 
 - name: Single filer at 350% FPL - interpolated value
-  period: 2024
+  period: 2026
   reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
   input:
     gov.contrib.aca.ptc_additional_bracket.in_effect: true
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2023-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 52_500
+    aca_magi_fraction: 3.5
   output:
     aca_ptc_phase_out_rate: 0.08
 
 - name: Baseline comparison at 400% FPL - shows difference
-  period: 2025
+  period: 2026
+  absolute_error_margin: 0.00001
   input:
-    gov.hhs.fpg.first_person.CONTIGUOUS_US.2024-01-01: 15_000
-    tax_units:
-      tax_unit:
-        aca_magi: 60_000
+    aca_magi_fraction: 4.0
   output:
-    aca_ptc_phase_out_rate: 0.095
+    aca_ptc_phase_out_rate: 0.0950

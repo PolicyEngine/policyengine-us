@@ -2,7 +2,7 @@ description: Custom ACA PTC contribution percentages by household income (MAGI a
 metadata:
   type: single_amount
   threshold_unit: /1
-  amount_unit: /1
+  rate_unit: /1
   label: ACA PTC contribution rate brackets
   reference:
     - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
@@ -10,50 +10,50 @@ metadata:
 
 brackets:
   - threshold:
-      0000-01-01: 0
+      2026-01-01: 0
     amount:
-      0000-01-01: 0
+      2026-01-01: 0
   - threshold:
-      0000-01-01: 1.5
+      2026-01-01: 1.5
     amount:
-      0000-01-01: 0
+      2026-01-01: 0
   - threshold:
-      0000-01-01: 2.0
+      2026-01-01: 2.0
     amount:
-      0000-01-01: 0.02
+      2026-01-01: 0.02
   - threshold:
-      0000-01-01: 2.5
+      2026-01-01: 2.5
     amount:
-      0000-01-01: 0.04
+      2026-01-01: 0.04
   - threshold:
-      0000-01-01: 3.0
+      2026-01-01: 3.0
     amount:
-      0000-01-01: 0.06
+      2026-01-01: 0.06
   - threshold:
-      0000-01-01: 4.0
+      2026-01-01: 4.0
     amount:
-      0000-01-01: 0.10
+      2026-01-01: 0.10
   - threshold:
-      0000-01-01: 5.0
+      2026-01-01: 5.0
     amount:
-      0000-01-01: 0.14
+      2026-01-01: 0.14
   - threshold:
-      0000-01-01: 6.0
+      2026-01-01: 6.0
     amount:
-      0000-01-01: 0.18
+      2026-01-01: 0.18
   - threshold:
-      0000-01-01: 7.0
+      2026-01-01: 7.0
     amount:
-      0000-01-01: 0.22
+      2026-01-01: 0.22
   - threshold:
-      0000-01-01: 8.0
+      2026-01-01: 8.0
     amount:
-      0000-01-01: 0.26
+      2026-01-01: 0.26
   - threshold:
-      0000-01-01: 9.0
+      2026-01-01: 9.0
     amount:
-      0000-01-01: 0.30
+      2026-01-01: 0.30
   - threshold:
-      0000-01-01: 10.0
+      2026-01-01: 10.0
     amount:
-      0000-01-01: 0.34
+      2026-01-01: 0.34

@@ -16,7 +16,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.aca.ptc_additional_bracket.brackets
-            return p.calc(magi_frac)
+            return np.interp(magi_frac, p.thresholds, p.amounts)
 
     class reform(Reform):
         def apply(self):
