@@ -1,0 +1,21 @@
+description: Massachusetts defines the following counties as western, central and southeast regions under the Child Care Financial Assistance program.
+
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts CCFA western, central and southeast regions counties
+  reference:
+    - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
+values:
+  2024-01-01: 
+    - BERKSHIRE_COUNTY_MA
+    - FRANKLIN_COUNTY_MA
+    - HAMPDEN_COUNTY_MA
+    - HAMPSHIRE_COUNTY_MA
+    - WORCESTER_COUNTY_MA
+    - PLYMOUTH_COUNTY_MA
+    - BARNSTABLE_COUNTY_MA
+    - DUKES_COUNTY_MA
+    # Some counties are split into multiple regions, assign them to one region.
+    # -NORFOLK_COUNTY_MA Assign to northeast
