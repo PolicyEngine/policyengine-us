@@ -1,7 +1,23 @@
-description: Whether the ACA PTC additional bracket structure is in effect
+description: >
+  Whether the ACA PTC additional bracket structure is in effect. When
+  enabled, this reform replaces the standard ACA premium tax credit
+  phase-out with an extended bracket structure that provides more gradual
+  subsidy reduction at higher income levels.
+
 values:
   0000-01-01: false
+
 metadata:
   unit: bool
   period: year
   label: ACA PTC additional bracket in effect
+  economy: true
+  reference:
+    - title: GitHub Issue #6629 - Create structural reform that adds an additional ACA bracket
+      href: https://github.com/PolicyEngine/policyengine-us/issues/6629
+  note: >
+    This parameter controls a hypothetical structural reform to the ACA
+    premium tax credit system. When set to true, it activates the extended
+    bracket structure defined in the associated brackets.yaml file, which
+    continues premium subsidies beyond the current 400% FPL cliff with a
+    gradual phase-out pattern.
