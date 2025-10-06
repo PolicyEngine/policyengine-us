@@ -5,12 +5,12 @@ from policyengine_core.periods import period as period_
 def create_aca_ptc_additional_bracket() -> Reform:
     class aca_ptc_phase_out_rate(Variable):
         """
-        ACA Premium Tax Credit phase-out rate with additional bracket structure.
+        ACA Premium Tax Credit phase-out rate with linear bracket extension.
 
-        This reform implements an extended bracket structure that continues
-        premium subsidies beyond the standard 400% FPL cliff. It uses 2021
-        baseline values up to 300% FPL, then increases contribution percentages
-        linearly at 4 percentage points per 100% FPL.
+        This reform extends premium subsidies beyond the standard 400% FPL cliff
+        using a linear formula. Above the transition threshold (typically 300% FPL),
+        the contribution percentage increases linearly based on the increment rate
+        (typically 4 percentage points per 100% FPL).
 
         The reform creates a more gradual phase-out of subsidies, reducing the
         cliff effect where households just above 400% FPL lose all subsidies.
@@ -49,18 +49,14 @@ def create_aca_ptc_additional_bracket_reform(
         return create_aca_ptc_additional_bracket()
 
     p = parameters.gov.contrib.aca.ptc_additional_bracket
-
-    reform_active = False
     current_period = period_(period)
 
     # Check if reform is active within a 5-year lookahead window
     # This allows the reform to be selected in the web app interface
     # even if it's scheduled to start in a future year
-    for i in range(5):
-        if p(current_period).in_effect:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
+    reform_active = any(
+        p(current_period.offset(i, "year")).in_effect for i in range(5)
+    )
 
     if reform_active:
         return create_aca_ptc_additional_bracket()
