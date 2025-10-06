@@ -38,37 +38,69 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             # This is the full CTC. This is then limited to the maximum refundable amount per child as per the
             # TCJA provision.
 
-            ctc = parameters(period).gov.irs.credits.ctc
-
             maximum_amount = tax_unit("ctc_refundable_maximum", period)
-
             total_ctc = tax_unit("ctc", period)
-
-            if ctc.refundable.fully_refundable:
-                reduction = tax_unit("ctc_phase_out", period)
-                reduced_max_amount = max_(0, maximum_amount - reduction)
-                return min_(reduced_max_amount, total_ctc)
 
             maximum_refundable_ctc = min_(maximum_amount, total_ctc)
             minimum_refundable_ctc = add(
                 tax_unit, period, ["ctc_minimum_refundable_amount"]
             )
             phase_in = tax_unit("ctc_phase_in", period)
-            phase_in_with_minimum = max_(phase_in, minimum_refundable_ctc)
-            limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
-            ctc_capped_by_tax = min_(total_ctc, limiting_tax)
+
+            phase_in_with_minimum = phase_in + minimum_refundable_ctc
             ctc_capped_by_increased_tax = min_(
-                total_ctc, limiting_tax + phase_in_with_minimum
+                total_ctc, phase_in_with_minimum
             )
-            amount_ctc_would_increase = (
-                ctc_capped_by_increased_tax - ctc_capped_by_tax
+
+            return min_(maximum_refundable_ctc, ctc_capped_by_increased_tax)
+
+    class ctc_refundable_maximum(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Maximum refundable CTC"
+        unit = USD
+        documentation = "The maximum refundable CTC for this person."
+        definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/24#a",
+            "https://www.law.cornell.edu/uscode/text/26/24#h",
+            "https://www.law.cornell.edu/uscode/text/26/24#i",
+            "https://www.irs.gov/pub/irs-prior/f1040--2021.pdf",
+            "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf",
+        )
+
+        def formula(tax_unit, period, parameters):
+            person = tax_unit.members
+            # Use either normal or ARPA CTC maximums.
+            individual_max = person("ctc_child_individual_maximum", period)
+            arpa_max = person("ctc_child_individual_maximum_arpa", period)
+            child_amount = tax_unit.sum(individual_max + arpa_max)
+            ctc = parameters(period).gov.irs.credits.ctc
+            qualifying_children = tax_unit("ctc_qualifying_children", period)
+            refundable_max = (
+                ctc.refundable.individual_max * qualifying_children
             )
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            return min_(child_amount, refundable_max)
+
+    class non_refundable_ctc(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "non-refundable CTC"
+        unit = USD
+        documentation = (
+            "The portion of the Child Tax Credit that is not refundable."
+        )
+        definition_period = YEAR
+
+        def formula(tax_unit, period, parameters):
+            return 0
 
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_minimum_refundable_amount)
             self.update_variable(refundable_ctc)
+            self.update_variable(ctc_refundable_maximum)
+            self.update_variable(non_refundable_ctc)
 
     return reform
 
