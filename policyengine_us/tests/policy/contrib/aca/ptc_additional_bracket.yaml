@@ -1,0 +1,143 @@
+- name: Single filer at 250% FPL - uses baseline value
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 37_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 2.50
+    aca_ptc_phase_out_rate: 0.04
+
+- name: Single filer at 300% FPL - uses baseline value
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 3.00
+    aca_ptc_phase_out_rate: 0.06
+
+- name: Single filer at 400% FPL - linear increase to 10%
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_phase_out_rate: 0.10
+
+- name: Single filer at 500% FPL - linear increase to 14%
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 5.00
+    aca_ptc_phase_out_rate: 0.14
+
+- name: Single filer at 600% FPL - linear increase to 18%
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 90_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 6.00
+    aca_ptc_phase_out_rate: 0.18
+
+- name: Single filer at 350% FPL - interpolated value
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 52_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 3.50
+    aca_ptc_phase_out_rate: 0.08
+
+- name: Family at 400% FPL with actual PTC calculation
+  period: 2024
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 35
+        aca_magi: 120_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_fpg: 30_000
+        slcsp: 20_000
+        is_aca_ptc_eligible: true
+        takes_up_aca_if_eligible: true
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_phase_out_rate: 0.10
+    aca_ptc: 8_000
+
+- name: Baseline comparison at 400% FPL - shows difference
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        aca_magi: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+  output:
+    aca_magi_fraction: 4.00
+    aca_ptc_phase_out_rate: 0.095

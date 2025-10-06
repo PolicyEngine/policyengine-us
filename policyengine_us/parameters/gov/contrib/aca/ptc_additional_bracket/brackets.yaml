@@ -1,0 +1,35 @@
+description: Custom ACA PTC contribution percentages by household income (MAGI as fraction of FPL). Uses 2021 baseline values up to 300% FPL, then increases linearly at 4 percentage points per 100% FPL (e.g., 400% FPL = 10%, 600% FPL = 18%).
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  label: ACA PTC contribution rate brackets
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 1.5
+    amount:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 2.0
+    amount:
+      0000-01-01: 0.02
+  - threshold:
+      0000-01-01: 2.5
+    amount:
+      0000-01-01: 0.04
+  - threshold:
+      0000-01-01: 3.0
+    amount:
+      0000-01-01: 0.06
+  - threshold:
+      0000-01-01: 10.0
+    amount:
+      0000-01-01: 0.34
