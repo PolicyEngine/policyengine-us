@@ -110,6 +110,7 @@ from .crfb import (
 )
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
+    create_aca_ptc_simplified_bracket_reform,
 )
 
 
@@ -254,6 +255,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
+    aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -305,6 +309,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_per_child_phase_in,
         ctc_minimum_refundable_amount,
         aca_ptc_additional_bracket,
+        aca_ptc_simplified_bracket,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
