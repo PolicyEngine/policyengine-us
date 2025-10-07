@@ -1,8 +1,8 @@
-description: >
-  Simplified ACA PTC contribution percentages with linear phase-out starting
-  at 100% FPL. This reform creates a single linear progression where
-  contribution percentages increase by 4 percentage points per 100% FPL
-  increment starting from 100% FPL.
+# Linear progression: above 100% FPL, contribution percentage increases
+# by 4 percentage points per 100% FPL increment.
+# Examples: 200% FPL = 4%, 400% FPL = 12%, 600% FPL = 20%
+
+description: Simplified ACA PTC contribution percentages with linear phase-out.
 
 metadata:
   type: single_amount
@@ -10,25 +10,8 @@ metadata:
   rate_unit: /1
   label: ACA PTC simplified contribution rate brackets
   reference:
-    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+    - title: 26 U.S. Code § 36B(b)(3)(A)
       href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
-      note: >
-        This reform extends the statutory framework with a simplified
-        linear progression starting at 100% FPL
-  note: >
-    Linear progression formula: For income above 100% FPL, the contribution
-    percentage increases by 4 percentage points per 100% FPL increment.
-
-    Examples:
-    - 100% FPL: 0%
-    - 200% FPL: 0% + (1 × 4%) = 4%
-    - 300% FPL: 0% + (2 × 4%) = 8%
-    - 400% FPL: 0% + (3 × 4%) = 12%
-    - 600% FPL: 0% + (5 × 4%) = 20%
-
-    This creates a simpler, more aggressive phase-out compared to the
-    additional bracket reform, reaching higher contribution percentages
-    at the same income levels.
 
 brackets:
   - threshold:

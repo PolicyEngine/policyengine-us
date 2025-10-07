@@ -1,9 +1,4 @@
-description: >
-  Whether the ACA PTC simplified bracket structure is in effect. When
-  enabled, this reform replaces the standard ACA premium tax credit
-  phase-out with a simplified linear progression starting at 100% FPL,
-  where contribution percentages increase by 4 percentage points per
-  100% FPL increment.
+description: Whether the ACA PTC simplified bracket structure is in effect.
 
 values:
   0000-01-01: false
@@ -12,12 +7,6 @@ metadata:
   unit: bool
   period: year
   label: ACA PTC simplified bracket in effect
-  economy: true
   reference:
-    - title: GitHub Issue #6629 - Create structural reform that adds an additional ACA bracket
+    - title: GitHub Issue #6629
       href: https://github.com/PolicyEngine/policyengine-us/issues/6629
-  note: >
-    This parameter controls a hypothetical structural reform to the ACA
-    premium tax credit system. When set to true, it activates the simplified
-    bracket structure defined in the associated brackets.yaml file, which
-    creates a single linear phase-out starting from 100% FPL.

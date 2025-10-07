@@ -1,8 +1,8 @@
-description: >
-  Custom ACA PTC contribution percentages by household income (MAGI as
-  fraction of FPL). This is a hypothetical reform structure that extends
-  beyond current law to create a more gradual phase-out of premium tax
-  credits at higher income levels.
+# Linear progression: above 300% FPL, contribution percentage increases
+# by 4 percentage points per 100% FPL increment.
+# Examples: 400% FPL = 10%, 600% FPL = 18%, 1000% FPL = 34%
+
+description: Custom ACA PTC contribution percentages by household income.
 
 metadata:
   type: single_amount
@@ -10,28 +10,10 @@ metadata:
   rate_unit: /1
   label: ACA PTC contribution rate brackets
   reference:
-    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+    - title: 26 U.S. Code § 36B(b)(3)(A)
       href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
-      note: >
-        This reform extends the statutory framework by adding additional
-        brackets beyond the standard ACA structure
-    - title: American Rescue Plan Act of 2021 - ACA Premium Tax Credit Enhancement
+    - title: American Rescue Plan Act of 2021
       href: https://www.congress.gov/bill/117th-congress/house-bill/1319
-      note: >
-        Uses 2021 baseline contribution percentage values (0%, 0%, 2%, 4%, 6%)
-        for income levels up to 300% FPL as the foundation
-  note: >
-    Linear progression formula: For income above 300% FPL, the contribution
-    percentage increases by 4 percentage points per 100% FPL increment.
-
-    Examples:
-    - 400% FPL: 6% + (1 × 4%) = 10%
-    - 600% FPL: 6% + (3 × 4%) = 18%
-    - 1000% FPL: 6% + (7 × 4%) = 34%
-
-    This creates a smooth transition that gradually reduces subsidies as
-    income increases, rather than having a sharp cliff at 400% FPL as in
-    the original ACA structure.
 
 brackets:
   - threshold:

@@ -30,9 +30,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
 
         def formula(tax_unit, period, parameters):
             magi_frac = tax_unit("aca_magi_fraction", period)
-            p = parameters(
-                period
-            ).gov.contrib.aca.ptc_additional_bracket.brackets
+            p = parameters(period).gov.contrib.aca.ptc_additional_bracket.brackets
             return np.interp(magi_frac, p.thresholds, p.amounts)
 
     class reform(Reform):
@@ -54,9 +52,12 @@ def create_aca_ptc_additional_bracket_reform(
     # Check if reform is active within a 5-year lookahead window
     # This allows the reform to be selected in the web app interface
     # even if it's scheduled to start in a future year
-    reform_active = any(
-        p(current_period.offset(i, "year")).in_effect for i in range(5)
-    )
+    reform_active = False
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
 
     if reform_active:
         return create_aca_ptc_additional_bracket()
