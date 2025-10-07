@@ -30,7 +30,9 @@ def create_aca_ptc_additional_bracket() -> Reform:
 
         def formula(tax_unit, period, parameters):
             magi_frac = tax_unit("aca_magi_fraction", period)
-            p = parameters(period).gov.contrib.aca.ptc_additional_bracket.brackets
+            p = parameters(
+                period
+            ).gov.contrib.aca.ptc_additional_bracket.brackets
             return np.interp(magi_frac, p.thresholds, p.amounts)
 
     class reform(Reform):
