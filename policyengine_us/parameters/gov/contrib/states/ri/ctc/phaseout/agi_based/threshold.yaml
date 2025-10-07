@@ -1,0 +1,28 @@
+description: Rhode Island CTC AGI-based phaseout threshold by filing status.
+
+metadata:
+  label: Rhode Island CTC AGI phaseout threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+
+JOINT:
+  values:
+    2025-01-01: 150_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 75_000
+
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 150_000
+
+SINGLE:
+  values:
+    2025-01-01: 75_000
+
+SEPARATE:
+  values:
+    2025-01-01: 75_000

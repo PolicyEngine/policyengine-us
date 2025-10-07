@@ -1,0 +1,28 @@
+description: AGI threshold above which the Rhode Island dependent exemption begins to phase out.
+
+metadata:
+  label: Rhode Island dependent exemption AGI phaseout threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+
+JOINT:
+  values:
+    2025-01-01: 200_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 100_000
+
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 200_000
+
+SINGLE:
+  values:
+    2025-01-01: 100_000
+
+SEPARATE:
+  values:
+    2025-01-01: 100_000

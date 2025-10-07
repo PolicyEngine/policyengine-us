@@ -1,0 +1,128 @@
+- name: RI CTC - fully refundable with AGI phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.fully_refundable.in_effect: true
+    gov.contrib.states.ri.ctc.phaseout.agi_based.in_effect: true
+    gov.contrib.states.ri.ctc.phaseout.agi_based.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.agi_based.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_maximum: 2_000
+    ri_ctc_phaseout: 0
+    ri_ctc: 2_000
+    ri_ctc_refundable: 2_000
+    ri_ctc_nonrefundable: 0
+
+- name: RI CTC - partially refundable with earnings phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_500
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.partially_refundable.in_effect: true
+    gov.contrib.states.ri.ctc.refundability.partially_refundable.cap: 1_000
+    gov.contrib.states.ri.ctc.phaseout.earnings_based.in_effect: true
+    gov.contrib.states.ri.ctc.phaseout.earnings_based.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.earnings_based.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    ri_ctc: 1_500
+    ri_ctc_refundable: 1_000
+    ri_ctc_nonrefundable: 500
+
+- name: RI CTC - nonrefundable with no phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 500
+    gov.contrib.states.ri.ctc.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.nonrefundable.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 1
+    ri_ctc: 500
+    ri_ctc_refundable: 0
+    ri_ctc_nonrefundable: 500
+
+- name: RI CTC - AGI phaseout reduces credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.fully_refundable.in_effect: true
+    gov.contrib.states.ri.ctc.phaseout.agi_based.in_effect: true
+    gov.contrib.states.ri.ctc.phaseout.agi_based.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.agi_based.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 85_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    ri_ctc_maximum: 1_000
+    ri_ctc_phaseout: 500  # (85_000 - 75_000) * 0.05 = 500
+    ri_ctc: 500  # 1_000 - 500 = 500
