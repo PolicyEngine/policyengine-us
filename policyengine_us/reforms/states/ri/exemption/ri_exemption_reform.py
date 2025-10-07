@@ -14,7 +14,9 @@ def create_ri_exemption_reform() -> Reform:
 
         def formula(tax_unit, period, parameters):
             # Check if reform is in effect
-            p_reform = parameters(period).gov.contrib.states.ri.dependent_exemption
+            p_reform = parameters(
+                period
+            ).gov.contrib.states.ri.dependent_exemption
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
             if p_reform.in_effect:
@@ -43,7 +45,9 @@ def create_ri_exemption_reform() -> Reform:
                 dependent_exemption_amount = dependents_count * p_reform.amount
 
                 # Total exemption before phaseout
-                total_exemption = personal_exemption_amount + dependent_exemption_amount
+                total_exemption = (
+                    personal_exemption_amount + dependent_exemption_amount
+                )
 
                 # Apply phaseout to dependent exemptions only
                 phaseout = 0
@@ -51,19 +55,27 @@ def create_ri_exemption_reform() -> Reform:
                 # AGI-based phaseout
                 if p_reform.phaseout.agi_based.in_effect:
                     mod_agi = tax_unit("ri_agi", period)
-                    threshold = p_reform.phaseout.agi_based.threshold[filing_status]
+                    threshold = p_reform.phaseout.agi_based.threshold[
+                        filing_status
+                    ]
                     excess_agi = max_(0, mod_agi - threshold)
                     phaseout = excess_agi * p_reform.phaseout.agi_based.rate
 
                 # Earnings-based phaseout
                 elif p_reform.phaseout.earnings_based.in_effect:
                     earnings = tax_unit("tax_unit_earned_income", period)
-                    threshold = p_reform.phaseout.earnings_based.threshold[filing_status]
+                    threshold = p_reform.phaseout.earnings_based.threshold[
+                        filing_status
+                    ]
                     excess_earnings = max_(0, earnings - threshold)
-                    phaseout = excess_earnings * p_reform.phaseout.earnings_based.rate
+                    phaseout = (
+                        excess_earnings * p_reform.phaseout.earnings_based.rate
+                    )
 
                 # Apply phaseout only to dependent exemptions
-                reduced_dependent_exemption = max_(dependent_exemption_amount - phaseout, 0)
+                reduced_dependent_exemption = max_(
+                    dependent_exemption_amount - phaseout, 0
+                )
 
                 return personal_exemption_amount + reduced_dependent_exemption
             else:

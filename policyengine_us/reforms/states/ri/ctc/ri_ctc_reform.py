@@ -82,7 +82,9 @@ def create_ri_ctc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.RI
-        reference = "https://github.com/PolicyEngine/policyengine-us/issues/6642"
+        reference = (
+            "https://github.com/PolicyEngine/policyengine-us/issues/6642"
+        )
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
@@ -117,7 +119,9 @@ def create_ri_ctc() -> Reform:
             if p.refundability.fully_refundable.in_effect:
                 return total_credit
             elif p.refundability.partially_refundable.in_effect:
-                return min_(total_credit, p.refundability.partially_refundable.cap)
+                return min_(
+                    total_credit, p.refundability.partially_refundable.cap
+                )
             else:  # Nonrefundable
                 return 0
 
