@@ -100,7 +100,7 @@ def create_ri_ctc() -> Reform:
 
             return credit_after_phaseout
 
-    class ri_ctc_refundable(Variable):
+    class ri_refundable_ctc(Variable):
         value_type = float
         entity = TaxUnit
         label = "Rhode Island CTC refundable portion"
@@ -126,7 +126,7 @@ def create_ri_ctc() -> Reform:
                 ),
             )
 
-    class ri_ctc_nonrefundable(Variable):
+    class ri_non_refundable_ctc(Variable):
         value_type = float
         entity = TaxUnit
         label = "Rhode Island CTC non-refundable portion"
@@ -138,20 +138,36 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             total_credit = tax_unit("ri_ctc", period)
-            refundable_portion = tax_unit("ri_ctc_refundable", period)
+            refundable_portion = tax_unit("ri_refundable_ctc", period)
             return total_credit - refundable_portion
 
     def modify_parameters(parameters):
-        # Add ri_ctc to refundable credits list if any refundable option is active
+        # Add ri_refundable_ctc to refundable credits list
         refundable = parameters.gov.states.ri.tax.income.credits.refundable
-        current_credits = refundable(instant("2025-01-01"))
-        if "ri_ctc" not in current_credits:
-            new_credits = list(current_credits) + ["ri_ctc"]
+        current_refundable = refundable(instant("2025-01-01"))
+        if "ri_refundable_ctc" not in current_refundable:
+            new_refundable = list(current_refundable) + ["ri_refundable_ctc"]
             refundable.update(
                 start=instant("2025-01-01"),
                 stop=instant("2100-12-31"),
-                value=new_credits,
+                value=new_refundable,
             )
+
+        # Add ri_non_refundable_ctc to non-refundable credits list
+        non_refundable = (
+            parameters.gov.states.ri.tax.income.credits.non_refundable
+        )
+        current_non_refundable = non_refundable(instant("2025-01-01"))
+        if "ri_non_refundable_ctc" not in current_non_refundable:
+            new_non_refundable = list(current_non_refundable) + [
+                "ri_non_refundable_ctc"
+            ]
+            non_refundable.update(
+                start=instant("2025-01-01"),
+                stop=instant("2100-12-31"),
+                value=new_non_refundable,
+            )
+
         return parameters
 
     class reform(Reform):
@@ -160,8 +176,8 @@ def create_ri_ctc() -> Reform:
             self.update_variable(ri_ctc_maximum)
             self.update_variable(ri_ctc_phaseout)
             self.update_variable(ri_ctc)
-            self.update_variable(ri_ctc_refundable)
-            self.update_variable(ri_ctc_nonrefundable)
+            self.update_variable(ri_refundable_ctc)
+            self.update_variable(ri_non_refundable_ctc)
             self.modify_parameters(modify_parameters)
 
     return reform

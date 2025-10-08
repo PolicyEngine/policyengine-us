@@ -31,8 +31,8 @@
     ri_ctc_maximum: 2_000
     ri_ctc_phaseout: 0
     ri_ctc: 2_000
-    ri_ctc_refundable: 2_000
-    ri_ctc_nonrefundable: 0
+    ri_refundable_ctc: 2_000
+    ri_non_refundable_ctc: 0
 
 - name: RI CTC - partially refundable with earnings phaseout
   period: 2025
@@ -62,8 +62,8 @@
         state_name: RI
   output:
     ri_ctc: 1_500
-    ri_ctc_refundable: 1_000
-    ri_ctc_nonrefundable: 500
+    ri_refundable_ctc: 1_000
+    ri_non_refundable_ctc: 500
 
 - name: RI CTC - nonrefundable with no phaseout
   period: 2025
@@ -93,8 +93,8 @@
   output:
     ri_ctc_eligible_children: 1
     ri_ctc: 500
-    ri_ctc_refundable: 0
-    ri_ctc_nonrefundable: 500
+    ri_refundable_ctc: 0
+    ri_non_refundable_ctc: 500
 
 - name: RI CTC - AGI phaseout reduces credit
   period: 2025

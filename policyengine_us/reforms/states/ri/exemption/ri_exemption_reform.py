@@ -13,93 +13,72 @@ def create_ri_exemption_reform() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
-            # Check if reform is in effect
             p_reform = parameters(
                 period
             ).gov.contrib.states.ri.dependent_exemption
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
-            if p_reform.in_effect:
-                # Personal exemptions use baseline amount
-                filing_status = tax_unit("filing_status", period)
-                personal_exemptions = where(
-                    filing_status == filing_status.possible_values.JOINT,
-                    2,
-                    1,
-                )
-                personal_exemption_amount = personal_exemptions * p_base.amount
+            # Personal exemptions use baseline amount
+            filing_status = tax_unit("filing_status", period)
+            personal_exemptions = where(
+                filing_status == filing_status.possible_values.JOINT,
+                2,
+                1,
+            )
+            personal_exemption_amount = personal_exemptions * p_base.amount
 
-                # Determine eligible dependents
-                person = tax_unit.members
-                age = person("age", period)
-                is_dependent = person("is_tax_unit_dependent", period)
+            # Determine eligible dependents
+            person = tax_unit.members
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
 
-                # Apply age limit if in effect
-                age_threshold = p_reform.age_limit.threshold
-                age_limited_dependents = is_dependent & (age < age_threshold)
-                eligible_dependents = where(
-                    p_reform.age_limit.in_effect,
-                    age_limited_dependents,
-                    is_dependent,
-                )
+            # Apply age limit if in effect
+            age_threshold = p_reform.age_limit.threshold
+            age_limited_dependents = is_dependent & (age < age_threshold)
+            eligible_dependents = where(
+                p_reform.age_limit.in_effect,
+                age_limited_dependents,
+                is_dependent,
+            )
 
-                dependents_count = tax_unit.sum(eligible_dependents)
-                dependent_exemption_amount = dependents_count * p_reform.amount
+            dependents_count = tax_unit.sum(eligible_dependents)
+            dependent_exemption_amount = dependents_count * p_reform.amount
 
-                # Total exemption before phaseout
-                total_exemption = (
-                    personal_exemption_amount + dependent_exemption_amount
-                )
+            # Apply phaseout to dependent exemptions only
+            # AGI-based phaseout
+            mod_agi = tax_unit("ri_agi", period)
+            agi_threshold = p_reform.phaseout.agi_based.threshold[
+                filing_status
+            ]
+            excess_agi = max_(0, mod_agi - agi_threshold)
+            agi_phaseout = excess_agi * p_reform.phaseout.agi_based.rate
 
-                # Apply phaseout to dependent exemptions only
-                # AGI-based phaseout
-                mod_agi = tax_unit("ri_agi", period)
-                agi_threshold = p_reform.phaseout.agi_based.threshold[
-                    filing_status
-                ]
-                excess_agi = max_(0, mod_agi - agi_threshold)
-                agi_phaseout = excess_agi * p_reform.phaseout.agi_based.rate
+            # Earnings-based phaseout
+            earnings = tax_unit("tax_unit_earned_income", period)
+            earnings_threshold = p_reform.phaseout.earnings_based.threshold[
+                filing_status
+            ]
+            excess_earnings = max_(0, earnings - earnings_threshold)
+            earnings_phaseout = (
+                excess_earnings * p_reform.phaseout.earnings_based.rate
+            )
 
-                # Earnings-based phaseout
-                earnings = tax_unit("tax_unit_earned_income", period)
-                earnings_threshold = (
-                    p_reform.phaseout.earnings_based.threshold[filing_status]
-                )
-                excess_earnings = max_(0, earnings - earnings_threshold)
-                earnings_phaseout = (
-                    excess_earnings * p_reform.phaseout.earnings_based.rate
-                )
+            phaseout = where(
+                p_reform.phaseout.agi_based.in_effect,
+                agi_phaseout,
+                where(
+                    p_reform.phaseout.earnings_based.in_effect,
+                    earnings_phaseout,
+                    0,
+                ),
+            )
 
-                phaseout = where(
-                    p_reform.phaseout.agi_based.in_effect,
-                    agi_phaseout,
-                    where(
-                        p_reform.phaseout.earnings_based.in_effect,
-                        earnings_phaseout,
-                        0,
-                    ),
-                )
+            # Apply phaseout only to dependent exemptions
+            reduced_dependent_exemption = max_(
+                dependent_exemption_amount - phaseout, 0
+            )
 
-                # Apply phaseout only to dependent exemptions
-                reduced_dependent_exemption = max_(
-                    dependent_exemption_amount - phaseout, 0
-                )
-
-                return personal_exemption_amount + reduced_dependent_exemption
-            else:
-                # Use baseline exemption calculation
-                p = p_base
-                exemptions_count = tax_unit("exemptions_count", period)
-                exemption_amount = exemptions_count * p.amount
-
-                # Modified Federal AGI
-                mod_agi = tax_unit("ri_agi", period)
-
-                excess_agi = max_(0, mod_agi - p.reduction.start)
-                increments = np.ceil(excess_agi / p.reduction.increment)
-                reduction_rate = min_(p.reduction.rate * increments, 1)
-
-                return exemption_amount * (1 - reduction_rate)
+            return personal_exemption_amount + reduced_dependent_exemption
 
     class reform(Reform):
         def apply(self):
