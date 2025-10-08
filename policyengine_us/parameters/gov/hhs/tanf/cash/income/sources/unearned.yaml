@@ -1,0 +1,22 @@
+description: The Department of Health and Human Services counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2020-01-01:
+    - veterans_benefits
+    - rental_income
+    - child_support_received
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+
+metadata:
+  unit: list
+  period: year
+  label: TANF unearned income sources
+  reference:
+    - title: 45 CFR § 260.30 - What definitions apply under the TANF regulations?
+      href: https://www.law.cornell.edu/cfr/text/45/260.30
