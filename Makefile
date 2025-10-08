@@ -19,8 +19,8 @@ coverage:
 	coverage combine
 	coverage xml -i
 documentation:
-	jb clean docs
-	jb build docs
+	myst clean --all docs
+	myst build docs
 	python policyengine_us/tools/add_plotly_to_book.py docs/_build
 build:
 	rm policyengine_us/data/storage/*.h5 | true
