@@ -7,7 +7,7 @@ def main():
     # First, find the current package version number from the pyproject.toml file
     with open("pyproject.toml", "rb") as f:
         data = tomllib.load(f)
-        version = data["project"]["version"]  # Would give us "1.358.0"
+        version = data["project"]["version"]
     # Then, clone the https://github.com/policyengine/policyengine-api repo using the GitHub CLI
     pat = os.environ["GITHUB_TOKEN"]
     os.system(
