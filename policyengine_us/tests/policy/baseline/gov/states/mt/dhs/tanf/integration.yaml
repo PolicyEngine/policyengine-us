@@ -18,17 +18,17 @@
     mt_tanf_assistance_unit_size: 2
     # Blended FPG for half the year (6 months from 2022 + 6 months from 2023)
     # (575.17 * 6) + (534.04 * 6) = 6,655.24
-    mt_tanf_assistance_unit_fpg: 19015
-    mt_tanf_payment_standard: 6655.24
+    mt_tanf_assistance_unit_fpg: 19_015
+    mt_tanf_payment_standard: 6_655.24
     mt_tanf_gross_earned_income: 0
     mt_tanf_countable_earned_income: 0
     mt_tanf_countable_income: 0
     # Benefit standard = FPG * 0.30 = 19015 * 0.30 = 5704.50
-    mt_tanf_benefit_standard: 19015 * 0.30
+    mt_tanf_benefit_standard: 19_015 * 0.30
     # Net income standard = Benefit standard / 0.785 = 5704.50 / 0.785 = 7266.88
     mt_tanf_net_income_standard: 5704 / 0.785
     # Gross income standard = Net standard * 1.85 = 7266.88 * 1.85 = 13443.73
-    mt_tanf_gross_income_standard: 7266.8 * 1.85
+    mt_tanf_gross_income_standard: 7_266.8 * 1.85
     mt_tanf_gross_income: 0
     mt_tanf_payment_standard_eligible: true
     mt_tanf_benefit_standard_eligible: true
@@ -47,7 +47,7 @@
     people:
       parent:
         age: 40
-        employment_income: 9000
+        employment_income: 9_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -56,7 +56,7 @@
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        childcare_expenses: 2400
+        childcare_expenses: 2_400
         members: [parent, child]
     households:
       household:
@@ -65,7 +65,7 @@
   output:
     mt_tanf_assistance_unit_size: 2
     # FPG = 1132 + 393 * (2 - 1) = 1525
-    mt_tanf_assistance_unit_fpg: 1132 + 393 * (2 - 1)
+    mt_tanf_assistance_unit_fpg: 1_132 + 393 * (2 - 1)
     mt_tanf_payment_standard: 534.00
     mt_tanf_gross_earned_income: 750.00
     # Countable earned income = gross income - $200 work expense - 25% disregard  
@@ -116,20 +116,20 @@
   output:
     mt_tanf_assistance_unit_size: 2
     # FPG = 1132 + 393 * (2 - 1) = 1525
-    mt_tanf_assistance_unit_fpg: 1132 + 393 * (2 - 1)
+    mt_tanf_assistance_unit_fpg: 1_132 + 393 * (2 - 1)
     mt_tanf_payment_standard: 534.00
-    mt_tanf_gross_earned_income: 1000.00
+    mt_tanf_gross_earned_income: 1_000.00
     # Countable earned income = gross income - $200 work expense - 25% disregard  
     # = 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
-    mt_tanf_countable_earned_income: 1000 - 200 - ((1000 - 200) * 0.25)
+    mt_tanf_countable_earned_income: 1_000 - 200 - ((1000 - 200) * 0.25)
     mt_tanf_countable_income: 600.00
     # Benefit standard = 1525 * 0.30 = 457.50
-    mt_tanf_benefit_standard: 1525 * 0.30
+    mt_tanf_benefit_standard: 1_525 * 0.30
     # Net income standard = 457.50 / 0.785 = 582.80
     mt_tanf_net_income_standard: 457.5 / 0.785
     # Gross income standard = 582.80 * 1.85 = 1078.18
     mt_tanf_gross_income_standard: 583 * 1.85
-    mt_tanf_gross_income: 1000.00
+    mt_tanf_gross_income: 1_000.00
     mt_tanf_payment_standard_eligible: false
     mt_tanf_benefit_standard_eligible: false
     mt_tanf_gmi_eligible: true
@@ -147,13 +147,13 @@
     people:
       parent1:
         age: 40
-        employment_income: 4500
+        employment_income: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       parent2:
         age: 40
-        employment_income: 4500
+        employment_income: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -173,7 +173,7 @@
   output:
     mt_tanf_assistance_unit_size: 4
     # FPG = 1132.50 + 393.30 * (4 - 1) = 2312.40
-    mt_tanf_assistance_unit_fpg: 1132.5 + 393.3 * (4 - 1)
+    mt_tanf_assistance_unit_fpg: 1_132.5 + 393.3 * (4 - 1)
     # Payment standard = 2312.40 * 0.35 = 809.34
     mt_tanf_payment_standard: 809.38
     mt_tanf_gross_earned_income: 750.00
@@ -184,7 +184,7 @@
     mt_tanf_countable_earned_income: 131.25 * 2
     mt_tanf_countable_income: 262.00
     # Benefit standard = 2312.50 * 0.30 = 693.75
-    mt_tanf_benefit_standard: 2312.5 * 0.30
+    mt_tanf_benefit_standard: 2_312.5 * 0.30
     # Net income standard = 693.75 / 0.785 = 883.44
     mt_tanf_net_income_standard: 694 / 0.785
     # Gross income standard = 883.44 * 1.85 = 1634.36
@@ -207,13 +207,13 @@
     people:
       parent1:
         age: 40
-        employment_income: 12000
+        employment_income: 12_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       parent2:
         age: 40
-        employment_income: 4500
+        employment_income: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -233,10 +233,10 @@
   output:
     mt_tanf_assistance_unit_size: 4
     # FPG = 1132.50 + 393.30 * (4 - 1) = 2312.40
-    mt_tanf_assistance_unit_fpg: 1132.5 + 393.3 * (4 - 1)
+    mt_tanf_assistance_unit_fpg: 1_132.5 + 393.3 * (4 - 1)
     # Payment standard = 2312.40 * 0.35 = 809.34
     mt_tanf_payment_standard: 809.38
-    mt_tanf_gross_earned_income: 1375.00
+    mt_tanf_gross_earned_income: 1_375.00
     # Countable earned income = gross income - $200 work expense - 25% disregard  
     # Parent 1: 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
     # Parent 2: 1000 - 200 - ((1000 - 200) * 0.25) = 131.25
@@ -245,12 +245,12 @@
     mt_tanf_countable_earned_income: 731.25
     mt_tanf_countable_income: 731.25
     # Benefit standard = 2312.50 * 0.30 = 693.75
-    mt_tanf_benefit_standard: 2312.5 * 0.30
+    mt_tanf_benefit_standard: 2_312.5 * 0.30
     # Net income standard = 693.75 / 0.785 = 883.44
     mt_tanf_net_income_standard: 694 / 0.785
     # Gross income standard = 883.44 * 1.85 = 1634.36
     mt_tanf_gross_income_standard: 884 * 1.85
-    mt_tanf_gross_income: 1375.00
+    mt_tanf_gross_income: 1_375.00
     mt_tanf_payment_standard_eligible: true
     mt_tanf_benefit_standard_eligible: false
     mt_tanf_gmi_eligible: true
