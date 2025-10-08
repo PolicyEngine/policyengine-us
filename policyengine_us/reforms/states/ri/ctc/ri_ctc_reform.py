@@ -51,23 +51,30 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             filing_status = tax_unit("filing_status", period)
-            phaseout = 0
 
-            # Check AGI-based phaseout
-            if p.phaseout.agi_based.in_effect:
-                income = tax_unit("ri_agi", period)
-                threshold = p.phaseout.agi_based.threshold[filing_status]
-                excess_income = max_(income - threshold, 0)
-                phaseout = excess_income * p.phaseout.agi_based.rate
+            # AGI-based phaseout
+            agi_income = tax_unit("ri_agi", period)
+            agi_threshold = p.phaseout.agi_based.threshold[filing_status]
+            agi_excess = max_(agi_income - agi_threshold, 0)
+            agi_phaseout = agi_excess * p.phaseout.agi_based.rate
 
-            # Check earnings-based phaseout
-            elif p.phaseout.earnings_based.in_effect:
-                income = tax_unit("tax_unit_earned_income", period)
-                threshold = p.phaseout.earnings_based.threshold[filing_status]
-                excess_income = max_(income - threshold, 0)
-                phaseout = excess_income * p.phaseout.earnings_based.rate
+            # Earnings-based phaseout
+            earnings_income = tax_unit("tax_unit_earned_income", period)
+            earnings_threshold = p.phaseout.earnings_based.threshold[
+                filing_status
+            ]
+            earnings_excess = max_(earnings_income - earnings_threshold, 0)
+            earnings_phaseout = earnings_excess * p.phaseout.earnings_based.rate
 
-            return phaseout
+            return where(
+                p.phaseout.agi_based.in_effect,
+                agi_phaseout,
+                where(
+                    p.phaseout.earnings_based.in_effect,
+                    earnings_phaseout,
+                    0,
+                ),
+            )
 
     class ri_ctc(Variable):
         value_type = float
@@ -106,14 +113,15 @@ def create_ri_ctc() -> Reform:
             total_credit = tax_unit("ri_ctc", period)
 
             # Check refundability options
-            if p.refundability.fully_refundable.in_effect:
-                return total_credit
-            elif p.refundability.partially_refundable.in_effect:
-                return min_(
-                    total_credit, p.refundability.partially_refundable.cap
-                )
-            else:  # Nonrefundable
-                return 0
+            return where(
+                p.refundability.fully_refundable.in_effect,
+                total_credit,
+                where(
+                    p.refundability.partially_refundable.in_effect,
+                    min_(total_credit, p.refundability.partially_refundable.cap),
+                    0,
+                ),
+            )
 
     class ri_ctc_nonrefundable(Variable):
         value_type = float
