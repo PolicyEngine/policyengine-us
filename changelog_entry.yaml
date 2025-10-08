@@ -1,5 +1,9 @@
-- bump: patch
+- bump: minor
   changes:
+    added:
+    - Montana itemized deductions spouse allocation rate parameter
+    changed:
+    - Consolidate medicaid_magi and aca_magi variables (removed redundant medicaid_magi)
     fixed:
     - Parameterize spouse allocation rate for Montana itemized deductions
     - Remove confusing comment in .github/update_api.py
