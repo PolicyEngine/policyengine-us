@@ -14,8 +14,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             person = tax_unit.members
             age = person("age", period)
@@ -37,8 +35,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             eligible_children = tax_unit("ri_ctc_eligible_children", period)
             return eligible_children * p.amount
@@ -53,8 +49,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             filing_status = tax_unit("filing_status", period)
             phaseout = 0
@@ -88,8 +82,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             # Calculate maximum credit
             maximum = tax_unit("ri_ctc_maximum", period)
@@ -110,8 +102,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             total_credit = tax_unit("ri_ctc", period)
 
@@ -135,8 +125,6 @@ def create_ri_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
-            if not p.in_effect:
-                return 0
 
             total_credit = tax_unit("ri_ctc", period)
             refundable_portion = tax_unit("ri_ctc_refundable", period)
