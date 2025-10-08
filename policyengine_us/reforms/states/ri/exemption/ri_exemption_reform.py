@@ -62,9 +62,9 @@ def create_ri_exemption_reform() -> Reform:
 
                 # Earnings-based phaseout
                 earnings = tax_unit("tax_unit_earned_income", period)
-                earnings_threshold = p_reform.phaseout.earnings_based.threshold[
-                    filing_status
-                ]
+                earnings_threshold = (
+                    p_reform.phaseout.earnings_based.threshold[filing_status]
+                )
                 excess_earnings = max_(0, earnings - earnings_threshold)
                 earnings_phaseout = (
                     excess_earnings * p_reform.phaseout.earnings_based.rate

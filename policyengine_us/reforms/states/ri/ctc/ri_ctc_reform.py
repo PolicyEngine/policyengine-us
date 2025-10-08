@@ -64,7 +64,9 @@ def create_ri_ctc() -> Reform:
                 filing_status
             ]
             earnings_excess = max_(earnings_income - earnings_threshold, 0)
-            earnings_phaseout = earnings_excess * p.phaseout.earnings_based.rate
+            earnings_phaseout = (
+                earnings_excess * p.phaseout.earnings_based.rate
+            )
 
             return where(
                 p.phaseout.agi_based.in_effect,
@@ -118,7 +120,9 @@ def create_ri_ctc() -> Reform:
                 total_credit,
                 where(
                     p.refundability.partially_refundable.in_effect,
-                    min_(total_credit, p.refundability.partially_refundable.cap),
+                    min_(
+                        total_credit, p.refundability.partially_refundable.cap
+                    ),
                     0,
                 ),
             )
