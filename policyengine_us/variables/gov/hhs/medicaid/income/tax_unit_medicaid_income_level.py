@@ -21,7 +21,7 @@ class tax_unit_medicaid_income_level(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("medicaid_magi", period)
+        income = tax_unit("aca_magi", period)
 
         pregnant_count = add(tax_unit, period, ["current_pregnancies"])
         tax_unit_size = tax_unit("tax_unit_size", period)

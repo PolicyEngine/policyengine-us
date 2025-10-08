@@ -8,6 +8,6 @@ class co_chp_out_of_pocket_maximum(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        income = person.tax_unit("medicaid_magi", period)
+        income = person.tax_unit("aca_magi", period)
         percent = parameters(period).gov.states.co.hcpf.chp.out_of_pocket
         return income * percent
