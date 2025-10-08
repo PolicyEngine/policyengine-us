@@ -8,7 +8,6 @@ def create_ri_ctc() -> Reform:
         value_type = int
         entity = TaxUnit
         label = "Rhode Island CTC eligible children count"
-        unit = "#"
         definition_period = YEAR
         defined_for = StateCode.RI
 
