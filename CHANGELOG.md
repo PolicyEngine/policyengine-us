@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.413.0] - 2025-10-09 22:40:48
+
+### Added
+
+- FY 2026 SMI values.
+
 ## [1.412.0] - 2025-10-09 22:32:59
 
 ### Added
@@ -13165,6 +13171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
 [1.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.411.0...1.412.0
 [1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
 [1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
