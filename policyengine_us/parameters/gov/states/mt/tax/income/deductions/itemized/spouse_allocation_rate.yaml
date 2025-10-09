@@ -1,12 +1,11 @@
 description: Montana divides itemized deductions equally between spouses when married filing separately on the same form.
 values:
   2022-01-01: 0.5
-  2024-01-01: null  # Tax simplification eliminated separate Montana itemized deduction calculation
 metadata:
   label: Montana itemized deductions spouse allocation rate
   unit: /1
   reference:
-    - title: TaxSlayer Montana Itemized Deductions Guide - "divided equally between you and your spouse"
-      href: https://support.taxslayer.com/hc/en-us/articles/360015706992-What-type-of-manual-adjustments-do-I-need-to-make-to-my-Montana-Itemized-Deductions
-    - title: Montana Tax Simplification (2024) - Uses federal taxable income
-      href: https://revenue.mt.gov/montana-tax-simplification-resource-hub
+    - title: Montana Administrative Rule 42.15.524 - Itemized Deductions of Married Taxpayers
+      href: https://rules.mt.gov/gateway/ruleno.asp?RN=42.15.524
+    - title: Montana Form 2 Instructions
+      href: https://revenue.mt.gov/publications/montana-form-2-individual-income-tax-return-forms-and-instructions-includes-form-2ec
