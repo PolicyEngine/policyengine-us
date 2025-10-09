@@ -112,19 +112,14 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             total_credit = tax_unit("ri_ctc", period)
+            cap = p.refundability.cap
 
-            # Check refundability options
-            return where(
-                p.refundability.fully_refundable.in_effect,
-                total_credit,
-                where(
-                    p.refundability.partially_refundable.in_effect,
-                    min_(
-                        total_credit, p.refundability.partially_refundable.cap
-                    ),
-                    0,
-                ),
-            )
+            # The refundable portion is the minimum of the cap and total credit
+            # This ensures the refundable amount never exceeds the total credit
+            # - If cap = 0: credit is nonrefundable
+            # - If 0 < cap < total_credit: credit is partially refundable
+            # - If cap >= total_credit: credit is fully refundable
+            return min_(total_credit, cap)
 
     class ri_non_refundable_ctc(Variable):
         value_type = float
