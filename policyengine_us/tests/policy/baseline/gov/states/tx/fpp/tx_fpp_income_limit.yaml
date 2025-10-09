@@ -1,0 +1,39 @@
+- name: FPP income limit for household size 1
+  period: 2025
+  input:
+    state_code: TX
+    spm_unit_size: 1
+  output:
+    tx_fpp_income_limit: 39_125  # 250% of 2025 FPG for size 1
+
+- name: FPP income limit for household size 2
+  period: 2025
+  input:
+    state_code: TX
+    spm_unit_size: 2
+  output:
+    tx_fpp_income_limit: 52_875  # 250% of 2025 FPG for size 2
+
+- name: FPP income limit for household size 3
+  period: 2025
+  input:
+    state_code: TX
+    spm_unit_size: 3
+  output:
+    tx_fpp_income_limit: 66_625  # 250% of 2025 FPG for size 3
+
+- name: FPP income limit for household size 5
+  period: 2025
+  input:
+    state_code: TX
+    spm_unit_size: 5
+  output:
+    tx_fpp_income_limit: 94_125  # 250% of 2025 FPG for size 5
+
+- name: FPP income limit for household size 10
+  period: 2025
+  input:
+    state_code: TX
+    spm_unit_size: 10
+  output:
+    tx_fpp_income_limit: 162_875  # 250% of 2025 FPG for size 10
