@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.411.0] - 2025-10-09 16:59:51
+
+### Added
+
+- ACA PTC additional bracket reform allowing custom contribution rate schedules by income level
+- ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+
 ## [1.410.0] - 2025-10-06 14:13:11
 
 ### Added
@@ -13152,6 +13159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
 [1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
 [1.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.1...1.409.0
 [1.408.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.0...1.408.1
