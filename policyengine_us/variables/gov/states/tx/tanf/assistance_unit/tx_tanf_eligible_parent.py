@@ -14,11 +14,11 @@ class tx_tanf_eligible_parent(Variable):
 
     def formula(person, period, parameters):
         # Per § 372.104, parents living in household must be included in certified group
-        is_parent = person("is_parent", period)
+        is_parent = person("is_tax_unit_head_or_spouse", period)
 
         # Must meet inclusion requirements
         inclusion_requirements = person(
-            "tx_tanf_inclusion_requirements", period
+            "tx_tanf_categorically_eligible_person", period
         )
 
         return is_parent & inclusion_requirements

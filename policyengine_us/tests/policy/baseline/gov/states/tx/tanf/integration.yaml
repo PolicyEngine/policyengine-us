@@ -4,7 +4,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
       person2:
         age: 10
@@ -48,7 +48,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 3_000  # $250/month
       person2:
         age: 1
@@ -96,11 +96,11 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
       person2:
         age: 29
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
       person3:
         age: 10
@@ -146,7 +146,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 4_800  # $400/month
       person2:
         age: 10
@@ -185,7 +185,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 4_800  # $400/month
       person2:
         age: 10
@@ -223,7 +223,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
         immigration_status: UNDOCUMENTED
       person2:
@@ -262,7 +262,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
       person2:
         age: 10

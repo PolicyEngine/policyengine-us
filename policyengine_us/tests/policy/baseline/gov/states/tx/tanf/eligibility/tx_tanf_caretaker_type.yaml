@@ -4,7 +4,7 @@
     people:
       person1:
         age: 10
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1]
@@ -22,10 +22,10 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person2:
         age: 10
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -43,13 +43,13 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person2:
         age: 29
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person3:
         age: 10
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -67,16 +67,16 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person2:
         age: 29
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person3:
         age: 28
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person4:
         age: 10
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -94,15 +94,15 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         immigration_status: UNDOCUMENTED
       person2:
         age: 29
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person3:
         age: 10
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
         immigration_status: CITIZEN
     spm_units:
       spm_unit:

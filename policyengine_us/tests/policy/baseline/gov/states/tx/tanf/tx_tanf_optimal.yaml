@@ -48,7 +48,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 0
         immigration_status: CITIZEN
       person2:
@@ -79,7 +79,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
         employment_income: 4_800
         immigration_status: CITIZEN
       person2:

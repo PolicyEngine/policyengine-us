@@ -4,7 +4,7 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person2:
         age: 10
     spm_units:
@@ -23,10 +23,10 @@
     people:
       person1:
         age: 30
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person2:
         age: 29
-        is_parent: true
+        is_tax_unit_head_or_spouse: true
       person3:
         age: 10
     spm_units:
@@ -45,7 +45,7 @@
     people:
       person1:
         age: 60
-        is_parent: false
+        is_tax_unit_head_or_spouse: false
       person2:
         age: 10
       person3:

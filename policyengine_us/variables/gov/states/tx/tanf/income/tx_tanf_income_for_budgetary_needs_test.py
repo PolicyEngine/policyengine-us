@@ -19,7 +19,6 @@ class tx_tanf_income_for_budgetary_needs_test(Variable):
         # 1. Work expense ($120)
         # 2. Dependent care costs
         # 3. Child support deduction (from unearned income)
-        # Does NOT include: 1/3 or 90% earned income disregard
 
         person = spm_unit.members
         p = parameters(period).gov.states.tx.tanf.income

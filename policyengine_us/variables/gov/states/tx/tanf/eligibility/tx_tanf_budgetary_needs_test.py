@@ -11,7 +11,6 @@ class tx_tanf_budgetary_needs_test(Variable):
 
     def formula(spm_unit, period, parameters):
         # Budgetary needs test applies to applicants (not receiving TANF in last 4 months)
-        # Uses income WITHOUT earned income disregards (1/3 or 90%)
         # Household passes if budgetary needs > income
 
         budgetary_needs = spm_unit("tx_tanf_budgetary_needs", period)

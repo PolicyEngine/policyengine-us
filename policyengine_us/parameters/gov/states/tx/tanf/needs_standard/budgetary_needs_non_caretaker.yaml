@@ -1,7 +1,7 @@
-description: Texas TANF budgetary needs amount for non-caretaker cases represents the monthly amount needed by the certified group to pay for food, clothing, housing, utilities, and incidental expenses.
+description: Texas sets these budgetary needs amounts for non-caretaker cases under the Temporary Assistance for Needy Families program.
 
 metadata:
-  label: Texas TANF budgetary needs standard (non-caretaker)
+  label: Texas TANF non-caretaker budgetary needs standard 
   type: single_amount
   threshold_unit: int
   amount_unit: currency-USD
@@ -12,70 +12,70 @@ metadata:
     - title: 1 Tex. Admin. Code § 372.2 (2) - Definitions
       href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-2
     - title: 1 Tex. Admin. Code § 372.408 (a)(1) - Income Eligibility
-      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-408
+      href: http://txrules.elaws.us/rule/title1_chapter372_sec.372.408
 
 brackets:
   - threshold:
-      2024-10-01: 0
+      2023-10-01: 0
     amount:
-      2024-10-01: 0
+      2023-10-01: 0
   - threshold:
-      2024-10-01: 1
+      2023-10-01: 1
     amount:
-      2024-10-01: 256
+      2023-10-01: 256
   - threshold:
-      2024-10-01: 2
+      2023-10-01: 2
     amount:
-      2024-10-01: 369
+      2023-10-01: 369
   - threshold:
-      2024-10-01: 3
+      2023-10-01: 3
     amount:
-      2024-10-01: 518
+      2023-10-01: 518
   - threshold:
-      2024-10-01: 4
+      2023-10-01: 4
     amount:
-      2024-10-01: 617
+      2023-10-01: 617
   - threshold:
-      2024-10-01: 5
+      2023-10-01: 5
     amount:
-      2024-10-01: 793
+      2023-10-01: 793
   - threshold:
-      2024-10-01: 6
+      2023-10-01: 6
     amount:
-      2024-10-01: 856
+      2023-10-01: 856
   - threshold:
-      2024-10-01: 7
+      2023-10-01: 7
     amount:
-      2024-10-01: 1_068
+      2023-10-01: 1_068
   - threshold:
-      2024-10-01: 8
+      2023-10-01: 8
     amount:
-      2024-10-01: 1_173
+      2023-10-01: 1_173
   - threshold:
-      2024-10-01: 9
+      2023-10-01: 9
     amount:
-      2024-10-01: 1_346
+      2023-10-01: 1_346
   - threshold:
-      2024-10-01: 10
+      2023-10-01: 10
     amount:
-      2024-10-01: 1_450
+      2023-10-01: 1_450
   - threshold:
-      2024-10-01: 11
+      2023-10-01: 11
     amount:
-      2024-10-01: 1_623
+      2023-10-01: 1_623
   - threshold:
-      2024-10-01: 12
+      2023-10-01: 12
     amount:
-      2024-10-01: 1_726
+      2023-10-01: 1_726
   - threshold:
-      2024-10-01: 13
+      2023-10-01: 13
     amount:
-      2024-10-01: 1_899
+      2023-10-01: 1_899
   - threshold:
-      2024-10-01: 14
+      2023-10-01: 14
     amount:
-      2024-10-01: 2_003
+      2023-10-01: 2_003
   - threshold:
-      2024-10-01: 15
+      2023-10-01: 15
     amount:
-      2024-10-01: 2_174
+      2023-10-01: 2_174
