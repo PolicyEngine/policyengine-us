@@ -192,16 +192,48 @@ values:
 ```yaml
 description: [Active voice sentence describing what this parameter does]
 metadata:
+  label: [Short display name - REQUIRED, always include]
   unit: [currency-USD | /1 | month | year | bool]
   period: [year | month | day | eternity]
   reference:
-    - title: [Specific document name and section]
+    - title: [Specific document name and section/subsection]
       href: [Direct URL to source]
       publication_date: [YYYY-MM-DD]
-  label: [Short display name]
 values:
   [date]: [value]
 ```
+
+### CRITICAL: Description and Label Requirements
+
+**Description must:**
+- Use active voice (not passive)
+- Start with the agency/state name when applicable
+- Be concise and clear (one sentence)
+- End with a period
+
+**Examples:**
+- ✅ "Montana allocates itemized deductions to each spouse at this rate when filing separately."
+- ✅ "Montana caps the federal income tax deduction to this amount, based on filing status."
+- ✅ "Puerto Rico phases the earned income credit out at this rate of state gross income."
+- ❌ "Rate at which itemized deductions are allocated" (passive voice, no period)
+- ❌ "The allocation rate for spouses" (too vague, no active verb)
+
+**Label must:**
+- ALWAYS be included in metadata
+- Be concise (2-6 words)
+- Identify the parameter clearly
+- Use title case for state/program names
+
+**Examples:**
+- ✅ "Montana itemized deductions spouse allocation rate"
+- ✅ "Montana federal income tax deduction cap"
+- ✅ "Idaho LIHEAP heating season start month"
+- ❌ Missing label field entirely
+
+**Reference must:**
+- Cite specific statute subsections: § 15-30-2131(2) not just § 15-30-2131
+- Include document section/page numbers when available
+- Use official statutory citations over secondary sources when possible
 
 ### Unit Types
 - `currency-USD`: Dollar amounts
