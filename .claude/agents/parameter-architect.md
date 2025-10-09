@@ -203,37 +203,28 @@ values:
   [date]: [value]
 ```
 
-### CRITICAL: Description and Label Requirements
+### Description and Label Standards
 
-**Description must:**
-- Use active voice (not passive)
-- Start with the agency/state name when applicable
-- Be concise and clear (one sentence)
-- End with a period
+**Description (REQUIRED):**
+- Must exist and describe what the parameter does
+- RECOMMENDED: Use active voice for clarity
+- RECOMMENDED: End with a period
 
 **Examples:**
 - ✅ "Montana allocates itemized deductions to each spouse at this rate when filing separately."
 - ✅ "Montana caps the federal income tax deduction to this amount, based on filing status."
-- ✅ "Puerto Rico phases the earned income credit out at this rate of state gross income."
-- ❌ "Rate at which itemized deductions are allocated" (passive voice, no period)
-- ❌ "The allocation rate for spouses" (too vague, no active verb)
+- ⚠️ "Rate at which itemized deductions are allocated" (passive voice, but still acceptable)
 
-**Label must:**
-- ALWAYS be included in metadata
-- Be concise (2-6 words)
-- Identify the parameter clearly
-- Use title case for state/program names
+**Label (RECOMMENDED):**
+- Should be included in metadata for better UI/documentation
+- Be concise (2-6 words) and descriptive
+- Missing label won't break functionality but reduces discoverability
 
-**Examples:**
-- ✅ "Montana itemized deductions spouse allocation rate"
-- ✅ "Montana federal income tax deduction cap"
-- ✅ "Idaho LIHEAP heating season start month"
-- ❌ Missing label field entirely
-
-**Reference must:**
-- Cite specific statute subsections: § 15-30-2131(2) not just § 15-30-2131
-- Include document section/page numbers when available
-- Use official statutory citations over secondary sources when possible
+**Reference (REQUIRED):**
+- MUST have at least one reference with title and href
+- RECOMMENDED: Cite specific statute subsections (§ 15-30-2131(2) vs § 15-30-2131)
+- RECOMMENDED: Include document section/page numbers when available
+- RECOMMENDED: Prefer official statutory citations over secondary sources
 
 ### Unit Types
 - `currency-USD`: Dollar amounts
