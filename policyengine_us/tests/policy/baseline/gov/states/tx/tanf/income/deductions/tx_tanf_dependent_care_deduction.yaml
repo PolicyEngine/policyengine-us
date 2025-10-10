@@ -1,0 +1,54 @@
+- name: Case 1, actual expenses below maximum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_dependent_care_deduction: 250
+
+- name: Case 2, actual expenses exceed maximum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_dependent_care_deduction: 375
+
+- name: Case 3, no childcare expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_dependent_care_deduction: 0

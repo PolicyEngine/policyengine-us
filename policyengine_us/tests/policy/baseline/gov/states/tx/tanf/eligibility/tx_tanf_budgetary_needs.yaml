@@ -1,0 +1,65 @@
+- name: Case 1, non-caretaker household size 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_budgetary_needs: 369
+
+- name: Case 2, caretaker without second parent size 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_budgetary_needs: 751
+
+- name: Case 3, caretaker with second parent size 4.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    tx_tanf_budgetary_needs: 925

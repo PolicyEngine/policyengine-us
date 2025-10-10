@@ -1,0 +1,44 @@
+- name: Case 1, resources well below limit.
+  period: 2025-01
+  input:
+    tx_tanf_countable_resources: 500
+    state_code: TX
+  output:
+    tx_tanf_resources_eligible: true
+    # Resources (500) <= limit (1,000) → Pass
+
+- name: Case 2, resources at limit.
+  period: 2025-01
+  input:
+    tx_tanf_countable_resources: 1_000
+    state_code: TX
+  output:
+    tx_tanf_resources_eligible: true
+    # Resources (1,000) <= limit (1,000) → Pass
+
+- name: Case 3, resources slightly above limit.
+  period: 2025-01
+  input:
+    tx_tanf_countable_resources: 1_001
+    state_code: TX
+  output:
+    tx_tanf_resources_eligible: false
+    # Resources (1,001) > limit (1,000) → Fail
+
+- name: Case 4, resources far above limit.
+  period: 2025-01
+  input:
+    tx_tanf_countable_resources: 15_000
+    state_code: TX
+  output:
+    tx_tanf_resources_eligible: false
+    # Resources (15,000) > limit (1,000) → Fail
+
+- name: Case 5, zero resources.
+  period: 2025-01
+  input:
+    tx_tanf_countable_resources: 0
+    state_code: TX
+  output:
+    tx_tanf_resources_eligible: true
+    # Resources (0) <= limit (1,000) → Pass

@@ -1,0 +1,23 @@
+description: Texas deducts up to this amount of dependent care expenses from countable income under the Temporary Assistance for Needy Families program, depending on age.
+
+metadata:
+  period: month
+  label: Texas TANF dependent care deduction by age
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Texas Works Handbook - A-1423 Dependent Care Deduction
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions
+    - title: 1 Tex. Admin. Code § 372.409 (a)(3) - Allowable Deductions
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-409
+
+brackets:
+  - threshold:
+      2017-01-01: 0
+    amount:
+      2017-01-01: 200
+  - threshold:
+      2017-01-01: 2
+    amount:
+      2017-01-01: 175

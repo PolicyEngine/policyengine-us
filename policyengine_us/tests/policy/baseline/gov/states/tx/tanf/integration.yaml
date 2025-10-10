@@ -1,0 +1,291 @@
+- name: Case 1, single parent with low income eligible and receives full grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Countable income (0) < recognizable needs (162.5) → Pass
+    tx_tanf_budgetary_needs_test: true
+    # Countable income (0) < budgetary needs (650) → Pass
+    tx_tanf_countable_income: 0
+    # No earned or unearned income
+    tx_tanf_countable_resources: 500
+    # Cash assets only, no vehicle: 500 + 0 = 500
+    tx_tanf_income_eligible: true
+    # Applicant: passes both budgetary AND recognizable needs tests
+    tx_tanf_resources_eligible: true
+    # Resources (500) <= limit (1,000) → Pass
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 320
+    # Caretaker without second parent, size 2 → $320
+    tx_tanf: 320
+    # Payment = max(payment_standard - countable_income, minimum_grant)
+    # Payment = max(320 - 0, 10) = 320
+
+- name: Case 2, household with earnings and child care expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 3_000  # $250/month
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        childcare_expenses: 2_400  # $200/month
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    tx_tanf_gross_earned_income: [250, 0]
+    # Person1: 3,000 / 12 = 250, Person2: 0
+    tx_tanf_earned_income_after_disregard_person: [87.1, 0]
+    # Person1 (applicant, 1/3 disregard):
+    #   After work expense: 250 - 120 = 130
+    #   Disregard = 130 / 3 = 43.33
+    #   After disregard = 130 - 43.33 = 86.67 ≈ 87.1
+    tx_tanf_dependent_care_deduction: 200
+    # Child age 1 → $200/month cap (min of actual $200 or cap $200)
+    tx_tanf_countable_earned_income: 0
+    # Sum person-level: 87.1 + 0 = 87.1
+    # After dependent care: max(87.1 - 200, 0) = 0
+    tx_tanf_countable_income: 0
+    # Earned (0) + unearned (0) = 0
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_income_eligible: true
+    # Countable income (0) < budgetary needs (650) AND recognizable needs (162.5)
+    tx_tanf_countable_resources: 800
+    tx_tanf_resources_eligible: true
+    # Resources (800) <= limit (1,000) → Pass
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 320
+    tx_tanf: 320
+    # Payment = max(320 - 0, 10) = 320
+
+- name: Case 3, two parent household exceeds resource limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      person2:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 15_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 3
+    # Both parents + child eligible
+    tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+    # Two eligible parents
+    tx_tanf_countable_income: 0
+    tx_tanf_budgetary_needs: 824
+    # Caretaker with second parent, size 3 → $824
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 824 * 0.25 = 206
+    # Countable income (0) < recognizable needs (206) → Pass
+    tx_tanf_budgetary_needs_test: true
+    # Countable income (0) < budgetary needs (824) → Pass
+    tx_tanf_income_eligible: true
+    # Applicant: passes both budgetary AND recognizable needs tests
+    tx_tanf_countable_resources: 15_000
+    # Cash assets: 15,000
+    tx_tanf_resources_eligible: false
+    # Resources (15,000) > limit (1,000) → Fail
+    tx_tanf_eligible: false
+    # Failed resources test
+    tx_tanf_payment_standard: 405
+    # Even though ineligible, payment standard would be $405 for this household
+    tx_tanf: 0
+    # Ineligible → no payment
+
+- name: Case 4, applicant vs continuing recipient with same income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 4_800  # $400/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: true  # Continuing recipient
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_gross_earned_income: [400, 0]
+    tx_tanf_earned_income_after_disregard_person: [28, 0]
+    # Person1 (continuing, 90% disregard):
+    #   After work expense: 400 - 120 = 280
+    #   After disregard: 280 - min(280 * 0.9, 1400) = 280 - 252 = 28
+    tx_tanf_countable_earned_income: 28
+    tx_tanf_countable_income: 28
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Countable income (28) < recognizable needs (162.5) → Pass
+    tx_tanf_income_eligible: true
+    # Continuing: only needs to pass recognizable needs test
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 320
+    tx_tanf: 292
+    # Payment = max(320 - 28, 10) = 292
+
+- name: Case 5, same household as applicant instead of continuing.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 4_800  # $400/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: false  # New applicant
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    tx_tanf_gross_earned_income: [400, 0]
+    tx_tanf_earned_income_after_disregard_person: [187.6, 0]
+    # Person1 (applicant, 1/3 disregard):
+    #   After work expense: 400 - 120 = 280
+    #   Disregard = 280 / 3 = 93.33
+    #   After disregard = 280 - 93.33 = 186.67 ≈ 187.6
+    tx_tanf_countable_earned_income: 187.6
+    tx_tanf_countable_income: 187.6
+    tx_tanf_budgetary_needs_test: true
+    # Countable income (187.6) < budgetary needs (650) → Pass
+    tx_tanf_recognizable_needs_test: false
+    # Countable income (187.6) > recognizable needs (162.5) → Fail
+    tx_tanf_income_eligible: false
+    # Applicant: must pass BOTH budgetary AND recognizable needs tests
+    tx_tanf_eligible: false
+    tx_tanf: 0
+
+- name: Case 6, mixed immigration status child-only case.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    # Only the 2 citizen children eligible, parent ineligible
+    tx_tanf_caretaker_type: NON_CARETAKER
+    # No eligible parents → child-only case
+    tx_tanf_budgetary_needs: 369
+    # Non-caretaker, size 2 → $369
+    tx_tanf_countable_income: 0
+    tx_tanf_income_eligible: true
+    tx_tanf_resources_eligible: true
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 182
+    # Non-caretaker, size 2 → $182
+    tx_tanf: 182
+
+- name: Case 7, child-only case with children receiving SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      person2:
+        age: 10
+        ssi: 900
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_assistance_unit_size: 2
+    # Parent + child without SSI eligible
+    # Child receiving SSI excluded from assistance unit
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    tx_tanf_countable_income: 0
+    tx_tanf_income_eligible: true
+    tx_tanf_resources_eligible: true
+    tx_tanf_eligible: true
+    tx_tanf_payment_standard: 320
+    tx_tanf: 320

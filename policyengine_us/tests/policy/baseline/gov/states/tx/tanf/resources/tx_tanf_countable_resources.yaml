@@ -1,0 +1,39 @@
+- name: Case 1, only cash assets.
+  period: 2025-01
+  input:
+    spm_unit_cash_assets: 6_000
+    household_vehicles_value: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_resources: 6_000
+    # Cash assets (6,000) + countable vehicle (0) = 6,000
+
+- name: Case 2, cash assets plus vehicle under exemption.
+  period: 2025-01
+  input:
+    spm_unit_cash_assets: 6_000
+    household_vehicles_value: 4_000
+    state_code: TX
+  output:
+    tx_tanf_countable_resources: 6_000
+    # Cash assets (6,000) + max(4,000 - 4,650, 0) = 6,000 + 0 = 6,000
+
+- name: Case 3, vehicle exceeds exemption.
+  period: 2025-01
+  input:
+    spm_unit_cash_assets: 6_000
+    household_vehicles_value: 12_000
+    state_code: TX
+  output:
+    tx_tanf_countable_resources: 13_350
+    # Cash assets (6,000) + max(12,000 - 4,650, 0) = 6,000 + 7,350 = 13,350
+
+- name: Case 4, no assets.
+  period: 2025-01
+  input:
+    spm_unit_cash_assets: 0
+    household_vehicles_value: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_resources: 0
+    # No cash or vehicle assets

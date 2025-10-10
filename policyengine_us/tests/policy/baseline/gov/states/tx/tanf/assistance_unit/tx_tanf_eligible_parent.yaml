@@ -1,0 +1,38 @@
+- name: Case 1, is parent.
+  period: 2025-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    state_code: TX
+  output:
+    tx_tanf_eligible_parent: true
+
+- name: Case 2, not a parent.
+  period: 2025-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: false
+    state_code: TX
+  output:
+    tx_tanf_eligible_parent: false
+
+- name: Case 3, parent receiving SSI excluded.
+  period: 2025-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 100
+    state_code: TX
+  output:
+    tx_tanf_eligible_parent: false
+
+- name: Case 4, parent is undocumented.
+  period: 2025-01
+  input:
+    age: 30
+    ssi: 0
+    is_tax_unit_head_or_spouse: true
+    immigration_status: UNDOCUMENTED
+    state_code: TX
+  output:
+    tx_tanf_eligible_parent: false

@@ -1,0 +1,30 @@
+- name: Case 1, income below budgetary needs passes.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_income_for_budgetary_needs_test: 400
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: true
+    # Income (400) < budgetary needs (650) → Pass
+    # Note: Uses income WITHOUT earned income disregards (1/3 or 90%)
+
+- name: Case 2, income equals budgetary needs fails.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_income_for_budgetary_needs_test: 650
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: false
+    # Income (650) = budgetary needs (650) → Fail (must be strictly less than)
+
+- name: Case 3, income exceeds budgetary needs fails.
+  period: 2025-01
+  input:
+    tx_tanf_budgetary_needs: 650
+    tx_tanf_income_for_budgetary_needs_test: 700
+    state_code: TX
+  output:
+    tx_tanf_budgetary_needs_test: false
+    # Income (700) > budgetary needs (650) → Fail

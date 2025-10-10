@@ -1,0 +1,34 @@
+- name: Case 1, age-eligible child under 18.
+  period: 2025-01
+  input:
+    age: 10
+    state_code: TX
+  output:
+    tx_tanf_eligible_child: true
+
+- name: Case 2, child aged 19 not eligible.
+  period: 2025-01
+  input:
+    age: 19
+    state_code: TX
+  output:
+    tx_tanf_eligible_child: false
+
+- name: Case 3, child receiving SSI excluded.
+  period: 2025-01
+  input:
+    age: 10
+    ssi: 900
+    state_code: TX
+  output:
+    tx_tanf_eligible_child: false
+
+- name: Case 4, child is undocumented.
+  period: 2025-01
+  input:
+    age: 10
+    ssi: 0
+    immigration_status: UNDOCUMENTED
+    state_code: TX
+  output:
+    tx_tanf_eligible_child: false
