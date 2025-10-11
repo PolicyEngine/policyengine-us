@@ -1,5 +1,10 @@
 # PolicyEngine US - Development Guide
 
+## CRITICAL REQUIREMENTS - DO NOT CHANGE
+⚠️ **MUST USE Python 3.13** - Do NOT downgrade to older versions
+⚠️ **MUST USE Jupyter Book 2.0 (MyST-NB)** - Do NOT use Jupyter Book 1.x
+⚠️ **Documentation builds with `myst build docs`** - NOT `jb build`
+
 ## Build/Test/Lint Commands
 ```bash
 # Install dependencies

@@ -1,0 +1,7 @@
+# Gov › Local › Ny › Nyc Variables
+
+This section contains 20 variables.
+
+## Categories
+
+- [Tax](tax/index.md) (20 variables)
