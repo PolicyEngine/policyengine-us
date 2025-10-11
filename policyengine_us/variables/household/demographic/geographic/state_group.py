@@ -25,5 +25,5 @@ class state_group(Variable):
         return where(
             np.isin(state_code, NON_CONTIGUOUS_STATES),
             StateGroup.encode(state_code).decode(),
-            StateGroup.CONTIGUOUS_US,
+            StateGroup.CONTIGUOUS_US,888
         )
