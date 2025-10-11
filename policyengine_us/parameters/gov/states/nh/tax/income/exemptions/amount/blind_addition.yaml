@@ -13,7 +13,27 @@ metadata:
       href: https://www.revenue.nh.gov/forms/2024/documents/dp-10-instructions-2023.pdf#page=6
     - title: 2022 DP-10 Interest and Dividends Tax Return Instructions
       href: https://www.revenue.nh.gov/forms/2023/documents/dp-10-instructions-2022.pdf#page=4
-    - title: 2021 New Hampshire DP-10 Form
-      href: https://www.revenue.nh.gov/forms/2022/documents/dp-10-2021-print.pdf#page=3
+    # NH DRA forms available from 2017-2023
+    - title: 2023 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2023_pro.pdf#page=3
+    - title: 2022 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2022-print.pdf#page=3
+    - title: 2021 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2021-print.pdf#page=3
+    - title: 2020 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2020-print.pdf#page=3
+    - title: 2019 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2019-print.pdf#page=3
+    - title: 2018 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2018-print.pdf#page=3
+    - title: 2017 New Hampshire DP-10 Form (Line 8 - Additional Exemptions)
+      href: https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2017-print.pdf#page=3
+# NOTE: Historical exemption amounts based on TAXSIM implementation
+# due to limited primary sources (see base.yaml for details)
+#
+# Historical values sourced from TAXSIM 35 (http://taxsim.nber.org/taxsim35/):
+# - 1977-1980: $600 additional exemption (TAXSIM source code lines 21267-21269)
+# - 1981+: $1,200 additional exemption (TAXSIM source code lines 21265-21266)
 values:
-  2021-01-01: 1_200
+  1977-01-01: 600
+  1981-01-01: 1_200
