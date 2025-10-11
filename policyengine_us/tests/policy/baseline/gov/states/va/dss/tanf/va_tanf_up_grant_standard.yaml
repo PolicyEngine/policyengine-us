@@ -1,0 +1,62 @@
+- name: If one person and lives in Arlington, up grand standard is $275 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 275 * 12
+
+- name: If ten person and lives in Fairfax, up grand standard is $944 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 944 * 12
+
+- name: If twelve person and lives in Montgomery, up grand standard is $1,086 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 1_086 * 12
+
+- name: If one person and lives in Bedford, up grand standard is $197 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 197 * 12
+
+- name: If ten person and lives in Frederick, up grand standard is $848 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 848 * 12
+
+- name: If twelve person and lives in Pittsylvania, up grand standard is $990 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 990 * 12
+
+- name: Only calculate for VA.
+  period: 2023
+  input:
+    state_code: FL
+    spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
+  output:
+    va_tanf_up_grant_standard: 0
