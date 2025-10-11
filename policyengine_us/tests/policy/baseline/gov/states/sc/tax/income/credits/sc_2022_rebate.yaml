@@ -1,0 +1,76 @@
+- name: Basic rebate calculation with tax liability
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_200
+    state_code: SC
+  output:
+    sc_2022_rebate: 800
+
+- name: Rebate limited by remaining tax liability
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 500
+    state_code: SC
+  output:
+    sc_2022_rebate: 500
+
+- name: No rebate when tax liability is zero
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 0
+    state_code: SC
+  output:
+    sc_2022_rebate: 0
+
+- name: Rebate reduced by other non-refundable credits
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_000
+    sc_cdcc: 300
+    state_code: SC
+  output:
+    sc_2022_rebate: 700
+
+- name: No rebate when other credits exceed tax liability
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 500
+    sc_cdcc: 600
+    state_code: SC
+  output:
+    sc_2022_rebate: 0
+
+- name: Rebate reduced by refundable credits
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_000
+    sc_tuition_credit: 400
+    state_code: SC
+  output:
+    sc_2022_rebate: 600
+
+- name: Partial rebate with combined credits
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 1_500
+    sc_cdcc: 200
+    sc_tuition_credit: 100
+    state_code: SC
+  output:
+    sc_2022_rebate: 800
+
+- name: Small tax liability yields small rebate
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 100
+    state_code: SC
+  output:
+    sc_2022_rebate: 100
+
+- name: High tax liability yields maximum rebate
+  period: 2021
+  input:
+    sc_income_tax_before_non_refundable_credits: 2_000
+    state_code: SC
+  output:
+    sc_2022_rebate: 800

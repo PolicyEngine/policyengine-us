@@ -1,0 +1,20 @@
+description: Illinois provides this income tax rebate amount for joint filers, based on federal adjusted gross income.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  type: single_amount
+  label: Illinois income tax rebate joint amount
+  reference:
+    - title: Illinois Statutes Chapter 35. Revenue § 5/212.1. Individual income tax rebates (a)
+      href: https://codes.findlaw.com/il/chapter-35-revenue/il-st-sect-35-5-212-1.html
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 400_000
+    amount:
+      2021-01-01: 0

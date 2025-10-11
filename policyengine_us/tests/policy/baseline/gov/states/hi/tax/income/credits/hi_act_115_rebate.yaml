@@ -1,0 +1,35 @@
+- name: Single, higher amount
+  period: 2021
+  input:
+    adjusted_gross_income: 99_999
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 300
+
+- name: Single, lower amount
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 100
+
+- name: Joint, higher amount
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    hi_act_115_rebate: 300
+
+- name: Joint, lower amount
+  period: 2021
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    hi_act_115_rebate: 100

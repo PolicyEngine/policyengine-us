@@ -1,0 +1,47 @@
+- name: Rebate for single filer
+  period: 2020
+  input:
+    state_code: IN
+    head_spouse_count: 1
+  output:
+    in_automatic_refund_rebate: 325  # (125 base + 200 additional) * 1
+
+- name: Rebate for married couple
+  period: 2020
+  input:
+    state_code: IN
+    head_spouse_count: 2
+  output:
+    in_automatic_refund_rebate: 650  # (125 base + 200 additional) * 2
+
+- name: No rebate outside Indiana
+  period: 2020
+  input:
+    state_code: CA
+    head_spouse_count: 1
+  output:
+    in_automatic_refund_rebate: 0
+
+- name: No rebate for zero head_spouse_count
+  period: 2020
+  input:
+    state_code: IN
+    head_spouse_count: 0
+  output:
+    in_automatic_refund_rebate: 0
+
+- name: Rebate for married couple outside Indiana
+  period: 2020
+  input:
+    state_code: NY
+    head_spouse_count: 2
+  output:
+    in_automatic_refund_rebate: 0
+
+- name: Single filer rebate validation
+  period: 2020
+  input:
+    state_code: IN
+    filing_status: SINGLE
+  output:
+    in_automatic_refund_rebate: 325  # (125 base + 200 additional) * 1
