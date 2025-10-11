@@ -1,0 +1,24 @@
+description: Representative Rashida Tlaib's BOOST Act applies a supplemental tax above this adjusted gross inccome threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: BOOST Act tax threshold
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
+  breakdown:
+    - filing_status
+JOINT:
+  2026-01-01: 60_000
+SINGLE:
+  2026-01-01: 30_000
+SEPARATE:
+  2026-01-01: 30_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 30_000
+SURVIVING_SPOUSE:
+  2026-01-01: 30_000

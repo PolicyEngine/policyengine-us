@@ -1,0 +1,149 @@
+- name: Only Baby Bonus Act in effect
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      baby:
+        age: 0
+        wic: 0
+      parent:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [parent, baby]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [parent, baby]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, baby]
+        household_state_benefits: 0
+  output:
+    # Baby gets bonus (Baby Bonus Act is in effect)
+    baby_bonus_act_payment: [2_000, 0]
+    boost_act_payment: [0, 3_000]
+    ecpa_child_benefit: [5_630, 0]
+    ecpa_filer_credit: 0
+    boost_act_tax: 125
+    # Only the baby bonus payment is applied to the household benefits
+    household_benefits: 2_000
+
+- name: Only BOOST Act in effect
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      baby:
+        age: 0
+        wic: 0
+      parent:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [parent, baby]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [parent, baby]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, baby]
+        household_state_benefits: 0
+  output:
+    baby_bonus_act_payment: [2_000, 0]
+    boost_act_payment: [0, 3_000]
+    ecpa_child_benefit: [5_630, 0]
+    ecpa_filer_credit: 0
+    boost_act_tax: 125
+    household_benefits: 3_000
+
+- name: Only End Child Poverty Act in effect
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      baby:
+        age: 0
+        wic: 0
+      parent:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [parent, baby]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [parent, baby]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, baby]
+        household_state_benefits: 0
+  output:
+    baby_bonus_act_payment: [2_000, 0]
+    boost_act_payment: [0, 3_000]
+    ecpa_child_benefit: [5_630, 0]
+    ecpa_filer_credit: 700
+    boost_act_tax: 0
+    household_benefits: 5_630
+
+- name: All three acts in effect
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      baby:
+        age: 0
+        wic: 0
+      parent:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [parent, baby]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [parent, baby]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [parent, baby]
+        household_state_benefits: 0
+  output:
+    baby_bonus_act_payment: [2_000, 0]
+    boost_act_payment: [0, 3_000]
+    ecpa_child_benefit: [5_630, 0]
+    ecpa_filer_credit: 0
+    boost_act_tax: 125
+    household_benefits: 10_630

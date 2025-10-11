@@ -28,6 +28,8 @@ from .harris.rent_relief_act.rent_relief_tax_credit import (
 )
 from .congress.tlaib import (
     create_end_child_poverty_act_reform,
+    income_security_package,
+    create_income_security_package_reform,
 )
 from .congress.tlaib.boost import (
     create_boost_middle_class_tax_credit_reform,
@@ -164,6 +166,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     end_child_poverty_act = create_end_child_poverty_act_reform(
         parameters, period
     )
+    income_security_package_reform = create_income_security_package_reform(
+        parameters, period
+    )
     boost_middle_class_tax_credit = (
         create_boost_middle_class_tax_credit_reform(parameters, period)
     )
@@ -277,6 +282,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
+        income_security_package_reform,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
