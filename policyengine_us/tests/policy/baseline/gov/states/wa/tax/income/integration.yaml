@@ -1,0 +1,93 @@
+- name: Washington has no income tax in 2020 - single person
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: WA
+  output:
+    wa_income_tax: 0
+    wa_income_tax_before_refundable_credits: 0
+    wa_capital_gains_tax: 0
+
+- name: Washington has no income tax in 2020 - married couple with high income
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+      person2:
+        age: 38
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: WA
+  output:
+    wa_income_tax: 0
+    wa_income_tax_before_refundable_credits: 0
+    wa_capital_gains_tax: 0
+
+- name: Washington has no income tax in 2020 - high capital gains
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 50_000
+        long_term_capital_gains: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: WA
+  output:
+    wa_income_tax: 0
+    wa_income_tax_before_refundable_credits: 0
+    wa_capital_gains_tax: 0
+
+- name: Washington has no income tax in 2020 - family with children
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 45_000
+      parent2:
+        age: 33
+        employment_income: 35_000
+      child1:
+        age: 10
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code_str: WA
+  output:
+    wa_income_tax: 0
+    wa_income_tax_before_refundable_credits: 0
+    wa_capital_gains_tax: 0
+    wa_working_families_tax_credit: 0  # Not in effect in 2020
