@@ -9,5 +9,5 @@ class ar_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    adds = ["ar_income_tax_before_refundable_credits"]
+    adds = ["ar_income_tax_before_refundable_credits_unit"]
     subtracts = ["ar_refundable_credits"]

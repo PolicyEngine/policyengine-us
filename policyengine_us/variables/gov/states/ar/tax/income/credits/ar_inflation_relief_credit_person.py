@@ -14,7 +14,7 @@ class ar_inflation_relief_credit_person(Variable):
         # mentioned in individual income tax return form AR1000F line 28
         filing_separately = person.tax_unit("ar_files_separately", period)
         income_joint = person("ar_taxable_income_joint", period)
-        income_indiv = person("ar_taxable_income_indiv", period)
+        income_indiv = person("ar_net_taxable_income_joint", period)
         # When filing separartely, the credit is calculated based on individual income
         income = where(
             filing_separately, income_indiv, person.tax_unit.sum(income_joint)

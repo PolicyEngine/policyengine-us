@@ -1,19 +1,16 @@
 from policyengine_us.model_api import *
 
 
-class ar_files_separately(Variable):
-    value_type = bool
+class ar_income_tax_before_refundable_credits_unit(Variable):
+    value_type = float
     entity = TaxUnit
-    label = "married couple files separately on the Arkansas tax return"
+    label = "Arkansas income tax before refundable credits"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf"
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
-    )
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        filing_separately = tax_unit("ar_files_separately", period)
         itax_indiv = add(
             tax_unit,
             period,
@@ -24,4 +21,5 @@ class ar_files_separately(Variable):
             period,
             ["ar_income_tax_before_refundable_credits_joint"],
         )
-        return itax_indiv < itax_joint
+
+        return where(filing_separately, itax_indiv, itax_joint)
