@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pr_tax(Variable):
+class pr_normal_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico tax"
+    label = "Puerto Rico normal tax"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR
