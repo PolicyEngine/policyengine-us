@@ -14,20 +14,11 @@ class tx_fpp_income_limit(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Get household size and state group for FPG calculation
-        size = spm_unit("spm_unit_size", period)
-        state_group = spm_unit.household("state_group_str", period)
-
-        # Get FPG parameters
-        p_fpg = parameters(period).gov.hhs.fpg
-        fpg_first = p_fpg.first_person[state_group]
-        fpg_additional = p_fpg.additional_person[state_group]
-
-        # Calculate base FPG for household size
-        base_fpg = fpg_first + fpg_additional * max_(size - 1, 0)
+        # Get the Federal Poverty Guideline for this SPM unit
+        fpg = spm_unit("spm_unit_fpg", period)
 
         # Get FPP percentage (250% = 2.5)
         fpp_percentage = parameters(period).gov.states.tx.fpp.fpg_percentage
 
-        # Return annual income limit
-        return base_fpg * fpp_percentage
+        # Return annual income limit (FPG * percentage)
+        return fpg * fpp_percentage
