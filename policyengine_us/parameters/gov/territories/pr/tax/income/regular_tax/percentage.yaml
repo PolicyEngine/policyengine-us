@@ -1,4 +1,4 @@
-description: Puerto Rico determines the percentage reduction of normal tax based on gross income.  
+description: Puerto Rico taxes this percentage of total normal taxes, based on gross income.
 brackets:
   - threshold: 
       2024-01-01: 0
@@ -12,7 +12,7 @@ metadata:
   amount_unit: /1
   threshold_unit: currency-USD
   type: single_amount
-  label: Puerto Rico normal tax percentage reduction
+  label: Puerto Rico regular tax percentage
   period: year
   reference:
     - title: Gov. of Puerto Rico Form 482.0 2024 
