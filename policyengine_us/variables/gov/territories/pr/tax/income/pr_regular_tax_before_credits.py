@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class pr_tax_before_credits(Variable):
+class pr_regular_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Puerto Rico regular tax before credits"
@@ -14,7 +14,7 @@ class pr_tax_before_credits(Variable):
         p = parameters(period).gov.territories.pr.tax.income.regular_tax
         gross_income = tax_unit("pr_gross_income", period)
         total_normal_tax = add(
-            tax_unit, period, ["pr_tax", "pr_gradual_adjustment_amount"]
+            tax_unit, period, ["pr_normal_tax", "pr_gradual_adjustment_amount"]
         )
 
         return total_normal_tax * p.percentage.calc(gross_income)
