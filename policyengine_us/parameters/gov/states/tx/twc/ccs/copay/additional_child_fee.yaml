@@ -1,4 +1,7 @@
 description: Texas applies this monthly copayment amount for each additional child in care based on household income as a percentage of State Median Income under the Child Care Services program.
+# Note: Texas implements parent share of cost through 28 local workforce development boards.
+# These values are from the Panhandle region and may differ in other areas.
+# Copays are capped at 7% of family income per federal regulations (45 CFR §98.45).
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -6,7 +9,11 @@ metadata:
   period: month
   label: Texas CCS monthly copayment for each additional child
   reference:
-    - title: Child Care Assistance Information for Parents # Panhandle
+    - title: 40 TAC §809.19 - Parent Share of Cost
+      href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
+    - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-psoc-chart-twc.pdf
+    - title: Workforce Solutions Panhandle - Child Care Assistance Information
       href: https://wspanhandle.com/child-care/for-parents/
 
 brackets:
