@@ -1,0 +1,10 @@
+- name: Case 1, region 1, 2 years old.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 2
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 49.39

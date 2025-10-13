@@ -11129,3 +11129,71 @@
     - CTC minimum refundable amount reform.
     - CTC per child phase-out reform.
   date: 2025-09-27 17:53:20
+- bump: patch
+  changes:
+    added:
+    - NY CTC 2027 bug fix.
+  date: 2025-09-30 19:58:04
+- bump: patch
+  changes:
+    fixed:
+    - Apply the 5 year look back to the CTC reforms.
+  date: 2025-09-30 19:59:15
+- bump: patch
+  changes:
+    fixed:
+    - Include partnership/S-corp income and farm income in Alabama gross income.
+  date: 2025-10-01 16:40:26
+- bump: patch
+  changes:
+    added:
+    - CTC reform integration tests.
+    fixed:
+    - Typo in the ctc per child phase-in reform and
+    - Minimum refundable CTC reform logic.
+  date: 2025-10-02 21:05:58
+- bump: minor
+  changes:
+    added:
+    - Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+  date: 2025-10-03 08:08:20
+- bump: patch
+  changes:
+    fixed:
+    - Vectorization of the CTC refundable maximum reform.
+  date: 2025-10-04 04:24:45
+- bump: minor
+  changes:
+    added:
+    - New benchmark_premium_uprating parameter based on KFF historical SLCSP data
+      (2014-2025)
+    changed:
+    - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth
+      rate of 4.3%
+    - Replace CRS references with IRS Revenue Procedures in ACA premium tax credit
+      parameters
+    - Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+  date: 2025-10-05 21:01:54
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Child Care Financial Assistance (CCFA).
+  date: 2025-10-06 14:13:11
+- bump: minor
+  changes:
+    added:
+    - ACA PTC additional bracket reform allowing custom contribution rate schedules
+      by income level
+    - ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+  date: 2025-10-09 16:59:51
+- bump: minor
+  changes:
+    added:
+    - Federal poverty guidelines for 2015 and 2016 to support WIC calculations back
+      to 2015.
+  date: 2025-10-09 22:32:59
+- bump: minor
+  changes:
+    added:
+    - FY 2026 SMI values.
+  date: 2025-10-09 22:40:48

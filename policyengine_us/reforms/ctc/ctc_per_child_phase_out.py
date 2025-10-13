@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 import numpy as np
+from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
+import numpy as np
 
 
 def create_ctc_per_child_phase_out() -> Reform:
@@ -28,9 +31,34 @@ def create_ctc_per_child_phase_out() -> Reform:
             reduction_amount = p.amount * qualifying_children
             return increments * reduction_amount
 
+    class ctc_arpa_uncapped_phase_out(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Uncapped phase-out of ARPA CTC increase"
+        unit = USD
+        definition_period = YEAR
+
+        def formula(tax_unit, period, parameters):
+            # Logic sequence follows the form, which is clearer than the IRC.
+            p = parameters(period).gov.irs.credits.ctc.phase_out.arpa
+            # defined_for didn't work.
+            if not p.in_effect:
+                return 0
+            # The ARPA CTC has two phase-outs: the original, and a new phase-out
+            # applying before and only to the increase in the maximum CTC under ARPA.
+            # Calculate the income used to assess the new phase-out.
+            threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
+            agi = tax_unit("adjusted_gross_income", period)
+            excess = max_(0, agi - threshold)
+            increments = np.ceil(excess / p.increment)
+            qualifying_children = tax_unit("ctc_qualifying_children", period)
+            reduction_amount = p.amount * qualifying_children
+            return increments * reduction_amount
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_phase_out)
+            self.update_variable(ctc_arpa_uncapped_phase_out)
 
     return reform
 
@@ -41,9 +69,17 @@ def create_ctc_per_child_phase_out_reform(
     if bypass:
         return create_ctc_per_child_phase_out()
 
-    p = parameters(period).gov.contrib.ctc.per_child_phase_out
+    p = parameters.gov.contrib.ctc.per_child_phase_out
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_ctc_per_child_phase_out()
     else:
         return None
