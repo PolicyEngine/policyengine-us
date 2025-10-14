@@ -31,11 +31,9 @@
     people:
       filer: {}
       grandparent:   
-        is_tax_unit_dependent: true
-        is_child_of_tax_head: false
+        is_child_dependent: false
       child: 
-        is_tax_unit_dependent: true
-        is_child_of_tax_head: true
+        is_child_dependent: true
     tax_units:
       tax_unit:
         members: [filer, grandparent, child]
@@ -54,8 +52,7 @@
       father: {}
       mother: {}    
       child: 
-        is_tax_unit_dependent: true
-        is_child_of_tax_head: true
+        is_child_dependent: true
     tax_units:
       tax_unit:
         members: [father, mother, child]
@@ -74,11 +71,9 @@
       father: {}
       mother: {}    
       child 1: 
-        is_tax_unit_dependent: true
-        is_child_of_tax_head: true
+        is_child_dependent: true
       child 2:
-        is_tax_unit_dependent: true
-        is_child_of_tax_head: true
+        is_child_dependent: true
     tax_units:
       tax_unit:
         members: [father, mother, child 1, child 2]
@@ -89,4 +84,3 @@
         state_code: PA
   output:
     pa_tax_forgiveness_rate: 0.1
-

@@ -15,7 +15,7 @@ class la_non_refundable_cdcc(Variable):
             period
         ).gov.states.la.tax.income.credits.cdcc.non_refundable
         # Louisiana matches the potential federal credit
-        us_cdcc = tax_unit("cdcc_potential", period)
+        us_cdcc = tax_unit("cdcc", period)
         us_agi = tax_unit("adjusted_gross_income", period)
         match = p.match.calc(us_agi, right=True)
         uncapped_credit = us_cdcc * match

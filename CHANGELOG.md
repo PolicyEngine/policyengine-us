@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.413.3] - 2025-10-14 02:23:12
+
+### Fixed
+
+- Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+
+## [1.413.2] - 2025-10-14 02:16:57
+
+### Fixed
+
+- Adjust the Louisiana non refundable CDCC to base it on actual and not potential credit amounts.
+
+## [1.413.1] - 2025-10-14 02:06:24
+
+### Fixed
+
+- Adjust the PA tax forgiveness rate to use is_child_dependent.
+- Remove the name metadata tag from the PA parameter system.
+
+## [1.413.0] - 2025-10-09 22:40:48
+
+### Added
+
+- FY 2026 SMI values.
+
+## [1.412.0] - 2025-10-09 22:32:59
+
+### Added
+
+- Federal poverty guidelines for 2015 and 2016 to support WIC calculations back to 2015.
+
+## [1.411.0] - 2025-10-09 16:59:51
+
+### Added
+
+- ACA PTC additional bracket reform allowing custom contribution rate schedules by income level
+- ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+
 ## [1.410.0] - 2025-10-06 14:13:11
 
 ### Added
@@ -13152,6 +13190,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.413.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.2...1.413.3
+[1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
+[1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1
+[1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
+[1.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.411.0...1.412.0
+[1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
 [1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
 [1.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.1...1.409.0
 [1.408.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.0...1.408.1

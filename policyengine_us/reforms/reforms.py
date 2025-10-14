@@ -108,6 +108,10 @@ from .crfb import (
     create_non_refundable_ss_credit_reform,
     create_senior_deduction_extension_reform,
 )
+from .aca import (
+    create_aca_ptc_additional_bracket_reform,
+    create_aca_ptc_simplified_bracket_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -248,6 +252,12 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_minimum_refundable_amount = (
         create_ctc_minimum_refundable_amount_reform(parameters, period)
     )
+    aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
+        parameters, period
+    )
+    aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -298,6 +308,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_per_child_phase_out,
         ctc_per_child_phase_in,
         ctc_minimum_refundable_amount,
+        aca_ptc_additional_bracket,
+        aca_ptc_simplified_bracket,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
