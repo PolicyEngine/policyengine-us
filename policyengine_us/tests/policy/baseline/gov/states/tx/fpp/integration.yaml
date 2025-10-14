@@ -16,7 +16,7 @@
     tx_fpp_age_eligible: [true]
     tx_fpp_income_eligible: [true]
     tx_fpp_eligible: [true]
-    tx_fpp_benefit: [431]
+    tx_fpp_benefit: [266.84]
 
 - name: Household with multiple people - both eligible
   period: 2026
@@ -38,7 +38,7 @@
     tx_fpp_age_eligible: [true, true]
     tx_fpp_income_eligible: [true, true]
     tx_fpp_eligible: [true, true]
-    tx_fpp_benefit: [431, 431]
+    tx_fpp_benefit: [266.84, 266.84]
 
 - name: Household with one age-ineligible person
   period: 2026
@@ -60,7 +60,7 @@
     tx_fpp_age_eligible: [true, false]
     tx_fpp_income_eligible: [true, true]
     tx_fpp_eligible: [true, false]
-    tx_fpp_benefit: [431, 0]
+    tx_fpp_benefit: [266.84, 0]
 
 - name: Household income-ineligible
   period: 2026
@@ -110,7 +110,7 @@
     tx_fpp_age_eligible: [true, true, true, true]
     tx_fpp_income_eligible: [true, true, true, true]
     tx_fpp_eligible: [true, true, true, true]
-    tx_fpp_benefit: [431, 431, 431, 431]
+    tx_fpp_benefit: [266.84, 266.84, 266.84, 266.84]
 
 - name: Edge case - age exactly at threshold
   period: 2026
@@ -130,4 +130,4 @@
     tx_fpp_age_eligible: [true]
     tx_fpp_income_eligible: [true]
     tx_fpp_eligible: [true]
-    tx_fpp_benefit: [431]
+    tx_fpp_benefit: [266.84]
