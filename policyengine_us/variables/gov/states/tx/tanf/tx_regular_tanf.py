@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class tx_tanf(Variable):
+class tx_regular_tanf(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Texas Temporary Assistance for Needy Families (TANF)"
+    label = (
+        "Texas Temporary Assistance for Needy Families (TANF) regular benefit"
+    )
     unit = USD
     definition_period = MONTH
     reference = (

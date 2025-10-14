@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class tx_tanf_optimal(Variable):
+class tx_tanf(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Texas TANF optimal benefit (TANF or OTTANF, whichever is higher)"
+    label = "Texas Temporary Assistance for Needy Families (TANF)"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -17,9 +17,9 @@ class tx_tanf_optimal(Variable):
         # Return whichever is higher for the household
 
         # Regular TANF: monthly benefit
-        tanf = spm_unit("tx_tanf", period)
+        regular_tanf = spm_unit("tx_regular_tanf", period)
 
         # OTTANF: one-time payment divided by 12 for monthly equivalent
         ottanf = spm_unit("tx_ottanf", period)
 
-        return max_(tanf, ottanf)
+        return max_(regular_tanf, ottanf)
