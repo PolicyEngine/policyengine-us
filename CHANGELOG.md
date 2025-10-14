@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.413.3] - 2025-10-14 02:23:12
+
+### Fixed
+
+- Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+
 ## [1.413.2] - 2025-10-14 02:16:57
 
 ### Fixed
@@ -13184,6 +13190,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.413.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.2...1.413.3
 [1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
 [1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1
 [1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
