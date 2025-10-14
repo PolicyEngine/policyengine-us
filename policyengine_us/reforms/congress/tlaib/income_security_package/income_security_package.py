@@ -93,7 +93,12 @@ def create_income_security_package() -> Reform:
             age = person("age", period)
             is_eligible = age < p.child_benefit.age_limit
 
-            return is_eligible * p.child_benefit.amount
+            # Use FPG additional_person amount (CONTIGUOUS_US for all states), rounded to nearest $10
+            p_fpg = parameters(period).gov.hhs.fpg
+            fpg_amount = p_fpg.additional_person.CONTIGUOUS_US
+            amount = round(fpg_amount / 10) * 10
+
+            return is_eligible * amount
 
     class ecpa_adult_dependent_credit(Variable):
         value_type = float
@@ -137,9 +142,7 @@ def create_income_security_package() -> Reform:
             person = tax_unit.members
             age = person("age", period)
 
-            is_head = person("is_tax_unit_head", period)
-            is_spouse = person("is_tax_unit_spouse", period)
-            is_head_or_spouse = is_head | is_spouse
+            is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
             is_eligible_age = (age >= p.filer_credit.eligibility.min_age) & (
                 age < p.filer_credit.eligibility.max_age
