@@ -25,7 +25,7 @@
       person1:
         age: 30
         is_tax_unit_head_or_spouse: true
-        employment_income: 18_000  # $1,500/month
+        employment_income: 2_400  # $200/month - low enough to pass TANF
         immigration_status: CITIZEN
       person2:
         age: 10
@@ -41,11 +41,7 @@
         members: [person1, person2]
         state_code: TX
   output:
-    tx_ottanf_income_eligible: true
-    # Gross income 1,500/month < 200% FPL (~2,510) → Pass
-    tx_ottanf_resources_eligible: true
-    # Resources (800) <= limit (1,000) → Pass
     tx_ottanf_eligible: true
-    # Meets all requirements → Eligible
+    # Meets TANF eligibility + $10 grant + crisis criteria
     tx_ottanf: 83.33
     # One-time payment of $1,000 / 12 = $83.33/month equivalent

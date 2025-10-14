@@ -1,152 +1,158 @@
-- name: Case 1, meets all eligibility requirements.
+- name: Case 1 - Eligible (all requirements met)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: false
+        employment_income: 2_400  # $200/month - low enough to pass TANF
       person2:
         age: 10
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 500
         tx_ottanf_crisis_criteria: true
-        tx_ottanf_income_eligible: true
-        tx_ottanf_resources_eligible: true
-        tx_regular_tanf: 0
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
     tx_ottanf_eligible: true
-    # Has eligible child (true) AND crisis (true) AND income (true) AND resources (true) AND citizenship (true) AND not receiving TANF (true) → Eligible
+    # Low income passes TANF eligibility, meets $10 grant minimum, has crisis
 
-- name: Case 2, fails crisis criteria.
+- name: Case 2 - Not eligible (no crisis criteria)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: false
+        employment_income: 2_400
       person2:
         age: 10
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 500
         tx_ottanf_crisis_criteria: false
-        tx_ottanf_income_eligible: true
-        tx_ottanf_resources_eligible: true
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
     tx_ottanf_eligible: false
-    # No crisis → Not eligible
+    # Fails crisis criteria requirement
 
-- name: Case 3, fails income test.
+- name: Case 3 - Not eligible (income too high for TANF)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: false
+        employment_income: 48_000  # $4,000/month - way too high
       person2:
         age: 10
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 500
         tx_ottanf_crisis_criteria: true
-        tx_ottanf_income_eligible: false
-        tx_ottanf_resources_eligible: true
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
     tx_ottanf_eligible: false
-    # Income too high → Not eligible
+    # Income too high, fails TANF eligibility
 
-- name: Case 4, fails immigration requirement.
+- name: Case 4 - Not eligible (resources too high)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: UNDOCUMENTED
-        tx_tanf_eligible_child: false
+        employment_income: 2_400
       person2:
         age: 10
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 2_000  # Over $1,000 limit
         tx_ottanf_crisis_criteria: true
-        tx_ottanf_income_eligible: true
-        tx_ottanf_resources_eligible: true
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
     tx_ottanf_eligible: false
-    # Not all members immigration eligible → Not eligible
+    # Resources too high, fails TANF resources eligibility
 
-- name: Case 5, no eligible child.
+- name: Case 5 - Not eligible (no eligible child)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: false
+        employment_income: 2_400
     spm_units:
       spm_unit:
         members: [person1]
+        spm_unit_size: 1
+        spm_unit_cash_assets: 500
         tx_ottanf_crisis_criteria: true
-        tx_ottanf_income_eligible: true
-        tx_ottanf_resources_eligible: true
     households:
       household:
         members: [person1]
         state_code: TX
   output:
     tx_ottanf_eligible: false
-    # No eligible child → Not eligible
+    # No eligible child, fails TANF child requirement
 
-- name: Case 6, fails resources test.
+- name: Case 6 - Eligible (low income applicant)
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: false
+        employment_income: 1_200  # $100/month
       person2:
-        age: 10
-        immigration_status: CITIZEN
-        tx_tanf_eligible_child: true
+        age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 200
         tx_ottanf_crisis_criteria: true
-        tx_ottanf_income_eligible: true
-        tx_ottanf_resources_eligible: false
     households:
       household:
         members: [person1, person2]
         state_code: TX
   output:
-    tx_ottanf_eligible: false
-    # Resources too high → Not eligible
+    tx_ottanf_eligible: true
+    # Very low income, passes all TANF tests
+
+- name: Case 7 - Eligible (with childcare deduction)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 6_000  # $500/month
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_cash_assets: 500
+        childcare_expenses: 2_400  # $200/month
+        tx_ottanf_crisis_criteria: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ottanf_eligible: true
+    # With childcare deduction, income is low enough to pass

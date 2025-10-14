@@ -18,6 +18,6 @@ class tx_tanf_recognizable_needs_test(Variable):
         p = parameters(period).gov.states.tx.tanf.needs_standard
 
         # Recognizable needs is 25% of budgetary needs
-        recognizable_needs = budgetary_needs * p.recognizable_needs_rate
+        recognizable_needs = budgetary_needs * p.recognizable_needs.rate
 
         return recognizable_needs > countable_income
