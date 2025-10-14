@@ -10,6 +10,7 @@ class tanf_fpg(Variable):
         "The federal poverty guideline used to determine TANF eligibility."
     )
     definition_period = MONTH
+    reference = "https://www.law.cornell.edu/uscode/text/42/9902"
 
     def formula(spm_unit, period, parameters):
         # We can use tanf_unit_size for more accurate model in the future

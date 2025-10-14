@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_person_immigration_status_tanf_eligible(Variable):
+class is_tanf_eligible_person_based_on_immigration_status(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for Temporary Assistance for Needy Families based on immigration status"

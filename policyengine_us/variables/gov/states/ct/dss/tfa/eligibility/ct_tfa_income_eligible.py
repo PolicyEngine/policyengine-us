@@ -26,9 +26,8 @@ class ct_tfa_income_eligible(Variable):
         gross_earnings = spm_unit("ct_tfa_gross_earnings", period)
         fpg = spm_unit("tanf_fpg", period)
 
-        income_eligible_at_grant_calculation = (
-            gross_earnings <= p.income_limit_rate * fpg
-        )
+        fpg_limit = p.income_limit_rate * fpg
+        income_eligible_at_grant_calculation = gross_earnings <= fpg_limit
         return where(
             is_tanf_enrolled,
             income_eligible_at_grant_calculation,
