@@ -8,7 +8,7 @@ metadata:
      - range(1, 68) #max rating areas +1
   documentation: For NY and VT below is base adult premium
   label: Second Lowest Cost Silver Plan premiums by rating area
-  uprating: gov.irs.uprating
+  uprating: gov.aca.benchmark_premium_uprating
   propagate_metadata_to_children: true
   reference:
     - title: CMS Market Rating Reforms State Specific Age Curve Variations

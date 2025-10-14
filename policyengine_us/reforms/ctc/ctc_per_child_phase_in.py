@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
-import numpy as np
+from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
 
 
 def create_ctc_per_child_phase_in() -> Reform:
@@ -36,9 +37,17 @@ def create_ctc_per_child_phase_in_reform(
     if bypass:
         return create_ctc_per_child_phase_in()
 
-    p = parameters(period).gov.contrib.ctc.per_child_phase_out
+    p = parameters.gov.contrib.ctc.per_child_phase_in
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_ctc_per_child_phase_in()
     else:
         return None

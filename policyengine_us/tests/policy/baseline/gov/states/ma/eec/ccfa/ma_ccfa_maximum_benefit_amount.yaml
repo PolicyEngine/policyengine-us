@@ -1,0 +1,209 @@
+- name: No benefit when not eligible for CCFA
+  period: 2025-01
+  input:
+    ma_ccfa_eligible: false
+    state_code: MA
+  output:
+    ma_ccfa_maximum_benefit_amount: 0
+
+- name: Full reimbursement with zero copay
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 0
+    households:
+      household:
+        state_code: MA
+        members: [parent, child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 1_200
+
+- name: Reduced benefit with copay
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 300
+    households:
+      household:
+        state_code: MA
+        members: [parent, child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 900
+
+- name: Multiple children with different reimbursement rates
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 35
+      infant:
+        age: 1
+        ma_ccfa_maximum_reimbursement: 1_500
+      toddler:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1_200
+      school_age:
+        age: 8
+        ma_ccfa_maximum_reimbursement: 800
+    spm_units:
+      spm_unit:
+        members: [parent, infant, toddler, school_age]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 400
+    households:
+      household:
+        state_code: MA
+        members: [parent, infant, toddler, school_age]
+  output:
+    ma_ccfa_maximum_benefit_amount: 3_100  # (1500 + 1200 + 800) - 400
+
+- name: Zero benefit when copay exceeds reimbursement
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        ma_ccfa_maximum_reimbursement: 500
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 600
+    households:
+      household:
+        state_code: MA
+        members: [parent, child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 0  # max(500 - 600, 0) = 0
+
+- name: TAFDC recipient with categorical eligibility and no copay
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 28
+      child1:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1_400
+      child2:
+        age: 5
+        ma_ccfa_maximum_reimbursement: 1_100
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        ma_ccfa_eligible: true
+        ma_tafdc_eligible: true
+        ma_ccfa_total_copay: 0  # TAFDC recipients typically have no copay
+    households:
+      household:
+        state_code: MA
+        members: [parent, child1, child2]
+  output:
+    ma_ccfa_maximum_benefit_amount: 2_500  # 1400 + 1100
+
+- name: High income family with maximum copay
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child:
+        age: 6
+        ma_ccfa_maximum_reimbursement: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 800
+    households:
+      household:
+        state_code: MA
+        members: [parent1, parent2, child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 200  # 1000 - 800
+
+- name: Single parent with infant - higher reimbursement rate
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 25
+      infant:
+        age: 0.5  # 6 months old
+        ma_ccfa_maximum_reimbursement: 1_800  # Infants typically have higher rates
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 150
+    households:
+      household:
+        state_code: MA
+        members: [parent, infant]
+  output:
+    ma_ccfa_maximum_benefit_amount: 1_650  # 1800 - 150
+
+- name: Family with disabled child - extended age eligibility
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 45
+      disabled_child:
+        age: 14
+        is_disabled: true
+        ma_ccfa_maximum_reimbursement: 1_300
+    spm_units:
+      spm_unit:
+        members: [parent, disabled_child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 250
+    households:
+      household:
+        state_code: MA
+        members: [parent, disabled_child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 1_050  # 1300 - 250
+
+- name: Edge case - exactly zero after copay
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 32
+      child:
+        age: 7
+        ma_ccfa_maximum_reimbursement: 750
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ma_ccfa_eligible: true
+        ma_ccfa_total_copay: 750
+    households:
+      household:
+        state_code: MA
+        members: [parent, child]
+  output:
+    ma_ccfa_maximum_benefit_amount: 0  # 750 - 750 = 0

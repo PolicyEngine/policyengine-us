@@ -5,6 +5,97 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.413.2] - 2025-10-14 02:16:57
+
+### Fixed
+
+- Adjust the Louisiana non refundable CDCC to base it on actual and not potential credit amounts.
+
+## [1.413.1] - 2025-10-14 02:06:24
+
+### Fixed
+
+- Adjust the PA tax forgiveness rate to use is_child_dependent.
+- Remove the name metadata tag from the PA parameter system.
+
+## [1.413.0] - 2025-10-09 22:40:48
+
+### Added
+
+- FY 2026 SMI values.
+
+## [1.412.0] - 2025-10-09 22:32:59
+
+### Added
+
+- Federal poverty guidelines for 2015 and 2016 to support WIC calculations back to 2015.
+
+## [1.411.0] - 2025-10-09 16:59:51
+
+### Added
+
+- ACA PTC additional bracket reform allowing custom contribution rate schedules by income level
+- ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+
+## [1.410.0] - 2025-10-06 14:13:11
+
+### Added
+
+- Massachusetts Child Care Financial Assistance (CCFA).
+
+## [1.409.0] - 2025-10-05 21:01:54
+
+### Added
+
+- New benchmark_premium_uprating parameter based on KFF historical SLCSP data (2014-2025)
+
+### Changed
+
+- Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth rate of 4.3%
+- Replace CRS references with IRS Revenue Procedures in ACA premium tax credit parameters
+- Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+
+## [1.408.1] - 2025-10-04 04:24:45
+
+### Fixed
+
+- Vectorization of the CTC refundable maximum reform.
+
+## [1.408.0] - 2025-10-03 08:08:20
+
+### Added
+
+- Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+
+## [1.407.4] - 2025-10-02 21:05:58
+
+### Added
+
+- CTC reform integration tests.
+
+### Fixed
+
+- Typo in the ctc per child phase-in reform and
+- Minimum refundable CTC reform logic.
+
+## [1.407.3] - 2025-10-01 16:40:26
+
+### Fixed
+
+- Include partnership/S-corp income and farm income in Alabama gross income.
+
+## [1.407.2] - 2025-09-30 19:59:15
+
+### Fixed
+
+- Apply the 5 year look back to the CTC reforms.
+
+## [1.407.1] - 2025-09-30 19:58:04
+
+### Added
+
+- NY CTC 2027 bug fix.
+
 ## [1.407.0] - 2025-09-27 17:53:20
 
 ### Added
@@ -13093,6 +13184,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
+[1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1
+[1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
+[1.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.411.0...1.412.0
+[1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
+[1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
+[1.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.1...1.409.0
+[1.408.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.0...1.408.1
+[1.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.4...1.408.0
+[1.407.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.3...1.407.4
+[1.407.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.2...1.407.3
+[1.407.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.1...1.407.2
+[1.407.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.0...1.407.1
 [1.407.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.406.0...1.407.0
 [1.406.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.405.0...1.406.0
 [1.405.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.1...1.405.0
