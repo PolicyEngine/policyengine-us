@@ -12,7 +12,7 @@ class ct_tfa_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_status_eligible = spm_unit(
-            "is_tanf_eligible_based_on_immigration_status", period
+            "tanf_eligible_unit_based_on_immigration_status", period
         )
         resources_eligible = spm_unit("ct_tfa_resources_eligible", period)
         income_eligible = spm_unit("ct_tfa_income_eligible", period)

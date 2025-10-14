@@ -22,10 +22,13 @@ class ct_tfa(Variable):
         # When gross earnings are between 171% and 230% of FPG, reduce the benefit by 20%
         gross_earnings = spm_unit("ct_tfa_gross_earnings", period)
         fpg = spm_unit("tanf_fpg", period)
-        high_income = gross_earnings >= p.rate * fpg
+        high_income_threshold = p.rate * fpg
+        high_income = gross_earnings >= high_income_threshold
+
+        reduction_multiplier = 1 - p.reduction_rate
 
         return where(
             high_income,
-            benefit_amount * (1 - p.reduction_rate),
+            benefit_amount * reduction_multiplier,
             benefit_amount,
         )

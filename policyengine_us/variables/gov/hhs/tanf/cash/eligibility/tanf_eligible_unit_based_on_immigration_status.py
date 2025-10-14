@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_tanf_eligible_based_on_immigration_status(Variable):
+class tanf_eligible_unit_based_on_immigration_status(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = MONTH
