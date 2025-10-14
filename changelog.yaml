@@ -11209,3 +11209,8 @@
     - Adjust the Louisiana non refundable CDCC to base it on actual and not potential
       credit amounts.
   date: 2025-10-14 02:16:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+  date: 2025-10-14 02:23:12
