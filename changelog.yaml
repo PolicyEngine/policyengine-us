@@ -11203,3 +11203,9 @@
     - Adjust the PA tax forgiveness rate to use is_child_dependent.
     - Remove the name metadata tag from the PA parameter system.
   date: 2025-10-14 02:06:24
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Louisiana non refundable CDCC to base it on actual and not potential
+      credit amounts.
+  date: 2025-10-14 02:16:57
