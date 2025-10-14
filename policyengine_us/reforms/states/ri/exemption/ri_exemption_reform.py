@@ -4,6 +4,84 @@ from policyengine_core.periods import instant
 
 
 def create_ri_exemption_reform() -> Reform:
+    class ri_eligible_dependents_count(Variable):
+        value_type = int
+        entity = TaxUnit
+        label = "Rhode Island eligible dependents count"
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.dependent_exemption
+
+            person = tax_unit.members
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
+
+            # Apply age limit if in effect
+            age_threshold = p.age_limit.threshold
+            age_limited_dependents = is_dependent & (age < age_threshold)
+            eligible_dependents = where(
+                p.age_limit.in_effect,
+                age_limited_dependents,
+                is_dependent,
+            )
+
+            return tax_unit.sum(eligible_dependents)
+
+    class ri_dependent_exemption_maximum(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Rhode Island dependent exemption maximum before phaseout"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.dependent_exemption
+
+            dependents_count = tax_unit("ri_eligible_dependents_count", period)
+            return dependents_count * p.amount
+
+    class ri_dependent_exemption_phaseout(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Rhode Island dependent exemption phaseout amount"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.dependent_exemption
+
+            filing_status = tax_unit("filing_status", period)
+            phased_out_based_on_earnings = p.phaseout.use_earnings_phaseout
+            agi = tax_unit("ri_agi", period)
+            earned_income = tax_unit("tax_unit_earned_income", period)
+            relevant_income = where(
+                phased_out_based_on_earnings, earned_income, agi
+            )
+
+            threshold = p.phaseout.threshold[filing_status]
+            excess_income = max_(relevant_income - threshold, 0)
+            return excess_income * p.phaseout.rate
+
+    class ri_dependent_exemption(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Rhode Island dependent exemption"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.dependent_exemption
+
+            maximum = tax_unit("ri_dependent_exemption_maximum", period)
+            phaseout = tax_unit("ri_dependent_exemption_phaseout", period)
+
+            return max_(maximum - phaseout, 0)
+
     class ri_exemptions(Variable):
         value_type = float
         entity = TaxUnit
@@ -13,9 +91,6 @@ def create_ri_exemption_reform() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
-            p_reform = parameters(
-                period
-            ).gov.contrib.states.ri.dependent_exemption
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
             # Personal exemptions use baseline amount
@@ -27,61 +102,19 @@ def create_ri_exemption_reform() -> Reform:
             )
             personal_exemption_amount = personal_exemptions * p_base.amount
 
-            # Determine eligible dependents
-            person = tax_unit.members
-            age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
-
-            # Apply age limit if in effect
-            age_threshold = p_reform.age_limit.threshold
-            age_limited_dependents = is_dependent & (age < age_threshold)
-            eligible_dependents = where(
-                p_reform.age_limit.in_effect,
-                age_limited_dependents,
-                is_dependent,
+            # Add dependent exemption
+            dependent_exemption_amount = tax_unit(
+                "ri_dependent_exemption", period
             )
 
-            dependents_count = tax_unit.sum(eligible_dependents)
-            dependent_exemption_amount = dependents_count * p_reform.amount
-
-            # Apply phaseout to dependent exemptions only
-            # AGI-based phaseout
-            mod_agi = tax_unit("ri_agi", period)
-            agi_threshold = p_reform.phaseout.agi_based.threshold[
-                filing_status
-            ]
-            excess_agi = max_(0, mod_agi - agi_threshold)
-            agi_phaseout = excess_agi * p_reform.phaseout.agi_based.rate
-
-            # Earnings-based phaseout
-            earnings = tax_unit("tax_unit_earned_income", period)
-            earnings_threshold = p_reform.phaseout.earnings_based.threshold[
-                filing_status
-            ]
-            excess_earnings = max_(0, earnings - earnings_threshold)
-            earnings_phaseout = (
-                excess_earnings * p_reform.phaseout.earnings_based.rate
-            )
-
-            phaseout = where(
-                p_reform.phaseout.agi_based.in_effect,
-                agi_phaseout,
-                where(
-                    p_reform.phaseout.earnings_based.in_effect,
-                    earnings_phaseout,
-                    0,
-                ),
-            )
-
-            # Apply phaseout only to dependent exemptions
-            reduced_dependent_exemption = max_(
-                dependent_exemption_amount - phaseout, 0
-            )
-
-            return personal_exemption_amount + reduced_dependent_exemption
+            return personal_exemption_amount + dependent_exemption_amount
 
     class reform(Reform):
         def apply(self):
+            self.update_variable(ri_eligible_dependents_count)
+            self.update_variable(ri_dependent_exemption_maximum)
+            self.update_variable(ri_dependent_exemption_phaseout)
+            self.update_variable(ri_dependent_exemption)
             self.update_variable(ri_exemptions)
 
     return reform

@@ -50,43 +50,24 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             filing_status = tax_unit("filing_status", period)
-
-            # AGI-based phaseout
-            agi_income = tax_unit("ri_agi", period)
-            agi_threshold = p.phaseout.agi_based.threshold[filing_status]
-            agi_excess = max_(agi_income - agi_threshold, 0)
-            agi_phaseout = agi_excess * p.phaseout.agi_based.rate
-
-            # Earnings-based phaseout
-            earnings_income = tax_unit("tax_unit_earned_income", period)
-            earnings_threshold = p.phaseout.earnings_based.threshold[
-                filing_status
-            ]
-            earnings_excess = max_(earnings_income - earnings_threshold, 0)
-            earnings_phaseout = (
-                earnings_excess * p.phaseout.earnings_based.rate
+            phased_out_based_on_earnings = p.phaseout.use_earnings_phaseout
+            agi = tax_unit("ri_agi", period)
+            earned_income = tax_unit("tax_unit_earned_income", period)
+            relevant_income = where(
+                phased_out_based_on_earnings, earned_income, agi
             )
 
-            return where(
-                p.phaseout.agi_based.in_effect,
-                agi_phaseout,
-                where(
-                    p.phaseout.earnings_based.in_effect,
-                    earnings_phaseout,
-                    0,
-                ),
-            )
+            threshold = p.phaseout.threshold[filing_status]
+            excess_income = max_(relevant_income - threshold, 0)
+            return excess_income * p.phaseout.rate
 
-    class ri_ctc(Variable):
+    class ri_total_ctc(Variable):
         value_type = float
         entity = TaxUnit
         label = "Rhode Island Child Tax Credit"
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.RI
-        reference = (
-            "https://github.com/PolicyEngine/policyengine-us/issues/6642"
-        )
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
@@ -96,9 +77,8 @@ def create_ri_ctc() -> Reform:
 
             # Apply phaseout
             phaseout = tax_unit("ri_ctc_phaseout", period)
-            credit_after_phaseout = max_(maximum - phaseout, 0)
 
-            return credit_after_phaseout
+            return max_(maximum - phaseout, 0)
 
     class ri_refundable_ctc(Variable):
         value_type = float
@@ -111,7 +91,7 @@ def create_ri_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
 
-            total_credit = tax_unit("ri_ctc", period)
+            total_credit = tax_unit("ri_total_ctc", period)
             cap = p.refundability.cap
 
             # The refundable portion is the minimum of the cap and total credit
@@ -132,9 +112,9 @@ def create_ri_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
 
-            total_credit = tax_unit("ri_ctc", period)
+            total_credit = tax_unit("ri_total_ctc", period)
             refundable_portion = tax_unit("ri_refundable_ctc", period)
-            return total_credit - refundable_portion
+            return max_(total_credit - refundable_portion, 0)
 
     def modify_parameters(parameters):
         # Add ri_refundable_ctc to refundable credits list
@@ -170,7 +150,7 @@ def create_ri_ctc() -> Reform:
             self.update_variable(ri_ctc_eligible_children)
             self.update_variable(ri_ctc_maximum)
             self.update_variable(ri_ctc_phaseout)
-            self.update_variable(ri_ctc)
+            self.update_variable(ri_total_ctc)
             self.update_variable(ri_refundable_ctc)
             self.update_variable(ri_non_refundable_ctc)
             self.modify_parameters(modify_parameters)

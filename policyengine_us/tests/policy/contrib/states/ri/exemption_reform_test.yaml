@@ -62,9 +62,9 @@
   input:
     gov.contrib.states.ri.dependent_exemption.in_effect: true
     gov.contrib.states.ri.dependent_exemption.amount: 5_100
-    gov.contrib.states.ri.dependent_exemption.phaseout.agi_based.in_effect: true
-    gov.contrib.states.ri.dependent_exemption.phaseout.agi_based.threshold.SINGLE: 100_000
-    gov.contrib.states.ri.dependent_exemption.phaseout.agi_based.rate: 0.05
+    gov.contrib.states.ri.dependent_exemption.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.ri.dependent_exemption.phaseout.rate: 0.05
+    gov.contrib.states.ri.dependent_exemption.phaseout.use_earnings_phaseout: false  # Use AGI (default)
     people:
       parent:
         age: 40
@@ -94,9 +94,9 @@
   input:
     gov.contrib.states.ri.dependent_exemption.in_effect: true
     gov.contrib.states.ri.dependent_exemption.amount: 5_100
-    gov.contrib.states.ri.dependent_exemption.phaseout.earnings_based.in_effect: true
-    gov.contrib.states.ri.dependent_exemption.phaseout.earnings_based.threshold.SINGLE: 100_000
-    gov.contrib.states.ri.dependent_exemption.phaseout.earnings_based.rate: 0.05
+    gov.contrib.states.ri.dependent_exemption.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.ri.dependent_exemption.phaseout.rate: 0.05
+    gov.contrib.states.ri.dependent_exemption.phaseout.use_earnings_phaseout: true  # Use earnings instead of AGI
     people:
       parent:
         age: 40

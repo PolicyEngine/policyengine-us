@@ -6,9 +6,9 @@
     gov.contrib.states.ri.ctc.amount: 1_000
     gov.contrib.states.ri.ctc.age_limit: 18
     gov.contrib.states.ri.ctc.refundability.cap: 999_999  # High cap = fully refundable, amount.yaml controls max
-    gov.contrib.states.ri.ctc.phaseout.agi_based.in_effect: true
-    gov.contrib.states.ri.ctc.phaseout.agi_based.threshold.SINGLE: 75_000
-    gov.contrib.states.ri.ctc.phaseout.agi_based.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: false  # Use AGI (default)
     people:
       parent:
         age: 35
@@ -22,6 +22,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
+        filing_status: SINGLE
     households:
       household:
         members: [parent, child1, child2]
@@ -30,7 +31,7 @@
     ri_ctc_eligible_children: 2
     ri_ctc_maximum: 2_000  # 2 children × $1_000 amount
     ri_ctc_phaseout: 0
-    ri_ctc: 2_000
+    ri_total_ctc: 2_000
     ri_refundable_ctc: 2_000  # min(2_000 total credit, 999_999 cap) = 2_000 (amount controls)
     ri_non_refundable_ctc: 0
 
@@ -42,9 +43,9 @@
     gov.contrib.states.ri.ctc.amount: 1_500
     gov.contrib.states.ri.ctc.age_limit: 18
     gov.contrib.states.ri.ctc.refundability.cap: 1_000  # Cap < total credit = partially refundable
-    gov.contrib.states.ri.ctc.phaseout.earnings_based.in_effect: true
-    gov.contrib.states.ri.ctc.phaseout.earnings_based.threshold.SINGLE: 75_000
-    gov.contrib.states.ri.ctc.phaseout.earnings_based.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: true  # Use earnings instead of AGI
     people:
       parent:
         age: 35
@@ -55,12 +56,13 @@
     tax_units:
       tax_unit:
         members: [parent, child1]
+        filing_status: SINGLE
     households:
       household:
         members: [parent, child1]
         state_name: RI
   output:
-    ri_ctc: 1_500
+    ri_total_ctc: 1_500
     ri_refundable_ctc: 1_000  # min(1_500 total credit, 1_000 cap) = 1_000
     ri_non_refundable_ctc: 500  # 1_500 - 1_000 = 500
 
@@ -85,13 +87,14 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
+        filing_status: SINGLE
     households:
       household:
         members: [parent, child1, child2]
         state_name: RI
   output:
     ri_ctc_eligible_children: 1
-    ri_ctc: 500
+    ri_total_ctc: 500
     ri_refundable_ctc: 0  # min(500 total credit, 0 cap) = 0
     ri_non_refundable_ctc: 500  # 500 - 0 = 500
 
@@ -103,9 +106,9 @@
     gov.contrib.states.ri.ctc.amount: 1_000
     gov.contrib.states.ri.ctc.age_limit: 18
     gov.contrib.states.ri.ctc.refundability.cap: 999_999  # Fully refundable
-    gov.contrib.states.ri.ctc.phaseout.agi_based.in_effect: true
-    gov.contrib.states.ri.ctc.phaseout.agi_based.threshold.SINGLE: 75_000
-    gov.contrib.states.ri.ctc.phaseout.agi_based.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: false  # Use AGI
     people:
       parent:
         age: 35
@@ -124,7 +127,7 @@
   output:
     ri_ctc_maximum: 1_000  # 1 child × $1_000 amount
     ri_ctc_phaseout: 500  # (85_000 - 75_000) * 0.05 = 500
-    ri_ctc: 500  # 1_000 - 500 = 500
+    ri_total_ctc: 500  # 1_000 - 500 = 500
     ri_refundable_ctc: 500  # min(500 total credit, 999_999 cap) = 500 (total credit controls)
 
 - name: RI CTC - cap exceeds amount but amount controls max
@@ -148,6 +151,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
+        filing_status: SINGLE
     households:
       household:
         members: [parent, child1, child2]
@@ -155,6 +159,6 @@
   output:
     ri_ctc_eligible_children: 2
     ri_ctc_maximum: 1_000  # 2 children × $500 amount (NOT $10_000!)
-    ri_ctc: 1_000  # amount.yaml controls the maximum
+    ri_total_ctc: 1_000  # amount.yaml controls the maximum
     ri_refundable_ctc: 1_000  # min(1_000 total credit, 10_000 cap) = 1_000
     ri_non_refundable_ctc: 0
