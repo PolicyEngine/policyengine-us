@@ -14,9 +14,8 @@ class ct_tfa_countable_unearned_income(Variable):
         total_unearned_income = add(
             spm_unit, period, ["tanf_gross_unearned_income"]
         )
-        child_support = add(
-            spm_unit, period.this_year, ["child_support_received"]
-        )
+        # Get child support - PolicyEngine handles period conversion automatically
+        child_support = add(spm_unit, period, ["child_support_received"])
         child_support_deduction = min_(child_support, p.child_support)
 
         return max_(0, total_unearned_income - child_support_deduction)

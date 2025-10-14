@@ -20,9 +20,9 @@ class ct_tfa(Variable):
         )
         benefit_amount = max_(payment_standard - countable_unearned_income, 0)
         # When gross earnings are between 171% and 230% of FPG, reduce the benefit by 20%
-        gross_earings = spm_unit("ct_tfa_gross_earnings", period)
+        gross_earnings = spm_unit("ct_tfa_gross_earnings", period)
         fpg = spm_unit("tanf_fpg", period)
-        high_income = gross_earings >= p.rate * fpg
+        high_income = gross_earnings >= p.rate * fpg
 
         return where(
             high_income,
