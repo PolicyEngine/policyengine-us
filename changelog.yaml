@@ -11197,3 +11197,9 @@
     added:
     - FY 2026 SMI values.
   date: 2025-10-09 22:40:48
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the PA tax forgiveness rate to use is_child_dependent.
+    - Remove the name metadata tag from the PA parameter system.
+  date: 2025-10-14 02:06:24
