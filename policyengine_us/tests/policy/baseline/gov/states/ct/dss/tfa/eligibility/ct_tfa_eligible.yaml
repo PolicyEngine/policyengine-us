@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     is_demographic_tanf_eligible: true
-    is_tanf_eligible_based_on_immigration_status: true
+    tanf_eligible_unit_based_on_immigration_status: true
     ct_tfa_resources_eligible: true
     ct_tfa_income_eligible: true
     state_code: CT
@@ -13,7 +13,7 @@
   period: 2024-01
   input:
     is_demographic_tanf_eligible: false
-    is_tanf_eligible_based_on_immigration_status: true
+    tanf_eligible_unit_based_on_immigration_status: true
     ct_tfa_resources_eligible: true
     ct_tfa_income_eligible: true
     state_code: CT
@@ -24,7 +24,7 @@
   period: 2024-01
   input:
     is_demographic_tanf_eligible: true
-    is_tanf_eligible_based_on_immigration_status: true
+    tanf_eligible_unit_based_on_immigration_status: true
     ct_tfa_resources_eligible: true
     ct_tfa_income_eligible: false
     state_code: CT
