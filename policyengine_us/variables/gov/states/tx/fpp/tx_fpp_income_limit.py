@@ -21,4 +21,4 @@ class tx_fpp_income_limit(Variable):
         p = parameters(period).gov.states.tx.fpp
 
         # Return annual income limit (FPG * percentage)
-        return fpg * fpp_percentage
+        return fpg * p.fpp_percentage
