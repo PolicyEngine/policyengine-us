@@ -1,0 +1,424 @@
+## Edge Case Tests: Income Boundaries
+## Tests income eligibility at critical FPL thresholds: 55%, 100%, 171%, 230%
+
+- name: Family of 3 - Income exactly at 55% FPL (initial eligibility threshold)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_208  # Exactly 55% FPL for 3: $1,184/month * 12
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $1,184/month (exactly 55% FPL)
+    # Edge case: Income EXACTLY at threshold - should be eligible (<=)
+    # Expected benefit: $698 (Region A) minus countable income
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar below 55% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_196  # $1 below: $1,183/month * 12
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $1,183/month (just under 55% FPL)
+    # Edge case: Just below threshold - definitely eligible
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar above 55% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_220  # $1 above: $1,185/month * 12
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $1,185/month (just over 55% FPL)
+    # Edge case: Just above initial threshold - should be ineligible for NEW applications
+    # But if continuing, would still be eligible up to 100% FPL
+    ct_tfa_income_eligible: true  # Under extension limit
+
+- name: Family of 4 - Income exactly at 100% FPL (continuing eligibility threshold)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 31_200  # Exactly 100% FPL for 4: $2,600/month * 12
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Income: $2,600/month (exactly 100% FPL)
+    # Edge case: At continuing eligibility threshold - full disregard applies
+    ct_tfa_income_eligible: true
+
+- name: Family of 4 - Income one dollar below 100% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 31_188  # $1 below: $2,599/month * 12
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Income: $2,599/month (just under 100% FPL)
+    # Edge case: Just below continuing threshold
+    ct_tfa_income_eligible: true
+
+- name: Family of 4 - Income one dollar above 100% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 31_212  # $1 above: $2,601/month * 12
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Income: $2,601/month (just above 100% FPL)
+    # Edge case: Above continuing threshold but within extension range
+    # Should trigger extension period rules (6 months max)
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income exactly at 171% FPL (extension benefit reduction threshold)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 44_160  # Exactly 171% FPL for 3: $3,680/month * 12
+      child1:
+        age: 6
+      child2:
+        age: 11
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $3,680/month (exactly 171% FPL)
+    # Edge case: At 20% benefit reduction threshold
+    # Should be eligible with 20% reduction applied
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar below 171% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 44_148  # $1 below: $3,679/month * 12
+      child1:
+        age: 6
+      child2:
+        age: 11
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $3,679/month (just under 171% FPL)
+    # Edge case: Just below reduction threshold - no reduction applied
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar above 171% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 44_172  # $1 above: $3,681/month * 12
+      child1:
+        age: 6
+      child2:
+        age: 11
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $3,681/month (just above 171% FPL)
+    # Edge case: Just above reduction threshold - 20% reduction should apply
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income exactly at 230% FPL (extension period maximum)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 59_400  # Exactly 230% FPL for 3: $4,950/month * 12
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $4,950/month (exactly 230% FPL)
+    # Edge case: At maximum extension eligibility - should be eligible
+    # 20% benefit reduction applies
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar below 230% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 59_388  # $1 below: $4,949/month * 12
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $4,949/month (just under 230% FPL)
+    # Edge case: Just under maximum - still eligible
+    ct_tfa_income_eligible: true
+
+- name: Family of 3 - Income one dollar above 230% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 59_412  # $1 above: $4,951/month * 12
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Income: $4,951/month (just over 230% FPL)
+    # Edge case: Exceeds maximum extension limit - ineligible
+    ct_tfa_income_eligible: false
+
+- name: Family of 2 - Multiple thresholds at 55%, 100%, 171%, 230% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+      child1:
+        age: 5
+    families:
+      family:
+        members: [parent, child1]
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Household size: 2
+    # 55% FPL: $937/month ($11,244/year)
+    # 100% FPL: $1,703/month ($20,436/year)
+    # 171% FPL: $2,912/month ($34,944/year)
+    # 230% FPL: $3,917/month ($47,004/year)
+    # Testing threshold calculations for family of 2
+    ct_tfa_assistance_unit_size: 2
+
+- name: Family of 5 - Multiple thresholds at 55%, 100%, 171%, 230% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 9
+      child4:
+        age: 14
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: CT
+  output:
+    # Household size: 5
+    # 55% FPL: $1,676/month ($20,112/year)
+    # 100% FPL: $3,048/month ($36,576/year)
+    # 171% FPL: $5,212/month ($62,544/year)
+    # 230% FPL: $7,010/month ($84,120/year)
+    # Testing threshold calculations for family of 5
+    ct_tfa_assistance_unit_size: 5
+
+- name: Family of 8 - Multiple thresholds at 55%, 100%, 171%, 230% FPL
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 45
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 8
+      child4:
+        age: 11
+      child5:
+        age: 14
+      child6:
+        age: 16
+      child7:
+        age: 17
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7]
+        state_code: CT
+  output:
+    # Household size: 8
+    # 55% FPL: $2,416/month ($28,992/year)
+    # 100% FPL: $4,393/month ($52,716/year)
+    # 171% FPL: $7,512/month ($90,144/year)
+    # 230% FPL: $10,104/month ($121,248/year)
+    # Testing threshold calculations for family of 8
+    ct_tfa_assistance_unit_size: 8

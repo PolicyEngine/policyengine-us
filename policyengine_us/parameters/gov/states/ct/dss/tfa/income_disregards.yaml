@@ -1,36 +1,110 @@
-description: Connecticut TFA income disregards and deductions
+description: >
+  Connecticut TFA income disregards and deductions.
+
+  Connecticut applies various income disregards to encourage work and support
+  families while receiving TFA assistance. These disregards reduce the amount
+  of income counted when determining benefit levels.
+
+  Key Disregards:
+  - $90 initial application deduction (per earner)
+  - 100% student income disregard
+  - $50/month child support passthrough
 
 metadata:
   reference:
     - title: Connecticut TANF State Plan 2024-2026, Income Treatment Section
       href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
       publication_date: 2024-04-15
-    - title: Connecticut General Statutes Section 17b-80 - Income Disregards
+    - title: Conn. Gen. Stat. § 17b-80 - Income Disregards
       href: https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_17b-80
+    - title: Connecticut DSS Uniform Policy Manual Section 8030 - Income Treatment
+      href: https://portal.ct.gov/DSS/Lists/Uniform-Policy-Manual
 
 # Initial application deduction
 initial_application_deduction:
-  description: Connecticut deducts this amount from each person's gross earnings at time of initial application for TFA
+  description: >
+    Connecticut deducts this amount from each person's gross earnings at time of
+    initial application for TFA ($90 per earner).
+
+    This per-earner deduction applies only at initial application to determine if
+    the household meets the 55% FPL income eligibility threshold. Once enrolled,
+    the more generous continuing eligibility disregard (100% of earnings up to
+    100% FPL) applies instead.
+
+    Example (Family with 2 earners at initial application):
+    - Earner 1 gross: $600/month
+    - Earner 2 gross: $400/month
+    - Total gross: $1,000/month
+    - Initial deduction: $90 + $90 = $180
+    - Countable income: $1,000 - $180 = $820/month
+
+    Note: This parameter is maintained for historical completeness but the current
+    implementation uses the continuing eligibility disregard (100% up to FPL) for
+    simplicity, which is more generous and reflects typical household experience.
+
   metadata:
     unit: currency-usd
     period: month
-  1996-01-01: 90
+    label: Initial application earned income deduction (per earner)
+  values:
+    1996-01-01: 90
 
 # Student income disregard
 student_income_disregard:
-  description: Connecticut fully disregards earned income of a child who is a student in determining eligibility, standard of need, and amount of assistance per CGS Section 17b-80
+  description: >
+    Connecticut fully disregards earned income of a child who is a student in
+    determining eligibility, standard of need, and amount of assistance
+    (100% disregard per Conn. Gen. Stat. § 17b-80).
+
+    This policy encourages education by ensuring that a student child's part-time
+    work earnings don't reduce the family's TFA benefits. The disregard applies to
+    children who are students in high school, vocational school, or higher education.
+
+    Example:
+    - Family of 3 includes high school student earning $500/month part-time
+    - Student income fully excluded from gross income calculation
+    - Only parent/guardian earnings count toward TFA income limits
+
   metadata:
     unit: /1
-  1996-01-01: 1.0
+    label: Student earned income disregard (percent)
+    reference:
+      - title: Conn. Gen. Stat. § 17b-80 - Student Income Exclusion
+        href: https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_17b-80
+  values:
+    1996-01-01: 1.0
 
 # Child support passthrough
 child_support_passthrough:
-  description: Connecticut passes through this amount of child support to the household and excludes it from benefit calculation
+  description: >
+    Connecticut passes through this amount of child support to the household and
+    excludes it from benefit calculation ($50/month).
+
+    The child support passthrough ensures that child support payments benefit the
+    child rather than simply offset TFA benefits. The first $50/month of child
+    support received is passed through to the family and excluded from countable
+    income. Any child support over $50/month is counted as unearned income.
+
+    Example 1 (Child support $75/month):
+    - Child support received: $75
+    - Passthrough exclusion: $50 (first $50)
+    - Countable unearned income: $75 - $50 = $25
+
+    Example 2 (Child support $30/month):
+    - Child support received: $30
+    - Passthrough exclusion: $30 (all of it, under $50)
+    - Countable unearned income: $0
+
+    This policy encourages non-custodial parents to pay child support by ensuring
+    the payment increases the custodial family's total resources.
+
   metadata:
     unit: currency-usd
     period: month
+    label: Child support passthrough amount
     reference:
       - title: SSA POMS SI BOS00830.403 - TANF - Connecticut, Child Support Provisions
         href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0500830403BOS
         publication_date: 2023-05-17
-  1996-01-01: 50
+  values:
+    1996-01-01: 50

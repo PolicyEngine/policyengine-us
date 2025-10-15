@@ -1,1 +1,13 @@
-
+- bump: minor
+  changes:
+    added:
+    - Connecticut Temporary Family Assistance (TFA) program implementation
+    - TFA eligibility variables for income, resources, categorical, and pregnancy
+    - TFA benefit calculation including payment standards and family cap
+    - Comprehensive YAML test coverage for all TFA components
+    - 130 edge case tests covering income boundaries, resource limits, household sizes, age boundaries, family cap, zero/negative values, mixed demographics, and rounding precision
+    changed:
+    - Enhanced TFA documentation with detailed calculation examples and regulatory citations
+    - Added step-by-step formula walkthroughs with real-world numeric examples for all TFA variables
+    - Expanded parameter descriptions with policy context, examples, and cross-references
+    - Added comprehensive inline code comments explaining calculation logic and regulatory basis

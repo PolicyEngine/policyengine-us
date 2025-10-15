@@ -1,0 +1,366 @@
+## Edge Case Tests: Resource/Asset Limits
+## Tests asset eligibility at $6,000 limit and $9,500 vehicle exclusion
+
+- name: Family with assets exactly at $6,000 limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000  # $833/month - under income limit
+      child1:
+        age: 7
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 6_000  # Exactly at asset limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $6,000 (exactly at limit)
+    # Edge case: Assets EXACTLY at threshold - should be eligible (<=)
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets one dollar below $6,000 limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000  # $833/month - under income limit
+      child1:
+        age: 7
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 5_999  # $1 below limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $5,999 (just under limit)
+    # Edge case: Just below threshold - definitely eligible
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets one dollar above $6,000 limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000  # $833/month - under income limit
+      child1:
+        age: 7
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 6_001  # $1 above limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $6,001 (just over limit)
+    # Edge case: Just above threshold - ineligible
+    ct_tfa_resources_eligible: false
+
+- name: Family with assets at $5,000 - comfortably below limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+      child1:
+        age: 5
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 5_000
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $5,000 (comfortably below $6,000 limit)
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets at $10,000 - well over limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 8_000
+      child1:
+        age: 4
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+        family_net_worth: 10_000  # Well over limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Assets: $10,000 (significantly over $6,000 limit)
+    ct_tfa_resources_eligible: false
+
+- name: Family with assets at exactly $0 - minimum assets
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 9_000
+      child1:
+        age: 3
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 0  # Zero assets
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $0 (minimum possible)
+    # Edge case: Zero assets - definitely eligible
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets at $100 - very low assets
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 8_500
+      child1:
+        age: 2
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 100  # Minimal assets
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $100 (very low)
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets at $3,000 - mid-range
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 33
+        employment_income: 11_000
+      child1:
+        age: 6
+      child2:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2]
+        family_net_worth: 3_000  # Half the limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Assets: $3,000 (mid-range, half of limit)
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets at $5,500 - just below limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 29
+        employment_income: 10_500
+      child1:
+        age: 4
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 5_500  # Close to but under limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $5,500 (close to $6,000 limit)
+    ct_tfa_resources_eligible: true
+
+- name: Family with assets at $6,500 - moderately over limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 9_500
+      child1:
+        age: 7
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 6_500  # Moderately over limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Assets: $6,500 (moderately over $6,000 limit)
+    ct_tfa_resources_eligible: false
+
+- name: Family with assets at $7,000 - $1,000 over limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 11_500
+      child1:
+        age: 9
+      child2:
+        age: 12
+    families:
+      family:
+        members: [parent, child1, child2]
+        family_net_worth: 7_000  # $1,000 over limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Assets: $7,000 ($1,000 over $6,000 limit)
+    ct_tfa_resources_eligible: false
+
+- name: Large family with assets at limit - size doesn't affect asset limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 15_000
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 8
+      child4:
+        age: 11
+      child5:
+        age: 14
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5]
+        family_net_worth: 6_000  # At limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: CT
+  output:
+    # Family size: 6
+    # Assets: $6,000 (at limit)
+    # Edge case: Asset limit does NOT vary by family size
+    ct_tfa_resources_eligible: true
+
+- name: Family with high income but low assets - tests asset limit independence
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 50_000  # High income
+      child1:
+        age: 6
+      child2:
+        age: 9
+    families:
+      family:
+        members: [parent, child1, child2]
+        family_net_worth: 5_000  # Under asset limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: High income, low assets
+    # Should pass asset test (but may fail income test)
+    ct_tfa_resources_eligible: true
+
+- name: Family with low income but high assets - tests asset limit independence
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 36
+        employment_income: 5_000  # Low income
+      child1:
+        age: 4
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 8_000  # Over asset limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Edge case: Low income, high assets
+    # Should fail asset test (even with qualifying income)
+    ct_tfa_resources_eligible: false
+
+## Note: Vehicle exclusion tests ($9,500 threshold) require more complex
+## vehicle asset tracking that may not be fully implemented in current variables.
+## These tests focus on the general $6,000 asset limit which uses spm_unit_assets.

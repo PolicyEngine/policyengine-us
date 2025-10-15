@@ -33,12 +33,15 @@ class ct_tfa_payment_standard(Variable):
         region_c = region == "C"
 
         # Get payment standard for each region, capped at max household size
-        max_size = 20
-        capped_size = min_(size, max_size)
+        # The parameter file defines payment standards up to household size 20
+        capped_size = min_(size, 20)
 
-        payment_a = p.region_a[capped_size]
-        payment_b = p.region_b[capped_size]
-        payment_c = p.region_c[capped_size]
+        # Convert size to string to match parameter file structure
+        size_str = capped_size.astype(str)
+
+        payment_a = p.region_a[size_str]
+        payment_b = p.region_b[size_str]
+        payment_c = p.region_c[size_str]
 
         # Return appropriate payment based on region
         return where(

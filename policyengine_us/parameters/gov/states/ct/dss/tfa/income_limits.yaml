@@ -1,4 +1,27 @@
-description: Connecticut TFA income eligibility limits expressed as percentages of Federal Poverty Level
+description: >
+  Connecticut TFA income eligibility limits expressed as percentages of Federal
+  Poverty Level (FPL).
+
+  Connecticut uses a tiered income eligibility system that varies by enrollment
+  status, allowing working families to retain TFA benefits as their earnings
+  increase. This graduated approach helps families transition to self-sufficiency
+  without sudden benefit loss.
+
+  Income Eligibility Tiers:
+  1. Initial/Standard of Need (55% FPL): New applicants must have earned income
+     below this threshold to qualify for TFA.
+
+  2. Continuing Eligibility (100% FPL): Once enrolled, households can earn up
+     to this level with full earned income disregard, retaining maximum benefits.
+
+  3. Extension Period (230% FPL): Effective January 1, 2024, families exceeding
+     100% FPL can continue receiving TFA for up to 6 months if earnings remain
+     under this threshold.
+
+  Example (Family of 3, 2024 FPL = $2,152/month):
+  - Initial limit (55% FPL): $1,184/month
+  - Continuing limit (100% FPL): $2,152/month
+  - Extension limit (230% FPL): $4,950/month
 
 metadata:
   reference:
@@ -7,24 +30,83 @@ metadata:
       publication_date: 2024-04-15
     - title: Connecticut TFA Fact Sheet - Income Standards
       href: https://portal.ct.gov/dss/knowledge-base/articles/fact-sheets-and-brochures-articles/fact-sheets-articles/tfa-fact-sheet
+    - title: Conn. Gen. Stat. § 17b-112 - TFA Program Authorization
+      href: https://www.cga.ct.gov/current/pub/chap_319s.htm
 
 # Standard of need and initial eligibility
 initial:
-  description: Initial eligibility requires gross earned income below this percentage of Federal Poverty Level for household size
+  description: >
+    Initial eligibility requires gross earned income below this percentage of
+    Federal Poverty Level for household size (55% FPL).
+
+    This is Connecticut's "Standard of Need" - the income threshold new applicants
+    must meet to qualify for TFA. This ensures TFA serves families with the lowest
+    incomes who need cash assistance most urgently.
+
+    Example (Family of 3, 2024):
+    - Annual FPL: $25,820
+    - Monthly FPL: $2,152
+    - Initial limit (55%): $1,184/month
+    - Family earning $1,200/month: Ineligible (over 55% FPL)
+    - Family earning $1,000/month: Eligible (under 55% FPL)
+
   metadata:
     unit: /1
-  1996-01-01: 0.55
+    label: Initial eligibility threshold (percent of FPL)
+  values:
+    1996-01-01: 0.55
 
 # Continuing eligibility
 continuing:
-  description: Active TFA households can earn up to this percentage of Federal Poverty Level and remain eligible, with full earned income disregard
+  description: >
+    Active TFA households can earn up to this percentage of Federal Poverty Level
+    and remain eligible, with full earned income disregard (100% FPL).
+
+    This generous policy allows enrolled families to work and increase earnings
+    without losing TFA benefits, as all earnings up to 100% FPL are disregarded
+    when calculating countable income. This work incentive helps families become
+    financially stable while maintaining a safety net.
+
+    Example (Family of 3, 2024):
+    - Monthly FPL: $2,152
+    - Continuing limit (100%): $2,152/month
+    - Family earns $1,800/month: Fully disregarded, receives full TFA benefit
+    - Family earns $2,100/month: Fully disregarded, receives full TFA benefit
+    - Family earns $2,500/month: Enters extension period (over 100% FPL)
+
   metadata:
     unit: /1
-  1996-01-01: 1.0
+    label: Continuing eligibility threshold (percent of FPL)
+  values:
+    1996-01-01: 1.0
 
 # Extension period eligibility (effective January 1, 2024)
 extension:
-  description: After earnings exceed 100 percent FPL, families may continue receiving benefits for up to 6 months with earnings disregarded up to this percentage of Federal Poverty Level for eligibility purposes
+  description: >
+    After earnings exceed 100 percent FPL, families may continue receiving benefits
+    for up to 6 consecutive months with earnings disregarded up to this percentage
+    of Federal Poverty Level for eligibility purposes (230% FPL).
+
+    This extension period policy (effective January 1, 2024) provides a gradual
+    transition from TFA to full employment. Families in the extension period with
+    earnings between 171% and 230% FPL receive benefits reduced by 20%, helping
+    them adjust to higher income while maintaining partial support.
+
+    Extension Period Rules:
+    - Duration: Up to 6 consecutive months
+    - Earnings 100%-171% FPL: Full benefit (minus countable income over 100% FPL)
+    - Earnings 171%-230% FPL: Benefit reduced by 20%
+    - Earnings over 230% FPL: Ineligible
+
+    Example (Family of 3, 2024):
+    - Monthly FPL: $2,152
+    - Extension limit (230%): $4,950/month
+    - Family earns $3,500/month (163% FPL): Eligible, no reduction
+    - Family earns $4,000/month (186% FPL): Eligible, 20% reduction applies
+    - Family earns $5,000/month (232% FPL): Ineligible
+
   metadata:
     unit: /1
-  2024-01-01: 2.3
+    label: Extension period eligibility threshold (percent of FPL)
+  values:
+    2024-01-01: 2.3

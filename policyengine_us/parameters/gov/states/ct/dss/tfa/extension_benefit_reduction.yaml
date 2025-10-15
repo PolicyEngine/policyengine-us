@@ -11,17 +11,20 @@ reduction_threshold_lower:
   description: If family earnings are at or above this percentage of Federal Poverty Level during the extension period, household benefit is reduced
   metadata:
     unit: /1
-  2024-01-01: 1.71
+  values:
+    2024-01-01: 1.71
 
 reduction_threshold_upper:
   description: If family earnings are at or below this percentage of Federal Poverty Level during the extension period and above the lower threshold, household benefit is reduced
   metadata:
     unit: /1
-  2024-01-01: 2.3
+  values:
+    2024-01-01: 2.3
 
 # Reduction rate
 reduction_rate:
   description: Connecticut reduces household TFA benefit by this percentage for families with earnings between 171 percent and 230 percent of FPL during the extension period
   metadata:
     unit: /1
-  2024-01-01: 0.2
+  values:
+    2024-01-01: 0.2

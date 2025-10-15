@@ -14,11 +14,13 @@ time_threshold_months:
   description: Children born within this many months of a mother's application for TFA assistance receive only 50 percent of the additional cash benefit they would otherwise receive
   metadata:
     unit: month
-  1995-01-01: 10
+  values:
+    1995-01-01: 10
 
 # Reduction percentage
 reduction_percentage:
   description: Connecticut reduces the benefit increase for additional children born within the time threshold by this percentage, representing the only state with a partial (rather than full) family cap
   metadata:
     unit: /1
-  1995-01-01: 0.5
+  values:
+    1995-01-01: 0.5

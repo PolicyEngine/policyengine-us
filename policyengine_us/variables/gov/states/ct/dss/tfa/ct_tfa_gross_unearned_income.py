@@ -25,24 +25,19 @@ class ct_tfa_gross_unearned_income(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
 
-        # Unearned income sources (SSI is specifically excluded)
-        unemployment_compensation = person("unemployment_compensation", period)
-        social_security = person("social_security", period)
-
-        # Other unearned income sources
-        dividend_income = person("dividend_income", period)
-        interest_income = person("taxable_interest_income", period)
-        pension_income = person("pension_income", period)
-        rental_income = person("rental_income", period)
-
-        # Total unearned income per person
-        total_unearned = (
-            unemployment_compensation
-            + social_security
-            + dividend_income
-            + interest_income
-            + pension_income
-            + rental_income
+        # Aggregate all unearned income sources per person
+        # SSI is specifically excluded from TFA income calculations
+        total_unearned = add(
+            person,
+            period,
+            [
+                "unemployment_compensation",
+                "social_security",
+                "dividend_income",
+                "taxable_interest_income",
+                "pension_income",
+                "rental_income",
+            ],
         )
 
         # Sum across household

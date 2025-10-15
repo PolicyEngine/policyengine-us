@@ -1,4 +1,27 @@
-description: Connecticut TFA maximum monthly benefit amounts by region and household size
+description: >
+  Connecticut TFA maximum monthly benefit amounts by region and household size.
+
+  These payment standards represent the maximum TFA cash assistance a household
+  can receive before income reductions. The actual benefit equals the payment
+  standard minus countable income, minus any family cap or extension period
+  reductions.
+
+  Historical Context:
+  Prior to July 1, 2022, Connecticut had three payment regions (A, B, C) based
+  on local housing costs. Public Act 22-118 (effective July 2022) made benefits
+  uniform statewide and indexed them to 55% of Federal Poverty Level.
+
+  Current Status:
+  The regional rates shown (effective July 1, 2014) are maintained for historical
+  analysis. For current benefit calculations post-2022, benefits should be based
+  on 55% FPL for household size. Contact CT DSS (1-855-626-6632) for the complete
+  current benefit schedule.
+
+  Example (2014 rates, Region A):
+  - Family of 3 with no income: $698/month
+  - Family of 3 with $800/month earnings (under 100% FPL): $698/month (earnings disregarded)
+  - Family of 4 with no income: $815/month
+
 metadata:
   unit: currency-usd
   period: month
@@ -6,81 +29,218 @@ metadata:
     - title: SSA POMS SI BOS00830.403 - TANF - Connecticut, Benefit Rate Charts
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0500830403BOS
       publication_date: 2023-05-17
+      note: Historical rates effective July 1, 2014
     - title: Connecticut TANF State Plan 2024-2026
       href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
       publication_date: 2024-04-15
+      note: Current policy framework (55% FPL indexing)
+    - title: Public Act 22-118 - Budget Implementation Act (Section on TFA)
+      href: https://www.cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00SB-00001-PA.PDF
+      publication_date: 2022-05-10
+      note: Made benefits uniform statewide, effective July 1, 2022
 
-# Region A - Highest cost areas
 region_a:
-  description: Connecticut TFA payment standards for Region A (highest housing cost areas)
-  2014-07-01:
-    1: 443
-    2: 563
-    3: 698
-    4: 815
-    5: 919
-    6: 1_028
-    7: 1_143
-    8: 1_257
-    9: 1_374
-    10: 1_490
-    11: 1_607
-    12: 1_722
-    13: 1_837
-    14: 1_952
-    15: 2_067
-    16: 2_183
-    17: 2_298
-    18: 2_413
-    19: 2_369
-    20: 2_326
+  description: >
+    Connecticut TFA payment standards for Region A (highest housing cost areas).
 
-# Region B - Middle cost areas
+    Region A historically included towns with the highest housing costs in Connecticut.
+    These rates were effective July 1, 2014 through June 30, 2022. After Public Act
+    22-118, regional distinctions were eliminated in favor of uniform statewide rates.
+
+    Towns historically in Region A included areas in and around Hartford, New Haven,
+    and Fairfield counties with higher cost of living.
+  metadata:
+    unit: currency-usd
+    period: month
+  '1':
+    values:
+      2014-07-01: 443
+  '2':
+    values:
+      2014-07-01: 563
+  '3':
+    values:
+      2014-07-01: 698
+  '4':
+    values:
+      2014-07-01: 815
+  '5':
+    values:
+      2014-07-01: 919
+  '6':
+    values:
+      2014-07-01: 1_028
+  '7':
+    values:
+      2014-07-01: 1_143
+  '8':
+    values:
+      2014-07-01: 1_257
+  '9':
+    values:
+      2014-07-01: 1_374
+  '10':
+    values:
+      2014-07-01: 1_490
+  '11':
+    values:
+      2014-07-01: 1_607
+  '12':
+    values:
+      2014-07-01: 1_722
+  '13':
+    values:
+      2014-07-01: 1_837
+  '14':
+    values:
+      2014-07-01: 1_952
+  '15':
+    values:
+      2014-07-01: 2_067
+  '16':
+    values:
+      2014-07-01: 2_183
+  '17':
+    values:
+      2014-07-01: 2_298
+  '18':
+    values:
+      2014-07-01: 2_413
+  '19':
+    values:
+      2014-07-01: 2_369
+  '20':
+    values:
+      2014-07-01: 2_326
+
 region_b:
   description: Connecticut TFA payment standards for Region B (middle housing cost areas)
-  2014-07-01:
-    1: 366
-    2: 487
-    3: 597
-    4: 701
-    5: 803
-    6: 908
-    7: 1_026
-    8: 1_134
-    9: 1_250
-    10: 1_362
-    11: 1_475
-    12: 1_586
-    13: 1_696
-    14: 1_807
-    15: 1_918
-    16: 2_028
-    17: 2_139
-    18: 2_250
-    19: 2_222
-    20: 2_193
+  metadata:
+    unit: currency-usd
+    period: month
+  '1':
+    values:
+      2014-07-01: 366
+  '2':
+    values:
+      2014-07-01: 487
+  '3':
+    values:
+      2014-07-01: 597
+  '4':
+    values:
+      2014-07-01: 701
+  '5':
+    values:
+      2014-07-01: 803
+  '6':
+    values:
+      2014-07-01: 908
+  '7':
+    values:
+      2014-07-01: 1_026
+  '8':
+    values:
+      2014-07-01: 1_134
+  '9':
+    values:
+      2014-07-01: 1_250
+  '10':
+    values:
+      2014-07-01: 1_362
+  '11':
+    values:
+      2014-07-01: 1_475
+  '12':
+    values:
+      2014-07-01: 1_586
+  '13':
+    values:
+      2014-07-01: 1_696
+  '14':
+    values:
+      2014-07-01: 1_807
+  '15':
+    values:
+      2014-07-01: 1_918
+  '16':
+    values:
+      2014-07-01: 2_028
+  '17':
+    values:
+      2014-07-01: 2_139
+  '18':
+    values:
+      2014-07-01: 2_250
+  '19':
+    values:
+      2014-07-01: 2_222
+  '20':
+    values:
+      2014-07-01: 2_193
 
-# Region C - Lower cost areas
 region_c:
   description: Connecticut TFA payment standards for Region C (lower housing cost areas)
-  2014-07-01:
-    1: 366
-    2: 487
-    3: 589
-    4: 684
-    5: 779
-    6: 885
-    7: 994
-    8: 1_100
-    9: 1_213
-    10: 1_324
-    11: 1_432
-    12: 1_540
-    13: 1_648
-    14: 1_756
-    15: 1_864
-    16: 1_972
-    17: 2_080
-    18: 2_188
-    19: 2_184
-    20: 2_180
+  metadata:
+    unit: currency-usd
+    period: month
+  '1':
+    values:
+      2014-07-01: 366
+  '2':
+    values:
+      2014-07-01: 487
+  '3':
+    values:
+      2014-07-01: 589
+  '4':
+    values:
+      2014-07-01: 684
+  '5':
+    values:
+      2014-07-01: 779
+  '6':
+    values:
+      2014-07-01: 885
+  '7':
+    values:
+      2014-07-01: 994
+  '8':
+    values:
+      2014-07-01: 1_100
+  '9':
+    values:
+      2014-07-01: 1_213
+  '10':
+    values:
+      2014-07-01: 1_324
+  '11':
+    values:
+      2014-07-01: 1_432
+  '12':
+    values:
+      2014-07-01: 1_540
+  '13':
+    values:
+      2014-07-01: 1_648
+  '14':
+    values:
+      2014-07-01: 1_756
+  '15':
+    values:
+      2014-07-01: 1_864
+  '16':
+    values:
+      2014-07-01: 1_972
+  '17':
+    values:
+      2014-07-01: 2_080
+  '18':
+    values:
+      2014-07-01: 2_188
+  '19':
+    values:
+      2014-07-01: 2_184
+  '20':
+    values:
+      2014-07-01: 2_180

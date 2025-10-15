@@ -13,11 +13,13 @@ general:
   description: Connecticut limits total countable assets to this amount for TFA eligibility
   metadata:
     unit: currency-usd
-  2020-01-01: 6_000
+  values:
+    2020-01-01: 6_000
 
 # Vehicle exclusion
 vehicle_exclusion:
   description: Connecticut excludes one vehicle from countable assets if total value minus any amount owed is under this amount, or if used to transport a household member with a disability regardless of value
   metadata:
     unit: currency-usd
-  1996-01-01: 9_500
+  values:
+    1996-01-01: 9_500

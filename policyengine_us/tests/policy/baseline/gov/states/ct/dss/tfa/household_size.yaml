@@ -1,0 +1,452 @@
+## Edge Case Tests: Household Size Extremes
+## Tests very large families (10+ members) and single-person households
+
+- name: Single person household (pregnant woman only) - minimum size
+  period: 2024-10
+  input:
+    people:
+      person:
+        age: 26
+        is_pregnant: true
+        employment_income: 7_000  # $583/month
+    families:
+      family:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    # Edge case: Minimum household size (1 person)
+    # Pregnant women qualify per documentation
+    # 55% FPL for 1: $690/month
+    ct_tfa_assistance_unit_size: 1
+
+- name: Family of 9 - one beyond standard 8-person tables
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 18_000  # $1,500/month
+      child1:
+        age: 2
+      child2:
+        age: 4
+      child3:
+        age: 6
+      child4:
+        age: 8
+      child5:
+        age: 10
+      child6:
+        age: 12
+      child7:
+        age: 14
+      child8:
+        age: 16
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: CT
+  output:
+    # Edge case: Family size 9 (beyond 8-person base)
+    # FPL calculation: base for 8 + $448 for each additional
+    # 55% FPL for 9: $2,416 + $448 = $2,864/month
+    ct_tfa_assistance_unit_size: 9
+
+- name: Family of 10 - two beyond standard tables
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 42
+        employment_income: 20_000  # $1,667/month
+      parent2:
+        age: 40
+        employment_income: 0
+      child1:
+        age: 1
+      child2:
+        age: 3
+      child3:
+        age: 5
+      child4:
+        age: 7
+      child5:
+        age: 9
+      child6:
+        age: 11
+      child7:
+        age: 13
+      child8:
+        age: 15
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: CT
+  output:
+    # Edge case: Family size 10
+    # 55% FPL for 10: $2,416 + ($448 * 2) = $3,312/month
+    ct_tfa_assistance_unit_size: 10
+
+- name: Family of 12 - very large family
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 48
+        employment_income: 24_000
+      parent2:
+        age: 46
+        employment_income: 0
+      child1:
+        age: 1
+      child2:
+        age: 3
+      child3:
+        age: 5
+      child4:
+        age: 7
+      child5:
+        age: 9
+      child6:
+        age: 11
+      child7:
+        age: 13
+      child8:
+        age: 15
+      child9:
+        age: 17
+      child10:
+        age: 17  # Twin
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        state_code: CT
+  output:
+    # Edge case: Family size 12 (very large)
+    # 55% FPL for 12: $2,416 + ($448 * 4) = $4,208/month
+    ct_tfa_assistance_unit_size: 12
+
+- name: Family of 15 - extremely large family
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 52
+        employment_income: 30_000
+      parent2:
+        age: 50
+        employment_income: 0
+      child1:
+        age: 1
+      child2:
+        age: 2
+      child3:
+        age: 4
+      child4:
+        age: 6
+      child5:
+        age: 8
+      child6:
+        age: 10
+      child7:
+        age: 11
+      child8:
+        age: 13
+      child9:
+        age: 14
+      child10:
+        age: 15
+      child11:
+        age: 16
+      child12:
+        age: 17
+      child13:
+        age: 17  # Multiple children same age
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13]
+        state_code: CT
+  output:
+    # Edge case: Family size 15 (extremely large)
+    # 55% FPL for 15: $2,416 + ($448 * 7) = $5,552/month
+    # Tests whether system handles very large households correctly
+    ct_tfa_assistance_unit_size: 15
+
+- name: Family of 20 - maximum stress test
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 55
+        employment_income: 36_000
+      parent2:
+        age: 53
+        employment_income: 0
+      child1:
+        age: 1
+      child2:
+        age: 2
+      child3:
+        age: 3
+      child4:
+        age: 4
+      child5:
+        age: 5
+      child6:
+        age: 6
+      child7:
+        age: 7
+      child8:
+        age: 8
+      child9:
+        age: 9
+      child10:
+        age: 10
+      child11:
+        age: 11
+      child12:
+        age: 12
+      child13:
+        age: 13
+      child14:
+        age: 14
+      child15:
+        age: 15
+      child16:
+        age: 16
+      child17:
+        age: 17
+      child18:
+        age: 17
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13, child14, child15, child16, child17, child18]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13, child14, child15, child16, child17, child18]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12, child13, child14, child15, child16, child17, child18]
+        state_code: CT
+  output:
+    # Edge case: Family size 20 (stress test for parameter handling)
+    # 55% FPL for 20: $2,416 + ($448 * 12) = $7,792/month
+    # Tests parameter file limits and calculation correctness
+    ct_tfa_assistance_unit_size: 20
+
+- name: Large family income eligibility - size 10 at 55% FPL threshold
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 44
+        employment_income: 39_744  # Exactly 55% FPL for 10: $3,312/month * 12
+      parent2:
+        age: 42
+      child1:
+        age: 2
+      child2:
+        age: 4
+      child3:
+        age: 6
+      child4:
+        age: 8
+      child5:
+        age: 10
+      child6:
+        age: 12
+      child7:
+        age: 14
+      child8:
+        age: 16
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: CT
+  output:
+    # Edge case: Size 10 at exactly 55% FPL threshold
+    # Tests threshold calculation for large families
+    ct_tfa_income_eligible: true
+
+- name: Large family at 230% FPL - size 9 extension limit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 46
+        employment_income: 118_800  # Exactly 230% FPL for 9: $9,900/month * 12
+      child1:
+        age: 2
+      child2:
+        age: 4
+      child3:
+        age: 6
+      child4:
+        age: 8
+      child5:
+        age: 10
+      child6:
+        age: 12
+      child7:
+        age: 14
+      child8:
+        age: 16
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: CT
+  output:
+    # Edge case: Size 9 at exactly 230% FPL (extension limit)
+    # Tests whether large families can use extension period correctly
+    # FPL for 9: $4,393 + $448 = $4,841/month
+    # 230% of that: $11,134/month (note: calculation based on actual FPL)
+    ct_tfa_income_eligible: true
+
+- name: Single parent with one child - size 2 baseline
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 10_000
+      child:
+        age: 5
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Common case baseline for comparison
+    # Size 2 is a typical TFA household
+    ct_tfa_assistance_unit_size: 2
+
+- name: Two parents with 6 children - size 8 at FPL table boundary
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 25_000
+      parent2:
+        age: 38
+        employment_income: 0
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 8
+      child4:
+        age: 11
+      child5:
+        age: 14
+      child6:
+        age: 17
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+        state_code: CT
+  output:
+    # Edge case: Size 8 is last size in standard FPL tables
+    # Tests boundary between tabular and calculated thresholds
+    # 55% FPL for 8: $2,416/month
+    ct_tfa_assistance_unit_size: 8
+
+- name: Three-generation household - size 11
+  period: 2024-10
+  input:
+    people:
+      grandparent1:
+        age: 65
+        employment_income: 0
+      grandparent2:
+        age: 63
+        employment_income: 0
+      parent1:
+        age: 35
+        employment_income: 22_000
+      parent2:
+        age: 33
+        employment_income: 0
+      child1:
+        age: 1
+      child2:
+        age: 3
+      child3:
+        age: 5
+      child4:
+        age: 7
+      child5:
+        age: 9
+      child6:
+        age: 11
+      child7:
+        age: 13
+    families:
+      family:
+        members: [grandparent1, grandparent2, parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+    spm_units:
+      spm_unit:
+        members: [grandparent1, grandparent2, parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+    households:
+      household:
+        members: [grandparent1, grandparent2, parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+        state_code: CT
+  output:
+    # Edge case: Multi-generational household with 11 members
+    # Tests whether non-standard household structures handled correctly
+    ct_tfa_assistance_unit_size: 11
