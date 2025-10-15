@@ -1,4 +1,5 @@
 - name: RI CTC - fully refundable with AGI phaseout
+  absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
   input:
@@ -34,8 +35,11 @@
     ri_total_ctc: 2_000
     ri_refundable_ctc: 2_000  # min(2_000 total credit, 999_999 cap) = 2_000 (amount controls)
     ri_non_refundable_ctc: 0
+    ri_refundable_credits: 2_246.32  # 2_000 (CTC) + 246.32 (EITC)
+    ri_non_refundable_credits: 0
 
 - name: RI CTC - partially refundable with earnings phaseout
+  absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
   input:
@@ -65,8 +69,11 @@
     ri_total_ctc: 1_500
     ri_refundable_ctc: 1_000  # min(1_500 total credit, 1_000 cap) = 1_000
     ri_non_refundable_ctc: 500  # 1_500 - 1_000 = 500
+    ri_refundable_credits: 1_522.45  # 1_000 (CTC refundable) + 522.45 (EITC)
+    ri_non_refundable_credits: 500  # 500 (CTC non-refundable)
 
 - name: RI CTC - nonrefundable with no phaseout
+  absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
   input:
@@ -97,8 +104,11 @@
     ri_total_ctc: 500
     ri_refundable_ctc: 0  # min(500 total credit, 0 cap) = 0
     ri_non_refundable_ctc: 500  # 500 - 0 = 500
+    ri_refundable_credits: 583.28  # 0 (CTC refundable) + 583.28 (EITC)
+    ri_non_refundable_credits: 500  # 500 (CTC non-refundable)
 
 - name: RI CTC - AGI phaseout reduces credit
+  absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
   input:
@@ -129,8 +139,12 @@
     ri_ctc_phaseout: 500  # (85_000 - 75_000) * 0.05 = 500
     ri_total_ctc: 500  # 1_000 - 500 = 500
     ri_refundable_ctc: 500  # min(500 total credit, 999_999 cap) = 500 (total credit controls)
+    ri_non_refundable_ctc: 0
+    ri_refundable_credits: 500  # 500 (CTC refundable) + 0 (EITC - income too high)
+    ri_non_refundable_credits: 0
 
 - name: RI CTC - cap exceeds amount but amount controls max
+  absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
   input:
@@ -162,3 +176,5 @@
     ri_total_ctc: 1_000  # amount.yaml controls the maximum
     ri_refundable_ctc: 1_000  # min(1_000 total credit, 10_000 cap) = 1_000
     ri_non_refundable_ctc: 0
+    ri_refundable_credits: 1_583.28  # 1_000 (CTC refundable) + 583.28 (EITC)
+    ri_non_refundable_credits: 0
