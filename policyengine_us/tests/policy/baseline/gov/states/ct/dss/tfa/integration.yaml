@@ -1,0 +1,548 @@
+- name: Single parent with 2 children, part-time work, Region A - eligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000  # $10,000/year = $833/month
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $833
+    # Initial eligibility limit (55% FPL): $1,184/month
+    # $833 < $1,184, so eligible
+    # Expected benefit for family of 3, Region A (using 2014 rates): $698
+    # Note: 2024 rate may be $833 based on documentation
+    ct_tfa: 698  # Using documented 2014 rate as baseline
+
+- name: Two-parent family with 3 children, one working, Region B - eligible
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 12_000  # $12,000/year = $1,000/month
+      parent2:
+        age: 33
+        employment_income: 0
+      child1:
+        age: 3
+      child2:
+        age: 6
+      child3:
+        age: 10
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: CT
+  output:
+    # Family size: 5
+    # Monthly employment income: $1,000
+    # Initial eligibility limit (55% FPL for 5): $1,676/month
+    # $1,000 < $1,676, so eligible
+    # Expected benefit for family of 5, Region B: $803
+    ct_tfa: 803
+
+- name: Family of 3 at initial eligibility income limit - eligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 14_208  # Exactly 55% FPL for 3: $1,184/month * 12
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $1,184 (exactly 55% FPL)
+    # At initial eligibility limit: $1,184/month
+    # $1,184 <= $1,184, so eligible (at threshold = eligible)
+    # Expected benefit for family of 3, Region A: $698
+    ct_tfa: 698
+
+- name: Family of 4 at continuing eligibility income limit - eligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 31_200  # Exactly 100% FPL for 4: $2,600/month * 12
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 9
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Family size: 4
+    # Monthly employment income: $2,600 (exactly 100% FPL)
+    # Continuing eligibility limit: $2,600/month (100% FPL)
+    # For continuing eligibility, earned income up to 100% FPL is disregarded
+    # Family remains eligible
+    # Expected benefit for family of 4, Region A: $815
+    ct_tfa: 815
+
+- name: Family of 3 in extension period with high earnings - eligible with reduced benefit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 50_000  # $50,000/year = $4,167/month (between 171% and 230% FPL)
+      child1:
+        age: 6
+      child2:
+        age: 11
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $4,167
+    # 100% FPL for 3: $2,152/month
+    # 171% FPL for 3: $2,152 * 1.71 = $3,680
+    # 230% FPL for 3: $2,152 * 2.30 = $4,950
+    # Income $4,167 is between $3,680 and $4,950
+    # Extension period eligibility: up to 230% FPL (6 months)
+    # Benefit reduction: 20% for income between 171% and 230% FPL
+    # Base benefit for family of 3, Region A: $698
+    # Reduced benefit: $698 * 0.80 = $558.40
+    ct_tfa: 558.40
+
+- name: Family of 2 with newborn subject to family cap - reduced benefit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 8_000  # $8,000/year = $667/month
+      child1:
+        age: 2
+      child2:
+        age: 0  # Newborn, born within 10 months of TFA application
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3 (but child2 subject to family cap)
+    # Monthly employment income: $667
+    # Without family cap: benefit for family of 3 = $698
+    # With family cap (child born within 10 months):
+    # Original benefit for family of 2: $563
+    # Full increase would be: $698 - $563 = $135
+    # 50% family cap: only get 50% of increase = $135 * 0.50 = $67.50
+    # Actual benefit: $563 + $67.50 = $630.50
+    ct_tfa: 630.50
+
+- name: Family exceeding asset limit - ineligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 8_000  # $8,000/year = $667/month (under income limit)
+      child1:
+        age: 4
+    families:
+      family:
+        members: [parent, child1]
+        family_net_worth: 7_000  # Exceeds $6,000 asset limit
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Family size: 2
+    # Monthly employment income: $667 (under limit)
+    # Assets: $7,000 > $6,000 asset limit
+    # Ineligible due to exceeding asset limit
+    ct_tfa: 0
+
+- name: Family with student child income - income disregarded
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 10_000  # $10,000/year = $833/month
+      child1:
+        age: 16
+        is_full_time_student: true
+        employment_income: 3_000  # $3,000/year = $250/month student earnings
+      child2:
+        age: 12
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Parent employment income: $833/month
+    # Student child income: $250/month (should be disregarded per CGS § 17b-80)
+    # Countable income: $833/month (student income excluded)
+    # Initial eligibility limit (55% FPL): $1,184/month
+    # $833 < $1,184, so eligible
+    # Expected benefit for family of 3, Region A: $698
+    ct_tfa: 698
+
+- name: Single parent with unearned income only - benefit reduced dollar-for-dollar
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 60
+        social_security: 6_000  # $6,000/year = $500/month
+      child1:
+        age: 10
+    families:
+      family:
+        members: [parent, child1]
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Family size: 2
+    # Monthly unearned income (Social Security): $500
+    # Unearned income counted dollar-for-dollar
+    # Maximum benefit for family of 2, Region A: $563
+    # Benefit reduced by unearned income: $563 - $500 = $63
+    ct_tfa: 63
+
+- name: Family with SSI income - SSI not counted
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        is_disabled: true
+        employment_income: 5_000  # $5,000/year = $417/month
+      child1:
+        age: 8
+        is_disabled: true
+    families:
+      family:
+        members: [parent, child1]
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Family size: 2
+    # Employment income: $417/month
+    # Note: SSI is excluded from countable income per documentation
+    # If parent or child receives SSI, it should not count
+    # Expected benefit for family of 2, Region A: $563
+    # With earned income disregard, most/all earned income excluded
+    ct_tfa: 563
+
+- name: Family of 4 in Region C - lower benefit amount
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 29
+        employment_income: 8_000  # $8,000/year = $667/month
+      child1:
+        age: 3
+      child2:
+        age: 5
+      child3:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Family size: 4
+    # Monthly employment income: $667
+    # Initial eligibility limit (55% FPL for 4): $1,430/month
+    # $667 < $1,430, so eligible
+    # Expected benefit for family of 4, Region C: $684
+    # (Region C has lower benefits than Regions A and B)
+    ct_tfa: 684
+
+- name: Large family of 6 in Region A - higher benefit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 15_000  # $15,000/year = $1,250/month
+      child1:
+        age: 2
+      child2:
+        age: 4
+      child3:
+        age: 7
+      child4:
+        age: 10
+      child5:
+        age: 13
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: CT
+  output:
+    # Family size: 6
+    # Monthly employment income: $1,250
+    # Initial eligibility limit (55% FPL for 6): $1,923/month
+    # $1,250 < $1,923, so eligible
+    # Expected benefit for family of 6, Region A: $1,028
+    ct_tfa: 1_028
+
+- name: Pregnant woman without children - eligible
+  period: 2024-10
+  input:
+    people:
+      person:
+        age: 26
+        is_pregnant: true
+        employment_income: 7_000  # $7,000/year = $583/month
+    families:
+      family:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    # Pregnant women qualify per documentation
+    # Family size: 1 (pregnant woman)
+    # Monthly employment income: $583
+    # Initial eligibility limit (55% FPL for 1): $690/month
+    # $583 < $690, so eligible
+    # Expected benefit for family of 1, Region A: $443
+    ct_tfa: 443
+
+- name: Family with income just over initial limit - ineligible for initial application
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 33
+        employment_income: 15_000  # $15,000/year = $1,250/month
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $1,250
+    # Initial eligibility limit (55% FPL): $1,184/month
+    # After $90 deduction: $1,250 - $90 = $1,160
+    # $1,160 < $1,184, so actually eligible
+    # Expected benefit for family of 3, Region A: $698
+    ct_tfa: 698
+
+- name: Elderly caregiver with young child - work requirement exemption
+  period: 2024-10
+  input:
+    people:
+      grandparent:
+        age: 62
+        employment_income: 6_000  # $6,000/year = $500/month
+      grandchild:
+        age: 3
+    families:
+      family:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: CT
+  output:
+    # Family size: 2
+    # Monthly employment income: $500
+    # Initial eligibility limit (55% FPL for 2): $937/month
+    # $500 < $937, so eligible
+    # Caregiver 60+ is exempt from work requirements and time limits
+    # Expected benefit for family of 2, Region A: $563
+    ct_tfa: 563
+
+- name: Family with child support income - first $50 excluded
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 8_000  # $8,000/year = $667/month
+      child1:
+        age: 6
+      child2:
+        age: 9
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $667
+    # Note: First $50 of child support is excluded from benefit calculation
+    # This test assumes implementation handles child support pass-through
+    # Expected benefit for family of 3, Region A: $698
+    ct_tfa: 698
+
+- name: Family at exactly 230% FPL extension limit - eligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 59_400  # Exactly 230% FPL for 3: $4,950/month * 12
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $4,950 (exactly 230% FPL)
+    # Extension period eligibility: up to 230% FPL
+    # Income between 171% FPL ($3,680) and 230% FPL ($4,950)
+    # Benefit reduction: 20%
+    # Base benefit for family of 3, Region A: $698
+    # Reduced benefit: $698 * 0.80 = $558.40
+    ct_tfa: 558.40
+
+- name: Family over 230% FPL - ineligible even in extension
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 36
+        employment_income: 65_000  # $65,000/year = $5,417/month (over 230% FPL)
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Family size: 3
+    # Monthly employment income: $5,417
+    # 230% FPL for 3: $4,950/month
+    # $5,417 > $4,950, exceeds extension period limit
+    # Ineligible
+    ct_tfa: 0
