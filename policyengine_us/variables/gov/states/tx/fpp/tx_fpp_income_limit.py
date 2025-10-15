@@ -18,7 +18,7 @@ class tx_fpp_income_limit(Variable):
         fpg = spm_unit("spm_unit_fpg", period)
 
         # Get FPP percentage (250% = 2.5)
-        fpp_percentage = parameters(period).gov.states.tx.fpp.fpg_percentage
+        p = parameters(period).gov.states.tx.fpp
 
         # Return annual income limit (FPG * percentage)
         return fpg * fpp_percentage
