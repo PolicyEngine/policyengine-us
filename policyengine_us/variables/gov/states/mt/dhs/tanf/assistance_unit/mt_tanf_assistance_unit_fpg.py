@@ -8,6 +8,7 @@ class mt_tanf_assistance_unit_fpg(Variable):
     unit = USD
     reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf"
     definition_period = MONTH
+    defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("mt_tanf_assistance_unit_size", period)
