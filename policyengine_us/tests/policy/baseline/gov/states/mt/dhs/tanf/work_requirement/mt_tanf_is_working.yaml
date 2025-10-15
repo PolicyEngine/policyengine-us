@@ -23,7 +23,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_tanf_is_working: [true, true, true]
+    mt_tanf_is_working: [true, true, false]
 
 - name: Case 2, Two-Parent Household, one parent hours lower than 33. 
   period: 2022-01
@@ -50,7 +50,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_tanf_is_working: [false, false, false]
+    mt_tanf_is_working: [false, true, false]
 
 - name: Case 3, Two-Parent Household, both hours lower than 33. 
   period: 2022-01
@@ -102,7 +102,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_tanf_is_working: [true, true]
+    mt_tanf_is_working: [true, false]
 
 - name: Case 5, Single-Parent Household, no child under 6. 
   period: 2022-01
@@ -152,4 +152,4 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_tanf_is_working: [true, true]
+    mt_tanf_is_working: [true, false]

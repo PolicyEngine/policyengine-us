@@ -20,36 +20,13 @@ class mt_tanf_is_working(Variable):
         is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
         youngest_age = spm_unit.sum(is_youngest_member * age)
 
+        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
         # For single parent with a child under 6, work 27 hours pr week
         # For single parent with a child at 6 or older, work 33 hours pr week
-        single_parent_requirement = (
-            sum(
-                where(
-                    is_head_or_spouse,
-                    weekly_hours_worked
-                    < p.single_parent.amount.calc(youngest_age),
-                    0,
-                )
-            )
-            == 0
-        )
-
         # For two-parent household, work-eligible heads of the household must individually meet the 33-hour/week requirement
-        two_parent_requirement = (
-            sum(
-                where(
-                    is_head_or_spouse,
-                    weekly_hours_worked < p.two_parents.amount,
-                    0,
-                )
-            )
-            == 0
-        )
-
-        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
-
-        return where(
+        required_hours = where(
             is_two_parent_unit,
-            two_parent_requirement,
-            single_parent_requirement,
+            p.two_parents.amount,
+            p.single_parent.amount.calc(youngest_age),
         )
+        return is_head_or_spouse & (weekly_hours_worked >= required_hours)

@@ -26,7 +26,7 @@ class mt_tanf_dependent_care_deduction(Variable):
         )
 
         dependent_expenses = spm_unit("childcare_expenses", period)
-        dependent_deduction_person = p.amount.value * is_eligible_person
+        dependent_deduction_person = p.amount * is_eligible_person
         total_dependent_deduction = spm_unit.sum(dependent_deduction_person)
 
         return min_(dependent_expenses, total_dependent_deduction)
