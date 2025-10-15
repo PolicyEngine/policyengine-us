@@ -1,0 +1,86 @@
+description: Connecticut TFA maximum monthly benefit amounts by region and household size
+metadata:
+  unit: currency-usd
+  period: month
+  reference:
+    - title: SSA POMS SI BOS00830.403 - TANF - Connecticut, Benefit Rate Charts
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0500830403BOS
+      publication_date: 2023-05-17
+    - title: Connecticut TANF State Plan 2024-2026
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
+      publication_date: 2024-04-15
+
+# Region A - Highest cost areas
+region_a:
+  description: Connecticut TFA payment standards for Region A (highest housing cost areas)
+  2014-07-01:
+    1: 443
+    2: 563
+    3: 698
+    4: 815
+    5: 919
+    6: 1_028
+    7: 1_143
+    8: 1_257
+    9: 1_374
+    10: 1_490
+    11: 1_607
+    12: 1_722
+    13: 1_837
+    14: 1_952
+    15: 2_067
+    16: 2_183
+    17: 2_298
+    18: 2_413
+    19: 2_369
+    20: 2_326
+
+# Region B - Middle cost areas
+region_b:
+  description: Connecticut TFA payment standards for Region B (middle housing cost areas)
+  2014-07-01:
+    1: 366
+    2: 487
+    3: 597
+    4: 701
+    5: 803
+    6: 908
+    7: 1_026
+    8: 1_134
+    9: 1_250
+    10: 1_362
+    11: 1_475
+    12: 1_586
+    13: 1_696
+    14: 1_807
+    15: 1_918
+    16: 2_028
+    17: 2_139
+    18: 2_250
+    19: 2_222
+    20: 2_193
+
+# Region C - Lower cost areas
+region_c:
+  description: Connecticut TFA payment standards for Region C (lower housing cost areas)
+  2014-07-01:
+    1: 366
+    2: 487
+    3: 589
+    4: 684
+    5: 779
+    6: 885
+    7: 994
+    8: 1_100
+    9: 1_213
+    10: 1_324
+    11: 1_432
+    12: 1_540
+    13: 1_648
+    14: 1_756
+    15: 1_864
+    16: 1_972
+    17: 2_080
+    18: 2_188
+    19: 2_184
+    20: 2_180

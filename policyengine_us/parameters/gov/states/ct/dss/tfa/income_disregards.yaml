@@ -1,0 +1,36 @@
+description: Connecticut TFA income disregards and deductions
+
+metadata:
+  reference:
+    - title: Connecticut TANF State Plan 2024-2026, Income Treatment Section
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
+      publication_date: 2024-04-15
+    - title: Connecticut General Statutes Section 17b-80 - Income Disregards
+      href: https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_17b-80
+
+# Initial application deduction
+initial_application_deduction:
+  description: Connecticut deducts this amount from each person's gross earnings at time of initial application for TFA
+  metadata:
+    unit: currency-usd
+    period: month
+  1996-01-01: 90
+
+# Student income disregard
+student_income_disregard:
+  description: Connecticut fully disregards earned income of a child who is a student in determining eligibility, standard of need, and amount of assistance per CGS Section 17b-80
+  metadata:
+    unit: /1
+  1996-01-01: 1.0
+
+# Child support passthrough
+child_support_passthrough:
+  description: Connecticut passes through this amount of child support to the household and excludes it from benefit calculation
+  metadata:
+    unit: currency-usd
+    period: month
+    reference:
+      - title: SSA POMS SI BOS00830.403 - TANF - Connecticut, Child Support Provisions
+        href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0500830403BOS
+        publication_date: 2023-05-17
+  1996-01-01: 50

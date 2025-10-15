@@ -1,0 +1,27 @@
+description: Connecticut TFA benefit reduction during extension period for high earners
+
+metadata:
+  reference:
+    - title: Connecticut TANF State Plan 2024-2026, Extension Period Section
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
+      publication_date: 2024-04-15
+
+# Benefit reduction threshold
+reduction_threshold_lower:
+  description: If family earnings are at or above this percentage of Federal Poverty Level during the extension period, household benefit is reduced
+  metadata:
+    unit: /1
+  2024-01-01: 1.71
+
+reduction_threshold_upper:
+  description: If family earnings are at or below this percentage of Federal Poverty Level during the extension period and above the lower threshold, household benefit is reduced
+  metadata:
+    unit: /1
+  2024-01-01: 2.3
+
+# Reduction rate
+reduction_rate:
+  description: Connecticut reduces household TFA benefit by this percentage for families with earnings between 171 percent and 230 percent of FPL during the extension period
+  metadata:
+    unit: /1
+  2024-01-01: 0.2

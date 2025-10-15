@@ -1,0 +1,23 @@
+description: Connecticut TFA asset and resource limits
+
+metadata:
+  reference:
+    - title: Connecticut TFA Fact Sheet - Asset Limits
+      href: https://portal.ct.gov/dss/knowledge-base/articles/fact-sheets-and-brochures-articles/fact-sheets-articles/tfa-fact-sheet
+    - title: Connecticut TANF State Plan 2024-2026, Asset Provisions
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
+      publication_date: 2024-04-15
+
+# General asset limit
+general:
+  description: Connecticut limits total countable assets to this amount for TFA eligibility
+  metadata:
+    unit: currency-usd
+  2020-01-01: 6_000
+
+# Vehicle exclusion
+vehicle_exclusion:
+  description: Connecticut excludes one vehicle from countable assets if total value minus any amount owed is under this amount, or if used to transport a household member with a disability regardless of value
+  metadata:
+    unit: currency-usd
+  1996-01-01: 9_500

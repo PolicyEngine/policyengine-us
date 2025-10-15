@@ -1,0 +1,30 @@
+description: Connecticut TFA income eligibility limits expressed as percentages of Federal Poverty Level
+
+metadata:
+  reference:
+    - title: Connecticut TANF State Plan 2024-2026, Section on Income Eligibility
+      href: https://portal.ct.gov/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf
+      publication_date: 2024-04-15
+    - title: Connecticut TFA Fact Sheet - Income Standards
+      href: https://portal.ct.gov/dss/knowledge-base/articles/fact-sheets-and-brochures-articles/fact-sheets-articles/tfa-fact-sheet
+
+# Standard of need and initial eligibility
+initial:
+  description: Initial eligibility requires gross earned income below this percentage of Federal Poverty Level for household size
+  metadata:
+    unit: /1
+  1996-01-01: 0.55
+
+# Continuing eligibility
+continuing:
+  description: Active TFA households can earn up to this percentage of Federal Poverty Level and remain eligible, with full earned income disregard
+  metadata:
+    unit: /1
+  1996-01-01: 1.0
+
+# Extension period eligibility (effective January 1, 2024)
+extension:
+  description: After earnings exceed 100 percent FPL, families may continue receiving benefits for up to 6 months with earnings disregarded up to this percentage of Federal Poverty Level for eligibility purposes
+  metadata:
+    unit: /1
+  2024-01-01: 2.3
