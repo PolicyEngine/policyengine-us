@@ -40,4 +40,6 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
     - title: 2019 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
-    # TCJA set base at $1,400 in 2018. IRC §24(i)(1) adjusts from 2017 base year.
+    # IRC §24(i)(1) adjusts the $1,400 statutory base using 2017 as reference year.
+    # Current implementation uses incremental uprating from latest value, which
+    # produces correct results but differs from statutory base-year calculation.
