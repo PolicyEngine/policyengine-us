@@ -1,0 +1,43 @@
+- name: Case 1, age 5, eligible.
+  period: 2025-01
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    ma_ccfa_immigration_status_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible_child: true
+
+- name: Case 2, age 13, ineligible.
+  period: 2025-01
+  input:
+    age: 13
+    is_disabled: false
+    is_tax_unit_dependent: true
+    ma_ccfa_immigration_status_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible_child: false
+
+- name: Case 3, age 13, disabled, eligible.
+  period: 2025-01
+  input:
+    age: 13
+    is_disabled: true
+    is_tax_unit_dependent: true
+    ma_ccfa_immigration_status_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible_child: true
+
+- name: Case 4, age 16, disabled, ineligible.
+  period: 2025-01
+  input:
+    age: 16
+    is_disabled: true
+    is_tax_unit_dependent: true
+    ma_ccfa_immigration_status_eligible: true
+    state_code: MA
+  output:
+    ma_ccfa_eligible_child: false

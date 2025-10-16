@@ -1,0 +1,42 @@
+# Linear progression: above 300% FPL, contribution percentage increases
+# by 4 percentage points per 100% FPL increment.
+# Examples: 400% FPL = 10%, 600% FPL = 18%, 1000% FPL = 34%
+
+description: Custom ACA PTC contribution percentages by household income.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: ACA PTC contribution rate brackets
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: American Rescue Plan Act of 2021
+      href: https://www.congress.gov/bill/117th-congress/house-bill/1319
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1.5
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 2.0
+    amount:
+      2026-01-01: 0.02
+  - threshold:
+      2026-01-01: 2.5
+    amount:
+      2026-01-01: 0.04
+  - threshold:
+      2026-01-01: 3.0
+    amount:
+      2026-01-01: 0.06
+  - threshold:
+      2026-01-01: 100.0
+    amount:
+      2026-01-01: 3.94

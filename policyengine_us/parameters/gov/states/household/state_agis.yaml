@@ -2,13 +2,13 @@ description: All state adjusted gross income variables.
 values:
   0000-01-01:
     - al_agi  # Alabama
-    - ar_agi  # Arkansas
+    # Arkansas allows for a married filing separately structure which requires two separate itemized deductions.
     - az_agi  # Arizona
     - ca_agi  # California
     # Colorado adopts federal AGI
     - ct_agi  # Connecticut
     - dc_agi  # DC
-    - de_agi  # Delaware
+    # Delaware allows for a married filing separately structure which requires two separate itemized deductions.
     - ga_agi  # Georgia
     - hi_agi  # Hawaii
     - ia_net_income  # Iowa
@@ -25,12 +25,12 @@ values:
     # Minnesota adopts federal AGI
     - mo_adjusted_gross_income  # Missouri
     - ms_agi  # Mississippi
-    - mt_agi  # Montana
+    - mt_agi_indiv # Montana
     # North Carolina adopts federal AGI
     # North Dakota adopts federal AGI
     - ne_agi  # Nebraska
     - nj_agi  # New Jersey
-    - nm_modified_gross_income  # New Mexico
+    # New Mexico adopts federal AGI
     - ny_agi  # New York
     - oh_agi  # Ohio
     - ok_agi  # Oklahoma

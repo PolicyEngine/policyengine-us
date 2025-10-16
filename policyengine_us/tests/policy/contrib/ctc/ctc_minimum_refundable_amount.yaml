@@ -1,0 +1,277 @@
+# Integration tests - With reform applied
+
+- name: Integration test - no earnings, minimum amount should apply
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 0
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    ctc_minimum_refundable_amount: [0, 800]
+    refundable_ctc: 800
+    ctc: 2_000
+    ctc_phase_in: 0  # No earnings means no phase-in
+
+- name: Integration test - low earnings where minimum exceeds phase-in
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 3_000  # Low earnings
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    # Phase-in = (3_000 - 2_500) * 0.15 = 75
+    # Minimum = 800 (exceeds phase-in)
+    # Should use minimum of 800
+    ctc_phase_in: 75
+    ctc_minimum_refundable_amount: [0, 800]
+    refundable_ctc: 875
+    ctc: 2_000
+
+
+- name: Integration test - multiple children with different ages
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800  # Under 6
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500  # 6 and over
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 0  # No earnings
+      child1:
+        age: 3
+        ctc_qualifying_child: true
+      child2:
+        age: 7
+        ctc_qualifying_child: true
+      child3:
+        age: 10
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+  output:
+    ctc_minimum_refundable_amount: [0, 800, 500, 500]  # By person
+    # Total minimum = 800 + 500 + 500 = 1_800
+    refundable_ctc: 1_800
+    ctc: 6_000  # 3 children * 2_000
+
+# Counterfactual tests - Without reform applied (baseline)
+
+- name: Counterfactual - no earnings, no refundable CTC without reform
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 0
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    refundable_ctc: 0  # No refundable CTC without earnings
+    ctc: 2_000
+    ctc_phase_in: 0
+
+- name: Counterfactual - low earnings, limited by phase-in without reform
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 3_000
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    ctc_phase_in: 75  # (3_000 - 2_500) * 0.15 = 75
+    refundable_ctc: 75  # Limited by phase-in
+    ctc: 2_000
+
+- name: Counterfactual - moderate earnings without reform
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 6_000
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    ctc_phase_in: 525  # (6_000 - 2_500) * 0.15
+    refundable_ctc: 525  # Uses phase-in
+    ctc: 2_000
+
+- name: Counterfactual - high earnings without reform
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 30_000
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    ctc_refundable_maximum: 1_700
+    ctc: 2_000
+    ctc_phase_in: 4_125  # (30_000 - 2_500) * 0.15
+    # Tax liability is 810, amount_ctc_would_increase = min(2000, 810+4125) - min(2000, 810) = 1190
+    refundable_ctc: 1_190  # Limited by amount CTC would increase
+
+- name: Edge case - multiple children ensuring, multiplication of refundable maximum
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 20_000  # Moderate earnings
+      child1:
+        age: 3
+        ctc_qualifying_child: true
+      child2:
+        age: 7
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+  output:
+    ctc_minimum_refundable_amount: [0, 800, 500]
+    # Total minimum = 1_300
+    ctc_phase_in: 2_625  # (20_000 - 2_500) * 0.15
+    # Phase-in exceeds total minimum, so use phase-in
+    ctc_refundable_maximum: 3_400  # 2 children * 1_700 (refundable max)
+    refundable_ctc: 3_400  
+    ctc: 4_000
+
+- name: Edge case - very high income with phase-out affecting refundability
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        employment_income: 250_000  # High income triggering phase-out
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1, child1]
+  output:
+    # Phase-out starts at 200_000 for single filers
+    # Phase-out = (250_000 - 200_000) * 0.05 = 2_500
+    ctc_phase_out: 2_500
+    ctc: 0  # Fully phased out (2_000 - 2_500 = 0, capped at 0)
+    refundable_ctc: 0  # No CTC left to be refundable
+
+- name: Vectorization check
+  period: 2024
+  reforms: policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount
+  input:
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 800
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 500
+    people:
+      person1:
+        age: 40
+        employment_income: 0  
+      child1:
+        age: 5
+        ctc_qualifying_child: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1, child1, child2]
+  output:
+    ctc_child_individual_maximum: [0, 2_000, 2_000]
+    ctc_child_individual_maximum_arpa: [0, 0, 0]
+    ctc_qualifying_children: 2
+    refundable_ctc: 1_600

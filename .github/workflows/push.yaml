@@ -90,6 +90,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
+    needs: Test
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

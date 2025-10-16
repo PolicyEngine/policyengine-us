@@ -17,7 +17,7 @@ class mt_federal_income_tax_deduction_indiv(Variable):
         unit_deds = person.tax_unit(
             "mt_federal_income_tax_deduction_unit", period
         )
-        person_agi = person("mt_agi", period)
+        person_agi = person("mt_agi_indiv", period)
         total_agi = person.tax_unit.sum(person_agi)
 
         prorate = np.zeros_like(total_agi)

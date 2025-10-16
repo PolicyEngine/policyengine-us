@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_agi(Variable):
+class mt_agi_indiv(Variable):
     value_type = float
     entity = Person
     label = "Montana Adjusted Gross Income for each individual"
