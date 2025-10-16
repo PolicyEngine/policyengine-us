@@ -6,8 +6,10 @@ metadata:
   breakdown:
     - filing_status
   reference:
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=21
     - title: 2025 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=15  
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=15
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=17
     - title: 2023 IRS data release
@@ -31,7 +33,7 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 182_100
   2024-01-01: 191_950
   2025-01-01: 197_300
-  2026-01-01: 200_300
+  2026-01-01: 201_750
 JOINT:
   2013-01-01: 0
   2018-01-01: 315_000
@@ -42,7 +44,7 @@ JOINT:
   2023-01-01: 364_200
   2024-01-01: 383_900
   2025-01-01: 394_600
-  2026-01-01: 400_600
+  2026-01-01: 403_500
 SEPARATE:
   2013-01-01: 0
   2018-01-01: 157_500
@@ -53,7 +55,7 @@ SEPARATE:
   2023-01-01: 182_100
   2024-01-01: 191_950
   2025-01-01: 197_300
-  2026-01-01: 200_300
+  2026-01-01: 201_775
 SINGLE:
   2013-01-01: 0
   2018-01-01: 157_500
@@ -64,7 +66,7 @@ SINGLE:
   2023-01-01: 182_100
   2024-01-01: 191_950
   2025-01-01: 197_300
-  2026-01-01: 200_300
+  2026-01-01: 201_750
 SURVIVING_SPOUSE:
   2013-01-01: 0
   2018-01-01: 315_000
@@ -75,4 +77,4 @@ SURVIVING_SPOUSE:
   2023-01-01: 364_200
   2024-01-01: 383_900
   2025-01-01: 394_600
-  2026-01-01: 400_600
+  2026-01-01: 403_500
