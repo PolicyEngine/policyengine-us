@@ -20,9 +20,9 @@ class capital_gains_excluded_from_taxable_income(Variable):
         )
         taxable_income = tax_unit("taxable_income", period)
         filing_status = tax_unit("filing_status", period)
-        cg = parameters(period).gov.irs.capital_gains.brackets
+        cg_thresholds = parameters(period).gov.irs.capital_gains.thresholds
         income_taxed_below_first_rate = clip(
-            taxable_income, 0, cg.thresholds["1"][filing_status]
+            taxable_income, 0, cg_thresholds["1"][filing_status]
         )
         reduced_taxable_income = max_(
             taxable_income - net_capital_gain,
