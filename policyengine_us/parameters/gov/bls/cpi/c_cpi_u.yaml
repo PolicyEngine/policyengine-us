@@ -289,12 +289,30 @@ values:
   2023-10-01: 171.595
   2023-11-01: 171.219
   2023-12-01: 171.015
-  2024-01-01: 171.910
-  # CBO projections.
-  # Since CBO projects the relevant tax parameter,
-  # which is the average over the 12mo ending August,
-  # we place that in February of each year.
-  2025-02-01: 176.7 # 2026 value.
+  2024-01-01: 171.649
+  2024-02-01: 172.700
+  2024-03-01: 173.796
+  2024-04-01: 174.424
+  2024-05-01: 174.685
+  2024-06-01: 174.721
+  2024-07-01: 174.792
+  2024-08-01: 174.848
+  2024-09-01: 175.099
+  2024-10-01: 175.282
+  2024-11-01: 175.129
+  2024-12-01: 175.144
+  2025-01-01: 176.268
+  2025-02-01: 177.032
+  2025-03-01: 177.415
+  2025-04-01: 177.959
+  2025-05-01: 178.318
+  2025-06-01: 178.909
+  2025-07-01: 179.154
+  2025-08-01: 179.656
+  # CBO projections for September 2025 onwards.
+  # CBO projects the relevant tax parameter as the average over the 12mo ending August,
+  # which we place in February of each year for tax year calculations.
+  2026-02-01: 176.7 # 2026 value from CBO Jan 2025 forecast.
   2026-02-01: 180.5 # 2027 value.
   2027-02-01: 184.1 # 2028 value.
   2028-02-01: 187.8 # 2029 value.
