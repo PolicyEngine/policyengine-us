@@ -60,6 +60,7 @@ metadata:
     - filing_status
   label: Additional standard deduction for the blind and aged
   period: year
+  propagate_metadata_to_children: true
   reference:
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18

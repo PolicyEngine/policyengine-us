@@ -2,6 +2,7 @@ description: AMT exemption phase-out start
 metadata:
   unit: currency-USD
   period: year
+  propagate_metadata_to_children: true
   uprating:
     parameter: gov.irs.uprating
     rounding:
