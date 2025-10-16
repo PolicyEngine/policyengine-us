@@ -17,8 +17,8 @@ class tx_fpp_income_limit(Variable):
         # Get the Federal Poverty Guideline for this SPM unit
         fpg = spm_unit("spm_unit_fpg", period)
 
-        # Get FPP percentage (250% = 2.5)
+        # Get FPG percentage (250% = 2.5)
         p = parameters(period).gov.states.tx.fpp
 
         # Return annual income limit (FPG * percentage)
-        return fpg * p.fpp_percentage
+        return fpg * p.fpg_percentage
