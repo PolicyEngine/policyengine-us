@@ -2,10 +2,10 @@
   changes:
     added:
       - 2026 IRS tax parameters from Revenue Procedure 2025-32 (standard deduction, tax brackets, EITC, AMT, CTC, capital gains, QBI phase-out, student loan interest deduction, aged/blind additional).
-      - Automatic uprating with statutory rounding rules for parameters that previously had no post-2025 values (tax brackets 1-2, retirement contributions, capital gains thresholds, CTC base and refundable amounts, QBI phase-out).
+      - Automatic uprating with statutory rounding rules for parameters that previously had no post-2025 values (tax brackets 1-2, retirement contributions, capital gains thresholds, QBI phase-out).
       - Actual BLS CPI data through August 2025 (C-CPI-U, CPI-U, CPI-W).
     changed:
-      - Replaced manual CBO forecast values (2027-2035) with automatic uprating for tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, and aged/blind additional deduction.
+      - Replaced manual CBO forecast values (2027-2035) with automatic uprating for tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, aged/blind additional deduction, CTC base amount, and CTC refundable maximum.
       - Replaced OBBB legislative references with permanent IRC statutory sections.
       - Split capital_gains/brackets.yaml into separate rates.yaml and thresholds.yaml files.
     fixed:

@@ -16,6 +16,11 @@ brackets:
         2035-01-01: 2_700
         # Rose to $3,000/$3,600 in 2021. See arpa.yaml.
       metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
         reference:
           - title: 26 U.S. Code § 24 - Child tax credit
             href: https://www.law.cornell.edu/uscode/text/26/24
@@ -39,9 +44,3 @@ metadata:
   amount_unit: currency-USD
   amount_period: year
   label: Child Tax Credit amount
-  propagate_metadata_to_children: true
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 100
