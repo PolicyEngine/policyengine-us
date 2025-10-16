@@ -16,7 +16,9 @@ class tx_harris_rides_subsidy(Variable):
         # Get estimated transportation costs
         # In a real implementation, this would be based on actual trip data
         # For now, we'll use a simplified estimate
-        transportation_costs = person("transportation_expense", period)
+        transportation_costs = person(
+            "pre_subsidy_transportation_expense", period
+        )
 
         # RIDES subsidizes 60% of trip costs (customer pays 40%)
         subsidy_rate = 1 - p.customer_payment_rate
