@@ -20,8 +20,10 @@ metadata:
       type: downwards
       interval: 100
   reference:
-    - title: 26 U.S. Code § 24(h)(5) - Child tax credit refundable portion
-      href: https://www.law.cornell.edu/uscode/text/26/24#h_5
+    - title: 26 U.S. Code § 24(h)(5)(A) - Child tax credit refundable portion
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A
+    - title: 26 U.S. Code § 24(i)(1) - Inflation adjustment for refundable amount
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_1
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=13
     - title: 2025 IRS data release
@@ -38,7 +40,4 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
     - title: 2019 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
-    # NB: Not specified in prior IRS data releases.
-    # Indexed to inflation with respect to 2017, rounding down by $100.
-    - title: 26 U.S. Code § 24(h)(5)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A
+    # TCJA set base at $1,400 in 2018. IRC §24(i)(1) adjusts from 2017 base year.
