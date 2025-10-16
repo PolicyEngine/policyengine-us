@@ -5,6 +5,11 @@ metadata:
   unit: currency-USD
   period: year
   label: IRA catch-up amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   references:
   - title: 26 U.S. Code § 219 - Retirement savings (b)(5)(B)
     href: https://www.law.cornell.edu/uscode/text/26/219

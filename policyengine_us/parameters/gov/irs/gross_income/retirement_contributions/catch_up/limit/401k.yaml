@@ -7,6 +7,11 @@ metadata:
   unit: currency-USD
   period: year
   label: 401(k) catch-up amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 500
   references:
   - title: 26 CFR § 1.414 - Catch-up contributions. (v)(2)(B)(i)
     href: https://www.law.cornell.edu/cfr/text/26/1.414(v)-1

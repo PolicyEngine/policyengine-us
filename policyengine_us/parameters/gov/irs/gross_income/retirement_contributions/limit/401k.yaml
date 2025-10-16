@@ -11,6 +11,11 @@ metadata:
   unit: currency-USD
   period: year
   label: 401(k) contribution limit
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 500
   references:
   - title: 26 CFR § 1.402(g)-1 - Limitation on exclusion for elective deferrals. (d))(i)
     href: https://law.cornell.edu/cfr/text/26/1.402(g)-1
