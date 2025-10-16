@@ -31,9 +31,6 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
         applicant_disregard = (
             after_work_expense * p.disregards.applicant_fraction
         )
-        after_applicant_disregard = max_(
-            after_work_expense - applicant_disregard, 0
-        )
 
         # For continuing recipients (enrolled): 90% disregard (capped at $1,400)
         # Note: This disregard is limited to 4 months per 12-month period (not yet implemented)
@@ -44,13 +41,12 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
             potential_recipient_disregard,
             p.disregards.continuing_recipient_cap,
         )
-        after_recipient_disregard = max_(
-            after_work_expense - actual_recipient_disregard, 0
-        )
 
         # Return appropriate value based on enrollment status
-        return where(
+        disregard = where(
             is_enrolled,
-            after_recipient_disregard,
-            after_applicant_disregard,
+            actual_recipient_disregard,
+            applicant_disregard,
         )
+
+        return max_(after_work_expense - disregard, 0)

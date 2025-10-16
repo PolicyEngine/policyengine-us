@@ -8,7 +8,7 @@ class tx_tanf_child_support_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions",
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions#a-1422-75-disregard-deduction",
         "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-404",
     )
     defined_for = StateCode.TX

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tx_tanf_budgetary_needs_test(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Passes Texas TANF budgetary needs test"
+    label = "Meets Texas TANF budgetary needs test"
     definition_period = MONTH
     reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
     defined_for = StateCode.TX
