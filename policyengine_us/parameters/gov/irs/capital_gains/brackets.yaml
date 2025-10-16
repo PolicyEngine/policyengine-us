@@ -15,6 +15,12 @@ thresholds:
   metadata:
     unit: currency-USD
     period: year
+    propagate_metadata_to_children: true
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     reference:
       - title: 2026 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=12
