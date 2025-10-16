@@ -1,4 +1,6 @@
 - bump: patch
   changes:
     changed:
-      - Add 2026 IRS tax parameters from Revenue Procedure 2025-32, including standard deduction, tax brackets, EITC, AMT, and retirement contribution limits.
+      - Add 2026 IRS tax parameters from Revenue Procedure 2025-32, including standard deduction, tax brackets, EITC, AMT, retirement contribution limits, Child Tax Credit, capital gains brackets, QBI phase-out thresholds, and student loan interest deduction phase-out.
+    fixed:
+      - Correct previously incorrect 2026 QBI phase-out threshold forecast values.
