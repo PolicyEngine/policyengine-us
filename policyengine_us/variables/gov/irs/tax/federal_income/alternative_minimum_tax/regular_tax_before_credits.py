@@ -42,7 +42,9 @@ class regular_tax_before_credits(Variable):
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
 
-        dwks38 = p.income.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
+        dwks38 = (
+            p.income.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
+        )
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39

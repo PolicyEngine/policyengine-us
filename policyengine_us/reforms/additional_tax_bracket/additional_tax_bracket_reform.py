@@ -17,7 +17,9 @@ def create_additional_tax_bracket() -> Reform:
             filing_status = tax_unit("filing_status", period)
             dwks1 = tax_unit("taxable_income", period)
 
-            dwks16 = min_(p.capital_gains.thresholds["1"][filing_status], dwks1)
+            dwks16 = min_(
+                p.capital_gains.thresholds["1"][filing_status], dwks1
+            )
             dwks17 = min_(tax_unit("dwks14", period), dwks16)
             dwks20 = dwks16 - dwks17
             lowest_rate_tax = p.capital_gains.rates["1"] * dwks20
@@ -26,7 +28,9 @@ def create_additional_tax_bracket() -> Reform:
             dwks21 = min_(dwks1, dwks13)
             dwks22 = dwks20
             dwks23 = max_(0, dwks21 - dwks22)
-            dwks25 = min_(p.capital_gains.thresholds["2"][filing_status], dwks1)
+            dwks25 = min_(
+                p.capital_gains.thresholds["2"][filing_status], dwks1
+            )
             dwks19 = tax_unit("dwks19", period)
             dwks26 = min_(dwks19, dwks20)
             dwks27 = max_(0, dwks25 - dwks26)

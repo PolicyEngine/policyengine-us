@@ -51,9 +51,7 @@ class amt_tax_including_cg(Variable):
             smaller_of_income_or_cg - disregarded_gains, 0
         )
         # Line 25 - Second CG tax bracket threshold
-        second_cg_bracket = p.capital_gains.thresholds["2"][
-            filing_status
-        ]
+        second_cg_bracket = p.capital_gains.thresholds["2"][filing_status]
         # Line 26 - same as line 21
         # Line 27 - Schedule D Line 21
         loss_limited_net_capital_gains = tax_unit(
@@ -80,9 +78,7 @@ class amt_tax_including_cg(Variable):
         # Line 33 - Line 22 minus Line 32
         excess_taxed_gains = max_(0, smaller_of_income_or_cg - taxed_gains)
         # Line 34 - multiply Line 33 by third CG tax rate
-        cg_third_bracket_tax = (
-            excess_taxed_gains * p.capital_gains.rates["3"]
-        )
+        cg_third_bracket_tax = excess_taxed_gains * p.capital_gains.rates["3"]
         # Line 35 - sum of Line 17, Line 32, Line 33
         final_taxed_income = excess_income + taxed_gains + excess_taxed_gains
         # Line 36 Line 12 minus Line 35
