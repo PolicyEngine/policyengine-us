@@ -12,26 +12,33 @@ class tx_ccs_work_requirement_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tx.twc.ccs.work_requirements
 
-        # Get work hours for tax unit heads and spouses in the SPM unit
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_exempt = person("tx_ccs_work_exempt", period)
         work_hours = person("weekly_hours_worked", period.this_year)
-        parent_work_hours = where(is_head_or_spouse, work_hours, 0)
-        # Sum total work hours
-        total_work_hours = spm_unit.sum(parent_work_hours)
-        # Check requirements based on number of parents
-        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
-        single_parent_requirement = total_work_hours >= p.single_parent
-        two_parent_requirement = total_work_hours >= p.two_parent
-        is_working = where(
-            is_two_parent_unit,
-            two_parent_requirement,
-            single_parent_requirement,
-        )
-        # Enroll in education program satisfied work requirement
-        is_full_time_student = person("is_full_time_student", period)
 
-        meets_work_requirements = (
-            is_working | is_full_time_student | ~is_head_or_spouse
+        # Count non-exempt parents and calculate their total work hours
+        is_non_exempt_parent = is_head_or_spouse & ~is_exempt
+        num_non_exempt_parents = spm_unit.sum(is_non_exempt_parent)
+        total_work_hours = spm_unit.sum(
+            where(is_non_exempt_parent, work_hours, 0)
         )
-        return spm_unit.sum(~meets_work_requirements) == 0
+
+        # Determine work hours requirement based on non-exempt parents
+        # If 0-1 non-exempt parents: 25 hours
+        # If 2+ non-exempt parents: 50 hours
+        requirement = where(
+            num_non_exempt_parents > 1, p.two_parent, p.single_parent
+        )
+
+        # Check each parent individually
+        # A parent meets requirements if they are:
+        # - Exempt from work, OR
+        # - Part of a household that meets the work hour requirement
+        household_meets_work_requirement = total_work_hours >= requirement
+        parent_meets_requirement = is_exempt | household_meets_work_requirement
+
+        # SPM unit is eligible if ALL parents meet requirements
+        # (Non-parents automatically pass)
+        person_eligible = parent_meets_requirement | ~is_head_or_spouse
+        return spm_unit.all(person_eligible)

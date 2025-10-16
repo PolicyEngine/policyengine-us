@@ -8,7 +8,7 @@ class tx_ccs_copay(Variable):
     label = "Texas Child Care Services (CCS) copayment"
     definition_period = MONTH
     reference = "https://wspanhandle.com/child-care/for-parents/"
-    defined_for = StateCode.TX
+    defined_for = "tx_ccs_eligible"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tx.twc.ccs.copay
@@ -30,8 +30,4 @@ class tx_ccs_copay(Variable):
 
         # Total copayment = first child + (additional children * additional child fee)
         additional_children = max_(eligible_children - 1, 0)
-        total_copay = first_child_fee + (
-            additional_children * additional_child_fee
-        )
-
-        return where(eligible_children > 0, total_copay, 0)
+        return first_child_fee + (additional_children * additional_child_fee)

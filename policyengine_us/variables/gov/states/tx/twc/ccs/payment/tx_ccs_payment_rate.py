@@ -7,13 +7,10 @@ class tx_ccs_payment_rate(Variable):
     label = "Texas Child Care Services (CCS) payment amount"
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.TX
+    defined_for = "tx_ccs_eligible_child"
     reference = "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf#page=9"
 
     def formula(person, period, parameters):
-        # Check if eligible for CCS
-        eligible = person("tx_ccs_eligible_child", period)
-
         # Get the payment parameters
         # Use Dallas County's value
         p = parameters(period).gov.states.tx.twc.ccs.payment
@@ -28,11 +25,9 @@ class tx_ccs_payment_rate(Variable):
         attending_days_per_month = person(
             "childcare_attending_days_per_month", period.this_year
         )
-        monthly_payment = (
+        return (
             p.rates[provider_type][provider_rating][age_category][
                 care_schedule
             ]
             * attending_days_per_month
         )
-
-        return where(eligible, monthly_payment, 0)
