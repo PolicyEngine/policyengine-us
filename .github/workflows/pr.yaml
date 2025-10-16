@@ -73,10 +73,10 @@ jobs:
           echo "=================="
           # Show files below 100% coverage (won't fail CI)
           coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
-          
+
           # Count files below 100%
           TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
-          
+
           if [ "$TOTAL_FILES" -gt "0" ]; then
             echo ""
             echo "⚠️  $TOTAL_FILES file(s) have less than 100% coverage"
@@ -85,7 +85,7 @@ jobs:
             echo ""
             echo "✅ All files have 100% coverage!"
           fi
-          
+
           # Generate XML for Codecov
           coverage xml || echo "No coverage data to generate XML report."
           # Expose whether we have coverage for later steps

@@ -22,7 +22,7 @@ class mt_standard_deduction_indiv(Variable):
 
         if p.state_specific_deduction_applies:
             # ── Pre-2024 MT-specific calculation ────────────────────────────────
-            agi = person("mt_agi", period)
+            agi = person("mt_agi_indiv", period)
             floor = p.floor[filing_status]
             cap = p.cap[filing_status]
             uncapped = p.rate * agi

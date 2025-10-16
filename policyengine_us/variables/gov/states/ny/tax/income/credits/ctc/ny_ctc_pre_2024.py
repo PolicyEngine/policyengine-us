@@ -38,7 +38,7 @@ class ny_ctc_pre_2024(Variable):
                 if isinstance(ctc_parameter, Parameter):
                     ctc_parameter.update(
                         start=instant("2017-01-01"),
-                        stop=instant("2026-01-01"),
+                        stop=instant("2035-01-01"),
                         value=ctc_parameter("2017-01-01"),
                     )
             # Delete all arrays from pre-TCJA CTC branch.
