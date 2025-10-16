@@ -1,0 +1,53 @@
+- name: Income eligible - at limit for household of 1
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 1
+    spm_unit_net_income: 39_125  # 250% of 2025 FPG for size 1
+  output:
+    tx_fpp_income_eligible: true
+
+- name: Income eligible - below limit for household of 1
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 1
+    spm_unit_net_income: 20_000
+  output:
+    tx_fpp_income_eligible: true
+
+- name: Income ineligible - above limit for household of 1
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 1
+    spm_unit_net_income: 42_000
+  output:
+    tx_fpp_income_eligible: false
+
+- name: Income eligible - at limit for household of 4
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 4
+    spm_unit_net_income: 80_375  # 250% of 2025 FPG for size 4
+  output:
+    tx_fpp_income_eligible: true
+
+- name: Income eligible - below limit for household of 4
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 4
+    spm_unit_net_income: 60_000
+  output:
+    tx_fpp_income_eligible: true
+
+- name: Income ineligible - above limit for household of 4
+  period: 2026
+  input:
+    state_code: TX
+    spm_unit_size: 4
+    spm_unit_net_income: 90_000
+  output:
+    tx_fpp_income_eligible: false

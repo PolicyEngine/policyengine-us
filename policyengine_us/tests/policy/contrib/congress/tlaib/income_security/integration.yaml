@@ -1,0 +1,154 @@
+- name: Family with baby, children, and adults receives all benefits
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      baby:
+        age: 0
+      child1:
+        age: 5
+      child2:
+        age: 10
+      adult_head:
+        age: 35
+      adult_spouse:
+        age: 33
+      adult_dependent:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult_head, adult_spouse, baby, child1, child2, adult_dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 45_000  # 5,000 above phase-out start
+  output:
+    # Baby Bonus
+    baby_bonus_act_payment:
+      2026: [2_000, 0, 0, 0, 0, 0]  # Only baby gets bonus
+    # ECPA Child Benefit
+    ecpa_child_benefit:
+      2026: [5_630, 5_630, 5_630, 0, 0, 0]  # All children under 19
+    # ECPA Adult Dependent Credit
+    ecpa_adult_dependent_credit:
+      2026: [0, 0, 0, 0, 0, 700]  # Only adult dependent
+    # BOOST Payment
+    boost_act_payment:
+      2026: [0, 0, 0, 3_000, 3_000, 3_000]  # Adults 19-67
+    # ECPA Filer Credit (at tax unit level)
+    ecpa_filer_credit:
+      2026: 1_150  # 1,400 - (5,000 * 0.05)
+    # BOOST Tax (at tax unit level)
+    boost_act_tax:
+      2026: 0  # Below 60,000 threshold for joint
+
+- name: Single parent with high income
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      parent:
+        age: 40
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 80_000
+  output:
+    # No baby bonus (child too old)
+    baby_bonus_act_payment:
+      2026: [0, 0]
+    # Child benefit
+    ecpa_child_benefit:
+      2026: [0, 5_630]
+    # BOOST payment for parent
+    boost_act_payment:
+      2026: [3_000, 0]
+    # ECPA filer credit fully phased out
+    ecpa_filer_credit:
+      2026: 0  # 700 - (60,000 * 0.05) = -2,300, max to 0
+    # BOOST tax on high income
+    boost_act_tax:
+      2026: 1_250  # (80,000 - 30,000) * 0.025
+
+- name: Senior couple with adult dependent
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      senior1:
+        age: 68
+      senior2:
+        age: 70
+      adult_dependent:
+        age: 40
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [senior1, senior2, adult_dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 35_000
+  output:
+    # No baby bonus
+    baby_bonus_act_payment:
+      2026: [0, 0, 0]
+    # No child benefit (all adults)
+    ecpa_child_benefit:
+      2026: [0, 0, 0]
+    # Adult dependent credit
+    ecpa_adult_dependent_credit:
+      2026: [0, 0, 700]
+    # BOOST payment only for adult dependent (seniors too old)
+    boost_act_payment:
+      2026: [0, 0, 3_000]
+    # No filer credit (seniors over 64)
+    ecpa_filer_credit:
+      2026: 0
+    # No BOOST tax (below threshold)
+    boost_act_tax:
+      2026: 0
+
+- name: Young adult living alone
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      young_adult:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [young_adult]
+        filing_status: SINGLE
+        adjusted_gross_income: 12_000
+  output:
+    # No baby bonus
+    baby_bonus_act_payment:
+      2026: 0
+    # No child benefit (19 or over)
+    ecpa_child_benefit:
+      2026: 0
+    # Not a dependent
+    ecpa_adult_dependent_credit:
+      2026: 0
+    # Gets BOOST payment
+    boost_act_payment:
+      2026: 3_000
+    # Gets filer credit
+    ecpa_filer_credit:
+      2026: 700  # No phase-out
+    # No BOOST tax (below threshold)
+    boost_act_tax:
+      2026: 0

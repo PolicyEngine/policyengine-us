@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.417.0] - 2025-10-16 13:32:23
+
+### Added
+
+- Texas Family Planning Program
+
+## [1.416.0] - 2025-10-15 15:31:19
+
+### Added
+
+- Adjust the ctc_value as part of the minimum refundable CTC reform.
+
+## [1.415.0] - 2025-10-15 15:30:29
+
+### Added
+
+- NYC formula.
+
+## [1.414.0] - 2025-10-15 14:45:38
+
+### Added
+
+- Rep. Rashida Tlaib Income Security Package.
+
 ## [1.413.3] - 2025-10-14 02:23:12
 
 ### Fixed
@@ -13190,6 +13214,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.417.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.416.0...1.417.0
+[1.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.415.0...1.416.0
+[1.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.414.0...1.415.0
+[1.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.3...1.414.0
 [1.413.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.2...1.413.3
 [1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
 [1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1

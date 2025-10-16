@@ -1,0 +1,20 @@
+- name: Queens County 
+  period: 2023
+  input:
+    county_str: QUEENS_COUNTY_NY
+  output:
+    in_nyc: true
+
+- name: Not NYC
+  period: 2025
+  input:
+    county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    in_nyc: false
+
+- name: Kings County 
+  period: 2023
+  input:
+    county_str: KINGS_COUNTY_NY
+  output:
+    in_nyc: true
