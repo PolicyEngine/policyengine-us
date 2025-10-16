@@ -1,7 +1,8 @@
-description: Top thresholds of long-term capital gains and qualified dividends (regular/non-AMT) tax brackets
+description: The IRS applies higher capital gains rates above these income thresholds.
 metadata:
   unit: currency-USD
   period: year
+  label: Capital gains tax rate thresholds
   propagate_metadata_to_children: true
   uprating:
     parameter: gov.irs.uprating
