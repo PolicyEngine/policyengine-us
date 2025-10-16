@@ -1,0 +1,133 @@
+- name: Single adult eligible for FPP
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        spm_unit_net_income: 25_000
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true]
+    tx_fpp_income_eligible: [true]
+    tx_fpp_eligible: [true]
+    tx_fpp_benefit: [266.84]
+
+- name: Household with multiple people - both eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 32
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_net_income: 45_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true, true]
+    tx_fpp_income_eligible: [true, true]
+    tx_fpp_eligible: [true, true]
+    tx_fpp_benefit: [266.84, 266.84]
+
+- name: Household with one age-ineligible person
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 70
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_net_income: 40_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true, false]
+    tx_fpp_income_eligible: [true, true]
+    tx_fpp_eligible: [true, false]
+    tx_fpp_benefit: [266.84, 0]
+
+- name: Household income-ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+      person3:
+        age: 8
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_net_income: 80_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true, true, true]
+    tx_fpp_income_eligible: [false, false, false]
+    tx_fpp_eligible: [false, false, false]
+    tx_fpp_benefit: [0, 0, 0]
+
+- name: Edge case - income exactly at limit for household of 4
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        spm_unit_net_income: 80_375  # 250% of 2025 FPG for size 4
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true, true, true, true]
+    tx_fpp_income_eligible: [true, true, true, true]
+    tx_fpp_eligible: [true, true, true, true]
+    tx_fpp_benefit: [266.84, 266.84, 266.84, 266.84]
+
+- name: Edge case - age exactly at threshold
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        spm_unit_net_income: 30_000
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_age_eligible: [true]
+    tx_fpp_income_eligible: [true]
+    tx_fpp_eligible: [true]
+    tx_fpp_benefit: [266.84]

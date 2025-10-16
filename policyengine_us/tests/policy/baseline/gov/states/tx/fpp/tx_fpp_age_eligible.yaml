@@ -1,0 +1,39 @@
+- name: Age eligible at 64 (at threshold)
+  period: 2025
+  input:
+    state_code: TX
+    age: 64
+  output:
+    tx_fpp_age_eligible: true
+
+- name: Age eligible at 30 (below threshold)
+  period: 2026
+  input:
+    state_code: TX
+    age: 30
+  output:
+    tx_fpp_age_eligible: true
+
+- name: Age eligible at 18 (young adult)
+  period: 2026
+  input:
+    state_code: TX
+    age: 18
+  output:
+    tx_fpp_age_eligible: true
+
+- name: Age ineligible at 65 (above threshold)
+  period: 2026
+  input:
+    state_code: TX
+    age: 65
+  output:
+    tx_fpp_age_eligible: false
+
+- name: Age ineligible at 70
+  period: 2026
+  input:
+    state_code: TX
+    age: 70
+  output:
+    tx_fpp_age_eligible: false
