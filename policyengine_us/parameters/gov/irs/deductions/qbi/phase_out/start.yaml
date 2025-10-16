@@ -20,8 +20,12 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=16
     - title: 2020 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=16
-  uprating: gov.irs.uprating
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 25
 
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 0

@@ -14,6 +14,11 @@ metadata:
   unit: currency-USD
   period: year
   label: Child tax credit refundable maximum amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   reference:
     - title: 26 U.S. Code § 24(h)(5) - Child tax credit refundable portion
       href: https://www.law.cornell.edu/uscode/text/26/24#h_5
