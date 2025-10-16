@@ -37,9 +37,8 @@ thresholds:
     period: year
     propagate_metadata_to_children: true
     reference:
-      - title: H.R.1 - One Big Beautiful Bill Act
-        href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-      # OBBB extended TCJA tax rates and brackets permanently. For 10% and 12% brackets, changed base year from 2017 to 2016 for inflation adjustments.
+      - title: 26 U.S. Code § 1(j) - Tax rate tables
+        href: https://www.law.cornell.edu/uscode/text/26/1#j
       - title: 2026 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=10
       - title: 2025 IRS data release
