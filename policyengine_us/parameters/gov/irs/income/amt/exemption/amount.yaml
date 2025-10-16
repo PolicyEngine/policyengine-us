@@ -2,7 +2,11 @@ description: AMT exemption amount
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
   reference:
     # OBBB extends TCJA AMT exemption amounts.
     - title: H.R.1 - One Big Beautiful Bill Act

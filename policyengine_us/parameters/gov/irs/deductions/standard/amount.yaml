@@ -81,4 +81,8 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

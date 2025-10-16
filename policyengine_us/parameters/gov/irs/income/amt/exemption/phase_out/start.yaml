@@ -2,7 +2,11 @@ description: AMT exemption phase-out start
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
   reference:
     # OBBB extends TCJA AMT phase out start, but resets the inflation adjustment.
     - title: H.R.1 - One Big Beautiful Bill Act
