@@ -309,10 +309,9 @@ values:
   2025-06-01: 178.909
   2025-07-01: 179.154
   2025-08-01: 179.656
-  # CBO projections for September 2025 onwards.
-  # CBO projects the relevant tax parameter as the average over the 12mo ending August,
-  # which we place in February of each year for tax year calculations.
-  2026-02-01: 176.7 # 2026 value from CBO Jan 2025 forecast.
+  # CBO projections from CBO Jan 2025 forecast for future periods.
+  # CBO projects the average C-CPI-U over the 12mo ending August,
+  # which determines tax parameters for the following year.
   2026-02-01: 180.5 # 2027 value.
   2027-02-01: 184.1 # 2028 value.
   2028-02-01: 187.8 # 2029 value.
