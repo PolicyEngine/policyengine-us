@@ -19,12 +19,12 @@ class il_aabd_shelter_allowance(Variable):
         rent_expense = person("rent", period)
         renter = rent_expense > 0
         rent_allowance = min_(rent_expense, p.rent)
-        # Housing cost = rent + property tax + homeowners insurance + HOA fees.
-        homestead_property_cost = (
-            person.spm_unit("housing_cost", period) - rent_expense
+        # Housing expense = rent + property tax + homeowners insurance + HOA fees.
+        homestead_property_expense = (
+            person.spm_unit("housing_expense", period) - rent_expense
         )
         homestead_property_allowance = min_(
-            homestead_property_cost, p.homestead
+            homestead_property_expense, p.homestead
         )
 
         total_allowance = where(

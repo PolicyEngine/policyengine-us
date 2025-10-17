@@ -17,13 +17,13 @@ class ny_drive_clean_rebate(Variable):
             "ny_drive_clean_vehicle_electric_range", period
         )
         # Calculate vehicle price
-        vehicle_cost = tax_unit("ny_drive_clean_vehicle_cost", period)
+        vehicle_expense = tax_unit("ny_drive_clean_vehicle_expense", period)
         # Calculate rebate size based on range
         rebate_amount_based_on_range = p.amount.calc(vehicle_range)
         # Determine whether or not vehicle is over the MSRP threhold,
         # qualifying for the flat rebate
         vehicle_over_msrp_threshold = (
-            vehicle_cost >= p.flat_rebate.msrp_threshold
+            vehicle_expense >= p.flat_rebate.msrp_threshold
         )
         # If the vehicle is more expensive than the MSRP treshold, the filer
         # receives the flat rebate, otherwise they receive the range-based rebate
