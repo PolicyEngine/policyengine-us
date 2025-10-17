@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.417.2] - 2025-10-17 19:09:38
+
+### Fixed
+
+- Updated ACA reform to start in 2026.
+
+## [1.417.1] - 2025-10-17 17:24:13
+
+### Fixed
+
+- Fix the income_security_package reform to apply the reform conditionally on the reform parameters.
+
 ## [1.417.0] - 2025-10-16 13:32:23
 
 ### Added
@@ -13214,6 +13226,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.417.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.1...1.417.2
+[1.417.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.0...1.417.1
 [1.417.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.416.0...1.417.0
 [1.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.415.0...1.416.0
 [1.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.414.0...1.415.0
