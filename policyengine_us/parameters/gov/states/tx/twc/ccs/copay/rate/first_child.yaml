@@ -1,0 +1,55 @@
+description: Texas applies this monthly copayment amount for the first child in care based on household income as a percentage of State Median Income under the Child Care Services program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: month
+  label: Texas CCS monthly copayment for first child
+  reference:
+    - title: 40 TAC §809.19 - Parent Share of Cost
+      href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
+    - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-psoc-chart-twc.pdf
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 0.05
+    amount:
+      2024-10-01: 0.0227
+  - threshold:
+      2024-10-01: 0.2
+    amount:
+      2024-10-01: 0.0327
+  - threshold:
+      2024-10-01: 0.3
+    amount:
+      2024-10-01: 0.046
+  - threshold:
+      2024-10-01: 0.4
+    amount:
+      2024-10-01: 0.0526
+  - threshold:
+      2024-10-01: 0.5
+    amount:
+      2024-10-01: 0.0593
+  - threshold:
+      2024-10-01: 0.6
+    amount:
+      2024-10-01: 0.066
+  - threshold:
+      2024-10-01: 0.7
+    amount:
+      2024-10-01: 0.0693
+  - threshold:
+      2024-10-01: 0.75
+    amount:
+      2024-10-01: 0.07
+  - threshold:
+      2024-10-01: 0.8
+    amount:
+      2024-10-01: 0.07

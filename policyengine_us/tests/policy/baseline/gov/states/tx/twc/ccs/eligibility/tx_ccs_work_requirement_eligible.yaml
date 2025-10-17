@@ -1,0 +1,155 @@
+- name: Single parent working 25 hours meets requirement
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 25
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true
+
+- name: Single parent working 20 hours does not meet requirement
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 20
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: false
+
+- name: Two parents working combined 50 hours meet requirement
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked: 30
+      parent2:
+        age: 32
+        weekly_hours_worked: 20
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true
+
+- name: Two parents working combined 45 hours do not meet requirement
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked: 25
+      parent2:
+        age: 32
+        weekly_hours_worked: 20
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: false
+
+- name: Single parent student, eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true
+
+- name: Two parents, one student, other works 25 hours - eligible
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      parent2:
+        age: 32
+        weekly_hours_worked: 25
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true
+
+- name: Two parents, both students, eligible
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      parent2:
+        age: 32
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      child:
+        age: 5
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    tx_ccs_work_requirement_eligible: true

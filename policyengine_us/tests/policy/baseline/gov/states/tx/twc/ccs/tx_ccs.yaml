@@ -1,0 +1,132 @@
+- name: Case 1 - Low income family with childcare expenses below copay
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 12_000  # Annual income ($1,000/month, <20% SMI)
+      child1:
+        age: 3
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_size: 2
+        spm_unit_pre_subsidy_childcare_expenses: 240  # Annual childcare expense ($20/month)
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    # Childcare expense ($20/month) < copay ($22.70, rate-based), so no benefit
+    tx_ccs: 0
+
+- name: Case 2 - Family with childcare expenses exceeding copay
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000  # Annual income ($2,500/month, ~35% SMI)
+      parent2:
+        age: 32
+      child1:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        spm_unit_size: 3
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # Annual childcare expense ($500/month)
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: TX
+        county: DALLAS_COUNTY_TX
+  output:
+    # Childcare expense ($500/month) - copay ($115, rate-based) = $385
+    tx_ccs: 385
+
+- name: Case 3 - Two children with high childcare expenses
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 48_000  # Annual income ($4,000/month, ~55% SMI)
+      parent2:
+        age: 32
+      child1:
+        age: 5
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 10
+      child2:
+        age: 2
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_size: 4
+        spm_unit_pre_subsidy_childcare_expenses: 15_600  # Annual childcare expense ($1,300/month)
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+        county: DALLAS_COUNTY_TX
+  output:
+    tx_ccs: 840  # Limited by max reimbursement: ($40.20 × 10) + ($43.80 × 10) = $840
+
+- name: Case 4 - Single parent with childcare expenses at maximum reimbursement
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 24_000  # Annual income ($2,000/month, ~25% SMI)
+      child1:
+        age: 1
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 22
+        tx_ccs_payment_rate: 600  # Maximum reimbursement limit
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_size: 2
+        spm_unit_pre_subsidy_childcare_expenses: 9_600  # Annual childcare expense ($800/month)
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_ccs: 600  # Limited to maximum reimbursement amount
+
+- name: Case 5 - Not eligible household means no benefit
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 36_000
+      teenager:
+        age: 14  # Too old for CCS
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent1, teenager]
+        spm_unit_size: 2
+        tx_ccs_eligible: false
+        spm_unit_pre_subsidy_childcare_expenses: 1_200  # Annual childcare expense ($100/month)
+    households:
+      household:
+        members: [parent1, teenager]
+        state_code: TX
+  output:
+    tx_ccs: 0  # Not eligible for CCS

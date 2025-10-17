@@ -1,0 +1,114 @@
+- name: Family meeting all requirements is eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 30
+        employment_income: 50_000  # Below 85% SMI
+      child:
+        age: 5
+        weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: trues
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 100_000  # Below $1M limit
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible: true
+
+- name: Family with income too high is not eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 30
+        employment_income: 150_000  # Above 85% SMI
+      child:
+        age: 5
+        weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 100_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible: false
+
+- name: Family with no eligible children is not eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 30
+        employment_income: 50_000
+      teen:
+        age: 14  # Too old
+        weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+        spm_unit_assets: 100_000
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    tx_ccs_eligible: false
+
+- name: Family not meeting work requirements is not eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 10  # Below minimum
+        employment_income: 50_000
+      child:
+        age: 5
+        weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 100_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible: false
+
+- name: Family with assets too high is not eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked: 30
+        employment_income: 50_000
+      child:
+        age: 5
+        weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 2_000_000  # Above $1M limit
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_ccs_eligible: false

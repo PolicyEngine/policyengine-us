@@ -1,0 +1,24 @@
+- name: Full-time student is exempt
+  period: 2024
+  input:
+    is_full_time_student: true
+    state_code: TX
+  output:
+    tx_ccs_work_exempt: true
+
+- name: Disabled person is exempt
+  period: 2024
+  input:
+    is_disabled: true
+    state_code: TX
+  output:
+    tx_ccs_work_exempt: true
+
+- name: Non-student, non-disabled person is not exempt
+  period: 2024
+  input:
+    is_disabled: false
+    is_full_time_student: false
+    state_code: TX
+  output:
+    tx_ccs_work_exempt: false

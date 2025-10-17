@@ -1,0 +1,79 @@
+- name: Gulf Coast - Harris County
+  period: 2024
+  input:
+    county: HARRIS_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: GULF_COAST
+
+- name: Gulf Coast - Fort Bend County
+  period: 2024
+  input:
+    county: FORT_BEND_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: GULF_COAST
+
+- name: Dallas County - Dallas
+  period: 2024
+  input:
+    county: DALLAS_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: DALLAS_COUNTY
+
+- name: Tarrant County - Fort Worth
+  period: 2024
+  input:
+    county: TARRANT_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: TARRANT_COUNTY
+
+- name: Capital Area - Travis County (Austin)
+  period: 2024
+  input:
+    county: TRAVIS_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+
+- name: Alamo - Bexar County (San Antonio)
+  period: 2024
+  input:
+    county: BEXAR_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: ALAMO
+
+- name: Panhandle - Potter County (Amarillo)
+  period: 2024
+  input:
+    county: POTTER_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: PANHANDLE
+
+- name: Borderplex - El Paso County
+  period: 2024
+  input:
+    county: EL_PASO_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: BORDERPLEX
+
+- name: Heart of Texas - McLennan County (Waco)
+  period: 2024
+  input:
+    county: MCLENNAN_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: HEART_OF_TEXAS
+
+- name: Cameron County - Brownsville
+  period: 2024
+  input:
+    county: CAMERON_COUNTY_TX
+    state_code: TX
+  output:
+    tx_ccs_workforce_board_region: CAMERON_COUNTY
