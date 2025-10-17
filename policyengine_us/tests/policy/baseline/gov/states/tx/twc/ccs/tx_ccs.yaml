@@ -44,6 +44,7 @@
       household:
         members: [parent1, parent2, child1]
         state_code: TX
+        county: DALLAS_COUNTY_TX
   output:
     tx_ccs: 390  # Childcare expense ($500/month) - copay ($110) = $390
 
@@ -75,6 +76,7 @@
       household:
         members: [parent1, parent2, child1, child2]
         state_code: TX
+        county: DALLAS_COUNTY_TX
   output:
     tx_ccs: 840  # Limited by max reimbursement: ($40.20 × 10) + ($43.80 × 10) = $840
 

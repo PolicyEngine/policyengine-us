@@ -35,9 +35,34 @@ class TXCCSWorkforceBoardRegion(Enum):
 class tx_ccs_workforce_board_region(Variable):
     value_type = Enum
     possible_values = TXCCSWorkforceBoardRegion
-    default_value = TXCCSWorkforceBoardRegion.DALLAS_COUNTY
+    default_value = TXCCSWorkforceBoardRegion.PANHANDLE
     entity = Household
     definition_period = YEAR
     label = "Texas CCS workforce board region"
     defined_for = StateCode.TX
-    reference = "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf"
+    reference = [
+        "https://www.twc.texas.gov/sites/default/files/wf/docs/workforce-board-directory-twc.pdf",
+        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf",
+    ]
+
+    def formula(household, period, parameters):
+        county = household("county_str", period)
+        p = parameters(period).gov.states.tx.twc.ccs.region
+
+        # Dynamically build conditions and results from enum
+        conditions = []
+        results = []
+
+        for region_enum in TXCCSWorkforceBoardRegion:
+            # Convert enum name to parameter name (PANHANDLE -> panhandle)
+            param_name = region_enum.name.lower()
+            region_param = getattr(p, param_name)
+
+            conditions.append(np.isin(county, region_param))
+            results.append(region_enum)
+
+        return select(
+            conditions,
+            results,
+            default=TXCCSWorkforceBoardRegion.PANHANDLE,
+        )
