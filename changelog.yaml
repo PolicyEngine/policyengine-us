@@ -11229,3 +11229,24 @@
     added:
     - Adjust the ctc_value as part of the minimum refundable CTC reform.
   date: 2025-10-15 15:31:19
+- bump: minor
+  changes:
+    added:
+    - Texas Family Planning Program
+  date: 2025-10-16 13:32:23
+- bump: patch
+  changes:
+    fixed:
+    - Fix the income_security_package reform to apply the reform conditionally on
+      the reform parameters.
+  date: 2025-10-17 17:24:13
+- bump: patch
+  changes:
+    fixed:
+    - Updated ACA reform to start in 2026.
+  date: 2025-10-17 19:09:38
+- bump: patch
+  changes:
+    fixed:
+    - Fix the in_nyc vectorization issue.
+  date: 2025-10-17 19:20:53

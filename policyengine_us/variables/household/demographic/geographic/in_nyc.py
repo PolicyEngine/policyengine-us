@@ -17,4 +17,4 @@ class in_nyc(Variable):
             "KINGS_COUNTY_NY",
         ]
 
-        return county in possible_counties
+        return np.isin(county, possible_counties)
