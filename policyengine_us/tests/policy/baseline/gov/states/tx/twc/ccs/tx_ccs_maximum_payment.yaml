@@ -8,6 +8,7 @@
       child1:
         age: 3
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 500  # Monthly reimbursement rate
     spm_units:
       spm_unit:
@@ -33,10 +34,12 @@
       child1:
         age: 5
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 600  # Monthly reimbursement for child1
       child2:
         age: 2
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 700  # Monthly reimbursement for child2
     spm_units:
       spm_unit:
@@ -62,14 +65,17 @@
       child1:
         age: 8
         is_disabled: false
+        is_citizen_or_legal_immigrant: trues
         tx_ccs_payment_rate: 400
       child2:
         age: 5
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 450
       child3:
         age: 2
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 500
     spm_units:
       spm_unit:
@@ -93,6 +99,7 @@
       child1:
         age: 6
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 200  # Low reimbursement rate
     spm_units:
       spm_unit:
@@ -116,6 +123,7 @@
       child1:
         age: 4
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 500
     spm_units:
       spm_unit:

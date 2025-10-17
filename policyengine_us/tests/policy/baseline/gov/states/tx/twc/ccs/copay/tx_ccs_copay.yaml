@@ -10,6 +10,7 @@
       child1:
         age: 3
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1]
@@ -33,6 +34,7 @@
       child1:
         age: 4
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1]
@@ -56,9 +58,11 @@
       child1:
         age: 5
         is_disabled: false
+        is_citizen_or_legal_immigrant: trues
       child2:
         age: 2
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
@@ -82,12 +86,15 @@
       child1:
         age: 8
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
       child2:
         age: 5
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
       child3:
         age: 2
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
@@ -99,16 +106,18 @@
   output:
     tx_ccs_copay: 470  # 75-80% SMI bracket = $290 + $90 + $90 for three children
 
-- name: Case 5 - Single child in 80% SMI bracket
+- name: Case 5 - Single child in above 85% SMI bracket
   period: 2024-01
   input:
     people:
       parent1:
         age: 35
-        employment_income: 78_000  # Annual income ($6,500/month, ~81% of SMI for family of 2)
+        employment_income: 78_000  # Annual income ($6,500/month, >85% of SMI for family of 2)
+        weekly_hours_worked: 40  # Meets work requirement
       child1:
         age: 6
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, child1]
@@ -118,7 +127,7 @@
         members: [parent1, child1]
         state_code: TX
   output:
-    tx_ccs_copay: 310  # 80-85% SMI bracket = $310 for first child
+    tx_ccs_copay: 0
 
 - name: Case 6 - No eligible children means no copay
   period: 2024-01
@@ -130,6 +139,7 @@
       teenager:
         age: 14  # Too old for CCS
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, teenager]

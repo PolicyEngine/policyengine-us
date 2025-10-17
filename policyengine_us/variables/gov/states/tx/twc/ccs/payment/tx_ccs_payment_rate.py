@@ -11,8 +11,11 @@ class tx_ccs_payment_rate(Variable):
     reference = "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf#page=9"
 
     def formula(person, period, parameters):
+        # Get the household's workforce board region
+        household = person.household
+        region = household("tx_ccs_workforce_board_region", period)
+
         # Get the payment parameters
-        # Use Dallas County's value
         p = parameters(period).gov.states.tx.twc.ccs.payment
 
         # Get the provider characteristics
@@ -21,12 +24,12 @@ class tx_ccs_payment_rate(Variable):
         age_category = person("tx_ccs_child_age_category", period)
         care_schedule = person("tx_ccs_care_schedule", period)
 
-        # Calculate monthly payment
+        # Calculate monthly payment based on region-specific rates
         attending_days_per_month = person(
             "childcare_attending_days_per_month", period.this_year
         )
         return (
-            p.rates[provider_type][provider_rating][age_category][
+            p.rates[region][provider_type][provider_rating][age_category][
                 care_schedule
             ]
             * attending_days_per_month

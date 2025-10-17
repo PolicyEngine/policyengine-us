@@ -9,7 +9,7 @@
         age: 5
         is_disabled: false
         is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -31,7 +31,7 @@
         age: 13
         is_disabled: false
         is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -53,7 +53,7 @@
         age: 15
         is_disabled: true
         is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -75,7 +75,7 @@
         age: 19
         is_disabled: true
         is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -94,7 +94,7 @@
         age: 10
         is_disabled: false
         is_tax_unit_dependent: false
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [person]
@@ -116,7 +116,7 @@
         age: 8
         is_disabled: false
         is_tax_unit_dependent: true
-        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -138,7 +138,7 @@
         age: 6
         is_disabled: false
         is_tax_unit_dependent: true
-        immigration_status: UNDOCUMENTED
+        is_citizen_or_legal_immigrant: false
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -160,7 +160,7 @@
         age: 0
         is_disabled: false
         is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        is_citizen_or_legal_immigrant: true
     tax_units:
       tax_unit:
         members: [parent, infant]

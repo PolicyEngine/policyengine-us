@@ -8,6 +8,7 @@
       child1:
         age: 3
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, child1]
@@ -32,6 +33,7 @@
       child1:
         age: 4
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         childcare_attending_days_per_month: 10
     spm_units:
       spm_unit:
@@ -57,10 +59,12 @@
       child1:
         age: 5
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         childcare_attending_days_per_month: 10
       child2:
         age: 2
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         childcare_attending_days_per_month: 10
     spm_units:
       spm_unit:
@@ -84,6 +88,7 @@
       child1:
         age: 1
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
         childcare_attending_days_per_month: 22
         tx_ccs_payment_rate: 600  # Maximum reimbursement limit
     spm_units:
@@ -108,6 +113,7 @@
       teenager:
         age: 14  # Too old for CCS
         is_disabled: false
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent1, teenager]

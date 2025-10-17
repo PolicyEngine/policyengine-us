@@ -9,6 +9,7 @@
       child:
         age: 5
         weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: trues
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -31,6 +32,7 @@
       child:
         age: 5
         weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -53,6 +55,7 @@
       teen:
         age: 14  # Too old
         weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent, teen]
@@ -75,6 +78,7 @@
       child:
         age: 5
         weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -97,6 +101,7 @@
       child:
         age: 5
         weekly_hours_worked: 0
+        is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
         members: [parent, child]
