@@ -1,0 +1,54 @@
+- name: Case 1, income below recognizable needs passes.
+  period: 2025-01
+  input:
+    tx_tanf_countable_income: 100
+    tx_tanf_budgetary_needs: 650
+    state_code: TX
+  output:
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Income (100) < recognizable needs (162.5) → Pass
+
+- name: Case 2, income equals recognizable needs fails.
+  period: 2025-01
+  input:
+    tx_tanf_countable_income: 162.5
+    tx_tanf_budgetary_needs: 650
+    state_code: TX
+  output:
+    tx_tanf_recognizable_needs_test: false
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Income (162.5) ≥ recognizable needs (162.5) → Fail
+
+- name: Case 3, income exceeds recognizable needs fails.
+  period: 2025-01
+  input:
+    tx_tanf_countable_income: 200
+    tx_tanf_budgetary_needs: 650
+    state_code: TX
+  output:
+    tx_tanf_recognizable_needs_test: false
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Income (200) > recognizable needs (162.5) → Fail
+
+- name: Case 4, zero income always passes.
+  period: 2025-01
+  input:
+    tx_tanf_countable_income: 0
+    tx_tanf_budgetary_needs: 650
+    state_code: TX
+  output:
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 650 * 0.25 = 162.5
+    # Income (0) < recognizable needs (162.5) → Pass
+
+- name: Case 5, larger household with higher needs.
+  period: 2025-01
+  input:
+    tx_tanf_countable_income: 200
+    tx_tanf_budgetary_needs: 824
+    state_code: TX
+  output:
+    tx_tanf_recognizable_needs_test: true
+    # Recognizable needs = 824 * 0.25 = 206
+    # Income (200) < recognizable needs (206) → Pass

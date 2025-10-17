@@ -1,0 +1,111 @@
+description: Texas sets this maximum grant amount for non-caretaker cases under the Temporary Assistance for Needy Families program.
+metadata:
+  label: Texas TANF non-caretaker maximum grant
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  reference:
+    - title: Texas Works Handbook C-110, TANF (2023-10-01)
+      href: https://web.archive.org/web/20240911175553/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas Works Handbook C-110, TANF (2024-10-01)
+      href: https://web.archive.org/web/20250308063323/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas Works Handbook C-110, TANF (Current)
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: 1 Tex. Admin. Code § 372.1505 (a) - Calculating Benefits
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-1505
+brackets:
+  - threshold:
+      2023-10-01: 0
+    amount:
+      2023-10-01: 0
+  - threshold:
+      2023-10-01: 1
+    amount:
+      2023-10-01: 121
+      2024-10-01: 126
+      2025-10-01: 130
+  - threshold:
+      2023-10-01: 2
+    amount:
+      2023-10-01: 174
+      2024-10-01: 182
+      2025-10-01: 188
+  - threshold:
+      2023-10-01: 3
+    amount:
+      2023-10-01: 243
+      2024-10-01: 255
+      2025-10-01: 263
+  - threshold:
+      2023-10-01: 4
+    amount:
+      2023-10-01: 290
+      2024-10-01: 304
+      2025-10-01: 314
+  - threshold:
+      2023-10-01: 5
+    amount:
+      2023-10-01: 372
+      2024-10-01: 391
+      2025-10-01: 403
+  - threshold:
+      2023-10-01: 6
+    amount:
+      2023-10-01: 402
+      2024-10-01: 422
+      2025-10-01: 435
+  - threshold:
+      2023-10-01: 7
+    amount:
+      2023-10-01: 501
+      2024-10-01: 526
+      2025-10-01: 543
+  - threshold:
+      2023-10-01: 8
+    amount:
+      2023-10-01: 551
+      2024-10-01: 577
+      2025-10-01: 596
+  - threshold:
+      2023-10-01: 9
+    amount:
+      2023-10-01: 632
+      2024-10-01: 663
+      2025-10-01: 684
+  - threshold:
+      2023-10-01: 10
+    amount:
+      2023-10-01: 681
+      2024-10-01: 714
+      2025-10-01: 737
+  - threshold:
+      2023-10-01: 11
+    amount:
+      2023-10-01: 762
+      2024-10-01: 799
+      2025-10-01: 824
+  - threshold:
+      2023-10-01: 12
+    amount:
+      2023-10-01: 810
+      2024-10-01: 850
+      2025-10-01: 877
+  - threshold:
+      2023-10-01: 13
+    amount:
+      2023-10-01: 891
+      2024-10-01: 935
+      2025-10-01: 965
+  - threshold:
+      2023-10-01: 14
+    amount:
+      2023-10-01: 940
+      2024-10-01: 986
+      2025-10-01: 1_017
+  - threshold:
+      2023-10-01: 15
+    amount:
+      2023-10-01: 1_020
+      2024-10-01: 1_070
+      2025-10-01: 1_104

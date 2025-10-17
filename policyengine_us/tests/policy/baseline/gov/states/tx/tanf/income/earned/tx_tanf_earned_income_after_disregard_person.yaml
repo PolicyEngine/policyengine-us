@@ -1,0 +1,36 @@
+- name: Case 1, new applicant with low earnings gets 1/3 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    tx_tanf_gross_earned_income: 600
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person: 321.60
+
+- name: Case 2, continuing recipient gets 90% disregard.
+  period: 2025-01
+  input:
+    tx_tanf_gross_earned_income: 600
+    is_tanf_enrolled: true
+    state_code: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person: 48
+
+- name: Case 3, continuing recipient hits $1,400 disregard cap.
+  period: 2025-01
+  input:
+    tx_tanf_gross_earned_income: 2_000
+    is_tanf_enrolled: true
+    state_code: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person: 480
+
+- name: Case 4, zero earnings.
+  period: 2025-01
+  input:
+    tx_tanf_gross_earned_income: 0
+    is_tanf_enrolled: false
+    state_code: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person: 0

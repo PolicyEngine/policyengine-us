@@ -1,0 +1,74 @@
+- name: Case 1, regular TANF higher than OTTANF.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    tx_regular_tanf: 320
+    tx_ottanf: 83.33
+    state_code: TX
+  output:
+    tx_tanf: 320
+    # Regular TANF ($320/month) > OTTANF ($83.33/month) → Choose TANF
+
+- name: Case 2, OTTANF higher than regular TANF.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    tx_regular_tanf: 0
+    tx_ottanf: 83.33
+    state_code: TX
+  output:
+    tx_tanf: 83.33
+    # Regular TANF ($0) < OTTANF ($83.33/month) → Choose OTTANF
+
+- name: Case 3, both zero.
+  period: 2025-01
+  input:
+    tx_regular_tanf: 0
+    tx_ottanf: 0
+    state_code: TX
+  output:
+    tx_tanf: 0
+    # Both zero → zero
+
+- name: Case 4, equal amounts.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    tx_regular_tanf: 83.33
+    tx_ottanf: 83.33
+    state_code: TX
+  output:
+    tx_tanf: 83.33
+    # Both equal → returns 83.33
+
+- name: Case 5, integration test regular TANF better for low income.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+        tx_ottanf_crisis_criteria: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_regular_tanf: 320
+    # Low income → eligible for regular TANF
+    tx_ottanf: 83.33
+    # Also eligible for OTTANF
+    tx_tanf: 320
+    # Regular TANF ($320) > OTTANF ($83.33) → Choose TANF
+
