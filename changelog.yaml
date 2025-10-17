@@ -11179,3 +11179,64 @@
     added:
     - Massachusetts Child Care Financial Assistance (CCFA).
   date: 2025-10-06 14:13:11
+- bump: minor
+  changes:
+    added:
+    - ACA PTC additional bracket reform allowing custom contribution rate schedules
+      by income level
+    - ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+  date: 2025-10-09 16:59:51
+- bump: minor
+  changes:
+    added:
+    - Federal poverty guidelines for 2015 and 2016 to support WIC calculations back
+      to 2015.
+  date: 2025-10-09 22:32:59
+- bump: minor
+  changes:
+    added:
+    - FY 2026 SMI values.
+  date: 2025-10-09 22:40:48
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the PA tax forgiveness rate to use is_child_dependent.
+    - Remove the name metadata tag from the PA parameter system.
+  date: 2025-10-14 02:06:24
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Louisiana non refundable CDCC to base it on actual and not potential
+      credit amounts.
+  date: 2025-10-14 02:16:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+  date: 2025-10-14 02:23:12
+- bump: minor
+  changes:
+    added:
+    - Rep. Rashida Tlaib Income Security Package.
+  date: 2025-10-15 14:45:38
+- bump: minor
+  changes:
+    added:
+    - NYC formula.
+  date: 2025-10-15 15:30:29
+- bump: minor
+  changes:
+    added:
+    - Adjust the ctc_value as part of the minimum refundable CTC reform.
+  date: 2025-10-15 15:31:19
+- bump: minor
+  changes:
+    added:
+    - Texas Family Planning Program
+  date: 2025-10-16 13:32:23
+- bump: patch
+  changes:
+    fixed:
+    - Fix the income_security_package reform to apply the reform conditionally on
+      the reform parameters.
+  date: 2025-10-17 17:24:13

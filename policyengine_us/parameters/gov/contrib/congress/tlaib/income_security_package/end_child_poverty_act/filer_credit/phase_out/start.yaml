@@ -1,0 +1,20 @@
+description: Representative Rashida Tlaib's End Child Poverty Act is phased out for filers with adjusted gross income above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  # reference: placeholder - bill not yet introduced
+  label: Filer credit phase-out start
+  propagate_metadata_to_children: true
+  uprating: gov.irs.uprating
+  breakdown:
+    - filing_status
+JOINT:
+  2026-01-01: 40_000
+SINGLE:
+  2026-01-01: 20_000
+SEPARATE:
+  2026-01-01: 20_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 20_000
+SURVIVING_SPOUSE:
+  2026-01-01: 20_000
