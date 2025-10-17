@@ -1,0 +1,17 @@
+- name: Case 1, household meets crisis criteria.
+  period: 2025-01
+  input:
+    tx_ottanf_crisis_criteria: true
+    state_code: TX
+  output:
+    tx_ottanf_crisis_criteria: true
+    # User input - household experiencing crisis
+
+- name: Case 2, household does not meet crisis criteria.
+  period: 2025-01
+  input:
+    tx_ottanf_crisis_criteria: false
+    state_code: TX
+  output:
+    tx_ottanf_crisis_criteria: false
+    # User input - household not experiencing crisis
