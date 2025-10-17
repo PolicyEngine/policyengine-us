@@ -95,10 +95,21 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         def formula(tax_unit, period, parameters):
             return 0
 
+    class ctc_value(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "CTC value"
+        unit = USD
+        documentation = "Actual value of the Child Tax Credit"
+        definition_period = YEAR
+
+        adds = ["refundable_ctc"]
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_minimum_refundable_amount)
             self.update_variable(refundable_ctc)
+            self.update_variable(ctc_value)
             self.update_variable(ctc_refundable_maximum)
             self.update_variable(non_refundable_ctc)
 

@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.417.3] - 2025-10-17 19:20:53
+
+### Fixed
+
+- Fix the in_nyc vectorization issue.
+
+## [1.417.2] - 2025-10-17 19:09:38
+
+### Fixed
+
+- Updated ACA reform to start in 2026.
+
+## [1.417.1] - 2025-10-17 17:24:13
+
+### Fixed
+
+- Fix the income_security_package reform to apply the reform conditionally on the reform parameters.
+
+## [1.417.0] - 2025-10-16 13:32:23
+
+### Added
+
+- Texas Family Planning Program
+
+## [1.416.0] - 2025-10-15 15:31:19
+
+### Added
+
+- Adjust the ctc_value as part of the minimum refundable CTC reform.
+
+## [1.415.0] - 2025-10-15 15:30:29
+
+### Added
+
+- NYC formula.
+
+## [1.414.0] - 2025-10-15 14:45:38
+
+### Added
+
+- Rep. Rashida Tlaib Income Security Package.
+
+## [1.413.3] - 2025-10-14 02:23:12
+
+### Fixed
+
+- Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+
+## [1.413.2] - 2025-10-14 02:16:57
+
+### Fixed
+
+- Adjust the Louisiana non refundable CDCC to base it on actual and not potential credit amounts.
+
+## [1.413.1] - 2025-10-14 02:06:24
+
+### Fixed
+
+- Adjust the PA tax forgiveness rate to use is_child_dependent.
+- Remove the name metadata tag from the PA parameter system.
+
 ## [1.413.0] - 2025-10-09 22:40:48
 
 ### Added
@@ -13171,6 +13232,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.417.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.2...1.417.3
+[1.417.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.1...1.417.2
+[1.417.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.0...1.417.1
+[1.417.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.416.0...1.417.0
+[1.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.415.0...1.416.0
+[1.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.414.0...1.415.0
+[1.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.3...1.414.0
+[1.413.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.2...1.413.3
+[1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
+[1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1
 [1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
 [1.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.411.0...1.412.0
 [1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
