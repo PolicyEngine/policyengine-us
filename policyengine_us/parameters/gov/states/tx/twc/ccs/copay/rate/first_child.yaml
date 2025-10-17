@@ -1,11 +1,9 @@
 description: Texas applies this monthly copayment amount for the first child in care based on household income as a percentage of State Median Income under the Child Care Services program.
-# Note: Texas implements parent share of cost through 28 local workforce development boards.
-# These values are from the Panhandle region and may differ in other areas.
-# Copays are capped at 7% of family income per federal regulations (45 CFR §98.45).
+
 metadata:
   type: single_amount
   threshold_unit: /1
-  amount_unit: currency-USD
+  amount_unit: /1
   period: month
   label: Texas CCS monthly copayment for first child
   reference:
@@ -20,36 +18,40 @@ brackets:
   - threshold:
       2024-10-01: 0
     amount:
-      2024-10-01: 30
+      2024-10-01: 0
   - threshold:
-      2024-10-01: 0.20
+      2024-10-01: 0.05
     amount:
-      2024-10-01: 65
+      2024-10-01: 0.0227
   - threshold:
-      2024-10-01: 0.30
+      2024-10-01: 0.2
     amount:
-      2024-10-01: 110
+      2024-10-01: 0.0327
   - threshold:
-      2024-10-01: 0.40
+      2024-10-01: 0.3
     amount:
-      2024-10-01: 150
+      2024-10-01: 0.046
   - threshold:
-      2024-10-01: 0.50
+      2024-10-01: 0.4
     amount:
-      2024-10-01: 190
+      2024-10-01: 0.0526
   - threshold:
-      2024-10-01: 0.60
+      2024-10-01: 0.5
     amount:
-      2024-10-01: 240
+      2024-10-01: 0.0593
   - threshold:
-      2024-10-01: 0.70
+      2024-10-01: 0.6
     amount:
-      2024-10-01: 270
+      2024-10-01: 0.066
+  - threshold:
+      2024-10-01: 0.7
+    amount:
+      2024-10-01: 0.0693
   - threshold:
       2024-10-01: 0.75
     amount:
-      2024-10-01: 290
+      2024-10-01: 0.07
   - threshold:
-      2024-10-01: 0.80
+      2024-10-01: 0.8
     amount:
-      2024-10-01: 310
+      2024-10-01: 0.07

@@ -20,7 +20,9 @@
         members: [parent1, parent2, child1]
         state_code: TX
   output:
-    tx_ccs_copay: 30  # Income < 20% SMI = $30 for first child
+    # Calculation: Income ~14% SMI → first child rate 2.27%
+    # Copay = 0.0227 * $1,000 = $22.70
+    tx_ccs_copay: 22.7
 
 - name: Case 2 - Single child in 30% SMI bracket
   period: 2024-01
@@ -44,7 +46,9 @@
         members: [parent1, parent2, child1]
         state_code: TX
   output:
-    tx_ccs_copay: 110  # 30-40% SMI bracket = $110 for first child
+    # Calculation: Income ~35% SMI → first child rate 4.6%
+    # Copay = 0.046 * $2,500 = $115
+    tx_ccs_copay: 115
 
 - name: Case 3 - Two children in 50% SMI bracket
   period: 2024-01
@@ -58,7 +62,7 @@
       child1:
         age: 5
         is_disabled: false
-        is_citizen_or_legal_immigrant: trues
+        is_citizen_or_legal_immigrant: true
       child2:
         age: 2
         is_disabled: false
@@ -72,7 +76,11 @@
         members: [parent1, parent2, child1, child2]
         state_code: TX
   output:
-    tx_ccs_copay: 260  # 50-60% SMI bracket = $190 + $70 for second child
+    # Calculation: Income ~55% SMI → first child rate 5.93%
+    # First child copay = 0.0593 * $4,000 = $237.20
+    # Additional child copay = 0.0015 * $4,000 * 1 = $6.00
+    # Total = $237.20 + $6.00 = $243.20
+    tx_ccs_copay: 243.2
 
 - name: Case 4 - Three children in 75% SMI bracket
   period: 2024-01
@@ -104,7 +112,12 @@
         members: [parent1, parent2, child1, child2, child3]
         state_code: TX
   output:
-    tx_ccs_copay: 470  # 75-80% SMI bracket = $290 + $90 + $90 for three children
+    # Calculation: Income ~77% SMI → first child rate would be 6.97%
+    # First child copay = 0.0697 * $7,000 = $487.90
+    # Additional child copay = 0.0015 * $7,000 * 2 = $21.00
+    # Subtotal = $487.90 + $21.00 = $508.90
+    # Capped at max: 0.07 * $7,000 = $490
+    tx_ccs_copay: 490
 
 - name: Case 5 - Single child in above 85% SMI bracket
   period: 2024-01

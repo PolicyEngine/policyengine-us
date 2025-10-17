@@ -19,7 +19,8 @@
         members: [parent1, child1]
         state_code: TX
   output:
-    tx_ccs: 0  # Childcare expense ($20/month) < copay ($30), so no benefit
+    # Childcare expense ($20/month) < copay ($22.70, rate-based), so no benefit
+    tx_ccs: 0
 
 - name: Case 2 - Family with childcare expenses exceeding copay
   period: 2024-01
@@ -46,7 +47,8 @@
         state_code: TX
         county: DALLAS_COUNTY_TX
   output:
-    tx_ccs: 390  # Childcare expense ($500/month) - copay ($110) = $390
+    # Childcare expense ($500/month) - copay ($115, rate-based) = $385
+    tx_ccs: 385
 
 - name: Case 3 - Two children with high childcare expenses
   period: 2024-01

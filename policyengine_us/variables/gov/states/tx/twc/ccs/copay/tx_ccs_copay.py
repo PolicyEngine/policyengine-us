@@ -23,11 +23,18 @@ class tx_ccs_copay(Variable):
             spm_unit.members("tx_ccs_eligible_child", period)
         )
 
-        # Calculate copayment based on income bracket
-        # Use Panhandle Region's value
-        first_child_fee = p.first_child_fee.calc(income_to_smi_ratio)
-        additional_child_fee = p.additional_child_fee.calc(income_to_smi_ratio)
+        # Calculate copayment rates based on income bracket
+        # Use Panhandle Region's values
+        first_child_rate = p.rate.first_child.calc(income_to_smi_ratio)
+        additional_child_rate = p.rate.additional_child
 
-        # Total copayment = first child + (additional children * additional child fee)
+        # Calculate copayments as percentage of income
+        first_child_copay = first_child_rate * income
         additional_children = max_(eligible_children - 1, 0)
-        return first_child_fee + (additional_children * additional_child_fee)
+        additional_copay = additional_child_rate * income * additional_children
+
+        # Total copayment, capped at maximum rate
+        total_copay = first_child_copay + additional_copay
+        max_copay = p.rate.maximum * income
+
+        return min_(total_copay, max_copay)

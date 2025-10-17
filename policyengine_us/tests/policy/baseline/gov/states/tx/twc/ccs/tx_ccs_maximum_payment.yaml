@@ -20,7 +20,8 @@
         members: [parent1, child1]
         state_code: TX
   output:
-    tx_ccs_maximum_payment: 470  # Reimbursement ($500) - copay ($30) = $470
+    # Reimbursement ($500) - copay ($22.70, rate-based) = $477.30
+    tx_ccs_maximum_payment: 477.3
 
 - name: Case 2 - Family with two children maximum payment
   period: 2024-01
@@ -51,7 +52,8 @@
         members: [parent1, parent2, child1, child2]
         state_code: TX
   output:
-    tx_ccs_maximum_payment: 1_040  # Total reimbursement ($1,300) - copay ($260) = $1,040
+    # Total reimbursement ($1,300) - copay ($243.20, rate-based) = $1,056.80
+    tx_ccs_maximum_payment: 1_056.8
 
 - name: Case 3 - High income family with lower maximum payment
   period: 2024-01
@@ -65,7 +67,7 @@
       child1:
         age: 8
         is_disabled: false
-        is_citizen_or_legal_immigrant: trues
+        is_citizen_or_legal_immigrant: true
         tx_ccs_payment_rate: 400
       child2:
         age: 5
@@ -87,7 +89,8 @@
         members: [parent1, parent2, child1, child2, child3]
         state_code: TX
   output:
-    tx_ccs_maximum_payment: 880  # Total reimbursement ($1,350) - copay ($470) = $880
+    # Total reimbursement ($1,350) - copay ($490, capped at 7%) = $860
+    tx_ccs_maximum_payment: 860
 
 - name: Case 4 - Copay exceeds reimbursement results in zero maximum payment
   period: 2024-01
