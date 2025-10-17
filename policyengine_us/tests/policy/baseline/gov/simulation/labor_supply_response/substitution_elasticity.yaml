@@ -1,48 +1,131 @@
 - name: Default substitution elasticity is zero
   period: 2023
   input:
+    age: 40
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
   output:
     substitution_elasticity: 0
 
-- name: Global substitution elasticity override
+- name: Global substitution elasticity override applies to all ages
   period: 2023
   input:
+    age: 70
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0.25
   output:
     substitution_elasticity: 0.25
 
-- name: Primary earner in decile 1 with default parameters
+- name: Primary earner under 65 in decile 5
   period: 2023
   input:
+    age: 50
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.5: 0.15
+  output:
+    substitution_elasticity: 0.15
+
+- name: Primary earner 65 and over in decile 5
+  period: 2023
+  input:
+    age: 70
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.5: 0.35
+  output:
+    substitution_elasticity: 0.35
+
+- name: Secondary earner under 65
+  period: 2023
+  input:
+    age: 45
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.secondary: 0.32
+  output:
+    substitution_elasticity: 0
+
+- name: Secondary earner 65 and over
+  period: 2023
+  input:
+    age: 67
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.secondary: 0.40
+  output:
+    substitution_elasticity: 0
+
+- name: Age 64 uses under_65 elasticity
+  period: 2023
+  input:
+    age: 64
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.5: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.5: 0.40
+  output:
+    substitution_elasticity: 0.20
+
+- name: Age 65 uses 65_and_over elasticity
+  period: 2023
+  input:
+    age: 65
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.5: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.5: 0.40
+  output:
+    substitution_elasticity: 0.40
+
+- name: Negative total earnings should have zero elasticity regardless of age
+  period: 2023
+  input:
+    age: 70
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -60_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.1: 0.35
+  output:
+    substitution_elasticity: 0
+
+- name: Positive net earnings after self-employment loss, age 65+
+  period: 2023
+  input:
+    age: 68
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: -5_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.5: 0.35
+  output:
+    substitution_elasticity: 0.35
+
+- name: Primary earner under 65 in decile 1 (lowest decile)
+  period: 2023
+  input:
+    age: 40
     employment_income_before_lsr: 10_000
     self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.1
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.2
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.1: 0.31
   output:
-    substitution_elasticity: 0  # TODO: Debug why single person isn't getting primary earner elasticity
+    substitution_elasticity: 0.31
 
-- name: Negative total earnings should have zero elasticity
+- name: Primary earner 65+ in decile 1 (highest elasticity expected)
   period: 2023
   input:
-    employment_income_before_lsr: 50_000
-    self_employment_income_before_lsr: -60_000  # Net negative earnings
+    age: 70
+    employment_income_before_lsr: 10_000
+    self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.2
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.1: 0.50
   output:
-    substitution_elasticity: 0  # max_(earnings, 0) = 0, so elasticity = 0
-
-- name: Positive net earnings after self-employment loss
-  period: 2023
-  input:
-    employment_income_before_lsr: 50_000
-    self_employment_income_before_lsr: -5_000  # Net positive earnings = 45_000
-    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15  # 45k falls in decile 5
-  output:
-    substitution_elasticity: 0.15
+    substitution_elasticity: 0.50
