@@ -11234,3 +11234,9 @@
     added:
     - Texas Family Planning Program
   date: 2025-10-16 13:32:23
+- bump: patch
+  changes:
+    fixed:
+    - Fix the income_security_package reform to apply the reform conditionally on
+      the reform parameters.
+  date: 2025-10-17 17:24:13
