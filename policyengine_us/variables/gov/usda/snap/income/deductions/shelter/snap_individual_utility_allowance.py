@@ -21,6 +21,7 @@ class snap_individual_utility_allowance(Variable):
                 for expense in expense_types
             ]
         )
+
         return where(
             allowance_type == allowance_types.IUA,
             sum_of_individual_allowances,

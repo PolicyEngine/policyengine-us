@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class snap_unearned_income(Variable):
+class snap_unearned_income_person(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     definition_period = MONTH
     label = "SNAP unearned income"
     documentation = "Unearned income for calculating the SNAP benefit"

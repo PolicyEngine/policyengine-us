@@ -1,7 +1,7 @@
 - name: Family of 4 in contiguous US
   period: 2022-01
   input:
-    spm_unit_size: 4
+    snap_unit_size: 4
     state_group: CONTIGUOUS_US
   output:
     snap_standard_deduction: 184
@@ -9,7 +9,7 @@
 - name: Family of 2 in contiguous US
   period: 2022-01
   input:
-    spm_unit_size: 2
+    snap_unit_size: 2
     state_group: CONTIGUOUS_US
   output:
     snap_standard_deduction: 177
@@ -17,7 +17,7 @@
 - name: Family of 9 in contiguous US
   period: 2022-01
   input:
-    spm_unit_size: 9
+    snap_unit_size: 9
     state_group: CONTIGUOUS_US
   output:
     snap_standard_deduction: 246
