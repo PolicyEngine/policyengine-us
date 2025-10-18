@@ -2,11 +2,17 @@ description: AMT exemption amount
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
   reference:
-    # OBBB extends TCJA AMT exemption amounts.
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S. Code § 55(d) - Alternative minimum tax exemption
+      href: https://www.law.cornell.edu/uscode/text/26/55#d
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=16
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=10
     - title: 2024 IRS data release
@@ -43,17 +49,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 81_300
     2024-01-01: 85_700
     2025-01-01: 88_100
-    # Internal forecast, will update when CBO forecast is released.
-    2026-01-01: 89_400
-    2027-01-01: 91_700
-    2028-01-01: 93_600
-    2029-01-01: 95_400
-    2030-01-01: 97_300
-    2031-01-01: 99_200
-    2032-01-01: 101_200
-    2033-01-01: 103_200
-    2034-01-01: 105_300
-    2035-01-01: 107_300
+    2026-01-01: 90_100
 JOINT:
   values:
     2013-01-01: 80_800
@@ -69,17 +65,7 @@ JOINT:
     2023-01-01: 126_500
     2024-01-01: 133_300
     2025-01-01: 137_000
-    # Internal forecast, will update when CBO forecast is released.
-    2026-01-01: 139_000
-    2027-01-01: 142_500
-    2028-01-01: 145_500
-    2029-01-01: 148_400
-    2030-01-01: 151_300
-    2031-01-01: 154_300
-    2032-01-01: 157_400
-    2033-01-01: 160_500
-    2034-01-01: 163_700
-    2035-01-01: 166_900
+    2026-01-01: 140_200
 SEPARATE:
   values:
     2013-01-01: 40_400
@@ -95,17 +81,7 @@ SEPARATE:
     2023-01-01: 63_250
     2024-01-01: 66_650
     2025-01-01: 68_500
-    # Internal forecast, will update when CBO forecast is released.
-    2026-01-01: 69_600
-    2027-01-01: 71_300
-    2028-01-01: 72_700
-    2029-01-01: 74_200
-    2030-01-01: 75_700
-    2031-01-01: 77_200
-    2032-01-01: 78_700
-    2033-01-01: 80_200
-    2034-01-01: 81_800
-    2035-01-01: 83_500
+    2026-01-01: 70_100
 SINGLE:
   values:
     2013-01-01: 51_900
@@ -121,17 +97,7 @@ SINGLE:
     2023-01-01: 81_300
     2024-01-01: 85_700
     2025-01-01: 88_100
-    # Internal forecast, will update when CBO forecast is released.
-    2026-01-01: 89_400
-    2027-01-01: 91_700
-    2028-01-01: 93_600
-    2029-01-01: 95_400
-    2030-01-01: 97_300
-    2031-01-01: 99_200
-    2032-01-01: 101_200
-    2033-01-01: 103_200
-    2034-01-01: 105_300
-    2035-01-01: 107_300
+    2026-01-01: 90_100
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 80_800
@@ -147,14 +113,4 @@ SURVIVING_SPOUSE:
     2023-01-01: 126_500
     2024-01-01: 133_300
     2025-01-01: 137_000
-    # Internal forecast, will update when CBO forecast is released.
-    2026-01-01: 139_000
-    2027-01-01: 142_500
-    2028-01-01: 145_500
-    2029-01-01: 148_400
-    2030-01-01: 151_300
-    2031-01-01: 154_300
-    2032-01-01: 157_400
-    2033-01-01: 160_500
-    2034-01-01: 163_700
-    2035-01-01: 166_900
+    2026-01-01: 140_200

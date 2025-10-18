@@ -9,6 +9,8 @@ metadata:
   reference:
     - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/221
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=23
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
     - title: 2022 IRS data release
@@ -29,6 +31,7 @@ JOINT:
     2022-01-01: 145_000
     2023-01-01: 155_000
     2024-01-01: 165_000
+    2026-01-01: 175_000
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -41,6 +44,7 @@ SINGLE:
     2019-01-01: 70_000
     2023-01-01: 75_000
     2024-01-01: 80_000
+    2026-01-01: 85_000
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -56,18 +60,20 @@ HEAD_OF_HOUSEHOLD:
     2019-01-01: 70_000
     2023-01-01: 75_000
     2024-01-01: 80_000
+    2026-01-01: 85_000
   metadata:
     uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 5_000
-SURVIVING_SPOUSE: 
+SURVIVING_SPOUSE:
   values:
     2002-01-01: 50_000
     2019-01-01: 70_000
     2023-01-01: 75_000
     2024-01-01: 80_000
+    2026-01-01: 85_000
   metadata:
     uprating:
       parameter: gov.irs.uprating
