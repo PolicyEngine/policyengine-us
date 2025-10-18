@@ -1,0 +1,382 @@
+## Edge Case Tests: Age Boundaries
+## Tests children exactly at age 18, full-time students at 18-19, and newborns
+
+- name: Child exactly age 18 - not a full-time student (ineligible)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 18  # Exactly 18
+        is_full_time_student: false
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Child exactly age 18, not in school
+    # Should NOT count in TFA assistance unit per eligibility rules
+    # Only children under 18 OR 18 and full-time student qualify
+    ct_tfa_demographic_eligible: [true, false]
+
+- name: Child exactly age 18 - full-time student (eligible)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 18  # Exactly 18
+        is_full_time_student: true
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Child exactly age 18, full-time student
+    # SHOULD count in TFA assistance unit per documentation
+    # "Children age 18 enrolled full-time in high school or vocational school"
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Child age 17 years 11 months - just before 18th birthday
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 11_000
+      child:
+        age: 17  # Just under 18
+        is_full_time_student: false
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Child age 17 (just under 18)
+    # Should count regardless of student status
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Child age 19 - full-time student (likely ineligible)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 12_000
+      child:
+        age: 19  # Over 18
+        is_full_time_student: true
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Child age 19, even as full-time student
+    # Should NOT count per documentation (only age 18 students qualify)
+    ct_tfa_demographic_eligible: [true, false]
+
+- name: Newborn - age 0 (eligible)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 8_000
+      newborn:
+        age: 0  # Newborn
+    families:
+      family:
+        members: [parent, newborn]
+    spm_units:
+      spm_unit:
+        members: [parent, newborn]
+    households:
+      household:
+        members: [parent, newborn]
+        state_code: CT
+  output:
+    # Edge case: Newborn (age 0)
+    # Should definitely count
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Multiple children at age boundary - ages 17 and 18 (one student, one not)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 15_000
+      child1:
+        age: 17
+        is_full_time_student: true
+      child2:
+        age: 18
+        is_full_time_student: true
+      child3:
+        age: 18
+        is_full_time_student: false
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Edge case: Mixed ages at boundary
+    # child1 (17): eligible
+    # child2 (18, student): eligible
+    # child3 (18, not student): NOT eligible
+    ct_tfa_demographic_eligible: [true, true, true, false]
+
+- name: Young parent age 18 with infant - both may qualify
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 18  # Young parent exactly 18
+        is_full_time_student: false
+        employment_income: 6_000
+      infant:
+        age: 0
+    families:
+      family:
+        members: [parent, infant]
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+    households:
+      household:
+        members: [parent, infant]
+        state_code: CT
+  output:
+    # Edge case: Parent exactly age 18
+    # Parent should qualify as caregiver
+    # Infant definitely qualifies
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Teen parent age 16 with infant - both qualify
+  period: 2024-10
+  input:
+    people:
+      teen_parent:
+        age: 16  # Minor parent
+        is_full_time_student: true
+        employment_income: 0
+      infant:
+        age: 0
+    families:
+      family:
+        members: [teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [teen_parent, infant]
+    households:
+      household:
+        members: [teen_parent, infant]
+        state_code: CT
+  output:
+    # Edge case: Minor parent (age 16)
+    # Both should qualify
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Household with children spanning age boundary - ages 15, 16, 17, 18, 19
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 20_000
+      child1:
+        age: 15
+        is_full_time_student: true
+      child2:
+        age: 16
+        is_full_time_student: true
+      child3:
+        age: 17
+        is_full_time_student: true
+      child4:
+        age: 18
+        is_full_time_student: true
+      child5:
+        age: 19
+        is_full_time_student: true
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: CT
+  output:
+    # Edge case: Children spanning the 18-year boundary
+    # Ages 15-17: eligible
+    # Age 18 (student): eligible
+    # Age 19 (even student): NOT eligible
+    ct_tfa_demographic_eligible: [true, true, true, true, true, false]
+
+- name: Child age 18 in vocational school (eligible)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 41
+        employment_income: 11_500
+      child:
+        age: 18
+        is_full_time_student: true  # Vocational school counts as full-time
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Age 18 in vocational school
+    # Per documentation: "vocational school" explicitly mentioned
+    # Should be treated same as high school
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Child age 10 - mid-range typical case
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 10  # Mid-range, clearly eligible
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Baseline case: Child age 10 (clearly eligible)
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Infant age 1 month (represented as age 0)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 27
+        employment_income: 9_000
+      infant:
+        age: 0  # Very young infant
+    families:
+      family:
+        members: [parent, infant]
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+    households:
+      household:
+        members: [parent, infant]
+        state_code: CT
+  output:
+    # Edge case: Very young infant (age 0)
+    # Tests minimum age handling
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Three children all age 18 - mixed student status
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 48
+        employment_income: 16_000
+      child1:
+        age: 18
+        is_full_time_student: true
+      child2:
+        age: 18
+        is_full_time_student: true
+      child3:
+        age: 18
+        is_full_time_student: false
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Edge case: Multiple children exactly age 18
+    # Tests whether student status correctly determines eligibility
+    # child1 & child2 (students): eligible
+    # child3 (not student): NOT eligible
+    ct_tfa_demographic_eligible: [true, true, true, false]
+
+- name: Child age 17 not in school - still eligible
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 36
+        employment_income: 10_500
+      child:
+        age: 17
+        is_full_time_student: false  # Not in school
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Age 17, not in school
+    # Should still be eligible (under 18 rule)
+    ct_tfa_demographic_eligible: [true, true]
