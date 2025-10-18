@@ -1,0 +1,11 @@
+description: Age threshold for young worker exception (under 24 years old)
+
+values:
+  1975-01-01: 24
+
+metadata:
+  unit: year
+  label: SSDI young worker age threshold (under 24)
+  reference:
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii
