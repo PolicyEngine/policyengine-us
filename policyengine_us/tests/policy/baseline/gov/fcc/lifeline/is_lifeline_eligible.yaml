@@ -42,3 +42,13 @@
     tanf: 1
   output:
     is_lifeline_eligible: true
+
+- name: Family with no categorical eligibility and income >135% of FPG is ineligible, but in Texas
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    medicaid: 0
+    state_code: TX
+  output:
+    is_lifeline_eligible: true
