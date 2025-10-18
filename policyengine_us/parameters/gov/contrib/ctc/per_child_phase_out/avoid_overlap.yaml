@@ -1,0 +1,7 @@
+description: Prevent overlap between regular and ARPA CTC phase-outs by subtracting ARPA phase-out amount from regular phase-out calculation.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Avoid CTC phase-out overlap
