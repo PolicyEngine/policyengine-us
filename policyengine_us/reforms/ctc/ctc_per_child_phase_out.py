@@ -36,7 +36,9 @@ def create_ctc_per_child_phase_out() -> Reform:
             avoid_overlap = p_contrib.avoid_overlap
             if avoid_overlap:
                 # Subtract ARPA phase-out to prevent double-counting
-                arpa_reduction = tax_unit("ctc_arpa_uncapped_phase_out", period)
+                arpa_reduction = tax_unit(
+                    "ctc_arpa_uncapped_phase_out", period
+                )
                 return max_(0, base_reduction - arpa_reduction)
             else:
                 return base_reduction
