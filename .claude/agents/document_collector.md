@@ -234,7 +234,143 @@ After you commit documentation:
 3. Both agents will reference your `working_references.md` file
 4. **ci-fixer** agent will merge all branches and run CI checks
 
-## Special Rules for TANF
-1. xxx
-2. xxxx 
+## Special Rules for TANF Programs
+
+### TANF Research Process
+
+When building a state TANF program, follow this systematic approach:
+
+#### 1. Primary Source Research
+- **Start with policy manuals** from the state's official TANF agency as the primary source
+- **Read each page carefully** - do not skip or skim content
+- **Read each website thoroughly** from the official source
+- **CRITICAL: Click on EACH SECTION of the legal code or website** - Do not just search for keywords
+  - Understand what each section is about
+  - Read sequentially through all sections in relevant divisions
+  - Don't stop after finding one relevant section
+- **Focus on key eligibility criteria:**
+  - Age requirements
+  - Income eligibility (identify if there are MULTIPLE income tests)
+  - Income deductions
+  - Immigration status requirements
+  - Payment standards
+
+#### 2. Legal Code Navigation
+
+**Legal Code Hierarchy:**
+```
+Title → Part → Chapter → Subchapter → Division → Section → Subsection
+```
+
+**Navigation Process:**
+1. **Start with table of contents** for the relevant chapter/subchapter
+2. **Identify relevant divisions** (Resources, Income, Benefits, Eligibility)
+3. **Read ALL sections in the division sequentially** - don't stop after finding one
+4. **Check multiple subchapters** - eligibility rules often in separate subchapter from benefit calculations
+
+**Common organization:**
+- **Definitions**: Early sections or Subchapter A
+- **Eligibility**: Divisions for citizenship, income, resources
+- **Benefits/Payments**: Separate subchapter for calculations
+
+**Quick reference table:**
+
+| Parameter Type | Find In | Subsection Example |
+|---|---|---|
+| Age thresholds | Definitions section | § XXX.103 (35) |
+| Income sources | Definitions + check exclusions | § XXX.103 (14) |
+| Deductions | Allowable Deductions section | § XXX.409 (a)(1) |
+| Resource limits | Resource Limits section | § XXX.401 (3) |
+| Payment amounts | Benefit Standards section | § XXX.420 (4)(d) |
+
+#### 3. Understanding Program Structure
+
+**CRITICAL: Build program exactly as specified in legal code and policy manual** - Don't assume or skip requirements
+
+**READ EACH SECTION CAREFULLY to verify HOW the program determines eligibility:**
+- Simple threshold: Income < $X
+- Percentage of FPL: Income < Y% of FPL
+- Needs-based test: Income vs. "needs" amount
+- Two-tier test: Different for applicants vs. continuing recipients
+- **Multiple income tests**: Programs may have BOTH gross and net income limits, some programs may have more than two income tests
+
+**Key steps:**
+1. Read eligibility determination section **completely**
+2. Check if special terms are defined ("budgetary needs", "payment standard", "GMI", "NMI", etc.)
+3. **Implement ALL eligibility tests mentioned** - don't skip any requirements
+4. Design parameters matching the actual process
+5. Separate eligibility standards from payment standards
+
+**Example:** Montana TANF has TWO income tests per ARM 37.78.420:
+- GMI (gross monthly income) standard - first eligibility test
+- Benefit standard (net countable income) - second eligibility test
+
+#### 4. Investigating How Parameter Values Are Determined
+
+**CRITICAL:** When you see a table of values on a website, investigate how they're calculated. Many tables are derived from formulas, not fixed amounts.
+
+**Common Calculation Methods:**
+1. **Percentage of FPG/FPL** - Store as rate (e.g., `0.35` for 35% of FPG)
+2. **Percentage of SMI** - State Median Income (childcare programs)
+3. **Percentage of another standard** - e.g., "25% of budgetary needs"
+4. **Formula-based** - e.g., "185% × (benefit standard ÷ 78.5%)"
+
+**Investigation Steps:**
+1. **Check table headers** - Look for "X% of FPL", "based on poverty level", etc.
+2. **Compare regulation vs. current website** - Big differences suggest policy change
+3. **Search for policy updates** - "[State] [Program] benefit increase [year] FPL"
+4. **Calculate backwards** - Divide table values by FPG to find percentage
+5. **Check State Plan** - Often contains formulas not in regulations
+6. **FIND THE LEGAL CODE** that states the formula (e.g., "30% of FPG")
+
+**When to Use Rates vs. Fixed Amounts:**
+
+**Use rate parameter when:**
+- Documentation explicitly mentions percentage
+- Policy ties to FPG/SMI/other updating standard
+- Multiple sources confirm percentage-based
+- You can find legal code stating the percentage
+
+**Use fixed amounts when:**
+- No calculation methodology found
+- Historically frozen or arbitrary amounts
+- Cannot find consistent percentage
+
+**Example: Montana TANF (2023 Policy Change)**
+- **Old regulation:** 33% of FY 2007 FPL → $298 for family of 1
+- **Current policy:** 35% of current FPL → $425 for family of 1
+- **Found in:** State Plan (page 10) specifies formulas
+- **Result:** Store as `0.35` rate, not dollar amounts
+
+### Reference Requirements
+
+**Two References Required:**
+1. **Legal code** - Must include subsection number (e.g., `ARM 37.78.103 (35)`)
+2. **Policy manual/handbook** - Specific section, not overview page
+
+**Rules:**
+- Only `title` and `href` fields (no `description`)
+- Click each link - you MUST see the actual parameter value
+- If reference doesn't show the value, remove it
+
+**Subsection examples:**
+- `(a)` - Top-level | `(a)(1)` - Nested | `(c)(22)` - List item
+
+### Documentation Quality Checklist
+
+Before finalizing TANF documentation:
+
+- [ ] URLs load and show actual values
+- [ ] Subsection numbers in legal code references
+- [ ] Two references: legal code + policy manual
+- [ ] Values match sources exactly
+- [ ] Effective dates from sources (keep month from source)
+- [ ] For lists: checked exclusions, documented with comments
+- [ ] **Investigated if table values are formula-based (FPG %, etc.)**
+- [ ] **Found legal code stating the formula if values are derived**
+- [ ] Numeric values use underscores (`3_000` not `3000`)
+- [ ] Read ALL relevant sections sequentially, not just keyword search
+- [ ] Identified if there are multiple income tests
+- [ ] Checked existing state TANF implementations for structural guidance
+
 Remember: Your documentation is the single source of truth for all other agents. Accuracy and completeness are paramount.

@@ -231,6 +231,191 @@ Before creating any variable, check if it exists:
 - Reuse federal calculations where applicable
 - **ALWAYS check for household_income, spm_unit_income before creating new income vars**
 
+## TANF-Specific Implementation Patterns
+
+### Standard TANF Variable Structure
+
+**Before implementing a new state TANF program:**
+- Examine existing state TANF implementations (IL TANF, DC TANF, MT TANF) as examples
+- Study their folder structure, variable organization, and parameter patterns
+- **⚠️ CRITICAL: Build based on the state's own policy manual and legal code, NOT other states' rules**
+- Each state has completely different TANF rules
+- Use other state implementations ONLY for structural guidance
+
+**Variables:**
+```
+tanf/
+├── eligibility/         # Eligibility tests (demographic, income, resources, overall)
+├── income/
+│   ├── earned/          # Gross → after disregards → countable (optional for simple programs)
+│   ├── unearned/        # Gross → countable (optional for simple programs)
+│   ├── deductions/      # Household-level deductions (optional for simple programs)
+│   └── countable_income.py
+├── payment_standard.py
+└── [state]_tanf.py      # Final benefit
+```
+
+### Simplified TANF Eligibility Pattern
+
+**No assistance_unit folder** - Assume everyone in SPM unit is part of TANF unit (no exclusions)
+
+**Person-level demographic check:**
+```python
+class [state]_tanf_demographic_eligible_person(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = MONTH
+    label = "[State] TANF demographic eligibility"
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.[state].tanf
+        age = person("age", period.this_year)  # YEAR variable, NOT monthly_age
+        is_pregnant = person("is_pregnant", period)
+
+        # Use where() for conditional age thresholds
+        age_limit = where(
+            person("is_full_time_student", period),
+            p.age_threshold.student,
+            p.age_threshold.minor_child
+        )
+
+        return (age < age_limit) | is_pregnant
+```
+
+**SPMUnit-level eligibility:**
+```python
+class [state]_tanf_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = MONTH
+    label = "[State] TANF eligibility"
+
+    def formula(spm_unit, period, parameters):
+        # At least one demographically eligible person
+        has_eligible_person = spm_unit.any(
+            spm_unit.members("[state]_tanf_demographic_eligible_person", period)
+        )
+        income_eligible = spm_unit("[state]_tanf_income_eligible", period)
+        resources_eligible = spm_unit("[state]_tanf_resources_eligible", period)
+
+        return has_eligible_person & income_eligible & resources_eligible
+```
+
+### Income Calculation Pipeline (Person → SPMUnit)
+
+**Person-level:** Gross income → After disregards (apply person deductions)
+**SPMUnit-level:** Countable earned (sum persons - household deductions) → Total countable (earned + unearned)
+
+**Critical rules:**
+- Follow deduction order from legal code exactly
+- Use `monthly_age` for MONTH variables (not `age`)
+- Reuse existing gross_income variables - don't re-list sources
+- Some programs have multiple income tests with different calculations
+
+**Entity selection:**
+- `Person`: Individual characteristics, person income/deductions, eligibility flags
+- `SPMUnit`: Household totals, household deductions, eligibility, benefits
+
+**Use `adds` pattern** for simple summing. Don't use for conditional logic or transformations.
+
+### Resources Are Stocks, Not Flows
+
+Resources/assets are point-in-time values - always use `period.this_year`, never divide by 12:
+
+```python
+# ✅ Correct
+cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+vehicle_value = spm_unit.household("household_vehicles_value", period.this_year)
+
+# ❌ Wrong - divides by 12
+cash_assets = spm_unit("spm_unit_cash_assets", period)
+```
+
+### Variable Period Conversion
+
+**Variables auto-convert:** Calling YEAR variable from MONTH formula with `period` auto-divides by 12
+**Parameters don't auto-convert:** Must manually divide: `p.value / MONTHS_IN_YEAR`
+
+For YEAR variables in MONTH formulas:
+- Monthly value: Use `period` (auto-converts)
+- Annual value: Use `period.this_year`
+
+**Examples:**
+```python
+# In a MONTH variable accessing YEAR variable
+age = person("age", period.this_year)  # Returns actual age, NOT age/12
+
+# In a MONTH variable for monthly amount
+monthly_income = person("employment_income", period)  # Auto-divides by 12
+```
+
+### Key Principles for Simplified TANF
+
+- Use `spm_unit_size` directly, not assistance unit size
+- Demographic eligibility: children (with age thresholds) OR pregnant persons
+- Use `spm_unit.any()` to check if at least one person is demographically eligible
+- Resources check: Use `spm_unit_assets` with `period.this_year` (simplified version)
+- Per-person deductions: Count eligible persons using `[state]_tanf_demographic_eligible_person`
+- Unearned income: Skip gross_unearned_income - Directly use `adds = "gov.states.[state].tanf.income.sources.unearned"` in countable_unearned_income
+- Create program-specific FPG variable (e.g., `mt_tanf_fpg`) with proper effective date alignment
+- Formula calculations: Use explicit parameters from State Plan - Calculate derived values (don't create parameters for calculated results)
+- Always verify variables exist in repo before using them
+
+### Entity Structures and Relationships
+
+**Marital Units:**
+- Include exactly 1 person (if unmarried) or 2 people (if married)
+- Do NOT include children or dependents
+- Used for calculations where spousal relationships matter (like SSI)
+- `marital_unit.nb_persons()` will return 1 or 2, never more
+
+**SSI Income Attribution:**
+- For married couples where both are SSI-eligible:
+  - Combined income is attributed to each spouse via `ssi_marital_earned_income` and `ssi_marital_unearned_income`
+  - These variables use `ssi_marital_both_eligible` to determine if combined income should be used
+
+**SSI Spousal Deeming:**
+- Only applies when one spouse is eligible and the other is ineligible
+- If both are eligible, spousal deeming doesn't apply; instead income is combined through marital income variables
+
+**Debugging Entity Relationships:**
+- When checking entity totals or sums, be aware of which entity level you're operating at
+- For variables that need to sum across units, use `entity.sum(variable)`
+- Use `entity.nb_persons()` to count people in an entity
+
+### Immigration Eligibility
+
+**Parameters:**
+- **ALWAYS include CITIZEN in immigration status parameter lists** - Don't add it separately in formulas
+- Use `unit: list` for immigration status parameters
+- Use exact Enum values from `ImmigrationStatus` class
+
+**Variables:**
+For mixed-status households, use `spm_unit.any()` not `spm_unit.all()`:
+
+```python
+# At least one member eligible (allows future deeming/proration)
+any_immigration_eligible = spm_unit.any(
+    spm_unit.members("[state]_tanf_immigration_status_eligible_person", period)
+)
+```
+
+### Variable Naming Conventions
+
+- `_age_eligible_child` - Age/demographic only
+- `_eligible_child` - Full eligibility (age + immigration + SSI)
+- `_inclusion_requirements` - Common requirements (immigration, SSI)
+- Use state prefixes: `mt_tanf_countable_income` not `tanf_countable_income`
+
+### Important Gotchas
+
+- Use `where` not `if`, `max_` not `max`, `min_` not `min` for vectorization
+- Array comparisons: `(x >= min) & (x <= max)` not `min <= x <= max`
+- Avoid `.any()` checks in formulas - prevents vectorization
+- Break complex calculations into separate variables
+- When implementing empty variables, check for dependent formulas
+- **Avoid unnecessary intermediate variables**: Return directly instead of assigning to variable then returning
+
 ## Implementation Checklist
 
 Before submitting ANY implementation:

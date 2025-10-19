@@ -47,6 +47,115 @@ range(n)  # iteration
 ### 3. TRACEABLE REFERENCES
 Every parameter must cite the specific document, page, and section that defines it.
 
+## Parameter File Format Standards
+
+### Standard Structure
+
+All parameter YAML files MUST follow this exact structure:
+
+```yaml
+description: [Program] [verb] [what parameter represents] [basic context].
+values:
+  YYYY-MM-DD: value
+
+metadata:
+  unit: [unit type]
+  period: [year/month]
+  label: [State] [Program] [parameter name]
+  reference:
+    - title: [Legal Code Section with subsection]
+      href: [URL]
+    - title: [Policy Manual Section]
+      href: [URL]
+```
+
+### Field Requirements
+
+**Description:**
+- First line in the file
+- One concise sentence describing what the parameter represents
+- End with a period
+- Use generic placeholders: `this amount`, `this percentage`, `this age`, `these sources`
+- Common verbs: `disregards`, `counts`, `provides`, `limits`, `sets`
+- Pattern: `[State] [verb] [what it represents] [under the [Full Program Name]].`
+
+**Examples:**
+```yaml
+description: Montana provides assistance to minor children under this age under the Temporary Assistance for Needy Families program.
+description: Montana disregards this amount from earned income under the Temporary Assistance for Needy Families program.
+description: Montana counts these sources as earned income under the Temporary Assistance for Needy Families program.
+```
+
+**Values:**
+- Second section (after description)
+- Use underscore thousands separators (`3_000` not `3000`)
+- Followed by a blank line before metadata
+
+**Metadata:**
+- Contains: `unit`, `period`, `label`, and `reference`
+- All reference entries nested inside metadata (not at root level)
+
+**Reference (inside metadata):**
+- Exactly **two references** required:
+  1. Legal code/regulation (ARM, CFR, USC, State Admin Code)
+  2. Policy manual/handbook
+- Only include references that **contain the actual parameter value**
+- Legal code references must include subsection numbers (e.g., `(a)(1)`, `(c)(22)`)
+- Only `title` and `href` fields (no `description` field)
+- If a reference doesn't show the value when clicked, remove it
+
+**Label:**
+- Short phrase (no sentence, period, or articles)
+- Spell out state name, abbreviate program: `Montana TANF` (not `MT TANF`)
+- Use type terms: `amount`, `rate`, `threshold`, `sources`, `limit`
+- Pattern: `[State] [PROGRAM] [parameter type/meaning]`
+
+**Examples:**
+```yaml
+label: Montana TANF minor child age threshold
+label: Montana TANF earned income initial disregard amount
+label: Montana TANF earned income disregard rate
+label: Riverside County General Relief minimum age limit
+```
+
+### Common Formatting Errors
+
+❌ Reference at root level instead of inside metadata
+❌ More than two references
+❌ References that don't contain the actual value
+❌ Missing blank line between values and metadata
+❌ Legal code references without subsection numbers
+❌ Including `description` field in references
+
+## Effective Dates
+
+### Where to Find Dates
+
+- **Legal code:** Bottom of sections ("eff. MM/DD/YYYY" or "adopted to be effective [Date]")
+- **Policy manuals:** Header or footer of tables
+- **State websites:** Footnotes on benefit tables
+- **State Plans:** Explicit "as of [date]" statements
+
+### Use Exact Dates from Sources
+
+**Keep the month consistent with your sources:**
+- Montana TANF: July 1, 2023 (from State Plan page 10)
+- DC TANF: October 1 (if that's what their sources say)
+- Texas TANF: Varies by parameter
+
+**Don't assume patterns:**
+- ❌ "Payment standards always use October 1st"
+- ✅ Use the date specified in the legal code/manual
+
+### Date Format
+
+Use `YYYY-MM-01` format:
+- September 15, 2023 → `2023-09-01` (keep the month, use 1st day)
+- July 1, 2023 → `2023-07-01`
+- January 2024 → `2024-01-01`
+
+**Why not arbitrary dates:** Using `2000-01-01` for everything shows no research and breaks historical accuracy
+
 ## Parameter Architecture Process
 
 ### Phase 1: Document Analysis
@@ -56,6 +165,13 @@ Identify all parameterizable values:
 - Dates/periods (seasons, eligibility windows)
 - Categories (priority groups, eligible expenses)
 - Factors (adjustments, multipliers)
+
+**Critical:** Investigate if table values are formula-based:
+- Check table headers for "X% of FPL", "based on poverty level", etc.
+- Compare regulation vs. current website - big differences suggest policy change
+- Search for policy updates
+- Calculate backwards - divide table values by FPG to find percentage
+- Check State Plan - often contains formulas not in regulations
 
 ### Phase 2: Federal/State Classification
 
@@ -84,7 +200,7 @@ parameters/gov/hhs/liheap/
 ├── household_size_factors.yaml    # Federal size adjustments
 └── required_components.yaml       # Federally required elements
 
-## STATE LEVEL  
+## STATE LEVEL
 parameters/gov/states/id/idhw/liheap/
 ├── benefit_amounts/
 │   ├── regular_benefit.yaml      # State-specific amounts
@@ -99,6 +215,81 @@ parameters/gov/states/id/idhw/liheap/
 └── priority_groups/
     ├── age_thresholds.yaml        # State-specific ages
     └── vulnerability_criteria.yaml # State definitions
+```
+
+### TANF-Specific Folder Organization
+
+**Age thresholds should be organized in age_threshold/ folder:**
+```
+tanf/
+├── age_threshold/
+│   ├── minor_child.yaml     # Non-student age limit
+│   ├── student.yaml         # Full-time student age limit
+│   └── ...
+```
+
+**needs_standard/** vs **payment_standard/**
+- `needs_standard/` - Eligibility thresholds (IF you qualify)
+- `payment_standard/` - Benefit amounts (WHAT you get)
+
+**income/** organized by purpose:
+```
+income/
+├── sources/         # What counts (earned.yaml, unearned.yaml)
+├── disregards/      # Percentage-based exclusions
+└── deductions/      # Dollar amount deductions
+```
+
+**Standard TANF Parameter Structure:**
+```
+tanf/
+├── age_threshold/       # Age limits (minor_child.yaml, student.yaml)
+├── immigration/         # Eligible immigration statuses
+├── resources/           # Resource limits
+├── income/
+│   ├── sources/         # What counts (earned.yaml, unearned.yaml)
+│   ├── disregards/      # Percentage-based exclusions
+│   └── deductions/      # Dollar amount deductions
+├── needs_standard/      # Eligibility thresholds
+└── payment_standard/    # Benefit amounts (or payment_standard_rate.yaml)
+```
+
+### Building Income Source Lists
+
+**Process:**
+1. Check definitions section (e.g., ARM §103 (14) for "earned income")
+2. Check exclusions section (find what's EXCLUDED)
+3. Only include income that is COUNTED
+
+**Formula:**
+```
+Counted Income = (All defined types) MINUS (Exclusions)
+```
+
+**Document exclusions with comments:**
+```yaml
+values:
+  2018-01-01:
+    - social_security
+    - disability_benefits
+    #- ssi # EXCLUDED per ARM 37.78.206
+```
+
+**References:** Include both definition AND exclusions sections
+
+### Scale Parameters (Age-Based)
+
+For deductions varying by age:
+```yaml
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+brackets:
+  - threshold: {2017-01-01: 0}    # Age 0-1
+    amount: {2017-01-01: 200}
+  - threshold: {2017-01-01: 2}    # Age 2+
+    amount: {2017-01-01: 175}
 ```
 
 ## Common Parameter Patterns
