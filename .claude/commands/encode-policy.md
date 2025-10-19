@@ -197,7 +197,7 @@ If a draft PR was created in Phase 1:
 1. Invoke agents using the Task tool
 2. Wait for their completion
 3. Check quality gates
-4. Proceed to next phase
+4. **PAUSE and wait for user confirmation before proceeding to next phase**
 
 **YOU MUST NOT**:
 - Write any code yourself
@@ -205,23 +205,64 @@ If a draft PR was created in Phase 1:
 - Run tests directly
 - Edit files
 
-**Start Implementation**:
-1. Phase 1: Invoke @issue-manager agent
-2. Phase 2: Invoke @naming-coordinator agent to establish naming conventions
-3. Phase 3: Invoke @document-collector agent for $ARGUMENTS  
-4. Phase 4: Invoke @test-creator AND @rules-engineer in parallel
-5. Phase 5: Invoke @integration-agent to merge branches
-6. Phase 6: Invoke @pr-pusher to validate and push branch
-7. Phase 7: Invoke fix agents sequentially (@edge-case-generator, @cross-program-validator, etc.)
-8. Phase 8: Invoke @implementation-validator to check for issues
-9. Phase 9: Invoke @rules-reviewer for final validation
-10. Phase 10: Invoke @ci-fixer to handle CI pipeline
+**Execution Flow (ONE PHASE AT A TIME)**:
 
-**CRITICAL**: You MUST complete ALL phases. Do NOT skip any phases - they are ALL REQUIRED:
+Execute each phase sequentially and **STOP after each phase** to wait for user instructions:
 
-- Phase 5 ensures branches work together
-- Phase 7 fixes critical issues (NOT optional enhancements)
-- Phase 8-9 validate correctness
-- Phase 10 ensures CI passes
+1. **Phase 1**: Issue and PR Setup
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
 
-If any agent fails, report the failure but DO NOT attempt to fix it yourself.
+2. **Phase 2**: Variable Naming Convention
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+3. **Phase 3**: Document Collection
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+4. **Phase 4**: Parallel Development
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+5. **Phase 5**: Branch Integration
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+6. **Phase 6**: Pre-Push Validation
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+7. **Phase 7**: Required Fixes and Validations (SEQUENTIAL)
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+8. **Phase 8**: Implementation Validation
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+9. **Phase 9**: Review
+   - Complete the phase
+   - Report results
+   - **STOP - Wait for user to say "continue" or provide adjustments**
+
+10. **Phase 10**: Local Testing & CI Finalization
+    - Complete the phase
+    - Report final results
+    - **WORKFLOW COMPLETE**
+
+**CRITICAL RULES**:
+- Do NOT proceed to the next phase until user explicitly says to continue
+- After each phase, summarize what was accomplished
+- If user provides adjustments, incorporate them before continuing
+- All 10 phases are still REQUIRED - pausing doesn't mean skipping
+
+If any agent fails, report the failure but DO NOT attempt to fix it yourself. Wait for user instructions.
