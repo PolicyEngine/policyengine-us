@@ -20,8 +20,13 @@ EXCLUSIONS = [
     'gov/aca/benchmark_premium_uprating.yaml',
 
     # Calibration data - not policy parameters
-    # Uncomment the line below to exclude all calibration data:
-    # 'calibration/',
+    'calibration/',
+    # Contributed reforms - not policy parameters
+    'contrib/',
+    # New Jersey EITC match - updated mechanically each year
+    'gov/states/nj/tax/income/credits/eitc/match.yaml',
+    # Georgia retirement exclusion - updated mechanically each year
+    'gov/states/ga/tax/income/agi/exclusions/retirement/cap/younger.yaml',
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
