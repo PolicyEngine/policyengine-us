@@ -11281,3 +11281,16 @@
     - CTC per-child phase-out reform now includes avoid_overlap parameter to prevent
       double-counting when regular and ARPA phase-outs overlap.
   date: 2025-10-19 09:34:25
+- bump: patch
+  changes:
+    added:
+    - Hawaii ACT 115 rebate.
+    - Illinois income tax rebate.
+    - Maine relief rebate.
+    - Massachusetts taxpayer refund rebate.
+    - South Carolina 2022 rebate.
+    - Indiana automatic refund rebate.
+    - Colorado Tabor cash back.
+    fixed:
+    - Apply state income tax rebates in the tax year rather than the payment year.
+  date: 2025-10-19 23:10:23

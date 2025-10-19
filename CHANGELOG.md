@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.423.1] - 2025-10-19 23:10:23
+
+### Added
+
+- Hawaii ACT 115 rebate.
+- Illinois income tax rebate.
+- Maine relief rebate.
+- Massachusetts taxpayer refund rebate.
+- South Carolina 2022 rebate.
+- Indiana automatic refund rebate.
+- Colorado Tabor cash back.
+
+### Fixed
+
+- Apply state income tax rebates in the tax year rather than the payment year.
+
 ## [1.423.0] - 2025-10-19 09:34:25
 
 ### Added
@@ -13268,6 +13284,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.0...1.423.1
 [1.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.422.0...1.423.0
 [1.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.421.0...1.422.0
 [1.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.420.0...1.421.0
