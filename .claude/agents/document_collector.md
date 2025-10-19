@@ -236,6 +236,40 @@ After you commit documentation:
 
 ## Special Rules for TANF Programs
 
+### CRITICAL: State-Specific Income Definitions
+
+**IMPORTANT:** There is NO federal definition of earned/unearned income for TANF. Each state defines income sources in their own legal code and policy manuals.
+
+**Federal baseline for simplified implementations:**
+- Variables `tanf_gross_earned_income` and `tanf_gross_unearned_income` exist at `/policyengine_us/variables/gov/hhs/tanf/cash/income/`
+- These are **baseline defaults for simplified state implementations**, NOT federal requirements
+- States may have completely different income definitions
+
+**When documenting state TANF programs:**
+1. **ALWAYS research the state's own income definitions** from:
+   - State legal code (e.g., ARM §103 (14) for earned income)
+   - State policy manual definitions section
+   - State exclusions section (what's NOT counted)
+
+2. **Document if state differs from federal baseline:**
+   - List all state-specific income sources
+   - Note which sources are excluded
+   - Identify state-specific income categories
+
+3. **Include in working_references.md:**
+```markdown
+## Income Sources
+
+**State Definition:** [State] defines earned income as [list from state code]
+**State Definition:** [State] defines unearned income as [list from state code]
+
+**Exclusions:** [State] excludes these from income: [list exclusions]
+
+**Implementation approach:**
+- [ ] Use federal baseline (simple implementation)
+- [ ] Create state-specific income sources (state has unique definitions)
+```
+
 ### TANF Research Process
 
 When building a state TANF program, follow this systematic approach:

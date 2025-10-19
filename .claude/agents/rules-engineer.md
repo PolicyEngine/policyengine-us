@@ -312,12 +312,23 @@ class [state]_tanf_eligible(Variable):
 - Reuse existing gross_income variables - don't re-list sources
 - Some programs have multiple income tests with different calculations
 
-### CRITICAL: Use Federal TANF Income Variables
+### Income Sources: Federal Baseline vs State-Specific
 
-**When building TANF programs, ALWAYS use these existing federal income variables:**
+**CRITICAL UNDERSTANDING:** There is NO federal definition of earned/unearned income for TANF. Each state defines income sources in their own legal code.
+
+**Federal baseline exists for SIMPLIFIED implementations only:**
+- `tanf_gross_earned_income` - Baseline earned income aggregation
+- `tanf_gross_unearned_income` - Baseline unearned income aggregation
+- Located at: `/policyengine_us/variables/gov/hhs/tanf/cash/income/`
+
+**Two implementation approaches:**
+
+#### Approach 1: Simplified Implementation (Use Federal Baseline)
+
+Use this when state's income definition closely matches federal baseline:
 
 ```python
-# ✅ CORRECT - Use federal TANF income variables
+# ✅ SIMPLIFIED - Use federal TANF income variables
 class mt_tanf_gross_earned_income(Variable):
     value_type = float
     entity = Person
@@ -326,7 +337,7 @@ class mt_tanf_gross_earned_income(Variable):
     unit = USD
     reference = "ARM 37.78.103"
 
-    adds = ["tanf_gross_earned_income"]  # Use federal TANF variable
+    adds = ["tanf_gross_earned_income"]  # Use federal baseline
 
 class mt_tanf_gross_unearned_income(Variable):
     value_type = float
@@ -336,37 +347,52 @@ class mt_tanf_gross_unearned_income(Variable):
     unit = USD
     reference = "ARM 37.78.103"
 
-    adds = ["tanf_gross_unearned_income"]  # Use federal TANF variable
+    adds = ["tanf_gross_unearned_income"]  # Use federal baseline
 ```
 
-**Available federal TANF income variables:**
-- `tanf_gross_earned_income` - Aggregates federal earned income sources
-- `tanf_gross_unearned_income` - Aggregates federal unearned income sources
+**When to use simplified approach:**
+- State's income definition is similar to baseline
+- Documentation says "use federal baseline"
+- Building quick proof-of-concept implementation
 
-These are defined at `/policyengine_us/variables/gov/hhs/tanf/cash/income/` and use income source parameters from `/policyengine_us/parameters/gov/hhs/tanf/cash/income/sources/`.
+#### Approach 2: State-Specific Income Sources
 
-**Why use federal variables:**
-- Maintains consistency across state TANF programs
-- Provides baseline federal definitions that states can override
-- Reduces duplication and ensures proper federal/state separation
-- States can add state-specific sources if needed
+Use this when state has unique income definitions:
 
-**If state has additional income sources:**
 ```python
-# State can extend with additional sources if needed
+# ✅ STATE-SPECIFIC - Define state's own income sources
 class mt_tanf_gross_earned_income(Variable):
-    adds = [
-        "tanf_gross_earned_income",  # Federal baseline
-        "mt_specific_earned_income"  # State-specific additions
-    ]
+    value_type = float
+    entity = Person
+    definition_period = MONTH
+    label = "Montana TANF gross earned income"
+    unit = USD
+    reference = "ARM 37.78.103 (14)"
+
+    # Use state-specific parameter with state-defined sources
+    adds = "gov.states.mt.tanf.income.sources.earned"
 ```
 
-❌ **DON'T create new income variables from scratch:**
-```python
-# WRONG - Don't re-implement income aggregation
-class mt_tanf_gross_earned_income(Variable):
-    adds = ["employment_income", "self_employment_income"]  # Duplicates federal work
+**When to use state-specific approach:**
+- State legal code has specific income source list
+- State excludes sources that federal baseline includes
+- State includes sources that federal baseline excludes
+- Documentation explicitly lists state-specific sources
+
+**Implementation Decision Guide:**
+
+Check documentation from document-collector:
+```markdown
+## Implementation approach:
+- [x] Use federal baseline (simple implementation)
+- [ ] Create state-specific income sources (state has unique definitions)
 ```
+
+If documentation says "Create state-specific income sources", implement state-specific parameters at:
+- `/parameters/gov/states/[state]/tanf/income/sources/earned.yaml`
+- `/parameters/gov/states/[state]/tanf/income/sources/unearned.yaml`
+
+**Key principle:** ALWAYS follow what documentation says. The federal baseline is for convenience, not a requirement.
 
 **Entity selection:**
 - `Person`: Individual characteristics, person income/deductions, eligibility flags
