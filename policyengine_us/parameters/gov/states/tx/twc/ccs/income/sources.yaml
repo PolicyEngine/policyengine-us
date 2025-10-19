@@ -1,0 +1,23 @@
+description: Texas counts these income sources as countable income under the Child Care Services program.
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+    - dividend_income
+    - interest_income 
+    - rental_income
+    - pension_income
+    - alimony_income
+    # The statute defines excluded sources rather than included sources:
+    # Medicare, Medicaid, SNAP, school meals, housing assistance
+    # TANF, social_security, ssi, general assistance, general relief
+    # unemployment_compensation
+    # child_support_received
+
+metadata:
+  unit: list
+  period: year
+  label: Texas CCS countable income sources
+  reference:
+    - title: SECTION 809.44. Calculating Family Income (b)
+      href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-44

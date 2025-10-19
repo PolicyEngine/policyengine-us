@@ -1,0 +1,127 @@
+- name: Infant - newborn (0 months)
+  period: 2024-01
+  input:
+    age: 0
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: INFANT
+
+- name: Infant - 6 month old
+  period: 2024-01
+  input:
+    age: 0.5
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: INFANT
+
+- name: Infant - 11 month old
+  period: 2024-01
+  input:
+    age: 0.92
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: INFANT
+
+- name: Infant - 17 month old (at threshold)
+  period: 2024-01
+  input:
+    age: 1.42
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: INFANT
+
+- name: Toddler - 18 month old
+  period: 2024-01
+  input:
+    age: 1.5
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: TODDLER
+
+- name: Toddler - 23 month old
+  period: 2024-01
+  input:
+    age: 1.92
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: TODDLER
+
+- name: Toddler - 2 year old
+  period: 2024-01
+  input:
+    age: 2
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: TODDLER
+
+- name: Toddler - 2.5 year old
+  period: 2024-01
+  input:
+    age: 2.5
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: TODDLER
+
+- name: Toddler - 35 month old (just under 3 years)
+  period: 2024-01
+  input:
+    age: 2.92
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: TODDLER
+
+- name: Preschool - 3 year old (at threshold)
+  period: 2024-01
+  input:
+    age: 3
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: PRESCHOOL
+
+- name: Preschool - 4 year old
+  period: 2024-01
+  input:
+    age: 4
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: PRESCHOOL
+
+- name: Preschool - 5 year old
+  period: 2024-01
+  input:
+    age: 5
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: PRESCHOOL
+
+- name: School age - 6 year old (at threshold)
+  period: 2024-01
+  input:
+    age: 6
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: SCHOOL_AGE
+
+- name: School age - 8 year old
+  period: 2024-01
+  input:
+    age: 8
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: SCHOOL_AGE
+
+- name: School age - 12 year old
+  period: 2024-01
+  input:
+    age: 12
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: SCHOOL_AGE
+
+- name: School age - 13 year old (typical CCS age limit)
+  period: 2024-01
+  input:
+    age: 13
+    state_code: TX
+  output:
+    tx_ccs_child_age_category: SCHOOL_AGE
