@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_income_security_package() -> Reform:
@@ -372,8 +373,28 @@ def create_income_security_package() -> Reform:
 def create_income_security_package_reform(
     parameters, period, bypass: bool = False
 ):
-    # Always return the reform - individual provisions will be 0 if parameters don't allow them
-    return create_income_security_package()
+    if bypass:
+        return create_income_security_package()
+
+    p = parameters.gov.contrib.congress.tlaib.income_security_package
+
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if (
+            p(current_period).baby_bonus_act.in_effect
+            or p(current_period).boost_act.in_effect
+            or p(current_period).end_child_poverty_act.in_effect
+        ):
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
+        return create_income_security_package()
+    else:
+        return None
 
 
 income_security_package = create_income_security_package_reform(

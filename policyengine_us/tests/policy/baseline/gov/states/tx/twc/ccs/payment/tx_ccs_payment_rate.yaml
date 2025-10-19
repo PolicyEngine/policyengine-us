@@ -1,0 +1,224 @@
+- name: LCCC REG Infant Full Time payment
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 0  # Infant
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: LCCC
+        tx_ccs_provider_rating: REG
+        tx_ccs_child_age_category: INFANT
+        tx_ccs_care_schedule: FULL_TIME
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # Rate is 46.80 per day * 10 days = 468.00
+    tx_ccs_payment_rate: [0, 468.00]
+
+- name: Relative None Toddler Part Time payment
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 2  # Toddler
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: RELATIVE
+        tx_ccs_provider_rating: NONE
+        tx_ccs_child_age_category: TODDLER
+        tx_ccs_care_schedule: PART_TIME
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # Rate is 11.00 per day * 10 days = 110.00
+    tx_ccs_payment_rate: [0, 110.00]
+
+- name: LCCH TRS4 Preschool Full Time payment
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 4  # Preschool
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: LCCH
+        tx_ccs_provider_rating: TRS4
+        tx_ccs_child_age_category: PRESCHOOL
+        tx_ccs_care_schedule: FULL_TIME
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # Rate is 42.63 per day * 10 days = 426.30
+    tx_ccs_payment_rate: [0, 426.30]
+
+- name: RCCH TRS2 School Age Blended payment
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 8  # School age
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: RCCH
+        tx_ccs_provider_rating: TRS2
+        tx_ccs_child_age_category: SCHOOL_AGE
+        tx_ccs_care_schedule: BLENDED
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    # Rate is 30.69 per day * 10 days = 306.90
+    tx_ccs_payment_rate: [0, 306.90]
+
+- name: Ineligible child (age 14) gets no payment
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 14  # Too old
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: LCCC
+        tx_ccs_provider_rating: REG
+        tx_ccs_child_age_category: SCHOOL_AGE
+        tx_ccs_care_schedule: FULL_TIME
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    tx_ccs_payment_rate: [0, 0]
+
+- name: School age student in LCCH, TRS3, Blended
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        is_disabled: false
+        is_tax_unit_dependent: true
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_type: LCCH
+        tx_ccs_provider_rating: TRS3
+        tx_ccs_care_schedule: BLENDED
+        childcare_attending_days_per_month: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+        tx_ccs_workforce_board_region: DALLAS_COUNTY
+  output:
+    tx_ccs_payment_rate: [0, 350.4]
+
+- name: ALAMO region - LCCC REG Infant Full Time
+  period: 2025-01
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCC
+    tx_ccs_provider_rating: REG
+    tx_ccs_child_age_category: INFANT
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: ALAMO
+  output:
+    # ALAMO rate is 44.40 per day * 10 days = 444.00
+    tx_ccs_payment_rate: 444.00
+
+- name: GULF_COAST region - LCCH TRS2 Toddler Part Time
+  period: 2025-01
+  input:
+    age: 2
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: TRS2
+    tx_ccs_child_age_category: TODDLER
+    tx_ccs_care_schedule: PART_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: GULF_COAST
+  output:
+    # GULF_COAST rate is 37.28 per day * 10 days = 372.80
+    tx_ccs_payment_rate: 372.80
+
+- name: CAPITAL_AREA region - RCCH TRS3 Preschool Full Time
+  period: 2025-01
+  input:
+    age: 4
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RCCH
+    tx_ccs_provider_rating: TRS3
+    tx_ccs_child_age_category: PRESCHOOL
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    tx_ccs_workforce_board_region: CAPITAL_AREA
+  output:
+    # CAPITAL_AREA rate is 53.36 per day * 10 days = 533.60
+    tx_ccs_payment_rate: 533.60

@@ -1,0 +1,81 @@
+description: Texas sets these budgetary needs amounts for caretaker with a second parent cases under the Temporary Assistance for Needy Families program.
+
+metadata:
+  label: Texas TANF caretaker with second parent budgetary needs standard
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  reference:
+    - title: Texas Works Handbook C-110, TANF (2023-10-01)
+      href: https://web.archive.org/web/20240911175553/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas Works Handbook C-110, TANF (2024-10-01)
+      href: https://web.archive.org/web/20250308063323/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas Works Handbook C-110, TANF (Current)
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: 1 Tex. Admin. Code § 372.2 (2) - Definitions
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-2
+    - title: 1 Tex. Admin. Code § 372.408 (a)(1) - Income Eligibility
+      href: http://txrules.elaws.us/rule/title1_chapter372_sec.372.408
+
+brackets:
+  - threshold:
+      2023-10-01: 0
+    amount:
+      2023-10-01: 0
+  - threshold:
+      2023-10-01: 2
+    amount:
+      2023-10-01: 498
+  - threshold:
+      2023-10-01: 3
+    amount:
+      2023-10-01: 824
+  - threshold:
+      2023-10-01: 4
+    amount:
+      2023-10-01: 925
+  - threshold:
+      2023-10-01: 5
+    amount:
+      2023-10-01: 1_073
+  - threshold:
+      2023-10-01: 6
+    amount:
+      2023-10-01: 1_176
+  - threshold:
+      2023-10-01: 7
+    amount:
+      2023-10-01: 1_319
+  - threshold:
+      2023-10-01: 8
+    amount:
+      2023-10-01: 1_422
+  - threshold:
+      2023-10-01: 9
+    amount:
+      2023-10-01: 1_595
+  - threshold:
+      2023-10-01: 10
+    amount:
+      2023-10-01: 1_698
+  - threshold:
+      2023-10-01: 11
+    amount:
+      2023-10-01: 1_871
+  - threshold:
+      2023-10-01: 12
+    amount:
+      2023-10-01: 1_975
+  - threshold:
+      2023-10-01: 13
+    amount:
+      2023-10-01: 2_147
+  - threshold:
+      2023-10-01: 14
+    amount:
+      2023-10-01: 2_251
+  - threshold:
+      2023-10-01: 15
+    amount:
+      2023-10-01: 2_423
