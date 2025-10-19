@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.422.0] - 2025-10-19 05:12:39
+
+### Added
+
+- Texas Child Care Services (CCS) program.
+
 ## [1.421.0] - 2025-10-18 17:49:59
 
 ### Added
@@ -13256,6 +13262,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.421.0...1.422.0
 [1.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.420.0...1.421.0
 [1.420.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.419.0...1.420.0
 [1.419.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.418.0...1.419.0
