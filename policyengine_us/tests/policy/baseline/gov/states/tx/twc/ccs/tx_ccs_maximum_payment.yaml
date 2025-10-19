@@ -1,0 +1,141 @@
+- name: Case 1 - Low income family maximum payment calculation
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 12_000  # Annual income ($1,000/month, <20% SMI)
+      child1:
+        age: 3
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 500  # Monthly reimbursement rate
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_size: 2
+        tx_ccs_eligible: true
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    # Reimbursement ($500) - copay ($22.70, rate-based) = $477.30
+    tx_ccs_maximum_payment: 477.3
+
+- name: Case 2 - Family with two children maximum payment
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 48_000  # Annual income ($4,000/month, ~55% SMI)
+      parent2:
+        age: 32
+      child1:
+        age: 5
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 600  # Monthly reimbursement for child1
+      child2:
+        age: 2
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 700  # Monthly reimbursement for child2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_size: 4
+        tx_ccs_eligible: true
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    # Total reimbursement ($1,300) - copay ($243.20, rate-based) = $1,056.80
+    tx_ccs_maximum_payment: 1_056.8
+
+- name: Case 3 - High income family with lower maximum payment
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 84_000  # Annual income ($7,000/month, 75-80% SMI)
+      parent2:
+        age: 38
+      child1:
+        age: 8
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 400
+      child2:
+        age: 5
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 450
+      child3:
+        age: 2
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 500
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        spm_unit_size: 5
+        tx_ccs_eligible: true
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: TX
+  output:
+    # Total reimbursement ($1,350) - copay ($490, capped at 7%) = $860
+    tx_ccs_maximum_payment: 860
+
+- name: Case 4 - Copay exceeds reimbursement results in zero maximum payment
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 78_000  # High income
+      child1:
+        age: 6
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 200  # Low reimbursement rate
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_size: 2
+        tx_ccs_eligible: true
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_ccs_maximum_payment: 0  # Reimbursement ($200) < copay ($310), max(0, -110) = $0
+
+- name: Case 5 - Not eligible household has zero maximum payment
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 36_000
+      child1:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_payment_rate: 500
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_size: 2
+        tx_ccs_eligible: false  # Not eligible
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+  output:
+    tx_ccs_maximum_payment: 0  # Not eligible = no maximum payment
