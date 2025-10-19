@@ -312,6 +312,62 @@ class [state]_tanf_eligible(Variable):
 - Reuse existing gross_income variables - don't re-list sources
 - Some programs have multiple income tests with different calculations
 
+### CRITICAL: Use Federal TANF Income Variables
+
+**When building TANF programs, ALWAYS use these existing federal income variables:**
+
+```python
+# ✅ CORRECT - Use federal TANF income variables
+class mt_tanf_gross_earned_income(Variable):
+    value_type = float
+    entity = Person
+    definition_period = MONTH
+    label = "Montana TANF gross earned income"
+    unit = USD
+    reference = "ARM 37.78.103"
+
+    adds = ["tanf_gross_earned_income"]  # Use federal TANF variable
+
+class mt_tanf_gross_unearned_income(Variable):
+    value_type = float
+    entity = Person
+    definition_period = MONTH
+    label = "Montana TANF gross unearned income"
+    unit = USD
+    reference = "ARM 37.78.103"
+
+    adds = ["tanf_gross_unearned_income"]  # Use federal TANF variable
+```
+
+**Available federal TANF income variables:**
+- `tanf_gross_earned_income` - Aggregates federal earned income sources
+- `tanf_gross_unearned_income` - Aggregates federal unearned income sources
+
+These are defined at `/policyengine_us/variables/gov/hhs/tanf/cash/income/` and use income source parameters from `/policyengine_us/parameters/gov/hhs/tanf/cash/income/sources/`.
+
+**Why use federal variables:**
+- Maintains consistency across state TANF programs
+- Provides baseline federal definitions that states can override
+- Reduces duplication and ensures proper federal/state separation
+- States can add state-specific sources if needed
+
+**If state has additional income sources:**
+```python
+# State can extend with additional sources if needed
+class mt_tanf_gross_earned_income(Variable):
+    adds = [
+        "tanf_gross_earned_income",  # Federal baseline
+        "mt_specific_earned_income"  # State-specific additions
+    ]
+```
+
+❌ **DON'T create new income variables from scratch:**
+```python
+# WRONG - Don't re-implement income aggregation
+class mt_tanf_gross_earned_income(Variable):
+    adds = ["employment_income", "self_employment_income"]  # Duplicates federal work
+```
+
 **Entity selection:**
 - `Person`: Individual characteristics, person income/deductions, eligibility flags
 - `SPMUnit`: Household totals, household deductions, eligibility, benefits
@@ -385,20 +441,48 @@ monthly_income = person("employment_income", period)  # Auto-divides by 12
 
 ### Immigration Eligibility
 
-**Parameters:**
-- **ALWAYS include CITIZEN in immigration status parameter lists** - Don't add it separately in formulas
-- Use `unit: list` for immigration status parameters
-- Use exact Enum values from `ImmigrationStatus` class
+**CRITICAL: Use existing federal immigration variable for TANF programs**
 
-**Variables:**
-For mixed-status households, use `spm_unit.any()` not `spm_unit.all()`:
+```python
+# ✅ CORRECT - Use federal immigration variable
+class mt_tanf_immigration_status_eligible_person(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Montana TANF immigration status eligibility"
+    reference = "ARM 37.78.XXX"
+
+    def formula(person, period, parameters):
+        # Use existing federal variable
+        return person("is_citizen_or_legal_immigrant", period)
+```
+
+**Available federal immigration variable:**
+- `is_citizen_or_legal_immigrant` - Already implemented, checks citizenship and legal immigration status
+
+**For mixed-status households, use `spm_unit.any()` not `spm_unit.all()`:**
 
 ```python
 # At least one member eligible (allows future deeming/proration)
-any_immigration_eligible = spm_unit.any(
-    spm_unit.members("[state]_tanf_immigration_status_eligible_person", period)
-)
+class mt_tanf_immigration_eligible(Variable):
+    def formula(spm_unit, period, parameters):
+        return spm_unit.any(
+            spm_unit.members("mt_tanf_immigration_status_eligible_person", period)
+        )
 ```
+
+❌ **DON'T recreate immigration checks:**
+```python
+# WRONG - Don't reimplement immigration logic
+def formula(person, period, parameters):
+    status = person("immigration_status", period)
+    return (status == ImmigrationStatus.CITIZEN) | (status == ImmigrationStatus.LEGAL_PERMANENT_RESIDENT)
+    # This duplicates existing is_citizen_or_legal_immigrant variable
+```
+
+**If state has different immigration rules:**
+- Most states follow federal rules - use `is_citizen_or_legal_immigrant` directly
+- Only create state-specific logic if state rules genuinely differ from federal baseline
 
 ### Variable Naming Conventions
 
