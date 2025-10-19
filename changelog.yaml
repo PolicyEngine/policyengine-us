@@ -11250,3 +11250,34 @@
     fixed:
     - Fix the in_nyc vectorization issue.
   date: 2025-10-17 19:20:53
+- bump: minor
+  changes:
+    added:
+    - Texas Harris County RIDES program.
+  date: 2025-10-17 21:50:35
+- bump: minor
+  changes:
+    added:
+    - Texas TANF.
+  date: 2025-10-17 22:13:09
+- bump: minor
+  changes:
+    added:
+    - Texas Lifeline fpg limit and supplement.
+  date: 2025-10-18 00:00:49
+- bump: minor
+  changes:
+    added:
+    - Texas Commodity Supplemental Food Program fpg limit.
+  date: 2025-10-18 17:49:59
+- bump: minor
+  changes:
+    added:
+    - Texas Child Care Services (CCS) program.
+  date: 2025-10-19 05:12:39
+- bump: minor
+  changes:
+    added:
+    - CTC per-child phase-out reform now includes avoid_overlap parameter to prevent
+      double-counting when regular and ARPA phase-outs overlap.
+  date: 2025-10-19 09:34:25

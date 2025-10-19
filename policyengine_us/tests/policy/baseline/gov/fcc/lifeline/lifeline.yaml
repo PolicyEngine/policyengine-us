@@ -91,3 +91,22 @@
     state_code_str: MA
   output:
     lifeline: (9.25 + 25) * 12
+
+- name: Eligible family with phone + broadband cost above the cap
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 200
+    phone_cost: 400
+  output:
+    lifeline: 111
+
+- name: Eligible family with phone + broadband cost above the cap in Texas, supplement applies
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 200
+    phone_cost: 400
+    state_code: TX
+  output:
+    lifeline: 153

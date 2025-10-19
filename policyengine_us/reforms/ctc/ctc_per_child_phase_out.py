@@ -29,7 +29,18 @@ def create_ctc_per_child_phase_out() -> Reform:
             excess = max_(0, income - phase_out_threshold)
             increments = np.ceil(excess / p.increment)
             reduction_amount = p.amount * qualifying_children
-            return increments * reduction_amount
+            base_reduction = increments * reduction_amount
+
+            # Option to avoid overlap between regular and ARPA phase-outs
+            p_contrib = parameters(period).gov.contrib.ctc.per_child_phase_out
+            if p_contrib.avoid_overlap:
+                # Subtract ARPA phase-out to prevent double-counting
+                arpa_reduction = tax_unit(
+                    "ctc_arpa_uncapped_phase_out", period
+                )
+                return max_(0, base_reduction - arpa_reduction)
+            else:
+                return base_reduction
 
     class ctc_arpa_uncapped_phase_out(Variable):
         value_type = float
