@@ -1,0 +1,90 @@
+- name: 4-year-old not age eligible for reduced fare
+  period: 2025
+  input:
+    state_code: TX
+    age: 4
+  output:
+    tx_dart_reduced_fare_age_eligible: false
+
+- name: 5-year-old child eligible (minimum age)
+  period: 2025
+  input:
+    state_code: TX
+    age: 5
+  output:
+    tx_dart_reduced_fare_age_eligible: true
+
+- name: 10-year-old child eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 10
+  output:
+    tx_dart_reduced_fare_age_eligible: true
+
+- name: 14-year-old child eligible (maximum age)
+  period: 2025
+  input:
+    state_code: TX
+    age: 14
+  output:
+    tx_dart_reduced_fare_age_eligible: true
+
+- name: 15-year-old not child eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 15
+  output:
+    tx_dart_reduced_fare_age_eligible: false
+
+- name: 30-year-old adult not age eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 30
+  output:
+    tx_dart_reduced_fare_age_eligible: false
+
+- name: 64-year-old not senior eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 64
+  output:
+    tx_dart_reduced_fare_age_eligible: false
+
+- name: 65-year-old senior eligible (minimum age)
+  period: 2025
+  input:
+    state_code: TX
+    age: 65
+  output:
+    tx_dart_reduced_fare_age_eligible: true
+
+- name: 70-year-old senior eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 70
+  output:
+    tx_dart_reduced_fare_age_eligible: true
+
+- name: Multi-generation household age eligibility
+  period: 2025
+  input:
+    people:
+      grandparent:
+        age: 68
+      parent:
+        age: 40
+      child:
+        age: 12
+      toddler:
+        age: 3
+    households:
+      household:
+        members: [grandparent, parent, child, toddler]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_age_eligible: [true, false, true, false]

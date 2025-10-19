@@ -20,3 +20,26 @@
     school_meal_net_subsidy: 180 * ((3.66 + 1.97) - (0.35 + 0.33))
     free_school_meals: 180 * (3.66 + 1.97 - 0.35 - 0.33)
     reduced_price_school_meals: 0
+
+# Test 2025 values
+- name: 2025 values test - Contiguous US FREE tier
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 1.2  # FREE tier
+        snap: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    school_meal_tier: FREE
+    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46 (2025 rates)

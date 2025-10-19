@@ -1,0 +1,32 @@
+- name: Eligible person receives 60% subsidy on transportation costs
+  period: 2025
+  input:
+    age: 70
+    is_disabled: false
+    county_str: HARRIS_COUNTY_TX
+    pre_subsidy_transportation_expense: 1_000
+  output:
+    tx_harris_rides_eligible: true
+    tx_harris_rides_subsidy: 600
+
+- name: Ineligible person receives no subsidy
+  period: 2025
+  input:
+    age: 40
+    is_disabled: false
+    county_str: HARRIS_COUNTY_TX
+    pre_subsidy_transportation_expense: 1_000
+  output:
+    tx_harris_rides_eligible: false
+    tx_harris_rides_subsidy: 0
+
+- name: Disabled person receives subsidy based on 40% customer payment rate
+  period: 2025
+  input:
+    age: 35
+    is_disabled: true
+    county_str: HARRIS_COUNTY_TX
+    pre_subsidy_transportation_expense: 500
+  output:
+    tx_harris_rides_eligible: true
+    tx_harris_rides_subsidy: 300  # 60% of $500

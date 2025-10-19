@@ -23,7 +23,7 @@
     mt_personal_exemptions_indiv: [2710, 2_710, 0]
     mt_dependent_exemptions_person: [0, 0, 2_710]
     mt_personal_exemptions_joint: [5420, 0, 0]
-    mt_agi: [10_000, 19_000, 0]
+    mt_agi_indiv: [10_000, 19_000, 0]
     mt_standard_deduction_indiv: [2_260, 3_800, 0]
     mt_standard_deduction_joint: [5_800, 0, 0]
     mt_taxable_income_joint: [15_070, 0, 0]
@@ -55,7 +55,7 @@
         state_code: MT
   output:
     mt_personal_exemptions_joint: [5_920, 0]
-    mt_agi: [40_000, 30_000]
+    mt_agi_indiv: [40_000, 30_000]
     mt_standard_deduction_joint: [11_080, 0]
     mt_taxable_income_joint: [53_000, 0]
     mt_income_tax_joint: 2_398.75
@@ -81,7 +81,7 @@
         state_code: MT
   output:
     mt_personal_exemptions_joint: [0, 0]
-    mt_agi: [40_000, 30_000]
+    mt_agi_indiv: [40_000, 30_000]
     mt_standard_deduction_joint: [29_200, 0]
     mt_taxable_income_joint: [40_800, 0]
     mt_income_tax_joint: 1_917.60
@@ -293,3 +293,52 @@
   output:
     mt_capital_gains_tax_joint: [59, 0]
     mt_income_tax: 59
+
+- name: 2251-MT.yaml
+  absolute_error_margin: 0.3
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 0
+        is_tax_unit_head: true
+      person2:
+        age: 71
+        employment_income: 89_047.617
+        is_tax_unit_spouse: true
+      person3:
+        age: 4
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 10
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person5:
+        age: 16
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 30
+  output:
+    mt_income_tax: 2_207

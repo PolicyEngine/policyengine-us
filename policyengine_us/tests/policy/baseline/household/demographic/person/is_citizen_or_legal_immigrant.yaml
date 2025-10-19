@@ -1,0 +1,55 @@
+- name: Case 1, citizen eligible.
+  period: 2025-01
+  input:
+    immigration_status: CITIZEN
+  output:
+    is_citizen_or_legal_immigrant: true
+    # Citizen → eligible
+
+- name: Case 2, legal permanent resident eligible.
+  period: 2025-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    is_citizen_or_legal_immigrant: true
+    # Qualified noncitizen → eligible
+
+- name: Case 3, refugee eligible.
+  period: 2025-01
+  input:
+    immigration_status: REFUGEE
+  output:
+    is_citizen_or_legal_immigrant: true
+    # Qualified noncitizen → eligible
+
+- name: Case 4, undocumented not eligible.
+  period: 2025-01
+  input:
+    immigration_status: UNDOCUMENTED
+  output:
+    is_citizen_or_legal_immigrant: false
+    # Not qualified immigration status → not eligible
+
+- name: Case 5, DACA not eligible.
+  period: 2025-01
+  input:
+    immigration_status: DACA
+  output:
+    is_citizen_or_legal_immigrant: false
+    # Not qualified immigration status → not eligible
+
+- name: Case 6, asylee eligible.
+  period: 2025-01
+  input:
+    immigration_status: ASYLEE
+  output:
+    is_citizen_or_legal_immigrant: true
+    # Qualified noncitizen → eligible
+
+- name: Case 7, Cuban/Haitian entrant eligible.
+  period: 2025-01
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+  output:
+    is_citizen_or_legal_immigrant: true
+    # Qualified noncitizen → eligible

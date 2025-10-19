@@ -5,6 +5,249 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.423.0] - 2025-10-19 09:34:25
+
+### Added
+
+- CTC per-child phase-out reform now includes avoid_overlap parameter to prevent double-counting when regular and ARPA phase-outs overlap.
+
+## [1.422.0] - 2025-10-19 05:12:39
+
+### Added
+
+- Texas Child Care Services (CCS) program.
+
+## [1.421.0] - 2025-10-18 17:49:59
+
+### Added
+
+- Texas Commodity Supplemental Food Program fpg limit.
+
+## [1.420.0] - 2025-10-18 00:00:49
+
+### Added
+
+- Texas Lifeline fpg limit and supplement.
+
+## [1.419.0] - 2025-10-17 22:13:09
+
+### Added
+
+- Texas TANF.
+
+## [1.418.0] - 2025-10-17 21:50:35
+
+### Added
+
+- Texas Harris County RIDES program.
+
+## [1.417.3] - 2025-10-17 19:20:53
+
+### Fixed
+
+- Fix the in_nyc vectorization issue.
+
+## [1.417.2] - 2025-10-17 19:09:38
+
+### Fixed
+
+- Updated ACA reform to start in 2026.
+
+## [1.417.1] - 2025-10-17 17:24:13
+
+### Fixed
+
+- Fix the income_security_package reform to apply the reform conditionally on the reform parameters.
+
+## [1.417.0] - 2025-10-16 13:32:23
+
+### Added
+
+- Texas Family Planning Program
+
+## [1.416.0] - 2025-10-15 15:31:19
+
+### Added
+
+- Adjust the ctc_value as part of the minimum refundable CTC reform.
+
+## [1.415.0] - 2025-10-15 15:30:29
+
+### Added
+
+- NYC formula.
+
+## [1.414.0] - 2025-10-15 14:45:38
+
+### Added
+
+- Rep. Rashida Tlaib Income Security Package.
+
+## [1.413.3] - 2025-10-14 02:23:12
+
+### Fixed
+
+- Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+
+## [1.413.2] - 2025-10-14 02:16:57
+
+### Fixed
+
+- Adjust the Louisiana non refundable CDCC to base it on actual and not potential credit amounts.
+
+## [1.413.1] - 2025-10-14 02:06:24
+
+### Fixed
+
+- Adjust the PA tax forgiveness rate to use is_child_dependent.
+- Remove the name metadata tag from the PA parameter system.
+
+## [1.413.0] - 2025-10-09 22:40:48
+
+### Added
+
+- FY 2026 SMI values.
+
+## [1.412.0] - 2025-10-09 22:32:59
+
+### Added
+
+- Federal poverty guidelines for 2015 and 2016 to support WIC calculations back to 2015.
+
+## [1.411.0] - 2025-10-09 16:59:51
+
+### Added
+
+- ACA PTC additional bracket reform allowing custom contribution rate schedules by income level
+- ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+
+## [1.410.0] - 2025-10-06 14:13:11
+
+### Added
+
+- Massachusetts Child Care Financial Assistance (CCFA).
+
+## [1.409.0] - 2025-10-05 21:01:54
+
+### Added
+
+- New benchmark_premium_uprating parameter based on KFF historical SLCSP data (2014-2025)
+
+### Changed
+
+- Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth rate of 4.3%
+- Replace CRS references with IRS Revenue Procedures in ACA premium tax credit parameters
+- Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+
+## [1.408.1] - 2025-10-04 04:24:45
+
+### Fixed
+
+- Vectorization of the CTC refundable maximum reform.
+
+## [1.408.0] - 2025-10-03 08:08:20
+
+### Added
+
+- Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+
+## [1.407.4] - 2025-10-02 21:05:58
+
+### Added
+
+- CTC reform integration tests.
+
+### Fixed
+
+- Typo in the ctc per child phase-in reform and
+- Minimum refundable CTC reform logic.
+
+## [1.407.3] - 2025-10-01 16:40:26
+
+### Fixed
+
+- Include partnership/S-corp income and farm income in Alabama gross income.
+
+## [1.407.2] - 2025-09-30 19:59:15
+
+### Fixed
+
+- Apply the 5 year look back to the CTC reforms.
+
+## [1.407.1] - 2025-09-30 19:58:04
+
+### Added
+
+- NY CTC 2027 bug fix.
+
+## [1.407.0] - 2025-09-27 17:53:20
+
+### Added
+
+- CTC per child phase-in reform.
+- CTC minimum refundable amount reform.
+- CTC per child phase-out reform.
+
+## [1.406.0] - 2025-09-26 15:55:30
+
+### Added
+
+- School meal subsidies 2024 and 2025 parameter updates.
+
+## [1.405.0] - 2025-09-25 20:33:35
+
+### Fixed
+
+- Adjust the `state_agi` variable to reflect states that adopt federal AGI.
+
+## [1.404.1] - 2025-09-25 20:18:49
+
+### Fixed
+
+- Improved test batching to avoid memory issues and reduce test duplication.
+- Split baseline tests into separate batches for household and contrib folders.
+
+## [1.404.0] - 2025-09-25 08:20:22
+
+### Added
+
+- Texas Dallas Area Rapid Transit (DART) reduced fare program.
+
+### Fixed
+
+- Don't publish to PyPI on push without passing tests.
+
+## [1.403.2] - 2025-09-24 15:23:57
+
+### Fixed
+
+- Montana married filing jointly subtractions allocation issue.
+- Rename mt_agi to mt_agi_indiv.
+
+## [1.403.1] - 2025-09-24 00:54:25
+
+### Fixed
+
+- Increase the tolerance for itemization comparison.
+
+## [1.403.0] - 2025-09-23 22:51:10
+
+### Added
+
+- Update SNAP parameters for FY 2026 Cost-of-Living Adjustments.
+
+## [1.402.3] - 2025-09-23 22:49:31
+
+### Fixed
+
+- Adjust the Oklahoma child care/ child tax credit to use the actual CTC value, not the potential.
+
+## [1.402.2] - 2025-09-23 22:47:11
+
+### Fixed
+
+- Reform tests related to social security taxation.
+
 ## [1.402.1] - 2025-09-22 21:29:46
 
 ### Fixed
@@ -13025,6 +13268,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.422.0...1.423.0
+[1.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.421.0...1.422.0
+[1.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.420.0...1.421.0
+[1.420.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.419.0...1.420.0
+[1.419.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.418.0...1.419.0
+[1.418.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.3...1.418.0
+[1.417.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.2...1.417.3
+[1.417.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.1...1.417.2
+[1.417.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.417.0...1.417.1
+[1.417.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.416.0...1.417.0
+[1.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.415.0...1.416.0
+[1.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.414.0...1.415.0
+[1.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.3...1.414.0
+[1.413.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.2...1.413.3
+[1.413.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.1...1.413.2
+[1.413.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.413.0...1.413.1
+[1.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.412.0...1.413.0
+[1.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.411.0...1.412.0
+[1.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.410.0...1.411.0
+[1.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.409.0...1.410.0
+[1.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.1...1.409.0
+[1.408.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.408.0...1.408.1
+[1.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.4...1.408.0
+[1.407.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.3...1.407.4
+[1.407.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.2...1.407.3
+[1.407.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.1...1.407.2
+[1.407.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.407.0...1.407.1
+[1.407.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.406.0...1.407.0
+[1.406.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.405.0...1.406.0
+[1.405.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.1...1.405.0
+[1.404.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.404.0...1.404.1
+[1.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.2...1.404.0
+[1.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.1...1.403.2
+[1.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.403.0...1.403.1
+[1.403.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.3...1.403.0
+[1.402.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.2...1.402.3
+[1.402.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.1...1.402.2
 [1.402.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.402.0...1.402.1
 [1.402.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.401.0...1.402.0
 [1.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.400.2...1.401.0

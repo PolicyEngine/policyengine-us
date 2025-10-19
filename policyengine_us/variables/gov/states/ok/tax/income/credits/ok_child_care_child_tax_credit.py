@@ -23,7 +23,7 @@ class ok_child_care_child_tax_credit(Variable):
         us_cdcc = tax_unit("cdcc_potential", period)
         ok_cdcc = us_cdcc * p.child.cdcc_fraction
         # determine OK ctc amount
-        us_ctc = tax_unit("ctc", period)
+        us_ctc = tax_unit("ctc_value", period)
         ok_ctc = us_ctc * p.child.ctc_fraction
         # determine prorated fraction
         ok_agi = tax_unit("ok_agi", period)

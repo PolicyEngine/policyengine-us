@@ -1,0 +1,206 @@
+- name: Person receiving SNAP benefits is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person receiving Medicaid is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        is_disabled: false
+        medicaid: 1
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Child receiving CHIP is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      child:
+        age: 10
+        chip: 1
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person receiving WIC is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      mother:
+        age: 28
+        wic: 100
+    households:
+      household:
+        members: [mother]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person receiving TANF is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 250
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Medicare-eligible person is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      senior:
+        age: 67
+        is_disabled: false
+    households:
+      household:
+        members: [senior]
+        state_code: TX
+  output:
+    # Age 67 makes person Medicare eligible
+    is_medicare_eligible: true
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Disabled person receiving SSDI long enough for Medicare is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        social_security_disability: 12_000
+        months_receiving_social_security_disability: 24  # 24 months required for Medicare
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Disability with 24+ months of SSDI makes person Medicare eligible
+    is_medicare_eligible: true
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person with no qualifying programs is not eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 75_000
+        is_disabled: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: false
+
+- name: Person with multiple qualifying programs is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        medicaid: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 150
+        tanf: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Family with mixed eligibility - only program recipients are eligible
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 20_000
+      parent2:
+        age: 33
+        employment_income: 35_000
+      child1:
+        age: 8
+        chip: 1  # Child receives CHIP
+      child2:
+        age: 12
+        chip: 1  # Child receives CHIP
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        snap: 400  # Family receives SNAP
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    # All family members get SNAP, so all are eligible
+    tx_dart_reduced_fare_program_eligible: [true, true, true, true]
+
+- name: Young professional with no assistance programs is not eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 55_000
+        is_disabled: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: false
+
+- name: Person outside Texas is not eligible regardless of programs
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200
+    households:
+      household:
+        members: [person1]
+        state_code: CA  # California, not Texas
+  output:
+    tx_dart_reduced_fare_program_eligible: false

@@ -41,7 +41,7 @@
 
 - name: North Carolina 2025, yearly integration test
   period: 2025
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.3
   input:
     people:   
       person1:
@@ -61,7 +61,7 @@
 
 - name: Self-employment income deduction integration test
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.3
   input:
     people:   
       person1:
@@ -86,11 +86,11 @@
     snap_earned_income: 5_000
     snap_gross_income: 5_000
     snap_net_income: 5_000
-    snap: 2_028
+    snap: 2_024.40
 
 - name: Counterfactual test, self-employment income deduction allowed
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.3
   input:
     gov.usda.snap.income.deductions.allowed: [snap_standard_deduction, snap_earned_income_deduction, snap_dependent_care_deduction, snap_child_support_deduction, snap_excess_medical_expense_deduction, snap_excess_shelter_expense_deduction, snap_self_employment_expense_deduction]
     people:   
@@ -115,4 +115,4 @@
     snap_deductions: 5_000
     # And then again subtracted as a deduction from gross income.
     snap_net_income: 0
-    snap: 3_525
+    snap: 3_522

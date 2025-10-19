@@ -1,0 +1,39 @@
+description: Massachusetts uses these income ratio increments by household size to set fee levels under the Child Care Financial Assistance program.
+metadata:
+  period: month
+  unit: /1
+  label: Massachusetts CCFA income ratio increments by household size
+  breakdown:
+    - range(1,13)
+  reference:
+    - title: EEC Financial Assistance Parent Fee Table FY2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025
+# Can't find official documentation for FY2024, assuming the same as FY2025
+# Increment value for each household size
+# Each fee level adds this increment to the base (1.0 = 100% FPG)
+0:
+  2023-10-01: 1  # Not used (min family size is 2)
+1:
+  2023-10-01: 1  # Not used (min family size is 2)
+2:
+  2023-10-01: 0.1280
+3:
+  2023-10-01: 0.1245
+4:
+  2023-10-01: 0.1219
+5:
+  2023-10-01: 0.1204
+6:
+  2023-10-01: 0.1192
+7:
+  2023-10-01: 0.1044
+8:
+  2023-10-01: 0.0929
+9:
+  2023-10-01: 0.0834
+10:
+  2023-10-01: 0.0756  
+11:
+  2023-10-01: 0.0690
+12:
+  2023-10-01: 0.0632
