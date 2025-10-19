@@ -14,6 +14,7 @@ EXCLUSIONS = [
     # Other uprating indices and factors
     "gov/hhs/uprating.yaml",  # HHS uprating factors
     "gov/ssa/nawi.yaml",  # National Average Wage Index (used for SS uprating)
+    "gov/ssa/uprating.yaml", # SSA uprating factors
     # ACA benchmark premium uprating - this is already an uprating file
     "gov/aca/benchmark_premium_uprating.yaml",
     # Calibration data - not policy parameters
@@ -24,6 +25,15 @@ EXCLUSIONS = [
     "gov/states/nj/tax/income/credits/eitc/match.yaml",
     # Georgia retirement exclusion - updated mechanically each year
     "gov/states/ga/tax/income/agi/exclusions/retirement/cap/younger.yaml",
+    # TANF is not adjusted with Inflation
+    "gov/states/tx/tanf/",
+    "gov/states/dc/tanf/",
+    # Takeup is not adjusted with Inflation
+    "gov/usda/snap/uprating.yaml",
+    # Massachusetts SSP payment amount - updating schedule is not tied to CPI
+    "gov/states/ma/dta/ssp/",
+    # Fair Market Rent - adjustments reflect local rent inflation, not CPI
+    "gov/states/vt/tax/income/credits/renter/",
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
