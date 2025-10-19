@@ -33,8 +33,7 @@ def create_ctc_per_child_phase_out() -> Reform:
 
             # Option to avoid overlap between regular and ARPA phase-outs
             p_contrib = parameters(period).gov.contrib.ctc.per_child_phase_out
-            avoid_overlap = p_contrib.avoid_overlap
-            if avoid_overlap:
+            if p_contrib.avoid_overlap:
                 # Subtract ARPA phase-out to prevent double-counting
                 arpa_reduction = tax_unit(
                     "ctc_arpa_uncapped_phase_out", period
