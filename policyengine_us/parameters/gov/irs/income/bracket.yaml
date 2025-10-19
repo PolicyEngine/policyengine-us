@@ -77,7 +77,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -94,7 +94,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -111,7 +111,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -128,7 +128,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -145,7 +145,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   2:
     SINGLE:
@@ -163,7 +163,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -180,7 +180,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -197,7 +197,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -214,7 +214,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -231,7 +231,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   3:
     SINGLE:
@@ -249,7 +249,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -266,7 +266,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -283,7 +283,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -300,7 +300,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -317,7 +317,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   4:
     SINGLE:
@@ -335,7 +335,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -352,7 +352,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -379,7 +379,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -396,7 +396,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -413,7 +413,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   5:
     SINGLE:
@@ -431,7 +431,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -448,7 +448,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -475,7 +475,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -502,7 +502,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -519,7 +519,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   6:
     SINGLE:
@@ -537,7 +537,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     JOINT:
       values:
@@ -554,7 +554,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SEPARATE:
       values:
@@ -571,7 +571,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
@@ -588,7 +588,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
     SURVIVING_SPOUSE:
       values:
@@ -605,7 +605,7 @@ thresholds:
         uprating:
           parameter: gov.irs.uprating
           rounding:
-            type: nearest
+            type: downwards
             interval: 50
   7:
     SINGLE:
