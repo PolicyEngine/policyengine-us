@@ -11275,3 +11275,9 @@
     added:
     - Texas Child Care Services (CCS) program.
   date: 2025-10-19 05:12:39
+- bump: minor
+  changes:
+    added:
+    - CTC per-child phase-out reform now includes avoid_overlap parameter to prevent
+      double-counting when regular and ARPA phase-outs overlap.
+  date: 2025-10-19 09:34:25
