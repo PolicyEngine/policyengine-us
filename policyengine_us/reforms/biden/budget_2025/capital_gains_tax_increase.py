@@ -93,10 +93,8 @@ def create_capital_gains_tax_increase() -> Reform:
 
             main_cg_tax = (
                 cg_in_first_bracket_below_top_bracket * cg.rates["1"]
-                + cg_in_second_bracket_below_top_bracket
-                * cg.rates["2"]
-                + cg_in_third_bracket_below_top_bracket
-                * cg.rates["3"]
+                + cg_in_second_bracket_below_top_bracket * cg.rates["2"]
+                + cg_in_third_bracket_below_top_bracket * cg.rates["3"]
                 + new_cg_tax
             )
 
