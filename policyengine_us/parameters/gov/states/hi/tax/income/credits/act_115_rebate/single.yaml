@@ -1,0 +1,20 @@
+description: Hawaii provides this ACT 115 rebate amount for single filers, based on federal adjusted gross income.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  type: single_amount
+  label: Hawaii ACT 115 Rebate single amount
+  reference:
+    - title: Hawaii Senate Bill 514, 2022, Section 1 (1)
+      href: https://www.capitol.hawaii.gov/sessions/session2022/bills/SB514_CD2_.pdf
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 300
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 100
