@@ -27,13 +27,20 @@ EXCLUSIONS = [
     "gov/states/ga/tax/income/agi/exclusions/retirement/cap/younger.yaml",
     # TANF is not adjusted with Inflation
     "gov/states/tx/tanf/",
-    "gov/states/dc/tanf/",
+    "gov/states/dc/dhs/tanf/",
     # Takeup is not adjusted with Inflation
     "gov/usda/snap/uprating.yaml",
+    "gov/usda/wic/takeup.yaml",
     # Massachusetts SSP payment amount - updating schedule is not tied to CPI
     "gov/states/ma/dta/ssp/",
     # Fair Market Rent - adjustments reflect local rent inflation, not CPI
     "gov/states/vt/tax/income/credits/renter/",
+    # Illinois AABD - not tied to CPI
+    "gov/states/il/dhs/aabd/",
+    # Colorado SSA programs are not adjusted with Inflation
+    "gov/states/co/ssa/",
+    # Age thresholds are not adjusted with Inflation
+    "gov/states/ca/foster_care/age_threshold.yaml",
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
