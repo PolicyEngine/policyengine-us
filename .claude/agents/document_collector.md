@@ -236,14 +236,21 @@ After you commit documentation:
 
 ## Special Rules for TANF Programs
 
-### CRITICAL: State-Specific Income Definitions
+### Federal TANF Definitions: What Exists vs What Doesn't
 
-**IMPORTANT:** There is NO federal definition of earned/unearned income for TANF. Each state defines income sources in their own legal code and policy manuals.
+**Demographic Eligibility - HAS federal definition:**
+- Variable `is_demographic_tanf_eligible` checks for eligible child or pregnant woman
+- Federal age thresholds: typically age 18 (age 19 for full-time students)
+- **Use this when state's age thresholds match federal definition**
 
-**Federal baseline for simplified implementations:**
-- Variables `tanf_gross_earned_income` and `tanf_gross_unearned_income` exist at `/policyengine_us/variables/gov/hhs/tanf/cash/income/`
-- These are **baseline defaults for simplified state implementations**, NOT federal requirements
+**Income Sources - NO federal definition:**
+- Variables `tanf_gross_earned_income` and `tanf_gross_unearned_income` exist but are **baseline defaults for simplified implementations only**
+- Each state defines income sources in their own legal code
 - States may have completely different income definitions
+
+**Immigration Eligibility - HAS federal baseline:**
+- Variable `is_citizen_or_legal_immigrant` checks citizenship and legal immigration status
+- Most states follow federal rules for immigration eligibility
 
 **When documenting state TANF programs:**
 1. **ALWAYS research the state's own income definitions** from:
@@ -258,6 +265,17 @@ After you commit documentation:
 
 3. **Include in working_references.md:**
 ```markdown
+## Demographic Eligibility
+
+**Age Thresholds:**
+- Minor child age limit: [age from state code]
+- Full-time student age limit: [age from state code]
+- Pregnant women: [eligible/not eligible]
+
+**Implementation approach:**
+- [ ] Use federal demographic eligibility (age 18/19 matches federal)
+- [ ] Create state-specific age thresholds (state has different ages)
+
 ## Income Sources
 
 **State Definition:** [State] defines earned income as [list from state code]

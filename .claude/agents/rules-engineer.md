@@ -259,8 +259,49 @@ tanf/
 
 **No assistance_unit folder** - Assume everyone in SPM unit is part of TANF unit (no exclusions)
 
-**Person-level demographic check:**
+### Demographic Eligibility: Federal vs State-Specific
+
+**IMPORTANT:** There IS a federal definition for TANF demographic eligibility - eligible child or pregnant woman.
+
+**Federal demographic variable available:**
+- `is_demographic_tanf_eligible` - Checks if person is eligible child or pregnant woman
+- Located at: `/policyengine_us/variables/gov/hhs/tanf/`
+- **Use this when state's age definition matches federal definition**
+
+#### Approach 1: Use Federal Demographic Eligibility (Simplified)
+
+Use this when state's age thresholds match federal definition:
+
 ```python
+# ✅ SIMPLIFIED - Use federal demographic eligibility
+class [state]_tanf_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = MONTH
+    label = "[State] TANF eligibility"
+
+    def formula(spm_unit, period, parameters):
+        # Use federal demographic eligibility variable
+        has_eligible_person = spm_unit.any(
+            spm_unit.members("is_demographic_tanf_eligible", period)
+        )
+        income_eligible = spm_unit("[state]_tanf_income_eligible", period)
+        resources_eligible = spm_unit("[state]_tanf_resources_eligible", period)
+
+        return has_eligible_person & income_eligible & resources_eligible
+```
+
+**When to use federal demographic eligibility:**
+- State's age thresholds match federal (typically age 18, age 19 for students)
+- Documentation says "use federal demographic eligibility"
+- Building simplified implementation
+
+#### Approach 2: State-Specific Demographic Eligibility
+
+Use this when state has different age thresholds:
+
+```python
+# ✅ STATE-SPECIFIC - Custom age thresholds
 class [state]_tanf_demographic_eligible_person(Variable):
     value_type = bool
     entity = Person
@@ -280,10 +321,7 @@ class [state]_tanf_demographic_eligible_person(Variable):
         )
 
         return (age < age_limit) | is_pregnant
-```
 
-**SPMUnit-level eligibility:**
-```python
 class [state]_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
@@ -291,7 +329,7 @@ class [state]_tanf_eligible(Variable):
     label = "[State] TANF eligibility"
 
     def formula(spm_unit, period, parameters):
-        # At least one demographically eligible person
+        # Use state-specific demographic eligibility
         has_eligible_person = spm_unit.any(
             spm_unit.members("[state]_tanf_demographic_eligible_person", period)
         )
@@ -300,6 +338,11 @@ class [state]_tanf_eligible(Variable):
 
         return has_eligible_person & income_eligible & resources_eligible
 ```
+
+**When to use state-specific demographic eligibility:**
+- State has different age thresholds (e.g., age 17 instead of 18)
+- State has different student age limits
+- Documentation explicitly lists state-specific age thresholds
 
 ### Income Calculation Pipeline (Person → SPMUnit)
 
