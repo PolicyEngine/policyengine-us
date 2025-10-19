@@ -70,14 +70,10 @@ def test_parameters_with_annual_updates_have_uprating_metadata():
         errors.append(f"\n  • {rel_path}")
         errors.append(f"    {years_str}{growth_str}")
         if len(file_findings) > 1:
-            errors.append(
-                f"    {len(file_findings)} parameters in this file"
-            )
+            errors.append(f"    {len(file_findings)} parameters in this file")
 
     if len(findings_by_file) > 10:
-        errors.append(
-            f"\n  ... and {len(findings_by_file) - 10} more files"
-        )
+        errors.append(f"\n  ... and {len(findings_by_file) - 10} more files")
 
     errors.append(
         "\n\nTo fix: Add 'uprating:' metadata to these parameters or exclude them "

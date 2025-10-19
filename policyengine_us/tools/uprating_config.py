@@ -10,25 +10,22 @@ parameters that should be uprated.
 # Add file paths or directory patterns here
 EXCLUSIONS = [
     # CPI indices - these ARE the uprating sources, not parameters to uprate
-    'gov/bls/cpi',
-
+    "gov/bls/cpi",
     # Other uprating indices and factors
-    'gov/hhs/uprating.yaml',  # HHS uprating factors
-    'gov/ssa/nawi.yaml',      # National Average Wage Index (used for SS uprating)
-
+    "gov/hhs/uprating.yaml",  # HHS uprating factors
+    "gov/ssa/nawi.yaml",  # National Average Wage Index (used for SS uprating)
     # ACA benchmark premium uprating - this is already an uprating file
-    'gov/aca/benchmark_premium_uprating.yaml',
-
+    "gov/aca/benchmark_premium_uprating.yaml",
     # Calibration data - not policy parameters
-    'calibration/',
+    "calibration/",
     # Contributed reforms - not policy parameters
-    'contrib/',
+    "contrib/",
     # New Jersey EITC match - updated mechanically each year
-    'gov/states/nj/tax/income/credits/eitc/match.yaml',
+    "gov/states/nj/tax/income/credits/eitc/match.yaml",
     # Georgia retirement exclusion - updated mechanically each year
-    'gov/states/ga/tax/income/agi/exclusions/retirement/cap/younger.yaml',
+    "gov/states/ga/tax/income/agi/exclusions/retirement/cap/younger.yaml",
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
-MIN_GROWTH_RATE = 0.0   # 0% - values should not decrease
+MIN_GROWTH_RATE = 0.0  # 0% - values should not decrease
 MAX_GROWTH_RATE = 0.10  # 10% - filter out large policy changes
