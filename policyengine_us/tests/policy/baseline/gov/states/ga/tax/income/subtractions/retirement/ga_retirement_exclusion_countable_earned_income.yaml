@@ -1,0 +1,17 @@
+- name: Combined income is capped
+  period: 2024
+  input:
+    state_code: GA
+    earned_income: 4_000
+    partnership_s_corp_income: 3_000
+  output:
+    ga_retirement_exclusion_countable_earned_income: 5_000
+
+- name: Income below cap
+  period: 2024
+  input:
+    state_code: GA
+    earned_income: 4_000
+    partnership_s_corp_income: 500
+  output:
+    ga_retirement_exclusion_countable_earned_income: 4_500
