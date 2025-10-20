@@ -32,3 +32,40 @@
   output:  # expected results from patched TAXSIM35 2023-08-31 version
     co_taxable_income: 38230.00
     co_income_tax: 1608.35
+
+- name: 0-CO.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        short_term_capital_gains: -2020.4384
+        taxable_interest_income: 0.4384
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 8
+  output:
+    co_sales_tax_refund: 177
+    co_income_tax: -977

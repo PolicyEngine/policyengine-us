@@ -1,0 +1,26 @@
+- name: 18 year olds are not eligible
+  period: 2024
+  input:
+    age: 18
+    meets_eitc_identification_requirements: true
+    state_code: MN
+  output:
+    mn_child_and_working_families_credits_ctc_eligible_child: false
+
+- name: 17 year olds are eligible
+  period: 2024
+  input:
+    age: 17
+    meets_eitc_identification_requirements: true
+    state_code: MN
+  output:
+    mn_child_and_working_families_credits_ctc_eligible_child: true
+
+- name: Child does not meet EITC identification requirements
+  period: 2024
+  input:
+    age: 17
+    meets_eitc_identification_requirements: false
+    state_code: MN
+  output:
+    mn_child_and_working_families_credits_ctc_eligible_child: false
