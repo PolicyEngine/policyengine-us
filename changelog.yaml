@@ -11315,3 +11315,9 @@
     added:
     - Rhode Island Child Tax Credit reforms.
   date: 2025-10-20 21:00:28
+- bump: patch
+  changes:
+    fixed:
+    - Fix us itemization integration tests which were failing due to a new Illinois
+      income tax rebate.
+  date: 2025-10-20 23:22:57
