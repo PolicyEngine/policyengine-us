@@ -19,13 +19,11 @@ def create_ri_exemption_reform() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
 
             # Apply age limit if in effect
-            age_threshold = p.age_limit.threshold
-            age_limited_dependents = is_dependent & (age < age_threshold)
-            eligible_dependents = where(
-                p.age_limit.in_effect,
-                age_limited_dependents,
-                is_dependent,
-            )
+            if p.age_limit.in_effect:
+                age_threshold = p.age_limit.threshold
+                eligible_dependents = is_dependent & (age < age_threshold)
+            else:
+                eligible_dependents = is_dependent
 
             return tax_unit.sum(eligible_dependents)
 
@@ -55,11 +53,10 @@ def create_ri_exemption_reform() -> Reform:
             p = parameters(period).gov.contrib.states.ri.dependent_exemption
 
             filing_status = tax_unit("filing_status", period)
-            phased_out_based_on_earnings = p.phaseout.use_earnings_phaseout
             agi = tax_unit("ri_agi", period)
             earned_income = tax_unit("tax_unit_earned_income", period)
             relevant_income = where(
-                phased_out_based_on_earnings, earned_income, agi
+                p.phaseout.use_earnings_phaseout, earned_income, agi
             )
 
             threshold = p.phaseout.threshold[filing_status]

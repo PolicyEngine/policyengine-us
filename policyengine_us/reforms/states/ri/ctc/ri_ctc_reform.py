@@ -50,11 +50,10 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             filing_status = tax_unit("filing_status", period)
-            phased_out_based_on_earnings = p.phaseout.use_earnings_phaseout
             agi = tax_unit("ri_agi", period)
             earned_income = tax_unit("tax_unit_earned_income", period)
             relevant_income = where(
-                phased_out_based_on_earnings, earned_income, agi
+                p.phaseout.use_earnings_phaseout, earned_income, agi
             )
 
             threshold = p.phaseout.threshold[filing_status]
@@ -92,14 +91,13 @@ def create_ri_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ri.ctc
 
             total_credit = tax_unit("ri_total_ctc", period)
-            cap = p.refundability.cap
 
             # The refundable portion is the minimum of the cap and total credit
             # This ensures the refundable amount never exceeds the total credit
             # - If cap = 0: credit is nonrefundable
             # - If 0 < cap < total_credit: credit is partially refundable
             # - If cap >= total_credit: credit is fully refundable
-            return min_(total_credit, cap)
+            return min_(total_credit, p.refundability.cap)
 
     class ri_non_refundable_ctc(Variable):
         value_type = float
