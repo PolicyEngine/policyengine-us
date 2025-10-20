@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 1_000
+    cdcc_relevant_expenses: 1_000
     count_cdcc_eligible: 1
   output:
     sc_cdcc: 70
@@ -12,7 +12,7 @@
   period: 2021
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 4_000
+    cdcc_relevant_expenses: 4_000
     count_cdcc_eligible: 1
   output:
     sc_cdcc: 210
@@ -22,7 +22,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 7_000
+    cdcc_relevant_expenses: 7_000
     count_cdcc_eligible: 2
   output:
     sc_cdcc: 420
@@ -32,7 +32,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 7_000
+    cdcc_relevant_expenses: 7_000
     count_cdcc_eligible: 4
   output:
     sc_cdcc: 420
@@ -42,7 +42,7 @@
   period: 2021
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 18_000
+    cdcc_relevant_expenses: 18_000
     count_cdcc_eligible: 2
   output:
     sc_cdcc: 420
@@ -52,7 +52,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 0
+    cdcc_relevant_expenses: 0
     count_cdcc_eligible: 0
   output:
     sc_cdcc: 0
@@ -61,7 +61,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 4_000
+    cdcc_relevant_expenses: 4_000
     count_cdcc_eligible: 0
   output:
     sc_cdcc: 0
@@ -70,7 +70,7 @@
   period: 2020
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 9_000
+    cdcc_relevant_expenses: 9_000
     count_cdcc_eligible: 1
   output:
     sc_cdcc: 210
@@ -80,7 +80,7 @@
   period: 2022
   input:
     state_code: SC
-    tax_unit_childcare_expenses: 9_000
+    cdcc_relevant_expenses: 9_000
     count_cdcc_eligible: 1
   output:
     sc_cdcc: 210
