@@ -51,13 +51,9 @@ def create_ri_ctc() -> Reform:
 
             filing_status = tax_unit("filing_status", period)
             agi = tax_unit("ri_agi", period)
-            earned_income = tax_unit("tax_unit_earned_income", period)
-            relevant_income = where(
-                p.phaseout.use_earnings_phaseout, earned_income, agi
-            )
 
             threshold = p.phaseout.threshold[filing_status]
-            excess_income = max_(relevant_income - threshold, 0)
+            excess_income = max_(agi - threshold, 0)
             return excess_income * p.phaseout.rate
 
     class ri_total_ctc(Variable):

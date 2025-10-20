@@ -9,7 +9,6 @@
     gov.contrib.states.ri.ctc.refundability.cap: 999_999  # High cap = fully refundable, amount.yaml controls max
     gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
     gov.contrib.states.ri.ctc.phaseout.rate: 0.05
-    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: false  # Use AGI (default)
     people:
       parent:
         age: 35
@@ -38,7 +37,7 @@
     ri_refundable_credits: 2_246.32  # 2_000 (CTC) + 246.32 (EITC)
     ri_non_refundable_credits: 0
 
-- name: RI CTC - partially refundable with earnings phaseout
+- name: RI CTC - partially refundable
   absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
@@ -49,7 +48,6 @@
     gov.contrib.states.ri.ctc.refundability.cap: 1_000  # Cap < total credit = partially refundable
     gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
     gov.contrib.states.ri.ctc.phaseout.rate: 0.05
-    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: true  # Use earnings instead of AGI
     people:
       parent:
         age: 35
@@ -118,7 +116,6 @@
     gov.contrib.states.ri.ctc.refundability.cap: 999_999  # Fully refundable
     gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
     gov.contrib.states.ri.ctc.phaseout.rate: 0.05
-    gov.contrib.states.ri.ctc.phaseout.use_earnings_phaseout: false  # Use AGI
     people:
       parent:
         age: 35
