@@ -1,0 +1,71 @@
+metadata:
+  label: by position and decile
+  unit: /1
+  propagate_metadata_to_children: true
+  reference:
+    - title: "CBO Working Paper 2012-12: A Review of Recent Research on Labor Supply Elasticities"
+      href: https://www.cbo.gov/publication/43675
+    - title: "CBO Working Paper 2012-13: Review of Estimates of the Frisch Elasticity of Labor Supply"
+      href: https://www.cbo.gov/publication/43676
+    - title: "French (2005): The Effects of Health, Wealth, and Wages on Labour Supply and Retirement Behaviour"
+      href: https://academic.oup.com/restud/article-abstract/72/2/395/1558553
+primary:
+  metadata:
+    label: primary adult
+    description: The highest earner within the tax unit. Elasticity varies by earnings decile.
+  1:
+    metadata:
+      label: primary adult, 1st decile substitution elasticity
+    values:
+      2020-01-01: 0
+  2:
+    metadata:
+      label: primary adult, 2nd decile substitution elasticity
+    values:
+      2020-01-01: 0
+  3:
+    metadata:
+      label: primary adult, 3rd decile substitution elasticity
+    values:
+      2020-01-01: 0
+  4:
+    metadata:
+      label: primary adult, 4th decile substitution elasticity
+    values:
+      2020-01-01: 0
+  5:
+    metadata:
+      label: primary adult, 5th decile substiticity
+    values:
+      2020-01-01: 0
+  6:
+    metadata:
+      label: primary adult, 6th decile substitution elasticity
+    values:
+      2020-01-01: 0
+  7:
+    metadata:
+      label: primary adult, 7th decile substitution elasticity
+    values:
+      2020-01-01: 0
+  8:
+    metadata:
+      label: primary adult, 8th decile substitution elasticity
+    values:
+      2020-01-01: 0
+  9:
+    metadata:
+      label: primary adult, 9th decile substitution elasticity
+    values:
+      2020-01-01: 0
+  10:
+    metadata:
+      label: primary adult, 10th decile substitution elasticity
+    values:
+      2020-01-01: 0
+secondary:
+  metadata:
+    label: secondary adult, all deciles substitution elasticity
+    description: Any earner in the tax unit who is not the primary (highest) earner.
+  values:
+    2020-01-01: 0
