@@ -1,4 +1,4 @@
-- name: Couple with different ages (under 65 and 65+) has correct elasticities
+- name: Couple with different ages (under 65 and 65+) with multiplier approach
   period: 2023
   input:
     people:
@@ -14,20 +14,19 @@
       tax_unit:
         members: [person1, person2]
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.4: 0.20
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.secondary: 0.30
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.6: 0.40
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.secondary: 0.35
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.30
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.05
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.08
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
     substitution_elasticity:
-      - 0.40  # person1: 67 years old, primary earner (60k > 40k), decile 6 (50k-61k), uses 65+ elasticity
-      - 0  # person2: 55 years old, secondary earner, uses under_65 elasticity but gets 0 since not primary
+      - 0.40  # person1: 67 years old, primary earner (60k), decile 6 (50k-61k), base 0.20 × multiplier 2.0 = 0.40
+      - 0  # person2: 55 years old, secondary earner, gets 0 since not primary
     income_elasticity:
-      - -0.08  # person1: 67 years old, uses 65+ elasticity
-      - -0.05  # person2: 55 years old, uses under_65 elasticity
+      - -0.08  # person1: 67 years old, base -0.04 × multiplier 2.0 = -0.08
+      - -0.04  # person2: 55 years old, base -0.04 (no multiplier)
 
 - name: Two older workers (both 65+) with different earnings
   period: 2023
@@ -45,17 +44,19 @@
       tax_unit:
         members: [person1, person2]
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.7: 0.35
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.secondary: 0.42
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.7: 0.18
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.30
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.09
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
   output:
     substitution_elasticity:
-      - 0.35  # person1: 70 years old, primary earner (80k), decile 7 (76k-97k), uses 65+ primary elasticity
-      - 0  # person2: 68 years old, secondary earner, would use 65+ secondary but gets 0 since not primary
+      - 0.36  # person1: 70 years old, primary earner (80k), decile 7 (76k-97k), base 0.18 × 2.0 = 0.36
+      - 0  # person2: 68 years old, secondary earner, gets 0 since not primary
     income_elasticity:
-      - -0.09  # person1: 70 years old, uses 65+ elasticity
-      - -0.09  # person2: 68 years old, uses 65+ elasticity
+      - -0.09  # person1: 70 years old, base -0.04 × 2.25 = -0.09
+      - -0.09  # person2: 68 years old, base -0.04 × 2.25 = -0.09
 
 - name: Young couple (both under 65) with different earnings
   period: 2023
@@ -73,17 +74,19 @@
       tax_unit:
         members: [person1, person2]
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.6: 0.18
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.secondary: 0.28
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.18
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.28
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
     substitution_elasticity:
-      - 0.18  # person1: 45 years old, primary earner (70k), decile 6 (61k-76k), uses under_65 primary elasticity
-      - 0  # person2: 42 years old, secondary earner, would use under_65 secondary but gets 0 since not primary
+      - 0.18  # person1: 45 years old, primary earner (70k), decile 6 (61k-76k), base 0.18 (no multiplier)
+      - 0  # person2: 42 years old, secondary earner, gets 0 since not primary
     income_elasticity:
-      - -0.04  # person1: 45 years old, uses under_65 elasticity
-      - -0.04  # person2: 42 years old, uses under_65 elasticity
+      - -0.04  # person1: 45 years old, base -0.04 (no multiplier)
+      - -0.04  # person2: 42 years old, base -0.04 (no multiplier)
 
 - name: Edge case - person exactly 65 years old with self-employment income
   period: 2023
@@ -92,14 +95,14 @@
     employment_income_before_lsr: 30_000
     self_employment_income_before_lsr: 10_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.under_65.primary.4: 0.20
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.4: 0.38
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.4: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 1.9
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.05
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.08
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
-    substitution_elasticity: 0.38  # Age 65 uses 65_and_over, total earnings 40k = decile 4 (39k-50k)
-    income_elasticity: -0.08  # Age 65 uses 65_and_over
+    substitution_elasticity: 0.38  # Age 65 applies multiplier, total earnings 40k = decile 4 (39k-50k), 0.20 × 1.9 = 0.38
+    income_elasticity: -0.08  # Age 65 applies multiplier, -0.04 × 2.0 = -0.08
 
 - name: Person with negative self-employment income but positive net earnings
   period: 2023
@@ -108,12 +111,14 @@
     employment_income_before_lsr: 55_000
     self_employment_income_before_lsr: -8_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.5: 0.42
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.21
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.09
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
   output:
-    substitution_elasticity: 0.42  # Net positive earnings (47k after max_(47k, 0)) = decile 5 (39k-50k)
-    income_elasticity: -0.09
+    substitution_elasticity: 0.42  # Net positive earnings (47k after max_(47k, 0)) = decile 5 (39k-50k), 0.21 × 2.0 = 0.42
+    income_elasticity: -0.09  # -0.04 × 2.25 = -0.09
 
 - name: Person with negative net earnings has zero substitution elasticity
   period: 2023
@@ -122,14 +127,16 @@
     employment_income_before_lsr: 25_000
     self_employment_income_before_lsr: -30_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_age_position_and_decile.65_and_over.primary.1: 0.50
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.25
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.09
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
   output:
     substitution_elasticity: 0  # Negative net earnings (-5k) treated as 0, resulting in zero elasticity
-    income_elasticity: -0.09  # Income elasticity still applies
+    income_elasticity: -0.09  # Income elasticity still applies: -0.04 × 2.25 = -0.09
 
-- name: Global override still works with age heterogeneity structure
+- name: Global override still works with multiplier approach
   period: 2023
   input:
     people:
@@ -153,3 +160,35 @@
     income_elasticity:
       - -0.06  # Global override applies regardless of age
       - -0.06  # Global override applies regardless of age
+
+- name: Testing different multiplier values (conservative 1.5x)
+  period: 2023
+  input:
+    age: 70
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 1.5
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 1.5
+  output:
+    substitution_elasticity: 0.30  # 0.20 × 1.5 = 0.30
+    income_elasticity: -0.06  # -0.04 × 1.5 = -0.06
+
+- name: Testing different multiplier values (aggressive 3.0x from French 2005)
+  period: 2023
+  input:
+    age: 70
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 3.0
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 3.0
+  output:
+    substitution_elasticity: 0.60  # 0.20 × 3.0 = 0.60
+    income_elasticity: -0.12  # -0.04 × 3.0 = -0.12

@@ -10,6 +10,7 @@ class substitution_elasticity(Variable):
     reference = [
         "https://www.cbo.gov/publication/43675",
         "https://www.cbo.gov/publication/43676",
+        "https://academic.oup.com/restud/article-abstract/72/2/395/1558553",
     ]
 
     def formula(person, period, parameters):
@@ -17,6 +18,7 @@ class substitution_elasticity(Variable):
             period
         ).gov.simulation.labor_supply_responses.elasticities.substitution
 
+        # Check for global override
         if p.all != 0:
             return p.all
 
@@ -34,6 +36,7 @@ class substitution_elasticity(Variable):
             1_726e3,
         ]
 
+        # Calculate earnings
         raw_earnings = add(
             person,
             period,
@@ -42,76 +45,53 @@ class substitution_elasticity(Variable):
                 "self_employment_income_before_lsr",
             ],
         )
+        # Use max_ to prevent negative earnings from causing issues
         earnings = max_(raw_earnings, 0)
         earnings_decile = (
             np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
         )
 
+        # Determine if primary earner (highest earner in tax unit)
         tax_unit = person.tax_unit
-        # Primary earner == highest earner in tax unit
         max_earnings_in_unit = tax_unit.max(earnings)
         is_primary_earner = earnings == max_earnings_in_unit
 
-        # Get age for age-based elasticities
-        age = person("age", period.this_year)
-        is_65_or_over = age >= 65
-
-        elasticities = np.zeros_like(earnings)
+        # Get base elasticity from position and decile
+        base_elasticity = np.zeros_like(earnings, dtype=float)
 
         # Handle zero earnings first
         zero_earnings = earnings == 0
-        elasticities[zero_earnings] = 0
+        base_elasticity[zero_earnings] = 0
 
-        # For non-zero earnings, assign elasticities based on age
+        # For non-zero earnings, assign base elasticities
         non_zero_earnings = earnings > 0
 
         if np.any(non_zero_earnings):
-            # Get age-specific parameter groups
-            p_under_65 = p.by_age_position_and_decile.under_65
-            p_65_and_over = p.by_age_position_and_decile["65_and_over"]
-
-            # Assign elasticities for under 65 group
-            mask_under_65 = non_zero_earnings & ~is_65_or_over
-            if np.any(mask_under_65):
-                # Primary earners under 65
-                decile_elasticities_under_65 = [
-                    p_under_65.primary._children[str(i + 1)]
-                    for i in range(10)
-                ]
-                for i in range(10):
-                    mask = (
-                        mask_under_65
-                        & (earnings_decile == i + 1)
-                        & is_primary_earner
-                    )
-                    elasticities[mask] = decile_elasticities_under_65[i]
-
-                # Secondary earners under 65
-                secondary_mask_under_65 = mask_under_65 & ~is_primary_earner
-                elasticities[secondary_mask_under_65] = p_under_65.secondary
-
-            # Assign elasticities for 65 and over group
-            mask_65_and_over = non_zero_earnings & is_65_or_over
-            if np.any(mask_65_and_over):
-                # Primary earners 65 and over
-                decile_elasticities_65_and_over = [
-                    p_65_and_over.primary._children[str(i + 1)]
-                    for i in range(10)
-                ]
-                for i in range(10):
-                    mask = (
-                        mask_65_and_over
-                        & (earnings_decile == i + 1)
-                        & is_primary_earner
-                    )
-                    elasticities[mask] = decile_elasticities_65_and_over[i]
-
-                # Secondary earners 65 and over
-                secondary_mask_65_and_over = (
-                    mask_65_and_over & ~is_primary_earner
+            # Primary earners by decile
+            decile_elasticities = [
+                p.by_position_and_decile.primary._children[str(i + 1)]
+                for i in range(10)
+            ]
+            for i in range(10):
+                mask = (
+                    non_zero_earnings
+                    & (earnings_decile == i + 1)
+                    & is_primary_earner
                 )
-                elasticities[secondary_mask_65_and_over] = (
-                    p_65_and_over.secondary
-                )
+                base_elasticity[mask] = decile_elasticities[i]
 
-        return elasticities
+            # Secondary earners
+            secondary_mask = non_zero_earnings & ~is_primary_earner
+            base_elasticity[secondary_mask] = (
+                p.by_position_and_decile.secondary
+            )
+
+        # Apply age multiplier for individuals 65 and over
+        age = person("age", period.this_year)
+        age_multiplier = where(
+            age >= 65,
+            p.age_multiplier_65_and_over,
+            1.0,  # No multiplier for under 65
+        )
+
+        return base_elasticity * age_multiplier

@@ -5,9 +5,9 @@ all:
   metadata:
     unit: /1
     label: substitution elasticity of labor supply
-by_age_position_and_decile:
+by_position_and_decile:
   metadata:
-    label: by age, position and decile
+    label: by position and decile
     unit: /1
     propagate_metadata_to_children: true
     reference:
@@ -15,125 +15,77 @@ by_age_position_and_decile:
         href: https://www.cbo.gov/publication/43675
       - title: "CBO Working Paper 2012-13: Review of Estimates of the Frisch Elasticity of Labor Supply"
         href: https://www.cbo.gov/publication/43676
-  under_65:
+      - title: "French (2005): The Effects of Health, Wealth, and Wages on Labour Supply and Retirement Behaviour"
+        href: https://academic.oup.com/restud/article-abstract/72/2/395/1558553
+  primary:
     metadata:
-      label: under age 65
-    primary:
+      label: primary adult
+      description: The highest earner within the tax unit. Elasticity varies by earnings decile.
+    1:
       metadata:
-        label: primary adult under 65
-      1:
-        metadata:
-          label: primary adult under 65, 1st decile substitution elasticity
-        values:
-          2020-01-01: 0
-      2:
-        metadata:
-          label: primary adult under 65, 2nd decile substitution elasticity
-        values:
-          2020-01-01: 0
-      3:
-        metadata:
-          label: primary adult under 65, 3rd decile substitution elasticity
-        values:
-          2020-01-01: 0
-      4:
-        metadata:
-          label: primary adult under 65, 4th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      5:
-        metadata:
-          label: primary adult under 65, 5th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      6:
-        metadata:
-          label: primary adult under 65, 6th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      7:
-        metadata:
-          label: primary adult under 65, 7th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      8:
-        metadata:
-          label: primary adult under 65, 8th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      9:
-        metadata:
-          label: primary adult under 65, 9th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      10:
-        metadata:
-          label: primary adult under 65, 10th decile substitution elasticity
-        values:
-          2020-01-01: 0
-    secondary:
-      metadata:
-        label: secondary adult under 65, all deciles substitution elasticity
+        label: primary adult, 1st decile substitution elasticity
       values:
         2020-01-01: 0
-  65_and_over:
-    metadata:
-      label: age 65 and over
-    primary:
+    2:
       metadata:
-        label: primary adult 65 and over
-      1:
-        metadata:
-          label: primary adult 65 and over, 1st decile substitution elasticity
-        values:
-          2020-01-01: 0
-      2:
-        metadata:
-          label: primary adult 65 and over, 2nd decile substitution elasticity
-        values:
-          2020-01-01: 0
-      3:
-        metadata:
-          label: primary adult 65 and over, 3rd decile substitution elasticity
-        values:
-          2020-01-01: 0
-      4:
-        metadata:
-          label: primary adult 65 and over, 4th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      5:
-        metadata:
-          label: primary adult 65 and over, 5th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      6:
-        metadata:
-          label: primary adult 65 and over, 6th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      7:
-        metadata:
-          label: primary adult 65 and over, 7th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      8:
-        metadata:
-          label: primary adult 65 and over, 8th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      9:
-        metadata:
-          label: primary adult 65 and over, 9th decile substitution elasticity
-        values:
-          2020-01-01: 0
-      10:
-        metadata:
-          label: primary adult 65 and over, 10th decile substitution elasticity
-        values:
-          2020-01-01: 0
-    secondary:
-      metadata:
-        label: secondary adult 65 and over, all deciles substitution elasticity
+        label: primary adult, 2nd decile substitution elasticity
       values:
         2020-01-01: 0
+    3:
+      metadata:
+        label: primary adult, 3rd decile substitution elasticity
+      values:
+        2020-01-01: 0
+    4:
+      metadata:
+        label: primary adult, 4th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    5:
+      metadata:
+        label: primary adult, 5th decile substiticity
+      values:
+        2020-01-01: 0
+    6:
+      metadata:
+        label: primary adult, 6th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    7:
+      metadata:
+        label: primary adult, 7th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    8:
+      metadata:
+        label: primary adult, 8th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    9:
+      metadata:
+        label: primary adult, 9th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    10:
+      metadata:
+        label: primary adult, 10th decile substitution elasticity
+      values:
+        2020-01-01: 0
+  secondary:
+    metadata:
+      label: secondary adult, all deciles substitution elasticity
+      description: Any earner in the tax unit who is not the primary (highest) earner.
+    values:
+      2020-01-01: 0
+age_multiplier_65_and_over:
+  description: Multiplier applied to all substitution elasticities for individuals aged 65 and over. Research shows older workers have higher labor supply elasticities than working-age adults. French (2005) finds elasticities 3x higher for age 60 vs age 40. A multiplier of 2.0 is conservative. Set to 1.0 for no age difference.
+  values:
+    2020-01-01: 2.0
+  metadata:
+    unit: /1
+    label: age 65+ elasticity multiplier
+    reference:
+      - title: "French (2005): The Effects of Health, Wealth, and Wages on Labour Supply and Retirement Behaviour"
+        href: https://academic.oup.com/restud/article-abstract/72/2/395/1558553
+      - title: "CBO Working Paper 2012-12: A Review of Recent Research on Labor Supply Elasticities"
+        href: https://www.cbo.gov/publication/43675

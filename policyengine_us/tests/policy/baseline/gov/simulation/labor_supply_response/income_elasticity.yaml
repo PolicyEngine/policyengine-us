@@ -14,58 +14,82 @@
   output:
     income_elasticity: -0.05
 
-- name: Income elasticity for person under 65
+- name: Income elasticity for person under 65 uses base
   period: 2023
   input:
     age: 50
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.05
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
-    income_elasticity: -0.05
+    income_elasticity: -0.04
 
-- name: Income elasticity for person 65 and over
+- name: Income elasticity for person 65+ applies multiplier
   period: 2023
   input:
     age: 70
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.08
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
     income_elasticity: -0.08
 
-- name: Age 64 uses under_65 income elasticity
+- name: Age 64 uses base elasticity (no multiplier)
   period: 2023
   input:
     age: 64
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.10
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.5
   output:
     income_elasticity: -0.04
 
-- name: Age 65 uses 65_and_over income elasticity
+- name: Age 65 applies multiplier
   period: 2023
   input:
     age: 65
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: -0.10
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.5
   output:
     income_elasticity: -0.10
 
-- name: Positive income elasticity for under 65 (unusual but valid)
+- name: Positive base income elasticity (unusual but valid)
   period: 2023
   input:
     age: 45
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.under_65: 0.02
+    gov.simulation.labor_supply_responses.elasticities.income.base: 0.02
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
     income_elasticity: 0.02
 
-- name: Zero income elasticity for 65+
+- name: Zero base income elasticity for 65+
   period: 2023
   input:
     age: 72
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.by_age.65_and_over: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: 0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
   output:
     income_elasticity: 0
+
+- name: Multiplier of 3.0 based on upper end of literature
+  period: 2023
+  input:
+    age: 70
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 3.0
+  output:
+    income_elasticity: -0.12
+
+- name: No age effect when multiplier is 1.0
+  period: 2023
+  input:
+    age: 70
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 1.0
+  output:
+    income_elasticity: -0.04
