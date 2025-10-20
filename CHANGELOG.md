@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.423.4] - 2025-10-20 19:43:44
+
+### Fixed
+
+- Allow for the Colorado sales tax refund for filers with negative income .
+
 ## [1.423.3] - 2025-10-20 15:35:19
 
 ### Fixed
@@ -13296,6 +13302,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.423.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.3...1.423.4
 [1.423.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.2...1.423.3
 [1.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.1...1.423.2
 [1.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.0...1.423.1
