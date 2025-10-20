@@ -86,12 +86,13 @@ class substitution_elasticity(Variable):
                 p.by_position_and_decile.secondary
             )
 
-        # Apply age multiplier for individuals 65 and over
+        # Apply age multiplier for individuals at or above age threshold
         age = person("age", period.this_year)
+        age_threshold = p.age_threshold
         age_multiplier = where(
-            age >= 65,
-            p.age_multiplier_65_and_over,
-            1.0,  # No multiplier for under 65
+            age >= age_threshold,
+            p.age_multiplier_over_threshold,
+            1.0,  # No multiplier for under threshold
         )
 
         return base_elasticity * age_multiplier

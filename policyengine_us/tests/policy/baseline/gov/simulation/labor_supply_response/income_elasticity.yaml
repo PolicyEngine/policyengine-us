@@ -20,7 +20,7 @@
     age: 50
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     income_elasticity: -0.04
 
@@ -30,7 +30,7 @@
     age: 70
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     income_elasticity: -0.08
 
@@ -40,7 +40,7 @@
     age: 64
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.5
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.5
   output:
     income_elasticity: -0.04
 
@@ -50,7 +50,7 @@
     age: 65
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.5
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.5
   output:
     income_elasticity: -0.10
 
@@ -60,7 +60,7 @@
     age: 45
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: 0.02
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     income_elasticity: 0.02
 
@@ -70,7 +70,7 @@
     age: 72
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: 0
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     income_elasticity: 0
 
@@ -80,7 +80,7 @@
     age: 70
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 3.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 3.0
   output:
     income_elasticity: -0.12
 
@@ -90,6 +90,6 @@
     age: 70
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 1.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 1.0
   output:
     income_elasticity: -0.04

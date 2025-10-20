@@ -16,10 +16,10 @@
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.20
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.30
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     substitution_elasticity:
       - 0.40  # person1: 67 years old, primary earner (60k), decile 6 (50k-61k), base 0.20 × multiplier 2.0 = 0.40
@@ -46,10 +46,10 @@
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.7: 0.18
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.30
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.25
   output:
     substitution_elasticity:
       - 0.36  # person1: 70 years old, primary earner (80k), decile 7 (76k-97k), base 0.18 × 2.0 = 0.36
@@ -76,10 +76,10 @@
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.18
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.28
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     substitution_elasticity:
       - 0.18  # person1: 45 years old, primary earner (70k), decile 6 (61k-76k), base 0.18 (no multiplier)
@@ -96,10 +96,10 @@
     self_employment_income_before_lsr: 10_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.4: 0.20
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 1.9
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 1.9
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
   output:
     substitution_elasticity: 0.38  # Age 65 applies multiplier, total earnings 40k = decile 4 (39k-50k), 0.20 × 1.9 = 0.38
     income_elasticity: -0.08  # Age 65 applies multiplier, -0.04 × 2.0 = -0.08
@@ -112,10 +112,10 @@
     self_employment_income_before_lsr: -8_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.21
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.25
   output:
     substitution_elasticity: 0.42  # Net positive earnings (47k after max_(47k, 0)) = decile 5 (39k-50k), 0.21 × 2.0 = 0.42
     income_elasticity: -0.09  # -0.04 × 2.25 = -0.09
@@ -128,10 +128,10 @@
     self_employment_income_before_lsr: -30_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.25
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 2.25
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.25
   output:
     substitution_elasticity: 0  # Negative net earnings (-5k) treated as 0, resulting in zero elasticity
     income_elasticity: -0.09  # Income elasticity still applies: -0.04 × 2.25 = -0.09
@@ -169,10 +169,10 @@
     self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.20
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 1.5
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 1.5
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 1.5
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 1.5
   output:
     substitution_elasticity: 0.30  # 0.20 × 1.5 = 0.30
     income_elasticity: -0.06  # -0.04 × 1.5 = -0.06
@@ -185,10 +185,10 @@
     self_employment_income_before_lsr: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.20
-    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_65_and_over: 3.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 3.0
     gov.simulation.labor_supply_responses.elasticities.income.all: 0
     gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_65_and_over: 3.0
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 3.0
   output:
     substitution_elasticity: 0.60  # 0.20 × 3.0 = 0.60
     income_elasticity: -0.12  # -0.04 × 3.0 = -0.12
