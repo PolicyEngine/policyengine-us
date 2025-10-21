@@ -11321,3 +11321,8 @@
     - Fix us itemization integration tests which were failing due to a new Illinois
       income tax rebate.
   date: 2025-10-20 23:22:57
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative Wisconsin married couple credit amounts.
+  date: 2025-10-21 14:09:42
