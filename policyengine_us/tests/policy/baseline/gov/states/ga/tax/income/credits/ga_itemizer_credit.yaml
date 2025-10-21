@@ -1,0 +1,40 @@
+- name: Georgia itemizer credit - itemizer receives credit
+  period: 2024
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+  output:
+    ga_itemizer_credit: 300
+
+- name: Georgia itemizer credit - non-itemizer receives no credit
+  period: 2024
+  input:
+    state_code: GA
+    tax_unit_itemizes: false
+  output:
+    ga_itemizer_credit: 0
+
+- name: Georgia itemizer credit - not available before 2024
+  period: 2023
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+  output:
+    ga_itemizer_credit: 0
+
+- name: Georgia itemizer credit - available in 2025
+  period: 2025
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+  output:
+    ga_itemizer_credit: 300
+
+- name: Georgia itemizer credit - high income itemizer receives credit
+  period: 2024
+  input:
+    state_code: GA
+    adjusted_gross_income: 100_000
+    tax_unit_itemizes: true
+  output:
+    ga_itemizer_credit: 300
