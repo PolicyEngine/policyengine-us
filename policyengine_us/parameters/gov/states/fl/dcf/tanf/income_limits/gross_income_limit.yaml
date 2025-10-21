@@ -1,0 +1,50 @@
+description: Florida TANF requires that gross income must be less than 185% of the Federal Poverty Level for the family size.
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 1
+    amount:
+      2024-01-01: 27_861
+  - threshold:
+      2024-01-01: 2
+    amount:
+      2024-01-01: 37_814
+  - threshold:
+      2024-01-01: 3
+    amount:
+      2024-01-01: 47_767
+  - threshold:
+      2024-01-01: 4
+    amount:
+      2024-01-01: 57_720
+  - threshold:
+      2024-01-01: 5
+    amount:
+      2024-01-01: 67_673
+  - threshold:
+      2024-01-01: 6
+    amount:
+      2024-01-01: 77_626
+  - threshold:
+      2024-01-01: 7
+    amount:
+      2024-01-01: 87_579
+  - threshold:
+      2024-01-01: 8
+    amount:
+      2024-01-01: 97_532
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: Florida Statute § 414.095 - Determining eligibility for temporary cash assistance
+      href: https://www.flsenate.gov/Laws/Statutes/2024/414.095
+    - title: Florida Administrative Code Chapter 65A-4 - Temporary Cash Assistance
+      href: https://flrules.org/gateway/ChapterHome.asp?Chapter=65A-4

@@ -1,0 +1,70 @@
+description: Florida TANF Tier 3 payment standard applies to families with shelter obligations greater than $50 per month or families experiencing homelessness.
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 1
+    amount:
+      2024-01-01: 180
+  - threshold:
+      2024-01-01: 2
+    amount:
+      2024-01-01: 241
+  - threshold:
+      2024-01-01: 3
+    amount:
+      2024-01-01: 303
+  - threshold:
+      2024-01-01: 4
+    amount:
+      2024-01-01: 364
+  - threshold:
+      2024-01-01: 5
+    amount:
+      2024-01-01: 426
+  - threshold:
+      2024-01-01: 6
+    amount:
+      2024-01-01: 487
+  - threshold:
+      2024-01-01: 7
+    amount:
+      2024-01-01: 549
+  - threshold:
+      2024-01-01: 8
+    amount:
+      2024-01-01: 610
+  - threshold:
+      2024-01-01: 9
+    amount:
+      2024-01-01: 671
+  - threshold:
+      2024-01-01: 10
+    amount:
+      2024-01-01: 733
+  - threshold:
+      2024-01-01: 11
+    amount:
+      2024-01-01: 795
+  - threshold:
+      2024-01-01: 12
+    amount:
+      2024-01-01: 857
+  - threshold:
+      2024-01-01: 13
+    amount:
+      2024-01-01: 919
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  reference:
+    - title: Florida Statute § 414.095(10) - Three-tier payment structure
+      href: https://www.flsenate.gov/Laws/Statutes/2024/414.095
+    - title: Florida Administrative Code Chapter 65A-4 - Temporary Cash Assistance
+      href: https://flrules.org/gateway/ChapterHome.asp?Chapter=65A-4
