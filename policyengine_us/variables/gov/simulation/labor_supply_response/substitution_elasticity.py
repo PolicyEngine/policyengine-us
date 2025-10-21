@@ -47,6 +47,8 @@ class substitution_elasticity(Variable):
         )
         # Use max_ to prevent negative earnings from causing issues
         earnings = max_(raw_earnings, 0)
+        # searchsorted returns index where value would be inserted
+        # Add 1 to convert to 1-based decile numbering (deciles 1-10)
         earnings_decile = (
             np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
         )
@@ -68,23 +70,27 @@ class substitution_elasticity(Variable):
 
         if np.any(non_zero_earnings):
             # Primary earners by decile
-            decile_elasticities = [
-                p.by_position_and_decile.primary._children[str(i + 1)]
-                for i in range(10)
-            ]
-            for i in range(10):
+            for i in range(10):  # Iterate through deciles 1-10
+                decile_num = i + 1  # Decile numbers are 1-10
                 mask = (
                     non_zero_earnings
-                    & (earnings_decile == i + 1)
+                    & (earnings_decile == decile_num)
                     & is_primary_earner
                 )
-                base_elasticity[mask] = decile_elasticities[i]
+                if np.any(mask):
+                    # Access parameter using getattr to handle both normal and test scenarios
+                    decile_param = getattr(
+                        p.by_position_and_decile.primary, str(decile_num)
+                    )
+                    # Handle both Parameter objects and raw values (when overridden in tests)
+                    param_value = (
+                        decile_param(period)
+                        if callable(decile_param)
+                        else decile_param
+                    )
+                    base_elasticity[mask] = param_value
 
-            # Secondary earners
-            secondary_mask = non_zero_earnings & ~is_primary_earner
-            base_elasticity[secondary_mask] = (
-                p.by_position_and_decile.secondary
-            )
+            # Secondary earners get zero elasticity (only primary earners have non-zero values)
 
         # Apply age multiplier for individuals at or above age threshold
         age = person("age", period.this_year)
