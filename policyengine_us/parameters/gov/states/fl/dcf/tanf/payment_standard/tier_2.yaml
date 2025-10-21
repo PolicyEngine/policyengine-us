@@ -1,0 +1,39 @@
+description: Florida TANF Tier 2 payment standard applies to families with shelter obligations between $1 and $50 per month.
+
+1:
+  2024-01-01: 153
+2:
+  2024-01-01: 205
+3:
+  2024-01-01: 258
+4:
+  2024-01-01: 309
+5:
+  2024-01-01: 362
+6:
+  2024-01-01: 414
+7:
+  2024-01-01: 467
+8:
+  2024-01-01: 519
+9:
+  2024-01-01: 570
+10:
+  2024-01-01: 623
+11:
+  2024-01-01: 676
+12:
+  2024-01-01: 728
+13:
+  2024-01-01: 781
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 14)
+  reference:
+    - title: Florida Statute § 414.095(10) - Three-tier payment structure
+      href: https://www.flsenate.gov/Laws/Statutes/2024/414.095
+    - title: Florida Administrative Code Chapter 65A-4 - Temporary Cash Assistance
+      href: https://flrules.org/gateway/ChapterHome.asp?Chapter=65A-4

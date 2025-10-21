@@ -1,0 +1,39 @@
+description: Florida TANF Tier 1 payment standard applies to families with no shelter obligation (rent or mortgage of $0).
+
+1:
+  2024-01-01: 95
+2:
+  2024-01-01: 158
+3:
+  2024-01-01: 198
+4:
+  2024-01-01: 254
+5:
+  2024-01-01: 289
+6:
+  2024-01-01: 346
+7:
+  2024-01-01: 392
+8:
+  2024-01-01: 438
+9:
+  2024-01-01: 485
+10:
+  2024-01-01: 534
+11:
+  2024-01-01: 582
+12:
+  2024-01-01: 630
+13:
+  2024-01-01: 678
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 14)
+  reference:
+    - title: Florida Statute § 414.095(10) - Three-tier payment structure
+      href: https://www.flsenate.gov/Laws/Statutes/2024/414.095
+    - title: Florida Administrative Code Chapter 65A-4 - Temporary Cash Assistance
+      href: https://flrules.org/gateway/ChapterHome.asp?Chapter=65A-4
