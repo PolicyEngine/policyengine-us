@@ -47,10 +47,10 @@ class substitution_elasticity(Variable):
         )
         # Use max_ to prevent negative earnings from causing issues
         earnings = max_(raw_earnings, 0)
-        # searchsorted returns index where value would be inserted
-        # Add 1 to convert to 1-based decile numbering (deciles 1-10)
-        earnings_decile = (
-            np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
+        # Use searchsorted with side='right' to bin earnings into deciles
+        # This gives decile numbers 1-10 directly without needing to add 1
+        earnings_decile = np.searchsorted(
+            EARNINGS_DECILE_MARKERS, earnings, side="right"
         )
 
         # Determine if primary earner (highest earner in tax unit)
