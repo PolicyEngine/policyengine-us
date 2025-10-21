@@ -26,8 +26,8 @@ class fl_tanf(Variable):
             payment_standard - countable_income - family_cap_reduction
         )
 
-        # Round down to nearest dollar
-        rounded_benefit = floor(gross_benefit)
+        # Round down to nearest dollar (using int conversion)
+        rounded_benefit = gross_benefit.astype(int)
 
         # Apply minimum benefit threshold
         minimum_benefit = p.minimum_benefit
