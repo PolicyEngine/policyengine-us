@@ -17,7 +17,9 @@ class ga_itemizer_credit(Variable):
     def formula(tax_unit, period, parameters):
         # Full-year and part-year residents who itemize their deductions
         # are entitled to a credit up to $300 per taxpayer
+        # Joint filers have 2 taxpayers, all others have 1
         itemizes = tax_unit("tax_unit_itemizes", period)
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        taxpayer_count = where(is_joint, 2, 1)
         p = parameters(period).gov.states.ga.tax.income.credits.itemizer
-        amount = p.amount
-        return where(itemizes, amount, 0)
+        return where(itemizes, p.amount * taxpayer_count, 0)
