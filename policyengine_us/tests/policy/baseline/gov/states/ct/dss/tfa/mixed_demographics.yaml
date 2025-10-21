@@ -1,0 +1,537 @@
+## Edge Case Tests: Mixed Demographics and Complex Household Structures
+## Tests pregnant women, multi-generational households, disabled members, and unusual compositions
+
+- name: Pregnant woman with no children - minimum eligible household
+  period: 2024-10
+  input:
+    people:
+      person:
+        age: 26
+        is_pregnant: true
+        employment_income: 7_000  # $583/month
+    families:
+      family:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    # Edge case: Pregnant woman alone (no children)
+    # Per documentation: pregnant women qualify
+    # 55% FPL for 1: $690/month
+    ct_tfa_demographic_eligible: [true]
+    ct_tfa_income_eligible: true
+
+- name: Pregnant woman with existing children - family of 3
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+        is_pregnant: true
+        employment_income: 12_000
+      child1:
+        age: 3
+      child2:
+        age: 5
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Pregnant woman with existing children
+    # All should be eligible
+    ct_tfa_demographic_eligible: [true, true, true]
+
+- name: Elderly caregiver with young grandchild - age 60+
+  period: 2024-10
+  input:
+    people:
+      grandparent:
+        age: 62
+        employment_income: 6_000
+      grandchild:
+        age: 3
+    families:
+      family:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: CT
+  output:
+    # Edge case: Elderly caregiver (age 60+)
+    # Exempt from work requirements and time limits
+    # Both should be eligible
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Three-generation household - grandparents, parent, children
+  period: 2024-10
+  input:
+    people:
+      grandparent1:
+        age: 68
+        employment_income: 0
+      grandparent2:
+        age: 66
+        employment_income: 0
+      parent:
+        age: 35
+        employment_income: 15_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    families:
+      family:
+        members: [grandparent1, grandparent2, parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [grandparent1, grandparent2, parent, child1, child2]
+    households:
+      household:
+        members: [grandparent1, grandparent2, parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Multi-generational household
+    # Tests whether grandparents counted in assistance unit
+    # Typically only parent and children would qualify
+    ct_tfa_assistance_unit_size: 5
+
+- name: Two parents, both disabled, with children
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 38
+        is_disabled: true
+        ssi: 10_000
+        employment_income: 0
+      parent2:
+        age: 36
+        is_disabled: true
+        ssi: 10_000
+        employment_income: 0
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Both parents disabled receiving SSI
+    # SSI is fully disregarded
+    # No earned income, should be eligible
+    ct_tfa_income_eligible: true
+
+- name: Parent with disabled child
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 11_000
+      child:
+        age: 6
+        is_disabled: true
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Child with disability
+    # Both should be eligible
+    # Parent may be exempt from work requirements
+    ct_tfa_demographic_eligible: [true, true]
+
+- name: Multiple disabled children in household
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 13_000
+      child1:
+        age: 5
+        is_disabled: true
+      child2:
+        age: 8
+        is_disabled: true
+      child3:
+        age: 11
+        is_disabled: false
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: CT
+  output:
+    # Edge case: Multiple disabled children
+    # All should be eligible
+    ct_tfa_assistance_unit_size: 4
+
+- name: Teen parent living with own parent - nested generations
+  period: 2024-10
+  input:
+    people:
+      grandparent:
+        age: 45
+        employment_income: 20_000
+      teen_parent:
+        age: 16
+        is_full_time_student: true
+        employment_income: 0
+      infant:
+        age: 0
+    families:
+      family:
+        members: [grandparent, teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [grandparent, teen_parent, infant]
+    households:
+      household:
+        members: [grandparent, teen_parent, infant]
+        state_code: CT
+  output:
+    # Edge case: Teen parent living with grandparent
+    # Complex household structure
+    # All three may be in assistance unit
+    ct_tfa_assistance_unit_size: 3
+
+- name: Non-parent guardian with children - relative caregiver
+  period: 2024-10
+  input:
+    people:
+      aunt:
+        age: 48
+        employment_income: 14_000
+      niece:
+        age: 6
+      nephew:
+        age: 9
+    families:
+      family:
+        members: [aunt, niece, nephew]
+    spm_units:
+      spm_unit:
+        members: [aunt, niece, nephew]
+    households:
+      household:
+        members: [aunt, niece, nephew]
+        state_code: CT
+  output:
+    # Edge case: Non-parent relative guardian
+    # Per documentation: "non-parent guardian assets not counted"
+    # All should be eligible
+    ct_tfa_demographic_eligible: [true, true, true]
+
+- name: Foster parent with foster children
+  period: 2024-10
+  input:
+    people:
+      foster_parent:
+        age: 42
+        employment_income: 16_000
+      foster_child1:
+        age: 5
+      foster_child2:
+        age: 8
+    families:
+      family:
+        members: [foster_parent, foster_child1, foster_child2]
+    spm_units:
+      spm_unit:
+        members: [foster_parent, foster_child1, foster_child2]
+    households:
+      household:
+        members: [foster_parent, foster_child1, foster_child2]
+        state_code: CT
+  output:
+    # Edge case: Foster care situation
+    # TFA rules for foster families may differ
+    # Tests whether system handles foster relationships
+    ct_tfa_assistance_unit_size: 3
+
+- name: Single father with children - male caregiver
+  period: 2024-10
+  input:
+    people:
+      father:
+        age: 32
+        employment_income: 11_000
+      child1:
+        age: 4
+      child2:
+        age: 7
+    families:
+      family:
+        members: [father, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [father, child1, child2]
+    households:
+      household:
+        members: [father, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Single father (male caregiver)
+    # Should have same eligibility as single mother
+    ct_tfa_demographic_eligible: [true, true, true]
+
+- name: Two-parent household with only one working
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 18_000
+      parent2:
+        age: 33
+        employment_income: 0  # Stay-at-home parent
+      child1:
+        age: 2
+      child2:
+        age: 5
+    families:
+      family:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Two-parent, single-earner household
+    # Both parents count in assistance unit
+    ct_tfa_assistance_unit_size: 4
+
+- name: Two-parent household with both working
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 12_000
+      parent2:
+        age: 36
+        employment_income: 10_000
+      child:
+        age: 6
+    families:
+      family:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CT
+  output:
+    # Edge case: Two-parent, dual-earner household
+    # Combined income: $22,000/year = $1,833/month
+    # Tests income aggregation for two earners
+    ct_tfa_assistance_unit_size: 3
+
+- name: Pregnant teen with no other children
+  period: 2024-10
+  input:
+    people:
+      teen:
+        age: 17
+        is_pregnant: true
+        is_full_time_student: true
+        employment_income: 0
+    families:
+      family:
+        members: [teen]
+    spm_units:
+      spm_unit:
+        members: [teen]
+    households:
+      household:
+        members: [teen]
+        state_code: CT
+  output:
+    # Edge case: Pregnant minor
+    # Should qualify as pregnant woman
+    ct_tfa_demographic_eligible: [true]
+
+- name: Household with step-children - blended family
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 16_000
+      parent2:
+        age: 38
+        employment_income: 0
+      biological_child:
+        age: 8
+      step_child1:
+        age: 10
+      step_child2:
+        age: 12
+    families:
+      family:
+        members: [parent1, parent2, biological_child, step_child1, step_child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, biological_child, step_child1, step_child2]
+    households:
+      household:
+        members: [parent1, parent2, biological_child, step_child1, step_child2]
+        state_code: CT
+  output:
+    # Edge case: Blended family with step-children
+    # All children should count equally
+    ct_tfa_assistance_unit_size: 5
+
+- name: Household with adopted children
+  period: 2024-10
+  input:
+    people:
+      parent1:
+        age: 44
+        employment_income: 14_000
+      parent2:
+        age: 42
+        employment_income: 0
+      adopted_child1:
+        age: 5
+      adopted_child2:
+        age: 7
+    families:
+      family:
+        members: [parent1, parent2, adopted_child1, adopted_child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, adopted_child1, adopted_child2]
+    households:
+      household:
+        members: [parent1, parent2, adopted_child1, adopted_child2]
+        state_code: CT
+  output:
+    # Edge case: Adopted children
+    # Should be treated same as biological children
+    ct_tfa_assistance_unit_size: 4
+
+- name: Single parent with infant under 1 year - exemption from work
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 0  # Not working due to infant care
+      infant:
+        age: 0  # Under 1 year
+    families:
+      family:
+        members: [parent, infant]
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+    households:
+      household:
+        members: [parent, infant]
+        state_code: CT
+  output:
+    # Edge case: Parent with infant under 1 year
+    # Per documentation: exempt from work requirements
+    ct_tfa_demographic_eligible: [true, true]
+    ct_tfa_income_eligible: true
+
+- name: Household with all members disabled
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 42
+        is_disabled: true
+        ssi: 10_000
+      child1:
+        age: 8
+        is_disabled: true
+        ssi: 8_000
+      child2:
+        age: 11
+        is_disabled: true
+        ssi: 8_000
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: All household members disabled
+    # All receiving SSI (fully disregarded)
+    # Should be eligible
+    ct_tfa_income_eligible: true
+
+- name: Pregnant woman over age 40 with existing children
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 43
+        is_pregnant: true
+        employment_income: 13_000
+      child1:
+        age: 15
+      child2:
+        age: 12
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Older pregnant woman
+    # Age should not affect pregnancy eligibility
+    ct_tfa_demographic_eligible: [true, true, true]

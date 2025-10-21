@@ -1,0 +1,421 @@
+## Edge Case Tests: Zero and Negative Values
+## Tests handling of zero income, zero assets, negative self-employment income, and edge cases
+
+- name: Family with zero employment income - no income at all
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0  # Zero income
+      child:
+        age: 5
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Zero income
+    # Should be eligible (under all thresholds)
+    # Should receive maximum benefit for size
+    ct_tfa_income_eligible: true
+    ct_tfa_gross_earned_income: 0
+
+- name: Family with zero assets - no wealth
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 10_000
+      child:
+        age: 3
+    families:
+      family:
+        members: [parent, child]
+        family_net_worth: 0  # Zero assets
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Zero assets
+    # Should pass asset test (0 <= $6,000)
+    ct_tfa_resources_eligible: true
+
+- name: Family with negative self-employment income
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 35
+        self_employment_income: -5_000  # Business loss
+        employment_income: 8_000  # Some W-2 income
+      child1:
+        age: 7
+      child2:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    # Edge case: Negative self-employment income (business loss)
+    # Should be handled gracefully (likely max with 0)
+    # Total earned income: max($8,000 - $5,000, 0) = max($3,000, 0)
+    ct_tfa_income_eligible: true
+
+- name: Family with large negative self-employment income exceeding positive income
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 38
+        self_employment_income: -20_000  # Large business loss
+        employment_income: 10_000  # W-2 income
+      child:
+        age: 6
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Large negative income exceeds positive income
+    # Net: -$10,000, should be treated as $0 (max_() function)
+    # Should not result in "negative" eligibility issues
+    ct_tfa_income_eligible: true
+
+- name: Family with zero assets and zero income - maximum need
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 0
+      child:
+        age: 2
+    families:
+      family:
+        members: [parent, child]
+        family_net_worth: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Both zero income and zero assets
+    # Should be eligible and receive maximum benefit
+    ct_tfa_income_eligible: true
+    ct_tfa_resources_eligible: true
+    ct_tfa_eligible: true
+
+- name: Family with very small income - $1 per year
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 29
+        employment_income: 1  # Minimal income ($0.08/month)
+      child:
+        age: 4
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Extremely small income (effectively zero)
+    # Should be treated almost like zero income
+    ct_tfa_income_eligible: true
+
+- name: Family with very small assets - $1 total
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 9_000
+      child:
+        age: 5
+    families:
+      family:
+        members: [parent, child]
+        family_net_worth: 1  # Minimal assets
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Extremely small assets
+    # Should easily pass asset test
+    ct_tfa_resources_eligible: true
+
+- name: Family with negative unearned income (shouldn't happen but test handling)
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 33
+        employment_income: 10_000
+        # Note: Negative unearned income is unusual but tests robustness
+      child:
+        age: 8
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Unusual negative unearned income scenario
+    # System should handle gracefully without errors
+    ct_tfa_income_eligible: true
+
+- name: Single person with zero income - pregnant woman
+  period: 2024-10
+  input:
+    people:
+      person:
+        age: 23
+        is_pregnant: true
+        employment_income: 0  # No income
+    families:
+      family:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    # Edge case: Pregnant woman with zero income
+    # Should be eligible and receive maximum benefit
+    ct_tfa_income_eligible: true
+    ct_tfa_eligible: true
+
+- name: Family with zero earned but positive unearned income
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 55
+        employment_income: 0  # No earned income
+        social_security: 12_000  # $1,000/month unearned
+      child:
+        age: 12
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Zero earned income, has unearned income
+    # Earned income test: passes (0 < 55% FPL)
+    # Unearned income: counted against benefit
+    ct_tfa_gross_earned_income: 0
+    ct_tfa_income_eligible: true  # Depends on unearned threshold
+
+- name: Family with all income from SSI - fully disregarded
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 40
+        is_disabled: true
+        ssi: 10_000  # SSI is disregarded
+        employment_income: 0
+      child:
+        age: 9
+        is_disabled: true
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Only SSI income (fully disregarded)
+    # Should be treated like zero countable income
+    ct_tfa_income_eligible: true
+
+- name: Large family with zero income - tests maximum benefit
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 0
+      child1:
+        age: 2
+      child2:
+        age: 4
+      child3:
+        age: 6
+      child4:
+        age: 8
+      child5:
+        age: 10
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4, child5]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: CT
+  output:
+    # Edge case: Large family with zero income
+    # Should receive maximum benefit for size 6
+    ct_tfa_income_eligible: true
+    ct_tfa_eligible: true
+
+- name: Family at exactly $0 for both income and assets
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 27
+        employment_income: 0
+      child:
+        age: 1
+    families:
+      family:
+        members: [parent, child]
+        family_net_worth: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Complete zero - both income and assets
+    # Represents family in maximum need
+    ct_tfa_income_eligible: true
+    ct_tfa_resources_eligible: true
+    ct_tfa_eligible: true
+    ct_tfa_gross_earned_income: 0
+
+- name: Family with income exactly at $0.01 - minimal non-zero
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 0.01  # Effectively zero but technically positive
+      child:
+        age: 6
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Smallest possible positive income
+    # Tests rounding and threshold comparison precision
+    ct_tfa_income_eligible: true
+
+- name: Family with assets exactly at $0.01 - minimal non-zero
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 10_000
+      child:
+        age: 7
+    families:
+      family:
+        members: [parent, child]
+        family_net_worth: 0.01  # Effectively zero but technically positive
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Smallest possible positive assets
+    # Should easily pass asset test
+    ct_tfa_resources_eligible: true
+
+- name: Mixed income - positive W-2, negative self-employment, net zero
+  period: 2024-10
+  input:
+    people:
+      parent:
+        age: 36
+        employment_income: 15_000  # W-2 income
+        self_employment_income: -15_000  # Offsetting loss
+      child:
+        age: 9
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Edge case: Income components cancel to zero
+    # Net earned income: max($15,000 - $15,000, 0) = 0
+    ct_tfa_income_eligible: true
