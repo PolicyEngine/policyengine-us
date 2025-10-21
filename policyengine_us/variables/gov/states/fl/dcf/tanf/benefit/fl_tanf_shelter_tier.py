@@ -12,8 +12,13 @@ class fl_tanf_shelter_tier(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.fl.dcf.tanf.payment_standard
 
-        # Get shelter costs (rent + mortgage + property taxes)
-        rent = spm_unit("rent", period)
+        # Get monthly shelter costs from rent
+        # Rent is defined per year for persons, so we sum across the SPM unit
+        # and convert to monthly
+        person = spm_unit.members
+        rent_annual = person("rent", period.this_year)
+        total_rent_annual = spm_unit.sum(rent_annual)
+        rent_monthly = total_rent_annual / 12
 
         # Determine tier based on shelter obligation
         tier_2_min = p.tier_2_min_shelter
@@ -23,10 +28,10 @@ class fl_tanf_shelter_tier(Variable):
         # Tier 2: Shelter $1-$50
         # Tier 3: Shelter >$50 or homeless
         tier = where(
-            rent == 0,
+            rent_monthly == 0,
             1,
             where(
-                (rent >= tier_2_min) & (rent <= tier_2_max),
+                (rent_monthly >= tier_2_min) & (rent_monthly <= tier_2_max),
                 2,
                 3,
             ),
