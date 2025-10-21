@@ -1,0 +1,15 @@
+description: Rhode Island provides this dependent exemption amount.
+
+values:
+  2025-01-01: 5_050
+  2026-01-01: 5_100
+
+metadata:
+  label: Rhode Island dependent exemption amount
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

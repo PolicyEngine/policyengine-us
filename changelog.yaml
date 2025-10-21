@@ -11294,3 +11294,30 @@
     fixed:
     - Apply state income tax rebates in the tax year rather than the payment year.
   date: 2025-10-19 23:10:23
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child and working families credits child tax credit eligible child
+      definition.
+  date: 2025-10-20 14:35:58
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable unemployment compensation to the list of California subtractions.
+  date: 2025-10-20 15:35:19
+- bump: patch
+  changes:
+    fixed:
+    - Allow for the Colorado sales tax refund for filers with negative income .
+  date: 2025-10-20 19:43:44
+- bump: minor
+  changes:
+    added:
+    - Rhode Island Child Tax Credit reforms.
+  date: 2025-10-20 21:00:28
+- bump: patch
+  changes:
+    fixed:
+    - Fix us itemization integration tests which were failing due to a new Illinois
+      income tax rebate.
+  date: 2025-10-20 23:22:57
