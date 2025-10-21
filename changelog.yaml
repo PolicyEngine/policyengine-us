@@ -11338,3 +11338,8 @@
     - Avoid double counting the unemployment compensation in the New Mexico modified
       gross income.
   date: 2025-10-21 14:34:10
+- bump: patch
+  changes:
+    fixed:
+    - Use cdcc_relevant_expenses in the South Carolina CDCC calculation.
+  date: 2025-10-21 14:40:37
