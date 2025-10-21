@@ -5,7 +5,7 @@ class fl_tanf_shelter_tier(Variable):
     value_type = int
     entity = SPMUnit
     label = "Florida TANF shelter tier"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.095(10)"
     documentation = "Determines payment tier: 1 (no shelter), 2 (shelter $1-$50), or 3 (shelter >$50 or homeless)"
 

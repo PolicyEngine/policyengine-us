@@ -6,7 +6,7 @@ class fl_tanf_earned_income_disregard(Variable):
     entity = SPMUnit
     label = "Florida TANF earned income disregard"
     unit = USD
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.095"
     documentation = "Two-step earned income disregard: (1) $90 per person standard disregard, then (2) $200 plus 50% of remainder"
 
@@ -16,12 +16,14 @@ class fl_tanf_earned_income_disregard(Variable):
         gross_earned = spm_unit("fl_tanf_gross_earned_income", period)
         family_size = spm_unit.nb_persons()
 
-        # Step 1: Standard disregard of $90 per person
-        standard_disregard = p.earned_per_person * family_size
+        # Step 1: Standard disregard of $90 per person per month (annualized)
+        monthly_per_person = p.earned_per_person
+        standard_disregard = monthly_per_person * family_size * MONTHS_IN_YEAR
         after_standard = max_(gross_earned - standard_disregard, 0)
 
-        # Step 2: Work incentive disregard - first $200 plus 50% of remainder
-        flat_disregard = p.earned_flat
+        # Step 2: Work incentive disregard - first $200 plus 50% of remainder (monthly, annualized)
+        monthly_flat = p.earned_flat
+        flat_disregard = monthly_flat * MONTHS_IN_YEAR
         percentage_disregard = p.earned_percentage
 
         after_flat = max_(after_standard - flat_disregard, 0)

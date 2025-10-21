@@ -6,7 +6,7 @@ class fl_tanf_family_cap_reduction(Variable):
     entity = SPMUnit
     label = "Florida TANF family cap reduction"
     unit = USD
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.095"
     documentation = "Reduction in benefit due to family cap: 2nd child born on TANF gets 50% reduction, 3rd+ get no benefit"
 

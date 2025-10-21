@@ -5,7 +5,7 @@ class fl_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Florida TANF eligible"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.095"
     documentation = "Eligible for Florida Temporary Cash Assistance based on categorical, income, and resource requirements"
 

@@ -6,7 +6,7 @@ class fl_tanf_countable_income(Variable):
     entity = SPMUnit
     label = "Florida TANF countable income"
     unit = USD
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Administrative Code Rule 65A-4.209"
     documentation = "Net countable income after applying all disregards, used to determine benefit amount"
 

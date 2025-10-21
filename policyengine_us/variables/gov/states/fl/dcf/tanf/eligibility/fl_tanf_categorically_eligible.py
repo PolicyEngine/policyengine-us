@@ -5,7 +5,7 @@ class fl_tanf_categorically_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Florida TANF categorically eligible"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = (
         "Florida Statute § 414.095; Florida Administrative Code Rule 65A-4.208"
     )

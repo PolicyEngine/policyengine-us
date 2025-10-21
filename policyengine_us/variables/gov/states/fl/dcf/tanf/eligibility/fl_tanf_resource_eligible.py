@@ -5,7 +5,7 @@ class fl_tanf_resource_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Florida TANF resource eligible"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.075"
     documentation = "Meets asset test: countable assets under $2,000 and vehicle equity under $8,500"
 

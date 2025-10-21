@@ -5,7 +5,7 @@ class fl_tanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Florida TANF income eligible"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Statute § 414.095"
     documentation = "Meets income test: gross income less than 185% FPL and net countable income at or below payment standard"
 
@@ -21,9 +21,8 @@ class fl_tanf_income_eligible(Variable):
 
         # Annual gross income limit (185% FPL)
         annual_limit = p.income_limits.gross_income_limit.calc(family_size)
-        monthly_limit = annual_limit / 12
 
-        gross_income_eligible = total_gross < monthly_limit
+        gross_income_eligible = total_gross < annual_limit
 
         # Net countable income test (must be at or below payment standard)
         countable_income = spm_unit("fl_tanf_countable_income", period)

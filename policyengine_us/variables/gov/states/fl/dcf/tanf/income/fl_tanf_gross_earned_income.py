@@ -6,7 +6,7 @@ class fl_tanf_gross_earned_income(Variable):
     entity = SPMUnit
     label = "Florida TANF gross earned income"
     unit = USD
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "Florida Administrative Code Rule 65A-4.209"
     documentation = "Total earned income before disregards, with specific exclusions for student earnings and WIOA income"
 
