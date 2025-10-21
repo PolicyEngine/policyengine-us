@@ -34,7 +34,9 @@ class fl_tanf(Variable):
 
         # If benefit is below minimum, no cash payment (return 0)
         final_monthly_benefit = where(
-            rounded_monthly_benefit >= minimum_benefit, rounded_monthly_benefit, 0
+            rounded_monthly_benefit >= minimum_benefit,
+            rounded_monthly_benefit,
+            0,
         )
 
         # Annualize the monthly benefit

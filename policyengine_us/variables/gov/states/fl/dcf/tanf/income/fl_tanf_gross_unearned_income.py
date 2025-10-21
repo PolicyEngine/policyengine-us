@@ -16,7 +16,9 @@ class fl_tanf_gross_unearned_income(Variable):
         # Child support with $50 monthly disregard (annualized)
         child_support = spm_unit("child_support_received", period)
         monthly_child_support_disregard = p.child_support
-        annual_child_support_disregard = monthly_child_support_disregard * MONTHS_IN_YEAR
+        annual_child_support_disregard = (
+            monthly_child_support_disregard * MONTHS_IN_YEAR
+        )
         countable_child_support = max_(
             child_support - annual_child_support_disregard, 0
         )
