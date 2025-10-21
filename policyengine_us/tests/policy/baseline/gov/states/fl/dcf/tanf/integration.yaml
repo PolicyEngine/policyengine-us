@@ -1,0 +1,523 @@
+# Florida TANF (Temporary Cash Assistance - TCA) Integration Tests
+# Based on Florida Statute § 414.095 and Florida Administrative Code Chapter 65A-4
+# Last Updated: October 21, 2025
+
+# Test 1: Single parent with one child, moderate earned income, Tier 3 shelter
+# Example from benefit_calculation.md (Example 2)
+- name: Single parent with two children, $500 monthly earnings, high shelter costs
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 6_000  # $500/month × 12
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Gross income: $500/month
+    # Earned income disregard:
+    #   Step 1: $500 - $90 = $410
+    #   Step 2: $410 - $200 = $210
+    #           $210 × 0.5 = $105 (disregarded)
+    #   Countable: $210 - $105 = $105
+    # Payment standard (Tier 3, size 3): $303
+    # Benefit: $303 - $105 = $198
+    fl_tanf: 2_376  # $198 × 12 months
+
+# Test 2: Single parent with one child, higher income near threshold, Tier 3 shelter
+# Based on benefit_calculation.md (Example 1)
+- name: Single parent with one child, $800 monthly earnings, income exceeds payment standard
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 9_600  # $800/month × 12
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    # Family size: 2
+    # Gross income: $800/month
+    # Earned income disregard:
+    #   Step 1: $800 - $90 = $710
+    #   Step 2: $710 - $200 = $510
+    #           $510 × 0.5 = $255 (disregarded)
+    #   Countable: $510 - $255 = $255
+    # Payment standard (Tier 3, size 2): $241
+    # Benefit: $241 - $255 = -$14 → NOT ELIGIBLE
+    fl_tanf: 0
+
+# Test 3: Family with child support income, Tier 2 shelter
+# Based on benefit_calculation.md (Example 3)
+- name: Single parent with two children, child support only, low shelter costs
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 28
+        child_support_received: 1_200  # $100/month × 12
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Unearned income (child support): $100/month
+    # First $50 excluded: $100 - $50 = $50 countable
+    # Payment standard (Tier 2, size 3): $258
+    # Benefit: $258 - $50 = $208
+    fl_tanf: 2_496  # $208 × 12 months
+
+# Test 4: Family with no income, Tier 1 (no shelter)
+- name: Single parent with one child, no income, no shelter obligation
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    # Family size: 2
+    # Gross income: $0
+    # Countable income: $0
+    # Payment standard (Tier 1, size 2): $158
+    # Benefit: $158 - $0 = $158
+    fl_tanf: 1_896  # $158 × 12 months
+
+# Test 5: Larger family with mixed income sources, Tier 3
+- name: Two-parent family with four children, mixed income sources
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 12_000  # $1,000/month × 12
+      parent2:
+        age: 33
+        employment_income: 3_600  # $300/month × 12
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 6
+      child4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: FL
+  output:
+    # Family size: 6
+    # Gross income: $1,300/month
+    # Earned income disregard (2 earners × $90 = $180):
+    #   Step 1: $1,300 - $180 = $1,120
+    #   Step 2: $1,120 - $200 = $920
+    #           $920 × 0.5 = $460 (disregarded)
+    #   Countable: $920 - $460 = $460
+    # Payment standard (Tier 3, size 6): $487
+    # Benefit: $487 - $460 = $27
+    fl_tanf: 324  # $27 × 12 months
+
+# Test 6: Income just below 185% FPL threshold
+- name: Family of three with income just under gross income limit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 47_000  # Just under $47,767 annual limit for family of 3
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Gross income: $3,917/month (47,000 / 12)
+    # Gross income limit (185% FPL): $3,981/month
+    # Income is below gross limit, but countable income calculation:
+    #   Step 1: $3,917 - $90 = $3,827
+    #   Step 2: $3,827 - $200 = $3,627
+    #           $3,627 × 0.5 = $1,814 (disregarded)
+    #   Countable: $3,627 - $1,814 = $1,813
+    # Payment standard (Tier 3, size 3): $303
+    # Benefit: $303 - $1,813 = -$1,510 → NOT ELIGIBLE (countable income exceeds payment standard)
+    fl_tanf: 0
+
+# Test 7: Income just above 185% FPL threshold
+- name: Family of three with income just over gross income limit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 29
+        employment_income: 48_000  # Just over $47,767 annual limit for family of 3
+      child1:
+        age: 11
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Gross income: $4,000/month (48,000 / 12)
+    # Gross income limit (185% FPL): $3,981/month
+    # NOT ELIGIBLE - gross income exceeds 185% FPL
+    fl_tanf: 0
+
+# Test 8: Low earned income qualifying family
+- name: Single parent with one child, low earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 27
+        employment_income: 3_600  # $300/month × 12
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    # Family size: 2
+    # Gross income: $300/month
+    # Earned income disregard:
+    #   Step 1: $300 - $90 = $210
+    #   Step 2: $210 - $200 = $10
+    #           $10 × 0.5 = $5 (disregarded)
+    #   Countable: $10 - $5 = $5
+    # Payment standard (Tier 3, size 2): $241
+    # Benefit: $241 - $5 = $236
+    fl_tanf: 2_832  # $236 × 12 months
+
+# Test 9: Larger family (family of 5) with moderate income
+- name: Single parent with four children, moderate earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 18_000  # $1,500/month × 12
+      child1:
+        age: 14
+      child2:
+        age: 11
+      child3:
+        age: 8
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: FL
+  output:
+    # Family size: 5
+    # Gross income: $1,500/month
+    # Earned income disregard:
+    #   Step 1: $1,500 - $90 = $1,410
+    #   Step 2: $1,410 - $200 = $1,210
+    #           $1,210 × 0.5 = $605 (disregarded)
+    #   Countable: $1,210 - $605 = $605
+    # Payment standard (Tier 3, size 5): $426
+    # Benefit: $426 - $605 = -$179 → NOT ELIGIBLE
+    fl_tanf: 0
+
+# Test 10: Very small benefit amount (testing minimum $10 threshold)
+- name: Family with countable income close to payment standard
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 5_640  # $470/month × 12
+      child1:
+        age: 9
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Gross income: $470/month
+    # Earned income disregard:
+    #   Step 1: $470 - $90 = $380
+    #   Step 2: $380 - $200 = $180
+    #           $180 × 0.5 = $90 (disregarded)
+    #   Countable: $180 - $90 = $90
+    # Payment standard (Tier 3, size 3): $303
+    # Benefit: $303 - $90 = $213
+    fl_tanf: 2_556  # $213 × 12 months
+
+# Test 11: Pregnant woman (9th month) with no other children
+- name: Pregnant woman in 9th month, no income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 24
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: FL
+  output:
+    # Family size: 1 (pregnant woman counts as 1 for payment purposes)
+    # Gross income: $0
+    # Countable income: $0
+    # Payment standard (Tier 3, size 1): $180
+    # Benefit: $180 - $0 = $180
+    fl_tanf: 2_160  # $180 × 12 months
+
+# Test 12: High school student child with earnings (should be excluded)
+- name: Single parent with teen in high school who has part-time job
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 6_000  # $500/month × 12
+      teen:
+        age: 17
+        employment_income: 3_600  # $300/month × 12 - should be excluded
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: FL
+  output:
+    # Family size: 2
+    # Parent gross income: $500/month
+    # Teen income excluded (full-time student under 19)
+    # Earned income disregard:
+    #   Step 1: $500 - $90 = $410
+    #   Step 2: $410 - $200 = $210
+    #           $210 × 0.5 = $105 (disregarded)
+    #   Countable: $210 - $105 = $105
+    # Payment standard (Tier 3, size 2): $241
+    # Benefit: $241 - $105 = $136
+    fl_tanf: 1_632  # $136 × 12 months
+
+# Test 13: Combined earned and unearned income
+- name: Single parent with earned income and child support
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 33
+        employment_income: 4_800  # $400/month × 12
+        child_support_received: 1_800  # $150/month × 12
+      child1:
+        age: 7
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: FL
+  output:
+    # Family size: 3
+    # Gross earned income: $400/month
+    # Earned income disregard:
+    #   Step 1: $400 - $90 = $310
+    #   Step 2: $310 - $200 = $110
+    #           $110 × 0.5 = $55 (disregarded)
+    #   Countable earned: $110 - $55 = $55
+    # Child support: $150/month
+    #   First $50 excluded: $150 - $50 = $100 countable
+    # Total countable income: $55 + $100 = $155
+    # Payment standard (Tier 3, size 3): $303
+    # Benefit: $303 - $155 = $148
+    fl_tanf: 1_776  # $148 × 12 months
+
+# Test 14: Very large family (testing family size 10+)
+- name: Large family with eight children, minimal income
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 42
+        employment_income: 7_200  # $600/month × 12
+      parent2:
+        age: 40
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+      child6:
+        age: 6
+      child7:
+        age: 4
+      child8:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: FL
+  output:
+    # Family size: 10
+    # Gross income: $600/month
+    # Earned income disregard:
+    #   Step 1: $600 - $90 = $510
+    #   Step 2: $510 - $200 = $310
+    #           $310 × 0.5 = $155 (disregarded)
+    #   Countable: $310 - $155 = $155
+    # Payment standard (Tier 3, size 10): $733
+    # Benefit: $733 - $155 = $578
+    fl_tanf: 6_936  # $578 × 12 months
+
+# Test 15: Two-parent family with one earner
+- name: Two-parent family with three children, one earner
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 36
+        employment_income: 9_000  # $750/month × 12
+      parent2:
+        age: 34
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: FL
+  output:
+    # Family size: 5
+    # Gross income: $750/month
+    # Earned income disregard:
+    #   Step 1: $750 - $90 = $660
+    #   Step 2: $660 - $200 = $460
+    #           $460 × 0.5 = $230 (disregarded)
+    #   Countable: $460 - $230 = $230
+    # Payment standard (Tier 3, size 5): $426
+    # Benefit: $426 - $230 = $196
+    fl_tanf: 2_352  # $196 × 12 months
