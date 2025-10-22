@@ -5,6 +5,119 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.425.3] - 2025-10-22 14:06:11
+
+### Fixed
+
+- Fix the baby bonus act payment test.
+
+## [1.425.2] - 2025-10-22 12:30:35
+
+### Fixed
+
+- Fix contributed test cases.
+
+## [1.425.1] - 2025-10-22 12:00:48
+
+### Fixed
+
+- CTC per-child phase-out reform to avoid double-counting when regular and ARPA phase-outs overlap.
+
+## [1.425.0] - 2025-10-22 03:08:12
+
+### Added
+
+- 2026 IRS tax parameters from Revenue Procedure 2025-32 (standard deduction, tax brackets, EITC, AMT, CTC, capital gains, QBI phase-out, student loan interest deduction, aged/blind additional).
+- Automatic uprating with statutory rounding rules for parameters that previously had no post-2025 values (tax brackets 1-2, retirement contributions, capital gains thresholds).
+- Statutory rounding rules to parameters with uprating but no rounding (QBI phase-out).
+- Actual BLS CPI data through August 2025 (C-CPI-U, CPI-U, CPI-W).
+
+### Changed
+
+- Replaced manual CBO forecast values (2027-2035) with automatic uprating for tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, aged/blind additional deduction, CTC base amount, and CTC refundable maximum.
+- Replaced OBBB legislative references with permanent IRC statutory sections.
+- Split capital_gains/brackets.yaml into separate rates.yaml and thresholds.yaml files.
+
+### Fixed
+
+- Corrected previously incorrect 2026 QBI phase-out threshold forecast values.
+
+## [1.424.6] - 2025-10-21 17:40:03
+
+### Fixed
+
+- Do not allow for an additional exemption for head of household filers under the Kansas food sales tax credit.
+
+## [1.424.5] - 2025-10-21 14:40:37
+
+### Fixed
+
+- Use cdcc_relevant_expenses in the South Carolina CDCC calculation.
+
+## [1.424.4] - 2025-10-21 14:34:10
+
+### Fixed
+
+- Avoid double counting the unemployment compensation in the New Mexico modified gross income.
+
+## [1.424.3] - 2025-10-21 14:28:43
+
+### Fixed
+
+- Include business income in the earned income concept for the Georgia retirement income exclusion.
+
+## [1.424.2] - 2025-10-21 14:09:42
+
+### Fixed
+
+- Avoid negative Wisconsin married couple credit amounts.
+
+## [1.424.1] - 2025-10-20 23:22:57
+
+### Fixed
+
+- Fix us itemization integration tests which were failing due to a new Illinois income tax rebate.
+
+## [1.424.0] - 2025-10-20 21:00:28
+
+### Added
+
+- Rhode Island Child Tax Credit reforms.
+
+## [1.423.4] - 2025-10-20 19:43:44
+
+### Fixed
+
+- Allow for the Colorado sales tax refund for filers with negative income .
+
+## [1.423.3] - 2025-10-20 15:35:19
+
+### Fixed
+
+- Add taxable unemployment compensation to the list of California subtractions.
+
+## [1.423.2] - 2025-10-20 14:35:58
+
+### Fixed
+
+- Minnesota child and working families credits child tax credit eligible child definition.
+
+## [1.423.1] - 2025-10-19 23:10:23
+
+### Added
+
+- Hawaii ACT 115 rebate.
+- Illinois income tax rebate.
+- Maine relief rebate.
+- Massachusetts taxpayer refund rebate.
+- South Carolina 2022 rebate.
+- Indiana automatic refund rebate.
+- Colorado Tabor cash back.
+
+### Fixed
+
+- Apply state income tax rebates in the tax year rather than the payment year.
+
 ## [1.423.0] - 2025-10-19 09:34:25
 
 ### Added
@@ -13268,6 +13381,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.425.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.2...1.425.3
+[1.425.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.1...1.425.2
+[1.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.0...1.425.1
+[1.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.6...1.425.0
+[1.424.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.5...1.424.6
+[1.424.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.4...1.424.5
+[1.424.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.3...1.424.4
+[1.424.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.2...1.424.3
+[1.424.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.1...1.424.2
+[1.424.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.0...1.424.1
+[1.424.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.4...1.424.0
+[1.423.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.3...1.423.4
+[1.423.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.2...1.423.3
+[1.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.1...1.423.2
+[1.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.423.0...1.423.1
 [1.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.422.0...1.423.0
 [1.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.421.0...1.422.0
 [1.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.420.0...1.421.0

@@ -24,7 +24,7 @@ class sc_cdcc(Variable):
         sc_max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
 
         # Get child care expenses.
-        childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        childcare_expenses = tax_unit("cdcc_relevant_expenses", period)
 
         # Married filing separate are ineligible.
         filing_status = tax_unit("filing_status", period)
