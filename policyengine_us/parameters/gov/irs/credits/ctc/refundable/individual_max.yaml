@@ -14,10 +14,18 @@ metadata:
   unit: currency-USD
   period: year
   label: Child tax credit refundable maximum amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-    # OBBB extends TCJA CTC refundable maximum, sets base year to 2017 instead of 2016 for uprating.
+    - title: 26 U.S. Code § 24(h)(5)(A) - Child tax credit refundable portion
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A
+    - title: 26 U.S. Code § 24(i)(1) - Inflation adjustment for refundable amount
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_1
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=13
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=8
     - title: 2024 IRS data release
@@ -32,7 +40,6 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
     - title: 2019 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
-    # NB: Not specified in prior IRS data releases.
-    # Indexed to inflation with respect to 2017, rounding down by $100.
-    - title: 26 U.S. Code § 24(h)(5)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A
+    # IRC §24(i)(1) adjusts the $1,400 statutory base using 2017 as reference year.
+    # Current implementation uses incremental uprating from latest value, which
+    # produces correct results but differs from statutory base-year calculation.

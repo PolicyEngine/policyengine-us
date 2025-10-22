@@ -11275,3 +11275,109 @@
     added:
     - Texas Child Care Services (CCS) program.
   date: 2025-10-19 05:12:39
+- bump: minor
+  changes:
+    added:
+    - CTC per-child phase-out reform now includes avoid_overlap parameter to prevent
+      double-counting when regular and ARPA phase-outs overlap.
+  date: 2025-10-19 09:34:25
+- bump: patch
+  changes:
+    added:
+    - Hawaii ACT 115 rebate.
+    - Illinois income tax rebate.
+    - Maine relief rebate.
+    - Massachusetts taxpayer refund rebate.
+    - South Carolina 2022 rebate.
+    - Indiana automatic refund rebate.
+    - Colorado Tabor cash back.
+    fixed:
+    - Apply state income tax rebates in the tax year rather than the payment year.
+  date: 2025-10-19 23:10:23
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child and working families credits child tax credit eligible child
+      definition.
+  date: 2025-10-20 14:35:58
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable unemployment compensation to the list of California subtractions.
+  date: 2025-10-20 15:35:19
+- bump: patch
+  changes:
+    fixed:
+    - Allow for the Colorado sales tax refund for filers with negative income .
+  date: 2025-10-20 19:43:44
+- bump: minor
+  changes:
+    added:
+    - Rhode Island Child Tax Credit reforms.
+  date: 2025-10-20 21:00:28
+- bump: patch
+  changes:
+    fixed:
+    - Fix us itemization integration tests which were failing due to a new Illinois
+      income tax rebate.
+  date: 2025-10-20 23:22:57
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative Wisconsin married couple credit amounts.
+  date: 2025-10-21 14:09:42
+- bump: patch
+  changes:
+    fixed:
+    - Include business income in the earned income concept for the Georgia retirement
+      income exclusion.
+  date: 2025-10-21 14:28:43
+- bump: patch
+  changes:
+    fixed:
+    - Avoid double counting the unemployment compensation in the New Mexico modified
+      gross income.
+  date: 2025-10-21 14:34:10
+- bump: patch
+  changes:
+    fixed:
+    - Use cdcc_relevant_expenses in the South Carolina CDCC calculation.
+  date: 2025-10-21 14:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Do not allow for an additional exemption for head of household filers under
+      the Kansas food sales tax credit.
+  date: 2025-10-21 17:40:03
+- bump: minor
+  changes:
+    added:
+    - 2026 IRS tax parameters from Revenue Procedure 2025-32 (standard deduction,
+      tax brackets, EITC, AMT, CTC, capital gains, QBI phase-out, student loan interest
+      deduction, aged/blind additional).
+    - Automatic uprating with statutory rounding rules for parameters that previously
+      had no post-2025 values (tax brackets 1-2, retirement contributions, capital
+      gains thresholds).
+    - Statutory rounding rules to parameters with uprating but no rounding (QBI phase-out).
+    - Actual BLS CPI data through August 2025 (C-CPI-U, CPI-U, CPI-W).
+    changed:
+    - Replaced manual CBO forecast values (2027-2035) with automatic uprating for
+      tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, aged/blind
+      additional deduction, CTC base amount, and CTC refundable maximum.
+    - Replaced OBBB legislative references with permanent IRC statutory sections.
+    - Split capital_gains/brackets.yaml into separate rates.yaml and thresholds.yaml
+      files.
+    fixed:
+    - Corrected previously incorrect 2026 QBI phase-out threshold forecast values.
+  date: 2025-10-22 03:08:12
+- bump: patch
+  changes:
+    fixed:
+    - CTC per-child phase-out reform to avoid double-counting when regular and ARPA
+      phase-outs overlap.
+  date: 2025-10-22 12:00:48
+- bump: patch
+  changes:
+    fixed:
+    - Fix contributed test cases.
+  date: 2025-10-22 12:30:35

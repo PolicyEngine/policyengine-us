@@ -1,0 +1,42 @@
+- name: Basic rebate calculation
+  period: 2021
+  input:
+    ma_income_tax_before_refundable_credits: 1_000
+    ma_eitc: 100
+    ma_child_and_family_credit_or_dependent_care_credit: 50
+    ma_senior_circuit_breaker: 25
+    state_code: MA
+  output:
+    ma_taxpayer_refund_rebate: 115.7574
+
+- name: No rebate when tax liability is zero
+  period: 2021
+  input:
+    ma_income_tax_before_refundable_credits: 0
+    ma_eitc: 0
+    ma_child_and_family_credit_or_dependent_care_credit: 0
+    ma_senior_circuit_breaker: 0
+    state_code: MA
+  output:
+    ma_taxpayer_refund_rebate: 0
+
+- name: No rebate when credits exceed tax liability
+  period: 2021
+  input:
+    ma_income_tax_before_refundable_credits: 500
+    ma_eitc: 300
+    ma_child_and_family_credit_or_dependent_care_credit: 200
+    ma_senior_circuit_breaker: 100
+    state_code: MA
+  output:
+    ma_taxpayer_refund_rebate: 0
+
+- name: Partial rebate with some credits
+  period: 2021
+  input:
+    ma_income_tax_before_refundable_credits: 2_000
+    ma_eitc: 200
+    ma_child_and_family_credit_or_dependent_care_credit: 100
+    state_code: MA
+  output:
+    ma_taxpayer_refund_rebate: 238.53

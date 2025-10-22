@@ -36,10 +36,8 @@
         state_code: OK
   output:
     # Federal CTC/EITC calculated for state reference
-    ctc:
-      2026: 4_900  # $2,200 per child + $500 other dependent
-    eitc:
-      2026: 4_225.342  # Joint, 2 children, $50k income
+    ctc: 4_900 
+    eitc: 4_244
 
     # Oklahoma credits (5% of federal)
     ok_child_care_child_tax_credit:
@@ -91,14 +89,11 @@
         state_code: ME
   output:
     # Federal calculations
-    ctc:
-      2026: 4_400
-    eitc:
-      2026: 7_055.704
+    ctc: 4_400
+    eitc: 7_071
 
     # Maine EITC is 25% of federal
-    me_eitc:
-      2026: 1_763.926
+    me_eitc: 1_767
 
     # Income Security Package
     baby_bonus_act_payment:
