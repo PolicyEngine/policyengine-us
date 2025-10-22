@@ -11370,3 +11370,9 @@
     fixed:
     - Corrected previously incorrect 2026 QBI phase-out threshold forecast values.
   date: 2025-10-22 03:08:12
+- bump: patch
+  changes:
+    fixed:
+    - CTC per-child phase-out reform to avoid double-counting when regular and ARPA
+      phase-outs overlap.
+  date: 2025-10-22 12:00:48
