@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.425.0] - 2025-10-22 03:08:12
+
+### Added
+
+- 2026 IRS tax parameters from Revenue Procedure 2025-32 (standard deduction, tax brackets, EITC, AMT, CTC, capital gains, QBI phase-out, student loan interest deduction, aged/blind additional).
+- Automatic uprating with statutory rounding rules for parameters that previously had no post-2025 values (tax brackets 1-2, retirement contributions, capital gains thresholds).
+- Statutory rounding rules to parameters with uprating but no rounding (QBI phase-out).
+- Actual BLS CPI data through August 2025 (C-CPI-U, CPI-U, CPI-W).
+
+### Changed
+
+- Replaced manual CBO forecast values (2027-2035) with automatic uprating for tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, aged/blind additional deduction, CTC base amount, and CTC refundable maximum.
+- Replaced OBBB legislative references with permanent IRC statutory sections.
+- Split capital_gains/brackets.yaml into separate rates.yaml and thresholds.yaml files.
+
+### Fixed
+
+- Corrected previously incorrect 2026 QBI phase-out threshold forecast values.
+
 ## [1.424.6] - 2025-10-21 17:40:03
 
 ### Fixed
@@ -13344,6 +13363,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.6...1.425.0
 [1.424.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.5...1.424.6
 [1.424.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.4...1.424.5
 [1.424.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.424.3...1.424.4
