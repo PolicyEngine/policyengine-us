@@ -1,0 +1,13 @@
+description: Maximum amount of business losses deductible
+metadata:
+  unit: currency-USD
+  period: year
+  label: Business loss limitation
+  reference:
+    - title: 26 U.S. Code § 461 - General rule for taxable year of deduction (l)(3)(A)(ii)(II)
+      href: https://www.law.cornell.edu/uscode/text/26/461#l_3_A_ii_II
+
+values:
+  2001-01-01: false
+  2018-01-01: true
+  2027-01-01: false
