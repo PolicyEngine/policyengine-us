@@ -49,6 +49,12 @@ EXCLUSIONS = [
     "gov/states/mn/tax/income/credits/marriage/minimum_taxable_income.yaml",
     # Rhode Island social security modification birth year threshold 
     "gov/states/ri/tax/income/agi/subtractions/social_security/limit/birth_year.yaml",
+    # social security AGI subtraction - the subtraction has been repealed
+    "gov/states/ne/tax/income/agi/subtractions/social_security/threshold.yaml",
+    # Montana standard deduction - the deduction has been repealed
+    "gov/states/mt/tax/income/deductions/standard/",
+    # Montana exemptions - the exemption has been repealed
+    "gov/states/mt/tax/income/exemptions/",
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
