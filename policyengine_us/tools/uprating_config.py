@@ -41,6 +41,14 @@ EXCLUSIONS = [
     "gov/states/co/ssa/",
     # Age thresholds are not adjusted with Inflation
     "gov/states/ca/foster_care/age_threshold.yaml",
+    # Kentucky pension income exclusion threshold - not uprated
+    "gov/states/ky/tax/income/exclusions/pension_income/threshold.yaml",
+    # Maryland refundable EITC match - not uprated
+    "gov/states/md/tax/income/credits/eitc/refundable/married_or_has_child/match.yaml",
+    # Minnesota marriage credit minimum taxable income - defined annually by the commissioner of revenue
+    "gov/states/mn/tax/income/credits/marriage/minimum_taxable_income.yaml",
+    # Rhode Island social security modification birth year threshold 
+    "gov/states/ri/tax/income/agi/subtractions/social_security/limit/birth_year.yaml",
 ]
 
 # Growth rate thresholds for detecting inflation-like updates
