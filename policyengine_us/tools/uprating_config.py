@@ -14,7 +14,7 @@ EXCLUSIONS = [
     # Other uprating indices and factors
     "gov/hhs/uprating.yaml",  # HHS uprating factors
     "gov/ssa/nawi.yaml",  # National Average Wage Index (used for SS uprating)
-    "gov/ssa/uprating.yaml", # SSA uprating factors
+    "gov/ssa/uprating.yaml",  # SSA uprating factors
     # ACA benchmark premium uprating - this is already an uprating file
     "gov/aca/benchmark_premium_uprating.yaml",
     # Calibration data - not policy parameters
@@ -47,7 +47,7 @@ EXCLUSIONS = [
     "gov/states/md/tax/income/credits/eitc/refundable/married_or_has_child/match.yaml",
     # Minnesota marriage credit minimum taxable income - defined annually by the commissioner of revenue
     "gov/states/mn/tax/income/credits/marriage/minimum_taxable_income.yaml",
-    # Rhode Island social security modification birth year threshold 
+    # Rhode Island social security modification birth year threshold
     "gov/states/ri/tax/income/agi/subtractions/social_security/limit/birth_year.yaml",
     # social security AGI subtraction - the subtraction has been repealed
     "gov/states/ne/tax/income/agi/subtractions/social_security/threshold.yaml",
