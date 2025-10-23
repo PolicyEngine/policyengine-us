@@ -3,7 +3,7 @@ from policyengine_core.periods import period as period_
 
 
 def create_aca_ptc_additional_bracket() -> Reform:
-    class aca_ptc_phase_out_rate(Variable):
+    class aca_required_contribution_percentage(Variable):
         """
         ACA Premium Tax Credit phase-out rate with linear bracket extension.
 
@@ -90,7 +90,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(aca_ptc_phase_out_rate)
+            self.update_variable(aca_required_contribution_percentage)
             self.update_variable(is_aca_ptc_eligible)
 
     return reform
