@@ -3,7 +3,7 @@
   input:
     state_code: GA
     tax_unit_itemizes: true
-    tax_unit_is_joint: false
+    filing_status: SINGLE
   output:
     ga_itemizer_credit: 300
 
@@ -12,7 +12,7 @@
   input:
     state_code: GA
     tax_unit_itemizes: true
-    tax_unit_is_joint: true
+    filing_status: JOINT
   output:
     ga_itemizer_credit: 600
 
@@ -38,7 +38,7 @@
     state_code: GA
     adjusted_gross_income: 100_000
     tax_unit_itemizes: true
-    tax_unit_is_joint: false
+    filing_status: SINGLE
   output:
     ga_itemizer_credit: 300
 
