@@ -1,0 +1,47 @@
+- name: Under working age
+  period: 2024
+  input:
+    age: 17
+    state_code: CO
+  output:
+    co_is_working_age: false
+
+- name: Working age - minimum
+  period: 2024
+  input:
+    age: 18
+    state_code: CO
+  output:
+    co_is_working_age: true
+
+- name: Working age - mid range
+  period: 2024
+  input:
+    age: 35
+    state_code: CO
+  output:
+    co_is_working_age: true
+
+- name: Working age - maximum
+  period: 2024
+  input:
+    age: 64
+    state_code: CO
+  output:
+    co_is_working_age: true
+
+- name: Above working age
+  period: 2024
+  input:
+    age: 65
+    state_code: CO
+  output:
+    co_is_working_age: false
+
+- name: Intentional test failure to demo CI
+  period: 2024
+  input:
+    age: 35
+    state_code: CO
+  output:
+    co_is_working_age: false  # This is wrong - should be true!
