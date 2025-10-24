@@ -11392,3 +11392,9 @@
     - Rhode Island exemption reform now correctly applies baseline phase-out to personal
       exemptions at high incomes
   date: 2025-10-22 20:34:02
+- bump: patch
+  changes:
+    added:
+    - Changed name of aca_ptc_phase_out_rate to aca_required_contribution_percentage
+      to better reflect its purpose.
+  date: 2025-10-24 01:02:40
