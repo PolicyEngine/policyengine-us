@@ -1,0 +1,11 @@
+description: Period in years for which credits must be earned for workers under 24
+
+values:
+  1975-01-01: 3
+
+metadata:
+  unit: year
+  label: SSDI credit period for workers under 24
+  reference:
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii
