@@ -1,0 +1,24 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Dallas Ft.Worth area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Dallas Ft.Worth area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - COLLIN_COUNTY_TX
+    - DALLAS_COUNTY_TX
+    - DENTON_COUNTY_TX
+    - ELLIS_COUNTY_TX
+    - HOOD_COUNTY_TX
+    - HUNT_COUNTY_TX
+    - JOHNSON_COUNTY_TX
+    - KAUFMAN_COUNTY_TX
+    - PARKER_COUNTY_TX
+    - ROCKWALL_COUNTY_TX
+    - SOMERVELL_COUNTY_TX
+    - TARRANT_COUNTY_TX
+    - WISE_COUNTY_TX
