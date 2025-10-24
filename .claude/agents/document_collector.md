@@ -234,7 +234,4 @@ After you commit documentation:
 3. Both agents will reference your `working_references.md` file
 4. **ci-fixer** agent will merge all branches and run CI checks
 
-## Special Rules for TANF
-1. xxx
-2. xxxx 
 Remember: Your documentation is the single source of truth for all other agents. Accuracy and completeness are paramount.
