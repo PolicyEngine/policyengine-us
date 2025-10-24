@@ -1,0 +1,17 @@
+- name: Case 1, get maximum deduction of $50 on child support received.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 70
+    child_support_received: 720  # Annual: $60/month * 12 months
+    state_code: CT
+  output:
+    ct_tfa_countable_unearned_income: 20 # 70 - min(60,50) = 70 - 50
+
+- name: Case 2, get deduction of up to child support received.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 70
+    child_support_received: 360  # Annual: $30/month * 12 months
+    state_code: CT
+  output:
+    ct_tfa_countable_unearned_income: 40 # 70 - min(30,50) = 70 - 30

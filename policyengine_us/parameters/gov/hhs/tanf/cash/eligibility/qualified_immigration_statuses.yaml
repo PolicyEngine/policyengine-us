@@ -1,0 +1,20 @@
+description: The Department of Human and Health Services considers these statuses as qualified immigrant for the Temporary Assistance for Needy Families program.
+values:
+  1975-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - ASYLEE
+    - REFUGEE
+    - PAROLED_ONE_YEAR
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - CUBAN_HAITIAN_ENTRANT
+    
+
+metadata:
+  label: TANF qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: 8 U.S. Code § 1641 - Definitions
+      href: https://www.law.cornell.edu/uscode/text/8/1641
