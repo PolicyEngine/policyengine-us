@@ -86,16 +86,25 @@ def create_ri_exemption_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
-            # Personal exemptions use baseline amount
+            # Calculate personal exemptions base amount
             filing_status = tax_unit("filing_status", period)
             personal_exemptions = where(
                 filing_status == filing_status.possible_values.JOINT,
                 2,
                 1,
             )
-            personal_exemption_amount = personal_exemptions * p_base.amount
+            personal_exemption_base = personal_exemptions * p_base.amount
 
-            # Add dependent exemption
+            # Apply baseline phase-out to personal exemptions
+            mod_agi = tax_unit("ri_agi", period)
+            excess_agi = max_(0, mod_agi - p_base.reduction.start)
+            increments = np.ceil(excess_agi / p_base.reduction.increment)
+            reduction_rate = min_(p_base.reduction.rate * increments, 1)
+            personal_exemption_amount = personal_exemption_base * (
+                1 - reduction_rate
+            )
+
+            # Add dependent exemption (has its own phase-out logic)
             dependent_exemption_amount = tax_unit(
                 "ri_dependent_exemption", period
             )

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class aca_ptc_phase_out_rate(Variable):
+class aca_required_contribution_percentage(Variable):
     value_type = float
     entity = TaxUnit
     label = "ACA PTC phase-out rate (i.e., IRS Form 8962 'applicable figure')"
@@ -11,5 +11,5 @@ class aca_ptc_phase_out_rate(Variable):
 
     def formula(tax_unit, period, parameters):
         magi_frac = tax_unit("aca_magi_fraction", period)
-        p = parameters(period).gov.aca.ptc_phase_out_rate
+        p = parameters(period).gov.aca.required_contribution_percentage
         return np.interp(magi_frac, p.thresholds, p.amounts)
