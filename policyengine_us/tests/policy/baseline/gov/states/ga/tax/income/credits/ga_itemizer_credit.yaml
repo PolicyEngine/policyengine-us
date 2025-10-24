@@ -1,0 +1,44 @@
+- name: Georgia itemizer credit - single itemizer receives credit
+  period: 2024
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+    filing_status: SINGLE
+  output:
+    ga_itemizer_credit: 300
+
+- name: Georgia itemizer credit - joint itemizers receive double credit
+  period: 2024
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+    filing_status: JOINT
+  output:
+    ga_itemizer_credit: 600
+
+- name: Georgia itemizer credit - non-itemizer receives no credit
+  period: 2024
+  input:
+    state_code: GA
+    tax_unit_itemizes: false
+  output:
+    ga_itemizer_credit: 0
+
+- name: Georgia itemizer credit - available in 2025
+  period: 2025
+  input:
+    state_code: GA
+    tax_unit_itemizes: true
+  output:
+    ga_itemizer_credit: 300
+
+- name: Georgia itemizer credit - high income single itemizer receives credit
+  period: 2024
+  input:
+    state_code: GA
+    adjusted_gross_income: 100_000
+    tax_unit_itemizes: true
+    filing_status: SINGLE
+  output:
+    ga_itemizer_credit: 300
+
