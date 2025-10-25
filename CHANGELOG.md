@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.425.6] - 2025-10-25 22:24:57
+
+### Changed
+
+- Restructure PR CI workflow to run selective tests (with coverage) and full test suite in parallel for faster feedback and comprehensive validation.
+
 ## [1.425.5] - 2025-10-24 01:02:40
 
 ### Added
@@ -13393,6 +13399,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.425.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.5...1.425.6
 [1.425.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.4...1.425.5
 [1.425.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.3...1.425.4
 [1.425.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.2...1.425.3

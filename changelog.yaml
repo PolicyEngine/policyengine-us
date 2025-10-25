@@ -11398,3 +11398,9 @@
     - Changed name of aca_ptc_phase_out_rate to aca_required_contribution_percentage
       to better reflect its purpose.
   date: 2025-10-24 01:02:40
+- bump: patch
+  changes:
+    changed:
+    - Restructure PR CI workflow to run selective tests (with coverage) and full test
+      suite in parallel for faster feedback and comprehensive validation.
+  date: 2025-10-25 22:24:57
