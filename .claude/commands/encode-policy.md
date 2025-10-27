@@ -112,24 +112,43 @@ Invoke @rules-reviewer to validate the complete implementation against documenta
 - Proper parameter usage
 - Edge case handling
 
-## Phase 10: CI Fix & PR Finalization
+## Phase 10: Local Testing & CI Finalization
 **CRITICAL: ALWAYS invoke @ci-fixer agent - do NOT manually fix issues**
 
+### Step 1: Local Test Execution & Fixes
+
 Invoke @ci-fixer agent to:
-- Find the draft PR created in Phase 0
-- Merge test-creator and rules-engineer branches
-- Monitor CI pipeline for ALL failures
-- Fix failing tests, linting, formatting automatically
+- Run all tests locally: `policyengine-core test policyengine_us/tests/policy/baseline/gov/states/[STATE]/[PROGRAM] -c policyengine_us -v`
+- Identify ALL failing tests
+- For each failing test:
+  - Read the test file to understand expected values
+  - Read the actual test output to see what was calculated
+  - Determine root cause: incorrect test expectations OR bug in implementation
+  - Fix the issue:
+    - If test expectations are wrong: update the test file with correct values
+    - If implementation is wrong: fix the variable/parameter code
+  - Re-run tests to verify fix
+- Iterate until ALL tests pass locally
+- Run `make format` before committing fixes
+
+### Step 2: PR & CI Monitoring (if PR exists)
+
+If a draft PR was created in Phase 1:
+- Push all local fixes to the PR branch
+- Monitor GitHub Actions CI pipeline for ALL failures
+- Fix any additional environment-specific issues found in CI
 - Address any entity-level issues in tests
 - Fix parameter validation errors
-- Clean up working_references.md
+- Clean up working_references.md and temporary files
 - Iterate until ALL CI checks pass
 - Mark PR as ready for review
 
 **Success Metrics**:
+- All tests pass locally (green output)
 - All CI checks passing (tests, lint, format)
 - Test and implementation branches merged
-- PR marked ready (not draft)
+- No temporary files in commits
+- PR marked ready (not draft) if PR exists
 - Clean commit history showing agent work
 
 
