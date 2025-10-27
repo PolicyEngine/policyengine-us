@@ -13,3 +13,4 @@ class snap_earned_income(Variable):
     unit = USD
 
     adds = ["snap_earned_income_person"]
+    subtracts = ["snap_prorate_earned_income_exclusion_person"]

@@ -99,3 +99,25 @@
         meets_snap_categorical_eligibility: false
   output:
     is_snap_eligible: true
+
+- name: Ineligible due to not snap unit eligible.
+  period: 2022
+  input:
+    meets_snap_gross_income_test: true
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: true
+    meets_snap_categorical_eligibility: false
+    is_snap_demographic_eligible_person: false
+  output:
+    is_snap_eligible: false
+
+- name: Passed all check, eligible.
+  period: 2022
+  input:
+    meets_snap_gross_income_test: true
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: true
+    meets_snap_categorical_eligibility: false
+    is_snap_demographic_eligible_person: true
+  output:
+    is_snap_eligible: true

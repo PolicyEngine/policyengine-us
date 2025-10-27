@@ -22,10 +22,15 @@ class snap_excess_shelter_expense_deduction(Variable):
             "snap_net_income_pre_shelter", period
         )
         subtracted_income = p.income_share_disregard * net_income_pre_shelter
-        housing_cost = add(
-            spm_unit, period, ["snap_utility_allowance", "housing_cost"]
+        # Use snap_housing_cost which already includes person-level proration
+        # Combine housing cost and utility allowance
+        total_shelter_cost = add(
+            spm_unit,
+            period,
+            ["snap_housing_cost", "snap_utility_allowance"],
         )
-        uncapped_ded = max_(housing_cost - subtracted_income, 0)
+
+        uncapped_ded = max_(total_shelter_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
         state_group = spm_unit.household("snap_region_str", period)
         ded_cap = p.cap[state_group]
@@ -40,7 +45,7 @@ class snap_excess_shelter_expense_deduction(Variable):
         homeless_deduction = p.homeless.deduction * p.homeless.available[state]
         return where(
             spm_unit.household("is_homeless", period)
-            & (housing_cost > 0)
+            & (total_shelter_cost > 0)
             & (homeless_deduction > non_homeless_shelter_deduction),
             homeless_deduction,
             non_homeless_shelter_deduction,

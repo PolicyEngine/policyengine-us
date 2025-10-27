@@ -10,4 +10,10 @@ class snap_dependent_care_deduction(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_3"
 
-    adds = ["childcare_expenses"]
+    def formula(spm_unit, period, parameters):
+        childcare_expenses = spm_unit("childcare_expenses", period)
+        # Exclude ineligible members' share per SNAP proration rules
+        prorate_factor = spm_unit(
+            "snap_applicable_share_of_expenses", period.this_year
+        )
+        return childcare_expenses * prorate_factor

@@ -2,6 +2,8 @@ description: The USDA deducts this amount from net income when computing SNAP be
 
 # Household sizes above 6 use the rate for a 6 member household in all states.
 CONTIGUOUS_US:
+  0:
+    2020-10-01: 0
   1:
     2020-10-01: 167
     2021-10-01: 177
@@ -45,6 +47,8 @@ CONTIGUOUS_US:
     2024-10-01: 291
     2025-10-01: 299
 AK:
+  0:
+    2020-10-01: 0
   1:
     2020-10-01: 286
     2021-10-01: 303
@@ -88,6 +92,8 @@ AK:
     2024-10-01: 364
     2025-10-01: 374
 GU:
+  0:
+    2020-10-01: 0
   1:
     2020-10-01: 336
     2021-10-01: 356
@@ -131,6 +137,8 @@ GU:
     2024-10-01: 581
     2025-10-01: 598
 HI:
+  0:
+    2020-10-01: 0
   1:
     2020-10-01: 236
     2021-10-01: 250
@@ -174,6 +182,8 @@ HI:
     2024-10-01: 335
     2025-10-01: 344
 VI:
+  0:
+    2020-10-01: 0
   1:
     2020-10-01: 147
     2021-10-01: 156
@@ -239,6 +249,6 @@ metadata:
   period: month
   breakdown:
     - state_group
-    - range(1, 7)
+    - range(0, 7)
   uprating: gov.usda.snap.uprating
   propagate_metadata_to_children: true

@@ -1,0 +1,62 @@
+- name: All household members are ineligible aliens
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_ineligible_members_fraction: 1
+    snap_unit_ineligible_people: 3
+
+- name: Two of three members are ineligible aliens
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_ineligible_members_fraction: 0.67
+    snap_unit_ineligible_people: 2
+
+- name: All household members are US citizens
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    snap_ineligible_members_fraction: 0
+    snap_unit_ineligible_people: 0

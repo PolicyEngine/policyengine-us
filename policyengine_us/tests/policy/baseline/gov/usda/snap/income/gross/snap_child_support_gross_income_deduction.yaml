@@ -12,3 +12,27 @@
     child_support_expense: 100
   output:
     snap_child_support_gross_income_deduction: 100
+
+- name: With prorate fraction, Alaska - person level test
+  period: 2022
+  input:
+    people:
+      person1:
+        child_support_expense: 100
+        is_snap_ineligible_member_based_on_immigration_status: false
+      person2:
+        child_support_expense: 0
+        is_snap_ineligible_member_based_on_immigration_status: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_ineligible_members_fraction: 0.5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    snap_child_support_gross_income_deduction_person:
+      - 100  # person1: eligible, full deduction
+      - 0    # person2: no child support expense
+    snap_child_support_gross_income_deduction: 100

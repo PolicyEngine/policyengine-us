@@ -20,7 +20,7 @@
 
 - name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.
   period: 2022
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_disabled: true
     medical_out_of_pocket_expenses: 35.01 * 12
@@ -30,7 +30,7 @@
 
 - name: Elderly/disabled person in California with $155 medical expenses gets the standard medical expense deduction.
   period: 2022
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_disabled: true
     is_usda_elderly: true
@@ -41,7 +41,7 @@
 
 - name: Elderly person in California with $156 medical expenses takes the normal deduction.
   period: 2022
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_elderly: true
     medical_out_of_pocket_expenses: 156 * 12
@@ -51,7 +51,7 @@
 
 - name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_disabled: true
     medical_out_of_pocket_expenses: 35.01 * 12
@@ -61,7 +61,7 @@
 
 - name: Elderly/disabled person in California with $185 medical expenses gets the standard medical expense deduction.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_disabled: true
     is_usda_elderly: true
@@ -72,7 +72,7 @@
 
 - name: Elderly person in California with $186 medical expenses takes the normal deduction.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.5
   input:
     is_usda_elderly: true
     medical_out_of_pocket_expenses: 186 * 12
