@@ -11,7 +11,9 @@ class meets_snap_abawd_work_requirements(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.abawd
         age = person("monthly_age", period)
-        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        weekly_hours_worked = person(
+            "weekly_hours_worked_before_lsr", period.this_year
+        )
         # Work at least 20 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
         # Adults within an age range are exempt
