@@ -1,0 +1,45 @@
+- name: Couple with different ages (under 65 and 65+) with multiplier approach
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income_before_lsr: 60_000
+        self_employment_income_before_lsr: 0
+      person2:
+        age: 55
+        employment_income_before_lsr: 40_000
+        self_employment_income_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.20
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.30
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
+  output:
+    substitution_elasticity:
+      - 0.40  # person1: 67 years old, primary earner (60k), decile 5 (50k-61k), base 0.20 × multiplier 2.0 = 0.40
+      - 0  # person2: 55 years old, secondary earner, gets 0 since not primary
+    income_elasticity:
+      - -0.08  # person1: 67 years old, base -0.04 × multiplier 2.0 = -0.08
+      - -0.04  # person2: 55 years old, base -0.04 (no multiplier)
+
+- name: Person with negative net earnings has zero substitution elasticity
+  period: 2023
+  input:
+    age: 66
+    employment_income_before_lsr: 25_000
+    self_employment_income_before_lsr: -30_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.25
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income.all: 0
+    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
+    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.25
+  output:
+    substitution_elasticity: 0  # Negative net earnings (-5k) treated as 0, resulting in zero elasticity
+    income_elasticity: -0.09  # Income elasticity still applies: -0.04 × 2.25 = -0.09
