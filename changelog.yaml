@@ -11404,3 +11404,8 @@
     - Restructure PR CI workflow to run selective tests (with coverage) and full test
       suite in parallel for faster feedback and comprehensive validation.
   date: 2025-10-25 22:24:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix recursion errors when applying LSRs.
+  date: 2025-10-28 14:08:51
