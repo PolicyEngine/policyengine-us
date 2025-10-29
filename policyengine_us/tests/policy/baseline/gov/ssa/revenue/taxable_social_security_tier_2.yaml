@@ -1,0 +1,112 @@
+- name: Tier 2 - zero income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_2: 0
+
+- name: Tier 2 - below base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income < base threshold, so no tier 2
+    taxable_social_security_tier_2: 0
+
+- name: Tier 2 - between base and adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Between thresholds, so only tier 1, no tier 2
+    taxable_social_security_tier_2: 0
+
+- name: Tier 2 - above adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = 65_000, adjusted base = 34_000
+    # Excess over adjusted base = 65_000 - 34_000 = 31_000
+    # Bracket amount = 4_500 (from tier 1 test)
+    # Tier 2 total = min(0.85 * 31_000 + 4_500, 0.85 * 30_000)
+    #              = min(26_350 + 4_500, 25_500)
+    #              = min(30_850, 25_500) = 25_500
+    # Tier 2 (50-85% layer) = 25_500 - 4_500 = 21_000
+    taxable_social_security_tier_2: 21_000
+
+- name: Tier 2 - joint filing with high income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        employment_income: 60_000
+      person2:
+        age: 65
+        social_security: 20_000
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = 130_000, adjusted base = 44_000
+    # Excess over adjusted base = 130_000 - 44_000 = 86_000
+    # Bracket amount = 6_000 (from tier 1 test)
+    # Tier 2 total = min(0.85 * 86_000 + 6_000, 0.85 * 60_000)
+    #              = min(73_100 + 6_000, 51_000)
+    #              = min(79_100, 51_000) = 51_000
+    # Tier 2 (50-85% layer) = 51_000 - 6_000 = 45_000
+    taxable_social_security_tier_2: 45_000

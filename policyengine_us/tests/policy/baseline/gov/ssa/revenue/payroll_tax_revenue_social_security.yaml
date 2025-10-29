@@ -1,0 +1,43 @@
+- name: SS payroll tax revenue - zero earnings
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+  output:
+    payroll_tax_revenue_social_security: 0
+
+- name: SS payroll tax revenue - standard earnings
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employee + employer SS tax
+    # Rate = 6.2% + 6.2% = 12.4%
+    # Revenue = 50_000 * 0.124 = 6_200
+    payroll_tax_revenue_social_security: 6_200
+
+- name: SS payroll tax revenue - above wage base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+    households:
+      household:
+        members: [person1]
+  output:
+    # 2024 wage base = 168_600
+    # Revenue = 168_600 * 0.124 = 20_906.40
+    payroll_tax_revenue_social_security: 20_906.40
