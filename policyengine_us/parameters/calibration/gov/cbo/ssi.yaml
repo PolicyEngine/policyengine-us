@@ -15,10 +15,12 @@ values:
   2033-01-01: 87_500_000_000
   2034-01-01: 83_300_000_000
   2035-01-01: 78_500_000_000
-  # Updated to use SSA Trustees CPI-W + demographics (2036-2100)
-  # Source: SSA Trustees Report 2024, Intermediate Assumptions
-  # Methodology: Grows with CPI-W (~2.4%) + aging population (~0.5%)
-  # Note: SSI benefits indexed to CPI-W; aging population increases caseload
+  # Long-term projection using constant 2.900% annual growth (2036-2100)
+  # Methodology: Extrapolated from 2035 CBO value using constant growth rate
+  # Note: SSI has no trust fund and is not included in SSA Trustees projections.
+  # CBO only projects ~10 years ahead. These long-term values are extrapolations,
+  # not official projections, assuming benefits grow with COLA plus modest caseload
+  # growth (~2.4% inflation + ~0.5% demographics = 2.9% total).
   2036-01-01: 80_776_500_000
   2037-01-01: 83_119_018_500
   2038-01-01: 85_529_470_036
