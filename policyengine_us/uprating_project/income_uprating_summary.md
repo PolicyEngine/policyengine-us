@@ -75,23 +75,40 @@
 - Interest & ordinary dividends (2025-2100) - Using SSA GDP (1.90% of AGI)
   - Covers both taxable and tax-exempt interest
   - Also includes ordinary (non-qualified) dividends
-- Qualified dividends (2025-2100) - Using SSA GDP + 0.5% equity premium (~4.5% growth)
-  - Reflects historical equity outperformance
+- Qualified dividends (2025-2100) - Using SSA Trustees data (~2.7% annual growth)
   - Grows from $587B (2035) to $32.6T (2100)
 - Pension income (2025-2100) - Using SSA GDP (9.85% of AGI)
   - Reflects wage growth and demographic trends (aging population)
   - Grows from $2.57T (2035) to $46.8T (2100)
-- Capital gains (2025-2100) - Using SSA GDP + 0.5% equity premium (~4.5% growth)
-  - Same growth as qualified dividends (both from equity appreciation)
+- Capital gains (2025-2100) - Using SSA Trustees data (~2.7% annual growth)
   - Note: CBO projects only 1.74% due to realization timing effects
   - Long-term: asset appreciation drives growth
   - Grows from $1.72T (2035) to $61.2T (2100)
 
-🔄 **In Progress:**
+## Completion Status
 
-## Next Steps
+✅ **COMPLETE** - All uprating parameters extended to 2100!
 
-1. Create parameter files for each income category
-2. Link parameters to income variables via metadata.uprating
-3. Test uprating with microsimulation
-4. Document methodology and sources
+**Pull Request:** https://github.com/PolicyEngine/policyengine-us/pull/6744
+
+## Summary of Work Completed
+
+1. ✅ Extended all CPI indices (CPI-W, CPI-U) to 2100
+2. ✅ Created SSA Average Wage Index projections to 2100
+3. ✅ Extended 6 major income categories to 2100:
+   - Self-employment income
+   - Interest & ordinary dividends
+   - Qualified dividends
+   - Pension income
+   - Capital gains
+   - Adjusted Gross Income
+4. ✅ Updated population projections with SSA Trustees data to 2100
+5. ✅ Documented all data sources and methodology
+6. ✅ Committed and pushed changes to uprating branch
+
+## Next Steps (Future Work)
+
+1. Test uprating with microsimulation (recommended before merge)
+2. Validate aggregate totals for 2050, 2075, 2100
+3. Consider extending state-level parameters
+4. Automate updates when new Trustees reports published
