@@ -1,0 +1,9 @@
+description: Age at which the age multiplier begins to apply. Individuals at this age or older will have their base elasticity multiplied by the age multiplier. Default is 65 (typical retirement age), but can be adjusted to reflect different retirement patterns or policy scenarios (e.g., 62 for early retirement, 67 for full retirement age).
+values:
+  2020-01-01: 65
+metadata:
+  unit: year
+  label: age threshold for elasticity multiplier
+  reference:
+    - title: "French (2005): The Effects of Health, Wealth, and Wages on Labour Supply and Retirement Behaviour"
+      href: https://academic.oup.com/restud/article-abstract/72/2/395/1558553
