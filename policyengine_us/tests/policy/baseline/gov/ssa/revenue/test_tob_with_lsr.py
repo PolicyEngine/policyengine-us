@@ -18,9 +18,7 @@ def test_tob_revenue_with_lsr():
     """TOB revenue should work with labor supply responses."""
     # Simple reform to create baseline (LSR needs sim.baseline)
     lsr_params = {
-        "gov.irs.credits.ctc.amount.base": {
-            "2024-01-01.2100-12-31": 2001
-        }
+        "gov.irs.credits.ctc.amount.base": {"2024-01-01.2100-12-31": 2001}
     }
     reform = Reform.from_dict(lsr_params, country_id="us")
     sim = Microsimulation(reform=reform)
