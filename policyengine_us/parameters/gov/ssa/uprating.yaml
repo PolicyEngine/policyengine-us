@@ -1,4 +1,39 @@
-description: SSA CPI-W uprating index indexed to 2025 = 100. Used for Social Security COLA adjustments (OASDI and SSI). Source: SSA Trustees Report 2025 intermediate assumptions.
+description: |
+  SSA CPI-W uprating index indexed to 2025 = 100. Used for Social Security
+  COLA adjustments (OASDI and SSI). Source: SSA Trustees Report 2025
+  intermediate assumptions.
+
+  RELATIONSHIP TO parameters.gov.bls.cpi.cpi_w:
+  Both sources represent CPI-W, but:
+  - gov.bls.cpi.cpi_w = Raw monthly CPI-W values from BLS
+  - gov.ssa.uprating = Annual index (2025=100) based on Q3 CPI-W averages
+
+  SSA COLA METHODOLOGY:
+  Each year's COLA is calculated by comparing Q3 (Jul+Aug+Sep) average CPI-W
+  from the previous year to the year before that. For example, the 2025 COLA
+  applied to benefits is: (Q3 2024 avg / Q3 2023 avg) - 1. This COLA is then
+  applied to benefits starting January 2025. The uprating index compounds these
+  annual COLAs with 2025 as the base year.
+
+  VERIFYING CONSISTENCY:
+  Growth rates between these sources should match. To verify:
+  1. Calculate Q3 average CPI-W for year A: (Jul + Aug + Sep) / 3
+  2. Calculate Q3 average CPI-W for year B: (Jul + Aug + Sep) / 3
+  3. Ratio from raw CPI-W: Q3_B / Q3_A
+  4. Ratio from uprating index: uprating_B / uprating_A
+  5. These ratios should be approximately equal (within ~0.1% due to rounding)
+
+  Example verification (2025 to 2100):
+  - Q3 2024 CPI-W avg: (307.410 + 307.843 + 308.539) / 3 = 307.931
+  - Q3 2099 CPI-W avg: (projections for Jul+Aug+Sep 2099) / 3 ≈ 1832.407
+  - CPI-W ratio: 1832.407 / 307.931 = 5.95x growth over 75 years
+  - Uprating ratio: 592.78 / 100.0 = 5.93x growth over 75 years
+  - Difference: 0.3% (acceptable due to projection methodology differences)
+
+  IMPORTANT: Use gov.ssa.uprating for Social Security benefit calculations
+  to match SSA's official methodology. Use gov.bls.cpi.cpi_w only when you
+  need monthly CPI-W data for other purposes. Do not mix these sources in
+  related calculations or they will drift over time.
 values:
   # Historical values (2022-2023) converted to 2025=100 scale
   # Using scaling factor: 100 / 308.767 (old 2025 value)
