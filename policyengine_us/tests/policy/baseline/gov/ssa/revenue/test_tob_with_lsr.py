@@ -1,6 +1,7 @@
 """
 Test TOB revenue variable with labor supply responses.
 """
+
 import pytest
 from policyengine_us import Microsimulation
 from policyengine_core.reforms import Reform

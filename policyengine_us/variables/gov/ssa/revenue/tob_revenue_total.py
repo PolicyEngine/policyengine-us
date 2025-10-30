@@ -23,7 +23,9 @@ class tob_revenue_total(Variable):
 
         # Create branch and neutralize taxable SS
         branch = sim.get_branch("tob_calc", clone_system=True)
-        branch.tax_benefit_system.neutralize_variable("tax_unit_taxable_social_security")
+        branch.tax_benefit_system.neutralize_variable(
+            "tax_unit_taxable_social_security"
+        )
 
         # Delete all calculated variables to force recalculation
         for var_name in list(branch.tax_benefit_system.variables.keys()):

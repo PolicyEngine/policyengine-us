@@ -17,7 +17,10 @@ class labor_supply_behavioral_response(Variable):
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
-        if hasattr(simulation, '_lsr_calculating') and simulation._lsr_calculating:
+        if (
+            hasattr(simulation, "_lsr_calculating")
+            and simulation._lsr_calculating
+        ):
             return 0
 
         # Mark that we're calculating LSR
