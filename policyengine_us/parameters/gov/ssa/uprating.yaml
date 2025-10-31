@@ -35,10 +35,16 @@ description: |
   need monthly CPI-W data for other purposes. Do not mix these sources in
   related calculations or they will drift over time.
 values:
-  # Historical values (2022-2023) converted to 2025=100 scale
-  # Using scaling factor: 100 / 308.767 (old 2025 value)
-  2022-01-01: 86.93
-  2023-01-01: 94.54
+  # Historical values from cpi_w_trustees_pre_2025.csv (Q3 CPI-W averages, indexed to 2025 = 100)
+  2015-01-01: 73.58
+  2016-01-01: 74.30
+  2017-01-01: 75.88
+  2018-01-01: 77.81
+  2019-01-01: 79.11
+  2020-01-01: 80.07
+  2021-01-01: 84.28
+  2022-01-01: 91.41
+  2023-01-01: 94.90
   # Values from SSA Trustees Report 2025 (indexed to 2025 = 100)
   2024-01-01: 97.59
   2025-01-01: 100.0
