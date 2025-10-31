@@ -192,16 +192,39 @@ values:
 ```yaml
 description: [Active voice sentence describing what this parameter does]
 metadata:
+  label: [Short display name - REQUIRED, always include]
   unit: [currency-USD | /1 | month | year | bool]
   period: [year | month | day | eternity]
   reference:
-    - title: [Specific document name and section]
+    - title: [Specific document name and section/subsection]
       href: [Direct URL to source]
       publication_date: [YYYY-MM-DD]
-  label: [Short display name]
 values:
   [date]: [value]
 ```
+
+### Description and Label Standards
+
+**Description (REQUIRED):**
+- Must exist and describe what the parameter does
+- RECOMMENDED: Use active voice for clarity
+- RECOMMENDED: End with a period
+
+**Examples:**
+- ✅ "Montana allocates itemized deductions to each spouse at this rate when filing separately."
+- ✅ "Montana caps the federal income tax deduction to this amount, based on filing status."
+- ⚠️ "Rate at which itemized deductions are allocated" (passive voice, but still acceptable)
+
+**Label (RECOMMENDED):**
+- Should be included in metadata for better UI/documentation
+- Be concise (2-6 words) and descriptive
+- Missing label won't break functionality but reduces discoverability
+
+**Reference (REQUIRED):**
+- MUST have at least one reference with title and href
+- RECOMMENDED: Cite specific statute subsections (§ 15-30-2131(2) vs § 15-30-2131)
+- RECOMMENDED: Include document section/page numbers when available
+- RECOMMENDED: Prefer official statutory citations over secondary sources
 
 ### Unit Types
 - `currency-USD`: Dollar amounts
