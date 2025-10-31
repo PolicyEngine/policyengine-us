@@ -1,0 +1,35 @@
+description: Puerto Rico taxes individuals at this rate structure.
+# NOTE: no separate thresholds given by the tax reference for separate filing statuses
+# NOTE: no more recent tax rates since 2012 found in legal and tax code
+brackets:
+  - threshold: 
+      2012-12-31: 0
+    rate:
+      2012-12-31: 0
+  - threshold:
+      2012-12-31: 9_000
+    rate:
+      2012-12-31: 0.07
+  - threshold:
+      2012-12-31: 25_000
+    rate:
+      2012-12-31: 0.14
+  - threshold:
+      2012-12-31: 41_500
+    rate:
+      2012-12-31: 0.25
+  - threshold:
+      2012-12-31: 61_500
+    rate:
+      2012-12-31: 0.33
+metadata:
+  rate_unit: /1
+  threshold_unit: currency_USD
+  type: marginal_rate
+  label: Puerto Rico tax rate
+  period: year
+  reference:
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=19
+    - title: P.R. Laws tit. 13, § 30061 (a)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1004/subchapter-a/30061/
