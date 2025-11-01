@@ -1,0 +1,9 @@
+- bump: minor
+  changes:
+    added:
+    - Social Security and Medicare HI revenue tracking variables that properly separate taxation of benefits (TOB) by trust fund allocation.
+    - Tier 1 (0-50%) and tier 2 (50-85%) taxable Social Security split variables.
+    - TOB revenue variables for OASDI trust funds (tier 1) and Medicare HI trust fund (tier 2).
+    - Payroll tax revenue aggregation variables for Social Security and Medicare.
+    - Total revenue variables combining payroll taxes and taxation of benefits by trust fund (social_security_revenue, medicare_hi_revenue).
+    - Revenue allocation parameters to enable policy modeling of trust fund credit rules.

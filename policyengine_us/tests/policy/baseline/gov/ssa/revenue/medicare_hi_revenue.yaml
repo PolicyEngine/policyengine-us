@@ -1,0 +1,76 @@
+- name: Total Medicare revenue - worker with no benefits
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Only payroll tax, no TOB
+    # Payroll = 50_000 * 0.029 = 1_450
+    medicare_hi_revenue: 1_450
+
+- name: Total Medicare revenue - high earner above additional threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Payroll = 7_700 (from payroll test)
+    medicare_hi_revenue: 7_700
+
+- name: Total Medicare revenue - retiree with high SS and income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Payroll = 60_000 * 0.029 = 1_740
+    # TOB tier 2 revenue ≈ 3_113
+    # Total ≈ 4_853
+    medicare_hi_revenue: 4_853
+
+- name: Total Medicare revenue - zero income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    medicare_hi_revenue: 0

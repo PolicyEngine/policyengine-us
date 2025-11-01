@@ -1,0 +1,118 @@
+- name: Tier 1 - zero income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_1: 0
+
+- name: Tier 1 - below base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = 0 + 0.5 * 20_000 = 10_000
+    # Base threshold for SINGLE = 25_000
+    # 10_000 < 25_000, so tier 1 = 0
+    taxable_social_security_tier_1: 0
+
+- name: Tier 1 - between base and adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = 20_000 + 0.5 * 20_000 = 30_000
+    # Base threshold = 25_000, adjusted base = 34_000
+    # Excess over base = 30_000 - 25_000 = 5_000
+    # Tier 1 = min(0.5 * 20_000, 0.5 * 5_000) = min(10_000, 2_500) = 2_500
+    taxable_social_security_tier_1: 2_500
+
+- name: Tier 1 - above adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = 50_000 + 0.5 * 30_000 = 65_000
+    # Base = 25_000, adjusted base = 34_000
+    # Over adjusted base, so tier 1 = bracket amount
+    # Bracket amount = min(amount_under_paragraph_1, 0.5 * (34_000 - 25_000))
+    # amount_under_paragraph_1 = min(0.5 * 30_000, 0.5 * (65_000 - 25_000))
+    #                           = min(15_000, 20_000) = 15_000
+    # Bracket amount = min(15_000, 0.5 * 9_000) = min(15_000, 4_500) = 4_500
+    taxable_social_security_tier_1: 4_500
+
+- name: Tier 1 - joint filing with high income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        employment_income: 60_000
+      person2:
+        age: 65
+        social_security: 20_000
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = 100_000 + 0.5 * 60_000 = 130_000
+    # Base for JOINT = 32_000, adjusted base = 44_000
+    # Over adjusted base
+    # Excess over base = 130_000 - 32_000 = 98_000
+    # amount_under_paragraph_1 = min(0.5 * 60_000, 0.5 * 98_000)
+    #                           = min(30_000, 49_000) = 30_000
+    # Bracket amount = min(30_000, 0.5 * (44_000 - 32_000))
+    #                = min(30_000, 6_000) = 6_000
+    taxable_social_security_tier_1: 6_000
