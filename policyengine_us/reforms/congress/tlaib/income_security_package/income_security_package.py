@@ -352,6 +352,38 @@ def create_income_security_package() -> Reform:
 
             return add(tax_unit, period, CREDITS)
 
+    class household_tax_before_refundable_credits(Variable):
+        value_type = float
+        entity = Household
+        label = "total tax before refundable credits"
+        documentation = "Total tax liability before refundable credits."
+        unit = USD
+        definition_period = YEAR
+
+        def formula(household, period, parameters):
+            p = parameters(
+                period
+            ).gov.contrib.congress.tlaib.income_security_package
+
+            base_taxes = add(
+                household,
+                period,
+                [
+                    "employee_payroll_tax",
+                    "self_employment_tax",
+                    "income_tax_before_refundable_credits",
+                    "flat_tax",
+                    "household_state_tax_before_refundable_credits",
+                ],
+            )
+
+            # Add BOOST tax only if active
+            if p.boost_act.in_effect:
+                boost_tax = add(household, period, ["boost_act_tax"])
+                return base_taxes + boost_tax
+            else:
+                return base_taxes
+
     class reform(Reform):
         def apply(self):
             # Update all variables for the Income Security Package
@@ -366,6 +398,7 @@ def create_income_security_package() -> Reform:
             self.update_variable(income_tax)
             self.update_variable(income_tax_refundable_credits)
             self.update_variable(income_tax_non_refundable_credits)
+            self.update_variable(household_tax_before_refundable_credits)
 
     return reform
 
