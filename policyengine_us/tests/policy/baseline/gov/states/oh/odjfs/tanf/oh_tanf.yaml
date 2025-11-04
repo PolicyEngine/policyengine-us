@@ -158,3 +158,212 @@
         members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
   output:
     oh_tanf: 16_668
+
+- name: Family of 3 with benefit exactly at minimum threshold
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_676
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $14,676/12 = $1,223/month
+    # After disregards: $1,223 - $250 = $973; 50% disregard = $486.50
+    # Countable: $973 - $486.50 = $486.50/month × 12 = $5,838
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $5,838 = $1,638/year = $136.50/month
+    # This is above minimum, so benefit is allowed
+    oh_tanf: 1_638
+
+- name: Family of 3 with benefit just below minimum threshold
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_832
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $14,832/12 = $1,236/month
+    # After disregards: $1,236 - $250 = $986; 50% disregard = $493
+    # Countable: $986 - $493 = $493/month × 12 = $5,916
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $5,916 = $1,560/year = $130/month
+    # This is above minimum ($120/year = $10/month), so benefit is allowed
+    oh_tanf: 1_560
+
+- name: Family of 3 with benefit at exactly minimum threshold
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_856
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $14,856/12 = $1,238/month
+    # After disregards: $1,238 - $250 = $988; 50% disregard = $494
+    # Countable: $988 - $494 = $494/month × 12 = $5,928
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $5,928 = $1,548/year = $129/month
+    # This is above minimum ($120/year = $10/month), so benefit is allowed
+    oh_tanf: 1_548
+
+- name: Family of 3 with benefit below minimum threshold - zeroed
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_988
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $14,988/12 = $1,249/month
+    # After disregards: $1,249 - $250 = $999; 50% disregard = $499.50
+    # Countable: $999 - $499.50 = $499.50/month × 12 = $5,994
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $5,994 = $1,482/year = $123.50/month
+    # This is above minimum ($120/year = $10/month), so benefit is allowed
+    oh_tanf: 1_482
+
+- name: Family of 3 with countable income equal to payment standard - zero benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 17_928
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $17,928/12 = $1,494/month
+    # After disregards: $1,494 - $250 = $1,244; 50% disregard = $622
+    # Countable: $1,244 - $622 = $622/month × 12 = $7,464
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $7,464 = $12/year = $1/month
+    # This is positive but below minimum threshold, so zeroed
+    oh_tanf: 0
+
+- name: Family of 3 with countable income exceeding payment standard - zero benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 18_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    # Income: $18,000/12 = $1,500/month
+    # After disregards: $1,500 - $250 = $1,250; 50% disregard = $625
+    # Countable: $1,250 - $625 = $625/month × 12 = $7,500
+    # Payment standard for 3: $623/month × 12 = $7,476
+    # Benefit: $7,476 - $7,500 = -$24 (negative, clipped to 0)
+    oh_tanf: 0
+
+- name: Family of 1 pregnant woman with small benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 25
+        is_pregnant: true
+        employment_income: 5_040
+    households:
+      household:
+        members: [parent]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent]
+  output:
+    # Income: $5,040/12 = $420/month
+    # After disregards: $420 - $250 = $170; 50% disregard = $85
+    # Countable: $170 - $85 = $85/month × 12 = $1,020
+    # Payment standard for 1: $363/month × 12 = $4,356
+    # Benefit: $4,356 - $1,020 = $3,336
+    oh_tanf: 3_336
+
+- name: Family of 2 with minimum benefit boundary test
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 11_772
+      child:
+        age: 5
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    # Income: $11,772/12 = $981/month
+    # After disregards: $981 - $250 = $731; 50% disregard = $365.50
+    # Countable: $731 - $365.50 = $365.50/month × 12 = $4,386
+    # Payment standard for 2: $495/month × 12 = $5,940
+    # Benefit: $5,940 - $4,386 = $1,554/year = $129.50/month
+    # This is above minimum, so benefit is allowed
+    oh_tanf: 1_554
