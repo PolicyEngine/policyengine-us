@@ -5,11 +5,12 @@ class pa_tanf(Variable):
     value_type = float
     entity = SPMUnit
     label = "Pennsylvania TANF"
-    documentation = "Pennsylvania Temporary Assistance for Needy Families (TANF) cash assistance benefit amount, calculated as the Family Size Allowance minus countable income."
     unit = USD
     definition_period = MONTH
     defined_for = "pa_tanf_eligible"
-    reference = "55 Pa. Code Chapters 175, 183"
+    reference = (
+        "https://www.pa.gov/agencies/dhs/resources/cash-assistance/tanf"
+    )
 
     def formula(spm_unit, period, parameters):
         # Get maximum benefit (annual)

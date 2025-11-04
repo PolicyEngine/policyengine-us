@@ -1,110 +1,95 @@
-- name: No income - zero countable income
-  period: 2024
+- name: Case 1, no income.
+  period: 2024-01
   input:
     employment_income_before_lsr: 0
     social_security: 0
-    pa_tanf_earned_income_deductions: 0
     state_code: PA
   output:
     pa_tanf_countable_income: 0
 
-- name: Only earned income with deductions
-  period: 2024
+- name: Case 2, earned income only, enrolled.
+  period: 2024-01
   input:
     employment_income_before_lsr: 12_000
     social_security: 0
-    pa_tanf_earned_income_deductions: 8_940
+    is_tanf_enrolled: true
     state_code: PA
   output:
-    pa_tanf_countable_income: 3_060
+    # Monthly: $12,000/12 = $1,000
+    # $1,000 - $90 = $910; $910 × 50% = $455; $455 - $200 = $255
+    pa_tanf_countable_income: 255
 
-- name: Only unearned income - no deductions
-  period: 2024
+- name: Case 3, earned income only, new applicant.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 12_000
+    social_security: 0
+    is_tanf_enrolled: false
+    state_code: PA
+  output:
+    # Monthly: $12,000/12 = $1,000
+    # $1,000 - $90 = $910; No disregard; $910 - $200 = $710
+    pa_tanf_countable_income: 710
+
+- name: Case 4, unearned income only.
+  period: 2024-01
   input:
     employment_income_before_lsr: 0
     social_security: 6_000
-    pa_tanf_earned_income_deductions: 0
     state_code: PA
   output:
-    pa_tanf_countable_income: 6_000
+    # Monthly: $6,000/12 = $500
+    # Unearned income has no deductions
+    pa_tanf_countable_income: 500
 
-- name: Both earned and unearned income
-  period: 2024
+- name: Case 5, both earned and unearned, enrolled.
+  period: 2024-01
   input:
-    employment_income_before_lsr: 6_000
-    social_security: 3_000
-    pa_tanf_earned_income_deductions: 5_940
+    employment_income_before_lsr: 7_200
+    social_security: 3_600
+    is_tanf_enrolled: true
     state_code: PA
   output:
-    # Earned: $6,000 - $5,940 = $60
-    # Unearned: $3,000
-    # Total: $60 + $3,000 = $3,060
-    pa_tanf_countable_income: 3_060
+    # Earned monthly: $7,200/12 = $600
+    # $600 - $90 = $510; $510 × 50% = $255; $255 - $200 = $55
+    # Unearned monthly: $3,600/12 = $300
+    # Total: $55 + $300 = $355
+    pa_tanf_countable_income: 355
 
-- name: Earned deductions exceed earned income - zero countable earned
-  period: 2024
+- name: Case 6, deductions exceed earned income.
+  period: 2024-01
   input:
-    employment_income_before_lsr: 2_000
-    social_security: 1_500
-    pa_tanf_earned_income_deductions: 3_000
+    employment_income_before_lsr: 2_400
+    social_security: 1_200
+    is_tanf_enrolled: true
     state_code: PA
   output:
-    # Earned: max($2,000 - $3,000, 0) = $0
-    # Unearned: $1,500
-    # Total: $1,500
-    pa_tanf_countable_income: 1_500
+    # Earned monthly: $2,400/12 = $200
+    # $200 - $90 = $110; $110 × 50% = $55; $55 - $200 = -$145, clipped to 0
+    # Unearned monthly: $1,200/12 = $100
+    # Total: $0 + $100 = $100
+    pa_tanf_countable_income: 100
 
-- name: High earned income with standard deductions
-  period: 2024
+- name: Case 7, high earned income, enrolled.
+  period: 2024-01
   input:
     employment_income_before_lsr: 30_000
     social_security: 0
-    pa_tanf_earned_income_deductions: 17_940
+    is_tanf_enrolled: true
     state_code: PA
   output:
-    # $30,000 - $17,940 = $12,060
-    pa_tanf_countable_income: 12_060
+    # Monthly: $30,000/12 = $2,500
+    # $2,500 - $90 = $2,410; $2,410 × 50% = $1,205; $1,205 - $200 = $1,005
+    pa_tanf_countable_income: 1_005
 
-- name: Very low earned income with deductions
-  period: 2024
+- name: Case 8, high earned income, new applicant.
+  period: 2024-01
   input:
-    employment_income_before_lsr: 2_400
+    employment_income_before_lsr: 30_000
     social_security: 0
-    pa_tanf_earned_income_deductions: 3_480
+    is_tanf_enrolled: false
     state_code: PA
   output:
-    # max($2,400 - $3,480, 0) = $0
-    pa_tanf_countable_income: 0
-
-- name: High unearned income only
-  period: 2024
-  input:
-    employment_income_before_lsr: 0
-    social_security: 15_000
-    pa_tanf_earned_income_deductions: 0
-    state_code: PA
-  output:
-    pa_tanf_countable_income: 15_000
-
-- name: Mixed income - moderate amounts
-  period: 2024
-  input:
-    employment_income_before_lsr: 18_000
-    social_security: 2_400
-    pa_tanf_earned_income_deductions: 11_940
-    state_code: PA
-  output:
-    # Earned: $18,000 - $11,940 = $6,060
-    # Unearned: $2,400
-    # Total: $8,460
-    pa_tanf_countable_income: 8_460
-
-- name: Exactly at deduction threshold
-  period: 2024
-  input:
-    employment_income_before_lsr: 5_000
-    social_security: 0
-    pa_tanf_earned_income_deductions: 5_000
-    state_code: PA
-  output:
-    pa_tanf_countable_income: 0
+    # Monthly: $30,000/12 = $2,500
+    # $2,500 - $90 = $2,410; No disregard; $2,410 - $200 = $2,210
+    pa_tanf_countable_income: 2_210

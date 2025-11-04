@@ -1,0 +1,17 @@
+description: Pennsylvania TANF Group 1 counties for benefit amount and standard of need schedules.
+
+metadata:
+  unit: list
+  period: year
+  label: Pennsylvania TANF Group 1 counties
+  reference:
+    - title: PA DHS Policy Manual - Appendix A and B
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/168_Determining_Eligibility_and_Payment_Amount/168_Appendix_A.htm
+
+values:
+  1990-01-01:
+    - BUCKS_COUNTY_PA
+    - CHESTER_COUNTY_PA
+    - LANCASTER_COUNTY_PA
+    - MONTGOMERY_COUNTY_PA
+    - PIKE_COUNTY_PA

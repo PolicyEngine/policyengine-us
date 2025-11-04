@@ -5,10 +5,11 @@ class pa_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Pennsylvania TANF eligibility"
-    documentation = "Pennsylvania TANF eligibility requires meeting demographic, income, and resource requirements."
     definition_period = MONTH
     defined_for = StateCode.PA
-    reference = "55 Pa. Code Chapters 145, 153, 175, 178, 183"
+    reference = (
+        "https://www.pa.gov/agencies/dhs/resources/cash-assistance/tanf"
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

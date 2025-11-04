@@ -1,98 +1,90 @@
-- name: Single person household - size 1
-  period: 2024
+- name: Case 1, single person household.
+  period: 2024-01
   input:
     spm_unit_size: 1
     state_code: PA
   output:
-    # $205/month * 12 = $2,460/year
-    pa_tanf_maximum_benefit: 2_460
+    pa_tanf_maximum_benefit: 205
 
-- name: Two person household - size 2
-  period: 2024
+- name: Case 2, two person household.
+  period: 2024-01
   input:
     spm_unit_size: 2
     state_code: PA
   output:
-    # $316/month * 12 = $3,792/year
-    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_maximum_benefit: 316
 
-- name: Three person household - size 3
-  period: 2024
+- name: Case 3, three person household.
+  period: 2024-01
   input:
     spm_unit_size: 3
     state_code: PA
   output:
-    # $403/month * 12 = $4,836/year
-    pa_tanf_maximum_benefit: 4_836
+    pa_tanf_maximum_benefit: 403
 
-- name: Four person household - size 4
-  period: 2024
+- name: Case 4, four person household.
+  period: 2024-01
   input:
     spm_unit_size: 4
     state_code: PA
   output:
-    # $497/month * 12 = $5,964/year
-    pa_tanf_maximum_benefit: 5_964
+    pa_tanf_maximum_benefit: 497
 
-- name: Five person household - size 5
-  period: 2024
+- name: Case 5, five person household.
+  period: 2024-01
   input:
     spm_unit_size: 5
     state_code: PA
   output:
-    # $589/month * 12 = $7,068/year
-    pa_tanf_maximum_benefit: 7_068
+    pa_tanf_maximum_benefit: 589
 
-- name: Six person household - size 6
-  period: 2024
+- name: Case 6, six person household.
+  period: 2024-01
   input:
     spm_unit_size: 6
     state_code: PA
   output:
-    # $670/month * 12 = $8,040/year
-    pa_tanf_maximum_benefit: 8_040
+    pa_tanf_maximum_benefit: 670
 
-- name: Seven person household - size 7
-  period: 2024
+- name: Case 7, seven person household.
+  period: 2024-01
   input:
     spm_unit_size: 7
     state_code: PA
   output:
-    # $753/month * 12 = $9,036/year
-    pa_tanf_maximum_benefit: 9_036
+    pa_tanf_maximum_benefit: 753
 
-- name: Eight person household - size 8 (table max)
-  period: 2024
+- name: Case 8, eight person household.
+  period: 2024-01
   input:
     spm_unit_size: 8
     state_code: PA
   output:
-    # $836/month * 12 = $10,032/year
-    pa_tanf_maximum_benefit: 10_032
+    pa_tanf_maximum_benefit: 836
 
-- name: Nine person household - beyond table size
-  period: 2024
+- name: Case 9, nine person household.
+  period: 2024-01
   input:
     spm_unit_size: 9
     state_code: PA
   output:
-    # $836 base + $83 increment = $919/month * 12 = $11,028/year
-    pa_tanf_maximum_benefit: 11_028
+    # $836 base + $83 increment = $919
+    pa_tanf_maximum_benefit: 919
 
-- name: Ten person household - beyond table size
-  period: 2024
+- name: Case 10, ten person household.
+  period: 2024-01
   input:
     spm_unit_size: 10
     state_code: PA
   output:
-    # $836 base + ($83 * 2) = $1,002/month * 12 = $12,024/year
-    pa_tanf_maximum_benefit: 12_024
+    # $836 base + ($83 × 2) = $1,002
+    pa_tanf_maximum_benefit: 1_002
 
-- name: Very large household - size 12
-  period: 2024
+- name: Case 11, very large household.
+  period: 2024-01
   input:
     spm_unit_size: 12
     state_code: PA
   output:
-    # $836 base + ($83 * 4) = $1,168/month * 12 = $14,016/year
-    pa_tanf_maximum_benefit: 14_016
+    # $836 base + ($83 × 4) = $1,168
+    pa_tanf_maximum_benefit: 1_168

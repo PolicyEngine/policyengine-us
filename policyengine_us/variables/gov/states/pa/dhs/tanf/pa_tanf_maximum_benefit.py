@@ -5,54 +5,55 @@ class pa_tanf_maximum_benefit(Variable):
     value_type = float
     entity = SPMUnit
     label = "Pennsylvania TANF maximum benefit"
-    documentation = "Pennsylvania TANF Family Size Allowance (FSA) is the maximum monthly benefit amount based on household size, before income deductions."
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.PA
-    reference = "55 Pa. Code Chapter 183, Appendix B, Table 3"
+    reference = "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.pa.dhs.tanf
+        household = spm_unit.household
+
+        # Get county group
+        county_group = household("pa_tanf_county_group", period)
 
         # Get household size
         size = spm_unit("spm_unit_size", period)
 
-        # Get benefit amounts for sizes 1-8
-        benefit_schedule = p.benefit_amount
-
-        # For households larger than 8, add incremental amount per person
-        base_size = 8
-        # Use .astype(int) to ensure proper indexing
+        # For households larger than 6, add incremental amount per person
+        base_size = 6
         capped_size = min_(size, base_size).astype(int)
 
-        # Get scheduled benefit for household size (keys are strings in parameter file)
-        scheduled_benefit = select(
+        # Get benefit schedule for each group
+        group_1_schedule = p.benefit_amount.GROUP_1
+        group_2_schedule = p.benefit_amount.GROUP_2
+        group_3_schedule = p.benefit_amount.GROUP_3
+        group_4_schedule = p.benefit_amount.GROUP_4
+
+        # Select benefit based on county group and size
+        from policyengine_us.variables.gov.states.pa.dhs.tanf.pa_tanf_county_group import (
+            PATANFCountyGroup,
+        )
+
+        benefit = select(
             [
-                capped_size == 1,
-                capped_size == 2,
-                capped_size == 3,
-                capped_size == 4,
-                capped_size == 5,
-                capped_size == 6,
-                capped_size == 7,
-                capped_size == 8,
+                county_group == PATANFCountyGroup.GROUP_1,
+                county_group == PATANFCountyGroup.GROUP_2,
+                county_group == PATANFCountyGroup.GROUP_3,
+                county_group == PATANFCountyGroup.GROUP_4,
             ],
             [
-                benefit_schedule["1"],
-                benefit_schedule["2"],
-                benefit_schedule["3"],
-                benefit_schedule["4"],
-                benefit_schedule["5"],
-                benefit_schedule["6"],
-                benefit_schedule["7"],
-                benefit_schedule["8"],
+                group_1_schedule[capped_size],
+                group_2_schedule[capped_size],
+                group_3_schedule[capped_size],
+                group_4_schedule[capped_size],
             ],
         )
 
-        # Add increment for each person beyond 8
+        # Add increment for each person beyond 6
         additional_people = max_(size - base_size, 0)
         additional_increment = p.additional_person_increment
         additional_benefit = additional_people * additional_increment
 
         # Return monthly benefit
-        return scheduled_benefit + additional_benefit
+        return benefit + additional_benefit
