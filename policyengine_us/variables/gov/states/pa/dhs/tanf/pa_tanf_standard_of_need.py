@@ -1,14 +1,14 @@
 from policyengine_us.model_api import *
 
 
-class pa_tanf_maximum_benefit(Variable):
+class pa_tanf_standard_of_need(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Pennsylvania TANF maximum benefit"
+    label = "Pennsylvania TANF standard of need"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.PA
-    reference = "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
+    reference = "http://services.dpw.state.pa.us/oimpolicymanuals/cash/168_Determining_Eligibility_and_Payment_Amount/168_Appendix_A.htm"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.pa.dhs.tanf
@@ -23,14 +23,14 @@ class pa_tanf_maximum_benefit(Variable):
         # For households larger than 6, add incremental amount per person
         capped_size = min_(size, 6).astype(int)
 
-        # Get benefit based on county group and size
+        # Get standard of need based on county group and size
         # Use county_group enum value as parameter key
-        benefit = p.benefit_amount[county_group][capped_size]
+        standard = p.standard_of_need[county_group][capped_size]
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.additional_person_increment
-        additional_benefit = additional_people * additional_increment
+        additional_increment = p.standard_of_need_additional_person
+        additional_amount = additional_people * additional_increment
 
-        # Return monthly benefit
-        return benefit + additional_benefit
+        # Return monthly standard of need
+        return standard + additional_amount

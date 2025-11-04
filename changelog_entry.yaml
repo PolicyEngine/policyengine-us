@@ -1,10 +1,4 @@
 - bump: minor
   changes:
     added:
-    - Pennsylvania TANF (Cash Assistance) simplified implementation following PolicyEngine coding standards
-    - PA TANF county group support (4 groups covering all 67 PA counties)
-    - PA TANF Standard of Need parameter for disregard eligibility determination
-    - Person-level earned income deductions with applicant vs recipient distinction
-    - Integration with federal TANF demographic and immigration eligibility variables
-    fixed:
-    - Federal TANF parameter typo (employment_income_before_lrs → employment_income_before_lsr)
+    - Pennsylvania TANF.

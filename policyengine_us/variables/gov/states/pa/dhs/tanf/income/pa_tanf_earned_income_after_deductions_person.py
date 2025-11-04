@@ -20,21 +20,25 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         after_initial = max_(gross_earned - p.initial_work_expense.amount, 0)
 
         # Step 2: Apply 50% earned income disregard (only if eligible)
-        # Eligibility: enrolled OR received TANF in 1 of last 4 months
-        # Simplified: use is_tanf_enrolled as proxy
-        is_enrolled = person.spm_unit("is_tanf_enrolled", period)
+        # Eligibility determined by pa_tanf_disregard_eligible:
+        # - Enrolled recipients: automatic
+        # - New applicants: must pass Standard of Need test
+        disregard_eligible = person.spm_unit(
+            "pa_tanf_disregard_eligible", period
+        )
 
         # Apply disregard conditionally
-        # "Disregard 50%" = keep only 50%, so multiply by (1 - 0.5)
+        # "Disregard 50%" = keep only 50%
+        disregard_percentage = p.earned_income_disregard.percentage
+        keep_rate = 1 - disregard_percentage
+
         after_disregard = where(
-            is_enrolled,
-            # Recipients: apply 50% disregard (keep 50% of remaining)
-            after_initial * (1 - p.earned_income_disregard.percentage),
-            # New applicants: no disregard (keep 100%)
+            disregard_eligible,
+            # Eligible: apply 50% disregard (keep 50% of remaining)
+            after_initial * keep_rate,
+            # Not eligible: no disregard (keep 100%)
             after_initial,
         )
 
         # Step 3: Subtract $200 additional work expense deduction (everyone)
-        countable = max_(after_disregard - p.additional_work_expense.amount, 0)
-
-        return countable
+        return max_(after_disregard - p.additional_work_expense.amount, 0)
