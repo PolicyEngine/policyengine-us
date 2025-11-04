@@ -1,0 +1,14 @@
+description: Pennsylvania deducts this amount from gross earned income under the Temporary Assistance for Needy Families program before applying other deductions.
+
+values:
+  1990-01-01: 90
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania TANF initial work expense deduction
+  reference:
+    - title: 55 Pa. Code § 183.94(a)(2) - First $90 monthly from earnings
+      href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+    - title: Pennsylvania TANF Working References - Earned Income Deductions
+      href: file://working_references.md#earned-income-deductions

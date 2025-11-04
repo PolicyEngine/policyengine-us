@@ -6,17 +6,16 @@ class pa_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "Pennsylvania TANF income eligibility"
     documentation = "Pennsylvania TANF requires countable income to be less than the Family Size Allowance (FSA) for the household size."
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.PA
     reference = "55 Pa. Code Chapter 183, working_references.md"
 
     def formula(spm_unit, period, parameters):
-        # Get countable income (annual)
+        # Get countable income (monthly)
         countable_income = spm_unit("pa_tanf_countable_income", period)
 
-        # Get maximum benefit (monthly), convert to annual
+        # Get maximum benefit (monthly)
         maximum_benefit = spm_unit("pa_tanf_maximum_benefit", period)
-        annual_maximum = maximum_benefit * 12
 
         # Eligible if countable income is less than the benefit standard
-        return countable_income < annual_maximum
+        return countable_income < maximum_benefit

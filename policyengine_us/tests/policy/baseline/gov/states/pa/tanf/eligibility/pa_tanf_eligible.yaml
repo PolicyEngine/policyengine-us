@@ -1,7 +1,7 @@
 - name: All requirements met - eligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: true
+    is_demographic_tanf_eligible: true
     pa_tanf_income_eligible: true
     pa_tanf_resource_eligible: true
     state_code: PA
@@ -11,7 +11,7 @@
 - name: Demographic not met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: false
+    is_demographic_tanf_eligible: false
     pa_tanf_income_eligible: true
     pa_tanf_resource_eligible: true
     state_code: PA
@@ -21,7 +21,7 @@
 - name: Income not met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: true
+    is_demographic_tanf_eligible: true
     pa_tanf_income_eligible: false
     pa_tanf_resource_eligible: true
     state_code: PA
@@ -31,7 +31,7 @@
 - name: Resource not met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: true
+    is_demographic_tanf_eligible: true
     pa_tanf_income_eligible: true
     pa_tanf_resource_eligible: false
     state_code: PA
@@ -41,7 +41,7 @@
 - name: Only demographic met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: true
+    is_demographic_tanf_eligible: true
     pa_tanf_income_eligible: false
     pa_tanf_resource_eligible: false
     state_code: PA
@@ -51,7 +51,7 @@
 - name: Only income met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: false
+    is_demographic_tanf_eligible: false
     pa_tanf_income_eligible: true
     pa_tanf_resource_eligible: false
     state_code: PA
@@ -61,7 +61,7 @@
 - name: Only resource met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: false
+    is_demographic_tanf_eligible: false
     pa_tanf_income_eligible: false
     pa_tanf_resource_eligible: true
     state_code: PA
@@ -71,7 +71,7 @@
 - name: No requirements met - ineligible
   period: 2024
   input:
-    pa_tanf_demographic_eligible: false
+    is_demographic_tanf_eligible: false
     pa_tanf_income_eligible: false
     pa_tanf_resource_eligible: false
     state_code: PA

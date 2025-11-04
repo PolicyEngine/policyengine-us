@@ -7,7 +7,7 @@ class pa_tanf_maximum_benefit(Variable):
     label = "Pennsylvania TANF maximum benefit"
     documentation = "Pennsylvania TANF Family Size Allowance (FSA) is the maximum monthly benefit amount based on household size, before income deductions."
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.PA
     reference = "55 Pa. Code Chapter 183, Appendix B, Table 3"
 
@@ -54,8 +54,5 @@ class pa_tanf_maximum_benefit(Variable):
         additional_increment = p.additional_person_increment
         additional_benefit = additional_people * additional_increment
 
-        # Monthly benefit
-        monthly_benefit = scheduled_benefit + additional_benefit
-
-        # Return annual benefit (used in yearly calculation)
-        return monthly_benefit * 12
+        # Return monthly benefit
+        return scheduled_benefit + additional_benefit

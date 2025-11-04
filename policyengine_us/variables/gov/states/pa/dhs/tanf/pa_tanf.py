@@ -7,7 +7,7 @@ class pa_tanf(Variable):
     label = "Pennsylvania TANF"
     documentation = "Pennsylvania Temporary Assistance for Needy Families (TANF) cash assistance benefit amount, calculated as the Family Size Allowance minus countable income."
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "pa_tanf_eligible"
     reference = "55 Pa. Code Chapters 175, 183"
 

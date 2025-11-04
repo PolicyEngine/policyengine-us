@@ -1,0 +1,23 @@
+description: Pennsylvania deducts up to this amount of child care expenses per child from countable income under the Temporary Assistance for Needy Families program, depending on child age.
+
+metadata:
+  period: month
+  label: Pennsylvania TANF monthly child care deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 55 Pa. Code § 181.311, § 183.91 - Child care deductions
+      href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+    - title: Pennsylvania TANF Working References - Child Care Expense Deductions
+      href: file://working_references.md#child-care-expense-deductions
+
+brackets:
+  - threshold:
+      1990-01-01: 0
+    amount:
+      1990-01-01: 200
+  - threshold:
+      1990-01-01: 2
+    amount:
+      1990-01-01: 175

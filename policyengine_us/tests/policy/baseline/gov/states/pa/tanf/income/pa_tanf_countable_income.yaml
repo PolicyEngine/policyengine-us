@@ -1,8 +1,8 @@
 - name: No income - zero countable income
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 0
-    pa_tanf_gross_unearned_income: 0
+    employment_income_before_lsr: 0
+    social_security: 0
     pa_tanf_earned_income_deductions: 0
     state_code: PA
   output:
@@ -11,8 +11,8 @@
 - name: Only earned income with deductions
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 12_000
-    pa_tanf_gross_unearned_income: 0
+    employment_income_before_lsr: 12_000
+    social_security: 0
     pa_tanf_earned_income_deductions: 8_940
     state_code: PA
   output:
@@ -21,8 +21,8 @@
 - name: Only unearned income - no deductions
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 0
-    pa_tanf_gross_unearned_income: 6_000
+    employment_income_before_lsr: 0
+    social_security: 6_000
     pa_tanf_earned_income_deductions: 0
     state_code: PA
   output:
@@ -31,8 +31,8 @@
 - name: Both earned and unearned income
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 6_000
-    pa_tanf_gross_unearned_income: 3_000
+    employment_income_before_lsr: 6_000
+    social_security: 3_000
     pa_tanf_earned_income_deductions: 5_940
     state_code: PA
   output:
@@ -44,8 +44,8 @@
 - name: Earned deductions exceed earned income - zero countable earned
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 2_000
-    pa_tanf_gross_unearned_income: 1_500
+    employment_income_before_lsr: 2_000
+    social_security: 1_500
     pa_tanf_earned_income_deductions: 3_000
     state_code: PA
   output:
@@ -57,8 +57,8 @@
 - name: High earned income with standard deductions
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 30_000
-    pa_tanf_gross_unearned_income: 0
+    employment_income_before_lsr: 30_000
+    social_security: 0
     pa_tanf_earned_income_deductions: 17_940
     state_code: PA
   output:
@@ -68,8 +68,8 @@
 - name: Very low earned income with deductions
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 2_400
-    pa_tanf_gross_unearned_income: 0
+    employment_income_before_lsr: 2_400
+    social_security: 0
     pa_tanf_earned_income_deductions: 3_480
     state_code: PA
   output:
@@ -79,8 +79,8 @@
 - name: High unearned income only
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 0
-    pa_tanf_gross_unearned_income: 15_000
+    employment_income_before_lsr: 0
+    social_security: 15_000
     pa_tanf_earned_income_deductions: 0
     state_code: PA
   output:
@@ -89,8 +89,8 @@
 - name: Mixed income - moderate amounts
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 18_000
-    pa_tanf_gross_unearned_income: 2_400
+    employment_income_before_lsr: 18_000
+    social_security: 2_400
     pa_tanf_earned_income_deductions: 11_940
     state_code: PA
   output:
@@ -102,8 +102,8 @@
 - name: Exactly at deduction threshold
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 5_000
-    pa_tanf_gross_unearned_income: 0
+    employment_income_before_lsr: 5_000
+    social_security: 0
     pa_tanf_earned_income_deductions: 5_000
     state_code: PA
   output:

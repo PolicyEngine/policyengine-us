@@ -7,14 +7,18 @@ class pa_tanf_countable_income(Variable):
     label = "Pennsylvania TANF countable income"
     documentation = "Pennsylvania TANF countable income is the sum of earned income after deductions plus all unearned income, used to determine eligibility and benefit amount."
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.PA
     reference = "55 Pa. Code Chapter 183"
 
     def formula(spm_unit, period, parameters):
-        # Get gross income
-        gross_earned = spm_unit("pa_tanf_gross_earned_income", period)
-        gross_unearned = spm_unit("pa_tanf_gross_unearned_income", period)
+        person = spm_unit.members
+
+        # Use federal baseline (Person, MONTH) and aggregate to SPMUnit
+        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
+        gross_unearned = spm_unit.sum(
+            person("tanf_gross_unearned_income", period)
+        )
 
         # Get earned income deductions
         earned_deductions = spm_unit(

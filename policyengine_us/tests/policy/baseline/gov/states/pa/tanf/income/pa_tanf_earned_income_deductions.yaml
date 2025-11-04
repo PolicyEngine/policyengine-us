@@ -1,7 +1,7 @@
 - name: No earned income - standard deductions still apply
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 0
+    employment_income_before_lsr: 0
     state_code: PA
   output:
     # Monthly: $0, but standard deductions still calculated
@@ -12,7 +12,7 @@
 - name: Very low earned income - below first deduction
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 600
+    employment_income_before_lsr: 600
     state_code: PA
   output:
     # Monthly: $600/12 = $50
@@ -26,7 +26,7 @@
 - name: Low earned income - 2400 annual
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 2_400
+    employment_income_before_lsr: 2_400
     state_code: PA
   output:
     # Monthly: $2,400/12 = $200
@@ -39,7 +39,7 @@
 - name: Moderate earned income - 12000 annual
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 12_000
+    employment_income_before_lsr: 12_000
     state_code: PA
   output:
     # Monthly: $12,000/12 = $1,000
@@ -52,7 +52,7 @@
 - name: Higher earned income - 18000 annual
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 18_000
+    employment_income_before_lsr: 18_000
     state_code: PA
   output:
     # Monthly: $18,000/12 = $1,500
@@ -65,7 +65,7 @@
 - name: High earned income - 30000 annual
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 30_000
+    employment_income_before_lsr: 30_000
     state_code: PA
   output:
     # Monthly: $30,000/12 = $2,500
@@ -78,7 +78,7 @@
 - name: Income exactly 6000 - edge case
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 6_000
+    employment_income_before_lsr: 6_000
     state_code: PA
   output:
     # Monthly: $6,000/12 = $500
@@ -91,7 +91,7 @@
 - name: Income exactly 9600 - edge case
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 9_600
+    employment_income_before_lsr: 9_600
     state_code: PA
   output:
     # Monthly: $9,600/12 = $800
@@ -104,7 +104,7 @@
 - name: Income 14400 - moderate high
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 14_400
+    employment_income_before_lsr: 14_400
     state_code: PA
   output:
     # Monthly: $14,400/12 = $1,200
@@ -117,7 +117,7 @@
 - name: Income exactly at 90 monthly threshold
   period: 2024
   input:
-    pa_tanf_gross_earned_income: 1_080
+    employment_income_before_lsr: 1_080
     state_code: PA
   output:
     # Monthly: $1,080/12 = $90
