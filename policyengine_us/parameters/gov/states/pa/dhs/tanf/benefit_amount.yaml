@@ -1,0 +1,30 @@
+description: Pennsylvania TANF monthly Family Size Allowance (FSA) benefit amounts for Group 2 (Philadelphia County), which represent the maximum benefit a family can receive before income deductions.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: Pennsylvania TANF Family Size Allowance (FSA) - Group 2
+  reference:
+    - title: Pennsylvania TANF Working References - Benefit Amounts and Payment Standards, Group 2 (Philadelphia County)
+      href: file://working_references.md#benefit-amounts-and-payment-standards
+    - title: 55 Pa. Code Chapter 183, Appendix B, Table 3
+      href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+
+1:
+  1990-01-01: 205
+2:
+  1990-01-01: 316
+3:
+  1990-01-01: 403
+4:
+  1990-01-01: 497
+5:
+  1990-01-01: 589
+6:
+  1990-01-01: 670
+7:
+  1990-01-01: 753
+8:
+  1990-01-01: 836

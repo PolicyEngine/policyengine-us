@@ -1,0 +1,9 @@
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania TANF (Cash Assistance) implementation with eligibility rules, income calculations, and benefit determination
+    - PA TANF eligibility variables including demographic, income, and resource tests
+    - PA TANF income calculation variables for earned and unearned income with state-specific deductions
+    - PA TANF benefit calculation based on family size and countable income
+    - PA TANF parameters including benefit amounts, income deductions, child care deductions, and time limits
+    - Comprehensive integration tests for PA TANF program covering various household scenarios

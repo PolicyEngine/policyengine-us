@@ -1,0 +1,75 @@
+description: Pennsylvania TANF child care expense deductions vary by child age and parent employment status.
+
+full_time:
+  description: Monthly child care expense deductions for full-time employment.
+
+  age_1_or_younger:
+    description: Pennsylvania TANF deducts this amount per month for child care expenses for each child age 1 or younger when the parent works full-time.
+    metadata:
+      unit: currency-USD
+      period: month
+      reference:
+        - title: 55 Pa. Code § 181.311, § 183.91 - Child care deductions
+          href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+        - title: Pennsylvania TANF Working References - $200/month per child age 1 or younger
+          href: file://working_references.md#child-care-expense-deductions
+    values:
+      1990-01-01: 200
+
+  age_2_or_older:
+    description: Pennsylvania TANF deducts this amount per month for child care expenses for each child age 2 or older when the parent works full-time.
+    metadata:
+      unit: currency-USD
+      period: month
+      reference:
+        - title: 55 Pa. Code § 181.311, § 183.91 - Child care deductions
+          href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+        - title: Pennsylvania TANF Working References - $175/month per child age 2 or older
+          href: file://working_references.md#child-care-expense-deductions
+    values:
+      1990-01-01: 175
+
+part_time:
+  description: Monthly child care expense deductions for part-time employment.
+
+  age_2_or_older:
+    description: Pennsylvania TANF deducts this amount per month for child care expenses for each child age 2 or older when the parent works part-time.
+    metadata:
+      unit: currency-USD
+      period: month
+      reference:
+        - title: 55 Pa. Code § 181.311, § 183.91 - Child care deductions
+          href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+        - title: Pennsylvania TANF Working References - $150/month per child age 2 or older, part-time
+          href: file://working_references.md#child-care-expense-deductions
+    values:
+      1990-01-01: 150
+
+dependent_care_incapacitated:
+  description: Monthly dependent care expense deductions for care of incapacitated adults.
+
+  full_time:
+    description: Pennsylvania TANF deducts this amount per month for dependent care of incapacitated adults when the caregiver works full-time.
+    metadata:
+      unit: currency-USD
+      period: month
+      reference:
+        - title: 55 Pa. Code § 181.311, § 183.91 - Dependent care deductions
+          href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+        - title: Pennsylvania TANF Working References - $175/month for full-time employment
+          href: file://working_references.md#child-care-expense-deductions
+    values:
+      1990-01-01: 175
+
+  part_time:
+    description: Pennsylvania TANF deducts this amount per month for dependent care of incapacitated adults when the caregiver works part-time.
+    metadata:
+      unit: currency-USD
+      period: month
+      reference:
+        - title: 55 Pa. Code § 181.311, § 183.91 - Dependent care deductions
+          href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+        - title: Pennsylvania TANF Working References - $150/month for part-time employment
+          href: file://working_references.md#child-care-expense-deductions
+    values:
+      1990-01-01: 150

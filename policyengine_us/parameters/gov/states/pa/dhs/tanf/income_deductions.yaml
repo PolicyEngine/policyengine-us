@@ -1,0 +1,39 @@
+description: Pennsylvania TANF income deduction parameters used to calculate countable income from gross earned income.
+
+initial_work_expense:
+  description: Pennsylvania TANF deducts this amount from gross earned income before applying other deductions, representing the first $90 monthly from earnings.
+  metadata:
+    unit: currency-USD
+    period: month
+    reference:
+      - title: 55 Pa. Code § 183.94(a)(2) - First $90 monthly from earnings
+        href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+      - title: Pennsylvania TANF Working References - Earned Income Deductions
+        href: file://working_references.md#earned-income-deductions
+  values:
+    1990-01-01: 90
+
+earned_income_disregard_rate:
+  description: Pennsylvania TANF disregards this percentage of remaining earned income after the initial work expense deduction is applied.
+  metadata:
+    unit: /1
+    reference:
+      - title: 55 Pa. Code § 183.94(a)(1) - 50% earned income disregard
+        href: https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055
+      - title: Pennsylvania TANF Working References - Apply 50% earned income disregard
+        href: file://working_references.md#earned-income-deductions
+  values:
+    1990-01-01: 0.5
+
+additional_work_expense:
+  description: Pennsylvania TANF provides this additional monthly work expense deduction for each working individual in TANF families with earned income, applied after the 50% disregard.
+  metadata:
+    unit: currency-USD
+    period: month
+    reference:
+      - title: Just Harvest - Additional $200/month work expense deduction, effective September 26, 2020
+        href: https://justharvest.org/get-help/welfare-client-resources/an-overview-of-welfare-programs/
+      - title: Pennsylvania TANF Working References - Additional Work Expense Deduction
+        href: file://working_references.md#earned-income-deductions
+  values:
+    2020-09-26: 200
