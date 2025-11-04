@@ -1,0 +1,53 @@
+- name: No income - full benefit
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 0
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 3_792
+
+- name: Partial income - partial benefit
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 1_500
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 2_292
+
+- name: Countable income equals maximum benefit - zero benefit
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 3_792
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 0
+
+- name: Countable income exceeds maximum benefit - zero benefit
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 5_000
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 0
+
+- name: Very small benefit amount
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 3_791
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 1
+
+- name: Large family - high maximum benefit
+  period: 2024
+  input:
+    pa_tanf_maximum_benefit: 10_032
+    pa_tanf_countable_income: 2_500
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 7_532

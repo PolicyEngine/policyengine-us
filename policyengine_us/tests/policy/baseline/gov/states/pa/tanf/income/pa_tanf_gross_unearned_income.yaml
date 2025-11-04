@@ -1,0 +1,193 @@
+- name: Single person with Social Security only
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 6_000
+        unemployment_compensation: 0
+    spm_units:
+      unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 6_000
+
+- name: Single person with unemployment only
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 0
+        unemployment_compensation: 4_000
+    spm_units:
+      unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 4_000
+
+- name: Single person with both Social Security and unemployment
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 8_000
+        unemployment_compensation: 3_000
+    spm_units:
+      unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 11_000
+
+- name: Two person household - one with Social Security
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 12_000
+        unemployment_compensation: 0
+      person2:
+        social_security: 0
+        unemployment_compensation: 0
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 12_000
+
+- name: Two person household - both with unearned income
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 9_000
+        unemployment_compensation: 0
+      person2:
+        social_security: 0
+        unemployment_compensation: 5_000
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 14_000
+
+- name: Multi-person household - mixed unearned income
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 15_000
+        unemployment_compensation: 2_000
+      person2:
+        social_security: 6_000
+        unemployment_compensation: 0
+      person3:
+        social_security: 0
+        unemployment_compensation: 3_000
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 26_000
+
+- name: No unearned income - all zeros
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 0
+        unemployment_compensation: 0
+      person2:
+        social_security: 0
+        unemployment_compensation: 0
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 0
+
+- name: Very low unearned income
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 1_000
+        unemployment_compensation: 0
+    spm_units:
+      unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 1_000
+
+- name: High unearned income
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 25_000
+        unemployment_compensation: 8_000
+    spm_units:
+      unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 33_000
+
+- name: Large household with multiple unearned income sources
+  period: 2024
+  input:
+    people:
+      person1:
+        social_security: 18_000
+        unemployment_compensation: 0
+      person2:
+        social_security: 10_000
+        unemployment_compensation: 4_000
+      person3:
+        social_security: 0
+        unemployment_compensation: 0
+      person4:
+        social_security: 0
+        unemployment_compensation: 0
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    pa_tanf_gross_unearned_income: 32_000

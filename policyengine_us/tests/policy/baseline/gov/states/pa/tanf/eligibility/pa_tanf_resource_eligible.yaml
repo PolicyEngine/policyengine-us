@@ -1,0 +1,79 @@
+- name: No assets - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 0
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Low assets - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 500
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Assets just below limit - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 999
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Assets exactly at limit - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 1_000
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Assets just above limit - not eligible
+  period: 2024
+  input:
+    spm_unit_assets: 1_001
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: false
+
+- name: Assets moderately above limit - not eligible
+  period: 2024
+  input:
+    spm_unit_assets: 2_000
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: false
+
+- name: High assets - not eligible
+  period: 2024
+  input:
+    spm_unit_assets: 10_000
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: false
+
+- name: Very low assets - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 100
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Assets at half of limit - eligible
+  period: 2024
+  input:
+    spm_unit_assets: 500
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: true
+
+- name: Very high assets - not eligible
+  period: 2024
+  input:
+    spm_unit_assets: 50_000
+    state_code: PA
+  output:
+    pa_tanf_resource_eligible: false

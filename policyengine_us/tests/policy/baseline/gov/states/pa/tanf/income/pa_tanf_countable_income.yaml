@@ -1,0 +1,110 @@
+- name: No income - zero countable income
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 0
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_earned_income_deductions: 0
+    state_code: PA
+  output:
+    pa_tanf_countable_income: 0
+
+- name: Only earned income with deductions
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 12_000
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_earned_income_deductions: 8_940
+    state_code: PA
+  output:
+    pa_tanf_countable_income: 3_060
+
+- name: Only unearned income - no deductions
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 0
+    pa_tanf_gross_unearned_income: 6_000
+    pa_tanf_earned_income_deductions: 0
+    state_code: PA
+  output:
+    pa_tanf_countable_income: 6_000
+
+- name: Both earned and unearned income
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 6_000
+    pa_tanf_gross_unearned_income: 3_000
+    pa_tanf_earned_income_deductions: 5_940
+    state_code: PA
+  output:
+    # Earned: $6,000 - $5,940 = $60
+    # Unearned: $3,000
+    # Total: $60 + $3,000 = $3,060
+    pa_tanf_countable_income: 3_060
+
+- name: Earned deductions exceed earned income - zero countable earned
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 2_000
+    pa_tanf_gross_unearned_income: 1_500
+    pa_tanf_earned_income_deductions: 3_000
+    state_code: PA
+  output:
+    # Earned: max($2,000 - $3,000, 0) = $0
+    # Unearned: $1,500
+    # Total: $1,500
+    pa_tanf_countable_income: 1_500
+
+- name: High earned income with standard deductions
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 30_000
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_earned_income_deductions: 17_940
+    state_code: PA
+  output:
+    # $30,000 - $17,940 = $12,060
+    pa_tanf_countable_income: 12_060
+
+- name: Very low earned income with deductions
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 2_400
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_earned_income_deductions: 3_480
+    state_code: PA
+  output:
+    # max($2,400 - $3,480, 0) = $0
+    pa_tanf_countable_income: 0
+
+- name: High unearned income only
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 0
+    pa_tanf_gross_unearned_income: 15_000
+    pa_tanf_earned_income_deductions: 0
+    state_code: PA
+  output:
+    pa_tanf_countable_income: 15_000
+
+- name: Mixed income - moderate amounts
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 18_000
+    pa_tanf_gross_unearned_income: 2_400
+    pa_tanf_earned_income_deductions: 11_940
+    state_code: PA
+  output:
+    # Earned: $18,000 - $11,940 = $6,060
+    # Unearned: $2,400
+    # Total: $8,460
+    pa_tanf_countable_income: 8_460
+
+- name: Exactly at deduction threshold
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 5_000
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_earned_income_deductions: 5_000
+    state_code: PA
+  output:
+    pa_tanf_countable_income: 0

@@ -1,0 +1,97 @@
+- name: No income - eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 0
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Income well below maximum - eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 1_000
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Income just below maximum - eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 45_503
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 45,504, so 45,503 < 45,504
+    pa_tanf_income_eligible: true
+
+- name: Income exactly at maximum - not eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 45_504
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 45,504, so 45,504 is NOT < 45,504
+    pa_tanf_income_eligible: false
+
+- name: Income just above maximum - not eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 45_505
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 45,504, so 45,505 is NOT < 45,504
+    pa_tanf_income_eligible: false
+
+- name: Income well above maximum - not eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 50_000
+    pa_tanf_maximum_benefit: 3_792
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 45,504
+    pa_tanf_income_eligible: false
+
+- name: Larger household - income below maximum - eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 100_000
+    pa_tanf_maximum_benefit: 10_032
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 120,384
+    pa_tanf_income_eligible: true
+
+- name: Larger household - income above maximum - not eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 125_000
+    pa_tanf_maximum_benefit: 10_032
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 120,384
+    pa_tanf_income_eligible: false
+
+- name: Very small income difference - eligible
+  period: 2024
+  input:
+    pa_tanf_countable_income: 58_031
+    pa_tanf_maximum_benefit: 4_836
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 58,032
+    pa_tanf_income_eligible: true
+
+- name: Boundary case - one dollar over
+  period: 2024
+  input:
+    pa_tanf_countable_income: 71_569
+    pa_tanf_maximum_benefit: 5_964
+    state_code: PA
+  output:
+    # maximum_benefit * 12 = 71,568
+    pa_tanf_income_eligible: false

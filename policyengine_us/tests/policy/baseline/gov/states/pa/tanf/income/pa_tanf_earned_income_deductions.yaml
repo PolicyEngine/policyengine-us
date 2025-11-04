@@ -1,0 +1,128 @@
+- name: No earned income - standard deductions still apply
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 0
+    state_code: PA
+  output:
+    # Monthly: $0, but standard deductions still calculated
+    # $90 + $0 + $200 = $290 per month
+    # Annual: $290 * 12 = $3,480
+    pa_tanf_earned_income_deductions: 3_480
+
+- name: Very low earned income - below first deduction
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 600
+    state_code: PA
+  output:
+    # Monthly: $600/12 = $50
+    # Step 1: max($50 - $90, 0) = $0
+    # Step 2: $0 * 50% = $0
+    # Step 3: $0 + $0 + $200 = $200 would exceed income
+    # Total monthly: $90 + $0 + $200 = $290
+    # Annual: $290 * 12 = $3,480
+    pa_tanf_earned_income_deductions: 3_480
+
+- name: Low earned income - 2400 annual
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 2_400
+    state_code: PA
+  output:
+    # Monthly: $2,400/12 = $200
+    # Step 1: max($200 - $90, 0) = $110
+    # Step 2: $110 * 50% = $55
+    # Step 3: $90 + $55 + $200 = $345
+    # Annual: $345 * 12 = $4,140
+    pa_tanf_earned_income_deductions: 4_140
+
+- name: Moderate earned income - 12000 annual
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 12_000
+    state_code: PA
+  output:
+    # Monthly: $12,000/12 = $1,000
+    # Step 1: max($1,000 - $90, 0) = $910
+    # Step 2: $910 * 50% = $455
+    # Step 3: $90 + $455 + $200 = $745
+    # Annual: $745 * 12 = $8,940
+    pa_tanf_earned_income_deductions: 8_940
+
+- name: Higher earned income - 18000 annual
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 18_000
+    state_code: PA
+  output:
+    # Monthly: $18,000/12 = $1,500
+    # Step 1: max($1,500 - $90, 0) = $1,410
+    # Step 2: $1,410 * 50% = $705
+    # Step 3: $90 + $705 + $200 = $995
+    # Annual: $995 * 12 = $11,940
+    pa_tanf_earned_income_deductions: 11_940
+
+- name: High earned income - 30000 annual
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 30_000
+    state_code: PA
+  output:
+    # Monthly: $30,000/12 = $2,500
+    # Step 1: max($2,500 - $90, 0) = $2,410
+    # Step 2: $2,410 * 50% = $1,205
+    # Step 3: $90 + $1,205 + $200 = $1,495
+    # Annual: $1,495 * 12 = $17,940
+    pa_tanf_earned_income_deductions: 17_940
+
+- name: Income exactly 6000 - edge case
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 6_000
+    state_code: PA
+  output:
+    # Monthly: $6,000/12 = $500
+    # Step 1: max($500 - $90, 0) = $410
+    # Step 2: $410 * 50% = $205
+    # Step 3: $90 + $205 + $200 = $495
+    # Annual: $495 * 12 = $5,940
+    pa_tanf_earned_income_deductions: 5_940
+
+- name: Income exactly 9600 - edge case
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 9_600
+    state_code: PA
+  output:
+    # Monthly: $9,600/12 = $800
+    # Step 1: max($800 - $90, 0) = $710
+    # Step 2: $710 * 50% = $355
+    # Step 3: $90 + $355 + $200 = $645
+    # Annual: $645 * 12 = $7,740
+    pa_tanf_earned_income_deductions: 7_740
+
+- name: Income 14400 - moderate high
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 14_400
+    state_code: PA
+  output:
+    # Monthly: $14,400/12 = $1,200
+    # Step 1: max($1,200 - $90, 0) = $1,110
+    # Step 2: $1,110 * 50% = $555
+    # Step 3: $90 + $555 + $200 = $845
+    # Annual: $845 * 12 = $10,140
+    pa_tanf_earned_income_deductions: 10_140
+
+- name: Income exactly at 90 monthly threshold
+  period: 2024
+  input:
+    pa_tanf_gross_earned_income: 1_080
+    state_code: PA
+  output:
+    # Monthly: $1,080/12 = $90
+    # Step 1: max($90 - $90, 0) = $0
+    # Step 2: $0 * 50% = $0
+    # Step 3: $90 + $0 + $200 = $290
+    # Annual: $290 * 12 = $3,480
+    pa_tanf_earned_income_deductions: 3_480

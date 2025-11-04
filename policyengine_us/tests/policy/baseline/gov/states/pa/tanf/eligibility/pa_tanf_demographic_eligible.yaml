@@ -1,0 +1,15 @@
+- name: Demographically eligible household
+  period: 2024
+  input:
+    is_demographic_tanf_eligible: true
+    state_code: PA
+  output:
+    pa_tanf_demographic_eligible: true
+
+- name: Demographically ineligible household
+  period: 2024
+  input:
+    is_demographic_tanf_eligible: false
+    state_code: PA
+  output:
+    pa_tanf_demographic_eligible: false
