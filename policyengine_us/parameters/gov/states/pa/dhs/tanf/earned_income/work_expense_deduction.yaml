@@ -1,0 +1,16 @@
+description: Pennsylvania deducts this amount from earned income for all working TANF families to account for work-related expenses, applied after the fifty percent earned income disregard.
+values:
+  2020-09-26: 200
+  2009-03-28: 50
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania TANF work expense deduction
+  reference:
+    - title: "PA Changes in TANF Support Transition from Welfare to Work (September 2020)"
+      href: "https://justharvest.org/pa-changes-tanf-support-transition-from-welfare-to-work/"
+      publication_date: 2020-09-26
+    - title: "55 Pa. Code Section 183.94"
+      href: "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/s183.94.html&d=reduce"
+  household: false
+  economy: false

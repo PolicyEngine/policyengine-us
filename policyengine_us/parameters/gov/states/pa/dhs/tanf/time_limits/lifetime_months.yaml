@@ -1,0 +1,14 @@
+description: Pennsylvania limits TANF cash assistance for adult heads of household or their spouses to this many months over their lifetime.
+values:
+  1996-08-22: 60
+metadata:
+  unit: month
+  label: Pennsylvania TANF lifetime time limit
+  reference:
+    - title: "105.2 TANF Categorical Requirements - Time Limits"
+      href: "http://services.dpw.state.pa.us/oimpolicymanuals/cash/105_Category/105_2_TANF_Categorical_Requirements.htm"
+    - title: "55 Pa. Code Chapter 105, Section 105.2"
+      href: "https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055&file=/secure/pacode/data/055/055toc.html"
+  note: Time limit applies to adult head-of-household or spouse of head-of-household (age 18+), pregnant minor head-of-household, minor parent head-of-household, or minor married to head-of-household. Does not count assistance received as a minor when not head-of-household or spouse.
+  household: false
+  economy: false

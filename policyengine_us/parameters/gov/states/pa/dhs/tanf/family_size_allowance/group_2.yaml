@@ -1,0 +1,41 @@
+description: Pennsylvania uses this Family Size Allowance (FSA) schedule for Group 2, which includes Philadelphia County and most recipients, representing the maximum monthly cash assistance amount and the income eligibility threshold by family size.
+brackets:
+  - threshold:
+      1990-02-03: 0
+    amount:
+      1990-02-03: 205
+  - threshold:
+      1990-02-03: 1
+    amount:
+      1990-02-03: 316
+  - threshold:
+      1990-02-03: 2
+    amount:
+      1990-02-03: 403
+  - threshold:
+      1990-02-03: 3
+    amount:
+      1990-02-03: 497
+  - threshold:
+      1990-02-03: 4
+    amount:
+      1990-02-03: 589
+  - threshold:
+      1990-02-03: 5
+    amount:
+      1990-02-03: 670
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  amount_period: month
+  label: Pennsylvania TANF Family Size Allowance (Group 2)
+  reference:
+    - title: "55 Pa. Code Chapter 183, Appendix B, Table 3 - Family Size Allowances"
+      href: "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
+      publication_date: 1990-02-03
+    - title: "Pennsylvania TANF Profile 2024"
+      href: "https://www.nccp.org/wp-content/uploads/2024/11/TANF-profile-Pennsylvania.pdf"
+  note: FSA relocated from Chapter 175 to Chapter 183, Appendix B, Table 3 per 20 Pa.B. 554 (February 3, 1990). Group 2 schedule applies to Philadelphia County and most recipients.
+  household: false
+  economy: false

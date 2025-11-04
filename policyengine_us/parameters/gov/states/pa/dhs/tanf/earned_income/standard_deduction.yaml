@@ -1,0 +1,15 @@
+description: Pennsylvania subtracts this amount from gross earned income as the first step in calculating countable earned income for TANF eligibility and benefit determination.
+values:
+  1997-03-03: 90
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania TANF standard earned income deduction
+  reference:
+    - title: "55 Pa. Code Section 183.94 - Eligibility for TANF earned income deductions"
+      href: "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/s183.94.html&d=reduce"
+      publication_date: 2002-09-13
+    - title: "160.2 TANF Earned Income Deductions (Policy Manual)"
+      href: "http://services.dpw.state.pa.us/oimpolicymanuals/cash/160_Income_Deductions/160_2_TANF_Earned_Income_Deductions.htm"
+  household: false
+  economy: false

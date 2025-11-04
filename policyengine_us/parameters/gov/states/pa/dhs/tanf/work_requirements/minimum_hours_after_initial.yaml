@@ -1,0 +1,14 @@
+description: Pennsylvania requires TANF recipients to participate in work activities for at least this many hours per week after the initial period.
+values:
+  1996-08-22: 20
+metadata:
+  unit: hour
+  period: week
+  label: Pennsylvania TANF minimum work hours after initial period
+  reference:
+    - title: "135.8 Employment and Training Requirements"
+      href: "http://services.dpw.state.pa.us/oimpolicymanuals/cash/135_Employment_and_Training_Requirements/"
+    - title: "55 Pa. Code Chapter 135"
+      href: "https://www.pacodeandbulletin.gov/Display/pacode?titleNumber=055&file=/secure/pacode/data/055/055toc.html"
+  household: false
+  economy: false
