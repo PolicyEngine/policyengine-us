@@ -25,11 +25,11 @@ class pa_tanf_standard_of_need(Variable):
 
         # Get standard of need based on county group and size
         # Use county_group enum value as parameter key
-        standard = p.standard_of_need[county_group][capped_size]
+        standard = p.standard_of_need.amount[county_group][capped_size]
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.standard_of_need_additional_person
+        additional_increment = p.standard_of_need.increment
         additional_amount = additional_people * additional_increment
 
         # Return monthly standard of need

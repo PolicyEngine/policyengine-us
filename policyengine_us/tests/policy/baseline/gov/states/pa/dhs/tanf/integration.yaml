@@ -255,7 +255,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
         state_code: PA
   output:
-    # Family of 9: Base (8) = $836 + $83 increment = $919/month
+    # Family of 9 (GROUP_2): Base (6) = $670 + 3 × $83 increment = $919/month
     pa_tanf_maximum_benefit: 919
     pa_tanf_countable_income: 0
     pa_tanf: 919

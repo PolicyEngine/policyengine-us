@@ -52,6 +52,7 @@
     spm_unit_size: 7
     state_code: PA
   output:
+    # Base (6) = $670 + (1 × $83) = $753
     pa_tanf_maximum_benefit: 753
 
 - name: Case 8, eight person household.
@@ -60,6 +61,7 @@
     spm_unit_size: 8
     state_code: PA
   output:
+    # Base (6) = $670 + (2 × $83) = $836
     pa_tanf_maximum_benefit: 836
 
 - name: Case 9, nine person household.
@@ -68,7 +70,7 @@
     spm_unit_size: 9
     state_code: PA
   output:
-    # $836 base + $83 increment = $919
+    # Base (6) = $670 + (3 × $83) = $919
     pa_tanf_maximum_benefit: 919
 
 - name: Case 10, ten person household.
@@ -77,7 +79,7 @@
     spm_unit_size: 10
     state_code: PA
   output:
-    # $836 base + ($83 × 2) = $1,002
+    # Base (6) = $670 + (4 × $83) = $1,002
     pa_tanf_maximum_benefit: 1_002
 
 - name: Case 11, very large household.
@@ -86,5 +88,5 @@
     spm_unit_size: 12
     state_code: PA
   output:
-    # $836 base + ($83 × 4) = $1,168
+    # Base (6) = $670 + (6 × $83) = $1,168
     pa_tanf_maximum_benefit: 1_168
