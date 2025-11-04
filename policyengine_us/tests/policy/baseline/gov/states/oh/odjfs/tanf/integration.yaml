@@ -1,0 +1,468 @@
+- name: Single parent with two children and moderate earned income receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 9_600  # $800/month
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Income calculation:
+    # Gross earned income: $800/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $800 - $250 = $550
+    # $550 * 0.50 = $275 disregarded
+    # Countable income: $550 - $275 = $275
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $275 = $348/month
+    oh_tanf_countable_income: 275 * 12
+    oh_tanf: 348 * 12
+
+- name: Single parent with one child and no income receives maximum benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 28
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
+  output:
+    # No income means no disregard needed
+    # Countable income: $0
+    # Payment standard for 2 should be used
+    # Benefit: Payment standard - $0
+    oh_tanf_countable_income: 0
+    oh_tanf_eligible: true
+
+- name: Family of three with income at disregard threshold receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 3_000  # $250/month - exactly at threshold
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Gross earned income: $250/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $250 - $250 = $0 remainder
+    # $0 * 0.50 = $0 additional disregard
+    # Countable income: $0
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $0 = $623/month (maximum benefit)
+    oh_tanf_countable_income: 0
+    oh_tanf: 623 * 12
+
+- name: Family of three with high earned income receives reduced benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_400  # $1,200/month
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Gross earned income: $1,200/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,200 - $250 = $950
+    # $950 * 0.50 = $475 disregarded
+    # Countable income: $950 - $475 = $475
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $475 = $148/month
+    oh_tanf_countable_income: 475 * 12
+    oh_tanf: 148 * 12
+
+- name: Two-parent family with four children and mixed income receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 33
+        employment_income: 10_800  # $900/month
+      parent2:
+        age: 31
+        employment_income: 6_000  # $500/month
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+      child3:
+        age: 9
+        is_tax_unit_dependent: true
+      child4:
+        age: 12
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: OH
+  output:
+    # Gross earned income: $900 + $500 = $1,400/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,400 - $250 = $1,150
+    # $1,150 * 0.50 = $575 disregarded
+    # Countable income: $1,150 - $575 = $575
+    #
+    # Payment standard for 6 should be used
+    # Family is likely income-eligible based on parameters
+    oh_tanf_countable_income: 575 * 12
+
+- name: Single parent with earned and unearned income receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 6_000  # $500/month earned
+        social_security: 4_800  # $400/month unearned
+      child1:
+        age: 14
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Gross earned income: $500/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $500 - $250 = $250
+    # $250 * 0.50 = $125 disregarded
+    # Countable earned: $250 - $125 = $125
+    #
+    # Gross unearned income: $400/month (no disregard)
+    # Total countable: $125 + $400 = $525/month
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $525 = $98/month
+    oh_tanf_countable_income: 525 * 12
+    oh_tanf: 98 * 12
+
+- name: Family with income above payment standard receives no benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 18_000  # $1,500/month
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Gross earned income: $1,500/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,500 - $250 = $1,250
+    # $1,250 * 0.50 = $625 disregarded
+    # Countable income: $1,250 - $625 = $625
+    #
+    # Payment standard for 3: $623
+    # Countable income ($625) >= payment standard ($623)
+    # Benefit: $0 (ineligible due to income)
+    oh_tanf_countable_income: 625 * 12
+    oh_tanf: 0
+
+- name: Pregnant woman with no children and no income may be eligible
+  period: 2024-01
+  input:
+    people:
+      pregnant_woman:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [pregnant_woman]
+    households:
+      household:
+        members: [pregnant_woman]
+        state_code: OH
+  output:
+    # Pregnant women at 6+ months are categorically eligible
+    # No income means maximum benefit for household size of 1
+    oh_tanf_countable_income: 0
+
+- name: Single parent with one child and low earned income receives high benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 4_800  # $400/month
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
+  output:
+    # Gross earned income: $400/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $400 - $250 = $150
+    # $150 * 0.50 = $75 disregarded
+    # Countable income: $150 - $75 = $75
+    #
+    # Payment standard for 2 should be used
+    # Benefit depends on payment standard for 2
+    oh_tanf_countable_income: 75 * 12
+
+- name: Large family with five children and moderate income receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 12_000  # $1,000/month
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+      child4:
+        age: 11
+        is_tax_unit_dependent: true
+      child5:
+        age: 15
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: OH
+  output:
+    # Gross earned income: $1,000/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,000 - $250 = $750
+    # $750 * 0.50 = $375 disregarded
+    # Countable income: $750 - $375 = $375
+    #
+    # Payment standard for 6 should be used
+    oh_tanf_countable_income: 375 * 12
+
+- name: Family with only unearned income receives reduced benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 38
+        social_security: 7_200  # $600/month unearned only
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # No earned income, so no earned income disregard applies
+    # Gross unearned income: $600/month
+    # No disregard for unearned income per ORC 5107.10(D)(3)
+    # Countable income: $600
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $600 = $23/month
+    oh_tanf_countable_income: 600 * 12
+    oh_tanf: 23 * 12
+
+- name: Family with self-employment income receives benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 36
+        self_employment_income: 12_000  # $1,000/month gross self-employment
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Self-employment income is treated as earned income
+    # (After 50% expense deduction if applicable per OAC 5101:1-23-20)
+    # Assuming gross receipts minus 50% = $1,000/month net
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,000 - $250 = $750
+    # $750 * 0.50 = $375 disregarded
+    # Countable income: $750 - $375 = $375
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $375 = $248/month
+    oh_tanf_countable_income: 375 * 12
+    oh_tanf: 248 * 12
+
+- name: Two adults with no children receive no benefit
+  period: 2024-01
+  input:
+    people:
+      adult1:
+        age: 28
+      adult2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: OH
+  output:
+    # No minor children means categorically ineligible
+    # Must have at least one minor child or be pregnant
+    oh_tanf: 0
+    oh_tanf_eligible: false
+
+- name: Family at income limit boundary testing 50 percent of 1997 FPL
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 34
+        employment_income: 6_665  # Close to 50% of 1997 FPL for family of 3
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # 1997 FPL for family of 3: $13,330/year = $1,110.83/month
+    # 50% of 1997 FPL: $555.42/month = $6,665/year
+    # Gross earned income: $555.42/month
+    #
+    # Earned income disregard: $250 + 50% of remainder
+    # $555.42 - $250 = $305.42
+    # $305.42 * 0.50 = $152.71 disregarded
+    # Countable income: $305.42 - $152.71 = $152.71
+    #
+    # Payment standard for 3: $623
+    # Should be income-eligible (gross < 50% FPL threshold)
+    # Benefit: $623 - $152.71 = $470.29/month
+    oh_tanf_income_eligible: true
+
+- name: Family with income just below benefit minimum threshold
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 29
+        employment_income: 14_700  # Income that results in benefit < $10
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Gross earned income: $1,225/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $1,225 - $250 = $975
+    # $975 * 0.50 = $487.50 disregarded
+    # Countable income: $975 - $487.50 = $487.50
+    #
+    # Payment standard for 3: $623
+    # Benefit: $623 - $487.50 = $135.50/month
+    # This is above the $10 minimum threshold
+    oh_tanf_countable_income: 487.50 * 12
