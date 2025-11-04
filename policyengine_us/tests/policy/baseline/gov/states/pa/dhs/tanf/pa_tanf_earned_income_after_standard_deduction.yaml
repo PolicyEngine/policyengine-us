@@ -1,0 +1,64 @@
+# Unit tests for pa_tanf_earned_income_after_standard_deduction
+# Tests earned income after subtracting the $90 standard deduction
+
+- name: Zero earned income - no deduction applied
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 0
+  output:
+    pa_tanf_earned_income_after_standard_deduction: 0
+
+- name: Minimal earned income - below standard deduction
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 50
+  output:
+    # $50 - $90 = -$40, but cannot go negative, so $0
+    pa_tanf_earned_income_after_standard_deduction: 0
+
+- name: Earned income exactly at standard deduction
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 90
+  output:
+    # $90 - $90 = $0
+    pa_tanf_earned_income_after_standard_deduction: 0
+
+- name: Earned income $1 over standard deduction
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 91
+  output:
+    # $91 - $90 = $1
+    pa_tanf_earned_income_after_standard_deduction: 1
+
+- name: Moderate earned income - $500/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 500
+  output:
+    # $500 - $90 = $410
+    pa_tanf_earned_income_after_standard_deduction: 410
+
+- name: High earned income - $2,000/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 2_000
+  output:
+    # $2,000 - $90 = $1,910
+    pa_tanf_earned_income_after_standard_deduction: 1_910
+
+- name: Very high earned income - $5,000/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 5_000
+  output:
+    # $5,000 - $90 = $4,910
+    pa_tanf_earned_income_after_standard_deduction: 4_910

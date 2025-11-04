@@ -1,0 +1,113 @@
+# Unit tests for pa_tanf_benefit_amount
+# Tests benefit calculation: FSA - countable income (if eligible)
+
+- name: Eligible with zero income - maximum benefit
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 0
+    pa_tanf_eligible: true
+  output:
+    # $316 - $0 = $316
+    pa_tanf_benefit_amount: 316
+
+- name: Eligible with low countable income
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 100
+    pa_tanf_eligible: true
+  output:
+    # $316 - $100 = $216
+    pa_tanf_benefit_amount: 216
+
+- name: Eligible with moderate countable income
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 403
+    pa_tanf_countable_income: 250
+    pa_tanf_eligible: true
+  output:
+    # $403 - $250 = $153
+    pa_tanf_benefit_amount: 153
+
+- name: Eligible with income close to FSA
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 497
+    pa_tanf_countable_income: 490
+    pa_tanf_eligible: true
+  output:
+    # $497 - $490 = $7
+    pa_tanf_benefit_amount: 7
+
+- name: Eligible with income $1 below FSA
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 315
+    pa_tanf_eligible: true
+  output:
+    # $316 - $315 = $1
+    pa_tanf_benefit_amount: 1
+
+- name: NOT eligible - zero benefit regardless of calculation
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 100
+    pa_tanf_eligible: false
+  output:
+    # Not eligible, so benefit = $0 regardless
+    pa_tanf_benefit_amount: 0
+
+- name: NOT eligible with zero income - still zero benefit
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 0
+    pa_tanf_eligible: false
+  output:
+    # Not eligible, so benefit = $0
+    pa_tanf_benefit_amount: 0
+
+- name: Eligible - larger household with no income
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 670
+    pa_tanf_countable_income: 0
+    pa_tanf_eligible: true
+  output:
+    # $670 - $0 = $670
+    pa_tanf_benefit_amount: 670
+
+- name: Eligible - larger household with moderate income
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 670
+    pa_tanf_countable_income: 350
+    pa_tanf_eligible: true
+  output:
+    # $670 - $350 = $320
+    pa_tanf_benefit_amount: 320
+
+- name: Edge case - countable income exceeds FSA but still eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_family_size_allowance: 316
+    pa_tanf_countable_income: 400
+    pa_tanf_eligible: true
+  output:
+    # $316 - $400 = -$84, but cannot be negative, so $0
+    # (Note: This shouldn't normally happen as income eligibility requires income < FSA)
+    pa_tanf_benefit_amount: 0

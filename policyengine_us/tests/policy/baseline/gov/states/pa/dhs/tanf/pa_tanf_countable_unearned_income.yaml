@@ -1,0 +1,51 @@
+# Unit tests for pa_tanf_countable_unearned_income
+# Tests countable unearned income (currently equals gross unearned income)
+
+- name: No unearned income
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 0
+  output:
+    pa_tanf_countable_unearned_income: 0
+
+- name: Minimal unearned income - $50/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 50
+  output:
+    # Currently no deductions applied, so countable = gross
+    pa_tanf_countable_unearned_income: 50
+
+- name: Moderate unearned income - $500/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 500
+  output:
+    pa_tanf_countable_unearned_income: 500
+
+- name: High unearned income - $1,000/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 1_000
+  output:
+    pa_tanf_countable_unearned_income: 1_000
+
+- name: Very high unearned income - $2,500/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 2_500
+  output:
+    pa_tanf_countable_unearned_income: 2_500
+
+- name: Decimal amount - $125.50/month
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_unearned_income: 125.5
+  output:
+    pa_tanf_countable_unearned_income: 125.5

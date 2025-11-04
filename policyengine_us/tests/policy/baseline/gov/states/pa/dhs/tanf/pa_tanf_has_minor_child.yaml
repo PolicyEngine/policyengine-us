@@ -1,0 +1,135 @@
+# Unit tests for pa_tanf_has_minor_child
+# Tests whether the SPM unit contains at least one minor child
+
+- name: Single adult - no minor child
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: false
+
+- name: Single parent with infant - has minor child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: true
+
+- name: Two adults - no minor children
+  period: 2024-01
+  input:
+    people:
+      adult1:
+        age: 30
+      adult2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: false
+
+- name: Family with multiple minor children
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+      child2:
+        age: 10
+      child3:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: true
+
+- name: Parent with 18-year-old student - has minor child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+      student:
+        age: 18
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: true
+
+- name: Parent with 18-year-old non-student - no minor child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+      adult_child:
+        age: 18
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: false
+
+- name: Mixed household with one minor and one adult child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 45
+      minor_child:
+        age: 12
+      adult_child:
+        age: 20
+    spm_units:
+      spm_unit:
+        members: [parent, minor_child, adult_child]
+    households:
+      household:
+        members: [parent, minor_child, adult_child]
+        state_code: PA
+  output:
+    pa_tanf_has_minor_child: true

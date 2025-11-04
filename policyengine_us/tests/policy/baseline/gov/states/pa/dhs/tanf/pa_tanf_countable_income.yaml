@@ -1,0 +1,156 @@
+# Unit tests for pa_tanf_countable_income
+# Tests total countable income (earned + unearned) for the SPM unit
+
+- name: Single person with no income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_countable_income: 0
+
+- name: Single person with only earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 300
+        pa_tanf_countable_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_countable_income: 300
+
+- name: Single person with only unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_countable_income: 500
+
+- name: Single person with both earned and unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 200
+        pa_tanf_countable_unearned_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # $200 earned + $300 unearned = $500
+    pa_tanf_countable_income: 500
+
+- name: Two-person household - both with income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 250
+        pa_tanf_countable_unearned_income: 100
+      person2:
+        pa_tanf_countable_earned_income: 150
+        pa_tanf_countable_unearned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Person1: $250 + $100 = $350
+    # Person2: $150 + $200 = $350
+    # Total: $700
+    pa_tanf_countable_income: 700
+
+- name: Three-person household - mixed income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        pa_tanf_countable_earned_income: 400
+        pa_tanf_countable_unearned_income: 0
+      child1:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 100
+      child2:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Parent: $400 + $0 = $400
+    # Child1: $0 + $100 = $100
+    # Child2: $0 + $0 = $0
+    # Total: $500
+    pa_tanf_countable_income: 500
+
+- name: Large household - five people
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pa_tanf_countable_earned_income: 500
+        pa_tanf_countable_unearned_income: 200
+      person2:
+        pa_tanf_countable_earned_income: 300
+        pa_tanf_countable_unearned_income: 0
+      person3:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 150
+      person4:
+        pa_tanf_countable_earned_income: 0
+        pa_tanf_countable_unearned_income: 0
+      person5:
+        pa_tanf_countable_earned_income: 100
+        pa_tanf_countable_unearned_income: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: PA
+  output:
+    # Person1: $500 + $200 = $700
+    # Person2: $300 + $0 = $300
+    # Person3: $0 + $150 = $150
+    # Person4: $0 + $0 = $0
+    # Person5: $100 + $50 = $150
+    # Total: $1,300
+    pa_tanf_countable_income: 1_300

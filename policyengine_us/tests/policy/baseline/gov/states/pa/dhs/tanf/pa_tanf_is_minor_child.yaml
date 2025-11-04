@@ -1,0 +1,128 @@
+# Unit tests for pa_tanf_is_minor_child
+# Tests whether a person qualifies as a minor child for PA TANF (under 18 OR 18 and full-time student)
+
+- name: Infant - clearly a minor child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [true]
+
+- name: Young child age 5
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [true]
+
+- name: Teenager age 16
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [true]
+
+- name: Age 17 - still under limit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [true]
+
+- name: Age 18 - NOT a full-time student - NOT a minor child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [false]
+
+- name: Age 18 - IS a full-time student - qualifies as minor child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [true]
+
+- name: Age 19 - even if full-time student - NOT a minor child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [false]
+
+- name: Age 20 - adult - NOT a minor child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [false]
+
+- name: Age 25 - clearly an adult
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_tanf_is_minor_child: [false]

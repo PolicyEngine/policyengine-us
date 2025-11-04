@@ -1,0 +1,38 @@
+# Unit tests for pa_tanf_categorical_eligible
+# Tests categorical eligibility (has minor child OR has pregnant member)
+
+- name: No minor child and no pregnant member - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_has_minor_child: false
+    pa_tanf_has_pregnant_member: false
+  output:
+    pa_tanf_categorical_eligible: false
+
+- name: Has minor child only - categorically eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_has_minor_child: true
+    pa_tanf_has_pregnant_member: false
+  output:
+    pa_tanf_categorical_eligible: true
+
+- name: Has pregnant member only - categorically eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_has_minor_child: false
+    pa_tanf_has_pregnant_member: true
+  output:
+    pa_tanf_categorical_eligible: true
+
+- name: Has both minor child and pregnant member - categorically eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_has_minor_child: true
+    pa_tanf_has_pregnant_member: true
+  output:
+    pa_tanf_categorical_eligible: true

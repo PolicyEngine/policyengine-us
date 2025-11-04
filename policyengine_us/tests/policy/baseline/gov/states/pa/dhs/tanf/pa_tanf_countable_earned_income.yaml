@@ -1,0 +1,82 @@
+# Unit tests for pa_tanf_countable_earned_income
+# Tests final countable earned income after all deductions including $200 work expense
+
+- name: No earned income - no work expense deduction
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 0
+    pa_tanf_earned_income_after_disregard: 0
+  output:
+    # No income, so no work expense deduction applied
+    pa_tanf_countable_earned_income: 0
+
+- name: Has earnings but after disregard less than work expense
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 100
+    pa_tanf_earned_income_after_disregard: 50
+  output:
+    # $50 - $200 = -$150, but cannot be negative, so $0
+    pa_tanf_countable_earned_income: 0
+
+- name: Income after disregard exactly equals work expense
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 200
+    pa_tanf_earned_income_after_disregard: 200
+  output:
+    # $200 - $200 = $0
+    pa_tanf_countable_earned_income: 0
+
+- name: Income after disregard $1 over work expense
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 201
+    pa_tanf_earned_income_after_disregard: 201
+  output:
+    # $201 - $200 = $1
+    pa_tanf_countable_earned_income: 1
+
+- name: Moderate income after disregard - $500
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 500
+    pa_tanf_earned_income_after_disregard: 500
+  output:
+    # $500 - $200 = $300
+    pa_tanf_countable_earned_income: 300
+
+- name: High income after disregard - $1,500
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 1_500
+    pa_tanf_earned_income_after_disregard: 1_500
+  output:
+    # $1,500 - $200 = $1,300
+    pa_tanf_countable_earned_income: 1_300
+
+- name: Very high income after disregard - $3,000
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 3_000
+    pa_tanf_earned_income_after_disregard: 3_000
+  output:
+    # $3,000 - $200 = $2,800
+    pa_tanf_countable_earned_income: 2_800
+
+- name: Edge case - minimal gross income results in zero countable
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 1
+    pa_tanf_earned_income_after_disregard: 0.5
+  output:
+    # $0.50 - $200 = -$199.50, but cannot be negative, so $0
+    pa_tanf_countable_earned_income: 0

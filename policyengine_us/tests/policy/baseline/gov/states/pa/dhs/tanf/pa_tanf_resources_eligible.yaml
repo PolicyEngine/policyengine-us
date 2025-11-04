@@ -1,0 +1,66 @@
+# Unit tests for pa_tanf_resources_eligible
+# Tests whether countable resources are at or below the $1,000 limit
+
+- name: No resources - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 0
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Minimal resources - $100 - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 100
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Moderate resources - $500 - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 500
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Resources at $999 - just under limit - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 999
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Resources exactly at $1,000 limit - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 1_000
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Resources $1 over limit - $1,001 - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 1_001
+  output:
+    pa_tanf_resources_eligible: false
+
+- name: Resources significantly over limit - $2,000 - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 2_000
+  output:
+    pa_tanf_resources_eligible: false
+
+- name: High resources - $10,000 - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 10_000
+  output:
+    pa_tanf_resources_eligible: false

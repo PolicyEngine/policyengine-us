@@ -1,0 +1,198 @@
+# Unit tests for pa_tanf_family_size_allowance
+# Tests Family Size Allowance (Group 2 schedule) based on household size
+
+- name: Single person household - size 1
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # 1 person = $205/month
+    pa_tanf_family_size_allowance: 205
+
+- name: Two person household - size 2
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 2 people = $316/month
+    pa_tanf_family_size_allowance: 316
+
+- name: Three person household - size 3
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # 3 people = $403/month
+    pa_tanf_family_size_allowance: 403
+
+- name: Four person household - size 4
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    # 4 people = $497/month
+    pa_tanf_family_size_allowance: 497
+
+- name: Five person household - size 5
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: PA
+  output:
+    # 5 people = $589/month
+    pa_tanf_family_size_allowance: 589
+
+- name: Six person household - size 6
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 7
+      person6:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: PA
+  output:
+    # 6 people = $670/month
+    pa_tanf_family_size_allowance: 670
+
+- name: Seven person household - size 7
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 36
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 9
+      person6:
+        age: 6
+      person7:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: PA
+  output:
+    # 7+ people = $670/month (capped at 6-person rate)
+    pa_tanf_family_size_allowance: 670
+
+- name: Large household - size 10
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 18
+      person4:
+        age: 16
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: PA
+  output:
+    # 10 people = $670/month (capped at 6-person rate)
+    pa_tanf_family_size_allowance: 670

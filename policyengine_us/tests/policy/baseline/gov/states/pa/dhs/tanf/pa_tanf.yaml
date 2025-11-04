@@ -1,0 +1,50 @@
+# Unit tests for pa_tanf
+# Tests the final TANF benefit (passes through pa_tanf_benefit_amount)
+
+- name: Benefit amount of $100
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 100
+  output:
+    pa_tanf: 100
+
+- name: Benefit amount of $316 (2-person max)
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 316
+  output:
+    pa_tanf: 316
+
+- name: Benefit amount of $670 (6-person max)
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 670
+  output:
+    pa_tanf: 670
+
+- name: Zero benefit amount
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 0
+  output:
+    pa_tanf: 0
+
+- name: Small benefit amount - $25
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 25
+  output:
+    pa_tanf: 25
+
+- name: Moderate benefit amount - $250
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_benefit_amount: 250
+  output:
+    pa_tanf: 250

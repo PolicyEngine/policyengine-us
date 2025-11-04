@@ -1,0 +1,118 @@
+# Unit tests for pa_tanf_has_pregnant_member
+# Tests whether the SPM unit contains at least one pregnant member
+
+- name: Single non-pregnant woman
+  period: 2024-01
+  input:
+    people:
+      woman:
+        is_pregnant: false
+    spm_units:
+      spm_unit:
+        members: [woman]
+    households:
+      household:
+        members: [woman]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: false
+
+- name: Single pregnant woman
+  period: 2024-01
+  input:
+    people:
+      woman:
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [woman]
+    households:
+      household:
+        members: [woman]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: true
+
+- name: Family with pregnant mother
+  period: 2024-01
+  input:
+    people:
+      mother:
+        is_pregnant: true
+      father:
+        is_pregnant: false
+      child:
+        is_pregnant: false
+    spm_units:
+      spm_unit:
+        members: [mother, father, child]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: true
+
+- name: Family with no pregnant members
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        is_pregnant: false
+      parent2:
+        is_pregnant: false
+      child1:
+        is_pregnant: false
+      child2:
+        is_pregnant: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: false
+
+- name: Household with multiple pregnant members
+  period: 2024-01
+  input:
+    people:
+      woman1:
+        is_pregnant: true
+      woman2:
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [woman1, woman2]
+    households:
+      household:
+        members: [woman1, woman2]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: true
+
+- name: Large household with one pregnant member
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_pregnant: false
+      person2:
+        is_pregnant: false
+      person3:
+        is_pregnant: true
+      person4:
+        is_pregnant: false
+      person5:
+        is_pregnant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: PA
+  output:
+    pa_tanf_has_pregnant_member: true

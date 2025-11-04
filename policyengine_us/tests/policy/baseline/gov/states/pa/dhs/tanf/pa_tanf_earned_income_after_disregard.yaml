@@ -1,0 +1,65 @@
+# Unit tests for pa_tanf_earned_income_after_disregard
+# Tests the 50% disregard applied to earned income after standard deduction
+
+- name: Zero income after standard deduction
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 0
+  output:
+    # $0 * 50% = $0
+    pa_tanf_earned_income_after_disregard: 0
+
+- name: Small amount after standard deduction - $10
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 10
+  output:
+    # $10 * 50% = $5
+    pa_tanf_earned_income_after_disregard: 5
+
+- name: Moderate income after standard deduction - $400
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 400
+  output:
+    # $400 * 50% = $200
+    pa_tanf_earned_income_after_disregard: 200
+
+- name: Round number - $1,000
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 1_000
+  output:
+    # $1,000 * 50% = $500
+    pa_tanf_earned_income_after_disregard: 500
+
+- name: Odd number requiring decimal - $777
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 777
+  output:
+    # $777 * 50% = $388.50
+    pa_tanf_earned_income_after_disregard: 388.5
+
+- name: High income - $2,500
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 2_500
+  output:
+    # $2,500 * 50% = $1,250
+    pa_tanf_earned_income_after_disregard: 1_250
+
+- name: Very high income - $5,000
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_earned_income_after_standard_deduction: 5_000
+  output:
+    # $5,000 * 50% = $2,500
+    pa_tanf_earned_income_after_disregard: 2_500

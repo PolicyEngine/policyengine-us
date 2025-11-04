@@ -1,0 +1,84 @@
+# Unit tests for pa_tanf_income_eligible
+# Tests whether countable income is less than Family Size Allowance
+
+- name: No income and $205 FSA - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 0
+    pa_tanf_family_size_allowance: 205
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Low income less than FSA - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 100
+    pa_tanf_family_size_allowance: 316
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Income $1 below FSA - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 315
+    pa_tanf_family_size_allowance: 316
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Income exactly equals FSA - NOT eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 316
+    pa_tanf_family_size_allowance: 316
+  output:
+    # Countable income must be LESS than FSA, not equal
+    pa_tanf_income_eligible: false
+
+- name: Income $1 over FSA - NOT eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 317
+    pa_tanf_family_size_allowance: 316
+  output:
+    pa_tanf_income_eligible: false
+
+- name: Income significantly over FSA - NOT eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 500
+    pa_tanf_family_size_allowance: 316
+  output:
+    pa_tanf_income_eligible: false
+
+- name: High income well over FSA - NOT eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 1_000
+    pa_tanf_family_size_allowance: 403
+  output:
+    pa_tanf_income_eligible: false
+
+- name: Larger household - income under FSA - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 400
+    pa_tanf_family_size_allowance: 589
+  output:
+    pa_tanf_income_eligible: true
+
+- name: Larger household - income over FSA - NOT eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_countable_income: 600
+    pa_tanf_family_size_allowance: 589
+  output:
+    pa_tanf_income_eligible: false

@@ -1,0 +1,82 @@
+# Unit tests for pa_tanf_eligible
+# Tests overall eligibility (categorical AND resources AND income)
+
+- name: Meets all three criteria - eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: true
+    pa_tanf_resources_eligible: true
+    pa_tanf_income_eligible: true
+  output:
+    pa_tanf_eligible: true
+
+- name: Fails categorical eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: false
+    pa_tanf_resources_eligible: true
+    pa_tanf_income_eligible: true
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails resource eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: true
+    pa_tanf_resources_eligible: false
+    pa_tanf_income_eligible: true
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails income eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: true
+    pa_tanf_resources_eligible: true
+    pa_tanf_income_eligible: false
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails categorical and resource eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: false
+    pa_tanf_resources_eligible: false
+    pa_tanf_income_eligible: true
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails categorical and income eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: false
+    pa_tanf_resources_eligible: true
+    pa_tanf_income_eligible: false
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails resource and income eligibility - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: true
+    pa_tanf_resources_eligible: false
+    pa_tanf_income_eligible: false
+  output:
+    pa_tanf_eligible: false
+
+- name: Fails all three criteria - not eligible
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_categorical_eligible: false
+    pa_tanf_resources_eligible: false
+    pa_tanf_income_eligible: false
+  output:
+    pa_tanf_eligible: false
