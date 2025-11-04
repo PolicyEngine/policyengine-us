@@ -21,7 +21,7 @@
         state_code: PA
   output:
     # Age eligibility: Child under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     # Resources eligible (assume under $1,000 limit)
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
@@ -58,7 +58,7 @@
         state_code: PA
   output:
     # Age eligibility: Children under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 3-person household:
     # Gross earned: $18,000/year = $1,500/month
@@ -98,7 +98,7 @@
         state_code: PA
   output:
     # Age eligibility: Children under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 5-person household:
     # Gross earned: $15,000/year = $1,250/month
@@ -133,7 +133,7 @@
         state_code: PA
   output:
     # Age eligibility: Child under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
     # Earned income: $8,000/year = $667/month
@@ -170,7 +170,7 @@
         state_code: PA
   output:
     # Age eligibility: Children under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 3-person household:
     # Gross earned: $11,712/year = $976/month
@@ -203,7 +203,7 @@
         state_code: PA
   output:
     # Pregnancy makes person categorically eligible
-    pa_tanf_pregnancy_eligibility: true
+    pa_tanf_has_pregnant_member: true
     pa_tanf_resources_eligible: true
     # Income calculation for 1-person household:
     # Gross earned: $10,000/year = $833/month
@@ -246,7 +246,7 @@
         state_code: PA
   output:
     # Age eligibility: Children under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 6-person household:
     # Gross earned: $25,000/year = $2,083/month
@@ -280,7 +280,7 @@
         state_code: PA
   output:
     # Age eligibility: 18-year-old full-time student qualifies
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
     # Gross earned: $14,000/year = $1,167/month
@@ -313,7 +313,7 @@
         state_code: PA
   output:
     # Age eligibility: Child under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
     # No earned or unearned income
@@ -349,7 +349,7 @@
         state_code: PA
   output:
     # Age eligibility: Children under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 4-person household:
     # Gross earned: $22,000/year = $1,833/month
@@ -383,7 +383,7 @@
         state_code: PA
   output:
     # Age eligibility: Child under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
     # No earned income
@@ -414,7 +414,7 @@
         state_code: PA
   output:
     # Age eligibility: Child under 18
-    pa_tanf_age_eligible: true
+    pa_tanf_has_minor_child: true
     pa_tanf_resources_eligible: true
     # Income calculation for 2-person household:
     # Gross earned: $3,600/year = $300/month
