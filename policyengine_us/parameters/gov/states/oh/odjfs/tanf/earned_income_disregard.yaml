@@ -1,0 +1,28 @@
+description: Ohio Works First earned income disregard structure. For ongoing eligibility, the assistance group's gross earned income is reduced by a flat dollar amount plus a percentage of the remainder to calculate countable earned income.
+metadata:
+  reference:
+    - title: Ohio Revised Code § 5107.10(D)(3) - Income eligibility standards
+      href: https://codes.ohio.gov/ohio-revised-code/section-5107.10
+    - title: Ohio Administrative Code 5101:1-23-20 - Income and eligibility
+      href: http://codes.ohio.gov/oac/5101:1-23-20
+
+flat_amount:
+  description: The flat dollar amount disregarded from gross earned income before applying the percentage disregard.
+  metadata:
+    unit: currency-USD
+    period: month
+    reference:
+      - title: Ohio Revised Code § 5107.10(D)(3) - Two hundred-fifty dollar disregard
+        href: https://codes.ohio.gov/ohio-revised-code/section-5107.10
+  values:
+    1997-07-01: 250
+
+percent_of_remainder:
+  description: The percentage of remaining earned income (after flat amount) that is disregarded when calculating countable earned income.
+  metadata:
+    unit: /1
+    reference:
+      - title: Ohio Revised Code § 5107.10(D)(3) - One-half of remainder disregard
+        href: https://codes.ohio.gov/ohio-revised-code/section-5107.10
+  values:
+    1997-07-01: 0.5

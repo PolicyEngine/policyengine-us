@@ -1,0 +1,160 @@
+- name: Family of 3 with no income receives maximum benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    oh_tanf: 7_476
+
+- name: Family of 3 with low earned income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9_600
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    oh_tanf: 4_176
+
+- name: Family of 3 with moderate earned income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 14_400
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    oh_tanf: 1_776
+
+- name: Family of 3 with earned and unearned income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 7_200
+        social_security: 2_400
+      child1:
+        age: 5
+      child2:
+        age: 3
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    oh_tanf: 2_976
+
+- name: Family of 1 with no income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        is_pregnant: true
+        employment_income: 0
+    households:
+      household:
+        members: [parent]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent]
+  output:
+    oh_tanf: 4_356
+
+- name: Family of 5 with low earned income
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 12_000
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 4
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+  output:
+    oh_tanf: 6_024
+
+- name: Family of 9 (larger than table size)
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 0
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+      child6:
+        age: 6
+      child7:
+        age: 4
+      child8:
+        age: 2
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: OH
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8]
+  output:
+    oh_tanf: 16_668

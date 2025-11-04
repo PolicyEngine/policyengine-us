@@ -1,0 +1,9 @@
+description: Maximum Ohio Works First assistance group size explicitly defined in the payment standard table. Assistance groups larger than this size use the size 8 amount plus the additional person increment for each person beyond 8.
+metadata:
+  unit: person
+  reference:
+    - title: Ohio Administrative Code 5101:1-23-40 - Payments
+      href: http://codes.ohio.gov/oac/5101:1-23-40
+
+values:
+  2024-11-01: 8
