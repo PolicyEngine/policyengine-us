@@ -1,0 +1,431 @@
+# Pennsylvania TANF Integration Tests
+# Tests complete benefit calculation pipeline from inputs to final benefit
+# Based on 55 Pa. Code Chapter 183 and Pennsylvania TANF documentation
+
+# TEST 1: Single parent with one child - eligible with earned income
+- name: Single parent with one child - low earned income eligible
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: Child under 18
+    pa_tanf_age_eligible: true
+    # Resources eligible (assume under $1,000 limit)
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # Gross earned: $12,000/year = $1,000/month
+    # Less $90 standard deduction: $910
+    # Apply 50% disregard: $910 * 0.5 = $455
+    # Less $200 work expense: $455 - $200 = $255 countable/month
+    # FSA for 2: $316/month
+    # Countable < FSA, so eligible
+    # Benefit: $316 - $255 = $61/month = $732/year
+    pa_tanf_countable_income: [3_060, 3_060]  # $255 * 12
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 732  # Estimated annual benefit
+
+# TEST 2: Single parent with two children - moderate income
+- name: Single parent with two children - moderate earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 18_000  # $1,500/month
+      child1:
+        age: 3
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Age eligibility: Children under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 3-person household:
+    # Gross earned: $18,000/year = $1,500/month
+    # Less $90 standard deduction: $1,410
+    # Apply 50% disregard: $1,410 * 0.5 = $705
+    # Less $200 work expense: $705 - $200 = $505 countable/month
+    # FSA for 3: $403/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [6_060, 6_060, 6_060]  # $505 * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 3: Two-parent family with three children - eligible
+- name: Two-parent family with three children - low income eligible
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 15_000  # $1,250/month
+      parent2:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 2
+      child2:
+        age: 6
+      child3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: PA
+  output:
+    # Age eligibility: Children under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 5-person household:
+    # Gross earned: $15,000/year = $1,250/month
+    # Less $90 standard deduction: $1,160
+    # Apply 50% disregard: $1,160 * 0.5 = $580
+    # Less $200 work expense: $580 - $200 = $380 countable/month
+    # FSA for 5: $589/month
+    # Countable < FSA, so eligible
+    # Benefit: $589 - $380 = $209/month = $2,508/year
+    pa_tanf_countable_income: [4_560, 4_560, 4_560, 4_560, 4_560]  # $380 * 12
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 2_508  # Estimated annual benefit
+
+# TEST 4: Single parent with unearned income (Social Security)
+- name: Single parent with child receiving Social Security
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 8_000  # $667/month earned
+        social_security: 6_000  # $500/month unearned
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: Child under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # Earned income: $8,000/year = $667/month
+    # Less $90 standard deduction: $577
+    # Apply 50% disregard: $577 * 0.5 = $288.50
+    # Less $200 work expense: $288.50 - $200 = $88.50 countable earned/month
+    # Unearned income: $500/month (fully countable)
+    # Total countable: $88.50 + $500 = $588.50/month
+    # FSA for 2: $316/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [7_062, 7_062]  # ($88.50 + $500) * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 5: Family at income threshold - exactly at limit
+- name: Family of three at exact income threshold
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 27
+        employment_income: 11_712  # Calculated to be at threshold
+      child1:
+        age: 4
+      child2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Age eligibility: Children under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 3-person household:
+    # Gross earned: $11,712/year = $976/month
+    # Less $90 standard deduction: $886
+    # Apply 50% disregard: $886 * 0.5 = $443
+    # Less $200 work expense: $443 - $200 = $243 countable/month
+    # FSA for 3: $403/month
+    # Countable < FSA, so eligible
+    # Benefit: $403 - $243 = $160/month = $1,920/year
+    pa_tanf_countable_income: [2_916, 2_916, 2_916]  # $243 * 12
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 1_920  # Estimated annual benefit
+
+# TEST 6: Pregnant woman with no children - eligible (Category C)
+- name: Pregnant woman with no other children - categorical eligibility
+  period: 2024-01
+  input:
+    people:
+      woman:
+        age: 25
+        is_pregnant: true
+        employment_income: 10_000  # $833/month
+    spm_units:
+      spm_unit:
+        members: [woman]
+    households:
+      household:
+        members: [woman]
+        state_code: PA
+  output:
+    # Pregnancy makes person categorically eligible
+    pa_tanf_pregnancy_eligibility: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 1-person household:
+    # Gross earned: $10,000/year = $833/month
+    # Less $90 standard deduction: $743
+    # Apply 50% disregard: $743 * 0.5 = $371.50
+    # Less $200 work expense: $371.50 - $200 = $171.50 countable/month
+    # FSA for 1: $205/month
+    # Countable < FSA, so eligible
+    # Benefit: $205 - $171.50 = $33.50/month = $402/year
+    pa_tanf_countable_income: 2_058  # $171.50 * 12
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 402  # Estimated annual benefit
+
+# TEST 7: Large family - six people
+- name: Large family with four children
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 20_000  # $1,667/month
+      parent2:
+        age: 36
+        employment_income: 5_000  # $417/month
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 8
+      child4:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: PA
+  output:
+    # Age eligibility: Children under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 6-person household:
+    # Gross earned: $25,000/year = $2,083/month
+    # Less $90 standard deduction: $1,993
+    # Apply 50% disregard: $1,993 * 0.5 = $996.50
+    # Less $200 work expense: $996.50 - $200 = $796.50 countable/month
+    # FSA for 6: $670/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [9_558, 9_558, 9_558, 9_558, 9_558, 9_558]  # $796.50 * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 8: Student eligibility - 18-year-old full-time student
+- name: Single parent with 18-year-old full-time student child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 14_000  # $1,167/month
+      child:
+        age: 18
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: 18-year-old full-time student qualifies
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # Gross earned: $14,000/year = $1,167/month
+    # Less $90 standard deduction: $1,077
+    # Apply 50% disregard: $1,077 * 0.5 = $538.50
+    # Less $200 work expense: $538.50 - $200 = $338.50 countable/month
+    # FSA for 2: $316/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [4_062, 4_062]  # $338.50 * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 9: Very low income - maximum benefit scenario
+- name: Single parent with one child - no income maximum benefit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 22
+        employment_income: 0
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: Child under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # No earned or unearned income
+    # Countable income: $0
+    # FSA for 2: $316/month
+    # Benefit: $316/month = $3,792/year
+    pa_tanf_countable_income: [0, 0]
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 3_792  # Maximum benefit for 2-person household
+
+# TEST 10: Edge case - income just over threshold
+- name: Family of four just over income threshold
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 33
+        employment_income: 22_000  # $1,833/month
+      parent2:
+        age: 31
+        employment_income: 0
+      child1:
+        age: 6
+      child2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: PA
+  output:
+    # Age eligibility: Children under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 4-person household:
+    # Gross earned: $22,000/year = $1,833/month
+    # Less $90 standard deduction: $1,743
+    # Apply 50% disregard: $1,743 * 0.5 = $871.50
+    # Less $200 work expense: $871.50 - $200 = $671.50 countable/month
+    # FSA for 4: $497/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [8_058, 8_058, 8_058, 8_058]  # $671.50 * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 11: Disabled parent receiving SSI
+- name: Single parent with disability receiving SSI
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 29
+        is_disabled: true
+        ssi: 9_000  # $750/month SSI (unearned income)
+      child:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: Child under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # No earned income
+    # Unearned income (SSI): $750/month (fully countable)
+    # FSA for 2: $316/month
+    # Countable > FSA, so ineligible
+    pa_tanf_countable_income: [9_000, 9_000]  # $750 * 12
+    pa_tanf_income_eligible: false
+    pa_tanf_eligible: false
+    pa_tanf: 0
+
+# TEST 12: Minimal earned income - testing deduction application
+- name: Single parent with minimal earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 24
+        employment_income: 3_600  # $300/month
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: PA
+  output:
+    # Age eligibility: Child under 18
+    pa_tanf_age_eligible: true
+    pa_tanf_resources_eligible: true
+    # Income calculation for 2-person household:
+    # Gross earned: $3,600/year = $300/month
+    # Less $90 standard deduction: $210
+    # Apply 50% disregard: $210 * 0.5 = $105
+    # Less $200 work expense: $105 - $200 = -$95 → $0 countable
+    # (Work expense deduction cannot create negative countable income)
+    # FSA for 2: $316/month
+    # Countable < FSA, so eligible
+    # Benefit: $316 - $0 = $316/month = $3,792/year
+    pa_tanf_countable_income: [0, 0]
+    pa_tanf_income_eligible: true
+    pa_tanf_eligible: true
+    pa_tanf: 3_792  # Full benefit (deductions exceeded income)
