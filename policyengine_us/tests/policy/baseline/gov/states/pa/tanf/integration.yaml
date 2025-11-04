@@ -1,0 +1,502 @@
+# Pennsylvania TANF Integration Tests
+# These tests validate the complete benefit calculation pipeline for PA TANF
+# using realistic household scenarios based on PA DHS policy
+
+- name: Single parent with one child - no income - fully eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: PA
+  output:
+    # Family of 2: FSA = $316/month = $3,792/year (Group 2)
+    # No income, so full benefit
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 0
+    pa_tanf: 3_792
+
+- name: Single parent with two children - low earned income - eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 12_000  # $1,000/month
+      child1:
+        age: 8
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month = $4,836/year (Group 2)
+    # Gross income: $12,000/year = $1,000/month
+    # - $90 work expense = $910
+    # - 50% disregard = $455 countable
+    # - $200 additional work expense = $255 countable per month
+    # Annual countable income: $255 * 12 = $3,060
+    # Benefit: $4,836 - $3,060 = $1,776
+    pa_tanf_maximum_benefit: 4_836
+    pa_tanf_countable_income: 3_060
+    pa_tanf: 1_776
+
+- name: Family of four - moderate income - eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 18_000
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: PA
+  output:
+    # Family of 4: FSA = $497/month = $5,964/year (Group 2)
+    # Gross income: $18,000/year = $1,500/month
+    # - $90 work expense = $1,410
+    # - 50% disregard = $705 countable
+    # - $200 additional work expense = $505 countable per month
+    # Annual countable income: $505 * 12 = $6,060
+    # Income exceeds FSA: $6,060 > $5,964
+    # Not eligible - countable income exceeds FSA
+    pa_tanf_maximum_benefit: 5_964
+    pa_tanf_countable_income: 6_060
+    pa_tanf: 0
+
+- name: Large family of six - no income - fully eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 0
+      parent2:
+        age: 36
+        employment_income: 0
+      child1:
+        age: 15
+      child2:
+        age: 12
+      child3:
+        age: 9
+      child4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: PA
+  output:
+    # Family of 6: FSA = $670/month = $8,040/year (Group 2)
+    # No income, so full benefit
+    pa_tanf_maximum_benefit: 8_040
+    pa_tanf_countable_income: 0
+    pa_tanf: 8_040
+
+- name: Pregnant woman with no other children - eligible
+  period: 2024
+  input:
+    people:
+      woman:
+        age: 25
+        employment_income: 6_000  # $500/month
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [woman]
+    households:
+      household:
+        members: [woman]
+        state_code: PA
+  output:
+    # Family of 1: FSA = $205/month = $2,460/year (Group 2)
+    # Gross income: $6,000/year = $500/month
+    # - $90 work expense = $410
+    # - 50% disregard = $205 countable
+    # - $200 additional work expense = $5 countable per month
+    # Annual countable income: $5 * 12 = $60
+    # Benefit: $2,460 - $60 = $2,400
+    pa_tanf_maximum_benefit: 2_460
+    pa_tanf_countable_income: 60
+    pa_tanf: 2_400
+
+- name: Two-parent family - one parent working - eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 15_000
+      parent2:
+        age: 27
+        employment_income: 0
+      child1:
+        age: 2
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: PA
+  output:
+    # Family of 4: FSA = $497/month = $5,964/year (Group 2)
+    # Gross income: $15,000/year = $1,250/month
+    # - $90 work expense = $1,160
+    # - 50% disregard = $580 countable
+    # - $200 additional work expense = $380 countable per month
+    # Annual countable income: $380 * 12 = $4,560
+    # Benefit: $5,964 - $4,560 = $1,404
+    pa_tanf_maximum_benefit: 5_964
+    pa_tanf_countable_income: 4_560
+    pa_tanf: 1_404
+
+- name: Single parent with three children - higher income - not eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child1:
+        age: 16
+      child2:
+        age: 13
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: PA
+  output:
+    # Family of 4: FSA = $497/month = $5,964/year (Group 2)
+    # Gross income: $30,000/year = $2,500/month
+    # - $90 work expense = $2,410
+    # - 50% disregard = $1,205 countable
+    # - $200 additional work expense = $1,005 countable per month
+    # Annual countable income: $1,005 * 12 = $12,060
+    # Income exceeds FSA significantly: $12,060 > $5,964
+    # Not eligible
+    pa_tanf_maximum_benefit: 5_964
+    pa_tanf_countable_income: 12_060
+    pa_tanf: 0
+
+- name: Family of five with mixed income - partially eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 33
+        employment_income: 9_600  # $800/month
+      child1:
+        age: 17
+        is_full_time_student: true
+      child2:
+        age: 14
+      child3:
+        age: 11
+      child4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: PA
+  output:
+    # Family of 5: FSA = $589/month = $7,068/year (Group 2)
+    # Gross income: $9,600/year = $800/month
+    # - $90 work expense = $710
+    # - 50% disregard = $355 countable
+    # - $200 additional work expense = $155 countable per month
+    # Annual countable income: $155 * 12 = $1,860
+    # Benefit: $7,068 - $1,860 = $5,208
+    pa_tanf_maximum_benefit: 7_068
+    pa_tanf_countable_income: 1_860
+    pa_tanf: 5_208
+
+- name: Single parent with child age 18 in school - eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 39
+        employment_income: 8_400  # $700/month
+      child1:
+        age: 18
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: PA
+  output:
+    # Family of 2: FSA = $316/month = $3,792/year (Group 2)
+    # Gross income: $8,400/year = $700/month
+    # - $90 work expense = $610
+    # - 50% disregard = $305 countable
+    # - $200 additional work expense = $105 countable per month
+    # Annual countable income: $105 * 12 = $1,260
+    # Benefit: $3,792 - $1,260 = $2,532
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 1_260
+    pa_tanf: 2_532
+
+- name: Family with unearned income only - eligible
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 0
+        social_security: 6_000  # $500/month
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month = $4,836/year (Group 2)
+    # Unearned income: $6,000/year (no disregards apply to unearned income)
+    # Countable income: $6,000
+    # Income exceeds FSA: $6,000 > $4,836
+    # Not eligible
+    pa_tanf_maximum_benefit: 4_836
+    pa_tanf_countable_income: 6_000
+    pa_tanf: 0
+
+- name: Family with both earned and unearned income - edge case
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 42
+        employment_income: 6_000  # $500/month
+        social_security: 3_000  # $250/month
+      child1:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: PA
+  output:
+    # Family of 2: FSA = $316/month = $3,792/year (Group 2)
+    # Earned income: $6,000/year = $500/month
+    # - $90 work expense = $410
+    # - 50% disregard = $205 countable
+    # - $200 additional work expense = $5 countable per month
+    # Earned countable: $5 * 12 = $60/year
+    # Unearned income: $3,000/year (no disregards)
+    # Total countable income: $60 + $3,000 = $3,060
+    # Benefit: $3,792 - $3,060 = $732
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 3_060
+    pa_tanf: 732
+
+- name: Large family of seven - moderate income - eligible
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 44
+        employment_income: 14_400  # $1,200/month
+      parent2:
+        age: 41
+        employment_income: 0
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 11
+      child4:
+        age: 8
+      child5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+        state_code: PA
+  output:
+    # Family of 7: FSA = $753/month = $9,036/year (Group 2)
+    # Gross income: $14,400/year = $1,200/month
+    # - $90 work expense = $1,110
+    # - 50% disregard = $555 countable
+    # - $200 additional work expense = $355 countable per month
+    # Annual countable income: $355 * 12 = $4,260
+    # Benefit: $9,036 - $4,260 = $4,776
+    pa_tanf_maximum_benefit: 9_036
+    pa_tanf_countable_income: 4_260
+    pa_tanf: 4_776
+
+- name: Family of eight - maximum table size - no income
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 46
+        employment_income: 0
+      parent2:
+        age: 44
+        employment_income: 0
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+        state_code: PA
+  output:
+    # Family of 8: FSA = $836/month = $10,032/year (Group 2)
+    # No income, so full benefit
+    pa_tanf_maximum_benefit: 10_032
+    pa_tanf_countable_income: 0
+    pa_tanf: 10_032
+
+- name: Single parent with very low income - nearly full benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 2_400  # $200/month
+      child1:
+        age: 3
+      child2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month = $4,836/year (Group 2)
+    # Gross income: $2,400/year = $200/month
+    # - $90 work expense = $110
+    # - 50% disregard = $55 countable
+    # - $200 additional work expense = -$145 (treated as $0)
+    # Annual countable income: $0 * 12 = $0
+    # Benefit: $4,836 - $0 = $4,836
+    pa_tanf_maximum_benefit: 4_836
+    pa_tanf_countable_income: 0
+    pa_tanf: 4_836
+
+- name: Family at exact income threshold - edge case
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 21_540  # Results in countable income = FSA
+      child1:
+        age: 9
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month = $4,836/year (Group 2)
+    # Gross income: $21,540/year = $1,795/month
+    # - $90 work expense = $1,705
+    # - 50% disregard = $852.50 countable
+    # - $200 additional work expense = $652.50 countable per month
+    # Annual countable income: $652.50 * 12 = $7,830
+    # Income exceeds FSA: $7,830 > $4,836
+    # Not eligible
+    pa_tanf_maximum_benefit: 4_836
+    pa_tanf_countable_income: 7_830
+    pa_tanf: 0
+
+- name: Teen parent living with child - eligible
+  period: 2024
+  input:
+    people:
+      teen_parent:
+        age: 17
+        employment_income: 3_600  # $300/month part-time
+      baby:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [teen_parent, baby]
+    households:
+      household:
+        members: [teen_parent, baby]
+        state_code: PA
+  output:
+    # Family of 2: FSA = $316/month = $3,792/year (Group 2)
+    # Gross income: $3,600/year = $300/month
+    # - $90 work expense = $210
+    # - 50% disregard = $105 countable
+    # - $200 additional work expense = -$95 (treated as $0)
+    # Annual countable income: $0 * 12 = $0
+    # Benefit: $3,792 - $0 = $3,792
+    pa_tanf_maximum_benefit: 3_792
+    pa_tanf_countable_income: 0
+    pa_tanf: 3_792
