@@ -5,7 +5,7 @@ class oh_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Ohio TANF eligibility"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5107.10",

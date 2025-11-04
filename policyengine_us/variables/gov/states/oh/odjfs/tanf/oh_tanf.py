@@ -6,7 +6,7 @@ class oh_tanf(Variable):
     entity = SPMUnit
     label = "Ohio TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "oh_tanf_eligible"
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
@@ -30,7 +30,7 @@ class oh_tanf(Variable):
         # Per OAC 5101:1-23-40: "OWF shall not be authorized when the
         # amount is at least $1 but less than $10 per month"
         p = parameters(period).gov.states.oh.odjfs.tanf
-        minimum_benefit = p.minimum_benefit * MONTHS_IN_YEAR
+        minimum_benefit = p.minimum_benefit
 
         # If benefit is positive but below minimum, set to zero
         benefit_meets_minimum = (benefit >= minimum_benefit) | (benefit <= 0)

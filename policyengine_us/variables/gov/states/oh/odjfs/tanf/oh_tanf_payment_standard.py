@@ -6,7 +6,7 @@ class oh_tanf_payment_standard(Variable):
     entity = SPMUnit
     label = "Ohio TANF payment standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.OH
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5107.04"
 
@@ -25,5 +25,4 @@ class oh_tanf_payment_standard(Variable):
         base_amount = p.amounts[table_size]
         additional_amount = extra_members * p.additional_person_increment
 
-        monthly_standard = base_amount + additional_amount
-        return monthly_standard * MONTHS_IN_YEAR
+        return base_amount + additional_amount
