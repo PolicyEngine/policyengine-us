@@ -29,8 +29,9 @@ class oh_tanf(Variable):
         # Apply minimum benefit threshold
         # Per OAC 5101:1-23-40: "OWF shall not be authorized when the
         # amount is at least $1 but less than $10 per month"
-        p = parameters(period).gov.states.oh.odjfs.tanf
-        minimum_benefit = p.minimum_benefit
+        minimum_benefit = parameters(
+            period
+        ).gov.states.oh.odjfs.tanf.minimum_benefit
 
         # If benefit is positive but below minimum, set to zero
         benefit_meets_minimum = (benefit >= minimum_benefit) | (benefit <= 0)
