@@ -1,0 +1,531 @@
+- name: Case 1, single parent with no income receives maximum benefit for family of 2.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 2
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 324
+    ga_tanf_income_eligible: true
+    # Countable income (0) < Standard of Need (324)
+    ga_tanf_resources_eligible: true
+    # Resources (500) <= limit (1,000)
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 188
+    ga_tanf: 188
+    # Benefit = MIN(324 - 0, 188) = 188
+
+- name: Case 2, family of 3 with no income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 800
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 280
+    # Benefit = MIN(424 - 0, 280) = 280
+
+- name: Case 3, single parent with earnings in first 4 months with 30 plus 1/3 disregard.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 3_600  # $300/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false  # New applicant, first 4 months
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 300
+    # Work expense deduction: $90
+    # After work expense: 300 - 90 = 210
+    # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100
+    # Countable earned income: 210 - 100 = 110
+    ga_tanf_countable_income: 110
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    # Countable income (110) < Standard of Need (424)
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 280
+    # Benefit = MIN(424 - 110, 280) = MIN(314, 280) = 280
+
+- name: Case 4, single parent with earnings in months 5-12 with 30 disregard only.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 3_600  # $300/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: true  # Continuing recipient, months 5-12
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 300
+    # Work expense deduction: $90
+    # After work expense: 300 - 90 = 210
+    # $30 disregard: 30
+    # Countable earned income: 210 - 30 = 180
+    ga_tanf_countable_income: 180
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    # Countable income (180) < Standard of Need (424)
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 244
+    # Benefit = MIN(424 - 180, 280) = MIN(244, 280) = 244
+
+- name: Case 5, parent with earnings and child care expenses for child under 2.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 4_800  # $400/month
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 500
+        childcare_expenses: 2_400  # $200/month
+        is_tanf_enrolled: false  # New applicant
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 2
+    ga_tanf_gross_earned_income: 400
+    # Work expense: $90
+    # After work expense: 400 - 90 = 310
+    # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
+    # Countable earned before childcare: 310 - 133 = 177
+    ga_tanf_childcare_deduction: 200
+    # Child under 2: $200/month maximum
+    ga_tanf_countable_income: 0
+    # MAX(177 - 200, 0) = 0
+    ga_tanf_standard_of_need: 324
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 188
+    ga_tanf: 188
+    # Benefit = MIN(324 - 0, 188) = 188
+
+- name: Case 6, parent with earnings and child care expenses for child age 2 or older.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 4_800  # $400/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 500
+        childcare_expenses: 2_100  # $175/month
+        is_tanf_enrolled: false  # New applicant
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 2
+    ga_tanf_gross_earned_income: 400
+    # Work expense: $90
+    # After work expense: 400 - 90 = 310
+    # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
+    # Countable earned before childcare: 310 - 133 = 177
+    ga_tanf_childcare_deduction: 175
+    # Child age 2+: $175/month maximum
+    ga_tanf_countable_income: 2
+    # MAX(177 - 175, 0) = 2
+    ga_tanf_standard_of_need: 324
+    ga_tanf_income_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 188
+    ga_tanf: 188
+    # Benefit = MIN(324 - 2, 188) = MIN(322, 188) = 188
+
+- name: Case 7, family of 1 with no income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      person:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 300
+    households:
+      household:
+        members: [person]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 1
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 235
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 155
+    ga_tanf: 155
+    # Benefit = MIN(235 - 0, 155) = 155
+
+- name: Case 8, family of 4 with no income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        spm_unit_cash_assets: 900
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 4
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 529
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 364
+    ga_tanf: 364
+    # Benefit = MIN(529 - 0, 364) = 364
+
+- name: Case 9, family of 5 with no income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 14
+      child2:
+        age: 11
+      child3:
+        age: 8
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+        spm_unit_cash_assets: 950
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 5
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 639
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 447
+    ga_tanf: 447
+    # Benefit = MIN(639 - 0, 447) = 447
+
+- name: Case 10, family at income threshold barely eligible.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9_000  # $750/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false  # New applicant
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 750
+    # Gross Income Ceiling for 3: $784
+    # 750 < 784, passes gross income test
+    # Work expense: $90
+    # After work expense: 750 - 90 = 660
+    # 30 + 1/3 disregard: 30 + (660 * 1/3) = 30 + 220 = 250
+    # Countable earned: 660 - 250 = 410
+    ga_tanf_countable_income: 410
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    # Countable income (410) < Standard of Need (424)
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 14
+    # Benefit = MIN(424 - 410, 280) = MIN(14, 280) = 14
+
+- name: Case 11, family above gross income ceiling ineligible.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9_600  # $800/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 800
+    # Gross Income Ceiling for 3: $784
+    # 800 > 784, fails gross income test
+    ga_tanf_income_eligible: false
+    ga_tanf_eligible: false
+    ga_tanf: 0
+
+- name: Case 12, family with countable income exceeding standard of need ineligible.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 8_400  # $700/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: true  # Continuing recipient, $30 disregard only
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 700
+    # Gross Income Ceiling for 3: $784
+    # 700 < 784, passes gross income test
+    # Work expense: $90
+    # After work expense: 700 - 90 = 610
+    # $30 disregard (months 5-12): 30
+    # Countable earned: 610 - 30 = 580
+    ga_tanf_countable_income: 580
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: false
+    # Countable income (580) > Standard of Need (424)
+    ga_tanf_eligible: false
+    ga_tanf: 0
+
+- name: Case 13, two parent household with no income.
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 33
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_cash_assets: 600
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_countable_income: 0
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 280
+    # Benefit = MIN(424 - 0, 280) = 280
+
+- name: Case 14, family exceeds resource limit ineligible.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 1_500
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 2
+    ga_tanf_countable_income: 0
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: false
+    # Resources (1,500) > limit (1,000)
+    ga_tanf_eligible: false
+    ga_tanf: 0
+
+- name: Case 15, family with unearned income from child support.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 3_600  # $300/month
+        child_support_received: 1_200  # $100/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: false  # New applicant
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 3
+    ga_tanf_gross_earned_income: 300
+    # Work expense: $90
+    # After work expense: 300 - 90 = 210
+    # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100
+    # Countable earned: 210 - 100 = 110
+    # Unearned income (child support): 100
+    ga_tanf_countable_income: 210
+    # 110 + 100 = 210
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    # Countable income (210) < Standard of Need (424)
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 214
+    # Benefit = MIN(424 - 210, 280) = MIN(214, 280) = 214
+
+- name: Case 16, child-only case with SSI-receiving child excluded.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 10
+        ssi: 900
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_assistance_unit_size: 2
+    # Parent + child2 (child1 receiving SSI excluded)
+    ga_tanf_countable_income: 0
+    # SSI not counted as income for TANF
+    ga_tanf_standard_of_need: 324
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 188
+    ga_tanf: 188
+    # Benefit = MIN(324 - 0, 188) = 188

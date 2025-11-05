@@ -1,0 +1,37 @@
+description: Georgia limits TANF eligibility to households with gross monthly income below this ceiling, which is set at 185% of the Standard of Need for each assistance unit size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: GA TANF gross income ceiling
+  reference:
+    - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
+      publication_date: 2025-03-01
+    - title: PAMMS TANF Policy Manual - Section 1525 Income
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
+    - title: Georgia DFCS TANF Eligibility Requirements
+      href: https://dfcs.georgia.gov/services/temporary-assistance-needy-families/tanf-eligibility-requirements
+
+1:
+  2025-03-01: 435
+2:
+  2025-03-01: 599
+3:
+  2025-03-01: 784
+4:
+  2025-03-01: 1_088
+5:
+  2025-03-01: 1_384
+6:
+  2025-03-01: 1_487
+7:
+  2025-03-01: 1_487
+8:
+  2025-03-01: 1_487
+9:
+  2025-03-01: 1_487
+10:
+  2025-03-01: 1_487

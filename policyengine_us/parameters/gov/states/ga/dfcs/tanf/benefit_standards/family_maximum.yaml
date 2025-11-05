@@ -1,0 +1,38 @@
+description: Georgia limits monthly TANF cash assistance to this maximum amount based on assistance unit size, regardless of the calculated benefit from Standard of Need minus countable income.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: GA TANF family maximum benefit
+  reference:
+    - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
+      publication_date: 2025-03-01
+    - title: PAMMS TANF Policy Manual - Section 1525 Income
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
+    - title: Georgia Budget and Policy Institute - TANF Basics
+      href: https://gbpi.org/the-basics-of-georgias-temporary-assistance-for-needy-families-program/
+      publication_date: 2023-01-01
+
+1:
+  2025-03-01: 155
+2:
+  2025-03-01: 188
+3:
+  2025-03-01: 280
+4:
+  2025-03-01: 364
+5:
+  2025-03-01: 447
+6:
+  2025-03-01: 530
+7:
+  2025-03-01: 530
+8:
+  2025-03-01: 530
+9:
+  2025-03-01: 530
+10:
+  2025-03-01: 530

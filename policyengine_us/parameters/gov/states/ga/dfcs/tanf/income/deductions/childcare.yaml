@@ -1,0 +1,24 @@
+description: Georgia deducts up to this amount of dependent care expenses per child from countable income under TANF, based on child age. The dependent must live in the home and receive TANF, and the earner must receive this deduction.
+
+metadata:
+  period: month
+  label: GA TANF monthly childcare deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: PAMMS TANF Policy Manual - Section 1615 Deductions
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1615/
+    - title: PAMMS TANF Policy Manual PDF, Page 284
+      href: https://pamms.dhs.ga.gov/dfcs/_exports/tanf-policy-manual.pdf
+      publication_date: 2025-09-13
+
+brackets:
+  - threshold:
+      2025-03-01: 0
+    amount:
+      2025-03-01: 200
+  - threshold:
+      2025-03-01: 2
+    amount:
+      2025-03-01: 175

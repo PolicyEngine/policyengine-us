@@ -1,0 +1,35 @@
+description: Georgia uses this Standard of Need amount to calculate TANF benefits based on assistance unit size. The benefit equals the Standard of Need minus countable income, capped at the Family Maximum.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: GA TANF standard of need
+  reference:
+    - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
+      publication_date: 2025-03-01
+    - title: PAMMS TANF Policy Manual - Section 1525 Income
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
+
+1:
+  2025-03-01: 235
+2:
+  2025-03-01: 324
+3:
+  2025-03-01: 424
+4:
+  2025-03-01: 529
+5:
+  2025-03-01: 639
+6:
+  2025-03-01: 749
+7:
+  2025-03-01: 804
+8:
+  2025-03-01: 804
+9:
+  2025-03-01: 804
+10:
+  2025-03-01: 804
