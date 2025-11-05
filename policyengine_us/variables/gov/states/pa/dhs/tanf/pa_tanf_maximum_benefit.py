@@ -25,11 +25,11 @@ class pa_tanf_maximum_benefit(Variable):
 
         # Get benefit based on county group and size
         # Use county_group enum value as parameter key
-        benefit = p.payment_standard.amount[county_group][capped_size]
+        benefit = p.family_size_allowance.amount[county_group][capped_size]
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.payment_standard.increment
+        additional_increment = p.family_size_allowance.additional_person
         additional_benefit = additional_people * additional_increment
 
         # Return monthly benefit

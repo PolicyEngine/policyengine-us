@@ -1,9 +1,11 @@
-description: Pennsylvania provides this amount under the Temporary Assistance for Needy Families program for each household size by county group.
+description: Pennsylvania provides this maximum family size allowance under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
-  label: Pennsylvania TANF Family Size Allowance by county group
+  label: Pennsylvania TANF family size allowance by county group
+  breakdown:
+    - pa_tanf_county_group
   reference:
     - title: 55 Pa. Code § 183.91
       href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/s183.91.html&d=reduce

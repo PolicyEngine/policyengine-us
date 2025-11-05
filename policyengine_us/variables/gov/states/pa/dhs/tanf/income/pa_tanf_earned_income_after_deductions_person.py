@@ -17,7 +17,7 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         gross_earned = person("tanf_gross_earned_income", period)
 
         # Step 1: Subtract $90 initial work expense deduction (everyone)
-        after_initial = max_(gross_earned - p.initial_work_expense.amount, 0)
+        after_initial = max_(gross_earned - p.work_expense.initial, 0)
 
         # Step 2: Apply 50% earned income disregard (only if eligible)
         # Eligibility determined by pa_tanf_disregard_eligible:
@@ -41,4 +41,4 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         )
 
         # Step 3: Subtract $200 additional work expense deduction (everyone)
-        return max_(after_disregard - p.additional_work_expense.amount, 0)
+        return max_(after_disregard - p.work_expense.additional, 0)

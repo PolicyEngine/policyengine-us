@@ -29,7 +29,7 @@ class pa_tanf_standard_of_need(Variable):
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.standard_of_need.increment
+        additional_increment = p.standard_of_need.additional_person
         additional_amount = additional_people * additional_increment
 
         # Return monthly standard of need

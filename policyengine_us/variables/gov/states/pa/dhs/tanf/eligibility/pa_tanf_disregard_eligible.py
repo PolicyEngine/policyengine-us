@@ -22,7 +22,7 @@ class pa_tanf_disregard_eligible(Variable):
         # 1. Earned income after $90 deduction per person
         gross_earned = person("tanf_gross_earned_income", period)
         preliminary_earned_per_person = max_(
-            gross_earned - p.initial_work_expense.amount, 0
+            gross_earned - p.work_expense.initial, 0
         )
         preliminary_earned = spm_unit.sum(preliminary_earned_per_person)
 
