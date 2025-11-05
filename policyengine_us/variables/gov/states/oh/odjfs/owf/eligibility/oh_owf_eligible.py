@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oh_tanf_eligible(Variable):
+class oh_owf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Ohio TANF eligibility"
+    label = "Ohio OWF eligibility"
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
@@ -26,8 +26,9 @@ class oh_tanf_eligible(Variable):
             person("is_citizen_or_legal_immigrant", period)
         )
 
-        # Must meet income requirements (countable income < payment standard)
-        income_eligible = spm_unit("oh_tanf_income_eligible", period)
+        # Must meet income requirements
+        # (oh_owf_income_eligible handles both initial and ongoing tests)
+        income_eligible = spm_unit("oh_owf_income_eligible", period)
 
         # Ohio has NO resource limits per working_references.md:
         # "No Resource Test: Resources such as a car or home ownership

@@ -4,7 +4,7 @@
     people:
       parent:
         age: 32
-        employment_income: 9_600
+        employment_income_before_lsr: 9_600
       child1:
         age: 5
         is_tax_unit_dependent: true
@@ -27,11 +27,11 @@
     #
     # Payment standard for 3: $623/month × 12 = $7,476/year
     # Benefit: $7,476 - $3,300 = $4,176/year
-    oh_tanf_countable_income: 3_300
-    oh_tanf_payment_standard: 7_476
-    oh_tanf_income_eligible: true
-    oh_tanf_eligible: true
-    oh_tanf: 4_176
+    oh_owf_countable_income: 3_300
+    oh_owf_payment_standard: 7_476
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 4_176
 
 - name: Single parent with one child and no income receives maximum benefit
   period: 2024
@@ -54,11 +54,11 @@
     # Countable income: $0
     # Payment standard for 2: $495/month × 12 = $5,940/year
     # Benefit: $5,940 - $0 = $5,940/year (maximum benefit)
-    oh_tanf_countable_income: 0
-    oh_tanf_payment_standard: 5_940
-    oh_tanf_income_eligible: true
-    oh_tanf_eligible: true
-    oh_tanf: 5_940
+    oh_owf_countable_income: 0
+    oh_owf_payment_standard: 5_940
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 5_940
 
 - name: Single parent with earned and unearned income receives reduced benefit
   period: 2024
@@ -66,7 +66,7 @@
     people:
       parent:
         age: 40
-        employment_income: 6_000
+        employment_income_before_lsr: 6_000
         social_security: 4_800
       child1:
         age: 14
@@ -91,11 +91,11 @@
     #
     # Payment standard for 3: $623/month × 12 = $7,476/year
     # Benefit: $7,476 - $6,300 = $1,176/year
-    oh_tanf_countable_income: 6_300
-    oh_tanf_payment_standard: 7_476
-    oh_tanf_income_eligible: true
-    oh_tanf_eligible: true
-    oh_tanf: 1_176
+    oh_owf_countable_income: 6_300
+    oh_owf_payment_standard: 7_476
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 1_176
 
 - name: Family with income above payment standard receives no benefit
   period: 2024
@@ -103,7 +103,7 @@
     people:
       parent:
         age: 35
-        employment_income: 18_000
+        employment_income_before_lsr: 18_000
       child1:
         age: 6
         is_tax_unit_dependent: true
@@ -125,11 +125,11 @@
     # Payment standard for 3: $623/month × 12 = $7,476/year
     # Countable income ($7,500) >= payment standard ($7,476)
     # Not income eligible, no benefit
-    oh_tanf_countable_income: 7_500
-    oh_tanf_payment_standard: 7_476
-    oh_tanf_income_eligible: false
-    oh_tanf_eligible: false
-    oh_tanf: 0
+    oh_owf_countable_income: 7_500
+    oh_owf_payment_standard: 7_476
+    oh_owf_income_eligible: false
+    oh_owf_eligible: false
+    oh_owf: 0
 
 - name: Two adults with no children are not eligible
   period: 2024
@@ -149,5 +149,5 @@
   output:
     # No minor children means categorically ineligible
     # Must have at least one minor child or be pregnant
-    oh_tanf_eligible: false
-    oh_tanf: 0
+    oh_owf_eligible: false
+    oh_owf: 0

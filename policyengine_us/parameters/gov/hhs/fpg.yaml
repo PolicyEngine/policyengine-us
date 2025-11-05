@@ -1,7 +1,6 @@
 description: Federal poverty guidelines published by the Department of Health and Human Services.
 first_person:
   CONTIGUOUS_US:
-    1997-03-10: 7_890
     2015-01-01: 11_770
     2016-01-01: 11_880
     2017-01-01: 12_060
@@ -14,7 +13,6 @@ first_person:
     2024-01-01: 15_060
     2025-01-01: 15_650
   AK:
-    1997-03-10: 9_870
     2015-01-01: 14_720
     2016-01-01: 14_840
     2017-01-01: 15_060
@@ -27,7 +25,6 @@ first_person:
     2024-01-01: 18_810
     2025-01-01: 19_550
   HI:
-    1997-03-10: 9_070
     2015-01-01: 13_550
     2016-01-01: 13_670
     2017-01-01: 13_860
@@ -53,7 +50,6 @@ additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
   # This difference is always the same for larger households.
   CONTIGUOUS_US:
-    1997-03-10: 2_720
     2015-01-01: 4_160
     2016-01-01: 4_160
     2017-01-01: 4_180
@@ -66,7 +62,6 @@ additional_person:
     2024-01-01: 5_380
     2025-01-01: 5_500
   AK:
-    1997-03-10: 3_400
     2015-01-01: 5_200
     2016-01-01: 5_200
     2017-01-01: 5_230
@@ -79,7 +74,6 @@ additional_person:
     2024-01-01: 6_730
     2025-01-01: 6_880
   HI:
-    1997-03-10: 3_130
     2015-01-01: 4_780
     2016-01-01: 4_780
     2017-01-01: 4_810
@@ -102,11 +96,6 @@ additional_person:
 metadata:
   unit: currency-USD
   reference:
-    - title: 1997 HHS Poverty Guidelines
-      href: https://aspe.hhs.gov/1997-hhs-poverty-guidelines
-      publication_date: 1997-03-10
-    - title: Federal Register Vol. 62, No. 46, March 10, 1997, pp. 10856-10859
-      href: https://aspe.hhs.gov/1997-hhs-poverty-guidelines
     - title: 2015 Poverty Guidelines
       href: https://aspe.hhs.gov/2015-poverty-guidelines
     - title: 2016 Poverty Guidelines

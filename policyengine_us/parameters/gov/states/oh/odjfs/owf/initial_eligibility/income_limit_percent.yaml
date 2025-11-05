@@ -1,0 +1,14 @@
+description: Ohio uses this percentage of the current federal poverty guideline as the gross income limit for initial Ohio Works First eligibility determination.
+metadata:
+  unit: /1
+  period: year
+  label: Ohio Works First initial eligibility income limit percentage
+  reference:
+    - title: Ohio Revised Code § 5107.10(D) - Gross income cannot exceed 50% of federal poverty guidelines
+      href: https://codes.ohio.gov/ohio-revised-code/section-5107.10
+    - title: ODJFS OWF Payment Standards Table - Initial Eligibility Test column
+      href: https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/ofam/OWFPaymentStandards.pdf
+  note: Despite statute referencing July 1 1997 FPL, Ohio uses current year FPL in practice
+
+values:
+  1997-07-01: 0.5

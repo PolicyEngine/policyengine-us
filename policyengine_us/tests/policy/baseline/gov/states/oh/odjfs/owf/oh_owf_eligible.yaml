@@ -4,7 +4,7 @@
     people:
       parent:
         age: 30
-        employment_income: 5_000
+        employment_income_before_lsr: 5_000
       child:
         age: 5
     spm_units:
@@ -15,7 +15,7 @@
         members: [parent, child]
         state_code: OH
   output:
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
 
 - name: Pregnant woman - categorically eligible
   period: 2024
@@ -24,7 +24,7 @@
       woman:
         age: 28
         is_pregnant: true
-        employment_income: 3_000
+        employment_income_before_lsr: 3_000
     spm_units:
       spm_unit:
         members: [woman]
@@ -33,7 +33,7 @@
         members: [woman]
         state_code: OH
   output:
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
 
 - name: Two adults no children - not demographic eligible
   period: 2024
@@ -51,7 +51,7 @@
         members: [adult1, adult2]
         state_code: OH
   output:
-    oh_tanf_eligible: false
+    oh_owf_eligible: false
 
 - name: Family with child but income too high
   period: 2024
@@ -59,7 +59,7 @@
     people:
       parent:
         age: 30
-        employment_income: 20_000
+        employment_income_before_lsr: 20_000
       child:
         age: 5
     spm_units:
@@ -75,7 +75,7 @@
     # Countable: $1,416.67 - $708.33 = $708.33/month
     # Payment standard for 2: $495/month
     # Not income eligible since $708.33 >= $495
-    oh_tanf_eligible: false
+    oh_owf_eligible: false
 
 - name: Family with child but no citizen or legal immigrant
   period: 2024
@@ -83,7 +83,7 @@
     people:
       parent:
         age: 30
-        employment_income: 5_000
+        employment_income_before_lsr: 5_000
         immigration_status: UNDOCUMENTED
       child:
         age: 5
@@ -96,7 +96,7 @@
         members: [parent, child]
         state_code: OH
   output:
-    oh_tanf_eligible: false
+    oh_owf_eligible: false
 
 - name: Family with child, parent undocumented but child is citizen - eligible
   period: 2024
@@ -104,7 +104,7 @@
     people:
       parent:
         age: 30
-        employment_income: 5_000
+        employment_income_before_lsr: 5_000
         immigration_status: UNDOCUMENTED
       child:
         age: 5
@@ -117,7 +117,7 @@
         members: [parent, child]
         state_code: OH
   output:
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
 
 - name: Family at income threshold - just eligible
   period: 2024
@@ -125,12 +125,13 @@
     people:
       parent:
         age: 30
-        employment_income: 11_879
+        employment_income_before_lsr: 11_879
       child:
         age: 5
     spm_units:
       spm_unit:
         members: [parent, child]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child]
@@ -141,7 +142,7 @@
     # Countable: $739.92 - $369.96 = $369.96/month
     # Payment standard for 2: $495/month
     # Eligible since $369.96 < $495
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
 
 - name: Family just over income threshold - still eligible due to disregard
   period: 2024
@@ -149,12 +150,13 @@
     people:
       parent:
         age: 30
-        employment_income: 11_881
+        employment_income_before_lsr: 11_881
       child:
         age: 5
     spm_units:
       spm_unit:
         members: [parent, child]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child]
@@ -165,7 +167,7 @@
     # Countable: $740.08 - $370.04 = $370.04/month
     # Payment standard for 2: $495/month
     # Eligible since $370.04 < $495
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
 
 - name: Family with zero income - eligible
   period: 2024
@@ -173,7 +175,7 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       child:
         age: 5
     spm_units:
@@ -184,4 +186,54 @@
         members: [parent, child]
         state_code: OH
   output:
-    oh_tanf_eligible: true
+    oh_owf_eligible: true
+
+- name: New applicant with low income - passes initial eligibility
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 8_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    # Gross income: $8,000/year = $666.67/month
+    # 50% FPL for size 2 (2024): ~$852/month
+    # Passes initial test: $666.67 < $852
+    # After disregards: $666.67 - $250 = $416.67; 50% = $208.33
+    # Countable: $208.33/month
+    # Payment standard: $495/month
+    # Passes ongoing: $208.33 < $495
+    oh_owf_eligible: true
+
+- name: New applicant with high income - fails initial eligibility
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 25_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    # Gross income: $25,000/year = $2,083/month
+    # 50% FPL for size 2 (2024): ~$852/month
+    # Fails initial test: $2,083 > $852
+    oh_owf_eligible: false
