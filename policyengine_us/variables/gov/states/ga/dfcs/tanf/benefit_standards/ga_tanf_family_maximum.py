@@ -18,12 +18,10 @@ class ga_tanf_family_maximum(Variable):
         unit_size = spm_unit("ga_tanf_assistance_unit_size", period)
 
         # Maximum amounts for units up to 10 people
-        max_amount = p.family_maximum[
-            min_(unit_size, len(p.family_maximum.keys()))
-        ]
+        max_table_size = 10
+        max_amount = p.family_maximum[min_(unit_size, max_table_size)]
 
         # Add increment for each additional person beyond 10
-        max_table_size = len(p.family_maximum.keys())
         additional_members = max_(unit_size - max_table_size, 0)
         increment = additional_members * p.family_maximum_increment
 
