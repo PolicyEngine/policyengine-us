@@ -1,0 +1,64 @@
+- name: No earned income receives no disregard.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 0
+    ga_tanf_work_expense_deduction: 0
+  output:
+    ga_tanf_earned_income_disregard: 0
+
+- name: Earned income with work expense deduction receives flat plus percentage disregard.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 300
+    ga_tanf_work_expense_deduction: 90
+  output:
+    # After work expense: 300 - 90 = 210
+    # Disregard: 30 + (210 * 1/3) = 30 + 70 = 100
+    ga_tanf_earned_income_disregard: 100
+
+- name: Earned income exactly equals work expense.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 90
+    ga_tanf_work_expense_deduction: 90
+  output:
+    # After work expense: 90 - 90 = 0
+    # Disregard: 30 + (0 * 1/3) = 30
+    ga_tanf_earned_income_disregard: 30
+
+- name: Very small earned income after work expense.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 100
+    ga_tanf_work_expense_deduction: 90
+  output:
+    # After work expense: 100 - 90 = 10
+    # Disregard: 30 + (10 * 1/3) = 30 + 3.33 = 33.33
+    ga_tanf_earned_income_disregard: 33.33
+
+- name: Large earned income after work expense.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 600
+    ga_tanf_work_expense_deduction: 90
+  output:
+    # After work expense: 600 - 90 = 510
+    # Disregard: 30 + (510 * 1/3) = 30 + 170 = 200
+    ga_tanf_earned_income_disregard: 200
+
+- name: Edge case with $1 earned income.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_gross_earned_income: 1
+    ga_tanf_work_expense_deduction: 90
+  output:
+    # After work expense: max(1 - 90, 0) = 0
+    # Disregard: 30 + (0 * 1/3) = 30
+    ga_tanf_earned_income_disregard: 30

@@ -15,7 +15,9 @@ class ga_tanf_standard_of_need(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.dfcs.tanf.benefit_standards
-        unit_size = spm_unit("ga_tanf_assistance_unit_size", period)
+        # In simplified implementation, use SPM unit size directly
+        # (does not exclude SSI recipients from assistance unit)
+        unit_size = spm_unit("spm_unit_size", period)
 
         # Standard amounts for units up to 10 people
         max_table_size = 10

@@ -13,11 +13,14 @@ class ga_tanf_childcare_deduction(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.dfcs.tanf.income.deductions
         person = spm_unit.members
-        age = person("age", period.this_year)
+        dependent = person("is_tax_unit_dependent", period)
+        age = person("monthly_age", period)
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
         # Georgia allows up to $200/month per child under 2,
         # and up to $175/month per child age 2 and older
-        max_deduction_per_child = p.childcare.calc(age)
+        # Calculate max deduction per dependent based on age
+        childcare_deduction_person = p.childcare.calc(age) * dependent
+        total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
 
-        # Sum across all children in the SPM unit
-        return spm_unit.sum(max_deduction_per_child)
+        return min_(childcare_expenses, total_childcare_deduction)

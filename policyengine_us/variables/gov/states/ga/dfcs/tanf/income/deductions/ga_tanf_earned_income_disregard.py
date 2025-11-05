@@ -24,9 +24,13 @@ class ga_tanf_earned_income_disregard(Variable):
         # Flat disregard amount
         flat_disregard = p.flat_amount
 
-        # Percentage disregard (1/3) - applied only in first 4 months
-        # For now, we apply the most generous interpretation:
-        # $30 + 1/3 of remaining income after work expense
+        # Percentage disregard (1/3)
+        # NOTE: In the full Georgia TANF policy, this disregard varies by time:
+        # - Months 1-4: $30 + 1/3 of remaining income
+        # - Months 5-12: $30 only
+        # - Month 13+: No disregard
+        # For this simplified implementation, we do not model time limits
+        # and apply the most generous interpretation ($30 + 1/3) to all recipients
         percentage_disregard = p.percentage * income_after_work_expense
 
         # Total disregard is flat amount plus percentage of remaining

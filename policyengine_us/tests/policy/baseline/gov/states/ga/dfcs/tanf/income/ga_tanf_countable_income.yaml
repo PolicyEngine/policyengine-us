@@ -1,0 +1,69 @@
+- name: All income components are zero.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 0
+    ga_tanf_countable_unearned_income: 0
+    ga_tanf_childcare_deduction: 0
+  output:
+    ga_tanf_countable_income: 0
+
+- name: Only earned income, no childcare deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 200
+    ga_tanf_countable_unearned_income: 0
+    ga_tanf_childcare_deduction: 0
+  output:
+    ga_tanf_countable_income: 200
+
+- name: Only unearned income, no childcare deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 0
+    ga_tanf_countable_unearned_income: 150
+    ga_tanf_childcare_deduction: 0
+  output:
+    ga_tanf_countable_income: 150
+
+- name: Earned and unearned income, no childcare deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 200
+    ga_tanf_countable_unearned_income: 150
+    ga_tanf_childcare_deduction: 0
+  output:
+    ga_tanf_countable_income: 350
+
+- name: Childcare deduction less than total income.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 200
+    ga_tanf_countable_unearned_income: 150
+    ga_tanf_childcare_deduction: 100
+  output:
+    ga_tanf_countable_income: 250
+
+- name: Childcare deduction exactly equals total income.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 200
+    ga_tanf_countable_unearned_income: 150
+    ga_tanf_childcare_deduction: 350
+  output:
+    ga_tanf_countable_income: 0
+
+- name: Childcare deduction exceeds total income.
+  period: 2025-01
+  input:
+    state_code: GA
+    ga_tanf_countable_earned_income: 200
+    ga_tanf_countable_unearned_income: 150
+    ga_tanf_childcare_deduction: 400
+  output:
+    ga_tanf_countable_income: 0

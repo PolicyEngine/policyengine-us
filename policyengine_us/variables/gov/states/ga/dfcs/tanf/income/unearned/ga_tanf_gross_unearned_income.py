@@ -15,7 +15,7 @@ class ga_tanf_gross_unearned_income(Variable):
 
     adds = [
         "social_security",
-        "ssi",
+        # Note: SSI is excluded from TANF unearned income
         "unemployment_compensation",
         "child_support_received",
         "alimony_income",

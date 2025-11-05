@@ -14,8 +14,10 @@ class ga_tanf_countable_resources(Variable):
     defined_for = StateCode.GA
 
     def formula(spm_unit, period, parameters):
-        # For simplicity, use the standard SPM unit assets
+        # For simplified implementation, use SPM unit cash assets
         # In a more complete implementation, this would account for
-        # excluded resources and vehicle value limits
-        assets = spm_unit("spm_unit_assets", period)
-        return max_(assets, 0)
+        # excluded resources (primary residence, household goods, etc.)
+        # and vehicle value limits
+        # Note: spm_unit_cash_assets is a yearly variable, access it properly
+        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        return max_(cash_assets, 0)
