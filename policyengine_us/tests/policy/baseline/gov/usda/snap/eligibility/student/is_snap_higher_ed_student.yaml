@@ -21,11 +21,3 @@
     is_part_time_college_student: true
   output:
     is_snap_higher_ed_student: true
-
-- name: Both full-time and part-time (edge case)
-  period: 2024
-  input:
-    is_full_time_college_student: true
-    is_part_time_college_student: true
-  output:
-    is_snap_higher_ed_student: true

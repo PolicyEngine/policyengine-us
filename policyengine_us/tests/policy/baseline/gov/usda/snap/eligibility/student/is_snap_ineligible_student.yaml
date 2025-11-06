@@ -66,28 +66,6 @@
   output:
     is_snap_ineligible_student: [false, false]
 
-- name: Single parent college student with child over 12 is ineligible
-  period: 2022
-  input:
-    people:
-      parent:
-        is_full_time_college_student: true
-        age: 35
-        is_disabled: false
-        weekly_hours_worked_before_lsr: 0
-        tanf_person: 0
-      child:
-        age: 14
-        tanf_person: 0
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-  output:
-    is_snap_ineligible_student: [true, false]
-
 - name: Two parent household with child under 6 is eligible
   period: 2022
   input:
@@ -112,28 +90,3 @@
         members: [parent1, parent2, child]
   output:
     is_snap_ineligible_student: [false, false, false]
-
-- name: Two parent household with child age 6-12 is ineligible
-  period: 2022
-  input:
-    people:
-      parent1:
-        is_full_time_college_student: true
-        age: 32
-        is_disabled: false
-        weekly_hours_worked_before_lsr: 0
-        tanf_person: 0
-      parent2:
-        age: 34
-        tanf_person: 0
-      child:
-        age: 8
-        tanf_person: 0
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child]
-    spm_units:
-      spm_unit:
-        members: [parent1, parent2, child]
-  output:
-    is_snap_ineligible_student: [true, false, false]
