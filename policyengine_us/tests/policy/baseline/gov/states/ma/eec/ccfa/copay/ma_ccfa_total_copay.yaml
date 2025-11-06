@@ -4,7 +4,7 @@
     people:
       person1:
         age: 40
-        employment_income: 0
+        employment_income_before_lsr: 0
       person2:
         age: 1
         ma_ccfa_eligible_child: true
@@ -28,7 +28,7 @@
     people:
       person1:
         age: 40
-        employment_income: 1_800 * 12
+        employment_income_before_lsr: 1_800 * 12
       person2:
         age: 1
         ma_ccfa_eligible_child: true
@@ -52,7 +52,7 @@
     people:
       person1:
         age: 40
-        employment_income: 3_800 * 12
+        employment_income_before_lsr: 3_800 * 12
       person2:
         age: 1
         ma_ccfa_eligible_child: true
@@ -82,7 +82,7 @@
     people:
       person1:
         age: 30
-        employment_income: 2_000 * 12
+        employment_income_before_lsr: 2_000 * 12
       person2:
         age: 2
         ma_ccfa_eligible_child: true

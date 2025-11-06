@@ -10,7 +10,7 @@ class meets_snap_work_exception(Variable):
 
     def formula(person, period, parameters):
         # Exception 4: Employed at least 20 hours per week or work-study
-        hours_worked = person("weekly_hours_worked", period)
+        hours_worked = person("weekly_hours_worked_before_lsr", period)
         p = parameters(period).gov.usda.snap.student
         meets_hours_requirement = hours_worked >= p.working_hours_threshold
 

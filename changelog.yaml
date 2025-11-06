@@ -11386,3 +11386,51 @@
     fixed:
     - Fix the baby bonus act payment test.
   date: 2025-10-22 14:06:11
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island exemption reform now correctly applies baseline phase-out to personal
+      exemptions at high incomes
+  date: 2025-10-22 20:34:02
+- bump: patch
+  changes:
+    added:
+    - Changed name of aca_ptc_phase_out_rate to aca_required_contribution_percentage
+      to better reflect its purpose.
+  date: 2025-10-24 01:02:40
+- bump: patch
+  changes:
+    changed:
+    - Restructure PR CI workflow to run selective tests (with coverage) and full test
+      suite in parallel for faster feedback and comprehensive validation.
+  date: 2025-10-25 22:24:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix recursion errors when applying LSRs.
+  date: 2025-10-28 14:08:51
+- bump: minor
+  changes:
+    added:
+    - Age heterogeneity in labor supply response elasticities using multiplier approach.
+  date: 2025-10-28 20:44:10
+- bump: minor
+  changes:
+    added:
+    - Fix Rhode Island Dependent Exemption to Match Model.
+  date: 2025-10-31 00:57:16
+- bump: minor
+  changes:
+    added:
+    - Federal TANF baseline infrastructure for simplified state implementations.
+  date: 2025-10-31 17:27:49
+- bump: minor
+  changes:
+    fixed:
+    - Fixed typo in tanf and snap parameter folders.
+  date: 2025-11-06 17:11:46
+- bump: minor
+  changes:
+    added:
+    - Georgia Itemizer Tax Credit.
+  date: 2025-11-06 17:14:20

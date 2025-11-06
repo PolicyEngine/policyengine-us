@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.430.0] - 2025-11-06 17:14:20
+
+### Added
+
+- Georgia Itemizer Tax Credit.
+
+## [1.429.0] - 2025-11-06 17:11:46
+
+### Fixed
+
+- Fixed typo in tanf and snap parameter folders.
+
+## [1.428.0] - 2025-10-31 17:27:49
+
+### Added
+
+- Federal TANF baseline infrastructure for simplified state implementations.
+
+## [1.427.0] - 2025-10-31 00:57:16
+
+### Added
+
+- Fix Rhode Island Dependent Exemption to Match Model.
+
+## [1.426.0] - 2025-10-28 20:44:10
+
+### Added
+
+- Age heterogeneity in labor supply response elasticities using multiplier approach.
+
+## [1.425.7] - 2025-10-28 14:08:51
+
+### Fixed
+
+- Fix recursion errors when applying LSRs.
+
+## [1.425.6] - 2025-10-25 22:24:57
+
+### Changed
+
+- Restructure PR CI workflow to run selective tests (with coverage) and full test suite in parallel for faster feedback and comprehensive validation.
+
+## [1.425.5] - 2025-10-24 01:02:40
+
+### Added
+
+- Changed name of aca_ptc_phase_out_rate to aca_required_contribution_percentage to better reflect its purpose.
+
+## [1.425.4] - 2025-10-22 20:34:02
+
+### Fixed
+
+- Rhode Island exemption reform now correctly applies baseline phase-out to personal exemptions at high incomes
+
 ## [1.425.3] - 2025-10-22 14:06:11
 
 ### Fixed
@@ -13381,6 +13435,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.429.0...1.430.0
+[1.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.428.0...1.429.0
+[1.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.427.0...1.428.0
+[1.427.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.426.0...1.427.0
+[1.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.7...1.426.0
+[1.425.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.6...1.425.7
+[1.425.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.5...1.425.6
+[1.425.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.4...1.425.5
+[1.425.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.3...1.425.4
 [1.425.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.2...1.425.3
 [1.425.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.1...1.425.2
 [1.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.0...1.425.1
