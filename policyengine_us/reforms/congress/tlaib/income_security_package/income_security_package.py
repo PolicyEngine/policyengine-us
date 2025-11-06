@@ -19,6 +19,9 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
+            if not p.in_effect:
+                return 0
+
             # Baby bonus is for those born in 2026 and after, paid in their birth year
             birth_year = person("birth_year", period)
 
@@ -47,6 +50,9 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
             is_eligible = (age >= p.min_age) & (age <= p.max_age)
 
@@ -67,6 +73,9 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
+
+            if not p.in_effect:
+                return 0
 
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
@@ -90,6 +99,9 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
+
+            if not p.in_effect:
+                return 0
 
             age = person("age", period)
             is_eligible = age < p.child_benefit.age_limit
@@ -117,6 +129,9 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
+            if not p.in_effect:
+                return 0
+
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
 
@@ -139,6 +154,9 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
+
+            if not p.in_effect:
+                return 0
 
             person = tax_unit.members
             age = person("age", period)
