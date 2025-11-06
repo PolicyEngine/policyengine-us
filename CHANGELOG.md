@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.429.0] - 2025-11-06 17:11:46
+
+### Fixed
+
+- Fixed typo in tanf and snap parameter folders.
+
 ## [1.428.0] - 2025-10-31 17:27:49
 
 ### Added
@@ -13423,6 +13429,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.428.0...1.429.0
 [1.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.427.0...1.428.0
 [1.427.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.426.0...1.427.0
 [1.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.425.7...1.426.0
