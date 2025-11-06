@@ -5,21 +5,13 @@ class is_snap_ineligible_student(Variable):
     value_type = bool
     entity = Person
     label = "Is an ineligible student for SNAP"
-    documentation = (
-        "Whether this person is ineligible for SNAP due to student status. "
-        "Under 7 USC 2015(e), individuals enrolled at least half-time in "
-        "higher education are generally ineligible, unless they meet one of "
-        "eight statutory exceptions."
-    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
 
     def formula(person, period, parameters):
         # Base rule: Students enrolled at least half-time in higher education
         # are ineligible (K-12 students are not affected by this rule)
-        # Note: Currently we only check full-time college students, but the
-        # statute covers half-time or more
-        is_higher_ed_student = person("is_full_time_college_student", period)
+        is_higher_ed_student = person("is_snap_higher_ed_student", period)
 
         # Eight statutory exceptions that make students eligible:
 
@@ -31,34 +23,29 @@ class is_snap_ineligible_student(Variable):
         # Exception 2: Not physically or mentally fit (disabled)
         meets_disability_exception = person("is_disabled", period)
 
-        # Exception 3: Employment/training programs (WIOA, career/technical ed)
+        # Exception 3: Assignment through workforce/employment programs
+        # (WIOA, career/technical ed, remedial/basic education)
+        # Not modeled
 
         # Exception 4: Employed at least 20 hours per week or work-study
-        hours_worked = person("weekly_hours_worked", period)
-        meets_work_hours_exception = hours_worked >= p.working_hours_threshold
-
-        # Exception 5: Parent caring for dependent child under 6.
-        # Exception 8: Single parent with responsibility for dependent under 12
-        is_parent = person("is_tax_unit_head_or_spouse", period)
-        parent_count = person.spm_unit.sum(is_parent)
-
-        # Check if there are children in the household under the age thresholds
-        household_member_ages = person.spm_unit.members("age", period)
-        has_young_child = person.spm_unit.any(
-            household_member_ages < p.young_child
-        )
-        has_younger_child = person.spm_unit.any(
-            household_member_ages < p.younger_child
+        meets_work_hours_exception = person(
+            "meets_snap_work_exception", period
         )
 
-        parent_exception_requirement = where(
-            parent_count > 1, has_young_child, has_younger_child
-        )
-        meets_parent_exception = is_parent & parent_exception_requirement
+        # Exception 5: Parent with responsibility for dependent child under 6,
+        # or child 6-11 when adequate child care is not available
+        # Exception 8: Single parent enrolled full-time with responsibility
+        # for dependent child under 12
+        # (Exceptions 5 and 8 are implemented together)
+        meets_parent_exception = person("meets_snap_parent_exception", period)
 
-        # Exception 6: Receiving TANF benefits
+        # Exception 6: Receiving TANF benefits (part A of title IV)
         tanf = person("tanf_person", period)
         receives_tanf = tanf > 0
+
+        # Exception 7: Enrolled as result of participation in work incentive
+        # program under title IV (TANF work programs) or successor programs
+        # Not modeled
 
         # Student is INELIGIBLE if they are a higher ed student AND
         # they do NOT meet ANY of the eight exceptions

@@ -1,0 +1,13 @@
+- name: Not a parent does not meet exception
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: false
+  output:
+    meets_snap_parent_exception: false
+
+- name: Parent with no children does not meet exception
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+  output:
+    meets_snap_parent_exception: false
