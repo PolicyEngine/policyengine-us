@@ -1,4 +1,8 @@
-- bump: patch
+- bump: minor
   changes:
+    added:
+    - is_federal_work_study_participant.
+    - is_part_time_college_student.
     changed:
-    - Refactor is_snap_ineligible_student formula to align with 7 USC 2015(e).
+    - Refactor is_snap_ineligible_student to include part-time students and Federal Work Study exception.
+    - Update snap_countable_earner to exclude Federal Work Study income.
