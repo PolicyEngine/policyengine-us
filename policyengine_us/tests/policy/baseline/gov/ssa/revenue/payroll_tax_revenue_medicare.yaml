@@ -1,0 +1,52 @@
+- name: Medicare payroll tax revenue - zero earnings
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+  output:
+    payroll_tax_revenue_medicare: 0
+
+- name: Medicare payroll tax revenue - standard earnings
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employee + employer Medicare tax
+    # Rate = 1.45% + 1.45% = 2.9%
+    # Revenue = 50_000 * 0.029 = 1_450
+    payroll_tax_revenue_medicare: 1_450
+
+- name: Medicare payroll tax revenue - above additional threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Regular Medicare: 250_000 * 0.029 = 7_250
+    # Additional Medicare (employee only): (250_000 - 200_000) * 0.009 = 450
+    # Total = 7_250 + 450 = 7_700
+    payroll_tax_revenue_medicare: 7_700
