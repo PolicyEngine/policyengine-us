@@ -1,4 +1,4 @@
 - bump: patch
   changes:
     fixed:
-      - Fix Head Start categorical eligibility vectorization bug causing incorrect benefits at high incomes
+      - Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing incorrect categorical eligibility
