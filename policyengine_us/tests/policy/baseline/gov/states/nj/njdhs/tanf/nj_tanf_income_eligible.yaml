@@ -1,0 +1,54 @@
+- name: Household with no income is eligible. (0+0<1)
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_maximum_allowable_income: 1
+    nj_tanf_countable_earned_income: 0
+    nj_tanf_countable_gross_unearned_income: 0
+  output:
+    nj_tanf_income_eligible: true
+
+
+- name: Household with income exceeding maximum allowable income is ineligible. (1+1>1)
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_maximum_allowable_income: 1
+    nj_tanf_countable_earned_income: 1
+    nj_tanf_countable_gross_unearned_income: 1
+  output:
+    nj_tanf_income_eligible: false
+
+
+- name: Household with income equals maximum allowable income is eligible. (1+0=1)
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_maximum_allowable_income: 1
+    nj_tanf_countable_earned_income: 1
+    nj_tanf_countable_gross_unearned_income: 0
+  output:
+    nj_tanf_income_eligible: true
+
+- name: Household with income equals maximum allowable income and income equals maximum benefit is ineligible.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_maximum_allowable_income: 1
+    nj_tanf_maximum_benefit: 1
+    nj_tanf_countable_earned_income: 1
+    nj_tanf_countable_gross_unearned_income: 0
+  output:
+    nj_tanf_income_eligible: false
+
+
+- name: Household with income less than maximum allowable income and income less than maximum benefit is eligible. 
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_maximum_allowable_income: 3
+    nj_tanf_maximum_benefit: 2
+    nj_tanf_countable_earned_income: 1
+    nj_tanf_countable_gross_unearned_income: 0
+  output:
+    nj_tanf_income_eligible: true
