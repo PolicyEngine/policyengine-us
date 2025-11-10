@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.432.5] - 2025-11-10 19:14:05
+
+### Added
+
+- Debug income security package.
+
 ## [1.432.4] - 2025-11-10 13:54:57
 
 ### Fixed
@@ -13471,6 +13477,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.432.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.4...1.432.5
 [1.432.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.3...1.432.4
 [1.432.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.2...1.432.3
 [1.432.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.1...1.432.2
