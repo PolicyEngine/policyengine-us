@@ -11424,3 +11424,45 @@
     added:
     - Federal TANF baseline infrastructure for simplified state implementations.
   date: 2025-10-31 17:27:49
+- bump: minor
+  changes:
+    fixed:
+    - Fixed typo in tanf and snap parameter folders.
+  date: 2025-11-06 17:11:46
+- bump: minor
+  changes:
+    added:
+    - Georgia Itemizer Tax Credit.
+  date: 2025-11-06 17:14:20
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico tax computation.
+  date: 2025-11-07 23:08:43
+- bump: minor
+  changes:
+    added:
+    - Virginia 2024 income tax rebate.
+  date: 2025-11-07 23:12:15
+- bump: patch
+  changes:
+    fixed:
+    - Avoid removing older dependents from the Rhode Island exemption reform.
+  date: 2025-11-09 20:09:40
+- bump: patch
+  changes:
+    fixed:
+    - Apply the potential federal CDCC when computing the Ohio CDCC.
+  date: 2025-11-10 11:36:20
+- bump: patch
+  changes:
+    changed:
+    - Fix Head Start and Early Head Start variable metadata (add unit=USD, simplify
+      labels)
+  date: 2025-11-10 11:57:39
+- bump: patch
+  changes:
+    fixed:
+    - Fix Head Start categorical eligibility vectorization bug causing incorrect benefits
+      at high incomes
+  date: 2025-11-10 13:54:57
