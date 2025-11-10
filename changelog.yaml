@@ -11460,3 +11460,9 @@
     - Fix Head Start and Early Head Start variable metadata (add unit=USD, simplify
       labels)
   date: 2025-11-10 11:57:39
+- bump: patch
+  changes:
+    fixed:
+    - Fix Head Start categorical eligibility vectorization bug causing incorrect benefits
+      at high incomes
+  date: 2025-11-10 13:54:57
