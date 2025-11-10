@@ -298,6 +298,58 @@ def formula(spm_unit, period, parameters):
     return income <= limit
 ```
 
+## Critical Vectorization Rule: NEVER Use np.any() or np.all() Without Axis
+
+### The Bug Pattern
+
+**NEVER write code like this:**
+
+```python
+# ❌ WRONG - Breaks vectorization across multiple households
+def formula(person, period, parameters):
+    programs = add(person.tax_unit, period, ["tanf", "snap", "wic"])
+    return np.any(programs)  # Collapses to single boolean!
+```
+
+**What goes wrong**: When simulating multiple households (axes/microsimulation), `np.any(programs)` checks if ANY household qualifies and returns that single True/False for EVERYONE. If one low-income household gets TANF, then $200k+ households also become "categorically eligible".
+
+### The Fix - Element-Wise Comparison
+
+```python
+# ✅ CORRECT - Preserves separate values per person
+def formula(person, period, parameters):
+    return add(person.tax_unit, period, ["tanf", "snap", "wic"]) > 0
+```
+
+This keeps vectorization working: each person gets their own True/False based on their own household's benefits.
+
+### When You CAN Use np.any()
+
+Only with explicit axis for within-entity aggregation:
+
+```python
+# ✅ OK - axis=0 preserves one value per household
+def formula(household, period, parameters):
+    person_disabled = household.members("has_disability", period)
+    return np.any(person_disabled, axis=0)
+```
+
+But prefer clearer patterns:
+```python
+# ✅ BETTER - more explicit
+def formula(household, period, parameters):
+    return household.sum(household.members("has_disability", period)) > 0
+```
+
+### Detection in Your Code
+
+Before submitting, search for:
+- `np.any(` - Does it have `axis=`? If not, use `> 0` instead
+- `np.all(` - Does it have `axis=`? If not, use element-wise comparison
+- Any formula aggregating from another entity (person.tax_unit, person.household, etc.)
+
+**Red flag**: Eligibility formulas that aggregate benefits from tax_unit/household/spm_unit level.
+
 ## Validation Self-Check
 
 Run this mental check for EVERY variable:
@@ -306,5 +358,6 @@ Run this mental check for EVERY variable:
 3. Are federal and state rules properly separated?
 4. Does every reference directly support its value?
 5. Am I duplicating an existing variable?
+6. **Am I using np.any() or np.all() without an axis parameter?**
 
-If ANY answer is "no", fix it before submitting.
+If ANY answer is "no" (or yes for #6), fix it before submitting.
