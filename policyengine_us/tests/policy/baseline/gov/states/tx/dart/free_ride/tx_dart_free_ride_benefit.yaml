@@ -1,0 +1,132 @@
+- name: Eligible child under 5 years old receives free monthly pass benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 3
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    # $126 monthly pass * 12 months = $1,512 annual benefit
+    tx_dart_free_ride_benefit: 1_512
+
+- name: Child exactly 5 years old does not receive free ride benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 5
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_dart_free_ride_benefit: 0
+
+- name: Older child age 10 does not receive free ride benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 10
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_dart_free_ride_benefit: 0
+
+- name: Adult does not receive free ride benefit
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 35
+    households:
+      household:
+        members: [adult]
+        state_code: TX
+  output:
+    tx_dart_free_ride_benefit: 0
+
+- name: Multi-person household with one eligible young child
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 32
+      parent2:
+        age: 30
+      child1:
+        age: 2
+      child2:
+        age: 8
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    tx_dart_free_ride_benefit: [0, 0, 1_512, 0]
+
+- name: Infant under 1 year old receives free ride benefit
+  period: 2025
+  input:
+    people:
+      infant:
+        age: 0
+    households:
+      household:
+        members: [infant]
+        state_code: TX
+  output:
+    # $126 monthly pass * 12 months = $1,512 annual benefit
+    tx_dart_free_ride_benefit: 1_512
+
+- name: Child at age 4 boundary receives free ride benefit
+  period: 2025
+  input:
+    people:
+      child:
+        age: 4
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    # $126 monthly pass * 12 months = $1,512 annual benefit
+    tx_dart_free_ride_benefit: 1_512
+
+- name: Elderly person does not receive free ride benefit
+  period: 2025
+  input:
+    people:
+      senior:
+        age: 70
+    households:
+      household:
+        members: [senior]
+        state_code: TX
+  output:
+    tx_dart_free_ride_benefit: 0
+
+- name: Multiple young children each receive free ride benefit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 28
+      child1:
+        age: 1
+      child2:
+        age: 3
+      child3:
+        age: 4
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: TX
+  output:
+    # Each eligible child gets $1,512 annual benefit
+    tx_dart_free_ride_benefit: [0, 1_512, 1_512, 1_512]

@@ -1,10 +1,10 @@
 description: Massachusetts counts these income sources as countable income under the Child Care Financial Assistance program.
 values:
   2020-01-01:
-    - employment_income
-    - self_employment_income
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
     - dividend_income
-    - interest_income 
+    - interest_income
     - rental_income
     - pension_income
     - veterans_benefits

@@ -1,0 +1,272 @@
+# Essential unit tests for Income Security Package individual components
+# Tests cover critical logic boundaries and edge cases for each act
+
+# Baby Bonus Act Tests
+- name: Baby born in eligibility year receives bonus
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      child_eligible:
+        age: 0
+        birth_year: 2026
+      child_ineligible:
+        age: 0
+        birth_year: 2025
+  output:
+    baby_bonus_act_payment:
+      2026: [2_000, 0]
+
+- name: Baby bonus only paid in birth year
+  period: 2027
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      child_2026:
+        age: 1
+        birth_year: 2026
+      child_2027:
+        age: 0
+        birth_year: 2027
+  output:
+    baby_bonus_act_payment:
+      2027: [0, 2_038]  # Only 2027 birth, uprated
+
+# BOOST Act Payment Tests
+- name: BOOST payment age boundaries
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      age_18:
+        age: 18
+      age_19:
+        age: 19
+      age_67:
+        age: 67
+      age_68:
+        age: 68
+  output:
+    boost_act_payment:
+      2026: [0, 3_000, 3_000, 0]
+
+# BOOST Act Tax Tests
+- name: BOOST tax single filer above threshold
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      filer:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000  # 10k above 30k threshold
+  output:
+    boost_act_tax:
+      2026: 250  # 10,000 * 0.025
+
+- name: BOOST tax joint filers above threshold
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000  # 20k above 60k threshold
+  output:
+    boost_act_tax:
+      2026: 500  # 20,000 * 0.025
+
+- name: BOOST tax head of household above threshold
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: false
+    people:
+      head:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 45_000  # 15k above 30k threshold
+  output:
+    boost_act_tax:
+      2026: 375  # 15,000 * 0.025
+
+# ECPA Child Benefit Tests
+- name: ECPA child benefit age boundary at 19
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      age_17:
+        age: 17
+      age_18:
+        age: 18
+      age_19:
+        age: 19
+  output:
+    ecpa_child_benefit:
+      2026: [5_630, 5_630, 0]
+
+# ECPA Adult Dependent Credit Tests
+- name: ECPA adult dependent credit requires dependent status and age 18+
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      parent:
+        age: 45
+      child_17:
+        age: 17
+        is_tax_unit_dependent: true
+      adult_dep_18:
+        age: 18
+        is_tax_unit_dependent: true
+      adult_not_dep:
+        age: 20
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [parent, child_17, adult_dep_18, adult_not_dep]
+  output:
+    ecpa_adult_dependent_credit:
+      2026: [0, 0, 700, 0]
+
+# ECPA Filer Credit Tests
+- name: ECPA filer credit single base amount
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      filer:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_000
+  output:
+    ecpa_filer_credit:
+      2026: 700
+
+- name: ECPA filer credit joint base amount
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 33
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 30_000
+  output:
+    ecpa_filer_credit:
+      2026: 1_400
+
+- name: ECPA filer credit partial phaseout
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      filer:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_000  # 4k above 20k threshold
+  output:
+    ecpa_filer_credit:
+      2026: 500  # 700 - (4,000 * 0.05)
+
+- name: ECPA filer credit full phaseout
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      filer:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000  # Fully phased out
+  output:
+    ecpa_filer_credit:
+      2026: 0
+
+- name: ECPA filer credit age boundaries
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: false
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      age_18:
+        age: 18
+      age_19:
+        age: 19
+      age_64:
+        age: 64
+      age_65:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [age_18, age_19, age_64, age_65]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+  output:
+    ecpa_filer_credit:
+      2026: 700  # Tax unit level, head must be 19-64

@@ -1,0 +1,513 @@
+- name: HoH filer with 2 kids, 5k earnings
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in, 
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount, 
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+      person2:
+        age: 10
+      person3: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    ctc_arpa_phase_out: 0
+    ctc_arpa_max_addition: 5_200
+    refundable_ctc: 6_800
+    non_refundable_ctc: 0
+
+- name: HoH filer with 2 kids, 20k earnings
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in, 
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount, 
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 10
+      person3: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    refundable_ctc: 9_600
+    non_refundable_ctc: 0
+
+- name: HoH filer with 2 kids, 75k earnings
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in, 
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount, 
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    people:
+      person1:
+        age: 40
+        employment_income: 75_000
+      person2:
+        age: 10
+      person3: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    ctc_phase_out: 0
+    ctc_arpa_max_addition: 5_200
+    ctc_arpa_phase_out: 2_500
+    refundable_ctc: 7_100
+    non_refundable_ctc: 0
+
+- name: Joint filer with 3 kids, 5k income
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in, 
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount, 
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+      person2:
+        age: 40
+      person3: 
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    refundable_ctc: 10_200
+    non_refundable_ctc: 0
+
+- name: Joint filer with 3 kids, 75k income
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in, 
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount, 
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    people:
+      person1:
+        age: 40
+        employment_income: 75_000
+      person2:
+        age: 40
+      person3: 
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    refundable_ctc: 11_400
+    non_refundable_ctc: 0
+
+- name: Joint filer with 3 kids, 250k income
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in,
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount,
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    gov.contrib.ctc.per_child_phase_out.avoid_overlap: false
+    people:
+      person1:
+        age: 40
+        employment_income: 250_000
+      person2:
+        age: 40
+      person3: 
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    refundable_ctc: 2_850
+    non_refundable_ctc: 0
+
+- name: Single filer, 1 child, 120k income, avoid_overlap enabled
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in,
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount,
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    gov.contrib.ctc.per_child_phase_out.avoid_overlap: true
+    people:
+      person1:
+        age: 40
+        employment_income: 120_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ctc_arpa_uncapped_phase_out: 1_875
+    ctc_phase_out: 500
+    ctc: 2_425
+    refundable_ctc: 2_425
+
+- name: Single filer, 1 child, 120k income, avoid_overlap disabled
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in,
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount,
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    gov.contrib.ctc.per_child_phase_out.avoid_overlap: false
+    people:
+      person1:
+        age: 40
+        employment_income: 120_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ctc_arpa_uncapped_phase_out: 2_375
+    ctc_phase_out: 500
+    ctc: 1_925
+    refundable_ctc: 1_925
+
+- name: Single filer, 1 child, 50k income, avoid_overlap enabled (only ARPA applies)
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in,
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount,
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    gov.contrib.ctc.per_child_phase_out.avoid_overlap: true
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ctc_arpa_uncapped_phase_out: 625
+    ctc_phase_out: 0
+    ctc: 4_175
+    refundable_ctc: 4_175
+
+- name: HoH filer, 2 kids, 150k income, avoid_overlap enabled (in overlap zone)
+  period: 2025
+  reforms: [policyengine_us.reforms.ctc.ctc_per_child_phase_in.ctc_per_child_phase_in,
+    policyengine_us.reforms.ctc.ctc_minimum_refundable_amount.ctc_minimum_refundable_amount,
+    policyengine_us.reforms.ctc.ctc_per_child_phase_out.ctc_per_child_phase_out]
+  input:
+    gov.contrib.ctc.per_child_phase_out.in_effect: true
+    gov.contrib.ctc.per_child_phase_in.in_effect: true
+    gov.contrib.ctc.minimum_refundable.in_effect: true
+    gov.contrib.ctc.minimum_refundable.amount[0].amount: 2_400
+    gov.contrib.ctc.minimum_refundable.amount[1].amount: 2_400
+    gov.irs.credits.ctc.refundable.individual_max: 4_800
+    gov.irs.credits.ctc.refundable.phase_in.threshold: 0
+    gov.irs.credits.ctc.refundable.phase_in.rate: 0.2
+    gov.irs.credits.ctc.amount.base[0].amount: 2_200
+    gov.irs.credits.ctc.amount.arpa[0].amount: 4_800
+    gov.irs.credits.ctc.amount.arpa[1].amount: 4_800
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: true
+    gov.irs.credits.ctc.phase_out.arpa.threshold.JOINT: 35_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SINGLE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.HEAD_OF_HOUSEHOLD: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SURVIVING_SPOUSE: 25_000
+    gov.irs.credits.ctc.phase_out.arpa.threshold.SEPARATE: 25_000
+    gov.irs.credits.ctc.phase_out.threshold.JOINT: 200_000
+    gov.irs.credits.ctc.phase_out.threshold.SINGLE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SURVIVING_SPOUSE: 100_000
+    gov.irs.credits.ctc.phase_out.threshold.SEPARATE: 100_000
+    gov.irs.credits.ctc.phase_out.arpa.amount: 25
+    gov.irs.credits.ctc.phase_out.amount: 25
+    gov.contrib.ctc.per_child_phase_out.avoid_overlap: true
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+      person2:
+        age: 10
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    ctc_arpa_uncapped_phase_out: 3_750
+    ctc_phase_out: 2_500
+    ctc: 3_350
+    refundable_ctc: 3_350

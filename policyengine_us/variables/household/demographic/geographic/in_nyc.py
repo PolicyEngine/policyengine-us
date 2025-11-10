@@ -6,6 +6,15 @@ class in_nyc(Variable):
     entity = Household
     definition_period = YEAR
     label = "Is in NYC"
-    # No formula by design given that in_nyc is included in CPS datasets.
-    # For details, see the add_household_variables method in the
-    # policyengine_us/data/datasets/cps/cps.py module.
+
+    def formula(household, period, parameters):
+        county = household("county_str", period)
+        possible_counties = [
+            "QUEENS_COUNTY_NY",
+            "BRONX_COUNTY_NY",
+            "RICHMOND_COUNTY_NY",
+            "NEW_YORK_COUNTY_NY",
+            "KINGS_COUNTY_NY",
+        ]
+
+        return np.isin(county, possible_counties)

@@ -1,0 +1,23 @@
+description: Rhode Island phases the dependent exemption out for filers with adjusted gross income above this threshold, based on filing status.
+
+metadata:
+  label: Rhode Island dependent exemption phaseout threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+
+JOINT:
+  2025-01-01: 0
+
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 0
+
+SURVIVING_SPOUSE:
+  2025-01-01: 0
+
+SINGLE:
+  2025-01-01: 0
+
+SEPARATE:
+  2025-01-01: 0

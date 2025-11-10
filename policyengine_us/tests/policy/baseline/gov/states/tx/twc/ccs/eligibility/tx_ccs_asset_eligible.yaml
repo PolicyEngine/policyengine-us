@@ -1,0 +1,67 @@
+- name: Family with assets below limit is eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_assets: 500_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_ccs_asset_eligible: true
+
+- name: Family with assets at limit is eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_ccs_asset_eligible: true
+
+- name: Family with assets above limit is not eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_assets: 1_000_001
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_ccs_asset_eligible: false
+
+- name: Family with no assets is eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    tx_ccs_asset_eligible: true
