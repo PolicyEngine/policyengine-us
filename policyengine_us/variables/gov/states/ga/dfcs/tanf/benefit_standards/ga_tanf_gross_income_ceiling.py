@@ -14,19 +14,11 @@ class ga_tanf_gross_income_ceiling(Variable):
     defined_for = StateCode.GA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ga.dfcs.tanf.benefit_standards
-        # In simplified implementation, use SPM unit size directly
-        # (does not exclude SSI recipients from assistance unit)
-        unit_size = spm_unit("spm_unit_size", period)
+        p = parameters(period).gov.states.ga.dfcs.tanf.financial_standards
 
-        # Income ceiling amounts for units up to 10 people
-        max_table_size = 10
-        ceiling_amount = p.gross_income_ceiling[
-            min_(unit_size, max_table_size)
-        ]
+        # Gross income ceiling is 185% of the Standard of Need
+        # per Ga. Comp. R. & Regs. 290-2-28-.02(j)
+        standard_of_need = spm_unit("ga_tanf_standard_of_need", period)
+        rate = p.gross_income_ceiling_rate
 
-        # Add increment for each additional person beyond 10
-        additional_members = max_(unit_size - max_table_size, 0)
-        increment = additional_members * p.gross_income_ceiling_increment
-
-        return ceiling_amount + increment
+        return standard_of_need * rate

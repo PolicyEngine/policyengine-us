@@ -1,11 +1,11 @@
-description: Georgia limits monthly TANF cash assistance to this maximum amount based on assistance unit size, regardless of the calculated benefit from Standard of Need minus countable income.
+description: Georgia limits monthly cash assistance to this base maximum under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 11)
-  label: GA TANF family maximum benefit
+  label: GA TANF family maximum base amount
   reference:
     - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
       href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
