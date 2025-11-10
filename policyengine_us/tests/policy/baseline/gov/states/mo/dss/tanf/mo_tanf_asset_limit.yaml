@@ -1,0 +1,35 @@
+- name: An applicant who own personal property with equity not greater than $1,000 and signs an IEP own personal property with equity not greater than $5,000 is eligible.
+  period: 2023
+  input:
+    state_code: MO
+    mo_tanf_asset: 1_000
+    mo_tanf_iep_asset: 5_000
+  output:
+    mo_tanf_asset_limit: true
+
+- name: An applicant who own personal property with equity greater than $1,000 and signs an IEP own personal property with equity greater than $5,000 is ineligible.
+  period: 2023
+  input:
+    state_code: MO
+    mo_tanf_asset: 1_001
+    mo_tanf_iep_asset: 5_001
+  output:
+   mo_tanf_asset_limit: false
+
+- name: An applicant who own personal property with equity greater than $1,000 and signs an IEP own personal property with equity not greater than $5,000 is ineligible.
+  period: 2023
+  input:
+    state_code: MO
+    mo_tanf_asset: 1_001
+    mo_tanf_iep_asset: 5_000
+  output:
+    mo_tanf_asset_limit: false
+
+- name: An applicant who own personal property with equity not greater than $1,000 and signs an IEP own personal property with equity greater than $5,000 is ineligible.
+  period: 2023
+  input:
+    state_code: MO
+    mo_tanf_asset: 1_000
+    mo_tanf_iep_asset: 5_001
+  output:
+    mo_tanf_asset_limit: false
