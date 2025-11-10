@@ -4,12 +4,16 @@ from policyengine_us.model_api import *
 class early_head_start(Variable):
     value_type = float
     entity = Person
-    label = "Amount of Early Head Start benefit"
+    label = "Early Head Start"
+    unit = USD
     definition_period = YEAR
     defined_for = "is_early_head_start_eligible"
     reference = "https://headstart.gov/program-data/article/head-start-program-facts-fiscal-year-2022"
 
     def formula(person, period, parameters):
+        takes_up = person("takes_up_early_head_start_if_eligible", period)
+        is_in_microsim = hasattr(person.simulation, "dataset")
+
         p = parameters(period).gov.hhs.head_start.early_head_start
         state = person.household("state_code_str", period)
         spending = p.spending[state]
@@ -17,4 +21,8 @@ class early_head_start(Variable):
         mask = enrollment > 0
         result = np.zeros_like(p.spending[state])
         result[mask] = spending[mask] / enrollment[mask]
-        return result
+
+        if is_in_microsim:
+            return result * takes_up
+        else:
+            return result
