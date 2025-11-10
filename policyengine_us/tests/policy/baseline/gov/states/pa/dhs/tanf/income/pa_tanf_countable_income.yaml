@@ -16,8 +16,8 @@
     state_code: PA
   output:
     # Monthly: $12,000/12 = $1,000
-    # $1,000 - $90 = $910; $910 × 50% = $455; $455 - $200 = $255
-    pa_tanf_countable_income: 255
+    # $1,000 × 50% = $500; $500 - $200 = $300
+    pa_tanf_countable_income: 300
 
 - name: Case 3, earned income only, new applicant.
   period: 2024-01
@@ -28,8 +28,8 @@
     state_code: PA
   output:
     # Monthly: $12,000/12 = $1,000
-    # $1,000 - $90 = $910; No disregard; $910 - $200 = $710
-    pa_tanf_countable_income: 710
+    # Not EID eligible - full earned income is countable
+    pa_tanf_countable_income: 1_000
 
 - name: Case 4, unearned income only.
   period: 2024-01
@@ -51,10 +51,10 @@
     state_code: PA
   output:
     # Earned monthly: $7,200/12 = $600
-    # $600 - $90 = $510; $510 × 50% = $255; $255 - $200 = $55
+    # $600 × 50% = $300; $300 - $200 = $100
     # Unearned monthly: $3,600/12 = $300
-    # Total: $55 + $300 = $355
-    pa_tanf_countable_income: 355
+    # Total: $100 + $300 = $400
+    pa_tanf_countable_income: 400
 
 - name: Case 6, deductions exceed earned income.
   period: 2024-01
@@ -65,7 +65,7 @@
     state_code: PA
   output:
     # Earned monthly: $2,400/12 = $200
-    # $200 - $90 = $110; $110 × 50% = $55; $55 - $200 = -$145, clipped to 0
+    # $200 × 50% = $100; $100 - $200 = -$100, clipped to 0
     # Unearned monthly: $1,200/12 = $100
     # Total: $0 + $100 = $100
     pa_tanf_countable_income: 100
@@ -79,8 +79,8 @@
     state_code: PA
   output:
     # Monthly: $30,000/12 = $2,500
-    # $2,500 - $90 = $2,410; $2,410 × 50% = $1,205; $1,205 - $200 = $1,005
-    pa_tanf_countable_income: 1_005
+    # $2,500 × 50% = $1,250; $1,250 - $200 = $1,050
+    pa_tanf_countable_income: 1_050
 
 - name: Case 8, high earned income, new applicant.
   period: 2024-01
@@ -91,5 +91,5 @@
     state_code: PA
   output:
     # Monthly: $30,000/12 = $2,500
-    # $2,500 - $90 = $2,410; No disregard; $2,410 - $200 = $2,210
-    pa_tanf_countable_income: 2_210
+    # Not EID eligible - full earned income is countable
+    pa_tanf_countable_income: 2_500

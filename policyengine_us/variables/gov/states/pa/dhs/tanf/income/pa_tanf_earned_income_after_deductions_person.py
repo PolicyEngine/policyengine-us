@@ -8,7 +8,10 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.PA
-    reference = "https://www.law.cornell.edu/regulations/pennsylvania/55-Pa-Code-SS-183-94"
+    reference = (
+        "http://services.dpw.state.pa.us/oimpolicymanuals/cash/160_Income_Deductions/160_2_TANF_Earned_Income_Deductions.htm",
+        "https://www.law.cornell.edu/regulations/pennsylvania/55-Pa-Code-SS-183-94",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.pa.dhs.tanf.income.deductions
@@ -16,29 +19,34 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         # Get gross earned income for this person
         gross_earned = person("tanf_gross_earned_income", period)
 
-        # Step 1: Subtract $90 initial work expense deduction (everyone)
-        after_initial = max_(gross_earned - p.work_expense.initial, 0)
-
-        # Step 2: Apply 50% earned income disregard (only if eligible)
+        # Check if eligible for Earned Income Disregard (EID)
         # Eligibility determined by pa_tanf_disregard_eligible:
         # - Enrolled recipients: automatic
-        # - New applicants: must pass Standard of Need test
+        # - New applicants: must pass Standard of Need test (using $90 deduction)
         disregard_eligible = person.spm_unit(
             "pa_tanf_disregard_eligible", period
         )
 
-        # Apply disregard conditionally
+        # Per PA DHS Cash Assistance Handbook Section 160.22:
+        # "If the individual is eligible for the EID, calculate and subtract the EID
+        # and subsequently subtract the $200 WED."
+        # "If an individual is not eligible for the EID, the CAO will not deduct the WED."
+
+        # Step 1: Apply 50% Earned Income Disregard (EID) to GROSS earned income
         # "Disregard 50%" = keep only 50%
         disregard_percentage = p.earned_income_disregard.percentage
         keep_rate = 1 - disregard_percentage
+        after_eid = gross_earned * keep_rate
 
-        after_disregard = where(
+        # Step 2: Subtract $200 Work Expense Deduction (WED)
+        # Only applied if eligible for EID
+        after_wed = max_(after_eid - p.work_expense.additional, 0)
+
+        # Return countable income based on eligibility
+        return where(
             disregard_eligible,
-            # Eligible: apply 50% disregard (keep 50% of remaining)
-            after_initial * keep_rate,
-            # Not eligible: no disregard (keep 100%)
-            after_initial,
+            # Eligible: apply EID + WED
+            after_wed,
+            # Not eligible: full earned income is countable (no deductions)
+            gross_earned,
         )
-
-        # Step 3: Subtract $200 additional work expense deduction (everyone)
-        return max_(after_disregard - p.work_expense.additional, 0)
