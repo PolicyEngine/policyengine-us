@@ -1,6 +1,8 @@
 - name: Both income and resources eligible.
   period: 2025-01
   input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     state_code: GA
     ga_tanf_income_eligible: true
     ga_tanf_resources_eligible: true
@@ -10,6 +12,8 @@
 - name: Income eligible but resources ineligible.
   period: 2025-01
   input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     state_code: GA
     ga_tanf_income_eligible: true
     ga_tanf_resources_eligible: false
@@ -19,6 +23,8 @@
 - name: Resources eligible but income ineligible.
   period: 2025-01
   input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     state_code: GA
     ga_tanf_income_eligible: false
     ga_tanf_resources_eligible: true
@@ -28,6 +34,8 @@
 - name: Both income and resources ineligible.
   period: 2025-01
   input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     state_code: GA
     ga_tanf_income_eligible: false
     ga_tanf_resources_eligible: false

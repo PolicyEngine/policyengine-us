@@ -12,6 +12,8 @@ class ga_tanf_work_expense_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.dfcs.tanf.income.deductions
-        gross_earned = spm_unit("ga_tanf_gross_earned_income", period)
+        person = spm_unit.members
+        # Use federal TANF gross earned income variable
+        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
         has_earned_income = gross_earned > 0
         return where(has_earned_income, p.work_expense, 0)

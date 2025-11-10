@@ -61,7 +61,7 @@
     people:
       parent:
         age: 30
-        employment_income: 3_600  # $300/month
+        employment_income_before_lsr: 3_600  # $300/month
       child1:
         age: 10
       child2:
@@ -76,7 +76,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 300
     # Work expense deduction: $90
     # After work expense: 300 - 90 = 210
     # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100
@@ -98,7 +97,7 @@
     people:
       parent:
         age: 30
-        employment_income: 3_600  # $300/month
+        employment_income_before_lsr: 3_600  # $300/month
       child1:
         age: 10
       child2:
@@ -113,7 +112,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 300
     # SIMPLIFIED IMPLEMENTATION: Always applies $30 + 1/3 disregard
     # (does not model time-based limits)
     # Work expense deduction: $90
@@ -136,7 +134,7 @@
     people:
       parent:
         age: 30
-        employment_income: 4_800  # $400/month
+        employment_income_before_lsr: 4_800  # $400/month
       child:
         age: 1
     spm_units:
@@ -150,7 +148,6 @@
         members: [parent, child]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 400
     # Work expense: $90
     # After work expense: 400 - 90 = 310
     # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
@@ -174,7 +171,7 @@
     people:
       parent:
         age: 30
-        employment_income: 4_800  # $400/month
+        employment_income_before_lsr: 4_800  # $400/month
       child:
         age: 5
     spm_units:
@@ -188,7 +185,6 @@
         members: [parent, child]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 400
     # Work expense: $90
     # After work expense: 400 - 90 = 310
     # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
@@ -297,7 +293,7 @@
     people:
       parent:
         age: 30
-        employment_income: 9_000  # $750/month
+        employment_income_before_lsr: 9_000  # $750/month
       child1:
         age: 10
       child2:
@@ -312,7 +308,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 750
     # Gross Income Ceiling for 3: $784
     # 750 < 784, passes gross income test
     # Work expense: $90
@@ -335,7 +330,7 @@
     people:
       parent:
         age: 30
-        employment_income: 9_600  # $800/month
+        employment_income_before_lsr: 9_600  # $800/month
       child1:
         age: 10
       child2:
@@ -350,7 +345,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 800
     # Gross Income Ceiling for 3: $784
     # 800 > 784, fails gross income test
     ga_tanf_income_eligible: false
@@ -364,7 +358,7 @@
     people:
       parent:
         age: 30
-        employment_income: 8_400  # $700/month
+        employment_income_before_lsr: 8_400  # $700/month
       child1:
         age: 10
       child2:
@@ -379,7 +373,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 700
     # SIMPLIFIED IMPLEMENTATION: Always applies $30 + 1/3 disregard
     # (does not model time-based limits)
     # Gross Income Ceiling for 3: $784
@@ -455,7 +448,7 @@
     people:
       parent:
         age: 30
-        employment_income: 3_600  # $300/month
+        employment_income_before_lsr: 3_600  # $300/month
         child_support_received: 1_200  # $100/month
       child1:
         age: 10
@@ -471,7 +464,6 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    ga_tanf_gross_earned_income: 300
     # Work expense: $90
     # After work expense: 300 - 90 = 210
     # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100

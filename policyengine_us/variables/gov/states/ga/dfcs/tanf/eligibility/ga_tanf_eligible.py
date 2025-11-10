@@ -16,6 +16,28 @@ class ga_tanf_eligible(Variable):
     defined_for = StateCode.GA
 
     def formula(spm_unit, period, parameters):
+        person = spm_unit.members
+
+        # Must meet demographic requirements (minor child OR pregnant woman)
+        # Use federal demographic eligibility directly
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+
+        # Must have at least one citizen or legal immigrant
+        # Use federal immigration eligibility
+        has_citizen = spm_unit.any(
+            person("is_citizen_or_legal_immigrant", period)
+        )
+
+        # Must meet income requirements (gross and net income tests)
         income_eligible = spm_unit("ga_tanf_income_eligible", period)
+
+        # Must meet resource requirements (assets <= $1,000)
         resources_eligible = spm_unit("ga_tanf_resources_eligible", period)
-        return income_eligible & resources_eligible
+
+        # All requirements must be met
+        return (
+            demographic_eligible
+            & has_citizen
+            & income_eligible
+            & resources_eligible
+        )

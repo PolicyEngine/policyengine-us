@@ -2,8 +2,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_gross_earned_income: 0
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 0
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -14,8 +12,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_gross_earned_income: 598
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 100
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -25,9 +21,8 @@
 - name: Gross income one dollar over ceiling fails gross test.
   period: 2025-01
   input:
+    employment_income_before_lsr: 7_188  # $599/month - one dollar over ceiling
     state_code: GA
-    ga_tanf_gross_earned_income: 599
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 100
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -38,8 +33,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_gross_earned_income: 300
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 324
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -50,8 +43,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_gross_earned_income: 300
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 323
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -62,8 +53,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_gross_earned_income: 500
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 325
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598
@@ -73,9 +62,8 @@
 - name: Pass net test but fail gross test.
   period: 2025-01
   input:
+    employment_income_before_lsr: 9_600  # $800/month - over ceiling of $598
     state_code: GA
-    ga_tanf_gross_earned_income: 600
-    ga_tanf_gross_unearned_income: 0
     ga_tanf_countable_income: 100
     ga_tanf_standard_of_need: 324
     ga_tanf_gross_income_ceiling: 598

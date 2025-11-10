@@ -15,7 +15,9 @@ class ga_tanf_earned_income_disregard(Variable):
             period
         ).gov.states.ga.dfcs.tanf.income.deductions.earned_income_disregard
 
-        gross_earned = spm_unit("ga_tanf_gross_earned_income", period)
+        person = spm_unit.members
+        # Use federal TANF gross earned income variable
+        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
         work_expense = spm_unit("ga_tanf_work_expense_deduction", period)
 
         # Calculate income after work expense

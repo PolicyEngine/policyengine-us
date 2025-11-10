@@ -11,6 +11,10 @@ class ga_tanf_countable_unearned_income(Variable):
     defined_for = StateCode.GA
 
     def formula(spm_unit, period, parameters):
+        person = spm_unit.members
         # Georgia does not apply deductions to unearned income
-        gross_unearned = spm_unit("ga_tanf_gross_unearned_income", period)
+        # Use federal TANF gross unearned income variable
+        gross_unearned = spm_unit.sum(
+            person("tanf_gross_unearned_income", period)
+        )
         return gross_unearned
