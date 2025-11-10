@@ -1,0 +1,63 @@
+- name: Household with only earned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_countable_earned_income: 300
+    mi_tanf_gross_unearned_income: 0
+  output:
+    mi_tanf_countable_income: 300
+
+- name: Household with only unearned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_countable_earned_income: 0
+    mi_tanf_gross_unearned_income: 400
+  output:
+    mi_tanf_countable_income: 400
+
+- name: Household with both earned and unearned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_countable_earned_income: 300
+    mi_tanf_gross_unearned_income: 200
+  output:
+    mi_tanf_countable_income: 500
+
+- name: Household with zero income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_countable_earned_income: 0
+    mi_tanf_gross_unearned_income: 0
+  output:
+    mi_tanf_countable_income: 0
+
+- name: Household with multiple people with unearned income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        mi_tanf_gross_unearned_income: 200
+      person2:
+        mi_tanf_gross_unearned_income: 150
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_tanf_countable_earned_income: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_tanf_countable_income: 450
+
+- name: Household outside Michigan returns zero
+  period: 2025-01
+  input:
+    state_code: CA
+    mi_tanf_countable_earned_income: 300
+    mi_tanf_gross_unearned_income: 200
+  output:
+    mi_tanf_countable_income: 0

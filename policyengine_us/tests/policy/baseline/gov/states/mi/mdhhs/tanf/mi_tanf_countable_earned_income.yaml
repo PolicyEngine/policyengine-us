@@ -1,0 +1,97 @@
+- name: Household with zero earned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 0
+  output:
+    mi_tanf_countable_earned_income: 0
+
+- name: Household with earned income below fixed disregard
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 150
+  output:
+    # Disregard = $200 + 50% of remainder
+    # Since $150 < $200, disregard is $200
+    # Countable = max($150 - $200, 0) = $0
+    mi_tanf_countable_earned_income: 0
+
+- name: Household with earned income equal to fixed disregard
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 200
+  output:
+    # Disregard = $200 + 50% of remainder
+    # Remainder = max($200 - $200, 0) = $0
+    # Total disregard = $200 + (50% × $0) = $200
+    # Countable = $200 - $200 = $0
+    mi_tanf_countable_earned_income: 0
+
+- name: Household with earned income just above fixed disregard
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 250
+  output:
+    # Disregard = $200 + 50% of remainder
+    # Remainder = $250 - $200 = $50
+    # Total disregard = $200 + (50% × $50) = $200 + $25 = $225
+    # Countable = $250 - $225 = $25
+    mi_tanf_countable_earned_income: 25
+
+- name: Household with moderate earned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 1_000
+  output:
+    # Disregard = $200 + 50% of remainder
+    # Remainder = $1,000 - $200 = $800
+    # Total disregard = $200 + (50% × $800) = $200 + $400 = $600
+    # Countable = $1,000 - $600 = $400
+    mi_tanf_countable_earned_income: 400
+
+- name: Household with high earned income
+  period: 2025-01
+  input:
+    state_code: MI
+    mi_tanf_gross_earned_income: 2_000
+  output:
+    # Disregard = $200 + 50% of remainder
+    # Remainder = $2,000 - $200 = $1,800
+    # Total disregard = $200 + (50% × $1,800) = $200 + $900 = $1,100
+    # Countable = $2,000 - $1,100 = $900
+    mi_tanf_countable_earned_income: 900
+
+- name: Multiple people with earned income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        mi_tanf_gross_earned_income: 800
+      person2:
+        mi_tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Total gross earned = $800 + $400 = $1,200
+    # Disregard = $200 + 50% of remainder
+    # Remainder = $1,200 - $200 = $1,000
+    # Total disregard = $200 + (50% × $1,000) = $200 + $500 = $700
+    # Countable = $1,200 - $700 = $500
+    mi_tanf_countable_earned_income: 500
+
+- name: Household outside Michigan returns zero
+  period: 2025-01
+  input:
+    state_code: CA
+    mi_tanf_gross_earned_income: 1_000
+  output:
+    mi_tanf_countable_earned_income: 0

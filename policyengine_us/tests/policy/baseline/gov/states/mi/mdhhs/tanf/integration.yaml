@@ -427,18 +427,16 @@
   output:
     # Family of 4: Payment standard = $707
     # Total monthly income = $800 + $400 = $1,200
-    # Ongoing earned income disregard applied per person
-    # Parent1: Disregard = $200 + (50% × $600) = $200 + $300 = $500
-    # Parent1 countable = $800 - $500 = $300
-    # Parent2: Disregard = $200 + (50% × $200) = $200 + $100 = $300
-    # Parent2 countable = $400 - $300 = $100
-    # Total countable income = $300 + $100 = $400
-    # Benefit = $707 - $400 = $307
+    # Ongoing earned income disregard applied to household total
+    # Remainder = $1,200 - $200 = $1,000
+    # Total disregard = $200 + (50% × $1,000) = $200 + $500 = $700
+    # Countable income = $1,200 - $700 = $500
+    # Benefit = $707 - $500 = $207
     mi_tanf_payment_standard: 707
-    mi_tanf_countable_income: 400
+    mi_tanf_countable_income: 500
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf: 307
+    mi_tanf: 207
 
 - name: Family with unearned income only
   period: 2025-01
@@ -447,7 +445,7 @@
       parent:
         age: 35
         employment_income: 0
-        social_security: 6_000  # $500/month
+        social_security_disability: 6_000  # $500/month
       child1:
         age: 8
       child2:
@@ -481,7 +479,7 @@
       parent:
         age: 35
         employment_income: 6_000  # $500/month
-        social_security: 3_600  # $300/month
+        social_security_retirement: 3_600  # $300/month
       child1:
         age: 8
       child2:

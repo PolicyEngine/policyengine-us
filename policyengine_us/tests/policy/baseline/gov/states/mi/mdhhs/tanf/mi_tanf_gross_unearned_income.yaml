@@ -1,0 +1,87 @@
+- name: Person with no unearned income
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 0
+    social_security_retirement: 0
+    unemployment_compensation: 0
+    pension_income: 0
+  output:
+    mi_tanf_gross_unearned_income: 0
+
+- name: Person with only social security disability
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 12_000  # Annual amount = $1,000/month
+    social_security_retirement: 0
+    unemployment_compensation: 0
+    pension_income: 0
+  output:
+    mi_tanf_gross_unearned_income: 1_000
+
+- name: Person with only social security retirement
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 0
+    social_security_retirement: 9_600  # Annual amount = $800/month
+    unemployment_compensation: 0
+    pension_income: 0
+  output:
+    mi_tanf_gross_unearned_income: 800
+
+- name: Person with only unemployment compensation
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 0
+    social_security_retirement: 0
+    unemployment_compensation: 7_200  # Annual amount = $600/month
+    pension_income: 0
+  output:
+    mi_tanf_gross_unearned_income: 600
+
+- name: Person with only pension income
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 0
+    social_security_retirement: 0
+    unemployment_compensation: 0
+    pension_income: 6_000  # Annual amount = $500/month
+  output:
+    mi_tanf_gross_unearned_income: 500
+
+- name: Person with multiple unearned income sources
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 4_800  # Annual = $400/month
+    social_security_retirement: 3_600  # Annual = $300/month
+    unemployment_compensation: 2_400  # Annual = $200/month
+    pension_income: 1_200  # Annual = $100/month
+  output:
+    mi_tanf_gross_unearned_income: 1_000
+
+- name: Person with two unearned income sources
+  period: 2025-01
+  input:
+    state_code: MI
+    social_security_disability: 0
+    social_security_retirement: 8_400  # Annual = $700/month
+    unemployment_compensation: 3_600  # Annual = $300/month
+    pension_income: 0
+  output:
+    mi_tanf_gross_unearned_income: 1_000
+
+- name: Person outside Michigan returns zero
+  period: 2025-01
+  input:
+    state_code: CA
+    social_security_disability: 4_800  # Annual = $400/month
+    social_security_retirement: 3_600  # Annual = $300/month
+    unemployment_compensation: 2_400  # Annual = $200/month
+    pension_income: 1_200  # Annual = $100/month
+  output:
+    mi_tanf_gross_unearned_income: 0

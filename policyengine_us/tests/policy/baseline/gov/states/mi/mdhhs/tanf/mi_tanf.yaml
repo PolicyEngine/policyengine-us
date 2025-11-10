@@ -1,155 +1,62 @@
-- name: Michigan TANF - Family of 3, no income
-  period: 2024-01
-  absolute_error_margin: 0.01
+- name: Eligible household with positive benefit
+  period: 2025-01
   input:
-    people:
-      person1:
-        age: 30
-        employment_income: 0
-      person2:
-        age: 8
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_assets: 10_000
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: MI
+    mi_tanf_eligible: true
+    mi_tanf_payment_standard: 500
+    mi_tanf_countable_income: 200
   output:
+    mi_tanf: 300
+
+- name: Eligible household at boundary - countable income equals payment standard
+  period: 2025-01
+  input:
+    mi_tanf_eligible: true
+    mi_tanf_payment_standard: 500
+    mi_tanf_countable_income: 500
+  output:
+    mi_tanf: 0
+
+- name: Eligible household with zero income
+  period: 2025-01
+  input:
+    mi_tanf_eligible: true
+    mi_tanf_payment_standard: 500
+    mi_tanf_countable_income: 0
+  output:
+    mi_tanf: 500
+
+- name: Eligible household with countable income exceeding payment standard
+  period: 2025-01
+  input:
+    mi_tanf_eligible: true
+    mi_tanf_payment_standard: 500
+    mi_tanf_countable_income: 600
+  output:
+    mi_tanf: 0
+
+- name: Ineligible household returns zero
+  period: 2025-01
+  input:
+    mi_tanf_eligible: false
+    mi_tanf_payment_standard: 500
+    mi_tanf_countable_income: 200
+  output:
+    mi_tanf: 0
+
+- name: Eligible household with small benefit amount
+  period: 2025-01
+  input:
+    mi_tanf_eligible: true
+    mi_tanf_payment_standard: 100
+    mi_tanf_countable_income: 99
+  output:
+    mi_tanf: 1
+
+- name: Eligible household with countable income one dollar below payment standard
+  period: 2025-01
+  input:
+    mi_tanf_eligible: true
     mi_tanf_payment_standard: 583
-    mi_tanf_countable_income: 0
-    mi_tanf_eligible: true
-    mi_tanf: 583
-
-- name: Michigan TANF - Family of 3, with $500 earned income
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 6_000  # $500/month * 12 months
-      person2:
-        age: 8
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_assets: 10_000
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: MI
+    mi_tanf_countable_income: 582
   output:
-    mi_tanf_gross_earned_income: [500, 0, 0]
-    mi_tanf_countable_earned_income: 150  # 500 - 200 - (300 * 0.5) = 150
-    mi_tanf_countable_income: 150
-    mi_tanf_eligible: true
-    mi_tanf: 433  # 583 - 150 = 433
-
-- name: Michigan TANF - Family of 1, no income
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 10_000
-    households:
-      household:
-        members: [person1]
-        state_code: MI
-  output:
-    mi_tanf_payment_standard: 363
-    mi_tanf_countable_income: 0
-    mi_tanf_eligible: true
-    mi_tanf: 363
-
-- name: Michigan TANF - Income too high
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 24_000  # $2,000/month * 12 months
-      person2:
-        age: 8
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_assets: 10_000
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: MI
-  output:
-    mi_tanf_countable_earned_income: 900  # 2000 - 200 - (1800 * 0.5) = 900
-    mi_tanf_eligible: false
-    mi_tanf: 0
-
-- name: Michigan TANF - Assets too high
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 0
-      person2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 20_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_tanf_resources_eligible: false
-    mi_tanf_eligible: false
-    mi_tanf: 0
-
-- name: Michigan TANF - Family of 8
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 28
-      person3:
-        age: 12
-      person4:
-        age: 10
-      person5:
-        age: 8
-      person6:
-        age: 6
-      person7:
-        age: 4
-      person8:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        spm_unit_assets: 5_000
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        state_code: MI
-  output:
-    mi_tanf_payment_standard: 1_167  # 1072 + 95 for 8th person
-    mi_tanf_eligible: true
-    mi_tanf: 1_167
+    mi_tanf: 1
