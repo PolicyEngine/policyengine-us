@@ -1,0 +1,25 @@
+description: Pennsylvania counts these income sources as unearned income under the TANF program.
+values:
+  2020-09-14:
+    - veterans_benefits # Department of Military and Veteran’s Affairs (DMVA) benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income #lump sum payments, income from relatives
+    - pension_income # retirement_benefits
+    - unemployment_compensation
+    - social_security
+    
+#   - excess_over_unreimbursed_assistance
+#   - contributions
+#   - picket_pay
+#   - income_of_a_child
+#   - sick_and_accidents_benefits_by_insurance
+#   - workers_compensation
+
+metadata:
+  unit: list
+  reference:
+    title: Cash Assistance Handbook | 150.3 Unearned Income.
+    href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/index.htm#t=150_Income%2F150_3_Unearned_Income.htm&rhsearch=countable%20assets&rhsyns=%20
