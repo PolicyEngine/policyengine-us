@@ -1,0 +1,33 @@
+from policyengine_us.model_api import *
+
+
+class mi_tanf_countable_earned_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "Michigan FIP countable earned income"
+    unit = USD
+    definition_period = MONTH
+    reference = (
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf",
+        "https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_2023.pdf",
+    )
+    defined_for = StateCode.MI
+
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.mi.mdhhs.tanf
+
+        # Get gross earned income for all SPM unit members
+        person = spm_unit.members
+        gross_earned_income = person("mi_tanf_gross_earned_income", period)
+        total_gross_earned = spm_unit.sum(gross_earned_income)
+
+        # Apply earned income disregard: $200 + 50% of remainder
+        # Note: Using ongoing rate for simplified implementation
+        # Full implementation would distinguish initial vs ongoing eligibility
+        fixed_disregard = p.earned_income_disregard_fixed
+        rate_disregard = p.earned_income_disregard_ongoing_rate
+
+        remainder = max_(total_gross_earned - fixed_disregard, 0)
+        total_disregard = fixed_disregard + (rate_disregard * remainder)
+
+        return max_(total_gross_earned - total_disregard, 0)
