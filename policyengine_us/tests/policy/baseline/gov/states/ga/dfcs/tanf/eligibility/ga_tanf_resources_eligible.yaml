@@ -2,7 +2,7 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_countable_resources: 1_000
+    spm_unit_cash_assets: 1_000
   output:
     ga_tanf_resources_eligible: true
 
@@ -10,7 +10,7 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_countable_resources: 1_001
+    spm_unit_cash_assets: 1_001
   output:
     ga_tanf_resources_eligible: false
 
@@ -18,7 +18,7 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_countable_resources: 0
+    spm_unit_cash_assets: 0
   output:
     ga_tanf_resources_eligible: true
 
@@ -26,6 +26,6 @@
   period: 2025-01
   input:
     state_code: GA
-    ga_tanf_countable_resources: 999
+    spm_unit_cash_assets: 999
   output:
     ga_tanf_resources_eligible: true

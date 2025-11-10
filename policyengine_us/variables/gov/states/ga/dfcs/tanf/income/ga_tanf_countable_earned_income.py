@@ -14,8 +14,7 @@ class ga_tanf_countable_earned_income(Variable):
         person = spm_unit.members
         # Use federal TANF gross earned income variable
         gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
+        # Georgia only allows $250 standard work expense deduction
+        # per PAMMS Section 1615 and 1605
         work_expense = spm_unit("ga_tanf_work_expense_deduction", period)
-        earned_income_disregard = spm_unit(
-            "ga_tanf_earned_income_disregard", period
-        )
-        return max_(gross_earned - work_expense - earned_income_disregard, 0)
+        return max_(gross_earned - work_expense, 0)

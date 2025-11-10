@@ -15,11 +15,11 @@
 Georgia's Temporary Assistance for Needy Families (TANF) program provides time-limited cash assistance to eligible families with children. The program emphasizes employment and self-sufficiency. Key features:
 
 - **Maximum benefit for family of 3:** $280/month (unchanged since 1990)
-- **Income limit for family of 3:** $784/month gross income
-- **Resource limit:** $1,000 (vehicle value max: $4,650)
+- **Income limit for family of 3:** $784/month gross income (185% of Standard of Need)
+- **Resource limit:** $1,000
 - **Lifetime limit:** 48 months
 - **Work requirement:** 30 hours/week for adults
-- **Earned income disregard:** $250/month
+- **Work expense deduction:** $250/month per employed individual
 
 ---
 
@@ -141,19 +141,18 @@ Georgia's Temporary Assistance for Needy Families (TANF) program provides time-l
   - New income sources: All receipts from first payment to present
 
 #### Section 1615: Deductions
-- **URL:** Referenced in manual (page 284), specific URL not accessible
+- **URL:** https://pamms.dhs.ga.gov/dfcs/tanf/1615/
 - **Earned Income Deductions:**
-  - **Standard Work Expense Allowance:** $90.00 deducted from gross earned income
-  - **$30 Plus 1/3 Disregard:** Applied for four (4) consecutive months
-    - $30 plus 1/3 of remaining earned income after $90 work expense deduction
-    - Resets if TANF ends or employment stops before period completes
-  - **$30 Disregard:** After four-month period, continues for eight (8) additional months
+  - **Standard Work Expense Deduction:** $250 per employed individual
+    - Applied at application, renewal, and when there are changes
+    - This is the ONLY earned income deduction (no additional percentage or flat disregards)
   - **Dependent Care Expenses:**
     - Up to $200/month per child under age 2
     - Up to $175/month per child age 2 and older or incapacitated adult
     - Dependent must live in home and receive TANF
     - Earner must receive this deduction
-- **Note:** Georgia commonly cited as disregarding "$250 a month in earnings" which appears to be simplified reference to these deductions
+- **Important Note:** Georgia does NOT use the traditional AFDC $30 + 1/3 earned income disregard. Only the $250 work expense deduction applies.
+- **Deductions NOT Applied:** If an individual fails to report new or increased earnings within 10 days of receiving the first paycheck (except the $250 standard work deduction remains eligible ongoing)
 
 #### Section 1349: Work Requirements
 - **URL:** https://pamms.dhs.ga.gov/dfcs/tanf/1349/
@@ -184,27 +183,18 @@ Georgia's Temporary Assistance for Needy Families (TANF) program provides time-l
 - **Effective Date:** March 2025 (per Manual Transmittal 79, superseding MT 76)
 - **Last Updated:** Manual Transmittal 79
 
-**Gross Income Ceiling (GIC) by Assistance Unit Size:**
-| AU Size | Gross Income Ceiling |
-|---------|---------------------|
-| 1       | $435                |
-| 2       | $599                |
-| 3       | $784                |
-| 4       | $1,088              |
-| 5       | $1,384              |
-| 6       | $1,487              |
-| 10      | $1,487              |
-| 10+     | Add $44 per member  |
-
 **Standard of Need (SON) by Assistance Unit Size:**
 | AU Size | Standard of Need |
 |---------|-----------------|
 | 1       | $235            |
-| 2       | $324            |
+| 2       | $356            |
 | 3       | $424            |
-| 4       | $529            |
-| 5       | $639            |
-| 6       | $749            |
+| 4       | $500            |
+| 5       | $573            |
+| 6       | $621            |
+| 7       | $672            |
+| 8       | $713            |
+| 9       | $751            |
 | 10      | $804            |
 | 10+     | Add $24 per member |
 
@@ -212,12 +202,20 @@ Georgia's Temporary Assistance for Needy Families (TANF) program provides time-l
 | AU Size | Family Maximum |
 |---------|---------------|
 | 1       | $155          |
-| 2       | $188          |
+| 2       | $235          |
 | 3       | $280          |
-| 4       | $364          |
-| 5       | $447          |
-| 6       | $530          |
+| 4       | $330          |
+| 5       | $378          |
+| 6       | $410          |
+| 7       | $444          |
+| 8       | $470          |
+| 9       | $496          |
+| 10      | $530          |
 | 10+     | Add $17 per member |
+
+**Gross Income Ceiling (GIC) by Assistance Unit Size:**
+- **Formula:** GIC = 185% × Standard of Need (per Ga. Comp. R. & Regs. 290-2-28-.02(j))
+- Calculated values (formula-based, not hardcoded table)
 
 **Grandparents Raising Grandchildren (GRG) - 160% Federal Poverty Level:**
 | AU Size | 160% FPL    |
@@ -233,7 +231,6 @@ Georgia's Temporary Assistance for Needy Families (TANF) program provides time-l
 
 **Resources:**
 - **Resource Limit:** $1,000 per assistance unit
-- **Vehicle Value Limit:** $4,650 (per eligibility page)
 
 ---
 
@@ -344,19 +341,17 @@ Georgia's Temporary Assistance for Needy Families (TANF) program provides time-l
 - Countable resources must be ≤ $1,000
 - Vehicle value must be ≤ $4,650
 
-**Step 3: Calculate Countable Income**
+**Step 3: Calculate Countable Earned Income**
 
 From gross earned income, subtract:
-1. **Standard Work Expense:** $90
-2. **$30 Plus 1/3 Disregard** (first 4 months):
-   - $30 + (1/3 × [gross earned income - $90])
-3. **$30 Disregard** (months 5-12):
-   - $30
-4. **Dependent Care Expenses:**
+1. **Standard Work Expense:** $250 per employed individual
+2. **Dependent Care Expenses** (from countable income):
    - Up to $200/month per child under age 2
    - Up to $175/month per child age 2+ or incapacitated adult
 
 Add all unearned income (after applicable exclusions)
+
+**Note:** Georgia does NOT use the traditional AFDC $30 + 1/3 earned income disregard
 
 **Step 4: Net Income Test**
 - Compare countable income to Standard of Need (SON)
@@ -370,29 +365,18 @@ Add all unearned income (after applicable exclusions)
 
 **Scenario:** Mother with 2 children, $500/month earned income, $100/month child support, no other income
 
-**Month 1-4 (with $30 + 1/3 disregard):**
+**Calculation:**
 1. Gross earned income: $500
-2. Standard work expense: -$90
-3. Remaining: $410
-4. $30 + 1/3 disregard: -$30 - ($410 × 1/3) = -$30 - $137 = -$167
-5. Countable earned income: $500 - $90 - $167 = $243
-6. Add unearned income (child support): +$100
-7. Total countable income: $343
-8. Standard of Need for 3: $424
-9. Benefit before max: $424 - $343 = $81
-10. Family Maximum for 3: $280
-11. **Final Benefit: $81/month**
+2. Standard work expense: -$250
+3. Countable earned income: $500 - $250 = $250
+4. Add unearned income (child support): +$100
+5. Total countable income: $350
+6. Standard of Need for 3: $424
+7. Benefit before max: $424 - $350 = $74
+8. Family Maximum for 3: $280
+9. **Final Benefit: $74/month**
 
-**Month 5-12 (with $30 disregard only):**
-1. Gross earned income: $500
-2. Standard work expense: -$90
-3. $30 disregard: -$30
-4. Countable earned income: $500 - $90 - $30 = $380
-5. Add unearned income (child support): +$100
-6. Total countable income: $480
-7. Standard of Need for 3: $424
-8. Benefit before max: $424 - $480 = $0 (negative, so ineligible)
-9. **Final Benefit: $0/month (ineligible due to excess income)**
+**Note:** If gross earned income were $700/month or higher, countable income would exceed the Standard of Need and family would be ineligible for cash benefits.
 
 ---
 
@@ -491,14 +475,11 @@ Two-parent families: One parent must have recent connection to workforce
 | Parameter | Value |
 |-----------|-------|
 | **Maximum Benefit (Family of 3)** | $280/month |
-| **Income Limit (Family of 3)** | $784/month gross |
+| **Income Limit (Family of 3)** | $784/month gross (185% × $424) |
 | **Resource Limit** | $1,000 |
-| **Vehicle Value Limit** | $4,650 |
 | **Lifetime Limit** | 48 months |
 | **Work Requirement** | 30 hrs/week (20 hrs if child under 6) |
-| **Standard Work Expense** | $90/month |
-| **$30+1/3 Disregard Period** | First 4 months |
-| **$30 Disregard Period** | Months 5-12 |
+| **Standard Work Expense** | $250/month per employed individual |
 | **Child Care Deduction (under 2)** | Up to $200/month |
 | **Child Care Deduction (2+)** | Up to $175/month |
 | **Standard of Need (Family of 3)** | $424/month |
@@ -510,10 +491,10 @@ Two-parent families: One parent must have recent connection to workforce
 ### For Simple Implementation
 The basic implementation should focus on:
 
-1. **Income Eligibility:** Gross Income Ceiling test
+1. **Income Eligibility:** Gross Income Ceiling test (185% × Standard of Need)
 2. **Resource Test:** $1,000 limit
 3. **Benefit Calculation:** MIN(SON - Countable Income, Family Maximum)
-4. **Earned Income Deductions:** $90 work expense + time-based disregards
+4. **Earned Income Deductions:** $250 work expense only (no additional disregards)
 5. **Dependent Care:** $200 (under 2) or $175 (2+) per child
 
 ### Complexities Not Yet Addressed
@@ -538,11 +519,11 @@ The following items need further investigation:
 
 ## 11. Questions for Clarification
 
-1. **Earned Income Disregard Simplification:** Multiple sources cite "$250/month earnings disregard" but PAMMS shows complex structure ($90 + $30+1/3 or $90 + $30). Is $250 a simplification or separate provision?
+1. **✅ RESOLVED - Earned Income Disregard:** Initial document incorrectly included AFDC-era $30 + 1/3 disregard. Georgia currently uses only $250 standard work expense deduction per PAMMS Section 1615 and 1605. Previous reference to "$90 work expense" was incorrect.
 
-2. **Income Ceiling Formula:** PAMMS Appendix A shows GIC = 185% of SON, but calculated values don't match exactly (e.g., 3-person: $424 × 1.85 = $784.40, shown as $784). Is rounding applied?
+2. **✅ RESOLVED - Income Ceiling Formula:** Confirmed GIC = 185% × Standard of Need per Ga. Comp. R. & Regs. 290-2-28-.02(j). Implementation uses formula-based calculation, not hardcoded table.
 
-3. **Vehicle Limit Source:** Vehicle value limit of $4,650 cited on eligibility page but not in PAMMS Appendix A. Is this in different section?
+3. **Vehicle Limit:** Vehicle value limit of $4,650 cited on eligibility page but not modeled in simplified implementation (resource test uses cash assets only)
 
 4. **P-TANF vs Regular TANF:** Are benefit calculations identical for P-TANF (Grandparents Raising Grandchildren) or are there differences beyond income limits?
 
@@ -567,6 +548,7 @@ The following items need further investigation:
 | Date | Change | Notes |
 |------|--------|-------|
 | 2025-11-05 | Initial document creation | Phase 3A - Document gathering complete |
+| 2025-11-10 | CRITICAL CORRECTIONS | Fixed parameter errors after regulation verification:<br>- Work expense: $90 → $250 (correct value per PAMMS 1615)<br>- Earned income disregard: REMOVED (does not exist in current GA policy)<br>- Standard of Need: Corrected 7/10 values per PAMMS Appendix A<br>- Family Maximum: Corrected 7/10 values per PAMMS Appendix A<br>- GIC: Changed to formula-based (185% × SON)<br>All values verified against PAMMS March 2025 publication |
 
 ---
 

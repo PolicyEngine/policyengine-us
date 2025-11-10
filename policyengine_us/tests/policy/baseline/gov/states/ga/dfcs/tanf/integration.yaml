@@ -16,15 +16,15 @@
         state_code: GA
   output:
     ga_tanf_countable_income: 0
-    ga_tanf_standard_of_need: 324
+    ga_tanf_standard_of_need: 356
     ga_tanf_income_eligible: true
-    # Countable income (0) < Standard of Need (324)
+    # Countable income (0) < Standard of Need (356)
     ga_tanf_resources_eligible: true
     # Resources (500) <= limit (1,000)
     ga_tanf_eligible: true
-    ga_tanf_family_maximum: 188
-    ga_tanf: 188
-    # Benefit = MIN(324 - 0, 188) = 188
+    ga_tanf_family_maximum: 235
+    ga_tanf: 235
+    # Benefit = MIN(356 - 0, 235) = 235
 
 - name: Case 2, family of 3 with no income receives maximum benefit.
   period: 2025-01
@@ -54,9 +54,8 @@
     ga_tanf: 280
     # Benefit = MIN(424 - 0, 280) = 280
 
-- name: Case 3, single parent with earnings in first 4 months with 30 plus 1/3 disregard.
+- name: Case 3, single parent with earnings receives benefit.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -70,34 +69,33 @@
       spm_unit:
         members: [parent, child1, child2]
         spm_unit_cash_assets: 500
-        is_tanf_enrolled: false  # New applicant, first 4 months
+        is_tanf_enrolled: false  # New applicant
     households:
       household:
         members: [parent, child1, child2]
         state_code: GA
   output:
-    # Work expense deduction: $90
-    # After work expense: 300 - 90 = 210
-    # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100
-    # Countable earned income: 210 - 100 = 110
-    ga_tanf_countable_income: 110
+    # Georgia only allows $250 work expense deduction
+    # No earned income disregard per PAMMS 1615
+    # Work expense: $250
+    # Countable earned: 300 - 250 = 50
+    ga_tanf_countable_income: 50
     ga_tanf_standard_of_need: 424
     ga_tanf_income_eligible: true
-    # Countable income (110) < Standard of Need (424)
+    # Countable income (50) < Standard of Need (424)
     ga_tanf_resources_eligible: true
     ga_tanf_eligible: true
     ga_tanf_family_maximum: 280
     ga_tanf: 280
-    # Benefit = MIN(424 - 110, 280) = MIN(314, 280) = 280
+    # Benefit = MIN(424 - 50, 280) = MIN(374, 280) = 280
 
-- name: Case 4, single parent with earnings in months 5-12 with 30 disregard only.
+- name: Case 4, parent with higher earnings receives reduced benefit.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
         age: 30
-        employment_income_before_lsr: 3_600  # $300/month
+        employment_income_before_lsr: 6_000  # $500/month
       child1:
         age: 10
       child2:
@@ -106,30 +104,25 @@
       spm_unit:
         members: [parent, child1, child2]
         spm_unit_cash_assets: 500
-        is_tanf_enrolled: true  # Continuing recipient, months 5-12
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
         state_code: GA
   output:
-    # SIMPLIFIED IMPLEMENTATION: Always applies $30 + 1/3 disregard
-    # (does not model time-based limits)
-    # Work expense deduction: $90
-    # After work expense: 300 - 90 = 210
-    # $30 + 1/3 disregard: 30 + 70 = 100
-    # Countable earned income: 210 - 100 = 110
-    ga_tanf_countable_income: 110
+    # Work expense: $250
+    # Countable earned: 500 - 250 = 250
+    ga_tanf_countable_income: 250
     ga_tanf_standard_of_need: 424
     ga_tanf_income_eligible: true
-    # Countable income (110) < Standard of Need (424)
+    # Countable income (250) < Standard of Need (424)
     ga_tanf_eligible: true
     ga_tanf_family_maximum: 280
-    ga_tanf: 280
-    # Benefit = MIN(424 - 110, 280) = MIN(314, 280) = 280
+    ga_tanf: 174
+    # Benefit = MIN(424 - 250, 280) = MIN(174, 280) = 174
 
 - name: Case 5, parent with earnings and child care expenses for child under 2.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -148,25 +141,22 @@
         members: [parent, child]
         state_code: GA
   output:
-    # Work expense: $90
-    # After work expense: 400 - 90 = 310
-    # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
-    # Countable earned before childcare: 310 - 133 = 177
+    # Work expense: $250
+    # Countable earned before childcare: 400 - 250 = 150
     ga_tanf_childcare_deduction: 200
     # Child under 2: $200/month maximum
     ga_tanf_countable_income: 0
-    # MAX(177 - 200, 0) = 0
-    ga_tanf_standard_of_need: 324
+    # MAX(150 - 200, 0) = 0
+    ga_tanf_standard_of_need: 356
     ga_tanf_income_eligible: true
     ga_tanf_resources_eligible: true
     ga_tanf_eligible: true
-    ga_tanf_family_maximum: 188
-    ga_tanf: 188
-    # Benefit = MIN(324 - 0, 188) = 188
+    ga_tanf_family_maximum: 235
+    ga_tanf: 235
+    # Benefit = MIN(356 - 0, 235) = 235
 
 - name: Case 6, parent with earnings and child care expenses for child age 2 or older.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -185,20 +175,18 @@
         members: [parent, child]
         state_code: GA
   output:
-    # Work expense: $90
-    # After work expense: 400 - 90 = 310
-    # 30 + 1/3 disregard: 30 + (310 * 1/3) = 30 + 103 = 133
-    # Countable earned before childcare: 310 - 133 = 177
+    # Work expense: $250
+    # Countable earned before childcare: 400 - 250 = 150
     ga_tanf_childcare_deduction: 175
     # Child age 2+: $175/month maximum
-    ga_tanf_countable_income: 2
-    # MAX(177 - 175, 0) = 2
-    ga_tanf_standard_of_need: 324
+    ga_tanf_countable_income: 0
+    # MAX(150 - 175, 0) = 0
+    ga_tanf_standard_of_need: 356
     ga_tanf_income_eligible: true
     ga_tanf_eligible: true
-    ga_tanf_family_maximum: 188
-    ga_tanf: 188
-    # Benefit = MIN(324 - 2, 188) = MIN(322, 188) = 188
+    ga_tanf_family_maximum: 235
+    ga_tanf: 235
+    # Benefit = MIN(356 - 0, 235) = 235
 
 - name: Case 7, family of 1 with no income receives maximum benefit.
   period: 2025-01
@@ -246,13 +234,13 @@
         state_code: GA
   output:
     ga_tanf_countable_income: 0
-    ga_tanf_standard_of_need: 529
+    ga_tanf_standard_of_need: 500
     ga_tanf_income_eligible: true
     ga_tanf_resources_eligible: true
     ga_tanf_eligible: true
-    ga_tanf_family_maximum: 364
-    ga_tanf: 364
-    # Benefit = MIN(529 - 0, 364) = 364
+    ga_tanf_family_maximum: 330
+    ga_tanf: 330
+    # Benefit = MIN(500 - 0, 330) = 330
 
 - name: Case 9, family of 5 with no income receives maximum benefit.
   period: 2025-01
@@ -278,17 +266,16 @@
         state_code: GA
   output:
     ga_tanf_countable_income: 0
-    ga_tanf_standard_of_need: 639
+    ga_tanf_standard_of_need: 573
     ga_tanf_income_eligible: true
     ga_tanf_resources_eligible: true
     ga_tanf_eligible: true
-    ga_tanf_family_maximum: 447
-    ga_tanf: 447
-    # Benefit = MIN(639 - 0, 447) = 447
+    ga_tanf_family_maximum: 378
+    ga_tanf: 378
+    # Benefit = MIN(573 - 0, 378) = 378
 
-- name: Case 10, family at income threshold barely eligible.
+- name: Case 10, family with high earnings ineligible due to exceeding standard of need.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -310,20 +297,16 @@
   output:
     # Gross Income Ceiling for 3: $784.4 (185% × $424)
     # 750 < 784.4, passes gross income test
-    # Work expense: $90
-    # After work expense: 750 - 90 = 660
-    # 33% disregard: 660 × 0.33 = 217.8
-    # Total disregard: 30 + 217.8 = 247.8
-    # Countable earned: 660 - 247.8 = 412.2
-    ga_tanf_countable_income: 412
+    # Work expense: $250
+    # Countable earned: 750 - 250 = 500
+    ga_tanf_countable_income: 500
     ga_tanf_standard_of_need: 424
-    ga_tanf_income_eligible: true
-    # Countable income (412) < Standard of Need (424)
+    ga_tanf_income_eligible: false
+    # Passes GIC (750 < 784) but fails net test: countable (500) >= SON (424)
     ga_tanf_resources_eligible: true
-    ga_tanf_eligible: true
+    ga_tanf_eligible: false
     ga_tanf_family_maximum: 280
-    ga_tanf: 12
-    # Benefit = MIN(424 - 412, 280) = MIN(12, 280) = 12
+    ga_tanf: 0
 
 - name: Case 11, family above gross income ceiling ineligible.
   period: 2025-01
@@ -346,15 +329,14 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    # Gross Income Ceiling for 3: $784
-    # 800 > 784, fails gross income test
+    # Gross Income Ceiling for 3: $784.4 (185% × $424)
+    # 800 > 784.4, fails gross income test
     ga_tanf_income_eligible: false
     ga_tanf_eligible: false
     ga_tanf: 0
 
-- name: Case 12, family with countable income exceeding standard of need ineligible.
+- name: Case 12, family with moderate earnings ineligible due to exceeding standard of need.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -368,28 +350,22 @@
       spm_unit:
         members: [parent, child1, child2]
         spm_unit_cash_assets: 500
-        is_tanf_enrolled: true  # Continuing recipient, $30 disregard only
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
         state_code: GA
   output:
-    # SIMPLIFIED IMPLEMENTATION: Always applies $30 + 33% disregard
-    # (does not model time-based limits)
     # Gross Income Ceiling for 3: $784.4 (185% × $424)
     # 700 < 784.4, passes gross income test
-    # Work expense: $90
-    # After work expense: 700 - 90 = 610
-    # 33% disregard: 610 × 0.33 = 201.3
-    # Total disregard: 30 + 201.3 = 231.3
-    # Countable earned: 610 - 231.3 = 378.7
-    ga_tanf_countable_income: 379
+    # Work expense: $250
+    # Countable earned: 700 - 250 = 450
+    ga_tanf_countable_income: 450
     ga_tanf_standard_of_need: 424
-    ga_tanf_income_eligible: true
-    # Countable income (379) < Standard of Need (424)
-    ga_tanf_eligible: true
-    ga_tanf: 45
-    # Benefit = MIN(424 - 379, 280) = MIN(45, 280) = 45
+    ga_tanf_income_eligible: false
+    # Passes GIC but fails net test: countable (450) >= SON (424)
+    ga_tanf_eligible: false
+    ga_tanf: 0
 
 - name: Case 13, two parent household with no income.
   period: 2025-01
@@ -443,9 +419,8 @@
     ga_tanf_eligible: false
     ga_tanf: 0
 
-- name: Case 15, family with unearned income from child support.
+- name: Case 15, family with earned and unearned income.
   period: 2025-01
-  absolute_error_margin: 1
   input:
     people:
       parent:
@@ -466,21 +441,19 @@
         members: [parent, child1, child2]
         state_code: GA
   output:
-    # Work expense: $90
-    # After work expense: 300 - 90 = 210
-    # 30 + 1/3 disregard: 30 + (210 * 1/3) = 30 + 70 = 100
-    # Countable earned: 210 - 100 = 110
+    # Work expense: $250
+    # Countable earned: 300 - 250 = 50
     # Unearned income (child support): 100
-    ga_tanf_countable_income: 210
-    # 110 + 100 = 210
+    ga_tanf_countable_income: 150
+    # 50 + 100 = 150
     ga_tanf_standard_of_need: 424
     ga_tanf_income_eligible: true
-    # Countable income (210) < Standard of Need (424)
+    # Countable income (150) < Standard of Need (424)
     ga_tanf_resources_eligible: true
     ga_tanf_eligible: true
     ga_tanf_family_maximum: 280
-    ga_tanf: 214
-    # Benefit = MIN(424 - 210, 280) = MIN(214, 280) = 214
+    ga_tanf: 274
+    # Benefit = MIN(424 - 150, 280) = MIN(274, 280) = 274
 
 - name: Case 16, child-only case with SSI-receiving child excluded.
   period: 2025-01

@@ -14,5 +14,9 @@ class ga_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.dfcs.tanf.resources
-        countable_resources = spm_unit("ga_tanf_countable_resources", period)
-        return countable_resources <= p.limit
+        # For simplified implementation, use SPM unit cash assets directly
+        # In a more complete implementation, this would account for
+        # excluded resources (primary residence, household goods, etc.)
+        # and vehicle value limits
+        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        return cash_assets <= p.limit
