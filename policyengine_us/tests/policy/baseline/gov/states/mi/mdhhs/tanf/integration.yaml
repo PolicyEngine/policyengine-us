@@ -26,7 +26,7 @@
     mi_tanf_countable_income: 0
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 478
+    mi_tanf: 478
 
 - name: Single parent with two children - no income - maximum benefit
   period: 2025-01
@@ -58,7 +58,7 @@
     mi_tanf_countable_income: 0
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 583
+    mi_tanf: 583
 
 - name: Single parent with two children - low income - partial benefit
   period: 2025-01
@@ -92,7 +92,7 @@
     mi_tanf_countable_income: 400
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 183
+    mi_tanf: 183
 
 - name: Single parent with two children - moderate income - smaller benefit
   period: 2025-01
@@ -126,7 +126,7 @@
     mi_tanf_countable_income: 550
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 33
+    mi_tanf: 33
 
 - name: Single parent with two children - at ongoing eligibility threshold
   period: 2025-01
@@ -160,7 +160,7 @@
     mi_tanf_countable_income: 492
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 91
+    mi_tanf: 91
 
 - name: Single parent with two children - above ongoing eligibility threshold
   period: 2025-01
@@ -194,7 +194,7 @@
     mi_tanf_countable_income: 500
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 83
+    mi_tanf: 83
 
 - name: Single parent with two children - at initial eligibility threshold
   period: 2025-01
@@ -229,7 +229,7 @@
     mi_tanf_countable_income: 307
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 276
+    mi_tanf: 276
 
 - name: Single person household - no income - maximum benefit
   period: 2025-01
@@ -257,7 +257,7 @@
     mi_tanf_countable_income: 0
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 363
+    mi_tanf: 363
 
 - name: Single person household - part-time income
   period: 2025-01
@@ -287,7 +287,7 @@
     mi_tanf_countable_income: 150
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 213
+    mi_tanf: 213
 
 - name: Large family - five members - no income
   period: 2025-01
@@ -323,7 +323,7 @@
     mi_tanf_countable_income: 0
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 822
+    mi_tanf: 822
 
 - name: Large family - five members - moderate income
   period: 2025-01
@@ -361,7 +361,7 @@
     mi_tanf_countable_income: 650
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 172
+    mi_tanf: 172
 
 - name: Two-parent household with children - one parent working
   period: 2025-01
@@ -398,7 +398,7 @@
     mi_tanf_countable_income: 400
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 307
+    mi_tanf: 307
 
 - name: Two-parent household with children - both parents working
   period: 2025-01
@@ -438,7 +438,7 @@
     mi_tanf_countable_income: 400
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 307
+    mi_tanf: 307
 
 - name: Family with unearned income only
   period: 2025-01
@@ -472,7 +472,7 @@
     mi_tanf_countable_income: 500
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 83
+    mi_tanf: 83
 
 - name: Family with mixed earned and unearned income
   period: 2025-01
@@ -509,7 +509,7 @@
     mi_tanf_countable_income: 450
     mi_tanf_income_eligible: true
     mi_tanf_eligible: true
-    mi_tanf_benefit: 133
+    mi_tanf: 133
 
 - name: High income family - no benefit
   period: 2025-01
@@ -543,7 +543,7 @@
     mi_tanf_countable_income: 1_150
     mi_tanf_income_eligible: false
     mi_tanf_eligible: false
-    mi_tanf_benefit: 0
+    mi_tanf: 0
 
 - name: Family outside Michigan - not eligible
   period: 2025-01
@@ -569,4 +569,4 @@
   output:
     # Not in Michigan - not eligible for MI TANF
     mi_tanf_eligible: false
-    mi_tanf_benefit: 0
+    mi_tanf: 0
