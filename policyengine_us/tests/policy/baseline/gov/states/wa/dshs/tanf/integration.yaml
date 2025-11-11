@@ -26,10 +26,10 @@
     # Payment standard: $706
     # Countable income: $0
     # Benefit: $706 - $0 = $706
-    wa_tanf_payment_standard: [706, 0, 0]
-    wa_tanf_countable_income: [0, 0, 0]
-    wa_tanf_eligible: [true, false, false]
-    wa_tanf: [706, 0, 0]
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 706
 
 - name: Single parent with 2 children - low earned income
   period: 2024-01
@@ -60,10 +60,10 @@
     # Payment standard: $706
     # Countable earned: ($1,000 - $500) × 0.5 = $250
     # Benefit: $706 - $250 = $456
-    wa_tanf_payment_standard: [706, 0, 0]
-    wa_tanf_countable_income: [250, 0, 0]
-    wa_tanf_eligible: [true, false, false]
-    wa_tanf: [456, 0, 0]
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 250
+    wa_tanf_eligible: true
+    wa_tanf: 456
 
 - name: Single parent with 2 children - moderate earned income
   period: 2024-01
@@ -94,10 +94,10 @@
     # Payment standard: $706
     # Countable earned: ($1,800 - $500) × 0.5 = $650
     # Benefit: $706 - $650 = $56
-    wa_tanf_payment_standard: [706, 0, 0]
-    wa_tanf_countable_income: [650, 0, 0]
-    wa_tanf_eligible: [true, false, false]
-    wa_tanf: [56, 0, 0]
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 650
+    wa_tanf_eligible: true
+    wa_tanf: 56
 
 - name: Single parent with 2 children - at income threshold
   period: 2024-01
@@ -128,10 +128,10 @@
     # Payment standard: $706
     # Countable earned: ($1,912 - $500) × 0.5 = $706
     # Benefit: $706 - $706 = $0 (eligible but no payment)
-    wa_tanf_payment_standard: [706, 0, 0]
-    wa_tanf_countable_income: [706, 0, 0]
-    wa_tanf_eligible: [true, false, false]
-    wa_tanf: [0, 0, 0]
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 706
+    wa_tanf_eligible: true
+    wa_tanf: 0
 
 - name: Single parent with 2 children - over income threshold
   period: 2024-01
@@ -159,8 +159,8 @@
         state_code: WA
   output:
     # Family of 3, income over threshold - ineligible
-    wa_tanf_eligible: [false, false, false]
-    wa_tanf: [0, 0, 0]
+    wa_tanf_eligible: false
+    wa_tanf: 0
 
 - name: Two parents with 3 children - one parent working
   period: 2024-01
@@ -195,10 +195,10 @@
     # Payment standard: $959
     # Countable earned: ($2,000 - $500) × 0.5 = $750
     # Benefit: $959 - $750 = $209
-    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
-    wa_tanf_countable_income: [750, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false]
-    wa_tanf: [209, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 959
+    wa_tanf_countable_income: 750
+    wa_tanf_eligible: true
+    wa_tanf: 209
 
 - name: Two parents with 2 children - both parents working
   period: 2024-01
@@ -232,10 +232,10 @@
     # Payment standard: $833
     # Countable earned: ($2,300 - $500) × 0.5 = $900
     # Benefit: $833 - $900 = $0 (over income after disregard)
-    wa_tanf_payment_standard: [833, 0, 0, 0]
-    wa_tanf_countable_income: [900, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false]
-    wa_tanf: [0, 0, 0, 0]
+    wa_tanf_payment_standard: 833
+    wa_tanf_countable_income: 900
+    wa_tanf_eligible: true
+    wa_tanf: 0
 
 - name: Single parent with 1 child - unearned income only
   period: 2024-01
@@ -264,10 +264,10 @@
     # Payment standard: $570
     # Countable unearned: $500 (no disregard for unearned)
     # Benefit: $570 - $500 = $70
-    wa_tanf_payment_standard: [570, 0]
-    wa_tanf_countable_income: [500, 0]
-    wa_tanf_eligible: [true, false]
-    wa_tanf: [70, 0]
+    wa_tanf_payment_standard: 570
+    wa_tanf_countable_income: 500
+    wa_tanf_eligible: true
+    wa_tanf: 70
 
 - name: Family of 4 - mixed earned and unearned income
   period: 2024-01
@@ -303,10 +303,10 @@
     # Countable unearned: $300
     # Total countable: $550
     # Benefit: $833 - $550 = $283
-    wa_tanf_payment_standard: [833, 0, 0, 0]
-    wa_tanf_countable_income: [550, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false]
-    wa_tanf: [283, 0, 0, 0]
+    wa_tanf_payment_standard: 833
+    wa_tanf_countable_income: 550
+    wa_tanf_eligible: true
+    wa_tanf: 283
 
 - name: Family size 1 - single person household
   period: 2024-01
@@ -372,10 +372,10 @@
     # Payment standard: $1,090
     # Countable earned: ($1,500 - $500) × 0.5 = $500
     # Benefit: $1,090 - $500 = $590
-    wa_tanf_payment_standard: [1_090, 0, 0, 0, 0, 0]
-    wa_tanf_countable_income: [500, 0, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false, false]
-    wa_tanf: [590, 0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 1_090
+    wa_tanf_countable_income: 500
+    wa_tanf_eligible: true
+    wa_tanf: 590
 
 - name: Family size 8 - testing maximum grant cap with no income
   period: 2024-01
@@ -417,10 +417,10 @@
     # Benefit before cap: $1,392
     # Maximum grant cap for 8+ members: $1,338
     # Benefit: $1,338
-    wa_tanf_payment_standard: [1_392, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_countable_income: [0, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false, false, false, false]
-    wa_tanf: [1_338, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 1_392
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 1_338
 
 - name: Family size 10 - testing maximum grant cap with low income
   period: 2024-01
@@ -467,10 +467,10 @@
     # Benefit before cap: $1,662 - $150 = $1,512
     # Maximum grant cap for 8+ members: $1,338
     # Benefit: $1,338
-    wa_tanf_payment_standard: [1_662, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_countable_income: [150, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false, false, false, false, false, false]
-    wa_tanf: [1_338, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 1_662
+    wa_tanf_countable_income: 150
+    wa_tanf_eligible: true
+    wa_tanf: 1_338
 
 - name: Single parent with 1 child - earned income below $500 disregard
   period: 2024-01
@@ -499,10 +499,10 @@
     # Payment standard: $570
     # Countable earned: ($400 - $500) × 0.5 = max($0, -$50) = $0
     # Benefit: $570 - $0 = $570
-    wa_tanf_payment_standard: [570, 0]
-    wa_tanf_countable_income: [0, 0]
-    wa_tanf_eligible: [true, false]
-    wa_tanf: [570, 0]
+    wa_tanf_payment_standard: 570
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 570
 
 - name: Single parent with 3 children - earned income exactly at $500
   period: 2024-01
@@ -535,10 +535,10 @@
     # Payment standard: $833
     # Countable earned: ($500 - $500) × 0.5 = $0
     # Benefit: $833 - $0 = $833
-    wa_tanf_payment_standard: [833, 0, 0, 0]
-    wa_tanf_countable_income: [0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false]
-    wa_tanf: [833, 0, 0, 0]
+    wa_tanf_payment_standard: 833
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 833
 
 - name: Family of 5 - high unearned income exceeding payment standard
   period: 2024-01
@@ -573,10 +573,10 @@
     # Payment standard: $959
     # Countable unearned: $1,000
     # Benefit: $959 - $1,000 = $0 (income exceeds standard)
-    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
-    wa_tanf_countable_income: [1_000, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false]
-    wa_tanf: [0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 959
+    wa_tanf_countable_income: 1_000
+    wa_tanf_eligible: true
+    wa_tanf: 0
 
 - name: Family of 7 - testing payment standard and cap boundary
   period: 2024-01
@@ -614,10 +614,10 @@
     # Payment standard: $1,258
     # Countable income: $0
     # Benefit: $1,258 (no cap - cap starts at 8 members)
-    wa_tanf_payment_standard: [1_258, 0, 0, 0, 0, 0, 0]
-    wa_tanf_countable_income: [0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false, false, false]
-    wa_tanf: [1_258, 0, 0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 1_258
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 1_258
 
 - name: Family of 9 - testing grant cap with moderate income
   period: 2024-01
@@ -662,10 +662,10 @@
     # Benefit before cap: $1,529 - $250 = $1,279
     # Maximum grant cap for 8+ members: $1,338
     # Benefit: $1,279 (under cap, so actual benefit applies)
-    wa_tanf_payment_standard: [1_529, 0, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_countable_income: [250, 0, 0, 0, 0, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false, false, false, false, false]
-    wa_tanf: [1_279, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 1_529
+    wa_tanf_countable_income: 250
+    wa_tanf_eligible: true
+    wa_tanf: 1_279
 
 - name: Single parent with 4 children - self-employment income
   period: 2024-01
@@ -700,7 +700,7 @@
     # Payment standard: $959
     # Countable earned: ($1,300 - $500) × 0.5 = $400
     # Benefit: $959 - $400 = $559
-    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
-    wa_tanf_countable_income: [400, 0, 0, 0, 0]
-    wa_tanf_eligible: [true, false, false, false, false]
-    wa_tanf: [559, 0, 0, 0, 0]
+    wa_tanf_payment_standard: 959
+    wa_tanf_countable_income: 400
+    wa_tanf_eligible: true
+    wa_tanf: 559
