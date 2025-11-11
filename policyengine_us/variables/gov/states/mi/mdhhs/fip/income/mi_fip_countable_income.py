@@ -9,19 +9,20 @@ class mi_fip_countable_income(Variable):
     definition_period = MONTH
     reference = (
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/520.pdf",
-        "https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_2023.pdf",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf",
     )
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        # Countable income is the sum of:
-        # 1. Countable earned income (after disregards)
-        # 2. Gross unearned income (no disregard for unearned)
+        # BEM 520 Section D Line 9: "Enter the sum of line 7 and line 8"
+        # Line 7: Countable earned income (after deductions per person)
+        # Line 8: All countable unearned income
+
+        # Countable earned income (aggregates per-person deductions)
         countable_earned = spm_unit("mi_fip_countable_earned_income", period)
 
-        # Use federal TANF gross unearned income directly
-        person = spm_unit.members
-        gross_unearned = person("tanf_gross_unearned_income", period)
-        total_unearned = spm_unit.sum(gross_unearned)
+        # Gross unearned income (no deductions for FIP per BEM 503)
+        # Use federal TANF baseline
+        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
 
-        return countable_earned + total_unearned
+        return countable_earned + gross_unearned

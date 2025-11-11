@@ -13,6 +13,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child]
@@ -45,6 +46,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -77,6 +79,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -111,6 +114,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -145,6 +149,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -179,6 +184,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -213,6 +219,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -244,6 +251,7 @@
     spm_units:
       spm_unit:
         members: [person]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person]
@@ -272,6 +280,7 @@
     spm_units:
       spm_unit:
         members: [person]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person]
@@ -310,6 +319,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2, child3, child4]
@@ -346,6 +356,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2, child3, child4]
@@ -383,6 +394,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent1, parent2, child1, child2]
@@ -420,23 +432,23 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent1, parent2, child1, child2]
         state_code: MI
   output:
     # Family of 4: Payment standard = $707
-    # Total monthly income = $800 + $400 = $1,200
-    # Ongoing earned income disregard applied to household total
-    # Remainder = $1,200 - $200 = $1,000
-    # Total disregard = $200 + (50% × $1,000) = $200 + $500 = $700
-    # Countable income = $1,200 - $700 = $500
-    # Benefit = $707 - $500 = $207
+    # BEM 518: Per-person deductions (enrolled recipients, 50% rate)
+    # Parent 1: $800 - [$200 + 50%×$600] = $800 - $500 = $300
+    # Parent 2: $400 - [$200 + 50%×$200] = $400 - $300 = $100
+    # Countable income = $300 + $100 = $400
+    # Benefit = $707 - $400 = $307
     mi_fip_payment_standard: 707
-    mi_fip_countable_income: 500
+    mi_fip_countable_income: 400
     mi_fip_income_eligible: true
     mi_fip_eligible: true
-    mi_fip: 207
+    mi_fip: 307
 
 - name: Family with unearned income only
   period: 2025-01
@@ -456,6 +468,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -490,6 +503,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -526,6 +540,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]
@@ -560,6 +575,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [parent, child1, child2]

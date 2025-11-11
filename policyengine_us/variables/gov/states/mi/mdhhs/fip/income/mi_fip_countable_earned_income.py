@@ -9,30 +9,11 @@ class mi_fip_countable_earned_income(Variable):
     definition_period = MONTH
     reference = (
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf",
-        "https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_2023.pdf",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf",
     )
     defined_for = StateCode.MI
 
-    def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mi.mdhhs.fip
-
-        # Get gross earned income for all SPM unit members
-        # Use federal TANF gross earned income directly
-        person = spm_unit.members
-        gross_earned_income = person("tanf_gross_earned_income", period)
-        total_gross_earned = spm_unit.sum(gross_earned_income)
-
-        # Apply earned income deduction: $200 + 50% of remainder
-        # Note: Using ongoing rate for simplified implementation
-        # Full implementation would distinguish initial vs ongoing eligibility
-        flat_deduction = (
-            p.income.deductions.earned_income_disregard.flat_amount
-        )
-        percent_deduction = (
-            p.income.deductions.earned_income_disregard.percent_of_remainder
-        )
-
-        remainder = max_(total_gross_earned - flat_deduction, 0)
-        total_deduction = flat_deduction + (percent_deduction * remainder)
-
-        return max_(total_gross_earned - total_deduction, 0)
+    # BEM 518: "Apply this disregard separately to each program group member's
+    # earned income"
+    # Sum the per-person countable earned income across all household members
+    adds = ["mi_fip_earned_income_after_deductions_person"]
