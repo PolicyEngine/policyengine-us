@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.432.7] - 2025-11-11 14:47:06
+
+### Fixed
+
+- Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing incorrect categorical eligibility
+
+## [1.432.6] - 2025-11-11 13:40:35
+
+### Fixed
+
+- Remove the repeal of the Hawaii alternative tax on capital gains.
+
+## [1.432.5] - 2025-11-10 19:14:05
+
+### Added
+
+- Debug income security package.
+
+## [1.432.4] - 2025-11-10 13:54:57
+
+### Fixed
+
+- Fix Head Start categorical eligibility vectorization bug causing incorrect benefits at high incomes
+
+## [1.432.3] - 2025-11-10 11:57:39
+
+### Changed
+
+- Fix Head Start and Early Head Start variable metadata (add unit=USD, simplify labels)
+
+## [1.432.2] - 2025-11-10 11:36:20
+
+### Fixed
+
+- Apply the potential federal CDCC when computing the Ohio CDCC.
+
+## [1.432.1] - 2025-11-09 20:09:40
+
+### Fixed
+
+- Avoid removing older dependents from the Rhode Island exemption reform.
+
+## [1.432.0] - 2025-11-07 23:12:15
+
+### Added
+
+- Virginia 2024 income tax rebate.
+
+## [1.431.0] - 2025-11-07 23:08:43
+
+### Added
+
+- Puerto Rico tax computation.
+
 ## [1.430.0] - 2025-11-06 17:14:20
 
 ### Added
@@ -13435,6 +13489,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
+[1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6
+[1.432.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.4...1.432.5
+[1.432.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.3...1.432.4
+[1.432.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.2...1.432.3
+[1.432.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.1...1.432.2
+[1.432.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.0...1.432.1
+[1.432.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.431.0...1.432.0
+[1.431.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.430.0...1.431.0
 [1.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.429.0...1.430.0
 [1.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.428.0...1.429.0
 [1.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.427.0...1.428.0
