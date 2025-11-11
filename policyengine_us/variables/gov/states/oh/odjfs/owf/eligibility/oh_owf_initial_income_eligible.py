@@ -13,14 +13,12 @@ class oh_owf_initial_income_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-
         # Get gross income (before any disregards) using federal TANF variables
-        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
-        gross_unearned = spm_unit.sum(
-            person("tanf_gross_unearned_income", period)
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
-        gross_income = gross_earned + gross_unearned
 
         # Get initial eligibility income limit (50% of current year FPL)
         fpg = spm_unit("tanf_fpg", period)

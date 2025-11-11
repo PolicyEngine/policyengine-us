@@ -34,7 +34,7 @@
     oh_owf: 4_176
 
 - name: Single parent with one child and no income receives maximum benefit
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -52,13 +52,12 @@
   output:
     # No income means no disregard needed
     # Countable income: $0
-    # Payment standard for 2: $495/month × 12 = $5,940/year
-    # Benefit: $5,940 - $0 = $5,940/year (maximum benefit)
+    # Payment standard for 2: $495/month
     oh_owf_countable_income: 0
-    oh_owf_payment_standard: 5_940
+    oh_owf_payment_standard: 495
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 5_940
+    oh_owf: 495
 
 - name: Single parent with earned and unearned income receives reduced benefit
   period: 2024
@@ -151,3 +150,37 @@
     # Must have at least one minor child or be pregnant
     oh_owf_eligible: false
     oh_owf: 0
+
+- name: 2025 verification - family with moderate income receives benefit
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 9_600
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Income: $9,600/year = $800/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $800 - $250 = $550; $550 × 50% = $275 disregarded
+    # Countable income: $550 - $275 = $275/month
+    #
+    # Payment standard for 3: $623/month
+    # Benefit: $623 - $275 = $348/month
+    oh_owf_countable_income: 275
+    oh_owf_payment_standard: 623
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 348

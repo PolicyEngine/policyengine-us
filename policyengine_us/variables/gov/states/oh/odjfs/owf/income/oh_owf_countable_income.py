@@ -17,7 +17,7 @@ class oh_owf_countable_income(Variable):
         person = spm_unit.members
 
         # Get gross earned income from federal TANF variable
-        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
+        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 
         # Apply earned income disregard: $250 + 50% of remainder
         # ORC 5107.10(D)(3) specifies "the two hundred-fifty dollar and
@@ -31,7 +31,7 @@ class oh_owf_countable_income(Variable):
         remainder = max_(gross_earned - flat_disregard, 0)
 
         # Apply percentage disregard to remainder
-        percent_disregarded = remainder * p.percent_of_remainder
+        percent_disregarded = remainder * p.percentage_of_disregard
 
         # Countable earned income = gross - flat disregard - percent of remainder
         countable_earned = max_(
@@ -40,9 +40,7 @@ class oh_owf_countable_income(Variable):
 
         # Get gross unearned income from federal variable
         # Per ORC 5107.10(D)(3): "No disregards apply to gross unearned income"
-        gross_unearned = spm_unit.sum(
-            person("tanf_gross_unearned_income", period)
-        )
+        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
 
         # Total countable income
         return countable_earned + gross_unearned
