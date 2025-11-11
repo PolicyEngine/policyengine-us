@@ -37,7 +37,7 @@
     people:
       parent:
         age: 30
-        employment_income: 12_000  # $1,000/month
+        employment_income_before_lsr: 12_000  # $1,000/month
       child1:
         age: 5
       child2:
@@ -71,7 +71,7 @@
     people:
       parent:
         age: 30
-        employment_income: 21_600  # $1,800/month
+        employment_income_before_lsr: 21_600  # $1,800/month
       child1:
         age: 5
       child2:
@@ -105,7 +105,7 @@
     people:
       parent:
         age: 30
-        employment_income: 22_944  # $1,912/month (exact threshold)
+        employment_income_before_lsr: 22_944  # $1,912/month (exact threshold)
       child1:
         age: 5
       child2:
@@ -139,7 +139,7 @@
     people:
       parent:
         age: 30
-        employment_income: 23_000  # Over $1,912/month threshold
+        employment_income_before_lsr: 23_000  # Over $1,912/month threshold
       child1:
         age: 5
       child2:
@@ -168,7 +168,7 @@
     people:
       parent1:
         age: 32
-        employment_income: 24_000  # $2,000/month
+        employment_income_before_lsr: 24_000  # $2,000/month
       parent2:
         age: 30
       child1:
@@ -206,10 +206,10 @@
     people:
       parent1:
         age: 35
-        employment_income: 18_000  # $1,500/month
+        employment_income_before_lsr: 18_000  # $1,500/month
       parent2:
         age: 33
-        employment_income: 9_600   # $800/month
+        employment_income_before_lsr: 9_600   # $800/month
       child1:
         age: 7
       child2:
@@ -229,12 +229,14 @@
         state_code: WA
   output:
     # Family of 4, combined $2,300/month earned income
+    # Gross income limit: $2,166 for family of 4
+    # $2,300 > $2,166, so INELIGIBLE due to income
     # Payment standard: $833
     # Countable earned: ($2,300 - $500) × 0.5 = $900
-    # Benefit: $833 - $900 = $0 (over income after disregard)
+    # Benefit: $0 (ineligible)
     wa_tanf_payment_standard: 833
     wa_tanf_countable_income: 900
-    wa_tanf_eligible: true
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 - name: Single parent with 1 child - unearned income only
@@ -275,7 +277,7 @@
     people:
       parent:
         age: 40
-        employment_income: 12_000  # $1,000/month
+        employment_income_before_lsr: 12_000  # $1,000/month
         social_security: 3_600     # $300/month
       child1:
         age: 12
@@ -343,7 +345,7 @@
     people:
       parent1:
         age: 38
-        employment_income: 18_000  # $1,500/month
+        employment_income_before_lsr: 18_000  # $1,500/month
       parent2:
         age: 36
       child1:
@@ -428,7 +430,7 @@
     people:
       parent1:
         age: 45
-        employment_income: 9_600  # $800/month
+        employment_income_before_lsr: 9_600  # $800/month
       parent2:
         age: 43
       child1:
@@ -478,7 +480,7 @@
     people:
       parent:
         age: 28
-        employment_income: 4_800  # $400/month
+        employment_income_before_lsr: 4_800  # $400/month
       child:
         age: 3
     families:
@@ -510,7 +512,7 @@
     people:
       parent:
         age: 32
-        employment_income: 6_000  # $500/month
+        employment_income_before_lsr: 6_000  # $500/month
       child1:
         age: 10
       child2:
@@ -625,7 +627,7 @@
     people:
       parent1:
         age: 44
-        employment_income: 12_000  # $1,000/month
+        employment_income_before_lsr: 12_000  # $1,000/month
       parent2:
         age: 42
       child1:
@@ -673,7 +675,7 @@
     people:
       parent:
         age: 34
-        self_employment_income: 15_600  # $1,300/month
+        self_employment_income_before_lsr: 15_600  # $1,300/month
       child1:
         age: 12
       child2:

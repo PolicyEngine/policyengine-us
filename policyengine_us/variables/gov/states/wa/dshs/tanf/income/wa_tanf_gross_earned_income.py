@@ -11,6 +11,7 @@ class wa_tanf_gross_earned_income(Variable):
     defined_for = StateCode.WA
 
     def formula(spm_unit, period, parameters):
-        # Sum all person-level TANF gross earned income
-        person_earned = spm_unit.members("tanf_gross_earned_income", period)
+        # Aggregate person-level federal TANF gross earned income
+        person = spm_unit.members
+        person_earned = person("tanf_gross_earned_income", period)
         return spm_unit.sum(person_earned)

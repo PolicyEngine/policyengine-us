@@ -12,13 +12,15 @@ class wa_tanf_payment_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get parameters
-        p = parameters(period).gov.states.wa.dshs.tanf.benefit.payment_standard
+        p = parameters(period).gov.states.wa.dshs.tanf
+        payment_standards = p.benefit.payment_standard
+        max_family_size = p.maximum_family_size
 
-        # Get household size
+        # Get household size, capped at maximum for which standards are defined
         size = spm_unit("spm_unit_size", period)
-        size_capped = min_(size, 10)
+        size_capped = min_(size, max_family_size)
 
         # Get payment standard for this family size
-        payment_standard = p[size_capped]
+        payment_standard = payment_standards[size_capped]
 
         return payment_standard

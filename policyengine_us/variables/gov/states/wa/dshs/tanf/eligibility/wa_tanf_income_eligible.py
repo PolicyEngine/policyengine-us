@@ -14,18 +14,18 @@ class wa_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get parameters
-        p = parameters(
-            period
-        ).gov.states.wa.dshs.tanf.eligibility.income.gross_earned_income_limit
+        p = parameters(period).gov.states.wa.dshs.tanf
+        income_limits = p.eligibility.income.gross_earned_income_limit
+        max_family_size = p.maximum_family_size
 
-        # Get household size
+        # Get household size, capped at maximum for which limits are defined
         size = spm_unit("spm_unit_size", period)
-        size_capped = min_(size, 10)
+        size_capped = min_(size, max_family_size)
 
         # Get gross earned income limit for this family size
-        income_limit = p[size_capped]
+        income_limit = income_limits[size_capped]
 
-        # Get gross earned income
+        # Get gross earned income (already aggregated at SPMUnit level)
         gross_earned = spm_unit("wa_tanf_gross_earned_income", period)
 
         # Must be at or below the income limit

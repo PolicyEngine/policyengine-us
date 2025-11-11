@@ -1,0 +1,16 @@
+description: Washington TANF payment standards and income limits are defined for family sizes up to this maximum value. Families larger than this size use the parameters for this maximum size.
+
+metadata:
+  unit: person
+  period: year
+  label: Washington TANF maximum family size for parameter schedules
+  reference:
+    - title: WAC 388-478-0020, "What are the income assistance standards for TANF, SFA, PWA, and RCA?"
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020
+      publication_date: 2024-01-16
+    - title: WAC 388-478-0035, "What are the maximum earned income limits for TANF, SFA, PWA, and RCA?"
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
+      publication_date: 2024-05-21
+
+values:
+  2024-01-01: 10

@@ -14,8 +14,8 @@ class wa_tanf_countable_unearned_income(Variable):
     defined_for = StateCode.WA
 
     def formula(spm_unit, period, parameters):
-        # Get gross unearned income
-        # No disregards apply to unearned income for TANF
+        # Get gross unearned income (already aggregated at SPMUnit level)
         gross_unearned = spm_unit("wa_tanf_gross_unearned_income", period)
 
+        # Washington TANF counts unearned income in full (no disregards)
         return gross_unearned

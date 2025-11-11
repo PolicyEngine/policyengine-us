@@ -14,7 +14,7 @@ class wa_tanf_countable_earned_income(Variable):
         # Get parameters
         p = parameters(period).gov.states.wa.dshs.tanf.income
 
-        # Get gross earned income
+        # Get gross earned income (already aggregated at SPMUnit level)
         gross_earned = spm_unit("wa_tanf_gross_earned_income", period)
 
         # Apply family earnings disregard ($500)
