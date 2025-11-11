@@ -20,5 +20,4 @@ class ga_tanf_earned_income_after_disregard(Variable):
         # PAMMS 1605 Step 8: Apply earned income deductions to
         # "each employed individual"
         gross_earned = person("tanf_gross_earned_income", period)
-        work_expense = p.work_expense
-        return max_(gross_earned - work_expense, 0)
+        return max_(gross_earned - p.work_expense, 0)

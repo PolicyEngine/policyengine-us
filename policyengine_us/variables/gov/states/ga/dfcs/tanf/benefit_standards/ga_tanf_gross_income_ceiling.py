@@ -19,6 +19,5 @@ class ga_tanf_gross_income_ceiling(Variable):
         # Gross income ceiling is 185% of the Standard of Need
         # per Ga. Comp. R. & Regs. 290-2-28-.02(j)
         standard_of_need = spm_unit("ga_tanf_standard_of_need", period)
-        rate = p.gross_income_ceiling_rate
 
-        return standard_of_need * rate
+        return standard_of_need * p.gross_income_ceiling_rate
