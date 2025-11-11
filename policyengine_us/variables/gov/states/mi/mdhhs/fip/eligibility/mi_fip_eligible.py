@@ -13,15 +13,32 @@ class mi_fip_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        # Overall eligibility requires:
-        # 1. Income eligibility
-        # 2. Resource eligibility
-        # Note: Simplified implementation does not model:
-        # - Time limits (not cross-sectionally modelable)
-        # - Work requirements (behavioral)
-        # - Household composition details (using SPM unit as proxy)
+        person = spm_unit.members
 
+        # Must meet demographic requirements (age, deprivation)
+        # Use federal demographic eligibility
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+
+        # Must have at least one citizen or legal immigrant
+        # Per MI FIP requirements: "You must have at least one citizen or
+        # qualified lawful immigrant in your family"
+        has_citizen = spm_unit.any(
+            person("is_citizen_or_legal_immigrant", period)
+        )
+
+        # Must meet income eligibility
         income_eligible = spm_unit("mi_fip_income_eligible", period)
+
+        # Must meet resource eligibility
         resources_eligible = spm_unit("mi_fip_resources_eligible", period)
 
-        return income_eligible & resources_eligible
+        # Note: Simplified implementation does not model:
+        # - Time limits (60 months as of April 2025)
+        # - Work requirements (behavioral)
+
+        return (
+            demographic_eligible
+            & has_citizen
+            & income_eligible
+            & resources_eligible
+        )

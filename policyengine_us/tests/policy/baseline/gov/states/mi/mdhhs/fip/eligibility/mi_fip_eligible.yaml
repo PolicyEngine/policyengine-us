@@ -1,34 +1,64 @@
-- name: Income eligible and resource eligible
+- name: All requirements met
   period: 2025-01
   input:
     state_code: MI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     mi_fip_income_eligible: true
     mi_fip_resources_eligible: true
   output:
     mi_fip_eligible: true
 
-- name: Income eligible but not resource eligible
+- name: Demographic not met
   period: 2025-01
   input:
     state_code: MI
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
     mi_fip_income_eligible: true
-    mi_fip_resources_eligible: false
+    mi_fip_resources_eligible: true
   output:
     mi_fip_eligible: false
 
-- name: Not income eligible but resource eligible
+- name: Citizenship not met
   period: 2025-01
   input:
     state_code: MI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    mi_fip_income_eligible: true
+    mi_fip_resources_eligible: true
+  output:
+    mi_fip_eligible: false
+
+- name: Income not met
+  period: 2025-01
+  input:
+    state_code: MI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     mi_fip_income_eligible: false
     mi_fip_resources_eligible: true
   output:
     mi_fip_eligible: false
 
-- name: Not income eligible and not resource eligible
+- name: Resources not met
   period: 2025-01
   input:
     state_code: MI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    mi_fip_income_eligible: true
+    mi_fip_resources_eligible: false
+  output:
+    mi_fip_eligible: false
+
+- name: No requirements met
+  period: 2025-01
+  input:
+    state_code: MI
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: false
     mi_fip_income_eligible: false
     mi_fip_resources_eligible: false
   output:
@@ -38,6 +68,8 @@
   period: 2025-01
   input:
     state_code: CA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     mi_fip_income_eligible: true
     mi_fip_resources_eligible: true
   output:
