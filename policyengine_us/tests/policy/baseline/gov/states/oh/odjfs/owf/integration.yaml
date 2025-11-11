@@ -52,12 +52,12 @@
   output:
     # No income means no disregard needed
     # Countable income: $0
-    # Payment standard for 2: $495/month
+    # Payment standard for 2: $507/month (January 2025 COLA increase)
     oh_owf_countable_income: 0
-    oh_owf_payment_standard: 495
+    oh_owf_payment_standard: 507
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 495
+    oh_owf: 507
 
 - name: Single parent with earned and unearned income receives reduced benefit
   period: 2024
