@@ -1,12 +1,13 @@
-description: Michigan disregards this share of remaining earned income (after the fixed disregard) when determining initial Family Independence Program eligibility.
+description: Michigan deducts this share of remaining earned income (after the flat deduction) when calculating Family Independence Program benefits.
 
 values:
   1900-01-01: 0.2
+  2011-01-01: 0.5
 
 metadata:
   unit: /1
   period: month
-  label: MI FIP earned income initial disregard rate
+  label: MI FIP earned income percentage deduction
   reference:
     - title: Michigan DHHS BEM 518 - FIP/RCA/SDA Income Budgeting
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf

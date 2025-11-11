@@ -21,13 +21,17 @@ class mi_tanf_countable_earned_income(Variable):
         gross_earned_income = person("mi_tanf_gross_earned_income", period)
         total_gross_earned = spm_unit.sum(gross_earned_income)
 
-        # Apply earned income disregard: $200 + 50% of remainder
+        # Apply earned income deduction: $200 + 50% of remainder
         # Note: Using ongoing rate for simplified implementation
         # Full implementation would distinguish initial vs ongoing eligibility
-        fixed_disregard = p.income.disregards.fixed
-        rate_disregard = p.income.disregards.ongoing_rate
+        flat_deduction = (
+            p.income.deductions.earned_income_disregard.flat_amount
+        )
+        percent_deduction = (
+            p.income.deductions.earned_income_disregard.percent_of_remainder
+        )
 
-        remainder = max_(total_gross_earned - fixed_disregard, 0)
-        total_disregard = fixed_disregard + (rate_disregard * remainder)
+        remainder = max_(total_gross_earned - flat_deduction, 0)
+        total_deduction = flat_deduction + (percent_deduction * remainder)
 
-        return max_(total_gross_earned - total_disregard, 0)
+        return max_(total_gross_earned - total_deduction, 0)

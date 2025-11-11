@@ -19,20 +19,19 @@ class mi_tanf_payment_standard(Variable):
         # Determine household size
         size = spm_unit.nb_persons()
 
-        # Use eligible grantee payment standard (simplified implementation)
-        # Full implementation would check for ineligible grantees (e.g., SSI recipients)
-        schedule = p.payment_standards.eligible_grantee
+        # Get payment standard from bracket schedule
+        schedule = p.payment_standard.amounts
 
         # For sizes 1-7, use the bracket schedule
         # For size 8+, use the size 7 amount plus additional per person
-        max_bracket_size = p.payment_standards.max_bracket_size
+        max_bracket_size = 7  # Maximum size in bracket schedule
         size_capped = min_(size, max_bracket_size)
         base_standard = schedule.calc(size_capped)
 
         # Add additional amount for household size 8+
         additional_persons = max_(size - max_bracket_size, 0)
         additional_amount = (
-            additional_persons * p.payment_standards.additional_per_person
+            additional_persons * p.payment_standard.additional_person_increment
         )
 
         return base_standard + additional_amount

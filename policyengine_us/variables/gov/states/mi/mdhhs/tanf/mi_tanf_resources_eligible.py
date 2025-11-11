@@ -21,4 +21,4 @@ class mi_tanf_resources_eligible(Variable):
         # Note: spm_unit_assets is a YEAR variable, so we access it with this_year
         assets = spm_unit("spm_unit_assets", period.this_year)
 
-        return assets <= p.eligibility.asset_limit
+        return assets <= p.resource_limit

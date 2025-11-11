@@ -1,4 +1,4 @@
-description: Michigan disregards this fixed dollar amount from earned income when determining Family Independence Program eligibility and calculating benefits.
+description: Michigan deducts this fixed dollar amount from earned income when determining Family Independence Program eligibility and calculating benefits.
 
 values:
   1900-01-01: 200
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: month
-  label: MI FIP earned income fixed disregard
+  label: MI FIP earned income flat deduction
   reference:
     - title: Michigan DHHS BEM 518 - FIP/RCA/SDA Income Budgeting
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf
