@@ -1,5 +1,5 @@
 - name: Family with child - all requirements met
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -18,7 +18,7 @@
     oh_owf_eligible: true
 
 - name: Pregnant woman - categorically eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       woman:
@@ -36,7 +36,7 @@
     oh_owf_eligible: true
 
 - name: Two adults no children - not demographic eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       adult1:
@@ -54,7 +54,7 @@
     oh_owf_eligible: false
 
 - name: Family with child but income too high
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -78,7 +78,7 @@
     oh_owf_eligible: false
 
 - name: Family with child but no citizen or legal immigrant
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -99,7 +99,7 @@
     oh_owf_eligible: false
 
 - name: Family with child, parent undocumented but child is citizen - eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -120,7 +120,7 @@
     oh_owf_eligible: true
 
 - name: Family at income threshold - just eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -145,7 +145,7 @@
     oh_owf_eligible: true
 
 - name: Family just over income threshold - still eligible due to disregard
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -170,7 +170,7 @@
     oh_owf_eligible: true
 
 - name: Family with zero income - eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -189,7 +189,7 @@
     oh_owf_eligible: true
 
 - name: New applicant with low income - passes initial eligibility
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -216,7 +216,7 @@
     oh_owf_eligible: true
 
 - name: New applicant with high income - fails initial eligibility
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:

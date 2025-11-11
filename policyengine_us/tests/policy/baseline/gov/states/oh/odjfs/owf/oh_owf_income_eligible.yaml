@@ -1,5 +1,5 @@
 - name: Case 1, no income, eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 0
     oh_owf_payment_standard: 7_476
@@ -8,7 +8,7 @@
     oh_owf_income_eligible: true
 
 - name: Case 2, income below payment standard, eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 3_000
     oh_owf_payment_standard: 7_476
@@ -17,7 +17,7 @@
     oh_owf_income_eligible: true
 
 - name: Case 3, income exactly at payment standard, not eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 7_476
     oh_owf_payment_standard: 7_476
@@ -26,7 +26,7 @@
     oh_owf_income_eligible: false
 
 - name: Case 4, income exceeds payment standard, not eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 8_000
     oh_owf_payment_standard: 7_476
@@ -35,7 +35,7 @@
     oh_owf_income_eligible: false
 
 - name: Case 5, income just below payment standard, eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 7_475
     oh_owf_payment_standard: 7_476
@@ -44,7 +44,7 @@
     oh_owf_income_eligible: true
 
 - name: Case 6, income just above payment standard, not eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 7_477
     oh_owf_payment_standard: 7_476
@@ -53,7 +53,7 @@
     oh_owf_income_eligible: false
 
 - name: Case 7, very high income, not eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 50_000
     oh_owf_payment_standard: 7_476
@@ -62,7 +62,7 @@
     oh_owf_income_eligible: false
 
 - name: Case 8, small payment standard with zero income, eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 0
     oh_owf_payment_standard: 4_356
@@ -71,7 +71,7 @@
     oh_owf_income_eligible: true
 
 - name: Case 9, large family payment standard with moderate income, eligible.
-  period: 2024
+  period: 2025-01
   input:
     oh_owf_countable_income: 10_000
     oh_owf_payment_standard: 16_668

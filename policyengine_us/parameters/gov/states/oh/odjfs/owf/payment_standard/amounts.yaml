@@ -1,8 +1,10 @@
-description: Monthly payment standard amounts for Ohio Works First assistance groups of sizes 1 through 8.
+description: Ohio sets this monthly payment standard for Ohio Works First program.
 metadata:
   unit: currency-USD
   period: month
   label: Ohio Works First payment standard amounts
+  breakdown:
+    - range(1, 9)
   reference:
     - title: ODJFS Action Change Transmittal Letter No. 295 - January 1, 2025 COLA Increase
       href: https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/
@@ -10,30 +12,20 @@ metadata:
       href: https://codes.ohio.gov/ohio-revised-code/section-5107.04
     - title: Ohio Administrative Code 5101:1-23-40 - Payments
       href: http://codes.ohio.gov/oac/5101:1-23-40
-  breakdown:
-    - range(1, 9)
 
 1:
-  2024-11-01: 363
   2025-01-01: 372
 2:
-  2024-11-01: 495
   2025-01-01: 507
 3:
-  2024-11-01: 623
   2025-01-01: 623
 4:
-  2024-11-01: 749
   2025-01-01: 768
 5:
-  2024-11-01: 877
   2025-01-01: 899
 6:
-  2024-11-01: 1_005
   2025-01-01: 1_000
 7:
-  2024-11-01: 1_133
   2025-01-01: 1_118
 8:
-  2024-11-01: 1_261
   2025-01-01: 1_240

@@ -14,8 +14,6 @@ class oh_owf_countable_income(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-
         # Get gross earned income from federal TANF variable
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 
@@ -25,17 +23,16 @@ class oh_owf_countable_income(Variable):
         p = parameters(
             period
         ).gov.states.oh.odjfs.owf.income.deductions.earned_income_disregard
-        flat_disregard = p.flat_amount
 
         # Calculate remainder after flat disregard
-        remainder = max_(gross_earned - flat_disregard, 0)
+        remainder = max_(gross_earned - p.flat_amount, 0)
 
         # Apply percentage disregard to remainder
         percent_disregarded = remainder * p.percentage_of_disregard
 
         # Countable earned income = gross - flat disregard - percent of remainder
         countable_earned = max_(
-            gross_earned - flat_disregard - percent_disregarded, 0
+            remainder - percent_disregarded, 0
         )
 
         # Get gross unearned income from federal variable

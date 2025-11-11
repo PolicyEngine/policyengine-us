@@ -23,7 +23,7 @@ class oh_owf_initial_income_eligible(Variable):
         # Get initial eligibility income limit (50% of current year FPL)
         fpg = spm_unit("tanf_fpg", period)
         p = parameters(period).gov.states.oh.odjfs.owf.initial_eligibility
-        income_limit = fpg * p.income_limit_percent
+        income_limit = fpg * p.income_limit_rate
 
         # Initial eligibility test: gross income must be below limit
         # Per ORC 5107.10(D)(1) and ODJFS Payment Standards Table

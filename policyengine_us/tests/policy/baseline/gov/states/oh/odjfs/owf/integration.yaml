@@ -1,5 +1,5 @@
 - name: Single parent with two children and moderate earned income receives benefit
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -23,15 +23,15 @@
     # Gross earned income: $9,600/year = $800/month
     # Earned income disregard: $250 + 50% of remainder
     # $800 - $250 = $550; $550 × 50% = $275 disregarded
-    # Countable income: $550 - $275 = $275/month × 12 = $3,300/year
+    # Countable income: $550 - $275 = $275/month
     #
-    # Payment standard for 3: $623/month × 12 = $7,476/year
-    # Benefit: $7,476 - $3,300 = $4,176/year
-    oh_owf_countable_income: 3_300
-    oh_owf_payment_standard: 7_476
+    # Payment standard for 3: $623/month
+    # Benefit: $623 - $275 = $348/month
+    oh_owf_countable_income: 275
+    oh_owf_payment_standard: 623
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 4_176
+    oh_owf: 348
 
 - name: Single parent with one child and no income receives maximum benefit
   period: 2025-01
@@ -60,7 +60,7 @@
     oh_owf: 507
 
 - name: Single parent with earned and unearned income receives reduced benefit
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -83,21 +83,21 @@
   output:
     # Earned: $6,000/year = $500/month
     # Disregard: $500 - $250 = $250; $250 × 50% = $125
-    # Countable earned: $250 - $125 = $125/month × 12 = $1,500/year
+    # Countable earned: $250 - $125 = $125/month
     #
-    # Unearned: $4,800/year (no disregard)
-    # Total countable: $1,500 + $4,800 = $6,300/year
+    # Unearned: $4,800/year = $400/month (no disregard)
+    # Total countable: $125 + $400 = $525/month
     #
-    # Payment standard for 3: $623/month × 12 = $7,476/year
-    # Benefit: $7,476 - $6,300 = $1,176/year
-    oh_owf_countable_income: 6_300
-    oh_owf_payment_standard: 7_476
+    # Payment standard for 3: $623/month
+    # Benefit: $623 - $525 = $98/month
+    oh_owf_countable_income: 525
+    oh_owf_payment_standard: 623
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 1_176
+    oh_owf: 98
 
 - name: Family with income above payment standard receives no benefit
-  period: 2024
+  period: 2025-01
   input:
     people:
       parent:
@@ -119,19 +119,19 @@
   output:
     # Earned: $18,000/year = $1,500/month
     # Disregard: $1,500 - $250 = $1,250; $1,250 × 50% = $625
-    # Countable: $1,250 - $625 = $625/month × 12 = $7,500/year
+    # Countable: $1,250 - $625 = $625/month
     #
-    # Payment standard for 3: $623/month × 12 = $7,476/year
-    # Countable income ($7,500) >= payment standard ($7,476)
+    # Payment standard for 3: $623/month
+    # Countable income ($625) >= payment standard ($623)
     # Not income eligible, no benefit
-    oh_owf_countable_income: 7_500
-    oh_owf_payment_standard: 7_476
+    oh_owf_countable_income: 625
+    oh_owf_payment_standard: 623
     oh_owf_income_eligible: false
     oh_owf_eligible: false
     oh_owf: 0
 
 - name: Two adults with no children are not eligible
-  period: 2024
+  period: 2025-01
   input:
     people:
       adult1:
@@ -150,37 +150,3 @@
     # Must have at least one minor child or be pregnant
     oh_owf_eligible: false
     oh_owf: 0
-
-- name: 2025 verification - family with moderate income receives benefit
-  period: 2025-01
-  input:
-    people:
-      parent:
-        age: 30
-        employment_income_before_lsr: 9_600
-      child1:
-        age: 6
-        is_tax_unit_dependent: true
-      child2:
-        age: 10
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2]
-    households:
-      household:
-        members: [parent, child1, child2]
-        state_code: OH
-  output:
-    # Income: $9,600/year = $800/month
-    # Earned income disregard: $250 + 50% of remainder
-    # $800 - $250 = $550; $550 × 50% = $275 disregarded
-    # Countable income: $550 - $275 = $275/month
-    #
-    # Payment standard for 3: $623/month
-    # Benefit: $623 - $275 = $348/month
-    oh_owf_countable_income: 275
-    oh_owf_payment_standard: 623
-    oh_owf_income_eligible: true
-    oh_owf_eligible: true
-    oh_owf: 348

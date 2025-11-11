@@ -1,4 +1,8 @@
-description: Ohio disregards this flat dollar amount from gross earned income before applying the percentage disregard when calculating countable earned income for Ohio Works First.
+description: Ohio deducts this flat amount from gross earned income under Ohio Works First program.
+
+values:
+  2023-10-01: 250
+
 metadata:
   unit: currency-USD
   period: month
@@ -6,6 +10,3 @@ metadata:
   reference:
     - title: Ohio Revised Code § 5107.10(D)(3) - Two hundred-fifty dollar disregard
       href: https://codes.ohio.gov/ohio-revised-code/section-5107.10
-
-values:
-  1997-07-01: 250
