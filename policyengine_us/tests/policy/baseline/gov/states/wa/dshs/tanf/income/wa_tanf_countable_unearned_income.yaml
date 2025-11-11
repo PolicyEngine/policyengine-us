@@ -1,0 +1,43 @@
+- name: Zero gross unearned income - zero countable
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_gross_unearned_income: 0
+  output:
+    # No disregards for unearned income
+    wa_tanf_countable_unearned_income: 0
+
+- name: Low gross unearned income
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_gross_unearned_income: 250
+  output:
+    # No disregards for unearned income
+    wa_tanf_countable_unearned_income: 250
+
+- name: Moderate gross unearned income
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_gross_unearned_income: 500
+  output:
+    # No disregards for unearned income
+    wa_tanf_countable_unearned_income: 500
+
+- name: High gross unearned income
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_gross_unearned_income: 1_500
+  output:
+    # No disregards for unearned income
+    wa_tanf_countable_unearned_income: 1_500
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: OR
+    wa_tanf_gross_unearned_income: 500
+  output:
+    wa_tanf_countable_unearned_income: 0

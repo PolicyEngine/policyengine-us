@@ -1,0 +1,108 @@
+- name: Single person with no earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_tanf_gross_earned_income: 0
+
+- name: Single person with earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_tanf_gross_earned_income: 1_000
+
+- name: Two adults - one earner
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_500
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Total = $1,500 + $0 = $1,500
+    wa_tanf_gross_earned_income: 1_500
+
+- name: Two adults - both earners
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_200
+      person2:
+        tanf_gross_earned_income: 800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Total = $1,200 + $800 = $2,000
+    wa_tanf_gross_earned_income: 2_000
+
+- name: Family of four - multiple earners
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        tanf_gross_earned_income: 1_800
+      parent2:
+        tanf_gross_earned_income: 1_200
+      child1:
+        tanf_gross_earned_income: 300
+      child2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: WA
+  output:
+    # Total = $1,800 + $1,200 + $300 + $0 = $3,300
+    wa_tanf_gross_earned_income: 3_300
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    wa_tanf_gross_earned_income: 0
