@@ -20,7 +20,7 @@ class nj_cdcc(Variable):
 
         # Get federal CDCC
         # New Jersey matches the potential federal credit
-        federal_cdcc = tax_unit("cdcc_potential", period)
+        federal_cdcc = tax_unit("cdcc", period)
 
         # Calculate NJ CDCC
         rate = p.calc(taxable_income, right=True)
