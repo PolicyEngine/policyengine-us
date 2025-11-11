@@ -11476,3 +11476,9 @@
     fixed:
     - Remove the repeal of the Hawaii alternative tax on capital gains.
   date: 2025-11-11 13:40:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing
+      incorrect categorical eligibility
+  date: 2025-11-11 14:47:06
