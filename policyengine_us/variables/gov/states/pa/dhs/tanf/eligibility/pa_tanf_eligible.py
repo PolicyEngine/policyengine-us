@@ -28,12 +28,12 @@ class pa_tanf_eligible(Variable):
         income_eligible = spm_unit("pa_tanf_income_eligible", period)
 
         # Must meet resource requirements (assets <= $1,000)
-        resource_eligible = spm_unit("pa_tanf_resource_eligible", period)
+        resources_eligible = spm_unit("pa_tanf_resources_eligible", period)
 
         # All requirements must be met
         return (
             demographic_eligible
             & has_citizen
             & income_eligible
-            & resource_eligible
+            & resources_eligible
         )

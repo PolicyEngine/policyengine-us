@@ -11,7 +11,7 @@ class pa_tanf_maximum_benefit(Variable):
     reference = "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.pa.dhs.tanf
+        p = parameters(period).gov.states.pa.dhs.tanf.family_size_allowance
         household = spm_unit.household
 
         # Get county group
@@ -25,12 +25,11 @@ class pa_tanf_maximum_benefit(Variable):
 
         # Get benefit based on county group and size
         # Use county_group enum value as parameter key
-        benefit = p.family_size_allowance.amount[county_group][capped_size]
+        benefit = p.amount[county_group][capped_size]
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.family_size_allowance.additional_person
-        additional_benefit = additional_people * additional_increment
+        additional_benefit = additional_people * p.additional_person
 
         # Return monthly benefit
         return benefit + additional_benefit

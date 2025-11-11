@@ -11,7 +11,7 @@ class pa_tanf_standard_of_need(Variable):
     reference = "http://services.dpw.state.pa.us/oimpolicymanuals/cash/168_Determining_Eligibility_and_Payment_Amount/168_Appendix_A.htm"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.pa.dhs.tanf
+        p = parameters(period).gov.states.pa.dhs.tanf.standard_of_need
         household = spm_unit.household
 
         # Get county group
@@ -25,12 +25,11 @@ class pa_tanf_standard_of_need(Variable):
 
         # Get standard of need based on county group and size
         # Use county_group enum value as parameter key
-        standard = p.standard_of_need.amount[county_group][capped_size]
+        standard = p.amount[county_group][capped_size]
 
         # Add increment for each person beyond 6
         additional_people = max_(size - 6, 0)
-        additional_increment = p.standard_of_need.additional_person
-        additional_amount = additional_people * additional_increment
+        additional_amount = additional_people * p.additional_person
 
         # Return monthly standard of need
         return standard + additional_amount
