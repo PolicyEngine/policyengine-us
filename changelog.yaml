@@ -11482,3 +11482,8 @@
     - Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing
       incorrect categorical eligibility
   date: 2025-11-11 14:47:06
+- bump: patch
+  changes:
+    changed:
+    - Revert age heterogeneity in labor supply response elasticities (v1.426.0).
+  date: 2025-11-11 19:02:22
