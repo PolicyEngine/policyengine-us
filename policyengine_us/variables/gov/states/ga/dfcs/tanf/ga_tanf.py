@@ -8,10 +8,8 @@ class ga_tanf(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://law.justia.com/codes/georgia/title-49/chapter-4/article-9/",
         "https://rules.sos.ga.gov/gac/290-2-28",
         "https://pamms.dhs.ga.gov/dfcs/tanf/",
-        "https://dfcs.georgia.gov/tanf",
     )
     defined_for = "ga_tanf_eligible"
 

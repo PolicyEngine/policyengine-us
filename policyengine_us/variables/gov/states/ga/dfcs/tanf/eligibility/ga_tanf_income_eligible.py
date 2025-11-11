@@ -13,14 +13,12 @@ class ga_tanf_income_eligible(Variable):
     defined_for = StateCode.GA
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-
         # Gross income test - use federal TANF variables
-        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
-        gross_unearned = spm_unit.sum(
-            person("tanf_gross_unearned_income", period)
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
-        gross_income = gross_earned + gross_unearned
 
         gross_income_ceiling = spm_unit("ga_tanf_gross_income_ceiling", period)
         passes_gross_test = gross_income <= gross_income_ceiling
