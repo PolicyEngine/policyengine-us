@@ -1,0 +1,13 @@
+description: Michigan limits the Family Independence Program to households with countable assets up to this amount.
+
+values:
+  1900-01-01: 3_000
+  2019-01-01: 15_000
+
+metadata:
+  unit: currency-USD
+  label: MI FIP asset limit
+  reference:
+    - title: Michigan DHHS BEM 400 - Assets
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/400.pdf
+      effective_date: 2025-10-01

@@ -24,8 +24,8 @@ class mi_tanf_countable_earned_income(Variable):
         # Apply earned income disregard: $200 + 50% of remainder
         # Note: Using ongoing rate for simplified implementation
         # Full implementation would distinguish initial vs ongoing eligibility
-        fixed_disregard = p.earned_income_disregard_fixed
-        rate_disregard = p.earned_income_disregard_ongoing_rate
+        fixed_disregard = p.income.disregards.fixed
+        rate_disregard = p.income.disregards.ongoing_rate
 
         remainder = max_(total_gross_earned - fixed_disregard, 0)
         total_disregard = fixed_disregard + (rate_disregard * remainder)

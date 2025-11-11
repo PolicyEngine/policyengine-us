@@ -11,6 +11,5 @@ class mi_tanf_gross_earned_income(Variable):
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf",
         "https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_2023.pdf",
     )
-    defined_for = StateCode.MI
 
-    adds = ["employment_income", "self_employment_income"]
+    adds = ["tanf_gross_earned_income"]
