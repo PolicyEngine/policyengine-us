@@ -25,11 +25,11 @@ class mi_tanf_payment_standard(Variable):
 
         # For sizes 1-7, use the bracket schedule
         # For size 8+, use the size 7 amount plus additional per person
-        size_capped = min_(size, 7)
+        max_bracket_size = p.max_bracket_size
+        size_capped = min_(size, max_bracket_size)
         base_standard = schedule.calc(size_capped)
 
         # Add additional amount for household size 8+
-        max_bracket_size = 7
         additional_persons = max_(size - max_bracket_size, 0)
         additional_amount = (
             additional_persons * p.payment_standard_additional_per_person
