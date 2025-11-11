@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        self_employment_income_before_lsr: 3_000
-      person2:
-        employment_income_before_lsr: 1_000
+        self_employment_income: 3_000
+      person2: 
+        employment_income: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -23,9 +23,9 @@
   input:
     people:
       person1:
-        self_employment_income_before_lsr: 3_000
-      person2:
-        employment_income_before_lsr: 1_000
+        self_employment_income: 3_000
+      person2: 
+        employment_income: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]

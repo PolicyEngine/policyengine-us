@@ -48,8 +48,7 @@ jobs:
           message: Update PolicyEngine US
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
           fetch: false
-  YAML-NonStructural:
-    name: Non-Structural YAML Tests
+  Test:
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -74,26 +73,6 @@ jobs:
         run: |
           echo "Running non-structural YAML tests..."
           uv run make test-yaml-no-structural
-  Structural-and-Python:
-    name: Structural YAML & Python Tests
-    runs-on: ubuntu-latest
-    if: |
-      (github.repository == 'PolicyEngine/policyengine-us')
-      && (github.event.head_commit.message == 'Update PolicyEngine US')
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: uv sync --dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
       - name: Run structural YAML tests
         env:
           PYTHONUNBUFFERED: 1
@@ -111,7 +90,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [YAML-NonStructural, Structural-and-Python]
+    needs: Test
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

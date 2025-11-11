@@ -40,17 +40,17 @@
         age: 40
         is_pregnant: false
         current_pregnancy_month: 0
-        employment_income_before_lsr: 10_000
-        alimony_income: 0
-        pension_income: 0
+        employment_income: 10_000
+        alimony_income: 0 
+        pension_income: 0 
         social_security: 0
-        weekly_hours_worked_before_lsr: 10
+        weekly_hours_worked: 10
       person2:
         age: 18
         is_in_secondary_school: true
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 3_000
-        weekly_hours_worked_before_lsr: 0
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -88,26 +88,26 @@
         age: 40
         is_pregnant: false
         current_pregnancy_month: 0
-        employment_income_before_lsr: 30_000
-        alimony_income: 0
-        pension_income: 0
+        employment_income: 30_000
+        alimony_income: 0 
+        pension_income: 0 
         social_security: 0
-        weekly_hours_worked_before_lsr: 4
+        weekly_hours_worked: 4
       person2:
         age: 40
         is_pregnant: false
         current_pregnancy_month: 0
-        employment_income_before_lsr: 20_000
-        alimony_income: 0
-        pension_income: 0
+        employment_income: 20_000
+        alimony_income: 0 
+        pension_income: 0 
         social_security: 0
-        weekly_hours_worked_before_lsr: 4
+        weekly_hours_worked: 4
       person3:
         age: 18
         is_in_secondary_school: true
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 3_000
-        weekly_hours_worked_before_lsr: 0
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]

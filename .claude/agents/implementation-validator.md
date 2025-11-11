@@ -162,74 +162,6 @@ The validator produces a structured report:
 3. Reorganize Z parameter files
 ```
 
-## Vectorization Issues
-
-### Critical: np.any() and np.all() Break Vectorization
-
-**NEVER use `np.any()` or `np.all()` without specifying the correct axis.** These functions collapse arrays and break vectorization when calculating across multiple entities.
-
-#### The Bug Pattern
-
-```python
-# ❌ WRONG - Breaks vectorization
-def formula(person, period, parameters):
-    tax_unit = person.tax_unit
-    programs = add(tax_unit, period, ["tanf", "snap", "wic"])
-    return np.any(programs)  # Collapses entire array to single boolean!
-```
-
-**What happens**: When simulating multiple households (e.g., with axes or microsimulation), `np.any(programs)` checks if ANY household receives benefits and returns that single True/False for ALL people.
-
-**Impact**: If one low-income household qualifies, then high-income households ($200k+) also incorrectly become eligible.
-
-**Real example**: Head Start categorical eligibility was giving benefits to all children regardless of income when any tax unit received qualifying benefits (TANF/SNAP).
-
-#### The Fix - Use Element-Wise Comparisons
-
-```python
-# ✅ CORRECT - Preserves array structure
-def formula(person, period, parameters):
-    return add(person.tax_unit, period, ["tanf", "snap", "wic"]) > 0
-```
-
-This performs element-wise comparison, maintaining separate True/False for each person based on their own household's benefits.
-
-#### When np.any() IS Acceptable
-
-Only use with explicit axis for within-entity aggregation:
-
-```python
-# ✅ Correct - aggregating persons within each household
-def formula(household, period, parameters):
-    person_values = household.members("has_disability", period)
-    # axis=0 keeps one value per household
-    return np.any(person_values, axis=0)
-```
-
-But even then, prefer explicit patterns:
-```python
-# ✅ Better - clearer intent
-def formula(household, period, parameters):
-    return household.any(household.members("has_disability", period))
-```
-
-Or for existence checks:
-```python
-# ✅ Best - most explicit
-def formula(household, period, parameters):
-    return household.sum(household.members("has_disability", period)) > 0
-```
-
-#### Detection Rules
-
-Flag these patterns in code review:
-- `np.any(variable)` without `axis=` parameter
-- `np.all(variable)` without `axis=` parameter
-- `variable.any()` without axis specification
-- `variable.all()` without axis specification
-
-**Especially check**: Eligibility formulas that aggregate from other entities (person.tax_unit, person.household, person.spm_unit, etc.)
-
 ## Success Criteria
 
 Implementation passes when:
@@ -238,7 +170,6 @@ Implementation passes when:
 - Proper parameter hierarchy
 - All test variables exist
 - Complete documentation and references
-- No vectorization bugs (np.any/np.all without axis)
 
 ## Common Patterns Across Programs
 

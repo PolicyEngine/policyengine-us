@@ -12,5 +12,7 @@ class is_head_start_categorically_eligible(Variable):
     )
 
     def formula(person, period, parameters):
+        tax_unit = person.tax_unit
         p = parameters(period).gov.hhs.head_start
-        return add(person.tax_unit, period, p.categorical_eligibility) > 0
+        programs = add(tax_unit, period, p.categorical_eligibility)
+        return np.any(programs)

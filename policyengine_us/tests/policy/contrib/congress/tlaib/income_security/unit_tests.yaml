@@ -141,7 +141,7 @@
       2026: [5_630, 5_630, 0]
 
 # ECPA Adult Dependent Credit Tests
-- name: ECPA adult dependent credit requires dependent status and age 19+
+- name: ECPA adult dependent credit requires dependent status and age 18+
   period: 2026
   reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
   input:
@@ -151,18 +151,18 @@
     people:
       parent:
         age: 45
-      child_18:
-        age: 18
+      child_17:
+        age: 17
         is_tax_unit_dependent: true
-      adult_dep_19:
-        age: 19
+      adult_dep_18:
+        age: 18
         is_tax_unit_dependent: true
       adult_not_dep:
         age: 20
         is_tax_unit_dependent: false
     tax_units:
       tax_unit:
-        members: [parent, child_18, adult_dep_19, adult_not_dep]
+        members: [parent, child_17, adult_dep_18, adult_not_dep]
   output:
     ecpa_adult_dependent_credit:
       2026: [0, 0, 700, 0]

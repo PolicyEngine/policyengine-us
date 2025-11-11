@@ -17,6 +17,6 @@ class ca_care_categorically_eligible(Variable):
         tribal_lifeline_programs = add(household, period, p.tribal_categorical)
         return np.where(
             is_on_tribal_land,
-            tribal_lifeline_programs > 0,
-            non_tribal_lifeline_programs > 0,
+            np.any(tribal_lifeline_programs),
+            np.any(non_tribal_lifeline_programs),
         )

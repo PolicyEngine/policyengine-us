@@ -68,28 +68,12 @@ def create_ri_exemption_reform() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.dependent_exemption
 
             maximum = tax_unit("ri_dependent_exemption_maximum", period)
             phaseout = tax_unit("ri_dependent_exemption_phaseout", period)
 
             return max_(maximum - phaseout, 0)
-
-    class ri_older_dependents_count(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "Rhode Island older dependents count"
-        unit = USD
-        definition_period = YEAR
-        defined_for = StateCode.RI
-
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
-            total_dependents = tax_unit.sum(is_dependent)
-            eligible_dependent_exemptions = tax_unit(
-                "ri_eligible_dependents_count", period
-            )
-            return max_(0, total_dependents - eligible_dependent_exemptions)
 
     class ri_exemptions(Variable):
         value_type = float
@@ -104,14 +88,10 @@ def create_ri_exemption_reform() -> Reform:
 
             # Calculate personal exemptions base amount
             filing_status = tax_unit("filing_status", period)
-            older_dependents = tax_unit("ri_older_dependents_count", period)
-            personal_exemptions = (
-                where(
-                    filing_status == filing_status.possible_values.JOINT,
-                    2,
-                    1,
-                )
-                + older_dependents
+            personal_exemptions = where(
+                filing_status == filing_status.possible_values.JOINT,
+                2,
+                1,
             )
             personal_exemption_base = personal_exemptions * p_base.amount
 
@@ -138,7 +118,6 @@ def create_ri_exemption_reform() -> Reform:
             self.update_variable(ri_dependent_exemption_phaseout)
             self.update_variable(ri_dependent_exemption)
             self.update_variable(ri_exemptions)
-            self.update_variable(ri_older_dependents_count)
 
     return reform
 

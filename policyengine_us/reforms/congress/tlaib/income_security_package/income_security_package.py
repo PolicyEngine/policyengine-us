@@ -19,9 +19,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.baby_bonus_act
 
-            if not p.in_effect:
-                return 0
-
             # Baby bonus is for those born in 2026 and after, paid in their birth year
             birth_year = person("birth_year", period)
 
@@ -50,9 +47,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
 
-            if not p.in_effect:
-                return 0
-
             age = person("age", period)
             is_eligible = (age >= p.min_age) & (age <= p.max_age)
 
@@ -73,9 +67,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.boost_act
-
-            if not p.in_effect:
-                return 0
 
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
@@ -99,9 +90,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
-
-            if not p.in_effect:
-                return 0
 
             age = person("age", period)
             is_eligible = age < p.child_benefit.age_limit
@@ -129,9 +117,6 @@ def create_income_security_package() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
 
-            if not p.in_effect:
-                return 0
-
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
 
@@ -154,9 +139,6 @@ def create_income_security_package() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act
-
-            if not p.in_effect:
-                return 0
 
             person = tax_unit.members
             age = person("age", period)
@@ -370,38 +352,6 @@ def create_income_security_package() -> Reform:
 
             return add(tax_unit, period, CREDITS)
 
-    class household_tax_before_refundable_credits(Variable):
-        value_type = float
-        entity = Household
-        label = "total tax before refundable credits"
-        documentation = "Total tax liability before refundable credits."
-        unit = USD
-        definition_period = YEAR
-
-        def formula(household, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.congress.tlaib.income_security_package
-
-            base_taxes = add(
-                household,
-                period,
-                [
-                    "employee_payroll_tax",
-                    "self_employment_tax",
-                    "income_tax_before_refundable_credits",
-                    "flat_tax",
-                    "household_state_tax_before_refundable_credits",
-                ],
-            )
-
-            # Add BOOST tax only if active
-            if p.boost_act.in_effect:
-                boost_tax = add(household, period, ["boost_act_tax"])
-                return base_taxes + boost_tax
-            else:
-                return base_taxes
-
     class reform(Reform):
         def apply(self):
             # Update all variables for the Income Security Package
@@ -416,7 +366,6 @@ def create_income_security_package() -> Reform:
             self.update_variable(income_tax)
             self.update_variable(income_tax_refundable_credits)
             self.update_variable(income_tax_non_refundable_credits)
-            self.update_variable(household_tax_before_refundable_credits)
 
     return reform
 

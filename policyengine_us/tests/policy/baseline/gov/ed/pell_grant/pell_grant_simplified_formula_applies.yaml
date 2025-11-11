@@ -135,7 +135,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified_formula_applies: [false, true]  # main has no benefits, other has medicaid
+    pell_grant_simplified_formula_applies: true
 
 - name: Too much income
   period: 2023
