@@ -1,5 +1,24 @@
 description: Washington TANF requires that a family's gross earned income must be below these levels to qualify for eligibility, which already incorporate the $500 family earnings deduction in their calculation.
-
+1:
+  2024-08-01: 1_400
+2:
+  2024-08-01: 1_640
+3:
+  2024-08-01: 1_912
+4:
+  2024-08-01: 2_166
+5:
+  2024-08-01: 2_418
+6:
+  2024-08-01: 2_680
+7:
+  2024-08-01: 3_016
+8:
+  2024-08-01: 3_284
+9:
+  2024-08-01: 3_558
+10:
+  2024-08-01: 3_824
 metadata:
   unit: currency-USD
   period: month
@@ -9,26 +28,4 @@ metadata:
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
       publication_date: 2024-05-21
   breakdown:
-    1: One person
-    2: Two people
-    3: Three people
-    4: Four people
-    5: Five people
-    6: Six people
-    7: Seven people
-    8: Eight people
-    9: Nine people
-    10: Ten or more people
-
-values:
-  2024-08-01:
-    1: 1_400
-    2: 1_640
-    3: 1_912
-    4: 2_166
-    5: 2_418
-    6: 2_680
-    7: 3_016
-    8: 3_284
-    9: 3_558
-    10: 3_824
+    - range(1, 11)
