@@ -12,5 +12,5 @@ class wa_tanf_countable_income(Variable):
 
     adds = [
         "wa_tanf_countable_earned_income",
-        "wa_tanf_countable_unearned_income",
+        "tanf_gross_unearned_income",
     ]

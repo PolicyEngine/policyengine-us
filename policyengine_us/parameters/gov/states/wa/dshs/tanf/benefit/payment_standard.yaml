@@ -1,4 +1,15 @@
 description: Washington TANF provides this maximum monthly payment standard based on assistance unit size before deducting countable income.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF payment standard
+  reference:
+    - title: WAC 388-478-0020 - Payment standards for TANF, SFA, and RCA
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020
+  breakdown:
+    - range(1, 11)
+
 1:
   2024-01-01: 450
 2:
@@ -19,13 +30,3 @@ description: Washington TANF provides this maximum monthly payment standard base
   2024-01-01: 1_529
 10:
   2024-01-01: 1_662
-metadata:
-  unit: currency-USD
-  period: month
-  label: Washington TANF payment standard
-  reference:
-    - title: WAC 388-478-0020, "Payment standards for TANF, SFA, and RCA"
-      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020
-      publication_date: 2023-12-04
-  breakdown:
-    - range(1, 11)

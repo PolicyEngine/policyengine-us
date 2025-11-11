@@ -1,36 +1,55 @@
-- name: Both resource and income eligible - eligible
+- name: All requirements met - eligible
   period: 2024-01
   input:
     state_code: WA
-    wa_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
   output:
     wa_tanf_eligible: true
 
-- name: Resource eligible but income ineligible - ineligible
+- name: Missing demographic eligibility - ineligible
   period: 2024-01
   input:
     state_code: WA
-    wa_tanf_resources_eligible: true
-    wa_tanf_income_eligible: false
-  output:
-    wa_tanf_eligible: false
-
-- name: Income eligible but resource ineligible - ineligible
-  period: 2024-01
-  input:
-    state_code: WA
-    wa_tanf_resources_eligible: false
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
   output:
     wa_tanf_eligible: false
 
-- name: Both resource and income ineligible - ineligible
+- name: Missing citizenship - ineligible
   period: 2024-01
   input:
     state_code: WA
-    wa_tanf_resources_eligible: false
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: Income ineligible - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: false
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: Resource ineligible - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: false
   output:
     wa_tanf_eligible: false
 
@@ -38,7 +57,9 @@
   period: 2024-01
   input:
     state_code: ID
-    wa_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
   output:
     wa_tanf_eligible: false

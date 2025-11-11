@@ -1,4 +1,15 @@
 description: Washington TANF requires that a family's gross earned income must be below these levels to qualify for eligibility, which already incorporate the $500 family earnings deduction in their calculation.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF maximum gross earned income limit
+  reference:
+    - title: WAC 388-478-0035 - Maximum earned income limits for TANF, SFA, PWA, and RCA
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
+  breakdown:
+    - range(1, 11)
+
 1:
   2024-01-01: 1_400
 2:
@@ -19,13 +30,3 @@ description: Washington TANF requires that a family's gross earned income must b
   2024-01-01: 3_558
 10:
   2024-01-01: 3_824
-metadata:
-  unit: currency-USD
-  period: month
-  label: Washington TANF maximum gross earned income limit
-  reference:
-    - title: WAC 388-478-0035, "What are the maximum earned income limits for TANF, SFA, PWA, and RCA?"
-      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
-      publication_date: 2024-05-21
-  breakdown:
-    - range(1, 11)

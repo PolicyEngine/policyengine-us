@@ -3,7 +3,7 @@
   input:
     state_code: WA
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 0
+    tanf_gross_earned_income: 0
   output:
     # Income limit for family of 3: $1,912
     # Gross earned: $0 <= $1,912
@@ -14,7 +14,7 @@
   input:
     state_code: WA
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 1_500
+    tanf_gross_earned_income: 1_500
   output:
     # Income limit for family of 3: $1,912
     # Gross earned: $1,500 <= $1,912
@@ -25,7 +25,7 @@
   input:
     state_code: WA
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 1_912
+    tanf_gross_earned_income: 1_912
   output:
     # Income limit for family of 3: $1,912
     # Gross earned: $1,912 <= $1,912
@@ -36,7 +36,7 @@
   input:
     state_code: WA
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 1_913
+    tanf_gross_earned_income: 1_913
   output:
     # Income limit for family of 3: $1,912
     # Gross earned: $1,913 > $1,912
@@ -47,7 +47,7 @@
   input:
     state_code: WA
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 3_000
+    tanf_gross_earned_income: 3_000
   output:
     # Income limit for family of 3: $1,912
     # Gross earned: $3,000 > $1,912
@@ -58,7 +58,7 @@
   input:
     state_code: WA
     spm_unit_size: 1
-    wa_tanf_gross_earned_income: 1_400
+    tanf_gross_earned_income: 1_400
   output:
     # Income limit for family of 1: $1,400
     # Gross earned: $1,400 <= $1,400
@@ -69,7 +69,7 @@
   input:
     state_code: WA
     spm_unit_size: 10
-    wa_tanf_gross_earned_income: 3_824
+    tanf_gross_earned_income: 3_824
   output:
     # Income limit for family of 10: $3,824
     # Gross earned: $3,824 <= $3,824
@@ -80,7 +80,7 @@
   input:
     state_code: WA
     spm_unit_size: 15
-    wa_tanf_gross_earned_income: 3_824
+    tanf_gross_earned_income: 3_824
   output:
     # Income limit capped at family of 10: $3,824
     # Gross earned: $3,824 <= $3,824
@@ -91,6 +91,6 @@
   input:
     state_code: MT
     spm_unit_size: 3
-    wa_tanf_gross_earned_income: 1_000
+    tanf_gross_earned_income: 1_000
   output:
     wa_tanf_income_eligible: false

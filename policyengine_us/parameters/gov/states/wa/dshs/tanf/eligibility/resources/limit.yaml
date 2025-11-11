@@ -1,14 +1,14 @@
 description: Washington limits TANF eligibility to households with countable resources up to this amount, including cash on hand, checking and savings accounts, and other liquid assets.
 
+values:
+  2021-10-01: 6_000
+  2024-02-01: 12_000
+
 metadata:
   unit: currency-USD
   label: Washington TANF resource limit
   reference:
-    - title: WAC 388-470-0045, "How do my resources count toward the resource limits for cash assistance?"
+    - title: WAC 388-470-0045 - How do my resources count toward the resource limits for cash assistance?
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-470-0045
-    - title: WAC 388-470-0005, "Resource equity value"
+    - title: WAC 388-470-0005 - Resource equity value
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-470-0005
-
-values:
-  2021-10-01: 6_000
-  2024-02-01: 12_000

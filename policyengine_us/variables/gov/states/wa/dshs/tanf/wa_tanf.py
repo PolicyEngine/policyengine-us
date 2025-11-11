@@ -11,26 +11,25 @@ class wa_tanf(Variable):
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020",
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0165",
     )
-    defined_for = StateCode.WA
+    defined_for = "wa_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Get parameters
-        p = parameters(period).gov.states.wa.dshs.tanf.benefit
-
-        # Check eligibility
-        eligible = spm_unit("wa_tanf_eligible", period)
-
-        # Get payment standard
+        # Get payment standard based on assistance unit size
         payment_standard = spm_unit("wa_tanf_payment_standard", period)
 
-        # Get countable income
+        # Get countable income (after all disregards and deductions)
         countable_income = spm_unit("wa_tanf_countable_income", period)
 
-        # Calculate grant amount: Payment Standard - Countable Income
+        # Calculate benefit per WAC 388-450-0165:
+        # "The department calculates the amount of your cash assistance
+        # by subtracting your AU's countable income from the applicable
+        # payment standard."
         grant_before_cap = max_(payment_standard - countable_income, 0)
 
-        # Apply maximum grant cap
+        # Apply maximum grant cap (unique to Washington)
+        # Per WAC 388-478-0020, grants cannot exceed $1,338/month
+        # regardless of family size (affects families of 8+)
+        p = parameters(period).gov.states.wa.dshs.tanf.benefit
         grant_with_cap = min_(grant_before_cap, p.maximum_grant_cap)
 
-        # Return grant if eligible, otherwise 0
-        return where(eligible, grant_with_cap, 0)
+        return grant_with_cap
