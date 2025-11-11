@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.432.7] - 2025-11-11 14:47:06
+
+### Fixed
+
+- Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing incorrect categorical eligibility
+
 ## [1.432.6] - 2025-11-11 13:40:35
 
 ### Fixed
@@ -13483,6 +13489,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
 [1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6
 [1.432.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.4...1.432.5
 [1.432.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.3...1.432.4
