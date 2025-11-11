@@ -1,0 +1,706 @@
+- name: Single parent with 2 children - no income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: WA
+  output:
+    # Family of 3, no income
+    # Payment standard: $706
+    # Countable income: $0
+    # Benefit: $706 - $0 = $706
+    wa_tanf_payment_standard: [706, 0, 0]
+    wa_tanf_countable_income: [0, 0, 0]
+    wa_tanf_eligible: [true, false, false]
+    wa_tanf: [706, 0, 0]
+
+- name: Single parent with 2 children - low earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: WA
+  output:
+    # Family of 3, $1,000/month earned income
+    # Payment standard: $706
+    # Countable earned: ($1,000 - $500) × 0.5 = $250
+    # Benefit: $706 - $250 = $456
+    wa_tanf_payment_standard: [706, 0, 0]
+    wa_tanf_countable_income: [250, 0, 0]
+    wa_tanf_eligible: [true, false, false]
+    wa_tanf: [456, 0, 0]
+
+- name: Single parent with 2 children - moderate earned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 21_600  # $1,800/month
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: WA
+  output:
+    # Family of 3, $1,800/month earned income
+    # Payment standard: $706
+    # Countable earned: ($1,800 - $500) × 0.5 = $650
+    # Benefit: $706 - $650 = $56
+    wa_tanf_payment_standard: [706, 0, 0]
+    wa_tanf_countable_income: [650, 0, 0]
+    wa_tanf_eligible: [true, false, false]
+    wa_tanf: [56, 0, 0]
+
+- name: Single parent with 2 children - at income threshold
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 22_944  # $1,912/month (exact threshold)
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: WA
+  output:
+    # Family of 3, $1,912/month earned income (at threshold)
+    # Payment standard: $706
+    # Countable earned: ($1,912 - $500) × 0.5 = $706
+    # Benefit: $706 - $706 = $0 (eligible but no payment)
+    wa_tanf_payment_standard: [706, 0, 0]
+    wa_tanf_countable_income: [706, 0, 0]
+    wa_tanf_eligible: [true, false, false]
+    wa_tanf: [0, 0, 0]
+
+- name: Single parent with 2 children - over income threshold
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 23_000  # Over $1,912/month threshold
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: WA
+  output:
+    # Family of 3, income over threshold - ineligible
+    wa_tanf_eligible: [false, false, false]
+    wa_tanf: [0, 0, 0]
+
+- name: Two parents with 3 children - one parent working
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 24_000  # $2,000/month
+      parent2:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
+      child3:
+        age: 2
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: WA
+  output:
+    # Family of 5, $2,000/month earned income
+    # Payment standard: $959
+    # Countable earned: ($2,000 - $500) × 0.5 = $750
+    # Benefit: $959 - $750 = $209
+    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
+    wa_tanf_countable_income: [750, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false]
+    wa_tanf: [209, 0, 0, 0, 0]
+
+- name: Two parents with 2 children - both parents working
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 18_000  # $1,500/month
+      parent2:
+        age: 33
+        employment_income: 9_600   # $800/month
+      child1:
+        age: 7
+      child2:
+        age: 4
+    families:
+      family:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: WA
+  output:
+    # Family of 4, combined $2,300/month earned income
+    # Payment standard: $833
+    # Countable earned: ($2,300 - $500) × 0.5 = $900
+    # Benefit: $833 - $900 = $0 (over income after disregard)
+    wa_tanf_payment_standard: [833, 0, 0, 0]
+    wa_tanf_countable_income: [900, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false]
+    wa_tanf: [0, 0, 0, 0]
+
+- name: Single parent with 1 child - unearned income only
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 45
+        social_security: 6_000  # $500/month
+      child:
+        age: 10
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Family of 2, $500/month unearned income
+    # Payment standard: $570
+    # Countable unearned: $500 (no disregard for unearned)
+    # Benefit: $570 - $500 = $70
+    wa_tanf_payment_standard: [570, 0]
+    wa_tanf_countable_income: [500, 0]
+    wa_tanf_eligible: [true, false]
+    wa_tanf: [70, 0]
+
+- name: Family of 4 - mixed earned and unearned income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12_000  # $1,000/month
+        social_security: 3_600     # $300/month
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 6
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: WA
+  output:
+    # Family of 4, $1,000/month earned + $300/month unearned
+    # Payment standard: $833
+    # Countable earned: ($1,000 - $500) × 0.5 = $250
+    # Countable unearned: $300
+    # Total countable: $550
+    # Benefit: $833 - $550 = $283
+    wa_tanf_payment_standard: [833, 0, 0, 0]
+    wa_tanf_countable_income: [550, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false]
+    wa_tanf: [283, 0, 0, 0]
+
+- name: Family size 1 - single person household
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+    families:
+      family:
+        members: [parent]
+    spm_units:
+      spm_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: WA
+  output:
+    # Family of 1, no income
+    # Payment standard: $450
+    # Countable income: $0
+    # Benefit: $450
+    wa_tanf_payment_standard: 450
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 450
+
+- name: Family size 6 - moderate income
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 38
+        employment_income: 18_000  # $1,500/month
+      parent2:
+        age: 36
+      child1:
+        age: 14
+      child2:
+        age: 11
+      child3:
+        age: 8
+      child4:
+        age: 5
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: WA
+  output:
+    # Family of 6, $1,500/month earned income
+    # Payment standard: $1,090
+    # Countable earned: ($1,500 - $500) × 0.5 = $500
+    # Benefit: $1,090 - $500 = $590
+    wa_tanf_payment_standard: [1_090, 0, 0, 0, 0, 0]
+    wa_tanf_countable_income: [500, 0, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false, false]
+    wa_tanf: [590, 0, 0, 0, 0, 0]
+
+- name: Family size 8 - testing maximum grant cap with no income
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 42
+      parent2:
+        age: 40
+      child1:
+        age: 16
+      child2:
+        age: 14
+      child3:
+        age: 12
+      child4:
+        age: 10
+      child5:
+        age: 8
+      child6:
+        age: 6
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+        state_code: WA
+  output:
+    # Family of 8, no income
+    # Payment standard: $1,392
+    # Countable income: $0
+    # Benefit before cap: $1,392
+    # Maximum grant cap for 8+ members: $1,338
+    # Benefit: $1,338
+    wa_tanf_payment_standard: [1_392, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_countable_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false, false, false, false]
+    wa_tanf: [1_338, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Family size 10 - testing maximum grant cap with low income
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 9_600  # $800/month
+      parent2:
+        age: 43
+      child1:
+        age: 18
+      child2:
+        age: 16
+      child3:
+        age: 14
+      child4:
+        age: 12
+      child5:
+        age: 10
+      child6:
+        age: 8
+      child7:
+        age: 6
+      child8:
+        age: 4
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: WA
+  output:
+    # Family of 10, $800/month earned income
+    # Payment standard: $1,662
+    # Countable earned: ($800 - $500) × 0.5 = $150
+    # Benefit before cap: $1,662 - $150 = $1,512
+    # Maximum grant cap for 8+ members: $1,338
+    # Benefit: $1,338
+    wa_tanf_payment_standard: [1_662, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_countable_income: [150, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false, false, false, false, false, false]
+    wa_tanf: [1_338, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Single parent with 1 child - earned income below $500 disregard
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 4_800  # $400/month
+      child:
+        age: 3
+    families:
+      family:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Family of 2, $400/month earned income
+    # Payment standard: $570
+    # Countable earned: ($400 - $500) × 0.5 = max($0, -$50) = $0
+    # Benefit: $570 - $0 = $570
+    wa_tanf_payment_standard: [570, 0]
+    wa_tanf_countable_income: [0, 0]
+    wa_tanf_eligible: [true, false]
+    wa_tanf: [570, 0]
+
+- name: Single parent with 3 children - earned income exactly at $500
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income: 6_000  # $500/month
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 4
+    families:
+      family:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: WA
+  output:
+    # Family of 4, $500/month earned income
+    # Payment standard: $833
+    # Countable earned: ($500 - $500) × 0.5 = $0
+    # Benefit: $833 - $0 = $833
+    wa_tanf_payment_standard: [833, 0, 0, 0]
+    wa_tanf_countable_income: [0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false]
+    wa_tanf: [833, 0, 0, 0]
+
+- name: Family of 5 - high unearned income exceeding payment standard
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 50
+        social_security: 12_000  # $1,000/month
+      child1:
+        age: 15
+      child2:
+        age: 13
+      child3:
+        age: 11
+      child4:
+        age: 9
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: WA
+  output:
+    # Family of 5, $1,000/month unearned income
+    # Payment standard: $959
+    # Countable unearned: $1,000
+    # Benefit: $959 - $1,000 = $0 (income exceeds standard)
+    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
+    wa_tanf_countable_income: [1_000, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false]
+    wa_tanf: [0, 0, 0, 0, 0]
+
+- name: Family of 7 - testing payment standard and cap boundary
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 15
+      child2:
+        age: 13
+      child3:
+        age: 11
+      child4:
+        age: 9
+      child5:
+        age: 7
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+        state_code: WA
+  output:
+    # Family of 7, no income
+    # Payment standard: $1,258
+    # Countable income: $0
+    # Benefit: $1,258 (no cap - cap starts at 8 members)
+    wa_tanf_payment_standard: [1_258, 0, 0, 0, 0, 0, 0]
+    wa_tanf_countable_income: [0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false, false, false]
+    wa_tanf: [1_258, 0, 0, 0, 0, 0, 0]
+
+- name: Family of 9 - testing grant cap with moderate income
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 44
+        employment_income: 12_000  # $1,000/month
+      parent2:
+        age: 42
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+    families:
+      family:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7]
+        state_code: WA
+  output:
+    # Family of 9, $1,000/month earned income
+    # Payment standard: $1,529
+    # Countable earned: ($1,000 - $500) × 0.5 = $250
+    # Benefit before cap: $1,529 - $250 = $1,279
+    # Maximum grant cap for 8+ members: $1,338
+    # Benefit: $1,279 (under cap, so actual benefit applies)
+    wa_tanf_payment_standard: [1_529, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_countable_income: [250, 0, 0, 0, 0, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false, false, false, false, false]
+    wa_tanf: [1_279, 0, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Single parent with 4 children - self-employment income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 34
+        self_employment_income: 15_600  # $1,300/month
+      child1:
+        age: 12
+      child2:
+        age: 10
+      child3:
+        age: 8
+      child4:
+        age: 6
+    families:
+      family:
+        members: [parent, child1, child2, child3, child4]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: WA
+  output:
+    # Family of 5, $1,300/month self-employment income
+    # Payment standard: $959
+    # Countable earned: ($1,300 - $500) × 0.5 = $400
+    # Benefit: $959 - $400 = $559
+    wa_tanf_payment_standard: [959, 0, 0, 0, 0]
+    wa_tanf_countable_income: [400, 0, 0, 0, 0]
+    wa_tanf_eligible: [true, false, false, false, false]
+    wa_tanf: [559, 0, 0, 0, 0]
