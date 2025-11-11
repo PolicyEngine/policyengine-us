@@ -13,7 +13,7 @@ class meets_snap_parent_exception(Variable):
 
     def formula(person, period, parameters):
         # Exception 5: Parent with responsibility for dependent child under 6,
-        # or child 6-11 when adequate child care is not available
+        # Or child 6-11 when adequate child care is not available (not molded)
         # Exception 8: Single parent enrolled full-time with responsibility
         # for dependent child under 12
         is_parent = person("is_tax_unit_head_or_spouse", period)
@@ -30,9 +30,12 @@ class meets_snap_parent_exception(Variable):
         )
 
         # Two-parent households need child under 6
-        # Single parent households need child under 12
+        # Single parent households need child under 12, enrolled full-time
+        is_full_time_student = person("is_full_time_college_student", period)
         parent_exception_requirement = where(
-            parent_count > 1, has_young_child, has_younger_child
+            parent_count > 1,
+            has_young_child,
+            has_younger_child & is_full_time_student,
         )
 
         return is_parent & parent_exception_requirement
