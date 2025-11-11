@@ -4,7 +4,7 @@
     state_code: MI
     spm_unit_assets: 10_000
   output:
-    mi_tanf_resources_eligible: true
+    mi_fip_resources_eligible: true
 
 - name: Household with zero assets is eligible
   period: 2025-01
@@ -12,7 +12,7 @@
     state_code: MI
     spm_unit_assets: 0
   output:
-    mi_tanf_resources_eligible: true
+    mi_fip_resources_eligible: true
 
 - name: Household with assets exactly at limit is eligible
   period: 2025-01
@@ -20,7 +20,7 @@
     state_code: MI
     spm_unit_assets: 15_000
   output:
-    mi_tanf_resources_eligible: true
+    mi_fip_resources_eligible: true
 
 - name: Household with assets exceeding limit is not eligible
   period: 2025-01
@@ -28,7 +28,7 @@
     state_code: MI
     spm_unit_assets: 20_000
   output:
-    mi_tanf_resources_eligible: false
+    mi_fip_resources_eligible: false
 
 - name: Household with assets one dollar over limit is not eligible
   period: 2025-01
@@ -36,7 +36,7 @@
     state_code: MI
     spm_unit_assets: 15_001
   output:
-    mi_tanf_resources_eligible: false
+    mi_fip_resources_eligible: false
 
 - name: Household outside Michigan returns zero
   period: 2025-01
@@ -44,4 +44,4 @@
     state_code: CA
     spm_unit_assets: 10_000
   output:
-    mi_tanf_resources_eligible: 0
+    mi_fip_resources_eligible: 0

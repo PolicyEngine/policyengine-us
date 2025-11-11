@@ -1,0 +1,69 @@
+- name: Household with no income
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    social_security: 0
+    state_code: MI
+  output:
+    mi_fip_countable_income: 0
+
+- name: Household with earned income only
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 12_000  # $1,000/month
+    social_security: 0
+    state_code: MI
+  output:
+    # Earned: $1,000/month
+    # Deduction = $200 + 50% of remainder = $200 + $400 = $600
+    # Countable earned = $1,000 - $600 = $400
+    # Unearned = $0
+    # Total countable = $400
+    mi_fip_countable_income: 400
+
+- name: Household with unearned income only
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    social_security_disability: 6_000  # $500/month
+    state_code: MI
+  output:
+    # Earned = $0
+    # Unearned = $500/month (no deduction)
+    # Total countable = $500
+    mi_fip_countable_income: 500
+
+- name: Household with mixed earned and unearned income
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 9_600  # $800/month
+    social_security_retirement: 3_600  # $300/month
+    state_code: MI
+  output:
+    # Earned: $800/month
+    # Deduction = $200 + (50% × $600) = $200 + $300 = $500
+    # Countable earned = $800 - $500 = $300
+    # Unearned = $300/month (no deduction)
+    # Total countable = $300 + $300 = $600
+    mi_fip_countable_income: 600
+
+- name: Household with zero earned income but has unearned
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    unemployment_compensation: 12_000  # $1,000/month
+    state_code: MI
+  output:
+    # Earned = $0
+    # Unearned = $1,000/month (no deduction)
+    # Total countable = $1,000
+    mi_fip_countable_income: 1_000
+
+- name: Household outside Michigan returns zero
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 12_000
+    social_security: 6_000
+    state_code: CA
+  output:
+    mi_fip_countable_income: 0

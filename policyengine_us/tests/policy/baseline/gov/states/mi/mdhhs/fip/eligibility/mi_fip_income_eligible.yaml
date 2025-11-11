@@ -2,61 +2,61 @@
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 400
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 400
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: true
+    mi_fip_income_eligible: true
 
 - name: Household with zero countable income is eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 0
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 0
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: true
+    mi_fip_income_eligible: true
 
 - name: Household with countable income equal to payment standard is not eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 500
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 500
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: false
+    mi_fip_income_eligible: false
 
 - name: Household with countable income exceeding payment standard is not eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 600
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 600
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: false
+    mi_fip_income_eligible: false
 
 - name: Household with countable income one dollar below payment standard is eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 499
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 499
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: true
+    mi_fip_income_eligible: true
 
 - name: Household with countable income one dollar above payment standard is not eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_countable_income: 501
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 501
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: false
+    mi_fip_income_eligible: false
 
 - name: Household outside Michigan returns zero
   period: 2025-01
   input:
     state_code: CA
-    mi_tanf_countable_income: 400
-    mi_tanf_payment_standard: 500
+    mi_fip_countable_income: 400
+    mi_fip_payment_standard: 500
   output:
-    mi_tanf_income_eligible: 0
+    mi_fip_income_eligible: 0

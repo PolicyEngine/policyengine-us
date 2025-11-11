@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_tanf_resources_eligible(Variable):
+class mi_fip_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Michigan FIP based on resources"
@@ -13,7 +13,7 @@ class mi_tanf_resources_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mi.mdhhs.tanf
+        p = parameters(period).gov.states.mi.mdhhs.fip
 
         # Get total household assets
         # Using spm_unit_assets as a proxy for countable assets

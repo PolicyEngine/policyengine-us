@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_tanf_eligible(Variable):
+class mi_fip_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for Michigan FIP (TANF)"
+    label = "Eligible for Michigan Family Independence Program"
     definition_period = MONTH
     reference = (
         "https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_2023.pdf",
@@ -21,7 +21,7 @@ class mi_tanf_eligible(Variable):
         # - Work requirements (behavioral)
         # - Household composition details (using SPM unit as proxy)
 
-        income_eligible = spm_unit("mi_tanf_income_eligible", period)
-        resources_eligible = spm_unit("mi_tanf_resources_eligible", period)
+        income_eligible = spm_unit("mi_fip_income_eligible", period)
+        resources_eligible = spm_unit("mi_fip_resources_eligible", period)
 
         return income_eligible & resources_eligible

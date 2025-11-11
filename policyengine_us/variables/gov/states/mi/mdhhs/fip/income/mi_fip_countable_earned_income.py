@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_tanf_countable_earned_income(Variable):
+class mi_fip_countable_earned_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "Michigan FIP countable earned income"
@@ -14,11 +14,12 @@ class mi_tanf_countable_earned_income(Variable):
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mi.mdhhs.tanf
+        p = parameters(period).gov.states.mi.mdhhs.fip
 
         # Get gross earned income for all SPM unit members
+        # Use federal TANF gross earned income directly
         person = spm_unit.members
-        gross_earned_income = person("mi_tanf_gross_earned_income", period)
+        gross_earned_income = person("tanf_gross_earned_income", period)
         total_gross_earned = spm_unit.sum(gross_earned_income)
 
         # Apply earned income deduction: $200 + 50% of remainder

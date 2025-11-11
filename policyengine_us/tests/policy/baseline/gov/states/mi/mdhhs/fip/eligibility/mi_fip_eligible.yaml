@@ -2,43 +2,43 @@
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_income_eligible: true
-    mi_tanf_resources_eligible: true
+    mi_fip_income_eligible: true
+    mi_fip_resources_eligible: true
   output:
-    mi_tanf_eligible: true
+    mi_fip_eligible: true
 
 - name: Income eligible but not resource eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_income_eligible: true
-    mi_tanf_resources_eligible: false
+    mi_fip_income_eligible: true
+    mi_fip_resources_eligible: false
   output:
-    mi_tanf_eligible: false
+    mi_fip_eligible: false
 
 - name: Not income eligible but resource eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_income_eligible: false
-    mi_tanf_resources_eligible: true
+    mi_fip_income_eligible: false
+    mi_fip_resources_eligible: true
   output:
-    mi_tanf_eligible: false
+    mi_fip_eligible: false
 
 - name: Not income eligible and not resource eligible
   period: 2025-01
   input:
     state_code: MI
-    mi_tanf_income_eligible: false
-    mi_tanf_resources_eligible: false
+    mi_fip_income_eligible: false
+    mi_fip_resources_eligible: false
   output:
-    mi_tanf_eligible: false
+    mi_fip_eligible: false
 
 - name: Household outside Michigan is not eligible
   period: 2025-01
   input:
     state_code: CA
-    mi_tanf_income_eligible: true
-    mi_tanf_resources_eligible: true
+    mi_fip_income_eligible: true
+    mi_fip_resources_eligible: true
   output:
-    mi_tanf_eligible: 0
+    mi_fip_eligible: 0

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_tanf_payment_standard(Variable):
+class mi_fip_payment_standard(Variable):
     value_type = float
     entity = SPMUnit
     label = "Michigan FIP payment standard"
@@ -14,7 +14,7 @@ class mi_tanf_payment_standard(Variable):
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mi.mdhhs.tanf
+        p = parameters(period).gov.states.mi.mdhhs.fip
 
         # Determine household size
         size = spm_unit.nb_persons()

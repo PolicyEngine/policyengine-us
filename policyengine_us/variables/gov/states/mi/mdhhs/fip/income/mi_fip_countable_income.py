@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_tanf_countable_income(Variable):
+class mi_fip_countable_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "Michigan FIP countable income"
@@ -17,10 +17,11 @@ class mi_tanf_countable_income(Variable):
         # Countable income is the sum of:
         # 1. Countable earned income (after disregards)
         # 2. Gross unearned income (no disregard for unearned)
-        countable_earned = spm_unit("mi_tanf_countable_earned_income", period)
+        countable_earned = spm_unit("mi_fip_countable_earned_income", period)
 
+        # Use federal TANF gross unearned income directly
         person = spm_unit.members
-        gross_unearned = person("mi_tanf_gross_unearned_income", period)
+        gross_unearned = person("tanf_gross_unearned_income", period)
         total_unearned = spm_unit.sum(gross_unearned)
 
         return countable_earned + total_unearned
