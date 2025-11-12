@@ -15,13 +15,19 @@ class tn_tanf_countable_income(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        # Sum countable earned and unearned income
+        # Get countable earned income (after $250 disregard)
         countable_earned = spm_unit("tn_tanf_countable_earned_income", period)
+
+        # Subtract child care deduction from earned income
+        # Per TN regulations, childcare deduction applies to earned income only
+        child_care_deduction = spm_unit("tn_tanf_child_care_deduction", period)
+        countable_earned_after_childcare = max_(
+            countable_earned - child_care_deduction, 0
+        )
+
+        # Add unearned income (no disregard for unearned)
         countable_unearned = spm_unit(
             "tn_tanf_countable_unearned_income", period
         )
-        # Subtract child care deduction
-        child_care_deduction = spm_unit("tn_tanf_child_care_deduction", period)
-        return max_(
-            countable_earned + countable_unearned - child_care_deduction, 0
-        )
+
+        return countable_earned_after_childcare + countable_unearned

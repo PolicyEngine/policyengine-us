@@ -1,17 +1,14 @@
-description: Tennessee provides the higher Differential Grant Payment Amount (DGPA) instead of the Standard Payment Amount (SPA) when the caretaker relative is at or above this age threshold, is disabled, provides care for a disabled family member, or when no eligible adults are present in the assistance unit.
+description: Tennessee provides the higher Differential Grant Payment Amount (DGPA) instead of the Standard Payment Amount (SPA) when the caretaker relative is at or above this age threshold, is disabled, provides care for a disabled family member, or when no eligible adults are present in the assistance unit. The 2008 Administrative Code specified age 60 as the threshold.
 
 metadata:
   unit: year
   period: month
   label: TN TANF DGPA age threshold
   reference:
-    - title: Tennessee Administrative Code § 1240-01-50-.20 - Standard of Need/Income
-      href: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20
+    - title: Tennessee Administrative Code § 1240-01-50-.20(d) (2008) - Specifies age 60 threshold
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf
       publication_date: 2008-11-24
-    - title: Tennessee TANF State Plan 2024-2027, Section 4
-      href: https://wioaplans.ed.gov/node/545036
-      publication_date: 2024-07-01
   uprating: null
 
 values:
-  2024-01-01: 60
+  2008-11-24: 60

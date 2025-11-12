@@ -1,4 +1,4 @@
-description: Tennessee deducts up to this amount per child for dependent care expenses from countable income under the Families First TANF program, based on child age. These amounts apply for parents who choose to receive a deduction rather than having child care paid directly to the provider.
+description: Tennessee deducts up to this amount per child for dependent care expenses from countable income under the Families First TANF program, based on child age. These amounts apply for parents who choose to receive a deduction rather than having child care paid directly to the provider. The 2008 Administrative Code specified the same amounts ($200 under age 2, $175 age 2+) which are confirmed in the 2024 State Plan.
 
 metadata:
   period: month
@@ -7,21 +7,19 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   reference:
-    - title: Tennessee TANF State Plan 2020-2023, Section 4
-      href: https://www.tn.gov/content/dam/tn/human-services/documents/TANF%20State%20Plan.pdf
-    - title: Tennessee TANF State Plan 2024-2027, Section 4
+    - title: Tennessee Administrative Code § 1240-01-50-.16 (2008) - Specifies $200/$175 deductions
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf
+      publication_date: 2008-11-24
+    - title: Tennessee TANF State Plan 2024-2027 - Confirms $200/$175 amounts
       href: https://wioaplans.ed.gov/node/545036
       publication_date: 2024-07-01
-    - title: National Center for Children in Poverty - Tennessee TANF Profile (2024)
-      href: https://www.nccp.org/wp-content/uploads/2024/11/TANF-profile-Tennessee.pdf
-      publication_date: 2024-11-01
 
 brackets:
   - threshold:
-      2024-07-01: 0
+      2008-11-24: 0
     amount:
-      2024-07-01: 200
+      2008-11-24: 200
   - threshold:
-      2024-07-01: 2
+      2008-11-24: 2
     amount:
-      2024-07-01: 175
+      2008-11-24: 175

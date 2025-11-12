@@ -28,13 +28,19 @@ class tn_tanf_income_eligible(Variable):
         max_size = p.eligibility.max_family_size
         capped_size = min_(unit_size, max_size)
 
-        # Check gross income standard (185% of CNS)
-        gis = p.income.gross_income_standard[capped_size]
+        # Get Consolidated Need Standard (CNS) for family size
+        cns = p.benefit.consolidated_need_standard[capped_size]
+
+        # Calculate Gross Income Standard (GIS) = 185% of CNS
+        # Per Tenn. Comp. R. & Regs. 1240-01-50-.20:
+        # "This standard is set at One Hundred Eighty-Five Percent (185%)
+        # of the consolidated need standard."
+        gis_percentage = p.income.gis_percentage
+        gis = cns * gis_percentage
         gross_income_test = gross_income <= gis
 
         # Check net income test (countable income < CNS)
         countable_income = spm_unit("tn_tanf_countable_income", period)
-        cns = p.benefit.consolidated_need_standard[capped_size]
         net_income_test = countable_income < cns
 
         # Must pass both tests
