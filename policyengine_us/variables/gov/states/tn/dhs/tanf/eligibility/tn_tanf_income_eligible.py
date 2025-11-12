@@ -14,9 +14,12 @@ class tn_tanf_income_eligible(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        # Calculate gross income for initial test
-        gross_earned = spm_unit("tn_tanf_gross_earned_income", period)
-        gross_unearned = spm_unit("tn_tanf_gross_unearned_income", period)
+        # Calculate gross income for initial test using federal TANF variables
+        person = spm_unit.members
+        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
+        gross_unearned = spm_unit.sum(
+            person("tanf_gross_unearned_income", period)
+        )
         gross_income = gross_earned + gross_unearned
 
         # Determine unit size
