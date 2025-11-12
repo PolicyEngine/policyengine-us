@@ -25,7 +25,12 @@ class tob_revenue_oasdi(Variable):
         total_taxable = tier1 + tier2
 
         # Allocate total TOB based on tier 1 proportion
-        # Use where to handle division by zero
-        oasdi_share = where(total_taxable > 0, tier1 / total_taxable, 0)
+        # Use np.divide with out/where to handle division by zero safely
+        oasdi_share = np.divide(
+            tier1,
+            total_taxable,
+            out=np.zeros_like(tier1, dtype=np.float32),
+            where=total_taxable != 0,
+        )
 
         return total_tob * oasdi_share
