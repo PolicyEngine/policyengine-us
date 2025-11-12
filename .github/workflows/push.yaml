@@ -4,7 +4,7 @@ on:
     branches: [master]
 jobs:
   Lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -19,7 +19,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
@@ -50,7 +50,7 @@ jobs:
           fetch: false
   YAML-NonStructural:
     name: Non-Structural YAML Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -76,7 +76,7 @@ jobs:
           uv run make test-yaml-no-structural
   Structural-and-Python:
     name: Structural YAML & Python Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -107,7 +107,7 @@ jobs:
           echo "Running Python-based tests..."
           uv run make test-other
   Publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -135,7 +135,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
     steps:

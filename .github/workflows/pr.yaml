@@ -4,7 +4,7 @@ on:
     branches: [master]
 jobs:
   Lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: Check formatting
@@ -13,7 +13,7 @@ jobs:
           args: ". -l 79 --check"
   check-version:
     name: Check version
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,7 +34,7 @@ jobs:
         run: make changelog
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -109,7 +109,7 @@ jobs:
         run: uv build
   YAML-NonStructural:
     name: Full Suite - Non-Structural YAML
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -132,7 +132,7 @@ jobs:
           uv run make test-yaml-no-structural
   Structural-and-Python:
     name: Full Suite - Structural YAML & Python
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
