@@ -15,4 +15,3 @@ class nj_gross_income(Variable):
     defined_for = StateCode.NJ
 
     adds = "gov.states.nj.tax.income.gross_income_sources"
-
