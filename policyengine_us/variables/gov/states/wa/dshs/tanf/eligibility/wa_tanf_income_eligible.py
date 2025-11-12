@@ -20,17 +20,16 @@ class wa_tanf_income_eligible(Variable):
         # Per WAC 388-478-0035, these limits "include the $500 family
         # earnings deduction" in their calculation
         p = parameters(period).gov.states.wa.dshs.tanf
-        income_limits = p.eligibility.income.gross_earned_income_limit
-        max_family_size = p.maximum_family_size
 
         # Get household size, capped at maximum for which limits are defined
         size = spm_unit("spm_unit_size", period)
-        size_capped = min_(size, max_family_size)
-
-        # Get gross earned income limit for this family size
-        income_limit = income_limits[size_capped]
+        size_capped = min_(size, p.maximum_family_size)
 
         # Gross earned income must be at or below the limit
         # Note: Unlike some states, WA tests GROSS income (not countable)
         # against published limits that already factor in the $500 disregard
+        income_limit = p.eligibility.income.gross_earned_income_limit[
+            size_capped
+        ]
+
         return gross_earned <= income_limit

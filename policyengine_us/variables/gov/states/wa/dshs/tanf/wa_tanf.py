@@ -30,6 +30,5 @@ class wa_tanf(Variable):
         # Per WAC 388-478-0020, grants cannot exceed $1,338/month
         # regardless of family size (affects families of 8+)
         p = parameters(period).gov.states.wa.dshs.tanf.benefit
-        grant_with_cap = min_(grant_before_cap, p.maximum_grant_cap)
 
-        return grant_with_cap
+        return min_(grant_before_cap, p.maximum_grant_cap)

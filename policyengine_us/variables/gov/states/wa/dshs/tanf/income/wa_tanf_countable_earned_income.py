@@ -21,14 +21,11 @@ class wa_tanf_countable_earned_income(Variable):
         p = parameters(period).gov.states.wa.dshs.tanf.income
 
         # Step 1: Deduct flat $500 family earnings disregard
-        remainder_after_flat_disregard = max_(
-            gross_earned - p.earned_income_disregard, 0
-        )
+        remainder = max_(gross_earned - p.earned_income_disregard, 0)
 
-        # Step 2: Count 50% of remaining income (disregard other 50%)
-        # "Work incentive percentage" = what we COUNT (not what we disregard)
-        countable_earned = (
-            remainder_after_flat_disregard * p.work_incentive_percentage
-        )
+        # Step 2: Subtract (disregard) 50% of remaining income
+        # Per WAC 388-450-0170(3): "subtract 50% of the remaining...income"
+        amount_disregarded = remainder * p.percentage_of_remainder_disregarded
 
-        return countable_earned
+        # Countable earned income = remainder - amount disregarded
+        return remainder - amount_disregarded
