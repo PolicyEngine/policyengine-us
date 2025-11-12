@@ -7,6 +7,12 @@ class tn_tanf(Variable):
     label = "Tennessee TANF"
     unit = USD
     definition_period = MONTH
+    documentation = (
+        "Tennessee Families First TANF benefit using fill-the-gap methodology. "
+        "The benefit equals the minimum of: (1) the payment standard (SPA or DGPA), "
+        "or (2) the deficit (Consolidated Need Standard minus countable income). "
+        "No payment is made if the calculated benefit is less than the minimum grant."
+    )
     reference = (
         "https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20",
         "Tennessee Administrative Code § 1240-01-50-.20 - Standard of Need/Income",
@@ -24,12 +30,25 @@ class tn_tanf(Variable):
         # Calculate countable income
         countable_income = spm_unit("tn_tanf_countable_income", period)
 
-        # Fill-the-gap budgeting: benefit = payment_standard - countable_income
-        calculated_benefit = max_(payment_standard - countable_income, 0)
+        # Fill-the-gap budgeting methodology per Tenn. Comp. R. & Regs. 1240-01-50-.20:
+        # "The monthly grant equals the smaller of a maximum payment amount by family size
+        # (SPA or DGPA, as appropriate) or the deficit if it is ten dollars ($10) or more."
+        #
+        # Step 1: Get Consolidated Need Standard (CNS) based on family size
+        p = parameters(period).gov.states.tn.dhs.tanf
+        unit_size = spm_unit.nb_persons()
+        max_size = p.eligibility.max_family_size
+        capped_size = min_(unit_size, max_size)
+        cns = p.benefit.consolidated_need_standard[capped_size]
+
+        # Step 2: Calculate deficit = CNS - countable_income
+        deficit = max_(cns - countable_income, 0)
+
+        # Step 3: Benefit = min(payment_standard, deficit)
+        calculated_benefit = min_(payment_standard, deficit)
 
         # Apply minimum grant threshold
-        p = parameters(period).gov.states.tn.dhs.tanf.benefit
-        minimum_grant = p.minimum_grant
+        minimum_grant = p.benefit.minimum_grant
 
         # If benefit is less than minimum, no payment is made
         benefit = where(
