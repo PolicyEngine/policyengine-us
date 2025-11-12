@@ -1,21 +1,31 @@
 - name: No earned income results in zero countable earned income
   period: 2024
   input:
+    people:
+      person:
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person]
     households:
       household:
+        members: [person]
         state_code: TN
-    state_code: TN
-    tn_tanf_gross_earned_income: 0
   output:
     tn_tanf_countable_earned_income: 0
 - name: Gross earned income exactly equal to $250 disregard
   period: 2024
   input:
+    people:
+      person:
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person]
     households:
       household:
+        members: [person]
         state_code: TN
-    state_code: TN
-    tn_tanf_gross_earned_income: 250
   output:
     tn_tanf_countable_earned_income: 0
 - name: Gross earned income one dollar above $250 disregard

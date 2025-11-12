@@ -15,8 +15,11 @@ class tn_tanf_countable_earned_income(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        gross_earned = spm_unit("tn_tanf_gross_earned_income", period)
+        # Get gross earned income from federal TANF variable
+        person = spm_unit.members
+        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
+
+        # Apply $250 earned income disregard per Tenn. Comp. R. & Regs. 1240-01-50
         p = parameters(period).gov.states.tn.dhs.tanf.income.deductions
         earned_disregard = p.earned_income_disregard
-        # Apply $250 earned income disregard
         return max_(gross_earned - earned_disregard, 0)
