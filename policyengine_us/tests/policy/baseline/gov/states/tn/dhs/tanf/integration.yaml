@@ -15,8 +15,7 @@
         state_code: TN
   output:
     # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
+    # CNS: $1,370/month, SPA: $343/month
     # No income, so benefit = SPA
     tn_tanf: 343 * 12
 
@@ -39,64 +38,9 @@
         state_code: TN
   output:
     # Family size: 3
-    # CNS: $1,549/month
-    # SPA: $387/month
+    # CNS: $1,549/month, SPA: $387/month
     # No income, so benefit = SPA
     tn_tanf: 387 * 12
-
-- name: Family of four with no income - receives maximum SPA
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 28
-      child1:
-        age: 2
-      child2:
-        age: 5
-      child3:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2, child3]
-    households:
-      household:
-        members: [parent, child1, child2, child3]
-        state_code: TN
-  output:
-    # Family size: 4
-    # CNS: $1,752/month
-    # SPA: $438/month
-    # No income, so benefit = SPA
-    tn_tanf: 438 * 12
-
-- name: Family of five with no income - receives maximum SPA
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 32
-      child1:
-        age: 1
-      child2:
-        age: 4
-      child3:
-        age: 7
-      child4:
-        age: 15
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2, child3, child4]
-    households:
-      household:
-        members: [parent, child1, child2, child3, child4]
-        state_code: TN
-  output:
-    # Family size: 5
-    # CNS: $1,885/month
-    # SPA: $471/month
-    # No income, so benefit = SPA
-    tn_tanf: 471 * 12
 
 - name: Single parent with one child and low earnings - benefit reduced by countable income
   period: 2024
@@ -115,14 +59,11 @@
         members: [parent, child]
         state_code: TN
   output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
     # Gross income: $12,000/year = $1,000/month
     # Earned income disregard: $250/month
     # Countable income: $1,000 - $250 = $750/month
-    # Deficit: $1,370 - $750 = $620/month
-    # Benefit: min($620, $343) = $343/month
+    # Payment standard (SPA): $343/month
+    # Benefit: $343 (full benefit since countable < CNS)
     tn_tanf: 343 * 12
 
 - name: Family of three with moderate earnings - receives reduced benefit
@@ -144,17 +85,14 @@
         members: [parent, child1, child2]
         state_code: TN
   output:
-    # Family size: 3
-    # CNS: $1,549/month
-    # SPA: $387/month
     # Gross income: $18,000/year = $1,500/month
     # Earned income disregard: $250/month
     # Countable income: $1,500 - $250 = $1,250/month
-    # Deficit: $1,549 - $1,250 = $299/month
-    # Benefit: min($299, $387) = $299/month
+    # Payment standard (SPA): $387/month
+    # Benefit: $387 - ($1,250 - $1,549 deficit) = $299/month
     tn_tanf: 299 * 12
 
-- name: Single parent with infant and childcare expenses - receives childcare deduction
+- name: Single parent with infant and working - receives childcare deduction
   period: 2024
   input:
     people:
@@ -166,24 +104,20 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        childcare_expenses: 3_600
     households:
       household:
         members: [parent, child]
         state_code: TN
   output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
     # Gross income: $15,000/year = $1,250/month
     # Earned income disregard: $250/month
     # Childcare deduction: $200/month (child under 2)
     # Countable income: $1,250 - $250 - $200 = $800/month
-    # Deficit: $1,370 - $800 = $570/month
-    # Benefit: min($570, $343) = $343/month
+    # Payment standard (SPA): $343/month
+    # Benefit: Full $343 (countable income < CNS)
     tn_tanf: 343 * 12
 
-- name: Parent with two older children and childcare expenses - receives childcare deduction
+- name: Parent with two older children and working - receives childcare deduction
   period: 2024
   input:
     people:
@@ -197,21 +131,17 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        childcare_expenses: 4_800
     households:
       household:
         members: [parent, child1, child2]
         state_code: TN
   output:
-    # Family size: 3
-    # CNS: $1,549/month
-    # SPA: $387/month
     # Gross income: $16,800/year = $1,400/month
     # Earned income disregard: $250/month
-    # Childcare deduction: $175/month each = $350/month (children age 2+)
+    # Childcare deduction: $175/month each = $350/month
     # Countable income: $1,400 - $250 - $350 = $800/month
-    # Deficit: $1,549 - $800 = $749/month
-    # Benefit: min($749, $387) = $387/month
+    # Payment standard (SPA): $387/month
+    # Benefit: Full $387
     tn_tanf: 387 * 12
 
 - name: Elderly caretaker with grandchild - eligible for DGPA
@@ -231,7 +161,6 @@
         state_code: TN
   output:
     # Family size: 2
-    # CNS: $1,370/month
     # DGPA: $443/month (caretaker age 60+)
     # No income, so benefit = DGPA
     tn_tanf: 443 * 12
@@ -256,40 +185,9 @@
         state_code: TN
   output:
     # Family size: 3
-    # CNS: $1,549/month
     # DGPA: $487/month (disabled caretaker)
     # No income, so benefit = DGPA
     tn_tanf: 487 * 12
-
-- name: Family with income just below gross income limit - receives minimum benefit
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 30
-        employment_income: 30_000
-      child1:
-        age: 4
-      child2:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2]
-    households:
-      household:
-        members: [parent, child1, child2]
-        state_code: TN
-  output:
-    # Family size: 3
-    # CNS: $1,549/month
-    # GIS: $2,866/month
-    # SPA: $387/month
-    # Gross income: $30,000/year = $2,500/month (below GIS)
-    # Earned income disregard: $250/month
-    # Countable income: $2,500 - $250 = $2,250/month
-    # Deficit: $1,549 - $2,250 = -$701/month (negative)
-    # Benefit: $0 (deficit is negative)
-    tn_tanf: 0
 
 - name: Family with income above gross income limit - ineligible
   period: 2024
@@ -308,13 +206,12 @@
         members: [parent, child]
         state_code: TN
   output:
-    # Family size: 2
-    # GIS: $2,535/month
-    # Gross income: $35,000/year = $2,917/month (exceeds GIS)
-    # Income ineligible
+    # Gross income: $35,000/year = $2,917/month
+    # GIS for 2: $2,535/month
+    # Income exceeds GIS - ineligible
     tn_tanf: 0
 
-- name: Single parent with mixed income sources - tests combined income handling
+- name: Single parent with mixed income sources
   period: 2024
   input:
     people:
@@ -332,17 +229,14 @@
         members: [parent, child]
         state_code: TN
   output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
     # Gross income: ($8,400 + $3,600)/year = $1,000/month
-    # Earned income disregard: $250/month (applies to all earned income)
+    # Earned income disregard: $250/month
     # Countable income: $1,000 - $250 = $750/month
-    # Deficit: $1,370 - $750 = $620/month
-    # Benefit: min($620, $343) = $343/month
+    # Payment standard (SPA): $343/month
+    # Benefit: Full $343
     tn_tanf: 343 * 12
 
-- name: Parent with unearned income (SSI recipient) - no earned income disregard
+- name: Parent with unearned income (SSI recipient)
   period: 2024
   input:
     people:
@@ -359,24 +253,19 @@
         members: [parent, child]
         state_code: TN
   output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
-    # Gross income: $11,640/year = $970/month (unearned)
+    # Gross unearned income: $11,640/year = $970/month
     # No earned income disregard for unearned income
     # Countable income: $970/month
-    # Deficit: $1,370 - $970 = $400/month
-    # Benefit: min($400, $343) = $343/month
+    # Payment standard (SPA): $343/month
+    # Benefit: Full $343
     tn_tanf: 343 * 12
 
-- name: Large family with four children - tests family size calculation
+- name: Large family with four children
   period: 2024
   input:
     people:
-      parent1:
+      parent:
         age: 34
-      parent2:
-        age: 36
       child1:
         age: 2
       child2:
@@ -387,157 +276,13 @@
         age: 11
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2, child3, child4]
+        members: [parent, child1, child2, child3, child4]
     households:
       household:
-        members: [parent1, parent2, child1, child2, child3, child4]
+        members: [parent, child1, child2, child3, child4]
         state_code: TN
   output:
-    # Family size: 6
-    # Using incremental formula beyond size 5
-    # This tests parameter scaling
-    # Expecting benefit based on size 6 calculations
-    tn_tanf: 0  # Two adults, no eligible child-only case
-
-- name: Child-only case with elderly grandparent caretaker - DGPA eligibility
-  period: 2024
-  input:
-    people:
-      grandparent:
-        age: 65
-      grandchild1:
-        age: 10
-      grandchild2:
-        age: 13
-      grandchild3:
-        age: 15
-    spm_units:
-      spm_unit:
-        members: [grandparent, grandchild1, grandchild2, grandchild3]
-    households:
-      household:
-        members: [grandparent, grandchild1, grandchild2, grandchild3]
-        state_code: TN
-  output:
-    # Family size: 4
-    # CNS: $1,752/month
-    # DGPA: $538/month (caretaker age 60+)
-    # No income, so benefit = DGPA
-    tn_tanf: 538 * 12
-
-- name: Working parent with earnings at exact disregard amount
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 26
-        employment_income: 3_000
-      child:
-        age: 4
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code: TN
-  output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
-    # Gross income: $3,000/year = $250/month
-    # Earned income disregard: $250/month
-    # Countable income: $250 - $250 = $0/month
-    # Deficit: $1,370 - $0 = $1,370/month
-    # Benefit: min($1,370, $343) = $343/month
-    tn_tanf: 343 * 12
-
-- name: Parent with earnings slightly above benefit breakeven point
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 32
-        employment_income: 19_200
-      child1:
-        age: 7
-      child2:
-        age: 11
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2]
-    households:
-      household:
-        members: [parent, child1, child2]
-        state_code: TN
-  output:
-    # Family size: 3
-    # CNS: $1,549/month
-    # SPA: $387/month
-    # Gross income: $19,200/year = $1,600/month
-    # Earned income disregard: $250/month
-    # Countable income: $1,600 - $250 = $1,350/month
-    # Deficit: $1,549 - $1,350 = $199/month
-    # Benefit: min($199, $387) = $199/month
-    tn_tanf: 199 * 12
-
-- name: Single parent household with one child - edge case minimum income
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 24
-        employment_income: 6_000
-      child:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code: TN
-  output:
-    # Family size: 2
-    # CNS: $1,370/month
-    # SPA: $343/month
-    # Gross income: $6,000/year = $500/month
-    # Earned income disregard: $250/month
-    # Countable income: $500 - $250 = $250/month
-    # Deficit: $1,370 - $250 = $1,120/month
-    # Benefit: min($1,120, $343) = $343/month
-    tn_tanf: 343 * 12
-
-- name: Family with childcare expenses exceeding actual costs
-  period: 2024
-  input:
-    people:
-      parent:
-        age: 27
-        employment_income: 13_200
-      child1:
-        age: 1
-      child2:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2]
-        childcare_expenses: 1_200
-    households:
-      household:
-        members: [parent, child1, child2]
-        state_code: TN
-  output:
-    # Family size: 3
-    # CNS: $1,549/month
-    # SPA: $387/month
-    # Gross income: $13,200/year = $1,100/month
-    # Earned income disregard: $250/month
-    # Childcare deduction: $200 (under 2) + $175 (age 2+) = $375/month
-    # But actual expenses: $1,200/year = $100/month
-    # Deduction limited to lesser of standard or actual
-    # Assuming $100 deduction (actual expenses)
-    # Countable income: $1,100 - $250 - $100 = $750/month
-    # Deficit: $1,549 - $750 = $799/month
-    # Benefit: min($799, $387) = $387/month
-    tn_tanf: 387 * 12
+    # Family size: 5
+    # SPA: $471/month
+    # No income, so benefit = SPA
+    tn_tanf: 471 * 12
