@@ -1,0 +1,143 @@
+- name: Single person with only Social Security income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 12000
+        unemployment_compensation: 0
+        alimony_income: 0
+        pension_income: 0
+        disability_benefits: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 1000
+- name: Person with unemployment compensation only
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 0
+        unemployment_compensation: 6000
+        alimony_income: 0
+        pension_income: 0
+        disability_benefits: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 500
+- name: Person with multiple unearned income sources
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 8400
+        unemployment_compensation: 3600
+        alimony_income: 6000
+        pension_income: 0
+        disability_benefits: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 1500
+- name: Person with all unearned income types
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 12000
+        unemployment_compensation: 6000
+        alimony_income: 3000
+        pension_income: 9000
+        disability_benefits: 6000
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 3000
+- name: Two adults with various unearned income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      adult1:
+        social_security: 15000
+        unemployment_compensation: 0
+        alimony_income: 0
+        pension_income: 6000
+        disability_benefits: 0
+      adult2:
+        social_security: 0
+        unemployment_compensation: 4800
+        alimony_income: 0
+        pension_income: 0
+        disability_benefits: 7200
+    spm_units:
+      spm_unit:
+        members:
+        - adult1
+        - adult2
+  output:
+    tn_tanf_gross_unearned_income: 2750
+- name: Household with no unearned income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 0
+        unemployment_compensation: 0
+        alimony_income: 0
+        pension_income: 0
+        disability_benefits: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 0
+- name: Person with disability benefits only
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 0
+        unemployment_compensation: 0
+        alimony_income: 0
+        pension_income: 0
+        disability_benefits: 18000
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 1500
+- name: Person with alimony and pension income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        social_security: 0
+        unemployment_compensation: 0
+        alimony_income: 12000
+        pension_income: 24000
+        disability_benefits: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_unearned_income: 3000

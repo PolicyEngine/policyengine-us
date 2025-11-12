@@ -1,0 +1,110 @@
+- name: Single person with only employment income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        employment_income: 24000
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_earned_income: 2000
+- name: Single person with only self-employment income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        employment_income: 0
+        self_employment_income: 18000
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_earned_income: 1500
+- name: Person with both employment and self-employment income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        employment_income: 12000
+        self_employment_income: 6000
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_earned_income: 1500
+- name: Two adults with employment income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      adult1:
+        employment_income: 15000
+        self_employment_income: 0
+      adult2:
+        employment_income: 12000
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - adult1
+        - adult2
+  output:
+    tn_tanf_gross_earned_income: 2250
+- name: Family with mixed earned income sources
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      parent1:
+        employment_income: 20000
+        self_employment_income: 4000
+      parent2:
+        employment_income: 8000
+        self_employment_income: 0
+      child:
+        employment_income: 0
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - parent1
+        - parent2
+        - child
+  output:
+    tn_tanf_gross_earned_income: 2667
+- name: Household with no earned income
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        employment_income: 0
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_earned_income: 0
+- name: Person with exactly $250 monthly earnings (disregard amount)
+  period: 2024
+  input:
+    state_code: TN
+    people:
+      person:
+        employment_income: 3000
+        self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person
+  output:
+    tn_tanf_gross_earned_income: 250
