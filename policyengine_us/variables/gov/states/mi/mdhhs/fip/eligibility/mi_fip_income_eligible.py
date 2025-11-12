@@ -13,17 +13,23 @@ class mi_fip_income_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(spm_unit, period, parameters):
-        # BEM 518 Page 1-2: Financial need exists when the group passes
+        # BEM 518 Page 3: Financial need exists when the group passes
         # the Qualifying Deficit Test (initial) or Issuance Deficit Test (ongoing)
 
-        # BEM 520: "Bridges compares budgetable income... to the certified
-        # group's payment standard for the benefit month"
-
-        countable_income = spm_unit("mi_fip_countable_income", period)
+        enrolled = spm_unit("is_tanf_enrolled", period)
         payment_standard = spm_unit("mi_fip_payment_standard", period)
 
-        # Eligible if countable income is less than payment standard
-        # Note: The countable_income variable already applies correct deduction
-        # rates (20% for new applicants, 50% for enrolled) via the per-person
-        # deduction variable based on is_tanf_enrolled status
-        return countable_income < payment_standard
+        # New applicants: Use Qualifying Deficit Test (BEM 520 Section C)
+        # - Uses 20% deduction rate
+        countable_income_initial = spm_unit(
+            "mi_fip_countable_income_initial", period
+        )
+        passes_qualifying_test = countable_income_initial < payment_standard
+
+        # Enrolled recipients: Use Issuance Deficit Test (BEM 520 Section D)
+        # - Uses 50% deduction rate (more generous)
+        countable_income = spm_unit("mi_fip_countable_income", period)
+        passes_issuance_test = countable_income < payment_standard
+
+        # Return appropriate test based on enrollment status
+        return where(enrolled, passes_issuance_test, passes_qualifying_test)

@@ -21,29 +21,21 @@ class mi_fip_earned_income_after_deductions_person(Variable):
         # Get gross earned income for this person
         gross_earned = person("tanf_gross_earned_income", period)
 
-        # Check enrollment status to determine which rate to use
-        enrolled = person.spm_unit("is_tanf_enrolled", period)
+        # BEM 518 Page 5 - "Issuance Earned Income Disregard"
+        # BEM 520 Section D - Issuance Test (for benefit calculation)
+        # "Deduct $200 from each person's countable earnings. Then deduct an
+        # additional 50 percent of each person's remaining earnings."
 
-        # BEM 518 Page 5:
-        # Qualifying (Initial): "deduct $200... Then deduct an additional 20 percent"
-        # Issuance (Ongoing): "Deduct $200... Then deduct an additional 50 percent"
+        # This is used for BENEFIT CALCULATION for ALL recipients
+        # (both new applicants and enrolled recipients use 50% for benefits)
 
-        # Step 1: Deduct $200 from each person's earnings
+        # Step 1: Deduct $200 from this person's earnings
         flat_deduction = p.flat_amount
         remainder = max_(gross_earned - flat_deduction, 0)
 
-        # Step 2: Apply percentage based on enrollment status
-        # BEM 520 Section C (Qualifying): "Enter 20 percent of the total in line 5"
-        # BEM 520 Section D (Issuance): "Enter 50 percent of the total in line 5"
-        percent_deduction = where(
-            enrolled,
-            remainder * p.ongoing_percent,  # 50% for enrolled (since 2011)
-            remainder * p.initial_percent,  # 20% for new applicants
-        )
+        # Step 2: Deduct 50% of remainder (for benefit calculation)
+        percent_deduction = remainder * p.ongoing_percent
 
-        # Step 3: Total deduction
-        total_deduction = flat_deduction + percent_deduction
-
-        # Step 4: Countable income (cannot be negative)
+        # Step 3: Countable income (cannot be negative)
         # "The total disregard cannot exceed countable earnings" - BEM 518
-        return max_(gross_earned - total_deduction, 0)
+        return max_(gross_earned - flat_deduction - percent_deduction, 0)

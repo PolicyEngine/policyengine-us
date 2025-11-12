@@ -6,76 +6,71 @@
   output:
     mi_fip_countable_earned_income: 0
 
-- name: Household with earned income below fixed deduction, enrolled
+- name: Household with earned income below fixed deduction
   period: 2025-01
   input:
     employment_income_before_lsr: 1_800  # $150/month
-    is_tanf_enrolled: true
     state_code: MI
   output:
     # Monthly: $1,800/12 = $150
-    # Ongoing rate (50%): Deduction = $200 + 50% of remainder
+    # Issuance deduction (50%): $200 + 50% of remainder
     # Since $150 < $200, deduction is $200
     # Countable = max($150 - $200, 0) = $0
     mi_fip_countable_earned_income: 0
 
-- name: Household with earned income equal to fixed deduction, enrolled
+- name: Household with earned income equal to fixed deduction
   period: 2025-01
   input:
     employment_income_before_lsr: 2_400  # $200/month
-    is_tanf_enrolled: true
     state_code: MI
   output:
     # Monthly: $2,400/12 = $200
-    # Ongoing rate (50%): Deduction = $200 + 50% of remainder
+    # Issuance deduction (50%): $200 + 50% of remainder
     # Remainder = max($200 - $200, 0) = $0
     # Total deduction = $200 + (50% × $0) = $200
     # Countable = $200 - $200 = $0
     mi_fip_countable_earned_income: 0
 
-- name: Household with earned income just above fixed deduction, enrolled
+- name: Household with earned income just above fixed deduction
   period: 2025-01
   input:
     employment_income_before_lsr: 3_000  # $250/month
-    is_tanf_enrolled: true
     state_code: MI
   output:
     # Monthly: $3,000/12 = $250
-    # Ongoing rate (50%): Deduction = $200 + 50% of remainder
+    # Issuance deduction (50%): $200 + 50% of remainder
     # Remainder = $250 - $200 = $50
     # Total deduction = $200 + (50% × $50) = $200 + $25 = $225
     # Countable = $250 - $225 = $25
     mi_fip_countable_earned_income: 25
 
-- name: Household with moderate earned income, enrolled
+- name: Household with moderate earned income
   period: 2025-01
   input:
     employment_income_before_lsr: 12_000  # $1,000/month
-    is_tanf_enrolled: true
     state_code: MI
   output:
     # Monthly: $12,000/12 = $1,000
-    # Ongoing rate (50%): Deduction = $200 + 50% of remainder
+    # Issuance deduction (50%): $200 + 50% of remainder
     # Remainder = $1,000 - $200 = $800
     # Total deduction = $200 + (50% × $800) = $200 + $400 = $600
     # Countable = $1,000 - $600 = $400
     mi_fip_countable_earned_income: 400
 
-- name: Household with high earned income, enrolled
+- name: Household with high earned income
   period: 2025-01
   input:
     employment_income_before_lsr: 24_000  # $2,000/month
-    is_tanf_enrolled: true
     state_code: MI
   output:
     # Monthly: $24,000/12 = $2,000
-    # Ongoing rate (50%): Deduction = $200 + 50% of remainder
+    # Issuance deduction (50%): $200 + 50% of remainder
     # Remainder = $2,000 - $200 = $1,800
     # Total deduction = $200 + (50% × $1,800) = $200 + $900 = $1,100
     # Countable = $2,000 - $1,100 = $900
     mi_fip_countable_earned_income: 900
 
-- name: Household with multiple earners, enrolled (per-person deductions)
+- name: Household with multiple earners (per-person deductions)
   period: 2025-01
   input:
     people:
@@ -88,13 +83,13 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
         state_code: MI
   output:
     # BEM 518: "Apply this disregard separately to each program group member"
+    # Issuance deduction (50% for benefit calculation)
     # Person 1 monthly: $12,000/12 = $1,000
     #   Deduction = $200 + (50% × $800) = $600
     #   Countable = $1,000 - $600 = $400
@@ -111,17 +106,3 @@
     state_code: CA
   output:
     mi_fip_countable_earned_income: 0
-
-- name: New applicant with moderate income (20% initial rate)
-  period: 2025-01
-  input:
-    employment_income_before_lsr: 12_000  # $1,000/month
-    is_tanf_enrolled: false
-    state_code: MI
-  output:
-    # Monthly: $12,000/12 = $1,000
-    # Initial rate (20%): Deduction = $200 + 20% of remainder
-    # Remainder = $1,000 - $200 = $800
-    # Total deduction = $200 + (20% × $800) = $200 + $160 = $360
-    # Countable = $1,000 - $360 = $640
-    mi_fip_countable_earned_income: 640
