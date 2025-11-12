@@ -1,0 +1,110 @@
+# Essential state credit integration tests
+# Tests that federal CTC/EITC are calculated for state reference but not applied federally
+
+- name: Oklahoma family - state credits reference federal calculations
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  absolute_error_margin: 1
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000
+      parent2:
+        age: 33
+        employment_income: 20_000
+      newborn:
+        age: 0
+        birth_year: 2026
+      child:
+        age: 8
+        birth_year: 2018
+      adult_dependent:
+        age: 19
+        birth_year: 2007
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, newborn, child, adult_dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, newborn, child, adult_dependent]
+        state_code: OK
+  output:
+    # Federal CTC/EITC calculated for state reference
+    ctc: 4_900 
+    eitc: 4_244
+
+    # Oklahoma credits (5% of federal)
+    ok_child_care_child_tax_credit:
+      2026: 245  # 5% of $4,900
+    ok_eitc:
+      2026: 72.07
+
+    # Income Security Package benefits
+    baby_bonus_act_payment:
+      2026: [0, 0, 2_000, 0, 0]
+    ecpa_child_benefit:
+      2026: [0, 0, 5_630, 5_630, 0]
+    ecpa_adult_dependent_credit:
+      2026: [0, 0, 0, 0, 700]
+    ecpa_filer_credit:
+      2026: 900  # $1,400 - ($50k - $40k) * 0.05
+    boost_act_payment:
+      2026: [3_000, 3_000, 0, 0, 3_000]
+
+    # Federal refundable credits exclude CTC/EITC
+    income_tax_refundable_credits:
+      2026: 1_600  # ECPA filer ($900) + adult dependent ($700)
+
+- name: Maine single parent - state EITC percentage of federal
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.income_security_package.income_security_package
+  absolute_error_margin: 1
+  input:
+    gov.contrib.congress.tlaib.income_security_package.baby_bonus_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.boost_act.in_effect: true
+    gov.contrib.congress.tlaib.income_security_package.end_child_poverty_act.in_effect: true
+    people:
+      parent:
+        age: 28
+        employment_income: 25_000
+      child1:
+        age: 3
+        birth_year: 2023
+      child2:
+        age: 10
+        birth_year: 2016
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: ME
+  output:
+    # Federal calculations
+    ctc: 4_400
+    eitc: 7_071
+
+    # Maine EITC is 25% of federal
+    me_eitc: 1_767
+
+    # Income Security Package
+    baby_bonus_act_payment:
+      2026: [0, 0, 0]
+    ecpa_child_benefit:
+      2026: [0, 5_630, 5_630]
+    ecpa_filer_credit:
+      2026: 450  # $700 - ($25k - $20k) * 0.05
+    boost_act_payment:
+      2026: [3_000, 0, 0]
+
+    # Federal credits exclude EITC/CTC
+    income_tax_refundable_credits:
+      2026: 450

@@ -1,0 +1,13 @@
+description: The Department of Health and Human Services counts these income sources as earned income under the Temporary Assistance for Needy Families program.
+values:
+  2020-01-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+metadata:
+  unit: list
+  period: year
+  label: TANF earned income sources
+  reference:
+    - title: 42 U.S.C. § 602 - Eligible States; State plan
+      href: https://www.law.cornell.edu/uscode/text/42/602
+  # TANF gives states flexibility to define earned income in their state plans. This list serves as a general baseline that states may override with their own definitions.

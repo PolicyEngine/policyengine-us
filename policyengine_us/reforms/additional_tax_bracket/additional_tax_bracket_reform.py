@@ -13,29 +13,32 @@ def create_additional_tax_bracket() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.irs
             filing_status = tax_unit("filing_status", period)
             dwks1 = tax_unit("taxable_income", period)
 
-            capital_gains = parameters(period).gov.irs.capital_gains.brackets
-
-            dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
+            dwks16 = min_(
+                p.capital_gains.thresholds["1"][filing_status], dwks1
+            )
             dwks17 = min_(tax_unit("dwks14", period), dwks16)
             dwks20 = dwks16 - dwks17
-            lowest_rate_tax = capital_gains.rates["1"] * dwks20
+            lowest_rate_tax = p.capital_gains.rates["1"] * dwks20
             # Break in worksheet lines
             dwks13 = tax_unit("dwks13", period)
             dwks21 = min_(dwks1, dwks13)
             dwks22 = dwks20
             dwks23 = max_(0, dwks21 - dwks22)
-            dwks25 = min_(capital_gains.thresholds["2"][filing_status], dwks1)
+            dwks25 = min_(
+                p.capital_gains.thresholds["2"][filing_status], dwks1
+            )
             dwks19 = tax_unit("dwks19", period)
             dwks26 = min_(dwks19, dwks20)
             dwks27 = max_(0, dwks25 - dwks26)
             dwks28 = min_(dwks23, dwks27)
-            dwks29 = capital_gains.rates["2"] * dwks28
+            dwks29 = p.capital_gains.rates["2"] * dwks28
             dwks30 = dwks22 + dwks28
             dwks31 = dwks21 - dwks30
-            dwks32 = capital_gains.rates["3"] * dwks31
+            dwks32 = p.capital_gains.rates["3"] * dwks31
             # Break in worksheet lines
             dwks33 = min_(
                 tax_unit("dwks09", period),

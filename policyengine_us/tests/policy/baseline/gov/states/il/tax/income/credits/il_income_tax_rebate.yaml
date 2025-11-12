@@ -1,0 +1,49 @@
+- name: Head of household, income above threshold
+  period: 2021
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: IL
+    tax_unit_dependents: 3
+  output:
+    il_income_tax_rebate: 0
+
+- name: Head of household, income below threshold, three dependents
+  period: 2021
+  input:
+    adjusted_gross_income: 199_999
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: IL
+    tax_unit_dependents: 3
+  output:
+    il_income_tax_rebate: 350
+
+- name: Head of household, income below threshold, five dependents
+  period: 2021
+  input:
+    adjusted_gross_income: 199_999
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: IL
+    tax_unit_dependents: 5
+  output:
+    il_income_tax_rebate: 350
+
+- name: Joint with two dependents
+  period: 2021
+  input:
+    adjusted_gross_income: 399_999
+    tax_unit_is_joint: true
+    state_code: IL
+    tax_unit_dependents: 2
+  output:
+    il_income_tax_rebate: 300
+
+- name: Single with no dependents
+  period: 2021
+  input:
+    adjusted_gross_income: 0
+    tax_unit_is_joint: false
+    state_code: IL
+    tax_unit_dependents: 0
+  output:
+    il_income_tax_rebate: 50

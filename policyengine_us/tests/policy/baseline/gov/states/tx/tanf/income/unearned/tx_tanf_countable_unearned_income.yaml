@@ -1,0 +1,49 @@
+- name: Case 1, unearned income with no child support deduction.
+  period: 2025-01
+  input:
+    tx_tanf_gross_unearned_income: 300
+    tx_tanf_child_support_deduction: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_unearned_income: 300
+    # 300 - 0 = 300
+
+- name: Case 2, unearned income with partial child support deduction.
+  period: 2025-01
+  input:
+    tx_tanf_gross_unearned_income: 300
+    tx_tanf_child_support_deduction: 50
+    state_code: TX
+  output:
+    tx_tanf_countable_unearned_income: 250
+    # 300 - 50 = 250
+
+- name: Case 3, unearned income with $75 child support deduction.
+  period: 2025-01
+  input:
+    tx_tanf_gross_unearned_income: 300
+    tx_tanf_child_support_deduction: 75
+    state_code: TX
+  output:
+    tx_tanf_countable_unearned_income: 225
+    # 300 - 75 = 225
+
+- name: Case 4, child support deduction exceeds unearned income.
+  period: 2025-01
+  input:
+    tx_tanf_gross_unearned_income: 50
+    tx_tanf_child_support_deduction: 75
+    state_code: TX
+  output:
+    tx_tanf_countable_unearned_income: 0
+    # max(50 - 75, 0) = 0
+
+- name: Case 5, no unearned income.
+  period: 2025-01
+  input:
+    tx_tanf_gross_unearned_income: 0
+    tx_tanf_child_support_deduction: 0
+    state_code: TX
+  output:
+    tx_tanf_countable_unearned_income: 0
+    # 0 - 0 = 0

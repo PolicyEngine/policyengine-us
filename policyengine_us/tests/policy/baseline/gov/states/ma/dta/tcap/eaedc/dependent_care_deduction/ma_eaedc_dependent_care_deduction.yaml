@@ -1,17 +1,17 @@
-- name: Case 1, one child age of 5. 
+- name: Case 1, one child age of 5.
   period: 2022
   input:
     people:
       person1:
         age: 35
-        is_tax_unit_dependent: false 
-        weekly_hours_worked: 40
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 40
         ma_eaedc_eligible_dependent: false
       person2:
         age: 5
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 3_600
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         ma_eaedc_eligible_dependent: true
     spm_units:
       spm_unit:
@@ -33,13 +33,13 @@
       person1:
         age: 35
         is_tax_unit_dependent: false
-        weekly_hours_worked: 40 
+        weekly_hours_worked_before_lsr: 40
         ma_eaedc_eligible_dependent: false
       person2:
         age: 1
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 2_040
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         ma_eaedc_eligible_dependent: true
     spm_units:
       spm_unit:
@@ -60,20 +60,20 @@
     people:
       person1:
         age: 35
-        is_tax_unit_dependent: false 
-        weekly_hours_worked: 40
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 40
         ma_eaedc_eligible_dependent: false
       person2:
         age: 1
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 2_040
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         ma_eaedc_eligible_dependent: true
       person3:
         age: 5
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 2_760
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         ma_eaedc_eligible_dependent: true
     spm_units:
       spm_unit:
@@ -94,14 +94,14 @@
     people:
       person1:
         age: 35
-        is_tax_unit_dependent: false 
-        weekly_hours_worked: 25
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 25
         ma_eaedc_eligible_dependent: false
       person2:
         age: 2
         is_tax_unit_dependent: true
         pre_subsidy_childcare_expenses: 3_600
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         ma_eaedc_eligible_dependent: true
     spm_units:
       spm_unit:

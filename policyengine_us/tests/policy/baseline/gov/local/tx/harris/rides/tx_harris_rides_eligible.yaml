@@ -1,0 +1,35 @@
+- name: Senior citizen in Harris County is eligible
+  period: 2024
+  input:
+    age: 67
+    is_disabled: false
+    county_str: HARRIS_COUNTY_TX
+  output:
+    tx_harris_rides_eligible: true
+
+- name: Disabled person under 65 in Harris County is eligible
+  period: 2024
+  input:
+    age: 45
+    is_disabled: true
+    county_str: HARRIS_COUNTY_TX
+  output:
+    tx_harris_rides_eligible: true
+
+- name: Non-disabled person under 65 in Harris County is not eligible
+  period: 2024
+  input:
+    age: 45
+    is_disabled: false
+    county_str: HARRIS_COUNTY_TX
+  output:
+    tx_harris_rides_eligible: false
+
+- name: Senior citizen not in Harris County is not eligible
+  period: 2024
+  input:
+    age: 70
+    is_disabled: false
+    county_str: TRAVIS_COUNTY_TX
+  output:
+    tx_harris_rides_eligible: false

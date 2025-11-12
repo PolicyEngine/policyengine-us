@@ -1,0 +1,15 @@
+description: Rhode Island provides this dependent exemption amount.
+
+values:
+  2024-01-01: 4_950
+# Will uprate identically as the personal exemption
+
+metadata:
+  label: Rhode Island dependent exemption amount
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

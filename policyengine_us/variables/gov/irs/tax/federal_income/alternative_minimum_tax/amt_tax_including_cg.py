@@ -34,7 +34,7 @@ class amt_tax_including_cg(Variable):
         income_taxes_at_amt_rates = p.income.amt.brackets.calc(excess_income)
         # Line 19 - First CG tax bracket threshold
         filing_status = tax_unit("filing_status", period)
-        cg_bracket = p.capital_gains.brackets.thresholds["1"][filing_status]
+        cg_bracket = p.capital_gains.thresholds["1"][filing_status]
         # Line 20 - Schedule D Line 14
         lt_capital_loss_carryover = tax_unit("dwks14", period)
         # Line 21 - Line 20 minus Line 19
@@ -42,7 +42,7 @@ class amt_tax_including_cg(Variable):
         # Line 22 - smaller of Line 12 or Line 13
         smaller_of_income_or_cg = min_(reduced_income, cg_distributions)
         # Line 23 - smaller of Line 22 or Line 21 (amount is taxed at 0%)
-        cg_first_rate = p.capital_gains.brackets.rates["1"]
+        cg_first_rate = p.capital_gains.rates["1"]
         disregarded_gains = (
             min_(smaller_of_income_or_cg, reduced_cg_bracket) * cg_first_rate
         )
@@ -51,9 +51,7 @@ class amt_tax_including_cg(Variable):
             smaller_of_income_or_cg - disregarded_gains, 0
         )
         # Line 25 - Second CG tax bracket threshold
-        second_cg_bracket = p.capital_gains.brackets.thresholds["2"][
-            filing_status
-        ]
+        second_cg_bracket = p.capital_gains.thresholds["2"][filing_status]
         # Line 26 - same as line 21
         # Line 27 - Schedule D Line 21
         loss_limited_net_capital_gains = tax_unit(
@@ -73,16 +71,14 @@ class amt_tax_including_cg(Variable):
         )
         # Line 31 - multiply Line 30by second CG tax rate
         cg_second_bracket_tax = (
-            capped_income_including_cg * p.capital_gains.brackets.rates["2"]
+            capped_income_including_cg * p.capital_gains.rates["2"]
         )
         # Line 32 - Line 23 plus Line 30
         taxed_gains = disregarded_gains + capped_income_including_cg
         # Line 33 - Line 22 minus Line 32
         excess_taxed_gains = max_(0, smaller_of_income_or_cg - taxed_gains)
         # Line 34 - multiply Line 33 by third CG tax rate
-        cg_third_bracket_tax = (
-            excess_taxed_gains * p.capital_gains.brackets.rates["3"]
-        )
+        cg_third_bracket_tax = excess_taxed_gains * p.capital_gains.rates["3"]
         # Line 35 - sum of Line 17, Line 32, Line 33
         final_taxed_income = excess_income + taxed_gains + excess_taxed_gains
         # Line 36 Line 12 minus Line 35

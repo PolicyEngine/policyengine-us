@@ -45,7 +45,7 @@ class ks_fstc(Variable):
         eligible_income = fagi <= p.food_sales_tax.agi_limit
         # compute credit amount
         eligible = eligible_unit & eligible_income
-        exemptions = tax_unit("ks_count_exemptions", period)
+        exemptions = tax_unit("tax_unit_size", period)
         old_dependents = count_all_dependents - count_child_dependents
         fstc_exemptions = max_(0, exemptions - old_dependents)
         return eligible * fstc_exemptions * p.food_sales_tax.amount
