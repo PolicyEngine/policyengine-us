@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.432.8] - 2025-11-11 19:02:22
+
+### Changed
+
+- Revert age heterogeneity in labor supply response elasticities (v1.426.0).
+
+## [1.432.7] - 2025-11-11 14:47:06
+
+### Fixed
+
+- Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing incorrect categorical eligibility
+
+## [1.432.6] - 2025-11-11 13:40:35
+
+### Fixed
+
+- Remove the repeal of the Hawaii alternative tax on capital gains.
+
 ## [1.432.5] - 2025-11-10 19:14:05
 
 ### Added
@@ -13477,6 +13495,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.432.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.7...1.432.8
+[1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
+[1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6
 [1.432.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.4...1.432.5
 [1.432.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.3...1.432.4
 [1.432.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.2...1.432.3
