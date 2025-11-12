@@ -1,0 +1,17 @@
+description: Tennessee caps the Families First TANF benefit schedule at this maximum family size. Families larger than this size receive the benefit amount for this size.
+
+metadata:
+  unit: person
+  period: month
+  label: TN TANF maximum family size for benefit schedule
+  reference:
+    - title: Tennessee Administrative Code § 1240-01-50-.20 - Standard of Need/Income
+      href: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20
+      publication_date: 2008-11-24
+    - title: Tennessee TANF State Plan 2024-2027
+      href: https://wioaplans.ed.gov/node/545036
+      publication_date: 2024-07-01
+  uprating: null
+
+values:
+  2024-01-01: 10

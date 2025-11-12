@@ -20,10 +20,12 @@ class tn_tanf_eligible(Variable):
         # Must meet resource eligibility
         resources_eligible = spm_unit("tn_tanf_resources_eligible", period)
 
-        # Must have a child under 18 (or 18 and in high school)
+        # Must have a child under age limit (or at age limit and in high school)
+        p = parameters(period).gov.states.tn.dhs.tanf.eligibility
         person = spm_unit.members
         age = person("age", period)
-        has_qualifying_child = spm_unit.any(age < 18)
+        child_age_limit = p.child_age_limit
+        has_qualifying_child = spm_unit.any(age < child_age_limit)
 
         # Combine all eligibility criteria
         return income_eligible & resources_eligible & has_qualifying_child

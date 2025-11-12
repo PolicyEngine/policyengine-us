@@ -20,12 +20,12 @@ class tn_tanf_income_eligible(Variable):
         gross_income = gross_earned + gross_unearned
 
         # Determine unit size
+        p = parameters(period).gov.states.tn.dhs.tanf
         unit_size = spm_unit.nb_persons()
-        max_size = 10
+        max_size = p.eligibility.max_family_size
         capped_size = min_(unit_size, max_size)
 
         # Check gross income standard (185% of CNS)
-        p = parameters(period).gov.states.tn.dhs.tanf
         gis = p.income.gross_income_standard[capped_size]
         gross_income_test = gross_income <= gis
 

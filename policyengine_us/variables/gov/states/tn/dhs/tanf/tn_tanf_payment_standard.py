@@ -16,27 +16,28 @@ class tn_tanf_payment_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         # Determine assistance unit size
+        p = parameters(period).gov.states.tn.dhs.tanf
         unit_size = spm_unit.nb_persons()
-        p = parameters(period).gov.states.tn.dhs.tanf.benefit
         # Cap unit size at maximum defined in parameters
-        max_size = 10
+        max_size = p.eligibility.max_family_size
         capped_size = min_(unit_size, max_size)
 
         # Determine if eligible for DGPA
-        # DGPA eligibility: caretaker is 60+, disabled, provides care for disabled,
-        # or no eligible adults present
+        # DGPA eligibility: caretaker is at/above age threshold, disabled,
+        # provides care for disabled, or no eligible adults present
         person = spm_unit.members
         age = person("age", period)
         is_disabled = person("is_disabled", period)
 
-        caretaker_is_60_or_older = spm_unit.any(age >= 60)
+        dgpa_age_threshold = p.benefit.dgpa_age_threshold
+        caretaker_meets_age = spm_unit.any(age >= dgpa_age_threshold)
         caretaker_is_disabled = spm_unit.any(is_disabled)
-        # For simplification, assume eligible for DGPA if caretaker is 60+ or disabled
-        eligible_for_dgpa = caretaker_is_60_or_older | caretaker_is_disabled
+        # For simplification, assume eligible for DGPA if caretaker meets age or is disabled
+        eligible_for_dgpa = caretaker_meets_age | caretaker_is_disabled
 
         # Get SPA and DGPA amounts
-        spa = p.standard_payment_amount[capped_size]
-        dgpa = p.differential_grant_payment_amount[capped_size]
+        spa = p.benefit.standard_payment_amount[capped_size]
+        dgpa = p.benefit.differential_grant_payment_amount[capped_size]
 
         # Return DGPA if eligible, otherwise SPA
         return where(eligible_for_dgpa, dgpa, spa)
