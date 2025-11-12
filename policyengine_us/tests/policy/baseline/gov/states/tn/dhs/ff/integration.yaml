@@ -1,4 +1,4 @@
-- name: Case 1, no income - receives maximum SPA.
+- name: Case 1, family of 2 with no income.
   period: 2024-01
   input:
     people:
@@ -8,20 +8,17 @@
         age: 5
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id001
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff: 142
-- name: Case 2, no income - receives maximum SPA.
+- name: Case 2, family of 3 with no income.
   period: 2024-01
   input:
     people:
@@ -33,250 +30,169 @@
         age: 12
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     tax_units:
       tax_unit:
-        members: *id002
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    tn_ff: 387
-- name: Case 3, benefit reduced by countable income.
+    tn_ff: 185
+- name: Case 3, family of 2 with low earnings.
   period: 2024-01
   input:
     people:
       person1:
         age: 27
-        employment_income_before_lsr: 12000
+        employment_income_before_lsr: 12_000
       person2:
         age: 3
     spm_units:
       spm_unit:
-        members: &id003
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id003
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff: 142
-- name: Case 4, receives reduced benefit.
+- name: Case 4, family of 3 with moderate earnings.
   period: 2024-01
   input:
     people:
       person1:
         age: 29
-        employment_income_before_lsr: 18000
+        employment_income_before_lsr: 18_000
       person2:
         age: 6
       person3:
         age: 9
     spm_units:
       spm_unit:
-        members: &id004
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     tax_units:
       tax_unit:
-        members: *id004
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    tn_ff: 299
-- name: Case 5, receives childcare deduction.
+    tn_ff: 185
+- name: Case 5, family of 2 with infant and childcare expenses.
   period: 2024-01
   input:
     people:
       person1:
         age: 25
-        employment_income_before_lsr: 6000
+        employment_income_before_lsr: 6_000
       person2:
         age: 1
     spm_units:
       spm_unit:
-        members: &id005
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id005
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff: 142
-- name: Case 6, receives childcare deduction.
+- name: Case 6, family of 3 with two older children and childcare expenses.
   period: 2024-01
   input:
     people:
       person1:
         age: 33
-        employment_income_before_lsr: 16800
+        employment_income_before_lsr: 16_800
       person2:
         age: 3
       person3:
         age: 5
     spm_units:
       spm_unit:
-        members: &id006
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     tax_units:
       tax_unit:
-        members: *id006
-  output:
-    tn_ff: 387
-- name: Case 7, eligible for DGPA.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 62
-      person2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: &id007
-        - person1
-        - person2
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id007
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    tn_ff: 192
-- name: Case 8, eligible for DGPA.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        is_disabled: true
-      person2:
-        age: 6
-      person3:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: &id008
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
-    tax_units:
-      tax_unit:
-        members: *id008
-  output:
-    tn_ff: 232
-- name: Case 9, ineligible.
+    tn_ff: 185
+- name: Case 7, family of 2 with income above gross income limit.
   period: 2024-01
   input:
     people:
       person1:
         age: 28
-        employment_income_before_lsr: 20000
+        employment_income_before_lsr: 20_000
       person2:
         age: 5
     spm_units:
       spm_unit:
-        members: &id009
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id009
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff: 0
-- name: Case 10, Single parent with mixed income sources.
+- name: Case 8, family of 2 with mixed earned and self-employment income.
   period: 2024-01
   input:
     people:
       person1:
         age: 31
-        employment_income_before_lsr: 8400
-        self_employment_income_before_lsr: 3600
+        employment_income_before_lsr: 8_400
+        self_employment_income_before_lsr: 3_600
       person2:
         age: 7
     spm_units:
       spm_unit:
-        members: &id010
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id010
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff: 142
-- name: Case 11, Parent with unearned income (SSI recipient).
+- name: Case 9, SSI recipient with child (SSI excluded from income).
   period: 2024-01
   input:
     people:
       person1:
         age: 28
-        ssi: 11640
+        ssi: 11_640
       person2:
         age: 9
     spm_units:
       spm_unit:
-        members: &id011
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: *id011
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    tn_ff: 0
-- name: Case 12, Large family with four children.
+    tn_ff: 142
+- name: Case 10, large family of 5.
   period: 2024-01
   input:
     people:
@@ -292,22 +208,13 @@
         age: 11
     spm_units:
       spm_unit:
-        members: &id012
-        - person1
-        - person2
-        - person3
-        - person4
-        - person5
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
-        - person4
-        - person5
+        members: [person1, person2, person3, person4, person5]
     tax_units:
       tax_unit:
-        members: *id012
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TN
   output:
     tn_ff: 264
