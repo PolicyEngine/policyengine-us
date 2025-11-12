@@ -4,9 +4,9 @@
     people:
       person1:
         age: 35
-        is_tax_unit_dependent: false 
+        is_tax_unit_dependent: false
         ma_eaedc_eligible_dependent: false
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -30,7 +30,7 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    weekly_hours_worked_before_lsr: 10
     age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -41,7 +41,7 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    weekly_hours_worked_before_lsr: 10
     age: 1
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -52,7 +52,7 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    weekly_hours_worked_before_lsr: 10
     age: 2
     pre_subsidy_childcare_expenses: 30
   output:
@@ -63,7 +63,7 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 60
+    weekly_hours_worked_before_lsr: 60
     age: 2
     pre_subsidy_childcare_expenses: 3_000
   output:
@@ -71,10 +71,10 @@
 
 - name: Integration test, one dependent, 60 hours/week, older dependent.
   period: 2023
-  input: 
+  input:
     people:
       person1:
-        weekly_hours_worked: 60
+        weekly_hours_worked_before_lsr: 60
       person2:
         ma_eaedc_eligible_dependent: true
         age: 12

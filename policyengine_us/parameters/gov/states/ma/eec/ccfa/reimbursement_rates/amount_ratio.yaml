@@ -1,0 +1,23 @@
+description: Massachusetts applies this ratio for reimbursement rates depending on daily care hours under the Child Care Financial Assistance program.
+metadata:
+  type: single_amount
+  threshold_unit: hours
+  amount_unit: /1
+  period: year
+  label: Massachusetts CCFA reimbursement rates amount ratio
+  reference:
+    - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
+    - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download
+
+brackets:
+  - threshold:
+      2023-07-01: 0 
+    amount:
+      2023-07-01: 0.6
+  - threshold:
+      2023-07-01: 7
+      2024-07-01: 6
+    amount:
+      2023-07-01: 1

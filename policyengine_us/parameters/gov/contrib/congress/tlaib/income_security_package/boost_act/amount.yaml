@@ -1,0 +1,13 @@
+description: Representative Rashida Tlaib's BOOST Act provides this monthly amount to eligible adults.
+metadata:
+  unit: currency-USD
+  period: month
+  # reference: placeholder - bill not yet introduced
+  label: BOOST Act monthly amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
+values:
+  2026-01-01: 250

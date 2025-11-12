@@ -1,0 +1,171 @@
+- name: Person under 60 is not eligible regardless of income
+  period: 2024
+  input:
+    people:
+      person:
+        age: 59
+      spouse:
+        age: 62
+    spm_units:
+      spm_unit:
+        members: [person, spouse]
+        school_meal_fpg_ratio: 1.0  # Below the 130% limit
+  output:
+    commodity_supplemental_food_program_eligible: [false, true]
+
+- name: Person exactly 60 is eligible with low income
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.2  # Below the 130% limit
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Elderly person eligible with income at exactly 130% FPG
+  period: 2024
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.3  # Exactly at the limit
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Elderly person not eligible with income above 130% FPG
+  period: 2024
+  input:
+    people:
+      person:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.31  # Just above the limit
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Multiple household members with different eligibility
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+      adult:
+        age: 45
+      senior1:
+        age: 60
+      senior2:
+        age: 75
+    spm_units:
+      spm_unit:
+        members: [child, adult, senior1, senior2]
+        school_meal_fpg_ratio: 1.2  # Below the 130% limit
+  output:
+    commodity_supplemental_food_program_eligible: [false, false, true, true]
+
+- name: 2025 period with higher FPG limit of 150%
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.45  # Between 130% and 150%
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: 2025 period - not eligible above 150% FPG
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.51  # Just above the 150% limit
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Edge case - person turns 60 during the year
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60  # Assume they're 60 at some point in 2024
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.0
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: High income elderly person not eligible
+  period: 2024
+  input:
+    people:
+      person:
+        age: 80
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 2.5  # Well above the 130% limit
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Young adult with very low income still not eligible
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 0.5  # Very low income
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Texas income ineligible
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Texas income eligible
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.3
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    commodity_supplemental_food_program_eligible: true

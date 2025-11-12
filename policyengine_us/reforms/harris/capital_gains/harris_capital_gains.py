@@ -29,9 +29,9 @@ def create_harris_capital_gains() -> Reform:
 
             filing_status = tax_unit("filing_status", period)
 
-            first_threshold = p_ref.brackets.thresholds["1"][filing_status]
-            second_threshold = p_ref.brackets.thresholds["2"][filing_status]
-            third_threshold = p_ref.brackets.thresholds["3"][filing_status]
+            first_threshold = p_ref.thresholds["1"][filing_status]
+            second_threshold = p_ref.thresholds["2"][filing_status]
+            third_threshold = p_ref.thresholds["3"][filing_status]
 
             income_ordinarily_under_second_rate = clip(
                 taxable_income, 0, first_threshold
@@ -82,10 +82,10 @@ def create_harris_capital_gains() -> Reform:
             )
 
             main_cg_tax = (
-                cg_in_first_bracket * p_ref.brackets.rates["1"]
-                + cg_in_second_bracket * p_ref.brackets.rates["2"]
-                + cg_in_third_bracket * p_ref.brackets.rates["3"]
-                + cg_in_fourth_bracket * p_ref.brackets.rates["4"]
+                cg_in_first_bracket * p_ref.rates["1"]
+                + cg_in_second_bracket * p_ref.rates["2"]
+                + cg_in_third_bracket * p_ref.rates["3"]
+                + cg_in_fourth_bracket * p_ref.rates["4"]
             )
 
             unrecaptured_s_1250_gain = tax_unit(

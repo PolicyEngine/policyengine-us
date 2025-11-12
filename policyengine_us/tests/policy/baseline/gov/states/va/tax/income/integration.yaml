@@ -66,6 +66,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
+        va_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -124,6 +125,7 @@
         members: [person1, person2, person3, person4]
         tax_unit_itemizes: True
         state_income_tax: 20045.91
+        va_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]

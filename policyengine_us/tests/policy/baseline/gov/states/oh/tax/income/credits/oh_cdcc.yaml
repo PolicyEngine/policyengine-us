@@ -3,7 +3,7 @@
   input:
     state_code: OH
     oh_modified_agi: 19_999
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
     oh_cdcc: 2_000
 
@@ -12,7 +12,7 @@
   input:
     state_code: OH
     oh_modified_agi: 20_000
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
     oh_cdcc: 500
 
@@ -21,7 +21,7 @@
   input:
     state_code: OH
     oh_modified_agi: 39_999
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
     oh_cdcc: 500
 
@@ -30,6 +30,6 @@
   input:
     state_code: OH
     oh_modified_agi: 40_000
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
     oh_cdcc: 0
