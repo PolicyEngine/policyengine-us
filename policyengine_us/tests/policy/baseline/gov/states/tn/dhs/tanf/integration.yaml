@@ -62,8 +62,9 @@
     # Gross income: $12,000/year = $1,000/month
     # Earned income disregard: $250/month
     # Countable income: $1,000 - $250 = $750/month
-    # Payment standard (SPA): $343/month
-    # Benefit: $343 (full benefit since countable < CNS)
+    # CNS: $1,370/month, Payment standard (SPA): $343/month
+    # Deficit: $1,370 - $750 = $620
+    # Benefit: min($343, $620) = $343/month
     tn_tanf: 343 * 12
 
 - name: Family of three with moderate earnings - receives reduced benefit
@@ -88,8 +89,9 @@
     # Gross income: $18,000/year = $1,500/month
     # Earned income disregard: $250/month
     # Countable income: $1,500 - $250 = $1,250/month
-    # Payment standard (SPA): $387/month
-    # Benefit: $387 - ($1,250 - $1,549 deficit) = $299/month
+    # CNS: $1,549/month, Payment standard (SPA): $387/month
+    # Deficit: $1,549 - $1,250 = $299
+    # Benefit: min($387, $299) = $299/month
     tn_tanf: 299 * 12
 
 - name: Single parent with infant and working - receives childcare deduction
@@ -113,8 +115,9 @@
     # Earned income disregard: $250/month
     # Childcare deduction: $200/month (child under 2)
     # Countable income: $1,250 - $250 - $200 = $800/month
-    # Payment standard (SPA): $343/month
-    # Benefit: Full $343 (countable income < CNS)
+    # CNS: $1,370/month, Payment standard (SPA): $343/month
+    # Deficit: $1,370 - $800 = $570
+    # Benefit: min($343, $570) = $343/month
     tn_tanf: 343 * 12
 
 - name: Parent with two older children and working - receives childcare deduction
@@ -140,8 +143,9 @@
     # Earned income disregard: $250/month
     # Childcare deduction: $175/month each = $350/month
     # Countable income: $1,400 - $250 - $350 = $800/month
-    # Payment standard (SPA): $387/month
-    # Benefit: Full $387
+    # CNS: $1,549/month, Payment standard (SPA): $387/month
+    # Deficit: $1,549 - $800 = $749
+    # Benefit: min($387, $749) = $387/month
     tn_tanf: 387 * 12
 
 - name: Elderly caretaker with grandchild - eligible for DGPA
@@ -232,8 +236,9 @@
     # Gross income: ($8,400 + $3,600)/year = $1,000/month
     # Earned income disregard: $250/month
     # Countable income: $1,000 - $250 = $750/month
-    # Payment standard (SPA): $343/month
-    # Benefit: Full $343
+    # CNS: $1,370/month, Payment standard (SPA): $343/month
+    # Deficit: $1,370 - $750 = $620
+    # Benefit: min($343, $620) = $343/month
     tn_tanf: 343 * 12
 
 - name: Parent with unearned income (SSI recipient)
@@ -256,8 +261,9 @@
     # Gross unearned income: $11,640/year = $970/month
     # No earned income disregard for unearned income
     # Countable income: $970/month
-    # Payment standard (SPA): $343/month
-    # Benefit: Full $343
+    # CNS: $1,370/month, Payment standard (SPA): $343/month
+    # Deficit: $1,370 - $970 = $400
+    # Benefit: min($343, $400) = $343/month
     tn_tanf: 343 * 12
 
 - name: Large family with four children
