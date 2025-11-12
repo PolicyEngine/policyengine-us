@@ -14,11 +14,4 @@ class nj_additions(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(person, period, parameters):
-        p = parameters(period).gov.states.nj.tax.income
-        # Handle empty additions list
-        if len(p.additions) == 0:
-            return 0
-        total_additions = add(person, period, p.additions)
-        # Prevent negative additions from acting as subtractions
-        return max_(0, total_additions)
+    adds = "gov.states.nj.tax.income.additions"

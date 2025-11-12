@@ -14,8 +14,5 @@ class nj_gross_income(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(person, period, parameters):
-        # Build NJ gross income from specific income categories per NJ statute 54A:5-1
-        # This corresponds to lines 15-27 on Form NJ-1040
-        p = parameters(period).gov.states.nj.tax.income
-        return add(person, period, p.gross_income_sources)
+    adds = "gov.states.nj.tax.income.gross_income_sources"
+
