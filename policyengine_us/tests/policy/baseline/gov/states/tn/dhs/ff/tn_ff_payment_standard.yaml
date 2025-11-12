@@ -1,0 +1,249 @@
+- name: Size 2 household with non-DGPA eligible adult receives SPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 30
+        is_disabled: false
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    tn_ff_payment_standard: 343
+- name: Size 2 household with caretaker exactly age 60 receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      grandparent:
+        age: 60
+        is_disabled: false
+      grandchild:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+  output:
+    tn_ff_payment_standard: 443
+- name: Size 2 household with caretaker age 59 receives SPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      caretaker:
+        age: 59
+        is_disabled: false
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+  output:
+    tn_ff_payment_standard: 343
+- name: Size 2 household with caretaker age 61 receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      grandparent:
+        age: 61
+        is_disabled: false
+      grandchild:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+  output:
+    tn_ff_payment_standard: 443
+- name: Size 2 household with disabled caretaker receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 35
+        is_disabled: true
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    tn_ff_payment_standard: 443
+- name: Size 3 household with non-DGPA eligible adult receives SPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 28
+        is_disabled: false
+      child1:
+        age: 3
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    tn_ff_payment_standard: 387
+- name: Size 3 household with elderly caretaker receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      grandparent:
+        age: 65
+        is_disabled: false
+      grandchild1:
+        age: 10
+      grandchild2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild1, grandchild2]
+  output:
+    tn_ff_payment_standard: 487
+- name: Size 4 household with non-DGPA eligible adult receives SPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 32
+        is_disabled: false
+      child1:
+        age: 2
+      child2:
+        age: 5
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+  output:
+    tn_ff_payment_standard: 438
+- name: Size 4 household with disabled caretaker receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 40
+        is_disabled: true
+      child1:
+        age: 6
+      child2:
+        age: 9
+      child3:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+  output:
+    tn_ff_payment_standard: 538
+- name: Size 5 household with non-DGPA eligible adult receives SPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 1
+      child2:
+        age: 4
+      child3:
+        age: 7
+      child4:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+  output:
+    tn_ff_payment_standard: 471
+- name: Size 10 household at maximum size cap
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 42
+        is_disabled: false
+      child1:
+        age: 1
+      child2:
+        age: 3
+      child3:
+        age: 5
+      child4:
+        age: 7
+      child5:
+        age: 9
+      child6:
+        age: 11
+      child7:
+        age: 13
+      child8:
+        age: 15
+      child9:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+  output:
+    tn_ff_payment_standard: 636
+- name: Size 12 household uses size 10 parameters
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      parent:
+        age: 45
+        is_disabled: false
+      child1:
+        age: 1
+      child2:
+        age: 2
+      child3:
+        age: 3
+      child4:
+        age: 4
+      child5:
+        age: 5
+      child6:
+        age: 6
+      child7:
+        age: 7
+      child8:
+        age: 8
+      child9:
+        age: 9
+      child10:
+        age: 10
+      child11:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+  output:
+    tn_ff_payment_standard: 636
+- name: Both elderly and disabled caretaker receives DGPA
+  period: 2024-01
+  input:
+    state_code: TN
+    people:
+      grandparent:
+        age: 68
+        is_disabled: true
+      grandchild:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+  output:
+    tn_ff_payment_standard: 443

@@ -1,0 +1,71 @@
+- name: No earned income results in zero countable earned income
+  period: 2024-01
+  input:
+    people:
+      person:
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person]
+  output:
+    tn_ff_countable_earned_income: 0
+- name: Gross earned income exactly equal to $250 disregard
+  period: 2024-01
+  input:
+    people:
+      person:
+        employment_income_before_lsr: 3_000
+    spm_units:
+      spm_unit:
+        members: [person]
+  output:
+    tn_ff_countable_earned_income: 0
+- name: Gross earned income one dollar above $250 disregard
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 251
+  output:
+    tn_ff_countable_earned_income: 1
+- name: Gross earned income one dollar below $250 disregard
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 249
+  output:
+    tn_ff_countable_earned_income: 0
+- name: Gross earned income of $1,000 per month
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 1000
+  output:
+    tn_ff_countable_earned_income: 750
+- name: Gross earned income of $2,500 per month
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 2500
+  output:
+    tn_ff_countable_earned_income: 2250
+- name: Low earned income under disregard amount
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 100
+  output:
+    tn_ff_countable_earned_income: 0
+- name: Moderate earned income
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 1500
+  output:
+    tn_ff_countable_earned_income: 1250
+- name: High earned income
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_gross_earned_income: 3000
+  output:
+    tn_ff_countable_earned_income: 2750
