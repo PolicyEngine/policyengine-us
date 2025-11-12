@@ -6,7 +6,7 @@ class wa_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Washington TANF eligible"
     definition_period = MONTH
-    reference = ("https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0005",)
+    reference = "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0005"
     defined_for = StateCode.WA
 
     def formula(spm_unit, period, parameters):

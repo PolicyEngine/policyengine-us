@@ -28,8 +28,4 @@ class wa_tanf_income_eligible(Variable):
         # Gross earned income must be at or below the limit
         # Note: Unlike some states, WA tests GROSS income (not countable)
         # against published limits that already factor in the $500 disregard
-        income_limit = p.eligibility.income.gross_earned_income_limit[
-            size_capped
-        ]
-
-        return gross_earned <= income_limit
+        return gross_earned <= p.income.limit[size_capped]

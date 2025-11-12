@@ -1,14 +1,14 @@
-description: Washington TANF requires that a family's gross earned income must be below these levels to qualify for eligibility, which already incorporate the $500 family earnings deduction in their calculation.
+description: Washington sets these gross earned income limits for the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
   label: Washington TANF maximum gross earned income limit
+  breakdown:
+    - range(1, 11)
   reference:
     - title: WAC 388-478-0035 - Maximum earned income limits for TANF, SFA, PWA, and RCA
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
-  breakdown:
-    - range(1, 11)
 
 1:
   2024-01-01: 1_400

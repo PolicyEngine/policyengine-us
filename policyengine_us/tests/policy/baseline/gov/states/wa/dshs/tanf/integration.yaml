@@ -12,28 +12,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: WA
   output:
     wa_tanf_payment_standard: 706
@@ -55,28 +43,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: WA
   output:
     wa_tanf_payment_standard: 706
@@ -98,28 +74,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: WA
   output:
     wa_tanf_payment_standard: 706
@@ -141,28 +105,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: WA
   output:
     wa_tanf_payment_standard: 706
@@ -184,28 +136,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: WA
   output:
     wa_tanf_eligible: false
@@ -230,36 +170,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
+        members: [parent1, parent2, child1, child2, child3]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
+        members: [parent1, parent2, child1, child2, child3]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
+        members: [parent1, parent2, child1, child2, child3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
+        members: [parent1, parent2, child1, child2, child3]
         state_code: WA
   output:
     wa_tanf_payment_standard: 959
@@ -284,32 +204,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [parent1, parent2, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [parent1, parent2, child1, child2]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [parent1, parent2, child1, child2]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [parent1, parent2, child1, child2]
         state_code: WA
   output:
     wa_tanf_payment_standard: 833
@@ -328,24 +232,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     households:
       household:
-        members:
-        - parent
-        - child
+        members: [parent, child]
         state_code: WA
   output:
     wa_tanf_payment_standard: 570
@@ -371,32 +267,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         state_code: WA
   output:
     wa_tanf_payment_standard: 833
@@ -412,26 +292,18 @@
         is_pregnant: true
     families:
       family:
-        members:
-        - parent
+        members: [parent]
     spm_units:
       spm_unit:
-        members:
-        - parent
+        members: [parent]
     tax_units:
       tax_unit:
-        members:
-        - parent
+        members: [parent]
     households:
       household:
-        members:
-        - parent
+        members: [parent]
         state_code: WA
   output:
-    # Family of 1 (pregnant woman, no other children)
-    # Payment standard: $450
-    # Countable income: $0
-    # Benefit: $450
     wa_tanf_payment_standard: 450
     wa_tanf_countable_income: 0
     wa_tanf_eligible: true
@@ -459,40 +331,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent1, parent2, child1, child2, child3, child4]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent1, parent2, child1, child2, child3, child4]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent1, parent2, child1, child2, child3, child4]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent1, parent2, child1, child2, child3, child4]
         state_code: WA
   output:
     wa_tanf_payment_standard: 1090
@@ -527,48 +375,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
         state_code: WA
   output:
     wa_tanf_payment_standard: 1392
@@ -609,56 +425,20 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7, child8]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7, child8]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7, child8]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7, child8]
         state_code: WA
   output:
     wa_tanf_payment_standard: 1662
@@ -677,24 +457,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child
+        members: [parent, child]
     households:
       household:
-        members:
-        - parent
-        - child
+        members: [parent, child]
         state_code: WA
   output:
     wa_tanf_payment_standard: 570
@@ -719,32 +491,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         state_code: WA
   output:
     wa_tanf_payment_standard: 833
@@ -772,36 +528,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
         state_code: WA
   output:
     wa_tanf_payment_standard: 959
@@ -833,44 +569,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
         state_code: WA
   output:
     wa_tanf_payment_standard: 1258
@@ -909,52 +617,20 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7]
     spm_units:
       spm_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7]
     tax_units:
       tax_unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6,
+          child7]
         state_code: WA
   output:
     wa_tanf_payment_standard: 1529
@@ -982,36 +658,16 @@
         is_tax_unit_dependent: true
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     tax_units:
       tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
-        - child4
+        members: [parent, child1, child2, child3, child4]
         state_code: WA
   output:
     wa_tanf_payment_standard: 959

@@ -27,8 +27,8 @@ class wa_tanf(Variable):
         grant_before_cap = max_(payment_standard - countable_income, 0)
 
         # Apply maximum grant cap (unique to Washington)
-        # Per WAC 388-478-0020, grants cannot exceed $1,338/month
+        # Per DSHS manual, grants cannot exceed $1,338
         # regardless of family size (affects families of 8+)
-        p = parameters(period).gov.states.wa.dshs.tanf.benefit
+        p = parameters(period).gov.states.wa.dshs.tanf.payment_standard
 
-        return min_(grant_before_cap, p.maximum_grant_cap)
+        return min_(grant_before_cap, p.maximum_amount)

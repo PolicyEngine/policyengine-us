@@ -7,7 +7,7 @@ class wa_tanf_countable_earned_income(Variable):
     label = "Washington TANF countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = ("https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0170",)
+    reference = "https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0170"
     defined_for = StateCode.WA
 
     def formula(spm_unit, period, parameters):
@@ -18,14 +18,16 @@ class wa_tanf_countable_earned_income(Variable):
         # "We start by deducting the first $500 of the total household's
         # earned income. We then subtract 50% of the remaining monthly
         # gross earned income."
-        p = parameters(period).gov.states.wa.dshs.tanf.income
+        p = parameters(
+            period
+        ).gov.states.wa.dshs.tanf.income.deductions.earned_income_disregard
 
         # Step 1: Deduct flat $500 family earnings disregard
-        remainder = max_(gross_earned - p.earned_income_disregard, 0)
+        remainder = max_(gross_earned - p.amount, 0)
 
         # Step 2: Subtract (disregard) 50% of remaining income
         # Per WAC 388-450-0170(3): "subtract 50% of the remaining...income"
-        amount_disregarded = remainder * p.percentage_of_remainder_disregarded
+        amount_disregarded = remainder * p.percentage_disregarded
 
         # Countable earned income = remainder - amount disregarded
         return remainder - amount_disregarded
