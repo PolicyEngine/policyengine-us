@@ -1,4 +1,4 @@
-description: Tennessee establishes this Consolidated Need Standard (CNS) for the Families First TANF program, which represents the state's determination of the amount of income necessary to meet the basic needs of an assistance group of a given size. The CNS is used both as an income eligibility threshold and in the fill-the-gap benefit calculation.
+description: Tennessee establishes this Consolidated Need Standard (CNS) for the Families First TANF program, which represents the state's determination of the amount of income necessary to meet the basic needs of an assistance group of a given size. The CNS is used both as an income eligibility threshold and in the fill-the-gap benefit calculation. Note - The CNS is calculated annually by a contract agency per the 2024 State Plan. Complete 2024 tables for all family sizes were not found in publicly accessible sources. Values use 2008 amounts (most recent verifiable source) with 2024 update for family size 3 only (verified via NCCP 2024).
 
 metadata:
   unit: currency-USD
@@ -7,33 +7,31 @@ metadata:
     - range(1, 11)
   label: TN TANF Consolidated Need Standard
   reference:
-    - title: Tennessee Administrative Code § 1240-01-50-.20 - Standard of Need/Income
-      href: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20
+    - title: Tennessee Administrative Code § 1240-01-50-.20 (2008) - Complete table for all family sizes
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf
       publication_date: 2008-11-24
-    - title: Tennessee TANF State Plan 2024-2027, Section 4
-      href: https://wioaplans.ed.gov/node/545036
-      publication_date: 2024-07-01
-    - title: National Center for Children in Poverty - Tennessee TANF Profile (2024)
+    - title: National Center for Children in Poverty - Tennessee TANF Profile (2024) - Verifies family of 3 only
       href: https://www.nccp.org/wp-content/uploads/2024/11/TANF-profile-Tennessee.pdf
-      publication_date: 2024-11-01
+      publication_date: 2024-10-21
 
 1:
-  2024-07-01: 976
+  2008-11-24: 696
 2:
-  2024-07-01: 1_370
+  2008-11-24: 896
 3:
+  2008-11-24: 1_066
   2024-07-01: 1_549
 4:
-  2024-07-01: 1_752
+  2008-11-24: 1_211
 5:
-  2024-07-01: 1_885
+  2008-11-24: 1_335
 6:
-  2024-07-01: 2_018
+  2008-11-24: 1_441
 7:
-  2024-07-01: 2_151
+  2008-11-24: 1_534
 8:
-  2024-07-01: 2_284
+  2008-11-24: 1_617
 9:
-  2024-07-01: 2_417
+  2008-11-24: 1_691
 10:
-  2024-07-01: 2_550
+  2008-11-24: 1_760
