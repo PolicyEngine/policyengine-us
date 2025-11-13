@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.432.9] - 2025-11-13 15:46:53
+
+### Fixed
+
+- Limit the Hawaii CDCC to households with at least one qualifying dependent .
+
 ## [1.432.8] - 2025-11-11 19:02:22
 
 ### Changed
@@ -13495,6 +13501,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.432.9]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.8...1.432.9
 [1.432.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.7...1.432.8
 [1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
 [1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6
