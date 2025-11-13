@@ -11,18 +11,16 @@ class tn_ff_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Calculate gross income for initial test using federal TANF variables
-        person = spm_unit.members
-        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
-        gross_unearned = spm_unit.sum(
-            person("tanf_gross_unearned_income", period)
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
-        gross_income = gross_earned + gross_unearned
 
         # Determine unit size
         p = parameters(period).gov.states.tn.dhs.ff
         unit_size = spm_unit("spm_unit_size", period)
-        max_size = p.payment.max_family_size
-        capped_size = min_(unit_size, max_size)
+        capped_size = min_(unit_size, p.payment.max_family_size)
 
         # Get Consolidated Need Standard (CNS) for family size
         cns = p.payment.consolidated_need_standard[capped_size]

@@ -12,9 +12,5 @@ class tn_ff_child_care_deduction(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         age = person("age", period.this_year)
-        p = parameters(
-            period
-        ).gov.states.tn.dhs.ff.income.deductions.child_care_deduction
-        # Calculate deduction per child based on age
-        deduction_per_child = p.calc(age)
-        return spm_unit.sum(deduction_per_child)
+        p = parameters(period).gov.states.tn.dhs.ff.income.deductions
+        return spm_unit.sum(p.child_care_deduction.calc(age))
