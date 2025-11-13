@@ -6,7 +6,6 @@ class hi_cdcc_eligible(Variable):
     entity = TaxUnit
     label = "Hawaii child and dependent care credit eligible"
     defined_for = StateCode.HI
-    unit = USD
     definition_period = YEAR
     reference = "https://law.justia.com/codes/hawaii/title-14/chapter-235/section-235-55-6/"
 
