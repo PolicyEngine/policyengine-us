@@ -9,7 +9,8 @@ class taxable_social_security_tier_2(Variable):
     documentation = "Taxable Social Security from 50-85% taxation tier, credited to Medicare HI trust fund"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_2"
-    subtracts = [
-        "tax_unit_taxable_social_security",
-        "taxable_social_security_tier_1",
-    ]
+
+    def formula(tax_unit, period, parameters):
+        total_taxable = tax_unit("tax_unit_taxable_social_security", period)
+        tier1 = tax_unit("taxable_social_security_tier_1", period)
+        return max_(total_taxable - tier1, 0)

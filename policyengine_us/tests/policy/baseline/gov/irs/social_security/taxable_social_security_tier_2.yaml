@@ -1,25 +1,5 @@
-- name: TOB revenue - single retiree with SS and wages
+- name: Tier 2 with zero income
   period: 2024
-  absolute_error_margin: 100
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 30_000
-        employment_income: 50_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-  output:
-    tob_revenue_total: 4_240
-
-- name: TOB revenue - zero income
-  period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
@@ -34,11 +14,10 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 0
+    taxable_social_security_tier_2: 0
 
-- name: TOB revenue - below threshold
+- name: Tier 2 below base threshold
   period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
@@ -53,11 +32,46 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 0
+    taxable_social_security_tier_2: 0
 
-- name: TOB revenue - joint filers
+- name: Tier 2 in tier 1 range only
   period: 2024
-  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_2: 850
+
+- name: Tier 2 in tier 2 range
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_2: 21_000
+
+- name: Tier 2 joint filers in tier 2 range
+  period: 2024
   input:
     people:
       person1:
@@ -79,9 +93,9 @@
       household:
         members: [person1, person2]
   output:
-    tob_revenue_total: 4_080
+    taxable_social_security_tier_2: 28_000
 
-- name: TOB revenue - high income
+- name: Tier 2 with high income
   period: 2024
   absolute_error_margin: 100
   input:
@@ -98,4 +112,4 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 7_820
+    taxable_social_security_tier_2: 29_500

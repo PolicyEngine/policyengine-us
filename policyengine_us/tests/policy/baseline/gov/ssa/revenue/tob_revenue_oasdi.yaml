@@ -1,23 +1,4 @@
-- name: TOB revenue - single retiree with SS and wages
-  period: 2024
-  absolute_error_margin: 100
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 30_000
-        employment_income: 50_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-  output:
-    tob_revenue_total: 4_240
-
-- name: TOB revenue - zero income
+- name: OASDI revenue with zero income
   period: 2024
   absolute_error_margin: 50
   input:
@@ -34,9 +15,9 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 0
+    tob_revenue_oasdi: 0
 
-- name: TOB revenue - below threshold
+- name: OASDI revenue below threshold
   period: 2024
   absolute_error_margin: 50
   input:
@@ -53,9 +34,47 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 0
+    tob_revenue_oasdi: 0
 
-- name: TOB revenue - joint filers
+- name: OASDI revenue in tier 1 only
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_oasdi: 450
+
+- name: OASDI revenue in tier 2
+  period: 2024
+  absolute_error_margin: 200
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_oasdi: 750
+
+- name: OASDI revenue joint filers
   period: 2024
   absolute_error_margin: 100
   input:
@@ -79,9 +98,9 @@
       household:
         members: [person1, person2]
   output:
-    tob_revenue_total: 4_080
+    tob_revenue_oasdi: 720
 
-- name: TOB revenue - high income
+- name: OASDI revenue high income
   period: 2024
   absolute_error_margin: 100
   input:
@@ -98,4 +117,4 @@
       household:
         members: [person1]
   output:
-    tob_revenue_total: 7_820
+    tob_revenue_oasdi: 1_020
