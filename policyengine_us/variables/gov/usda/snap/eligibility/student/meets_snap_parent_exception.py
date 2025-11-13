@@ -13,7 +13,7 @@ class meets_snap_parent_exception(Variable):
 
     def formula(person, period, parameters):
         # Exception 5: Parent with responsibility for dependent child under 6,
-        # Or child 6-11 when adequate child care is not available (not molded)
+        # Or child 6-11 when adequate child care is not available (not modeled)
         # Exception 8: Single parent enrolled full-time with responsibility
         # for dependent child under 12
         is_parent = person("is_tax_unit_head_or_spouse", period)
