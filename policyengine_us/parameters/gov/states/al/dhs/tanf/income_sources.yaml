@@ -1,0 +1,21 @@
+description: Alabama family assistance counts these income sources as earned income.
+values:
+  2022-01-01:
+    - employment_income
+    - self_employment_income
+    - child_support_received
+    - social_security
+    - veterans_benefits
+    - unemployment_compensation
+    - roth_ira_contributions
+    - roth_401k_contributions
+    - traditional_ira_contributions
+    - traditional_401k_contributions
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama family assistance earned income sources
+  reference:
+    - title: Alabama department of human resources family assistance eligibility requirements
+      href: https://dhr.alabama.gov/wp-content/uploads/2023/10/DHR-FAD-595-Oct.23.pdf#page=1
