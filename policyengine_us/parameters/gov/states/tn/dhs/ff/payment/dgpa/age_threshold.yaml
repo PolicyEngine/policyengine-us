@@ -1,12 +1,12 @@
-description: Tennessee provides the higher Differential Grant Payment Amount (DGPA) instead of the Standard Payment Amount (SPA) when the caretaker relative is at or above this age threshold, is disabled, provides care for a disabled family member, or when no eligible adults are present in the assistance unit. The 2008 Administrative Code specified age 60 as the threshold.
+description: Tennessee provides the higher Differential Grant Payment Amount (DGPA) when the caretaker relative is at or above this age threshold under the Families First program.
+
+values:
+  2008-11-01: 60
 
 metadata:
   unit: year
   period: month
   label: Tennessee Families First DGPA age threshold
   reference:
-    - title: Tennessee Administrative Code § 1240-01-50-.20(d) 
+    - title: Tennessee Administrative Code § 1240-01-50-.20(d)
       href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf
-
-values:
-  2008-11-01: 60

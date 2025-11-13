@@ -12,10 +12,9 @@ class tn_ff_payment_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         # Determine assistance unit size
-        p = parameters(period).gov.states.tn.dhs.ff
+        p = parameters(period).gov.states.tn.dhs.ff.payment
         unit_size = spm_unit("spm_unit_size", period)
-        max_size = p.payment.max_family_size
-        capped_size = min_(unit_size, max_size)
+        capped_size = min_(unit_size, p.max_family_size)
 
         # # Determine if eligible for DGPA
         # # DGPA eligibility: caretaker is at/above age threshold, disabled,
@@ -38,4 +37,4 @@ class tn_ff_payment_standard(Variable):
         # return where(eligible_for_dgpa, dgpa, spa)
 
         # Simplified: return SPA only (DGPA disabled for now)
-        return p.payment.standard_payment_amount[capped_size]
+        return p.standard_payment_amount[capped_size]

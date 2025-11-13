@@ -1,4 +1,6 @@
-description: Tennessee caps the Families First TANF benefit schedule at this maximum family size. Families larger than this size receive the benefit amount for this size. The 2008 benefit tables extended to size 20; the cap at size 10 is used for practical implementation purposes.
+description: Tennessee caps the benefit schedule at this maximum family size under the Families First program.
+values:
+  2008-11-01: 10
 
 metadata:
   unit: person
@@ -7,6 +9,3 @@ metadata:
   reference:
     - title: Tennessee Administrative Code § 1240-01-50-.20 
       href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf
-
-values:
-  2008-11-01: 10
