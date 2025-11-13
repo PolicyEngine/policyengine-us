@@ -5,7 +5,7 @@ class hi_cdcc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii child and dependent care credit"
-    defined_for = StateCode.HI
+    defined_for = "hi_cdcc_eligible"
     unit = USD
     definition_period = YEAR
     reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40"
