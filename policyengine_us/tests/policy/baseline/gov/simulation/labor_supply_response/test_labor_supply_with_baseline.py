@@ -76,3 +76,74 @@ def test_labor_supply_response_no_baseline_returns_zero():
 
     result = sim.calculate("labor_supply_behavioral_response", 2023)
     assert result[0] == 0
+
+
+def test_labor_supply_response_with_baseline_but_zero_elasticities():
+    """Test line 17: baseline exists but elasticities are zero."""
+    baseline_sim = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "employment_income_before_lsr": {"2023": 50_000},
+                }
+            },
+            "households": {"household": {"members": ["person1"]}},
+        }
+    )
+
+    reform_sim = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "employment_income_before_lsr": {"2023": 50_000},
+                }
+            },
+            "households": {"household": {"members": ["person1"]}},
+        }
+    )
+
+    # Set baseline but keep elasticities at zero
+    reform_sim.baseline = baseline_sim
+
+    # Elasticities are 0 by default, so this should return 0 (line 17)
+    result = reform_sim.calculate("labor_supply_behavioral_response", 2023)
+    assert result[0] == 0
+
+
+def test_labor_supply_response_reentry_guard():
+    """Test line 24: re-entry guard prevents recursion."""
+    baseline_sim = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "employment_income_before_lsr": {"2023": 50_000},
+                }
+            },
+            "households": {"household": {"members": ["person1"]}},
+        }
+    )
+
+    reform_sim = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "employment_income_before_lsr": {"2023": 50_000},
+                }
+            },
+            "households": {"household": {"members": ["person1"]}},
+        }
+    )
+
+    reform_sim.baseline = baseline_sim
+
+    # Set non-zero elasticities
+    reform_sim.tax_benefit_system.parameters.gov.simulation.labor_supply_responses.elasticities.income.update(
+        period="year:2023:10", value=0.1
+    )
+
+    # Manually set the re-entry guard to simulate recursion scenario
+    reform_sim._lsr_calculating = True
+
+    # This should return 0 due to re-entry guard (line 24)
+    result = reform_sim.calculate("labor_supply_behavioral_response", 2023)
+    assert result[0] == 0
