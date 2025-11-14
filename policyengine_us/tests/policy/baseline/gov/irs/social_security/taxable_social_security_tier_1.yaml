@@ -147,3 +147,59 @@
         members: [person1, person2]
   output:
     taxable_social_security_tier_1: [0, 0]
+
+- name: Tier 1 at exact base threshold boundary
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_1: 0
+
+- name: Tier 1 just above base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_1: 500
+
+- name: Tier 1 head of household filing status
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 25_000
+        employment_income: 22_000
+      person2:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    taxable_social_security_tier_1: 4_500

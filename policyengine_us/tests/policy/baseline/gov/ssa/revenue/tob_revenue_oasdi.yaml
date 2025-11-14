@@ -118,3 +118,22 @@
         members: [person1]
   output:
     tob_revenue_oasdi: 1_020
+
+- name: OASDI revenue - only tier 1 taxable
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_oasdi: 540
