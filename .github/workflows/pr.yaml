@@ -34,7 +34,7 @@ jobs:
         run: make changelog
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
