@@ -244,3 +244,30 @@ def test_tob_revenue_joint_filers():
     assert medicare_result[0] > 0
     assert oasdi_result[0] > 0
     assert abs(total_result[0] - (medicare_result[0] + oasdi_result[0])) < 1
+
+
+def test_tob_revenue_total_multiple_calls():
+    """Test that calling tob_revenue_total multiple times works correctly."""
+    sim = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "age": {"2024": 67},
+                    "social_security": {"2024": 30_000},
+                    "employment_income": {"2024": 50_000},
+                }
+            },
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["person1"],
+                    "filing_status": {"2024": "SINGLE"},
+                }
+            },
+            "households": {"household": {"members": ["person1"]}},
+        }
+    )
+    # Call twice to ensure branch cleanup works
+    result1 = sim.calculate("tob_revenue_total", 2024)
+    result2 = sim.calculate("tob_revenue_total", 2024)
+    assert result1[0] == result2[0]
+    assert result1[0] > 0
