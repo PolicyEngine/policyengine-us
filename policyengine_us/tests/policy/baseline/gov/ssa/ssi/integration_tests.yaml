@@ -68,10 +68,12 @@
   output:
     is_ssi_eligible: [true, false, true]
     # Spouse's countable: $2,000 - $20 - $65 - $957.50 = $957.50/month = $11,490/year
-    # PolicyEngine deems all of spouse's countable income (doesn't subtract spouse allowance)
+    # Since $11,490 > $5,796 (couple - individual FBR diff), deeming applies
+    # With deeming, use couple FBR: $1,450/month = $17,400/year
     ssi_income_deemed_from_ineligible_spouse: [11_490, 0, 0]
     ssi_countable_income: [11_490, 0, 0]
-    ssi: [114, 0, 11_604]  # Adult1: $11,604 - $11,490 = $114; Child gets full FBR
+    # Adult1 SSI: $17,400 (couple FBR) - $11,490 (countable) = $5,910
+    ssi: [5_910, 0, 11_604]  # Adult1: $5,910 with couple rate; Child gets full FBR
 
 - name: Case 3 - Both adults healthy with income + disabled child
   period: 2025
@@ -217,12 +219,14 @@
   output:
     is_ssi_eligible: [true, false, true]
     # Spouse's countable: $5,000 - $20 - $65 - $2,457.50 = $2,457.50/month = $29,490/year
-    # PolicyEngine deems all countable income without subtracting spouse allowance
+    # Since $29,490 > $5,796 (couple - individual FBR diff), deeming applies
+    # With deeming, use couple FBR: $1,450/month = $17,400/year
+    # Adult1 SSI: $17,400 (couple FBR) - $29,490 (countable) = -$12,090, capped at $0
     ssi_income_deemed_from_ineligible_spouse: [29_490, 0, 0]
     # Parent income deeming to child also gets high amount
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 17_886]
     ssi_countable_income: [29_490, 0, 17_646]
-    ssi: [0, 0, 0]  # Both disabled members have too much deemed income
+    ssi: [0, 0, 0]  # Both disabled members have countable income exceeding FBR
 
 - name: Case 7 - Illinois single parent with $9,600 income + healthy child
   period: 2024-01
