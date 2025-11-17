@@ -35,8 +35,25 @@ def create_ri_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
 
+            # Base credit for all eligible children
             eligible_children = tax_unit("ri_ctc_eligible_children", period)
-            return eligible_children * p.amount
+            base_credit = eligible_children * p.amount
+
+            # Young child boost for children under the boost age limit
+            person = tax_unit.members
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
+            meets_age = age < p.age_limit
+            meets_young_child_age = age < p.young_child_boost.age_limit
+
+            eligible_young_children = tax_unit.sum(
+                is_dependent & meets_age & meets_young_child_age
+            )
+            young_child_boost = (
+                eligible_young_children * p.young_child_boost.amount
+            )
+
+            return base_credit + young_child_boost
 
     class ri_ctc_phaseout(Variable):
         value_type = float
