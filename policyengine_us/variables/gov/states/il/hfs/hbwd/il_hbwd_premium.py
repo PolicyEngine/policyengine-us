@@ -13,7 +13,16 @@ class il_hbwd_premium(Variable):
     )
     defined_for = "il_hbwd_eligible"
 
-    # TODO: Implement 2D lookup table from HBWD premium schedule
-    # Premium is based on both earned and unearned income brackets
-    # See hfsweb004.pdf for complete premium table
-    # Maximum premium is $500/month
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.il.hfs.hbwd.premium
+
+        earned = person("il_hbwd_countable_earned_income", period)
+        unearned = person("il_hbwd_countable_unearned_income", period)
+
+        # Lookup premium components from bracket parameters
+        earned_component = p.earned_component.calc(earned)
+        unearned_component = p.unearned_component.calc(unearned)
+
+        # Add components and apply $500 cap
+        uncapped_premium = earned_component + unearned_component
+        return min_(uncapped_premium, p.cap)
