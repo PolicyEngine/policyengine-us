@@ -24,6 +24,30 @@ def create_ri_ctc() -> Reform:
             eligible = is_dependent & meets_age
             return tax_unit.sum(eligible)
 
+    class ri_ctc_young_child_boost(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Rhode Island CTC young child boost"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.ctc
+
+            person = tax_unit.members
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
+
+            # Check both general CTC eligibility and young child age limit
+            meets_age = age < p.age_limit
+            meets_young_child_age = age < p.young_child_boost.age_limit
+
+            eligible_young_children = tax_unit.sum(
+                is_dependent & meets_age & meets_young_child_age
+            )
+            return eligible_young_children * p.young_child_boost.amount
+
     class ri_ctc_maximum(Variable):
         value_type = float
         entity = TaxUnit
@@ -39,19 +63,8 @@ def create_ri_ctc() -> Reform:
             eligible_children = tax_unit("ri_ctc_eligible_children", period)
             base_credit = eligible_children * p.amount
 
-            # Young child boost for children under the boost age limit
-            person = tax_unit.members
-            age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
-            meets_age = age < p.age_limit
-            meets_young_child_age = age < p.young_child_boost.age_limit
-
-            eligible_young_children = tax_unit.sum(
-                is_dependent & meets_age & meets_young_child_age
-            )
-            young_child_boost = (
-                eligible_young_children * p.young_child_boost.amount
-            )
+            # Young child boost
+            young_child_boost = tax_unit("ri_ctc_young_child_boost", period)
 
             return base_credit + young_child_boost
 
@@ -159,6 +172,7 @@ def create_ri_ctc() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(ri_ctc_eligible_children)
+            self.update_variable(ri_ctc_young_child_boost)
             self.update_variable(ri_ctc_maximum)
             self.update_variable(ri_ctc_phaseout)
             self.update_variable(ri_total_ctc)

@@ -209,7 +209,8 @@
         state_name: RI
   output:
     ri_ctc_eligible_children: 2
-    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: 1 × $500 = $500; Total = $2_500
+    ri_ctc_young_child_boost: 500  # 1 child under 6 × $500 = $500
+    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: $500; Total = $2_500
     ri_total_ctc: 2_500
     ri_refundable_ctc: 2_500
     ri_non_refundable_ctc: 0
@@ -245,7 +246,8 @@
         state_name: RI
   output:
     ri_ctc_eligible_children: 2
-    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: 1 × $500 (only age 5 child) = $500; Total = $2_500
+    ri_ctc_young_child_boost: 500  # Only child age 5 qualifies (age 6 does not)
+    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: $500 (only age 5 child); Total = $2_500
     ri_total_ctc: 2_500
 
 - name: RI CTC - young child boost with multiple young children
@@ -282,7 +284,8 @@
         state_name: RI
   output:
     ri_ctc_eligible_children: 3
-    ri_ctc_maximum: 4_000  # Base: 3 × $1_000 = $3_000; Boost: 2 × $500 = $1_000; Total = $4_000
+    ri_ctc_young_child_boost: 1_000  # 2 children under 6 × $500 = $1_000
+    ri_ctc_maximum: 4_000  # Base: 3 × $1_000 = $3_000; Boost: $1_000; Total = $4_000
     ri_total_ctc: 4_000
 
 - name: RI CTC - young child boost with no boost amount (zero)
@@ -313,5 +316,6 @@
         state_name: RI
   output:
     ri_ctc_eligible_children: 1
-    ri_ctc_maximum: 1_000  # Base: 1 × $1_000 = $1_000; Boost: 1 × $0 = $0; Total = $1_000
+    ri_ctc_young_child_boost: 0  # 1 child under 6 × $0 = $0
+    ri_ctc_maximum: 1_000  # Base: 1 × $1_000 = $1_000; Boost: $0; Total = $1_000
     ri_total_ctc: 1_000
