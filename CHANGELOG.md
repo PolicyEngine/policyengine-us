@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.435.0] - 2025-11-17 23:19:37
+
+### Fixed
+
+- Restructure Tlaib package
+
 ## [1.434.0] - 2025-11-17 16:29:28
 
 ### Added
@@ -13513,6 +13519,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.434.0...1.435.0
 [1.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.433.0...1.434.0
 [1.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.9...1.433.0
 [1.432.9]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.8...1.432.9
