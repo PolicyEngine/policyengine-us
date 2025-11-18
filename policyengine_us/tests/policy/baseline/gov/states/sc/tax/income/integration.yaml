@@ -1,0 +1,85 @@
+- name: taxsim_record_1_2024.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50000.0
+        self_employment_income: 110000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 45
+  output:
+    sc_income_tax: 7_875
+
+- name: taxsim_record_1_2024.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        deductible_mortgage_interest: 20456.529
+        taxable_interest_income: 10684.795
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        taxable_interest_income: 10684.795
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        tax_unit_childcare_expenses: 9202.9531
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 45
+  output:
+    sc_income_tax: 117

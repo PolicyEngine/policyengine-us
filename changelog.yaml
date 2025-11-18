@@ -10815,3 +10815,695 @@
     added:
     - Add a state non-refundable credits variable.
   date: 2025-08-26 19:32:44
+- bump: minor
+  changes:
+    added:
+    - Multi-agent system for autonomous code review and implementation
+    - 13 specialized agents for validation, implementation, and enhancement
+    - /encode-policy command for implementing new government programs with TDD
+    - /review-pr command for reviewing and fixing PRs with mandatory agent usage
+    - Comprehensive documentation for agent coordination and testing
+  date: 2025-08-28 02:26:40
+- bump: minor
+  changes:
+    added:
+    - Enhanced multi-agent system for autonomous benefit program implementations
+    - New agents for issue management, naming coordination, and branch integration
+    - Improved workflow documentation with @ syntax for agent invocation
+    changed:
+    - Updated agent workflow to establish naming conventions before parallel development
+    - Modified CI fixer to work with existing draft PRs
+    - Enhanced test creator and rules engineer to work in separate git worktrees
+  date: 2025-08-28 03:53:01
+- bump: patch
+  changes:
+    added:
+    - Memory-optimized test execution scripts for baseline and contrib tests
+    - Batch processing with periodic memory cleanup to prevent OOM errors
+    fixed:
+    - Python path detection in test scripts for compatibility across environments
+  date: 2025-08-28 14:57:49
+- bump: patch
+  changes:
+    fixed:
+    - Updated push.yaml to fix workflow hanging issue with PYTHONUNBUFFERED=1 and
+      uv virtual environment
+  date: 2025-08-29 01:04:56
+- bump: patch
+  changes:
+    added:
+    - Fix Maine Property Tax Fairness Credit Veteran Cap.
+  date: 2025-08-29 06:00:04
+- bump: minor
+  changes:
+    added:
+    - Idaho 2022 rebate.
+    - Idaho special seasonal rebate.
+  date: 2025-08-29 14:50:10
+- bump: minor
+  changes:
+    added:
+    - congressional_district_geoid variable to replace the congressional district
+      portion of the removed UCGID concept
+    removed:
+    - Remove ucgid and ucgid_str variables and their associated tests as they are
+      no longer needed
+  date: 2025-08-29 16:29:36
+- bump: minor
+  changes:
+    fixed:
+    - Illinois TANF FPG calculation adjustments.
+  date: 2025-08-29 20:56:57
+- bump: minor
+  changes:
+    added:
+    - Adjust the IED calculation to use FPG adjusted in March.
+  date: 2025-08-30 16:08:36
+- bump: patch
+  changes:
+    added:
+    - Georgia surplus tax rebate.
+    fixed:
+    - Backdate the Georgia tax rates to 2021.
+  date: 2025-08-30 18:43:46
+- bump: minor
+  changes:
+    added:
+    - Adjust the IED calculation to use FPG adjusted in March.
+  date: 2025-08-31 11:40:22
+- bump: patch
+  changes:
+    fixes:
+    - Optimally allocate the Mississippi taxable income for married couples filing
+      jointly.
+  date: 2025-09-01 22:58:34
+- bump: minor
+  changes:
+    added:
+    - Arkansas additional tax credit for qualified individuals.
+    fixed:
+    - Arkansas 2024 income tax rates.
+  date: 2025-09-02 15:09:34
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 18:08:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply a floor to the Michigan household resources.
+  date: 2025-09-02 19:32:13
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana 2024 capital gains tax.
+  date: 2025-09-02 19:45:27
+- bump: minor
+  changes:
+    added:
+    - California Riverside County General Relief Program.
+  date: 2025-09-02 22:52:24
+- bump: minor
+  changes:
+    added:
+    - Illinois Low Income Home Energy Assistance Program (LIHEAP)
+  date: 2025-09-02 23:14:24
+- bump: patch
+  changes:
+    changed:
+    - Removed coverage tracking from push.yaml workflow to speed up master branch
+      builds.
+    - Implemented selective test runner and coverage test for PR workflow to only
+      test changed files.
+  date: 2025-09-03 17:02:51
+- bump: minor
+  changes:
+    added:
+    - CRFB tax employer payroll tax reform with configurable percentage parameter
+  date: 2025-09-03 17:50:49
+- bump: patch
+  changes:
+    fixed:
+    - Fix the deductions if not itemizing list.
+  date: 2025-09-04 09:23:57
+- bump: minor
+  changes:
+    added:
+    - North Carolina Subsidized Child Care Assistance (SCCA) maximum payment variable.
+    fixed:
+    - North Carolina Subsidized Child Care Assistance (SCCA) formula.
+  date: 2025-09-04 09:30:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child tax credit amount and phase-out thresholds uprating.
+  date: 2025-09-04 20:41:18
+- bump: minor
+  changes:
+    added:
+    - Vermont child care contributions.
+  date: 2025-09-04 22:44:50
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted New York CTC calculations pre 2025.
+  date: 2025-09-05 09:29:37
+- bump: minor
+  changes:
+    fixed:
+    - Adjusted run_selective_tests.py to improve test discovery.
+  date: 2025-09-05 09:32:44
+- bump: minor
+  changes:
+    added:
+    - Reform to extend senior deduction beyond 2028.
+  date: 2025-09-05 15:45:41
+- bump: patch
+  changes:
+    fixed:
+    - Add the qualified business income deduction to the list of additions in South
+      Carolina.
+  date: 2025-09-05 20:35:09
+- bump: patch
+  changes:
+    fixed:
+    - Social Security taxation formula now uses a separate parameter for combined
+      income calculation instead of incorrectly reusing the base taxation rate
+  date: 2025-09-09 22:03:48
+- bump: minor
+  changes:
+    added:
+    - Michigan 2024 home heating credit rate.
+  date: 2025-09-09 23:54:52
+- bump: minor
+  changes:
+    added:
+    - Include missing non-refundable credits in state non-refundable credits list.
+  date: 2025-09-10 10:36:26
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the CTC phase-in relevant earnings.
+  date: 2025-09-10 23:55:47
+- bump: patch
+  changes:
+    fixed:
+    - Michigan integration test.
+  date: 2025-09-11 01:02:51
+- bump: minor
+  changes:
+    added:
+    - Refactor the CTC phase-in relevant earnings.
+  date: 2025-09-11 11:13:17
+- bump: patch
+  changes:
+    fixed:
+    - Remove the self-employment income deduction from the SNAP deductions list.
+  date: 2025-09-15 22:28:43
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico exemptions.
+  date: 2025-09-17 15:33:26
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey other retirement income exclusion calculation.
+  date: 2025-09-17 17:11:17
+- bump: minor
+  changes:
+    added:
+    - New Mexico 2024 low income tax rebate amounts.
+  date: 2025-09-18 16:40:36
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota CDCC structure.
+  date: 2025-09-18 16:41:32
+- bump: patch
+  changes:
+    fixed:
+    - Default itemization to be based on state deductions when federal tax liability
+      is equal.
+    - Compute state itemized and standard deductions for states that adopt the federal
+      itemized and standard deductions.
+    - Account for the married filing separately structure in the state itemized and
+      standard deductions.
+    - Adopt a parallel Montana federal tax deduction for federal itemization purposes.
+  date: 2025-09-19 20:09:46
+- bump: minor
+  changes:
+    added:
+    - Separated Social Security taxation parameters to match each statutory percentage
+      independently
+    changed:
+    - Refactored Social Security taxation formula to use properly separated parameters
+      per IRC Section 86
+  date: 2025-09-22 18:07:07
+- bump: minor
+  changes:
+    added:
+    - California state-funded Medicaid eligibility for undocumented immigrants with
+      age-based phase-in from 2016-2024.
+  date: 2025-09-22 20:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut and Montana federal social security tax parameter dependencies.
+  date: 2025-09-22 21:29:46
+- bump: patch
+  changes:
+    fixed:
+    - Reform tests related to social security taxation.
+  date: 2025-09-23 22:47:11
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Oklahoma child care/ child tax credit to use the actual CTC value,
+      not the potential.
+  date: 2025-09-23 22:49:31
+- bump: minor
+  changes:
+    added:
+    - Update SNAP parameters for FY 2026 Cost-of-Living Adjustments.
+  date: 2025-09-23 22:51:10
+- bump: patch
+  changes:
+    fixed:
+    - Increase the tolerance for itemization comparison.
+  date: 2025-09-24 00:54:25
+- bump: patch
+  changes:
+    fixed:
+    - Montana married filing jointly subtractions allocation issue.
+    - Rename mt_agi to mt_agi_indiv.
+  date: 2025-09-24 15:23:57
+- bump: minor
+  changes:
+    added:
+    - Texas Dallas Area Rapid Transit (DART) reduced fare program.
+    fixed:
+    - Don't publish to PyPI on push without passing tests.
+  date: 2025-09-25 08:20:22
+- bump: patch
+  changes:
+    fixed:
+    - Improved test batching to avoid memory issues and reduce test duplication.
+    - Split baseline tests into separate batches for household and contrib folders.
+  date: 2025-09-25 20:18:49
+- bump: minor
+  changes:
+    fixed:
+    - Adjust the `state_agi` variable to reflect states that adopt federal AGI.
+  date: 2025-09-25 20:33:35
+- bump: minor
+  changes:
+    added:
+    - School meal subsidies 2024 and 2025 parameter updates.
+  date: 2025-09-26 15:55:30
+- bump: minor
+  changes:
+    added:
+    - CTC per child phase-in reform.
+    - CTC minimum refundable amount reform.
+    - CTC per child phase-out reform.
+  date: 2025-09-27 17:53:20
+- bump: patch
+  changes:
+    added:
+    - NY CTC 2027 bug fix.
+  date: 2025-09-30 19:58:04
+- bump: patch
+  changes:
+    fixed:
+    - Apply the 5 year look back to the CTC reforms.
+  date: 2025-09-30 19:59:15
+- bump: patch
+  changes:
+    fixed:
+    - Include partnership/S-corp income and farm income in Alabama gross income.
+  date: 2025-10-01 16:40:26
+- bump: patch
+  changes:
+    added:
+    - CTC reform integration tests.
+    fixed:
+    - Typo in the ctc per child phase-in reform and
+    - Minimum refundable CTC reform logic.
+  date: 2025-10-02 21:05:58
+- bump: minor
+  changes:
+    added:
+    - Update New Mexico personal income tax rate schedules for TY2025 per HB 252 (2024).
+  date: 2025-10-03 08:08:20
+- bump: patch
+  changes:
+    fixed:
+    - Vectorization of the CTC refundable maximum reform.
+  date: 2025-10-04 04:24:45
+- bump: minor
+  changes:
+    added:
+    - New benchmark_premium_uprating parameter based on KFF historical SLCSP data
+      (2014-2025)
+    changed:
+    - Switch SLCSP uprating from Chained CPI-U to empirical benchmark premium growth
+      rate of 4.3%
+    - Replace CRS references with IRS Revenue Procedures in ACA premium tax credit
+      parameters
+    - Spell out acronyms in parameter descriptions (ACA, PTC, MAGI, FPL, SLCSP)
+  date: 2025-10-05 21:01:54
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Child Care Financial Assistance (CCFA).
+  date: 2025-10-06 14:13:11
+- bump: minor
+  changes:
+    added:
+    - ACA PTC additional bracket reform allowing custom contribution rate schedules
+      by income level
+    - ACA PTC simplified bracket reform with linear phase-out starting at 100% FPL
+  date: 2025-10-09 16:59:51
+- bump: minor
+  changes:
+    added:
+    - Federal poverty guidelines for 2015 and 2016 to support WIC calculations back
+      to 2015.
+  date: 2025-10-09 22:32:59
+- bump: minor
+  changes:
+    added:
+    - FY 2026 SMI values.
+  date: 2025-10-09 22:40:48
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the PA tax forgiveness rate to use is_child_dependent.
+    - Remove the name metadata tag from the PA parameter system.
+  date: 2025-10-14 02:06:24
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Louisiana non refundable CDCC to base it on actual and not potential
+      credit amounts.
+  date: 2025-10-14 02:16:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix typo in Ohio modified AGI filename (oh_modifed_agi.py to oh_modified_agi.py)
+  date: 2025-10-14 02:23:12
+- bump: minor
+  changes:
+    added:
+    - Rep. Rashida Tlaib Income Security Package.
+  date: 2025-10-15 14:45:38
+- bump: minor
+  changes:
+    added:
+    - NYC formula.
+  date: 2025-10-15 15:30:29
+- bump: minor
+  changes:
+    added:
+    - Adjust the ctc_value as part of the minimum refundable CTC reform.
+  date: 2025-10-15 15:31:19
+- bump: minor
+  changes:
+    added:
+    - Texas Family Planning Program
+  date: 2025-10-16 13:32:23
+- bump: patch
+  changes:
+    fixed:
+    - Fix the income_security_package reform to apply the reform conditionally on
+      the reform parameters.
+  date: 2025-10-17 17:24:13
+- bump: patch
+  changes:
+    fixed:
+    - Updated ACA reform to start in 2026.
+  date: 2025-10-17 19:09:38
+- bump: patch
+  changes:
+    fixed:
+    - Fix the in_nyc vectorization issue.
+  date: 2025-10-17 19:20:53
+- bump: minor
+  changes:
+    added:
+    - Texas Harris County RIDES program.
+  date: 2025-10-17 21:50:35
+- bump: minor
+  changes:
+    added:
+    - Texas TANF.
+  date: 2025-10-17 22:13:09
+- bump: minor
+  changes:
+    added:
+    - Texas Lifeline fpg limit and supplement.
+  date: 2025-10-18 00:00:49
+- bump: minor
+  changes:
+    added:
+    - Texas Commodity Supplemental Food Program fpg limit.
+  date: 2025-10-18 17:49:59
+- bump: minor
+  changes:
+    added:
+    - Texas Child Care Services (CCS) program.
+  date: 2025-10-19 05:12:39
+- bump: minor
+  changes:
+    added:
+    - CTC per-child phase-out reform now includes avoid_overlap parameter to prevent
+      double-counting when regular and ARPA phase-outs overlap.
+  date: 2025-10-19 09:34:25
+- bump: patch
+  changes:
+    added:
+    - Hawaii ACT 115 rebate.
+    - Illinois income tax rebate.
+    - Maine relief rebate.
+    - Massachusetts taxpayer refund rebate.
+    - South Carolina 2022 rebate.
+    - Indiana automatic refund rebate.
+    - Colorado Tabor cash back.
+    fixed:
+    - Apply state income tax rebates in the tax year rather than the payment year.
+  date: 2025-10-19 23:10:23
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota child and working families credits child tax credit eligible child
+      definition.
+  date: 2025-10-20 14:35:58
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable unemployment compensation to the list of California subtractions.
+  date: 2025-10-20 15:35:19
+- bump: patch
+  changes:
+    fixed:
+    - Allow for the Colorado sales tax refund for filers with negative income .
+  date: 2025-10-20 19:43:44
+- bump: minor
+  changes:
+    added:
+    - Rhode Island Child Tax Credit reforms.
+  date: 2025-10-20 21:00:28
+- bump: patch
+  changes:
+    fixed:
+    - Fix us itemization integration tests which were failing due to a new Illinois
+      income tax rebate.
+  date: 2025-10-20 23:22:57
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative Wisconsin married couple credit amounts.
+  date: 2025-10-21 14:09:42
+- bump: patch
+  changes:
+    fixed:
+    - Include business income in the earned income concept for the Georgia retirement
+      income exclusion.
+  date: 2025-10-21 14:28:43
+- bump: patch
+  changes:
+    fixed:
+    - Avoid double counting the unemployment compensation in the New Mexico modified
+      gross income.
+  date: 2025-10-21 14:34:10
+- bump: patch
+  changes:
+    fixed:
+    - Use cdcc_relevant_expenses in the South Carolina CDCC calculation.
+  date: 2025-10-21 14:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Do not allow for an additional exemption for head of household filers under
+      the Kansas food sales tax credit.
+  date: 2025-10-21 17:40:03
+- bump: minor
+  changes:
+    added:
+    - 2026 IRS tax parameters from Revenue Procedure 2025-32 (standard deduction,
+      tax brackets, EITC, AMT, CTC, capital gains, QBI phase-out, student loan interest
+      deduction, aged/blind additional).
+    - Automatic uprating with statutory rounding rules for parameters that previously
+      had no post-2025 values (tax brackets 1-2, retirement contributions, capital
+      gains thresholds).
+    - Statutory rounding rules to parameters with uprating but no rounding (QBI phase-out).
+    - Actual BLS CPI data through August 2025 (C-CPI-U, CPI-U, CPI-W).
+    changed:
+    - Replaced manual CBO forecast values (2027-2035) with automatic uprating for
+      tax brackets 3-6, standard deduction, AMT exemption, AMT phase-out, aged/blind
+      additional deduction, CTC base amount, and CTC refundable maximum.
+    - Replaced OBBB legislative references with permanent IRC statutory sections.
+    - Split capital_gains/brackets.yaml into separate rates.yaml and thresholds.yaml
+      files.
+    fixed:
+    - Corrected previously incorrect 2026 QBI phase-out threshold forecast values.
+  date: 2025-10-22 03:08:12
+- bump: patch
+  changes:
+    fixed:
+    - CTC per-child phase-out reform to avoid double-counting when regular and ARPA
+      phase-outs overlap.
+  date: 2025-10-22 12:00:48
+- bump: patch
+  changes:
+    fixed:
+    - Fix contributed test cases.
+  date: 2025-10-22 12:30:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix the baby bonus act payment test.
+  date: 2025-10-22 14:06:11
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island exemption reform now correctly applies baseline phase-out to personal
+      exemptions at high incomes
+  date: 2025-10-22 20:34:02
+- bump: patch
+  changes:
+    added:
+    - Changed name of aca_ptc_phase_out_rate to aca_required_contribution_percentage
+      to better reflect its purpose.
+  date: 2025-10-24 01:02:40
+- bump: patch
+  changes:
+    changed:
+    - Restructure PR CI workflow to run selective tests (with coverage) and full test
+      suite in parallel for faster feedback and comprehensive validation.
+  date: 2025-10-25 22:24:57
+- bump: patch
+  changes:
+    fixed:
+    - Fix recursion errors when applying LSRs.
+  date: 2025-10-28 14:08:51
+- bump: minor
+  changes:
+    added:
+    - Age heterogeneity in labor supply response elasticities using multiplier approach.
+  date: 2025-10-28 20:44:10
+- bump: minor
+  changes:
+    added:
+    - Fix Rhode Island Dependent Exemption to Match Model.
+  date: 2025-10-31 00:57:16
+- bump: minor
+  changes:
+    added:
+    - Federal TANF baseline infrastructure for simplified state implementations.
+  date: 2025-10-31 17:27:49
+- bump: minor
+  changes:
+    fixed:
+    - Fixed typo in tanf and snap parameter folders.
+  date: 2025-11-06 17:11:46
+- bump: minor
+  changes:
+    added:
+    - Georgia Itemizer Tax Credit.
+  date: 2025-11-06 17:14:20
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico tax computation.
+  date: 2025-11-07 23:08:43
+- bump: minor
+  changes:
+    added:
+    - Virginia 2024 income tax rebate.
+  date: 2025-11-07 23:12:15
+- bump: patch
+  changes:
+    fixed:
+    - Avoid removing older dependents from the Rhode Island exemption reform.
+  date: 2025-11-09 20:09:40
+- bump: patch
+  changes:
+    fixed:
+    - Apply the potential federal CDCC when computing the Ohio CDCC.
+  date: 2025-11-10 11:36:20
+- bump: patch
+  changes:
+    changed:
+    - Fix Head Start and Early Head Start variable metadata (add unit=USD, simplify
+      labels)
+  date: 2025-11-10 11:57:39
+- bump: patch
+  changes:
+    fixed:
+    - Fix Head Start categorical eligibility vectorization bug causing incorrect benefits
+      at high incomes
+  date: 2025-11-10 13:54:57
+- bump: patch
+  changes:
+    added:
+    - Debug income security package.
+  date: 2025-11-10 19:14:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove the repeal of the Hawaii alternative tax on capital gains.
+  date: 2025-11-11 13:40:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing
+      incorrect categorical eligibility
+  date: 2025-11-11 14:47:06
+- bump: patch
+  changes:
+    changed:
+    - Revert age heterogeneity in labor supply response elasticities (v1.426.0).
+  date: 2025-11-11 19:02:22
+- bump: patch
+  changes:
+    fixed:
+    - Limit the Hawaii CDCC to households with at least one qualifying dependent .
+  date: 2025-11-13 15:46:53
+- bump: minor
+  changes:
+    added:
+    - Working Pennsylvanians Tax Credit.
+  date: 2025-11-13 23:38:52
+- bump: minor
+  changes:
+    added:
+    - Rhode Island CTC young child boost.
+  date: 2025-11-17 16:29:28
+- bump: minor
+  changes:
+    fixed:
+    - Restructure Tlaib package
+  date: 2025-11-17 23:19:37

@@ -21,3 +21,6 @@ from .tax_employer_payroll_tax import (
 from .non_refundable_ss_credit import (
     create_non_refundable_ss_credit_reform,
 )
+from .senior_deduction_extension import (
+    create_senior_deduction_extension_reform,
+)

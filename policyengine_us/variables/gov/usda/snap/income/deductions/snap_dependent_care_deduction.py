@@ -10,4 +10,8 @@ class snap_dependent_care_deduction(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_3"
 
-    adds = ["childcare_expenses"]
+    # Use pre-subsidy expenses to avoid circular dependency
+    # (childcare subsidies depend on income, which would create a
+    # circular dependency if SNAP deductions depended on subsidized
+    # childcare expenses).
+    adds = ["pre_subsidy_childcare_expenses"]

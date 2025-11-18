@@ -1,0 +1,116 @@
+- name: Case 1, child-only non-caretaker case.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type: NON_CARETAKER
+    # 0 eligible parents → non-caretaker (child-only)
+
+- name: Case 2, single parent caretaker without second parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    # 1 eligible parent → caretaker without second parent
+
+- name: Case 3, two parent caretaker with second parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+    # 2 eligible parents → caretaker with second parent
+
+- name: Case 4, three parents still caretaker with second parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+      person4:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+    # 3+ eligible parents → caretaker with second parent
+
+- name: Case 5, undocumented parent excluded from count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+    # Person1 not immigration eligible → only 1 eligible parent

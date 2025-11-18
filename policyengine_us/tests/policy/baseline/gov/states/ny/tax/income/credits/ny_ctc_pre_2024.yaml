@@ -1,0 +1,99 @@
+- name: Case 1, taxsim_record_225838_2024.yaml.
+  absolute_error_margin: 0.2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0.0
+        taxable_interest_income: 24_248.203
+        is_tax_unit_head: true
+      person2:
+        age: 41
+        employment_income: 0.0
+        taxable_interest_income: 24_248.203
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        employment_income: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 36
+  output:
+    ny_ctc: 330
+    ny_ctc_pre_2024: 330
+   # ny_ctc: 0
+
+- name: Case 2, parent of four-year old child with no income gets minimum credit, $100 per child.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+    ny_ctc_pre_2024: 100
+
+- name: Case 3, parent of four-year old child with some earned income.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 330
+    ny_ctc_pre_2024: 330
+
+- name: Case 4, parent of four-year old child with some earned income.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        taxable_interest_income: 50_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 330
+    ny_ctc_pre_2024: 330

@@ -1,0 +1,1 @@
+# These files are used for the calculation of the federal itemization choice to avoid circular reference errors regarding the federal tax deduction. They are not applied in the final Montana income tax calculation. 

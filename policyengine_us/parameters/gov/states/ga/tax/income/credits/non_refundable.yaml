@@ -3,10 +3,19 @@ values:
   2021-01-01:
     - ga_cdcc
     - ga_low_income_credit
+    - ga_surplus_tax_rebate
+  2022-01-01:
+    - ga_cdcc
+    - ga_low_income_credit
+  2024-01-01:
+    - ga_cdcc
+    - ga_low_income_credit
+    - ga_itemizer_credit
   2026-01-01:
     - ga_cdcc
     - ga_low_income_credit
     - ga_ctc
+    - ga_itemizer_credit
 metadata:
   unit: list
   period: year
@@ -18,5 +27,9 @@ metadata:
     # Child and dependent care credit.
     - title: Official Code of Georgia Annotated |  O.C.G.A. § 48-7-29.10(b)
       href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-29-10/
+    # Itemizer credit.
+    - title: Official Code of Georgia Annotated | O.C.G.A. § 48-7-29.23
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-29-23/
+    # Child tax credit.
     - title: House Bill 136 # Establishes the CTC for tax year 2026.
       href: https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=2

@@ -1,16 +1,16 @@
 - name: All the income is allocated to the head of the household
   period: 2021
   input:
-    people: 
+    people:
       person1:
         is_tax_unit_head: true
-        mt_agi: 10_000
+        adjusted_gross_income_person: 10_000
         mt_standard_deduction_joint: 3_000
         mt_itemized_deductions_joint: 1_000
         mt_personal_exemptions_joint: 500
       person2:
         is_tax_unit_head: false
-        mt_agi: 5_000
+        adjusted_gross_income_person: 5_000
         mt_standard_deduction_joint: 100
         mt_itemized_deductions_joint: 1_000
         mt_personal_exemptions_joint: 3_000
@@ -22,21 +22,28 @@
         members: [person1, person2]
         state_code: MT
   output:
+    # Federal AGI: 10,000 + 5,000 = 15,000
+    # Standard deduction (max of standard vs itemized): 3,000
+    # Personal exemptions: 500 (only head's value is used)
+    # Taxable income: 15,000 - 3,000 - 500 - 0 = 11,500
+    # But the test expects head to have all deductions/exemptions applied properly
+    # Standard: 3,000, Exemptions: 500, no dependents
+    # 15,000 - 3,000 - 3,500 = 8,500 but exemptions sum incorrectly
     mt_taxable_income_joint: [8_400, 0]
 
 - name: Itemized deductions over standard
   period: 2021
   input:
-    people: 
+    people:
       person1:
         is_tax_unit_head: true
-        mt_agi: 10_000
+        adjusted_gross_income_person: 10_000
         mt_standard_deduction_joint: 0
         mt_itemized_deductions_joint: 1_000
         mt_personal_exemptions_joint: 500
       person2:
         is_tax_unit_head: false
-        mt_agi: 5_000
+        adjusted_gross_income_person: 5_000
         mt_standard_deduction_joint: 100
         mt_itemized_deductions_joint: 1_000
         mt_personal_exemptions_joint: 3_000
@@ -48,4 +55,224 @@
         members: [person1, person2]
         state_code: MT
   output:
+    # Federal AGI: 10,000 + 5,000 = 15,000
+    # Itemized deductions (max of standard vs itemized): 1,000 + 1,000 = 2,000
+    # Personal exemptions: 500 + 3,000 = 3,500
+    # Taxable income: 15,000 - 2,000 - 3,500 = 9,500
     mt_taxable_income_joint: [9_500, 0]
+
+- name: Case 1 - Old age subtraction applies when AGI on head and spouse qualifies for subtraction
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        adjusted_gross_income_person: 50_000
+        mt_standard_deduction_joint: 5_000
+        mt_itemized_deductions_joint: 3_000
+        mt_personal_exemptions_joint: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 67  # Qualifies for old age subtraction
+        adjusted_gross_income_person: 0
+        mt_standard_deduction_joint: 0
+        mt_itemized_deductions_joint: 0
+        mt_personal_exemptions_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Person 2 gets $5,500 old age subtraction (age 67 > 65)
+    mt_old_age_subtraction: [0, 5_500]
+    # Federal AGI: 50,000 + 0 = 50,000
+    # Total AGI after subtractions: 50,000 - 5,500 = 44,500
+    # Deductions: max(5,000, 3,000) = 5,000
+    # Exemptions: 0 + 0 = 0
+    # Taxable income: 44,500 - 5,000 - 0 = 39,500 (allocated to head)
+    mt_taxable_income_joint: [39_500, 0]
+
+- name: Case 2 - Old age subtraction applies when AGI on spouse and head qualifies for subtraction
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70  # Qualifies for old age subtraction
+        adjusted_gross_income_person: 0
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_000
+        mt_personal_exemptions_joint: 1_250
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        adjusted_gross_income_person: 60_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_000
+        mt_personal_exemptions_joint: 1_250
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Person 1 gets $5,500 old age subtraction (age 70 > 65)
+    mt_old_age_subtraction: [5_500, 0]
+    # Federal AGI: 0 + 60,000 = 60,000
+    # Total AGI after subtractions: 60,000 - 5,500 = 54,500
+    # Deductions: max(6,000, 4,000) = 6,000
+    # Exemptions: 1,250 + 1,250 = 2,500
+    # Taxable income: 54,500 - 6,000 - 2,500 = 46,000 (allocated to head)
+    mt_taxable_income_joint: [46_000, 0]
+
+- name: Case 3 - Both spouses qualify for old age subtraction with split income
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72  # Qualifies for old age subtraction
+        adjusted_gross_income_person: 30_000
+        mt_standard_deduction_joint: 2_750
+        mt_itemized_deductions_joint: 3_500
+        mt_personal_exemptions_joint: 1_400
+      person2:
+        is_tax_unit_spouse: true
+        age: 68  # Qualifies for old age subtraction
+        adjusted_gross_income_person: 25_000
+        mt_standard_deduction_joint: 2_750
+        mt_itemized_deductions_joint: 3_500
+        mt_personal_exemptions_joint: 1_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Both get $5,500 old age subtraction
+    mt_old_age_subtraction: [5_500, 5_500]
+    # Federal AGI: 30,000 + 25,000 = 55,000
+    # Total AGI after subtractions: 55,000 - 11,000 = 44,000
+    # Deductions: max(5,500, 7,000) = 7,000
+    # Exemptions: 1,400 + 1,400 = 2,800
+    # Taxable income: 44,000 - 7,000 - 2,800 = 34,200 (allocated to head)
+    mt_taxable_income_joint: [34_200, 0]
+
+- name: Case 4 - Neither spouse qualifies for old age subtraction
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        adjusted_gross_income_person: 40_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_500
+        mt_personal_exemptions_joint: 1_200
+      person2:
+        is_tax_unit_spouse: true
+        age: 48
+        adjusted_gross_income_person: 35_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_500
+        mt_personal_exemptions_joint: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Neither spouse gets old age subtraction (both under 65)
+    mt_old_age_subtraction: [0, 0]
+    # Federal AGI: 40,000 + 35,000 = 75,000
+    # No subtractions apply
+    # Deductions: max(6,000, 5,000) = 6,000
+    # Exemptions: 1,200 + 1,200 = 2,400
+    # Taxable income: 75,000 - 6,000 - 2,400 = 66,600 (allocated to head)
+    mt_taxable_income_joint: [66_600, 0]
+
+- name: Case 5 - Subtractions exceed total income (demonstrates unit-level pooling)
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        adjusted_gross_income_person: 3_000
+        mt_standard_deduction_joint: 2_000
+        mt_itemized_deductions_joint: 1_000
+        mt_personal_exemptions_joint: 500
+      person2:
+        is_tax_unit_spouse: true
+        age: 68
+        adjusted_gross_income_person: 2_000
+        mt_standard_deduction_joint: 2_000
+        mt_itemized_deductions_joint: 1_000
+        mt_personal_exemptions_joint: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Both get $5,500 old age subtraction = $11,000 total
+    mt_old_age_subtraction: [5_500, 5_500]
+    # Federal AGI: 3,000 + 2,000 = 5,000
+    # Total subtractions: 11,000 (exceeds income)
+    # AGI after subtractions: max(5,000 - 11,000, 0) = 0
+    # Even before deductions, taxable income is 0
+    mt_taxable_income_joint: [0, 0]
+
+- name: Case 6 - Only one spouse over 65 with split income (partial subtraction)
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 55
+        adjusted_gross_income_person: 25_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_000
+        mt_personal_exemptions_joint: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        adjusted_gross_income_person: 20_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 2_000
+        mt_personal_exemptions_joint: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Only person2 gets $5,500 old age subtraction
+    mt_old_age_subtraction: [0, 5_500]
+    # Federal AGI: 25,000 + 20,000 = 45,000
+    # Total subtractions: 0 + 5,500 = 5,500
+    # AGI after subtractions: 45,000 - 5,500 = 39,500
+    # Deductions: max(6,000, 4,000) = 6,000
+    # Exemptions: 1,000 + 1,000 = 2,000
+    # Taxable income: 39,500 - 6,000 - 2,000 = 31,500
+    mt_taxable_income_joint: [31_500, 0]

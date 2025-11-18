@@ -142,3 +142,27 @@ class state_fips(Variable):
     definition_period = YEAR
     documentation = "State FIPS code"
     default_value = 6
+
+
+class congressional_district_geoid(Variable):
+    value_type = int
+    label = "Congressional district GEOID"
+    entity = Household
+    definition_period = YEAR
+    documentation = """Congressional district geographic identifier stored as an integer.
+    
+    Format: SSDD where SS is the 2-digit state FIPS code and DD is the 2-digit district number.
+    
+    Examples:
+    - Alabama (FIPS 01) district 01 is stored as 101
+    - Alabama (FIPS 01) district 07 is stored as 107  
+    - North Carolina (FIPS 37) district 01 is stored as 3701
+    - California (FIPS 06) district 52 is stored as 652
+    
+    To extract components:
+    - State FIPS: geoid // 100
+    - District number: geoid % 100
+    
+    Note: Leading zeros are not preserved in the integer storage (e.g., 0101 becomes 101),
+    but the value remains unique and unambiguous since the format is always interpreted as SSDD."""
+    default_value = 0

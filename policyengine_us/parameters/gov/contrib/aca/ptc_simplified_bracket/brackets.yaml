@@ -1,0 +1,28 @@
+# Linear progression: above 100% FPL, contribution percentage increases
+# by 4 percentage points per 100% FPL increment.
+# Examples: 200% FPL = 4%, 400% FPL = 12%, 600% FPL = 20%
+
+description: Simplified ACA PTC contribution percentages with linear phase-out.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: ACA PTC simplified contribution rate brackets
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1.0
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 100.0
+    amount:
+      2026-01-01: 3.96

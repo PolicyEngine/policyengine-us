@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: MT
-    mt_agi: 12_950
+    mt_agi_indiv: 12_950
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
   output:
     mt_standard_deduction_indiv: 2_590
@@ -11,7 +11,7 @@
   period: 2021
   input:
     state_code: MT
-    mt_agi: 8_000
+    mt_agi_indiv: 8_000
     state_filing_status_if_married_filing_separately_on_same_return: SURVIVING_SPOUSE
   output:
     mt_standard_deduction_indiv: 2_140
@@ -20,7 +20,7 @@
   period: 2021
   input:
     state_code: MT
-    mt_agi: 30_000
+    mt_agi_indiv: 30_000
     state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
   output:
     mt_standard_deduction_indiv: 4_830
@@ -29,7 +29,7 @@
   period: 2022
   input:
     state_code: MT
-    mt_agi: 25_180
+    mt_agi_indiv: 25_180
     state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
   output:
     mt_standard_deduction_indiv: 5_036
@@ -41,13 +41,13 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 5_000
+        mt_agi_indiv: 5_000
       person2:
         is_tax_unit_head_or_spouse: true
-        mt_agi: 100_000
+        mt_agi_indiv: 100_000
       person3:
         is_tax_unit_head_or_spouse: false
-        mt_agi: 0
+        mt_agi_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -63,7 +63,7 @@
   period: 2024
   input:
     state_code: MT
-    mt_agi: 12_950
+    mt_agi_indiv: 12_950
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
   output:
     mt_standard_deduction_indiv: 14_600
