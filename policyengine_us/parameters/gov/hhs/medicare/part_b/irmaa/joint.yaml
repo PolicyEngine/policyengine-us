@@ -1,4 +1,4 @@
-description: Joint filers use these income brackets for Medicare Part B premiums, based on income from the previous tax year.
+description: Income-Related Monthly Adjustment Amount (IRMAA) surcharges for Medicare Part B for joint filers, based on modified adjusted gross income (MAGI) from two years prior.
 metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
@@ -30,6 +30,6 @@ brackets:
     amount:
       2025-01-01: 406.9
   - threshold:
-      2025-01-01: 750_001
+      2025-01-01: 750_000
     amount:
       2025-01-01: 443.9

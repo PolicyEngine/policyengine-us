@@ -1,9 +1,9 @@
-description: Married separate filers use these income brackets for Medicare Part B premiums, based on income from the previous tax year.
+description: Income-Related Monthly Adjustment Amount (IRMAA) surcharges for Medicare Part B for married filing separately, based on modified adjusted gross income (MAGI) from two years prior.
 metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: month
-  label: Medicare Part B income brackets for joint filers
+  label: Medicare Part B income brackets for married filing separately
   reference:
     - title: 2025 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2025-medicare-parts-b-premiums-and-deductibles
@@ -16,7 +16,7 @@ brackets:
       2025-01-01: 106_001
     amount:
       2025-01-01: 406.9
-  - threshold:  
-      2025-01-01: 394_001
+  - threshold:
+      2025-01-01: 394_000
     amount:
       2025-01-01: 443.9
