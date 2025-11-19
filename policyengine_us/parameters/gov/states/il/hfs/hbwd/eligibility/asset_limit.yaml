@@ -1,13 +1,13 @@
-description: Illinois HBWD allows higher asset limits than regular Medicaid. Non-exempt assets must be at or below this amount. Primary residence, one vehicle, and retirement accounts are exempt.
+description: Illinois limits the Health Benefits for Workers with Disabilities program to individuals with non-exempt assets at or below this amount.
 values:
-  2000-01-01: 25_000
+  2022-01-01: 25_000
 
 metadata:
   unit: currency-USD
   period: year
-  label: IL HBWD asset limit
+  label: Illinois Health Benefits for Workers with Disabilities asset limit
   reference:
     - title: 89 Ill. Admin. Code § 120.510 - HBWD Eligibility
-      href: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
     - title: Health Benefits for Workers with Disabilities Eligibility | HFS
       href: https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html

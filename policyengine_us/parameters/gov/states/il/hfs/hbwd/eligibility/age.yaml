@@ -1,25 +1,25 @@
-description: Age eligibility for Illinois Health Benefits for Workers with Disabilities (HBWD). Eligible individuals must be between 16 and 64 years old.
+description: Illinois limits the Health Benefits for Workers with Disabilities program to individuals between these ages.
 metadata:
   threshold_unit: year
   amount_unit: bool
   period: year
   type: single_amount
-  label: IL HBWD age eligibility
+  label: Illinois Health Benefits for Workers with Disabilities age eligibility
   reference:
     - title: 89 Ill. Admin. Code § 120.510 - HBWD Eligibility
-      href: https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
     - title: Health Benefits for Workers with Disabilities Eligibility | HFS
       href: https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html
 brackets:
   - threshold:
-      2000-01-01: 0
+      2022-01-01: 0
     amount:
-      2000-01-01: false
+      2022-01-01: false
   - threshold:
-      2000-01-01: 16
+      2022-01-01: 16
     amount:
-      2000-01-01: true
+      2022-01-01: true
   - threshold:
-      2000-01-01: 65
+      2022-01-01: 65
     amount:
-      2000-01-01: false
+      2022-01-01: false
