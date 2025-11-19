@@ -26,16 +26,19 @@ class ssi_amount_if_eligible(Variable):
         # No explicit cap logic is needed in uncapped_ssi.
 
         is_joint_claim = person("ssi_claim_is_joint", period)
-        deeming_applies = person("ssi_spousal_deeming_applies", period)
+        deeming_applies = person("is_ssi_spousal_deeming", period)
+
+        # Determine FBR to use based on scenario
+        individual_or_deeming_amount = where(
+            deeming_applies,
+            p.couple,  # Scenario 3: Deeming applies - use couple rate!
+            p.individual,  # Scenario 2: No deeming
+        )
 
         head_or_spouse_amount = where(
             is_joint_claim,
             p.couple / 2,  # Scenario 1: Both eligible
-            where(
-                deeming_applies,
-                p.couple,  # Scenario 3: Deeming applies - use couple rate!
-                p.individual,  # Scenario 2: No deeming
-            ),
+            individual_or_deeming_amount,
         )
 
         # Adults amount is based on scenario (see above)

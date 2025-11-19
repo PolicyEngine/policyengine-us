@@ -22,37 +22,37 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        # 1. Sum leftover spouse earned/unearned (post-child allocations).
+        # 1. Check if spousal deeming applies (avoids duplicating threshold logic)
+        deeming_applies = person("is_ssi_spousal_deeming", period)
+
+        # 2. If deeming applies, calculate deemed amount using "difference" approach:
+        #    (couple combined countable) - (individual alone countable)
+
+        # Get spouse's leftover income (post-child allocations)
         spouse_earned = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", period
         )
         spouse_unearned = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
-        leftover_spouse = spouse_earned + spouse_unearned
 
-        # 2. Compare leftover to FBR difference
-        p = parameters(period).gov.ssa.ssi.amount
-        diff = (p.couple - p.individual) * MONTHS_IN_YEAR
-        if_leftover_exceeds = leftover_spouse > diff
+        # Get individual's own income
+        individual_earned = person("ssi_earned_income", period)
+        individual_unearned = person("ssi_unearned_income", period)
 
-        # 3. If leftover <= diff => no deeming
-        #    If leftover > diff => difference of incomes approach
-        #    (couple combined) - (individual alone).
-        #   (a) individual's own income
-        indiv_earned = person("ssi_earned_income", period)
-        indiv_unearned = person("ssi_unearned_income", period)
+        # Calculate individual's countable income (alone)
         alone_countable = _apply_ssi_exclusions(
-            indiv_earned, indiv_unearned, parameters, period
+            individual_earned, individual_unearned, parameters, period
         )
 
-        #   (b) couple combined income
+        # Calculate couple's combined countable income
         couple_countable = _apply_ssi_exclusions(
-            indiv_earned + spouse_earned,
-            indiv_unearned + spouse_unearned,
+            individual_earned + spouse_earned,
+            individual_unearned + spouse_unearned,
             parameters,
             period,
         )
 
-        deemed_if_exceeds = max_(0, couple_countable - alone_countable)
-        return if_leftover_exceeds * deemed_if_exceeds
+        # Deemed amount is the difference (only when deeming applies)
+        deemed_amount = max_(0, couple_countable - alone_countable)
+        return deeming_applies * deemed_amount
