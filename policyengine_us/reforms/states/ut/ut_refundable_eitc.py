@@ -30,13 +30,8 @@ def create_ut_refundable_eitc() -> Reform:
             has_qualifying_child = tax_unit(
                 "ut_has_qualifying_child_for_refundable_eitc", period
             )
-            # Calculate directly from federal EITC to avoid circular dependency
-            p = parameters(
-                period
-            ).gov.states.ut.tax.income.credits.earned_income
-            federal_eitc = tax_unit("eitc", period)
-            ut_eitc_amount = p.rate * federal_eitc
-            return has_qualifying_child * ut_eitc_amount
+            ut_eitc = tax_unit("ut_eitc", period)
+            return has_qualifying_child * ut_eitc
 
     class ut_eitc(Variable):
         value_type = float
@@ -53,13 +48,42 @@ def create_ut_refundable_eitc() -> Reform:
                 period
             ).gov.states.ut.tax.income.credits.earned_income
             federal_eitc = tax_unit("eitc", period)
-            ut_eitc_amount = p.rate * federal_eitc
+            return p.rate * federal_eitc
 
-            # Return non-refundable portion (zero if has qualifying child)
-            has_qualifying_child = tax_unit(
-                "ut_has_qualifying_child_for_refundable_eitc", period
+    class ut_non_refundable_eitc(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Utah non-refundable EITC"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.UT
+
+        def formula(tax_unit, period, parameters):
+            ut_eitc = tax_unit("ut_eitc", period)
+            ut_refundable_eitc = tax_unit("ut_refundable_eitc", period)
+            return ut_eitc - ut_refundable_eitc
+
+    class ut_non_refundable_credits(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Utah non-refundable tax credits"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.UT
+
+        def formula(tax_unit, period, parameters):
+            # Under the reform, use ut_non_refundable_eitc instead of ut_eitc
+            return add(
+                tax_unit,
+                period,
+                [
+                    "ut_non_refundable_eitc",
+                    "ut_retirement_credit",
+                    "ut_ss_benefits_credit",
+                    "ut_at_home_parent_credit",
+                    "ut_ctc",
+                ],
             )
-            return where(has_qualifying_child, 0, ut_eitc_amount)
 
     class ut_refundable_credits(Variable):
         value_type = float
@@ -76,7 +100,9 @@ def create_ut_refundable_eitc() -> Reform:
         def apply(self):
             self.add_variable(ut_has_qualifying_child_for_refundable_eitc)
             self.add_variable(ut_refundable_eitc)
+            self.add_variable(ut_non_refundable_eitc)
             self.update_variable(ut_eitc)
+            self.update_variable(ut_non_refundable_credits)
             self.update_variable(ut_refundable_credits)
 
     return reform
