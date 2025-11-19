@@ -4,7 +4,7 @@ metadata:
   amount_unit: bool
   period: year
   type: single_amount
-  label: Illinois Health Benefits for Workers with Disabilities age eligibility
+  label: Illinois HBWD age eligibility
   reference:
     - title: 89 Ill. Admin. Code § 120.510 - HBWD Eligibility
       href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
@@ -12,14 +12,14 @@ metadata:
       href: https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html
 brackets:
   - threshold:
-      2022-01-01: 0
+      2022-04-01: 0
     amount:
-      2022-01-01: false
+      2022-04-01: false
   - threshold:
-      2022-01-01: 16
+      2022-04-01: 16
     amount:
-      2022-01-01: true
+      2022-04-01: true
   - threshold:
-      2022-01-01: 65
+      2022-04-01: 65
     amount:
-      2022-01-01: false
+      2022-04-01: false

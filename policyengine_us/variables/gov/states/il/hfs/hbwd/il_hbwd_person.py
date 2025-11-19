@@ -9,7 +9,7 @@ class il_hbwd_person(Variable):
     definition_period = MONTH
     reference = (
         "https://hfs.illinois.gov/medicalprograms/hbwd.html",
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
     )
     defined_for = "il_hbwd_eligible"
 

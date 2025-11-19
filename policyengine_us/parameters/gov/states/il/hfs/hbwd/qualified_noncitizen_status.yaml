@@ -1,6 +1,6 @@
 description: Illinois considers these statuses as qualified noncitizens under the Health Benefits for Workers with Disabilities program.
 values:
-  2000-01-01:
+  2022-04-01:
     # - HONORABLY_DISCHARGED_VETERAN  # Not in immigration_status enum
     - REFUGEE
     - ASYLEE
@@ -11,7 +11,7 @@ values:
     # - VICTIMS_OF_TRAFFICKING  # Not in immigration_status enum yet
 
 metadata:
-  label: Illinois Health Benefits for Workers with Disabilities qualified noncitizen statuses
+  label: Illinois HBWD qualified noncitizen statuses
   period: year
   unit: list
   reference:

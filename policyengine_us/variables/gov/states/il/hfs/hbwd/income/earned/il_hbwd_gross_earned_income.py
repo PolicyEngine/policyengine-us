@@ -8,8 +8,8 @@ class il_hbwd_gross_earned_income(Variable):
     label = "Illinois Health Benefits for Workers with Disabilities gross earned income"
     definition_period = MONTH
     reference = (
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I03600R.html",
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.360",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
     )
     defined_for = StateCode.IL
 

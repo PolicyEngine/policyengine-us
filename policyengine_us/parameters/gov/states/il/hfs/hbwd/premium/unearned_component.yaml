@@ -1,95 +1,95 @@
-description: Premium component based on unearned income bracket for Illinois Health Benefits for Workers with Disabilities.
+description: Illinois sets this premium component for the Health Benefits for Workers with Disabilities program based on unearned income bracket.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: month
-  label: Illinois Health Benefits for Workers with Disabilities unearned income premium component
+  label: Illinois HBWD unearned income premium component
   reference:
     - title: HBWD Premium Chart | HFS
       href: https://hfs.illinois.gov/medicalprograms/hbwd/premiums.html
 brackets:
   - threshold:
-      2000-01-01: 0
+      2022-04-01: 0
     amount:
-      2000-01-01: 0
+      2022-04-01: 0
   - threshold:
-      2000-01-01: 250
+      2022-04-01: 250
     amount:
-      2000-01-01: 19
+      2022-04-01: 19
   - threshold:
-      2000-01-01: 500
+      2022-04-01: 500
     amount:
-      2000-01-01: 38
+      2022-04-01: 38
   - threshold:
-      2000-01-01: 750
+      2022-04-01: 750
     amount:
-      2000-01-01: 56
+      2022-04-01: 56
   - threshold:
-      2000-01-01: 1_000
+      2022-04-01: 1_000
     amount:
-      2000-01-01: 75
+      2022-04-01: 75
   - threshold:
-      2000-01-01: 1_250
+      2022-04-01: 1_250
     amount:
-      2000-01-01: 94
+      2022-04-01: 94
   - threshold:
-      2000-01-01: 1_500
+      2022-04-01: 1_500
     amount:
-      2000-01-01: 113
+      2022-04-01: 113
   - threshold:
-      2000-01-01: 1_750
+      2022-04-01: 1_750
     amount:
-      2000-01-01: 131
+      2022-04-01: 131
   - threshold:
-      2000-01-01: 2_000
+      2022-04-01: 2_000
     amount:
-      2000-01-01: 150
+      2022-04-01: 150
   - threshold:
-      2000-01-01: 2_250
+      2022-04-01: 2_250
     amount:
-      2000-01-01: 169
+      2022-04-01: 169
   - threshold:
-      2000-01-01: 2_500
+      2022-04-01: 2_500
     amount:
-      2000-01-01: 188
+      2022-04-01: 188
   - threshold:
-      2000-01-01: 2_750
+      2022-04-01: 2_750
     amount:
-      2000-01-01: 206
+      2022-04-01: 206
   - threshold:
-      2000-01-01: 3_000
+      2022-04-01: 3_000
     amount:
-      2000-01-01: 225
+      2022-04-01: 225
   - threshold:
-      2000-01-01: 3_250
+      2022-04-01: 3_250
     amount:
-      2000-01-01: 244
+      2022-04-01: 244
   - threshold:
-      2000-01-01: 3_500
+      2022-04-01: 3_500
     amount:
-      2000-01-01: 263
+      2022-04-01: 263
   - threshold:
-      2000-01-01: 3_750
+      2022-04-01: 3_750
     amount:
-      2000-01-01: 281
+      2022-04-01: 281
   - threshold:
-      2000-01-01: 4_000
+      2022-04-01: 4_000
     amount:
-      2000-01-01: 300
+      2022-04-01: 300
   - threshold:
-      2000-01-01: 4_250
+      2022-04-01: 4_250
     amount:
-      2000-01-01: 319
+      2022-04-01: 319
   - threshold:
-      2000-01-01: 4_500
+      2022-04-01: 4_500
     amount:
-      2000-01-01: 338
+      2022-04-01: 338
   - threshold:
-      2000-01-01: 4_750
+      2022-04-01: 4_750
     amount:
-      2000-01-01: 356
+      2022-04-01: 356
   - threshold:
-      2000-01-01: 5_000
+      2022-04-01: 5_000
     amount:
-      2000-01-01: 375
+      2022-04-01: 375

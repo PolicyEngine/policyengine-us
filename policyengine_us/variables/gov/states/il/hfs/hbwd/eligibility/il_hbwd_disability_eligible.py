@@ -7,7 +7,7 @@ class il_hbwd_disability_eligible(Variable):
     label = "Illinois Health Benefits for Workers with Disabilities disability eligible"
     definition_period = MONTH
     reference = (
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
         "https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html",
     )
     defined_for = StateCode.IL

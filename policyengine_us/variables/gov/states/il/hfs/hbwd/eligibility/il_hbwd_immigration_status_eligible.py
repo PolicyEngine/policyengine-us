@@ -7,8 +7,8 @@ class il_hbwd_immigration_status_eligible(Variable):
     label = "Illinois Health Benefits for Workers with Disabilities immigration status eligible"
     definition_period = MONTH
     reference = (
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I03100R.html",
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.310",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
     )
     defined_for = StateCode.IL
 

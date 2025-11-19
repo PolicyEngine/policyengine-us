@@ -8,8 +8,8 @@ class il_hbwd_countable_assets(Variable):
     label = "Illinois Health Benefits for Workers with Disabilities countable assets"
     definition_period = MONTH
     reference = (
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I03810R.html",
-        "https://ilga.gov/commission/jcar/admincode/089/089001200I05100R.html",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.381",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",
         "https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html",
     )
     defined_for = StateCode.IL
