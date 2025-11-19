@@ -36,7 +36,7 @@ def create_ut_refundable_eitc() -> Reform:
             ).gov.states.ut.tax.income.credits.earned_income
             federal_eitc = tax_unit("eitc", period)
             ut_eitc_amount = p.rate * federal_eitc
-            return where(has_qualifying_child, ut_eitc_amount, 0)
+            return has_qualifying_child * ut_eitc_amount
 
     class ut_eitc(Variable):
         value_type = float
