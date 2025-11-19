@@ -13,10 +13,10 @@ class il_hbwd_income_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.hfs.hbwd.eligibility
+        p = parameters(period).gov.states.il.hfs.hbwd
         # Income limit is 350% of FPL
         fpg = person.spm_unit("spm_unit_fpg", period)
-        income_limit = fpg * p.income_limit_fpg_percent
+        income_limit = fpg * p.income.income_limit.rate
         # Check household countable income against limit
         # Per § 120.510(f), counts individual + spouse income
         countable_income = person.spm_unit("il_hbwd_countable_income", period)

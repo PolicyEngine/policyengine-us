@@ -13,15 +13,9 @@ class il_hbwd_countable_income(Variable):
     )
     defined_for = "is_tax_unit_head_or_spouse"
 
-    def formula(spm_unit, period, parameters):
-        # Per § 120.510(f), count income of individual AND spouse
-        # Sum earned and unearned income across the SPM unit
-        earned = spm_unit.sum(
-            spm_unit.members(
-                "il_aabd_earned_income_after_exemption_person", period
-            )
-        )
-        unearned = spm_unit.sum(
-            spm_unit.members("il_hbwd_countable_unearned_income", period)
-        )
-        return earned + unearned
+    adds = [
+        "il_aabd_earned_income_after_exemption_person",
+        "il_hbwd_countable_unearned_income",
+    ]
+    # Per § 120.510(f), count income of individual AND spouse
+    # Adds automatically sums across SPM unit members
