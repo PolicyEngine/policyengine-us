@@ -20,23 +20,9 @@ class base_part_a_premium(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicare.part_a
-        quarters = person("medicare_quarters_of_coverage", period)
+        quarters_covered = person("medicare_quarters_of_coverage", period)
 
-        # Get thresholds from parameters
-        premium_free_threshold = p.premium_free_quarters_threshold
-        reduced_premium_threshold = p.reduced_premium_quarters_threshold
-
-        # Calculate annual premiums from monthly amounts
-        full_premium = p.full_premium * 12
-        reduced_premium = p.reduced_premium * 12
-
-        # Return premium based on quarters of coverage
-        return where(
-            quarters >= premium_free_threshold,
-            0,  # Premium-free
-            where(
-                quarters >= reduced_premium_threshold,
-                reduced_premium,  # Reduced premium
-                full_premium,  # Full premium
-            ),
-        )
+              premium_free_part_a = person("is_premium_free_part_a", period)
+              quarters_above_reduced_premium_threshold = quarters_covered >= p.reduced_premium_quarters_threshold
+              premium_amount = where(quarters_above_reduced_premium_threshold, p.reduced_premium , p.full_premium)
+              return where(premium_free_part_a, 0, premium_amount) * MONTHS_IN_YEAR

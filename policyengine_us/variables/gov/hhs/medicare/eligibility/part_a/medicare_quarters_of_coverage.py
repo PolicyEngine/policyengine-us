@@ -13,7 +13,4 @@ class medicare_quarters_of_coverage(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
-        return parameters(
-            period
-        ).gov.hhs.medicare.part_a.default_quarters_of_coverage
+    adds = "gov.hhs.medicare.part_a.default_quarters_of_coverage"
