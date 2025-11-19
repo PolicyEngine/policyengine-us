@@ -20,4 +20,6 @@ class il_hbwd_premium(Variable):
         unearned = person("il_hbwd_countable_unearned_income", period)
 
         # Lookup premium components from bracket parameters
-        return p.earned_component.calc(earned) + p.unearned_component.calc(unearned)
+        return p.earned_component.calc(earned) + p.unearned_component.calc(
+            unearned
+        )

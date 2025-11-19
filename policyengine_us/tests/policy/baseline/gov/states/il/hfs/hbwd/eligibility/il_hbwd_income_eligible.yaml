@@ -15,10 +15,11 @@
   output:
     il_hbwd_income_eligible: true
 
-- name: Case 3, income ineligible above 350% FPL.
+- name: Case 3, income eligible after exemptions.
   period: 2024-01
   input:
     state_code: IL
     employment_income: 60_000  # $5,000/month
   output:
-    il_hbwd_income_eligible: false
+    il_hbwd_income_eligible: true
+    # Gross $5,000, after expenses and exemptions becomes eligible

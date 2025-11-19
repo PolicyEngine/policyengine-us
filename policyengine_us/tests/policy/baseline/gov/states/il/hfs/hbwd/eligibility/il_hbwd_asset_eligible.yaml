@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     state_code: IL
-    spm_unit_assets: 20_000
+    spm_unit_cash_assets: 20_000
   output:
     il_hbwd_asset_eligible: true
 
@@ -10,7 +10,7 @@
   period: 2024-01
   input:
     state_code: IL
-    spm_unit_assets: 25_000
+    spm_unit_cash_assets: 25_000
   output:
     il_hbwd_asset_eligible: true
 
@@ -18,7 +18,7 @@
   period: 2024-01
   input:
     state_code: IL
-    spm_unit_assets: 25_001
+    spm_unit_cash_assets: 25_001
   output:
     il_hbwd_asset_eligible: false
 
@@ -26,6 +26,6 @@
   period: 2024-01
   input:
     state_code: IL
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     il_hbwd_asset_eligible: true

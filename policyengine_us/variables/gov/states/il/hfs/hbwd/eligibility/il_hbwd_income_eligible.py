@@ -17,6 +17,7 @@ class il_hbwd_income_eligible(Variable):
         # Income limit is 350% of FPL
         fpg = person.spm_unit("spm_unit_fpg", period)
         income_limit = fpg * p.income_limit_fpg_percent
-        # Check countable income against limit
-        countable_income = person("il_hbwd_countable_income", period)
+        # Check household countable income against limit
+        # Per § 120.510(f), counts individual + spouse income
+        countable_income = person.spm_unit("il_hbwd_countable_income", period)
         return countable_income <= income_limit
