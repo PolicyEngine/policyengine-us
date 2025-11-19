@@ -58,10 +58,8 @@ def create_ut_refundable_eitc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.UT
 
-        def formula(tax_unit, period, parameters):
-            ut_eitc = tax_unit("ut_eitc", period)
-            ut_refundable_eitc = tax_unit("ut_refundable_eitc", period)
-            return ut_eitc - ut_refundable_eitc
+        adds = ["ut_eitc"]
+        subtracts = ["ut_refundable_eitc"]
 
     class ut_non_refundable_credits(Variable):
         value_type = float
@@ -71,19 +69,13 @@ def create_ut_refundable_eitc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.UT
 
-        def formula(tax_unit, period, parameters):
-            # Under the reform, use ut_non_refundable_eitc instead of ut_eitc
-            return add(
-                tax_unit,
-                period,
-                [
-                    "ut_non_refundable_eitc",
-                    "ut_retirement_credit",
-                    "ut_ss_benefits_credit",
-                    "ut_at_home_parent_credit",
-                    "ut_ctc",
-                ],
-            )
+        adds = [
+            "ut_non_refundable_eitc",
+            "ut_retirement_credit",
+            "ut_ss_benefits_credit",
+            "ut_at_home_parent_credit",
+            "ut_ctc",
+        ]
 
     class ut_refundable_credits(Variable):
         value_type = float
