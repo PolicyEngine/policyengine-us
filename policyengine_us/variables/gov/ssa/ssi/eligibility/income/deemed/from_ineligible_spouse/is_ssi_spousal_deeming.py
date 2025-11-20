@@ -7,6 +7,7 @@ class is_ssi_spousal_deeming(Variable):
     label = "SSI spousal deeming applies"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
+    defined_for = "is_ssi_eligible_individual"
     documentation = """
     Returns True when spousal deeming applies according to 20 CFR §416.1163.
 
@@ -21,9 +22,6 @@ class is_ssi_spousal_deeming(Variable):
     """
 
     def formula(person, period, parameters):
-        # Only applies to eligible individuals (not eligible spouses in a couple)
-        is_eligible_individual = person("is_ssi_eligible_individual", period)
-
         # Get spouse's deemed income (after child allocations)
         spouse_deemed_income = add(
             person,
@@ -40,4 +38,4 @@ class is_ssi_spousal_deeming(Variable):
 
         # Deeming applies when spouse's deemed income exceeds the differential
         # Note: regulation says "not more than" means ≤, so we use > for deeming
-        return is_eligible_individual & (spouse_deemed_income > diff)
+        return spouse_deemed_income > diff
