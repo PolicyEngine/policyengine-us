@@ -16,12 +16,12 @@ class ssi_amount_if_eligible(Variable):
         # Three scenarios for adults:
         # 1. Both spouses eligible (joint claim) → couple rate / 2
         # 2. One eligible, no deeming → individual rate
-        # 3. One eligible, deeming applies → couple rate (capped in uncapped_ssi)
+        # 3. One eligible, deeming applies → couple rate (capped in ssi)
         #
         # Note: In scenario 3, deeming applies when spouse's GROSS income > $483.
         # Income exclusions are applied to the COMBINED income afterwards.
         # This means countable income can be much lower than $483, and the
-        # benefit can exceed individual FBR, requiring the cap in uncapped_ssi.
+        # benefit can exceed individual FBR, requiring the cap in ssi.
 
         is_joint_claim = person("ssi_claim_is_joint", period)
         deeming_applies = person("is_ssi_spousal_deeming", period)
