@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_two_threshold_check
+import operator
 
 
 def create_medicare_and_investment_tax_increase() -> Reform:
@@ -71,15 +73,19 @@ def create_medicare_and_investment_tax_increase() -> Reform:
 def create_medicare_and_investment_tax_increase_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_medicare_and_investment_tax_increase()
-
-    p = parameters(period).gov.contrib.biden.budget_2025
-
-    if (p.medicare.rate > 0) | (p.net_investment_income.rate > 0):
-        return create_medicare_and_investment_tax_increase()
-    else:
-        return None
+    return create_reform_two_threshold_check(
+        parameters=parameters,
+        period=period,
+        parameter_path="gov.contrib.biden.budget_2025",
+        reform_function=create_medicare_and_investment_tax_increase,
+        comparison_parameter_path_1="medicare.rate",
+        comparison_parameter_path_2="net_investment_income.rate",
+        threshold_check_1=0,
+        threshold_check_2=0,
+        comparison_operator_1=operator.gt,
+        comparison_operator_2=operator.gt,
+        bypass=bypass,
+    )
 
 
 medicare_and_investment_tax_increase = (
