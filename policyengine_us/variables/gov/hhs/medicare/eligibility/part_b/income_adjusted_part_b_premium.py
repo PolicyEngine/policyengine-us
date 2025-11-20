@@ -22,7 +22,7 @@ class income_adjusted_part_b_premium(Variable):
         tax_exempt_interest = tax_unit(
             "tax_exempt_interest_income", prior_period
         )
-        income = agi + tax_exempt_interest
+        magi = agi + tax_exempt_interest
         base = person("base_part_b_premium", period)
 
         # Build boolean masks for each status
@@ -41,11 +41,11 @@ class income_adjusted_part_b_premium(Variable):
         irmaa_amount = select(
             in_status,
             [
-                p.single.calc(income),
-                p.joint.calc(income),
-                p.head_of_household.calc(income),
-                p.surviving_spouse.calc(income),
-                p.separate.calc(income),
+                p.single.calc(magi),
+                p.joint.calc(magi),
+                p.head_of_household.calc(magi),
+                p.surviving_spouse.calc(magi),
+                p.separate.calc(magi),
             ],
         )
 
