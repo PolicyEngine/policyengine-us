@@ -15,7 +15,7 @@ class il_hbwd_asset_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.hfs.hbwd
+        p = parameters(period).gov.states.il.hfs.hbwd.eligibility
         # Check countable assets against $25,000 limit
         countable_assets = person("il_hbwd_countable_assets", period)
         return countable_assets <= p.asset.limit

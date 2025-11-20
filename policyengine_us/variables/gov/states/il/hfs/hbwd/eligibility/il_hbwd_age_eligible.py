@@ -15,6 +15,6 @@ class il_hbwd_age_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.hfs.hbwd
+        p = parameters(period).gov.states.il.hfs.hbwd.eligibility
         age = person("monthly_age", period)
-        return p.age_threshold.calc(age)
+        return p.age.calc(age)

@@ -13,4 +13,4 @@ class il_hbwd_countable_unearned_income(Variable):
     )
     defined_for = StateCode.IL
 
-    adds = "gov.states.il.hfs.hbwd.income.sources.unearned"
+    adds = "gov.states.il.hfs.hbwd.eligibility.income.sources.unearned"

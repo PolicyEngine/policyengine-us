@@ -13,7 +13,7 @@ class il_hbwd_immigration_status_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.hfs.hbwd
+        p = parameters(period).gov.states.il.hfs.hbwd.eligibility
         immigration_status = person("immigration_status", period)
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
@@ -21,6 +21,6 @@ class il_hbwd_immigration_status_eligible(Variable):
         immigration_status_str = immigration_status.decode_to_str()
         has_qualifying_status = np.isin(
             immigration_status_str,
-            p.qualified_noncitizen_status,
+            p.qualified_noncitizen_statuses,
         )
         return has_qualifying_status | is_citizen

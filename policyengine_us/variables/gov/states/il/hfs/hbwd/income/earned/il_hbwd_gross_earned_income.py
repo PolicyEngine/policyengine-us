@@ -13,4 +13,4 @@ class il_hbwd_gross_earned_income(Variable):
     )
     defined_for = StateCode.IL
 
-    adds = "gov.states.il.hfs.hbwd.income.sources.earned"
+    adds = "gov.states.il.hfs.hbwd.eligibility.income.sources.earned"
