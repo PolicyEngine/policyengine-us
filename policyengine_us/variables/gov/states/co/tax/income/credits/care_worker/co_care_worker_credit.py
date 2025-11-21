@@ -13,7 +13,9 @@ class co_care_worker_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.credits.care_worker
         joint = tax_unit("tax_unit_is_joint", period)
-        eligible_care_worker_count = tax_unit("co_care_worker_credit_eligible_care_worker_count", period)
+        eligible_care_worker_count = tax_unit(
+            "co_care_worker_credit_eligible_care_worker_count", period
+        )
         joint_with_two_eligible_care_workers = joint & (
             eligible_care_worker_count == 2
         )
