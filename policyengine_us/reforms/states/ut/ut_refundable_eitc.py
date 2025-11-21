@@ -24,14 +24,9 @@ def create_ut_refundable_eitc() -> Reform:
         label = "Utah refundable EITC"
         unit = USD
         definition_period = YEAR
-        defined_for = StateCode.UT
+        defined_for = "ut_has_qualifying_child_for_refundable_eitc"
 
-        def formula(tax_unit, period, parameters):
-            has_qualifying_child = tax_unit(
-                "ut_has_qualifying_child_for_refundable_eitc", period
-            )
-            ut_eitc = tax_unit("ut_eitc", period)
-            return has_qualifying_child * ut_eitc
+       adds = ["ut_eitc"]
 
     class ut_eitc(Variable):
         value_type = float
