@@ -16,8 +16,9 @@ class co_care_worker_credit(Variable):
         eligible_care_worker_count = add(
             tax_unit, period, ["co_care_worker_credit_eligible_care_worker"]
         )
-        joint_with_two_eligible_care_workers = (
-            joint & (eligible_care_worker_count == 2))
+        joint_with_two_eligible_care_workers = joint & (
+            eligible_care_worker_count == 2
+        )
         return where(
             joint_with_two_eligible_care_workers,
             p.amount.joint,
