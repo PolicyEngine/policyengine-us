@@ -20,13 +20,13 @@ class meets_snap_parent_exception(Variable):
         parent_count = person.spm_unit.sum(is_parent)
 
         # Check if there are children in the household under the age thresholds
-        p = parameters(period).gov.usda.snap.student
+        p = parameters(period).gov.usda.snap.student.child_age_limit
         household_member_ages = person.spm_unit.members("age", period)
-        has_young_child = person.spm_unit.any(
-            household_member_ages < p.young_child
+        has_child_under_two_parent_limit = person.spm_unit.any(
+            household_member_ages < p.two_parent
         )
-        has_younger_child = person.spm_unit.any(
-            household_member_ages < p.younger_child
+        has_child_under_single_parent_limit = person.spm_unit.any(
+            household_member_ages < p.single_parent
         )
 
         # Two-parent households need child under 6
@@ -34,8 +34,8 @@ class meets_snap_parent_exception(Variable):
         is_full_time_student = person("is_full_time_college_student", period)
         parent_exception_requirement = where(
             parent_count > 1,
-            has_young_child,
-            has_younger_child & is_full_time_student,
+            has_child_under_two_parent_limit,
+            has_child_under_single_parent_limit & is_full_time_student,
         )
 
         return is_parent & parent_exception_requirement
