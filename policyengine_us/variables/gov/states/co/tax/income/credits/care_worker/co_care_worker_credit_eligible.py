@@ -18,12 +18,5 @@ class co_care_worker_credit_eligible(Variable):
             joint, p.income_limit.joint, p.income_limit.single
         )
         income_eligible = agi <= income_limit
-        eligible_care_worker_present = (
-            add(
-                tax_unit,
-                period,
-                ["co_care_worker_credit_eligible_care_worker"],
-            )
-            > 0
-        )
+        eligible_care_worker_present = tax_unit("co_care_worker_credit_eligible_care_worker_count", period) > 0
         return income_eligible & eligible_care_worker_present
