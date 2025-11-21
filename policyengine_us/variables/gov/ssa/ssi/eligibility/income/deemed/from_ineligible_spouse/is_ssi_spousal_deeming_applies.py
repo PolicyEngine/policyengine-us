@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_ssi_spousal_deeming(Variable):
+class is_ssi_spousal_deeming_applies(Variable):
     value_type = bool
     entity = Person
     label = "SSI spousal deeming applies"

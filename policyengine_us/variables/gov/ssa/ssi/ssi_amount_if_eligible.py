@@ -24,7 +24,7 @@ class ssi_amount_if_eligible(Variable):
         # benefit can exceed individual FBR, requiring the cap in ssi.
 
         is_joint_claim = person("ssi_claim_is_joint", period)
-        deeming_applies = person("is_ssi_spousal_deeming", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
 
         # Determine FBR to use based on scenario
         individual_or_deeming_amount = where(

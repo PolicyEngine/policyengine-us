@@ -23,7 +23,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
     def formula(person, period, parameters):
         # 1. Check if spousal deeming applies (avoids duplicating threshold logic)
-        deeming_applies = person("is_ssi_spousal_deeming", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
 
         # 2. If deeming applies, calculate deemed amount using "difference" approach:
         #    (couple combined countable) - (individual alone countable)
