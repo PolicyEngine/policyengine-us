@@ -1,0 +1,50 @@
+- name: Joint with one eligible care worker, lower amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        co_care_worker_credit_eligible: true
+  output:
+    co_care_worker_credit: 1_200
+
+- name: Joint with two eligible care workers, higher amount
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        co_care_worker_credit_eligible: true
+  output:
+    co_care_worker_credit: 2_400
+
+- name: Single person
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_joint: true
+        co_care_worker_credit_eligible: true
+  output:
+    co_care_worker_credit: 1_200
