@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.435.0] - 2025-11-17 23:19:37
+
+### Fixed
+
+- Restructure Tlaib package
+
+## [1.434.0] - 2025-11-17 16:29:28
+
+### Added
+
+- Rhode Island CTC young child boost.
+
+## [1.433.0] - 2025-11-13 23:38:52
+
+### Added
+
+- Working Pennsylvanians Tax Credit.
+
+## [1.432.9] - 2025-11-13 15:46:53
+
+### Fixed
+
+- Limit the Hawaii CDCC to households with at least one qualifying dependent .
+
+## [1.432.8] - 2025-11-11 19:02:22
+
+### Changed
+
+- Revert age heterogeneity in labor supply response elasticities (v1.426.0).
+
 ## [1.432.7] - 2025-11-11 14:47:06
 
 ### Fixed
@@ -13489,6 +13519,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.434.0...1.435.0
+[1.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.433.0...1.434.0
+[1.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.9...1.433.0
+[1.432.9]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.8...1.432.9
+[1.432.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.7...1.432.8
 [1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
 [1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6
 [1.432.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.4...1.432.5
