@@ -1,0 +1,14 @@
+description: Maximum countable resources allowed when initially applying for Indiana TANF. Once receiving TANF, families can retain up to $10,000 in resources.
+
+values:
+  2024-01-01: 1_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Indiana TANF resource limit at application
+  reference:
+    - title: Indiana FSSA - TANF Resource Limits
+      href: https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/
+    - title: Indiana Code 12-14-1-1 - TANF Eligibility
+      href: https://iga.in.gov/laws/2023/ic/titles/12

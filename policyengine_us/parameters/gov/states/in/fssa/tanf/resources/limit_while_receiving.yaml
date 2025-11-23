@@ -1,0 +1,16 @@
+description: Maximum countable resources allowed while receiving Indiana TANF. Families do not lose eligibility solely due to resource increase if resources remain at or below this amount.
+
+values:
+  2024-01-01: 10_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Indiana TANF resource limit while receiving benefits
+  reference:
+    - title: Indiana FSSA - TANF Resource Limits
+      href: https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/
+    - title: Indiana Code 12-14-1-1 - TANF Eligibility
+      href: https://iga.in.gov/laws/2023/ic/titles/12
+    - title: NCCP TANF Profile - Indiana
+      href: https://www.nccp.org/wp-content/uploads/2024/08/TANF-profile-Indiana.pdf

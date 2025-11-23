@@ -1,0 +1,34 @@
+description: Indiana TANF net income limit by family size. For families larger than 3, add $104 per additional member. Net income is calculated after applying earned income disregards and deductions.
+1:
+  2024-01-01: 248
+2:
+  2024-01-01: 409
+3:
+  2024-01-01: 513
+4:
+  2024-01-01: 617
+5:
+  2024-01-01: 721
+6:
+  2024-01-01: 825
+7:
+  2024-01-01: 929
+8:
+  2024-01-01: 1_033
+9:
+  2024-01-01: 1_137
+10:
+  2024-01-01: 1_241
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: Indiana TANF net income limit
+  reference:
+    - title: Indiana FSSA - TANF Income Limits
+      href: https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/
+    - title: Indiana Code 12-14-1-1 - TANF Eligibility
+      href: https://iga.in.gov/laws/2023/ic/titles/12
+    - title: 470 IAC 10.3-4 - Fiscal Eligibility Requirements
+      href: https://iar.iga.in.gov/latestArticle/470/10.3

@@ -1,0 +1,14 @@
+description: Total vehicle equity value excluded from countable resources for Indiana TANF. Equity value equals fair market value minus amount owed on the vehicle. This exclusion applies to total equity in all vehicles owned by family members.
+
+values:
+  2024-01-01: 20_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Indiana TANF vehicle equity exclusion
+  reference:
+    - title: Indiana FSSA - TANF Resource Limits
+      href: https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/
+    - title: NCCP TANF Profile - Indiana
+      href: https://www.nccp.org/wp-content/uploads/2024/08/TANF-profile-Indiana.pdf
