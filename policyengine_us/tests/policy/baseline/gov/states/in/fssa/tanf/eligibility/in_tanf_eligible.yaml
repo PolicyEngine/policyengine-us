@@ -1,0 +1,35 @@
+- name: Eligible - passes all tests
+  period: 2024-01
+  input:
+    in_tanf_gross_income_eligible: true
+    in_tanf_net_income_eligible: true
+    state_code: IN
+  output:
+    in_tanf_eligible: true
+
+- name: Not eligible - fails gross income test
+  period: 2024-01
+  input:
+    in_tanf_gross_income_eligible: false
+    in_tanf_net_income_eligible: true
+    state_code: IN
+  output:
+    in_tanf_eligible: false
+
+- name: Not eligible - fails net income test
+  period: 2024-01
+  input:
+    in_tanf_gross_income_eligible: true
+    in_tanf_net_income_eligible: false
+    state_code: IN
+  output:
+    in_tanf_eligible: false
+
+- name: Not eligible - fails both income tests
+  period: 2024-01
+  input:
+    in_tanf_gross_income_eligible: false
+    in_tanf_net_income_eligible: false
+    state_code: IN
+  output:
+    in_tanf_eligible: false

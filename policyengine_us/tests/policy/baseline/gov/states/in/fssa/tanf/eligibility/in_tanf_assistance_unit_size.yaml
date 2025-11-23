@@ -1,0 +1,77 @@
+- name: Single parent with one child
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_assistance_unit_size: [2, 2]
+
+- name: Single person (adult only)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_assistance_unit_size: 1
+
+- name: Two parents with two children
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IN
+  output:
+    in_tanf_assistance_unit_size: [4, 4, 4, 4]
+
+- name: Single parent with three children
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IN
+  output:
+    in_tanf_assistance_unit_size: [4, 4, 4, 4]

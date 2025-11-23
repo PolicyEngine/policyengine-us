@@ -1,0 +1,38 @@
+- name: No unearned income
+  period: 2024-01
+  input:
+    social_security: 0
+    unemployment_compensation: 0
+    state_code: IN
+  output:
+    in_tanf_countable_unearned_income: 0
+
+- name: Social Security income only
+  period: 2024-01
+  input:
+    social_security: 6_000  # $500/month
+    unemployment_compensation: 0
+    state_code: IN
+  output:
+    in_tanf_countable_unearned_income: 500
+    # No disregard - counted 100%
+
+- name: Unemployment compensation only
+  period: 2024-01
+  input:
+    social_security: 0
+    unemployment_compensation: 3_600  # $300/month
+    state_code: IN
+  output:
+    in_tanf_countable_unearned_income: 300
+    # No disregard - counted 100%
+
+- name: Mixed unearned income sources
+  period: 2024-01
+  input:
+    social_security: 4_800  # $400/month
+    unemployment_compensation: 2_400  # $200/month
+    state_code: IN
+  output:
+    in_tanf_countable_unearned_income: 600
+    # $400 + $200 = $600, no disregard

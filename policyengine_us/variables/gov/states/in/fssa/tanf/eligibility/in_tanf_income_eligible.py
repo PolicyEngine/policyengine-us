@@ -17,19 +17,8 @@ class in_tanf_income_eligible(Variable):
         # Indiana uses both gross and net income tests
         # Per 470 IAC 10.3-4 (Fiscal Eligibility Requirements)
 
-        assistance_unit_size = spm_unit("in_tanf_assistance_unit_size", period)
-        p = parameters(period).gov.states["in"].fssa.tanf.income
-
-        # Gross income test
-        gross_income = spm_unit("tanf_gross_income", period)
-        capped_size = min_(assistance_unit_size, 10)
-        gross_limit = p.gross_income_limit[capped_size]
-        gross_eligible = gross_income < gross_limit
-
-        # Net income test
-        net_income = spm_unit("in_tanf_countable_income", period)
-        net_limit = p.net_income_limit[capped_size]
-        net_eligible = net_income < net_limit
+        gross_eligible = spm_unit("in_tanf_gross_income_eligible", period)
+        net_eligible = spm_unit("in_tanf_net_income_eligible", period)
 
         # Must pass both tests
         return gross_eligible & net_eligible

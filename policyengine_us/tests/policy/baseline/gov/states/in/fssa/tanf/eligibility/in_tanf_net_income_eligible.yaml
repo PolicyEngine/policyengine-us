@@ -1,0 +1,57 @@
+- name: Family of 3 with zero countable income - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_countable_income: 0
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: true
+
+- name: Family of 3 with income below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_countable_income: 400
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: true
+    # Countable income ($400) < limit ($513) → eligible
+
+- name: Family of 3 with income at limit - not eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_countable_income: 513
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: false
+    # Countable income ($513) >= limit ($513) → not eligible
+
+- name: Family of 3 with income above limit - not eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_countable_income: 600
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: false
+
+- name: Family of 1 below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 1
+    in_tanf_countable_income: 200
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: true
+    # Countable income ($200) < limit ($248) → eligible
+
+- name: Family of 2 below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 2
+    in_tanf_countable_income: 350
+    state_code: IN
+  output:
+    in_tanf_net_income_eligible: true
+    # Countable income ($350) < limit ($409) → eligible

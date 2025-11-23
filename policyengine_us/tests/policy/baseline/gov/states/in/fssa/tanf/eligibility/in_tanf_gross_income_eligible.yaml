@@ -1,0 +1,57 @@
+- name: Family of 3 with zero income - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_gross_income: 0
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: true
+
+- name: Family of 3 with income below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_gross_income: 700
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: true
+    # Gross income ($700) < limit ($778) → eligible
+
+- name: Family of 3 with income at limit - not eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_gross_income: 778
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: false
+    # Gross income ($778) >= limit ($778) → not eligible
+
+- name: Family of 3 with income above limit - not eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 3
+    in_tanf_gross_income: 800
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: false
+
+- name: Family of 1 below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 1
+    in_tanf_gross_income: 400
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: true
+    # Gross income ($400) < limit ($457) → eligible
+
+- name: Family of 2 below limit - eligible
+  period: 2024-01
+  input:
+    in_tanf_assistance_unit_size: 2
+    in_tanf_gross_income: 600
+    state_code: IN
+  output:
+    in_tanf_gross_income_eligible: true
+    # Gross income ($600) < limit ($618) → eligible

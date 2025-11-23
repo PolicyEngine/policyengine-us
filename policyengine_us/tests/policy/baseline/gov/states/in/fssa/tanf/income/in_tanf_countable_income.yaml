@@ -1,0 +1,36 @@
+- name: No income
+  period: 2024-01
+  input:
+    in_tanf_countable_earned_income: 0
+    in_tanf_countable_unearned_income: 0
+    state_code: IN
+  output:
+    in_tanf_countable_income: 0
+
+- name: Earned income only
+  period: 2024-01
+  input:
+    in_tanf_countable_earned_income: 100
+    in_tanf_countable_unearned_income: 0
+    state_code: IN
+  output:
+    in_tanf_countable_income: 100
+
+- name: Unearned income only
+  period: 2024-01
+  input:
+    in_tanf_countable_earned_income: 0
+    in_tanf_countable_unearned_income: 300
+    state_code: IN
+  output:
+    in_tanf_countable_income: 300
+
+- name: Mixed earned and unearned income
+  period: 2024-01
+  input:
+    in_tanf_countable_earned_income: 125
+    in_tanf_countable_unearned_income: 200
+    state_code: IN
+  output:
+    in_tanf_countable_income: 325
+    # $125 + $200 = $325
