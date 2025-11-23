@@ -17,9 +17,9 @@ class in_tanf_net_income_eligible(Variable):
         # Per 470 IAC 10.3-4-3 (Net Income Test)
         assistance_unit_size = spm_unit("in_tanf_assistance_unit_size", period)
         countable_income = spm_unit("in_tanf_countable_income", period)
-        
+
         p = parameters(period).gov.states["in"].fssa.tanf.income
         capped_size = min_(assistance_unit_size, 10)
         net_limit = p.net_income_limit[capped_size]
-        
+
         return countable_income < net_limit

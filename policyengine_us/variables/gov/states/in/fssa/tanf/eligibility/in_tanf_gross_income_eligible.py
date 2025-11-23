@@ -17,9 +17,9 @@ class in_tanf_gross_income_eligible(Variable):
         # Per 470 IAC 10.3-4-2 (Gross Income Test)
         assistance_unit_size = spm_unit("in_tanf_assistance_unit_size", period)
         gross_income = spm_unit("in_tanf_gross_income", period)
-        
+
         p = parameters(period).gov.states["in"].fssa.tanf.income
         capped_size = min_(assistance_unit_size, 10)
         gross_limit = p.gross_income_limit[capped_size]
-        
+
         return gross_income < gross_limit

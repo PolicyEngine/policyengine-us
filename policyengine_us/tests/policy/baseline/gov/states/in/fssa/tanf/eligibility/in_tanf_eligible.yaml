@@ -1,6 +1,7 @@
 - name: Eligible - passes all tests
   period: 2024-01
   input:
+    is_demographic_tanf_eligible: true
     in_tanf_gross_income_eligible: true
     in_tanf_net_income_eligible: true
     state_code: IN

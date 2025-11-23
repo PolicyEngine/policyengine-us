@@ -17,11 +17,11 @@ class in_tanf_gross_income(Variable):
         # Gross income is the sum of all earned and unearned income
         # before any disregards are applied
         # Per 470 IAC 10.3-4-1 (Gross Income Definition)
-        return add(
-            spm_unit,
-            period,
-            [
-                "tanf_gross_earned_income",
-                "tanf_gross_unearned_income",
-            ],
+        person = spm_unit.members
+        employment = person("employment_income", period)
+        social_security = person("social_security", period)
+        unemployment_compensation = person("unemployment_compensation", period)
+
+        return spm_unit.sum(
+            employment + social_security + unemployment_compensation
         )

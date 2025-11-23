@@ -55,9 +55,8 @@
   output:
     in_tanf_assistance_unit_size: [2, 2]
     # Parent + 1 child = 2
-    in_tanf_countable_earned_income: [100, 0]
-    # Person1: $400 × 0.25 (75% disregard) = $100
-    # Person2: No income
+    in_tanf_countable_earned_income: [100, 100]
+    # Person1: $400 × 0.25 (75% disregard) = $100 (SPMUnit total)
     in_tanf_countable_unearned_income: [0, 0]
     in_tanf_countable_income: [100, 100]
     # Household total: $100
@@ -92,20 +91,20 @@
         state_code: IN
   output:
     in_tanf_assistance_unit_size: [2, 2]
-    in_tanf_countable_earned_income: [125, 0]
-    # Person1: $500 × 0.25 = $125
-    in_tanf_countable_unearned_income: [0, 200]
-    # Person2: Social Security $200 (no disregard)
+    in_tanf_countable_earned_income: [125, 125]
+    # Person1: $500 × 0.25 = $125 (SPMUnit total)
+    in_tanf_countable_unearned_income: [200, 200]
+    # Person2: Social Security $200 (no disregard, SPMUnit total)
     in_tanf_countable_income: [325, 325]
     # Total: $125 + $200 = $325
-    in_tanf_gross_income_eligible: [true, true]
-    # Gross income ($500 + $200 = $700) < limit ($618) → eligible (assumes gross income includes all income)
+    in_tanf_gross_income_eligible: [false, false]
+    # Gross income ($500 + $200 = $700) > limit ($618) → not eligible
     in_tanf_net_income_eligible: [true, true]
-    # Countable income ($325) < limit ($409) → eligible
+    # Countable income ($325) < limit ($409) → eligible (but failed gross test)
     in_tanf_payment_standard: [409, 409]
-    in_tanf_eligible: [true, true]
-    in_tanf: [84, 84]
-    # Max benefit ($409) - countable income ($325) = $84
+    in_tanf_eligible: [false, false]
+    # Failed gross income test
+    in_tanf: [0, 0]
 
 - name: Case 4 - Family income at net income limit receives zero benefit
   period: 2024-01
@@ -129,8 +128,8 @@
         state_code: IN
   output:
     in_tanf_assistance_unit_size: [3, 3, 3]
-    in_tanf_countable_earned_income: [513, 0, 0]
-    # Person1: $2,052 × 0.25 = $513
+    in_tanf_countable_earned_income: [513, 513, 513]
+    # Person1: $2,052 × 0.25 = $513 (SPMUnit total)
     in_tanf_countable_income: [513, 513, 513]
     in_tanf_gross_income_eligible: [false, false, false]
     # Gross income ($2,052) > limit ($778) → not eligible
@@ -167,8 +166,8 @@
   output:
     in_tanf_assistance_unit_size: [4, 4, 4, 4]
     # 2 parents + 2 children = 4
-    in_tanf_countable_earned_income: [150, 0, 0, 0]
-    # Person1: $600 × 0.25 = $150
+    in_tanf_countable_earned_income: [150, 150, 150, 150]
+    # Person1: $600 × 0.25 = $150 (SPMUnit total)
     in_tanf_countable_income: [150, 150, 150, 150]
     in_tanf_gross_income_eligible: [true, true, true, true]
     # Gross income ($600) < limit for family of 4 → eligible
@@ -200,8 +199,8 @@
         state_code: IN
   output:
     in_tanf_assistance_unit_size: [2, 2]
-    in_tanf_countable_earned_income: [250, 0]
-    # $1,000 × 0.25 = $250
+    in_tanf_countable_earned_income: [250, 250]
+    # $1,000 × 0.25 = $250 (SPMUnit total)
     in_tanf_countable_income: [250, 250]
     in_tanf_gross_income_eligible: [false, false]
     # Gross income ($1,000) > limit ($618) → not eligible
@@ -232,10 +231,11 @@
     in_tanf_assistance_unit_size: 1
     in_tanf_countable_income: 0
     in_tanf_gross_income_eligible: true
-    # Gross income ($0) < limit ($457) → eligible
+    # Gross income ($0) < limit ($457) → passes gross income test
     in_tanf_net_income_eligible: true
-    # Countable income ($0) < limit ($248) → eligible
+    # Countable income ($0) < limit ($248) → passes net income test
     in_tanf_payment_standard: 248
     # Family of 1 → $248
-    in_tanf_eligible: true
-    in_tanf: 248
+    in_tanf_eligible: false
+    # Single adult with no children → not demographically eligible
+    in_tanf: 0

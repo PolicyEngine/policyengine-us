@@ -14,7 +14,11 @@ class in_tanf_countable_unearned_income(Variable):
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):
-        # Get gross unearned income from federal baseline
+        # Get unearned income from persons in the unit
         # No disregard for unearned income in benefit calculation
         # Per Policy Manual Chapter 2800
-        return spm_unit("tanf_gross_unearned_income", period)
+        person = spm_unit.members
+        social_security = person("social_security", period)
+        unemployment_compensation = person("unemployment_compensation", period)
+
+        return spm_unit.sum(social_security + unemployment_compensation)
