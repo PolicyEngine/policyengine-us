@@ -1,43 +1,43 @@
 - name: Employment income is fully counted
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    employment_income: 20_000
+    employment_income_before_lsr: 20_000
   output:
     wi_tanf_countable_income: 20_000
 
 - name: Child support is fully disregarded
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    employment_income: 15_000
+    employment_income_before_lsr: 15_000
     child_support_received: 5_000
   output:
     wi_tanf_countable_income: 15_000
 
 - name: EITC is fully disregarded
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    employment_income: 15_000
+    employment_income_before_lsr: 15_000
     eitc: 3_000
   output:
     wi_tanf_countable_income: 15_000
 
 - name: Social Security income is counted
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    employment_income: 10_000
+    employment_income_before_lsr: 10_000
     social_security: 8_000
   output:
     wi_tanf_countable_income: 18_000
 
 - name: Multiple income sources with disregards
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    employment_income: 12_000
+    employment_income_before_lsr: 12_000
     child_support_received: 4_000
     eitc: 2_000
     social_security: 6_000
@@ -45,17 +45,17 @@
     wi_tanf_countable_income: 18_000  # Employment + Social Security only
 
 - name: Self-employment income is counted (gross receipts)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    self_employment_income: 15_000
+    self_employment_income_before_lsr: 15_000
   output:
     wi_tanf_countable_income: 15_000
 
 - name: Only calculate for Wisconsin
-  period: 2024
+  period: 2025
   input:
     state_code: CA
-    employment_income: 20_000
+    employment_income_before_lsr: 20_000
   output:
     wi_tanf_countable_income: 0

@@ -1,5 +1,5 @@
 - name: All eligibility criteria met - eligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     is_demographic_tanf_eligible: true
@@ -9,7 +9,7 @@
     wi_tanf_eligible: true
 
 - name: Demographic ineligible - ineligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     is_demographic_tanf_eligible: false
@@ -19,7 +19,7 @@
     wi_tanf_eligible: false
 
 - name: Income ineligible - ineligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     is_demographic_tanf_eligible: true
@@ -29,7 +29,7 @@
     wi_tanf_eligible: false
 
 - name: Resources ineligible - ineligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     is_demographic_tanf_eligible: true
@@ -39,7 +39,7 @@
     wi_tanf_eligible: false
 
 - name: All criteria failed - ineligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     is_demographic_tanf_eligible: false
@@ -49,7 +49,7 @@
     wi_tanf_eligible: false
 
 - name: Only calculate for Wisconsin
-  period: 2024
+  period: 2025
   input:
     state_code: CA
     is_demographic_tanf_eligible: true

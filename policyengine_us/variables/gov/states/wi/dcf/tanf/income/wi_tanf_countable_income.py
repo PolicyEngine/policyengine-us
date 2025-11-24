@@ -31,26 +31,31 @@ class wi_tanf_countable_income(Variable):
     """
 
     def formula(spm_unit, period, parameters):
-        # Use federal baseline for gross income
-        gross_earned = spm_unit("tanf_gross_earned_income", period)
-        gross_unearned = spm_unit("tanf_gross_unearned_income", period)
+        # Wisconsin disregards all earned income of dependent children (< 18)
+        # Calculate earned income for adults only
+        is_adult = spm_unit.members("age", period.this_year) >= 18
+        adult_earned = spm_unit.sum(
+            spm_unit.members("tanf_gross_earned_income", period) * is_adult
+        )
+
+        # All unearned income is counted (including children's)
+        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
+
+        # Total gross income (adult earned + all unearned)
+        total_income = adult_earned + gross_unearned
 
         # Wisconsin-specific disregards (implemented where data available)
         # Child support is fully disregarded
-        child_support = spm_unit("child_support_received", period)
-
-        # EITC is fully disregarded (both federal and state)
-        eitc = spm_unit("eitc", period)
-        wi_eitc = spm_unit("wi_earned_income_credit", period)
-
-        # Total gross income
-        total_income = gross_earned + gross_unearned
+        # Note: Child support is already included in tanf_gross_unearned_income,
+        # so we subtract it here to implement the disregard
+        child_support = add(spm_unit, period, ["child_support_received"])
 
         # Apply disregards
         # NOTE: Wisconsin disregards many additional income sources that
         # are not separately tracked in PolicyEngine (educational aid,
-        # in-kind benefits, dependent children's income, etc.)
-        # This implementation includes major disregards available in data
-        disregards = child_support + eitc + wi_eitc
+        # in-kind benefits, SSI for children, EITC, etc.)
+        # EITC and other tax credits are NOT included in gross income,
+        # so they don't need to be subtracted as disregards.
+        disregards = child_support
 
         return max_(total_income - disregards, 0)

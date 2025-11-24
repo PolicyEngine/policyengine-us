@@ -1,21 +1,21 @@
 - name: Single parent with one child - income below limit - eligible for $653/month
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 30
-        employment_income: 15_000
+        employment_income_before_lsr: 15_000
         child_support_received: 3_000  # Fully disregarded
       child1:
         age: 5
     spm_units:
       spm_unit:
         members: [parent, child1]
+        spm_unit_cash_assets: 1_500
     households:
       household:
         members: [parent, child1]
         state_code: WI
-        net_worth: 1_500
         household_vehicles_value: 8_000  # Under $10,000 exclusion
   output:
     # Income eligibility
@@ -31,13 +31,12 @@
     wi_tanf: 7_836  # $653/month * 12 = $7,836/year
 
 - name: Family of four - income at limit boundary - eligible
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 28
-        employment_income: 30_000
-        eitc: 2_500  # Fully disregarded
+        employment_income_before_lsr: 30_000
         child_support_received: 4_472  # Fully disregarded
       child1:
         age: 7
@@ -48,11 +47,11 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
+        spm_unit_cash_assets: 800
     households:
       household:
         members: [parent, child1, child2, child3]
         state_code: WI
-        net_worth: 800
         household_vehicles_value: 5_000  # Under $10,000 exclusion
   output:
     # Income eligibility
@@ -68,12 +67,12 @@
     wi_tanf: 7_836  # $653/month * 12
 
 - name: Single parent with two children - income just over limit - ineligible
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 32
-        employment_income: 32_000
+        employment_income_before_lsr: 32_000
         social_security: 6_000  # Counted as unearned income
       child1:
         age: 4
@@ -82,11 +81,11 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        spm_unit_cash_assets: 1_200
     households:
       household:
         members: [parent, child1, child2]
         state_code: WI
-        net_worth: 1_200
         household_vehicles_value: 3_000
   output:
     # Income eligibility
@@ -102,22 +101,22 @@
     wi_tanf: 0
 
 - name: Single parent - resources over limit - ineligible
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 27
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
       child1:
         age: 6
     spm_units:
       spm_unit:
         members: [parent, child1]
+        spm_unit_cash_assets: 1_000
     households:
       household:
         members: [parent, child1]
         state_code: WI
-        net_worth: 1_000
         household_vehicles_value: 14_000  # $4,000 over $10,000 exclusion
   output:
     # Income eligibility
@@ -133,28 +132,27 @@
     wi_tanf: 0
 
 - name: Family with mixed income sources - extensive disregards applied
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 29
-        employment_income: 14_000
-        self_employment_income: 8_000
+        employment_income_before_lsr: 14_000
+        self_employment_income_before_lsr: 8_000
         child_support_received: 6_000  # Disregarded
-        eitc: 3_200  # Disregarded
       child1:
         age: 8
-        employment_income: 2_000  # Dependent child income - disregarded
+        employment_income_before_lsr: 2_000  # Dependent child income - disregarded
       child2:
         age: 10
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        spm_unit_cash_assets: 2_400
     households:
       household:
         members: [parent, child1, child2]
         state_code: WI
-        net_worth: 2_400
         household_vehicles_value: 9_500
   output:
     # Income eligibility (child income and disregards excluded)
@@ -170,15 +168,15 @@
     wi_tanf: 7_836  # $653/month * 12
 
 - name: Large family (6 people) - testing incremental income limit
-  period: 2024
+  period: 2025
   input:
     people:
       parent1:
         age: 35
-        employment_income: 35_000
+        employment_income_before_lsr: 35_000
       parent2:
         age: 33
-        employment_income: 10_000
+        employment_income_before_lsr: 10_000
       child1:
         age: 12
       child2:
@@ -190,11 +188,11 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4]
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [parent1, parent2, child1, child2, child3, child4]
         state_code: WI
-        net_worth: 500
         household_vehicles_value: 7_000
   output:
     # Income eligibility
@@ -210,22 +208,22 @@
     wi_tanf: 7_836  # $653/month * 12
 
 - name: Edge case - income exactly at limit, resources exactly at limit
-  period: 2024
+  period: 2025
   input:
     people:
       parent:
         age: 31
-        employment_income: 18_000
+        employment_income_before_lsr: 18_000
       child1:
         age: 3
     spm_units:
       spm_unit:
         members: [parent, child1]
+        spm_unit_cash_assets: 2_500
     households:
       household:
         members: [parent, child1]
         state_code: WI
-        net_worth: 2_500
         household_vehicles_value: 10_000
   output:
     # Income eligibility

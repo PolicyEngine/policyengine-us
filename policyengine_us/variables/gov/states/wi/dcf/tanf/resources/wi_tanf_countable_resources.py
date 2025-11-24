@@ -25,15 +25,16 @@ class wi_tanf_countable_resources(Variable):
     """
 
     def formula(spm_unit, period, parameters):
-        # Use available household assets
-        # Access household net worth from SPMUnit level
-        total_assets = spm_unit.household("net_worth", period)
+        # Get liquid assets (cash, checking, savings, stocks) - excludes vehicles
+        liquid_assets = spm_unit("spm_unit_cash_assets", period)
 
-        # Apply vehicle equity exclusion
+        # Get vehicle value separately
+        vehicle_value = spm_unit.household("household_vehicles_value", period)
+
+        # Apply vehicle equity exclusion ($10,000 excluded)
         p = parameters(period).gov.states.wi.dcf.tanf.asset_limit
-        vehicle_exclusion = p.vehicle_exclusion
+        countable_vehicle = max_(vehicle_value - p.vehicle_exclusion, 0)
 
-        # Simplified calculation: apply vehicle exclusion to total assets
-        # NOTE: Ideally we would separate vehicle equity from other assets,
-        # but this data is not available in standard microdata
-        return max_(total_assets - vehicle_exclusion, 0)
+        # Total countable resources = liquid assets + countable vehicles
+        # Note: Home equity is excluded in Wisconsin's rules
+        return liquid_assets + countable_vehicle

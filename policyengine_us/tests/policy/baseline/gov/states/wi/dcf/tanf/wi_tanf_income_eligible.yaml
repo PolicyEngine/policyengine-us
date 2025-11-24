@@ -1,5 +1,5 @@
 - name: Income below limit - eligible (single person)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     wi_tanf_countable_income: 17_000
@@ -8,7 +8,7 @@
     wi_tanf_income_eligible: true
 
 - name: Income at limit - eligible (single person)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     wi_tanf_countable_income: 18_000
@@ -17,7 +17,7 @@
     wi_tanf_income_eligible: true
 
 - name: Income above limit - ineligible (single person)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     wi_tanf_countable_income: 19_000
@@ -26,7 +26,7 @@
     wi_tanf_income_eligible: false
 
 - name: Income below limit - eligible (family of four)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     wi_tanf_countable_income: 35_000
@@ -35,7 +35,7 @@
     wi_tanf_income_eligible: true
 
 - name: Income just above limit - ineligible (family of four)
-  period: 2024
+  period: 2025
   input:
     state_code: WI
     wi_tanf_countable_income: 37_000
@@ -44,7 +44,7 @@
     wi_tanf_income_eligible: false
 
 - name: Only calculate for Wisconsin
-  period: 2024
+  period: 2025
   input:
     state_code: CA
     wi_tanf_countable_income: 10_000

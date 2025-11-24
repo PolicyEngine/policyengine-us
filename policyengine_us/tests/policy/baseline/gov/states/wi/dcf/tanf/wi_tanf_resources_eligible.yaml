@@ -1,71 +1,71 @@
 - name: Resources below $2,500 limit - eligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 2_000
+    spm_unit_cash_assets: 2_000
     household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: true
 
 - name: Resources at $2,500 limit - eligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 2_500
+    spm_unit_cash_assets: 2_500
     household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: true
 
 - name: Resources above $2,500 limit - ineligible
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 3_000
+    spm_unit_cash_assets: 3_000
     household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: false
 
 - name: Vehicle value under $10,000 exclusion - fully excluded
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 1_000
+    spm_unit_cash_assets: 1_000
     household_vehicles_value: 8_000
   output:
     wi_tanf_resources_eligible: true  # Total assets = $1,000 (vehicle excluded)
 
 - name: Vehicle value at $10,000 exclusion - fully excluded
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 2_500
+    spm_unit_cash_assets: 2_500
     household_vehicles_value: 10_000
   output:
     wi_tanf_resources_eligible: true  # Total assets = $2,500 (vehicle excluded)
 
 - name: Vehicle value over $10,000 - partial exclusion
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 1_000
+    spm_unit_cash_assets: 1_000
     household_vehicles_value: 12_000
   output:
     wi_tanf_resources_eligible: false  # Total assets = $3,000 ($1,000 + $2,000 excess vehicle)
 
 - name: Multiple vehicles with combined value over exclusion
-  period: 2024
+  period: 2025
   input:
     state_code: WI
-    net_worth: 500
+    spm_unit_cash_assets: 500
     household_vehicles_value: 13_000
   output:
     wi_tanf_resources_eligible: false  # Total assets = $3,500 ($500 + $3,000 excess)
 
 - name: Only calculate for Wisconsin
-  period: 2024
+  period: 2025
   input:
     state_code: CA
-    net_worth: 1_000
+    spm_unit_cash_assets: 1_000
     household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: false
