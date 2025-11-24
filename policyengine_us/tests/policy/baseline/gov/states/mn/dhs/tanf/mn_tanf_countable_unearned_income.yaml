@@ -1,68 +1,118 @@
 - name: No unearned income
   period: 2025-01
   input:
-    state_code: MN
-    unemployment_compensation: 0
-    social_security: 0
+    people:
+      person1:
+        unemployment_compensation: 0
+        social_security: 0
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
     mn_tanf_countable_unearned_income: 0
 
-- name: Unemployment compensation only
+- name: Unearned income only (no child support)
   period: 2025-01
   input:
-    state_code: MN
-    unemployment_compensation: 6_000  # $6,000/year = $500/month
+    people:
+      person1:
+        unemployment_compensation: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
-    # Unearned income counted dollar-for-dollar
-    mn_tanf_countable_unearned_income: 6_000
+    # Unearned income counted dollar-for-dollar (monthly)
+    mn_tanf_countable_unearned_income: 500
 
-- name: Social Security benefits
+- name: Multiple unearned income sources
   period: 2025-01
   input:
-    state_code: MN
-    social_security: 12_000  # $12,000/year = $1,000/month
+    people:
+      person1:
+        unemployment_compensation: 3_600  # $300/month
+        social_security: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
-    # Unearned income counted dollar-for-dollar
-    mn_tanf_countable_unearned_income: 12_000
-
-- name: Mixed unearned income sources
-  period: 2025-01
-  input:
-    state_code: MN
-    unemployment_compensation: 3_600  # $300/month
-    social_security: 6_000  # $500/month
-  output:
-    # Total: $300 + $500 = $800/month
-    # Annual: $800 × 12 = $9,600
-    mn_tanf_countable_unearned_income: 9_600
+    # Total: $300 + $500 = $800/month counted dollar-for-dollar
+    mn_tanf_countable_unearned_income: 800
 
 - name: Child support below disregard - 1 child
   period: 2025-01
   input:
-    state_code: MN
-    child_support_received: 600  # $600/year = $50/month (< $100 disregard)
-    tanf_count_children: 1
+    people:
+      person1:
+        unemployment_compensation: 0
+        child_support_received: 600  # $50/month (< $100 disregard)
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tanf_count_children: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
-    # $50 < $100 disregard, fully disregarded
+    # $50/month < $100 disregard, fully disregarded
     mn_tanf_countable_unearned_income: 0
 
 - name: Child support above disregard - 1 child
   period: 2025-01
   input:
-    state_code: MN
-    child_support_received: 3_000  # $3,000/year = $250/month
-    tanf_count_children: 1
+    people:
+      person1:
+        unemployment_compensation: 0
+        child_support_received: 3_000  # $250/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tanf_count_children: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
-    # $250 - $100 disregard = $150 countable
-    # Annual: $150 × 12 = $1,800
-    mn_tanf_countable_unearned_income: 1_800
+    # $250 - $100 disregard = $150 countable monthly
+    mn_tanf_countable_unearned_income: 150
 
 - name: Child support below disregard - 2 children
   period: 2025-01
   input:
-    state_code: MN
-    child_support_received: 1_800  # $1,800/year = $150/month (< $200 disregard)
-    tanf_count_children: 2
+    people:
+      person1:
+        unemployment_compensation: 0
+        child_support_received: 1_800  # $150/month (< $200 disregard)
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tanf_count_children: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
     # $150 < $200 disregard, fully disregarded
     mn_tanf_countable_unearned_income: 0
@@ -70,10 +120,43 @@
 - name: Child support above disregard - 2 children
   period: 2025-01
   input:
-    state_code: MN
-    child_support_received: 4_800  # $4,800/year = $400/month
-    tanf_count_children: 2
+    people:
+      person1:
+        unemployment_compensation: 0
+        child_support_received: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tanf_count_children: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MN
   output:
-    # $400 - $200 disregard = $200 countable
-    # Annual: $200 × 12 = $2,400
-    mn_tanf_countable_unearned_income: 2_400
+    # $400 - $200 disregard = $200 countable monthly
+    mn_tanf_countable_unearned_income: 200
+
+- name: Mixed unearned income and child support
+  period: 2025-01
+  input:
+    people:
+      person1:
+        unemployment_compensation: 3_600  # $300/month
+        child_support_received: 3_000  # $250/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tanf_count_children: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # $300 UI + ($250 CS - $100 disregard) = $300 + $150 = $450
+    mn_tanf_countable_unearned_income: 450

@@ -1,76 +1,183 @@
 - name: Eligible family with no income and low assets
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 0
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tanf_eligible: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
   output:
-    mn_tanf_eligible: true
+    mn_tanf_eligible: [true, false, false]
 
 - name: Ineligible - assets exceed limit
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 0
-    spm_unit_assets: 15_000  # Exceeds $10,000 limit
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 15_000  # Exceeds $10,000 limit
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tanf_eligible: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
   output:
-    mn_tanf_eligible: false
+    mn_tanf_eligible: [false, false, false]
 
 - name: Ineligible - income too high
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 40_000  # Above Family Wage Level
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 42_000  # $3,500/month → $1,717.50 countable
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tanf_eligible: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
   output:
-    mn_tanf_eligible: false
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month
+    # Countable income: $1,717.50 > $1,533.40
+    mn_tanf_eligible: [false, false, false]
 
 - name: Ineligible - not TANF eligible (no children)
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 1
-    employment_income: 0
-    spm_unit_assets: 5_000
-    tanf_eligible: false  # Single adult without children
+    people:
+      adult:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [adult]
+        spm_unit_assets: 5_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        tanf_eligible: false  # Single adult without children
+    households:
+      household:
+        members: [adult]
+        state_code: MN
   output:
-    mn_tanf_eligible: false
+    mn_tanf_eligible: [false]
 
 - name: Eligible - assets at limit
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 4
-    employment_income: 12_000
-    spm_unit_assets: 10_000  # Exactly at limit
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        spm_unit_assets: 10_000  # Exactly at limit
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        tanf_eligible: true
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: MN
   output:
-    mn_tanf_eligible: true
+    mn_tanf_eligible: [true, false, false, false]
 
 - name: Eligible - low income and low assets
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 4
-    employment_income: 18_000
-    spm_unit_assets: 3_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 18_000  # $1,500/month
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        spm_unit_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        tanf_eligible: true
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: MN
   output:
-    mn_tanf_eligible: true
+    mn_tanf_eligible: [true, false, false, false]
 
 - name: Ineligible - multiple barriers
   period: 2025-01
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 50_000  # High income
-    spm_unit_assets: 25_000  # High assets
-    tanf_eligible: false  # Not TANF eligible
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000  # High income
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 25_000  # High assets
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tanf_eligible: false  # Not TANF eligible
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
   output:
-    mn_tanf_eligible: false
+    mn_tanf_eligible: [false, false, false]
