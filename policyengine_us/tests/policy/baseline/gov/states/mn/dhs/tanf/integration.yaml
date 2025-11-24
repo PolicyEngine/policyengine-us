@@ -5,6 +5,7 @@
       parent:
         age: 30
         employment_income: 0
+        unemployment_compensation: 0
       child1:
         age: 5
       child2:
@@ -21,7 +22,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 2000
+        spm_unit_assets: 2_000
     tax_units:
       tax_unit:
         members:
@@ -37,7 +38,7 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_income:
@@ -53,16 +54,18 @@
     - false
     - false
     mn_tanf:
-    - 16728
+    - 16_728
     - 0
     - 0
+
 - name: Family with part-time earnings - benefit reduced by earned income disregard
   period: 2025
   input:
     people:
       parent:
         age: 28
-        employment_income: 12000
+        employment_income: 12_000  # $1,000/month
+        unemployment_compensation: 0
       child1:
         age: 7
       child2:
@@ -79,7 +82,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 3500
+        spm_unit_assets: 3_500
     tax_units:
       tax_unit:
         members:
@@ -95,15 +98,15 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_earned_income:
-    - 5610
+    - 5_610  # Monthly: ($1,000 - $65 - 50%×remainder) × 12 = $467.50 × 12
     - 0
     - 0
     mn_tanf_countable_income:
-    - 5610
+    - 5_610
     - 0
     - 0
     mn_tanf_income_eligible:
@@ -115,16 +118,18 @@
     - false
     - false
     mn_tanf:
-    - 12791
+    - 12_791  # min($1,533.40 - $467.50, $1,394) × 12 = $1,065.90 × 12
     - 0
     - 0
+
 - name: Family with full-time earnings - larger benefit reduction
   period: 2025
   input:
     people:
       parent:
         age: 32
-        employment_income: 24000
+        employment_income: 24_000  # $2,000/month
+        unemployment_compensation: 0
       child1:
         age: 8
       child2:
@@ -145,7 +150,7 @@
         - child1
         - child2
         - child3
-        spm_unit_assets: 4200
+        spm_unit_assets: 4_200
     tax_units:
       tax_unit:
         members:
@@ -163,17 +168,17 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1675
+    - 20_100  # 1675 × 12 months
     - 0
     - 0
     - 0
     mn_tanf_countable_earned_income:
-    - 11610
+    - 11_610  # Monthly: ($2,000 - $65 - 50%×remainder) × 12 = $967.50 × 12
     - 0
     - 0
     - 0
     mn_tanf_countable_income:
-    - 11610
+    - 11_610
     - 0
     - 0
     - 0
@@ -188,17 +193,19 @@
     - false
     - false
     mn_tanf:
-    - 10500
+    - 10_500  # min($1,842.50 - $967.50, $1,675) × 12 = $875 × 12
     - 0
     - 0
     - 0
+
 - name: Family with unemployment income - dollar-for-dollar reduction
   period: 2025
   input:
     people:
       parent:
         age: 35
-        unemployment_compensation: 9600
+        employment_income: 0
+        unemployment_compensation: 9_600  # $800/month unemployment
       child1:
         age: 12
       child2:
@@ -215,7 +222,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 5000
+        spm_unit_assets: 5_000
     tax_units:
       tax_unit:
         members:
@@ -231,15 +238,15 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_unearned_income:
-    - 9600
+    - 9_600  # $800 × 12 (no disregard)
     - 0
     - 0
     mn_tanf_countable_income:
-    - 9600
+    - 9_600
     - 0
     - 0
     mn_tanf_income_eligible:
@@ -251,16 +258,19 @@
     - false
     - false
     mn_tanf:
-    - 7128
+    - 7_128  # ($1,394 - $800) × 12 = $594 × 12
     - 0
     - 0
+
 - name: Family with child support - partial disregard applied
   period: 2025
   input:
     people:
       parent:
         age: 29
-        child_support_received: 4800
+        employment_income: 0
+        unemployment_compensation: 0
+        child_support_received: 4_800  # $400/month
       child1:
         age: 6
       child2:
@@ -277,7 +287,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 1500
+        spm_unit_assets: 1_500
     tax_units:
       tax_unit:
         members:
@@ -294,15 +304,15 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_unearned_income:
-    - 2400
+    - 2_400  # ($400 - $200 disregard) × 12 = $200 × 12
     - 0
     - 0
     mn_tanf_countable_income:
-    - 2400
+    - 2_400
     - 0
     - 0
     mn_tanf_income_eligible:
@@ -314,17 +324,18 @@
     - false
     - false
     mn_tanf:
-    - 14328
+    - 14_328  # ($1,394 - $200) × 12 = $1,194 × 12
     - 0
     - 0
+
 - name: Family with combined earned and unearned income
   period: 2025
   input:
     people:
       parent:
         age: 31
-        employment_income: 9600
-        unemployment_compensation: 2400
+        employment_income: 9_600  # $800/month
+        unemployment_compensation: 2_400  # $200/month
       child1:
         age: 3
       child2:
@@ -341,7 +352,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 6500
+        spm_unit_assets: 6_500
     tax_units:
       tax_unit:
         members:
@@ -357,19 +368,19 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_earned_income:
-    - 4410
+    - 4_410  # ($800 - $65 - 50%×remainder) × 12 = $367.50 × 12
     - 0
     - 0
     mn_tanf_countable_unearned_income:
-    - 2400
+    - 2_400  # $200 × 12
     - 0
     - 0
     mn_tanf_countable_income:
-    - 6810
+    - 6_810  # $4,410 + $2,400
     - 0
     - 0
     mn_tanf_income_eligible:
@@ -380,7 +391,11 @@
     - true
     - false
     - false
-    mn_tanf: 14328
+    mn_tanf:
+    - 13_991  # min($1,533.40 - $367.50, $1,394 - $200) × 12 = min($1,165.90, $1,194) × 12
+    - 0
+    - 0
+
 - name: Family with assets exceeding limit - ineligible
   period: 2025
   input:
@@ -388,6 +403,7 @@
       parent:
         age: 33
         employment_income: 0
+        unemployment_compensation: 0
       child1:
         age: 10
       child2:
@@ -404,7 +420,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 12500
+        spm_unit_assets: 12_500
     tax_units:
       tax_unit:
         members:
@@ -420,7 +436,7 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_income:
@@ -432,13 +448,14 @@
     - false
     - false
     mn_tanf_eligible:
-    - false
+    - false  # Assets exceed $10,000 limit
     - false
     - false
     mn_tanf:
     - 0
     - 0
     - 0
+
 - name: Single adult without children - ineligible
   period: 2025
   input:
@@ -446,6 +463,7 @@
       adult:
         age: 25
         employment_income: 0
+        unemployment_compensation: 0
     families:
       family:
         members:
@@ -454,7 +472,7 @@
       spm_unit:
         members:
         - adult
-        spm_unit_assets: 1000
+        spm_unit_assets: 1_000
     tax_units:
       tax_unit:
         members:
@@ -471,13 +489,15 @@
     - false
     mn_tanf:
     - 0
+
 - name: Family with income at exit threshold - ineligible
   period: 2025
   input:
     people:
       parent:
         age: 34
-        employment_income: 40000
+        employment_income: 42_000  # $3,500/month
+        unemployment_compensation: 0
       child1:
         age: 14
       child2:
@@ -494,7 +514,7 @@
         - parent
         - child1
         - child2
-        spm_unit_assets: 3000
+        spm_unit_assets: 3_000
     tax_units:
       tax_unit:
         members:
@@ -510,19 +530,19 @@
         state_code: MN
   output:
     mn_tanf_payment_standard:
-    - 1394
+    - 16_728  # 1394 × 12 months
     - 0
     - 0
     mn_tanf_countable_earned_income:
-    - 19608
+    - 20_610  # ($3,500 - $65 - 50%×remainder) × 12 = $1,717.50 × 12
     - 0
     - 0
     mn_tanf_countable_income:
-    - 19608
+    - 20_610
     - 0
     - 0
     mn_tanf_income_eligible:
-    - false
+    - false  # Exceeds Family Wage Level ($1,533.40/month)
     - false
     - false
     mn_tanf_eligible:
