@@ -26,9 +26,8 @@ class wi_tanf_countable_resources(Variable):
 
     def formula(spm_unit, period, parameters):
         # Use available household assets
-        # Note: spm_unit_net_income_reported includes asset income
-        # For simplified implementation, we use reported assets
-        total_assets = spm_unit("household_assets", period)
+        # Access household net worth from SPMUnit level
+        total_assets = spm_unit.household("net_worth", period)
 
         # Apply vehicle equity exclusion
         p = parameters(period).gov.states.wi.dcf.tanf.asset_limit

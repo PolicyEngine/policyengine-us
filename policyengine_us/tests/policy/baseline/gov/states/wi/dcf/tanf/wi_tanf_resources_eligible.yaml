@@ -2,8 +2,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 2_000
-    household_vehicle_value: 0
+    net_worth: 2_000
+    household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: true
 
@@ -11,8 +11,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 2_500
-    household_vehicle_value: 0
+    net_worth: 2_500
+    household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: true
 
@@ -20,8 +20,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 3_000
-    household_vehicle_value: 0
+    net_worth: 3_000
+    household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: false
 
@@ -29,8 +29,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 1_000
-    household_vehicle_value: 8_000
+    net_worth: 1_000
+    household_vehicles_value: 8_000
   output:
     wi_tanf_resources_eligible: true  # Total assets = $1,000 (vehicle excluded)
 
@@ -38,8 +38,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 2_500
-    household_vehicle_value: 10_000
+    net_worth: 2_500
+    household_vehicles_value: 10_000
   output:
     wi_tanf_resources_eligible: true  # Total assets = $2,500 (vehicle excluded)
 
@@ -47,8 +47,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 1_000
-    household_vehicle_value: 12_000
+    net_worth: 1_000
+    household_vehicles_value: 12_000
   output:
     wi_tanf_resources_eligible: false  # Total assets = $3,000 ($1,000 + $2,000 excess vehicle)
 
@@ -56,8 +56,8 @@
   period: 2024
   input:
     state_code: WI
-    household_net_worth: 500
-    household_vehicle_value: 13_000
+    net_worth: 500
+    household_vehicles_value: 13_000
   output:
     wi_tanf_resources_eligible: false  # Total assets = $3,500 ($500 + $3,000 excess)
 
@@ -65,7 +65,7 @@
   period: 2024
   input:
     state_code: CA
-    household_net_worth: 1_000
-    household_vehicle_value: 0
+    net_worth: 1_000
+    household_vehicles_value: 0
   output:
     wi_tanf_resources_eligible: false

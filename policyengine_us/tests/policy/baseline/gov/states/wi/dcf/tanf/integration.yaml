@@ -15,8 +15,8 @@
       household:
         members: [parent, child1]
         state_code: WI
-        household_net_worth: 1_500
-        household_vehicle_value: 8_000  # Under $10,000 exclusion
+        net_worth: 1_500
+        household_vehicles_value: 8_000  # Under $10,000 exclusion
   output:
     # Income eligibility
     wi_tanf_income_limit: 24_324  # 2-person household (115% FPL)
@@ -52,8 +52,8 @@
       household:
         members: [parent, child1, child2, child3]
         state_code: WI
-        household_net_worth: 800
-        household_vehicle_value: 5_000  # Under $10,000 exclusion
+        net_worth: 800
+        household_vehicles_value: 5_000  # Under $10,000 exclusion
   output:
     # Income eligibility
     wi_tanf_income_limit: 36_972  # 4-person household (115% FPL)
@@ -86,8 +86,8 @@
       household:
         members: [parent, child1, child2]
         state_code: WI
-        household_net_worth: 1_200
-        household_vehicle_value: 3_000
+        net_worth: 1_200
+        household_vehicles_value: 3_000
   output:
     # Income eligibility
     wi_tanf_income_limit: 30_648  # 3-person household (115% FPL)
@@ -117,8 +117,8 @@
       household:
         members: [parent, child1]
         state_code: WI
-        household_net_worth: 1_000
-        household_vehicle_value: 14_000  # $4,000 over $10,000 exclusion
+        net_worth: 1_000
+        household_vehicles_value: 14_000  # $4,000 over $10,000 exclusion
   output:
     # Income eligibility
     wi_tanf_income_limit: 24_324  # 2-person household
@@ -154,8 +154,8 @@
       household:
         members: [parent, child1, child2]
         state_code: WI
-        household_net_worth: 2_400
-        household_vehicle_value: 9_500
+        net_worth: 2_400
+        household_vehicles_value: 9_500
   output:
     # Income eligibility (child income and disregards excluded)
     wi_tanf_income_limit: 30_648  # 3-person household
@@ -194,8 +194,8 @@
       household:
         members: [parent1, parent2, child1, child2, child3, child4]
         state_code: WI
-        household_net_worth: 500
-        household_vehicle_value: 7_000
+        net_worth: 500
+        household_vehicles_value: 7_000
   output:
     # Income eligibility
     wi_tanf_income_limit: 49_620  # 6-person household (115% FPL)
@@ -225,8 +225,8 @@
       household:
         members: [parent, child1]
         state_code: WI
-        household_net_worth: 2_500
-        household_vehicle_value: 10_000
+        net_worth: 2_500
+        household_vehicles_value: 10_000
   output:
     # Income eligibility
     wi_tanf_income_limit: 24_324  # 2-person household
