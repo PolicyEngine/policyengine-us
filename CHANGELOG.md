@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.439.0] - 2025-11-24 00:10:07
+
+### Added
+
+- Added 2018 income limit for optional senior or disabled pathway, changed dates to match with given reference.
+
 ## [1.438.1] - 2025-11-23 10:18:53
 
 ### Fixed
@@ -13549,6 +13555,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.1...1.439.0
 [1.438.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.0...1.438.1
 [1.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.437.0...1.438.0
 [1.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.436.0...1.437.0
