@@ -14,8 +14,7 @@ class in_tanf_payment_standard(Variable):
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):
-        assistance_unit_size = spm_unit("in_tanf_assistance_unit_size", period)
         p = parameters(period).gov.states["in"].fssa.tanf
         # Cap at maximum documented family size
-        capped_size = min_(assistance_unit_size, 10)
+        capped_size = min_(spm_unit("spm_unit_size", period), 10)
         return p.payment_standard[capped_size]

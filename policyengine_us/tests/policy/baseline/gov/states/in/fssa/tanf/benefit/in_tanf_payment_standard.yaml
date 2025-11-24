@@ -1,7 +1,7 @@
 - name: Payment standard for family of 1
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 1
+    spm_unit_size: 1
     state_code: IN
   output:
     in_tanf_payment_standard: 248
@@ -9,7 +9,7 @@
 - name: Payment standard for family of 2
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 2
+    spm_unit_size: 2
     state_code: IN
   output:
     in_tanf_payment_standard: 409
@@ -17,7 +17,7 @@
 - name: Payment standard for family of 3
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 3
+    spm_unit_size: 3
     state_code: IN
   output:
     in_tanf_payment_standard: 513
@@ -25,7 +25,7 @@
 - name: Payment standard for family of 4
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 4
+    spm_unit_size: 4
     state_code: IN
   output:
     in_tanf_payment_standard: 617
@@ -33,7 +33,7 @@
 - name: Payment standard for family of 5
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 5
+    spm_unit_size: 5
     state_code: IN
   output:
     in_tanf_payment_standard: 721
@@ -41,7 +41,7 @@
 - name: Payment standard for family of 6
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 6
+    spm_unit_size: 6
     state_code: IN
   output:
     in_tanf_payment_standard: 825
@@ -49,7 +49,7 @@
 - name: Payment standard for family of 10
   period: 2024-01
   input:
-    in_tanf_assistance_unit_size: 10
+    spm_unit_size: 10
     state_code: IN
   output:
     in_tanf_payment_standard: 1_241

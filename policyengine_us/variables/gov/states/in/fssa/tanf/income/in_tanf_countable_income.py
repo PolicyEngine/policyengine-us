@@ -13,14 +13,4 @@ class in_tanf_countable_income(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
-        # Sum countable earned and unearned income
-        # Per 470 IAC 10.3-4-4 (Countable Income Determination)
-        return add(
-            spm_unit,
-            period,
-            [
-                "in_tanf_countable_earned_income",
-                "in_tanf_countable_unearned_income",
-            ],
-        )
+    adds = ["in_tanf_countable_earned_income", "tanf_gross_unearned_income"]

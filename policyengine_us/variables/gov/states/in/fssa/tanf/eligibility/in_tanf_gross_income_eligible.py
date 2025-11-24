@@ -15,11 +15,13 @@ class in_tanf_gross_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Gross income test - family must have gross income below limit
         # Per 470 IAC 10.3-4-2 (Gross Income Test)
-        assistance_unit_size = spm_unit("in_tanf_assistance_unit_size", period)
-        gross_income = spm_unit("in_tanf_gross_income", period)
-
+        # Calculate gross income using federal TANF baseline
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
+        )
         p = parameters(period).gov.states["in"].fssa.tanf.income
-        capped_size = min_(assistance_unit_size, 10)
+        capped_size = min_(spm_unit("spm_unit_size", period), 10)
         gross_limit = p.gross_income_limit[capped_size]
-
         return gross_income < gross_limit

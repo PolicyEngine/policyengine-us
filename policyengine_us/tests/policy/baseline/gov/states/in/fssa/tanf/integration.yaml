@@ -4,8 +4,8 @@
     people:
       person1:
         age: 30
-        employment_income: 0
-        social_security: 0
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
       person2:
         age: 10
       person3:
@@ -19,10 +19,9 @@
         members: [person1, person2, person3]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [3, 3, 3]
+    spm_unit_size: [3, 3, 3]
     # Parent + 2 children = 3
     in_tanf_countable_earned_income: [0, 0, 0]
-    in_tanf_countable_unearned_income: [0, 0, 0]
     in_tanf_countable_income: [0, 0, 0]
     in_tanf_gross_income_eligible: [true, true, true]
     # Gross income ($0) < limit ($778) → eligible
@@ -40,8 +39,7 @@
     people:
       person1:
         age: 28
-        employment_income: 4_800  # $400/month
-        social_security: 0
+        tanf_gross_earned_income: 400
       person2:
         age: 5
     spm_units:
@@ -53,11 +51,10 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [2, 2]
+    spm_unit_size: [2, 2]
     # Parent + 1 child = 2
     in_tanf_countable_earned_income: [100, 100]
     # Person1: $400 × 0.25 (75% disregard) = $100 (SPMUnit total)
-    in_tanf_countable_unearned_income: [0, 0]
     in_tanf_countable_income: [100, 100]
     # Household total: $100
     in_tanf_gross_income_eligible: [true, true]
@@ -76,11 +73,10 @@
     people:
       person1:
         age: 35
-        employment_income: 6_000  # $500/month
-        social_security: 0
+        tanf_gross_earned_income: 500
       person2:
         age: 12
-        social_security: 2_400  # $200/month
+        tanf_gross_unearned_income: 200
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -90,13 +86,11 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [2, 2]
+    spm_unit_size: [2, 2]
     in_tanf_countable_earned_income: [125, 125]
     # Person1: $500 × 0.25 = $125 (SPMUnit total)
-    in_tanf_countable_unearned_income: [200, 200]
-    # Person2: Social Security $200 (no disregard, SPMUnit total)
     in_tanf_countable_income: [325, 325]
-    # Total: $125 + $200 = $325
+    # Total: $125 (earned) + $200 (unearned) = $325
     in_tanf_gross_income_eligible: [false, false]
     # Gross income ($500 + $200 = $700) > limit ($618) → not eligible
     in_tanf_net_income_eligible: [true, true]
@@ -112,8 +106,7 @@
     people:
       person1:
         age: 32
-        employment_income: 24_624  # $2,052/month
-        social_security: 0
+        tanf_gross_earned_income: 2_052
       person2:
         age: 7
       person3:
@@ -127,7 +120,7 @@
         members: [person1, person2, person3]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [3, 3, 3]
+    spm_unit_size: [3, 3, 3]
     in_tanf_countable_earned_income: [513, 513, 513]
     # Person1: $2,052 × 0.25 = $513 (SPMUnit total)
     in_tanf_countable_income: [513, 513, 513]
@@ -145,12 +138,9 @@
     people:
       person1:
         age: 30
-        employment_income: 7_200  # $600/month
-        social_security: 0
+        tanf_gross_earned_income: 600
       person2:
         age: 29
-        employment_income: 0
-        social_security: 0
       person3:
         age: 6
       person4:
@@ -164,7 +154,7 @@
         members: [person1, person2, person3, person4]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [4, 4, 4, 4]
+    spm_unit_size: [4, 4, 4, 4]
     # 2 parents + 2 children = 4
     in_tanf_countable_earned_income: [150, 150, 150, 150]
     # Person1: $600 × 0.25 = $150 (SPMUnit total)
@@ -185,8 +175,7 @@
     people:
       person1:
         age: 27
-        employment_income: 12_000  # $1,000/month
-        social_security: 0
+        tanf_gross_earned_income: 1_000
       person2:
         age: 9
     spm_units:
@@ -198,7 +187,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: [2, 2]
+    spm_unit_size: [2, 2]
     in_tanf_countable_earned_income: [250, 250]
     # $1,000 × 0.25 = $250 (SPMUnit total)
     in_tanf_countable_income: [250, 250]
@@ -217,8 +206,6 @@
     people:
       person1:
         age: 25
-        employment_income: 0
-        social_security: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -228,7 +215,7 @@
         members: [person1]
         state_code: IN
   output:
-    in_tanf_assistance_unit_size: 1
+    spm_unit_size: 1
     in_tanf_countable_income: 0
     in_tanf_gross_income_eligible: true
     # Gross income ($0) < limit ($457) → passes gross income test

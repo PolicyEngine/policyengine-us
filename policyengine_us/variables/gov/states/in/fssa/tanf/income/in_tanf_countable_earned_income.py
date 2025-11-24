@@ -15,14 +15,11 @@ class in_tanf_countable_earned_income(Variable):
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):
-        # Get gross earned income from persons in the unit
-        person = spm_unit.members
-        gross_earned = person("employment_income", period)
-
-        # Apply 75% disregard (only 25% counted)
+        # Get federal TANF earned income (includes employment + self-employment)
+        # Apply Indiana's 75% disregard (only 25% counted)
         # Per WIOA State Plan and Policy Manual Chapter 2800
         p = parameters(period).gov.states["in"].fssa.tanf.income
-        disregard_rate = p.earned_income_disregard
-        counted_rate = 1 - disregard_rate
-
+        person = spm_unit.members
+        gross_earned = person("tanf_gross_earned_income", period)
+        counted_rate = 1 - p.earned_income_disregard
         return spm_unit.sum(gross_earned * counted_rate)

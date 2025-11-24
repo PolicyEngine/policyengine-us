@@ -15,10 +15,7 @@ class in_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Indiana uses both gross and net income tests
-        # Per 470 IAC 10.3-4 (Fiscal Eligibility Requirements)
-
+        # Must pass both tests per 470 IAC 10.3-4 (Fiscal Eligibility Requirements)
         gross_eligible = spm_unit("in_tanf_gross_income_eligible", period)
         net_eligible = spm_unit("in_tanf_net_income_eligible", period)
-
-        # Must pass both tests
         return gross_eligible & net_eligible

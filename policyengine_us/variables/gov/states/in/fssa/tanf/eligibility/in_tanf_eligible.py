@@ -17,7 +17,14 @@ class in_tanf_eligible(Variable):
         # Per IC 12-14-1-0.5 and 470 IAC 10.3-3
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 
+        # Immigration eligibility - must have at least one citizen or qualified noncitizen
+        # Per IC 12-14-1-1
+        person = spm_unit.members
+        immigration_eligible = spm_unit.any(
+            person("is_citizen_or_legal_immigrant", period.this_year)
+        )
+
         # Income eligibility - state-specific
         income_eligible = spm_unit("in_tanf_income_eligible", period)
 
-        return demographic_eligible & income_eligible
+        return demographic_eligible & immigration_eligible & income_eligible
