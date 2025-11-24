@@ -29,7 +29,29 @@ def create_ctc_per_child_phase_out() -> Reform:
             excess = max_(0, income - phase_out_threshold)
             increments = np.ceil(excess / p.increment)
             reduction_amount = p.amount * qualifying_children
-            return increments * reduction_amount
+            base_reduction_uncapped = increments * reduction_amount
+
+            # Option to avoid overlap between regular and ARPA phase-outs
+            p_contrib = parameters(period).gov.contrib.ctc.per_child_phase_out
+            if p_contrib.avoid_overlap:
+                # Sequential application: ARPA phase-out reduces ARPA addition only,
+                # then regular phase-out applies to base + remaining ARPA
+                # NOTE: ctc_arpa_addition already has ARPA phase-out subtracted,
+                # so we only need to return the regular phase-out here
+                arpa_addition = tax_unit("ctc_arpa_addition", period)
+                base_ctc = tax_unit("ctc_maximum", period)
+
+                # Regular phase-out applies to base CTC + remaining ARPA addition
+                ctc_before_regular = base_ctc + arpa_addition
+                base_reduction = min_(
+                    base_reduction_uncapped, ctc_before_regular
+                )
+
+                # Return only the regular phase-out
+                # ARPA phase-out is already applied in ctc_arpa_addition
+                return base_reduction
+            else:
+                return base_reduction_uncapped
 
     class ctc_arpa_uncapped_phase_out(Variable):
         value_type = float
@@ -47,9 +69,20 @@ def create_ctc_per_child_phase_out() -> Reform:
             # The ARPA CTC has two phase-outs: the original, and a new phase-out
             # applying before and only to the increase in the maximum CTC under ARPA.
             # Calculate the income used to assess the new phase-out.
-            threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
+            arpa_threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
             agi = tax_unit("adjusted_gross_income", period)
-            excess = max_(0, agi - threshold)
+
+            # Check if we should cap ARPA phase-out to avoid overlap with regular phase-out
+            p_contrib = parameters(period).gov.contrib.ctc.per_child_phase_out
+            if p_contrib.avoid_overlap:
+                # Cap the ARPA phase-out at the regular phase-out threshold
+                # so ARPA only applies to income between its threshold and the regular threshold
+                regular_threshold = tax_unit("ctc_phase_out_threshold", period)
+                capped_income = min_(agi, regular_threshold)
+                excess = max_(0, capped_income - arpa_threshold)
+            else:
+                excess = max_(0, agi - arpa_threshold)
+
             increments = np.ceil(excess / p.increment)
             qualifying_children = tax_unit("ctc_qualifying_children", period)
             reduction_amount = p.amount * qualifying_children

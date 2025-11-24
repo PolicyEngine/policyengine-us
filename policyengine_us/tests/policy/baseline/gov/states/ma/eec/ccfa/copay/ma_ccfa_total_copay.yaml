@@ -1,0 +1,104 @@
+- name: Case 1, applicant has an eligible child, no income. 
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 0
+      person2:
+        age: 1
+        ma_ccfa_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 0
+
+- name: Case 2, applicant has an eligible child, $1800 monthly income. 
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_800 * 12
+      person2:
+        age: 1
+        ma_ccfa_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 3.88
+
+- name: Case 3, household of 4, $3800 monthly income. 
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 3_800 * 12
+      person2:
+        age: 1
+        ma_ccfa_eligible_child: true
+      person3:
+        age: 3
+        ma_ccfa_eligible_child: true
+      person4:
+        age: 5
+        ma_ccfa_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 112.35
+    # 64.2 + 64.2*0.5 + 64.2*0.25
+
+- name: Case 4, TAFDC recipient with children has zero copay.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_000 * 12
+      person2:
+        age: 2
+        ma_ccfa_eligible_child: true
+      person3:
+        age: 4
+        ma_ccfa_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_tafdc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 0

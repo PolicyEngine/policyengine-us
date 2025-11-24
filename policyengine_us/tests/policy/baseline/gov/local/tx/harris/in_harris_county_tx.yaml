@@ -1,0 +1,27 @@
+- name: Household in Harris County
+  period: 2025
+  input:
+    county_str: HARRIS_COUNTY_TX
+  output:
+    in_harris_county_tx: true
+
+- name: Household in Travis County
+  period: 2025
+  input:
+    county_str: TRAVIS_COUNTY_TX
+  output:
+    in_harris_county_tx: false
+
+- name: Household in Dallas County
+  period: 2025
+  input:
+    county_str: DALLAS_COUNTY_TX
+  output:
+    in_harris_county_tx: false
+
+- name: Household in Bexar County
+  period: 2025
+  input:
+    county_str: BEXAR_COUNTY_TX
+  output:
+    in_harris_county_tx: false

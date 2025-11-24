@@ -15,6 +15,11 @@ class commodity_supplemental_food_program_eligible(Variable):
         age = person("age", period)
 
         age_eligible = age >= p.min_age
-        income_eligible = fpg <= p.fpg_limit
-
+        federal_income_eligible = fpg <= p.fpg_limit
+        tx_income_eligible = person("tx_dta_csfp_income_eligible", period)
+        state_code = person.household("state_code", period)
+        in_tx = state_code == StateCode.TX
+        income_eligible = where(
+            in_tx, tx_income_eligible, federal_income_eligible
+        )
         return age_eligible & income_eligible

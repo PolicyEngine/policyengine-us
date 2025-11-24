@@ -1,0 +1,11 @@
+- name: Case 1, region 1, school age, full day.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_school_age_reimbursement: 49.69

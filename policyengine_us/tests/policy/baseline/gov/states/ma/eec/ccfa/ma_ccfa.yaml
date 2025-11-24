@@ -1,0 +1,249 @@
+- name: Case 1, eligible family.
+  period: 2025-01
+  input:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 50
+    spm_unit_pre_subsidy_childcare_expenses: 100
+    ma_ccfa_maximum_reimbursement: 200
+    state_code: MA
+  output:
+    ma_ccfa: 50
+
+- name: Case 2, eligible family.
+  period: 2025-01
+  input:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 50
+    spm_unit_pre_subsidy_childcare_expenses: 180
+    ma_ccfa_maximum_reimbursement: 100
+    state_code: MA
+  output:
+    ma_ccfa: 100
+
+- name: Case 3, integration test, family of 2, $1800 monthly income. 
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_800 * 12
+        weekly_hours_worked: 40
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: INFANT
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        childcare_attending_days_per_month: 10
+        childcare_hours_per_day: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_total_copay: 3.88
+    ma_ccfa_maximum_reimbursement: [0, 1_050]
+    ma_ccfa_eligible: true
+    ma_ccfa: 1_050
+
+- name: Case 4, TAFDC recipient integration test - automatic eligibility and zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 800 * 12
+        weekly_hours_worked: 20
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: PRESCHOOL
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: PRESCHOOL
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 2_400 * 12
+        ma_tafdc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+        county_str: SUFFOLK_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 0
+    ma_ccfa_maximum_reimbursement: [0, 1_789.26, 1_789.26]
+    ma_ccfa: 3_578.52
+
+- name: Case 5, two-parent family with multiple children, moderate income.
+  period: 2025-01
+  absolute_error_margin: 0.4
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 2_000 * 12
+        weekly_hours_worked: 40
+      person2:
+        age: 32
+        employment_income_before_lsr: 1_500 * 12
+        weekly_hours_worked: 30
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: INFANT
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: PRESCHOOL
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 2_500 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MA
+        county_str: SUFFOLK_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_total_copay: 66.15
+    ma_ccfa: 4_215.46
+
+- name: Case 6, family child care provider in Western Massachusetts.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income_before_lsr: 1_800 * 12
+        weekly_hours_worked: 35
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: PRESCHOOL
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_000 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: BERKSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_maximum_reimbursement: [0, 987.8]
+    ma_ccfa: 987.8
+
+- name: Case 7, senior caregiver exempt from activity requirements.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income_before_lsr: 1_500 * 12
+        weekly_hours_worked: 0
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: SCHOOL_AGE
+        ma_ccfa_care_provider_type: CENTER_BASED_CARE_SCHOOL_AGE
+        childcare_attending_days_per_month: 18
+        childcare_hours_per_day: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 950 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        county_str: MIDDLESEX_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_activity_eligible: true
+    ma_ccfa: 950.58
+
+- name: Case 8, income at edge of new applicant limit (50% SMI).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 5_000 * 12
+        weekly_hours_worked: 35
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: TODDLER
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        ma_ccfa_child_age_category: PRESCHOOL
+        ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 1_600 * 12
+        ma_ccfa_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+        county_str: HAMPSHIRE_COUNTY_MA
+  output:
+    ma_ccfa_eligible: true
+    ma_ccfa_income_eligible: true
+    ma_ccfa_total_copay: 363.16
+    ma_ccfa: 2_074.38

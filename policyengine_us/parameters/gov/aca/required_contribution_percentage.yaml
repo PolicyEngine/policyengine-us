@@ -1,0 +1,64 @@
+description: Rate of Affordable Care Act Premium Tax Credit phase out by modified adjusted gross income percent of federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: Rate of ACA PTC phase out
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: IRS Revenue Procedure 2021-23 - American Rescue Plan Act modifications for 2021
+      href: https://www.irs.gov/pub/irs-drop/rp-21-23.pdf
+    - title: IRS Internal Revenue Bulletin 2021-35 - Applicable percentage table for 2022
+      href: https://www.irs.gov/irb/2021-35_IRB
+    - title: IRS Revenue Procedure 2023-29 - Inflation Reduction Act extension for 2023-2024
+      href: https://www.irs.gov/pub/irs-drop/rp-23-29.pdf
+    - title: IRS Revenue Procedure 2024-35 - Applicable percentage table for 2025
+      href: https://www.irs.gov/irb/2024-42_IRB
+    - title: IRS Revenue Procedure 2025-25 - Applicable percentage table for 2026
+      href: https://www.irs.gov/pub/irs-drop/rp-25-25.pdf
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 0.02
+      2021-01-01: 0
+      2026-01-01: 0.021
+  - threshold:
+      2015-01-01: 1.33
+      2021-01-01: null
+      2026-01-01: 1.33
+    amount:
+      2015-01-01: 0.03
+      2021-01-01: null
+      2026-01-01: 0.0314
+  - threshold:
+      2015-01-01: 1.50
+    amount:
+      2015-01-01: 0.04
+      2021-01-01: 0.0
+      2026-01-01: 0.0419
+  - threshold:
+      2015-01-01: 2.00
+    amount:
+      2015-01-01: 0.063
+      2021-01-01: 0.02
+      2026-01-01: 0.066
+  - threshold:
+      2015-01-01: 2.50
+    amount:
+      2015-01-01: 0.0805
+      2021-01-01: 0.04
+      2026-01-01: 0.0844
+  - threshold:
+      2015-01-01: 3.00
+    amount:
+      2015-01-01: 0.095
+      2021-01-01: 0.06
+      2026-01-01: 0.0996
+  - threshold:
+      2015-01-01: 4.00
+    amount:
+      2015-01-01: 0.095
+      2021-01-01: 0.085
+      2026-01-01: 0.0996

@@ -4,7 +4,8 @@ from policyengine_us.model_api import *
 class head_start(Variable):
     value_type = float
     entity = Person
-    label = "Amount of Head Start benefit"
+    label = "Head Start"
+    unit = USD
     definition_period = YEAR
     defined_for = "is_head_start_eligible"
     reference = "https://headstart.gov/program-data/article/head-start-program-facts-fiscal-year-2022"
