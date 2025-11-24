@@ -23,5 +23,4 @@ class in_tanf_gross_income_eligible(Variable):
         )
         p = parameters(period).gov.states["in"].fssa.tanf.income
         capped_size = min_(spm_unit("spm_unit_size", period), 10)
-        gross_limit = p.gross_income_limit[capped_size]
-        return gross_income < gross_limit
+        return gross_income < p.gross_income_limit[capped_size]

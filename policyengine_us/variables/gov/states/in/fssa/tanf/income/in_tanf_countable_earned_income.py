@@ -21,5 +21,4 @@ class in_tanf_countable_earned_income(Variable):
         p = parameters(period).gov.states["in"].fssa.tanf.income
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)
-        counted_rate = 1 - p.earned_income_disregard
-        return spm_unit.sum(gross_earned * counted_rate)
+        return spm_unit.sum(gross_earned * (1 - p.earned_income_disregard))

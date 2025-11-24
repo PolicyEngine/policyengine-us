@@ -27,4 +27,13 @@ class in_tanf_eligible(Variable):
         # Income eligibility - state-specific
         income_eligible = spm_unit("in_tanf_income_eligible", period)
 
-        return demographic_eligible & immigration_eligible & income_eligible
+        # Resources eligibility - state-specific
+        # Per 470 IAC 10.3-3-6
+        resources_eligible = spm_unit("in_tanf_resources_eligible", period)
+
+        return (
+            demographic_eligible
+            & immigration_eligible
+            & income_eligible
+            & resources_eligible
+        )
