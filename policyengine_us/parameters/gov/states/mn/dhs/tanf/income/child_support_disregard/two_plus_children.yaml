@@ -1,0 +1,14 @@
+description: Minnesota disregards this amount of child support per month for families with two or more children under the Minnesota Family Investment Program.
+
+values:
+  2020-01-01: 200
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Minnesota MFIP child support disregard for two or more children
+  reference:
+    - title: Minnesota Statute 142G - Minnesota Family Investment Program
+      href: https://www.revisor.mn.gov/statutes/cite/142G/pdf
+    - title: Minnesota DHS Combined Manual 0022.12 - How to Calculate Benefit Level
+      href: https://www.dhs.mn.gov/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_002212
