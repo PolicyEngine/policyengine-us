@@ -1,0 +1,62 @@
+- name: Family of 1 receives $393 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 1
+  output:
+    mo_tanf_standard_of_need: 393
+
+- name: Family of 2 receives $678 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 2
+  output:
+    mo_tanf_standard_of_need: 678
+
+- name: Family of 3 receives $846 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 3
+  output:
+    mo_tanf_standard_of_need: 846
+
+- name: Family of 4 receives $990 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 4
+  output:
+    mo_tanf_standard_of_need: 990
+
+- name: Family of 5 receives $1123 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 5
+  output:
+    mo_tanf_standard_of_need: 1_123
+
+- name: Family of 6 receives $1247 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 6
+  output:
+    mo_tanf_standard_of_need: 1_247
+
+- name: Family of 10 receives $1722 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 10
+  output:
+    mo_tanf_standard_of_need: 1_722
+
+- name: Family of 12 receives $1956 standard
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 12
+  output:
+    mo_tanf_standard_of_need: 1_956
+
+- name: Family of 13 adds $116 per person
+  period: 2024
+  input:
+    mo_tanf_assistance_unit_size: 13
+  output:
+    mo_tanf_standard_of_need: 2_072  # 1956 + 116

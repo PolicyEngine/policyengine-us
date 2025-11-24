@@ -1,0 +1,53 @@
+- name: Ineligible household receives zero benefit
+  period: 2024
+  input:
+    mo_tanf_eligible: false
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 0
+  output:
+    mo_tanf: 0
+
+- name: Eligible household with no income receives maximum benefit
+  period: 2024
+  input:
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 0
+  output:
+    mo_tanf: 292  # 846 * 0.34526 = 292.09 rounded down
+
+- name: Eligible household with countable income receives reduced benefit
+  period: 2024
+  input:
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 100
+  output:
+    mo_tanf: 192  # 292 - 100 = 192
+
+- name: Benefit less than $10 results in zero payment
+  period: 2024
+  input:
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 285
+  output:
+    mo_tanf: 0  # 292 - 285 = 7, which is < $10
+
+- name: Benefit of exactly $10 is paid
+  period: 2024
+  input:
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 282
+  output:
+    mo_tanf: 10  # 292 - 282 = 10
+
+- name: Countable income exceeds maximum benefit results in zero
+  period: 2024
+  input:
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 300
+  output:
+    mo_tanf: 0
