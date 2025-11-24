@@ -10,7 +10,7 @@ class pr_gradual_adjustment_amount(Variable):
     )
     unit = USD
     definition_period = YEAR
-    defined_for = "pr_gradual_adjustment_eligibility"
+    defined_for = "pr_gradual_adjustment_eligible"
     reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=3"
 
     def formula(tax_unit, period, parameters):

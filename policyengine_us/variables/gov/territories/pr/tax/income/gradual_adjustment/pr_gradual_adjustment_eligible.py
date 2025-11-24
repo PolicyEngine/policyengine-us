@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pr_gradual_adjustment_eligibility(Variable):
-    value_type = float
+class pr_gradual_adjustment_eligible(Variable):
+    value_type = bool
     entity = TaxUnit
     label = "Puerto Rico gradual adjustment eligibility"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR
     reference = "https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=3"

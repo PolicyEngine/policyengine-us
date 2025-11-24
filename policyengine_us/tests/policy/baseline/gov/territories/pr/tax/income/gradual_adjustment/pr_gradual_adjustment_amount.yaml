@@ -1,7 +1,7 @@
 - name: Not eligible, income below threshold
   period: 2024
   input:
-    pr_gradual_adjustment_eligibility: False
+    pr_gradual_adjustment_eligible: False
     pr_net_taxable_income: 70_000
     pr_exemptions: 4_000
     state_code: PR
@@ -11,7 +11,7 @@
 - name: Amount lower than limit
   period: 2024
   input:
-    pr_gradual_adjustment_eligibility: True
+    pr_gradual_adjustment_eligible: True
     pr_net_taxable_income: 501_000 
     pr_exemptions: 1_300
     state_code: PR
@@ -21,7 +21,7 @@
 - name: Limit lower than amount
   period: 2024
   input:
-    pr_gradual_adjustment_eligibility: True
+    pr_gradual_adjustment_eligible: True
     pr_net_taxable_income: 700_000 
     pr_exemptions: 1_000
     state_code: PR
