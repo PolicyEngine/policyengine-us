@@ -15,7 +15,9 @@ class mo_tanf_income_for_185_test(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned_income = spm_unit("mo_tanf_gross_earned_income", period)
+        gross_earned_income = add(
+            spm_unit, period, ["mo_tanf_gross_earned_income"]
+        )
         unearned_income = spm_unit("mo_tanf_unearned_income", period)
 
         # For 185% test: Only $90 standard work exemption allowed

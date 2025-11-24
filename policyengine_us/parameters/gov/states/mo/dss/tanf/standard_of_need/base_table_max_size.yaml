@@ -1,0 +1,13 @@
+description: Maximum household size covered by the base Standard of Need table in Missouri TANF. For assistance units larger than this size, the additional_person_increment is added for each additional person.
+
+metadata:
+  unit: person
+  period: month
+  label: Missouri TANF Standard of Need base table maximum size
+  reference:
+    - title: 13 CSR 40-2.120(3)(A)1. - AFDC Consolidated Standard
+      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
+
+values:
+
+  1991-01-01: 12

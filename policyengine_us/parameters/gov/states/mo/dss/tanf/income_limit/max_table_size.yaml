@@ -1,0 +1,13 @@
+description: Maximum household size covered by the Missouri TANF Standard of Need table used for income limit calculations. Households larger than this size are capped at this value for the income limit calculation. The actual Standard of Need continues to increase beyond this size using the additional_person_increment.
+
+metadata:
+  unit: person
+  period: year
+  label: Missouri TANF income limit maximum table size
+  reference:
+    - title: 13 CSR 40-2.120(3)(A)1. - AFDC Consolidated Standard
+      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
+
+values:
+
+  1991-01-01: 8

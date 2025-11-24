@@ -15,12 +15,13 @@ class mo_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.resource_limit
 
-        # Use SPMUnit assets as proxy for countable resources
-        # In full implementation, would need specific MO resource definitions
-        spm_assets = add(spm_unit, period, ["spm_unit_net_income_reported"])
+        # Get MO TANF countable resources
+        countable_resources = spm_unit("mo_tanf_countable_resources", period)
 
-        # Use initial application limit (simplified)
-        # Full implementation would track whether IEP is signed
-        resource_limit = p.initial_application
+        # Check if household has signed Individual Employment Plan
+        has_iep = spm_unit("mo_tanf_has_individual_employment_plan", period)
 
-        return spm_assets <= resource_limit
+        # Select appropriate resource limit
+        resource_limit = where(has_iep, p.with_iep, p.initial_application)
+
+        return countable_resources <= resource_limit

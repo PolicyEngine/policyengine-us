@@ -18,7 +18,7 @@ class mo_tanf_eligible(Variable):
         # Use federal demographic and immigration eligibility
         person = spm_unit.members
         is_demographic_eligible = person(
-            "is_tanf_demographic_eligible", period
+            "is_person_demographic_tanf_eligible", period
         )
         has_demographic_eligible_member = spm_unit.any(is_demographic_eligible)
 

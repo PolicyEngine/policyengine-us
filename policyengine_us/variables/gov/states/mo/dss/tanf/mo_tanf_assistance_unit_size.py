@@ -13,6 +13,7 @@ class mo_tanf_assistance_unit_size(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        is_in_assistance_unit = person("is_tanf_eligible_person", period)
-        return spm_unit.sum(is_in_assistance_unit)
+        # Simplified implementation: use SPM unit size as proxy for assistance unit
+        # Full implementation would track eligible children, parents, and caretakers
+        # per 13 CSR 40-2.310 definitions
+        return spm_unit("spm_unit_size", period)

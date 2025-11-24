@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mo_tanf_gross_earned_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     label = "Missouri TANF gross earned income"
     unit = USD
     definition_period = MONTH
@@ -13,13 +13,10 @@ class mo_tanf_gross_earned_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(person, period, parameters):
         # Use federal baseline for earned income sources
-        person = spm_unit.members
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
 
         # Total earned income per person
-        earned_income = employment_income + self_employment_income
-
-        return spm_unit.sum(earned_income)
+        return employment_income + self_employment_income

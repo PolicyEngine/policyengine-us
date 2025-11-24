@@ -22,7 +22,7 @@ class mo_tanf(Variable):
         calculated_benefit = maximum_benefit - countable_income
 
         # Round down to nearest dollar
-        benefit_rounded = floor(calculated_benefit)
+        benefit_rounded = np.floor(calculated_benefit)
 
         # No payment if benefit < $10
         minimum_payment = p.minimum_payment.threshold

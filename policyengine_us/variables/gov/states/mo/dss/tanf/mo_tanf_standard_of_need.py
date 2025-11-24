@@ -17,11 +17,14 @@ class mo_tanf_standard_of_need(Variable):
         p = parameters(period).gov.states.mo.dss.tanf.standard_of_need
         assistance_unit_size = spm_unit("mo_tanf_assistance_unit_size", period)
 
-        # For household sizes 1-12, use the table
-        base_amount = p.amount[assistance_unit_size]
+        # For household sizes 1-base_table_max_size, use the table
+        # For sizes > max, use the max table size as base
+        max_table_size = p.base_table_max_size
+        table_size = min_(assistance_unit_size, max_table_size)
+        base_amount = p.amount[table_size]
 
-        # For household sizes > 12, add increment for each additional person
-        additional_persons = max_(assistance_unit_size - 12, 0)
+        # For household sizes > base_table_max_size, add increment for each additional person
+        additional_persons = max_(assistance_unit_size - max_table_size, 0)
         additional_amount = additional_persons * p.additional_person_increment
 
         return base_amount + additional_amount

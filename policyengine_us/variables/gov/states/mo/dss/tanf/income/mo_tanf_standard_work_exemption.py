@@ -15,7 +15,9 @@ class mo_tanf_standard_work_exemption(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned_income = spm_unit("mo_tanf_gross_earned_income", period)
+        gross_earned_income = add(
+            spm_unit, period, ["mo_tanf_gross_earned_income"]
+        )
 
         # Standard work exemption is the lesser of earned income or the exemption amount
         return min_(gross_earned_income, p.standard_work_exemption)

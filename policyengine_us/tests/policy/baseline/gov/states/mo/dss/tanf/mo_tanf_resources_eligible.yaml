@@ -1,63 +1,71 @@
 - name: Eligible with resources well below $1000 limit
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 500
+    state_code: MO
+    mo_tanf_countable_resources: 500
     mo_tanf_has_individual_employment_plan: false
   output:
     mo_tanf_resources_eligible: true
 
 - name: Eligible with resources just below $1000 limit
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 999
+    state_code: MO
+    mo_tanf_countable_resources: 999
     mo_tanf_has_individual_employment_plan: false
   output:
     mo_tanf_resources_eligible: true
 
 - name: Eligible with resources at $1000 limit
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 1_000
+    state_code: MO
+    mo_tanf_countable_resources: 1_000
     mo_tanf_has_individual_employment_plan: false
   output:
     mo_tanf_resources_eligible: true
 
 - name: Ineligible with resources exceeding $1000 limit without IEP
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 1_001
+    state_code: MO
+    mo_tanf_countable_resources: 1_001
     mo_tanf_has_individual_employment_plan: false
   output:
     mo_tanf_resources_eligible: false
 
 - name: Eligible with resources below $5000 limit with IEP
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 3_000
+    state_code: MO
+    mo_tanf_countable_resources: 3_000
     mo_tanf_has_individual_employment_plan: true
   output:
     mo_tanf_resources_eligible: true
 
 - name: Eligible with resources at $5000 limit with IEP
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 5_000
+    state_code: MO
+    mo_tanf_countable_resources: 5_000
     mo_tanf_has_individual_employment_plan: true
   output:
     mo_tanf_resources_eligible: true
 
 - name: Ineligible with resources exceeding $5000 limit with IEP
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 5_001
+    state_code: MO
+    mo_tanf_countable_resources: 5_001
     mo_tanf_has_individual_employment_plan: true
   output:
     mo_tanf_resources_eligible: false
 
 - name: IEP increases limit from $1000 to $5000
-  period: 2024
+  period: 2024-01
   input:
-    tanf_countable_resources: 2_500
+    state_code: MO
+    mo_tanf_countable_resources: 2_500
     mo_tanf_has_individual_employment_plan: true
   output:
     mo_tanf_resources_eligible: true  # Would be ineligible without IEP

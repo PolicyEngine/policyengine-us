@@ -10,9 +10,14 @@ class mo_tanf_income_limit(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        people = spm_unit("spm_unit_size", period)
+        assistance_unit_size = spm_unit("mo_tanf_assistance_unit_size", period)
         p = parameters(period).gov.states.mo.dss.tanf
-        # TODO: Find the amount for households with more than 8 people.
-        capped_people = min_(people, 8).astype(int)
-        # Note: Missouri defines income limits annually.
-        return p.income_limit[capped_people]
+
+        # For income limit purposes, use the standard of need
+        # Capped at max_table_size (8 persons) per regulations
+        max_size = p.income_limit.max_table_size
+        capped_size = min_(assistance_unit_size, max_size).astype(int)
+
+        # Get the standard of need for the capped size
+        # This is used for the 185% gross income test
+        return p.standard_of_need.amount[capped_size]

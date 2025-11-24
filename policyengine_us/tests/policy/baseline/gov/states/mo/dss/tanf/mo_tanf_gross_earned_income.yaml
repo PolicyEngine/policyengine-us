@@ -1,6 +1,7 @@
 - name: Employment income counts as earned income
   period: 2024
   input:
+    state_code: MO
     employment_income: 2_000
     self_employment_income: 0
   output:
@@ -9,6 +10,7 @@
 - name: Self-employment income counts as earned income
   period: 2024
   input:
+    state_code: MO
     employment_income: 0
     self_employment_income: 1_500
   output:
@@ -17,6 +19,7 @@
 - name: Combined employment and self-employment income
   period: 2024
   input:
+    state_code: MO
     employment_income: 1_200
     self_employment_income: 800
   output:
@@ -25,6 +28,7 @@
 - name: No income results in zero
   period: 2024
   input:
+    state_code: MO
     employment_income: 0
     self_employment_income: 0
   output:

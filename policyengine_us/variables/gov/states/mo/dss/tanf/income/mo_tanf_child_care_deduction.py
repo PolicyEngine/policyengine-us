@@ -20,7 +20,7 @@ class mo_tanf_child_care_deduction(Variable):
 
         # Count children under age 2 and age 2+
         is_under_two = age < p.age_threshold
-        is_two_and_over = (age >= p.age_threshold) & (age < 18)
+        is_two_and_over = (age >= p.age_threshold) & (age < p.max_age)
 
         count_under_two = spm_unit.sum(is_under_two)
         count_two_and_over = spm_unit.sum(is_two_and_over)
