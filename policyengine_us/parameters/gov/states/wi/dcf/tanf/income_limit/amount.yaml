@@ -1,0 +1,36 @@
+description: Wisconsin sets this monthly gross income limit at 115 percent of the Federal Poverty Level for the Wisconsin Works program, based on household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 20)
+  label: Wisconsin TANF income limit
+  reference:
+    - title: W-2 Manual § 3.2.1 - 115 Percent Gross Income Test
+      href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.2.1_115_Percent_Gross_Income_Test.htm
+    - title: Wisconsin Administrative Code DCF 101.09(3) - Financial Eligibility
+      href: https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3
+    - title: Wisconsin Statutes § 49.145(2)(a) - Wisconsin Works Eligibility
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/145#(2)(a)
+
+1:
+  2025-02-01: 1_500
+2:
+  2025-02-01: 2_027
+3:
+  2025-02-01: 2_554
+4:
+  2025-02-01: 3_081
+5:
+  2025-02-01: 3_608
+6:
+  2025-02-01: 4_135
+7:
+  2025-02-01: 4_662
+8:
+  2025-02-01: 5_189
+9:
+  2025-02-01: 5_716
+10:
+  2025-02-01: 6_243
