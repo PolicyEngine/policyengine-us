@@ -21,12 +21,12 @@ class mn_tanf(Variable):
         has_earnings = countable_earned > 0
 
         benefit_with_earnings = family_wage_level - countable_earned
-        benefit_without_earnings = payment_standard - countable_unearned
+        adjusted_payment_standard = payment_standard - countable_unearned
 
         benefit = where(
             has_earnings,
-            min_(benefit_with_earnings, payment_standard),
-            benefit_without_earnings,
+            min_(benefit_with_earnings, adjusted_payment_standard),
+            adjusted_payment_standard,
         )
 
         return max_(benefit, 0)

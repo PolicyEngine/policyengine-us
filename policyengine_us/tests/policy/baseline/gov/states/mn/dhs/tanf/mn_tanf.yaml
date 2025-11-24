@@ -1,131 +1,393 @@
 - name: No income - receives full transitional standard
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 0
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+      child2:
+        age: 3
+    families:
+      family:
+        members:
+        - parent
+        - child1
+        - child2
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Transitional standard for family of 3: $1,394/month
-    mn_tanf: 16_728  # $1,394 × 12
-
+    mn_tanf:
+    - 16728
+    - 0
+    - 0
 - name: Low earned income - benefit reduced
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 12_000  # $1,000/month
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 12000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id001
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id001
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Countable earned income: $467.50/month
-    # Family Wage Level: $1,394 × 1.10 = $1,533.40/month
-    # Benefit: $1,533.40 - $467.50 = $1,065.90/month
-    # But capped at Transitional Standard: $1,394/month
-    # Annual: $1,065.90 × 12 = $12,791
-    mn_tanf: 12_791
-
+    mn_tanf:
+    - 12791
+    - 0
+    - 0
 - name: Higher earned income - larger reduction
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 18_000  # $1,500/month
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 18000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id002
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id002
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Countable earned income: $717.50/month
-    # Family Wage Level: $1,533.40/month
-    # Benefit: $1,533.40 - $717.50 = $815.90/month
-    # Annual: $815.90 × 12 = $9,791
-    mn_tanf: 9_791
-
+    mn_tanf:
+    - 9791
+    - 0
+    - 0
 - name: Unearned income only - dollar-for-dollar reduction
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    unemployment_compensation: 6_000  # $500/month
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        unemployment_compensation: 6000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id003
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id003
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Transitional standard: $1,394/month
-    # Benefit: $1,394 - $500 = $894/month
-    # Annual: $894 × 12 = $10,728
-    mn_tanf: 10_728
-
+    mn_tanf:
+    - 10728
+    - 0
+    - 0
 - name: Assets exceed limit - zero benefit
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 0
-    spm_unit_assets: 15_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 15000
+    families:
+      family:
+        members: &id004
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id004
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    mn_tanf: 0
-
+    mn_tanf:
+    - 0
+    - 0
+    - 0
 - name: Income too high - zero benefit
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    employment_income: 40_000
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 40000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id005
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id005
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    mn_tanf: 0
-
+    mn_tanf:
+    - 0
+    - 0
+    - 0
 - name: Not TANF eligible - zero benefit
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 1
-    employment_income: 0
-    spm_unit_assets: 5_000
-    tanf_eligible: false
+    people:
+      adult:
+        age: 25
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members:
+        - adult
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id006
+        - adult
+    tax_units:
+      tax_unit:
+        members: *id006
+    households:
+      household:
+        members:
+        - adult
+        state_code: MN
   output:
-    mn_tanf: 0
-
+    mn_tanf:
+    - 0
 - name: Family of 4 - no income
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 4
-    employment_income: 0
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id007
+        - parent
+        - child1
+        - child2
+        - child3
+    tax_units:
+      tax_unit:
+        members: *id007
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        state_code: MN
   output:
-    # Transitional standard for family of 4: $1,675/month
-    mn_tanf: 20_100  # $1,675 × 12
-
+    mn_tanf:
+    - 20100
+    - 0
+    - 0
+    - 0
 - name: Family of 4 with earned income
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 4
-    employment_income: 18_000  # $1,500/month
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        employment_income: 18000
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id008
+        - parent
+        - child1
+        - child2
+        - child3
+    tax_units:
+      tax_unit:
+        members: *id008
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        state_code: MN
   output:
-    # Countable earned income: $717.50/month
-    # Family Wage Level: $1,675 × 1.10 = $1,842.50/month
-    # Benefit: $1,842.50 - $717.50 = $1,125/month
-    # Annual: $1,125 × 12 = $13,500
-    mn_tanf: 13_500
-
+    mn_tanf:
+    - 13500
+    - 0
+    - 0
+    - 0
 - name: Child support with disregard - 1 child
-  period: 2025-01
+  period: 2025
   input:
-    state_code: MN
-    spm_unit_size: 3
-    child_support_received: 3_000  # $250/month
-    tanf_count_children: 1
-    spm_unit_assets: 5_000
-    tanf_eligible: true
+    people:
+      parent:
+        age: 30
+        child_support_received: 3000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
+    families:
+      family:
+        members: &id009
+        - parent
+        - child1
+        - child2
+    tax_units:
+      tax_unit:
+        members: *id009
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Countable child support: $250 - $100 = $150/month
-    # Benefit: $1,394 - $150 = $1,244/month
-    # Annual: $1,244 × 12 = $14,928
-    mn_tanf: 14_928
+    mn_tanf:
+    - 14928
+    - 0
+    - 0
