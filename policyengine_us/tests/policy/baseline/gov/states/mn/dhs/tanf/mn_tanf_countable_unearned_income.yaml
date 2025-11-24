@@ -3,8 +3,7 @@
   input:
     people:
       person1:
-        unemployment_compensation: 0
-        social_security: 0
+        tanf_gross_unearned_income: 0
         child_support_received: 0
     spm_units:
       spm_unit:
@@ -21,7 +20,8 @@
   input:
     people:
       person1:
-        unemployment_compensation: 6_000  # $500/month
+        tanf_gross_unearned_income: 500  # $500/month
+        child_support_received: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -38,8 +38,8 @@
   input:
     people:
       person1:
-        unemployment_compensation: 3_600  # $300/month
-        social_security: 6_000  # $500/month
+        tanf_gross_unearned_income: 800  # $300 unemployment + $500 social security = $800/month
+        child_support_received: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -48,7 +48,7 @@
         members: [person1]
         state_code: MN
   output:
-    # Total: $300 + $500 = $800/month counted dollar-for-dollar
+    # Total: $800/month counted dollar-for-dollar
     mn_tanf_countable_unearned_income: 800
 
 - name: Child support below disregard - 1 child
@@ -56,18 +56,16 @@
   input:
     people:
       person1:
-        unemployment_compensation: 0
+        tanf_gross_unearned_income: 50  # $50/month child support (MUST include child support in gross unearned)
         child_support_received: 600  # $50/month (< $100 disregard)
+      child1:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-        tanf_count_children: 1
+        members: [person1, child1]
     households:
       household:
-        members: [person1]
+        members: [person1, child1]
         state_code: MN
   output:
     # $50/month < $100 disregard, fully disregarded
@@ -78,18 +76,16 @@
   input:
     people:
       person1:
-        unemployment_compensation: 0
+        tanf_gross_unearned_income: 250  # $250/month child support
         child_support_received: 3_000  # $250/month
+      child1:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-        tanf_count_children: 1
+        members: [person1, child1]
     households:
       household:
-        members: [person1]
+        members: [person1, child1]
         state_code: MN
   output:
     # $250 - $100 disregard = $150 countable monthly
@@ -100,18 +96,18 @@
   input:
     people:
       person1:
-        unemployment_compensation: 0
+        tanf_gross_unearned_income: 150  # $150/month child support
         child_support_received: 1_800  # $150/month (< $200 disregard)
+      child1:
+        age: 5
+      child2:
+        age: 3
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-        tanf_count_children: 2
+        members: [person1, child1, child2]
     households:
       household:
-        members: [person1]
+        members: [person1, child1, child2]
         state_code: MN
   output:
     # $150 < $200 disregard, fully disregarded
@@ -122,18 +118,18 @@
   input:
     people:
       person1:
-        unemployment_compensation: 0
+        tanf_gross_unearned_income: 400  # $400/month child support
         child_support_received: 4_800  # $400/month
+      child1:
+        age: 5
+      child2:
+        age: 3
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-        tanf_count_children: 2
+        members: [person1, child1, child2]
     households:
       household:
-        members: [person1]
+        members: [person1, child1, child2]
         state_code: MN
   output:
     # $400 - $200 disregard = $200 countable monthly
@@ -144,18 +140,16 @@
   input:
     people:
       person1:
-        unemployment_compensation: 3_600  # $300/month
-        child_support_received: 3_000  # $250/month
+        tanf_gross_unearned_income: 550  # $300/month unemployment + $250/month child support
+        child_support_received: 3_000  # $250/month child support
+      child1:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-        tanf_count_children: 1
+        members: [person1, child1]
     households:
       household:
-        members: [person1]
+        members: [person1, child1]
         state_code: MN
   output:
     # $300 UI + ($250 CS - $100 disregard) = $300 + $150 = $450
