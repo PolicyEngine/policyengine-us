@@ -1,0 +1,55 @@
+- name: One-person household has income limit of $18,000 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 1
+  output:
+    wi_tanf_income_limit: 18_000
+
+- name: Two-person household has income limit of $24,324 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 2
+  output:
+    wi_tanf_income_limit: 24_324
+
+- name: Three-person household has income limit of $30,648 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 3
+  output:
+    wi_tanf_income_limit: 30_648
+
+- name: Four-person household has income limit of $36,972 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 4
+  output:
+    wi_tanf_income_limit: 36_972
+
+- name: Five-person household has income limit of $43,296 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 5
+  output:
+    wi_tanf_income_limit: 43_296
+
+- name: Six-person household has income limit of $49,620 annually (115% FPL)
+  period: 2024
+  input:
+    state_code: WI
+    spm_unit_size: 6
+  output:
+    wi_tanf_income_limit: 49_620
+
+- name: Only calculate for Wisconsin
+  period: 2024
+  input:
+    state_code: CA
+    spm_unit_size: 1
+  output:
+    wi_tanf_income_limit: 0

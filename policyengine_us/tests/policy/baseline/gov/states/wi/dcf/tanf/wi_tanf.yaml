@@ -1,0 +1,23 @@
+- name: Eligible household receives $653/month CSJ payment
+  period: 2024
+  input:
+    state_code: WI
+    wi_tanf_eligible: true
+  output:
+    wi_tanf: 7_836  # $653 * 12 months
+
+- name: Ineligible household receives $0
+  period: 2024
+  input:
+    state_code: WI
+    wi_tanf_eligible: false
+  output:
+    wi_tanf: 0
+
+- name: Only calculate for Wisconsin
+  period: 2024
+  input:
+    state_code: CA
+    wi_tanf_eligible: true
+  output:
+    wi_tanf: 0
