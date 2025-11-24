@@ -1,353 +1,535 @@
 - name: Single mother with two children, no income - receives full benefit
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 30
         employment_income: 0
-        state_code_str: MN
       child1:
         age: 5
-        state_code_str: MN
       child2:
         age: 3
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 2_000
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 2000
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard for family of 3: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # No income, so countable income is 0
-    mn_tanf_countable_income: [0, 0, 0]
-    # Income eligible: countable income < Family Wage Level
-    mn_tanf_income_eligible: [true, false, false]
-    # Overall eligible: income eligible + assets < $10,000 + TANF eligible
-    mn_tanf_eligible: [true, false, false]
-    # Benefit = Transitional Standard ($1,394/month × 12 months)
-    mn_tanf: [16_728, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 0
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    mn_tanf:
+    - 16728
+    - 0
+    - 0
 - name: Family with part-time earnings - benefit reduced by earned income disregard
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 28
-        employment_income: 12_000  # $1,000/month
-        state_code_str: MN
+        employment_income: 12000
       child1:
         age: 7
-        state_code_str: MN
       child2:
         age: 4
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 3_500
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 3500
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # Earned income calculation:
-    # $1,000/month - $65 = $935
-    # $935 × 0.5 = $467.50 additional disregard
-    # Countable: $1,000 - $532.50 = $467.50/month
-    # Annual: $467.50 × 12 = $5,610
-    mn_tanf_countable_earned_income: [5_610, 0, 0]
-    mn_tanf_countable_income: [5_610, 0, 0]
-    # Income eligible: $5,610 < $18,401 (Family Wage Level)
-    mn_tanf_income_eligible: [true, false, false]
-    mn_tanf_eligible: [true, false, false]
-    # Benefit calculation:
-    # Family Wage Level: $1,394 × 1.10 = $1,533.40/month
-    # Benefit: $1,533.40 - $467.50 = $1,065.90/month
-    # Annual: $1,065.90 × 12 = $12,791
-    mn_tanf: [12_791, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_earned_income:
+    - 5610
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 5610
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    mn_tanf:
+    - 12791
+    - 0
+    - 0
 - name: Family with full-time earnings - larger benefit reduction
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 32
-        employment_income: 24_000  # $2,000/month
-        state_code_str: MN
+        employment_income: 24000
       child1:
         age: 8
-        state_code_str: MN
       child2:
         age: 6
-        state_code_str: MN
       child3:
         age: 2
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2, child3]
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
     spm_units:
       spm_unit:
-        members: [parent, child1, child2, child3]
-        spm_unit_assets: 4_200
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        spm_unit_assets: 4200
     tax_units:
       tax_unit:
-        members: [parent, child1, child2, child3]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        state_code: MN
   output:
-    # Payment standard for family of 4: $1,675/month
-    mn_tanf_payment_standard: [1_675, 0, 0, 0]
-    # Earned income calculation:
-    # $2,000/month - $65 = $1,935
-    # $1,935 × 0.5 = $967.50 additional disregard
-    # Countable: $2,000 - $1,032.50 = $967.50/month
-    # Annual: $967.50 × 12 = $11,610
-    mn_tanf_countable_earned_income: [11_610, 0, 0, 0]
-    mn_tanf_countable_income: [11_610, 0, 0, 0]
-    # Income eligible: $11,610 < $22,110 (Family Wage Level)
-    mn_tanf_income_eligible: [true, false, false, false]
-    mn_tanf_eligible: [true, false, false, false]
-    # Benefit calculation:
-    # Family Wage Level: $1,675 × 1.10 = $1,842.50/month
-    # Benefit: $1,842.50 - $967.50 = $875/month
-    # Annual: $875 × 12 = $10,500
-    mn_tanf: [10_500, 0, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1675
+    - 0
+    - 0
+    - 0
+    mn_tanf_countable_earned_income:
+    - 11610
+    - 0
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 11610
+    - 0
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    - false
+    mn_tanf:
+    - 10500
+    - 0
+    - 0
+    - 0
 - name: Family with unemployment income - dollar-for-dollar reduction
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 35
-        unemployment_compensation: 9_600  # $800/month
-        state_code_str: MN
+        unemployment_compensation: 9600
       child1:
         age: 12
-        state_code_str: MN
       child2:
         age: 9
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 5_000
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 5000
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # Unemployment counted dollar-for-dollar
-    mn_tanf_countable_unearned_income: [9_600, 0, 0]
-    mn_tanf_countable_income: [9_600, 0, 0]
-    # Income eligible: $9,600 < $18,401
-    mn_tanf_income_eligible: [true, false, false]
-    mn_tanf_eligible: [true, false, false]
-    # Benefit: $1,394 - $800 = $594/month
-    # Annual: $594 × 12 = $7,128
-    mn_tanf: [7_128, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_unearned_income:
+    - 9600
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 9600
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    mn_tanf:
+    - 7128
+    - 0
+    - 0
 - name: Family with child support - partial disregard applied
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 29
-        child_support_received: 4_800  # $400/month
-        state_code_str: MN
+        child_support_received: 4800
       child1:
         age: 6
-        state_code_str: MN
       child2:
         age: 4
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 1_500
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 1500
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
         tanf_count_children: 2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # Child support calculation:
-    # $400/month - $200 disregard (2 children) = $200/month
-    # Annual: $200 × 12 = $2,400
-    mn_tanf_countable_unearned_income: [2_400, 0, 0]
-    mn_tanf_countable_income: [2_400, 0, 0]
-    # Income eligible: $2,400 < $18,401
-    mn_tanf_income_eligible: [true, false, false]
-    mn_tanf_eligible: [true, false, false]
-    # Benefit: $1,394 - $200 = $1,194/month
-    # Annual: $1,194 × 12 = $14,328
-    mn_tanf: [14_328, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_unearned_income:
+    - 2400
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 2400
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    mn_tanf:
+    - 14328
+    - 0
+    - 0
 - name: Family with combined earned and unearned income
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 31
-        employment_income: 9_600  # $800/month
-        unemployment_compensation: 2_400  # $200/month
-        state_code_str: MN
+        employment_income: 9600
+        unemployment_compensation: 2400
       child1:
         age: 3
-        state_code_str: MN
       child2:
         age: 1
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 6_500
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 6500
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # Earned income: $800 - $65 = $735; $735 × 0.5 = $367.50
-    # Countable earned: $800 - $432.50 = $367.50/month = $4,410/year
-    mn_tanf_countable_earned_income: [4_410, 0, 0]
-    # Unemployment: $200/month × 12 = $2,400/year
-    mn_tanf_countable_unearned_income: [2_400, 0, 0]
-    # Total: $4,410 + $2,400 = $6,810
-    mn_tanf_countable_income: [6_810, 0, 0]
-    # Income eligible: $6,810 < $18,401
-    mn_tanf_income_eligible: [true, false, false]
-    mn_tanf_eligible: [true, false, false]
-    # Benefit with earned income:
-    # Family Wage Level: $1,394 × 1.10 = $1,533.40/month
-    # Net earned income: $367.50/month
-    # Benefit: $1,533.40 - $367.50 = $1,165.90/month
-    # But capped at transitional standard: $1,394/month
-    # Then reduce by unearned income: $1,394 - $200 = $1,194/month
-    # Annual: $1,194 × 12 = $14,328
-    mn_tanf: 14_328
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_earned_income:
+    - 4410
+    - 0
+    - 0
+    mn_tanf_countable_unearned_income:
+    - 2400
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 6810
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - true
+    - false
+    - false
+    mn_tanf: 14328
 - name: Family with assets exceeding limit - ineligible
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 33
         employment_income: 0
-        state_code_str: MN
       child1:
         age: 10
-        state_code_str: MN
       child2:
         age: 7
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 12_500  # Exceeds $10,000 limit
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 12500
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard exists
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # No income
-    mn_tanf_countable_income: [0, 0, 0]
-    # Income eligible but assets too high
-    mn_tanf_income_eligible: [true, false, false]
-    # Overall ineligible due to assets
-    mn_tanf_eligible: [false, false, false]
-    # Zero benefit
-    mn_tanf: [0, 0, 0]
-
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 0
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - true
+    - false
+    - false
+    mn_tanf_eligible:
+    - false
+    - false
+    - false
+    mn_tanf:
+    - 0
+    - 0
+    - 0
 - name: Single adult without children - ineligible
-  period: 2025-01
+  period: 2025
   input:
     people:
       adult:
         age: 25
         employment_income: 0
-        state_code_str: MN
     families:
       family:
-        members: [adult]
+        members:
+        - adult
     spm_units:
       spm_unit:
-        members: [adult]
-        spm_unit_assets: 1_000
+        members:
+        - adult
+        spm_unit_assets: 1000
     tax_units:
       tax_unit:
-        members: [adult]
-        tanf_eligible: false  # No children
+        members:
+        - adult
+    households:
+      household:
+        members:
+        - adult
+        state_code: MN
   output:
-    # Not eligible for TANF (no children)
-    mn_tanf_income_eligible: [false]
-    mn_tanf_eligible: [false]
-    mn_tanf: [0]
-
+    mn_tanf_income_eligible:
+    - false
+    mn_tanf_eligible:
+    - false
+    mn_tanf:
+    - 0
 - name: Family with income at exit threshold - ineligible
-  period: 2025-01
+  period: 2025
   input:
     people:
       parent:
         age: 34
-        employment_income: 40_000  # $3,333/month
-        state_code_str: MN
+        employment_income: 40000
       child1:
         age: 14
-        state_code_str: MN
       child2:
         age: 11
-        state_code_str: MN
     families:
       family:
-        members: [parent, child1, child2]
+        members:
+        - parent
+        - child1
+        - child2
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-        spm_unit_assets: 3_000
+        members:
+        - parent
+        - child1
+        - child2
+        spm_unit_assets: 3000
     tax_units:
       tax_unit:
-        members: [parent, child1, child2]
-        tanf_eligible: true
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code: MN
   output:
-    # Payment standard: $1,394/month
-    mn_tanf_payment_standard: [1_394, 0, 0]
-    # Earned income: $3,333 - $65 = $3,268; $3,268 × 0.5 = $1,634
-    # Countable: $3,333 - $1,699 = $1,634/month = $19,608/year
-    mn_tanf_countable_earned_income: [19_608, 0, 0]
-    mn_tanf_countable_income: [19_608, 0, 0]
-    # Income ineligible: $19,608 > $18,401 (Family Wage Level)
-    mn_tanf_income_eligible: [false, false, false]
-    mn_tanf_eligible: [false, false, false]
-    mn_tanf: [0, 0, 0]
+    mn_tanf_payment_standard:
+    - 1394
+    - 0
+    - 0
+    mn_tanf_countable_earned_income:
+    - 19608
+    - 0
+    - 0
+    mn_tanf_countable_income:
+    - 19608
+    - 0
+    - 0
+    mn_tanf_income_eligible:
+    - false
+    - false
+    - false
+    mn_tanf_eligible:
+    - false
+    - false
+    - false
+    mn_tanf:
+    - 0
+    - 0
+    - 0
