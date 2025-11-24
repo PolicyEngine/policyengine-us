@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        employment_income: 0
+        tanf_gross_earned_income: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -19,7 +19,7 @@
   input:
     people:
       person1:
-        employment_income: 600  # $50/month < $65 disregard
+        tanf_gross_earned_income: 50  # $50/month < $65 disregard
     spm_units:
       spm_unit:
         members: [person1]
@@ -36,7 +36,7 @@
   input:
     people:
       person1:
-        employment_income: 12_000  # $1,000/month
+        tanf_gross_earned_income: 1_000  # $1,000/month
     spm_units:
       spm_unit:
         members: [person1]
@@ -45,7 +45,7 @@
         members: [person1]
         state_code: MN
   output:
-    # $1,000/mo - $65 = $935 remaining
+    # $1,000 - $65 = $935 remaining
     # $935 × 0.5 = $467.50 additional disregard
     # $1,000 - ($65 + $467.50) = $467.50 countable monthly
     mn_tanf_countable_earned_income: 467.50
@@ -55,7 +55,7 @@
   input:
     people:
       person1:
-        employment_income: 30_000  # $2,500/month
+        tanf_gross_earned_income: 2_500  # $2,500/month
     spm_units:
       spm_unit:
         members: [person1]
@@ -64,7 +64,7 @@
         members: [person1]
         state_code: MN
   output:
-    # $2,500/mo - $65 = $2,435 remaining
+    # $2,500 - $65 = $2,435 remaining
     # $2,435 × 0.5 = $1,217.50 additional disregard
     # $2,500 - ($65 + $1,217.50) = $1,217.50 countable monthly
     mn_tanf_countable_earned_income: 1_217.50
@@ -74,9 +74,9 @@
   input:
     people:
       person1:
-        employment_income: 9_600  # $800/month
+        tanf_gross_earned_income: 800  # $800/month
       person2:
-        employment_income: 8_400  # $700/month
+        tanf_gross_earned_income: 700  # $700/month
     spm_units:
       spm_unit:
         members: [person1, person2]

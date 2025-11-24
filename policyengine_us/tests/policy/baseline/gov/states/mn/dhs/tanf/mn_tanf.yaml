@@ -1,302 +1,200 @@
 - name: No income - receives full transitional standard
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 0
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
       child1:
         age: 5
       child2:
         age: 3
     families:
       family:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
-    tax_units:
-      tax_unit:
-        members:
-        - parent
-        - child1
-        - child2
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
-    mn_tanf:
-    - 16_728  # $1,394 × 12
-    - 0
-    - 0
+    mn_tanf: 1_394  # $1,394/month
 
 - name: Low earned income - benefit reduced
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 12_000  # $1,000/month
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 1_000  # $1,000/month
+        tanf_gross_unearned_income: 0
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id001
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id001
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
     # $1,000/mo earned → $467.50 countable
     # FWL = $1,394 × 1.10 = $1,533.40
     # Benefit = min($1,533.40 - $467.50, $1,394 - $0) = min($1,065.90, $1,394) = $1,065.90/mo
-    # Annual: $1,065.90 × 12 = $12,791
-    mn_tanf:
-    - 12_791
-    - 0
-    - 0
+    mn_tanf: 1_065.90
 
 - name: Higher earned income - larger reduction
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 1_500  # $1,500/month
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 1_500  # $1,500/month
+        tanf_gross_unearned_income: 0
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id002
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id002
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
-    # $1,500/mo earned → $717.50 countable
+    # $1,500 - $65 = $1,435 × 0.5 = $717.50 disregarded → $717.50 countable
     # FWL = $1,533.40
     # Benefit = min($1,533.40 - $717.50, $1,394 - $0) = min($815.90, $1,394) = $815.90/mo
-    # Annual: $815.90 × 12 = $9,791
-    mn_tanf:
-    - 9_791
-    - 0
-    - 0
+    mn_tanf: 815.90
 
 - name: Unearned income only - dollar-for-dollar reduction
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 0
-        unemployment_compensation: 500  # $500/month
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 500  # $500/month
+        child_support_received: 0
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id003
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id003
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
     # $500/mo unearned → $500 countable
     # Standard = $1,394
     # Benefit = $1,394 - $500 = $894/mo
-    # Annual: $894 × 12 = $10,728
-    mn_tanf:
-    - 10_728
-    - 0
-    - 0
+    mn_tanf: 894
 
 - name: Assets exceed limit - zero benefit
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 0
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 15_000
     families:
       family:
-        members: &id004
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id004
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
-    mn_tanf:
-    - 0
-    - 0
-    - 0
+    mn_tanf: 0
 
 - name: Income too high - zero benefit
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 42_000  # $3,500/month
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 3_500  # $3,500/month
+        tanf_gross_unearned_income: 0
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id005
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id005
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
     # Income exceeds Family Wage Level
-    mn_tanf:
-    - 0
-    - 0
-    - 0
+    mn_tanf: 0
 
 - name: Not TANF eligible - zero benefit
-  period: 2025
+  period: 2025-01
   input:
     people:
       adult:
         age: 25
-        employment_income: 0
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
     spm_units:
       spm_unit:
-        members:
-        - adult
+        members: [adult]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id006
-        - adult
-    tax_units:
-      tax_unit:
-        members: *id006
+        members: [adult]
     households:
       household:
-        members:
-        - adult
+        members: [adult]
         state_code: MN
   output:
-    mn_tanf:
-    - 0
+    mn_tanf: 0
 
 - name: Family of 4 - no income
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 0
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
       child1:
         age: 8
       child2:
@@ -305,45 +203,26 @@
         age: 2
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id007
-        - parent
-        - child1
-        - child2
-        - child3
-    tax_units:
-      tax_unit:
-        members: *id007
+        members: [parent, child1, child2, child3]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         state_code: MN
   output:
-    mn_tanf:
-    - 20_100  # $1,675 × 12
-    - 0
-    - 0
-    - 0
+    mn_tanf: 1_675  # $1,675/month
 
 - name: Family of 4 with earned income
-  period: 2025
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 1_500  # $1,500/month
-        unemployment_compensation: 0
+        tanf_gross_earned_income: 1_500  # $1,500/month
+        tanf_gross_unearned_income: 0
       child1:
         age: 8
       child2:
@@ -352,84 +231,47 @@
         age: 2
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id008
-        - parent
-        - child1
-        - child2
-        - child3
-    tax_units:
-      tax_unit:
-        members: *id008
+        members: [parent, child1, child2, child3]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
-        - child3
+        members: [parent, child1, child2, child3]
         state_code: MN
   output:
     # $1,500/mo earned → $717.50 countable
     # FWL = $1,675 × 1.10 = $1,842.50
     # Benefit = min($1,842.50 - $717.50, $1,675 - $0) = min($1,125, $1,675) = $1,125/mo
-    # Annual: $1,125 × 12 = $13,500
-    mn_tanf:
-    - 13_500
-    - 0
-    - 0
-    - 0
+    mn_tanf: 1_125
 
-- name: Child support with disregard - 1 child
-  period: 2025
+- name: Child support with disregard - 2 children
+  period: 2025-01
   input:
     people:
       parent:
         age: 30
-        employment_income: 0
-        unemployment_compensation: 0
-        child_support_received: 250  # $250/month
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 250  # $250/month child support
+        child_support_received: 3_000  # $250/month
       child1:
         age: 5
       child2:
         age: 3
     spm_units:
       spm_unit:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         spm_unit_assets: 5_000
     families:
       family:
-        members: &id009
-        - parent
-        - child1
-        - child2
-    tax_units:
-      tax_unit:
-        members: *id009
-        tanf_count_children: 1
+        members: [parent, child1, child2]
     households:
       household:
-        members:
-        - parent
-        - child1
-        - child2
+        members: [parent, child1, child2]
         state_code: MN
   output:
-    # $250/mo child support - $100 disregard = $150 countable
+    # $250/mo child support - $200 disregard (2 children) = $50 countable
     # Standard = $1,394
-    # Benefit = $1,394 - $150 = $1,244/mo
-    # Annual: $1,244 × 12 = $14,928
-    mn_tanf:
-    - 14_928
-    - 0
-    - 0
+    # Benefit = $1,394 - $50 = $1,344/mo
+    mn_tanf: 1_344
