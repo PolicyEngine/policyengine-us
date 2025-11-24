@@ -26,7 +26,7 @@ def create_ut_refundable_eitc() -> Reform:
         definition_period = YEAR
         defined_for = "ut_has_qualifying_child_for_refundable_eitc"
 
-       adds = ["ut_eitc"]
+        adds = ["ut_eitc"]
 
     class ut_eitc(Variable):
         value_type = float
@@ -79,7 +79,6 @@ def create_ut_refundable_eitc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.UT
-        reference = ""
 
         adds = ["ut_refundable_eitc"]
 
