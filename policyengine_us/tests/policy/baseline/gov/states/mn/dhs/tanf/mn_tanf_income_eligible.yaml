@@ -1,0 +1,74 @@
+- name: No income - family of 3 - eligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 0
+  output:
+    mn_tanf_income_eligible: true
+
+- name: Low income - family of 3 - eligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 12_000  # Countable: $5,610/year
+  output:
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month = $18,401/year
+    # Countable income: $5,610 < $18,401
+    mn_tanf_income_eligible: true
+
+- name: Income at Family Wage Level - family of 3 - ineligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 36_000  # Countable: $17,610/year
+  output:
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month = $18,401/year
+    # Countable income: $17,610 < $18,401 (barely under)
+    mn_tanf_income_eligible: true
+
+- name: Income above Family Wage Level - family of 3 - ineligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 40_000  # Countable: $19,610/year
+  output:
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month = $18,401/year
+    # Countable income: $19,610 > $18,401
+    mn_tanf_income_eligible: false
+
+- name: High income - family of 4 - ineligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 4
+    employment_income: 50_000  # Countable: $24,610/year
+  output:
+    # Family Wage Level = $1,675 × 1.10 = $1,842.50/month = $22,110/year
+    # Countable income: $24,610 > $22,110
+    mn_tanf_income_eligible: false
+
+- name: Unearned income only - family of 3 - eligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    unemployment_compensation: 12_000  # Countable: $12,000
+  output:
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month = $18,401/year
+    # Countable income: $12,000 < $18,401
+    mn_tanf_income_eligible: true
+
+- name: High unearned income - family of 3 - ineligible
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    unemployment_compensation: 20_000  # Countable: $20,000
+  output:
+    # Family Wage Level = $1,394 × 1.10 = $1,533.40/month = $18,401/year
+    # Countable income: $20,000 > $18,401
+    mn_tanf_income_eligible: false

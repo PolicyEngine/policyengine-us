@@ -1,0 +1,76 @@
+- name: Eligible family with no income and low assets
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 0
+    spm_unit_assets: 5_000
+    tanf_eligible: true
+  output:
+    mn_tanf_eligible: true
+
+- name: Ineligible - assets exceed limit
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 0
+    spm_unit_assets: 15_000  # Exceeds $10,000 limit
+    tanf_eligible: true
+  output:
+    mn_tanf_eligible: false
+
+- name: Ineligible - income too high
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 40_000  # Above Family Wage Level
+    spm_unit_assets: 5_000
+    tanf_eligible: true
+  output:
+    mn_tanf_eligible: false
+
+- name: Ineligible - not TANF eligible (no children)
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 1
+    employment_income: 0
+    spm_unit_assets: 5_000
+    tanf_eligible: false  # Single adult without children
+  output:
+    mn_tanf_eligible: false
+
+- name: Eligible - assets at limit
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 4
+    employment_income: 12_000
+    spm_unit_assets: 10_000  # Exactly at limit
+    tanf_eligible: true
+  output:
+    mn_tanf_eligible: true
+
+- name: Eligible - low income and low assets
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 4
+    employment_income: 18_000
+    spm_unit_assets: 3_000
+    tanf_eligible: true
+  output:
+    mn_tanf_eligible: true
+
+- name: Ineligible - multiple barriers
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+    employment_income: 50_000  # High income
+    spm_unit_assets: 25_000  # High assets
+    tanf_eligible: false  # Not TANF eligible
+  output:
+    mn_tanf_eligible: false
