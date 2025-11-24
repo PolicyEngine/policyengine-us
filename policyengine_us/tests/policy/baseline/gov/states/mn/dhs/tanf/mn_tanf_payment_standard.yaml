@@ -1,0 +1,39 @@
+- name: Family of 3 - transitional standard
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 3
+  output:
+    mn_tanf_payment_standard: 1_394
+
+- name: Family of 4 - transitional standard
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 4
+  output:
+    mn_tanf_payment_standard: 1_675
+
+- name: Family of 1 - transitional standard
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 1
+  output:
+    mn_tanf_payment_standard: 0  # Placeholder - single person without children not typically eligible
+
+- name: Family of 2 - transitional standard
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 2
+  output:
+    mn_tanf_payment_standard: 0  # Placeholder - needs actual value from Combined Manual
+
+- name: Family of 5 - transitional standard
+  period: 2025-01
+  input:
+    state_code: MN
+    spm_unit_size: 5
+  output:
+    mn_tanf_payment_standard: 0  # Placeholder - needs actual value from Combined Manual

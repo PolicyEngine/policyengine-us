@@ -1,0 +1,79 @@
+- name: No unearned income
+  period: 2025-01
+  input:
+    state_code: MN
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    mn_tanf_countable_unearned_income: 0
+
+- name: Unemployment compensation only
+  period: 2025-01
+  input:
+    state_code: MN
+    unemployment_compensation: 6_000  # $6,000/year = $500/month
+  output:
+    # Unearned income counted dollar-for-dollar
+    mn_tanf_countable_unearned_income: 6_000
+
+- name: Social Security benefits
+  period: 2025-01
+  input:
+    state_code: MN
+    social_security: 12_000  # $12,000/year = $1,000/month
+  output:
+    # Unearned income counted dollar-for-dollar
+    mn_tanf_countable_unearned_income: 12_000
+
+- name: Mixed unearned income sources
+  period: 2025-01
+  input:
+    state_code: MN
+    unemployment_compensation: 3_600  # $300/month
+    social_security: 6_000  # $500/month
+  output:
+    # Total: $300 + $500 = $800/month
+    # Annual: $800 × 12 = $9,600
+    mn_tanf_countable_unearned_income: 9_600
+
+- name: Child support below disregard - 1 child
+  period: 2025-01
+  input:
+    state_code: MN
+    child_support_received: 600  # $600/year = $50/month (< $100 disregard)
+    tanf_count_children: 1
+  output:
+    # $50 < $100 disregard, fully disregarded
+    mn_tanf_countable_unearned_income: 0
+
+- name: Child support above disregard - 1 child
+  period: 2025-01
+  input:
+    state_code: MN
+    child_support_received: 3_000  # $3,000/year = $250/month
+    tanf_count_children: 1
+  output:
+    # $250 - $100 disregard = $150 countable
+    # Annual: $150 × 12 = $1,800
+    mn_tanf_countable_unearned_income: 1_800
+
+- name: Child support below disregard - 2 children
+  period: 2025-01
+  input:
+    state_code: MN
+    child_support_received: 1_800  # $1,800/year = $150/month (< $200 disregard)
+    tanf_count_children: 2
+  output:
+    # $150 < $200 disregard, fully disregarded
+    mn_tanf_countable_unearned_income: 0
+
+- name: Child support above disregard - 2 children
+  period: 2025-01
+  input:
+    state_code: MN
+    child_support_received: 4_800  # $4,800/year = $400/month
+    tanf_count_children: 2
+  output:
+    # $400 - $200 disregard = $200 countable
+    # Annual: $200 × 12 = $2,400
+    mn_tanf_countable_unearned_income: 2_400
