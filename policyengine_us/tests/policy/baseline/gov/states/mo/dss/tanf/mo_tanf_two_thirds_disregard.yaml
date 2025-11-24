@@ -1,0 +1,31 @@
+- name: No disregard when not eligible
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 1_000
+    mo_tanf_two_thirds_disregard_eligible: false
+  output:
+    mo_tanf_two_thirds_disregard: 0
+
+- name: Two-thirds of earned income when eligible
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 1_200
+    mo_tanf_two_thirds_disregard_eligible: true
+  output:
+    mo_tanf_two_thirds_disregard: 800  # 1200 * 2/3
+
+- name: Two-thirds applies to full earned income amount
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 900
+    mo_tanf_two_thirds_disregard_eligible: true
+  output:
+    mo_tanf_two_thirds_disregard: 600  # 900 * 2/3
+
+- name: No earned income results in zero disregard
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_two_thirds_disregard_eligible: true
+  output:
+    mo_tanf_two_thirds_disregard: 0

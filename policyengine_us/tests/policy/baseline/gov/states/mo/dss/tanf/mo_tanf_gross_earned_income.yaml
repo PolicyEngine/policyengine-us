@@ -1,0 +1,31 @@
+- name: Employment income counts as earned income
+  period: 2024
+  input:
+    employment_income: 2_000
+    self_employment_income: 0
+  output:
+    mo_tanf_gross_earned_income: 2_000
+
+- name: Self-employment income counts as earned income
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 1_500
+  output:
+    mo_tanf_gross_earned_income: 1_500
+
+- name: Combined employment and self-employment income
+  period: 2024
+  input:
+    employment_income: 1_200
+    self_employment_income: 800
+  output:
+    mo_tanf_gross_earned_income: 2_000
+
+- name: No income results in zero
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    mo_tanf_gross_earned_income: 0

@@ -1,0 +1,31 @@
+- name: No disregard when not eligible
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 2_000
+    mo_tanf_new_spouse_disregard_eligible: false
+  output:
+    mo_tanf_new_spouse_disregard: 0
+
+- name: Full income disregarded when eligible
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 2_000
+    mo_tanf_new_spouse_disregard_eligible: true
+  output:
+    mo_tanf_new_spouse_disregard: 2_000
+
+- name: Zero income results in zero disregard
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_new_spouse_disregard_eligible: true
+  output:
+    mo_tanf_new_spouse_disregard: 0
+
+- name: All earned income disregarded for new spouse
+  period: 2024
+  input:
+    mo_tanf_gross_earned_income: 1_500
+    mo_tanf_new_spouse_disregard_eligible: true
+  output:
+    mo_tanf_new_spouse_disregard: 1_500

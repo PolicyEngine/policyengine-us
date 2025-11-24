@@ -1,0 +1,47 @@
+- name: No children results in zero deduction
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 0
+    mo_tanf_children_under_age_2: 0
+  output:
+    mo_tanf_child_care_deduction: 0
+
+- name: One child age 2+ gets $175 deduction
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 1
+    mo_tanf_children_under_age_2: 0
+  output:
+    mo_tanf_child_care_deduction: 175
+
+- name: Two children age 2+ get $350 deduction
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 2
+    mo_tanf_children_under_age_2: 0
+  output:
+    mo_tanf_child_care_deduction: 350
+
+- name: One child under age 2 gets $200 deduction
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 0
+    mo_tanf_children_under_age_2: 1
+  output:
+    mo_tanf_child_care_deduction: 200
+
+- name: Two children under age 2 get $400 deduction
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 0
+    mo_tanf_children_under_age_2: 2
+  output:
+    mo_tanf_child_care_deduction: 400
+
+- name: Mixed age children get appropriate deductions
+  period: 2024
+  input:
+    mo_tanf_children_age_2_and_over: 2
+    mo_tanf_children_under_age_2: 1
+  output:
+    mo_tanf_child_care_deduction: 550  # 175*2 + 200*1

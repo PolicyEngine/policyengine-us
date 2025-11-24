@@ -1,0 +1,71 @@
+- name: Standard work exemption only
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 0
+    mo_tanf_two_thirds_disregard: 0
+    mo_tanf_30_plus_one_third_disregard: 0
+    mo_tanf_30_disregard: 0
+    mo_tanf_new_spouse_disregard: 0
+  output:
+    mo_tanf_earned_income_deductions: 90
+
+- name: Standard exemption plus child care
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 175
+    mo_tanf_two_thirds_disregard: 0
+    mo_tanf_30_plus_one_third_disregard: 0
+    mo_tanf_30_disregard: 0
+    mo_tanf_new_spouse_disregard: 0
+  output:
+    mo_tanf_earned_income_deductions: 265  # 90 + 175
+
+- name: Two-thirds disregard sequence
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 175
+    mo_tanf_two_thirds_disregard: 667
+    mo_tanf_30_plus_one_third_disregard: 0
+    mo_tanf_30_disregard: 0
+    mo_tanf_new_spouse_disregard: 0
+  output:
+    mo_tanf_earned_income_deductions: 932  # 667 + 90 + 175
+
+- name: 30 plus one-third disregard sequence
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 175
+    mo_tanf_two_thirds_disregard: 0
+    mo_tanf_30_plus_one_third_disregard: 270
+    mo_tanf_30_disregard: 0
+    mo_tanf_new_spouse_disregard: 0
+  output:
+    mo_tanf_earned_income_deductions: 535  # 90 + 270 + 175
+
+- name: 30 disregard only sequence
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 175
+    mo_tanf_two_thirds_disregard: 0
+    mo_tanf_30_plus_one_third_disregard: 0
+    mo_tanf_30_disregard: 30
+    mo_tanf_new_spouse_disregard: 0
+  output:
+    mo_tanf_earned_income_deductions: 295  # 90 + 30 + 175
+
+- name: All deductions combined
+  period: 2024
+  input:
+    mo_tanf_standard_work_exemption: 90
+    mo_tanf_child_care_deduction: 200
+    mo_tanf_two_thirds_disregard: 0
+    mo_tanf_30_plus_one_third_disregard: 0
+    mo_tanf_30_disregard: 0
+    mo_tanf_new_spouse_disregard: 500
+  output:
+    mo_tanf_earned_income_deductions: 790  # 90 + 200 + 500
