@@ -27,3 +27,28 @@
   input:
   output:
     snap_countable_earner: true
+
+- name: Case 5, federal work study participant is not a countable earner.
+  period: 2024-01
+  input:
+    is_federal_work_study_participant: true
+    age: 22
+  output:
+    snap_countable_earner: false
+
+- name: Case 6, non-federal work study participant is a countable earner.
+  period: 2024-01
+  input:
+    is_federal_work_study_participant: false
+    age: 22
+  output:
+    snap_countable_earner: true
+
+- name: Case 7, both K-12 exclusion and work study - not countable.
+  period: 2024-01
+  input:
+    age: 17
+    is_in_k12_school: true
+    is_federal_work_study_participant: true
+  output:
+    snap_countable_earner: false
