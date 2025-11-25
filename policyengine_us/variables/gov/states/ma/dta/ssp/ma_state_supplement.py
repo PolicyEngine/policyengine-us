@@ -6,6 +6,7 @@ class ma_state_supplement(Variable):
     entity = Person
     label = "Massachusetts State Supplement payment amount"
     definition_period = YEAR
+    defined_for = StateCode.MA
     exhaustive_parameter_dependencies = "gov.states.ma.dta.ssp"
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-330"
