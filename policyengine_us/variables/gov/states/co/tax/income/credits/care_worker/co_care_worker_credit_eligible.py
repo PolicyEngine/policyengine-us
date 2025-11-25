@@ -15,7 +15,7 @@ class co_care_worker_credit_eligible(Variable):
         joint = tax_unit("tax_unit_is_joint", period)
         agi = tax_unit("adjusted_gross_income", period)
         income_limit = where(
-            joint, p.income_limit.joint, p.income_limit.single
+            joint, p.income_limit.joint, p.income_limit.non_joint
         )
         income_eligible = agi <= income_limit
         eligible_care_worker_present = (
