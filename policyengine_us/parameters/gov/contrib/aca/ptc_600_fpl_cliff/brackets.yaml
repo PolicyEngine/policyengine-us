@@ -1,0 +1,49 @@
+# ACA PTC contribution brackets with 2021 subsidy levels extended to 600% FPL.
+# Maintains 8.5% contribution rate from 400% to 600% FPL, then ends eligibility.
+
+description: ACA PTC contribution percentages by household income (2021 levels extended to 600% FPL).
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: ACA PTC contribution rate brackets (600% FPL cliff)
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: American Rescue Plan Act of 2021 - ACA premium subsidy expansion
+      href: https://www.congress.gov/bill/117th-congress/house-bill/1319
+    - title: Inflation Reduction Act of 2022 - ACA subsidy extension through 2025
+      href: https://www.congress.gov/bill/117th-congress/house-bill/5376
+    - title: Affordable Care Act Enhancement Act - Proposed subsidy extension to 600% FPL
+      href: https://www.politico.com/f/?id=0000019a-6b87-dc40-a1bb-6fe74c510000
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1.5
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 2.0
+    amount:
+      2026-01-01: 0.02
+  - threshold:
+      2026-01-01: 2.5
+    amount:
+      2026-01-01: 0.04
+  - threshold:
+      2026-01-01: 3.0
+    amount:
+      2026-01-01: 0.06
+  - threshold:
+      2026-01-01: 4.0
+    amount:
+      2026-01-01: 0.085
+  - threshold:
+      2026-01-01: 6.0
+    amount:
+      2026-01-01: 0.085
