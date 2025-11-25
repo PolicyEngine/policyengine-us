@@ -11563,3 +11563,9 @@
       Work Study exception.
     - Update snap_countable_earner to exclude Federal Work Study income.
   date: 2025-11-25 11:22:31
+- bump: patch
+  changes:
+    fixed:
+    - Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where
+      non-MA households received Massachusetts State Supplement.
+  date: 2025-11-25 20:18:51
