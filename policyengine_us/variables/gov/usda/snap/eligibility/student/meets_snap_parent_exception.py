@@ -17,15 +17,16 @@ class meets_snap_parent_exception(Variable):
         # Exception 8: Single parent enrolled full-time with responsibility
         # for dependent child under 12
         is_parent = person("is_tax_unit_head_or_spouse", period)
-        parent_count = person.spm_unit.sum(is_parent)
+        spm_unit = person.spm_unit
+        parent_count = spm_unit.sum(is_parent)
 
         # Check if there are children in the household under the age thresholds
         p = parameters(period).gov.usda.snap.student.child_age_limit
-        household_member_ages = person.spm_unit.members("age", period)
-        has_child_under_two_parent_limit = person.spm_unit.any(
+        household_member_ages = spm_unit.members("age", period)
+        has_child_under_two_parent_limit = spm_unit.any(
             household_member_ages < p.two_parent
         )
-        has_child_under_single_parent_limit = person.spm_unit.any(
+        has_child_under_single_parent_limit = spm_unit.any(
             household_member_ages < p.single_parent
         )
 
