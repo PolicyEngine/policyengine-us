@@ -11507,3 +11507,39 @@
     fixed:
     - Restructure Tlaib package
   date: 2025-11-17 23:19:37
+- bump: patch
+  changes:
+    fixed:
+    - Fix SSI spousal deeming to correctly use couple FBR instead of individual FBR.
+  date: 2025-11-21 23:46:56
+- bump: minor
+  changes:
+    added:
+    - Colorado Care Worker Tax Credit.
+  date: 2025-11-22 01:36:58
+- bump: minor
+  changes:
+    added:
+    - Added 2026 base SLCSP values for all rating areas.
+  date: 2025-11-23 09:22:55
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico income tax.
+  date: 2025-11-23 09:45:04
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the New Jersey CDCC to apply the actual federal CDCC instead of the potential.
+  date: 2025-11-23 10:18:53
+- bump: minor
+  changes:
+    added:
+    - Added 2018 income limit for optional senior or disabled pathway, changed dates
+      to match with given reference.
+  date: 2025-11-24 00:10:07
+- bump: patch
+  changes:
+    changed:
+    - Remove deprecated 'name' metadata field from 51 parameter files
+  date: 2025-11-24 01:28:19
