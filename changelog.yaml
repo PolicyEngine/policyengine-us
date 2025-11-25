@@ -11553,3 +11553,13 @@
     fixed:
     - Adjust Colorado Care Worker credit parameter file names .
   date: 2025-11-25 11:02:51
+- bump: minor
+  changes:
+    added:
+    - is_federal_work_study_participant.
+    - is_part_time_college_student.
+    changed:
+    - Refactor is_snap_ineligible_student to include part-time students and Federal
+      Work Study exception.
+    - Update snap_countable_earner to exclude Federal Work Study income.
+  date: 2025-11-25 11:22:31
