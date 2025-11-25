@@ -18,23 +18,21 @@ class k401_catch_up_limit(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(period).gov.irs.gross_income.retirement_contributions
+        p = parameters(
+            period
+        ).gov.irs.gross_income.retirement_contributions.catch_up
 
         # Standard catch-up eligibility (age 50+)
-        catch_up_eligible = age >= p.catch_up.age_threshold
+        catch_up_eligible = age >= p.age_threshold
 
         # Enhanced catch-up eligibility (ages 60-63, starting 2025)
-        enhanced_min = p.catch_up.enhanced_age_min
-        enhanced_max = p.catch_up.enhanced_age_max
-        enhanced_eligible = (age >= enhanced_min) & (age <= enhanced_max)
-
-        # Get applicable limits
-        standard_limit = p.catch_up.limit.k401
-        enhanced_limit = p.catch_up.limit.k401_enhanced
+        enhanced_eligible = (age >= p.enhanced_age_min) & (
+            age <= p.enhanced_age_max
+        )
 
         # Apply enhanced limit for ages 60-63, standard for others 50+
         return where(
             enhanced_eligible,
-            enhanced_limit,
-            where(catch_up_eligible, standard_limit, 0),
+            p.limit.k401_enhanced,
+            where(catch_up_eligible, p.limit.k401, 0),
         )
