@@ -1,0 +1,120 @@
+- name: Medicare HI revenue with zero income
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 0
+
+- name: Medicare HI revenue below threshold
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 10_000
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 0
+
+- name: Medicare HI revenue in tier 1 only
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 85
+
+- name: Medicare HI revenue in tier 2
+  period: 2024
+  absolute_error_margin: 200
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 3_490
+
+- name: Medicare HI revenue joint filers
+  period: 2024
+  absolute_error_margin: 200
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 25_000
+        employment_income: 35_000
+      person2:
+        age: 65
+        social_security: 15_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    tob_revenue_medicare_hi: 3_360
+
+- name: Medicare HI revenue high income
+  period: 2024
+  absolute_error_margin: 500
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 6_780

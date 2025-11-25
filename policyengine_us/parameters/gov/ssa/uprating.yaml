@@ -1,28 +1,134 @@
-description: The US indexes Social Security benefits (OASDI and SSI) according to this schedule, annually updating based on CPI-W in the third quarter of the prior year.
+description: |
+  SSA CPI-W uprating index indexed to 2025 = 100. Used for Social Security
+  COLA adjustments (OASDI and SSI). Source: SSA Trustees Report 2025
+  intermediate assumptions.
+
+  RELATIONSHIP TO parameters.gov.bls.cpi.cpi_w:
+  Both sources represent CPI-W, but:
+  - gov.bls.cpi.cpi_w = Raw monthly CPI-W values from BLS
+  - gov.ssa.uprating = Annual index (2025=100) based on Q3 CPI-W averages
+
+  SSA COLA METHODOLOGY:
+  Each year's COLA is calculated by comparing Q3 (Jul+Aug+Sep) average CPI-W
+  from the previous year to the year before that. For example, the 2025 COLA
+  applied to benefits is: (Q3 2024 avg / Q3 2023 avg) - 1. This COLA is then
+  applied to benefits starting January 2025. The uprating index compounds these
+  annual COLAs with 2025 as the base year.
+
+  VERIFYING CONSISTENCY:
+  Growth rates between these sources should match. To verify:
+  1. Calculate Q3 average CPI-W for year A: (Jul + Aug + Sep) / 3
+  2. Calculate Q3 average CPI-W for year B: (Jul + Aug + Sep) / 3
+  3. Ratio from raw CPI-W: Q3_B / Q3_A
+  4. Ratio from uprating index: uprating_B / uprating_A
+  5. These ratios should be approximately equal (within ~0.1% due to rounding)
+
+  Example verification (2025 to 2100):
+  - Q3 2024 CPI-W avg: (307.410 + 307.843 + 308.539) / 3 = 307.931
+  - Q3 2099 CPI-W avg: (projections for Jul+Aug+Sep 2099) / 3 ≈ 1832.407
+  - CPI-W ratio: 1832.407 / 307.931 = 5.95x growth over 75 years
+  - Uprating ratio: 592.78 / 100.0 = 5.93x growth over 75 years
+  - Difference: 0.3% (acceptable due to projection methodology differences)
+
+  IMPORTANT: Use gov.ssa.uprating for Social Security benefit calculations
+  to match SSA's official methodology. Use gov.bls.cpi.cpi_w only when you
+  need monthly CPI-W data for other purposes. Do not mix these sources in
+  related calculations or they will drift over time.
 values:
-  # Actuals.
-  2022-01-01: 268.421 # 2021Q3: (267.789 + 268.387 + 269.086) / 3
-  2023-01-01: 291.901 # 2022Q3: (292.219 + 291.629 + 291.854) / 3
-  2024-01-01: 301.236 # 2023Q3: (299.899 + 301.551 + 302.257) / 3
-  2025-01-01: 308.767 # 2024Q3: 2.5% COLA announced by SSA
-  # Forecasts from marrying CPI-W actuals with CBO's CPI-U forecast.
-  2026-01-01: 318.155 # 2025Q3: 323.0 * 306.199 / 310.989
-  2027-01-01: 326.149 # 2026Q3: 330.1 * 306.199 / 310.989
-  2028-01-01: 332.241 # 2027Q3: 337.3 * 306.199 / 310.989
-  2029-01-01: 339.431 # 2028Q3: 344.6 * 306.199 / 310.989
-  2030-01-01: 346.917 # 2029Q3: 352.2 * 306.199 / 310.989
-  2031-01-01: 354.6 # 2030Q3: 360.0 * 306.199 / 310.989
-  2032-01-01: 362.579 # 2031Q3: 368.1 * 306.199 / 310.989
-  2033-01-01: 370.656 # 2032Q3: 376.3 * 306.199 / 310.989
-  2034-01-01: 379.028 # 2033Q3: 384.8 * 306.199 / 310.989
-  2035-01-01: 387.598 # 2034Q3: 393.5 * 306.199 / 310.989
-  # Values for 2036-2100 are set programmatically in uprating_extensions.py
+  # Historical values from cpi_w_trustees_pre_2025.csv (Q3 CPI-W averages, indexed to 2025 = 100)
+  2015-01-01: 73.58
+  2016-01-01: 74.30
+  2017-01-01: 75.88
+  2018-01-01: 77.81
+  2019-01-01: 79.11
+  2020-01-01: 80.07
+  2021-01-01: 84.28
+  2022-01-01: 91.41
+  2023-01-01: 94.90
+  # Values from SSA Trustees Report 2025 (indexed to 2025 = 100)
+  2024-01-01: 97.59
+  2025-01-01: 100.0
+  2026-01-01: 102.49
+  2027-01-01: 104.95
+  2028-01-01: 107.47
+  2029-01-01: 110.05
+  2030-01-01: 112.69
+  2031-01-01: 115.4
+  2032-01-01: 118.17
+  2033-01-01: 121.0
+  2034-01-01: 123.91
+  2035-01-01: 126.88
+  2036-01-01: 129.93
+  2037-01-01: 133.04
+  2038-01-01: 136.24
+  2039-01-01: 139.51
+  2040-01-01: 142.86
+  2041-01-01: 146.28
+  2042-01-01: 149.79
+  2043-01-01: 153.39
+  2044-01-01: 157.07
+  2045-01-01: 160.84
+  2046-01-01: 164.7
+  2047-01-01: 168.65
+  2048-01-01: 172.7
+  2049-01-01: 176.85
+  2050-01-01: 181.09
+  2051-01-01: 185.44
+  2052-01-01: 189.89
+  2053-01-01: 194.44
+  2054-01-01: 199.11
+  2055-01-01: 203.89
+  2056-01-01: 208.78
+  2057-01-01: 213.79
+  2058-01-01: 218.93
+  2059-01-01: 224.18
+  2060-01-01: 229.56
+  2061-01-01: 235.07
+  2062-01-01: 240.71
+  2063-01-01: 246.49
+  2064-01-01: 252.4
+  2065-01-01: 258.46
+  2066-01-01: 264.66
+  2067-01-01: 271.02
+  2068-01-01: 277.52
+  2069-01-01: 284.18
+  2070-01-01: 291.0
+  2071-01-01: 297.99
+  2072-01-01: 305.14
+  2073-01-01: 312.46
+  2074-01-01: 319.96
+  2075-01-01: 327.64
+  2076-01-01: 335.5
+  2077-01-01: 343.55
+  2078-01-01: 351.8
+  2079-01-01: 360.24
+  2080-01-01: 368.89
+  2081-01-01: 377.74
+  2082-01-01: 386.81
+  2083-01-01: 396.09
+  2084-01-01: 405.6
+  2085-01-01: 415.33
+  2086-01-01: 425.3
+  2087-01-01: 435.51
+  2088-01-01: 445.96
+  2089-01-01: 456.66
+  2090-01-01: 467.62
+  2091-01-01: 478.84
+  2092-01-01: 490.34
+  2093-01-01: 502.1
+  2094-01-01: 514.16
+  2095-01-01: 526.49
+  2096-01-01: 539.13
+  2097-01-01: 552.07
+  2098-01-01: 565.32
+  2099-01-01: 578.89
+  2100-01-01: 592.78
 metadata:
   economy: false
-  unit: currency-USD
-  label: SSA uprating
+  unit:
+  label: SSA CPI-W uprating (indexed to 2025 = 100)
   reference:
-    - title: Historical values
+    - title: SSA Trustees Report 2025 - Intermediate Assumptions
+      href: https://www.ssa.gov/oact/TR/2025/
+    - title: SSA Historical COLA Data
       href: https://www.ssa.gov/oact/cola/colaseries.html
-    - title: CBO Economic Projections, February 2024.
-      href: https://www.cbo.gov/publication/59710

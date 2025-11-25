@@ -1,0 +1,23 @@
+- name: Person in deep poverty (has deep poverty gap)
+  period: 2024
+  input:
+    people:
+      person: {}
+    spm_units:
+      spm_unit:
+        members: [person]
+        deep_poverty_gap: 500
+  output:
+    in_deep_poverty: true
+
+- name: Person not in deep poverty (no deep poverty gap)
+  period: 2024
+  input:
+    people:
+      person: {}
+    spm_units:
+      spm_unit:
+        members: [person]
+        deep_poverty_gap: 0
+  output:
+    in_deep_poverty: false
