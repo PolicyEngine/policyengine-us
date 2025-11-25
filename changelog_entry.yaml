@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where non-MA households received Massachusetts State Supplement.
