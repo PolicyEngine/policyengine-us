@@ -14,7 +14,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
         def formula(person, period, parameters):
             taxable_income = person.tax_unit("nyc_taxable_income", period)
             p = parameters(period).gov.local.ny.mamdani_income_tax
-            return rate.calc(taxable_income)
+            return p.rate.calc(taxable_income)
 
     class nyc_income_tax_before_credits(Variable):
         value_type = float
@@ -28,7 +28,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
             taxable_income = tax_unit("nyc_taxable_income", period)
             filing_status = tax_unit("filing_status", period)
             filing_statuses = filing_status.possible_values
-            rates = parameters(period).gov.local.ny.nyc.tax.income.rates
+            p = parameters(period).gov.local.ny.nyc.tax.income.rates
             regular_tax = select(
                 [
                     filing_status == filing_statuses.SINGLE,
@@ -38,11 +38,11 @@ def create_nyc_mamdani_income_tax() -> Reform:
                     filing_status == filing_statuses.SEPARATE,
                 ],
                 [
-                    rates.single.calc(taxable_income),
-                    rates.joint.calc(taxable_income),
-                    rates.head_of_household.calc(taxable_income),
-                    rates.surviving_spouse.calc(taxable_income),
-                    rates.separate.calc(taxable_income),
+                    p.single.calc(taxable_income),
+                    p.joint.calc(taxable_income),
+                    p.head_of_household.calc(taxable_income),
+                    p.surviving_spouse.calc(taxable_income),
+                    p.separate.calc(taxable_income),
                 ],
             )
             mamdani_tax = add(tax_unit, period, ["nyc_mamdani_income_tax"])
