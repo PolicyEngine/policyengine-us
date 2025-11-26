@@ -12,13 +12,9 @@ def create_nyc_mamdani_income_tax() -> Reform:
         defined_for = "in_nyc"
 
         def formula(person, period, parameters):
-            p = parameters(period).gov.local.ny.mamdani_income_tax
-            taxable_income = person("nyc_taxable_income", period)
-            threshold = p.threshold
-            rate = p.rate
-            # Apply 2% tax only to income above $1 million threshold
-            excess_income = max_(taxable_income - threshold, 0)
-            return excess_income * rate
+            taxable_income = person.tax_unit("nyc_taxable_income", period)
+            rate = parameters(period).gov.local.ny.mamdani_income_tax.rate
+            return rate.calc(taxable_income)
 
     class nyc_income_tax_before_credits(Variable):
         value_type = float
