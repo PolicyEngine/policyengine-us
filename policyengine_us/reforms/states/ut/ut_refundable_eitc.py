@@ -84,9 +84,9 @@ def create_ut_refundable_eitc() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.add_variable(ut_has_qualifying_child_for_refundable_eitc)
-            self.add_variable(ut_refundable_eitc)
-            self.add_variable(ut_non_refundable_eitc)
+            self.update_variable(ut_has_qualifying_child_for_refundable_eitc)
+            self.update_variable(ut_refundable_eitc)
+            self.update_variable(ut_non_refundable_eitc)
             self.update_variable(ut_eitc)
             self.update_variable(ut_non_refundable_credits)
             self.update_variable(ut_refundable_credits)
