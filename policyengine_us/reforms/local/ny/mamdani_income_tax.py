@@ -13,7 +13,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
 
         def formula(person, period, parameters):
             taxable_income = person.tax_unit("nyc_taxable_income", period)
-            rate = parameters(period).gov.local.ny.mamdani_income_tax.rate
+            p = parameters(period).gov.local.ny.mamdani_income_tax
             return rate.calc(taxable_income)
 
     class nyc_income_tax_before_credits(Variable):
