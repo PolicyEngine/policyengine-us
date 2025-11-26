@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.442.0] - 2025-11-26 09:56:33
+
+### Added
+
+- Integrate California alternative minimum tax (AMT) into CA income tax calculation.
+
 ## [1.441.3] - 2025-11-26 09:54:55
 
 ### Added
@@ -13603,6 +13609,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.442.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.3...1.442.0
 [1.441.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.2...1.441.3
 [1.441.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.1...1.441.2
 [1.441.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.0...1.441.1
