@@ -12,4 +12,9 @@ class mt_subtractions(Variable):
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5",
     )
     defined_for = StateCode.MT
-    adds = "gov.states.mt.tax.income.subtractions.subtractions"
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.mt.tax.income.subtractions
+        total_subtractions = add(person, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

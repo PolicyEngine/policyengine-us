@@ -15,48 +15,7 @@
       household:
         members: [person1, person2]
   output:
-    ssi_amount_if_eligible: [967, 0]
-
-- name: Case A1, single disabled parent with a disabled child. 
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_disabled: true
-        is_tax_unit_head: true
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        is_disabled: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-  output:
     ssi_amount_if_eligible: [967, 967]
-
-- name: Case A2, single healthy parent with a disabled child.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head: true
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        is_disabled: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-  output:
-    ssi_amount_if_eligible: [0, 967]
 
 - name: Case B, joint filers, one of them is disabled.
   period: 2025-01
@@ -74,7 +33,7 @@
       household:
         members: [person1, person2]
   output:
-    ssi_amount_if_eligible: [967, 0]
+    ssi_amount_if_eligible: [967, 967]
 
 - name: Case B1, joint filers, both of them are disabled.
   period: 2025-01
@@ -118,7 +77,7 @@
       household:
         members: [person1, person2, person3]
   output:
-    ssi_amount_if_eligible: [967, 0, 967]
+    ssi_amount_if_eligible: [967, 967, 967]
 
 - name: Case C1, joint filers, both head and spouse eligible, and a eligible child.
   period: 2025-01

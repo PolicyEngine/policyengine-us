@@ -1,0 +1,9 @@
+description: Rhode Island caps the fully refundable portion of the Child Tax Credit at this amount. When set to zero, the credit is nonrefundable. When set to a positive value, that amount is fully refundable. When set equal to the credit amount in amount.yaml, the entire credit is fully refundable.
+
+values:
+  2025-01-01: 0
+
+metadata:
+  label: Rhode Island CTC refundability cap
+  period: year
+  unit: currency-USD

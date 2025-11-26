@@ -1,30 +1,21 @@
 - name: Case 1, household size of 1 with $10000 earned income. 
   period: 2023
   input:
-    spm_unit_size: 1
+    il_tanf_assistance_unit_size: 1
     il_tanf_gross_earned_income: 10_000
     is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    spm_unit_fpg: 14_580
-    il_tanf_payment_level_for_initial_eligibility: 4_374
-    il_tanf_initial_employment_deduction_person: 2_916
-    # fpg: 14_580 
-    # payment level: 4_374 
-    # 0.5 * 14_580 - 4_374 = 2_916 
+    il_tanf_initial_employment_deduction_person: 2_874
 
 - name: Case 2, household size of 2 with $10000 earned income.
   period: 2023
   input:
-    spm_unit_size: 2
+    il_tanf_assistance_unit_size: 2
     il_tanf_gross_earned_income: 10_000
-    is_tax_unit_head_or_spouse: true
     state_code: IL
   output:
-    il_tanf_initial_employment_deduction_person: 3_944
-    # fpg: 19_720
-    # payment level: 5_916
-    # 0.5 * 19_720 - 5_916 = 3_944
+    il_tanf_initial_employment_deduction_person: 3_897.25
 
 - name: Case 3, household size of 1 with $10000 earned income, but not head or spouse. 
   period: 2023
@@ -45,3 +36,219 @@
     state_code: IL
   output:
     il_tanf_initial_employment_deduction_person: 2_000
+
+- name: Integration test, lagged fpg for IED 
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # 322.75 * 2 (Jan / Feb)
+    # 358 * 7 (Mar - Sep) (IED FPG adjusted in Mar)
+    # 333 * 3 (Oct - Dec) (Payment level adjusted in October)
+    il_tanf_initial_employment_deduction_person: [4_147, 0, 0]
+
+- name: 2024 january test
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [311, 0, 0]
+
+- name: 2025 monthly test
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [323, 0, 0]
+
+- name: 2023 monthly test
+  period: 2023-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+      person4:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:  
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [463, 0, 0, 0]
+
+- name: Integration test, lagged fpg for IED 
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # 322.75 * 2 (Jan / Feb)
+    # 358 * 7 (Mar - Sep) (IED FPG adjusted in Mar)
+    # 333 * 3 (Oct - Dec) (Payment level adjusted in October)
+    il_tanf_initial_employment_deduction_person: [4_147, 0, 0]
+
+- name: 2024 january test
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [311, 0, 0]
+
+- name: 2025 monthly test
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [323, 0, 0]
+
+- name: 2023 monthly test
+  period: 2023-01
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        employment_income: 10_200
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+      person4:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:  
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # https://www.dhs.state.il.us/page.aspx?item=82780
+    il_tanf_initial_employment_deduction_person: [463, 0, 0, 0]

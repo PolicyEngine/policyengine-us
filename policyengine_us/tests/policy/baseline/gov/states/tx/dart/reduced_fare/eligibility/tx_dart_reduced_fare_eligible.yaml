@@ -1,0 +1,146 @@
+- name: Senior citizen eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 67
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Child eligible through age
+  period: 2025
+  input:
+    state_code: TX
+    age: 8
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Disabled person eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 45
+    is_disabled: true
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Veteran eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_veteran: true
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Full-time student eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 20
+    is_full_time_student: true
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: SNAP recipient eligible through program enrollment
+  period: 2025
+  input:
+    state_code: TX
+    age: 40
+    snap: 300
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Medicaid recipient eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 25
+    medicaid: 5_000
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: CHIP recipient eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 12
+    chip: 3_000
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: WIC recipient eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 28
+    wic: 100
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: TANF recipient eligible
+  period: 2025
+  input:
+    state_code: TX
+    age: 32
+    tanf: 400
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Medicare eligible person qualifies
+  period: 2025
+  input:
+    state_code: TX
+    age: 68
+    is_medicare_eligible: true
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Non-eligible adult
+  period: 2025
+  input:
+    state_code: TX
+    age: 35
+    is_disabled: false
+    is_veteran: false
+    is_full_time_student: false
+    snap: 0
+    medicaid: 0
+  output:
+    tx_dart_reduced_fare_eligible: false
+
+- name: Multiple eligibility criteria (veteran and student)
+  period: 2025
+  input:
+    state_code: TX
+    age: 24
+    is_veteran: true
+    is_full_time_student: true
+  output:
+    tx_dart_reduced_fare_eligible: true
+
+- name: Family with mixed eligibility
+  period: 2025
+  input:
+    people:
+      veteran_parent:
+        age: 35
+        is_veteran: true
+      spouse:
+        age: 33
+        is_veteran: false
+      child:
+        age: 10
+        is_veteran: false
+      senior:
+        age: 70
+        is_veteran: false
+    spm_units:
+      spm_unit:
+        members: [veteran_parent, spouse, child, senior]
+        snap: 200
+    households:
+      household:
+        members: [veteran_parent, spouse, child, senior]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_eligible: [true, true, true, true]

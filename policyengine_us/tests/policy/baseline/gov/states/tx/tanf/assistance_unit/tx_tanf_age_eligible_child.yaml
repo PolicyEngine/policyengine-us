@@ -1,0 +1,34 @@
+- name: Case 1, age at 18, not in school.
+  period: 2025-01
+  input:
+    age: 18
+    state_code: TX
+  output:
+    tx_tanf_age_eligible_child: false
+
+- name: Case 2, age 18, in school.
+  period: 2025-01
+  input:
+    age: 18
+    is_full_time_student: true
+    is_tax_unit_dependent: true
+    state_code: TX
+  output:
+    tx_tanf_age_eligible_child: true
+
+- name: Case 3, child 19, in school.
+  period: 2025-01
+  input:
+    age: 19
+    is_full_time_student: true
+    state_code: TX
+  output:
+    tx_tanf_age_eligible_child: false
+
+- name: Case 4, age 17.
+  period: 2025-01
+  input:
+    age: 17
+    state_code: TX
+  output:
+    tx_tanf_age_eligible_child: true

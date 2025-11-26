@@ -20,7 +20,11 @@ class mn_child_and_working_families_credits(Variable):
         # The credits are defined by separate legal code sections
         # but are calculated together in the tax forms.
         # Child Tax Credit computation:
-        qualifying_children = tax_unit("ctc_qualifying_children", period)
+        qualifying_children = add(
+            tax_unit,
+            period,
+            ["mn_child_and_working_families_credits_ctc_eligible_child"],
+        )
         p = parameters(period).gov.states.mn.tax.income.credits.cwfc
         base_ctc_amount = qualifying_children * p.ctc.amount
         # Working Family Credit computation:

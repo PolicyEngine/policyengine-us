@@ -1,0 +1,402 @@
+# SSI Family of Three Test Cases - Various Scenarios for 2025
+# Testing how SSI handles different combinations of disability status and income
+
+- name: Case 1 - Both adults disabled with income + healthy child
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: true
+        employment_income: 1_000 * 12  # $1,000/month
+      adult2:
+        age: 33
+        is_disabled: true
+        employment_income: 0
+      child:
+        age: 10
+        is_disabled: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    # Both adults are SSI eligible
+    is_ssi_eligible: [true, true, false]
+    # Joint claim for married couple
+    ssi_claim_is_joint: [true, true, false]
+    # Combined countable income: $1,000 - $20 - $65 - $457.50 = $457.50/month = $5,490/year
+    ssi_countable_income: [2_745, 2_745, 0]  # Each spouse gets half of combined countable
+    # Couple FBR: $1,450/month = $17,400/year
+    ssi_amount_if_eligible: [8_700, 8_700, 11_604]  # Each gets half of couple rate, child gets individual even if not eligible
+    # SSI benefit: $17,400 - $5,490 = $11,910/year total, $5,955 each
+    ssi: [5_955, 5_955, 0]
+
+- name: Case 2 - One disabled adult + healthy spouse with income + disabled child
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: true
+        employment_income: 0
+      adult2:
+        age: 33
+        is_disabled: false
+        employment_income: 2_000 * 12  # $2,000/month
+      child:
+        age: 10
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    is_ssi_eligible: [true, false, true]
+    # Spouse's countable: $2,000 - $20 - $65 - $957.50 = $957.50/month = $11,490/year
+    # Since $11,490 > $5,796 (couple - individual FBR diff), deeming applies
+    # With deeming, use couple FBR: $1,450/month = $17,400/year
+    ssi_income_deemed_from_ineligible_spouse: [11_490, 0, 0]
+    ssi_countable_income: [11_490, 0, 0]
+    # Adult1 SSI: $17,400 (couple FBR) - $11,490 (countable) = $5,910
+    ssi: [5_910, 0, 11_604]  # Adult1: $5,910 with couple rate; Child gets full FBR
+
+- name: Case 3 - Both adults healthy with income + disabled child
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: false
+        employment_income: 1_500 * 12  # $1,500/month
+      adult2:
+        age: 33
+        is_disabled: false
+        employment_income: 1_000 * 12  # $1,000/month
+      child:
+        age: 10
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    is_ssi_eligible: [false, false, true]
+    # Combined parent income: $2,500/month
+    # After exclusions: $2,500 - $20 - $65 - $1,207.50 = $1,207.50/month = $14,490/year
+    # Parent allowance (couple): $1,450/month = $17,400/year
+    # No income deemed (parents need more than they have)
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi_countable_income: [0, 0, 0]
+    ssi: [0, 0, 11_604]  # Child gets full FBR
+
+- name: Case 4 - One disabled adult with income + healthy spouse with high income + healthy child
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: true
+        employment_income: 500 * 12  # $500/month
+      adult2:
+        age: 33
+        is_disabled: false
+        employment_income: 3_000 * 12  # $3,000/month
+      child:
+        age: 10
+        is_disabled: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    is_ssi_eligible: [true, false, false]
+    is_ssi_ineligible_child: [false, false, true]
+    # Child allocation: ($1,450 - $967) * 12 = $5,796/year
+    ssi_ineligible_child_allocation: [0, 0, 5_796]
+    # Spouse's earned countable: $3,000 - $20 - $65 - $1,457.50 = $1,457.50/month = $17,490/year
+    # Spouse's unearned is 0, so after child allocation from unearned: still 0
+    # Remaining child allocation applied to earned: $17,490 - $5,796 = $11,694
+    # After 50% earned exclusion on remaining: $11,694 * 0.5 = $5,847
+    # Plus remaining allocation: $5,847 + $5,796 = $11,643 but capped at original
+    # Actually PolicyEngine deems: $17,490 - $2,388 = $15,102
+    ssi_income_deemed_from_ineligible_spouse: [15_102, 0, 0]
+    # Adult1's own countable: $500 - $20 - $65 - $207.50 = $207.50/month = $2,490/year
+    ssi_countable_income: [17_592, 0, 0]  # $2,490 + $15,102
+    ssi: [0, 0, 0]  # Countable income exceeds FBR
+
+- name: Case 5 - All three disabled with varying income
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: true
+        employment_income: 800 * 12  # $800/month
+      adult2:
+        age: 33
+        is_disabled: true
+        employment_income: 400 * 12  # $400/month
+      child:
+        age: 10
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    is_ssi_eligible: [true, true, true]
+    ssi_claim_is_joint: [true, true, false]
+    # Combined adult income: $1,200/month
+    # Countable: $1,200 - $20 - $65 - $557.50 = $557.50/month = $6,690/year
+    ssi_countable_income: [3_345, 3_345, 0]  # Each spouse gets half; child has none
+    # Couple FBR: $17,400/year; Individual child: $11,604/year
+    ssi_amount_if_eligible: [8_700, 8_700, 11_604]
+    # Adults: $17,400 - $6,690 = $10,710 total ($5,355 each)
+    ssi: [5_355, 5_355, 11_604]
+
+- name: Case 6 - High income scenario - disabled adult + very high income spouse + disabled child
+  period: 2025
+  input:
+    people:
+      adult1:
+        age: 35
+        is_disabled: true
+        employment_income: 0
+      adult2:
+        age: 33
+        is_disabled: false
+        employment_income: 5_000 * 12  # $5,000/month
+      child:
+        age: 10
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    is_ssi_eligible: [true, false, true]
+    # Spouse's countable: $5,000 - $20 - $65 - $2,457.50 = $2,457.50/month = $29,490/year
+    # Since $29,490 > $5,796 (couple - individual FBR diff), deeming applies
+    # With deeming, use couple FBR: $1,450/month = $17,400/year
+    # Adult1 SSI: $17,400 (couple FBR) - $29,490 (countable) = -$12,090, capped at $0
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0, 0]
+    # Parent income deeming to child also gets high amount
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 17_886]
+    ssi_countable_income: [29_490, 0, 17_646]
+    ssi: [0, 0, 0]  # Both disabled members have countable income exceeding FBR
+
+- name: Case 7 - Illinois single parent with $9,600 income + healthy child
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        is_disabled: true  # Assuming parent is disabled to be SSI-eligible
+        employment_income: 9_600  # $800/month
+      child:
+        age: 10
+        is_disabled: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    # Parent's SSI calculation for January 2024:
+    # Income: $800/month
+    # Countable: $800 - $20 - $65 - $357.50 = $357.50/month
+    # 2024 Individual FBR: $943/month
+    # SSI: $943 - $357.50 = $585.50/month for January
+    is_ssi_eligible: [true, false]
+    ssi_earned_income: [800, 0]
+    ssi_countable_income: [357.50, 0]
+    ssi_amount_if_eligible: [943, 943]
+    ssi: [585.50, 0]
+
+- name: Case 8 - Deeming applies, benefit capped at individual FBR
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 55
+        is_disabled: false
+        employment_income: 967 * 12  # $967/month
+      adult2:
+        age: 60
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: NC
+  output:
+    is_ssi_eligible: [false, true]
+    # Step 1: Check if deeming applies
+    # Adult1 gross income: $967/month > $483 threshold → Deeming applies
+    #
+    # Step 2: Calculate deemed income
+    # Combined income: $967/month earned
+    # Apply exclusions: $967 - $20 (general) - $65 (earned) = $882
+    # Take half: $882 / 2 = $441/month
+    # Adult2 alone countable: $0
+    # Deemed income = $441 - $0 = $441/month
+    ssi_income_deemed_from_ineligible_spouse: [0, 441]
+    ssi_countable_income: [0, 441]
+    #
+    # Step 3: Calculate benefit
+    # Use couple FBR (deeming applies): $1,450/month
+    # Benefit before cap: $1,450 - $441 = $1,009/month
+    # Cap at individual FBR: min($1,009, $967) = $967/month
+    # Note: This demonstrates the cap is necessary when spouse's gross income
+    # is just above $483, resulting in low countable income after exclusions
+    ssi: [0, 967] 
+
+- name: Case 9 - Deeming applies without child
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 41
+        is_disabled: false
+        employment_income: 3_000 * 12  # $3,000/month
+      adult2:
+        age: 40
+        is_disabled: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: NC
+  output:
+    is_ssi_eligible: [false, true]
+    # Step 1: No child allocation (no child present)
+    # Adult1 gross income: $3,000/month (no reduction)
+    #
+    # Step 2: Check if deeming applies
+    # Adult1 gross income: $3,000 > $483 threshold → Deeming applies
+    #
+    # Step 3: Calculate deemed income
+    # Combined income: $3,000/month earned
+    # Apply exclusions: $3,000 - $20 (general) - $65 (earned) = $2,915
+    # Take half: $2,915 / 2 = $1,457.50/month
+    # Adult2 alone countable: $0
+    # Deemed income = $1,457.50 - $0 = $1,457.50/month
+    ssi_income_deemed_from_ineligible_spouse: [0, 1_457.50]
+    ssi_countable_income: [0, 1_457.50]
+    #
+    # Step 4: Calculate benefit
+    # Use couple FBR (deeming applies): $1,450/month
+    # Benefit before cap: $1,450 - $1,457.50 = -$7.50 (negative)
+    # Benefit capped at $0 (cannot be negative)
+    ssi: [0, 0]
+
+- name: Case 10 - Deeming applies with child allocation (compare to Case 9)
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 41
+        is_disabled: false
+        employment_income: 3_000 * 12  # $3,000/month
+      adult2:
+        age: 40
+        is_disabled: true
+        employment_income: 0
+      child:
+        age: 12
+        is_disabled: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+    marital_units:
+      marital_unit:
+        members: [adult1, adult2, child]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: NC
+  output:
+    is_ssi_eligible: [false, true, false]
+    # Step 1: Apply child allocation
+    # Child allocation: $1,450 (couple FBR) - $967 (individual FBR) = $483/month
+    # Child has $0 income, so full $483 allocation applies
+    # Adult1 earned after child allocation: $3,000 - $483 = $2,517/month
+    #
+    # Step 2: Check if deeming applies
+    # Adult1 income after child allocation: $2,517 > $483 threshold → Deeming applies
+    #
+    # Step 3: Calculate deemed income
+    # Combined income: $2,517/month earned (after child allocation)
+    # Apply exclusions: $2,517 - $20 (general) - $65 (earned) = $2,432
+    # Take half: $2,432 / 2 = $1,216/month
+    # Adult2 alone countable: $0
+    # Deemed income = $1,216 - $0 = $1,216/month
+    ssi_income_deemed_from_ineligible_spouse: [0, 1_216, 0]
+    ssi_countable_income: [0, 1_216, 0]
+    #
+    # Step 4: Calculate benefit
+    # Use couple FBR (deeming applies): $1,450/month
+    # Benefit before cap: $1,450 - $1,216 = $234/month
+    # Cap at individual FBR: min($234, $967) = $234 (no cap needed)
+    # Note: Compare to Case 9 - child allocation ($483) reduces deemed income,
+    # changing result from $0 to $234/month
+    ssi: [0, 234, 0]

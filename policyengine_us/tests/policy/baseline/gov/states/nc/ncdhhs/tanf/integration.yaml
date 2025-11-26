@@ -70,6 +70,100 @@
   output:
     nc_tanf: 300
 
+- name: One adult and two children household with one SSI recipient receives $236 per month
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 967 * 12
+      child1:
+        age: 5  
+      child2:
+        age: 7   
+    spm_units:
+      spm_unit:
+        members: [adult1, child1, child2]
+    households:
+      household:
+        members: [adult1, child1, child2]
+        state_code: NC
+  output:
+    nc_tanf: 236 * 12
+
+- name: One adult and two children household with $400 monthly income and one SSI recipient receives $36 per month
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 29
+        employment_income: 400 * 12
+        self_employment_income: 0
+      child1:
+        age: 2
+        ssi: 967 * 12
+      child2:
+        age: 4  
+    spm_units:
+      spm_unit:
+        members: [adult1, child1, child2]
+    households:
+      household:
+        members: [adult1, child1, child2]
+        state_code: NC
+  output:
+    nc_tanf: 36 * 12
+
+- name: One adult and two children household with $400 monthly income and two SSI recipient receives $0 per month
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 29
+        employment_income: 400 * 12
+        self_employment_income: 0
+      child1:
+        age: 2
+        ssi: 967 * 12
+      child2:
+        age: 4
+        ssi: 967 * 12  
+    spm_units:
+      spm_unit:
+        members: [adult1, child1, child2]
+    households:
+      household:
+        members: [adult1, child1, child2]
+        state_code: NC
+  output:
+    nc_tanf: 0
+
+- name: One adult and two children household with $330 monthly income and two SSI recipient receives $16 per month
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 29
+        employment_income: 330 * 12
+        self_employment_income: 0
+      child1:
+        age: 2
+        ssi: 967 * 12
+      child2:
+        age: 4
+        ssi: 967 * 12  
+    spm_units:
+      spm_unit:
+        members: [adult1, child1, child2]
+    households:
+      household:
+        members: [adult1, child1, child2]
+        state_code: NC
+  output:
+    nc_tanf: 16 * 12
+
 - name: One adult and one child household with income $430 monthly income receives $0 per year
   period: 2024
   input:

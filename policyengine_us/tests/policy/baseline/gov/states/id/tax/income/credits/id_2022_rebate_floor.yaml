@@ -1,0 +1,21 @@
+- name: One person in ID
+  period: 2022
+  input:
+    state_code: ID
+  output:
+    id_2022_rebate_floor: 75
+
+- name: Two people
+  period: 2022
+  input:
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_2022_rebate_floor: [75, 75]

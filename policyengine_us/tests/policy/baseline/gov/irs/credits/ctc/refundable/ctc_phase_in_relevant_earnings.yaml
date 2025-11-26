@@ -1,0 +1,13 @@
+- name: Income below threshold
+  period: 2023
+  input:
+    tax_unit_earned_income: 1_000
+  output:
+    ctc_phase_in_relevant_earnings: 0
+
+- name: Income above threshold
+  period: 2023
+  input:
+    tax_unit_earned_income: 5_000
+  output:
+    ctc_phase_in_relevant_earnings: 375

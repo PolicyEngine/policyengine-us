@@ -1,0 +1,79 @@
+- name: No SSI recipient, household size is same as spm_unit size
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 0
+      person2:
+        ssi: 0
+      person3: 
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_tanf_household_size: 3
+
+- name: Exclude SSI recipient from NC TANF household size
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 1
+      person2:
+        ssi: 0
+      person3: 
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_tanf_household_size: 2
+
+- name: Exclude SSI recipients from NC TANF household size
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 0
+      person2:
+        ssi: 1
+      person3: 
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_tanf_household_size: 2
+
+- name: Household size is 0 if all members receive SSI
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 1
+      person2:
+        ssi: 1
+      person3: 
+        ssi: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_tanf_household_size: 0

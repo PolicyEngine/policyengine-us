@@ -15,4 +15,9 @@ class ky_subtractions(Variable):
         "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27"
     )
     defined_for = StateCode.KY
-    adds = "gov.states.ky.tax.income.subtractions"
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.ky.tax.income
+        total_subtractions = add(person, period, p.subtractions)
+        # Prevent negative subtractions from acting as additions
+        return max_(0, total_subtractions)

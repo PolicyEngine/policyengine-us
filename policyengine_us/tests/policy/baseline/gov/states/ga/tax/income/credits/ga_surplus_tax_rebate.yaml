@@ -1,0 +1,39 @@
+- name: Single filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: SINGLE
+  output:
+    ga_surplus_tax_rebate: 250
+
+- name: Joint filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: JOINT
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: Head of household filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ga_surplus_tax_rebate: 375
+
+- name: Surviving spouse filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: Separate filer
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: SEPARATE
+  output:
+    ga_surplus_tax_rebate: 250

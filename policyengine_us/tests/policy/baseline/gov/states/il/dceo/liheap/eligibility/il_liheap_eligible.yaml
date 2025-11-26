@@ -1,0 +1,54 @@
+- name: Income eligible household with own heating is eligible
+  period: 2024
+  input:
+    state_code: IL
+    il_liheap_income_eligible: true
+    heat_expense_included_in_rent: false
+    rent: 1_000
+    irs_gross_income: 30_000
+  output:
+    il_liheap_eligible: true
+
+- name: Income eligible renter with heat in rent and rent > 30% income is eligible  
+  period: 2024
+  input:
+    state_code: IL
+    il_liheap_income_eligible: true
+    heat_expense_included_in_rent: true
+    rent: 10_000  # Annual rent
+    irs_gross_income: 30_000  # Rent is 33.3% of income
+  output:
+    il_liheap_eligible: true
+
+- name: Income eligible renter with heat in rent but rent < 30% income is not eligible
+  period: 2024
+  input:
+    state_code: IL
+    il_liheap_income_eligible: true
+    heat_expense_included_in_rent: true
+    rent: 5_000  # Annual rent
+    irs_gross_income: 30_000  # Rent is 16.7% of income
+  output:
+    il_liheap_eligible: false
+
+- name: Income eligible renter with heat in rent and rent exactly 30% income is not eligible
+  period: 2024
+  input:
+    state_code: IL
+    il_liheap_income_eligible: true
+    heat_expense_included_in_rent: true
+    rent: 9_000  # Annual rent
+    irs_gross_income: 30_000  # Rent is exactly 30% of income
+  output:
+    il_liheap_eligible: false
+
+- name: Not income eligible is not eligible regardless of rent
+  period: 2024
+  input:
+    state_code: IL
+    il_liheap_income_eligible: false
+    heat_expense_included_in_rent: false
+    rent: 1_000
+    irs_gross_income: 100_000
+  output:
+    il_liheap_eligible: false

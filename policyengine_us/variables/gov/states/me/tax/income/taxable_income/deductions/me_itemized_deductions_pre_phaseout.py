@@ -14,8 +14,6 @@ class me_itemized_deductions_pre_phaseout(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        # Whether or not the taxpayer itemized for federal taxes.
-        us_itemizing = tax_unit("tax_unit_itemizes", period)
 
         # Get the Maine itemizing deduction parameters.
         p = parameters(period).gov.states.me.tax.income.deductions.itemized
@@ -36,4 +34,4 @@ class me_itemized_deductions_pre_phaseout(Variable):
         capped_deduction_no_med = min_(deduction_no_med, p.cap)
 
         # Add back medical and dental expenses (which are not capped).
-        return us_itemizing * (capped_deduction_no_med + medical_expenses)
+        return capped_deduction_no_med + medical_expenses
