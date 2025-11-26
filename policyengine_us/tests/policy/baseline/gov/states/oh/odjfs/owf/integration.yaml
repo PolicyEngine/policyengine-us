@@ -1,0 +1,152 @@
+- name: Single parent with two children and moderate earned income receives benefit
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 32
+        employment_income_before_lsr: 9_600
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Income calculation:
+    # Gross earned income: $9,600/year = $800/month
+    # Earned income disregard: $250 + 50% of remainder
+    # $800 - $250 = $550; $550 × 50% = $275 disregarded
+    # Countable income: $550 - $275 = $275/month
+    #
+    # Payment standard for 3: $623/month
+    # Benefit: $623 - $275 = $348/month
+    oh_owf_countable_income: 275
+    oh_owf_payment_standard: 623
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 348
+
+- name: Single parent with one child and no income receives maximum benefit
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 28
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
+  output:
+    # No income means no disregard needed
+    # Countable income: $0
+    # Payment standard for 2: $507/month (January 2025 COLA increase)
+    oh_owf_countable_income: 0
+    oh_owf_payment_standard: 507
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 507
+
+- name: Single parent with earned and unearned income receives reduced benefit
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 6_000
+        social_security: 4_800
+      child1:
+        age: 14
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Earned: $6,000/year = $500/month
+    # Disregard: $500 - $250 = $250; $250 × 50% = $125
+    # Countable earned: $250 - $125 = $125/month
+    #
+    # Unearned: $4,800/year = $400/month (no disregard)
+    # Total countable: $125 + $400 = $525/month
+    #
+    # Payment standard for 3: $623/month
+    # Benefit: $623 - $525 = $98/month
+    oh_owf_countable_income: 525
+    oh_owf_payment_standard: 623
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 98
+
+- name: Family with income above payment standard receives no benefit
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 18_000
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Earned: $18,000/year = $1,500/month
+    # Disregard: $1,500 - $250 = $1,250; $1,250 × 50% = $625
+    # Countable: $1,250 - $625 = $625/month
+    #
+    # Payment standard for 3: $623/month
+    # Countable income ($625) >= payment standard ($623)
+    # Not income eligible, no benefit
+    oh_owf_countable_income: 625
+    oh_owf_payment_standard: 623
+    oh_owf_income_eligible: false
+    oh_owf_eligible: false
+    oh_owf: 0
+
+- name: Two adults with no children are not eligible
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 28
+      adult2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: OH
+  output:
+    # No minor children means categorically ineligible
+    # Must have at least one minor child or be pregnant
+    oh_owf_eligible: false
+    oh_owf: 0
