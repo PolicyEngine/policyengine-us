@@ -6,10 +6,7 @@ class in_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Indiana TANF eligible"
     definition_period = MONTH
-    reference = (
-        "https://iga.in.gov/laws/2023/ic/titles/12",
-        "https://iar.iga.in.gov/latestArticle/470/10.3",
-    )
+    reference = "https://iar.iga.in.gov/code/2026/470/10.3"  # 470 IAC 10.3
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):

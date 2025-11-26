@@ -8,8 +8,8 @@
       spm_unit:
         members: [person1]
         is_demographic_tanf_eligible: true
-        in_tanf_gross_income_eligible: true
-        in_tanf_net_income_eligible: true
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: true
     households:
       household:
         members: [person1]
@@ -17,7 +17,7 @@
   output:
     in_tanf_eligible: true
 
-- name: Not eligible - fails gross income test
+- name: Not eligible - fails countable income test
   period: 2024-01
   input:
     people:
@@ -27,8 +27,8 @@
       spm_unit:
         members: [person1]
         is_demographic_tanf_eligible: true
-        in_tanf_gross_income_eligible: false
-        in_tanf_net_income_eligible: true
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: true
     households:
       household:
         members: [person1]
@@ -36,7 +36,7 @@
   output:
     in_tanf_eligible: false
 
-- name: Not eligible - fails net income test
+- name: Not eligible - fails benefit income test
   period: 2024-01
   input:
     people:
@@ -46,8 +46,8 @@
       spm_unit:
         members: [person1]
         is_demographic_tanf_eligible: true
-        in_tanf_gross_income_eligible: true
-        in_tanf_net_income_eligible: false
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: false
     households:
       household:
         members: [person1]
@@ -65,8 +65,8 @@
       spm_unit:
         members: [person1]
         is_demographic_tanf_eligible: true
-        in_tanf_gross_income_eligible: false
-        in_tanf_net_income_eligible: false
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: false
     households:
       household:
         members: [person1]
@@ -84,8 +84,8 @@
       spm_unit:
         members: [person1]
         is_demographic_tanf_eligible: true
-        in_tanf_gross_income_eligible: true
-        in_tanf_net_income_eligible: true
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: true
     households:
       household:
         members: [person1]

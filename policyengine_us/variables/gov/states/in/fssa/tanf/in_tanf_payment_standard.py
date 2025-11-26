@@ -8,13 +8,12 @@ class in_tanf_payment_standard(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/",
-        "https://iga.in.gov/laws/2023/ic/titles/12",
+        "https://iga.in.gov/laws/2025/ic/titles/12/#12-14-2-5",
+        "https://iar.iga.in.gov/code/2026/470/10.3#470-10.3-4-3",
     )
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states["in"].fssa.tanf
-        # Cap at maximum documented family size
-        capped_size = min_(spm_unit("spm_unit_size", period), 10)
-        return p.payment_standard[capped_size]
+        p = parameters(period).gov.states["in"].fssa.tanf.standard_of_need
+        capped_size = min_(spm_unit("spm_unit_size", period), p.max_unit_size)
+        return p.amount[capped_size]

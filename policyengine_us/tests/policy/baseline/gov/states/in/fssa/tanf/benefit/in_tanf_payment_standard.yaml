@@ -1,10 +1,13 @@
+# Payment standard tests
+# Post P.L. 103-2023 reform, payment standard = 100% of standard of need
+
 - name: Payment standard for family of 1
   period: 2024-01
   input:
     spm_unit_size: 1
     state_code: IN
   output:
-    in_tanf_payment_standard: 248
+    in_tanf_payment_standard: 155
 
 - name: Payment standard for family of 2
   period: 2024-01
@@ -12,7 +15,7 @@
     spm_unit_size: 2
     state_code: IN
   output:
-    in_tanf_payment_standard: 409
+    in_tanf_payment_standard: 255
 
 - name: Payment standard for family of 3
   period: 2024-01
@@ -20,7 +23,7 @@
     spm_unit_size: 3
     state_code: IN
   output:
-    in_tanf_payment_standard: 513
+    in_tanf_payment_standard: 320
 
 - name: Payment standard for family of 4
   period: 2024-01
@@ -28,7 +31,7 @@
     spm_unit_size: 4
     state_code: IN
   output:
-    in_tanf_payment_standard: 617
+    in_tanf_payment_standard: 385
 
 - name: Payment standard for family of 5
   period: 2024-01
@@ -36,7 +39,7 @@
     spm_unit_size: 5
     state_code: IN
   output:
-    in_tanf_payment_standard: 721
+    in_tanf_payment_standard: 450
 
 - name: Payment standard for family of 6
   period: 2024-01
@@ -44,7 +47,7 @@
     spm_unit_size: 6
     state_code: IN
   output:
-    in_tanf_payment_standard: 825
+    in_tanf_payment_standard: 515
 
 - name: Payment standard for family of 10
   period: 2024-01
@@ -52,4 +55,4 @@
     spm_unit_size: 10
     state_code: IN
   output:
-    in_tanf_payment_standard: 1_241
+    in_tanf_payment_standard: 775

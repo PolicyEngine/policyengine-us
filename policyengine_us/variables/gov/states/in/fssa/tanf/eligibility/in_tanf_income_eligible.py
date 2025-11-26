@@ -6,16 +6,16 @@ class in_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "Indiana TANF income eligible"
     definition_period = MONTH
-    reference = (
-        "https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/",
-        "https://iga.in.gov/laws/2023/ic/titles/12",
-        "https://iar.iga.in.gov/latestArticle/470/10.3",
-    )
+    reference = "https://iar.iga.in.gov/code/2026/470/10.3#470-10.3-4"  # 470 IAC 10.3-4
     defined_for = StateCode.IN
 
     def formula(spm_unit, period, parameters):
-        # Indiana uses both gross and net income tests
-        # Must pass both tests per 470 IAC 10.3-4 (Fiscal Eligibility Requirements)
-        gross_eligible = spm_unit("in_tanf_gross_income_eligible", period)
-        net_eligible = spm_unit("in_tanf_net_income_eligible", period)
-        return gross_eligible & net_eligible
+        # Indiana uses two income tests per 470 IAC 10.3-4:
+        # 1. Countable income test (with eligibility disregards)
+        # 2. Payment test (with payment disregards)
+        # Must pass both tests for fiscal eligibility.
+        countable_eligible = spm_unit(
+            "in_tanf_countable_income_eligible", period
+        )
+        payment_eligible = spm_unit("in_tanf_payment_eligible", period)
+        return countable_eligible & payment_eligible
