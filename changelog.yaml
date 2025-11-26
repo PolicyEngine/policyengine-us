@@ -11569,3 +11569,9 @@
     - Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where
       non-MA households received Massachusetts State Supplement.
   date: 2025-11-25 20:18:51
+- bump: patch
+  changes:
+    changed:
+    - Split AMT exemption calculation into separate `amt_exemption` variable from
+      `amt_income_less_exemptions`.
+  date: 2025-11-26 09:48:01
