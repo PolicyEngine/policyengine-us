@@ -11575,3 +11575,8 @@
     - Split AMT exemption calculation into separate `amt_exemption` variable from
       `amt_income_less_exemptions`.
   date: 2025-11-26 09:48:01
+- bump: patch
+  changes:
+    added:
+    - Regression test for AMT calculation against TAXSIM35 (issue
+  date: 2025-11-26 09:54:55
