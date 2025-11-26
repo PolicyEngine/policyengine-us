@@ -1,16 +1,15 @@
-- name: Households with assets lower than or equal to $6,000 are eligible.
-  period: 2023
+- name: Households with assets at or below resource limit are eligible
+  period: 2024
   input:
     state_code: WA
-    wa_tanf_countable_resources: 6_000
+    wa_tanf_countable_resources: 12_000
   output:
     wa_tanf_resources_eligible: true
 
-
-- name: Households with assets higher than $6,000 are ineligible. 
-  period: 2023
+- name: Households with assets above resource limit are ineligible
+  period: 2024
   input:
     state_code: WA
-    wa_tanf_countable_resources: 7_000
+    wa_tanf_countable_resources: 13_000
   output:
     wa_tanf_resources_eligible: false
