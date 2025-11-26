@@ -1,0 +1,14 @@
+description: The Social Security Administration looks at work credits earned in this many years before disability onset for workers under age 24 for Social Security Disability Insurance eligibility.
+
+values:
+  1975-01-01: 3
+
+metadata:
+  unit: year
+  period: year
+  label: SSA SSDI young worker under 24 years period
+  reference:
+    - title: Social Security Administration - Young Worker Credits
+      href: https://www.ssa.gov/benefits/retirement/planner/credits.html#h3
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii
