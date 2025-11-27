@@ -1,0 +1,109 @@
+- name: Zero countable income receives full family maximum.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 356
+    ga_tanf_countable_income: 0
+    ga_tanf_family_maximum: 235
+  output:
+    # MIN(356 - 0, 235) = MIN(356, 235) = 235
+    ga_tanf: 235
+
+- name: Benefit exactly equals family maximum.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 500
+    ga_tanf_countable_income: 100
+    ga_tanf_family_maximum: 400
+  output:
+    # MIN(500 - 100, 400) = MIN(400, 400) = 400
+    ga_tanf: 400
+
+- name: Benefit limited by family maximum.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 500
+    ga_tanf_countable_income: 50
+    ga_tanf_family_maximum: 330
+  output:
+    # MIN(500 - 50, 330) = MIN(450, 330) = 330
+    ga_tanf: 330
+
+- name: Benefit limited by deficit (SON minus countable).
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 300
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(424 - 300, 280) = MIN(124, 280) = 124
+    ga_tanf: 124
+
+- name: Very small benefit of $1.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 423
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(424 - 423, 280) = MIN(1, 280) = 1
+    ga_tanf: 1
+
+- name: Countable income exactly equals standard of need results in zero.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 424
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(424 - 424, 280) = MIN(0, 280) = 0
+    ga_tanf: 0
+
+- name: Countable income exceeds standard of need results in zero.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 450
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(max(424 - 450, 0), 280) = MIN(0, 280) = 0
+    ga_tanf: 0
+
+- name: Maximum benefit for family of 3 with correct 2025 values.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 0
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(424 - 0, 280) = MIN(424, 280) = 280
+    ga_tanf: 280
+
+- name: Small countable income results in reduced benefit.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 356
+    ga_tanf_countable_income: 100
+    ga_tanf_family_maximum: 235
+  output:
+    # MIN(356 - 100, 235) = MIN(256, 235) = 235
+    ga_tanf: 235
+
+- name: Moderate income reduces benefit below family maximum.
+  period: 2025-01
+  input:
+    ga_tanf_eligible: true
+    ga_tanf_standard_of_need: 424
+    ga_tanf_countable_income: 200
+    ga_tanf_family_maximum: 280
+  output:
+    # MIN(424 - 200, 280) = MIN(224, 280) = 224
+    ga_tanf: 224
