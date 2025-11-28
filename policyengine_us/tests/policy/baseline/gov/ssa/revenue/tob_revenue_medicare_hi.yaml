@@ -1,0 +1,61 @@
+- name: TOB Medicare revenue - zero income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 0
+
+- name: TOB Medicare revenue - below adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Only tier 1, no tier 2
+    tob_revenue_medicare_hi: 0
+
+- name: TOB Medicare revenue - above adjusted base
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Tier 2 = 21_000 (from tier 2 test with adjusted employment_income)
+    # Combined income = 60_000 + 15_000 = 75_000
+    # Tier 1 = 4_500, Tier 2 = 21_000
+    # Total taxable SS = 25_500
+    # AGI = 60_000 + 25_500 = 85_500
+    # Standard deduction = 14_600
+    # Taxable income = 70_900
+    # This will have positive income tax and thus positive TOB revenue
+    tob_revenue_medicare_hi: 3_113.30
