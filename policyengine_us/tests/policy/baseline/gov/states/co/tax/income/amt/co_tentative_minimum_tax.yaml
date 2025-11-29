@@ -1,0 +1,9 @@
+# Colorado tentative minimum tax tests
+- name: Tentative minimum tax calculation
+  period: 2024
+  input:
+    co_alternative_minimum_taxable_income: 100_000
+    state_code: CO
+  output:
+    # 100,000 * 0.0347 = 3,470
+    co_tentative_minimum_tax: 3_470
