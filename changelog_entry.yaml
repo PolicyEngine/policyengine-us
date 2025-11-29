@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Set household_weight default value to 1 to prevent microdf errors in Python 3.13.
