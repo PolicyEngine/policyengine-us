@@ -1,0 +1,49 @@
+- name: All eligibility conditions pass - Eligible
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_payment_standard_eligible: true
+  output:
+    mt_tanf_income_eligible: true
+
+- name: GMI test fails - Not eligible
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: false
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_payment_standard_eligible: true
+  output:
+    mt_tanf_income_eligible: false
+
+- name: Benefit standard test fails - Not eligible
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: false
+    mt_tanf_payment_standard_eligible: true
+  output:
+    mt_tanf_income_eligible: false
+
+- name: Payment standard test fails - Not eligible
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_payment_standard_eligible: false
+  output:
+    mt_tanf_income_eligible: false
+
+- name: All eligibility conditions fail - Not eligible
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: false
+    mt_tanf_benefit_standard_eligible: false
+    mt_tanf_payment_standard_eligible: false
+  output:
+    mt_tanf_income_eligible: false
