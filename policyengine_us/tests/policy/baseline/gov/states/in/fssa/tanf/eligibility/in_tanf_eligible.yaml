@@ -1,0 +1,94 @@
+- name: Eligible - passes all tests
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_eligible: true
+
+- name: Not eligible - fails countable income test
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_eligible: false
+
+- name: Not eligible - fails benefit income test
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_eligible: false
+
+- name: Not eligible - fails both income tests
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_eligible: false
+
+- name: Not eligible - not a citizen or legal immigrant
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_eligible: false
