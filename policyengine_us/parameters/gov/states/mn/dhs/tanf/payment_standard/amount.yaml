@@ -1,0 +1,18 @@
+description: Minnesota provides this Transitional Standard monthly benefit amount under the Minnesota Family Investment Program, based on assistance unit size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 20)
+  label: Minnesota MFIP Transitional Standard amount
+  reference:
+    - title: Minnesota Statute 142G - Minnesota Family Investment Program
+      href: https://www.revisor.mn.gov/statutes/cite/142G/pdf
+    - title: Minnesota DHS Combined Manual 0020.09 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dDocName=cm_002009&RevisionSelectionMethod=LatestReleased
+
+3:
+  2025-01-01: 1_394
+4:
+  2025-01-01: 1_675

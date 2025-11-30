@@ -1,0 +1,14 @@
+description: Minnesota provides increased Minnesota Family Investment Program Transitional Standard amounts for assistance units with less than or equal to this number of members.
+
+metadata:
+  unit: int
+  period: month
+  label: Minnesota MFIP Transitional Standard max unit size
+  reference:
+    - title: Minnesota Statute 142G - Minnesota Family Investment Program
+      href: https://www.revisor.mn.gov/statutes/cite/142G/pdf
+    - title: Minnesota DHS Combined Manual 0020.09 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dDocName=cm_002009&RevisionSelectionMethod=LatestReleased
+
+values:
+  2025-01-01: 4
