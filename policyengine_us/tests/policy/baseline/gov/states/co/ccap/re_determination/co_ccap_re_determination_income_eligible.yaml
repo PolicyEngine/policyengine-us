@@ -2,7 +2,8 @@
   period: 2023-01
   input:
     co_ccap_countable_income: 0.8
-    co_ccap_smi: 1
+    hhs_smi:
+      2023: 12
   output:
     co_ccap_re_determination_income_eligible: true
 
@@ -10,6 +11,7 @@
   period: 2023-01
   input:
     co_ccap_countable_income: 0.9
-    co_ccap_smi: 1
+    hhs_smi:
+      2023: 12
   output:
     co_ccap_re_determination_income_eligible: false
