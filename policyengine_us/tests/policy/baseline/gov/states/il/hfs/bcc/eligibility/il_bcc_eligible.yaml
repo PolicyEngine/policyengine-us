@@ -1,0 +1,105 @@
+- name: Eligible US citizen with breast cancer under 65 and no insurance
+  period: 2024
+  input:
+    state_code: IL
+    age: 45
+    immigration_status: CITIZEN
+    has_breast_cancer_diagnosis: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: true
+
+- name: Eligible legal permanent resident with cervical cancer
+  period: 2024
+  input:
+    state_code: IL
+    age: 35
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    has_cervical_cancer_diagnosis: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: true
+
+- name: Eligible refugee with precancerous condition
+  period: 2024
+  input:
+    state_code: IL
+    age: 28
+    immigration_status: REFUGEE
+    has_cervical_precancerous_condition: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: true
+
+- name: Ineligible due to age over 65
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: CITIZEN
+    has_breast_cancer_diagnosis: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to no qualifying diagnosis
+  period: 2024
+  input:
+    state_code: IL
+    age: 40
+    immigration_status: CITIZEN
+    has_breast_cancer_diagnosis: false
+    has_cervical_cancer_diagnosis: false
+    has_cervical_precancerous_condition: false
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to non-qualifying immigration status
+  period: 2024
+  input:
+    state_code: IL
+    age: 40
+    immigration_status: UNDOCUMENTED
+    has_breast_cancer_diagnosis: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to having private insurance
+  period: 2024
+  input:
+    state_code: IL
+    age: 45
+    immigration_status: CITIZEN
+    has_breast_cancer_diagnosis: true
+    is_medicaid_eligible: false
+    is_medicare_eligible: false
+    health_insurance_premiums: 6_000
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to Medicaid coverage
+  period: 2024
+  input:
+    state_code: IL
+    age: 45
+    immigration_status: CITIZEN
+    has_breast_cancer_diagnosis: true
+    is_medicaid_eligible: true
+    is_medicare_eligible: false
+    health_insurance_premiums: 0
+  output:
+    il_bcc_eligible: false
