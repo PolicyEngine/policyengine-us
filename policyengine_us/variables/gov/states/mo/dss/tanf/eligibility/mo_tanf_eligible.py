@@ -15,19 +15,9 @@ class mo_tanf_eligible(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # Use federal demographic and immigration eligibility
         person = spm_unit.members
-        is_demographic_eligible = person(
-            "is_person_demographic_tanf_eligible", period
-        )
-        has_demographic_eligible_member = spm_unit.any(is_demographic_eligible)
-
-        # Check income and resource eligibility
+        demographic = person("is_person_demographic_tanf_eligible", period)
+        has_eligible_member = spm_unit.any(demographic)
         income_eligible = spm_unit("mo_tanf_income_eligible", period)
         resources_eligible = spm_unit("mo_tanf_resources_eligible", period)
-
-        return (
-            has_demographic_eligible_member
-            & income_eligible
-            & resources_eligible
-        )
+        return has_eligible_member & income_eligible & resources_eligible

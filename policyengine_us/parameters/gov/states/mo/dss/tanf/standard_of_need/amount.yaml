@@ -1,15 +1,15 @@
-description: Missouri TANF Standard of Need amounts (also called "Consolidated Standard" or "AFDC Consolidated Standard") used for income eligibility tests and benefit calculations. These amounts have been frozen since 1991.
+description: Missouri provides this amount as the standard of need under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 20)
-  label: Missouri TANF Standard of Need amount
+  label: Missouri TANF standard of need
   reference:
-    - title: 13 CSR 40-2.120(3)(A)1. - AFDC Consolidated Standard
+    - title: 13 CSR 40-2.120(3)(A)1
       href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
-    - title: 0210.010.05 - 185 Percent Income Eligibility Limit
+    - title: Missouri DSS Manual 0210.010.05
       href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-010-05-185/
 
 1:

@@ -1,15 +1,14 @@
-description: Missouri TANF $30 flat amount portion of the $30+1/3 earned income disregard for non-active recipients. Applied after the $90 standard work exemption and before the one-third percentage disregard. Available for 4 consecutive months, followed by $30-only disregard for 8 months.
+description: Missouri deducts this flat amount as part of the earned income disregard under the Temporary Assistance for Needy Families program.
+
+values:
+  1991-01-01: 30
 
 metadata:
   unit: currency-USD
   period: month
-  label: Missouri TANF $30+1/3 disregard flat amount
+  label: Missouri TANF thirty dollar disregard
   reference:
-    - title: 13 CSR 40-2.120(6) - Earned Income Disregards
+    - title: 13 CSR 40-2.120(6)
       href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
-    - title: 0210.015.30 - Earned Income Disregards
+    - title: Missouri DSS Manual 0210.015.30
       href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/
-
-values:
-  
-  1991-01-01: 30

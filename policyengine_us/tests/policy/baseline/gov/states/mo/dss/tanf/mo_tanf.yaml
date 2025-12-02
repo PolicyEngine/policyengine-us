@@ -16,7 +16,7 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 0
   output:
-    mo_tanf: 292  # 846 * 0.34526 = 292.09 rounded down
+    mo_tanf: 292.09
 
 - name: Eligible household with countable income receives reduced benefit
   period: 2024-01
@@ -26,9 +26,9 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 100
   output:
-    mo_tanf: 192  # 292 - 100 = 192
+    mo_tanf: 192.09
 
-- name: Benefit less than $10 results in zero payment
+- name: Small positive benefit is paid
   period: 2024-01
   input:
     state_code: MO
@@ -36,9 +36,9 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 285
   output:
-    mo_tanf: 0  # 292 - 285 = 7, which is < $10
+    mo_tanf: 7.09
 
-- name: Benefit of exactly $10 is paid
+- name: Benefit of $10
   period: 2024-01
   input:
     state_code: MO
@@ -46,7 +46,7 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 282
   output:
-    mo_tanf: 10  # 292 - 282 = 10
+    mo_tanf: 10.09
 
 - name: Countable income exceeds maximum benefit results in zero
   period: 2024-01

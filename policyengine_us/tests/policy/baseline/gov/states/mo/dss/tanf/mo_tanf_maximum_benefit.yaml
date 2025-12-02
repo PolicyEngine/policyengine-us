@@ -1,47 +1,47 @@
-- name: Family of 1 maximum benefit is $135
+- name: Family of 1 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 393
   output:
-    mo_tanf_maximum_benefit: 135  # 393 * 0.34526 = 135.67 rounded down to 135
+    mo_tanf_maximum_benefit: 135.687
 
-- name: Family of 2 maximum benefit is $234
+- name: Family of 2 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 678
   output:
-    mo_tanf_maximum_benefit: 234  # 678 * 0.34526 = 234.08 rounded to 234
+    mo_tanf_maximum_benefit: 234.086
 
-- name: Family of 3 maximum benefit is $292
+- name: Family of 3 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 846
   output:
-    mo_tanf_maximum_benefit: 292  # 846 * 0.34526 = 292.09 rounded to 292
+    mo_tanf_maximum_benefit: 292.09
 
-- name: Family of 4 maximum benefit is $341
+- name: Family of 4 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 990
   output:
-    mo_tanf_maximum_benefit: 341  # 990 * 0.34526 = 341.81 rounded down to 341
+    mo_tanf_maximum_benefit: 341.807
 
-- name: Family of 5 maximum benefit is $387
+- name: Family of 5 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 1_123
   output:
-    mo_tanf_maximum_benefit: 387  # 1123 * 0.34526 = 387.73 rounded down to 387
+    mo_tanf_maximum_benefit: 387.727
 
-- name: Family of 6 maximum benefit is $430
+- name: Family of 6 maximum benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_standard_of_need: 1_247
   output:
-    mo_tanf_maximum_benefit: 430  # 1247 * 0.34526 = 431.14 rounded down to 430
+    mo_tanf_maximum_benefit: 430.539

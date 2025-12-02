@@ -2,7 +2,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 1
+    spm_unit_size: 1
   output:
     mo_tanf_standard_of_need: 4_716  # 393 * 12
 
@@ -10,7 +10,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 2
+    spm_unit_size: 2
   output:
     mo_tanf_standard_of_need: 8_136  # 678 * 12
 
@@ -18,7 +18,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 3
+    spm_unit_size: 3
   output:
     mo_tanf_standard_of_need: 10_152  # 846 * 12
 
@@ -26,7 +26,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 4
+    spm_unit_size: 4
   output:
     mo_tanf_standard_of_need: 11_880  # 990 * 12
 
@@ -34,7 +34,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 5
+    spm_unit_size: 5
   output:
     mo_tanf_standard_of_need: 13_476  # 1123 * 12
 
@@ -42,7 +42,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 6
+    spm_unit_size: 6
   output:
     mo_tanf_standard_of_need: 14_964  # 1247 * 12
 
@@ -50,7 +50,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 10
+    spm_unit_size: 10
   output:
     mo_tanf_standard_of_need: 20_664  # 1722 * 12
 
@@ -58,7 +58,7 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 12
+    spm_unit_size: 12
   output:
     mo_tanf_standard_of_need: 23_472  # 1956 * 12
 
@@ -66,6 +66,6 @@
   period: 2024
   input:
     state_code: MO
-    mo_tanf_assistance_unit_size: 13
+    spm_unit_size: 13
   output:
     mo_tanf_standard_of_need: 24_864  # (1956 + 116) * 12 = 2072 * 12

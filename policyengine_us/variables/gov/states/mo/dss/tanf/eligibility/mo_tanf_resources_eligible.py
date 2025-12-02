@@ -14,14 +14,5 @@ class mo_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.resource_limit
-
-        # Get MO TANF countable resources
-        countable_resources = spm_unit("mo_tanf_countable_resources", period)
-
-        # Check if household has signed Individual Employment Plan
-        has_iep = spm_unit("mo_tanf_has_individual_employment_plan", period)
-
-        # Select appropriate resource limit
-        resource_limit = where(has_iep, p.with_iep, p.initial_application)
-
-        return countable_resources <= resource_limit
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        return resources <= p.amount

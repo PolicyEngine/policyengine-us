@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_185_percent_test: true
+    mo_tanf_gross_income_eligible: true
     mo_tanf_standard_of_need_test: true
     mo_tanf_percentage_of_need_test: true
   output:
@@ -12,7 +12,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_185_percent_test: false
+    mo_tanf_gross_income_eligible: false
     mo_tanf_standard_of_need_test: true
     mo_tanf_percentage_of_need_test: true
   output:
@@ -22,7 +22,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_185_percent_test: true
+    mo_tanf_gross_income_eligible: true
     mo_tanf_standard_of_need_test: false
     mo_tanf_percentage_of_need_test: true
   output:
@@ -32,7 +32,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_185_percent_test: true
+    mo_tanf_gross_income_eligible: true
     mo_tanf_standard_of_need_test: true
     mo_tanf_percentage_of_need_test: false
   output:
@@ -42,7 +42,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_185_percent_test: false
+    mo_tanf_gross_income_eligible: false
     mo_tanf_standard_of_need_test: false
     mo_tanf_percentage_of_need_test: false
   output:

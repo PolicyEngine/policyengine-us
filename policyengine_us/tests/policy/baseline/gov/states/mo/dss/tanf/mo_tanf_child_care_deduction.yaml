@@ -110,4 +110,22 @@
         members: [person1, person2, person3, person4]
         state_code: MO
   output:
-    mo_tanf_child_care_deduction: [550, 550, 550, 550]  # 175*2 + 200*1
+    mo_tanf_child_care_deduction: [550, 550, 550, 550]
+
+- name: Child age 18 does not qualify for deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [0, 0]

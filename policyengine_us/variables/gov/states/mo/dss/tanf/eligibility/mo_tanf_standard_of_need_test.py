@@ -13,9 +13,5 @@ class mo_tanf_standard_of_need_test(Variable):
 
     def formula(spm_unit, period, parameters):
         standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
-        income_for_test = spm_unit(
-            "mo_tanf_income_for_standard_of_need_test", period
-        )
-
-        # Income must be less than Standard of Need
-        return income_for_test < standard_of_need
+        income = spm_unit("mo_tanf_income_for_need_test", period)
+        return income < standard_of_need

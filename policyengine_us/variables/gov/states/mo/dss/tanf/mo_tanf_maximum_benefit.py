@@ -16,7 +16,4 @@ class mo_tanf_maximum_benefit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf
         standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
-        percentage = p.maximum_benefit.percentage
-
-        # Round down to nearest dollar per regulations
-        return np.floor(standard_of_need * percentage)
+        return standard_of_need * p.maximum_benefit.percentage

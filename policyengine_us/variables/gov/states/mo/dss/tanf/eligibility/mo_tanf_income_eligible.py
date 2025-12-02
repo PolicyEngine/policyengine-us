@@ -12,17 +12,7 @@ class mo_tanf_income_eligible(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # Must pass all three income tests sequentially
-        passes_185_test = spm_unit("mo_tanf_185_percent_test", period)
-        passes_standard_of_need_test = spm_unit(
-            "mo_tanf_standard_of_need_test", period
-        )
-        passes_percentage_of_need_test = spm_unit(
-            "mo_tanf_percentage_of_need_test", period
-        )
-
-        return (
-            passes_185_test
-            & passes_standard_of_need_test
-            & passes_percentage_of_need_test
-        )
+        gross = spm_unit("mo_tanf_gross_income_eligible", period)
+        need = spm_unit("mo_tanf_standard_of_need_test", period)
+        pct = spm_unit("mo_tanf_percentage_of_need_test", period)
+        return gross & need & pct

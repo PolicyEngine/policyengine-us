@@ -14,18 +14,6 @@ class mo_tanf(Variable):
     defined_for = "mo_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mo.dss.tanf
         maximum_benefit = spm_unit("mo_tanf_maximum_benefit", period)
         countable_income = spm_unit("mo_tanf_countable_income", period)
-
-        # Benefit = Maximum Benefit - Countable Income
-        calculated_benefit = maximum_benefit - countable_income
-
-        # Round down to nearest dollar
-        benefit_rounded = np.floor(calculated_benefit)
-
-        # No payment if benefit < $10
-        minimum_payment = p.minimum_payment.threshold
-        benefit = where(benefit_rounded >= minimum_payment, benefit_rounded, 0)
-
-        return max_(benefit, 0)
+        return max_(maximum_benefit - countable_income, 0)

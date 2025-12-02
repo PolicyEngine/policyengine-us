@@ -1,15 +1,14 @@
-description: Duration in consecutive months for the Missouri TANF $30+1/3 earned income disregard. Available to non-active recipients entering TA while employed.
+description: Missouri limits the thirty-plus-one-third disregard to this duration in months under the Temporary Assistance for Needy Families program.
+
+values:
+  1991-01-01: 4
 
 metadata:
   unit: month
   period: month
-  label: Missouri TANF $30+1/3 disregard duration
+  label: Missouri TANF thirty-plus-one-third disregard duration
   reference:
-    - title: 13 CSR 40-2.120(6) - Earned Income Disregards
+    - title: 13 CSR 40-2.120(6)
       href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
-    - title: 0210.015.30 - Earned Income Disregards
+    - title: Missouri DSS Manual 0210.015.30
       href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/
-
-values:
-  
-  1991-01-01: 4

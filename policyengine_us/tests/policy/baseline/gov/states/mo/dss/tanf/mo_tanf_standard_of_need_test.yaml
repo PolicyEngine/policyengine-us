@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_income_for_standard_of_need_test: 500
+    mo_tanf_income_for_need_test: 500
     mo_tanf_standard_of_need: 846
   output:
     mo_tanf_standard_of_need_test: true
@@ -11,7 +11,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_income_for_standard_of_need_test: 845
+    mo_tanf_income_for_need_test: 845
     mo_tanf_standard_of_need: 846
   output:
     mo_tanf_standard_of_need_test: true
@@ -20,7 +20,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_income_for_standard_of_need_test: 846
+    mo_tanf_income_for_need_test: 846
     mo_tanf_standard_of_need: 846
   output:
     mo_tanf_standard_of_need_test: false
@@ -29,7 +29,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_income_for_standard_of_need_test: 900
+    mo_tanf_income_for_need_test: 900
     mo_tanf_standard_of_need: 846
   output:
     mo_tanf_standard_of_need_test: false
@@ -38,7 +38,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_income_for_standard_of_need_test: 300
+    mo_tanf_income_for_need_test: 300
     mo_tanf_standard_of_need: 393
   output:
     mo_tanf_standard_of_need_test: true

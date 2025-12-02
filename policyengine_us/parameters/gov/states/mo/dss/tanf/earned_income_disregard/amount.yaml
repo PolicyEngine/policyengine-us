@@ -1,12 +1,12 @@
-description: Missouri excludes this share of remaining earned income as the one-third portion of the earned income disregard under the Temporary Assistance for Needy Families program.
+description: Missouri deducts this amount as the standard work exemption from gross earned income under the Temporary Assistance for Needy Families program.
 
 values:
-  1991-01-01: 0.33
+  1991-01-01: 90
 
 metadata:
-  unit: /1
+  unit: currency-USD
   period: month
-  label: Missouri TANF one-third disregard percentage
+  label: Missouri TANF standard work exemption
   reference:
     - title: 13 CSR 40-2.120(6)
       href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120

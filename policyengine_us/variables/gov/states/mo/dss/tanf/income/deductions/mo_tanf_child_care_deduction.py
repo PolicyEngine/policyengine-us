@@ -17,15 +17,12 @@ class mo_tanf_child_care_deduction(Variable):
         p = parameters(period).gov.states.mo.dss.tanf.child_care_deduction
         person = spm_unit.members
         age = person("age", period.this_year)
-
-        # Count children under age 2 and age 2+
         is_under_two = age < p.age_threshold
         is_two_and_over = (age >= p.age_threshold) & (age < p.max_age)
-
-        count_under_two = spm_unit.sum(is_under_two)
-        count_two_and_over = spm_unit.sum(is_two_and_over)
-
-        deduction_under_two = count_under_two * p.under_age_two
-        deduction_two_and_over = count_two_and_over * p.age_two_and_over
-
-        return deduction_under_two + deduction_two_and_over
+        under_two_deduction = (
+            spm_unit.sum(is_under_two) * p.amount_under_age_two
+        )
+        two_and_over_deduction = (
+            spm_unit.sum(is_two_and_over) * p.amount_age_two_and_over
+        )
+        return under_two_deduction + two_and_over_deduction
