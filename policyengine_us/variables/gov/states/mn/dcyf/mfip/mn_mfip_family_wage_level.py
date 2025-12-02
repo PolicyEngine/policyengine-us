@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mn_tanf_family_wage_level(Variable):
+class mn_mfip_family_wage_level(Variable):
     value_type = float
     entity = SPMUnit
     label = "Minnesota MFIP Family Wage Level"
@@ -11,8 +11,6 @@ class mn_tanf_family_wage_level(Variable):
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
-        payment_standard = spm_unit("mn_tanf_payment_standard", period)
-        multiplier = parameters(
-            period
-        ).gov.states.mn.dhs.tanf.income.family_wage_level_multiplier
-        return payment_standard * multiplier
+        p = parameters(period).gov.states.mn.dcyf.mfip.income
+        payment_standard = spm_unit("mn_mfip_payment_standard", period)
+        return payment_standard * p.family_wage_level_multiplier

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mn_tanf_income_eligible(Variable):
+class mn_mfip_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Minnesota MFIP due to income"
@@ -10,6 +10,6 @@ class mn_tanf_income_eligible(Variable):
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
-        countable_income = spm_unit("mn_tanf_countable_income", period)
-        family_wage_level = spm_unit("mn_tanf_family_wage_level", period)
-        return countable_income < family_wage_level
+        countable = spm_unit("mn_mfip_countable_income", period)
+        family_wage_level = spm_unit("mn_mfip_family_wage_level", period)
+        return countable < family_wage_level
