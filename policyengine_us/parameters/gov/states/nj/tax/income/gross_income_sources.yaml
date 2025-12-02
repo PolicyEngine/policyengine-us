@@ -10,8 +10,14 @@ metadata:
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf
 values:
   2021-01-01:
+    # Note: NJ uses W-2 Box 16 (state wages), not Box 1 (federal wages).
+    # NJ does not allow pre-tax deductions for 401k/403b that federal allows,
+    # so employment_income (gross wages) is correct, not irs_employment_income.
     - employment_income  # Line 15: Wages, salaries, tips (Category a)
     - taxable_interest_income  # Line 16a: Interest (Category e)
+    # Note: NJ Statute 54A:5-1(f) does not distinguish between qualified and
+    # non-qualified dividends. All dividends are taxed as ordinary income.
+    # dividend_income includes both qualified and non-qualified dividends.
     - dividend_income  # Line 17: Dividends (Category f)
     - self_employment_income  # Line 18: Net business profits (Category b)
     - farm_income  # Line 18: Farm income (Category b)
