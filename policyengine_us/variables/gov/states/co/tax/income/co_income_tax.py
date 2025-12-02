@@ -9,5 +9,5 @@ class co_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    adds = ["co_income_tax_before_refundable_credits"]
+    adds = ["co_income_tax_before_refundable_credits", "co_amt"]
     subtracts = ["co_refundable_credits"]
