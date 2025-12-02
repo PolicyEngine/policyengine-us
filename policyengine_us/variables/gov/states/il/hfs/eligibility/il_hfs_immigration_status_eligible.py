@@ -14,5 +14,5 @@ class il_hfs_immigration_status_eligible(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=146077"
     defined_for = StateCode.IL
     # Placeholder: defaults to True (assumes eligible)
-    # TODO: Implement full immigration status check
+    # Wait for other PR merged first
     default_value = True

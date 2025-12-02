@@ -26,7 +26,7 @@ class il_fpp_eligible(Variable):
         # Must NOT be pregnant (pregnant individuals should apply for
         # maternal health programs instead)
         not_pregnant = ~person("is_pregnant", period)
-        # Use shared IL HFS immigration status check (placeholder)
+        # Use shared IL HFS immigration status check
         immigration_eligible = person(
             "il_hfs_immigration_status_eligible", period
         )
