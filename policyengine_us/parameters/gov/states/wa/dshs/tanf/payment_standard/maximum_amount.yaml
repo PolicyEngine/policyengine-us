@@ -1,0 +1,12 @@
+description: Washington limits the grant payment to this amount under the Temporary Assistance for Needy Families program.
+
+values:
+  2024-01-01: 1_338
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF maximum grant cap
+  reference:
+    - title: DSHS Eligibility A-Z Manual, Income - Effect of Income and Deductions on Eligibility
+      href: https://www.dshs.wa.gov/esa/income-table-contents/income-effect-income-and-deductions-eligibility-and-benefit-level
