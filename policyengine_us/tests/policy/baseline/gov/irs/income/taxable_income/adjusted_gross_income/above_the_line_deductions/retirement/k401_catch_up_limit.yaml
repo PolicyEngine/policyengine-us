@@ -1,0 +1,74 @@
+# Tests for 401(k) catch-up contribution limits
+# Standard catch-up: $7,500 for ages 50+ (2024-2025)
+# Enhanced catch-up: $11,250 for ages 60-63 (2025+)
+
+- name: No catch-up limit for age under 50
+  period: 2025
+  input:
+    age: 45
+  output:
+    k401_catch_up_limit: 0
+
+- name: Standard catch-up limit for age 50
+  period: 2025
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Standard catch-up limit for age 55
+  period: 2025
+  input:
+    age: 55
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Standard catch-up limit for age 59
+  period: 2025
+  input:
+    age: 59
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Enhanced catch-up limit for age 60 (SECURE 2.0)
+  period: 2025
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Enhanced catch-up limit for age 62 (SECURE 2.0)
+  period: 2025
+  input:
+    age: 62
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Enhanced catch-up limit for age 63 (SECURE 2.0)
+  period: 2025
+  input:
+    age: 63
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Standard catch-up limit for age 64 (past enhanced window)
+  period: 2025
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Standard catch-up limit for age 70
+  period: 2025
+  input:
+    age: 70
+  output:
+    k401_catch_up_limit: 7_500
+
+# Test 2024 (before SECURE 2.0 enhanced catch-up)
+- name: No enhanced catch-up in 2024 for age 60
+  period: 2024
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 7_500
