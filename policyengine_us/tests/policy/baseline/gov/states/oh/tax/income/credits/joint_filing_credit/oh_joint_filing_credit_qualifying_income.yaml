@@ -1,0 +1,29 @@
+- name: Income and subtractions
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi_person: 67_000
+    oh_joint_filing_credit_agi_subtractions: 40_000
+  output:
+    oh_joint_filing_credit_qualifying_income: 27_000
+
+- name: Subtractions cannot be negative
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: OH
+    oh_agi_person: -10_000
+    oh_joint_filing_credit_agi_subtractions: -40_000
+  output:
+    oh_joint_filing_credit_qualifying_income: -10_000
+
+- name: Total income can be negative
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: OH
+    oh_agi_person: 4_000
+    oh_joint_filing_credit_agi_subtractions: 10_000
+  output:
+    oh_joint_filing_credit_qualifying_income: -6_000
