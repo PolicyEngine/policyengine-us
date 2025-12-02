@@ -3,8 +3,7 @@
   input:
     state_code: IL
     is_medicaid_eligible: false
-    is_medicare_eligible: false
-    health_insurance_premiums: 0
+    has_esi: false
   output:
     il_bcc_insurance_eligible: true
 
@@ -13,27 +12,15 @@
   input:
     state_code: IL
     is_medicaid_eligible: true
-    is_medicare_eligible: false
-    health_insurance_premiums: 0
+    has_esi: false
   output:
     il_bcc_insurance_eligible: false
 
-- name: Ineligible - on Medicare
+- name: Ineligible - has employer-sponsored insurance
   period: 2024
   input:
     state_code: IL
     is_medicaid_eligible: false
-    is_medicare_eligible: true
-    health_insurance_premiums: 0
-  output:
-    il_bcc_insurance_eligible: false
-
-- name: Ineligible - has private insurance
-  period: 2024
-  input:
-    state_code: IL
-    is_medicaid_eligible: false
-    is_medicare_eligible: false
-    health_insurance_premiums: 6_000
+    has_esi: true
   output:
     il_bcc_insurance_eligible: false

@@ -13,15 +13,15 @@ class il_bcc_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
+        is_female = person("is_female", period)
         age_eligible = person("il_bcc_age_eligible", period)
         immigration_eligible = person(
             "il_hfs_immigration_status_eligible", period
         )
-        medical_eligible = person("il_bcc_medical_eligible", period)
         insurance_eligible = person("il_bcc_insurance_eligible", period)
         return (
-            age_eligible
+            is_female
+            & age_eligible
             & immigration_eligible
-            & medical_eligible
             & insurance_eligible
         )
