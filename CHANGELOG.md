@@ -5,6 +5,150 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.445.0] - 2025-12-02 00:29:05
+
+### Added
+
+- Puerto Rico regular tax before credits and gradual adjustment.
+
+## [1.444.1] - 2025-11-29 11:29:24
+
+### Fixed
+
+- Arkansas tax reduction thresholds.
+
+## [1.444.0] - 2025-11-27 11:14:24
+
+### Added
+
+- Mamdani Millionaire Income Tax.
+
+## [1.443.0] - 2025-11-26 18:22:22
+
+### Added
+
+- Illinois Health Benefits for Workers with Disabilities (HBWD) program.
+
+## [1.442.1] - 2025-11-26 17:50:37
+
+### Fixed
+
+- Utah EITC reform.
+
+## [1.442.0] - 2025-11-26 09:56:33
+
+### Added
+
+- Integrate California alternative minimum tax (AMT) into CA income tax calculation.
+
+## [1.441.3] - 2025-11-26 09:54:55
+
+### Added
+
+- Regression test for AMT calculation against TAXSIM35 (issue
+
+## [1.441.2] - 2025-11-26 09:48:01
+
+### Changed
+
+- Split AMT exemption calculation into separate `amt_exemption` variable from `amt_income_less_exemptions`.
+
+## [1.441.1] - 2025-11-25 20:18:51
+
+### Fixed
+
+- Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where non-MA households received Massachusetts State Supplement.
+
+## [1.441.0] - 2025-11-25 11:22:31
+
+### Added
+
+- is_federal_work_study_participant.
+- is_part_time_college_student.
+
+### Changed
+
+- Refactor is_snap_ineligible_student to include part-time students and Federal Work Study exception.
+- Update snap_countable_earner to exclude Federal Work Study income.
+
+## [1.440.1] - 2025-11-25 11:02:51
+
+### Fixed
+
+- Adjust Colorado Care Worker credit parameter file names .
+
+## [1.440.0] - 2025-11-25 05:59:26
+
+### Added
+
+- Utah refundable EITC contributed reform.
+
+## [1.439.1] - 2025-11-24 01:28:19
+
+### Changed
+
+- Remove deprecated 'name' metadata field from 51 parameter files
+
+## [1.439.0] - 2025-11-24 00:10:07
+
+### Added
+
+- Added 2018 income limit for optional senior or disabled pathway, changed dates to match with given reference.
+
+## [1.438.1] - 2025-11-23 10:18:53
+
+### Fixed
+
+- Adjust the New Jersey CDCC to apply the actual federal CDCC instead of the potential.
+
+## [1.438.0] - 2025-11-23 09:45:04
+
+### Added
+
+- Puerto Rico income tax.
+
+## [1.437.0] - 2025-11-23 09:22:55
+
+### Added
+
+- Added 2026 base SLCSP values for all rating areas.
+
+## [1.436.0] - 2025-11-22 01:36:58
+
+### Added
+
+- Colorado Care Worker Tax Credit.
+
+## [1.435.1] - 2025-11-21 23:46:56
+
+### Fixed
+
+- Fix SSI spousal deeming to correctly use couple FBR instead of individual FBR.
+
+## [1.435.0] - 2025-11-17 23:19:37
+
+### Fixed
+
+- Restructure Tlaib package
+
+## [1.434.0] - 2025-11-17 16:29:28
+
+### Added
+
+- Rhode Island CTC young child boost.
+
+## [1.433.0] - 2025-11-13 23:38:52
+
+### Added
+
+- Working Pennsylvanians Tax Credit.
+
+## [1.432.9] - 2025-11-13 15:46:53
+
+### Fixed
+
+- Limit the Hawaii CDCC to households with at least one qualifying dependent .
+
 ## [1.432.8] - 2025-11-11 19:02:22
 
 ### Changed
@@ -13495,6 +13639,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.1...1.445.0
+[1.444.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.0...1.444.1
+[1.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.443.0...1.444.0
+[1.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.442.1...1.443.0
+[1.442.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.442.0...1.442.1
+[1.442.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.3...1.442.0
+[1.441.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.2...1.441.3
+[1.441.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.1...1.441.2
+[1.441.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.0...1.441.1
+[1.441.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.440.1...1.441.0
+[1.440.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.440.0...1.440.1
+[1.440.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.439.1...1.440.0
+[1.439.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.439.0...1.439.1
+[1.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.1...1.439.0
+[1.438.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.0...1.438.1
+[1.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.437.0...1.438.0
+[1.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.436.0...1.437.0
+[1.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.435.1...1.436.0
+[1.435.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.435.0...1.435.1
+[1.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.434.0...1.435.0
+[1.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.433.0...1.434.0
+[1.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.9...1.433.0
+[1.432.9]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.8...1.432.9
 [1.432.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.7...1.432.8
 [1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
 [1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6

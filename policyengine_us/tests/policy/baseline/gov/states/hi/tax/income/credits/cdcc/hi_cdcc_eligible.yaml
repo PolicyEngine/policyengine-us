@@ -1,0 +1,15 @@
+- name: No eligible dependents
+  period: 2022
+  input:
+    count_cdcc_eligible: 0
+    state_code: HI
+  output:
+    hi_cdcc_eligible: false
+
+- name: No eligible dependents
+  period: 2022
+  input:
+    count_cdcc_eligible: 1
+    state_code: HI
+  output:
+    hi_cdcc_eligible: true

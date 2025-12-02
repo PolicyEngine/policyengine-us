@@ -1,0 +1,68 @@
+- name: No phase-out, no kiddie tax
+  period: 2022
+  input:
+    amt_income: 200_000
+    amt_kiddie_tax_applies: false
+    filer_adjusted_earnings: 400_000
+    filing_status: SINGLE
+  output:
+    # Base exemption for SINGLE in 2022 is 75,900
+    # income_excess = max(0, 200,000 - 539,900) = 0
+    # No phase-out, full exemption of 75,900
+    amt_exemption: 75_900
+
+- name: No phase-out, kiddie tax applies with low earnings
+  period: 2022
+  input:
+    amt_income: 200_000
+    amt_kiddie_tax_applies: true
+    filer_adjusted_earnings: 10_000
+    filing_status: SINGLE
+  output:
+    # Base exemption for SINGLE in 2022 is 75,900
+    # reduced_exemption = 75,900 (no phase-out)
+    # exemption_cap = 10,000 + 8,200 (child amount) = 18,200
+    # amt_exemption = min(75,900, 18,200) = 18,200
+    amt_exemption: 18_200
+
+- name: Full phase-out at high income
+  period: 2022
+  input:
+    amt_income: 1_000_000
+    amt_kiddie_tax_applies: false
+    filer_adjusted_earnings: 400_000
+    filing_status: SINGLE
+  output:
+    # Base exemption for SINGLE in 2022 is 75,900
+    # income_excess = max(0, 1,000,000 - 539,900) = 460,100
+    # exemption_phase_out = 0.25 * 460,100 = 115,025
+    # reduced_exemption = max(0, 75,900 - 115,025) = 0
+    amt_exemption: 0
+
+- name: Partial phase-out
+  period: 2022
+  input:
+    amt_income: 600_000
+    amt_kiddie_tax_applies: false
+    filer_adjusted_earnings: 400_000
+    filing_status: SINGLE
+  output:
+    # Base exemption for SINGLE in 2022 is 75,900
+    # income_excess = max(0, 600,000 - 539,900) = 60,100
+    # exemption_phase_out = 0.25 * 60,100 = 15,025
+    # reduced_exemption = max(0, 75,900 - 15,025) = 60,875
+    amt_exemption: 60_875
+
+- name: Joint filers, no phase-out
+  period: 2022
+  input:
+    amt_income: 500_000
+    amt_kiddie_tax_applies: false
+    filer_adjusted_earnings: 400_000
+    filing_status: JOINT
+  output:
+    # Base exemption for JOINT in 2022 is 118,100
+    # Phase-out starts at 1,079,800
+    # income_excess = max(0, 500,000 - 1,079,800) = 0
+    # Full exemption of 118,100
+    amt_exemption: 118_100
