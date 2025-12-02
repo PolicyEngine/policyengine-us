@@ -1,0 +1,13 @@
+description: Illinois counts these income sources as earned income under the Health Benefits for Workers with Disabilities program.
+values:
+  2022-04-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois HBWD earned income sources
+  reference:
+    - title: 89 Ill. Admin. Code § 120.360 - Income - Earned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.360

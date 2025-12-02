@@ -29,10 +29,12 @@ class ca_amt_exemption(Variable):
         reduced_amti_rate = reduced_amti * p_irs.phase_out.rate
         # Line 6
         adult_exemption = max_(exemption_max_amount - reduced_amti_rate, 0)
-        # Eligible children receive an increased exemption amount
+        # Eligible children receive an increased exemption amount.
+        # This applies when the HEAD of the tax unit is a child dependent.
         person = tax_unit.members
         eligible_child = person("is_child_dependent", period)
-        head_is_eligible_child = tax_unit.any(eligible_child)
+        is_head = person("is_tax_unit_head", period)
+        head_is_eligible_child = tax_unit.any(eligible_child & is_head)
         # Line 7
         exemption_amount_child = p_irs.child.amount
         # Line 8

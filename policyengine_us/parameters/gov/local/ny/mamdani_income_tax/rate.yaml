@@ -1,0 +1,18 @@
+description: Zohran Mamdani proposed taxing New York City residents' income above a threshold at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Zohran Mamdani NYC high earner income tax rate
+  reference:
+    - title: Mamdani Revenue Proposal
+      href: https://drive.google.com/file/d/14-aM9DKG337SDMilmfQtLRR-pDwyWSTc/view
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1_000_000
+    rate:
+      2026-01-01: 0.02

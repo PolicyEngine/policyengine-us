@@ -1,0 +1,21 @@
+description: Puerto Rico taxes this percentage of total normal taxes, based on gross income.
+brackets:
+  - threshold: 
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0.92
+  - threshold: 
+      2024-01-01: 100_001
+    amount:
+      2024-01-01: 0.95
+metadata:
+  amount_unit: /1
+  threshold_unit: currency-USD
+  type: single_amount
+  label: Puerto Rico regular tax percentage
+  period: year
+  reference:
+    - title: Gov. of Puerto Rico Form 482.0 2024 
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=3
+    - title: P.R. Laws tit. 13, § 30061 (c)
+      href: https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/2-ingles/1-2011.pdf#page=33

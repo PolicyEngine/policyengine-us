@@ -13,6 +13,10 @@ class oh_joint_filing_credit_qualifying_income(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = ["oh_agi_person"]
-
-    subtracts = ["oh_joint_filing_credit_agi_subtractions"]
+    def formula(person, period, parameters):
+        agi = person("oh_agi_person", period)
+        # Prevent negative subtractions from acting as additions
+        subtractions = max_(
+            0, person("oh_joint_filing_credit_agi_subtractions", period)
+        )
+        return agi - subtractions

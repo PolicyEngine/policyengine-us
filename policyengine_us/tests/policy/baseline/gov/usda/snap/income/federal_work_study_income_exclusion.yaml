@@ -1,0 +1,24 @@
+- name: Federal work study participant income is excluded from SNAP earned income
+  period: 2024-01
+  input:
+    employment_income: 12_000
+    is_federal_work_study_participant: true
+  output:
+    snap_countable_earner: false
+    snap_earned_income: 0
+
+- name: Non-work study participant income is counted in SNAP earned income
+  period: 2024-01
+  input:
+    employment_income: 12_000
+    is_federal_work_study_participant: false
+  output:
+    snap_countable_earner: true
+    snap_earned_income: 1_000
+
+- name: Work study participant meets student work exception
+  period: 2024
+  input:
+    is_federal_work_study_participant: true
+  output:
+    meets_snap_work_exception: true

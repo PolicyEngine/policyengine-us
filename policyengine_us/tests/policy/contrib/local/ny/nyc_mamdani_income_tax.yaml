@@ -1,0 +1,51 @@
+- name: Person below threshold in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    nyc_taxable_income: 800_000
+    in_nyc: true
+  output:
+    nyc_mamdani_income_tax: 0
+
+- name: Person at threshold in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    nyc_taxable_income: 1_000_000
+    in_nyc: true
+  output:
+    nyc_mamdani_income_tax: 0
+
+- name: Person above threshold in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    nyc_taxable_income: 1_200_000
+    in_nyc: true
+  output:
+    # (1_200_000 - 1_000_000) * 0.02 = 200_000 * 0.02 = 4_000
+    nyc_mamdani_income_tax: 4_000
+
+- name: Person well above threshold in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    nyc_taxable_income: 2_000_000
+    in_nyc: true
+  output:
+    # (2_000_000 - 1_000_000) * 0.02 = 1_000_000 * 0.02 = 20_000
+    nyc_mamdani_income_tax: 20_000
+
+- name: Person not in NYC (no tax)
+  period: 2026
+  reforms: policyengine_us.reforms.local.ny.mamdani_income_tax.nyc_mamdani_income_tax
+  input:
+    gov.local.ny.mamdani_income_tax.in_effect: True
+    nyc_taxable_income: 1_500_000
+    in_nyc: false
+  output:
+    nyc_mamdani_income_tax: 0

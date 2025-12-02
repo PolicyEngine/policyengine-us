@@ -1,0 +1,39 @@
+- name: Case 1, age eligible at 16.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 16
+  output:
+    il_hbwd_age_eligible: true
+
+- name: Case 2, age eligible at 30.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 30
+  output:
+    il_hbwd_age_eligible: true
+
+- name: Case 3, age eligible at 64.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 64
+  output:
+    il_hbwd_age_eligible: true
+
+- name: Case 4, age ineligible at 15.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 15
+  output:
+    il_hbwd_age_eligible: false
+
+- name: Case 5, age ineligible at 65.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 65
+  output:
+    il_hbwd_age_eligible: false
