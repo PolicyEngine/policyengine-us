@@ -16,4 +16,7 @@ class mi_fip_countable_income_for_benefit(Variable):
     # BEM 520 Section D Line 9: "Enter the sum of line 7 and line 8"
     # Line 7: Countable earned income (after per-person deductions)
     # Line 8: All countable unearned income (gross, no deductions per BEM 503)
-    adds = ["mi_fip_countable_earned_income_for_benefit", "tanf_gross_unearned_income"]
+    adds = [
+        "mi_fip_countable_earned_income_for_benefit",
+        "tanf_gross_unearned_income",
+    ]

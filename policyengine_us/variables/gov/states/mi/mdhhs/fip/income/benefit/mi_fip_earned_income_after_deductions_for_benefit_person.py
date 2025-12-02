@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class mi_fip_earned_income_after_deductions_for_benefit_person(Variable):
     value_type = float
     entity = Person
-    label = "Michigan FIP earned income after deductions for benefit per person"
+    label = (
+        "Michigan FIP earned income after deductions for benefit per person"
+    )
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MI
