@@ -1,0 +1,84 @@
+- name: Case 1, premium with only earned income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 2_000
+    il_hbwd_countable_unearned_income: 0
+  output:
+    il_hbwd_premium: 50
+    # Earned $2,000 → bracket 8 (2001-2250) → $50
+    # Unearned $0 → bracket 0 → $0
+    # Total: $50
+
+- name: Case 2, premium with earned and unearned.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 1_000
+    il_hbwd_countable_unearned_income: 1_200
+  output:
+    il_hbwd_premium: 100
+    # Earned $1,000 → bracket 4 (1001-1250) → $25
+    # Unearned $1,200 → bracket 4 (1001-1250) → $75
+    # Total: $25 + $75 = $100
+
+- name: Case 3, premium with higher income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 3_000
+    il_hbwd_countable_unearned_income: 2_000
+  output:
+    il_hbwd_premium: 225
+    # Earned $3,000 → bracket 12 (3001-3250) → $75
+    # Unearned $2,000 → bracket 8 (2001-2250) → $150
+    # Total: $75 + $150 = $225
+
+- name: Case 4, premium capped at $500.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 5_000
+    il_hbwd_countable_unearned_income: 5_000
+  output:
+    il_hbwd_premium: 500
+    # Earned $5,000+ → bracket 20 → $125
+    # Unearned $5,000+ → bracket 20 → $375
+    # Uncapped: $500
+    # Capped: $500
+
+- name: Case 5, no premium in first bracket.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 200
+    il_hbwd_countable_unearned_income: 0
+  output:
+    il_hbwd_premium: 0
+    # Earned $200 → bracket 0 (0-250) → $0
+    # Unearned $0 → bracket 0 → $0
+    # Total: $0
+
+- name: Case 6, verify bracket boundary at $250.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 250
+    il_hbwd_countable_unearned_income: 250
+  output:
+    il_hbwd_premium: 25
+    # Earned $250 → bracket 1 (251-500) → $6
+    # Unearned $250 → bracket 1 (251-500) → $19
+    # Total: $6 + $19 = $25
