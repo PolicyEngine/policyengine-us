@@ -11605,3 +11605,36 @@
     fixed:
     - Arkansas tax reduction thresholds.
   date: 2025-11-29 11:29:24
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico regular tax before credits and gradual adjustment.
+  date: 2025-12-02 00:29:05
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico net taxable income calculation.
+  date: 2025-12-02 02:31:25
+- bump: patch
+  changes:
+    fixed:
+    - Prevent negative subtractions from acting as additions under the Ohio joint
+      filing credit.
+  date: 2025-12-02 02:33:48
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico adjusted gross income calculation.
+  date: 2025-12-02 15:22:21
+- bump: minor
+  changes:
+    added:
+    - Washington TANF.
+  date: 2025-12-02 15:33:28
+- bump: minor
+  changes:
+    added:
+    - Add Medicare Part A premiums (full, reduced, premium-free based on quarters
+      of coverage).
+    - Add Medicare Part B premiums with Income-Related Monthly Adjustment Amount (IRMAA).
+  date: 2025-12-02 22:19:22

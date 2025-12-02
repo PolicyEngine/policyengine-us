@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.449.0] - 2025-12-02 22:19:22
+
+### Added
+
+- Add Medicare Part A premiums (full, reduced, premium-free based on quarters of coverage).
+- Add Medicare Part B premiums with Income-Related Monthly Adjustment Amount (IRMAA).
+
+## [1.448.0] - 2025-12-02 15:33:28
+
+### Added
+
+- Washington TANF.
+
+## [1.447.0] - 2025-12-02 15:22:21
+
+### Added
+
+- Puerto Rico adjusted gross income calculation.
+
+## [1.446.1] - 2025-12-02 02:33:48
+
+### Fixed
+
+- Prevent negative subtractions from acting as additions under the Ohio joint filing credit.
+
+## [1.446.0] - 2025-12-02 02:31:25
+
+### Added
+
+- Puerto Rico net taxable income calculation.
+
+## [1.445.0] - 2025-12-02 00:29:05
+
+### Added
+
+- Puerto Rico regular tax before credits and gradual adjustment.
+
 ## [1.444.1] - 2025-11-29 11:29:24
 
 ### Fixed
@@ -13633,6 +13670,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.449.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.448.0...1.449.0
+[1.448.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.447.0...1.448.0
+[1.447.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.1...1.447.0
+[1.446.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.0...1.446.1
+[1.446.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.445.0...1.446.0
+[1.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.1...1.445.0
 [1.444.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.0...1.444.1
 [1.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.443.0...1.444.0
 [1.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.442.1...1.443.0
