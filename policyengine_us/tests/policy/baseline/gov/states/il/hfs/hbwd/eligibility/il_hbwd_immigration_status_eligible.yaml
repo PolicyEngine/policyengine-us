@@ -1,0 +1,47 @@
+- name: Case 1, citizen eligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: CITIZEN
+  output:
+    il_hbwd_immigration_status_eligible: true
+
+- name: Case 2, legal permanent resident eligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    il_hbwd_immigration_status_eligible: true
+
+- name: Case 3, refugee eligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: REFUGEE
+  output:
+    il_hbwd_immigration_status_eligible: true
+
+- name: Case 4, asylee eligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: ASYLEE
+  output:
+    il_hbwd_immigration_status_eligible: true
+
+- name: Case 5, undocumented ineligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: UNDOCUMENTED
+  output:
+    il_hbwd_immigration_status_eligible: false
+
+- name: Case 6, DACA ineligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    immigration_status: DACA
+  output:
+    il_hbwd_immigration_status_eligible: false
