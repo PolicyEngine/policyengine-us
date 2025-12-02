@@ -4,35 +4,38 @@ metadata:
   unit: currency-USD
   period: month
   breakdown:
-    - range(1, 11)
-  label: GA TANF family maximum base amount
+    - range(1, 12)
+  label: Georgia TANF family maximum base amount
   reference:
+    # These values have not changed since 1997 (and likely since 1990 under AFDC).
+    - title: 1997 Green Book - Table 7-9 Maximum AFDC/TANF Benefits by Family Size
+      href: https://www.govinfo.gov/content/pkg/GPO-CPRT-105WPRT37945/html/GPO-CPRT-105WPRT37945-2-7.htm
     - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
       href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
-      publication_date: 2025-03-01
     - title: PAMMS TANF Policy Manual - Section 1525 Income
       href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
     - title: Georgia Budget and Policy Institute - TANF Basics
       href: https://gbpi.org/the-basics-of-georgias-temporary-assistance-for-needy-families-program/
-      publication_date: 2023-01-01
 
 1:
-  2025-03-01: 155
+  1997-01-01: 155
 2:
-  2025-03-01: 235
+  1997-01-01: 235
 3:
-  2025-03-01: 280
+  1997-01-01: 280
 4:
-  2025-03-01: 330
+  1997-01-01: 330
 5:
-  2025-03-01: 378
+  1997-01-01: 378
 6:
-  2025-03-01: 410
+  1997-01-01: 410
 7:
-  2025-03-01: 444
+  1997-01-01: 444
 8:
-  2025-03-01: 470
+  1997-01-01: 470
 9:
-  2025-03-01: 496
+  1997-01-01: 496
 10:
-  2025-03-01: 530
+  1997-01-01: 530
+11:
+  1997-01-01: 568

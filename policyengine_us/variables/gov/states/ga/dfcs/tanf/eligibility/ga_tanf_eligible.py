@@ -24,7 +24,7 @@ class ga_tanf_eligible(Variable):
 
         # Must have at least one citizen or legal immigrant
         # Use federal immigration eligibility
-        has_citizen = spm_unit.any(
+        immigration_status_eligible = spm_unit.any(
             person("is_citizen_or_legal_immigrant", period)
         )
 
@@ -37,7 +37,7 @@ class ga_tanf_eligible(Variable):
         # All requirements must be met
         return (
             demographic_eligible
-            & has_citizen
+            & immigration_status_eligible
             & income_eligible
             & resources_eligible
         )
