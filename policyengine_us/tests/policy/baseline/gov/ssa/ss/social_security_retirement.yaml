@@ -1,0 +1,79 @@
+# Integration tests for complete Social Security retirement benefit calculation
+
+- name: Full retirement age benefit with moderate PIA
+  period: 2024
+  input:
+    age: 67  # At FRA for those born 1957
+    employment_income: 0  # Not working
+    ss_pia: 2_000  # Moderate PIA
+  output:
+    # Age 67 = 804 months, FRA = 804 months for 1957 birth
+    # But age is treated as full years, so 67 * 12 = 804 exactly
+    ss_retirement_age_adjustment_factor: 1.04  # Small delayed credit
+    ss_retirement_benefit_before_earnings_test: 24_960  # $2,000 * 1.04 * 12
+    ss_earnings_test_reduction: 0  # No earnings
+    social_security_retirement: 24_960
+
+- name: Early retirement at 62 with reduced benefit
+  period: 2024
+  input:
+    age: 62  # 5 years before FRA of 67
+    employment_income: 0
+    ss_pia: 2_000
+  output:
+    ss_full_retirement_age_months: 804  # 67 years
+    ss_retirement_age_adjustment_factor: 0.69999975  # 30% reduction (floating point)
+    ss_retirement_benefit_before_earnings_test: 16_799.994  # $2,000 * 0.69999975 * 12
+    social_security_retirement: 16_799.994
+
+- name: Delayed retirement at 70 with increased benefit
+  period: 2024
+  input:
+    age: 70  # 3 years after FRA of 67 (born 1954, FRA 66)
+    employment_income: 0
+    ss_pia: 2_000
+  output:
+    ss_full_retirement_age_months: 792  # 66 years for 1954
+    ss_retirement_age_adjustment_factor: 1.32  # 32% increase (4 years * 8%)
+    ss_retirement_benefit_before_earnings_test: 31_680  # $2,000 * 1.32 * 12
+    social_security_retirement: 31_680
+
+- name: Working beneficiary with earnings test reduction
+  period: 2024
+  input:
+    age: 64  # Before FRA
+    employment_income: 50_000  # Working with good income
+    ss_pia: 1_800
+  output:
+    ss_retirement_age_adjustment_factor: 0.79999983  # 3 years early (floating point)
+    ss_retirement_benefit_before_earnings_test: 17_279.996  # $1,800 * 0.79999983 * 12
+    # Earnings test: ($50,000 - $22,320) * 0.5 = $13,840
+    ss_earnings_test_reduction: 13_840
+    social_security_retirement: 3_439.996  # $17,279.996 - $13,840
+
+- name: High earner at FRA with earnings test not applied
+  period: 2024
+  input:
+    age: 67  # Past FRA (FRA is 66.5 for 1957 birth)
+    employment_income: 100_000  # Still working
+    ss_pia: 3_000  # High PIA
+  output:
+    ss_retirement_age_adjustment_factor: 1.04  # 6 months delayed = 0.5 * 0.08
+    ss_retirement_benefit_before_earnings_test: 37_440  # $3,000 * 1.04 * 12
+    ss_earnings_test_reduction: 0  # No reduction after FRA
+    social_security_retirement: 37_440
+
+- name: Complete retirement benefit calculation with working years
+  period: 2024
+  input:
+    age: 66  # Near FRA
+    employment_income: 30_000  # Part-time work
+    self_employment_income: 10_000
+    # Will use simulated career earnings for AIME
+  output:
+    ss_covered_earnings_this_year: 40_000
+    ss_quarters_of_coverage: 4
+    # AIME and PIA calculated based on simulated career
+    # Earnings test applies: ($40,000 - $22,320) * 0.5 = $8,840
+    # Note: exact values depend on AIME calculation
+

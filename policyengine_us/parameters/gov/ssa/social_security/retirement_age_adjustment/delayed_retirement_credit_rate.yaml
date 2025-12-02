@@ -1,0 +1,24 @@
+description: The US delayed retirement credit rate by birth year increases benefits for delaying retirement past full retirement age.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  label: Delayed retirement credit rate
+  reference:
+    - title: 42 U.S. Code § 402(w) - Increase in old-age insurance benefit amounts on account of delayed retirement
+      href: https://www.law.cornell.edu/uscode/text/42/402#w
+    - title: SSA Delayed Retirement Credits
+      href: https://www.ssa.gov/OACT/quickcalc/early_late.html
+      
+values:
+  1924-01-01: 0.03
+  1925-01-01: 0.035
+  1927-01-01: 0.04
+  1929-01-01: 0.045
+  1931-01-01: 0.05
+  1933-01-01: 0.055
+  1935-01-01: 0.06
+  1937-01-01: 0.065
+  1939-01-01: 0.07
+  1941-01-01: 0.075
+  1943-01-01: 0.08

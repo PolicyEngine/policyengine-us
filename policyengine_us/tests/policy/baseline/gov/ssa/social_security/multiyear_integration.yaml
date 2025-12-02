@@ -1,0 +1,83 @@
+# Multi-year Social Security integration tests
+# These demonstrate period-spanning capabilities for Social Security benefits
+
+- name: Worker at FRA with substantial career history
+  period: 2024
+  input:
+    age: 67  # Born 1957, 6 months past FRA (66y 6m)
+    # Demonstrate complete multi-year earnings history format
+    employment_income:
+      1978-01-01: 12_000   # Age 21, entry level
+      1982-01-01: 18_000   # Age 25, early career  
+      1987-01-01: 25_000   # Age 30, established
+      1992-01-01: 35_000   # Age 35, mid-career
+      1997-01-01: 45_000   # Age 40, advancing
+      2002-01-01: 55_000   # Age 45, senior level
+      2007-01-01: 65_000   # Age 50, peak earning years
+      2012-01-01: 70_000   # Age 55, pre-retirement
+      2017-01-01: 75_000   # Age 60, final high years
+      2022-01-01: 80_000   # Age 65, working past 62
+      2024-01-01: 30_000   # Age 67, part-time at FRA (no earnings test)
+  output:
+    # Multi-year calculation with actual historical data
+    ss_aime: 1_449.12      # Based on 11 years of provided earnings history, indexed to age 60
+    ss_pia: 1_144.60       # PIA formula: 90% * 1,174 + 32% * (1,449.12-1,174) 
+    ss_retirement_age_adjustment_factor: 1.04  # 4% delayed credit (6 months past FRA)  
+    ss_covered_earnings_this_year: 30_000     # Current year earnings
+    # Final annual benefit: PIA * 12 * adjustment = 1,144.60 * 12 * 1.04
+    social_security_retirement: 14_284.607   # No earnings test past FRA
+
+- name: Early retiree with 42-year career history
+  period: 2024
+  input:
+    age: 62  # Born 1962
+    # Demonstrate multi-year earnings history format
+    employment_income:
+      1982-01-01: 15_000   # Age 20 - entry level
+      1985-01-01: 20_000   # Age 23 - early career
+      1990-01-01: 35_000   # Age 28 - established
+      1995-01-01: 50_000   # Age 33 - mid-career
+      2000-01-01: 65_000   # Age 38 - peak earning years
+      2005-01-01: 70_000   # Age 43 - senior level
+      2010-01-01: 75_000   # Age 48 - experienced
+      2015-01-01: 80_000   # Age 53 - pre-retirement
+      2020-01-01: 85_000   # Age 58 - final years
+      2023-01-01: 88_000   # Age 61 - last working year
+      # Retired in 2024
+  output:
+    # Multi-year calculation with actual historical data
+    ss_aime: 2_303.1982   # Based on 10 years of provided earnings history
+    ss_pia: 1_417.90      # Based on AIME calculation
+    social_security_retirement: 11_910.355  # Early retirement reduction applied
+
+- name: High earner approaching retirement
+  period: 2024  
+  input:
+    age: 65  # Still working, testing earnings test
+    employment_income:
+      1980-01-01: 25_000
+      1990-01-01: 55_000
+      2000-01-01: 85_000
+      2010-01-01: 110_000  # At wage base
+      2020-01-01: 140_000  # Above wage base
+      2024-01-01: 20_000   # Reduced earnings to stay under test limit
+  output:
+    # Working beneficiary under earnings test limit
+    ss_covered_earnings_this_year: 20_000
+    social_security_retirement: 11_478.172  # Benefit with earnings under test limit
+
+- name: Maximum benefit recipient 
+  period: 2024
+  input:
+    age: 70  # Delayed retirement
+    employment_income:
+      1975-01-01: 15_000
+      1985-01-01: 40_000
+      1995-01-01: 65_000
+      2005-01-01: 95_000
+      2015-01-01: 125_000
+      # Retired, no current earnings
+  output:
+    # Delayed retirement with high lifetime earnings  
+    ss_retirement_age_adjustment_factor: 1.32  # 32% delayed credit
+    social_security_retirement: 15_486.77  # Maximum benefit with delayed retirement

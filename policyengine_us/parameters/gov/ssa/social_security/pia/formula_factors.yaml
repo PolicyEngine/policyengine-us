@@ -1,0 +1,64 @@
+description: The US applies these factors to Average Indexed Monthly Earnings in each bracket when calculating Social Security Primary Insurance Amount.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Social Security PIA formula factors
+  reference:
+    - title: 42 USC 415(a)(1)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/415#a_1_A
+    - title: PIA Formula
+      href: https://www.ssa.gov/OACT/COLA/piaformula.html
+brackets:
+  - threshold:
+      values:
+        2015-01-01: 0
+        2016-01-01: 0
+        2017-01-01: 0
+        2018-01-01: 0
+        2019-01-01: 0
+        2020-01-01: 0
+        2021-01-01: 0
+        2022-01-01: 0
+        2023-01-01: 0
+        2024-01-01: 0
+        2025-01-01: 0
+      metadata:
+        uprating: gov.ssa.uprating
+    rate:
+      1979-01-01: 0.90
+  - threshold:
+      values:
+        2015-01-01: 826
+        2016-01-01: 856
+        2017-01-01: 885
+        2018-01-01: 895
+        2019-01-01: 926
+        2020-01-01: 960
+        2021-01-01: 996
+        2022-01-01: 1_024
+        2023-01-01: 1_115
+        2024-01-01: 1_174
+        2025-01-01: 1_226
+      metadata:
+        uprating: gov.ssa.uprating
+    rate:
+      1979-01-01: 0.32
+  - threshold:
+      values:
+        2015-01-01: 4_980
+        2016-01-01: 5_157
+        2017-01-01: 5_336
+        2018-01-01: 5_397
+        2019-01-01: 5_583
+        2020-01-01: 5_785
+        2021-01-01: 6_002
+        2022-01-01: 6_172
+        2023-01-01: 6_721
+        2024-01-01: 7_078
+        2025-01-01: 7_391
+      metadata:
+        uprating: gov.ssa.uprating
+    rate:
+      1979-01-01: 0.15
+
