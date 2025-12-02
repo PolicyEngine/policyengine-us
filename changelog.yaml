@@ -11471,3 +11471,163 @@
     added:
     - Debug income security package.
   date: 2025-11-10 19:14:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove the repeal of the Hawaii alternative tax on capital gains.
+  date: 2025-11-11 13:40:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix vectorization bugs in Lifeline, CA CARE, and Pell Grant eligibility causing
+      incorrect categorical eligibility
+  date: 2025-11-11 14:47:06
+- bump: patch
+  changes:
+    changed:
+    - Revert age heterogeneity in labor supply response elasticities (v1.426.0).
+  date: 2025-11-11 19:02:22
+- bump: patch
+  changes:
+    fixed:
+    - Limit the Hawaii CDCC to households with at least one qualifying dependent .
+  date: 2025-11-13 15:46:53
+- bump: minor
+  changes:
+    added:
+    - Working Pennsylvanians Tax Credit.
+  date: 2025-11-13 23:38:52
+- bump: minor
+  changes:
+    added:
+    - Rhode Island CTC young child boost.
+  date: 2025-11-17 16:29:28
+- bump: minor
+  changes:
+    fixed:
+    - Restructure Tlaib package
+  date: 2025-11-17 23:19:37
+- bump: patch
+  changes:
+    fixed:
+    - Fix SSI spousal deeming to correctly use couple FBR instead of individual FBR.
+  date: 2025-11-21 23:46:56
+- bump: minor
+  changes:
+    added:
+    - Colorado Care Worker Tax Credit.
+  date: 2025-11-22 01:36:58
+- bump: minor
+  changes:
+    added:
+    - Added 2026 base SLCSP values for all rating areas.
+  date: 2025-11-23 09:22:55
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico income tax.
+  date: 2025-11-23 09:45:04
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the New Jersey CDCC to apply the actual federal CDCC instead of the potential.
+  date: 2025-11-23 10:18:53
+- bump: minor
+  changes:
+    added:
+    - Added 2018 income limit for optional senior or disabled pathway, changed dates
+      to match with given reference.
+  date: 2025-11-24 00:10:07
+- bump: patch
+  changes:
+    changed:
+    - Remove deprecated 'name' metadata field from 51 parameter files
+  date: 2025-11-24 01:28:19
+- bump: minor
+  changes:
+    added:
+    - Utah refundable EITC contributed reform.
+  date: 2025-11-25 05:59:26
+- bump: patch
+  changes:
+    fixed:
+    - Adjust Colorado Care Worker credit parameter file names .
+  date: 2025-11-25 11:02:51
+- bump: minor
+  changes:
+    added:
+    - is_federal_work_study_participant.
+    - is_part_time_college_student.
+    changed:
+    - Refactor is_snap_ineligible_student to include part-time students and Federal
+      Work Study exception.
+    - Update snap_countable_earner to exclude Federal Work Study income.
+  date: 2025-11-25 11:22:31
+- bump: patch
+  changes:
+    fixed:
+    - Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where
+      non-MA households received Massachusetts State Supplement.
+  date: 2025-11-25 20:18:51
+- bump: patch
+  changes:
+    changed:
+    - Split AMT exemption calculation into separate `amt_exemption` variable from
+      `amt_income_less_exemptions`.
+  date: 2025-11-26 09:48:01
+- bump: patch
+  changes:
+    added:
+    - Regression test for AMT calculation against TAXSIM35 (issue
+  date: 2025-11-26 09:54:55
+- bump: minor
+  changes:
+    added:
+    - Integrate California alternative minimum tax (AMT) into CA income tax calculation.
+  date: 2025-11-26 09:56:33
+- bump: patch
+  changes:
+    fixed:
+    - Utah EITC reform.
+  date: 2025-11-26 17:50:37
+- bump: minor
+  changes:
+    added:
+    - Illinois Health Benefits for Workers with Disabilities (HBWD) program.
+  date: 2025-11-26 18:22:22
+- bump: minor
+  changes:
+    added:
+    - Mamdani Millionaire Income Tax.
+  date: 2025-11-27 11:14:24
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas tax reduction thresholds.
+  date: 2025-11-29 11:29:24
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico regular tax before credits and gradual adjustment.
+  date: 2025-12-02 00:29:05
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico net taxable income calculation.
+  date: 2025-12-02 02:31:25
+- bump: patch
+  changes:
+    fixed:
+    - Prevent negative subtractions from acting as additions under the Ohio joint
+      filing credit.
+  date: 2025-12-02 02:33:48
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico adjusted gross income calculation.
+  date: 2025-12-02 15:22:21
+- bump: minor
+  changes:
+    added:
+    - Washington TANF.
+  date: 2025-12-02 15:33:28
