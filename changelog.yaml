@@ -11615,3 +11615,9 @@
     added:
     - Puerto Rico net taxable income calculation.
   date: 2025-12-02 02:31:25
+- bump: patch
+  changes:
+    fixed:
+    - Prevent negative subtractions from acting as additions under the Ohio joint
+      filing credit.
+  date: 2025-12-02 02:33:48
