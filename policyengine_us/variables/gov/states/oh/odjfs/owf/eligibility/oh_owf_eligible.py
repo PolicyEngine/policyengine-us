@@ -7,10 +7,7 @@ class oh_owf_eligible(Variable):
     label = "Ohio OWF eligibility"
     definition_period = MONTH
     defined_for = StateCode.OH
-    reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
-        "http://codes.ohio.gov/oac/5101:1-23-10",
-    )
+    reference = "https://codes.ohio.gov/ohio-revised-code/section-5107.10"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
@@ -22,7 +19,7 @@ class oh_owf_eligible(Variable):
 
         # Must have at least one citizen or legal immigrant
         # Use federal immigration eligibility
-        has_citizen = spm_unit.any(
+        immigration_status_eligible = spm_unit.any(
             person("is_citizen_or_legal_immigrant", period)
         )
 
@@ -35,4 +32,8 @@ class oh_owf_eligible(Variable):
         # are NOT considered in determining eligibility"
 
         # All requirements must be met
-        return demographic_eligible & has_citizen & income_eligible
+        return (
+            demographic_eligible
+            & immigration_status_eligible
+            & income_eligible
+        )

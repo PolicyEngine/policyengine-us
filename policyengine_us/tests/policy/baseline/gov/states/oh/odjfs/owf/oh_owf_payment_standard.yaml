@@ -54,24 +54,24 @@
     state_code: OH
   output:
     oh_owf_payment_standard: 1240
-- name: Family of 9 (uses increment)
+- name: Family of 9
   period: 2025-01
   input:
     spm_unit_size: 9
     state_code: OH
   output:
-    oh_owf_payment_standard: 1395
-- name: Family of 10 (uses increment)
+    oh_owf_payment_standard: 1_362
+- name: Family of 10
   period: 2025-01
   input:
     spm_unit_size: 10
     state_code: OH
   output:
-    oh_owf_payment_standard: 1550
-- name: Family of 12 (uses increment)
+    oh_owf_payment_standard: 1_485
+- name: Family of 12
   period: 2025-01
   input:
     spm_unit_size: 12
     state_code: OH
   output:
-    oh_owf_payment_standard: 1860
+    oh_owf_payment_standard: 1_729

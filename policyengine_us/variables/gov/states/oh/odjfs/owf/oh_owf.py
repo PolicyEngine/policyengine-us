@@ -9,8 +9,7 @@ class oh_owf(Variable):
     definition_period = MONTH
     defined_for = "oh_owf_eligible"
     reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
-        "http://codes.ohio.gov/oac/5101:1-23-40",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40"
     )
 
     def formula(spm_unit, period, parameters):
@@ -20,11 +19,5 @@ class oh_owf(Variable):
         # Get countable income (after all disregards)
         countable_income = spm_unit("oh_owf_countable_income", period)
 
-        # Calculate benefit: Payment Standard - Countable Income
-        # Per OAC 5101:1-23-40: "OWF payments are payments made to an
-        # assistance group which represent the difference between the
-        # countable income and the appropriate OWF payment standard."
-        benefit = payment_standard - countable_income
-
-        # Benefit cannot be negative
-        return max_(benefit, 0)
+        # Per OAC 5101:1-23-40: benefit = payment standard - countable income
+        return max_(payment_standard - countable_income, 0)

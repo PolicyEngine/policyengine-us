@@ -8,8 +8,8 @@ class oh_owf_initial_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
-        "http://codes.ohio.gov/oac/5101:1-23-20",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",
+        "https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/OWF/tanf/2024%20TANF%20State%20Plan%20Combined.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -20,8 +20,8 @@ class oh_owf_initial_income_eligible(Variable):
             ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
 
-        # Get initial eligibility income limit (50% of current year FPL)
-        fpg = spm_unit("tanf_fpg", period)
+        # Get initial eligibility income limit (50% of FPL effective July 1)
+        fpg = spm_unit("oh_owf_fpg", period)
         p = parameters(period).gov.states.oh.odjfs.owf.initial_eligibility
         income_limit = fpg * p.income_limit_rate
 

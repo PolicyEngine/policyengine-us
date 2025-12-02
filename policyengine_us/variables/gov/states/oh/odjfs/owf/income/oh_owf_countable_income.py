@@ -9,8 +9,7 @@ class oh_owf_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
-        "http://codes.ohio.gov/oac/5101:1-23-20",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",
     )
 
     def formula(spm_unit, period, parameters):
@@ -31,9 +30,7 @@ class oh_owf_countable_income(Variable):
         percent_disregarded = remainder * p.percentage_of_disregard
 
         # Countable earned income = gross - flat disregard - percent of remainder
-        countable_earned = max_(
-            remainder - percent_disregarded, 0
-        )
+        countable_earned = max_(remainder - percent_disregarded, 0)
 
         # Get gross unearned income from federal variable
         # Per ORC 5107.10(D)(3): "No disregards apply to gross unearned income"

@@ -8,8 +8,7 @@ class oh_owf_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
-        "http://codes.ohio.gov/oac/5101:1-23-20",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20"
     )
 
     def formula(spm_unit, period, parameters):
