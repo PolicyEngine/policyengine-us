@@ -3,7 +3,7 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 500
-    mi_fip_countable_income: 200
+    mi_fip_countable_income_for_benefit: 200
   output:
     mi_fip: 300
 
@@ -12,7 +12,7 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 500
-    mi_fip_countable_income: 500
+    mi_fip_countable_income_for_benefit: 500
   output:
     mi_fip: 0
 
@@ -21,7 +21,7 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 500
-    mi_fip_countable_income: 0
+    mi_fip_countable_income_for_benefit: 0
   output:
     mi_fip: 500
 
@@ -30,7 +30,7 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 500
-    mi_fip_countable_income: 600
+    mi_fip_countable_income_for_benefit: 600
   output:
     mi_fip: 0
 
@@ -39,7 +39,7 @@
   input:
     mi_fip_eligible: false
     mi_fip_payment_standard: 500
-    mi_fip_countable_income: 200
+    mi_fip_countable_income_for_benefit: 200
   output:
     mi_fip: 0
 
@@ -48,7 +48,7 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 100
-    mi_fip_countable_income: 99
+    mi_fip_countable_income_for_benefit: 99
   output:
     mi_fip: 1
 
@@ -57,6 +57,6 @@
   input:
     mi_fip_eligible: true
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 582
+    mi_fip_countable_income_for_benefit: 582
   output:
     mi_fip: 1

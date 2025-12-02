@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_fip_earned_income_after_deductions_initial_person(Variable):
+class mi_fip_earned_income_after_deductions_for_eligibility_person(Variable):
     value_type = float
     entity = Person
-    label = "Michigan FIP earned income after initial deductions per person"
+    label = "Michigan FIP earned income after deductions for eligibility per person"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MI
@@ -14,9 +14,7 @@ class mi_fip_earned_income_after_deductions_initial_person(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.mdhhs.fip.income.deductions.earned_income_disregard
+        p = parameters(period).gov.states.mi.mdhhs.fip.income.disregard
 
         # Get gross earned income for this person
         gross_earned = person("tanf_gross_earned_income", period)
@@ -27,11 +25,11 @@ class mi_fip_earned_income_after_deductions_initial_person(Variable):
         # Then deduct an additional 20 percent of each person's remaining earnings."
 
         # Step 1: Deduct $200 from this person's earnings
-        flat_deduction = p.flat_amount
+        flat_deduction = p.flat
         remainder = max_(gross_earned - flat_deduction, 0)
 
         # Step 2: Deduct 20% of remainder (for initial eligibility test)
-        percent_deduction = remainder * p.initial_percent
+        percent_deduction = remainder * p.initial_rate
 
         # Step 3: Total deduction
         total_deduction = flat_deduction + percent_deduction

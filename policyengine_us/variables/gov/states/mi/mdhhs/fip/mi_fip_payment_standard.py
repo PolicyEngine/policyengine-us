@@ -21,12 +21,12 @@ class mi_fip_payment_standard(Variable):
 
         # For sizes 1-7, use the bracket schedule
         # For size 8+, use the size 7 amount plus additional per person
-        max_bracket_size = 7  # Maximum size in bracket schedule
-        size_capped = min_(size, max_bracket_size)
-        base_standard = p.amounts.calc(size_capped)
+        max_household_size = p.max_household_size
+        capped_size = min_(size, max_household_size)
+        base_standard = p.base.calc(capped_size)
 
         # Add additional amount for household size 8+
-        additional_persons = max_(size - max_bracket_size, 0)
-        additional_amount = additional_persons * p.additional_person_increment
+        additional_persons = max_(size - max_household_size, 0)
+        additional_amount = additional_persons * p.additional
 
         return base_standard + additional_amount

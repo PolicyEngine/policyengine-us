@@ -24,7 +24,7 @@
     # Countable income = $0
     # Benefit = $478 - $0 = $478
     mi_fip_payment_standard: 478
-    mi_fip_countable_income: 0
+    mi_fip_countable_income_for_benefit: 0
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 478
@@ -57,7 +57,7 @@
     # Countable income = $0
     # Benefit = $583 - $0 = $583
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 0
+    mi_fip_countable_income_for_benefit: 0
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 583
@@ -92,7 +92,7 @@
     # Countable income = $1,000 - $600 = $400
     # Benefit = $583 - $400 = $183
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 400
+    mi_fip_countable_income_for_benefit: 400
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 183
@@ -127,7 +127,7 @@
     # Countable income = $1,300 - $750 = $550
     # Benefit = $583 - $550 = $33
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 550
+    mi_fip_countable_income_for_benefit: 550
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 33
@@ -162,7 +162,7 @@
     # Countable income = $1,184 - $692 = $492
     # Benefit = $583 - $492 = $91
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 492
+    mi_fip_countable_income_for_benefit: 492
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 91
@@ -197,7 +197,7 @@
     # Countable income = $1,200 - $700 = $500
     # Benefit = $583 - $500 = $83
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 500
+    mi_fip_countable_income_for_benefit: 500
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 83
@@ -233,7 +233,7 @@
     # Countable income = $814 - $507 = $307
     # Benefit = $583 - $307 = $276
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 307
+    mi_fip_countable_income_for_benefit: 307
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 276
@@ -270,7 +270,7 @@
     # Countable income = $0
     # Benefit = $822 - $0 = $822
     mi_fip_payment_standard: 822
-    mi_fip_countable_income: 0
+    mi_fip_countable_income_for_benefit: 0
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 822
@@ -309,7 +309,7 @@
     # Countable income = $1,500 - $850 = $650
     # Benefit = $822 - $650 = $172
     mi_fip_payment_standard: 822
-    mi_fip_countable_income: 650
+    mi_fip_countable_income_for_benefit: 650
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 172
@@ -347,7 +347,7 @@
     # Countable income = $1,000 - $600 = $400
     # Benefit = $707 - $400 = $307
     mi_fip_payment_standard: 707
-    mi_fip_countable_income: 400
+    mi_fip_countable_income_for_benefit: 400
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 307
@@ -385,7 +385,7 @@
     # Countable income = $300 + $100 = $400
     # Benefit = $707 - $400 = $307
     mi_fip_payment_standard: 707
-    mi_fip_countable_income: 400
+    mi_fip_countable_income_for_benefit: 400
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 307
@@ -420,7 +420,7 @@
     # Countable income = $500
     # Benefit = $583 - $500 = $83
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 500
+    mi_fip_countable_income_for_benefit: 500
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 83
@@ -458,7 +458,7 @@
     # Total countable income = $150 + $300 = $450
     # Benefit = $583 - $450 = $133
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 450
+    mi_fip_countable_income_for_benefit: 450
     mi_fip_income_eligible: true
     mi_fip_eligible: true
     mi_fip: 133
@@ -493,7 +493,7 @@
     # Countable income = $2,500 - $1,350 = $1,150
     # Benefit = $583 - $1,150 = -$567 (negative, so $0)
     mi_fip_payment_standard: 583
-    mi_fip_countable_income: 1_150
+    mi_fip_countable_income_for_benefit: 1_150
     mi_fip_income_eligible: false
     mi_fip_eligible: false
     mi_fip: 0

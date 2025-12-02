@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_fip_earned_income_after_deductions_person(Variable):
+class mi_fip_earned_income_after_deductions_for_benefit_person(Variable):
     value_type = float
     entity = Person
-    label = "Michigan FIP earned income after deductions per person"
+    label = "Michigan FIP earned income after deductions for benefit per person"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MI
@@ -14,9 +14,7 @@ class mi_fip_earned_income_after_deductions_person(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.mdhhs.fip.income.deductions.earned_income_disregard
+        p = parameters(period).gov.states.mi.mdhhs.fip.income.disregard
 
         # Get gross earned income for this person
         gross_earned = person("tanf_gross_earned_income", period)
@@ -30,11 +28,11 @@ class mi_fip_earned_income_after_deductions_person(Variable):
         # (both new applicants and enrolled recipients use 50% for benefits)
 
         # Step 1: Deduct $200 from this person's earnings
-        flat_deduction = p.flat_amount
+        flat_deduction = p.flat
         remainder = max_(gross_earned - flat_deduction, 0)
 
         # Step 2: Deduct 50% of remainder (for benefit calculation)
-        percent_deduction = remainder * p.ongoing_percent
+        percent_deduction = remainder * p.ongoing_rate
 
         # Step 3: Countable income (cannot be negative)
         # "The total disregard cannot exceed countable earnings" - BEM 518
