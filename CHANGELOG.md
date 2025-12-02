@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.449.1] - 2025-12-02 23:28:11
+
+### Fixed
+
+- StateGroup enum warnings for contiguous US states in state_group variable.
+
 ## [1.449.0] - 2025-12-02 22:19:22
 
 ### Added
@@ -13670,6 +13676,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.449.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.0...1.449.1
 [1.449.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.448.0...1.449.0
 [1.448.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.447.0...1.448.0
 [1.447.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.1...1.447.0
