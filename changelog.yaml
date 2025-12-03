@@ -11662,3 +11662,11 @@
     fixed:
     - Fix Filing Status Issues in Missouri Test Files.
   date: 2025-12-03 21:46:07
+- bump: patch
+  changes:
+    added:
+    - WIC integration tests.
+    fixed:
+    - "WIC eligibility now requires valid demographic category per 42 U.S.C. \xA7\
+      \ 1786(d)(1)."
+  date: 2025-12-03 22:13:14
