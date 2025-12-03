@@ -1,5 +1,6 @@
 - bump: minor
   changes:
     added:
-    - Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB, and QI eligibility levels.
-    - Illinois MSP aggregator (il_msp) referencing federal MSP rules.
+    - Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+    - SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+    - SMIB benefit covering Medicare Part B premiums for eligible individuals.
