@@ -11643,3 +11643,11 @@
     fixed:
     - StateGroup enum warnings for contiguous US states in state_group variable.
   date: 2025-12-02 23:28:11
+- bump: patch
+  changes:
+    changed:
+    - Parameterized Montana spouse allocation factor for itemized deductions (was
+      hardcoded 0.5)
+    removed:
+    - Unhelpful comment from .github/update_api.py
+  date: 2025-12-03 05:42:15
