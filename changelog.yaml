@@ -11670,3 +11670,9 @@
     - "WIC eligibility now requires valid demographic category per 42 U.S.C. \xA7\
       \ 1786(d)(1)."
   date: 2025-12-03 22:13:14
+- bump: patch
+  changes:
+    fixed:
+    - Fix invalid filing_status enum values in test files (lowercase 'single', numeric
+      '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
+  date: 2025-12-03 22:50:04
