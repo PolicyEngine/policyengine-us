@@ -53,7 +53,10 @@ def create_de_dependent_credit_reform() -> Reform:
             p = parameters(period).gov.contrib.states.de.dependent_credit
 
             filing_status = tax_unit("filing_status", period)
-            agi = add(tax_unit, period, ["de_agi_indiv"])
+            files_separately = tax_unit("de_files_separately", period)
+            agi_indiv = add(tax_unit, period, ["de_agi_indiv"])
+            agi_joint = add(tax_unit, period, ["de_agi_joint"])
+            agi = where(files_separately, agi_indiv, agi_joint)
 
             threshold = p.phaseout.threshold[filing_status]
             excess_income = max_(agi - threshold, 0)
