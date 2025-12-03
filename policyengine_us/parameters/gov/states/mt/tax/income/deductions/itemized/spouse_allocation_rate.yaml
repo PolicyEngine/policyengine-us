@@ -1,5 +1,6 @@
-description: Montana divides itemized deductions equally between spouses when married filing separately on the same form.
+description: Montana divides itemized deductions equally between spouses when married filing separately on the same form. This is not a policy parameter but a mathematical representation of "divided equally" per ARM 42.15.524.
 values:
+  # 0.5 represents "divided equally" - not a legislated value
   2022-01-01: 0.5
 metadata:
   label: Montana itemized deductions spouse allocation rate
