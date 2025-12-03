@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Fix invalid filing_status enum values in test files (lowercase 'single', numeric '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
