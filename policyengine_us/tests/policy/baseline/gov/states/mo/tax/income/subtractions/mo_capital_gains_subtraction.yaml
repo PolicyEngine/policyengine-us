@@ -1,0 +1,25 @@
+- name: Pre capital gains subtraction law
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
+    mo_capital_gains_subtraction: 0
+
+- name: Post capital gains subtraction law
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
+    mo_capital_gains_subtraction: 1_500
