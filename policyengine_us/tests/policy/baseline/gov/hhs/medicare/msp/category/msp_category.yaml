@@ -1,0 +1,104 @@
+# 2024 FPL for single person: $15,060/year = $1,255/month
+# QMB: <= 100% FPL ($1,255/month)
+# SLMB: 100-120% FPL ($1,255 - $1,506/month)
+# QI: 120-135% FPL ($1,506 - $1,694.25/month)
+
+- name: QMB category - income at 80% FPL
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 12_048  # $1,004/month = 80% FPL
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    msp_category: [QMB]
+
+- name: SLMB category - income at 110% FPL
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 16_566  # $1,380.50/month = 110% FPL
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    msp_category: [SLMB]
+
+- name: QI category - income at 130% FPL
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 19_578  # $1,631.50/month = 130% FPL
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    msp_category: [QI]
+
+- name: No category - income above 135% FPL
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 25_000  # $2,083/month = 166% FPL
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    msp_category: [NONE]
+
+- name: No category - not Medicare eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    msp_category: [NONE]

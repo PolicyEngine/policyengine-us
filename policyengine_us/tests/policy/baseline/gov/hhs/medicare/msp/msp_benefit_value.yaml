@@ -1,0 +1,95 @@
+# 2024 Medicare Premiums:
+# Part A full premium: $505/month
+# Part B base premium: $174.70/month
+# QMB covers Part A + Part B = $679.70/month (if paying full Part A)
+# SLMB/QI cover Part B only = $174.70/month
+# Note: Most people have premium-free Part A (40+ quarters)
+# Using default quarters which gives premium-free Part A
+
+- name: QMB benefit value - Part B only (premium-free Part A)
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40  # Premium-free Part A
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 12_048  # $1,004/month = 80% FPL (QMB)
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    # QMB covers Part A ($0) + Part B ($174.70) = $174.70/month
+    msp_benefit_value: [174.70]
+
+- name: QMB benefit value - with Part A premium
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 0  # Full Part A premium
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 12_048  # $1,004/month = 80% FPL (QMB)
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    # QMB covers Part A ($505) + Part B ($174.70) = $679.70/month
+    msp_benefit_value: [679.70]
+
+- name: SLMB benefit value - Part B only
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40  # Premium-free Part A
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 16_566  # $1,380.50/month = 110% FPL (SLMB)
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    # SLMB covers Part B only = $174.70/month
+    msp_benefit_value: [174.70]
+
+- name: QI benefit value - Part B only
+  period: 2024-01
+  input:
+    people:
+      person:
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40  # Premium-free Part A
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income: 19_578  # $1,631.50/month = 130% FPL (QI)
+    spm_units:
+      spm_unit:
+        members: [person]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [person]
+  output:
+    # QI covers Part B only = $174.70/month
+    msp_benefit_value: [174.70]

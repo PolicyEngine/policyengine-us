@@ -1,0 +1,52 @@
+# Illinois MSP integration test
+# Illinois uses federal MSP rules without modifications
+
+- name: Illinois QMB eligible senior
+  period: 2024-01
+  input:
+    people:
+      senior:
+        age: 67
+        medicare_quarters_of_coverage: 40
+    tax_units:
+      tax_unit:
+        members: [senior]
+        adjusted_gross_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [senior]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [senior]
+        state_code: IL
+  output:
+    msp_eligible: [true]
+    msp_category: [QMB]
+    msp: [174.70]
+    il_msp: [174.70]
+
+- name: Illinois SLMB eligible senior
+  period: 2024-01
+  input:
+    people:
+      senior:
+        age: 67
+        medicare_quarters_of_coverage: 40
+    tax_units:
+      tax_unit:
+        members: [senior]
+        adjusted_gross_income: 16_566  # 110% FPL
+    spm_units:
+      spm_unit:
+        members: [senior]
+        spm_unit_cash_assets: 5_000
+    households:
+      household:
+        members: [senior]
+        state_code: IL
+  output:
+    msp_eligible: [true]
+    msp_category: [SLMB]
+    msp: [174.70]
+    il_msp: [174.70]

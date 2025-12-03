@@ -1,0 +1,10 @@
+description: Whether the asset test applies for MSP eligibility. Some states have eliminated the asset test.
+metadata:
+  unit: bool
+  period: year
+  label: MSP asset test applies
+  reference:
+    - title: Medicare Savings Programs | CMS
+      href: https://www.cms.gov/medicare/costs/medicare-savings-programs
+values:
+  2020-01-01: true
