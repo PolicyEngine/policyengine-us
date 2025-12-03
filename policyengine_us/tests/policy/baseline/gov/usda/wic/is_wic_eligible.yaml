@@ -1,39 +1,52 @@
 # WIC requires each of the following:
-# - Either meeting the income test or categorical eligibility,
-# - Meeting a demographic test (pregnancy, age, parental status), and
+# - Being in a valid demographic category (pregnant, postpartum, breastfeeding, infant, or child),
+# - Either meeting the income test or categorical eligibility, and
 # - Being assessed to be at nutritional risk.
-- name: Case 1, satisfied all conditions hence is eligible
+
+# Unit tests with stubbed inputs
+- name: Case 1, child satisfies all conditions hence is eligible.
   period: 2022
   input:
+    wic_category: CHILD
     meets_wic_income_test: true
-    meets_wic_categorical_eligibility: true
     is_wic_at_nutritional_risk: true
   output:
     is_wic_eligible: true
 
-- name: Case 2, not nutritional risk hence not eligible
+- name: Case 2, healthy adult not eligible even with all other conditions met.
   period: 2022
   input:
+    wic_category: NONE
     meets_wic_income_test: true
     meets_wic_categorical_eligibility: true
-    is_wic_at_nutritional_risk: false
+    is_wic_at_nutritional_risk: true
   output:
     is_wic_eligible: false
 
-- name: Case 3, eligible when either income test or categorical passed 
+- name: Case 3, child not eligible without income or categorical eligibility.
   period: 2022
   input:
-    meets_wic_income_test: true
+    wic_category: CHILD
+    meets_wic_income_test: false
     meets_wic_categorical_eligibility: false
     is_wic_at_nutritional_risk: true
   output:
-    is_wic_eligible: true
+    is_wic_eligible: false
 
-- name: Case 4, eligible when either income test or categorical passed 
-  period: 2022
+- name: Case 4, family with adult, infant, and child age 6.
+  period: 2024-01
   input:
-    meets_wic_income_test: false
-    meets_wic_categorical_eligibility: true
-    is_wic_at_nutritional_risk: true
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        school_meal_countable_income: 30_000
   output:
-    is_wic_eligible: true
+    # Adult: not eligible, infant: eligible, age 6: not eligible
+    is_wic_eligible: [false, true, false]
