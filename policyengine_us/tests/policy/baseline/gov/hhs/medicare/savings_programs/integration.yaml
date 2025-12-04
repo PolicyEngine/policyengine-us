@@ -1,0 +1,79 @@
+- name: MSP integration - married couple, both QMB eligible
+  period: 2024-01
+  input:
+    people:
+      spouse1:
+        age: 68
+        is_medicare_eligible: true
+      spouse2:
+        age: 66
+        is_medicare_eligible: true
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000  # Under $14,130 couple limit
+        spm_unit_fpg: 20_440  # 2024 FPL for 2 people
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        adjusted_gross_income: 18_000  # Below 100% FPL for couple ($20,440)
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [true, true]
+    msp_category: [QMB, QMB]
+
+- name: MSP integration - single senior, SLMB level
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_medicare_eligible: true
+        base_part_a_premium: 0
+        base_part_b_premium: 2_096.40  # $174.70 * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_is_married: false
+        spm_unit_cash_assets: 8_000
+        spm_unit_fpg: 15_060
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 17_000  # Between 100% and 120% FPL
+    households:
+      household:
+        members: [person1]
+  output:
+    msp_eligible: [true]
+    msp_category: [SLMB]
+    msp_benefit_value: [174.70]
+    msp: [174.70]
+
+- name: MSP integration - not eligible, assets over limit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 67
+        is_medicare_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_is_married: false
+        spm_unit_cash_assets: 12_000  # Over $9,430 individual limit
+        spm_unit_fpg: 15_060
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1]
+  output:
+    msp_eligible: [false]
+    msp_category: [NONE]
+    msp: [0]

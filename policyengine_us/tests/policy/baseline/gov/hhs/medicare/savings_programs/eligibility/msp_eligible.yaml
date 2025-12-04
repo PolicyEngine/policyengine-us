@@ -1,0 +1,59 @@
+- name: MSP eligible - QMB level (65+, low income, low assets)
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    adjusted_gross_income: 10_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    spm_unit_fpg: 15_060  # 2024 FPL for 1 person
+  output:
+    msp_eligible: true
+
+- name: MSP eligible - QI level (65+, moderate income, low assets)
+  period: 2024-01
+  input:
+    age: 68
+    is_medicare_eligible: true
+    adjusted_gross_income: 18_000  # ~120% FPL
+    spm_unit_cash_assets: 8_000
+    spm_unit_is_married: false
+    spm_unit_fpg: 15_060
+  output:
+    msp_eligible: true
+
+- name: MSP not eligible - income too high
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    adjusted_gross_income: 30_000  # ~200% FPL
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    spm_unit_fpg: 15_060
+  output:
+    msp_eligible: false
+
+- name: MSP not eligible - assets too high
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    adjusted_gross_income: 10_000
+    spm_unit_cash_assets: 15_000  # Over $9,430 limit
+    spm_unit_is_married: false
+    spm_unit_fpg: 15_060
+  output:
+    msp_eligible: false
+
+- name: MSP not eligible - not Medicare eligible
+  period: 2024-01
+  input:
+    age: 60  # Under 65
+    is_medicare_eligible: false
+    adjusted_gross_income: 10_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    spm_unit_fpg: 15_060
+  output:
+    msp_eligible: false
