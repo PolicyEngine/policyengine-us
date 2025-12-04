@@ -1,0 +1,115 @@
+# Kentucky TANF (K-TAP) Overall Eligibility
+# Per 921 KAR 2:016 and 921 KAR 2:006
+# Must meet income eligibility, demographic eligibility, AND resource eligibility
+
+- name: Case 1, meets all eligibility requirements.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: true
+        is_demographic_tanf_eligible: true
+        ky_tanf_resource_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_tanf_eligible: true
+
+- name: Case 2, income eligible but not demographic eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: true
+        is_demographic_tanf_eligible: false
+        ky_tanf_resource_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Must meet all requirements
+    ky_tanf_eligible: false
+
+- name: Case 3, demographic eligible but not income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: false
+        is_demographic_tanf_eligible: true
+        ky_tanf_resource_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Must meet all requirements
+    ky_tanf_eligible: false
+
+- name: Case 4, income and demographic eligible but not resource eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: true
+        is_demographic_tanf_eligible: true
+        ky_tanf_resource_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Must meet all requirements
+    ky_tanf_eligible: false
+
+- name: Case 5, none eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: false
+        is_demographic_tanf_eligible: false
+        ky_tanf_resource_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_tanf_eligible: false
+
+- name: Case 6, non-KY state returns false.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_income_eligible: true
+        is_demographic_tanf_eligible: true
+        ky_tanf_resource_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_tanf_eligible: false

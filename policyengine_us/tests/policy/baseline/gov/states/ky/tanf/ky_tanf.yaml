@@ -1,0 +1,73 @@
+# Test: KY TANF benefit calculation for eligible family of 2 with no income
+# Expected: Full deficit * 0.55, capped at payment standard
+- name: Family of 2, no income, eligible for maximum benefit
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_tanf_need_standard: 552
+    ky_tanf_payment_standard: 450
+    ky_tanf_countable_income: 0
+    ky_tanf_eligible: true
+    # benefit = min(0.55 * (552 - 0), 450) = min(303.6, 450) = 303.6
+    ky_tanf: 303.6
+
+# Test: KY TANF benefit calculation with earned income
+# Earned income $400/month - $175 work expense = $225 countable
+- name: Family of 2, low earned income, partial benefit
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 4_800  # $400/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_tanf_countable_earned_income: 225  # 400 - 175
+    ky_tanf_countable_income: 225
+    ky_tanf_income_eligible: true
+    ky_tanf_eligible: true
+    # benefit = min(0.55 * (552 - 225), 450) = min(179.85, 450) = 179.85
+    ky_tanf: 179.85
+
+# Test: KY TANF ineligibility due to gross income exceeding limit
+# Gross income $1100/month > $1021 limit for family of 2
+- name: Family of 2, gross income exceeds limit, ineligible
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 13_200  # $1100/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_tanf_income_eligible: false
+    ky_tanf_eligible: false
+    ky_tanf: 0

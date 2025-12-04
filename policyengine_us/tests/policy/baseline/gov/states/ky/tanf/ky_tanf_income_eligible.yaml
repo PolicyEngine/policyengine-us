@@ -1,0 +1,107 @@
+# Kentucky TANF (K-TAP) Income Eligibility
+# Per 921 KAR 2:016 Section 9(2)(b)
+# Gross income must be at or below the gross income limit for family size
+#
+# Gross Income Limits (2023+):
+# Size 1: $890, Size 2: $1,021, Size 3: $1,169
+# Size 4: $1,315, Size 5: $1,462, Size 6: $1,608, Size 7+: $1,754
+
+- name: Case 1, no income is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $0 gross < $1,169 limit for size 3
+    ky_tanf_income_eligible: true
+
+- name: Case 2, income below limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 200
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $700 gross < $1,169 limit for size 3
+    ky_tanf_income_eligible: true
+
+- name: Case 3, income at limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 969
+        tanf_gross_unearned_income: 200
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $1,169 gross = $1,169 limit for size 3
+    ky_tanf_income_eligible: true
+
+- name: Case 4, income above limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 200
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $1,200 gross > $1,169 limit for size 3
+    ky_tanf_income_eligible: false
+
+- name: Case 5, non-KY state returns false.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_tanf_income_eligible: false

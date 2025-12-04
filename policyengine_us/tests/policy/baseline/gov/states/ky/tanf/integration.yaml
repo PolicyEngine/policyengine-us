@@ -1,0 +1,260 @@
+# Kentucky TANF (K-TAP) Integration Tests
+# Per 921 KAR 2:016 - Standards of need and amount for KTAP
+# Tests the complete benefit calculation pipeline
+#
+# Key Formulas:
+#   Countable Earned = max(sum_gross_earned - $175, 0)
+#   Countable Unearned = max(gross_unearned - min(child_support, $50), 0)
+#   Countable Income = countable_earned + countable_unearned
+#   Benefit = min(0.55 * max(need_standard - countable_income, 0), payment_standard)
+
+- name: Case 1, single parent with two children, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Family size 3
+    ky_tanf_need_standard: 631
+    ky_tanf_payment_standard: 524
+    # Earned: max($0 - $175, 0) = $0
+    ky_tanf_countable_earned_income: 0
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 0
+    # Income eligibility: $0 < $1,169 limit
+    ky_tanf_income_eligible: true
+    # Resource eligibility: $0 < $10,000 limit
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Benefit: min(0.55 * $631, $524) = min($347.05, $524) = $347.05
+    ky_tanf: 347.05
+
+- name: Case 2, single parent with two children, part-time work.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 7_200  # $600/month annual
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Family size 3
+    ky_tanf_need_standard: 631
+    ky_tanf_payment_standard: 524
+    # Earned: max($600 - $175, 0) = $425
+    ky_tanf_countable_earned_income: 425
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 425
+    # Income eligibility: $600 < $1,169 limit
+    ky_tanf_income_eligible: true
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: max($631 - $425, 0) = $206
+    # Benefit: min(0.55 * $206, $524) = min($113.30, $524) = $113.30
+    ky_tanf: 113.3
+
+- name: Case 3, two-parent family with three children, one working.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 9_600  # $800/month annual
+      person2:
+        age: 33
+        employment_income: 0
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KY
+  output:
+    # Family size 5
+    ky_tanf_need_standard: 790
+    ky_tanf_payment_standard: 766
+    # Earned: max($800 - $175, 0) = $625
+    ky_tanf_countable_earned_income: 625
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 625
+    # Income eligibility: $800 < $1,462 limit
+    ky_tanf_income_eligible: true
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: max($790 - $625, 0) = $165
+    # Benefit: min(0.55 * $165, $766) = min($90.75, $766) = $90.75
+    ky_tanf: 90.75
+
+- name: Case 4, single parent with one child, income at gross limit threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 12_252  # $1,021/month annual (family size 2 limit)
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_tanf_need_standard: 552
+    ky_tanf_payment_standard: 450
+    # Earned: max($1,021 - $175, 0) = $846
+    ky_tanf_countable_earned_income: 846
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 846
+    # Income eligibility: $1,021 = $1,021 limit (at threshold)
+    ky_tanf_income_eligible: true
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: max($552 - $846, 0) = $0 (income exceeds need)
+    # Benefit: $0
+    ky_tanf: 0
+
+- name: Case 5, single parent with one child, income above gross limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 27
+        employment_income: 12_264  # $1,022/month annual (just above limit)
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_tanf_need_standard: 552
+    ky_tanf_payment_standard: 450
+    # Earned: max($1,022 - $175, 0) = $847
+    ky_tanf_countable_earned_income: 847
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 847
+    # Income eligibility: $1,022 > $1,021 limit
+    ky_tanf_income_eligible: false
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: false
+    # No benefit when ineligible
+    ky_tanf: 0
+
+- name: Case 6, single parent with child support and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 4_800  # $400/month annual
+        social_security: 1_200    # $100/month annual
+        child_support_received: 900  # $75/month annual
+      person2:
+        age: 11
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KY
+  output:
+    # Family size 4
+    ky_tanf_need_standard: 710
+    ky_tanf_payment_standard: 656
+    # Earned: max($400 - $175, 0) = $225
+    ky_tanf_countable_earned_income: 225
+    # Gross unearned: social_security + child_support = $100 + $75 = $175
+    # Child support pass-through: min($75, $50) = $50
+    # Countable unearned: $175 - $50 = $125
+    ky_tanf_countable_unearned_income: 125
+    # Total countable: $225 + $125 = $350
+    ky_tanf_countable_income: 350
+    # Gross income: $400 + $175 = $575 < $1,315 limit
+    ky_tanf_income_eligible: true
+    # Resources: $2,000 < $10,000 limit
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: max($710 - $350, 0) = $360
+    # Benefit: min(0.55 * $360, $656) = min($198, $656) = $198
+    ky_tanf: 198
+
+- name: Case 7, adults only household, no eligible children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 0
+      person2:
+        age: 42
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_tanf_need_standard: 552
+    ky_tanf_payment_standard: 450
+    ky_tanf_countable_earned_income: 0
+    ky_tanf_countable_unearned_income: 0
+    ky_tanf_countable_income: 0
+    # Income eligible but demographically ineligible (no children)
+    ky_tanf_income_eligible: true
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: false
+    ky_tanf: 0

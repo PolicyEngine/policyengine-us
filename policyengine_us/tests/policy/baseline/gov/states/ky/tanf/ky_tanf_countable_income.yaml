@@ -1,0 +1,110 @@
+# Kentucky TANF (K-TAP) Total Countable Income
+# Per 921 KAR 2:016 Section 5
+# Sum of countable earned income and countable unearned income
+
+- name: Case 1, no income.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 0
+        ky_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_tanf_countable_income: 0
+
+- name: Case 2, only earned income.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 200
+        ky_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Only earned income counts
+    ky_tanf_countable_income: 200
+
+- name: Case 3, only unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 0
+        ky_tanf_countable_unearned_income: 300
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Only unearned income counts
+    ky_tanf_countable_income: 300
+
+- name: Case 4, both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 250
+        ky_tanf_countable_unearned_income: 150
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $250 + $150 = $400
+    ky_tanf_countable_income: 400
+
+- name: Case 5, high countable income.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 500
+        ky_tanf_countable_unearned_income: 400
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $500 + $400 = $900
+    ky_tanf_countable_income: 900
+
+- name: Case 6, non-KY state returns zero.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ky_tanf_countable_earned_income: 300
+        ky_tanf_countable_unearned_income: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_tanf_countable_income: 0
