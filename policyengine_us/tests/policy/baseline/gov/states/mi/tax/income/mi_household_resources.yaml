@@ -6,6 +6,8 @@
     health_insurance_premiums: 0
     above_the_line_deductions: 1_000
   output:
+    # Capital gains losses are limited to -2,000 (within $3,000 limit)
+    # but mi_household_resources cannot be negative, so 0
     mi_household_resources: 0
 
 - name: Reduced to 0
@@ -16,6 +18,7 @@
     health_insurance_premiums: 3_000
     above_the_line_deductions: 1_000
   output:
+    # 2,000 - 3,000 - 1,000 = -2,000, floored at 0
     mi_household_resources: 0
 
 - name: Partially reduced
@@ -26,4 +29,58 @@
     health_insurance_premiums: 3_000
     above_the_line_deductions: 1_000
   output:
+    # 10,000 - 3,000 - 1,000 = 6,000
     mi_household_resources: 6_000
+
+- name: Negative business income floored at 0
+  period: 2024
+  input:
+    self_employment_income: -50_000
+    irs_employment_income: 100_000
+    state_code: MI
+  output:
+    # Per MI-1040CR-7 Line 21: "If negative, enter 0"
+    # Self-employment income floored at 0 = 0
+    # But loss_ald = 50,000 (federal above-the-line deduction for business loss)
+    # Total: 100,000 - 50,000 = 50,000
+    mi_household_resources: 50_000
+
+- name: Negative rental income floored at 0
+  period: 2024
+  input:
+    rental_income: -30_000
+    employment_income_before_lsr: 50_000
+    state_code: MI
+  output:
+    # Per MI-1040CR-7 Line 22: "If negative, enter 0"
+    # Rental income floored at 0, so only employment income counts
+    mi_household_resources: 50_000
+
+- name: Large capital gains loss limited to 3000
+  period: 2024
+  input:
+    long_term_capital_gains: -100_000
+    short_term_capital_gains: -50_000
+    employment_income_before_lsr: 50_000
+    state_code: MI
+    filing_status: JOINT
+  output:
+    # Per MI-1040CR-7 Line 24: losses cannot exceed $3,000 for MFJ
+    # loss_limited_net_capital_gains: max(-150,000, -3,000) = -3,000
+    # above_the_line_deductions includes loss_ald of 3,000
+    # Total: 50,000 + (-3,000) - 3,000 = 44,000
+    mi_household_resources: 44_000
+
+- name: Capital gains loss limited to 1500 for MFS
+  period: 2024
+  input:
+    long_term_capital_gains: -100_000
+    employment_income_before_lsr: 50_000
+    state_code: MI
+    filing_status: SEPARATE
+  output:
+    # Per MI-1040CR-7 Line 24: losses cannot exceed $1,500 for MFS
+    # loss_limited_net_capital_gains: max(-100,000, -1,500) = -1,500
+    # above_the_line_deductions includes loss_ald of 1,500
+    # Total: 50,000 + (-1,500) - 1,500 = 47,000
+    mi_household_resources: 47_000
