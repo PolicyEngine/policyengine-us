@@ -77,3 +77,82 @@
     ky_tanf_resource_eligible: true
     ky_tanf_eligible: false
     ky_tanf: 0
+
+- name: Case 3, single parent with one child, with earned income.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 28
+        # Monthly income: $600, Annual: $7,200
+        # Use employment_income_before_lsr for TANF calculations
+        employment_income_before_lsr: 7_200
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_tanf_need_standard: 552 * 12
+    ky_tanf_payment_standard: 450 * 12
+    # Monthly earned: $600, minus $175 deduction = $425
+    # Annual: $425 * 12 = $5,100
+    ky_tanf_countable_earned_income: 425 * 12
+    ky_tanf_countable_unearned_income: 0
+    # Total countable: $425/month * 12 = $5,100/year
+    ky_tanf_countable_income: 425 * 12
+    # Gross income: $600/month vs limit $1,021/month = eligible
+    ky_tanf_income_eligible: true
+    # Resources: $500 < $10,000 limit
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: $552 need - $425 countable = $127
+    # Benefit: min(0.55 * $127, $450) = min($69.85, $450) = $69.85/month
+    # Annual: $69.85 * 12 = $838.20
+    ky_tanf: 69.85 * 12
+
+- name: Case 4, family with child support income.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 0
+        # Monthly child support: $200, Annual: $2,400
+        child_support_received: 2_400
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: KY
+  output:
+    # Family size 3
+    ky_tanf_need_standard: 631 * 12
+    ky_tanf_payment_standard: 524 * 12
+    ky_tanf_countable_earned_income: 0
+    # Monthly child support $200, pass-through exclusion $50
+    # Countable: $200 - $50 = $150/month
+    # Annual: $150 * 12 = $1,800
+    ky_tanf_countable_unearned_income: 150 * 12
+    ky_tanf_countable_income: 150 * 12
+    # Gross income: $200/month < $1,169 limit
+    ky_tanf_income_eligible: true
+    ky_tanf_resource_eligible: true
+    ky_tanf_eligible: true
+    # Deficit: $631 - $150 = $481
+    # Benefit: min(0.55 * $481, $524) = min($264.55, $524) = $264.55/month
+    # Annual: $264.55 * 12 = $3,174.60
+    ky_tanf: 264.55 * 12
