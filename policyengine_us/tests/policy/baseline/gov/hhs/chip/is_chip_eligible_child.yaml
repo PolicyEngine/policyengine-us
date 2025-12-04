@@ -1,0 +1,67 @@
+# Tests for is_chip_eligible_child variable
+# Children with ESI should not be eligible for CHIP
+# Using TX which has CHIP limit of 2.06 (206% FPL)
+
+- name: Child eligible for CHIP without ESI
+  period: 2023
+  input:
+    people:
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0  # 200% FPL - above Medicaid, below TX CHIP limit
+        has_esi: false
+    households:
+      household:
+        state_code: TX
+        members: [child]
+  output:
+    is_chip_eligible_child: true
+
+- name: Child ineligible for CHIP with ESI
+  period: 2023
+  input:
+    people:
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0  # 200% FPL - would qualify but has ESI
+        has_esi: true
+    households:
+      household:
+        state_code: TX
+        members: [child]
+  output:
+    is_chip_eligible_child: false
+
+- name: Child ineligible - too old
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 20
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_esi: false
+    households:
+      household:
+        state_code: TX
+        members: [adult]
+  output:
+    is_chip_eligible_child: false
+
+- name: Child ineligible - Medicaid eligible
+  period: 2023
+  input:
+    people:
+      child:
+        age: 10
+        is_medicaid_eligible: true
+        medicaid_income_level: 1.0  # 100% FPL - Medicaid eligible
+        has_esi: false
+    households:
+      household:
+        state_code: TX
+        members: [child]
+  output:
+    is_chip_eligible_child: false
