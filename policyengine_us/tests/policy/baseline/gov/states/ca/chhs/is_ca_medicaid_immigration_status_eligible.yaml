@@ -42,3 +42,39 @@
     state_code: CA
   output:
     is_ca_medicaid_immigration_status_eligible: true
+
+# Continuous coverage tests for 2026 enrollment freeze
+
+- name: Case 6, undocumented adult not on Medicaid is ineligible in 2026.
+  period: 2026
+  input:
+    age: 35
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    is_on_medicaid: false
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 7, undocumented adult on Medicaid retains eligibility in 2026.
+  period: 2026
+  input:
+    age: 35
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    is_on_medicaid: true
+    state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 8, citizen adult is not covered by this CA-specific variable.
+  period: 2026
+  input:
+    age: 35
+    is_pregnant: false
+    immigration_status: CITIZEN
+    state_code: CA
+  output:
+    # This variable is specifically for eligibility regardless of immigration status
+    # Citizens are eligible via standard immigration status rules, not this variable
+    is_ca_medicaid_immigration_status_eligible: false
