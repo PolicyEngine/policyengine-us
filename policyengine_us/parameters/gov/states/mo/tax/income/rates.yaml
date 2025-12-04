@@ -17,6 +17,7 @@ brackets:
         2022-01-01: 1_121
         2023-01-01: 1_207
         2024-01-01: 1_273
+        2025-01-01: 1_313
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -29,6 +30,7 @@ brackets:
         2022-01-01: 2_242
         2023-01-01: 2_414
         2024-01-01: 2_546
+        2025-01-01: 2_626
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -41,6 +43,7 @@ brackets:
         2022-01-01: 3_363
         2023-01-01: 3_621
         2024-01-01: 3_819
+        2025-01-01: 3_939
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -53,6 +56,7 @@ brackets:
         2022-01-01: 4_484
         2023-01-01: 4_828
         2024-01-01: 5_092
+        2025-01-01: 5_252
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -65,6 +69,7 @@ brackets:
         2022-01-01: 5_605
         2023-01-01: 6_035
         2024-01-01: 6_365
+        2025-01-01: 6_565
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -77,6 +82,7 @@ brackets:
         2022-01-01: 6_726
         2023-01-01: 7_242
         2024-01-01: 7_638
+        2025-01-01: 7_878
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -89,6 +95,7 @@ brackets:
         2022-01-01: 7_847
         2023-01-01: 8_449
         2024-01-01: 8_911
+        2025-01-01: 9_191
       metadata:
         uprating: gov.irs.uprating
     rate:
@@ -114,10 +121,10 @@ brackets:
       # withholding formula. Statutes allow further reductions to 0.046 in 2026
       # and 0.045 in 2027, but we assume revenue conditions are not met until confirmed.
       2025-01-01: 0.047
-      # We model rates through 2025 based on 143.011: initial 4.95% rate in 2023 
-      # (subsection 2(1)), 0.15% reduction to 4.8% in 2024 (subsection 3(1)), and first 
-      # 0.1% reduction to 4.7% in 2025 (subsection 4(1)). We do not model potential 
-      # further 0.1% reductions allowed in subsection 4 until revenue conditions are 
+      # We model rates through 2025 based on 143.011: initial 4.95% rate in 2023
+      # (subsection 2(1)), 0.15% reduction to 4.8% in 2024 (subsection 3(1)), and first
+      # 0.1% reduction to 4.7% in 2025 (subsection 4(1)). We do not model potential
+      # further 0.1% reductions allowed in subsection 4 until revenue conditions are
       # confirmed met.
 
 metadata:
@@ -136,6 +143,8 @@ metadata:
       href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
     - title: 2025 Missouri Withholding Tax Formula
       href: https://dor.mo.gov/forms/Withholding%20Table%20-%20Weekly_2025.pdf#page=2
+    - title: Missouri Department of Revenue 2025 Individual Income Tax Year Changes (This reference should be updated once the 2025 tax form comes out)
+      href: https://dor.mo.gov/taxation/individual/tax-types/income/year-changes/
 
   label: Missouri resident individual tax rates
   type: marginal_rate
