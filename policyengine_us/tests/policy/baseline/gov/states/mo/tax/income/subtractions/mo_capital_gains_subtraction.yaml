@@ -11,7 +11,7 @@
   output:
     mo_capital_gains_subtraction: 0
 
-- name: Post capital gains subtraction law
+- name: Post capital gains subtraction law (includes lt cap gains, not short-term)
   period: 2025
   absolute_error_margin: 0
   input:
@@ -22,4 +22,4 @@
     taxable_income: 100_000
     state_code: MO
   output:
-    mo_capital_gains_subtraction: 1_500
+    mo_capital_gains_subtraction: 1_000
