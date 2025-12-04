@@ -10,7 +10,7 @@ class medicaid_cost_if_enrolled(Variable):
     label = "Per capita Medicaid cost by eligibility group & state"
     unit = USD
     definition_period = YEAR
-    defined_for = "is_medicaid_eligible"
+    defined_for = "medicaid_enrolled"
 
     def formula(person, period, parameters):
         state = person.household("state_code", period)

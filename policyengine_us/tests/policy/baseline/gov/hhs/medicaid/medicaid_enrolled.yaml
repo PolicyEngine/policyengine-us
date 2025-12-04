@@ -1,0 +1,105 @@
+# Integration tests for medicaid_enrolled variable
+# Tests compare CA undocumented immigrant eligibility before/after 2026 rule change
+# Existing enrollees retain coverage by setting medicaid_enrolled: true as input
+
+- name: Case 1 - Undocumented adult in CA 2026, enrolled but not eligible (existing enrollee)
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    # Existing enrollees retain coverage even though new enrollments are frozen in 2026
+    # Setting medicaid_enrolled: true signals this person was enrolled before the cutoff
+    medicaid: [6_439.11]
+    is_medicaid_eligible: [false]
+    medicaid_enrolled: [true]
+    medicaid_cost_if_enrolled: [6_439.11]
+
+- name: Case 2 - Undocumented adult in CA 2024, enrolled and eligible
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    # In 2024, undocumented adults age 26-49 are eligible in CA
+    is_medicaid_eligible: [true]
+
+- name: Case 3 - Undocumented adult in CA 2026, medicaid_enrolled as OUTPUT (not input)
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        # NOTE: medicaid_enrolled is NOT in input - will be computed
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    # When computed (not input), medicaid_enrolled depends on:
+    # 1. is_medicaid_eligible (false in 2026 for undocumented)
+    # 2. takes_up_medicaid_if_eligible
+    # Since defined_for="is_medicaid_eligible" is false, medicaid_enrolled = false
+    is_medicaid_eligible: [false]
+    medicaid_enrolled: [false]
+
+- name: Case 4 - Undocumented adult in CA 2025, medicaid_enrolled as OUTPUT (not input)
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        # NOTE: medicaid_enrolled is NOT in input - will be computed
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    # In 2025, undocumented adults are still eligible in CA
+    is_medicaid_eligible: [true]
+    medicaid_enrolled: [true]
+    takes_up_medicaid_if_eligible: [true]
