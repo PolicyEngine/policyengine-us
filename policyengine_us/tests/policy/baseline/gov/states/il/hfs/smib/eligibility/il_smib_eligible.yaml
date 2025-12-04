@@ -1,0 +1,88 @@
+# Illinois SMIB Buy-In Program eligibility tests
+# SMIB pays Part B premiums for AABD, TANF, or SSI recipients who are Medicare eligible
+
+- name: SMIB eligible - AABD recipient on Medicare
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        il_aabd_eligible_person: true
+        medicare_quarters_of_coverage: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    is_medicare_eligible: [true]
+    il_smib_categorical_eligible: [true]
+    il_smib_eligible: [true]
+
+- name: SMIB eligible - SSI recipient on Medicare
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        immigration_status: CITIZEN
+        medicare_quarters_of_coverage: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    is_medicare_eligible: [true]
+    is_ssi_eligible: [true]
+    il_smib_categorical_eligible: [true]
+    il_smib_eligible: [true]
+
+- name: Not eligible - Medicare eligible but not AABD/TANF/SSI
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 67
+        medicare_quarters_of_coverage: 40
+        # Explicitly disable AABD/SSI eligibility
+        il_aabd_eligible_person: false
+        is_ssi_aged_blind_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    is_medicare_eligible: [true]
+    il_smib_categorical_eligible: [false]
+    il_smib_eligible: [false]
+
+- name: Not eligible - AABD but not Medicare eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        il_aabd_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    is_medicare_eligible: [false]
+    il_smib_categorical_eligible: [true]
+    il_smib_eligible: [false]
