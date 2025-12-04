@@ -1,4 +1,4 @@
-- name: Eligible refugee 
+- name: Eligible refugee
   period: 2023
   input:
     immigration_status: REFUGEE
@@ -6,7 +6,7 @@
   output:
     il_tanf_immigration_status_eligible_person: true
 
-- name: Not eligible undocumented 
+- name: Not eligible undocumented
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
