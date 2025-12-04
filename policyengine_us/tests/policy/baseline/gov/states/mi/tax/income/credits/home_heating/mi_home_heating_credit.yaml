@@ -47,3 +47,89 @@
     state_code: MI
   output: # 210 * 0.9 * 0.2
     mi_home_heating_credit: 37.8
+
+# Integration test from issue #6894: Large negative capital gains
+# should not offset positive income in household resources calculation
+- name: 25490-MI.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 129_626.8
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        long_term_capital_gains: -39_740.8515
+        short_term_capital_gains: -601_164.25
+        taxable_interest_income: 309.727295
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        long_term_capital_gains: -39_740.8515
+        short_term_capital_gains: -601_164.25
+        taxable_interest_income: 309.727295
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 10
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person5:
+        age: 10
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 26
+  output:
+    # With high income and large capital losses (floored per MI rules),
+    # household resources exceed income limits for the credit
+    mi_home_heating_credit: 0
