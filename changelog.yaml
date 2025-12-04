@@ -11681,3 +11681,11 @@
     fixed:
     - Fix New Jersey gross income computation.
   date: 2025-12-04 10:32:18
+- bump: patch
+  changes:
+    changed:
+    - Bump policyengine-core to 3.23.0 (adds strict enum validation).
+    fixed:
+    - IL TANF now correctly recognizes veterans as eligible regardless of immigration
+      status per 89 Ill. Admin. Code 112.10.
+  date: 2025-12-04 16:58:21
