@@ -28,7 +28,7 @@ class medicaid_group(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        enrolled = person("medicaid_enrolled", period)
+        eligible = person("is_medicaid_eligible", period)
 
         cat = person("medicaid_category", period)
         cats = cat.possible_values
@@ -59,7 +59,7 @@ class medicaid_group(Variable):
 
         # Core mapping, in precedence order:
         return select(
-            [~enrolled, disabled, non_expansion_adult, expansion_adult, child],
+            [~eligible, disabled, non_expansion_adult, expansion_adult, child],
             [
                 MedicaidGroup.NONE,
                 MedicaidGroup.AGED_DISABLED,
