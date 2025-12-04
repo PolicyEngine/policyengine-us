@@ -11676,3 +11676,8 @@
     - Fix invalid filing_status enum values in test files (lowercase 'single', numeric
       '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
   date: 2025-12-03 22:50:04
+- bump: patch
+  changes:
+    fixed:
+    - Fix New Jersey gross income computation.
+  date: 2025-12-04 10:32:18

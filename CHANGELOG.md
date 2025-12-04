@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.449.7] - 2025-12-04 10:32:18
+
+### Fixed
+
+- Fix New Jersey gross income computation.
+
 ## [1.449.6] - 2025-12-03 22:50:04
 
 ### Fixed
@@ -13710,6 +13716,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.449.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.6...1.449.7
 [1.449.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.5...1.449.6
 [1.449.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.4...1.449.5
 [1.449.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.3...1.449.4
