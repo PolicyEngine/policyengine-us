@@ -1,0 +1,108 @@
+- name: No income results in zero countable income
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 0
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 0
+  output:
+    tn_ff_countable_income: 0
+- name: Only countable earned income with no deductions
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 750
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 0
+  output:
+    tn_ff_countable_income: 750
+- name: Only unearned income with no deductions
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 0
+    tn_ff_countable_unearned_income: 800
+    tn_ff_child_care_deduction: 0
+  output:
+    tn_ff_countable_income: 800
+- name: Earned and unearned income with no child care deduction
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 750
+    tn_ff_countable_unearned_income: 500
+    tn_ff_child_care_deduction: 0
+  output:
+    tn_ff_countable_income: 1250
+- name: Earned income with child care deduction
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 1000
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 200
+  output:
+    tn_ff_countable_income: 800
+- name: Unearned income with child care deduction
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 0
+    tn_ff_countable_unearned_income: 900
+    tn_ff_child_care_deduction: 175
+  output:
+    tn_ff_countable_income: 725
+- name: Both income types with child care deduction
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 1250
+    tn_ff_countable_unearned_income: 400
+    tn_ff_child_care_deduction: 350
+  output:
+    tn_ff_countable_income: 1300
+- name: Child care deduction exceeds income (results in zero)
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 100
+    tn_ff_countable_unearned_income: 50
+    tn_ff_child_care_deduction: 200
+  output:
+    tn_ff_countable_income: 0
+- name: Child care deduction exactly equals income
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 300
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 300
+  output:
+    tn_ff_countable_income: 0
+- name: Child care deduction one dollar less than income
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 300
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 299
+  output:
+    tn_ff_countable_income: 1
+- name: Large income with multiple deductions
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 2250
+    tn_ff_countable_unearned_income: 1000
+    tn_ff_child_care_deduction: 550
+  output:
+    tn_ff_countable_income: 2700
+- name: Only child care deduction with no income (edge case)
+  period: 2024-01
+  input:
+    state_code: TN
+    tn_ff_countable_earned_income: 0
+    tn_ff_countable_unearned_income: 0
+    tn_ff_child_care_deduction: 375
+  output:
+    tn_ff_countable_income: 0
