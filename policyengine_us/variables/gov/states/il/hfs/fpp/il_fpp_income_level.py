@@ -26,4 +26,4 @@ class il_fpp_income_level(Variable):
         fpp_fpg = fpg(p.household_size, state_group, period, parameters)
 
         # Return income as fraction of FPL
-        return where(fpp_fpg > 0, income / fpp_fpg, 0)
+        return income / fpp_fpg
