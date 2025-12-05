@@ -1,0 +1,16 @@
+description: Minnesota multiplies the Transitional Standard by this factor to determine the Family Wage Level used for income eligibility testing under the Minnesota Family Investment Program.
+
+values:
+  2020-01-01: 1.10
+
+metadata:
+  unit: /1
+  period: month
+  label: Minnesota MFIP Family Wage Level multiplier
+  reference:
+    - title: Minnesota Statute 142G - Minnesota Family Investment Program
+      href: https://www.revisor.mn.gov/statutes/cite/142G/pdf
+    - title: Minnesota DHS Combined Manual 0022.12 - How to Calculate Benefit Level
+      href: https://www.dhs.mn.gov/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_002212
+    - title: Minnesota DHS ESM 3.9 - Income and Asset Limits for MFIP/DWP
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=ESM_000309

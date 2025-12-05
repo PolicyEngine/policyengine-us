@@ -1,0 +1,85 @@
+- name: Case 1, no unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_mfip_countable_unearned_income: 0
+
+- name: Case 2, child support below disregard for one child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Child support: $100/month
+    # Disregard for 1 child: $100
+    # Countable: max(100 - 100, 0) = 0
+    mn_mfip_countable_unearned_income: 0
+
+- name: Case 3, child support above disregard for one child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Child support: $150/month
+    # Disregard for 1 child: $100
+    # Countable: max(150 - 100, 0) = 50
+    mn_mfip_countable_unearned_income: 50
+
+- name: Case 4, child support with two children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_000  # $250/month
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Child support: $250/month
+    # Disregard for 2+ children: $200
+    # Countable: max(250 - 200, 0) = 50
+    mn_mfip_countable_unearned_income: 50
