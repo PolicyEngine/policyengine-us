@@ -1,0 +1,61 @@
+- name: Case 1, eligible with all conditions met.
+  period: 2025-01
+  input:
+    state_code: WI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wi_works_income_eligible: true
+    wi_works_resources_eligible: true
+  output:
+    wi_works_eligible: true
+
+- name: Case 2, not eligible due to demographic.
+  period: 2025-01
+  input:
+    state_code: WI
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    wi_works_income_eligible: true
+    wi_works_resources_eligible: true
+  output:
+    wi_works_eligible: false
+
+- name: Case 3, not eligible due to citizenship.
+  period: 2025-01
+  input:
+    state_code: WI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    wi_works_income_eligible: true
+    wi_works_resources_eligible: true
+  output:
+    wi_works_eligible: false
+
+- name: Case 4, not eligible due to income.
+  period: 2025-01
+  input:
+    state_code: WI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wi_works_income_eligible: false
+    wi_works_resources_eligible: true
+  output:
+    wi_works_eligible: false
+
+- name: Case 5, not eligible due to resources.
+  period: 2025-01
+  input:
+    state_code: WI
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wi_works_income_eligible: true
+    wi_works_resources_eligible: false
+  output:
+    wi_works_eligible: false
+
+- name: Case 6, non-Wisconsin state.
+  period: 2025-01
+  input:
+    state_code: CA
+  output:
+    wi_works_eligible: false

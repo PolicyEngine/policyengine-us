@@ -1,0 +1,43 @@
+- name: Case 1, income below 115% FPL.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_countable_income: 1_000
+    spm_unit_fpg: 18_000  # Annual FPL, monthly = 1500
+  output:
+    # Income limit = 1500 * 1.15 = 1725
+    wi_works_income_eligible: true
+
+- name: Case 2, income at exactly 115% FPL.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_countable_income: 1_725
+    spm_unit_fpg: 18_000
+  output:
+    wi_works_income_eligible: true
+
+- name: Case 3, income above 115% FPL.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_countable_income: 1_726
+    spm_unit_fpg: 18_000
+  output:
+    wi_works_income_eligible: false
+
+- name: Case 4, zero income.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_countable_income: 0
+    spm_unit_fpg: 18_000
+  output:
+    wi_works_income_eligible: true
+
+- name: Case 5, non-Wisconsin state.
+  period: 2025-01
+  input:
+    state_code: CA
+  output:
+    wi_works_income_eligible: false

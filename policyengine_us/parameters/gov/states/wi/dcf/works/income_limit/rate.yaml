@@ -1,0 +1,16 @@
+description: Wisconsin limits gross income to this share of the federal poverty guideline under the Wisconsin Works program.
+
+values:
+  2025-01-01: 1.15
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Works income limit FPL rate
+  reference:
+    - title: W-2 Manual 3.2.1 - 115 Percent Gross Income Test
+      href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.2.1_115_Percent_Gross_Income_Test.htm
+    - title: Wisconsin Administrative Code DCF 101.09(3)(a)
+      href: https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/a
+    - title: Wisconsin Statutes 49.145(2)(a)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/145/2/a
