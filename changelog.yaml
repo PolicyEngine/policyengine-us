@@ -11689,3 +11689,10 @@
     - IL TANF now correctly recognizes veterans as eligible regardless of immigration
       status per 89 Ill. Admin. Code 112.10.
   date: 2025-12-04 16:58:21
+- bump: minor
+  changes:
+    added:
+    - Illinois Health Benefits for Persons with Breast or Cervical Cancer (BCC) eligibility.
+    - Shared Illinois HFS immigration status eligibility variable.
+    - has_bcc_qualifying_coverage variable for creditable health coverage determination.
+  date: 2025-12-05 21:39:43
