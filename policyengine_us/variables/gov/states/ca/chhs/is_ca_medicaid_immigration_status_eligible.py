@@ -15,4 +15,12 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
         p = parameters(period).gov.states.ca.chhs
         age = person("age", period)
         pregnant = person("is_pregnant", period)
-        return p.eligible_regardless_of_immigration_status.calc(age) | pregnant
+        # Standard eligibility based on age or pregnancy
+        standard_eligible = (
+            p.eligible_regardless_of_immigration_status.calc(age) | pregnant
+        )
+        # Continuous coverage for existing enrollees (after 2026 freeze)
+        continuous_coverage = person(
+            "is_ca_medicaid_continuous_coverage_eligible", period
+        )
+        return standard_eligible | continuous_coverage

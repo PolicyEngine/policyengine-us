@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    added:
+    - CA Medicaid continuous coverage for existing undocumented enrollees after 2026 enrollment freeze.
+    - is_on_medicaid input variable to indicate current Medicaid enrollment status.
+    - is_ca_medicaid_continuous_coverage_eligible variable for CA-specific continuous coverage logic.
