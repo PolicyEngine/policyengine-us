@@ -1,0 +1,131 @@
+- name: No children results in zero deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [0]
+
+- name: One child age 2+ gets $175 deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [175, 175]
+
+- name: Two children age 2+ get $350 deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [350, 350, 350]
+
+- name: One child under age 2 gets $200 deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [200, 200]
+
+- name: Two children under age 2 get $400 deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [400, 400, 400]
+
+- name: Mixed age children get appropriate deductions
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 5
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [550, 550, 550, 550]
+
+- name: Child age 18 does not qualify for deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: [0, 0]

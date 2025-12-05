@@ -1,0 +1,44 @@
+- name: Passes when income below standard of need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_income_for_need_test: 500
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_standard_of_need_test: true
+
+- name: Passes when income just below standard of need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_income_for_need_test: 845
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_standard_of_need_test: true
+
+- name: Fails when income equals standard of need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_income_for_need_test: 846
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_standard_of_need_test: false
+
+- name: Fails when income exceeds standard of need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_income_for_need_test: 900
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_standard_of_need_test: false
+
+- name: Passes for family of 1 below need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_income_for_need_test: 300
+    mo_tanf_standard_of_need: 393
+  output:
+    mo_tanf_standard_of_need_test: true
