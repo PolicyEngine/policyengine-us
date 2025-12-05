@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class takes_up_aca_if_eligible(Variable):
+class takes_up_head_start_if_eligible(Variable):
     value_type = bool
-    entity = TaxUnit
-    label = "Whether an eligible tax unit claims ACA Premium Tax Credit"
+    entity = Person
+    label = "Whether an eligible person enrolls in Head Start"
     documentation = (
         "Generated stochastically in the dataset using take-up rates. "
         "No formula - purely deterministic rules engine."
