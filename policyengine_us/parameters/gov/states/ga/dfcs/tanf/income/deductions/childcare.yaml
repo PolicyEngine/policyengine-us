@@ -1,0 +1,23 @@
+description: Georgia deducts up to this amount for dependent care expenses under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: Georgia TANF monthly childcare deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: PAMMS TANF Policy Manual - Section 1615 Deductions
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1615/
+    - title: PAMMS TANF Policy Manual PDF
+      href: https://pamms.dhs.ga.gov/dfcs/_exports/tanf-policy-manual.pdf#page=291
+
+brackets:
+  - threshold:
+      1997-07-01: 0
+    amount:
+      1997-07-01: 200
+  - threshold:
+      1997-07-01: 2
+    amount:
+      1997-07-01: 175

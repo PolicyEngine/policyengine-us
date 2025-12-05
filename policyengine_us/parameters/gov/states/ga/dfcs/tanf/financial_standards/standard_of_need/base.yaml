@@ -1,0 +1,39 @@
+description: Georgia uses this base amount for the standard of need under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 12)
+  label: Georgia TANF standard of need base amount
+  reference:
+    # These values have not changed since 1997 (and likely since 1990 under AFDC).
+    - title: 1997 Green Book - Table 7-8 Need Standard and Maximum Benefits
+      href: https://www.govinfo.gov/content/pkg/GPO-CPRT-105WPRT37945/html/GPO-CPRT-105WPRT37945-2-7.htm
+    - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
+    - title: PAMMS TANF Policy Manual - Section 1525 Income
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
+
+1:
+  1997-01-01: 235
+2:
+  1997-01-01: 356
+3:
+  1997-01-01: 424
+4:
+  1997-01-01: 500
+5:
+  1997-01-01: 573
+6:
+  1997-01-01: 621
+7:
+  1997-01-01: 672
+8:
+  1997-01-01: 713
+9:
+  1997-01-01: 751
+10:
+  1997-01-01: 804
+11:
+  1997-01-01: 860
