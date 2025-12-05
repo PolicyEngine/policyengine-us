@@ -1,0 +1,78 @@
+- name: Eligible with low resources and low income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_pregnant: false
+        employment_income:
+          2024: 12_000  # $1_000/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 500  # Below $1_000 limit
+    households:
+      household:
+        members: [parent, child]
+        state_code: IN
+        household_vehicles_value: 0  # No vehicle
+  output:
+    in_tanf_countable_resources: 500  # 500 - 0 vehicle exclusion = 500
+    in_tanf_resources_eligible: true
+    in_tanf_eligible: true
+    # Meets all eligibility criteria
+
+- name: Ineligible due to excess resources despite low income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_pregnant: false
+        employment_income:
+          2024: 12_000  # $1_000/month (low income)
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 25_000  # Well above limits (includes vehicle)
+    households:
+      household:
+        members: [parent, child]
+        state_code: IN
+        household_vehicles_value: 20_000  # Vehicle at exclusion limit
+  output:
+    in_tanf_countable_resources: 5_000  # 25_000 - min(20_000, 20_000) = 5_000
+    in_tanf_resources_eligible: false  # 5_000 > 1_000 application limit
+    in_tanf_eligible: false  # Fails resources test
+    # Income eligible but resources too high
+
+- name: Enrolled recipient can have higher resources
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_pregnant: false
+        employment_income:
+          2024: 12_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 25_000  # Above application limit but below ongoing (includes vehicle)
+        is_tanf_enrolled: true  # Currently enrolled
+    households:
+      household:
+        members: [parent, child]
+        state_code: IN
+        household_vehicles_value: 20_000  # Vehicle at exclusion limit
+  output:
+    in_tanf_countable_resources: 5_000  # 25_000 - min(20_000, 20_000) = 5_000
+    in_tanf_resources_eligible: true  # 5_000 < 10_000 ongoing limit
+    in_tanf_eligible: true
+    # Uses higher limit for enrolled recipients

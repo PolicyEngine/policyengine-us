@@ -1,0 +1,38 @@
+- name: No assets means zero countable resources
+  period: 2024-01
+  input:
+    state_code: IN
+    # SPM unit assets currently returns 0 in baseline
+    spm_unit_assets: 0
+  output:
+    in_tanf_countable_resources: 0
+
+- name: Non-vehicle assets are fully countable
+  period: 2024-01
+  input:
+    state_code: IN
+    spm_unit_assets: 5_000
+    household_vehicles_value: 0  # No vehicle
+  output:
+    in_tanf_countable_resources: 5_000
+    # 5_000 - 0 vehicle exclusion = 5_000
+
+- name: Vehicle exclusion reduces countable resources
+  period: 2024-01
+  input:
+    state_code: IN
+    spm_unit_assets: 25_000  # Includes vehicle value
+    household_vehicles_value: 15_000  # Vehicle worth $15,000
+  output:
+    in_tanf_countable_resources: 10_000
+    # 25_000 - min(15_000, 20_000) = 25_000 - 15_000 = 10_000
+
+- name: Vehicle exclusion capped at limit
+  period: 2024-01
+  input:
+    state_code: IN
+    spm_unit_assets: 30_000  # Includes vehicle value
+    household_vehicles_value: 25_000  # Vehicle worth more than exclusion limit
+  output:
+    in_tanf_countable_resources: 10_000
+    # 30_000 - min(25_000, 20_000) = 30_000 - 20_000 = 10_000

@@ -1,0 +1,64 @@
+- name: Family of 3 with no income receives maximum benefit
+  period: 2024-01
+  input:
+    in_tanf_eligible: true
+    in_tanf_payment_standard: 513
+    in_tanf_countable_income_for_payment: 0
+    state_code: IN
+  output:
+    in_tanf: 513
+    # Max benefit ($513) - countable income ($0) = $513
+
+- name: Family of 3 with countable income receives reduced benefit
+  period: 2024-01
+  input:
+    in_tanf_eligible: true
+    in_tanf_payment_standard: 513
+    in_tanf_countable_income_for_payment: 200
+    state_code: IN
+  output:
+    in_tanf: 313
+    # Max benefit ($513) - countable income ($200) = $313
+
+- name: Family of 2 with partial income
+  period: 2024-01
+  input:
+    in_tanf_eligible: true
+    in_tanf_payment_standard: 409
+    in_tanf_countable_income_for_payment: 100
+    state_code: IN
+  output:
+    in_tanf: 309
+    # Max benefit ($409) - countable income ($100) = $309
+
+- name: Ineligible family receives no benefit
+  period: 2024-01
+  input:
+    in_tanf_eligible: false
+    in_tanf_payment_standard: 513
+    in_tanf_countable_income_for_payment: 100
+    state_code: IN
+  output:
+    in_tanf: 0
+
+- name: Family with countable income equal to payment standard
+  period: 2024-01
+  input:
+    in_tanf_eligible: true
+    in_tanf_payment_standard: 513
+    in_tanf_countable_income_for_payment: 513
+    state_code: IN
+  output:
+    in_tanf: 0
+    # Max benefit ($513) - countable income ($513) = $0
+
+- name: Family with countable income exceeding payment standard
+  period: 2024-01
+  input:
+    in_tanf_eligible: true
+    in_tanf_payment_standard: 513
+    in_tanf_countable_income_for_payment: 600
+    state_code: IN
+  output:
+    in_tanf: 0
+    # max(513 - 600, 0) = 0
