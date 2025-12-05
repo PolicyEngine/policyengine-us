@@ -3,7 +3,7 @@
   input:
     state_code: IL
     is_medicaid_eligible: false
-    has_esi: false
+    has_bcc_qualifying_coverage: false
   output:
     il_bcc_insurance_eligible: true
 
@@ -12,15 +12,24 @@
   input:
     state_code: IL
     is_medicaid_eligible: true
-    has_esi: false
+    has_bcc_qualifying_coverage: false
   output:
     il_bcc_insurance_eligible: false
 
-- name: Ineligible - has employer-sponsored insurance
+- name: Ineligible - has qualifying health coverage
   period: 2024
   input:
     state_code: IL
     is_medicaid_eligible: false
-    has_esi: true
+    has_bcc_qualifying_coverage: true
+  output:
+    il_bcc_insurance_eligible: false
+
+- name: Ineligible - both Medicaid and qualifying coverage
+  period: 2024
+  input:
+    state_code: IL
+    is_medicaid_eligible: true
+    has_bcc_qualifying_coverage: true
   output:
     il_bcc_insurance_eligible: false
