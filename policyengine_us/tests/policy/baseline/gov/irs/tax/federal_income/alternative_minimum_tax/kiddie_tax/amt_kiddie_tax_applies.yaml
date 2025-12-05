@@ -1,11 +1,12 @@
-- name: Kiddie tax does applies to single head
+# Non-student tests
+- name: Kiddie tax applies to single head under 19
   period: 2022
   input:
     age_head: 18
   output:
     amt_kiddie_tax_applies: true
 
-- name: Older spouse
+- name: Kiddie tax does not apply when spouse is 19+ (non-student)
   period: 2022
   input:
     age_head: 18
@@ -13,7 +14,7 @@
   output:
     amt_kiddie_tax_applies: false
 
-- name: Younger spouse
+- name: Kiddie tax applies when both head and spouse under 19
   period: 2022
   input:
     age_head: 18
@@ -21,10 +22,85 @@
   output:
     amt_kiddie_tax_applies: true
 
-- name: Older head
+- name: Kiddie tax does not apply when head is 19+ (non-student)
   period: 2022
   input:
     age_head: 19
     age_spouse: 18
+  output:
+    amt_kiddie_tax_applies: false
+
+# Full-time student tests (students under 24 are subject to kiddie tax)
+- name: Kiddie tax applies to 20-year-old full-time student head
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Kiddie tax applies to 23-year-old full-time student head
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 23
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Kiddie tax does not apply to 24-year-old student
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 24
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    amt_kiddie_tax_applies: false
+
+- name: Kiddie tax does not apply to 20-year-old non-student
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_college_student: false
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    amt_kiddie_tax_applies: false
+
+- name: Kiddie tax does not apply when student spouse is 24+
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+      person2:
+        age: 24
+        is_full_time_college_student: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
   output:
     amt_kiddie_tax_applies: false
