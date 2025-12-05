@@ -5,13 +5,14 @@ class qbid_amount(Variable):
     value_type = float
     entity = Person
     label = (
-        "Per-cap qualified business income deduction amount for each person"
+        "Per-person qualified business income deduction amount"
     )
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
-        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
+        "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
+        "https://www.irs.gov/pub/irs-pdf/f8995.pdf",
     )
 
     def formula(person, period, parameters):
@@ -53,4 +54,15 @@ class qbid_amount(Variable):
         )
         line26 = max_(0, adj_qbid_max - reduction)
         line12 = where(adj_cap < adj_qbid_max, line26, 0)
-        return max_(line11, line12)  # Worksheet 12-A, line 13
+        # QBI component (Worksheet 12-A, line 13 / Form 8995 Line 5)
+        qbi_component = max_(line11, line12)
+
+        # REIT/PTP component (Form 8995 Lines 6-9)
+        # Per §199A(b)(1)(B), qualified REIT dividends and qualified PTP income
+        # receive a 20% deduction WITHOUT W-2 wage or UBIA limitations
+        reit_ptp_income = person("qualified_reit_and_ptp_income", period)
+        reit_ptp_component = p.max.reit_ptp_rate * max_(0, reit_ptp_income)
+
+        # Total QBID = QBI component + REIT/PTP component
+        # (Form 8995 Line 10: Add lines 5 and 9)
+        return qbi_component + reit_ptp_component
