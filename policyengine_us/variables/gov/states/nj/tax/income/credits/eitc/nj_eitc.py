@@ -35,10 +35,16 @@ class nj_eitc(Variable):
             & federal_eitc_meets_income_test
             & federal_eitc_takes_up
         )
+        childless_eitc_age_eligible = tax_unit(
+            "nj_childless_eitc_age_eligible", period
+        )
+        childless_eitc_eligible = (
+            childless_eitc_age_eligible & federal_eitc_meets_income_test
+        )
         federal_eitc = select(
             [
                 federal_eitc_eligible,
-                tax_unit("nj_childless_eitc_age_eligible", period),
+                childless_eitc_eligible,
             ],
             [
                 tax_unit("eitc", period),
