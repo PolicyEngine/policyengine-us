@@ -15,11 +15,12 @@ class mt_itemized_deductions_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.deductions
+        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
         # Since we only compute the federal charitable deduction at the tax unit level,
         # we will split the value between each spouse
         charitable_deduction = (
-            person.tax_unit("charitable_deduction", period) * 0.5
+            person.tax_unit("charitable_deduction", period)
+            * p.spouse_allocation_rate
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The interest deduction is the sum of mortagage and investment interest expenses
