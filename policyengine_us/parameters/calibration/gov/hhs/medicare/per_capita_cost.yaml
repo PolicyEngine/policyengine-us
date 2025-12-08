@@ -1,0 +1,12 @@
+description: Average Medicare spending per enrolled beneficiary (national average). Represents the annual value of Medicare coverage including Part A and Part B.
+values:
+  2021-01-01: 11_080  # Traditional Medicare (Part A and/or Part B) per KFF
+  2025-01-01: 14_500  # Estimated - update with official Centers for Medicare & Medicaid Services (CMS) data when available
+metadata:
+  label: Medicare per capita cost
+  unit: currency-USD
+  period: year
+  reference:
+    - title: KFF Medicare Spending Per Beneficiary (2021)
+      href: https://www.kff.org/medicare/state-indicator/per-beneficiary/
+    - title: Note - 2024 value is estimated and should be updated with official Centers for Medicare & Medicaid Services (CMS) data

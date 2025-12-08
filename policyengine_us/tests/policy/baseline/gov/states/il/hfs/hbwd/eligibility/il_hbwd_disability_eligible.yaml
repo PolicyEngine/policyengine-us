@@ -1,0 +1,35 @@
+- name: Case 1, disability eligible via SSI disability.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_ssi_disabled: true
+    social_security_disability: 0
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 2, disability eligible via SSDI receipt.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_ssi_disabled: false
+    social_security_disability: 14_400  # $1,200/month
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 3, disability eligible via both.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_ssi_disabled: true
+    social_security_disability: 14_400  # $1,200/month
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 4, disability ineligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_ssi_disabled: false
+    social_security_disability: 0
+  output:
+    il_hbwd_disability_eligible: false

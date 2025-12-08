@@ -11,3 +11,24 @@
     state_code: AK
   output:
     state_group: AK
+
+- name: Contiguous state does not cause empty array indexing error
+  period: 2024
+  input:
+    state_code: TX
+  output:
+    state_group: CONTIGUOUS_US
+
+- name: Hawaii
+  period: 2024
+  input:
+    state_code: HI
+  output:
+    state_group: HI
+
+- name: Puerto Rico
+  period: 2024
+  input:
+    state_code: PR
+  output:
+    state_group: PR

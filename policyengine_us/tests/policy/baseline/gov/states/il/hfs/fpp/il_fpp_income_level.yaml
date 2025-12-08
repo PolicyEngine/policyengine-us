@@ -1,0 +1,27 @@
+# IL FPP uses applicant's income only with fixed household size of 2
+# 2024 FPL for household size 2 in contiguous US: $15,060 + $5,380 = $20,440
+
+- name: Case 1, income at 100% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    adjusted_gross_income_person: 20_440
+  output:
+    il_fpp_income_level: 1.0
+
+- name: Case 2, income at 213% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    adjusted_gross_income_person: 43_537
+  output:
+    # 43,537 / 20,440 = 2.13
+    il_fpp_income_level: 2.13
+
+- name: Case 3, zero income.
+  period: 2024
+  input:
+    state_code: IL
+    adjusted_gross_income_person: 0
+  output:
+    il_fpp_income_level: 0

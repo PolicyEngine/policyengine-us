@@ -101,6 +101,9 @@ from .reconciliation import (
 from .states.mi.surtax import (
     create_mi_surtax_reform,
 )
+from .local.ny.mamdani_income_tax import (
+    create_nyc_mamdani_income_tax_reform,
+)
 from .states.ut import (
     create_ut_refundable_eitc_reform,
 )
@@ -252,6 +255,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     mi_surtax = create_mi_surtax_reform(parameters, period)
+
+    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
+        parameters, period
+    )
+
     ut_refundable_eitc = create_ut_refundable_eitc_reform(parameters, period)
 
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
@@ -320,6 +328,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
+        nyc_mamdani_income_tax,
         ut_refundable_eitc,
         additional_tax_bracket,
         american_worker_rebate_act,
