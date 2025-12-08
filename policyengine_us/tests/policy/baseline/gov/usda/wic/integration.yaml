@@ -1,0 +1,181 @@
+# WIC Integration Tests
+# Tests the full eligibility pipeline from demographics to benefits.
+# Per 42 U.S.C. § 1786, eligibility requires:
+# 1. Valid demographic category (pregnant, postpartum, breastfeeding, infant, child)
+# 2. Income ≤ 185% FPG OR categorical eligibility (SNAP/TANF/Medicaid)
+# 3. Nutritional risk assessment (assumed true in individual simulation)
+#
+# Note: WIC package values are uprated from 2018 base values using CPI-U.
+# Note: school_meal_countable_income is input as ANNUAL but computed as monthly.
+
+- name: Case 1, infant in low-income family eligible for WIC.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Parent - not WIC eligible (adult)
+        age: 30
+      person2:
+        # Infant - WIC eligible
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Annual income: $24,000
+        # Monthly: $2,000
+        # 2-person FPG 2024: $20,440/year = $1,703/month
+        # Ratio: 2000/1703 = 1.17 < 1.85 ✓
+        school_meal_countable_income: 24_000
+  output:
+    wic_category: [NONE, INFANT]
+    meets_wic_income_test: true
+    is_wic_eligible: [false, true]
+    # INFANT value uprated from $138.64 (2018) to ~$173.28 (2024)
+    wic: [0, 173.28]
+
+- name: Case 2, pregnant woman fails income but passes categorical via SNAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Annual income: $60,000
+        # Monthly: $5,000
+        # Pregnant adds +1 to household → 2-person FPG: $20,440/year = $1,703/month
+        # Ratio: 5000/1703 = 2.94 > 1.85 ✗
+        school_meal_countable_income: 60_000
+        snap: 200
+  output:
+    wic_category: PREGNANT
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_eligible: true
+    # PREGNANT value uprated from $37.33 (2018) to ~$46.66 (2024)
+    wic: 46.66
+
+- name: Case 3, child age 3 eligible through Medicaid.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        medicaid_enrolled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Annual income: $48,000
+        # Monthly: $4,000
+        # 1-person FPG 2024: $15,060/year = $1,255/month
+        # Ratio: 4000/1255 = 3.19 > 1.85 ✗
+        school_meal_countable_income: 48_000
+        # Explicitly disable SNAP to test Medicaid pathway
+        snap: 0
+  output:
+    wic_category: CHILD
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_eligible: true
+    # CHILD value uprated from $31.78 (2018) to ~$39.72 (2024)
+    wic: 39.72
+
+- name: Case 4, healthy adult not eligible even with SNAP.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_countable_income: 12_000
+        snap: 200
+  output:
+    wic_category: NONE
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: true
+    # Not eligible - adult is not in valid WIC demographic category
+    is_wic_eligible: false
+    wic: 0
+
+- name: Case 5, child age 5 not eligible (too old).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+        # Explicitly disable Medicaid to test demographic-only rejection
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_countable_income: 18_000
+        # Explicitly disable SNAP/TANF
+        snap: 0
+        tanf: 0
+  output:
+    # Age 5+ is category NONE per 42 U.S.C. § 1786(b)(2)
+    wic_category: NONE
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: false
+    is_wic_eligible: false
+    wic: 0
+
+- name: Case 6, family with pregnant mother and toddler.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 28
+        is_pregnant: true
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Annual income: $36,000
+        # Monthly: $3,000
+        # 3 people + 1 for pregnancy = 4-person equivalent
+        # 4-person FPG 2024: $31,200/year = $2,600/month
+        # Ratio: 3000/2600 = 1.15 < 1.85 ✓
+        school_meal_countable_income: 36_000
+  output:
+    wic_category: [NONE, PREGNANT, CHILD]
+    is_wic_eligible: [false, true, true]
+    # Father: $0, Mother: ~$46.66, Child: ~$39.72
+    wic: [0, 46.66, 39.72]
+
+- name: Case 7, income above 185% FPG without categorical eligibility.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 2
+        # Explicitly disable Medicaid to test income-only pathway
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Annual income: $36,000
+        # Monthly: $3,000
+        # 1-person FPG 2024: $15,060/year = $1,255/month
+        # Ratio: 3000/1255 = 2.39 > 1.85 ✗
+        school_meal_countable_income: 36_000
+        # Explicitly disable SNAP/TANF
+        snap: 0
+        tanf: 0
+  output:
+    wic_category: CHILD
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: false
+    is_wic_eligible: false
+    wic: 0

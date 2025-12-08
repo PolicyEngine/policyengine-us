@@ -13,7 +13,7 @@
 - name: Real estate taxes and mortgage capped 
   period: 2022
   input:
-    filing_status: WIDWO
+    filing_status: SURVIVING_SPOUSE
     mortgage_interest: 11_000
     real_estate_taxes: 11_000
     charitable_deduction: 0
@@ -25,7 +25,7 @@
 - name: Real estate taxes and mortgage capped with medical and charitable
   period: 2022
   input:
-    filing_status: WIDWO
+    filing_status: SURVIVING_SPOUSE
     mortgage_interest: 11_000
     real_estate_taxes: 11_000
     charitable_deduction: 1_000

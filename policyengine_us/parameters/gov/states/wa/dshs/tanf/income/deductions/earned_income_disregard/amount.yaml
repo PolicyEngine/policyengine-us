@@ -1,0 +1,14 @@
+description: Washington deducts this amount from the household's total gross earned income under the Temporary Assistance for Needy Families program.
+
+values:
+  2024-01-01: 500
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF family earnings disregard
+  reference:
+    - title: WAC 388-450-0170(2) - Deducting the first $500 of earned income
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0170
+    - title: DSHS Eligibility A-Z Manual, Income - Earned Income Deductions
+      href: https://www.dshs.wa.gov/esa/income-table-contents/budgeting
