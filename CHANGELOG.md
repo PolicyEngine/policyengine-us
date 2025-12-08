@@ -5,6 +5,113 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.452.0] - 2025-12-05 22:06:02
+
+### Added
+
+- Illinois Family Planning Program (FPP).
+
+## [1.451.0] - 2025-12-05 21:40:25
+
+### Added
+
+- Illinois Medicaid Presumptive Eligibility (MPE).
+
+## [1.450.0] - 2025-12-05 21:39:43
+
+### Added
+
+- Illinois Health Benefits for Persons with Breast or Cervical Cancer (BCC) eligibility.
+- Shared Illinois HFS immigration status eligibility variable.
+- has_bcc_qualifying_coverage variable for creditable health coverage determination.
+
+## [1.449.8] - 2025-12-04 16:58:21
+
+### Changed
+
+- Bump policyengine-core to 3.23.0 (adds strict enum validation).
+
+### Fixed
+
+- IL TANF now correctly recognizes veterans as eligible regardless of immigration status per 89 Ill. Admin. Code 112.10.
+
+## [1.449.7] - 2025-12-04 10:32:18
+
+### Fixed
+
+- Fix New Jersey gross income computation.
+
+## [1.449.6] - 2025-12-03 22:50:04
+
+### Fixed
+
+- Fix invalid filing_status enum values in test files (lowercase 'single', numeric '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
+
+## [1.449.5] - 2025-12-03 22:13:14
+
+### Added
+
+- WIC integration tests.
+
+### Fixed
+
+- WIC eligibility now requires valid demographic category per 42 U.S.C. § 1786(d)(1).
+
+## [1.449.4] - 2025-12-03 21:46:07
+
+### Fixed
+
+- Fix Filing Status Issues in Missouri Test Files.
+
+## [1.449.3] - 2025-12-03 13:07:31
+
+### Fixed
+
+- Fixed typo in Colorado state supplement directory name (state_suplement → state_supplement).
+
+## [1.449.2] - 2025-12-03 05:42:15
+
+### Changed
+
+- Parameterized Montana spouse allocation factor for itemized deductions (was hardcoded 0.5)
+
+## [1.449.1] - 2025-12-02 23:28:11
+
+### Fixed
+
+- StateGroup enum warnings for contiguous US states in state_group variable.
+
+## [1.449.0] - 2025-12-02 22:19:22
+
+### Added
+
+- Add Medicare Part A premiums (full, reduced, premium-free based on quarters of coverage).
+- Add Medicare Part B premiums with Income-Related Monthly Adjustment Amount (IRMAA).
+
+## [1.448.0] - 2025-12-02 15:33:28
+
+### Added
+
+- Washington TANF.
+
+## [1.447.0] - 2025-12-02 15:22:21
+
+### Added
+
+- Puerto Rico adjusted gross income calculation.
+
+## [1.446.1] - 2025-12-02 02:33:48
+
+### Fixed
+
+- Prevent negative subtractions from acting as additions under the Ohio joint filing credit.
+
+## [1.446.0] - 2025-12-02 02:31:25
+
+### Added
+
+- Puerto Rico net taxable income calculation.
+
 ## [1.445.0] - 2025-12-02 00:29:05
 
 ### Added
@@ -13639,6 +13746,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
+[1.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.450.0...1.451.0
+[1.450.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.8...1.450.0
+[1.449.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.7...1.449.8
+[1.449.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.6...1.449.7
+[1.449.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.5...1.449.6
+[1.449.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.4...1.449.5
+[1.449.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.3...1.449.4
+[1.449.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.2...1.449.3
+[1.449.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.1...1.449.2
+[1.449.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.0...1.449.1
+[1.449.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.448.0...1.449.0
+[1.448.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.447.0...1.448.0
+[1.447.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.1...1.447.0
+[1.446.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.0...1.446.1
+[1.446.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.445.0...1.446.0
 [1.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.1...1.445.0
 [1.444.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.0...1.444.1
 [1.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.443.0...1.444.0

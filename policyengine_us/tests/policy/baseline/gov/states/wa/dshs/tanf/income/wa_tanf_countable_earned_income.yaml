@@ -1,0 +1,70 @@
+- name: Zero gross earned income - zero countable
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 0
+  output:
+    # Countable = max($0 - $500, 0) × 0.5 = $0
+    wa_tanf_countable_earned_income: 0
+
+- name: Gross earned below disregard - zero countable
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 300
+  output:
+    # Countable = max($300 - $500, 0) × 0.5 = $0
+    wa_tanf_countable_earned_income: 0
+
+- name: Gross earned exactly at disregard - zero countable
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 500
+  output:
+    # Countable = max($500 - $500, 0) × 0.5 = $0
+    wa_tanf_countable_earned_income: 0
+
+- name: Gross earned one dollar over disregard
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 501
+  output:
+    # Countable = ($501 - $500) × 0.5 = $0.50
+    wa_tanf_countable_earned_income: 0.5
+
+- name: Gross earned moderately above disregard
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 1_000
+  output:
+    # Countable = ($1,000 - $500) × 0.5 = $250
+    wa_tanf_countable_earned_income: 250
+
+- name: Gross earned significantly above disregard
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 2_000
+  output:
+    # Countable = ($2,000 - $500) × 0.5 = $750
+    wa_tanf_countable_earned_income: 750
+
+- name: High gross earned income
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 4_000
+  output:
+    # Countable = ($4,000 - $500) × 0.5 = $1,750
+    wa_tanf_countable_earned_income: 1_750
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 1_000
+  output:
+    wa_tanf_countable_earned_income: 0

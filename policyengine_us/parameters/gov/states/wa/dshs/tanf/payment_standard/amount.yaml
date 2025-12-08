@@ -1,0 +1,32 @@
+description: Washington provides this payment standard based on assistance unit size under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF payment standard
+  breakdown:
+    - range(1, 11)
+  reference:
+    - title: WAC 388-478-0020 - Payment standards for TANF, SFA, and RCA
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020
+
+1:
+  2024-01-01: 450
+2:
+  2024-01-01: 570
+3:
+  2024-01-01: 706
+4:
+  2024-01-01: 833
+5:
+  2024-01-01: 959
+6:
+  2024-01-01: 1_090
+7:
+  2024-01-01: 1_258
+8:
+  2024-01-01: 1_392
+9:
+  2024-01-01: 1_529
+10:
+  2024-01-01: 1_662
