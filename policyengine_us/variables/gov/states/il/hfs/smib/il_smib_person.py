@@ -21,7 +21,6 @@ class il_smib_person(Variable):
     def formula(person, period, parameters):
         # SMIB pays the Part B premium
         # base_part_b_premium is annual, convert to monthly
-        part_b_premium = (
+        return (
             person("base_part_b_premium", period.this_year) / MONTHS_IN_YEAR
         )
-        return part_b_premium

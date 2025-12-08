@@ -22,5 +22,5 @@ class il_smib_categorical_eligible(Variable):
         # TANF recipient (SPM unit level, check if person is in eligible unit)
         is_tanf = person.spm_unit("il_tanf_eligible", period)
         # SSI recipient
-        is_ssi = person("is_ssi_eligible", period.this_year)
+        is_ssi = person("is_ssi_eligible", period)
         return is_aabd | is_tanf | is_ssi
