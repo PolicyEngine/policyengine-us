@@ -12,5 +12,5 @@ class pa_tanf_countable_income(Variable):
 
     adds = [
         "pa_tanf_countable_earned_income",
-        "pa_tanf_countable_unearned_income",
+        "tanf_gross_unearned_income",
     ]

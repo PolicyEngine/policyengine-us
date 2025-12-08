@@ -22,7 +22,6 @@ class pa_tanf_county_group(Variable):
         county = household("county_str", period)
         p = parameters(period).gov.states.pa.dhs.tanf.county_group
 
-        # Check which group the county belongs to
         group_1 = np.isin(county, p.group_1)
         group_2 = np.isin(county, p.group_2)
         group_3 = np.isin(county, p.group_3)

@@ -12,9 +12,4 @@ class pa_tanf_countable_earned_income(Variable):
         "http://services.dpw.state.pa.us/oimpolicymanuals/cash/160_Income_Deductions/160_2_TANF_Earned_Income_Deductions.htm",
         "https://www.law.cornell.edu/regulations/pennsylvania/55-Pa-Code-SS-183-94",
     )
-
-    def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        return spm_unit.sum(
-            person("pa_tanf_earned_income_after_deductions_person", period)
-        )
+    adds = ["pa_tanf_earned_income_after_deductions_person"]

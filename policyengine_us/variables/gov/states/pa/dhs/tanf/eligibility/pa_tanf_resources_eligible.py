@@ -12,9 +12,6 @@ class pa_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.pa.dhs.tanf
 
-        # Get household assets (stock variable - use this_year)
         household_assets = spm_unit("spm_unit_assets", period.this_year)
 
-        # Check if assets are below the resource limit
-        resource_limit = p.resource_limit
-        return household_assets <= resource_limit
+        return household_assets <= p.resource_limit
