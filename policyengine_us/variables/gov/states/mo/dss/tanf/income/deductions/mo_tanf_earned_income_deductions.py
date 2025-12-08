@@ -16,6 +16,9 @@ class mo_tanf_earned_income_deductions(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
+        # Note: Missouri has time-limited earned income disregards ($30+1/3 for
+        # first 4 months, $30-only for next 8 months, 2/3 for up to 12 months).
+        # This simplified implementation does not model these month limits.
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         is_enrolled = spm_unit("is_tanf_enrolled", period)

@@ -16,13 +16,9 @@ class mo_tanf_child_care_deduction(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.child_care_deduction
         person = spm_unit.members
+        dependent = person("is_tax_unit_dependent", period)
         age = person("age", period.this_year)
-        is_under_two = age < p.age_threshold
-        is_two_and_over = (age >= p.age_threshold) & (age < p.max_age)
-        under_two_deduction = (
-            spm_unit.sum(is_under_two) * p.amount_under_age_two
-        )
-        two_and_over_deduction = (
-            spm_unit.sum(is_two_and_over) * p.amount_age_two_and_over
-        )
-        return under_two_deduction + two_and_over_deduction
+        childcare_expenses = spm_unit("childcare_expenses", period)
+        max_deduction_per_child = p.amount.calc(age) * dependent
+        total_max_deduction = spm_unit.sum(max_deduction_per_child)
+        return min_(childcare_expenses, total_max_deduction)

@@ -28,7 +28,7 @@
   output:
     mo_tanf: 192.09
 
-- name: Small positive benefit is paid
+- name: Benefit below $10 minimum threshold is not paid
   period: 2024-01
   input:
     state_code: MO
@@ -36,7 +36,8 @@
     mo_tanf_standard_of_need: 846
     mo_tanf_countable_income: 285
   output:
-    mo_tanf: 7.09
+    # $292.09 - $285 = $7.09, but minimum payment is $10
+    mo_tanf: 0
 
 - name: Benefit of $10
   period: 2024-01
