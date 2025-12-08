@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.452.0] - 2025-12-05 22:06:02
+
+### Added
+
+- Illinois Family Planning Program (FPP).
+
+## [1.451.0] - 2025-12-05 21:40:25
+
+### Added
+
+- Illinois Medicaid Presumptive Eligibility (MPE).
+
+## [1.450.0] - 2025-12-05 21:39:43
+
+### Added
+
+- Illinois Health Benefits for Persons with Breast or Cervical Cancer (BCC) eligibility.
+- Shared Illinois HFS immigration status eligibility variable.
+- has_bcc_qualifying_coverage variable for creditable health coverage determination.
+
 ## [1.449.8] - 2025-12-04 16:58:21
 
 ### Changed
@@ -13726,6 +13746,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
+[1.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.450.0...1.451.0
+[1.450.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.8...1.450.0
 [1.449.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.7...1.449.8
 [1.449.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.6...1.449.7
 [1.449.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.5...1.449.6
