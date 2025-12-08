@@ -15,8 +15,9 @@ class msp_asset_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility
+        state_code = person.household("state_code_str", period)
         # Check if asset test applies (some states have eliminated it)
-        asset_test_applies = p.asset.applies
+        asset_test_applies = p.asset.applies[state_code]
         # If asset test doesn't apply, everyone is asset-eligible
         cash_assets = person.spm_unit("spm_unit_cash_assets", period.this_year)
         married = person.spm_unit("spm_unit_is_married", period)

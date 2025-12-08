@@ -1,4 +1,4 @@
-description: Federal QI (Qualifying Individual) eligibility requires income at or below this percentage of the Federal Poverty Level. States may set higher limits.
+description: Federal QI (Qualifying Individual) eligibility requires income at or below this percentage of the Federal Poverty Level.
 values:
   2024-01-01: 1.35
 
@@ -9,5 +9,6 @@ metadata:
   reference:
     - title: 42 CFR 435.123 - Individuals eligible as qualifying individuals
       href: https://www.law.cornell.edu/cfr/text/42/435.123
+      # Note: States may set higher income limits than the federal floor
     - title: Medicare Savings Programs | Medicare.gov
       href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs

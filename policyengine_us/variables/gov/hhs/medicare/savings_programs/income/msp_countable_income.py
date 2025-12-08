@@ -17,6 +17,6 @@ class msp_countable_income(Variable):
     def formula(person, period, parameters):
         # MSP uses a MAGI-like income definition
         # SSI and certain other income is excluded but not modeled here
-        yearly_agi = person.tax_unit("adjusted_gross_income", period.this_year)
-        monthly_income = yearly_agi / MONTHS_IN_YEAR
+        # AGI is automatically disaggregated from annual to monthly
+        monthly_income = person.tax_unit("adjusted_gross_income", period)
         return max_(monthly_income, 0)

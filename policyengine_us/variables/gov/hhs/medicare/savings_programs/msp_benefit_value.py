@@ -18,13 +18,9 @@ class msp_benefit_value(Variable):
     def formula(person, period, parameters):
         category = person("msp_category", period)
 
-        # Get annual premiums and convert to monthly
-        part_a_premium = (
-            person("base_part_a_premium", period.this_year) / MONTHS_IN_YEAR
-        )
-        part_b_premium = (
-            person("base_part_b_premium", period.this_year) / MONTHS_IN_YEAR
-        )
+        # Get premiums (automatically disaggregated from annual to monthly)
+        part_a_premium = person("base_part_a_premium", period)
+        part_b_premium = person("base_part_b_premium", period)
 
         # Benefit depends on category:
         # QMB: Part A + Part B premiums (plus deductibles/copays, not modeled)

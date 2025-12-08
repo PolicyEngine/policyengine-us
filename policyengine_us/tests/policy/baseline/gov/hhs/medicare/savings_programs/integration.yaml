@@ -73,6 +73,7 @@
     households:
       household:
         members: [person1]
+        state_code: TX  # Use a state with asset test
   output:
     msp_eligible: [false]
     msp_category: [NONE]
