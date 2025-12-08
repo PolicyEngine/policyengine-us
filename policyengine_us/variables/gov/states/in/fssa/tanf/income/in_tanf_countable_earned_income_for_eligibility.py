@@ -18,7 +18,7 @@ class in_tanf_countable_earned_income_for_eligibility(Variable):
     def formula(spm_unit, period, parameters):
         # NOTE: The $30 and 1/3 disregard only applies for the first 4 months
         # of continuing eligibility. This simplified implementation always
-        # applies the disregard since PolicyEngine cannot track benefit history.
+        # applies the $30 and 1/3 disregard.
         p = parameters(period).gov.states["in"].fssa.tanf.income.deductions
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)
