@@ -27,7 +27,24 @@ class variable_name(Variable):
     reference = "Specific regulation citation (e.g., 42 USC 601, 7 CFR 273.9)"
 ```
 
-### 2. Reference-Value Corroboration
+### 2. Reference-Value Corroboration (CRITICAL)
+
+**⚠️ THE REFERENCE MUST ACTUALLY CORROBORATE THE VALUE ⚠️**
+
+This is the most critical validation. A reference that doesn't support the value is worse than no reference.
+
+**MANDATORY CHECKS:**
+1. **Fetch the referenced document** (if accessible via WebFetch)
+2. **Read the cited section/subsection**
+3. **Verify it explicitly states the value** (not just related content)
+4. **Flag if subsection citation is wrong** even if general section is correct
+
+**Example of what went wrong:**
+- Parameter value: 0.5 (spouse allocation rate)
+- Citation: "Montana Code § 15-30-2131(2)"
+- Actual statute § 15-30-2131(2): About day-care home deductions (WRONG SUBSECTION!)
+- Correct subsection: § 15-30-2131(1)(c)(vi)(D): "deduction...must be divided equally"
+- **This MUST be flagged as non-corroborating even though the statute number is related**
 
 **The reference must explicitly support the value:**
 

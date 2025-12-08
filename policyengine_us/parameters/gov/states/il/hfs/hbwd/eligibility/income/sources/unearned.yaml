@@ -1,0 +1,25 @@
+description: Illinois counts these income sources as unearned income under the Health Benefits for Workers with Disabilities program.
+values:
+  2022-04-01:
+    - social_security
+    - disability_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - capital_gains
+    - farm_income
+    - farm_rent_income
+    - debt_relief
+    - illicit_income
+    - miscellaneous_income
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois HBWD unearned income sources
+  reference:
+    - title: 89 Ill. Admin. Code § 120.330 - Income - Unearned Income
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.330

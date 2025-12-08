@@ -1,0 +1,15 @@
+description: Washington limits the Temporary Assistance for Needy Families program to households with countable resources up to this amount.
+
+values:
+  2022-01-01: 6_000
+  2024-01-01: 12_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington TANF resource limit
+  reference:
+    - title: Washington TANF State Plan 2022, page 13 - $6,000 cash resource limit
+      href: https://workfirst.wa.gov/sites/default/files/public/TANF_stateplan_2022_final.pdf#page=13
+    - title: HB 1447 (2023 c 418) - Increased asset limit to $12,000 effective Feb 1, 2024
+      href: https://app.leg.wa.gov/billsummary?BillNumber=1447&Year=2023

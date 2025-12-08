@@ -1,0 +1,33 @@
+# Nutritional risk is a health assessment per 42 U.S.C. § 1786(b)(8).
+# In individual simulation, all persons are assumed at nutritional risk.
+# In microsimulation, risk is assigned probabilistically by category.
+
+- name: Case 1, infant assumed at nutritional risk in individual simulation.
+  period: 2024-01
+  input:
+    age: 0
+  output:
+    is_wic_at_nutritional_risk: true
+
+- name: Case 2, child assumed at nutritional risk in individual simulation.
+  period: 2024-01
+  input:
+    age: 3
+  output:
+    is_wic_at_nutritional_risk: true
+
+- name: Case 3, adult assumed at nutritional risk in individual simulation.
+  period: 2024-01
+  input:
+    age: 35
+  output:
+    # Even adults are assumed at nutritional risk in individual simulation.
+    # Demographic eligibility is checked separately in is_wic_eligible.
+    is_wic_at_nutritional_risk: true
+
+- name: Case 4, person receiving WIC is at nutritional risk.
+  period: 2024-01
+  input:
+    receives_wic: true
+  output:
+    is_wic_at_nutritional_risk: true
