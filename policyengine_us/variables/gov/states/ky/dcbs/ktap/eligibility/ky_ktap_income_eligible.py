@@ -16,6 +16,6 @@ class ky_ktap_income_eligible(Variable):
             period,
             ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
-        need_standard = spm_unit("ky_ktap_need_standard", period)
-        gross_income_limit = need_standard * p.gross_income_limit_rate
+        standard_of_need = spm_unit("ky_ktap_standard_of_need", period)
+        gross_income_limit = standard_of_need * p.gross_income_limit_rate
         return gross_income <= gross_income_limit
