@@ -13,6 +13,6 @@ class wi_works_countable_income(Variable):
     ]
     defined_for = StateCode.WI
     # Wisconsin disregards child support, which is included in
-    # tanf_gross_unearned_income, so we subtract it here.
+    # tanf_gross_unearned_income. The result cannot be negative.
     adds = ["tanf_gross_earned_income", "tanf_gross_unearned_income"]
     subtracts = ["child_support_received"]
