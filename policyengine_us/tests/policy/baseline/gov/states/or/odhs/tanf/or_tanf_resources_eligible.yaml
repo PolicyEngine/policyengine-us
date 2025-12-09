@@ -5,7 +5,7 @@
   period: 2024
   input:
     state_code: OR
-    spm_unit_countable_resources: 0
+    spm_unit_assets: 0
   output:
     or_tanf_resources_eligible: true
 
@@ -14,7 +14,7 @@
   period: 2024
   input:
     state_code: OR
-    spm_unit_countable_resources: 5_000
+    spm_unit_assets: 5_000
   output:
     or_tanf_resources_eligible: true
 
@@ -23,7 +23,7 @@
   period: 2024
   input:
     state_code: OR
-    spm_unit_countable_resources: 10_000
+    spm_unit_assets: 10_000
   output:
     or_tanf_resources_eligible: true
 
@@ -32,7 +32,7 @@
   period: 2024
   input:
     state_code: OR
-    spm_unit_countable_resources: 10_001
+    spm_unit_assets: 10_001
   output:
     or_tanf_resources_eligible: false
 
@@ -41,6 +41,6 @@
   period: 2024
   input:
     state_code: OR
-    spm_unit_countable_resources: 25_000
+    spm_unit_assets: 25_000
   output:
     or_tanf_resources_eligible: false
