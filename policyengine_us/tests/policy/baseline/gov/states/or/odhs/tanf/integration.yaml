@@ -1,0 +1,273 @@
+# Oregon TANF Integration Tests
+# End-to-end tests with realistic family scenarios
+# Based on OAR 461-155-0030, OAR 461-160-0160, OAR 461-165-0060
+
+- name: Single parent with one child, no income - receives full benefit
+  # Scenario: Single parent (age 30) with one child (age 5)
+  # 2-person household payment standard: $432/month
+  # No earned income, no unearned income
+  # Countable income = $0
+  # Adjusted income = $0
+  # Benefit = $432 - $0 = $432/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_adult: true
+        employment_income: 0
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 5
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_tanf: 432
+    or_tanf_payment_standard: 432
+    or_tanf_adjusted_income: 0
+    or_tanf_eligible: true
+
+- name: Single parent with two children, part-time employment
+  # Scenario: Single parent with two children
+  # 3-person household payment standard: $506/month
+  # Gross earned income: $600/month (part-time work)
+  # No unearned income, no child support disregard
+  # Countable income = $600
+  # Earned income disregard: 50% * $600 = $300
+  # Adjusted income = $600 - $300 = $300
+  # Benefit = $506 - $300 = $206/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        is_adult: true
+        employment_income: 600
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 7
+        is_child: true
+      person3:
+        age: 4
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OR
+  output:
+    or_tanf: 206
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 300
+    or_tanf_countable_income: 600
+
+- name: Two parents with three children, mixed income
+  # Scenario: Two adults with three children
+  # 5-person household payment standard: $721/month
+  # Gross earned income: $800/month
+  # Gross unearned income: $100/month (Social Security benefits)
+  # Countable income = $800 + $100 = $900
+  # Earned income disregard: 50% * $800 = $400
+  # Adjusted income = $900 - $400 = $500
+  # Benefit = $721 - $500 = $221/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_adult: true
+        employment_income: 800
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 32
+        is_adult: true
+        social_security: 100
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 10
+        is_child: true
+      person4:
+        age: 8
+        is_child: true
+      person5:
+        age: 3
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: OR
+  output:
+    or_tanf: 221
+    or_tanf_payment_standard: 721
+    or_tanf_adjusted_income: 500
+    or_tanf_countable_income: 900
+
+- name: Single parent with one child, income too high - ineligible
+  # Scenario: Single parent with moderate income
+  # 2-person household payment standard: $432/month
+  # Countable income limit: $499/month
+  # Gross earned income: $1,000/month
+  # Countable income = $1,000 (> $499 limit, fails countable test)
+  # Benefit = $0 (income ineligible)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_adult: true
+        employment_income: 1_000
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 3
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_tanf: 0
+    or_tanf_payment_standard: 432
+    or_tanf_income_eligible: false
+
+- name: Single adult without children - not demographic eligible
+  # Scenario: Single adult with no children (not TANF eligible)
+  # Adults without dependent children are not demographic eligible
+  # Even with zero income, no benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_adult: true
+        employment_income: 0
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_tanf: 0
+    or_tanf_payment_standard: 339
+
+- name: Large family with six children, low income
+  # Scenario: Single parent with six children (7-person household)
+  # 7-person household payment standard: $923/month
+  # Gross earned income: $400/month
+  # Countable income = $400
+  # Earned income disregard: 50% * $400 = $200
+  # Adjusted income = $400 - $200 = $200
+  # Benefit = $923 - $200 = $723/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+        is_adult: true
+        employment_income: 400
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 15
+        is_child: true
+      person3:
+        age: 13
+        is_child: true
+      person4:
+        age: 10
+        is_child: true
+      person5:
+        age: 8
+        is_child: true
+      person6:
+        age: 5
+        is_child: true
+      person7:
+        age: 2
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: OR
+  output:
+    or_tanf: 723
+    or_tanf_payment_standard: 923
+    or_tanf_adjusted_income: 200
+
+- name: Benefit below minimum threshold - no benefit issued
+  # Scenario: Single parent with one child, income just below cutoff
+  # 2-person household payment standard: $432/month
+  # Gross earned income: $850/month
+  # Countable income = $850
+  # Earned income disregard: 50% * $850 = $425
+  # Adjusted income = $850 - $425 = $425
+  # Raw benefit = $432 - $425 = $7
+  # $7 < $10 minimum benefit -> benefit = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_adult: true
+        employment_income: 850
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 6
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_countable_resources: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_tanf: 0
+    or_tanf_payment_standard: 432
+    or_tanf_adjusted_income: 425

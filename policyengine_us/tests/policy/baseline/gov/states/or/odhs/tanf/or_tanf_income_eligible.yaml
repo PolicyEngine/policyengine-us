@@ -1,0 +1,85 @@
+# Oregon TANF Income Eligibility (OAR 461-160-0100)
+# Two-tier test: countable income must be below countable limit AND
+# adjusted income must be below adjusted limit
+
+- name: Zero income passes both tests
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 0
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf_income_eligible: true
+
+- name: Countable income below limit and adjusted income below limit is eligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($400) < $616 - passes
+  # Adjusted income ($300) < $485 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 400
+    or_tanf_adjusted_income: 300
+  output:
+    or_tanf_income_eligible: true
+
+- name: Countable income at or above limit is ineligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($616) >= $616 - fails
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 616
+    or_tanf_adjusted_income: 300
+  output:
+    or_tanf_income_eligible: false
+
+- name: Adjusted income at or above limit is ineligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($500) < $616 - passes
+  # Adjusted income ($485) >= $485 - fails
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 500
+    or_tanf_adjusted_income: 485
+  output:
+    or_tanf_income_eligible: false
+
+- name: Just below both limits is eligible
+  # 3-person household:
+  # Countable income ($615) < $616 - passes
+  # Adjusted income ($484) < $485 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 615
+    or_tanf_adjusted_income: 484
+  output:
+    or_tanf_income_eligible: true
+
+- name: Single person household income test
+  # 1-person household:
+  # Countable income limit = $345
+  # Adjusted income limit = $326
+  # Countable income ($300) < $345 - passes
+  # Adjusted income ($250) < $326 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+    or_tanf_countable_income: 300
+    or_tanf_adjusted_income: 250
+  output:
+    or_tanf_income_eligible: true

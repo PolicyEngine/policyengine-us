@@ -1,0 +1,87 @@
+# Oregon TANF Child Support Disregard (OAR 461-145-0080)
+# Disregard up to $50 per dependent child per month, max $200 per household
+
+- name: No child support results in zero disregard
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: 0
+    age: [30, 5]
+  output:
+    or_tanf_child_support_disregard: 0
+
+- name: One child with child support under per-child limit
+  # 1 child, child support = $30
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($30, $50) = $30
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [30, 0]
+    age: [30, 5]
+  output:
+    or_tanf_child_support_disregard: 30
+
+- name: One child with child support at per-child limit
+  # 1 child, child support = $50
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($50, $50) = $50
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [50, 0]
+    age: [30, 5]
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: One child with child support above per-child limit
+  # 1 child, child support = $100
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($100, $50) = $50
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [100, 0]
+    age: [30, 5]
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: Two children with child support under total limit
+  # 2 children, child support = $80
+  # Max disregard = 2 * $50 = $100
+  # Disregard = min($80, $100) = $80
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [80, 0, 0]
+    age: [30, 8, 5]
+  output:
+    or_tanf_child_support_disregard: 80
+
+- name: Four children hits household max
+  # 4 children, child support = $250
+  # Max by children = 4 * $50 = $200
+  # Household max = $200
+  # Max disregard = min($200, $200) = $200
+  # Disregard = min($250, $200) = $200
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [250, 0, 0, 0, 0]
+    age: [30, 10, 8, 5, 3]
+  output:
+    or_tanf_child_support_disregard: 200
+
+- name: Five children still capped at household max
+  # 5 children, child support = $300
+  # Max by children = 5 * $50 = $250
+  # Household max = $200
+  # Max disregard = min($250, $200) = $200
+  # Disregard = min($300, $200) = $200
+  period: 2024-01
+  input:
+    state_code: OR
+    child_support_received: [300, 0, 0, 0, 0, 0]
+    age: [30, 12, 10, 8, 5, 3]
+  output:
+    or_tanf_child_support_disregard: 200
