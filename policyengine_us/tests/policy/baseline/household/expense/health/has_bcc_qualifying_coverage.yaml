@@ -1,0 +1,12 @@
+- name: Default is no qualifying coverage
+  period: 2024
+  input: {}
+  output:
+    has_bcc_qualifying_coverage: false
+
+- name: Has qualifying coverage when set
+  period: 2024
+  input:
+    has_bcc_qualifying_coverage: true
+  output:
+    has_bcc_qualifying_coverage: true

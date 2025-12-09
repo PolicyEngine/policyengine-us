@@ -6,11 +6,11 @@
   output:
     la_general_relief_immigration_status_eligible_person: true
 
-- name: Residents are eligible
+- name: Legal Permanent Residents are eligible
   period: 2022
   input:
     in_la: true
-    immigration_status: RESIDENT
+    immigration_status: LEGAL_PERMANENT_RESIDENT
   output:
     la_general_relief_immigration_status_eligible_person: true
 

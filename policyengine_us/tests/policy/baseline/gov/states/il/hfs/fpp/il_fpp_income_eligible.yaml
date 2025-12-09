@@ -1,0 +1,35 @@
+# IL FPP income limit is 213% FPL (208% + 5% disregard)
+# 2024 FPL for household size 2: $20,440
+# 213% * $20,440 = $43,537.20
+
+- name: Case 1, income at 100% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    il_fpp_income_level: 1.0
+  output:
+    il_fpp_income_eligible: true
+
+- name: Case 2, income at 213% FPL limit.
+  period: 2024
+  input:
+    state_code: IL
+    il_fpp_income_level: 2.13
+  output:
+    il_fpp_income_eligible: true
+
+- name: Case 3, income over 213% FPL limit.
+  period: 2024
+  input:
+    state_code: IL
+    il_fpp_income_level: 2.14
+  output:
+    il_fpp_income_eligible: false
+
+- name: Case 4, zero income.
+  period: 2024
+  input:
+    state_code: IL
+    il_fpp_income_level: 0
+  output:
+    il_fpp_income_eligible: true

@@ -1,0 +1,13 @@
+description: Share of tax unit itemized deductions allocated to each spouse when married filing separately on the same form. This is not a policy parameter but a mathematical representation of "divided equally".
+values:
+  # 0.5 means each spouse gets 50% of joint deductions
+  2021-01-01: 0.5
+metadata:
+  label: Montana itemized deductions spouse allocation rate
+  period: year
+  unit: /1
+  reference:
+    - title: Montana Administrative Rule 42.15.524 - Itemized Deductions of Married Taxpayers
+      href: https://rules.mt.gov/gateway/ruleno.asp?RN=42.15.524
+    - title: Montana Form 2 Instructions
+      href: https://revenue.mt.gov/publications/montana-form-2-individual-income-tax-return-forms-and-instructions-includes-form-2ec

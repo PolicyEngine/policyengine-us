@@ -1,4 +1,4 @@
-- name: Eligible refugee 
+- name: Eligible refugee
   period: 2023
   input:
     immigration_status: REFUGEE
@@ -6,7 +6,7 @@
   output:
     il_tanf_immigration_status_eligible_person: true
 
-- name: Not eligible undocumented 
+- name: Not eligible undocumented
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -22,10 +22,32 @@
   output:
     il_tanf_immigration_status_eligible_person: true
 
-- name: Eligible HONORABLY_DISCHARGED_VETERAN
+# Per 89 Ill. Admin. Code 112.10, honorably discharged veterans are eligible
+# regardless of immigration status. Veteran status is tracked separately
+# from immigration status via the is_veteran variable.
+- name: Eligible veteran (non-citizen LPR who is a veteran)
   period: 2023
   input:
-    immigration_status: HONORABLY_DISCHARGED_VETERAN
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    is_veteran: true
     state_code: IL
   output:
     il_tanf_immigration_status_eligible_person: true
+
+- name: Eligible veteran (undocumented person who is a veteran)
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    is_veteran: true
+    state_code: IL
+  output:
+    il_tanf_immigration_status_eligible_person: true
+
+- name: Not eligible (undocumented non-veteran)
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    is_veteran: false
+    state_code: IL
+  output:
+    il_tanf_immigration_status_eligible_person: false

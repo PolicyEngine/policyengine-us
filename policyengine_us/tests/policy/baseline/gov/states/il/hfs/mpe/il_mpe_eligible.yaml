@@ -1,0 +1,39 @@
+- name: Case 1, pregnant with low income.
+  period: 2024-01
+  input:
+    state_code: IL
+    current_pregnancies: 1
+    medicaid_income_level: 1.5
+  output:
+    is_pregnant: true
+    il_mpe_eligible: true
+
+- name: Case 2, pregnant with income at 200% FPL.
+  period: 2024-01
+  input:
+    state_code: IL
+    current_pregnancies: 1
+    medicaid_income_level: 2
+  output:
+    is_pregnant: true
+    il_mpe_eligible: true
+
+- name: Case 3, pregnant with income above 200% FPL.
+  period: 2024-01
+  input:
+    state_code: IL
+    current_pregnancies: 1
+    medicaid_income_level: 2.5
+  output:
+    is_pregnant: true
+    il_mpe_eligible: false
+
+- name: Case 4, not pregnant with low income.
+  period: 2024-01
+  input:
+    state_code: IL
+    current_pregnancies: 0
+    medicaid_income_level: 1
+  output:
+    is_pregnant: false
+    il_mpe_eligible: false

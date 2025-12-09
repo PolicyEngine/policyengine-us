@@ -1,0 +1,102 @@
+- name: Eligible with no income - full payment standard
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    # Benefit = $706 - $0 = $706
+    wa_tanf: 706
+
+- name: Eligible with partial income - reduced benefit
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 250
+  output:
+    # Benefit = $706 - $250 = $456
+    wa_tanf: 456
+
+- name: Eligible with income equal to payment standard - zero benefit
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 706
+  output:
+    # Benefit = $706 - $706 = $0
+    wa_tanf: 0
+
+- name: Eligible with income exceeding payment standard - zero benefit
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 800
+  output:
+    # Benefit = max($706 - $800, 0) = $0
+    wa_tanf: 0
+
+- name: Ineligible household - zero benefit
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: false
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_tanf: 0
+
+- name: Large family - benefit capped by maximum grant cap
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 1_662
+    wa_tanf_countable_income: 0
+  output:
+    # Benefit before cap = $1,662 - $0 = $1,662
+    # Maximum grant cap = $1,338
+    # Benefit = min($1,662, $1,338) = $1,338
+    wa_tanf: 1_338
+
+- name: Large family with income - benefit under cap
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 1_529
+    wa_tanf_countable_income: 250
+  output:
+    # Benefit before cap = $1,529 - $250 = $1,279
+    # Maximum grant cap = $1,338
+    # Benefit = min($1,279, $1,338) = $1,279 (under cap)
+    wa_tanf: 1_279
+
+- name: Medium family - benefit exactly at cap
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 1_392
+    wa_tanf_countable_income: 54
+  output:
+    # Benefit before cap = $1,392 - $54 = $1,338
+    # Maximum grant cap = $1,338
+    # Benefit = min($1,338, $1,338) = $1,338 (exactly at cap)
+    wa_tanf: 1_338
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: OR
+    wa_tanf_eligible: false
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_tanf: 0

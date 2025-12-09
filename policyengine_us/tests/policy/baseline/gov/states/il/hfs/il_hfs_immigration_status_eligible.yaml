@@ -1,0 +1,47 @@
+- name: Citizen eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: CITIZEN
+  output:
+    il_hfs_immigration_status_eligible: true
+
+- name: Legal permanent resident eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    il_hfs_immigration_status_eligible: true
+
+- name: Refugee eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: REFUGEE
+  output:
+    il_hfs_immigration_status_eligible: true
+
+- name: Asylee eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: ASYLEE
+  output:
+    il_hfs_immigration_status_eligible: true
+
+- name: Undocumented ineligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: UNDOCUMENTED
+  output:
+    il_hfs_immigration_status_eligible: false
+
+- name: DACA ineligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: DACA
+  output:
+    il_hfs_immigration_status_eligible: false

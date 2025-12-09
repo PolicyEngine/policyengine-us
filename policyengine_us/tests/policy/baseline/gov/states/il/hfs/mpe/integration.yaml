@@ -1,0 +1,138 @@
+- name: Case 1, married couple with pregnant spouse expecting one child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        current_pregnancies: 1
+        employment_income: 15_000
+      person2:
+        age: 30
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Combined income: 25,000/year
+    # Household size: 2 adults + 1 unborn = 3
+    # 2024 FPL for 3: 25,820
+    # Income level: 25,000 / 25,820 = 0.97 (97% FPL)
+    # Under 200% FPL limit = income eligible
+    il_mpe_income_eligible: [true, true]
+    # person1: pregnant + income eligible = eligible
+    # person2: not pregnant = not eligible
+    il_mpe_eligible: [true, false]
+
+- name: Case 2, pregnant with twins increases household size.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        current_pregnancies: 2
+        employment_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income: 35,000/year
+    # Household size: 1 adult + 2 unborn = 3
+    # 2024 FPL for 3: 25,820
+    # Income level: 35,000 / 25,820 = 1.36 (136% FPL)
+    # Under 200% FPL limit = income eligible
+    il_mpe_income_eligible: true
+    il_mpe_eligible: true
+
+- name: Case 3, single pregnant woman over income limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        current_pregnancies: 1
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income: 80,000/year
+    # Household size: 1 adult + 1 unborn = 2
+    # 2024 FPL for 2: 20,440
+    # Income level: 80,000 / 20,440 = 3.91 (391% FPL)
+    # Over 200% FPL limit = not income eligible
+    il_mpe_income_eligible: false
+    il_mpe_eligible: false
+
+- name: Case 4, pregnancy increases household size and passes income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        current_pregnancies: 1
+        employment_income: 31_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income: 31,000/year
+    # Household size: 1 adult + 1 unborn = 2
+    # 2024 FPL for 2: 20,440
+    # Income level: 31,000 / 20,440 = 1.52 (152% FPL)
+    # Under 200% FPL = income eligible
+    il_mpe_income_eligible: true
+    il_mpe_eligible: true
+
+- name: Case 5, same income without pregnancy fails income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 31_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income: 31,000/year
+    # Household size: 1 adult only = 1
+    # 2024 FPL for 1: 15,060
+    # Income level: 31,000 / 15,060 = 2.06 (206% FPL)
+    # Over 200% FPL = not income eligible
+    il_mpe_income_eligible: false
+    il_mpe_eligible: false

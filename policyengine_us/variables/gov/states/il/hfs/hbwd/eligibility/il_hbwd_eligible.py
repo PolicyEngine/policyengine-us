@@ -20,7 +20,7 @@ class il_hbwd_eligible(Variable):
         income_eligible = person("il_hbwd_income_eligible", period)
         asset_eligible = person("il_hbwd_asset_eligible", period)
         immigration_eligible = person(
-            "il_hbwd_immigration_status_eligible", period
+            "il_hfs_immigration_status_eligible", period
         )
 
         return (

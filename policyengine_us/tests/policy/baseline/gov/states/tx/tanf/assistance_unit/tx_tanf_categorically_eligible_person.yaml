@@ -11,7 +11,7 @@
 - name: Case 2, qualified noncitizen eligible for inclusion.
   period: 2025-01
   input:
-    immigration_status: PERMANENT_RESIDENT
+    immigration_status: LEGAL_PERMANENT_RESIDENT
     ssi: 0
     state_code: TX
   output:

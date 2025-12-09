@@ -1,0 +1,36 @@
+description: Washington sets these gross earned income limits for the Temporary Assistance for Needy Families program.
+# Note: These values follow the formula: Income Limit = (Payment Standard × 2) + $500
+# This represents the break-even point where countable income equals the payment standard,
+# resulting in $0 benefit. While mathematically derived, WAC 388-478-0035 publishes these
+# as a table rather than a formula, so we preserve the table structure here.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington TANF maximum gross earned income limit
+  breakdown:
+    - range(1, 11)
+  reference:
+    - title: WAC 388-478-0035 - Maximum earned income limits for TANF, SFA, PWA, and RCA
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
+
+1:
+  2024-01-01: 1_400
+2:
+  2024-01-01: 1_640
+3:
+  2024-01-01: 1_912
+4:
+  2024-01-01: 2_166
+5:
+  2024-01-01: 2_418
+6:
+  2024-01-01: 2_680
+7:
+  2024-01-01: 3_016
+8:
+  2024-01-01: 3_284
+9:
+  2024-01-01: 3_558
+10:
+  2024-01-01: 3_824
