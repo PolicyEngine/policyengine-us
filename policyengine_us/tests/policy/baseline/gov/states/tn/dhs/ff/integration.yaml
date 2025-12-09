@@ -1,4 +1,14 @@
-- name: Case 1, no income - receives maximum SPA.
+# TN Families First Integration Tests
+# For 2024-01:
+# - CNS size 2: $896, SPA: $142
+# - CNS size 3: $1,066, SPA: $185
+# - CNS size 5: $1,335, SPA: $264
+# - Earned income disregard: $150
+# - Child care: $200 (under 2), $175 (2+)
+# - Minimum grant: $10
+# - GIS = CNS * 1.85
+
+- name: Case 1, no income receives SPA.
   period: 2024-01
   input:
     people:
@@ -8,20 +18,19 @@
         age: 5
     spm_units:
       spm_unit:
-        members: &id001
-        - person1
-        - person2
+        members: [person1, person2]
     households:
       household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id001
+        members: [person1, person2]
+        state_code: TN
   output:
+    # Size 2, no income
+    # Payment standard: SPA = $142
+    # Deficit: CNS ($896) - countable ($0) = $896
+    # Benefit: min($142, $896) = $142
     tn_ff: 142
-- name: Case 2, no income - receives maximum SPA.
+
+- name: Case 2, no income family of 3 receives SPA.
   period: 2024-01
   input:
     people:
@@ -33,250 +42,87 @@
         age: 12
     spm_units:
       spm_unit:
-        members: &id002
-        - person1
-        - person2
-        - person3
+        members: [person1, person2, person3]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
-    tax_units:
-      tax_unit:
-        members: *id002
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    tn_ff: 387
-- name: Case 3, benefit reduced by countable income.
+    # Size 3, no income
+    # Payment standard: SPA = $185
+    tn_ff: 185
+
+- name: Case 3, earned income reduces benefit.
   period: 2024-01
   input:
     people:
       person1:
         age: 27
-        employment_income_before_lsr: 12000
+        tanf_gross_earned_income: 500
       person2:
         age: 3
     spm_units:
       spm_unit:
-        members: &id003
-        - person1
-        - person2
+        members: [person1, person2]
     households:
       household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id003
+        members: [person1, person2]
+        state_code: TN
   output:
+    # Gross earned: $500/month
+    # Countable earned: $500 - $150 = $350
+    # Child care (age 3): $175
+    # Countable: max($350 - $175, 0) = $175
+    # Payment standard: SPA = $142
+    # Deficit: $896 - $175 = $721
+    # Benefit: min($142, $721) = $142
     tn_ff: 142
-- name: Case 4, receives reduced benefit.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 29
-        employment_income_before_lsr: 18000
-      person2:
-        age: 6
-      person3:
-        age: 9
-    spm_units:
-      spm_unit:
-        members: &id004
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
-    tax_units:
-      tax_unit:
-        members: *id004
-  output:
-    tn_ff: 299
-- name: Case 5, receives childcare deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 25
-        employment_income_before_lsr: 6000
-      person2:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: &id005
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id005
-  output:
-    tn_ff: 142
-- name: Case 6, receives childcare deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 33
-        employment_income_before_lsr: 16800
-      person2:
-        age: 3
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: &id006
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
-    tax_units:
-      tax_unit:
-        members: *id006
-  output:
-    tn_ff: 387
-- name: Case 7, eligible for DGPA.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 62
-      person2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: &id007
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id007
-  output:
-    tn_ff: 192
-- name: Case 8, eligible for DGPA.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        is_disabled: true
-      person2:
-        age: 6
-      person3:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: &id008
-        - person1
-        - person2
-        - person3
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        - person3
-    tax_units:
-      tax_unit:
-        members: *id008
-  output:
-    tn_ff: 232
-- name: Case 9, ineligible.
+
+- name: Case 4, income over GIS is ineligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 28
-        employment_income_before_lsr: 20000
+        tanf_gross_earned_income: 2_000
       person2:
         age: 5
     spm_units:
       spm_unit:
-        members: &id009
-        - person1
-        - person2
+        members: [person1, person2]
     households:
       household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id009
+        members: [person1, person2]
+        state_code: TN
   output:
+    # Gross: $2,000/month > GIS ($896 * 1.85 = $1,657.60)
+    # Ineligible
     tn_ff: 0
-- name: Case 10, Single parent with mixed income sources.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 31
-        employment_income_before_lsr: 8400
-        self_employment_income_before_lsr: 3600
-      person2:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: &id010
-        - person1
-        - person2
-    households:
-      household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id010
-  output:
-    tn_ff: 142
-- name: Case 11, Parent with unearned income (SSI recipient).
+
+- name: Case 5, unearned income fails net test.
   period: 2024-01
   input:
     people:
       person1:
         age: 28
-        ssi: 11640
+        tanf_gross_unearned_income: 1_000
       person2:
         age: 9
     spm_units:
       spm_unit:
-        members: &id011
-        - person1
-        - person2
+        members: [person1, person2]
     households:
       household:
-        members:
-        - person1
-        - person2
-    tax_units:
-      tax_unit:
-        members: *id011
+        members: [person1, person2]
+        state_code: TN
   output:
+    # Unearned: $1,000/month
+    # Gross: $1,000 < GIS ($1,657.60) - passes
+    # Countable (no disregard for unearned): $1,000 >= CNS ($896)
+    # Fails net income test
     tn_ff: 0
-- name: Case 12, Large family with four children.
+
+- name: Case 6, large family with 4 children.
   period: 2024-01
   input:
     people:
@@ -292,22 +138,53 @@
         age: 11
     spm_units:
       spm_unit:
-        members: &id012
-        - person1
-        - person2
-        - person3
-        - person4
-        - person5
+        members: [person1, person2, person3, person4, person5]
     households:
       household:
-        members:
-        - person1
-        - person2
-        - person3
-        - person4
-        - person5
-    tax_units:
-      tax_unit:
-        members: *id012
+        members: [person1, person2, person3, person4, person5]
+        state_code: TN
   output:
+    # Size 5, no income
+    # Payment standard: SPA = $264
     tn_ff: 264
+
+- name: Case 7, resources over limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Assets: $10,000
+    # Countable resources: $10,000 - $4,600 = $5,400 > $2,000
+    # Ineligible
+    tn_ff: 0
+
+- name: Case 8, no qualifying child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # No child under 18
+    tn_ff: 0

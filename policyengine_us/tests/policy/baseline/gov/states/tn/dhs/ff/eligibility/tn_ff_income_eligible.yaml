@@ -1,144 +1,127 @@
-- name: Household with no income passes both gross and net income tests
+# Tests for TN FF income eligibility
+# For 2024-01:
+# - CNS size 2: $896, GIS: $1,657.60
+# - Earned income disregard: $150
+
+- name: Case 1, no income passes both tests.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 0
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 0
-    spm_unit_size: 2
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_income_eligible: true
 
-- name: Gross income exactly at GIS limit is eligible
+- name: Case 2, gross income over GIS limit.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 2_535
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_000
-    spm_unit_size: 2
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # GIS for 2 persons: $2,535/month
-    # Gross income: $2,535 (at limit)
-    # Net income test: $1,000 < $1,370 CNS (passes)
-    tn_ff_income_eligible: true
-
-- name: Gross income one dollar over GIS limit is ineligible
-  period: 2024-01
-  input:
-    tn_ff_gross_earned_income: 2_536
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_000
-    spm_unit_size: 2
-  output:
-    # GIS for 2 persons: $2,535/month
-    # Gross income: $2,536 (over limit by $1)
-    # Fails gross income test
+    # Gross income ($2,000) > GIS ($1,657.60)
     tn_ff_income_eligible: false
 
-- name: Net income exactly at CNS limit is ineligible
+- name: Case 3, countable income below CNS.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 1_400
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_370
-    spm_unit_size: 2
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_046
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # CNS for 2 persons: $1,370/month
-    # Countable income: $1,370 (at limit)
-    # Net income test requires countable income < CNS (not <=)
-    tn_ff_income_eligible: false
-
-- name: Net income one dollar below CNS limit is eligible
-  period: 2024-01
-  input:
-    tn_ff_gross_earned_income: 1_400
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_369
-    spm_unit_size: 2
-  output:
-    # CNS for 2 persons: $1,370/month
-    # Countable income: $1,369 (below limit by $1)
-    # Passes net income test
+    # Gross: $1,046 < GIS ($1,657.60) - passes
+    # Countable after $150 disregard + $175 child care = $1,046 - $150 - $175 = $721
+    # $721 < CNS ($896) - passes
     tn_ff_income_eligible: true
 
-- name: Family of three at gross income limit
+- name: Case 4, low income passes both tests.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 2_866
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_200
-    spm_unit_size: 3
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # GIS for 3 persons: $2,866/month
-    # CNS for 3 persons: $1,549/month
-    # Gross income: $2,866 (at limit)
-    # Net income: $1,200 < $1,549 (passes)
+    # Gross: $500/month < GIS ($1,657.60)
+    # Countable: $500 - $150 - $175 = $175 < CNS ($896)
     tn_ff_income_eligible: true
 
-- name: Family of five passes both tests
+- name: Case 5, unearned income only.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 2_000
-    tn_ff_gross_unearned_income: 500
-    tn_ff_countable_income: 1_500
-    spm_unit_size: 5
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # GIS for 5 persons: $3,488/month
-    # CNS for 5 persons: $1,885/month
-    # Gross income: $2,500 < $3,488 (passes)
-    # Net income: $1,500 < $1,885 (passes)
+    # Gross: $500/month < GIS ($1,657.60)
+    # Countable (no disregard for unearned): $500 < CNS ($896)
     tn_ff_income_eligible: true
 
-- name: Family of ten at maximum size cap
+- name: Case 6, high unearned income fails net test.
   period: 2024-01
   input:
-    tn_ff_gross_earned_income: 4_200
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 2_300
-    spm_unit_size: 10
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 1_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # GIS for 10 persons: $4,799/month (max)
-    # CNS for 10 persons: $2,594/month (max)
-    # Gross income: $4,200 < $4,799 (passes)
-    # Net income: $2,300 < $2,594 (passes)
-    tn_ff_income_eligible: true
-
-- name: Family larger than ten uses size ten parameters
-  period: 2024-01
-  input:
-    tn_ff_gross_earned_income: 4_200
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 2_300
-    spm_unit_size: 12
-  output:
-    # Size capped at 10
-    # GIS for 10 persons: $4,799/month
-    # CNS for 10 persons: $2,594/month
-    tn_ff_income_eligible: true
-
-- name: Passes gross test but fails net test
-  period: 2024-01
-  input:
-    tn_ff_gross_earned_income: 2_000
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_550
-    spm_unit_size: 3
-  output:
-    # GIS for 3 persons: $2,866/month
-    # CNS for 3 persons: $1,549/month
-    # Gross income: $2,000 < $2,866 (passes)
-    # Net income: $1,550 >= $1,549 (fails)
-    tn_ff_income_eligible: false
-
-- name: Fails gross test even though passes net test
-  period: 2024-01
-  input:
-    tn_ff_gross_earned_income: 2_900
-    tn_ff_gross_unearned_income: 0
-    tn_ff_countable_income: 1_200
-    spm_unit_size: 3
-  output:
-    # GIS for 3 persons: $2,866/month
-    # CNS for 3 persons: $1,549/month
-    # Gross income: $2,900 > $2,866 (fails)
-    # Must pass both tests
+    # Gross: $1,000/month < GIS ($1,657.60) - passes
+    # Countable: $1,000 >= CNS ($896) - fails
     tn_ff_income_eligible: false

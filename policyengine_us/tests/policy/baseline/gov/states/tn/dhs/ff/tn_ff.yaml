@@ -1,0 +1,175 @@
+# Tests for TN Families First benefit calculation
+# For 2024-01:
+# - CNS size 2: $896, SPA: $142
+# - Minimum grant: $10
+# - Fill-the-gap: benefit = min(payment_standard, CNS - countable_income)
+
+- name: Case 1, no income receives full SPA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Deficit: $896 - $0 = $896
+    # Benefit: min($142, $896) = $142
+    tn_ff: 142
+
+- name: Case 2, deficit less than SPA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 900
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $900 - $150 - $175 = $575
+    # Deficit: $896 - $575 = $321
+    # Benefit: min($142, $321) = $142
+    tn_ff: 142
+
+- name: Case 3, deficit smaller than SPA caps benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,000 - $150 - $175 = $675
+    # Deficit: $896 - $675 = $221
+    # Benefit: min($142, $221) = $142
+    tn_ff: 142
+
+- name: Case 4, high income results in small deficit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_100
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,100 - $150 - $175 = $775
+    # Deficit: $896 - $775 = $121
+    # Benefit: min($142, $121) = $121
+    tn_ff: 121
+
+- name: Case 5, benefit below minimum grant is zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_200
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,200 - $150 - $175 = $875
+    # Deficit: $896 - $875 = $21
+    # Benefit: min($142, $21) = $21 >= $10 minimum
+    tn_ff: 21
+
+- name: Case 6, benefit exactly at minimum grant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_211
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,211 - $150 - $175 = $886
+    # Deficit: $896 - $886 = $10
+    # Benefit: min($142, $10) = $10 >= $10 minimum
+    tn_ff: 10
+
+- name: Case 7, benefit below minimum grant is zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_212
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,212 - $150 - $175 = $887
+    # Deficit: $896 - $887 = $9
+    # Benefit: $9 < $10 minimum → $0
+    tn_ff: 0
+
+- name: Case 8, ineligible due to no child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff: 0
