@@ -1,4 +1,4 @@
-- name: Pre capital gains subtraction law and qualified premiums
+- name: Pre capital gains subtraction law and qualified premiums, cap gains
   period: 2024
   absolute_error_margin: 0
   input:
@@ -12,11 +12,41 @@
     state_code: MO
   output:
     mo_capital_gains_subtraction: 0
+
+
+- name: Pre capital gains subtraction law and qualified premiums, health insurance
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    health_insurance_premiums: 12_000
+    medical_out_of_pocket_expenses: 12_000
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
     mo_qualified_health_insurance_premiums: 12_000
+
+
+- name: Pre capital gains subtraction law and qualified premiums, subtractions
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    health_insurance_premiums: 12_000
+    medical_out_of_pocket_expenses: 12_000
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
     mo_agi_subtractions: 12_000
 
 
-- name: Post capital gains subtraction law and qualified premiums
+- name: Post capital gains subtraction law and qualified premiums, capital gains
   period: 2025
   absolute_error_margin: 0
   input:
@@ -30,5 +60,35 @@
     state_code: MO
   output:
     mo_capital_gains_subtraction: 1_000
-    mo_qualified_health_insurance_premiums: 10_000
-    mo_agi_subtractions: 11_000
+
+
+- name: Post capital gains subtraction law and qualified premiums, health insurance
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    health_insurance_premiums: 12_000
+    medical_out_of_pocket_expenses: 12_000
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
+    mo_qualified_health_insurance_premiums: 12_000
+
+
+- name: Post capital gains subtraction law and qualified premiums, subtractions
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 500
+    health_insurance_premiums: 12_000
+    medical_out_of_pocket_expenses: 12_000
+    medical_expense_deduction: 0
+    tax_unit_itemizes: False
+    taxable_income: 100_000
+    state_code: MO
+  output:
+    mo_agi_subtractions: 13_000
