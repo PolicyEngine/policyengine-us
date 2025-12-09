@@ -16,5 +16,5 @@ class mo_capital_gains_subtraction(Variable):
         net_capital_gain = max_(0, tax_unit("net_capital_gain", period))
         p = parameters(
             period
-        ).gov.states.mo.tax.income.deductions.net_capital_gain
+        ).gov.states.mo.tax.income.subtractions.net_capital_gain
         return net_capital_gain * p.rate
