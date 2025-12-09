@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.454.0] - 2025-12-09 18:51:53
+
+### Added
+
+- CA Medi-Cal continuous coverage for existing undocumented enrollees after 2026 enrollment freeze.
+- receives_medicaid input variable to indicate current Medicaid enrollment status.
+- medi_cal_enrollment_freeze parameter for CA.
+
 ## [1.453.1] - 2025-12-09 15:58:42
 
 ### Fixed
@@ -13758,6 +13766,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.454.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.1...1.454.0
 [1.453.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.0...1.453.1
 [1.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.452.0...1.453.0
 [1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
