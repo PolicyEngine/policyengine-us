@@ -6,10 +6,12 @@ class mn_mfip_resource_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Minnesota MFIP due to resources"
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/256P.02"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/256P.02#stat.256P.02.2"
+    )
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mn.dcyf.mfip.resources
-        resources = spm_unit("mn_mfip_countable_resources", period.this_year)
+        resources = spm_unit("spm_unit_assets", period.this_year)
         return resources <= p.limit

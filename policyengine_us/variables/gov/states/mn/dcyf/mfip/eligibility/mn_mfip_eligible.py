@@ -6,11 +6,14 @@ class mn_mfip_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Minnesota MFIP"
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = "https://www.revisor.mn.gov/statutes/cite/142G.11"
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
         demographic = spm_unit("is_demographic_tanf_eligible", period)
         income = spm_unit("mn_mfip_income_eligible", period)
         resources = spm_unit("mn_mfip_resource_eligible", period)
-        return demographic & income & resources
+        immigration = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+        )
+        return demographic & income & resources & immigration

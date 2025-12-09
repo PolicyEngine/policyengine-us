@@ -6,7 +6,9 @@ class mn_mfip_income_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Minnesota MFIP due to income"
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/142G.02#stat.142G.02.42"
+    )
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):

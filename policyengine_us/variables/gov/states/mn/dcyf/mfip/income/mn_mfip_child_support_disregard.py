@@ -7,7 +7,9 @@ class mn_mfip_child_support_disregard(Variable):
     label = "Minnesota MFIP child support disregard"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/256P.06#stat.256P.06.3"
+    )
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
@@ -15,8 +17,4 @@ class mn_mfip_child_support_disregard(Variable):
             period
         ).gov.states.mn.dcyf.mfip.income.child_support_disregard
         children = spm_unit("spm_unit_count_children", period.this_year)
-        return where(
-            children >= 2,
-            p.two_plus_children,
-            where(children == 1, p.one_child, 0),
-        )
+        return p.amount.calc(children)

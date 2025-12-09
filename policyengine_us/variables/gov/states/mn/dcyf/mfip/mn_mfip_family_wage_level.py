@@ -7,7 +7,9 @@ class mn_mfip_family_wage_level(Variable):
     label = "Minnesota MFIP Family Wage Level"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/142G.02#stat.142G.02.42"
+    )
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
