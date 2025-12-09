@@ -11711,3 +11711,16 @@
     added:
     - Add Utah Military Retirement Credit (code AJ).
   date: 2025-12-08 23:40:59
+- bump: patch
+  changes:
+    fixed:
+    - Apply the net income test to the New Jersey childless EITC.
+  date: 2025-12-09 15:58:42
+- bump: minor
+  changes:
+    added:
+    - CA Medi-Cal continuous coverage for existing undocumented enrollees after 2026
+      enrollment freeze.
+    - receives_medicaid input variable to indicate current Medicaid enrollment status.
+    - medi_cal_enrollment_freeze parameter for CA.
+  date: 2025-12-09 18:51:53
