@@ -1,71 +1,130 @@
-- name: No earned income results in zero countable earned income
+# Tests for TN FF countable earned income
+# For 2024-01: Earned income disregard = $150
+
+- name: Case 1, no earned income.
   period: 2024-01
   input:
     people:
-      person:
-        employment_income_before_lsr: 0
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
     tn_ff_countable_earned_income: 0
-- name: Gross earned income exactly equal to $250 disregard
+
+- name: Case 2, earned income exactly equal to disregard.
   period: 2024-01
   input:
     people:
-      person:
-        employment_income_before_lsr: 3_000
+      person1:
+        age: 30
+        tanf_gross_earned_income: 150
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
+    # $150 - $150 = $0
     tn_ff_countable_earned_income: 0
-- name: Gross earned income one dollar above $250 disregard
+
+- name: Case 3, earned income one dollar above disregard.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_gross_earned_income: 251
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 151
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
+    # $151 - $150 = $1
     tn_ff_countable_earned_income: 1
-- name: Gross earned income one dollar below $250 disregard
+
+- name: Case 4, earned income below disregard.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_gross_earned_income: 249
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
+    # max($100 - $150, 0) = $0
     tn_ff_countable_earned_income: 0
-- name: Gross earned income of $1,000 per month
+
+- name: Case 5, moderate earned income.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_gross_earned_income: 1000
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    tn_ff_countable_earned_income: 750
-- name: Gross earned income of $2,500 per month
+    # $1,000 - $150 = $850
+    tn_ff_countable_earned_income: 850
+
+- name: Case 6, high earned income.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_gross_earned_income: 2500
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    tn_ff_countable_earned_income: 2250
-- name: Low earned income under disregard amount
+    # $2,500 - $150 = $2,350
+    tn_ff_countable_earned_income: 2_350
+
+- name: Case 7, multiple people with earned income.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_gross_earned_income: 100
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+      person2:
+        age: 28
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    tn_ff_countable_earned_income: 0
-- name: Moderate earned income
-  period: 2024-01
-  input:
-    state_code: TN
-    tn_ff_gross_earned_income: 1500
-  output:
-    tn_ff_countable_earned_income: 1250
-- name: High earned income
-  period: 2024-01
-  input:
-    state_code: TN
-    tn_ff_gross_earned_income: 3000
-  output:
-    tn_ff_countable_earned_income: 2750
+    # ($1,000 + $500) - $150 = $1,350
+    tn_ff_countable_earned_income: 1_350

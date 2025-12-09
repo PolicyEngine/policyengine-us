@@ -1,108 +1,191 @@
-- name: No income results in zero countable income
+# Tests for TN FF countable income
+# For 2024-01: Earned income disregard = $150
+# Child care deduction: $200 for under 2, $175 for 2+
+# Formula: max(countable_earned - child_care, 0) + unearned
+
+- name: Case 1, no income.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 0
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 0
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
     tn_ff_countable_income: 0
-- name: Only countable earned income with no deductions
+
+- name: Case 2, earned income only.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 750
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 0
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    tn_ff_countable_income: 750
-- name: Only unearned income with no deductions
+    # Countable earned: $1,000 - $150 = $850
+    # No child care, no unearned
+    tn_ff_countable_income: 850
+
+- name: Case 3, unearned income only.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 0
-    tn_ff_countable_unearned_income: 800
-    tn_ff_child_care_deduction: 0
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
+    # No disregard for unearned income
     tn_ff_countable_income: 800
-- name: Earned and unearned income with no child care deduction
+
+- name: Case 4, earned and unearned income.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 750
-    tn_ff_countable_unearned_income: 500
-    tn_ff_child_care_deduction: 0
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    tn_ff_countable_income: 1250
-- name: Earned income with child care deduction
+    # Earned: $1,000 - $150 disregard = $850
+    # Unearned: $500
+    # Total: $850 + $500 = $1,350
+    tn_ff_countable_income: 1_350
+
+- name: Case 5, earned income with child under 2.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 1000
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 200
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    tn_ff_countable_income: 800
-- name: Unearned income with child care deduction
+    # Earned: $1,500 - $150 = $1,350
+    # Child care: $200 (for child under 2)
+    # Countable earned: $1,350 - $200 = $1,150
+    tn_ff_countable_income: 1_150
+
+- name: Case 6, earned income with child 2 or older.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 0
-    tn_ff_countable_unearned_income: 900
-    tn_ff_child_care_deduction: 175
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    tn_ff_countable_income: 725
-- name: Both income types with child care deduction
+    # Earned: $1,500 - $150 = $1,350
+    # Child care: $175 (for child 2+)
+    # Countable earned: $1,350 - $175 = $1,175
+    tn_ff_countable_income: 1_175
+
+- name: Case 7, earned income with multiple children.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 1250
-    tn_ff_countable_unearned_income: 400
-    tn_ff_child_care_deduction: 350
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_000
+      person2:
+        age: 1
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    tn_ff_countable_income: 1300
-- name: Child care deduction exceeds income (results in zero)
+    # Earned: $2,000 - $150 = $1,850
+    # Child care: $200 (under 2) + $175 (2+) = $375
+    # Countable earned: $1,850 - $375 = $1,475
+    tn_ff_countable_income: 1_475
+
+- name: Case 8, child care exceeds countable earned.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 100
-    tn_ff_countable_unearned_income: 50
-    tn_ff_child_care_deduction: 200
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 300
+      person2:
+        age: 1
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
+    # Earned: $300 - $150 = $150
+    # Child care: $200 + $175 = $375
+    # max($150 - $375, 0) = $0
     tn_ff_countable_income: 0
-- name: Child care deduction exactly equals income
+
+- name: Case 9, low earned with high unearned.
   period: 2024-01
   input:
-    state_code: TN
-    tn_ff_countable_earned_income: 300
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 300
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 200
+        tanf_gross_unearned_income: 800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    tn_ff_countable_income: 0
-- name: Child care deduction one dollar less than income
-  period: 2024-01
-  input:
-    state_code: TN
-    tn_ff_countable_earned_income: 300
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 299
-  output:
-    tn_ff_countable_income: 1
-- name: Large income with multiple deductions
-  period: 2024-01
-  input:
-    state_code: TN
-    tn_ff_countable_earned_income: 2250
-    tn_ff_countable_unearned_income: 1000
-    tn_ff_child_care_deduction: 550
-  output:
-    tn_ff_countable_income: 2700
-- name: Only child care deduction with no income (edge case)
-  period: 2024-01
-  input:
-    state_code: TN
-    tn_ff_countable_earned_income: 0
-    tn_ff_countable_unearned_income: 0
-    tn_ff_child_care_deduction: 375
-  output:
-    tn_ff_countable_income: 0
+    # Earned: $200 - $150 = $50
+    # Unearned: $800
+    # Total: $50 + $800 = $850
+    tn_ff_countable_income: 850

@@ -23,25 +23,15 @@ class tn_ff(Variable):
         # Calculate countable income
         countable_income = spm_unit("tn_ff_countable_income", period)
 
-        # Fill-the-gap budgeting methodology per Tenn. Comp. R. & Regs. 1240-01-50-.20:
-        # "The monthly grant equals the smaller of a maximum payment amount by family size
-        # (SPA or DGPA, as appropriate) or the deficit if it is ten dollars ($10) or more."
-        #
-        # Step 1: Get Consolidated Need Standard (CNS) based on family size
         p = parameters(period).gov.states.tn.dhs.ff.payment
-        unit_size = spm_unit("spm_unit_size", period)
+        unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_family_size)
 
-        # Step 2: Calculate deficit = CNS - countable_income
         deficit = max_(
             p.consolidated_need_standard[capped_size] - countable_income, 0
         )
-
-        # Step 3: Benefit = min(payment_standard, deficit)
         calculated_benefit = min_(payment_standard, deficit)
 
-        # Apply minimum grant threshold
-        # If benefit is less than minimum, no payment is made
         return where(
             calculated_benefit >= p.minimum_grant, calculated_benefit, 0
         )

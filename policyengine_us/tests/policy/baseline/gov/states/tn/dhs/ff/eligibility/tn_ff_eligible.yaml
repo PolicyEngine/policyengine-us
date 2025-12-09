@@ -1,148 +1,164 @@
-- name: Household meeting all eligibility criteria is eligible
+- name: Case 1, eligible household with no income.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 30
-      child:
+      person2:
         age: 5
     spm_units:
       spm_unit:
-        members: [parent, child]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_eligible: true
 
-- name: Income ineligible household is not eligible
+- name: Case 2, income over limit is ineligible.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 30
-      child:
+        tanf_gross_earned_income: 2_000
+      person2:
         age: 8
     spm_units:
       spm_unit:
-        members: [parent, child]
-    tn_ff_income_eligible: false
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
+    # Gross: $2,000 > GIS ($1,657.60)
     tn_ff_eligible: false
 
-- name: Resources ineligible household is not eligible
+- name: Case 3, resources over limit is ineligible.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 30
-      child:
+      person2:
         age: 12
     spm_units:
       spm_unit:
-        members: [parent, child]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: false
+        members: [person1, person2]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_eligible: false
 
-- name: Household with no qualifying child is ineligible
+- name: Case 4, no child is ineligible.
   period: 2024-01
   input:
     people:
-      adult1:
+      person1:
         age: 30
-      adult2:
+      person2:
         age: 35
     spm_units:
       spm_unit:
-        members: [adult1, adult2]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # No child under 18
     tn_ff_eligible: false
 
-- name: Household with child exactly age 17 is eligible
+- name: Case 5, child exactly age 17 is eligible.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 40
-      child:
+      person2:
         age: 17
     spm_units:
       spm_unit:
-        members: [parent, child]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # Child age 17 < 18 (qualifying)
     tn_ff_eligible: true
 
-- name: Household with child exactly age 18 is ineligible
+- name: Case 6, child exactly age 18 is ineligible.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 42
-      child:
+      person2:
         age: 18
     spm_units:
       spm_unit:
-        members: [parent, child]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
-    # Child age 18 >= 18 (not qualifying)
     tn_ff_eligible: false
 
-- name: Multiple children with youngest under 18 is eligible
+- name: Case 7, multiple children with youngest under 18.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 45
-      child1:
+      person2:
         age: 19
-      child2:
+      person3:
         age: 16
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
-    # Child2 age 16 < 18 (qualifying)
     tn_ff_eligible: true
 
-- name: Household failing all criteria is ineligible
+- name: Case 8, single adult is ineligible.
   period: 2024-01
   input:
     people:
-      adult:
+      person1:
         age: 25
     spm_units:
       spm_unit:
-        members: [adult]
-    tn_ff_income_eligible: false
-    tn_ff_resources_eligible: false
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
-    # No child, income ineligible, resources ineligible
     tn_ff_eligible: false
 
-- name: Single parent with infant is eligible
+- name: Case 9, parent with infant.
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 22
-      baby:
+      person2:
         age: 0
     spm_units:
       spm_unit:
-        members: [parent, baby]
-    tn_ff_income_eligible: true
-    tn_ff_resources_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_eligible: true

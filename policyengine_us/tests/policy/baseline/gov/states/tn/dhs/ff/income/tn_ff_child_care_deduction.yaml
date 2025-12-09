@@ -1,164 +1,195 @@
-- name: No children results in zero child care deduction
+# Tests for TN FF child care deduction
+# $200/month for children under age 2
+# $175/month for children age 2 and older
+
+- name: Case 1, no children.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      adult:
+      person1:
         age: 30
     spm_units:
       spm_unit:
-        members: [adult]
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 0
-- name: One child under age 2 gets $200 per month deduction
+
+- name: Case 2, one child under age 2.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 28
-      baby:
+      person2:
         age: 1
     spm_units:
       spm_unit:
-        members: [parent, baby]
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 200
-- name: One child exactly age 2 gets $175 per month deduction
+
+- name: Case 3, one child exactly age 2.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 30
-      child:
+      person2:
         age: 2
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 175
-- name: One child age 5 gets $175 per month deduction
+
+- name: Case 4, one child age 5.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 32
-      child:
+      person2:
         age: 5
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 175
-- name: Two children both under age 2
+
+- name: Case 5, two children both under age 2.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 25
-      child1:
+      person2:
         age: 0
-      child2:
+      person3:
         age: 1
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
+    # $200 + $200 = $400
     tn_ff_child_care_deduction: 400
-- name: Two children both age 2 or older
+
+- name: Case 6, two children both age 2 or older.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 35
-      child1:
+      person2:
         age: 3
-      child2:
+      person3:
         age: 7
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
+    # $175 + $175 = $350
     tn_ff_child_care_deduction: 350
-- name: Two children with mixed ages (one under 2, one age 2+)
+
+- name: Case 7, mixed ages one under 2 and one 2+.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 30
-      baby:
+      person2:
         age: 1
-      child:
+      person3:
         age: 4
     spm_units:
       spm_unit:
-        members: [parent, baby, child]
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
   output:
+    # $200 + $175 = $375
     tn_ff_child_care_deduction: 375
-- name: Three children with various ages
+
+- name: Case 8, three children various ages.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 40
-      child1:
+      person2:
         age: 0
-      child2:
+      person3:
         age: 2
-      child3:
+      person4:
         age: 8
     spm_units:
       spm_unit:
-        members: [parent, child1, child2, child3]
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
   output:
+    # $200 + $175 + $175 = $550
     tn_ff_child_care_deduction: 550
-- name: Child exactly at boundary age (age 1 vs age 2)
+
+- name: Case 9, adult children do not receive deduction.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
-        age: 27
-      child1:
-        age: 1
-      child2:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [parent, child1, child2]
-  output:
-    tn_ff_child_care_deduction: 375
-- name: Adult children (over 18) do not receive deduction
-  period: 2024-01
-  input:
-    state_code: TN
-    people:
-      parent:
+      person1:
         age: 45
-      adult_child:
+      person2:
         age: 19
     spm_units:
       spm_unit:
-        members: [parent, adult_child]
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 0
-- name: Teen age 15 gets $175 per month deduction
+
+- name: Case 10, teen age 15.
   period: 2024-01
   input:
-    state_code: TN
     people:
-      parent:
+      person1:
         age: 38
-      teen:
+      person2:
         age: 15
     spm_units:
       spm_unit:
-        members: [parent, teen]
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
   output:
     tn_ff_child_care_deduction: 175
