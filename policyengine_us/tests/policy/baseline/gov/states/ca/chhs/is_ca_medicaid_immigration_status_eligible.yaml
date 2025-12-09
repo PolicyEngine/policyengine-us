@@ -1,4 +1,9 @@
-- name: In 2020, children under 19 are eligible
+# Tests for CA state-funded Medicaid eligibility regardless of immigration status
+# Per California Welfare and Institutions Code Section 14007.8
+
+# Age-based eligibility tests (standard pathway)
+
+- name: Case 1, child under 19 is eligible in 2020.
   period: 2020
   input:
     age: 18
@@ -7,7 +12,7 @@
   output:
     is_ca_medicaid_immigration_status_eligible: true
 
-- name: In 2020, adults over 50 are ineligible
+- name: Case 2, adult 50+ is ineligible in 2020 (before expansion).
   period: 2020
   input:
     age: 50
@@ -16,7 +21,7 @@
   output:
     is_ca_medicaid_immigration_status_eligible: false
 
-- name: In 2020, adults over 26 are ineligible
+- name: Case 3, adult 26+ is ineligible in 2020 (before expansion).
   period: 2020
   input:
     age: 26
@@ -25,7 +30,7 @@
   output:
     is_ca_medicaid_immigration_status_eligible: false
 
-- name: Pregnant adults are eligible
+- name: Case 4, pregnant adult is eligible regardless of age.
   period: 2020
   input:
     age: 26
@@ -34,7 +39,7 @@
   output:
     is_ca_medicaid_immigration_status_eligible: true
 
-- name: In 2024, adults over 26 are ineligible
+- name: Case 5, adult 26+ is eligible in 2024 (after expansion).
   period: 2024
   input:
     age: 26
@@ -51,7 +56,7 @@
     age: 35
     is_pregnant: false
     immigration_status: UNDOCUMENTED
-    is_on_medicaid: false
+    receives_medicaid: false
     state_code: CA
   output:
     is_ca_medicaid_immigration_status_eligible: false
@@ -62,19 +67,32 @@
     age: 35
     is_pregnant: false
     immigration_status: UNDOCUMENTED
-    is_on_medicaid: true
+    receives_medicaid: true
     state_code: CA
   output:
+    # Existing enrollees without SIS retain coverage per Section 14007.8
     is_ca_medicaid_immigration_status_eligible: true
 
-- name: Case 8, citizen adult is not covered by this CA-specific variable.
+- name: Case 8, child under 19 is still eligible in 2026 (not affected by freeze).
+  period: 2026
+  input:
+    age: 10
+    is_pregnant: false
+    receives_medicaid: false
+    state_code: CA
+  output:
+    # Children under 19 remain eligible for new enrollment
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 9, refugee on Medicaid does not get CA state-funded eligibility.
   period: 2026
   input:
     age: 35
     is_pregnant: false
-    immigration_status: CITIZEN
+    immigration_status: REFUGEE
+    receives_medicaid: true
     state_code: CA
   output:
-    # This variable is specifically for eligibility regardless of immigration status
-    # Citizens are eligible via standard immigration status rules, not this variable
+    # Refugees have satisfactory immigration status - they use federal rules
+    # CA state-funded program is only for those without SIS
     is_ca_medicaid_immigration_status_eligible: false

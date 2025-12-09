@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class is_on_medicaid(Variable):
+class receives_medicaid(Variable):
     value_type = bool
     entity = Person
-    label = "Whether person is currently on Medicaid"
+    label = "Currently receives Medicaid"
     definition_period = YEAR
     documentation = """
     Input variable indicating a person currently has Medicaid coverage.
