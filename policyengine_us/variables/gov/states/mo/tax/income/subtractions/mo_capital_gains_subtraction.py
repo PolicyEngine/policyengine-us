@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mo_capital_gains_subtraction(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Missouri capital gains subtraction"
     unit = USD
     definition_period = YEAR
@@ -12,13 +12,9 @@ class mo_capital_gains_subtraction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
-        stcg = add(tax_unit, period, ["short_term_capital_gains"])
-        capped_stcg = min_(0, stcg)
-        net_cg = max_(0, ltcg + capped_stcg)
+    def formula(tax_unit, period, parameters):
+        net_capital_gain = max_(0, tax_unit("net_capital_gain", period))
         p = parameters(
             period
         ).gov.states.mo.tax.income.deductions.net_capital_gain
-        return net_cg * p.rate
+        return net_capital_gain * p.rate

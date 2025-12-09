@@ -39,6 +39,5 @@ class mo_adjusted_gross_income(Variable):
         )
         fed_agi = gross_income - ind_total_personal_alds - allocated_alds
         # return MO AGI including MO additions and MO subtractions
-        subtractions = person("mo_qualified_health_insurance_premiums", period)
-        cap_gains = person("mo_capital_gains_subtraction", period)
-        return max_(0, fed_agi - subtractions - cap_gains)
+        subtractions = tax_unit("mo_agi_subtractions", period)
+        return max_(0, fed_agi - subtractions)
