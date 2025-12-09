@@ -1,10 +1,18 @@
 description: Minnesota subtracts these variables from federal adjusted gross income when computing its taxable income.
 values:
+  # Military pay subtraction available since 2005
+  # Military pension subtraction available since 2016
+  # 529 contribution subtraction available since 2017
+  # Public pension subtraction available since 2023
   2021-01-01:
     - mn_charity_subtraction
     - mn_social_security_subtraction
     - us_govt_interest
     - mn_elderly_disabled_subtraction
+    - mn_k12_education_subtraction
+    - mn_military_pension_subtraction
+    - mn_active_duty_military_pay_subtraction
+    - mn_529_contribution_subtraction
 
   2023-01-01:
     - mn_charity_subtraction
@@ -12,6 +20,10 @@ values:
     - us_govt_interest
     - mn_elderly_disabled_subtraction
     - mn_public_pension_subtraction
+    - mn_k12_education_subtraction
+    - mn_military_pension_subtraction
+    - mn_active_duty_military_pay_subtraction
+    - mn_529_contribution_subtraction
 
 
 metadata:
@@ -29,3 +41,5 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1m-23_0.pdf
   - title: 2024 Minnesota Schedule M1M, Income Additions and Subtractions
     href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf
+  - title: 2025 Minnesota Schedule M1M, Income Additions and Subtractions
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1m-25.pdf#page=1
