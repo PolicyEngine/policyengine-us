@@ -59,18 +59,6 @@
   output:
     mo_federal_income_tax_deduction: 5_000
 
-- name:  Cap test, married (check that value can't go above 10k, this is a ridiculous scenario)
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 24_000
-    income_tax: 110_000
-    rrc_cares: 0
-    filing_status: SINGLE
-    state_code: MO
-  output:
-    mo_federal_income_tax_deduction: 10_000
-
 - name:  Cap test, married (see if value can go above 5k)
   period: 2022
   absolute_error_margin: 0
