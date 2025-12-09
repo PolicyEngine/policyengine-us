@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.453.1] - 2025-12-09 15:58:42
+
+### Fixed
+
+- Apply the net income test to the New Jersey childless EITC.
+
 ## [1.453.0] - 2025-12-08 23:40:59
 
 ### Added
@@ -13752,6 +13758,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.453.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.0...1.453.1
 [1.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.452.0...1.453.0
 [1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
 [1.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.450.0...1.451.0
