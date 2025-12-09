@@ -7,7 +7,9 @@ class mn_mfip_countable_unearned_income(Variable):
     label = "Minnesota MFIP countable unearned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/256P.06#stat.256P.06.3"
+    )
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):

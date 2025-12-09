@@ -7,7 +7,7 @@ class mn_mfip_payment_standard(Variable):
     label = "Minnesota MFIP Transitional Standard"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.house.mn.gov/hrd/pubs/ss/ssmfip.pdf"
+    reference = "https://www.house.mn.gov/hrd/pubs/ss/ssmfip.pdf#page=5"
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):

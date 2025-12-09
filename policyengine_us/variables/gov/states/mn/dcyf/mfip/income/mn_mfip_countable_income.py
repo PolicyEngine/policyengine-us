@@ -7,7 +7,7 @@ class mn_mfip_countable_income(Variable):
     label = "Minnesota MFIP countable income"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.revisor.mn.gov/statutes/cite/142G/pdf"
+    reference = "https://www.revisor.mn.gov/statutes/cite/142G"
     defined_for = StateCode.MN
     adds = [
         "mn_mfip_countable_earned_income",
