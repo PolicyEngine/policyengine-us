@@ -11724,3 +11724,20 @@
     - receives_medicaid input variable to indicate current Medicaid enrollment status.
     - medi_cal_enrollment_freeze parameter for CA.
   date: 2025-12-09 18:51:53
+- bump: patch
+  changes:
+    fixed:
+    - Fix IL qualified noncitizen status parameters and TANF immigration eligibility.
+  date: 2025-12-09 22:07:46
+- bump: minor
+  changes:
+    added:
+    - Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+    - SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+    - SMIB benefit covering Medicare Part B premiums for eligible individuals.
+  date: 2025-12-10 11:48:36
+- bump: minor
+  changes:
+    added:
+    - Add 20% qualified REIT/PTP income component.
+  date: 2025-12-10 15:49:56

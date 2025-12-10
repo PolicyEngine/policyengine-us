@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.456.0] - 2025-12-10 15:49:56
+
+### Added
+
+- Add 20% qualified REIT/PTP income component.
+
+## [1.455.0] - 2025-12-10 11:48:36
+
+### Added
+
+- Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+- SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+- SMIB benefit covering Medicare Part B premiums for eligible individuals.
+
+## [1.454.1] - 2025-12-09 22:07:46
+
+### Fixed
+
+- Fix IL qualified noncitizen status parameters and TANF immigration eligibility.
+
 ## [1.454.0] - 2025-12-09 18:51:53
 
 ### Added
@@ -13766,6 +13786,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.455.0...1.456.0
+[1.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.1...1.455.0
+[1.454.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.0...1.454.1
 [1.454.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.1...1.454.0
 [1.453.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.0...1.453.1
 [1.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.452.0...1.453.0
