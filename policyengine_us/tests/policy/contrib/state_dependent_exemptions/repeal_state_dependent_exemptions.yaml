@@ -63,7 +63,7 @@
   period: 2024
   input:
     gov.contrib.repeal_state_dependent_exemptions.in_effect: false
-    people: 
+    people:
       person1:
         age: 38
       person2:
@@ -79,3 +79,26 @@
         state_code: VT
   output:
     vt_personal_exemptions: 15_300
+
+# Test for KY family size tax credit rate - verifies state_group_str is used correctly
+# This test ensures state_group is derived from state_code, not set explicitly
+- name: Kentucky family size tax credit with reform - state_group derived from state_code
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person1:
+        age: 38
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # With 20k income vs ~15k FPG for 1 person in 2024, income/FPG ratio ~133%
+    # Rate should be 0.25 (between 125% and 150% FPG)
+    ky_family_size_tax_credit_rate: 0.25
