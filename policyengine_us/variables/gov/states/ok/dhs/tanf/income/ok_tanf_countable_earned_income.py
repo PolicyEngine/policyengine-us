@@ -13,8 +13,8 @@ class ok_tanf_countable_earned_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ok.dhs.tanf.income
 
-        # Step 1: Get gross earned income from federal TANF variable
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
+        # Step 1: Get gross earned income from OK-specific TANF variable
+        gross_earned = add(spm_unit, period, ["ok_tanf_gross_earned_income"])
 
         # Step 2: Apply work expense deduction
         # Per OAC 340:10-3-33: $120 for applicants, $240 for recipients with
