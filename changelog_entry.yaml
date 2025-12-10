@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    added:
+    - CI check to enforce uv.lock freshness, ensuring tests use the same dependency versions users get.
