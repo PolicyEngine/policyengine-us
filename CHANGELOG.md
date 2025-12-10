@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.457.0] - 2025-12-10 18:16:05
+
+### Added
+
+- Create reform to separate dependent children from Delaware Personal Credit.
+
+## [1.456.2] - 2025-12-10 17:53:29
+
+### Fixed
+
+- Fix state_group enum usage in FPG parameter indexing for KY and WV tax credits
+
+## [1.456.1] - 2025-12-10 17:43:25
+
+### Added
+
+- CI check to enforce uv.lock freshness, ensuring tests use the same dependency versions users get.
+
+## [1.456.0] - 2025-12-10 15:49:56
+
+### Added
+
+- Add 20% qualified REIT/PTP income component.
+
+## [1.455.0] - 2025-12-10 11:48:36
+
+### Added
+
+- Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+- SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+- SMIB benefit covering Medicare Part B premiums for eligible individuals.
+
+## [1.454.1] - 2025-12-09 22:07:46
+
+### Fixed
+
+- Fix IL qualified noncitizen status parameters and TANF immigration eligibility.
+
+## [1.454.0] - 2025-12-09 18:51:53
+
+### Added
+
+- CA Medi-Cal continuous coverage for existing undocumented enrollees after 2026 enrollment freeze.
+- receives_medicaid input variable to indicate current Medicaid enrollment status.
+- medi_cal_enrollment_freeze parameter for CA.
+
+## [1.453.1] - 2025-12-09 15:58:42
+
+### Fixed
+
+- Apply the net income test to the New Jersey childless EITC.
+
 ## [1.453.0] - 2025-12-08 23:40:59
 
 ### Added
@@ -13752,6 +13804,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.457.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.2...1.457.0
+[1.456.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.1...1.456.2
+[1.456.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.0...1.456.1
+[1.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.455.0...1.456.0
+[1.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.1...1.455.0
+[1.454.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.0...1.454.1
+[1.454.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.1...1.454.0
+[1.453.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.0...1.453.1
 [1.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.452.0...1.453.0
 [1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
 [1.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.450.0...1.451.0
