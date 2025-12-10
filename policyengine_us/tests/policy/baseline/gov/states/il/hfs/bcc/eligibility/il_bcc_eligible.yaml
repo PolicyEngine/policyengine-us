@@ -5,7 +5,7 @@
     is_female: true
     age: 45
     immigration_status: CITIZEN
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: true
@@ -17,7 +17,7 @@
     is_female: true
     age: 35
     immigration_status: LEGAL_PERMANENT_RESIDENT
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: true
@@ -29,7 +29,7 @@
     is_female: true
     age: 28
     immigration_status: REFUGEE
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: true
@@ -41,7 +41,7 @@
     is_female: true
     age: 70
     immigration_status: CITIZEN
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: false
@@ -53,7 +53,7 @@
     is_female: true
     age: 40
     immigration_status: UNDOCUMENTED
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: false
@@ -65,7 +65,7 @@
     is_female: false
     age: 45
     immigration_status: CITIZEN
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: false
@@ -77,7 +77,7 @@
     is_female: true
     age: 45
     immigration_status: CITIZEN
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: true
   output:
     il_bcc_eligible: false
@@ -89,7 +89,7 @@
     is_female: true
     age: 45
     immigration_status: CITIZEN
-    is_medicaid_eligible: true
+    receives_medicaid: true
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_eligible: false
