@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.456.1] - 2025-12-10 17:43:25
+
+### Added
+
+- CI check to enforce uv.lock freshness, ensuring tests use the same dependency versions users get.
+
 ## [1.456.0] - 2025-12-10 15:49:56
 
 ### Added
@@ -13786,6 +13792,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.456.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.0...1.456.1
 [1.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.455.0...1.456.0
 [1.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.1...1.455.0
 [1.454.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.0...1.454.1

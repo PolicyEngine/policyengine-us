@@ -11741,3 +11741,9 @@
     added:
     - Add 20% qualified REIT/PTP income component.
   date: 2025-12-10 15:49:56
+- bump: patch
+  changes:
+    added:
+    - CI check to enforce uv.lock freshness, ensuring tests use the same dependency
+      versions users get.
+  date: 2025-12-10 17:43:25
