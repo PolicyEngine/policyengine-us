@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.456.2] - 2025-12-10 17:53:29
+
+### Fixed
+
+- Fix state_group enum usage in FPG parameter indexing for KY and WV tax credits
+
 ## [1.456.1] - 2025-12-10 17:43:25
 
 ### Added
@@ -13792,6 +13798,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.456.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.1...1.456.2
 [1.456.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.0...1.456.1
 [1.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.455.0...1.456.0
 [1.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.1...1.455.0
