@@ -99,6 +99,7 @@
         members: [person1]
         state_code: KY
   output:
-    # With 20k income vs ~15k FPG for 1 person in 2024, income/FPG ratio ~133%
-    # Rate should be 0.25 (between 125% and 150% FPG)
-    ky_family_size_tax_credit_rate: 0.25
+    # With 20k income vs 15,060 FPG for 1 person in 2024, income/FPG ratio = 132.8%
+    # The rate scale: 130% -> 0.1, 133% -> 0
+    # Since 132.8% is between 130% and 133%, the rate is 0.1
+    ky_family_size_tax_credit_rate: 0.1
