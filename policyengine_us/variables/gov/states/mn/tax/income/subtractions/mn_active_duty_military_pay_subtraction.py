@@ -12,17 +12,4 @@ class mn_active_duty_military_pay_subtraction(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1m-25.pdf",
     )
     defined_for = StateCode.MN
-
-    def formula(tax_unit, period, parameters):
-        # Minnesota residents in the armed forces can subtract
-        # federal active-duty military pay included in federal AGI
-        # This covers:
-        # - Line 20: Federal active-duty military pay for MN residents
-        # - Line 21: National Guard members and Reservists pay
-        #   (training, state active service, AGR duty, etc.)
-        # Note: Per M1M instructions, if income is included on Line 20,
-        # it should not also be included on Line 21 (no double counting)
-        # The military_service_income variable covers both active duty
-        # and National Guard/Reserve pay.
-        military_income = add(tax_unit, period, ["military_service_income"])
-        return military_income
+    adds = ["military_service_income"]

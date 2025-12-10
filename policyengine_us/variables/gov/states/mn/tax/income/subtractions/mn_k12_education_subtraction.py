@@ -26,6 +26,6 @@ class mn_k12_education_subtraction(Variable):
         expenses = tax_unit("k12_tuition_and_fees", period)
         # Maximum subtraction - using 7-12 max as upper bound since we can't
         # distinguish grades
-        max_subtraction = k12_children * p.max_7_12
+        max_subtraction = k12_children * p.cap.higher
         # Subtraction is lesser of expenses or maximum
         return min_(expenses, max_subtraction)
