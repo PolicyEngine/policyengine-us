@@ -1,0 +1,17 @@
+description: Illinois considers these statuses as qualified noncitizens under HFS medical programs (BCC, HBWD, etc.).
+values:
+  2000-10-01:
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - LEGAL_PERMANENT_RESIDENT
+    - PAROLED_ONE_YEAR
+
+metadata:
+  label: Illinois HFS qualified noncitizen statuses
+  period: year
+  unit: list
+  reference:
+    - title: 89 Ill. Admin. Code § 120.310 (a)&(b) - Citizenship and Alien Status
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.310

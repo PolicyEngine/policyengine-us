@@ -1,0 +1,214 @@
+- name: Single parent with child under max age - full EITC refundable
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    # Utah EITC = 20% of federal EITC = 0.2 * 5_000 = 1_000
+    # Since child is age 2 (at max_age threshold), full amount is refundable
+    ut_eitc: 1_000  # Total EITC
+    ut_refundable_eitc: 1_000
+    ut_non_refundable_eitc: 0  # Non-refundable portion is reduced to zero
+    ut_has_qualifying_child_for_refundable_eitc: true
+
+- name: Single parent with child at age 1
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 3_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    # Utah EITC = 20% of federal EITC = 0.2 * 3_000 = 600
+    ut_eitc: 600
+    ut_refundable_eitc: 600
+    ut_non_refundable_eitc: 0
+    ut_has_qualifying_child_for_refundable_eitc: true
+
+- name: Single parent with child age 3 - not eligible for refundable EITC
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 4_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    # Child is too old (max_age is 2)
+    # Utah EITC = 0.2 * 4_000 = 800
+    ut_eitc: 800
+    ut_refundable_eitc: 0
+    ut_non_refundable_eitc: 800  # Remains fully non-refundable
+    ut_has_qualifying_child_for_refundable_eitc: false
+
+- name: Single parent with multiple children, one qualifying
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        eitc: 6_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: UT
+  output:
+    # Has at least one qualifying child, so full EITC is refundable
+    # Utah EITC = 0.2 * 6_000 = 1_200
+    ut_eitc: 1_200
+    ut_refundable_eitc: 1_200
+    ut_non_refundable_eitc: 0
+    ut_has_qualifying_child_for_refundable_eitc: true
+
+- name: Childless tax unit - not eligible
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 500
+    households:
+      household:
+        members: [person]
+        state_code: UT
+  output:
+    # Utah EITC = 0.2 * 500 = 100 (all non-refundable)
+    ut_eitc: 100
+    ut_refundable_eitc: 0
+    ut_non_refundable_eitc: 100
+    ut_has_qualifying_child_for_refundable_eitc: false
+
+- name: Married couple with infant (age 0)
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent1:
+        age: 28
+      parent2:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        eitc: 7_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: UT
+  output:
+    # Utah EITC = 0.2 * 7_000 = 1_400
+    ut_eitc: 1_400
+    ut_refundable_eitc: 1_400
+    ut_non_refundable_eitc: 0
+    ut_has_qualifying_child_for_refundable_eitc: true
+
+- name: Tax unit with qualifying child but no federal EITC
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    # No federal EITC means no Utah EITC
+    ut_eitc: 0
+    ut_refundable_eitc: 0
+    ut_non_refundable_eitc: 0
+    ut_has_qualifying_child_for_refundable_eitc: true
+
+- name: Custom max_age parameter - child at age 4 qualifies
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.ut_refundable_eitc.ut_refundable_eitc
+  input:
+    gov.contrib.states.ut.eitc.in_effect: true
+    gov.contrib.states.ut.eitc.max_age: 4
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    # With max_age = 4, child age 4 qualifies
+    # Utah EITC = 0.2 * 5_000 = 1_000
+    ut_eitc: 1_000
+    ut_refundable_eitc: 1_000
+    ut_non_refundable_eitc: 0
+    ut_has_qualifying_child_for_refundable_eitc: true

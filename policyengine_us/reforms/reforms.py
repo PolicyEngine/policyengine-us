@@ -28,8 +28,9 @@ from .harris.rent_relief_act.rent_relief_tax_credit import (
 )
 from .congress.tlaib import (
     create_end_child_poverty_act_reform,
-    income_security_package,
-    create_income_security_package_reform,
+)
+from .congress.tlaib.economic_dignity_for_all_agenda import (
+    create_end_child_poverty_act_reform as create_edaa_end_child_poverty_act_reform,
 )
 from .congress.tlaib.boost import (
     create_boost_middle_class_tax_credit_reform,
@@ -100,6 +101,12 @@ from .reconciliation import (
 from .states.mi.surtax import (
     create_mi_surtax_reform,
 )
+from .local.ny.mamdani_income_tax import (
+    create_nyc_mamdani_income_tax_reform,
+)
+from .states.ut import (
+    create_ut_refundable_eitc_reform,
+)
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
@@ -113,6 +120,9 @@ from .crfb import (
 from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
+)
+from .states.de.dependent_credit.de_dependent_credit_reform import (
+    create_de_dependent_credit_reform_fn,
 )
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
@@ -171,7 +181,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     end_child_poverty_act = create_end_child_poverty_act_reform(
         parameters, period
     )
-    income_security_package_reform = create_income_security_package_reform(
+    edaa_end_child_poverty_act = create_edaa_end_child_poverty_act_reform(
         parameters, period
     )
     boost_middle_class_tax_credit = (
@@ -250,6 +260,12 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mi_surtax = create_mi_surtax_reform(parameters, period)
 
+    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
+        parameters, period
+    )
+
+    ut_refundable_eitc = create_ut_refundable_eitc_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -264,6 +280,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    de_dependent_credit = create_de_dependent_credit_reform_fn(
+        parameters, period
+    )
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
@@ -292,7 +311,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
-        income_security_package_reform,
+        edaa_end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
@@ -319,6 +338,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
+        nyc_mamdani_income_tax,
+        ut_refundable_eitc,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -326,6 +347,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_minimum_refundable_amount,
         ri_ctc,
         ri_exemption,
+        de_dependent_credit,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,

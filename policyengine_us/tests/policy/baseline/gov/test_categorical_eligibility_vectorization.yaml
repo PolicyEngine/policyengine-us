@@ -1,0 +1,41 @@
+- name: Categorical eligibility respects income limits with axes
+  period: 2025
+  absolute_error_margin: 100
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 1
+    families:
+      fam:
+        members: [parent, child]
+    marital_units:
+      mu1:
+        members: [parent]
+      mu2:
+        members: [child]
+        marital_unit_id: 1
+    tax_units:
+      tu:
+        members: [parent, child]
+    spm_units:
+      spm:
+        members: [parent, child]
+    households:
+      hh:
+        members: [parent, child]
+        state_code: CA
+    axes:
+      - - name: employment_income
+          min: 0
+          max: 100_000
+          count: 5
+  output:
+    # At $0, $25k, $50k, $75k, $100k income
+    # Child should only be eligible at low incomes (below ~$26k FPG for family of 2)
+    is_early_head_start_eligible: [True, True, False, False, False, True, True, False, False, False]
+    # SPM unit lifeline eligibility (indices 0,2,4,6,8 for 5 income levels)
+    is_lifeline_eligible: [True, False, False, False, False]
+    # Household CA CARE eligibility (indices 0,2,4,6,8 for 5 income levels)
+    ca_care_categorically_eligible: [True, False, False, False, False]
