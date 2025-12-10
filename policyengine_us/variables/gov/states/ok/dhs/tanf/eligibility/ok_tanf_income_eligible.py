@@ -20,8 +20,10 @@ class ok_tanf_income_eligible(Variable):
         gross_income_limit = need_standard * p.gross_income_limit_rate
 
         # Gross income test uses gross income (before disregards)
-        gross_earned = add(spm_unit, period, ["ok_tanf_gross_earned_income"])
-        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        gross_income = gross_earned + gross_unearned
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
+        )
 
         return gross_income <= gross_income_limit

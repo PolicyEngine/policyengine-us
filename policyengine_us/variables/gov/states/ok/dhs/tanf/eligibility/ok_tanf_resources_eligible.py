@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ok_tanf_resource_eligible(Variable):
+class ok_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Oklahoma TANF resource eligible"
+    label = "Oklahoma TANF resources eligible"
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/regulations/oklahoma/Okla-Admin-Code-SS-340-10-3-5"
     defined_for = StateCode.OK

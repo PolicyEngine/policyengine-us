@@ -13,6 +13,6 @@ class ok_tanf_payment_standard(Variable):
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ok.dhs.tanf.income
+        p = parameters(period).gov.states.ok.dhs.tanf.benefit
         unit_size = spm_unit("spm_unit_size", period)
         return p.payment_standard.calc(unit_size)

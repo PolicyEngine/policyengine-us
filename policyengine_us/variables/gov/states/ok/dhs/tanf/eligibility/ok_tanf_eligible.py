@@ -12,15 +12,18 @@ class ok_tanf_eligible(Variable):
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):
-        # Check for eligible child in the unit
-        has_eligible_child = (
-            spm_unit.sum(
-                spm_unit.members("ok_tanf_eligible_child", period.this_year)
-            )
-            > 0
+        # Use federal demographic eligibility (minor child or pregnant)
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+        # Per OAC 340:10-15: Must be US citizen or qualified alien
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
-
         income_eligible = spm_unit("ok_tanf_income_eligible", period)
-        resource_eligible = spm_unit("ok_tanf_resource_eligible", period)
+        resources_eligible = spm_unit("ok_tanf_resources_eligible", period)
 
-        return has_eligible_child & income_eligible & resource_eligible
+        return (
+            demographic_eligible
+            & immigration_eligible
+            & income_eligible
+            & resources_eligible
+        )

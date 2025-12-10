@@ -7,14 +7,14 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
       child:
-        ok_tanf_eligible_child: true
+        is_person_demographic_tanf_eligible: true
     spm_units:
       spm_unit:
         members: [adult, child]
         ok_tanf_income_eligible: true
-        ok_tanf_resource_eligible: true
+        ok_tanf_resources_eligible: true
     households:
       household:
         members: [adult, child]
@@ -27,12 +27,12 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
     spm_units:
       spm_unit:
         members: [adult]
         ok_tanf_income_eligible: true
-        ok_tanf_resource_eligible: true
+        ok_tanf_resources_eligible: true
     households:
       household:
         members: [adult]
@@ -45,14 +45,14 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
       child:
-        ok_tanf_eligible_child: true
+        is_person_demographic_tanf_eligible: true
     spm_units:
       spm_unit:
         members: [adult, child]
         ok_tanf_income_eligible: false
-        ok_tanf_resource_eligible: true
+        ok_tanf_resources_eligible: true
     households:
       household:
         members: [adult, child]
@@ -65,14 +65,14 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
       child:
-        ok_tanf_eligible_child: true
+        is_person_demographic_tanf_eligible: true
     spm_units:
       spm_unit:
         members: [adult, child]
         ok_tanf_income_eligible: true
-        ok_tanf_resource_eligible: false
+        ok_tanf_resources_eligible: false
     households:
       household:
         members: [adult, child]
@@ -85,12 +85,12 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
     spm_units:
       spm_unit:
         members: [adult]
         ok_tanf_income_eligible: false
-        ok_tanf_resource_eligible: false
+        ok_tanf_resources_eligible: false
     households:
       household:
         members: [adult]
@@ -103,14 +103,14 @@
   input:
     people:
       adult:
-        ok_tanf_eligible_child: false
+        is_person_demographic_tanf_eligible: false
       child:
-        ok_tanf_eligible_child: true
+        is_person_demographic_tanf_eligible: true
     spm_units:
       spm_unit:
         members: [adult, child]
         ok_tanf_income_eligible: false
-        ok_tanf_resource_eligible: false
+        ok_tanf_resources_eligible: false
     households:
       household:
         members: [adult, child]

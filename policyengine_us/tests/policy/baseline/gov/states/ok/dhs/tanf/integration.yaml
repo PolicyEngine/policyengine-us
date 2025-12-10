@@ -34,7 +34,7 @@
     # Countable income: $0
     # Payment standard (family of 3): $292
     # Benefit: $292 - $0 = $292 (>= $10 minimum)
-    ok_tanf_eligible_child: [false, true, true]
+    is_person_demographic_tanf_eligible: [false, true, true]
     ok_tanf_eligible: true
     ok_tanf_payment_standard: 292
     ok_tanf_countable_income: 0
@@ -75,7 +75,7 @@
     # Payment standard (family of 3): $292
     # Calculated benefit: $292 - $290 = $2
     # But $2 < $10 minimum, so no payment issued
-    ok_tanf_eligible_child: [false, true, true]
+    is_person_demographic_tanf_eligible: [false, true, true]
     ok_tanf_eligible: true
     ok_tanf_countable_income: 290
     ok_tanf_payment_standard: 292
@@ -112,7 +112,7 @@
     # Countable earned income: $190
     # Payment standard (family of 2): $225
     # Benefit: $225 - $190 = $35 (>= $10 minimum)
-    ok_tanf_eligible_child: [false, true]
+    is_person_demographic_tanf_eligible: [false, true]
     ok_tanf_eligible: true
     ok_tanf_countable_income: 190
     ok_tanf_payment_standard: 225
@@ -150,7 +150,7 @@
     # Monthly gross income: $1,500
     # Max gross income limit (185% of $798): $1,476
     # Income exceeds limit, ineligible
-    ok_tanf_eligible_child: [false, false, true, true]
+    is_person_demographic_tanf_eligible: [false, false, true, true]
     ok_tanf_income_eligible: false
     ok_tanf_eligible: false
     ok_tanf: 0
@@ -191,7 +191,7 @@
     # Countable earned income: $535
     # Payment standard: $292
     # Benefit: max($292 - $535, 0) = $0 (eligible but no payment)
-    ok_tanf_eligible_child: [false, true, true]
+    is_person_demographic_tanf_eligible: [false, true, true]
     ok_tanf_income_eligible: true
     ok_tanf_eligible: true
     ok_tanf_countable_income: 535
@@ -231,7 +231,7 @@
     # Countable income: $140 + $100 = $240
     # Payment standard (family of 2): $225
     # Benefit: max($225 - $240, 0) = $0 (eligible but no payment)
-    ok_tanf_eligible_child: [false, true]
+    is_person_demographic_tanf_eligible: [false, true]
     ok_tanf_eligible: true
     ok_tanf_countable_income: 240
     ok_tanf_payment_standard: 225
@@ -278,7 +278,7 @@
     # Countable earned: $340
     # Payment standard (family of 5): $422
     # Benefit: $422 - $340 = $82 (>= $10 minimum)
-    ok_tanf_eligible_child: [false, false, true, true, true]
+    is_person_demographic_tanf_eligible: [false, false, true, true, true]
     ok_tanf_income_eligible: true
     ok_tanf_eligible: true
     ok_tanf_countable_income: 340
