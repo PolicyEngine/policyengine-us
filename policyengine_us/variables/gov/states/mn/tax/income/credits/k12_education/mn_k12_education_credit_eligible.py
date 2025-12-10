@@ -21,9 +21,9 @@ class mn_k12_education_credit_eligible(Variable):
         k12_children = tax_unit("mn_k12_qualifying_children", period)
         # Check income limit based on number of children
         agi = tax_unit("adjusted_gross_income", period)
-        # Income limit = base + increment * max(0, children - 2)
-        income_limit = p.income_limit_base + p.income_limit_increment * max_(
-            0, k12_children - 2
+        # Income limit = base + additional * max(0, children - child_threshold)
+        income_limit = p.income_limit.base + p.income_limit.additional * max_(
+            0, k12_children - p.income_limit.child_threshold
         )
         income_eligible = agi < income_limit
         # Eligible if: not married filing separately, has qualifying children,

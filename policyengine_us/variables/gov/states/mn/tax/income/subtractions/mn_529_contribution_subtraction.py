@@ -21,6 +21,6 @@ class mn_529_contribution_subtraction(Variable):
         contributions = tax_unit("investment_in_529_plan", period)
         # Get filing status for maximum limit
         filing_status = tax_unit("filing_status", period)
-        max_subtraction = p.max_subtraction[filing_status]
+        max_subtraction = p.cap[filing_status]
         # Subtraction is lesser of contributions or maximum
         return min_(contributions, max_subtraction)

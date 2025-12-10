@@ -1,15 +1,12 @@
-description: Minnesota sets this income limit for the K-12 Education Credit for filers with 1-2 qualifying children.
+description: Minnesota increases the K-12 Education Credit income limit by this amount for each child above a certain number.
 values:
-  2021-01-01: 37_500
-  2022-01-01: 38_660
-  2023-01-01: 41_400
-  2024-01-01: 79_760
-  2025-01-01: 81_820
+  2021-01-01: 2_000
+  2024-01-01: 3_000
 
 metadata:
   period: year
   unit: currency-USD
-  label: Minnesota K-12 Education Credit income limit (1-2 children)
+  label: Minnesota K-12 Education Credit income limit increment per additional child
   reference:
   - title: 2025 Schedule M1ED Instructions
     href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1ed-25.pdf
