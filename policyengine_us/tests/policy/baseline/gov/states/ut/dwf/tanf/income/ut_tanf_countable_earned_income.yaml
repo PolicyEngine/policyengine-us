@@ -1,11 +1,11 @@
-# Unit tests for ut_tanf_earned_income_deduction (earned income deductions)
-# Utah applies two earned income deductions:
+# Unit tests for ut_tanf_countable_earned_income
+# Utah applies earned income deductions then counts the remainder:
 #   1. Work expense allowance: $100 per employed person
 #   2. 50% earned income disregard on remaining earned income
-# Formula: work_expense + 0.50 * max(earned_income - work_expense, 0)
+# Formula: sum(max(person_earned - 100, 0)) * 0.5
 # Reference: Utah Admin. Code R986-200-239(2)(a) and R986-200-239(2)(b)
 
-- name: No earned income - zero deduction.
+- name: No earned income - zero countable.
   period: 2024-01
   input:
     people:
@@ -21,8 +21,8 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # No earnings = no deduction
-    ut_tanf_earned_income_deduction: 0
+    # No earnings = no countable earned income
+    ut_tanf_countable_earned_income: 0
 
 - name: Single employed person with $500 earnings.
   period: 2024-01
@@ -40,11 +40,9 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # 1 employed person: work_expense = $100
     # After work expense = max(500 - 100, 0) = 400
-    # 50% disregard = 400 * 0.50 = 200
-    # Total deduction = 100 + 200 = 300
-    ut_tanf_earned_income_deduction: 300
+    # Countable = 400 * 0.50 = 200
+    ut_tanf_countable_earned_income: 200
 
 - name: Single employed person with $1,000 earnings.
   period: 2024-01
@@ -62,11 +60,9 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # 1 employed person: work_expense = $100
-    # After work expense = max(1,000 - 100, 0) = 900
-    # 50% disregard = 900 * 0.50 = 450
-    # Total deduction = 100 + 450 = 550
-    ut_tanf_earned_income_deduction: 550
+    # After work expense = max(1000 - 100, 0) = 900
+    # Countable = 900 * 0.50 = 450
+    ut_tanf_countable_earned_income: 450
 
 - name: Two employed persons with earnings.
   period: 2024-01
@@ -84,12 +80,11 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # 2 employed persons: work_expense = $200 (100 * 2)
-    # Total earnings = 600 + 400 = 1,000
-    # After work expense = max(1,000 - 200, 0) = 800
-    # 50% disregard = 800 * 0.50 = 400
-    # Total deduction = 200 + 400 = 600
-    ut_tanf_earned_income_deduction: 600
+    # Person1 after work expense = max(600 - 100, 0) = 500
+    # Person2 after work expense = max(400 - 100, 0) = 300
+    # Total after work expense = 800
+    # Countable = 800 * 0.50 = 400
+    ut_tanf_countable_earned_income: 400
 
 - name: Earnings less than work expense deduction.
   period: 2024-01
@@ -107,11 +102,9 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # 1 employed person: work_expense = $100
     # After work expense = max(80 - 100, 0) = 0
-    # 50% disregard = 0 * 0.50 = 0
-    # Total deduction = 80 (capped at earnings, cannot exceed earnings)
-    ut_tanf_earned_income_deduction: 80
+    # Countable = 0 * 0.50 = 0
+    ut_tanf_countable_earned_income: 0
 
 - name: Earnings exactly equal to work expense.
   period: 2024-01
@@ -129,8 +122,6 @@
         members: [person1, person2]
         state_code: UT
   output:
-    # 1 employed person: work_expense = $100
     # After work expense = max(100 - 100, 0) = 0
-    # 50% disregard = 0 * 0.50 = 0
-    # Total deduction = 100
-    ut_tanf_earned_income_deduction: 100
+    # Countable = 0 * 0.50 = 0
+    ut_tanf_countable_earned_income: 0

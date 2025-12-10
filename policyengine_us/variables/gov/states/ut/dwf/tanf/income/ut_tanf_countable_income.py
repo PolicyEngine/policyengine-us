@@ -12,11 +12,7 @@ class ut_tanf_countable_income(Variable):
     )
     defined_for = StateCode.UT
 
-    def formula(spm_unit, period, parameters):
-        # Countable income = gross_earned - deductions + gross_unearned
-        person = spm_unit.members
-        gross_earned = spm_unit.sum(person("tanf_gross_earned_income", period))
-        deduction = spm_unit("ut_tanf_earned_income_deduction", period)
-        countable_earned = max_(gross_earned - deduction, 0)
-        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        return countable_earned + gross_unearned
+    adds = [
+        "ut_tanf_countable_earned_income",
+        "tanf_gross_unearned_income",
+    ]

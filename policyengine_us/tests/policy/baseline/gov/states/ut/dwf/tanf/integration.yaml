@@ -77,17 +77,15 @@
   output:
     # Family size = 3
     # Gross income = $600, Gross limit = $1,050 -> PASS
-    # Work expense = $100 (1 employed person)
-    # After work expense = $600 - $100 = $500
-    # 50% disregard = $500 * 0.50 = $250
-    # Total deduction = $100 + $250 = $350
-    # Countable income = $600 - $350 = $250
+    # After work expense = max(600 - 100, 0) = 500
+    # Countable earned = 500 * 0.50 = 250
+    # Countable income = 250 + 0 (unearned) = 250
     # Net limit = $568 (100% SNB), $250 < $568 -> PASS
     # Resources = $1,000 <= $2,000 -> PASS
     # Eligible = true
     # Benefit = Payment standard ($662) - Countable income ($250) = $412
     ut_tanf_payment_standard: 662
-    ut_tanf_earned_income_deduction: 350
+    ut_tanf_countable_earned_income: 250
     ut_tanf_gross_income_eligible: true
     ut_tanf_countable_income: 250
     ut_tanf_net_income_eligible: true
@@ -131,17 +129,15 @@
   output:
     # Family size = 5
     # Gross income = $400 + $300 = $700, Gross limit = $1,400 -> PASS
-    # Work expense = $200 (2 employed persons: $100 * 2)
-    # After work expense = $700 - $200 = $500
-    # 50% disregard = $500 * 0.50 = $250
-    # Total deduction = $200 + $250 = $450
-    # Countable income = $700 - $450 = $250
+    # After work expense = max(400-100,0) + max(300-100,0) = 300 + 200 = 500
+    # Countable earned = 500 * 0.50 = 250
+    # Countable income = 250 + 0 (unearned) = 250
     # Net limit = $757 (100% SNB), $250 < $757 -> PASS
     # Resources = $1,500 <= $2,000 -> PASS
     # Eligible = true
     # Benefit = Payment standard ($882) - Countable income ($250) = $632
     ut_tanf_payment_standard: 882
-    ut_tanf_earned_income_deduction: 450
+    ut_tanf_countable_earned_income: 250
     ut_tanf_gross_income_eligible: true
     ut_tanf_countable_income: 250
     ut_tanf_net_income_eligible: true
@@ -241,16 +237,14 @@
   output:
     # Family size = 2
     # Gross income = $400, Gross limit = $843 -> PASS
-    # Work expense = $100
-    # After work expense = $400 - $100 = $300
-    # 50% disregard = $300 * 0.50 = $150
-    # Total deduction = $100 + $150 = $250
-    # Countable income = $400 - $250 = $150
+    # After work expense = max(400 - 100, 0) = 300
+    # Countable earned = 300 * 0.50 = 150
+    # Countable income = 150 + 0 (unearned) = 150
     # Net limit = $456, $150 < $456 -> PASS
     # Resources = $3,000 > $2,000 -> FAIL
     # Ineligible due to excess resources
     ut_tanf_payment_standard: 531
-    ut_tanf_earned_income_deduction: 250
+    ut_tanf_countable_earned_income: 150
     ut_tanf_gross_income_eligible: true
     ut_tanf_countable_income: 150
     ut_tanf_net_income_eligible: true
@@ -300,7 +294,7 @@
     # Eligible = true
     # Benefit = Payment standard ($882) - Countable income ($400) = $482
     ut_tanf_payment_standard: 882
-    ut_tanf_earned_income_deduction: 0
+    ut_tanf_countable_earned_income: 0
     ut_tanf_gross_income_eligible: true
     ut_tanf_countable_income: 400
     ut_tanf_net_income_eligible: true

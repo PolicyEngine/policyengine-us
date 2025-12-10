@@ -19,5 +19,4 @@ class ut_tanf_net_income_eligible(Variable):
         size_capped = min_(size, p.payment_standard.max_unit_size)
 
         countable_income = spm_unit("ut_tanf_countable_income", period)
-        net_limit = p.income.net_income_limit.amount[size_capped]
-        return countable_income < net_limit
+        return countable_income < p.income.net_income_limit.amount[size_capped]

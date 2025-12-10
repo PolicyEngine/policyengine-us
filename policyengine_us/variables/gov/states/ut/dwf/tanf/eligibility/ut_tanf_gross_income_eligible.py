@@ -19,5 +19,4 @@ class ut_tanf_gross_income_eligible(Variable):
         size_capped = min_(size, p.payment_standard.max_unit_size)
 
         gross_income = spm_unit("ut_tanf_gross_income", period)
-        gross_limit = p.income.gross_income_limit.amount[size_capped]
-        return gross_income <= gross_limit
+        return gross_income <= p.income.gross_income_limit.amount[size_capped]
