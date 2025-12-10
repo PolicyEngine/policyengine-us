@@ -11,20 +11,26 @@ class ok_tanf_countable_earned_income(Variable):
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):
+        # NOTE: OAC 340:10-3-31.1 also provides a 3-month EID period where
+        # 100% of earned income is excluded. This applies once per rolling
+        # 12-month period when a recipient obtains employment. This 100%
+        # disregard is not currently implemented.
+
         p = parameters(period).gov.states.ok.dhs.tanf.income
 
-        # Step 1: Get gross earned income from federal TANF variable
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
+        # Sum person-level earned income after work expense
+        # Per OAC 340:10-3-33(a): $120 for <30 hrs/week, $240 for 30+ hrs/week
+        after_work_expense = add(
+            spm_unit,
+            period,
+            ["ok_tanf_earned_income_after_work_expense_person"],
+        )
 
-        # Step 2: Apply work expense deduction
-        # Per OAC 340:10-3-33: $120 for applicants, $240 for recipients with
-        # child < 6 working 20+ hours. For simplified implementation, use $120.
-        # NOTE: Applicant vs. recipient status cannot be tracked
-        work_expense = p.work_expense.applicant
-        after_work_expense = max_(gross_earned - work_expense, 0)
-
-        # Step 3: Apply 50% earned income disregard to remainder
-        disregard_rate = p.earned_income_disregard_rate
-        disregard_amount = after_work_expense * disregard_rate
-
+        # Apply 50% EID if eligible (gross earned <= $2,064)
+        eid_eligible = spm_unit("ok_tanf_eid_eligible", period)
+        disregard_amount = where(
+            eid_eligible,
+            after_work_expense * p.earned_income_disregard_rate,
+            0,
+        )
         return max_(after_work_expense - disregard_amount, 0)

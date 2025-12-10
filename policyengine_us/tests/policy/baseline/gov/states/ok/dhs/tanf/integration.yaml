@@ -1,7 +1,7 @@
 # Integration tests for Oklahoma TANF - full pipeline testing
 # Tests realistic family scenarios with complete eligibility and benefit calculations
 # OAC 340:10: https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10
-# Note: Uses $120 applicant work expense (simplified implementation)
+# Note: Work expense based on hours: $120 (<30 hrs), $240 (30+ hrs)
 # Note: Minimum benefit is $10 - benefits below this are not issued
 
 - name: Scenario 1 - Single parent with 2 children, no income - full benefit
@@ -40,8 +40,8 @@
     ok_tanf_countable_income: 0
     ok_tanf: 292
 
-- name: Scenario 2 - Family of 3 with $700 monthly earnings (benefit below minimum)
-  # Standard earned income calculation with $120 work expense
+- name: Scenario 2 - Family of 3 with $700 monthly earnings (part-time)
+  # Standard earned income calculation with $120 work expense (<30 hrs)
   # Benefits below $10 are not issued
   period: 2024-01
   absolute_error_margin: 0.5
@@ -50,6 +50,7 @@
       person1:
         age: 28
         employment_income_before_lsr: 8_400  # $700/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
       person2:
         age: 4
         is_in_k12_school: true
@@ -68,7 +69,7 @@
   output:
     # Family size: 3
     # Monthly gross earned income: $700
-    # Work expense deduction: $120 (applicant rate)
+    # Work expense deduction: $120 (<30 hrs)
     # After work expense: $700 - $120 = $580
     # 50% disregard: $580 * 0.50 = $290
     # Countable earned income: $290
@@ -81,8 +82,8 @@
     ok_tanf_payment_standard: 292
     ok_tanf: 0
 
-- name: Scenario 3 - Single parent with one child, $500 monthly earnings
-  # Family of 2, uses $120 applicant work expense
+- name: Scenario 3 - Single parent with one child, $500 monthly earnings (part-time)
+  # Family of 2, uses $120 work expense (<30 hrs)
   period: 2024-01
   absolute_error_margin: 0.5
   input:
@@ -90,6 +91,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
       person2:
         age: 10
         is_in_k12_school: true
@@ -106,7 +108,7 @@
   output:
     # Family size: 2
     # Monthly gross earned income: $500
-    # Work expense deduction: $120
+    # Work expense deduction: $120 (<30 hrs)
     # After work expense: $500 - $120 = $380
     # 50% disregard: $380 * 0.50 = $190
     # Countable earned income: $190
@@ -127,6 +129,7 @@
       person1:
         age: 40
         employment_income_before_lsr: 18_000  # $1,500/month - exceeds $1,476 limit
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 38
       person3:
@@ -164,6 +167,7 @@
       person1:
         age: 32
         employment_income_before_lsr: 14_280  # $1,190/month - just under $1,193 limit
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
       person2:
         age: 7
         is_in_k12_school: true
@@ -185,7 +189,7 @@
     # Monthly gross income: $1,190
     # Max gross income limit (185% of $645): $1,193
     # Just under limit, eligible
-    # Work expense: $120
+    # Work expense: $120 (<30 hrs)
     # After work expense: $1,190 - $120 = $1,070
     # 50% disregard: $1,070 * 0.50 = $535
     # Countable earned income: $535
@@ -197,7 +201,7 @@
     ok_tanf_countable_income: 535
     ok_tanf: 0
 
-- name: Scenario 6 - Combined earned and unearned income
+- name: Scenario 6 - Combined earned and unearned income (part-time)
   # Tests handling of both income types
   period: 2024-01
   absolute_error_margin: 0.5
@@ -207,6 +211,7 @@
         age: 29
         employment_income_before_lsr: 4_800  # $400/month earned
         child_support_received: 1_200  # $100/month unearned
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
       person2:
         age: 4
         is_in_k12_school: true
@@ -224,7 +229,7 @@
     # Family size: 2
     # Monthly gross earned: $400, unearned: $100
     # Total gross: $500 (under $923 limit)
-    # Work expense: $120
+    # Work expense: $120 (<30 hrs)
     # After work expense: $400 - $120 = $280
     # 50% disregard: $280 * 0.50 = $140
     # Countable earned: $140
@@ -237,7 +242,7 @@
     ok_tanf_payment_standard: 225
     ok_tanf: 0
 
-- name: Scenario 7 - Large family of 5, partial benefit
+- name: Scenario 7 - Large family of 5, partial benefit (part-time)
   # Tests larger family size payment standard
   period: 2024-01
   absolute_error_margin: 0.5
@@ -246,6 +251,7 @@
       person1:
         age: 38
         employment_income_before_lsr: 9_600  # $800/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
       person2:
         age: 36
       person3:
@@ -272,7 +278,7 @@
     # Monthly gross income: $800
     # Max gross income limit (185% of $933): $1,726
     # Under limit, eligible
-    # Work expense: $120
+    # Work expense: $120 (<30 hrs)
     # After work expense: $800 - $120 = $680
     # 50% disregard: $680 * 0.50 = $340
     # Countable earned: $340
