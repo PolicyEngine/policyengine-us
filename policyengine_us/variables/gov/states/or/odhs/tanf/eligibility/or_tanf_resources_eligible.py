@@ -14,7 +14,8 @@ class or_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["or"].odhs.tanf.resources.limit
-        countable_resources = spm_unit("spm_unit_assets", period)
+        # spm_unit_assets is a YEAR variable, access with period.this_year
+        countable_resources = spm_unit("spm_unit_assets", period.this_year)
         # Existing recipients have a higher resource limit ($10,000)
         # New applicants have a lower limit ($2,500)
         is_enrolled = spm_unit("is_tanf_enrolled", period)
