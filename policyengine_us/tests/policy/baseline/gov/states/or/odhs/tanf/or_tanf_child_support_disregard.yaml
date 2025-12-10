@@ -187,3 +187,86 @@
         state_code: OR
   output:
     or_tanf_child_support_disregard: 200
+
+# Age 18 boundary test - 18-year-old is NOT a minor child for child support disregard
+
+- name: Age 18 not counted as minor child for disregard
+  # 1 minor child (age 17) + 1 adult child (age 18)
+  # Child support = $150/month = $1,800/year
+  # Only 1 minor child counts for disregard
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($150, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        child_support_received: 1_800
+      child1:
+        age: 18
+        child_support_received: 0
+      child2:
+        age: 17
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: Age 17 counted as minor child - boundary test
+  # 1 minor child (age 17)
+  # Child support = $100/month = $1,200/year
+  # 1 minor child counts for disregard
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($100, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        child_support_received: 1_200
+      child:
+        age: 17
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: All children age 18 or older - no minor children
+  # No minor children (both age 18+)
+  # Child support = $100/month = $1,200/year
+  # 0 minor children count for disregard
+  # Max disregard = 0 * $50 = $0
+  # Disregard = min($100, $0) = $0
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 45
+        child_support_received: 1_200
+      child1:
+        age: 20
+        child_support_received: 0
+      child2:
+        age: 18
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 0

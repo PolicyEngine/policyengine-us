@@ -271,3 +271,93 @@
     or_tanf: 0
     or_tanf_payment_standard: 432
     or_tanf_adjusted_income: 425
+
+- name: ELI enrolled family with earned income - higher income limit applies
+  # Scenario: Currently enrolled family with earned income
+  # 3-person household payment standard: $506/month
+  # ELI limit = $506 × 2 = $1,012
+  # Standard countable limit = $616/month
+  # Gross earned income: $900/month = $10,800/year
+  # Countable income = $900 (> $616, fails standard; < $1,012, passes ELI)
+  # Earned income disregard: 50% × $900 = $450
+  # Adjusted income = $900 - $450 = $450
+  # Benefit = $506 - $450 = $56/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        is_adult: true
+        employment_income_before_lsr: 10_800
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 8
+        is_child: true
+      person3:
+        age: 5
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OR
+  output:
+    or_tanf: 56
+    or_tanf_payment_standard: 506
+    or_tanf_countable_income: 900
+    or_tanf_adjusted_income: 450
+    or_tanf_income_eligible: true
+
+- name: Child support integration - reduces countable income
+  # Scenario: Single parent receives child support payments through the state program
+  # 3-person household payment standard: $506/month
+  # Countable income limit = $616/month
+  # Gross earned income: $600/month = $7,200/year
+  # Child support received: $100/month = $1,200/year
+  # 2 minor children × $50/child = $100 child support disregard
+  # Countable income = $600 + $100 - $100 = $600
+  # Earned income disregard: 50% × $600 = $300
+  # Adjusted income = $600 - $300 = $300
+  # Benefit = $506 - $300 = $206/month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        is_adult: true
+        employment_income_before_lsr: 7_200
+        child_support_received: 1_200
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 7
+        is_child: true
+        child_support_received: 0
+      person3:
+        age: 4
+        is_child: true
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OR
+  output:
+    or_tanf: 206
+    or_tanf_payment_standard: 506
+    or_tanf_child_support_disregard: 100
+    or_tanf_countable_income: 600
+    or_tanf_adjusted_income: 300
+

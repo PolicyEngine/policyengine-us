@@ -4,7 +4,7 @@
 
 # New applicant tests (is_tanf_enrolled: false)
 - name: New applicant with zero resources is eligible
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 0
@@ -14,7 +14,7 @@
 
 - name: New applicant with resources below limit is eligible
   # Countable resources ($2,000) <= $2,500 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 2_000
@@ -24,7 +24,7 @@
 
 - name: New applicant with resources at limit is eligible
   # Countable resources ($2,500) <= $2,500 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 2_500
@@ -34,7 +34,7 @@
 
 - name: New applicant with resources above limit is not eligible
   # Countable resources ($2,501) > $2,500 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 2_501
@@ -45,7 +45,7 @@
 # Existing recipient tests (is_tanf_enrolled: true)
 - name: Existing recipient with resources below new applicant limit is eligible
   # Countable resources ($2,000) <= $10,000 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 2_000
@@ -55,7 +55,7 @@
 
 - name: Existing recipient with resources above new applicant limit but below recipient limit is eligible
   # Countable resources ($5,000) <= $10,000 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 5_000
@@ -65,7 +65,7 @@
 
 - name: Existing recipient with resources at limit is eligible
   # Countable resources ($10,000) <= $10,000 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 10_000
@@ -75,7 +75,7 @@
 
 - name: Existing recipient with resources above limit is not eligible
   # Countable resources ($10,001) > $10,000 limit
-  period: 2024
+  period: 2024-01
   input:
     state_code: OR
     spm_unit_assets: 10_001
