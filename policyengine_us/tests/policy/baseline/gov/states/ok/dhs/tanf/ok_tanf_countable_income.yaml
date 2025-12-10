@@ -1,0 +1,106 @@
+# Unit tests for Oklahoma TANF countable income calculation
+# OAC 340:10-3-31.1, OAC 340:10-3-33
+# Formula: Countable Income = (Gross Earned - Work Expense) * 0.50 + Gross Unearned
+# Work expense: $120 (applicant) or $240 (recipient with child under 6)
+# https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html
+
+- name: No income results in zero countable income
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 0
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # (0 - 120) * 0.50 = 0 (clipped at 0) + 0 = 0
+    ok_tanf_countable_income: 0
+
+- name: Documentation example - $700 earnings with $240 work expense
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 700
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 240
+    state_code: OK
+  output:
+    # (700 - 240) * 0.50 = 460 * 0.50 = 230
+    ok_tanf_countable_income: 230
+
+- name: Earnings only with $120 work expense (applicant)
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 500
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # (500 - 120) * 0.50 = 380 * 0.50 = 190
+    ok_tanf_countable_income: 190
+
+- name: Earnings below work expense deduction
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 100
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # (100 - 120) * 0.50 = max(0, -20) * 0.50 = 0
+    ok_tanf_countable_income: 0
+
+- name: Unearned income only (counted at full amount)
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 0
+    ok_tanf_gross_unearned_income: 300
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # 0 + 300 = 300
+    ok_tanf_countable_income: 300
+
+- name: Combined earned and unearned income
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 600
+    ok_tanf_gross_unearned_income: 200
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # Earned: (600 - 120) * 0.50 = 480 * 0.50 = 240
+    # Total: 240 + 200 = 440
+    ok_tanf_countable_income: 440
+
+- name: Higher earnings with recipient work expense ($240)
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 1_000
+    ok_tanf_gross_unearned_income: 100
+    ok_tanf_work_expense_deduction: 240
+    state_code: OK
+  output:
+    # Earned: (1000 - 240) * 0.50 = 760 * 0.50 = 380
+    # Total: 380 + 100 = 480
+    ok_tanf_countable_income: 480
+
+- name: Edge case - earnings exactly equal to work expense
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 120
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # (120 - 120) * 0.50 = 0 * 0.50 = 0
+    ok_tanf_countable_income: 0
+
+- name: High earnings near income limit for family of 3
+  period: 2024-01
+  input:
+    ok_tanf_gross_earned_income: 1_200
+    ok_tanf_gross_unearned_income: 0
+    ok_tanf_work_expense_deduction: 120
+    state_code: OK
+  output:
+    # (1200 - 120) * 0.50 = 1080 * 0.50 = 540
+    ok_tanf_countable_income: 540

@@ -1,0 +1,139 @@
+# Unit tests for Oklahoma TANF payment standard by family size
+# OAC 340:10-3-59: Payment standards from Schedule IX
+# Adults and/or Children rates used when parent is in assistance unit
+# https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
+
+- name: Family size 1 (single adult or child only)
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 1
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 180
+
+- name: Family size 2 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 2
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 225
+
+- name: Family size 3 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 3
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 292
+
+- name: Family size 4 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 4
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 361
+
+- name: Family size 5 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 5
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 422
+
+- name: Family size 6 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 6
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 483
+
+- name: Family size 7 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 7
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 544
+
+- name: Family size 8 - adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 8
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 598
+
+- name: Family size 9+ - maximum adults and/or children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 9
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 650
+
+- name: Family size 10 - caps at 9+ rate
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 10
+    ok_tanf_children_only_case: false
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 650
+
+- name: Children only case - 1 child
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 1
+    ok_tanf_children_only_case: true
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 104
+
+- name: Children only case - 2 children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 2
+    ok_tanf_children_only_case: true
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 205
+
+- name: Children only case - 3 children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 3
+    ok_tanf_children_only_case: true
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 289
+
+- name: Children only case - 4 children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 4
+    ok_tanf_children_only_case: true
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 373
+
+- name: Children only case - 5 children
+  period: 2024-01
+  input:
+    ok_tanf_unit_size: 5
+    ok_tanf_children_only_case: true
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 448

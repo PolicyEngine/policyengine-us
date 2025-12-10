@@ -1,0 +1,51 @@
+description: Oklahoma sets this State Standard of Need amount for families in the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oklahoma TANF State Standard of Need
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: OAC 340:10-3-27 - Gross Income Test
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-27
+    - title: OKDHS Appendix C-1 Schedule IX-A
+      href: https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
+
+brackets:
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 398
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 499
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 645
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 798
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 933
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 1068
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 1203
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 1323
+  - threshold:
+      2021-01-01: 9
+    amount:
+      2021-01-01: 1436

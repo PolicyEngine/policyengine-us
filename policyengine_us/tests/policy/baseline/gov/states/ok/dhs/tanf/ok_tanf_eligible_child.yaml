@@ -1,0 +1,78 @@
+# Unit tests for Oklahoma TANF eligible child determination
+# OAC 340:10-5-1: Minor child through age 18, or through 19 if full-time student
+# https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-5/age.html
+
+- name: Child under 18 is eligible
+  period: 2024-01
+  input:
+    age: 10
+    is_tax_unit_dependent: true
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: true
+
+- name: Child at age 17 is eligible
+  period: 2024-01
+  input:
+    age: 17
+    is_tax_unit_dependent: true
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: true
+
+- name: 18-year-old not in school is ineligible
+  period: 2024-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: false
+
+- name: 18-year-old full-time student is eligible
+  period: 2024-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: true
+
+- name: 19-year-old student is ineligible (past age limit)
+  period: 2024-01
+  input:
+    age: 19
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: false
+
+- name: Adult (25) is ineligible regardless of dependent status
+  period: 2024-01
+  input:
+    age: 25
+    is_tax_unit_dependent: false
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: false
+
+- name: Infant (age 0) is eligible
+  period: 2024-01
+  input:
+    age: 0
+    is_tax_unit_dependent: true
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: true
+
+- name: Non-dependent child under 18 is ineligible
+  period: 2024-01
+  input:
+    age: 15
+    is_tax_unit_dependent: false
+    state_code: OK
+  output:
+    ok_tanf_eligible_child: false

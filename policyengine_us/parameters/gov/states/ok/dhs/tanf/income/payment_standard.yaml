@@ -1,0 +1,51 @@
+description: Oklahoma sets this payment standard amount for families in the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oklahoma TANF payment standard
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: OAC 340:10-3-59 - Assistance Benefits
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-59
+    - title: OKDHS Appendix C-1 Schedule IX-A
+      href: https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
+
+brackets:
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 180
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 225
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 292
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 361
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 422
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 483
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 544
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 598
+  - threshold:
+      2021-01-01: 9
+    amount:
+      2021-01-01: 650
