@@ -3,7 +3,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 12_000  # QMB level
+    adjusted_gross_income_person: 12_000  # QMB level
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -18,7 +18,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 16_500  # SLMB level
+    adjusted_gross_income_person: 16_500  # SLMB level
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -32,7 +32,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 19_000  # QI level
+    adjusted_gross_income_person: 19_000  # QI level
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -46,7 +46,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 30_000  # Above 135% FPL
+    adjusted_gross_income_person: 30_000  # Above 135% FPL
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060

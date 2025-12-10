@@ -3,7 +3,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 10_000
+    adjusted_gross_income_person: 10_000
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060  # 2024 FPL for 1 person
@@ -15,7 +15,7 @@
   input:
     age: 68
     is_medicare_eligible: true
-    adjusted_gross_income: 18_000  # ~120% FPL
+    adjusted_gross_income_person: 18_000  # ~120% FPL
     spm_unit_cash_assets: 8_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -27,7 +27,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 30_000  # ~200% FPL
+    adjusted_gross_income_person: 30_000  # ~200% FPL
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -39,7 +39,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 10_000
+    adjusted_gross_income_person: 10_000
     spm_unit_cash_assets: 15_000  # Over $9,430 limit
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -52,7 +52,7 @@
   input:
     age: 60  # Under 65
     is_medicare_eligible: false
-    adjusted_gross_income: 10_000
+    adjusted_gross_income_person: 10_000
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060

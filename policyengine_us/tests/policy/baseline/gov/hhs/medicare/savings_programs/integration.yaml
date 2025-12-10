@@ -5,9 +5,11 @@
       spouse1:
         age: 68
         is_medicare_eligible: true
+        adjusted_gross_income_person: 9_000  # Each spouse's AGI
       spouse2:
         age: 66
         is_medicare_eligible: true
+        adjusted_gross_income_person: 9_000  # Each spouse's AGI
     spm_units:
       spm_unit:
         members: [spouse1, spouse2]
@@ -17,7 +19,6 @@
     tax_units:
       tax_unit:
         members: [spouse1, spouse2]
-        adjusted_gross_income: 18_000  # Below 100% FPL for couple ($20,440)
     households:
       household:
         members: [spouse1, spouse2]
@@ -34,6 +35,7 @@
         is_medicare_eligible: true
         base_part_a_premium: 0
         base_part_b_premium: 2_096.40  # $174.70 * 12
+        adjusted_gross_income_person: 17_000  # Between 100% and 120% FPL
     spm_units:
       spm_unit:
         members: [person1]
@@ -43,7 +45,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 17_000  # Between 100% and 120% FPL
     households:
       household:
         members: [person1]
@@ -60,6 +61,7 @@
       person1:
         age: 67
         is_medicare_eligible: true
+        adjusted_gross_income_person: 10_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -69,7 +71,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 10_000
     households:
       household:
         members: [person1]

@@ -3,7 +3,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 12_000  # Below 100% FPL ($15,060)
+    adjusted_gross_income_person: 12_000  # Below 100% FPL ($15,060)
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -15,7 +15,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 16_500  # Between 100% ($15,060) and 120% ($18,072) FPL
+    adjusted_gross_income_person: 16_500  # Between 100% ($15,060) and 120% ($18,072) FPL
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -27,7 +27,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 19_000  # Between 120% ($18,072) and 135% ($20,331) FPL
+    adjusted_gross_income_person: 19_000  # Between 120% ($18,072) and 135% ($20,331) FPL
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -39,7 +39,7 @@
   input:
     age: 67
     is_medicare_eligible: true
-    adjusted_gross_income: 25_000  # Above 135% FPL ($20,331)
+    adjusted_gross_income_person: 25_000  # Above 135% FPL ($20,331)
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
@@ -51,7 +51,7 @@
   input:
     age: 60
     is_medicare_eligible: false
-    adjusted_gross_income: 10_000
+    adjusted_gross_income_person: 10_000
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
     spm_unit_fpg: 15_060
