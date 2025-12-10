@@ -1,46 +1,84 @@
-# Oregon TANF Resources Eligibility (OAR 461-160-0015)
-# Resources must be at or below $10,000 limit
+# Oregon TANF Resources Eligibility (OAR 461-160-0015(8))
+# New applicants: $2,500 limit
+# Existing recipients: $10,000 limit
 
-- name: Zero resources is resources eligible
+# New applicant tests (is_tanf_enrolled: false)
+- name: New applicant with zero resources is eligible
   period: 2024
   input:
     state_code: OR
     spm_unit_assets: 0
+    is_tanf_enrolled: false
   output:
     or_tanf_resources_eligible: true
 
-- name: Resources below limit is eligible
+- name: New applicant with resources below limit is eligible
+  # Countable resources ($2,000) <= $2,500 limit
+  period: 2024
+  input:
+    state_code: OR
+    spm_unit_assets: 2_000
+    is_tanf_enrolled: false
+  output:
+    or_tanf_resources_eligible: true
+
+- name: New applicant with resources at limit is eligible
+  # Countable resources ($2,500) <= $2,500 limit
+  period: 2024
+  input:
+    state_code: OR
+    spm_unit_assets: 2_500
+    is_tanf_enrolled: false
+  output:
+    or_tanf_resources_eligible: true
+
+- name: New applicant with resources above limit is not eligible
+  # Countable resources ($2,501) > $2,500 limit
+  period: 2024
+  input:
+    state_code: OR
+    spm_unit_assets: 2_501
+    is_tanf_enrolled: false
+  output:
+    or_tanf_resources_eligible: false
+
+# Existing recipient tests (is_tanf_enrolled: true)
+- name: Existing recipient with resources below new applicant limit is eligible
+  # Countable resources ($2,000) <= $10,000 limit
+  period: 2024
+  input:
+    state_code: OR
+    spm_unit_assets: 2_000
+    is_tanf_enrolled: true
+  output:
+    or_tanf_resources_eligible: true
+
+- name: Existing recipient with resources above new applicant limit but below recipient limit is eligible
   # Countable resources ($5,000) <= $10,000 limit
   period: 2024
   input:
     state_code: OR
     spm_unit_assets: 5_000
+    is_tanf_enrolled: true
   output:
     or_tanf_resources_eligible: true
 
-- name: Resources at limit is eligible
+- name: Existing recipient with resources at limit is eligible
   # Countable resources ($10,000) <= $10,000 limit
   period: 2024
   input:
     state_code: OR
     spm_unit_assets: 10_000
+    is_tanf_enrolled: true
   output:
     or_tanf_resources_eligible: true
 
-- name: Resources above limit is not eligible
+- name: Existing recipient with resources above limit is not eligible
   # Countable resources ($10,001) > $10,000 limit
   period: 2024
   input:
     state_code: OR
     spm_unit_assets: 10_001
-  output:
-    or_tanf_resources_eligible: false
-
-- name: High resources is not eligible
-  # Countable resources ($25,000) > $10,000 limit
-  period: 2024
-  input:
-    state_code: OR
-    spm_unit_assets: 25_000
+    is_tanf_enrolled: true
   output:
     or_tanf_resources_eligible: false

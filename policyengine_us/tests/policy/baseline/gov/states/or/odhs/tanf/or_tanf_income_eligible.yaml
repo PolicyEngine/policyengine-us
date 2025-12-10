@@ -1,6 +1,6 @@
 # Oregon TANF Income Eligibility (OAR 461-160-0100)
-# Two-tier test: countable income must be below countable limit AND
-# adjusted income must be below adjusted limit
+# Standard test: countable income < countable limit AND adjusted income < adjusted limit
+# ELI test (for enrolled recipients with earned income): countable income < ELI limit (2 × payment standard)
 
 - name: Zero income passes both tests
   period: 2024-01
@@ -83,3 +83,84 @@
     or_tanf_adjusted_income: 250
   output:
     or_tanf_income_eligible: true
+
+# ELI (Exit Limit Increase) test cases
+# ELI applies when enrolled in TANF AND has earned income
+# ELI limit = payment_standard × eli_multiplier (2)
+
+- name: ELI eligible - income above standard limit but below ELI limit
+  # 3-person household:
+  # Standard countable limit = $616
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($800) > $616 (fails standard) but < $1,012 (passes ELI)
+  # With ELI, family remains eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 800
+    or_tanf_adjusted_income: 500
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: true
+
+- name: ELI eligible - income at ELI limit is ineligible
+  # 3-person household:
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($1,012) >= $1,012 - fails ELI test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 1_012
+    or_tanf_adjusted_income: 600
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: false
+
+- name: ELI eligible - income just below ELI limit is eligible
+  # 3-person household:
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($1,011) < $1,012 - passes ELI test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 1_011
+    or_tanf_adjusted_income: 600
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: true
+
+- name: Not ELI eligible - enrolled but no earned income uses standard test
+  # 3-person household with only unearned income (not ELI eligible)
+  # Standard countable limit = $616
+  # Countable income ($700) >= $616 - fails standard test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 700
+    or_tanf_adjusted_income: 400
+  output:
+    or_tanf_income_eligible: false
+
+- name: Not enrolled with earned income - uses standard test not ELI
+  # New applicant (not enrolled) with earned income
+  # ELI does NOT apply to new applicants
+  # Standard countable limit = $616
+  # Countable income ($700) >= $616 - fails standard test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: false
+    or_tanf_countable_income: 700
+    or_tanf_adjusted_income: 400
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: false

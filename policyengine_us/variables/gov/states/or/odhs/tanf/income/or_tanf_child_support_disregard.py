@@ -11,18 +11,15 @@ class or_tanf_child_support_disregard(Variable):
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .odhs.tanf.income.child_support_disregard
-        )
+        p = parameters(period).gov.states["or"].odhs.tanf
         child_support_received = add(
             spm_unit, period, ["child_support_received"]
         )
         person = spm_unit.members
         age = person("age", period.this_year)
-        is_child = age < 18
+        is_child = age < p.age_threshold.minor_child
         num_children = spm_unit.sum(is_child)
-        max_disregard_by_children = num_children * p.per_child
-        max_disregard = min_(max_disregard_by_children, p.max)
+        disregard = p.income.child_support_disregard
+        max_disregard_by_children = num_children * disregard.per_child
+        max_disregard = min_(max_disregard_by_children, disregard.max)
         return min_(child_support_received, max_disregard)
