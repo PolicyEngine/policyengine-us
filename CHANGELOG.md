@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.458.0] - 2025-12-11 18:30:32
+
+### Added
+
+- Add spm_unit_tenure_type variable at SPM unit level for local area calibration.
+
+## [1.457.1] - 2025-12-11 00:31:16
+
+### Fixed
+
+- Replace is_medicaid_eligible with receives_medicaid in il_bcc_insurance_eligible.
+
 ## [1.457.0] - 2025-12-10 18:16:05
 
 ### Added
@@ -13804,6 +13816,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.458.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.1...1.458.0
+[1.457.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.0...1.457.1
 [1.457.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.2...1.457.0
 [1.456.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.1...1.456.2
 [1.456.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.0...1.456.1

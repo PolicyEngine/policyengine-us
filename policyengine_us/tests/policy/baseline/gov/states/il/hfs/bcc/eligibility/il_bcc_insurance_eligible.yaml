@@ -2,7 +2,7 @@
   period: 2024
   input:
     state_code: IL
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_insurance_eligible: true
@@ -11,7 +11,7 @@
   period: 2024
   input:
     state_code: IL
-    is_medicaid_eligible: true
+    receives_medicaid: true
     has_bcc_qualifying_coverage: false
   output:
     il_bcc_insurance_eligible: false
@@ -20,7 +20,7 @@
   period: 2024
   input:
     state_code: IL
-    is_medicaid_eligible: false
+    receives_medicaid: false
     has_bcc_qualifying_coverage: true
   output:
     il_bcc_insurance_eligible: false
@@ -29,7 +29,7 @@
   period: 2024
   input:
     state_code: IL
-    is_medicaid_eligible: true
+    receives_medicaid: true
     has_bcc_qualifying_coverage: true
   output:
     il_bcc_insurance_eligible: false
