@@ -2,3 +2,4 @@
   changes:
     changed:
     - Split structural YAML tests into parallel CI jobs for better memory management.
+    - Add workflow concurrency to cancel in-progress CI runs when new commits are pushed to the same PR.
