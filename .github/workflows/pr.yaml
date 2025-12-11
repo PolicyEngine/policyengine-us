@@ -125,8 +125,8 @@ jobs:
           verbose: true
       - name: Build package
         run: uv build
-  NonStructural-and-Python:
-    name: Full Suite - Non-Structural YAML & Python
+  NonStructural:
+    name: Full Suite - Non-Structural YAML
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -148,14 +148,8 @@ jobs:
         run: |
           echo "Running non-structural YAML tests..."
           uv run make test-yaml-no-structural
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
-  Structural:
-    name: Full Suite - Structural YAML
+  Structural-and-Python:
+    name: Full Suite - Structural YAML & Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -177,6 +171,12 @@ jobs:
         run: |
           echo "Running structural YAML tests..."
           uv run make test-yaml-structural
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          uv run make test-other
   Structural-Heavy:
     name: Full Suite - Structural YAML (Heavy)
     runs-on: ubuntu-latest

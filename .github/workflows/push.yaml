@@ -48,8 +48,8 @@ jobs:
           message: Update PolicyEngine US
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
           fetch: false
-  NonStructural-and-Python:
-    name: Non-Structural YAML & Python Tests
+  NonStructural:
+    name: Non-Structural YAML Tests
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -74,14 +74,8 @@ jobs:
         run: |
           echo "Running non-structural YAML tests..."
           uv run make test-yaml-no-structural
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
-  Structural:
-    name: Structural YAML Tests
+  Structural-and-Python:
+    name: Structural YAML & Python Tests
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -106,6 +100,12 @@ jobs:
         run: |
           echo "Running structural YAML tests..."
           uv run make test-yaml-structural
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          uv run make test-other
   Structural-Heavy:
     name: Structural YAML Tests (Heavy)
     runs-on: ubuntu-latest
@@ -137,7 +137,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [NonStructural-and-Python, Structural, Structural-Heavy]
+    needs: [NonStructural, Structural-and-Python, Structural-Heavy]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
