@@ -11762,3 +11762,8 @@
     fixed:
     - Replace is_medicaid_eligible with receives_medicaid in il_bcc_insurance_eligible.
   date: 2025-12-11 00:31:16
+- bump: minor
+  changes:
+    added:
+    - Add spm_unit_tenure_type variable at SPM unit level for local area calibration.
+  date: 2025-12-11 18:30:32
