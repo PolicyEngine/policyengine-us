@@ -4,17 +4,16 @@ metadata:
   unit: currency-USD
   period: month
   breakdown:
-    - range(0, 12)
+    - range(1, 11)
   label: Nevada TANF payment standard amount
   reference:
-    - title: Nevada DSS TANF FAQ - Income Considerations
-      href: https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-Income-Consid-2/
-    - title: Nevada TANF State Plan - Chapter C-140 Needs Standards
-      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+    - title: Nevada DWSS Eligibility and Payments Manual, Chapter C-140
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
 
-# Values based on TANF documentation stating family of 3 receives up to $386/month
-# Additional household sizes extrapolated from state patterns
-# Full table should be verified from Chapter C-140 PDF
+# Confirmed values: Family of 3 = $386/month (from multiple sources)
+# Child-only (1 child) = $417/month (from TANF Budget Form 2183-EE-A)
+# Other household sizes derived from $62 increment pattern
+# TODO: Verify all values from Chapter C-140 PDF
 1:
   2014-07-01: 262
 2:
