@@ -125,8 +125,8 @@ jobs:
           verbose: true
       - name: Build package
         run: uv build
-  NonStructural:
-    name: Full Suite - Non-Structural YAML
+  NonStructural-States:
+    name: Full Suite - Non-Structural YAML (States)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -142,12 +142,35 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests
+      - name: Run non-structural YAML tests (states)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests..."
-          uv run make test-yaml-no-structural
+          echo "Running non-structural YAML tests (states)..."
+          uv run make test-yaml-no-structural-states
+  NonStructural-Other:
+    name: Full Suite - Non-Structural YAML (Other)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run non-structural YAML tests (other)
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running non-structural YAML tests (other)..."
+          uv run make test-yaml-no-structural-other
   Structural-and-Python:
     name: Full Suite - Structural YAML & Python
     runs-on: ubuntu-latest
