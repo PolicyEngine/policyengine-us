@@ -1,0 +1,14 @@
+description: Nevada provides the Temporary Assistance for Needy Families program payment standard for households up to this size.
+
+metadata:
+  unit: int
+  period: month
+  label: Nevada TANF payment standard max unit size
+  reference:
+    - title: Nevada DSS TANF FAQ - Income Considerations
+      href: https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-Income-Consid-2/
+    - title: Nevada TANF State Plan - Chapter C-140 Needs Standards
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+
+values:
+  2014-07-01: 10

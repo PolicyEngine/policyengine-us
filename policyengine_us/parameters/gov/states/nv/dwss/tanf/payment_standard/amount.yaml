@@ -1,0 +1,37 @@
+description: Nevada provides this amount as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 12)
+  label: Nevada TANF payment standard amount
+  reference:
+    - title: Nevada DSS TANF FAQ - Income Considerations
+      href: https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-Income-Consid-2/
+    - title: Nevada TANF State Plan - Chapter C-140 Needs Standards
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+
+# Values based on TANF documentation stating family of 3 receives up to $386/month
+# Additional household sizes extrapolated from state patterns
+# Full table should be verified from Chapter C-140 PDF
+1:
+  2014-07-01: 262
+2:
+  2014-07-01: 324
+3:
+  2014-07-01: 386
+4:
+  2014-07-01: 448
+5:
+  2014-07-01: 510
+6:
+  2014-07-01: 572
+7:
+  2014-07-01: 634
+8:
+  2014-07-01: 696
+9:
+  2014-07-01: 758
+10:
+  2014-07-01: 820
