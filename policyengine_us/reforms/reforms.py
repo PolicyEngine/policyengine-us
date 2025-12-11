@@ -121,6 +121,9 @@ from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
 )
+from .states.de.dependent_credit.de_dependent_credit_reform import (
+    create_de_dependent_credit_reform_fn,
+)
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
@@ -276,6 +279,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    de_dependent_credit = create_de_dependent_credit_reform_fn(
+        parameters, period
+    )
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
@@ -337,6 +343,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_minimum_refundable_amount,
         ri_ctc,
         ri_exemption,
+        de_dependent_credit,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
     ]
