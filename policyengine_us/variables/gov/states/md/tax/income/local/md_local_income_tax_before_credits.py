@@ -10,11 +10,12 @@ class md_local_income_tax_before_credits(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        county = tax_unit.household("county_str", period)
         in_md = tax_unit.household("state_code_str", period) == "MD"
-        rate = np.zeros_like(county, dtype=float)
-        rates = parameters(period).gov.local.tax.income.flat_tax_rate
-        if in_md.sum() > 0:
-            # Only compute Maryland local taxes if the simulation includes Maryland households.
-            rate[in_md] = rates[county[in_md]]
-        return rate * tax_unit("md_taxable_income", period)
+
+        anne_arundel_tax = tax_unit("md_anne_arundel_county_tax", period)
+        frederick_tax = tax_unit("md_frederick_county_tax", period)
+        flat_rate_tax = tax_unit("md_flat_rate_county_tax", period)
+
+        total_tax = anne_arundel_tax + frederick_tax + flat_rate_tax
+
+        return where(in_md, total_tax, 0)
