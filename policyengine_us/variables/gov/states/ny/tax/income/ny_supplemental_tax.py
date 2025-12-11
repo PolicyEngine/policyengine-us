@@ -53,20 +53,13 @@ class ny_supplemental_tax(Variable):
             applicable_amount / p.phase_in_length,
         )
 
-        # edge case for high agi
-        agi_limit = select(
-            in_each_status,
-            [
-                single.thresholds[-1],
-                joint.thresholds[-1],
-                hoh.thresholds[-1],
-                surviving_spouse.thresholds[-1],
-                separate.thresholds[-1],
-            ],
-        )
+        # For AGI above the high threshold, apply flat top rate to all income
+        high_agi_threshold = p.high_agi_threshold
+        # Create array for marginal_rates lookup
+        high_agi_lookup = ny_agi * 0 + high_agi_threshold + 1
         high_agi_rate = select(
             in_each_status,
-            [scale.marginal_rates(agi_limit + 1) for scale in scales],
+            [scale.marginal_rates(high_agi_lookup) for scale in scales],
         )
 
         supplemental_tax_high_agi = (
@@ -105,13 +98,13 @@ class ny_supplemental_tax(Variable):
             )
 
             return where(
-                ny_agi > agi_limit,
+                ny_agi > high_agi_threshold,
                 supplemental_tax_high_agi,
                 supplemental_tax_general,
             )
 
         return where(
-            ny_agi > agi_limit,
+            ny_agi > high_agi_threshold,
             supplemental_tax_high_agi,
             0,
         )
