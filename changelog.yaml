@@ -11757,3 +11757,8 @@
     added:
     - Create reform to separate dependent children from Delaware Personal Credit.
   date: 2025-12-10 18:16:05
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_bcc_insurance_eligible.
+  date: 2025-12-11 00:31:16
