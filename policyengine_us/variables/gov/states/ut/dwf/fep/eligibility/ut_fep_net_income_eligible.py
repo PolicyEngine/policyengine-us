@@ -11,7 +11,7 @@ class ut_fep_net_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Utah net income test: countable income < 100% of SNB (strict less than)
-        p = parameters(period).gov.states.ut.dwf.tanf
+        p = parameters(period).gov.states.ut.dwf.fep
 
         size = spm_unit("spm_unit_size", period)
         size_capped = min_(size, p.payment_standard.max_unit_size)

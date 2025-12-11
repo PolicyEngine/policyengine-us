@@ -13,7 +13,7 @@ class ut_fep_gross_income_eligible(Variable):
         # Utah gross income test: gross income <= 185% of SNB (Standard Needs Budget)
         # Per R986-200-239(1), gross income must be <= 185% of SNB
         # The net income limit equals the SNB
-        p = parameters(period).gov.states.ut.dwf.tanf
+        p = parameters(period).gov.states.ut.dwf.fep
 
         size = spm_unit("spm_unit_size", period)
         size_capped = min_(size, p.payment_standard.max_unit_size)
