@@ -1,0 +1,48 @@
+- name: Family size 1 - payment standard
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 1
+  output:
+    wa_tanf_payment_standard: 450
+
+- name: Family size 2 - payment standard
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 2
+  output:
+    wa_tanf_payment_standard: 570
+
+- name: Family size 5 - payment standard
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 5
+  output:
+    wa_tanf_payment_standard: 959
+
+- name: Family size 10 - maximum payment standard
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 10
+  output:
+    wa_tanf_payment_standard: 1_662
+
+- name: Family size 15 - capped at size 10
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 15
+  output:
+    # Payment standard capped at size 10
+    wa_tanf_payment_standard: 1_662
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: CA
+    spm_unit_size: 3
+  output:
+    wa_tanf_payment_standard: 0

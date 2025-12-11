@@ -1,0 +1,96 @@
+- name: Zero gross earned income - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 0
+  output:
+    # Income limit for family of 3: $1,912
+    # Gross earned: $0 <= $1,912
+    wa_tanf_income_eligible: true
+
+- name: Gross earned income below threshold - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_500
+  output:
+    # Income limit for family of 3: $1,912
+    # Gross earned: $1,500 <= $1,912
+    wa_tanf_income_eligible: true
+
+- name: Gross earned income exactly at threshold - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_912
+  output:
+    # Income limit for family of 3: $1,912
+    # Gross earned: $1,912 <= $1,912
+    wa_tanf_income_eligible: true
+
+- name: Gross earned income one dollar over threshold - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_913
+  output:
+    # Income limit for family of 3: $1,912
+    # Gross earned: $1,913 > $1,912
+    wa_tanf_income_eligible: false
+
+- name: Gross earned income far over threshold - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 3_000
+  output:
+    # Income limit for family of 3: $1,912
+    # Gross earned: $3,000 > $1,912
+    wa_tanf_income_eligible: false
+
+- name: Family size 1 - at threshold
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 1
+    tanf_gross_earned_income: 1_400
+  output:
+    # Income limit for family of 1: $1,400
+    # Gross earned: $1,400 <= $1,400
+    wa_tanf_income_eligible: true
+
+- name: Family size 10 - at maximum threshold
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 10
+    tanf_gross_earned_income: 3_824
+  output:
+    # Income limit for family of 10: $3,824
+    # Gross earned: $3,824 <= $3,824
+    wa_tanf_income_eligible: true
+
+- name: Family size 15 - capped at size 10 limit
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 15
+    tanf_gross_earned_income: 3_824
+  output:
+    # Income limit capped at family of 10: $3,824
+    # Gross earned: $3,824 <= $3,824
+    wa_tanf_income_eligible: true
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: MT
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_000
+  output:
+    wa_tanf_income_eligible: false
