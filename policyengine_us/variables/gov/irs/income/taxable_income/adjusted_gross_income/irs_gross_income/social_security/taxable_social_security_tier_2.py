@@ -9,7 +9,6 @@ class taxable_social_security_tier_2(Variable):
     documentation = "Taxable Social Security from 50-85% taxation tier, credited to Medicare HI trust fund"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_2"
-    subtracts = [
-        "tax_unit_taxable_social_security",
-        "taxable_social_security_tier_1",
-    ]
+    # tier_2 = total_taxable - tier_1
+    adds = ["tax_unit_taxable_social_security"]
+    subtracts = ["taxable_social_security_tier_1"]
