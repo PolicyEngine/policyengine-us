@@ -18,25 +18,23 @@ class mi_household_resources(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income
-        # Per MI-1040CR form instructions, only certain income sources must be
+        # Per form instructions, only certain income sources must be
         # floored at 0 if negative. Capital gains have special loss limitation.
         income_sources = p.household_resources
 
-        # MI-1040CR Line 16: "Net business income (including net farm income).
-        # If negative, enter 0"
-        business_income_sources = [
+        # Sources that must be floored at 0 per form instructions:
+        # "Net business income (including net farm income). If negative, enter 0"
+        # "Net royalty or rent income. If negative, enter 0"
+        floored_sources = {
             "farm_income",
             "self_employment_income",
             "partnership_s_corp_income",
-        ]
-        # MI-1040CR Line 17: "Net royalty or rent income. If negative, enter 0"
-        rent_income_sources = [
             "rental_income",
             "farm_rent_income",
-        ]
-        # Sources that must be floored at 0 per form instructions
-        floored_sources = business_income_sources + rent_income_sources
+        }
 
+        # Iterate through each source exactly once, applying flooring only
+        # to the sources that require it per form instructions
         total = 0
         for source in income_sources:
             if source == "net_capital_gains":
