@@ -12,11 +12,19 @@ class va_agi_person(Variable):
     defined_for = StateCode.VA
 
     def formula(person, period, parameters):
-        total_agi = person.tax_unit("va_agi", period)
-        person_agi = person("adjusted_gross_income_person", period)
-        total_federal_agi = person.tax_unit.sum(person_agi)
+        # Calculate separate Virginia AGI for each person
+        # This follows the VA Form 760 Spouse Tax Adjustment Worksheet
+        # which shows "Separate Virginia Adjusted Gross Income" calculation
+        # on page 12 of the instructions
 
-        prorate = np.zeros_like(total_agi)
-        mask = total_federal_agi > 0
-        prorate[mask] = person_agi[mask] / total_federal_agi[mask]
-        return total_agi * prorate
+        # Start with federal AGI for this person
+        federal_agi = person("adjusted_gross_income_person", period)
+
+        # Add Virginia-specific additions for this person
+        va_additions = person("va_additions_person", period)
+
+        # Subtract Virginia-specific subtractions for this person
+        va_subtractions = person("va_subtractions_person", period)
+
+        # Calculate separate VAGI for this person
+        return federal_agi + va_additions - va_subtractions
