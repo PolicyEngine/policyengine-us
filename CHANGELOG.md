@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.459.0] - 2025-12-12 14:32:00
+
+### Added
+
+- ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap to 600% FPL and phaseout to 9.25% at 700% FPL
+
 ## [1.458.2] - 2025-12-12 14:10:11
 
 ### Fixed
@@ -13829,6 +13835,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.459.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.2...1.459.0
 [1.458.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.1...1.458.2
 [1.458.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.0...1.458.1
 [1.458.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.1...1.458.0
