@@ -21,37 +21,33 @@ def count_yaml_files(directory: Path) -> int:
     return len(list(directory.rglob("*.yaml")))
 
 
-def get_test_directories(base_path: Path) -> Dict[str, int]:
-    """Get all subdirectories and their test counts."""
-    dir_counts = {}
-
-    # Check for yaml files directly in base directory
-    root_count = len(list(base_path.glob("*.yaml")))
-    if root_count > 0:
-        dir_counts["."] = root_count
-
-    # Get all subdirectories with their test counts
-    for item in base_path.iterdir():
-        if item.is_dir():
-            yaml_count = count_yaml_files(item)
-            if yaml_count > 0:
-                dir_counts[item.name] = yaml_count
-
-    return dir_counts
-
-
-def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
+def split_into_batches(
+    base_path: Path, num_batches: int, exclude: List[str] = None
+) -> List[List[str]]:
     """
     Split test directories into specified number of batches.
     Special handling for baseline tests to separate states.
     Special handling for contrib tests to divide by folder count.
+
+    Args:
+        base_path: Path to the test directory
+        num_batches: Number of batches to split into
+        exclude: List of directory names to exclude (for contrib tests)
     """
+    if exclude is None:
+        exclude = []
+
     # Special handling for contrib tests - each folder is its own batch
     # Only apply to policy/contrib (structural tests), not baseline/contrib
     if str(base_path).endswith("policy/contrib"):
         # Get all subdirectories and sort them alphabetically
+        # Exclude specified directories
         subdirs = sorted(
-            [item for item in base_path.iterdir() if item.is_dir()]
+            [
+                item
+                for item in base_path.iterdir()
+                if item.is_dir() and item.name not in exclude
+            ]
         )
 
         # Get root level YAML files and sort them
@@ -73,19 +69,17 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
     if "reform" in str(base_path):
         return [[str(base_path)]]
 
-    # Special handling for baseline tests with 2 batches
-    if "baseline" in str(base_path) and num_batches == 2:
+    # Special handling for baseline tests
+    if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
         states_path = base_path / "gov" / "states"
-        if states_path.exists() and count_yaml_files(states_path) > 0:
-            # Batch 1: Only states
-            batch1 = [str(states_path)]
 
-            # Batch 2: Everything else (excluding states, household, and contrib)
-            batch2 = []
+        # If --exclude states, skip states and run everything else
+        if "states" in exclude:
+            batch = []
 
             # Add root level files if any
             for yaml_file in base_path.glob("*.yaml"):
-                batch2.append(str(yaml_file))
+                batch.append(str(yaml_file))
 
             # Add all directories except gov/states, household, and contrib
             for item in base_path.iterdir():
@@ -97,49 +91,17 @@ def split_into_batches(base_path: Path, num_batches: int) -> List[List[str]]:
                         # Add gov subdirectories except states
                         for gov_item in item.iterdir():
                             if gov_item.is_dir() and gov_item.name != "states":
-                                batch2.append(str(gov_item))
+                                batch.append(str(gov_item))
                             elif gov_item.suffix == ".yaml":
-                                batch2.append(str(gov_item))
+                                batch.append(str(gov_item))
                     else:
                         # Other non-gov directories
-                        batch2.append(str(item))
+                        batch.append(str(item))
 
-            return [batch1, batch2] if batch2 else [batch1]
+            return [batch] if batch else []
 
-    # Default behavior for non-baseline or different batch counts
-    dir_counts = get_test_directories(base_path)
-
-    if num_batches <= 0:
-        num_batches = 1
-
-    # If only 1 batch, return everything
-    if num_batches == 1:
-        return [[str(base_path)]]
-
-    # Sort directories by test count (largest first)
-    sorted_dirs = sorted(dir_counts.items(), key=lambda x: x[1], reverse=True)
-
-    # Initialize batches
-    batches = [[] for _ in range(num_batches)]
-    batch_counts = [0] * num_batches
-
-    # Distribute directories to batches (greedy algorithm - add to smallest batch)
-    for dir_name, count in sorted_dirs:
-        # Find batch with fewest tests
-        min_batch_idx = batch_counts.index(min(batch_counts))
-
-        # Add directory to that batch
-        if dir_name == ".":
-            # Root level files - add individually
-            for yaml_file in base_path.glob("*.yaml"):
-                batches[min_batch_idx].append(str(yaml_file))
-        else:
-            batches[min_batch_idx].append(str(base_path / dir_name))
-
-        batch_counts[min_batch_idx] += count
-
-    # Filter out empty batches
-    return [batch for batch in batches if batch]
+    # Default: return the entire path as a single batch
+    return [[str(base_path)]]
 
 
 def run_batch(test_paths: List[str], batch_name: str) -> Dict:
@@ -298,8 +260,15 @@ def main():
         default=2,
         help="Number of batches to split tests into (default: 2)",
     )
+    parser.add_argument(
+        "--exclude",
+        type=str,
+        default="",
+        help="Comma-separated list of directory names to exclude (for contrib tests)",
+    )
 
     args = parser.parse_args()
+    exclude_list = [x.strip() for x in args.exclude.split(",") if x.strip()]
 
     if not os.path.exists("policyengine_us"):
         print("Error: Must run from PolicyEngine US root directory")
@@ -314,13 +283,15 @@ def main():
     print("=" * 60)
     print(f"Test path: {test_path}")
     print(f"Requested batches: {args.batches}")
+    if exclude_list:
+        print(f"Excluding: {', '.join(exclude_list)}")
 
     # Count total tests
     total_tests = count_yaml_files(test_path)
     print(f"Total test files: {total_tests}")
 
     # Split into batches
-    batches = split_into_batches(test_path, args.batches)
+    batches = split_into_batches(test_path, args.batches, exclude_list)
     if len(batches) != args.batches:
         print(
             f"Actual batches: {len(batches)} (optimized for {total_tests} files)"
