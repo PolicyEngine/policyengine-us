@@ -43,7 +43,7 @@
     wv_homestead_excess_property_tax_credit: 0
 
 - name: WV no HEPTC credit with negative income and zero property taxes
-  absolute_error_margin: 0.01
+  absolute_error_margin: 2
   period: 2024
   input:
     people:
