@@ -1,3 +1,6 @@
+# MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B)
+# For married couples, MSP uses couple FPL = $20,440 for 2024
+
 - name: MSP integration - married couple, both QMB eligible
   period: 2024-01
   input:
@@ -5,17 +8,17 @@
       spouse1:
         age: 68
         is_medicare_eligible: true
-        adjusted_gross_income_person: 9_000  # Each spouse's AGI
+        # $9,000 unearned each -> ($750 - $20) = $730/month countable each
+        ssi_unearned_income: 9_000
       spouse2:
         age: 66
         is_medicare_eligible: true
-        adjusted_gross_income_person: 9_000  # Each spouse's AGI
+        ssi_unearned_income: 9_000
     spm_units:
       spm_unit:
         members: [spouse1, spouse2]
         spm_unit_is_married: true
         spm_unit_cash_assets: 10_000  # Under $14,130 couple limit
-        spm_unit_fpg: 20_440  # 2024 FPL for 2 people
     tax_units:
       tax_unit:
         members: [spouse1, spouse2]
@@ -35,13 +38,14 @@
         is_medicare_eligible: true
         base_part_a_premium: 0
         base_part_b_premium: 2_096.40  # $174.70 * 12
-        adjusted_gross_income_person: 17_000  # Between 100% and 120% FPL
+        # $16_500 unearned -> ($1,375 - $20) = $1,355/month countable
+        # $1,255 < $1,355 < $1,506 (100-120% FPL) -> SLMB
+        ssi_unearned_income: 16_500
     spm_units:
       spm_unit:
         members: [person1]
         spm_unit_is_married: false
         spm_unit_cash_assets: 8_000
-        spm_unit_fpg: 15_060
     tax_units:
       tax_unit:
         members: [person1]
@@ -61,13 +65,12 @@
       person1:
         age: 67
         is_medicare_eligible: true
-        adjusted_gross_income_person: 10_000
+        ssi_unearned_income: 10_000
     spm_units:
       spm_unit:
         members: [person1]
         spm_unit_is_married: false
         spm_unit_cash_assets: 12_000  # Over $9,430 individual limit
-        spm_unit_fpg: 15_060
     tax_units:
       tax_unit:
         members: [person1]
