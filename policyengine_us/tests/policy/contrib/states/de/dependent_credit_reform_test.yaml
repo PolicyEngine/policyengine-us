@@ -1,0 +1,210 @@
+- name: DE dependent credit reform - restrict to children under 18
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.de.dependent_credit.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: DE
+  output:
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head (parent): $110
+    #   - 1 older dependent (child2, age 20, over age limit 18): $110
+    # Dependent credit (subject to phaseout):
+    #   - 1 eligible dependent (child1, age 16, under age limit 18): $110
+    # Total: $110 + $110 + $110 = $330
+    de_personal_credit: 330
+
+- name: DE dependent credit reform - restrict to children under 13
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.de.dependent_credit.age_limit.threshold: 13
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: DE
+  output:
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head (parent): $110
+    #   - 1 older dependent (child2, age 16, over age limit 13): $110
+    # Dependent credit (subject to phaseout):
+    #   - 1 eligible dependent (child1, age 10, under age limit 13): $110
+    # Total: $110 + $110 + $110 = $330
+    de_personal_credit: 330
+
+- name: DE dependent credit reform - AGI phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.de.dependent_credit.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 40
+        employment_income: 120_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: DE
+  output:
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head (parent): $110
+    # Dependent credit (subject to phaseout):
+    #   - 1 eligible dependent (child1, age 10): $110 before phaseout
+    #   - Phaseout: ($120,000 - $100,000) * 0.05 = $1,000
+    #   - Dependent credit after phaseout: max($110 - $1,000, 0) = $0
+    # Total: $110 + $0 = $110
+    de_personal_credit: 110
+
+- name: DE dependent credit reform - no age limit
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.age_limit.in_effect: false
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 25
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: DE
+  output:
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head (parent): $110
+    # Dependent credit (no age limit, so all dependents are eligible):
+    #   - 2 eligible dependents (child1, age 16; child2, age 25): $110 * 2 = $220
+    # Total: $110 + $220 = $330
+    de_personal_credit: 330
+
+- name: DE dependent credit reform - married joint with phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.phaseout.threshold.JOINT: 150_000
+    gov.contrib.states.de.dependent_credit.phaseout.rate: 0.01
+    people:
+      head:
+        age: 40
+        employment_income: 160_000
+      spouse:
+        age: 38
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_name: DE
+  output:
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head: $110
+    #   - 1 spouse: $110
+    # Dependent credit (subject to phaseout):
+    #   - 1 eligible dependent (child, age 5): $110 before phaseout
+    #   - Phaseout: ($160,000 - $150,000) * 0.01 = $100
+    #   - Dependent credit after phaseout: max($110 - $100, 0) = $10
+    # Total: $110 + $110 + $10 = $230
+    de_personal_credit: 230
+
+- name: DE dependent credit reform - married filing separately uses individual AGI
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.phaseout.threshold.JOINT: 100_000
+    gov.contrib.states.de.dependent_credit.phaseout.rate: 0.01
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+      spouse:
+        age: 38
+        employment_income: 80_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_name: DE
+  output:
+    # de_files_separately = true (filing separately is more advantageous)
+    # Uses de_agi_indiv ($80,000 + $80,000 = $160,000) for phaseout
+    # Personal credits (unaffected by dependent credit reform):
+    #   - 1 head: $110
+    #   - 1 spouse: $110
+    # Dependent credit (subject to phaseout):
+    #   - 1 eligible dependent (child, age 5): $110 before phaseout
+    #   - Phaseout: ($160,000 - $100,000) * 0.01 = $600
+    #   - Dependent credit after phaseout: max($110 - $600, 0) = $0
+    # Total: $110 + $110 + $0 = $220
+    de_personal_credit: 220
