@@ -33,8 +33,7 @@ class nj_other_retirement_income_exclusion(Variable):
         exclusion_cap = p.max_amount[filing_status]
 
         # calculate maximum exclusion
-        total_income_person = age_eligible * person("nj_total_income", period)
-        total_income = tax_unit.sum(total_income_person)
+        total_income = add(tax_unit, period, ["nj_total_income"])
         maximum_exclusion = min_(fraction * total_income, exclusion_cap)
 
         # calculate unused pension exclusion

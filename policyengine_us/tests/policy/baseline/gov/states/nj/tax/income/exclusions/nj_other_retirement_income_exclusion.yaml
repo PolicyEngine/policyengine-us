@@ -210,3 +210,31 @@
         state_code: NJ
   output:
     nj_other_retirement_income_exclusion: 0
+
+- name: nj_other_retirement_exclusion_joint_one_elderly
+  # TAXSIM issue #663 - Joint filers with only one spouse age-eligible
+  # Exclusion amount should be based on TOTAL tax unit income (both spouses)
+  # not just the age-eligible person's income
+  # Reference: https://github.com/PolicyEngine/policyengine-taxsim/issues/663
+  period: 2024
+  absolute_error_margin: 5
+  input:
+    people:
+      head:
+        age: 75
+        taxable_interest_income: 65_158
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        taxable_interest_income: 65_158
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_fips: 34
+  output:
+    nj_other_retirement_income_exclusion: 32_579
+    nj_income_tax: 2_459
