@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+      - Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+      - Fix IL HBWD disability eligibility to use medical definition without SGA test.
