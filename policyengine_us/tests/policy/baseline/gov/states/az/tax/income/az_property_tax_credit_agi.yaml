@@ -9,10 +9,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        state_code: AZ
     households:
       household:
         members: [person1]
+        state_code: AZ
         state_name: AZ
   output:
     # Federal AGI = wages + interest = 3,715.56 + 50.52 = 3,766.08
