@@ -11786,3 +11786,9 @@
     - ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap
       to 600% FPL and phaseout to 9.25% at 700% FPL
   date: 2025-12-12 14:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+    - Fix IL HBWD disability eligibility to use medical definition without SGA test.
+  date: 2025-12-12 18:20:04
