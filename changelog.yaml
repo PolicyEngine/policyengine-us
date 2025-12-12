@@ -11774,3 +11774,9 @@
     - Add workflow concurrency to cancel in-progress CI runs when new commits are
       pushed to the same PR.
   date: 2025-12-12 04:32:17
+- bump: patch
+  changes:
+    fixed:
+    - Floor only business and rental income sources in MI household resources per
+      MI-1040CR form instructions.
+  date: 2025-12-12 14:10:11
