@@ -33,17 +33,11 @@ class mi_household_resources(Variable):
             "farm_rent_income",
         }
 
-        # Iterate through each source exactly once, applying flooring only
-        # to the sources that require it per form instructions
+        # Iterate through each source, applying flooring only to
+        # sources that require it per form instructions
         total = 0
         for source in income_sources:
-            if source == "net_capital_gains":
-                # MI-1040CR Line 19: Capital gains less capital losses
-                # (see instructions) - losses cannot exceed $3,000 ($1,500 MFS)
-                total += add(
-                    tax_unit, period, ["loss_limited_net_capital_gains"]
-                )
-            elif source in floored_sources:
+            if source in floored_sources:
                 # Per MI-1040CR instructions: "If negative, enter 0"
                 total += max_(add(tax_unit, period, [source]), 0)
             else:
