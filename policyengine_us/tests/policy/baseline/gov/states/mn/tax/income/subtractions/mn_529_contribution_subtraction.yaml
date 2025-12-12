@@ -1,0 +1,62 @@
+- name: Minnesota 529 Contribution Subtraction - single filer under max
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    investment_in_529_plan: 1_000
+  output:
+    # Max for single filer is $1,500
+    # Subtraction = min(1,000, 1,500) = 1,000
+    mn_529_contribution_subtraction: 1_000
+
+- name: Minnesota 529 Contribution Subtraction - single filer over max
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    investment_in_529_plan: 2_000
+  output:
+    # Max for single filer is $1,500
+    # Subtraction = min(2,000, 1,500) = 1,500
+    mn_529_contribution_subtraction: 1_500
+
+- name: Minnesota 529 Contribution Subtraction - joint filer under max
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: JOINT
+    investment_in_529_plan: 2_500
+  output:
+    # Max for joint filer is $3,000
+    # Subtraction = min(2,500, 3,000) = 2,500
+    mn_529_contribution_subtraction: 2_500
+
+- name: Minnesota 529 Contribution Subtraction - joint filer over max
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: JOINT
+    investment_in_529_plan: 5_000
+  output:
+    # Max for joint filer is $3,000
+    # Subtraction = min(5,000, 3,000) = 3,000
+    mn_529_contribution_subtraction: 3_000
+
+- name: Minnesota 529 Contribution Subtraction - head of household
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: HEAD_OF_HOUSEHOLD
+    investment_in_529_plan: 2_000
+  output:
+    # Max for HOH is $1,500
+    # Subtraction = min(2,000, 1,500) = 1,500
+    mn_529_contribution_subtraction: 1_500
+
+- name: Minnesota 529 Contribution Subtraction - no contribution
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SINGLE
+  output:
+    mn_529_contribution_subtraction: 0

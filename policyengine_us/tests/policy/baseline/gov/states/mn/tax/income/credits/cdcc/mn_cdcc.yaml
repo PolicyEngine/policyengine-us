@@ -240,3 +240,39 @@
         state_fips: 27
   output:
     mn_cdcc: 800
+
+# 2025 test case
+# Joint filers with 2 children under 13, low AGI (below phaseout threshold of $64,150)
+# Childcare expenses: $6,000 (max for 2 dependents)
+# Credit rate: 32% (for joint filers with AGI $10,000)
+# Credit = $6,000 * 0.32 = $1,920
+- name: MN CDCC 2025 joint low income
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        employment_income: 10_000
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc: 0.32 * 6_000
