@@ -227,3 +227,28 @@
     ms_total_exemptions_joint: [12_000, 0]
     ms_taxable_income_joint: [12_892, 11_307]
     ms_income_tax: 197
+
+- name: ms_optimal_exemption_allocation_elderly_couple
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 12_696.518
+        taxable_interest_income: 13_148.1955
+        is_tax_unit_head: true
+      spouse:
+        age: 75
+        employment_income: 0
+        taxable_interest_income: 13_148.1955
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_fips: 28
+  output:
+    ms_income_tax: 0
