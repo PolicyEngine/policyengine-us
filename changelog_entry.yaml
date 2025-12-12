@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+    - Update uv.lock during version bump so contributors don't need to run uv lock --upgrade after pulling from master.
+    - Change push workflow concurrency to queue runs instead of cancelling to ensure each merge completes.
