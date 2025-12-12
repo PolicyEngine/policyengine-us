@@ -18,15 +18,22 @@ class dc_ptc(Variable):
         retax = add(tax_unit, period, ["real_estate_taxes"])
         p_dc = parameters(period).gov.states.dc.tax.income.credits
         ptax = retax + rent * p_dc.ptc.rent_ratio
+
+        # Must have some rent or property taxes to be eligible
+        eligible = ptax > 0
+
         elderly_age = p_dc.ptc.min_elderly_age
         head_age = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
         is_elderly = (head_age >= elderly_age) | (spouse_age >= elderly_age)
+
+        # Only positive AGI creates an offset (negative AGI should not reduce offset)
         us_agi = tax_unit("adjusted_gross_income", period)
-        ptax_offset = us_agi * where(
+        positive_agi = max_(0, us_agi)
+        ptax_offset = positive_agi * where(
             is_elderly,
-            p_dc.ptc.fraction_elderly.calc(us_agi, right=True),
-            p_dc.ptc.fraction_nonelderly.calc(us_agi, right=True),
+            p_dc.ptc.fraction_elderly.calc(positive_agi, right=True),
+            p_dc.ptc.fraction_nonelderly.calc(positive_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
-        return min_(p_dc.ptc.max, uncapped_ptc)
+        return where(eligible, min_(p_dc.ptc.max, uncapped_ptc), 0)
