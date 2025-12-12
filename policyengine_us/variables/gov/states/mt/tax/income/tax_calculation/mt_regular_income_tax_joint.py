@@ -17,6 +17,9 @@ class mt_regular_income_tax_joint(Variable):
 
         if p.capital_gains.in_effect:
             capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
+            # Only subtract positive capital gains (they're taxed separately)
+            # Negative capital gains should not create phantom taxable income
+            capital_gains = max_(capital_gains, 0)
             taxable_income = max_(taxable_income - capital_gains, 0)
         return select(
             [
