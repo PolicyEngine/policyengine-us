@@ -18,10 +18,9 @@ class is_qmb_eligible(Variable):
         medicare_eligible = person("is_medicare_eligible", period.this_year)
         asset_eligible = person("msp_asset_eligible", period)
 
-        fpg = person.spm_unit("spm_unit_fpg", period.this_year)
-        monthly_fpg = fpg / MONTHS_IN_YEAR
+        fpg = person.spm_unit("spm_unit_fpg", period)
         countable_income = person("msp_countable_income", period)
-        qmb_income_limit = monthly_fpg * p.income.qmb.fpl_limit
+        qmb_income_limit = fpg * p.income.qmb.fpl_limit
         income_eligible = countable_income <= qmb_income_limit
 
         return medicare_eligible & income_eligible & asset_eligible

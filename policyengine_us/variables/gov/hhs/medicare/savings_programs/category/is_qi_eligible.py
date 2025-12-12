@@ -18,12 +18,11 @@ class is_qi_eligible(Variable):
         medicare_eligible = person("is_medicare_eligible", period.this_year)
         asset_eligible = person("msp_asset_eligible", period)
 
-        fpg = person.spm_unit("spm_unit_fpg", period.this_year)
-        monthly_fpg = fpg / MONTHS_IN_YEAR
+        fpg = person.spm_unit("spm_unit_fpg", period)
         countable_income = person("msp_countable_income", period)
 
-        slmb_income_limit = monthly_fpg * p.income.slmb.fpl_limit
-        qi_income_limit = monthly_fpg * p.income.qi.fpl_limit
+        slmb_income_limit = fpg * p.income.slmb.fpl_limit
+        qi_income_limit = fpg * p.income.qi.fpl_limit
 
         income_above_slmb = countable_income > slmb_income_limit
         income_at_or_below_qi = countable_income <= qi_income_limit

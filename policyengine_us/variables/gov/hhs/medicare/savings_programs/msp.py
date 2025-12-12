@@ -11,6 +11,4 @@ class msp(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
     defined_for = "msp_eligible"
-
-    def formula(person, period, parameters):
-        return person("msp_benefit_value", period)
+    adds = ["msp_benefit_value"]
