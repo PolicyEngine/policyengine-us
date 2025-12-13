@@ -37,7 +37,7 @@ def split_into_batches(
     if exclude is None:
         exclude = []
 
-    # Special handling for contrib tests - each folder is its own batch
+    # Special handling for contrib tests - run all together in one batch
     # Only apply to policy/contrib (structural tests), not baseline/contrib
     if str(base_path).endswith("policy/contrib"):
         # Get all subdirectories and sort them alphabetically
@@ -53,17 +53,11 @@ def split_into_batches(
         # Get root level YAML files and sort them
         root_files = sorted(list(base_path.glob("*.yaml")))
 
-        # Create one batch per subdirectory
-        batches = []
-        for subdir in subdirs:
-            batches.append([str(subdir)])
+        # Combine all subdirs and root files into a single batch
+        batch = [str(subdir) for subdir in subdirs]
+        batch.extend([str(file) for file in root_files])
 
-        # If there are root files, group them together in their own batch
-        if root_files:
-            root_batch = [str(file) for file in root_files]
-            batches.append(root_batch)
-
-        return batches
+        return [batch] if batch else []
 
     # Special handling for reform tests - run all together in one batch
     if "reform" in str(base_path):
