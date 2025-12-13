@@ -69,6 +69,20 @@ def split_into_batches(
     if "reform" in str(base_path):
         return [[str(base_path)]]
 
+    # Special handling for states directory - support excluding specific states
+    if str(base_path).endswith("gov/states"):
+        subdirs = sorted(
+            [
+                item
+                for item in base_path.iterdir()
+                if item.is_dir() and item.name not in exclude
+            ]
+        )
+        # Return all non-excluded state directories as a single batch
+        if subdirs:
+            return [[str(subdir) for subdir in subdirs]]
+        return []
+
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
         states_path = base_path / "gov" / "states"
