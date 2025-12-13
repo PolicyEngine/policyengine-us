@@ -1,0 +1,29 @@
+- name: Passes when gross income below 185% limit
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 0
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_gross_income_eligible: true
+
+- name: Passes at 185% limit
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 1_500
+    tanf_gross_unearned_income: 65
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_gross_income_eligible: true
+
+- name: Fails when gross income exceeds 185% limit
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 1_500
+    tanf_gross_unearned_income: 100
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_gross_income_eligible: false

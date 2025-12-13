@@ -1,0 +1,71 @@
+- name: Family of 1 receives $393/month standard ($4716/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 1
+  output:
+    mo_tanf_standard_of_need: 4_716  # 393 * 12
+
+- name: Family of 2 receives $678/month standard ($8136/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 2
+  output:
+    mo_tanf_standard_of_need: 8_136  # 678 * 12
+
+- name: Family of 3 receives $846/month standard ($10152/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 3
+  output:
+    mo_tanf_standard_of_need: 10_152  # 846 * 12
+
+- name: Family of 4 receives $990/month standard ($11880/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 4
+  output:
+    mo_tanf_standard_of_need: 11_880  # 990 * 12
+
+- name: Family of 5 receives $1123/month standard ($13476/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 5
+  output:
+    mo_tanf_standard_of_need: 13_476  # 1123 * 12
+
+- name: Family of 6 receives $1247/month standard ($14964/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 6
+  output:
+    mo_tanf_standard_of_need: 14_964  # 1247 * 12
+
+- name: Family of 10 receives $1722/month standard ($20664/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 10
+  output:
+    mo_tanf_standard_of_need: 20_664  # 1722 * 12
+
+- name: Family of 12 receives $1956/month standard ($23472/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 12
+  output:
+    mo_tanf_standard_of_need: 23_472  # 1956 * 12
+
+- name: Family of 13 adds $116/month per person ($24864/year)
+  period: 2024
+  input:
+    state_code: MO
+    spm_unit_size: 13
+  output:
+    mo_tanf_standard_of_need: 24_864  # (1956 + 116) * 12 = 2072 * 12
