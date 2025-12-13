@@ -420,7 +420,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             income = tax_unit("ky_modified_agi", period)
             fpg = parameters(period).gov.hhs.fpg
             # This will be CONTIGUOUS_US for Kentucky.
-            state_group = tax_unit.household("state_group", period)
+            state_group = tax_unit.household("state_group_str", period)
             p1 = fpg.first_person[state_group]
             padd = fpg.additional_person[state_group]
             family_size = tax_unit("head_spouse_count", period)

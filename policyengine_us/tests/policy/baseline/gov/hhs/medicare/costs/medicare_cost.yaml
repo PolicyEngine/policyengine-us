@@ -1,0 +1,65 @@
+- name: unit test 1 - enrolled, premium-free Part A
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 40
+    adjusted_gross_income:
+      2023: 50_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+  output:
+    medicare_cost: 12_280  # $14,500 spending - $2,220 Part B premium (2025)
+
+- name: unit test 2 - enrolled, pays full Part A premium
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 20
+    adjusted_gross_income:
+      2023: 50_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+  output:
+    medicare_cost: 6_064  # $14,500 - $6,216 Part A - $2,220 Part B (2025)
+
+- name: unit test 3 - enrolled with IRMAA
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 40
+    adjusted_gross_income:
+      2023: 500_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    filing_status: SINGLE
+  output:
+    medicare_cost: 6_953.2  # $14,500 - $7,546.80 Part B with IRMAA (2025)
+
+- name: unit test 4 - eligible but not enrolled
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: false
+  output:
+    medicare_cost: 0
+
+- name: unit test 5 - 2021 data, premium-free
+  period: 2021
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 40
+    adjusted_gross_income:
+      2019: 50_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2019: 0
+  output:
+    medicare_cost: 9_298  # $11,080 - $1,782 Part B (2021: $148.50*12)

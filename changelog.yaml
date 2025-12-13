@@ -11631,3 +11631,191 @@
     added:
     - Washington TANF.
   date: 2025-12-02 15:33:28
+- bump: minor
+  changes:
+    added:
+    - Add Medicare Part A premiums (full, reduced, premium-free based on quarters
+      of coverage).
+    - Add Medicare Part B premiums with Income-Related Monthly Adjustment Amount (IRMAA).
+  date: 2025-12-02 22:19:22
+- bump: patch
+  changes:
+    fixed:
+    - StateGroup enum warnings for contiguous US states in state_group variable.
+  date: 2025-12-02 23:28:11
+- bump: patch
+  changes:
+    changed:
+    - Parameterized Montana spouse allocation factor for itemized deductions (was
+      hardcoded 0.5)
+    removed:
+    - Unhelpful comment from .github/update_api.py
+  date: 2025-12-03 05:42:15
+- bump: patch
+  changes:
+    fixed:
+    - "Fixed typo in Colorado state supplement directory name (state_suplement \u2192\
+      \ state_supplement)."
+  date: 2025-12-03 13:07:31
+- bump: patch
+  changes:
+    fixed:
+    - Fix Filing Status Issues in Missouri Test Files.
+  date: 2025-12-03 21:46:07
+- bump: patch
+  changes:
+    added:
+    - WIC integration tests.
+    fixed:
+    - "WIC eligibility now requires valid demographic category per 42 U.S.C. \xA7\
+      \ 1786(d)(1)."
+  date: 2025-12-03 22:13:14
+- bump: patch
+  changes:
+    fixed:
+    - Fix invalid filing_status enum values in test files (lowercase 'single', numeric
+      '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
+  date: 2025-12-03 22:50:04
+- bump: patch
+  changes:
+    fixed:
+    - Fix New Jersey gross income computation.
+  date: 2025-12-04 10:32:18
+- bump: patch
+  changes:
+    changed:
+    - Bump policyengine-core to 3.23.0 (adds strict enum validation).
+    fixed:
+    - IL TANF now correctly recognizes veterans as eligible regardless of immigration
+      status per 89 Ill. Admin. Code 112.10.
+  date: 2025-12-04 16:58:21
+- bump: minor
+  changes:
+    added:
+    - Illinois Health Benefits for Persons with Breast or Cervical Cancer (BCC) eligibility.
+    - Shared Illinois HFS immigration status eligibility variable.
+    - has_bcc_qualifying_coverage variable for creditable health coverage determination.
+  date: 2025-12-05 21:39:43
+- bump: minor
+  changes:
+    added:
+    - Illinois Medicaid Presumptive Eligibility (MPE).
+  date: 2025-12-05 21:40:25
+- bump: minor
+  changes:
+    added:
+    - Illinois Family Planning Program (FPP).
+  date: 2025-12-05 22:06:02
+- bump: minor
+  changes:
+    added:
+    - Add Utah Military Retirement Credit (code AJ).
+  date: 2025-12-08 23:40:59
+- bump: patch
+  changes:
+    fixed:
+    - Apply the net income test to the New Jersey childless EITC.
+  date: 2025-12-09 15:58:42
+- bump: minor
+  changes:
+    added:
+    - CA Medi-Cal continuous coverage for existing undocumented enrollees after 2026
+      enrollment freeze.
+    - receives_medicaid input variable to indicate current Medicaid enrollment status.
+    - medi_cal_enrollment_freeze parameter for CA.
+  date: 2025-12-09 18:51:53
+- bump: patch
+  changes:
+    fixed:
+    - Fix IL qualified noncitizen status parameters and TANF immigration eligibility.
+  date: 2025-12-09 22:07:46
+- bump: minor
+  changes:
+    added:
+    - Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+    - SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+    - SMIB benefit covering Medicare Part B premiums for eligible individuals.
+  date: 2025-12-10 11:48:36
+- bump: minor
+  changes:
+    added:
+    - Add 20% qualified REIT/PTP income component.
+  date: 2025-12-10 15:49:56
+- bump: patch
+  changes:
+    added:
+    - CI check to enforce uv.lock freshness, ensuring tests use the same dependency
+      versions users get.
+  date: 2025-12-10 17:43:25
+- bump: patch
+  changes:
+    fixed:
+    - Fix state_group enum usage in FPG parameter indexing for KY and WV tax credits
+  date: 2025-12-10 17:53:29
+- bump: minor
+  changes:
+    added:
+    - Create reform to separate dependent children from Delaware Personal Credit.
+  date: 2025-12-10 18:16:05
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_bcc_insurance_eligible.
+  date: 2025-12-11 00:31:16
+- bump: minor
+  changes:
+    added:
+    - Add spm_unit_tenure_type variable at SPM unit level for local area calibration.
+  date: 2025-12-11 18:30:32
+- bump: patch
+  changes:
+    changed:
+    - Split structural YAML tests into parallel CI jobs for better memory management.
+    - Add workflow concurrency to cancel in-progress CI runs when new commits are
+      pushed to the same PR.
+  date: 2025-12-12 04:32:17
+- bump: patch
+  changes:
+    fixed:
+    - Floor only business and rental income sources in MI household resources per
+      MI-1040CR form instructions.
+  date: 2025-12-12 14:10:11
+- bump: minor
+  changes:
+    added:
+    - ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap
+      to 600% FPL and phaseout to 9.25% at 700% FPL
+  date: 2025-12-12 14:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+    - Fix IL HBWD disability eligibility to use medical definition without SGA test.
+  date: 2025-12-12 18:20:04
+- bump: patch
+  changes:
+    fixed:
+    - Fix IL AABD non-financial eligibility to require SSI status eligibility per
+      IDHS Policy Manual PM 11-01-00.
+    - Remove retirement_distributions from IL AABD asset sources (incorrectly included
+      income variable).
+    removed:
+    - Remove orphaned il_aabd_aged_blind_disabled_person variable and aged_age_threshold
+      parameter.
+  date: 2025-12-12 18:28:16
+- bump: minor
+  changes:
+    added:
+    - Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB,
+      and QI eligibility levels.
+    - State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY,
+      OR, VT have eliminated the asset test).
+  date: 2025-12-12 23:16:34
+- bump: patch
+  changes:
+    fixed:
+    - Update uv.lock during version bump so contributors don't need to run uv lock
+      --upgrade after pulling from master.
+    - Change push workflow concurrency to queue runs instead of cancelling to ensure
+      each merge completes.
+  date: 2025-12-13 04:31:57

@@ -1,0 +1,137 @@
+- name: 0-NJ.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        deductible_mortgage_interest: 13_333.333
+        qualified_dividend_income: 23_910.8455
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 10_000
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        qualified_dividend_income: 23_910.8455
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        tax_unit_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 34
+  output:
+    nj_income_tax: 955
+
+- name: 34183-NJ.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        taxable_interest_income: 10_931.683
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_income_tax: 139
+
+- name: 0-NJ.yaml
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        self_employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 0.0
+        ssi: 0
+        wic: 0
+        head_start: 0
+        early_head_start: 0
+        commodity_supplemental_food_program: 0
+        self_employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    nj_income_tax: 2_640

@@ -1,0 +1,52 @@
+# ACA PTC contribution brackets with amended rate schedule extended to 700% FPL.
+# Rate schedule:
+# - 200-250% FPL: 2% to 4%
+# - 250-300% FPL: 4% to 6%
+# - 300-400% FPL: 6% to 8.5%
+# - 400-600% FPL: 8.5% (flat)
+# - 600-700% FPL: 8.5% to 9.25%
+
+description: ACA PTC contribution percentages by household income (700% FPL cliff with amended rates).
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: ACA PTC contribution rate brackets (700% FPL cliff)
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 1.5
+    amount:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 2.0
+    amount:
+      2026-01-01: 0.02
+  - threshold:
+      2026-01-01: 2.5
+    amount:
+      2026-01-01: 0.04
+  - threshold:
+      2026-01-01: 3.0
+    amount:
+      2026-01-01: 0.06
+  - threshold:
+      2026-01-01: 4.0
+    amount:
+      2026-01-01: 0.085
+  - threshold:
+      2026-01-01: 6.0
+    amount:
+      2026-01-01: 0.085
+  - threshold:
+      2026-01-01: 7.0
+    amount:
+      2026-01-01: 0.0925
