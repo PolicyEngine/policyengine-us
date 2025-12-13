@@ -17,10 +17,10 @@ class wi_works_placement(Variable):
     possible_values = WIWorksPlacement
     default_value = WIWorksPlacement.CSJ
     defined_for = StateCode.WI
-    reference = [
+    reference = (
         "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148",
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm",
-    ]
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wi.dcf.works.placement
