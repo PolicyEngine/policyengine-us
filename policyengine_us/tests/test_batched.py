@@ -37,11 +37,31 @@ def split_into_batches(
     if exclude is None:
         exclude = []
 
-    # Special handling for contrib tests - each folder is its own batch
+    # Special handling for contrib tests - split into 6 batches by memory usage
     # Only apply to policy/contrib (structural tests), not baseline/contrib
     if str(base_path).endswith("policy/contrib"):
-        # Get all subdirectories and sort them alphabetically
-        # Exclude specified directories
+        # Define batches by memory usage (measured empirically)
+        # Batch 6 (crfb) is always alone due to high memory (8.9 GB)
+        BATCH_1 = ["federal", "harris", "treasury"]  # ~9.0 GB
+        BATCH_2 = ["ctc", "snap_ea", "ubi_center"]  # ~8.6 GB
+        BATCH_3 = ["deductions", "aca", "snap"]  # ~8.1 GB
+        BATCH_4 = [
+            "tax_exempt",
+            "eitc",
+            "state_dependent_exemptions",
+            "additional_tax_bracket",
+        ]  # ~8.0 GB
+        # Batch 5 is the catch-all for unknown/new folders (~7.8 GB + headroom)
+        BATCH_5_DEFINED = [
+            "local",
+            "dc_single_joint_threshold_ratio.yaml",
+            "reconciliation",
+            "dc_kccatc.yaml",
+            "reported_state_income_tax.yaml",
+        ]
+        BATCH_6 = ["crfb"]  # ~8.9 GB, always alone
+
+        # Get all subdirectories (excluding states, congress which are in Heavy job)
         subdirs = sorted(
             [
                 item
@@ -50,24 +70,74 @@ def split_into_batches(
             ]
         )
 
-        # Get root level YAML files and sort them
+        # Get root level YAML files
         root_files = sorted(list(base_path.glob("*.yaml")))
 
-        # Create one batch per subdirectory
-        batches = []
-        for subdir in subdirs:
-            batches.append([str(subdir)])
+        # Build batches
+        def get_batch_paths(batch_names, subdirs, root_files):
+            paths = []
+            for name in batch_names:
+                # Check if it's a directory
+                for subdir in subdirs:
+                    if subdir.name == name:
+                        paths.append(str(subdir))
+                        break
+                # Check if it's a root file
+                for f in root_files:
+                    if f.name == name:
+                        paths.append(str(f))
+                        break
+            return paths
 
-        # If there are root files, group them together in their own batch
-        if root_files:
-            root_batch = [str(file) for file in root_files]
-            batches.append(root_batch)
+        # Collect known folders/files
+        all_known = set(
+            BATCH_1 + BATCH_2 + BATCH_3 + BATCH_4 + BATCH_5_DEFINED + BATCH_6
+        )
+
+        # Find unknown folders/files (new additions go to Batch 5)
+        unknown = []
+        for subdir in subdirs:
+            if subdir.name not in all_known:
+                unknown.append(str(subdir))
+        for f in root_files:
+            if f.name not in all_known:
+                unknown.append(str(f))
+
+        # Build all batches
+        batch1 = get_batch_paths(BATCH_1, subdirs, root_files)
+        batch2 = get_batch_paths(BATCH_2, subdirs, root_files)
+        batch3 = get_batch_paths(BATCH_3, subdirs, root_files)
+        batch4 = get_batch_paths(BATCH_4, subdirs, root_files)
+        batch5 = (
+            get_batch_paths(BATCH_5_DEFINED, subdirs, root_files) + unknown
+        )
+        batch6 = get_batch_paths(BATCH_6, subdirs, root_files)
+
+        # Return non-empty batches in order
+        batches = []
+        for batch in [batch1, batch2, batch3, batch4, batch5, batch6]:
+            if batch:
+                batches.append(batch)
 
         return batches
 
     # Special handling for reform tests - run all together in one batch
     if "reform" in str(base_path):
         return [[str(base_path)]]
+
+    # Special handling for states directory - support excluding specific states
+    if str(base_path).endswith("gov/states"):
+        subdirs = sorted(
+            [
+                item
+                for item in base_path.iterdir()
+                if item.is_dir() and item.name not in exclude
+            ]
+        )
+        # Return all non-excluded state directories as a single batch
+        if subdirs:
+            return [[str(subdir) for subdir in subdirs]]
+        return []
 
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
