@@ -1,0 +1,111 @@
+- name: Case 1, default to CSJ with no special conditions.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
+
+- name: Case 2, CMC with infant under 2 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: false
+      person2:
+        monthly_age: 1
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CMC
+
+- name: Case 3, CMC with infant exactly 2 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        monthly_age: 2
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CMC
+
+- name: Case 4, CSJ with child over 2 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        # Explicit monthly_age to avoid formula calculation issues
+        monthly_age: 300
+      person2:
+        # monthly_age > 2 to exceed CMC threshold
+        monthly_age: 3
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
+
+- name: Case 5, ARP with pregnant person in third trimester.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        current_pregnancy_month: 7
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_works_placement: ARP
+
+- name: Case 6, CSJ with pregnant person not in third trimester.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        current_pregnancy_month: 6
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_works_placement: CSJ
+
+- name: Case 7, CMC takes priority over ARP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        current_pregnancy_month: 8
+      person2:
+        monthly_age: 1
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_placement: CMC
