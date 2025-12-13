@@ -33,9 +33,11 @@
         tanf_gross_earned_income: 900
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
@@ -55,9 +57,11 @@
         tanf_gross_earned_income: 1_000
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
@@ -77,9 +81,11 @@
         tanf_gross_earned_income: 1_100
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
@@ -99,9 +105,11 @@
         tanf_gross_earned_income: 1_200
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
@@ -121,9 +129,11 @@
         tanf_gross_earned_income: 1_211
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
@@ -143,9 +153,11 @@
         tanf_gross_earned_income: 1_212
       person2:
         age: 5
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
     households:
       household:
         members: [person1, person2]
