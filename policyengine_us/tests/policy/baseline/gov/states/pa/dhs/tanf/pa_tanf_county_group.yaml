@@ -1,0 +1,63 @@
+- name: Case 1, Group 1 county (Bucks).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: BUCKS_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_1
+
+- name: Case 2, Group 1 county (Chester).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: CHESTER_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_1
+
+- name: Case 3, Group 2 county (Philadelphia).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: PHILADELPHIA_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_2
+
+- name: Case 4, Group 2 county (Allegheny).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: ALLEGHENY_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_2
+
+- name: Case 5, Group 3 county (Beaver).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: BEAVER_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_3
+
+- name: Case 6, Group 3 county (Washington).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: WASHINGTON_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_3
+
+- name: Case 7, Group 4 county (Fayette).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: FAYETTE_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_4
+
+- name: Case 8, Group 4 county (Cambria).
+  period: 2024
+  input:
+    state_code: PA
+    county_str: CAMBRIA_COUNTY_PA
+  output:
+    pa_tanf_county_group: GROUP_4

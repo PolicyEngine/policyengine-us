@@ -1,0 +1,73 @@
+- name: Case 1, Group 1 family of 3.
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_1
+    spm_unit_size: 3
+  output:
+    pa_tanf_standard_of_need: 614
+
+- name: Case 2, Group 2 family of 3.
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_2
+    spm_unit_size: 3
+  output:
+    pa_tanf_standard_of_need: 587
+
+- name: Case 3, Group 3 family of 3.
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_3
+    spm_unit_size: 3
+  output:
+    pa_tanf_standard_of_need: 573
+
+- name: Case 4, Group 4 family of 3.
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_4
+    spm_unit_size: 3
+  output:
+    pa_tanf_standard_of_need: 532
+
+- name: Case 5, single person household.
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_4
+    spm_unit_size: 1
+  output:
+    pa_tanf_standard_of_need: 253
+
+- name: Case 6, six person household (max table size).
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_4
+    spm_unit_size: 6
+  output:
+    pa_tanf_standard_of_need: 894
+
+- name: Case 7, seven person household (additional person).
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_4
+    spm_unit_size: 7
+  output:
+    # Base (6) = $894 + (1 x $121) = $1,015
+    pa_tanf_standard_of_need: 1_015
+
+- name: Case 8, large household (10 persons).
+  period: 2024-01
+  input:
+    state_code: PA
+    pa_tanf_county_group: GROUP_4
+    spm_unit_size: 10
+  output:
+    # Base (6) = $894 + (4 x $121) = $1,378
+    pa_tanf_standard_of_need: 1_378
