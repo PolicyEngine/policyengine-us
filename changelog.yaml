@@ -11786,3 +11786,28 @@
     - ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap
       to 600% FPL and phaseout to 9.25% at 700% FPL
   date: 2025-12-12 14:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+    - Fix IL HBWD disability eligibility to use medical definition without SGA test.
+  date: 2025-12-12 18:20:04
+- bump: patch
+  changes:
+    fixed:
+    - Fix IL AABD non-financial eligibility to require SSI status eligibility per
+      IDHS Policy Manual PM 11-01-00.
+    - Remove retirement_distributions from IL AABD asset sources (incorrectly included
+      income variable).
+    removed:
+    - Remove orphaned il_aabd_aged_blind_disabled_person variable and aged_age_threshold
+      parameter.
+  date: 2025-12-12 18:28:16
+- bump: minor
+  changes:
+    added:
+    - Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB,
+      and QI eligibility levels.
+    - State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY,
+      OR, VT have eliminated the asset test).
+  date: 2025-12-12 23:16:34
