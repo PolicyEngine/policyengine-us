@@ -1,0 +1,27 @@
+# Extended income eligibility for ACA PTC up to 700% FPL.
+
+description: Eligibility for ACA Premium Tax Credit by percent of modified AGI to federal poverty line (700% FPL limit).
+
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: /1
+  amount_unit: bool
+  label: ACA PTC income eligibility conditions (700% FPL cliff)
+  reference:
+    - title: 26 U.S. Code § 36B(c)(1) - Eligibility requirements
+      href: https://www.law.cornell.edu/uscode/text/26/36B#c_1
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: false
+  - threshold:
+      2026-01-01: 1.00
+    amount:
+      2026-01-01: true
+  - threshold:
+      2026-01-01: 7.0
+    amount:
+      2026-01-01: false

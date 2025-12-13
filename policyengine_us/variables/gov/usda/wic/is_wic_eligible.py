@@ -15,4 +15,13 @@ class is_wic_eligible(Variable):
             "meets_wic_categorical_eligibility", period
         )
         nutritional_risk = person("is_wic_at_nutritional_risk", period)
-        return (meets_income_test | meets_categorical_test) & nutritional_risk
+        # Must be in a valid WIC demographic category per 42 U.S.C. § 1786(d)(1)
+        wic_category = person("wic_category", period)
+        demographic_eligible = (
+            wic_category != wic_category.possible_values.NONE
+        )
+        return (
+            demographic_eligible
+            & (meets_income_test | meets_categorical_test)
+            & nutritional_risk
+        )
