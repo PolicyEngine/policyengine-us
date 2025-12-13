@@ -1,0 +1,14 @@
+description: Minnesota sets this dollar amount as the maximum countable assets an assistance unit may have to remain eligible for the Minnesota Family Investment Program.
+
+values:
+  2020-01-01: 10_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Minnesota MFIP asset limit
+  reference:
+    - title: Minnesota Statute 256P.02, Subd. 2 - Asset Limits
+      href: https://www.revisor.mn.gov/statutes/cite/256P.02#stat.256P.02.2
+    - title: Minnesota DHS ESM 3.9 - Income and Asset Limits for MFIP/DWP
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=ESM_000309

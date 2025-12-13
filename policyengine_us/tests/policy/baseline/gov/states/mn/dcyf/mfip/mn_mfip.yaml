@@ -1,0 +1,143 @@
+- name: Case 1, no income receives full transitional standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Transitional standard for 2: $1,087
+    # Family wage level: $1,196
+    # Countable earned: $0
+    # Countable unearned: $0
+    # Benefit = min(1196-0, 1087) - 0 = $1,087
+    mn_mfip: 1_087
+
+- name: Case 2, earned income reduces benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Transitional standard for 2: $1,087
+    # Family wage level: 1,087 * 1.10 = $1,195.70
+    # Gross earned: $500/month
+    # Countable earned: (500-65)*0.5 = $217.50
+    # Countable unearned: $0
+    # Earned-based: min(1195.7-217.5, 1087) = min(978.2, 1087) = $978.20
+    # Benefit = max(978.2 - 0, 0) = $978.20
+    mn_mfip: 978.2
+
+- name: Case 3, unearned income reduces benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Transitional standard for 2: $1,087
+    # Family wage level: $1,196
+    # Countable earned: $0
+    # Child support: $300, disregard: $100, countable: $200
+    # Earned-based: min(1196-0, 1087) = $1,087
+    # Benefit = max(1087 - 200, 0) = $887
+    mn_mfip: 887
+
+- name: Case 4, both earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        child_support_received: 2_400  # $200/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Transitional standard for 2: $1,087
+    # Family wage level: 1,087 * 1.10 = $1,195.70
+    # Gross earned: $500/month
+    # Countable earned: (500-65)*0.5 = $217.50
+    # Child support: $200, disregard: $100, countable: $100
+    # Earned-based: min(1195.7-217.5, 1087) = min(978.2, 1087) = $978.20
+    # Benefit = max(978.2 - 100, 0) = $878.20
+    mn_mfip: 878.2
+
+- name: Case 5, ineligible due to no children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_mfip: 0
+
+- name: Case 6, family of three with no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Transitional standard for 3: $1,394
+    mn_mfip: 1_394
