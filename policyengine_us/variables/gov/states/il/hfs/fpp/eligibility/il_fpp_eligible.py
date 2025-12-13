@@ -31,7 +31,7 @@ class il_fpp_eligible(Variable):
             "il_hfs_immigration_status_eligible", period
         )
         # Cannot be enrolled in other non-spenddown full medical coverage
-        not_on_medicaid = ~person("is_medicaid_eligible", period)
+        not_on_medicaid = ~person("receives_medicaid", period)
         return (
             income_eligible
             & not_pregnant

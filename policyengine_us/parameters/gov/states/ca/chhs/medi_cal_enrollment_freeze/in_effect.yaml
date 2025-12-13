@@ -1,0 +1,12 @@
+description: California freezes new Medi-Cal enrollments for adults without satisfactory immigration status under this provision.
+values:
+  2016-01-01: false
+  2026-01-01: true
+  # TODO: End date not yet determined. Update when legislation changes.
+metadata:
+  unit: bool
+  period: year
+  label: CA Medi-Cal enrollment freeze in effect
+  reference:
+    - title: California Welfare and Institutions Code Section 14007.8(b)(1)
+      href: https://california.public.law/codes/welfare_and_institutions_code_section_14007.8

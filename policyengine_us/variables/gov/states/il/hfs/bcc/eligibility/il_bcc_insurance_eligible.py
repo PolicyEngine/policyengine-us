@@ -23,7 +23,7 @@ class il_bcc_insurance_eligible(Variable):
         # - Coverage where lifetime cap has been met/exceeded
         # - Coverage that excludes cancer treatment
         # - Indian Health Service coverage only
-        on_medicaid = person("is_medicaid_eligible", period)
+        on_medicaid = person("receives_medicaid", period)
         has_qualifying_coverage = person("has_bcc_qualifying_coverage", period)
         has_disqualifying_coverage = on_medicaid | has_qualifying_coverage
         return ~has_disqualifying_coverage

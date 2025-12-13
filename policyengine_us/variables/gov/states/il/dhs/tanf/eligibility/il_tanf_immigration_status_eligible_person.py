@@ -15,14 +15,10 @@ class il_tanf_immigration_status_eligible_person(Variable):
         immigration_status_str = immigration_status.decode_to_str()
         has_qualifying_status = np.isin(
             immigration_status_str,
-            p.qualified_noncitizen_status,
+            p.qualified_noncitizen_statuses,
         )
         is_citizen = (
             immigration_status == immigration_status.possible_values.CITIZEN
         )
-        # Per 89 Ill. Admin. Code 112.10, honorably discharged veterans
-        # (and their spouses/dependents) are eligible regardless of
-        # immigration status.
-        is_veteran = person("is_veteran", period.this_year)
 
-        return has_qualifying_status | is_citizen | is_veteran
+        return has_qualifying_status | is_citizen

@@ -3,7 +3,7 @@
   input:
     state_code: IL
     age: 35
-    is_ssi_disabled: true
+    is_disabled: true
     employment_income: 30_000  # $2,500/month
     spm_unit_cash_assets: 10_000
   output:
@@ -25,7 +25,7 @@
   input:
     state_code: IL
     age: 70
-    is_ssi_disabled: true
+    is_disabled: true
     employment_income: 24_000  # $2,000/month
     spm_unit_cash_assets: 5_000
   output:
@@ -36,7 +36,7 @@
   input:
     state_code: IL
     age: 40
-    is_ssi_disabled: true
+    is_disabled: true
     social_security_disability: 18_000  # $1,500/month
     spm_unit_cash_assets: 5_000
   output:
@@ -47,7 +47,7 @@
   input:
     state_code: IL
     age: 45
-    is_ssi_disabled: true
+    is_disabled: true
     employment_income: 72_000  # $6,000/month
     spm_unit_cash_assets: 5_000
   output:
@@ -58,7 +58,7 @@
   input:
     state_code: IL
     age: 30
-    is_ssi_disabled: true
+    is_disabled: true
     employment_income: 24_000  # $2,000/month
     spm_unit_cash_assets: 30_000
   output:
