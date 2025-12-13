@@ -1,0 +1,47 @@
+# Oregon TANF ELI (Exit Limit Increase) Eligibility
+# ELI applies when: currently enrolled in TANF AND has earned income
+
+- name: Not enrolled, no earned income - not ELI eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_tanf_enrolled: false
+    employment_income_before_lsr: 0
+  output:
+    or_tanf_eli_eligible: false
+
+- name: Not enrolled, has earned income - not ELI eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_tanf_enrolled: false
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_eli_eligible: false
+
+- name: Enrolled, no earned income - not ELI eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_tanf_enrolled: true
+    employment_income_before_lsr: 0
+  output:
+    or_tanf_eli_eligible: false
+
+- name: Enrolled with earned income - ELI eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_tanf_enrolled: true
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_eli_eligible: true
+
+- name: Enrolled with self-employment income - ELI eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_tanf_enrolled: true
+    self_employment_income_before_lsr: 3_600
+  output:
+    or_tanf_eli_eligible: true

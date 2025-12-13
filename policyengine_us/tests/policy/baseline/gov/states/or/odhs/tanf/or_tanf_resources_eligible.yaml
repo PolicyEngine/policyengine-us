@@ -1,0 +1,37 @@
+# Oregon TANF Resources Eligibility (OAR 461-160-0015)
+# Resource limit: $10,000
+
+- name: Zero resources is eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_assets: 0
+  output:
+    or_tanf_resources_eligible: true
+
+- name: Resources below limit is eligible
+  # Countable resources ($5,000) <= $10,000 limit
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_assets: 5_000
+  output:
+    or_tanf_resources_eligible: true
+
+- name: Resources at limit is eligible
+  # Countable resources ($10,000) <= $10,000 limit
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_assets: 10_000
+  output:
+    or_tanf_resources_eligible: true
+
+- name: Resources above limit is not eligible
+  # Countable resources ($10,001) > $10,000 limit
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_assets: 10_001
+  output:
+    or_tanf_resources_eligible: false

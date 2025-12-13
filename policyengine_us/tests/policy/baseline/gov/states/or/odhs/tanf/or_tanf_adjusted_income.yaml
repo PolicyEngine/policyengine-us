@@ -1,0 +1,77 @@
+# Oregon TANF Adjusted Income (OAR 461-001-0000, OAR 461-160-0160)
+# Adjusted income = countable income - (50% * gross earned income)
+# This is the income used for final benefit calculation
+
+- name: Zero income results in zero adjusted income
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 0
+    tanf_gross_earned_income: 0
+  output:
+    or_tanf_adjusted_income: 0
+
+- name: Only unearned income results in no disregard
+  # Countable income = $300 (all unearned)
+  # Gross earned = $0
+  # Earned income disregard = 50% * $0 = $0
+  # Adjusted income = $300 - $0 = $300
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 300
+    tanf_gross_earned_income: 0
+  output:
+    or_tanf_adjusted_income: 300
+
+- name: Only earned income gets 50% disregard
+  # Countable income = $1,000 (all earned)
+  # Gross earned = $1,000
+  # Earned income disregard = 50% * $1,000 = $500
+  # Adjusted income = $1,000 - $500 = $500
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 1_000
+    tanf_gross_earned_income: 1_000
+  output:
+    or_tanf_adjusted_income: 500
+
+- name: Mixed income with 50% earned income disregard
+  # Countable income = $800 (earned) + $200 (unearned) = $1,000
+  # Gross earned = $800
+  # Earned income disregard = 50% * $800 = $400
+  # Adjusted income = $1,000 - $400 = $600
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 1_000
+    tanf_gross_earned_income: 800
+  output:
+    or_tanf_adjusted_income: 600
+
+- name: Adjusted income cannot go below zero
+  # Countable income = $200
+  # Gross earned = $600
+  # Earned income disregard = 50% * $600 = $300
+  # Adjusted income = max($200 - $300, 0) = $0
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 200
+    tanf_gross_earned_income: 600
+  output:
+    or_tanf_adjusted_income: 0
+
+- name: Higher income scenario
+  # Countable income = $2,500
+  # Gross earned = $2,000
+  # Earned income disregard = 50% * $2,000 = $1,000
+  # Adjusted income = $2,500 - $1,000 = $1,500
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_countable_income: 2_500
+    tanf_gross_earned_income: 2_000
+  output:
+    or_tanf_adjusted_income: 1_500

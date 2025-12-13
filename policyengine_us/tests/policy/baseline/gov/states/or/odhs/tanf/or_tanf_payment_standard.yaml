@@ -1,0 +1,68 @@
+# Oregon TANF Payment Standards (OAR 461-155-0030)
+# Monthly payment standards for benefit groups containing an adult
+# Values effective since July 1, 2011
+
+- name: Single person household gets $339 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+  output:
+    or_tanf_payment_standard: 339
+
+- name: Two person household gets $432 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 2
+  output:
+    or_tanf_payment_standard: 432
+
+- name: Three person household gets $506 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+  output:
+    or_tanf_payment_standard: 506
+
+- name: Four person household gets $621 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 4
+  output:
+    or_tanf_payment_standard: 621
+
+- name: Five person household gets $721 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 5
+  output:
+    or_tanf_payment_standard: 721
+
+- name: Six person household gets $833 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 6
+  output:
+    or_tanf_payment_standard: 833
+
+- name: Ten person household gets $1,204 monthly payment standard
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 10
+  output:
+    or_tanf_payment_standard: 1_204
+
+- name: Eleven person household gets payment standard with additional increment
+  # Size 10 ($1,204) + $110 increment = $1,314
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+  output:
+    or_tanf_payment_standard: 1_314

@@ -1,0 +1,75 @@
+# Oregon TANF ELI Income Eligibility (OAR 461-155-0030(3))
+# Tests countable income < (payment standard × 2)
+
+- name: Zero countable income passes ELI test
+  # 3-person ELI limit = $506 × 2 = $1,012
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 0
+  output:
+    or_tanf_eli_income_eligible: true
+
+- name: Countable income below ELI limit is eligible
+  # 3-person ELI limit = $506 × 2 = $1,012
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 800
+  output:
+    or_tanf_eli_income_eligible: true
+
+- name: Countable income just below ELI limit is eligible
+  # 3-person ELI limit = $506 × 2 = $1,012
+  # $1,011 < $1,012 = eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 1_011
+  output:
+    or_tanf_eli_income_eligible: true
+
+- name: Countable income at ELI limit is not eligible
+  # 3-person ELI limit = $506 × 2 = $1,012
+  # $1,012 >= $1,012 = not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 1_012
+  output:
+    or_tanf_eli_income_eligible: false
+
+- name: Countable income above ELI limit is not eligible
+  # 3-person ELI limit = $506 × 2 = $1,012
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 1_100
+  output:
+    or_tanf_eli_income_eligible: false
+
+- name: Single person ELI test
+  # 1-person ELI limit = $339 × 2 = $678
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+    or_tanf_countable_income: 677
+  output:
+    or_tanf_eli_income_eligible: true
+
+- name: Large household ELI test with additional person increment
+  # 11-person payment standard = $1,204 + $110 = $1,314
+  # ELI limit = $1,314 × 2 = $2,628
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+    or_tanf_countable_income: 2_627
+  output:
+    or_tanf_eli_income_eligible: true

@@ -1,0 +1,73 @@
+# Oregon TANF Adjusted Income Eligibility (OAR 461-155-0030(4)(a))
+# Tests adjusted income < adjusted income limit
+
+- name: Zero adjusted income is eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf_adjusted_income_eligible: true
+
+- name: Adjusted income below limit is eligible
+  # 3-person adjusted income limit = $485
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_adjusted_income: 400
+  output:
+    or_tanf_adjusted_income_eligible: true
+
+- name: Adjusted income just below limit is eligible
+  # 3-person adjusted income limit = $485
+  # $484 < $485 = eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_adjusted_income: 484
+  output:
+    or_tanf_adjusted_income_eligible: true
+
+- name: Adjusted income at limit is not eligible
+  # 3-person adjusted income limit = $485
+  # $485 >= $485 = not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_adjusted_income: 485
+  output:
+    or_tanf_adjusted_income_eligible: false
+
+- name: Adjusted income above limit is not eligible
+  # 3-person adjusted income limit = $485
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_adjusted_income: 500
+  output:
+    or_tanf_adjusted_income_eligible: false
+
+- name: Single person adjusted income test
+  # 1-person adjusted income limit = $326
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+    or_tanf_adjusted_income: 325
+  output:
+    or_tanf_adjusted_income_eligible: true
+
+- name: Large household with additional person increment
+  # 11-person adjusted income limit = $1,150 + $110 = $1,260
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+    or_tanf_adjusted_income: 1_259
+  output:
+    or_tanf_adjusted_income_eligible: true

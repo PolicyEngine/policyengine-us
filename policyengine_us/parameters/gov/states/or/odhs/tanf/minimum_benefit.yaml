@@ -1,0 +1,12 @@
+description: Oregon does not issue benefits below this minimum amount under the Temporary Assistance for Needy Families program.
+
+values:
+  2011-07-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oregon TANF minimum benefit
+  reference:
+    - title: OAR 461-165-0060(3) - Minimum Benefit Amount; REF, SNAP, TANF
+      href: https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=326976

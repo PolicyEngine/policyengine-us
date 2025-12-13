@@ -1,0 +1,94 @@
+# Oregon TANF Benefit Amount (OAR 461-155-0030, OAR 461-165-0060)
+# Benefit = Payment Standard - Adjusted Income
+# Minimum benefit is $10; amounts below $10 are not issued
+
+- name: Ineligible household receives zero benefit
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: false
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf: 0
+
+- name: Eligible household with zero adjusted income receives full payment standard
+  # Benefit = $506 - $0 = $506
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf: 506
+
+- name: Eligible household with partial adjusted income receives reduced benefit
+  # Benefit = $506 - $300 = $206
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 300
+  output:
+    or_tanf: 206
+
+- name: Benefit at minimum threshold receives $10
+  # Benefit = $506 - $496 = $10
+  # $10 >= minimum benefit, so benefit is issued
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 496
+  output:
+    or_tanf: 10
+
+- name: Benefit below minimum threshold receives zero
+  # Benefit = $506 - $500 = $6
+  # $6 < $10 minimum benefit, so benefit is $0
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 500
+  output:
+    or_tanf: 0
+
+- name: Adjusted income exceeds payment standard results in zero benefit
+  # Benefit = max($506 - $600, 0) = $0
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 506
+    or_tanf_adjusted_income: 600
+  output:
+    or_tanf: 0
+
+- name: Larger household with zero adjusted income gets higher benefit
+  # Payment standard for 5-person household = $721
+  # Benefit = $721 - $0 = $721
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 721
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf: 721
+
+- name: Single person household with zero adjusted income
+  # Payment standard for 1-person household = $339
+  # Benefit = $339 - $0 = $339
+  period: 2024-01
+  input:
+    state_code: OR
+    or_tanf_eligible: true
+    or_tanf_payment_standard: 339
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf: 339
