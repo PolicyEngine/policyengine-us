@@ -1,0 +1,156 @@
+- name: Case 1, no assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_countable_resources: 0
+
+- name: Case 2, assets below vehicle exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_countable_resources: 0
+
+- name: Case 3, assets exactly equal to vehicle exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_600
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_countable_resources: 0
+
+- name: Case 4, assets one dollar above vehicle exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_601
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_countable_resources: 1
+
+- name: Case 5, assets at resource limit after exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 6_600
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 6,600 - 4,600 = 2,000
+    tn_ff_countable_resources: 2_000
+
+- name: Case 6, assets one dollar over resource limit after exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 6_601
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 6,601 - 4,600 = 2,001
+    tn_ff_countable_resources: 2_001
+
+- name: Case 7, moderate assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 8,000 - 4,600 = 3,400
+    tn_ff_countable_resources: 3_400
+
+- name: Case 8, high assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 15,000 - 4,600 = 10,400
+    tn_ff_countable_resources: 10_400
+
+- name: Case 9, low assets below exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_countable_resources: 0

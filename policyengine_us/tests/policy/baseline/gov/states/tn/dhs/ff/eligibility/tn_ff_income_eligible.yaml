@@ -1,0 +1,129 @@
+# Tests for TN FF income eligibility
+# For 2024-01:
+# - CNS size 2: $896, GIS: $1,657.60
+# - Earned income disregard: $150
+
+- name: Case 1, no income passes both tests.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_income_eligible: true
+
+- name: Case 2, gross income over GIS limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross income ($2,000) > GIS ($1,657.60)
+    tn_ff_income_eligible: false
+
+- name: Case 3, countable income below CNS.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_046
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross: $1,046 < GIS ($1,657.60) - passes
+    # Countable after $150 disregard + $175 child care = $1,046 - $150 - $175 = $721
+    # $721 < CNS ($896) - passes
+    tn_ff_income_eligible: true
+
+- name: Case 4, low income passes both tests.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross: $500/month < GIS ($1,657.60)
+    # Countable: $500 - $150 - $175 = $175 < CNS ($896)
+    tn_ff_income_eligible: true
+
+- name: Case 5, unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross: $500/month < GIS ($1,657.60)
+    # Countable (no disregard for unearned): $500 < CNS ($896)
+    tn_ff_income_eligible: true
+
+- name: Case 6, high unearned income fails net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 1_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross: $1,000/month < GIS ($1,657.60) - passes
+    # Countable: $1,000 >= CNS ($896) - fails
+    tn_ff_income_eligible: false
