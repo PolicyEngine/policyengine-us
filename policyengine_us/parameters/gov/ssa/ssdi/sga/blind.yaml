@@ -1,0 +1,15 @@
+description: The Social Security Administration considers blind individuals earning more than this amount to be engaged in Substantial Gainful Activity for Social Security Disability Insurance purposes.
+
+values:
+  2024-01-01: 2_590
+  2025-01-01: 2_700
+
+metadata:
+  unit: USD
+  period: month
+  label: SSA SSDI blind SGA threshold
+  reference:
+    - title: Social Security Administration - Substantial Gainful Activity
+      href: https://www.ssa.gov/oact/cola/sga.html
+    - title: 42 U.S. Code § 423(d)(4) - Substantial gainful activity framework
+      href: https://www.law.cornell.edu/uscode/text/42/423#d_4
