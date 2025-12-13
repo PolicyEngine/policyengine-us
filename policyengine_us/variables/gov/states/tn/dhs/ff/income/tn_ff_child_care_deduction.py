@@ -8,11 +8,16 @@ class tn_ff_child_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.TN
+    reference = "https://wioaplans.ed.gov/node/545036"
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        age = person("age", period.this_year)
-        is_child = age < 18
         p = parameters(period).gov.states.tn.dhs.ff.income.deductions
-        child_deduction = p.child_care_deduction.calc(age)
-        return spm_unit.sum(where(is_child, child_deduction, 0))
+        person = spm_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        age = person("monthly_age", period)
+        childcare_expenses = spm_unit("childcare_expenses", period)
+        childcare_deduction_person = (
+            p.child_care_deduction.calc(age) * dependent
+        )
+        total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
+        return min_(childcare_expenses, total_childcare_deduction)
