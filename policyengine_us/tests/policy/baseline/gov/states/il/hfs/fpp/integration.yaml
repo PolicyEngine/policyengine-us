@@ -1,0 +1,116 @@
+# Illinois Family Planning Program Integration Tests
+#
+# Key rules:
+# - Only applicant's income counted (not household)
+# - Fixed household size of 2 for FPL calculation
+# - Income limit: 213% FPL (~$43,537 for 2024)
+# - Must NOT be pregnant
+# - Must NOT be enrolled in full Medicaid
+#
+# 2024 FPL for HH size 2: $20,440
+# 213% * $20,440 = $43,537.20
+
+- name: Case 1, married couple with different incomes.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        is_pregnant: false
+      person2:
+        age: 32
+        employment_income: 60_000
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # person1: $25,000 / $20,440 = 1.22 (122% FPL) - eligible
+    # person2: $60,000 / $20,440 = 2.94 (294% FPL) - over limit
+    il_fpp_income_eligible: [true, false]
+    il_fpp_eligible: [true, false]
+
+- name: Case 2, pregnant vs non-pregnant.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_000
+        is_pregnant: true
+      person2:
+        age: 30
+        employment_income: 20_000
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Both income eligible but person1 is pregnant
+    il_fpp_income_eligible: [true, true]
+    # person1 ineligible (pregnant), person2 eligible
+    il_fpp_eligible: [false, true]
+
+- name: Case 3, income at boundary.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 43_500
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # $43,500 / $20,440 = 2.128 (~213% FPL) - just under limit
+    il_fpp_income_eligible: [true]
+    il_fpp_eligible: [true]
+
+- name: Case 4, family with children.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_pregnant: false
+      person2:
+        age: 33
+        employment_income: 25_000
+        is_pregnant: false
+      person3:
+        age: 10
+        is_pregnant: false
+      person4:
+        age: 8
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Each person evaluated individually with fixed HH size 2
+    # person1: $30,000 / $20,440 = 1.47 (147% FPL) - income eligible
+    # person2: $25,000 / $20,440 = 1.22 (122% FPL) - income eligible
+    # person3, person4: $0 income - income eligible
+    il_fpp_income_eligible: [true, true, true, true]
+    # All meet criteria: income eligible, not pregnant, not receiving Medicaid
+    il_fpp_eligible: [true, true, true, true]

@@ -22,8 +22,11 @@ class state_group(Variable):
     def formula(household, period, parameters):
         NON_CONTIGUOUS_STATES = ("AK", "HI", "GU", "PR", "VI")
         state_code = household("state_code", period).decode_to_str()
-        return where(
-            np.isin(state_code, NON_CONTIGUOUS_STATES),
-            StateGroup.encode(state_code).decode(),
-            StateGroup.CONTIGUOUS_US,
-        )
+        is_non_contiguous = np.isin(state_code, NON_CONTIGUOUS_STATES)
+        encoded = np.empty(state_code.shape, dtype=object)
+        encoded[:] = StateGroup.CONTIGUOUS_US
+        if is_non_contiguous.any():
+            encoded[is_non_contiguous] = StateGroup.encode(
+                state_code[is_non_contiguous]
+            ).decode()
+        return encoded
