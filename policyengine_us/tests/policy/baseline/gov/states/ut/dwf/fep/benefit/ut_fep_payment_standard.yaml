@@ -1,0 +1,73 @@
+# Unit tests for ut_fep_payment_standard (maximum benefit by family size)
+# Payment standard is 87.5% of Standard Needs Budget (SNB)
+# Reference: Utah Admin. Code R986-200-239
+# Source: https://jobs.utah.gov/Infosource/eligibilitymanual/Tables
+#
+# 2022 Payment Standards (87.5% SNB):
+#   Size 1: $383, Size 2: $531, Size 3: $662
+#   Size 4: $775, Size 5: $882, Size 6: $972
+#   Size 7: $1,017, Size 8: $1,065
+
+- name: Family size 1 - payment standard $383.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 1
+  output:
+    ut_fep_payment_standard: 383
+
+- name: Family size 2 - payment standard $531.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 2
+  output:
+    ut_fep_payment_standard: 531
+
+- name: Family size 3 - payment standard $662.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+  output:
+    ut_fep_payment_standard: 662
+
+- name: Family size 4 - payment standard $775.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 4
+  output:
+    ut_fep_payment_standard: 775
+
+- name: Family size 5 - payment standard $882.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 5
+  output:
+    ut_fep_payment_standard: 882
+
+- name: Family size 6 - payment standard $972.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 6
+  output:
+    ut_fep_payment_standard: 972
+
+- name: Family size 7 - payment standard $1,017.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 7
+  output:
+    ut_fep_payment_standard: 1_017
+
+- name: Family size 8 - payment standard $1,065.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 8
+  output:
+    ut_fep_payment_standard: 1_065
