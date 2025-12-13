@@ -6,10 +6,10 @@ class wi_works_income_eligible(Variable):
     entity = SPMUnit
     label = "Wisconsin Works income eligible"
     definition_period = MONTH
-    reference = [
+    reference = (
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.2.1_115_Percent_Gross_Income_Test.htm",
         "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/a",
-    ]
+    )
     defined_for = StateCode.WI
 
     def formula(spm_unit, period, parameters):

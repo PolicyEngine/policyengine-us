@@ -7,10 +7,10 @@ class wi_works(Variable):
     label = "Wisconsin Works"
     unit = USD
     definition_period = MONTH
-    reference = [
+    reference = (
         "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148",
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm",
-    ]
+    )
     defined_for = "wi_works_eligible"
 
     def formula(spm_unit, period, parameters):

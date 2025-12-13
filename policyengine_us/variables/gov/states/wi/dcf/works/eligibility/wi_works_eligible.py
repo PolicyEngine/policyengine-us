@@ -6,10 +6,10 @@ class wi_works_eligible(Variable):
     entity = SPMUnit
     label = "Wisconsin Works eligible"
     definition_period = MONTH
-    reference = [
+    reference = (
         "https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/145",
         "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09",
-    ]
+    )
     defined_for = StateCode.WI
 
     def formula(spm_unit, period, parameters):

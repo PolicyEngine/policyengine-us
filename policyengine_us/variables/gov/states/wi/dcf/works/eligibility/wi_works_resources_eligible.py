@@ -6,10 +6,10 @@ class wi_works_resources_eligible(Variable):
     entity = SPMUnit
     label = "Wisconsin Works resources eligible"
     definition_period = YEAR
-    reference = [
+    reference = (
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.3.4_COUNTING_ASSETS.htm",
         "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/b",
-    ]
+    )
     defined_for = StateCode.WI
 
     def formula(spm_unit, period, parameters):
