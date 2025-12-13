@@ -1,0 +1,60 @@
+- name: Resources below application limit passes eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 500  # Below $1_000 limit
+    is_tanf_enrolled: false  # Not enrolled in TANF
+  output:
+    in_tanf_resources_eligible: true
+    # 500 <= 1_000 = true
+
+- name: Resources at application limit passes eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 1_000  # At $1_000 limit
+    is_tanf_enrolled: false  # Not enrolled in TANF
+  output:
+    in_tanf_resources_eligible: true
+    # 1_000 <= 1_000 = true
+
+- name: Resources above application limit fails eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 1_500  # Above $1_000 limit
+    is_tanf_enrolled: false  # Not enrolled in TANF
+  output:
+    in_tanf_resources_eligible: false
+    # 1_500 <= 1_000 = false
+
+- name: Resources below limit while enrolled passes eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 5_000  # Below $10_000 ongoing limit
+    is_tanf_enrolled: true  # Currently enrolled in TANF
+  output:
+    in_tanf_resources_eligible: true
+    # Uses limit_while_receiving parameter: $10_000
+    # 5_000 <= 10_000 = true
+
+- name: Resources above limit while enrolled fails eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 15_000  # Above $10_000 ongoing limit
+    is_tanf_enrolled: true  # Currently enrolled in TANF
+  output:
+    in_tanf_resources_eligible: false
+    # 15_000 <= 10_000 = false
+
+- name: Zero resources always passes eligibility
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 0
+    is_tanf_enrolled: false
+  output:
+    in_tanf_resources_eligible: true
+    # 0 <= 1_000 = true
