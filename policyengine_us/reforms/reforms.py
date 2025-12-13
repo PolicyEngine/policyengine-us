@@ -127,6 +127,7 @@ from .states.de.dependent_credit.de_dependent_credit_reform import (
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
+    create_aca_ptc_700_fpl_cliff_reform,
 )
 
 
@@ -288,6 +289,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
         parameters, period
     )
+    aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -346,6 +350,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         de_dependent_credit,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
+        aca_ptc_700_fpl_cliff,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
