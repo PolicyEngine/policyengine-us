@@ -1,0 +1,25 @@
+description: Kentucky limits dependent care disregard to this amount per child under the Kentucky Transitional Assistance Program.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Kentucky K-TAP dependent care disregard per child
+  reference:
+    - title: 921 KAR 2:016 Section 5(3)(b)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+
+brackets:
+  - threshold:
+      2023-03-01: 0
+    amount:
+      2023-03-01: 200
+  - threshold:
+      2023-03-01: 2
+    amount:
+      2023-03-01: 175
+  - threshold:
+      2023-03-01: 13
+    amount:
+      2023-03-01: 0

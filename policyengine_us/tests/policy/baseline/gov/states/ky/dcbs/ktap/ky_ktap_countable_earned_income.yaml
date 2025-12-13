@@ -1,0 +1,112 @@
+# Kentucky TANF (K-TAP) Countable Earned Income
+# Per 921 KAR 2:016 Section 5(3)(a) and Section 8
+# Work Expense Deduction: $175/month (both full-time and part-time)
+# 50% Earned Income Disregard: Applied to remainder (ongoing cases, 6 months)
+# Formula: max(sum_of_gross_earned - 175, 0) * 0.5
+
+- name: Case 1, no earned income results in zero countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # No income, no deductions needed
+    ky_ktap_countable_earned_income: 0
+
+- name: Case 2, income below work expense deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $100 gross - $175 work expense = $0 (cannot be negative)
+    ky_ktap_countable_earned_income: 0
+
+- name: Case 3, income exactly at work expense deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 175
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $175 gross - $175 work expense = $0
+    ky_ktap_countable_earned_income: 0
+
+- name: Case 4, moderate earned income with deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $500 gross - $175 work expense = $325
+    # $325 * 0.5 (50% disregard) = $162.50
+    ky_ktap_countable_earned_income: 162.5
+
+- name: Case 5, higher earned income with deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $1,000 gross - $175 work expense = $825
+    # $825 * 0.5 (50% disregard) = $412.50
+    ky_ktap_countable_earned_income: 412.5
+
+- name: Case 6, two earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 600
+      person2:
+        tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Total gross: $600 + $400 = $1,000
+    # $1,000 - $175 work expense = $825
+    # $825 * 0.5 (50% disregard) = $412.50
+    ky_ktap_countable_earned_income: 412.5
+
+- name: Case 7, non-KY state returns zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_ktap_countable_earned_income: 0

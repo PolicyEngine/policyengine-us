@@ -1,0 +1,156 @@
+# Kentucky K-TAP Dependent Care Disregard
+# Per 921 KAR 2:016 Section 5(3)(b)
+# Max per child:
+# - $200/month for child under age 2
+# - $175/month for child age 2-12
+
+- name: No childcare expenses results in zero disregard.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_dependent_care_disregard: 0
+
+- name: One child age 5, childcare below cap.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # $100/month * 12 = $1,200/year
+        childcare_expenses: 1_200
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Max for age 5: $175/month, actual: $100/month
+    # Disregard = min($100, $175) = $100
+    ky_ktap_dependent_care_disregard: 100
+
+- name: One child age 5, childcare exceeds cap.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # $300/month * 12 = $3,600/year
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Max for age 5: $175/month, actual: $300/month
+    # Disregard = min($300, $175) = $175
+    ky_ktap_dependent_care_disregard: 175
+
+- name: One child under age 2, childcare exceeds cap.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+      infant:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+        # $400/month * 12 = $4,800/year
+        childcare_expenses: 4_800
+    households:
+      household:
+        members: [parent, infant]
+        state_code: KY
+  output:
+    # Max for under 2: $200/month, actual: $400/month
+    # Disregard = min($400, $200) = $200
+    ky_ktap_dependent_care_disregard: 200
+
+- name: Two children, one infant and one age 5.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 1
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, infant, child]
+        # $500/month * 12 = $6,000/year
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, infant, child]
+        state_code: KY
+  output:
+    # Max for infant: $200, max for age 5: $175
+    # Total max: $375/month, actual: $500/month
+    # Disregard = min($500, $375) = $375
+    ky_ktap_dependent_care_disregard: 375
+
+- name: Child age 13 gets no disregard.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      teen:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+        # $200/month * 12 = $2,400/year
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [parent, teen]
+        state_code: KY
+  output:
+    # Max for age 13+: $0
+    # Disregard = min($200, $0) = $0
+    ky_ktap_dependent_care_disregard: 0
+
+- name: Non-KY state returns zero.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ky_ktap_dependent_care_disregard: 0
