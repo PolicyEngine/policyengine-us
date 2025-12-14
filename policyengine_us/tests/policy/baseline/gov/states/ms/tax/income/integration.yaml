@@ -227,3 +227,33 @@
     ms_total_exemptions_joint: [12_000, 0]
     ms_taxable_income_joint: [12_892, 11_307]
     ms_income_tax: 197
+
+- name: MS joint with capital losses should use federal $3,000 limit
+  absolute_error_margin: 100
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_480.75
+        taxable_interest_income: 202_089.485
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_480.75
+        taxable_interest_income: 202_089.485
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 28
+  output:
+    ms_income_tax: 17_136
