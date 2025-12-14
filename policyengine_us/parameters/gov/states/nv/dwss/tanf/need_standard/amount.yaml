@@ -1,0 +1,31 @@
+description: Nevada uses this amount as the need standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: Nevada TANF need standard amount
+  reference:
+    - title: Nevada DWSS Eligibility and Payments Manual, Section C-140.1 TANF Need Standards Chart
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
+
+# 100% Need Standard from C-140.1 TANF Need Standards Chart
+# Effective April 1, 2018
+# For sizes > 8, use amount[8] + (size - 8) * additional_person increment
+1:
+  2018-04-01: 759
+2:
+  2018-04-01: 1_029
+3:
+  2018-04-01: 1_299
+4:
+  2018-04-01: 1_569
+5:
+  2018-04-01: 1_839
+6:
+  2018-04-01: 2_109
+7:
+  2018-04-01: 2_379
+8:
+  2018-04-01: 2_649

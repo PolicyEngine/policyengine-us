@@ -1,0 +1,42 @@
+# Unit tests for nv_tanf_eligible
+# Tests combined eligibility (demographic, income, resource)
+
+- name: All eligible
+  period: 2025-01
+  input:
+    state_code: NV
+    is_demographic_tanf_eligible: true
+    nv_tanf_income_eligible: true
+    nv_tanf_resource_eligible: true
+  output:
+    nv_tanf_eligible: true
+
+- name: Income ineligible
+  period: 2025-01
+  input:
+    state_code: NV
+    is_demographic_tanf_eligible: true
+    nv_tanf_income_eligible: false
+    nv_tanf_resource_eligible: true
+  output:
+    nv_tanf_eligible: false
+
+- name: Resource ineligible
+  period: 2025-01
+  input:
+    state_code: NV
+    is_demographic_tanf_eligible: true
+    nv_tanf_income_eligible: true
+    nv_tanf_resource_eligible: false
+  output:
+    nv_tanf_eligible: false
+
+- name: Demographic ineligible
+  period: 2025-01
+  input:
+    state_code: NV
+    is_demographic_tanf_eligible: false
+    nv_tanf_income_eligible: true
+    nv_tanf_resource_eligible: true
+  output:
+    nv_tanf_eligible: false

@@ -23,9 +23,10 @@ class nv_tanf_income_eligible(Variable):
         # Must pass gross income test (130% FPL)
         passes_gross_test = gross_income <= gross_income_limit
 
-        # Must also have countable income <= payment standard
+        # Must also have countable income <= 100% Need Standard
+        # Per C-140.1: Need Standard is used for eligibility determination
         countable_income = spm_unit("nv_tanf_countable_income", period)
-        payment_standard = spm_unit("nv_tanf_payment_standard", period)
-        passes_net_test = countable_income <= payment_standard
+        need_standard = spm_unit("nv_tanf_need_standard", period)
+        passes_net_test = countable_income <= need_standard
 
         return passes_gross_test & passes_net_test
