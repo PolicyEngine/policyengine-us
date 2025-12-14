@@ -43,7 +43,7 @@
   output:
     mt_itemized_deductions_joint: 8_818
 
-- name: Amount only distributed to the head 
+- name: Amount only distributed to the head
   period: 2021
   absolute_error_margin: 1
   input:
@@ -74,3 +74,31 @@
         mt_federal_income_tax_deduction_unit: 600
   output:
     mt_itemized_deductions_joint: [2_212, 0, 0]
+
+- name: MT 2024 joint filers should not get federal income tax deduction
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        taxable_interest_income: 70_600.515
+        mortgage_interest: 60_400.344
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        taxable_interest_income: 70_600.515
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    mt_itemized_deductions_joint: 60_400

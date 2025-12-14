@@ -54,3 +54,12 @@
         state_code: MT
   output:
     mt_federal_income_tax_deduction_unit: 7_000
+
+- name: Federal income tax deduction eliminated in 2024 under SB 399
+  period: 2024
+  input:
+    filing_status: JOINT
+    income_tax_before_refundable_credits: 7_000
+    state_code: MT
+  output:
+    mt_federal_income_tax_deduction_unit: 0
