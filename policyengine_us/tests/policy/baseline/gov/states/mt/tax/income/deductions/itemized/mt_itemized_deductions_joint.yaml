@@ -84,7 +84,7 @@
         age: 40
         employment_income: 30_000
         taxable_interest_income: 70_600.515
-        mortgage_interest: 60_400.344
+        mortgage_interest: 60_400
         is_tax_unit_head: true
       person2:
         age: 40
@@ -101,4 +101,4 @@
         members: [person1, person2]
         state_fips: 30
   output:
-    mt_itemized_deductions_joint: 60_400
+    mt_itemized_deductions_joint: [60_400, 0]
