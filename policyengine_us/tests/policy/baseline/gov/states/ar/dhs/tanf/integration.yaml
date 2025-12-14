@@ -1,5 +1,6 @@
 # Integration tests for Arkansas TANF (TEA - Transitional Employment Assistance)
 # These tests verify the complete benefit calculation pipeline from inputs to final benefit
+# Note: These tests use is_tanf_enrolled: true to simulate ongoing recipients
 
 - name: Case 1, family of 3 with no income receives full benefit.
   period: 2024-01
@@ -16,6 +17,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -31,7 +33,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 0 <= 223 -> eligible
+    # Gross: 0 < 185% FPL -> pass
+    # Net: 0 <= 223 -> pass
     ar_tanf_resources_eligible: true
     # 1,000 <= 3,000 -> eligible
     ar_tanf_eligible: true
@@ -43,7 +46,7 @@
     # Gross income 0 < 446, so full payment
     # max(204 - 0, 0) = 204
 
-- name: Case 2, family of 3 with earned income below trigger receives partial benefit.
+- name: Case 2, ongoing family of 3 with earned income below trigger receives partial benefit.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -60,6 +63,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 500
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -76,7 +80,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 128 <= 223 -> eligible
+    # Gross: 400 < 185% FPL -> pass
+    # Net: 128 <= 223 -> pass
     ar_tanf_resources_eligible: true
     # 500 <= 3,000 -> eligible
     ar_tanf_eligible: true
@@ -88,7 +93,7 @@
     # Gross income 400 < 446, so full payment standard
     # max(204 - 128, 0) = 76
 
-- name: Case 3, family of 2 with earnings at gross income trigger.
+- name: Case 3, ongoing family of 2 with earnings at gross income trigger.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -103,6 +108,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 2_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -117,7 +123,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 142.72 <= 223 -> eligible
+    # Gross: 446 < 185% FPL -> pass
+    # Net: 142.72 <= 223 -> pass
     ar_tanf_resources_eligible: true
     # 2,000 <= 3,000 -> eligible
     ar_tanf_eligible: true
@@ -130,7 +137,7 @@
     # Reduced payment = 162 * 0.5 = 81
     # max(81 - 142.72, 0) = max(-61.72, 0) = 0
 
-- name: Case 4, family of 4 with earnings above trigger but still eligible.
+- name: Case 4, ongoing family of 4 with earnings above trigger but still eligible.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -150,6 +157,7 @@
       spm_unit:
         members: [person1, person2, person3, person4]
         spm_unit_assets: 1_500
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -164,7 +172,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 160 <= 223 -> eligible
+    # Gross: 500 < 185% FPL -> pass
+    # Net: 160 <= 223 -> pass
     ar_tanf_eligible: true
 
     # Benefit calculation
@@ -175,7 +184,7 @@
     # Reduced payment = 247 * 0.5 = 123.5
     # max(123.5 - 160, 0) = 0
 
-- name: Case 5, documentation example 550 gross earnings.
+- name: Case 5, ongoing recipient documentation example 550 gross earnings.
   period: 2024-01
   input:
     people:
@@ -191,6 +200,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 500
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -206,7 +216,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 176 <= 223 -> eligible
+    # Gross: 550 < 185% FPL -> pass
+    # Net: 176 <= 223 -> pass
     ar_tanf_eligible: true
 
     # Benefit calculation
@@ -216,7 +227,7 @@
     # Reduced payment = 204 * 0.5 = 102
     # max(102 - 176, 0) = 0
 
-- name: Case 6, income exceeds eligibility standard making family ineligible.
+- name: Case 6, ongoing recipient income exceeds net eligibility standard making family ineligible.
   period: 2024-01
   input:
     people:
@@ -232,6 +243,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -245,7 +257,8 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: false
-    # 256 > 223 -> INELIGIBLE
+    # Gross: 800 < 185% FPL -> pass
+    # Net: 256 > 223 -> FAIL
     ar_tanf_eligible: false
 
     # Benefit calculation
@@ -266,6 +279,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 5_000
+        is_tanf_enrolled: true
         # Exceeds $3,000 resource limit
     households:
       household:
@@ -277,12 +291,92 @@
 
     # Eligibility chain
     ar_tanf_income_eligible: true
-    # 0 <= 223 -> income eligible
+    # Gross: 0 < 185% FPL -> pass
+    # Net: 0 <= 223 -> pass
     ar_tanf_resources_eligible: false
     # 5,000 > 3,000 -> RESOURCES INELIGIBLE
     ar_tanf_eligible: false
 
     # Benefit calculation
     ar_tanf_maximum_benefit: 162
+    ar_tanf: 0
+    # Ineligible -> no benefit
+
+- name: Case 8, initial applicant family of 3 (20% deduction only).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800
+        # Annual $4,800 = $400/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Income calculation chain - initial applicant gets only 20% deduction
+    tanf_gross_earned_income: [400, 0, 0]
+    ar_tanf_countable_earned_income: 320
+    # Initial applicant: 400 * 0.80 = 320 (only 20% work expense)
+    ar_tanf_countable_income: 320
+    # 320 (earned) + 0 (unearned) = 320
+
+    # Eligibility chain
+    ar_tanf_income_eligible: false
+    # Gross: 400 < 185% FPL -> pass
+    # Net: 320 > 223 -> FAIL (initial applicant has higher countable income)
+    ar_tanf_eligible: false
+
+    # Benefit calculation
+    ar_tanf_maximum_benefit: 204
+    ar_tanf: 0
+    # Ineligible -> no benefit
+
+- name: Case 9, gross income above 185% FPL makes family ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 54_000
+        # Annual $54,000 = $4,500/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 500
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Income calculation chain
+    tanf_gross_earned_income: [4_500, 0, 0]
+    ar_tanf_countable_earned_income: 1_440
+    # 4,500 * 0.80 * 0.40 = 1,440
+    ar_tanf_countable_income: 1_440
+
+    # Eligibility chain
+    ar_tanf_income_eligible: false
+    # 185% FPL for size 3 in 2024: $25,820 * 1.85 / 12 = $3,980.58
+    # Gross: 4,500 >= 3,980.58 -> FAIL
+    ar_tanf_eligible: false
+
+    # Benefit calculation
+    ar_tanf_maximum_benefit: 204
     ar_tanf: 0
     # Ineligible -> no benefit

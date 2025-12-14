@@ -13,12 +13,18 @@ class ar_tanf_countable_earned_income(Variable):
     def formula(spm_unit, period, parameters):
         # Per 208.00.13 Ark. Code R. Section 001, Section 3.3
         p = parameters(period).gov.states.ar.dhs.tanf.income.deductions
-        gross_earned = spm_unit("tanf_gross_earned_income", period)
+        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 
-        # Step 1: Apply 20% work expense deduction
+        # Step 1: Apply 20% work expense deduction (applies to all)
         after_work_expense = gross_earned * (1 - p.work_expense.rate)
 
-        # Step 2: Apply 60% work incentive deduction
-        countable_earned = after_work_expense * (1 - p.work_incentive.rate)
+        # Step 2: Apply 60% work incentive deduction (only for ongoing recipients)
+        is_enrolled = spm_unit("is_tanf_enrolled", period)
 
-        return max_(countable_earned, 0)
+        # For initial applicants: only 20% work expense deduction
+        # For ongoing recipients: 20% work expense + 60% work incentive
+        return where(
+            is_enrolled,
+            after_work_expense * (1 - p.work_incentive.rate),
+            after_work_expense,
+        )
