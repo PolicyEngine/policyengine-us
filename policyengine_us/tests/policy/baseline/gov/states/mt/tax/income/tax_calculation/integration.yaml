@@ -1,0 +1,29 @@
+- name: MT joint with only capital losses should have zero tax
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -1_531_814.15
+        long_term_capital_gains: -1_570_696.9
+        taxable_interest_income: 11.85
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        short_term_capital_gains: -1_531_814.15
+        long_term_capital_gains: -1_570_696.9
+        taxable_interest_income: 11.85
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    mt_income_tax: 0  # From TaxAct - no income means no tax

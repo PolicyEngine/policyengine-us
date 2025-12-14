@@ -18,6 +18,7 @@ class mt_regular_income_tax_indiv(Variable):
         )
         if p.capital_gains.in_effect:
             capital_gains = person("long_term_capital_gains", period)
+            capital_gains = max_(capital_gains, 0)
             taxable_income = max_(taxable_income - capital_gains, 0)
         status = filing_status.possible_values
         return select(

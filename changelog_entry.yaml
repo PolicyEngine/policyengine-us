@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax now correctly handles long-term capital losses, preventing phantom income from being created when subtracting negative capital gains.
