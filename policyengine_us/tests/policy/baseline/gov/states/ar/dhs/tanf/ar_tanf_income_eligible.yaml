@@ -1,0 +1,93 @@
+# Unit tests for ar_tanf_income_eligible
+# Arkansas TEA has a fixed income eligibility standard of $223/month for ALL family sizes
+# A household is income eligible if countable income <= $223
+
+- name: Case 1, zero income is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tanf_countable_income: 0
+  output:
+    ar_tanf_income_eligible: true
+    # 0 <= 223 -> eligible
+
+- name: Case 2, income below threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tanf_countable_income: 150
+  output:
+    ar_tanf_income_eligible: true
+    # 150 <= 223 -> eligible
+
+- name: Case 3, income exactly at threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tanf_countable_income: 223
+  output:
+    ar_tanf_income_eligible: true
+    # 223 <= 223 -> eligible (at threshold is still eligible)
+
+- name: Case 4, income one dollar over threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tanf_countable_income: 224
+  output:
+    ar_tanf_income_eligible: false
+    # 224 > 223 -> ineligible
+
+- name: Case 5, income well above threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tanf_countable_income: 500
+  output:
+    ar_tanf_income_eligible: false
+    # 500 > 223 -> ineligible
