@@ -11803,3 +11803,19 @@
     - Remove orphaned il_aabd_aged_blind_disabled_person variable and aged_age_threshold
       parameter.
   date: 2025-12-12 18:28:16
+- bump: minor
+  changes:
+    added:
+    - Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB,
+      and QI eligibility levels.
+    - State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY,
+      OR, VT have eliminated the asset test).
+  date: 2025-12-12 23:16:34
+- bump: patch
+  changes:
+    fixed:
+    - Update uv.lock during version bump so contributors don't need to run uv lock
+      --upgrade after pulling from master.
+    - Change push workflow concurrency to queue runs instead of cancelling to ensure
+      each merge completes.
+  date: 2025-12-13 04:31:57
