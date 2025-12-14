@@ -1,0 +1,34 @@
+- name: Case 1, employment eligible with employment income.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 24_000  # $2,000/month
+  output:
+    il_hbwd_employment_eligible: true
+
+- name: Case 2, employment eligible with self-employment income.
+  period: 2024-01
+  input:
+    state_code: IL
+    self_employment_income: 18_000  # $1,500/month
+  output:
+    il_hbwd_employment_eligible: true
+
+- name: Case 3, employment eligible with both.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 12_000  # $1,000/month
+    self_employment_income: 6_000  # $500/month
+  output:
+    il_hbwd_employment_eligible: true
+
+- name: Case 4, employment ineligible with no earned income.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 0
+    self_employment_income: 0
+    social_security: 12_000  # $1,000/month
+  output:
+    il_hbwd_employment_eligible: false

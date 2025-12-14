@@ -1,0 +1,95 @@
+- name: Eligible female US citizen under 65 without insurance
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 45
+    immigration_status: CITIZEN
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: true
+
+- name: Eligible female legal permanent resident
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 35
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: true
+
+- name: Eligible female refugee
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 28
+    immigration_status: REFUGEE
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: true
+
+- name: Ineligible due to age over 65
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 70
+    immigration_status: CITIZEN
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to non-qualifying immigration status
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 40
+    immigration_status: UNDOCUMENTED
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible male
+  period: 2024
+  input:
+    state_code: IL
+    is_female: false
+    age: 45
+    immigration_status: CITIZEN
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to qualifying health coverage
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 45
+    immigration_status: CITIZEN
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: true
+  output:
+    il_bcc_eligible: false
+
+- name: Ineligible due to Medicaid coverage
+  period: 2024
+  input:
+    state_code: IL
+    is_female: true
+    age: 45
+    immigration_status: CITIZEN
+    receives_medicaid: true
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_eligible: false

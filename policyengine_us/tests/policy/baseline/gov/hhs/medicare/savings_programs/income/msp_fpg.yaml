@@ -1,0 +1,22 @@
+# MSP uses individual (1 person) or couple (2 persons) FPL,
+# not the full SPM unit size per 42 U.S.C. 1396d(p)
+# 2024 FPL: individual = $15,060, couple = $20,440
+# Note: Published limits are $20 higher (FPL + $20 exclusion built in)
+# Our implementation applies $20 exclusion to income instead - mathematically equivalent
+
+- name: Case 1, single person gets individual FPL.
+  period: 2024-01
+  input:
+    spm_unit_is_married: false
+  output:
+    # Individual FPL = $15,060/year, monthly = $1,255
+    msp_fpg: 1_255
+
+- name: Case 2, married couple gets couple FPL.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_is_married: true
+  output:
+    # Couple FPL = $20,440/year, monthly = $1,703.33
+    msp_fpg: 1_703.33

@@ -16,8 +16,8 @@ class oh_cdcc(Variable):
         p = parameters(period).gov.states.oh.tax.income.credits.cdcc
 
         agi = tax_unit("oh_modified_agi", period)
-        # Ohio matches the federal credit taken
-        us_cdcc = tax_unit("cdcc", period)
+        # Ohio matches the potential federal credit
+        us_cdcc = tax_unit("cdcc_potential", period)
 
         rate = p.match.calc(agi)
         # qualify for full CDCC amount when AGI < 20_000
