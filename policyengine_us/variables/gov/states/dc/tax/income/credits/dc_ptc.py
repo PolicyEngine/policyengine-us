@@ -19,7 +19,6 @@ class dc_ptc(Variable):
         p_dc = parameters(period).gov.states.dc.tax.income.credits
         ptax = retax + rent * p_dc.ptc.rent_ratio
 
-
         elderly_age = p_dc.ptc.min_elderly_age
         head_age = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
