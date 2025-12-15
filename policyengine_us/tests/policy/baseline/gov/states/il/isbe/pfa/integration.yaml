@@ -104,7 +104,7 @@
     il_pfa_eligible: [false, true]
     il_pfae_eligible: [false, true]
 
-- name: Case 5, foster care child.
+- name: Case 5, foster care child with moderate income (PFA only).
   period: 2024
   input:
     people:
@@ -129,6 +129,8 @@
     # Foster care is person-level, only child has it
     il_pfa_highest_priority_eligible: [false, true]
     il_pfa_eligible: [false, true]
+    # Income $50k > 200% FPL (~$41k for 2), so not PFAE eligible
+    il_pfae_eligible: [false, false]
 
 - name: Case 6, child with developmental delay.
   period: 2024

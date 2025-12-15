@@ -33,3 +33,27 @@
     has_iep: true
   output:
     il_pfa_eligible: false
+
+- name: Case 5, eligible with parent education risk factor.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    parent_has_less_than_high_school_education: true
+    employment_income: 55_000
+  output:
+    # parent_education + categorical_benefits (Medicaid - IL has generous child coverage)
+    il_pfa_risk_factor_count: 2
+    il_pfa_eligible: true
+
+- name: Case 6, eligible with just Medicaid categorical benefit.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    employment_income: 55_000
+  output:
+    # Child is Medicaid eligible in IL (generous child coverage)
+    # This counts as categorical benefits risk factor
+    il_pfa_risk_factor_count: 1
+    il_pfa_eligible: true

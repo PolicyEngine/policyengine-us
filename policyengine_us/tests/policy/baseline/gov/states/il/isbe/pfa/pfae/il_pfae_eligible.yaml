@@ -1,19 +1,23 @@
-- name: Case 1, eligible age 4 with IEP.
+- name: Case 1, PFAE eligible - highest priority (IEP) with low income.
   period: 2024
   input:
     state_code: IL
     age: 4
     has_iep: true
+    employment_income: 20_000
   output:
+    il_pfa_eligible: true
     il_pfae_eligible: true
 
-- name: Case 2, eligible age 3 in foster care.
+- name: Case 2, PFAE eligible - highest priority (foster care) with low income.
   period: 2024
   input:
     state_code: IL
     age: 3
     is_in_foster_care: true
+    employment_income: 15_000
   output:
+    il_pfa_eligible: true
     il_pfae_eligible: true
 
 - name: Case 3, ineligible age 6 too old.
@@ -24,3 +28,44 @@
     has_iep: true
   output:
     il_pfae_eligible: false
+
+- name: Case 4, PFA only - has risk factors but income too high for PFAE.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    parent_has_less_than_high_school_education: true
+    employment_income: 55_000
+  output:
+    # parent_education + categorical_benefits (Medicaid)
+    il_pfa_risk_factor_count: 2
+    il_pfa_eligible: true
+    # Not PFAE: income $55k > 200% FPL (~$30k)
+    il_pfae_eligible: false
+
+- name: Case 5, PFAE ineligible - highest priority but income too high.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    has_iep: true
+    employment_income: 50_000
+  output:
+    il_pfa_highest_priority_eligible: true
+    # Income $50k < 400% FPL (~$60k), so PFA eligible
+    il_pfa_eligible: true
+    # Income $50k > 200% FPL (~$30k), so not PFAE eligible
+    il_pfae_eligible: false
+
+- name: Case 6, PFAE eligible - multiple risk factors with low income.
+  period: 2024
+  input:
+    state_code: IL
+    age: 3
+    parent_has_less_than_high_school_education: true
+    receives_or_needs_protective_services: true
+    employment_income: 25_000
+  output:
+    # parent_education + protective_services + low_income + categorical_benefits (Medicaid)
+    il_pfa_eligible: true
+    il_pfae_eligible: true
