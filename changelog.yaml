@@ -11819,3 +11819,20 @@
     - Change push workflow concurrency to queue runs instead of cancelling to ensure
       each merge completes.
   date: 2025-12-13 04:31:57
+- bump: patch
+  changes:
+    fixed:
+    - WV homestead excess property tax credit with negative income and zero property
+      taxes
+  date: 2025-12-15 18:31:12
+- bump: minor
+  changes:
+    added:
+    - Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi)
+      using exact branching methodology
+    - Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare
+      HI allocation
+    - LSR recursion guard to prevent infinite loops when branches calculate variables
+    fixed:
+    - Labor supply behavioral response infinite recursion bug
+  date: 2025-12-15 19:02:39
