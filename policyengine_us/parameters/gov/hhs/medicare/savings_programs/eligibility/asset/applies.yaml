@@ -1,0 +1,115 @@
+description: States determine whether the asset test applies under the Medicare Savings Programs.
+metadata:
+  unit: bool
+  period: year
+  label: MSP asset test applies
+  breakdown:
+    - state_code
+  reference:
+    - title: Medicare Savings Programs | Medicare.gov
+      href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
+    - title: Medicare Interactive - Medicare Savings Program Income and Asset Limits
+      href: https://www.medicareinteractive.org/understanding-medicare/cost-saving-programs/medicare-savings-programs-qmb-slmb-qi/medicare-savings-program-income-and-asset-limits
+# States that have eliminated the asset test are set to false
+AL:
+  2024-01-01: false
+AK:
+  2024-01-01: true
+AZ:
+  2024-01-01: false
+AR:
+  2024-01-01: true
+CA:
+  2024-01-01: false
+CO:
+  2024-01-01: true
+CT:
+  2024-01-01: false
+DE:
+  2024-01-01: false
+DC:
+  2024-01-01: false
+FL:
+  2024-01-01: true
+GA:
+  2024-01-01: true
+HI:
+  2024-01-01: true
+ID:
+  2024-01-01: true
+IL:
+  2024-01-01: true
+IN:
+  2024-01-01: true
+IA:
+  2024-01-01: true
+KS:
+  2024-01-01: true
+KY:
+  2024-01-01: true
+LA:
+  2024-01-01: false
+ME:
+  2024-01-01: true
+MD:
+  2024-01-01: true
+MA:
+  2024-01-01: true
+MI:
+  2024-01-01: true
+MN:
+  2024-01-01: true
+MS:
+  2024-01-01: false
+MO:
+  2024-01-01: true
+MT:
+  2024-01-01: true
+NE:
+  2024-01-01: true
+NV:
+  2024-01-01: true
+NH:
+  2024-01-01: true
+NJ:
+  2024-01-01: true
+NM:
+  2024-01-01: false
+NY:
+  2024-01-01: false
+NC:
+  2024-01-01: true
+ND:
+  2024-01-01: true
+OH:
+  2024-01-01: true
+OK:
+  2024-01-01: true
+OR:
+  2024-01-01: false
+PA:
+  2024-01-01: true
+RI:
+  2024-01-01: true
+SC:
+  2024-01-01: true
+SD:
+  2024-01-01: true
+TN:
+  2024-01-01: true
+TX:
+  2024-01-01: true
+UT:
+  2024-01-01: true
+VT:
+  2024-01-01: false
+VA:
+  2024-01-01: true
+WA:
+  2024-01-01: true
+WV:
+  2024-01-01: true
+WI:
+  2024-01-01: true
+WY:
+  2024-01-01: true
