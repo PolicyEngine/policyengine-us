@@ -5,6 +5,77 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.461.1] - 2025-12-15 21:03:17
+
+### Fixed
+
+- Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+
+## [1.461.0] - 2025-12-15 19:02:39
+
+### Added
+
+- Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi) using exact branching methodology
+- Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare HI allocation
+- LSR recursion guard to prevent infinite loops when branches calculate variables
+
+### Fixed
+
+- Labor supply behavioral response infinite recursion bug
+
+## [1.460.2] - 2025-12-15 18:31:12
+
+### Fixed
+
+- WV homestead excess property tax credit with negative income and zero property taxes
+
+## [1.460.1] - 2025-12-13 04:31:57
+
+### Fixed
+
+- Update uv.lock during version bump so contributors don't need to run uv lock --upgrade after pulling from master.
+- Change push workflow concurrency to queue runs instead of cancelling to ensure each merge completes.
+
+## [1.460.0] - 2025-12-12 23:16:34
+
+### Added
+
+- Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB, and QI eligibility levels.
+- State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY, OR, VT have eliminated the asset test).
+
+## [1.459.2] - 2025-12-12 18:28:16
+
+### Fixed
+
+- Fix IL AABD non-financial eligibility to require SSI status eligibility per IDHS Policy Manual PM 11-01-00.
+- Remove retirement_distributions from IL AABD asset sources (incorrectly included income variable).
+
+## [1.459.1] - 2025-12-12 18:20:04
+
+### Fixed
+
+- Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+- Fix IL HBWD disability eligibility to use medical definition without SGA test.
+
+## [1.459.0] - 2025-12-12 14:32:00
+
+### Added
+
+- ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap to 600% FPL and phaseout to 9.25% at 700% FPL
+
+## [1.458.2] - 2025-12-12 14:10:11
+
+### Fixed
+
+- Floor only business and rental income sources in MI household resources per MI-1040CR form instructions.
+
+## [1.458.1] - 2025-12-12 04:32:17
+
+### Changed
+
+- Split structural YAML tests into parallel CI jobs for better memory management.
+- Add workflow concurrency to cancel in-progress CI runs when new commits are pushed to the same PR.
+
 ## [1.458.0] - 2025-12-11 18:30:32
 
 ### Added
@@ -13816,6 +13887,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.461.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.0...1.461.1
+[1.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.2...1.461.0
+[1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
+[1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
+[1.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.2...1.460.0
+[1.459.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.1...1.459.2
+[1.459.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.0...1.459.1
+[1.459.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.2...1.459.0
+[1.458.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.1...1.458.2
+[1.458.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.0...1.458.1
 [1.458.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.1...1.458.0
 [1.457.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.0...1.457.1
 [1.457.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.2...1.457.0

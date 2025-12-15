@@ -1,0 +1,86 @@
+# Unit tests for tob_revenue_oasdi
+# Tests OASDI trust fund revenue allocation from SS benefit taxation
+# OASDI receives revenue proportional to tier 1's share of total taxable SS
+
+- name: No SS benefits - zero OASDI revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_oasdi: 0
+
+- name: Below threshold - zero OASDI revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # No taxable SS → no TOB revenue → no OASDI share
+    tob_revenue_oasdi: 0
+
+- name: Tier 1 only - all revenue to OASDI
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # In tier 1 only: tier1 = $2,500, tier2 = $0
+    # All taxable SS is tier 1 → 100% to OASDI
+    # Total TOB revenue all goes to OASDI
+    taxable_social_security_tier_1: 2_500
+    taxable_social_security_tier_2: 0
+    # tob_revenue_oasdi = tob_revenue_total (100% share)
+
+- name: In tier 2 - proportional split
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Tier 1 = $4,500, Tier 2 = $21,000, Total = $25,500
+    # OASDI share = 4,500 / 25,500 = 17.6%
+    # Total TOB ~$4,240 → OASDI = $4,240 * 0.176 = ~$748
+    tob_revenue_oasdi: 748
