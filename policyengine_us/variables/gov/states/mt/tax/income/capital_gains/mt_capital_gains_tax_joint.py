@@ -21,7 +21,6 @@ class mt_capital_gains_tax_joint(Variable):
             # Line 2
             capital_gains = person("long_term_capital_gains", period)
             # No tax on zero or negative capital gains
-            if_positive_gains = capital_gains > 0
             # Line 3
             lesser_of_cg_and_taxable_income = min_(
                 capital_gains, taxable_income
@@ -88,8 +87,7 @@ class mt_capital_gains_tax_joint(Variable):
             # Line 10
             higher_capital_gains_tax = income_above_threshold * higher_rate
             # Line 11
-            total_tax = lower_capital_gains_tax + higher_capital_gains_tax
+            return max_(lower_capital_gains_tax + higher_capital_gains_tax, 0)
             # Only apply tax if capital gains are positive
-            return where(if_positive_gains, total_tax, 0)
 
         return 0
