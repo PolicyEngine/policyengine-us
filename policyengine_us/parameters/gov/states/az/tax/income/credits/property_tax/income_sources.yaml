@@ -1,22 +1,30 @@
-description: Arizona accounts for the following income sources for the property tax credit.
+description: >-
+  Arizona accounts for the following income sources for the property tax credit.
+  Per ITR 12-1, income includes Federal AGI components plus items not in AGI
+  (tax-exempt interest, excluded capital gains, tax-exempt pensions).
+  Social Security is excluded via az_property_tax_credit_agi.
 values:
   2021-01-01:
+    # Item (7): Capital gains - excluded gains not in Federal AGI
     - capital_gains_excluded_from_taxable_income
+    # Item (2): All interest income including tax-exempt
     - tax_exempt_interest_income
-    - public_pension_income
+    # Item (9): Pension income - tax-exempt portions not in Federal AGI
+    # (taxable pension is already in Federal AGI via az_property_tax_credit_agi)
+    - tax_exempt_public_pension_income
+    - tax_exempt_private_pension_income
+    # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion)
     - az_property_tax_credit_agi
 metadata:
   unit: list
   period: year
   label: Arizona property tax credit income sources
   reference:
-    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older(H-6)
-      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
+    - title: ARS 43-1072. Property tax credit - Income definition
+      href: https://www.azleg.gov/ars/43/01072.htm
+    - title: ITR 12-1. Income Tax Ruling - Property Tax Credit Household Income
+      href: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2012_itr12-1.pdf
     - title: 2024 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
+      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable
     - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
-    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTC.pdf#page=2
-    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
-      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
+      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable
