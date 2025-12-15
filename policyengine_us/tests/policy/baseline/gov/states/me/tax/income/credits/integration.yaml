@@ -24,6 +24,7 @@
         members: [head, dependent]
         state_code: ME
   output:
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
     me_dependent_exemption_credit: 300  # $300 for 1 qualifying dependent age 17
 
 - name: ME dependent exemption credit includes ODC-qualifying dependent age 18
@@ -49,6 +50,7 @@
         members: [head, dependent]
         state_code: ME
   output:
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
     me_dependent_exemption_credit: 300  # $300 for 1 qualifying dependent age 18
 
 - name: ME dependent exemption credit with mixed CTC and ODC dependents
@@ -80,5 +82,6 @@
         members: [head, child_under_6, child_over_6, dependent_over_17]
         state_code: ME
   output:
-    # $600 (child under 6) + $300 (child 6-16) + $300 (dependent 17+) = $1,200
-    me_dependent_exemption_credit: 1_200
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
+    # $300 (child under 6) + $300 (child 6-16) + $300 (dependent 17+) = $900
+    me_dependent_exemption_credit: 900
