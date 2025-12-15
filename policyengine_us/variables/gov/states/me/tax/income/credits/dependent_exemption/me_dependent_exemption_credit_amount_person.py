@@ -8,7 +8,7 @@ class me_dependent_exemption_credit_amount_person(Variable):
     label = "Maine dependent exemption credit amount for each person"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
     definition_period = YEAR
-    defined_for = "ctc_qualifying_child"
+    defined_for = "is_tax_unit_dependent"
 
     def formula(person, period, parameters):
         dependent = person("is_tax_unit_dependent", period)
