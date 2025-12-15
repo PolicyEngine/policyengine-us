@@ -56,7 +56,8 @@ class ny_supplemental_tax(Variable):
         # For AGI above the high threshold, apply flat top rate to all income
         high_agi_threshold = p.high_agi_threshold
         # Create array for marginal_rates lookup
-        high_agi_lookup = ny_agi * 0 + high_agi_threshold + 1
+        # Use +100 for float32 precision at $25M threshold
+        high_agi_lookup = ny_agi * 0 + high_agi_threshold + 100
         high_agi_rate = select(
             in_each_status,
             [scale.marginal_rates(high_agi_lookup) for scale in scales],
