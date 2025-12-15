@@ -1,0 +1,47 @@
+- name: Case 1, employment income only.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 30_000
+  output:
+    il_pfa_countable_income: 30_000
+
+- name: Case 2, employment and child support.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 25_000
+    child_support_received: 5_000
+  output:
+    # Child support IS included in PFA income (unlike IRS gross income)
+    il_pfa_countable_income: 30_000
+
+- name: Case 3, employment and disability benefits.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 20_000
+    disability_benefits: 10_000
+  output:
+    # Disability benefits included in PFA income
+    il_pfa_countable_income: 30_000
+
+- name: Case 4, multiple income sources.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 15_000
+    social_security_retirement: 8_000
+    pension_income: 5_000
+    veterans_benefits: 2_000
+  output:
+    # All sources included: 15_000 + 8_000 + 5_000 + 2_000 = 30_000
+    il_pfa_countable_income: 30_000
+
+- name: Case 5, self-employment income.
+  period: 2024
+  input:
+    state_code: IL
+    self_employment_income: 40_000
+  output:
+    il_pfa_countable_income: 40_000

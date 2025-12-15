@@ -1,0 +1,52 @@
+- name: Case 1, highest priority due to homeless.
+  period: 2024
+  input:
+    state_code: IL
+    is_homeless: true
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: true
+
+- name: Case 2, highest priority due to foster care.
+  period: 2024
+  input:
+    state_code: IL
+    is_in_foster_care: true
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: true
+
+- name: Case 3, highest priority due to IEP.
+  period: 2024
+  input:
+    state_code: IL
+    has_iep: true
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: true
+
+- name: Case 4, highest priority due to developmental delay.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: true
+
+- name: Case 5, highest priority due to non-English home.
+  period: 2024
+  input:
+    state_code: IL
+    is_non_english_speaking_home: true
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: true
+
+- name: Case 6, not highest priority with high income.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 100_000
+  output:
+    il_pfa_highest_priority_eligible: false
