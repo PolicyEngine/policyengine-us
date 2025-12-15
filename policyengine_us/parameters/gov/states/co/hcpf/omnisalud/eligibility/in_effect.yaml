@@ -1,0 +1,12 @@
+description: Whether Colorado OmniSalud program is in effect
+metadata:
+  unit: bool
+  period: year
+  label: CO OmniSalud in effect
+  reference:
+    - title: Colorado OmniSalud Guide 2024
+      href: https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf
+
+values:
+  2020-01-01: false
+  2022-01-01: true  # OmniSalud launched

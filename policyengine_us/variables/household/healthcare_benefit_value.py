@@ -12,4 +12,5 @@ class healthcare_benefit_value(Variable):
         "dc_medicaid_cost",
         "per_capita_chip",
         "aca_ptc",
+        "co_omnisalud",
     ]

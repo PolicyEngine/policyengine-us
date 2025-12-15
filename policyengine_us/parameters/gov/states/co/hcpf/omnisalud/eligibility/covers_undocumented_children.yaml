@@ -1,0 +1,12 @@
+description: Whether Colorado OmniSalud covers undocumented children (they move to Health First Colorado in 2025)
+metadata:
+  unit: bool
+  period: year
+  label: CO OmniSalud covers undocumented children
+  reference:
+    - title: Colorado OmniSalud 2025 Changes
+      href: https://connectforhealthco.com/get-started/omnisalud/
+
+values:
+  2022-01-01: true   # OmniSalud originally covered undocumented children
+  2025-01-01: false  # Undocumented children 0-18 move to Health First Colorado
