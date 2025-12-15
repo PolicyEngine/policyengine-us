@@ -19,8 +19,6 @@ class dc_ptc(Variable):
         p_dc = parameters(period).gov.states.dc.tax.income.credits
         ptax = retax + rent * p_dc.ptc.rent_ratio
 
-        # Must have some rent or property taxes to be eligible
-        eligible = ptax > 0
 
         elderly_age = p_dc.ptc.min_elderly_age
         head_age = tax_unit("age_head", period)
@@ -36,4 +34,4 @@ class dc_ptc(Variable):
             p_dc.ptc.fraction_nonelderly.calc(positive_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
-        return where(eligible, min_(p_dc.ptc.max, uncapped_ptc), 0)
+        return min_(p_dc.ptc.max, uncapped_ptc)
