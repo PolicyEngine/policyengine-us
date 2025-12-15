@@ -1,8 +1,4 @@
-description: >-
-  Arizona accounts for the following income sources for the property tax credit.
-  Per ITR 12-1, income includes Federal AGI components plus items not in AGI
-  (tax-exempt interest, excluded capital gains, tax-exempt pensions).
-  Social Security is excluded via az_property_tax_credit_agi.
+description: Arizona accounts for the following income sources for the property tax credit per ITR 12-1 including Federal AGI components plus items not in AGI (tax-exempt interest, excluded capital gains, tax-exempt pensions) with Social Security excluded via az_property_tax_credit_agi.
 values:
   2021-01-01:
     # Item (7): Capital gains - excluded gains not in Federal AGI
