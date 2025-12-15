@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.460.2] - 2025-12-15 18:31:12
+
+### Fixed
+
+- WV homestead excess property tax credit with negative income and zero property taxes
+
 ## [1.460.1] - 2025-12-13 04:31:57
 
 ### Fixed
@@ -13863,6 +13869,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
 [1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
 [1.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.2...1.460.0
 [1.459.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.1...1.459.2
