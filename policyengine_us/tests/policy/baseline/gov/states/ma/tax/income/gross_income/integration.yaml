@@ -1,0 +1,28 @@
+- name: MA joint with STCG losses offsetting LTCG should have zero Part C tax
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_480.75
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_480.75
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 25
+  output:
+    ma_part_c_taxable_income: 0
+    ma_income_tax: 0
