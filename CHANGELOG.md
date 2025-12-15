@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.462.1] - 2025-12-15 23:24:43
+
+### Fixed
+
+- MA income tax now allows short-term capital losses to offset long-term capital gains in Part C
+
 ## [1.462.0] - 2025-12-15 22:36:33
 
 ### Fixed
@@ -13905,6 +13911,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.0...1.462.1
 [1.462.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.3...1.462.0
 [1.461.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.2...1.461.3
 [1.461.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.1...1.461.2

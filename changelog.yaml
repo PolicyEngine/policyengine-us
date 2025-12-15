@@ -11861,3 +11861,9 @@
       M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and
       ODC).
   date: 2025-12-15 22:36:33
+- bump: patch
+  changes:
+    fixed:
+    - MA income tax now allows short-term capital losses to offset long-term capital
+      gains in Part C
+  date: 2025-12-15 23:24:43
