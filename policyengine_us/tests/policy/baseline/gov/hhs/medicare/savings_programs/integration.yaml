@@ -1,0 +1,84 @@
+# MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B)
+# For married couples, MSP uses couple FPL = $20,440 for 2024
+
+- name: MSP integration - married couple, both QMB eligible
+  period: 2024-01
+  input:
+    people:
+      spouse1:
+        age: 68
+        is_medicare_eligible: true
+        # $9,000 unearned each -> ($750 - $20) = $730/month countable each
+        ssi_unearned_income: 9_000
+      spouse2:
+        age: 66
+        is_medicare_eligible: true
+        ssi_unearned_income: 9_000
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000  # Under $14,130 couple limit
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [true, true]
+    msp_category: [QMB, QMB]
+
+- name: MSP integration - single senior, SLMB level
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_medicare_eligible: true
+        base_part_a_premium: 0
+        base_part_b_premium: 2_096.40  # $174.70 * 12
+        # $16_500 unearned -> ($1,375 - $20) = $1,355/month countable
+        # $1,255 < $1,355 < $1,506 (100-120% FPL) -> SLMB
+        ssi_unearned_income: 16_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_is_married: false
+        spm_unit_cash_assets: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    msp_eligible: [true]
+    msp_category: [SLMB]
+    msp_benefit_value: [174.70]
+    msp: [174.70]
+
+- name: MSP integration - not eligible, assets over limit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 67
+        is_medicare_eligible: true
+        ssi_unearned_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_is_married: false
+        spm_unit_cash_assets: 12_000  # Over $9,430 individual limit
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # Use a state with asset test
+  output:
+    msp_eligible: [false]
+    msp_category: [NONE]
+    msp: [0]
