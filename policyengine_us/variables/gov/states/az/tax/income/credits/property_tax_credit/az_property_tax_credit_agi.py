@@ -33,6 +33,4 @@ class az_property_tax_credit_agi(Variable):
         # Per ARS 43-1072(H)(6) and Admin Code R15-2C-502, the property tax credit
         # uses a definition that does not include Arizona exemptions
 
-        return max_(
-            0, adjusted_gross_income + additions - subtractions
-        )
+        return max_(0, adjusted_gross_income + additions - subtractions)
