@@ -1,0 +1,15 @@
+- name: Case 1, pregnant woman eligible.
+  period: 2024
+  input:
+    state_code: IL
+    is_pregnant: true
+  output:
+    il_pi_eligible_pregnant: true
+
+- name: Case 2, not pregnant not eligible via pregnancy.
+  period: 2024
+  input:
+    state_code: IL
+    is_pregnant: false
+  output:
+    il_pi_eligible_pregnant: false

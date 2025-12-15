@@ -1,0 +1,39 @@
+- name: Case 1, eligible infant age 0.
+  period: 2024
+  input:
+    age: 0
+    state_code: IL
+  output:
+    il_pi_eligible_child: true
+
+- name: Case 2, eligible toddler age 1.
+  period: 2024
+  input:
+    age: 1
+    state_code: IL
+  output:
+    il_pi_eligible_child: true
+
+- name: Case 3, eligible toddler age 2.
+  period: 2024
+  input:
+    age: 2
+    state_code: IL
+  output:
+    il_pi_eligible_child: true
+
+- name: Case 4, ineligible child age 3 transitions to PFA.
+  period: 2024
+  input:
+    age: 3
+    state_code: IL
+  output:
+    il_pi_eligible_child: false
+
+- name: Case 5, ineligible child age 4.
+  period: 2024
+  input:
+    age: 4
+    state_code: IL
+  output:
+    il_pi_eligible_child: false

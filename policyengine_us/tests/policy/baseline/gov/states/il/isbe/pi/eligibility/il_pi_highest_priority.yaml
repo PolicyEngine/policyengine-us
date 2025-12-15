@@ -1,0 +1,47 @@
+- name: Case 1, homeless is highest priority.
+  period: 2024
+  input:
+    state_code: IL
+    is_homeless: true
+  output:
+    il_pi_highest_priority: true
+
+- name: Case 2, foster care is highest priority.
+  period: 2024
+  input:
+    state_code: IL
+    is_in_foster_care: true
+  output:
+    il_pi_highest_priority: true
+
+- name: Case 3, Early Intervention is highest priority.
+  period: 2024
+  input:
+    state_code: IL
+    is_enrolled_in_early_intervention: true
+  output:
+    il_pi_highest_priority: true
+
+- name: Case 4, developmental delay is highest priority.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+  output:
+    il_pi_highest_priority: true
+
+- name: Case 5, non-English home is highest priority.
+  period: 2024
+  input:
+    state_code: IL
+    is_non_english_speaking_home: true
+  output:
+    il_pi_highest_priority: true
+
+- name: Case 6, no priority factors.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+  output:
+    il_pi_highest_priority: false

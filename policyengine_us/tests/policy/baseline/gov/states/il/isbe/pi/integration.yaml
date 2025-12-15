@@ -1,0 +1,147 @@
+- name: Case 1, low income family with infant in Early Intervention.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 25_000
+      person2:
+        age: 1
+        is_enrolled_in_early_intervention: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_eligible_child: [false, true]
+    il_pi_highest_priority: [false, true]
+    il_pi_eligible: [false, true]
+
+- name: Case 2, pregnant woman in non-English speaking home.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 22
+        is_pregnant: true
+        employment_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        is_non_english_speaking_home: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    il_pi_eligible_pregnant: [true]
+    il_pi_highest_priority: [true]
+    il_pi_eligible: [true]
+
+- name: Case 3, homeless family with toddler.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+      person2:
+        age: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_eligible_child: [false, true]
+    il_pi_highest_priority: [true, true]
+    il_pi_eligible: [false, true]
+
+- name: Case 4, higher income family no risk factors ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 150_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_eligible_child: [false, true]
+    il_pi_risk_factor_count: [0, 0]
+    il_pi_eligible: [false, false]
+
+- name: Case 5, child age 3 transitions out of PI.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 3
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_eligible_child: [false, false]
+    # Child has developmental delay but too old for PI
+    il_pi_eligible: [false, false]
+
+- name: Case 6, foster child infant highest priority.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+      person2:
+        age: 0
+        is_in_foster_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_eligible_child: [false, true]
+    il_pi_highest_priority: [false, true]
+    il_pi_eligible: [false, true]
