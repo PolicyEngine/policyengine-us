@@ -11847,3 +11847,9 @@
     - Montana income tax calculation with negative capital gains now correctly produces
       zero tax instead of phantom positive tax
   date: 2025-12-15 21:42:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix DC Property Tax Credit incorrectly granting credit for negative AGI with
+      zero rent/property taxes
+  date: 2025-12-15 22:10:21
