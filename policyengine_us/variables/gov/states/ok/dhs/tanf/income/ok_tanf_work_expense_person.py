@@ -21,5 +21,5 @@ class ok_tanf_work_expense_person(Variable):
         # Only apply work expense if person has earnings
         has_earnings = person("tanf_gross_earned_income", period) > 0
 
-        work_expense = p.work_expense.calc(weekly_hours)
+        work_expense = p.deductions.work_expense.calc(weekly_hours)
         return where(has_earnings, work_expense, 0)

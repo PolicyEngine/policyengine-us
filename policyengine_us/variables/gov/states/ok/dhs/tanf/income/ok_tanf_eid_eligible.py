@@ -15,4 +15,4 @@ class ok_tanf_eid_eligible(Variable):
         # Per OAC 340:10-3-31.1(a): EID applies when gross earned income <= $2,064
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         p = parameters(period).gov.states.ok.dhs.tanf.income
-        return gross_earned <= p.earned_income_disregard_cap
+        return gross_earned <= p.disregard.cap

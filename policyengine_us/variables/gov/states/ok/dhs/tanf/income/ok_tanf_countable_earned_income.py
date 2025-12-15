@@ -30,7 +30,7 @@ class ok_tanf_countable_earned_income(Variable):
         eid_eligible = spm_unit("ok_tanf_eid_eligible", period)
         disregard_amount = where(
             eid_eligible,
-            after_work_expense * p.earned_income_disregard_rate,
+            after_work_expense * p.disregard.rate,
             0,
         )
         return max_(after_work_expense - disregard_amount, 0)

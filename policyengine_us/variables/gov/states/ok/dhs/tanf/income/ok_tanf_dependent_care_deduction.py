@@ -24,7 +24,7 @@ class ok_tanf_dependent_care_deduction(Variable):
         age = person("monthly_age", period)  # Returns true age in years
 
         # Calculate maximum deduction per dependent based on age
-        max_deduction_per_dependent = p.dependent_care_deduction.calc(age)
+        max_deduction_per_dependent = p.deductions.dependent_care.calc(age)
         total_max_deduction = spm_unit.sum(
             max_deduction_per_dependent * dependent
         )
