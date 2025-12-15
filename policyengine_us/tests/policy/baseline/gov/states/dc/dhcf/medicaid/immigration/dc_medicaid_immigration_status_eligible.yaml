@@ -1,68 +1,54 @@
-- name: US citizen eligible for DC Medicaid immigration status
+# Tests for DC Medicaid/Alliance immigration status eligibility
+# DC Alliance covers immigrants NOT eligible for federal Medicaid
+
+# Federally-eligible statuses should NOT qualify for DC Alliance
+# (they use federal Medicaid instead)
+
+- name: US citizen NOT eligible for DC Alliance (uses federal Medicaid)
   period: 2025
   input:
     immigration_status: CITIZEN
     state_code_str: DC
   output:
-    dc_medicaid_immigration_status_eligible: true
+    dc_medicaid_immigration_status_eligible: false
 
-- name: LPR eligible for DC Medicaid immigration status
+- name: LPR NOT eligible for DC Alliance (uses federal Medicaid)
   period: 2025
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
     state_code_str: DC
   output:
-    dc_medicaid_immigration_status_eligible: true
+    dc_medicaid_immigration_status_eligible: false
 
-- name: Refugee eligible for DC Medicaid immigration status
+- name: Refugee NOT eligible for DC Alliance (uses federal Medicaid)
   period: 2025
   input:
     immigration_status: REFUGEE
     state_code_str: DC
   output:
-    dc_medicaid_immigration_status_eligible: true
+    dc_medicaid_immigration_status_eligible: false
 
-- name: Asylee eligible for DC Medicaid immigration status
+- name: Asylee NOT eligible for DC Alliance (uses federal Medicaid)
   period: 2025
   input:
     immigration_status: ASYLEE
     state_code_str: DC
   output:
-    dc_medicaid_immigration_status_eligible: true
+    dc_medicaid_immigration_status_eligible: false
 
-- name: Cuban/Haitian entrant eligible for DC Medicaid immigration status
+# DC Alliance covers undocumented immigrants
+
+- name: Undocumented person eligible for DC Alliance
   period: 2025
   input:
-    immigration_status: CUBAN_HAITIAN_ENTRANT
+    immigration_status: UNDOCUMENTED
     state_code_str: DC
   output:
     dc_medicaid_immigration_status_eligible: true
 
-- name: Conditional entrant eligible for DC Medicaid immigration status
-  period: 2025
-  input:
-    immigration_status: CONDITIONAL_ENTRANT
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
+# DC Alliance covers DACA and TPS recipients
 
-- name: Paroled for at least one year eligible for DC Medicaid immigration status
-  period: 2025
-  input:
-    immigration_status: PAROLED_ONE_YEAR
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
-
-- name: Deportation withheld eligible for DC Medicaid immigration status
-  period: 2025
-  input:
-    immigration_status: DEPORTATION_WITHHELD
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
-
-- name: DACA recipient eligible for DC Medicaid immigration status
+- name: DACA recipient eligible for DC Alliance
   period: 2025
   input:
     immigration_status: DACA
@@ -70,7 +56,7 @@
   output:
     dc_medicaid_immigration_status_eligible: true
 
-- name: TPS recipient eligible for DC Medicaid immigration status
+- name: TPS recipient eligible for DC Alliance
   period: 2025
   input:
     immigration_status: TPS
@@ -78,7 +64,7 @@
   output:
     dc_medicaid_immigration_status_eligible: true
 
-- name: DACA_TPS status eligible for DC Medicaid immigration status
+- name: DACA_TPS status eligible for DC Alliance
   period: 2025
   input:
     immigration_status: DACA_TPS
@@ -86,13 +72,7 @@
   output:
     dc_medicaid_immigration_status_eligible: true
 
-- name: Undocumented person eligible for DC Medicaid via Alliance program
-  period: 2025
-  input:
-    immigration_status: UNDOCUMENTED
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
+# Multi-person household test
 
 - name: Multi-person household with different immigration statuses
   period: 2025
@@ -112,10 +92,12 @@
         members: [parent, child1, child2, child3]
   output:
     dc_medicaid_immigration_status_eligible:
-      - true  # parent (US citizen)
-      - true  # child1 (DACA)
-      - true  # child2 (undocumented - covered by Alliance)
-      - true  # child3 (LPR)
+      - false  # parent (citizen - uses federal Medicaid)
+      - true   # child1 (DACA - covered by DC Alliance)
+      - true   # child2 (undocumented - covered by DC Alliance)
+      - false  # child3 (LPR - uses federal Medicaid)
+
+# Non-DC residents should not qualify
 
 - name: Person outside DC not eligible for DC-specific variable
   period: 2025
@@ -125,34 +107,20 @@
   output:
     dc_medicaid_immigration_status_eligible: false
 
-- name: Test after 2026 cutoff - citizen still eligible
-  period: 2027
-  input:
-    immigration_status: CITIZEN
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
+# Test future years - DC Alliance still covers these statuses
 
-- name: Test after 2026 cutoff - refugee not federally eligible but still covered by DC
-  period: 2027
-  input:
-    immigration_status: REFUGEE
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: false
-
-- name: Test after 2026 cutoff - DACA still covered by DC
-  period: 2027
-  input:
-    immigration_status: DACA
-    state_code_str: DC
-  output:
-    dc_medicaid_immigration_status_eligible: true
-
-- name: Test after 2026 cutoff - undocumented still covered by DC Alliance
+- name: Undocumented still covered in 2027
   period: 2027
   input:
     immigration_status: UNDOCUMENTED
+    state_code_str: DC
+  output:
+    dc_medicaid_immigration_status_eligible: true
+
+- name: DACA still covered in 2027
+  period: 2027
+  input:
+    immigration_status: DACA
     state_code_str: DC
   output:
     dc_medicaid_immigration_status_eligible: true
