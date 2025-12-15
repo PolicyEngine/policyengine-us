@@ -1,0 +1,8 @@
+- bump: minor
+  changes:
+    added:
+      - Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi) using exact branching methodology
+      - Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare HI allocation
+      - LSR recursion guard to prevent infinite loops when branches calculate variables
+    fixed:
+      - Labor supply behavioral response infinite recursion bug
