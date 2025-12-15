@@ -1,0 +1,28 @@
+- name: AZ property tax credit uses gross household income without exemptions
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 81
+        taxable_interest_income: 2_640.18
+        rent: 17_139.24
+      person2:
+        age: 73
+        taxable_interest_income: 2_640.18
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 4
+  output:
+    # Household income = $2,640.18 + $2,640.18 = $5,280.36
+    # This is in the $5,201-$5,350 bracket which gives $78 credit
+    # Previously, az_agi subtracted $4,200 in exemptions, giving only $1,080.36 income
+    # which would incorrectly place it in the $0-$2,500 bracket for $502 credit
+    az_property_tax_credit: 78
