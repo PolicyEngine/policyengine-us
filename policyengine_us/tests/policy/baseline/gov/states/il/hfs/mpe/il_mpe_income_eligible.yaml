@@ -1,0 +1,23 @@
+- name: Case 1, income below 200% FPL.
+  period: 2024-01
+  input:
+    state_code: IL
+    medicaid_income_level: 1.5
+  output:
+    il_mpe_income_eligible: true
+
+- name: Case 2, income at exactly 200% FPL.
+  period: 2024-01
+  input:
+    state_code: IL
+    medicaid_income_level: 2
+  output:
+    il_mpe_income_eligible: true
+
+- name: Case 3, income above 200% FPL.
+  period: 2024-01
+  input:
+    state_code: IL
+    medicaid_income_level: 2.01
+  output:
+    il_mpe_income_eligible: false

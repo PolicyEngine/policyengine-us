@@ -1,0 +1,23 @@
+- name: Case 1
+  period: 2024-01
+  input:
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_region: WESTERN_CENTRAL_AND_SOUTHEAST
+
+- name: Case 2
+  period: 2024-01
+  input:
+    county_str: ESSEX_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_region: NORTHEAST
+
+- name: Case 3
+  period: 2024-01
+  input:
+    county_str: SUFFOLK_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_region: METRO_AND_BOSTON_METRO

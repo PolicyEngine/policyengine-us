@@ -1,0 +1,10 @@
+- name: Case 1, region 1, infant.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    state_code: MA
+  output:
+    ma_ccfa_center_based_early_education_reimbursement: 105

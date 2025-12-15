@@ -1,0 +1,37 @@
+description: California provides state-funded Medicaid to undocumented immigrants, based on the age.
+metadata:
+  period: year
+  amount_unit: bool
+  threshold_unit: year
+  type: single_amount
+  label: California state-funded Medicaid undocumented immigrant eligibility
+  reference:
+    # We currently do not include pregnancy/emergency services 
+    - title: California Welfare and Institutions Code Section 14007.8
+      href: https://california.public.law/codes/welfare_and_institutions_code_section_14007.8
+
+brackets:
+  - threshold:
+      2016-01-01: 0    
+    amount:
+      2016-01-01: true
+  - threshold:
+      2016-01-01: 19
+    amount:
+      # Section 14007.8 (b)(1)
+      2016-01-01: true
+      2026-01-01: false
+  - threshold:
+      2016-01-01: 26
+    amount:
+      # Section 14007.8 (a)(1)
+      2016-01-01: false
+      2024-01-01: true
+      2026-01-01: false
+  - threshold:
+      2016-01-01: 50
+    amount:
+      # Section 14007.8 (a)(2)
+      2016-01-01: false
+      2022-01-01: true
+      2026-01-01: false

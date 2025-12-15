@@ -7,4 +7,8 @@ class healthcare_benefit_value(Variable):
     entity = Household
     definition_period = YEAR
     unit = USD
-    adds = ["medicaid_cost", "per_capita_chip", "aca_ptc", "dc_medicaid_cost"]
+    adds = [
+        "medicaid_cost",
+        "per_capita_chip",
+        "aca_ptc",
+    ]

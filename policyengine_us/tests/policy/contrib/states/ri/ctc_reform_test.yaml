@@ -1,0 +1,321 @@
+- name: RI CTC - fully refundable with AGI phaseout
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999  # High cap = fully refundable, amount.yaml controls max
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_maximum: 2_000  # 2 children × $1_000 amount
+    ri_ctc_phaseout: 0
+    ri_total_ctc: 2_000
+    ri_refundable_ctc: 2_000  # min(2_000 total credit, 999_999 cap) = 2_000 (amount controls)
+    ri_non_refundable_ctc: 0
+    ri_refundable_credits: 2_246.32  # 2_000 (CTC) + 246.32 (EITC)
+    ri_non_refundable_credits: 0
+
+- name: RI CTC - partially refundable
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_500
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.cap: 1_000  # Cap < total credit = partially refundable
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    ri_total_ctc: 1_500
+    ri_refundable_ctc: 1_000  # min(1_500 total credit, 1_000 cap) = 1_000
+    ri_non_refundable_ctc: 500  # 1_500 - 1_000 = 500
+    ri_refundable_credits: 1_522.45  # 1_000 (CTC refundable) + 522.45 (EITC)
+    ri_non_refundable_credits: 500  # 500 (CTC non-refundable)
+
+- name: RI CTC - nonrefundable with no phaseout
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 500
+    gov.contrib.states.ri.ctc.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.cap: 0  # Cap = 0, credit is nonrefundable
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 1
+    ri_total_ctc: 500
+    ri_refundable_ctc: 0  # min(500 total credit, 0 cap) = 0
+    ri_non_refundable_ctc: 500  # 500 - 0 = 500
+    ri_refundable_credits: 583.28  # 0 (CTC refundable) + 583.28 (EITC)
+    ri_non_refundable_credits: 500  # 500 (CTC non-refundable)
+
+- name: RI CTC - AGI phaseout reduces credit
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999  # Fully refundable
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 75_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 85_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    ri_ctc_maximum: 1_000  # 1 child × $1_000 amount
+    ri_ctc_phaseout: 500  # (85_000 - 75_000) * 0.05 = 500
+    ri_total_ctc: 500  # 1_000 - 500 = 500
+    ri_refundable_ctc: 500  # min(500 total credit, 999_999 cap) = 500 (total credit controls)
+    ri_non_refundable_ctc: 0
+    ri_refundable_credits: 500  # 500 (CTC refundable) + 0 (EITC - income too high)
+    ri_non_refundable_credits: 0
+
+- name: RI CTC - cap exceeds amount but amount controls max
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 500  # Only $500 per child
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.refundability.cap: 10_000  # Cap is much higher than possible credit
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_maximum: 1_000  # 2 children × $500 amount (NOT $10_000!)
+    ri_total_ctc: 1_000  # amount.yaml controls the maximum
+    ri_refundable_ctc: 1_000  # min(1_000 total credit, 10_000 cap) = 1_000
+    ri_non_refundable_ctc: 0
+    ri_refundable_credits: 1_583.28  # 1_000 (CTC refundable) + 583.28 (EITC)
+    ri_non_refundable_credits: 0
+
+- name: RI CTC - young child boost applies to children under age 6
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.young_child_boost.amount: 500
+    gov.contrib.states.ri.ctc.young_child_boost.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    gov.contrib.states.ri.ctc.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_young_child_boost: 500  # 1 child under 6 × $500 = $500
+    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: $500; Total = $2_500
+    ri_total_ctc: 2_500
+    ri_refundable_ctc: 2_500
+    ri_non_refundable_ctc: 0
+
+- name: RI CTC - young child boost boundary at age 6
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.young_child_boost.amount: 500
+    gov.contrib.states.ri.ctc.young_child_boost.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_young_child_boost: 500  # Only child age 5 qualifies (age 6 does not)
+    ri_ctc_maximum: 2_500  # Base: 2 × $1_000 = $2_000; Boost: $500 (only age 5 child); Total = $2_500
+    ri_total_ctc: 2_500
+
+- name: RI CTC - young child boost with multiple young children
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.young_child_boost.amount: 500
+    gov.contrib.states.ri.ctc.young_child_boost.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+      child3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 3
+    ri_ctc_young_child_boost: 1_000  # 2 children under 6 × $500 = $1_000
+    ri_ctc_maximum: 4_000  # Base: 3 × $1_000 = $3_000; Boost: $1_000; Total = $4_000
+    ri_total_ctc: 4_000
+
+- name: RI CTC - young child boost with no boost amount (zero)
+  absolute_error_margin: 0.1
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1_000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.young_child_boost.amount: 0  # No boost
+    gov.contrib.states.ri.ctc.young_child_boost.age_limit: 6
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 1
+    ri_ctc_young_child_boost: 0  # 1 child under 6 × $0 = $0
+    ri_ctc_maximum: 1_000  # Base: 1 × $1_000 = $1_000; Boost: $0; Total = $1_000
+    ri_total_ctc: 1_000

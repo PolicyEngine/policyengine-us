@@ -1,7 +1,7 @@
 - name: Arkansas does not allow for a flat deduction
   period: 2025
   input:
-    self_employment_income: 2_000
+    self_employment_income_before_lsr: 2_000
     snap_self_employment_income_expense: 300
     state_code: AR
   output:
@@ -10,7 +10,7 @@
 - name: Alabama does not allow for an actual expense deduction
   period: 2025
   input:
-    self_employment_income: 300
+    self_employment_income_before_lsr: 300
     snap_self_employment_income_expense: 300
     state_code: AL
   output:
@@ -19,7 +19,7 @@
 - name: Alaska allows for both percentage and actual expense deductions
   period: 2025
   input:
-    self_employment_income: 300
+    self_employment_income_before_lsr: 300
     snap_self_employment_income_expense: 300
     state_code: AK
   output:
@@ -28,7 +28,7 @@
 - name: Alaska allows for both percentage and actual expense deductions, income over expenses
   period: 2025
   input:
-    self_employment_income: 3_000
+    self_employment_income_before_lsr: 3_000
     snap_self_employment_income_expense: 300
     state_code: AK
   output:

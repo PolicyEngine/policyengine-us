@@ -91,11 +91,18 @@ When invoked to fix issues, you MUST:
 
 ### 1. NO HARD-CODED VALUES - EVERYTHING MUST BE PARAMETERIZED
 
+**⚠️ CRITICAL: NEVER INTRODUCE NEW HARD-CODED NUMERIC VALUES**
+When fixing issues or refactoring code, you MUST NOT introduce ANY numeric literals except:
+- 0, 1, -1 for basic mathematical operations
+- Array indices ONLY when accessing known structures from parameters
+
 ❌ **AUTOMATIC REJECTION - Hard-coded values**:
 ```python
 return where(eligible & crisis, p.maximum * 0.5, 0)  # Hard-coded 0.5
 in_heating_season = (month >= 10) | (month <= 3)     # Hard-coded months
 benefit = min_(75, calculated_amount)                # Hard-coded 75
+age < 15  # Hard-coded age threshold - NEVER DO THIS
+return (age < 5) & eligible  # Hard-coded 5 - UNACCEPTABLE
 ```
 
 ✅ **REQUIRED - Everything parameterized**:
@@ -108,7 +115,16 @@ in_season = (month >= p_season.start_month) | (month <= p_season.end_month)
 
 min_amount = parameters(period).path.to.program.minimum_amount
 benefit = max_(min_amount, calculated_amount)
+
+# For age thresholds - get from parameters
+max_age = p.age_threshold.thresholds[-1]  # Get last threshold
+return (age < max_age) & eligible
+
+# Or use parameter calc methods
+return p.age_bracket.calc(age)
 ```
+
+**VALIDATION**: After making ANY code changes, mentally scan for numeric literals. If you see ANY number other than 0, 1, -1 that isn't coming from a parameter, STOP and fix it.
 
 ### 2. NO PLACEHOLDER IMPLEMENTATIONS
 
@@ -282,6 +298,58 @@ def formula(spm_unit, period, parameters):
     return income <= limit
 ```
 
+## Critical Vectorization Rule: NEVER Use np.any() or np.all() Without Axis
+
+### The Bug Pattern
+
+**NEVER write code like this:**
+
+```python
+# ❌ WRONG - Breaks vectorization across multiple households
+def formula(person, period, parameters):
+    programs = add(person.tax_unit, period, ["tanf", "snap", "wic"])
+    return np.any(programs)  # Collapses to single boolean!
+```
+
+**What goes wrong**: When simulating multiple households (axes/microsimulation), `np.any(programs)` checks if ANY household qualifies and returns that single True/False for EVERYONE. If one low-income household gets TANF, then $200k+ households also become "categorically eligible".
+
+### The Fix - Element-Wise Comparison
+
+```python
+# ✅ CORRECT - Preserves separate values per person
+def formula(person, period, parameters):
+    return add(person.tax_unit, period, ["tanf", "snap", "wic"]) > 0
+```
+
+This keeps vectorization working: each person gets their own True/False based on their own household's benefits.
+
+### When You CAN Use np.any()
+
+Only with explicit axis for within-entity aggregation:
+
+```python
+# ✅ OK - axis=0 preserves one value per household
+def formula(household, period, parameters):
+    person_disabled = household.members("has_disability", period)
+    return np.any(person_disabled, axis=0)
+```
+
+But prefer clearer patterns:
+```python
+# ✅ BETTER - more explicit
+def formula(household, period, parameters):
+    return household.sum(household.members("has_disability", period)) > 0
+```
+
+### Detection in Your Code
+
+Before submitting, search for:
+- `np.any(` - Does it have `axis=`? If not, use `> 0` instead
+- `np.all(` - Does it have `axis=`? If not, use element-wise comparison
+- Any formula aggregating from another entity (person.tax_unit, person.household, etc.)
+
+**Red flag**: Eligibility formulas that aggregate benefits from tax_unit/household/spm_unit level.
+
 ## Validation Self-Check
 
 Run this mental check for EVERY variable:
@@ -290,5 +358,6 @@ Run this mental check for EVERY variable:
 3. Are federal and state rules properly separated?
 4. Does every reference directly support its value?
 5. Am I duplicating an existing variable?
+6. **Am I using np.any() or np.all() without an axis parameter?**
 
-If ANY answer is "no", fix it before submitting.
+If ANY answer is "no" (or yes for #6), fix it before submitting.

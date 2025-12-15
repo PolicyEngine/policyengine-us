@@ -81,7 +81,7 @@ In non‑expansion states, PolicyEngine applies the IRA coverage‑gap fix above
 | **State-specific age curves** | CMS *Market Rating Reforms – State-Specific Age Curve Variations* | 2018 + | `gov/aca/age_curves/{state}.yaml`<br/>(AL, DC, MA, MN, MS, NY, OR, UT, VT) |
 | **SLCSP premiums by rating area** | Derived from batch scraping (e.g., KFF calculator) | PY 2025 | `gov/aca/state_rating_area_cost.yaml` |
 | **Family tier factors (NY/VT)** | CMS *Market Rating Reforms – State-Specific Age Curve Variations* | 2018 + | `gov/aca/family_tier_ratings/{state}.yaml` |
-| **Contribution % schedule (PTC phase-out)** | 26 U.S.C. § 36B(b)(3)(A) as amended by ARPA § 9661 & IRA § 12001 | 2015 – 2025 (with ARPA/IRA enhancements) | `gov/aca/ptc_phase_out_rate.yaml` |
+| **Contribution % schedule (PTC phase-out)** | 26 U.S.C. § 36B(b)(3)(A) as amended by ARPA § 9661 & IRA § 12001 | 2015 – 2025 (with ARPA/IRA enhancements) | `gov/aca/required_contribution_percentage.yaml` |
 | **PTC income-eligibility thresholds** | ACA statutory requirements | By year | `gov/aca/ptc_income_eligibility.yaml` |
 | **FPL guidelines** | HHS Poverty Guidelines | Annual updates | `gov/hhs/poverty_guidelines.yaml` |
 

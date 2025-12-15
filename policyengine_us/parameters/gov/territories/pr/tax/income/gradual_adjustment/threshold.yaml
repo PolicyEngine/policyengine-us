@@ -1,0 +1,13 @@
+description: Puerto Rico provides the following income amount as a threshold for the gradual adjustment amount.
+values: 
+  2024-01-01: 500_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Puerto Rico gradual adjustment amount income threshold
+  # discrepancy between legal form and tax form for the income threshold 
+  reference:
+    - title: Gov. of Puerto Rico Form 482.0 2024 
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=52
+    - title: P.R. Laws tit. 13, § 30061 (b)(4))
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1004/subchapter-a/30061/

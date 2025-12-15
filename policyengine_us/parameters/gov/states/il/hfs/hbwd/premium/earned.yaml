@@ -1,0 +1,96 @@
+description: Illinois sets this premium component for the Health Benefits for Workers with Disabilities program based on earned income bracket.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: Illinois HBWD earned income premium component
+  reference:
+    # Illinois presents the table as a matrix, but the values can be summed between row 1 and column 1.
+    - title: 89 Ill. Admin. Code § 120.510 (n)
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
+brackets:
+  - threshold:
+      2022-04-01: 0
+    amount:
+      2022-04-01: 0
+  - threshold:
+      2022-04-01: 250
+    amount:
+      2022-04-01: 6
+  - threshold:
+      2022-04-01: 500
+    amount:
+      2022-04-01: 13
+  - threshold:
+      2022-04-01: 750
+    amount:
+      2022-04-01: 19
+  - threshold:
+      2022-04-01: 1_000
+    amount:
+      2022-04-01: 25
+  - threshold:
+      2022-04-01: 1_250
+    amount:
+      2022-04-01: 31
+  - threshold:
+      2022-04-01: 1_500
+    amount:
+      2022-04-01: 38
+  - threshold:
+      2022-04-01: 1_750
+    amount:
+      2022-04-01: 44
+  - threshold:
+      2022-04-01: 2_000
+    amount:
+      2022-04-01: 50
+  - threshold:
+      2022-04-01: 2_250
+    amount:
+      2022-04-01: 56
+  - threshold:
+      2022-04-01: 2_500
+    amount:
+      2022-04-01: 63
+  - threshold:
+      2022-04-01: 2_750
+    amount:
+      2022-04-01: 69
+  - threshold:
+      2022-04-01: 3_000
+    amount:
+      2022-04-01: 75
+  - threshold:
+      2022-04-01: 3_250
+    amount:
+      2022-04-01: 81
+  - threshold:
+      2022-04-01: 3_500
+    amount:
+      2022-04-01: 88
+  - threshold:
+      2022-04-01: 3_750
+    amount:
+      2022-04-01: 94
+  - threshold:
+      2022-04-01: 4_000
+    amount:
+      2022-04-01: 100
+  - threshold:
+      2022-04-01: 4_250
+    amount:
+      2022-04-01: 106
+  - threshold:
+      2022-04-01: 4_500
+    amount:
+      2022-04-01: 113
+  - threshold:
+      2022-04-01: 4_750
+    amount:
+      2022-04-01: 119
+  - threshold:
+      2022-04-01: 5_000
+    amount:
+      2022-04-01: 125

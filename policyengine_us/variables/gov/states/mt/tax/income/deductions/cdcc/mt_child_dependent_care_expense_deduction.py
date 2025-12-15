@@ -25,7 +25,7 @@ class mt_child_dependent_care_expense_deduction(Variable):
         # Line 2
         capped_expenses = min_(care_expenses, cap)
         # Line 3
-        agi = person("mt_agi", period)
+        agi = person("mt_agi_indiv", period)
         # Line 6
         reduction = p.phase_out.calc(agi)
         # The deduction has to be allocated equally between spouses

@@ -2,18 +2,19 @@ description: AMT exemption phase-out start
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
   reference:
-    # OBBB extends TCJA AMT phase out start, but resets the inflation adjustment.
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-    - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (d)(2)
-      href: https://www.law.cornell.edu/uscode/text/26/55#d_2
-    # TCJA amendment.
-    - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (d)(4)(A)(ii)
-      href: https://www.law.cornell.edu/uscode/text/26/55#d_4_A_ii
+    - title: 26 U.S. Code § 55(d) - Alternative minimum tax exemption phase-out
+      href: https://www.law.cornell.edu/uscode/text/26/55#d
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=16
     - title: 2025 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=11  
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=11
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=13
     - title: 2023 IRS data release
@@ -45,17 +46,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 578_150
     2024-01-01: 609_350
     2025-01-01: 626_350
-    # Internal forecast, will update when CBO forecast is released.
     2026-01-01: 500_000
-    2027-01-01: 520_150
-    2028-01-01: 530_950
-    2029-01-01: 541_550
-    2030-01-01: 552_350
-    2031-01-01: 563_250
-    2032-01-01: 574_300
-    2033-01-01: 585_700
-    2034-01-01: 597_350
-    2035-01-01: 609_150
 JOINT:
   values:
     2013-01-01: 153_900
@@ -71,17 +62,7 @@ JOINT:
     2023-01-01: 1_156_300
     2024-01-01: 1_218_700
     2025-01-01: 1_252_700
-    # Internal forecast, will update when CBO forecast is released.
     2026-01-01: 1_000_000
-    2027-01-01: 1_040_300
-    2028-01-01: 1_061_900
-    2029-01-01: 1_083_100
-    2030-01-01: 1_104_700
-    2031-01-01: 1_126_500
-    2032-01-01: 1_148_600
-    2033-01-01: 1_171_400
-    2034-01-01: 1_194_700
-    2035-01-01: 1_218_300
 SEPARATE:
   values:
     2013-01-01: 76_950
@@ -97,17 +78,7 @@ SEPARATE:
     2023-01-01: 578_150
     2024-01-01: 609_350
     2025-01-01: 626_350
-    # Internal forecast, will update when CBO forecast is released.
     2026-01-01: 500_000
-    2027-01-01: 520_150
-    2028-01-01: 530_950
-    2029-01-01: 541_550
-    2030-01-01: 552_350
-    2031-01-01: 563_250
-    2032-01-01: 574_300
-    2033-01-01: 585_700
-    2034-01-01: 597_350
-    2035-01-01: 609_150
 SINGLE:
   values:
     2013-01-01: 115_400
@@ -123,17 +94,7 @@ SINGLE:
     2023-01-01: 578_150
     2024-01-01: 609_350
     2025-01-01: 626_350
-    # Internal forecast, will update when CBO forecast is released.
     2026-01-01: 500_000
-    2027-01-01: 520_150
-    2028-01-01: 530_950
-    2029-01-01: 541_550
-    2030-01-01: 552_350
-    2031-01-01: 563_250
-    2032-01-01: 574_300
-    2033-01-01: 585_700
-    2034-01-01: 597_350
-    2035-01-01: 609_150
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 153_900
@@ -149,14 +110,4 @@ SURVIVING_SPOUSE:
     2023-01-01: 1_156_300
     2024-01-01: 1_218_700
     2025-01-01: 1_252_700
-    # Internal forecast, will update when CBO forecast is released.
     2026-01-01: 1_000_000
-    2027-01-01: 1_040_300
-    2028-01-01: 1_061_900
-    2029-01-01: 1_083_100
-    2030-01-01: 1_104_700
-    2031-01-01: 1_126_500
-    2032-01-01: 1_148_600
-    2033-01-01: 1_171_400
-    2034-01-01: 1_194_700
-    2035-01-01: 1_218_300

@@ -2,7 +2,7 @@
   period: 2022
   input:
     age: 17
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
@@ -11,7 +11,7 @@
   period: 2022
   input:
     age: 55
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
@@ -20,7 +20,7 @@
   period: 2022
   input:
     age: 18
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: false
@@ -29,7 +29,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: true
   output:
     meets_snap_abawd_work_requirements: true
@@ -38,7 +38,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked: 19
+    weekly_hours_worked_before_lsr: 19
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: false
@@ -47,7 +47,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked: 20
+    weekly_hours_worked_before_lsr: 20
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
@@ -56,7 +56,7 @@
   period: 2022
   input:
     age: 30
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
     is_homeless: true
   output:
@@ -68,10 +68,10 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 19
+        weekly_hours_worked_before_lsr: 19
       person2:
         age: 30
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
         is_pregnant: true
     spm_units:
       spm_unit:
@@ -90,7 +90,7 @@
   absolute_error_margin: 0.9
   input:
     age: 55
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
@@ -100,7 +100,7 @@
   absolute_error_margin: 0.9
   input:
     age: 55
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: false
@@ -112,7 +112,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked: 1
+        weekly_hours_worked_before_lsr: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -129,7 +129,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked: 1
+        weekly_hours_worked_before_lsr: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -146,7 +146,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked: 1
+        weekly_hours_worked_before_lsr: 1
         is_disabled: false
         is_parent: true
       person2:
@@ -163,7 +163,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked: 1
+        weekly_hours_worked_before_lsr: 1
         is_disabled: false
         is_veteran: true
       person2:
@@ -180,7 +180,7 @@
     people:
       person1:
         age: 55
-        weekly_hours_worked: 1
+        weekly_hours_worked_before_lsr: 1
         is_disabled: false
         is_veteran: true
       person2:
@@ -199,7 +199,7 @@
   absolute_error_margin: 0.9
   input:
     age: 18
-    weekly_hours_worked: 1
+    weekly_hours_worked_before_lsr: 1
     is_disabled: false
     state_code: HI
   output:

@@ -1,0 +1,31 @@
+- name: Lowest bracket
+  period: 2024
+  input:
+    pr_net_taxable_income: 9_000
+    state_code: PR
+  output:
+    pr_normal_tax: 0
+
+- name: Second bracket
+  period: 2024
+  input:
+    pr_net_taxable_income: 9_001
+    state_code: PR
+  output:
+    pr_normal_tax: 0.07
+
+- name: Third bracket
+  period: 2024
+  input:
+    pr_net_taxable_income: 30_000
+    state_code: PR
+  output:
+    pr_normal_tax: 1_820
+
+- name: Upper bracket
+  period: 2024
+  input:
+    pr_net_taxable_income: 100_000
+    state_code: PR
+  output:
+    pr_normal_tax: 21_135
