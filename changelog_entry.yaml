@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax calculation with negative capital gains now correctly produces zero tax instead of phantom positive tax
