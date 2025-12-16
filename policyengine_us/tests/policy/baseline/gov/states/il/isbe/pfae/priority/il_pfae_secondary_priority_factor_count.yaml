@@ -1,0 +1,44 @@
+- name: Case 1, low income only.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 10_000
+  output:
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 2, low income and low education.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 10_000
+    parent_has_less_than_high_school_education: true
+  output:
+    il_pfae_secondary_priority_factor_count: 2
+
+- name: Case 3, developmental delay without IEP.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+    employment_income: 50_000
+  output:
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 4, developmental delay with IEP not counted.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+    has_iep: true
+    employment_income: 50_000
+  output:
+    # IEP is 50-pt factor, so delay doesn't count as 25-pt
+    il_pfae_secondary_priority_factor_count: 0
+
+- name: Case 5, no secondary priority factors.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+  output:
+    il_pfae_secondary_priority_factor_count: 0
