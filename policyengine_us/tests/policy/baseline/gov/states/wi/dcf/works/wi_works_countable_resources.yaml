@@ -1,0 +1,54 @@
+- name: Case 1, liquid assets only.
+  period: 2025
+  input:
+    state_code: WI
+    spm_unit_cash_assets: 1_000
+    household_vehicles_value: 0
+  output:
+    wi_works_countable_resources: 1_000
+
+- name: Case 2, vehicle under exclusion.
+  period: 2025
+  input:
+    state_code: WI
+    spm_unit_cash_assets: 0
+    household_vehicles_value: 8_000
+  output:
+    # Vehicle exclusion is $10,000, so 8000 - 10000 = 0
+    wi_works_countable_resources: 0
+
+- name: Case 3, vehicle at exclusion limit.
+  period: 2025
+  input:
+    state_code: WI
+    spm_unit_cash_assets: 0
+    household_vehicles_value: 10_000
+  output:
+    wi_works_countable_resources: 0
+
+- name: Case 4, vehicle over exclusion.
+  period: 2025
+  input:
+    state_code: WI
+    spm_unit_cash_assets: 0
+    household_vehicles_value: 15_000
+  output:
+    # 15000 - 10000 = 5000
+    wi_works_countable_resources: 5_000
+
+- name: Case 5, liquid assets plus vehicle over exclusion.
+  period: 2025
+  input:
+    state_code: WI
+    spm_unit_cash_assets: 1_500
+    household_vehicles_value: 12_000
+  output:
+    # 1500 + (12000 - 10000) = 1500 + 2000 = 3500
+    wi_works_countable_resources: 3_500
+
+- name: Case 6, non-Wisconsin state.
+  period: 2025
+  input:
+    state_code: CA
+  output:
+    wi_works_countable_resources: 0
