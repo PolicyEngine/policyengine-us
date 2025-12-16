@@ -17,7 +17,7 @@ class il_isbe_income_eligible(Variable):
     def formula(person, period, parameters):
         spm_unit = person.spm_unit
         # Income must be at or below 400% FPL for ISBE programs.
-        p = parameters(period).gov.states.il.isbe.eligibility.income
+        p = parameters(period).gov.states.il.isbe.income
         fpg = spm_unit("spm_unit_fpg", period)
         income = spm_unit("il_isbe_countable_income", period)
         threshold = fpg * p.income_limit_rate
