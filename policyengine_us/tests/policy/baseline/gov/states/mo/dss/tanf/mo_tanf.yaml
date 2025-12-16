@@ -1,0 +1,60 @@
+- name: Ineligible household receives zero benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: false
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 0
+  output:
+    mo_tanf: 0
+
+- name: Eligible household with no income receives maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 0
+  output:
+    mo_tanf: 292.09
+
+- name: Eligible household with countable income receives reduced benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 100
+  output:
+    mo_tanf: 192.09
+
+- name: Benefit below $10 minimum threshold is not paid
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 285
+  output:
+    # $292.09 - $285 = $7.09, but minimum payment is $10
+    mo_tanf: 0
+
+- name: Benefit of $10
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 282
+  output:
+    mo_tanf: 10.09
+
+- name: Countable income exceeds maximum benefit results in zero
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_standard_of_need: 846
+    mo_tanf_countable_income: 300
+  output:
+    mo_tanf: 0
