@@ -43,7 +43,7 @@
     # This is where the bug manifests - with only subtracts, it computes negative!
     taxable_social_security_tier_2: 21_000
 
-- name: TOB revenue split follows tier proportions
+- name: TOB revenue split follows IRC 86(d)(2) allocation
   period: 2024
   absolute_error_margin: 100
   input:
@@ -60,14 +60,19 @@
       household:
         members: [person1]
   output:
-    # With tiers at ~18% tier1 / ~82% tier2 for this individual case,
-    # the TOB revenue should split proportionally.
-    # Total TOB revenue ~$4,240 (from existing test)
-    # OASDI share: $4,240 * (4,500 / 25,500) = $748
-    # Medicare HI share: $4,240 * (21,000 / 25,500) = $3,492
+    # Per IRC §86(d)(2): OASDI gets tax on "first 50%" of gross SS benefits
+    # Taxable SS = $25,500 (85% of $30,000)
+    # 50% of gross SS = $15,000
+    # OASDI portion = min($25,500, $15,000) = $15,000
+    # HI portion = $25,500 - $15,000 = $10,500
+    # OASDI share = 15,000 / 25,500 = 58.8%
+    # HI share = 10,500 / 25,500 = 41.2%
+    # Total TOB revenue ~$4,240
+    # OASDI = $4,240 × 0.588 = ~$2,494
+    # HI = $4,240 × 0.412 = ~$1,746
     tob_revenue_total: 4240
-    tob_revenue_oasdi: 748
-    tob_revenue_medicare_hi: 3492
+    tob_revenue_oasdi: 2494
+    tob_revenue_medicare_hi: 1746
 
 - name: Verify tier2 is positive (regression test for subtracts bug)
   period: 2024

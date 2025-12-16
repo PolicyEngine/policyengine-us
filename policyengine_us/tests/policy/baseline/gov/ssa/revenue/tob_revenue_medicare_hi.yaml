@@ -1,6 +1,7 @@
 # Unit tests for tob_revenue_medicare_hi
 # Tests Medicare HI trust fund revenue allocation from SS benefit taxation
-# Medicare HI receives revenue proportional to tier 2's share of total taxable SS
+# Per IRC §86(d)(2): Medicare HI receives tax on "remaining portion" of SS benefits
+# This means: taxable_ss - min(taxable_ss, 50% × gross_ss) goes to HI
 
 - name: No SS benefits - zero Medicare revenue
   period: 2024
@@ -39,7 +40,7 @@
     # No taxable SS → no TOB revenue → no Medicare share
     tob_revenue_medicare_hi: 0
 
-- name: Tier 1 only - zero Medicare revenue
+- name: Tier 1 only (50% taxable) - zero Medicare revenue
   period: 2024
   input:
     people:
@@ -55,10 +56,11 @@
       household:
         members: [person1]
   output:
-    # In tier 1 only: tier2 = $0 → 0% to Medicare
+    # Taxable SS = $2,500 ≤ 50% of gross ($10,000)
+    # All taxable SS goes to OASDI, none to Medicare HI
     tob_revenue_medicare_hi: 0
 
-- name: In tier 2 - proportional split
+- name: High income single - 85% taxable with 41.2% HI split
   period: 2024
   absolute_error_margin: 100
   input:
@@ -66,7 +68,7 @@
       person1:
         age: 67
         social_security: 30_000
-        employment_income: 50_000
+        employment_income: 100_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -75,20 +77,22 @@
       household:
         members: [person1]
   output:
-    # Tier 1 = $4,500, Tier 2 = $21,000, Total = $25,500
-    # Medicare share = 21,000 / 25,500 = 82.4%
-    # Total TOB ~$4,240 → Medicare = $4,240 * 0.824 = ~$3,492
-    tob_revenue_medicare_hi: 3_492
+    # Taxable SS = 85% × $30,000 = $25,500
+    # 50% of gross = $15,000
+    # OASDI portion = min($25,500, $15,000) = $15,000
+    # HI portion = $25,500 - $15,000 = $10,500
+    # HI share = $10,500 / $25,500 = 41.2%
+    tax_unit_taxable_social_security: 25_500
 
-- name: Joint filers in tier 2
+- name: High income joint - 85% taxable with 41.2% HI split
   period: 2024
   absolute_error_margin: 200
   input:
     people:
       person1:
         age: 67
-        social_security: 40_000
-        employment_income: 60_000
+        social_security: 50_000
+        employment_income: 150_000
       person2:
         age: 65
     tax_units:
@@ -99,7 +103,9 @@
       household:
         members: [person1, person2]
   output:
-    # Tier 1 = $6,000, Tier 2 = $28,000, Total = $34,000
-    # Medicare share = 28,000 / 34,000 = 82.4%
-    taxable_social_security_tier_1: 6_000
-    taxable_social_security_tier_2: 28_000
+    # Taxable SS = 85% × $50,000 = $42,500
+    # 50% of gross = $25,000
+    # OASDI portion = min($42,500, $25,000) = $25,000
+    # HI portion = $42,500 - $25,000 = $17,500
+    # HI share = $17,500 / $42,500 = 41.2%
+    tax_unit_taxable_social_security: 42_500
