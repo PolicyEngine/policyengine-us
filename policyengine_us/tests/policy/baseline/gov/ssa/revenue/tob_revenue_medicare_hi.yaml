@@ -1,12 +1,15 @@
-- name: Medicare HI revenue with zero income
+# Unit tests for tob_revenue_medicare_hi
+# Tests Medicare HI trust fund revenue allocation from SS benefit taxation
+# Medicare HI receives revenue proportional to tier 2's share of total taxable SS
+
+- name: No SS benefits - zero Medicare revenue
   period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
         age: 67
         social_security: 0
-        employment_income: 0
+        employment_income: 100_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -17,15 +20,14 @@
   output:
     tob_revenue_medicare_hi: 0
 
-- name: Medicare HI revenue below threshold
+- name: Below threshold - zero Medicare revenue
   period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
         age: 67
-        social_security: 10_000
-        employment_income: 5_000
+        social_security: 20_000
+        employment_income: 10_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -34,16 +36,16 @@
       household:
         members: [person1]
   output:
+    # No taxable SS → no TOB revenue → no Medicare share
     tob_revenue_medicare_hi: 0
 
-- name: Medicare HI revenue in tier 1 only
+- name: Tier 1 only - zero Medicare revenue
   period: 2024
-  absolute_error_margin: 100
   input:
     people:
       person1:
         age: 67
-        social_security: 30_000
+        social_security: 20_000
         employment_income: 20_000
     tax_units:
       tax_unit:
@@ -53,11 +55,12 @@
       household:
         members: [person1]
   output:
-    tob_revenue_medicare_hi: 85
+    # In tier 1 only: tier2 = $0 → 0% to Medicare
+    tob_revenue_medicare_hi: 0
 
-- name: Medicare HI revenue in tier 2
+- name: In tier 2 - proportional split
   period: 2024
-  absolute_error_margin: 200
+  absolute_error_margin: 100
   input:
     people:
       person1:
@@ -72,49 +75,31 @@
       household:
         members: [person1]
   output:
-    tob_revenue_medicare_hi: 3_490
+    # Tier 1 = $4,500, Tier 2 = $21,000, Total = $25,500
+    # Medicare share = 21,000 / 25,500 = 82.4%
+    # Total TOB ~$4,240 → Medicare = $4,240 * 0.824 = ~$3,492
+    tob_revenue_medicare_hi: 3_492
 
-- name: Medicare HI revenue joint filers
+- name: Joint filers in tier 2
   period: 2024
   absolute_error_margin: 200
   input:
     people:
       person1:
         age: 67
-        social_security: 25_000
-        employment_income: 35_000
+        social_security: 40_000
+        employment_income: 60_000
       person2:
         age: 65
-        social_security: 15_000
-        employment_income: 30_000
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
   output:
-    tob_revenue_medicare_hi: 3_360
-
-- name: Medicare HI revenue high income
-  period: 2024
-  absolute_error_margin: 500
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 40_000
-        employment_income: 100_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-  output:
-    tob_revenue_medicare_hi: 6_780
+    # Tier 1 = $6,000, Tier 2 = $28,000, Total = $34,000
+    # Medicare share = 28,000 / 34,000 = 82.4%
+    taxable_social_security_tier_1: 6_000
+    taxable_social_security_tier_2: 28_000

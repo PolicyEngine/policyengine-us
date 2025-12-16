@@ -10,7 +10,8 @@ class taxable_social_security_tier_2(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_2"
 
+    # tier_2 = total_taxable - tier_1 capped at 0
     def formula(tax_unit, period, parameters):
+        tier_1 = tax_unit("taxable_social_security_tier_1", period)
         total_taxable = tax_unit("tax_unit_taxable_social_security", period)
-        tier1 = tax_unit("taxable_social_security_tier_1", period)
-        return max_(total_taxable - tier1, 0)
+        return max_(total_taxable - tier_1, 0)

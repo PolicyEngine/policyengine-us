@@ -1,0 +1,35 @@
+- name: Eligible - no insurance
+  period: 2024
+  input:
+    state_code: IL
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_insurance_eligible: true
+
+- name: Ineligible - on Medicaid
+  period: 2024
+  input:
+    state_code: IL
+    receives_medicaid: true
+    has_bcc_qualifying_coverage: false
+  output:
+    il_bcc_insurance_eligible: false
+
+- name: Ineligible - has qualifying health coverage
+  period: 2024
+  input:
+    state_code: IL
+    receives_medicaid: false
+    has_bcc_qualifying_coverage: true
+  output:
+    il_bcc_insurance_eligible: false
+
+- name: Ineligible - both Medicaid and qualifying coverage
+  period: 2024
+  input:
+    state_code: IL
+    receives_medicaid: true
+    has_bcc_qualifying_coverage: true
+  output:
+    il_bcc_insurance_eligible: false

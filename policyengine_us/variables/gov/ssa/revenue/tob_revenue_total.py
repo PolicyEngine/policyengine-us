@@ -19,7 +19,7 @@ class tob_revenue_total(Variable):
         sim = tax_unit.simulation
 
         # Calculate income tax WITH taxable SS
-        income_tax_with = tax_unit("income_tax", period)
+        income_tax_with_ss = tax_unit("income_tax", period)
 
         # Create branch and neutralize taxable SS
         branch = sim.get_branch("tob_calc", clone_system=True)
@@ -33,9 +33,9 @@ class tob_revenue_total(Variable):
                 branch.delete_arrays(var_name)
 
         # Recalculate income tax without taxable SS
-        income_tax_without = branch.tax_unit("income_tax", period)
+        income_tax_without_ss = branch.tax_unit("income_tax", period)
 
         # Clean up branch
         del sim.branches["tob_calc"]
 
-        return income_tax_with - income_tax_without
+        return income_tax_with_ss - income_tax_without_ss

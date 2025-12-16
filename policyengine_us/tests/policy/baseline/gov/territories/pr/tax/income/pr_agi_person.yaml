@@ -1,0 +1,17 @@
+- name: Joint
+  period: 2024
+  input:
+    pr_agi: 20_000
+    filing_status: JOINT
+    state_code: PR
+  output:
+    pr_agi_person: 10_000
+
+- name: Separate
+  period: 2024
+  input:
+    pr_agi: 20_000
+    filing_status: SEPARATE
+    state_code: PR
+  output:
+    pr_agi_person: 20_000
