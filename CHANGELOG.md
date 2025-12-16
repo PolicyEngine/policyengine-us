@@ -5,8 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-=======
 ## [1.464.1] - 2025-12-16 04:11:35
 
 ### Fixed
@@ -80,7 +78,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update uv.lock during version bump so contributors don't need to run uv lock --upgrade after pulling from master.
 - Change push workflow concurrency to queue runs instead of cancelling to ensure each merge completes.
 
->>>>>>> 73c22b7cf4d18c2f6523f3da8b49c1fd53196d13
 ## [1.460.0] - 2025-12-12 23:16:34
 
 ### Added
@@ -13932,8 +13929,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-<<<<<<< HEAD
-=======
 [1.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.0...1.464.1
 [1.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.463.0...1.464.0
 [1.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.1...1.463.0
@@ -13945,7 +13940,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.2...1.461.0
 [1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
 [1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
->>>>>>> 73c22b7cf4d18c2f6523f3da8b49c1fd53196d13
 [1.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.2...1.460.0
 [1.459.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.1...1.459.2
 [1.459.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.0...1.459.1
