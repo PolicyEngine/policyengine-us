@@ -1,4 +1,4 @@
-description: Illinois counts these income sources as countable income under the Prevention Initiative program.
+description: Illinois uses these income sources to calculate countable income under the Illinois State Board of Education early childhood programs.
 values:
   2015-01-01:
     # Earned income
@@ -22,9 +22,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Illinois PI countable income sources
+  label: Illinois ISBE countable income sources
   reference:
-    - title: ISBE Household and Income Form
+    - title: ISBE Household and Income Form (69-72)
       href: https://www.isbe.net/Documents/69-72_hshld_income.pdf
-    - title: ISBE FY 2026 Income Eligibility Guidelines
-      href: https://www.isbe.net/Documents/IEG-26.pdf

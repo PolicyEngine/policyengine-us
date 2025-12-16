@@ -12,9 +12,10 @@ class il_pi_is_low_income(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
+        spm_unit = person.spm_unit
         # Low income: income at or below 200% FPL.
         p = parameters(period).gov.states.il.isbe.pi.eligibility.income
-        fpg = person.spm_unit("spm_unit_fpg", period)
-        income = person.spm_unit("il_pi_countable_income", period)
+        fpg = spm_unit("spm_unit_fpg", period)
+        income = spm_unit("il_isbe_countable_income", period)
         threshold = fpg * p.low_income_rate
         return income <= threshold
