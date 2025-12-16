@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_pfae_eligible_child(Variable):
+class il_pfae_age_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Child meets age requirements for Illinois PFAE"

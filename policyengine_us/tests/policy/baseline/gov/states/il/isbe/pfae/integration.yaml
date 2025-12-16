@@ -22,7 +22,7 @@
         members: [person1, person2, person3]
   output:
     # Age eligibility: only person2 (age 4) is eligible
-    il_pfae_eligible_child: [false, true, false]
+    il_pfae_age_eligible_child: [false, true, false]
     # Highest priority: person2 has IEP
     il_pfae_has_highest_priority_factor: [false, true, false]
     # PFAE eligibility: only person2 is eligible
@@ -55,7 +55,7 @@
         members: [person1, person2, person3]
   output:
     # Both children are age eligible
-    il_pfae_eligible_child: [false, true, true]
+    il_pfae_age_eligible_child: [false, true, true]
     # Both have highest priority factors (IEP, foster care)
     il_pfae_has_highest_priority_factor: [false, true, true]
     # Both children are PFAE eligible
@@ -90,7 +90,7 @@
         members: [person1, person2, person3]
   output:
     # No children in age range 3-5
-    il_pfae_eligible_child: [false, false, false]
+    il_pfae_age_eligible_child: [false, false, false]
     # No PFAE eligibility
     il_pfae_eligible: [false, false, false]
     il_pfa_eligible: [false, false, false]
