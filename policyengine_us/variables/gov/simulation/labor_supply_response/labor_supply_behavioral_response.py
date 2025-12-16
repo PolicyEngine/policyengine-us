@@ -16,53 +16,68 @@ class labor_supply_behavioral_response(Variable):
         if p.elasticities.income == 0 and p.elasticities.substitution.all == 0:
             return 0
 
-        measurement_branch = simulation.get_branch(
-            "lsr_measurement", clone_system=True
-        )  # A branch without LSRs
-        baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_lsr_measurement", clone_system=True
-        )  # Already created by default
-        baseline_branch.tax_benefit_system.parameters.simulation = (
-            measurement_branch.tax_benefit_system.parameters.simulation
-        )
+        # Guard against re-entry (prevents recursion when branches calculate variables)
+        if (
+            hasattr(simulation, "_lsr_calculating")
+            and simulation._lsr_calculating
+        ):
+            return 0
 
-        # (system with LSRs) <- (system without LSRs used to calculate LSRs)
-        #                      |
-        #                      * -(baseline system without LSRs used to calculate LSRs)
+        # Mark that we're calculating LSR
+        simulation._lsr_calculating = True
 
-        for branch in [measurement_branch, baseline_branch]:
-            branch.tax_benefit_system.neutralize_variable(
-                "employment_income_behavioral_response"
+        try:
+            measurement_branch = simulation.get_branch(
+                "lsr_measurement", clone_system=True
+            )  # A branch without LSRs
+            baseline_branch = simulation.get_branch("baseline").get_branch(
+                "baseline_lsr_measurement", clone_system=True
+            )  # Already created by default
+            baseline_branch.tax_benefit_system.parameters.simulation = (
+                measurement_branch.tax_benefit_system.parameters.simulation
             )
-            branch.tax_benefit_system.neutralize_variable(
-                "self_employment_income_behavioral_response"
-            )
-            branch.set_input(
-                "employment_income_before_lsr",
+
+            # (system with LSRs) <- (system without LSRs used to calculate LSRs)
+            #                      |
+            #                      * -(baseline system without LSRs used to calculate LSRs)
+
+            for branch in [measurement_branch, baseline_branch]:
+                branch.tax_benefit_system.neutralize_variable(
+                    "employment_income_behavioral_response"
+                )
+                branch.tax_benefit_system.neutralize_variable(
+                    "self_employment_income_behavioral_response"
+                )
+                branch.set_input(
+                    "employment_income_before_lsr",
+                    period,
+                    person("employment_income_before_lsr", period),
+                )
+                branch.set_input(
+                    "self_employment_income_before_lsr",
+                    period,
+                    person("self_employment_income_before_lsr", period),
+                )
+
+            response = add(
+                person,
                 period,
-                person("employment_income_before_lsr", period),
+                [
+                    "income_elasticity_lsr",
+                    "substitution_elasticity_lsr",
+                ],
             )
-            branch.set_input(
-                "self_employment_income_before_lsr",
-                period,
-                person("self_employment_income_before_lsr", period),
-            )
+            simulation = person.simulation
+            del simulation.branches["baseline"].branches[
+                "baseline_lsr_measurement"
+            ]
+            del simulation.branches["lsr_measurement"]
 
-        response = add(
-            person,
-            period,
-            [
-                "income_elasticity_lsr",
-                "substitution_elasticity_lsr",
-            ],
-        )
-        simulation = person.simulation
-        del simulation.branches["baseline"].branches[
-            "baseline_lsr_measurement"
-        ]
-        del simulation.branches["lsr_measurement"]
+            simulation.macro_cache_read = False
+            simulation.macro_cache_write = False
 
-        simulation.macro_cache_read = False
-        simulation.macro_cache_write = False
+            return response
 
-        return response
+        finally:
+            # Clear the re-entry guard
+            simulation._lsr_calculating = False
