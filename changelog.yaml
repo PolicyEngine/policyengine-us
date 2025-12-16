@@ -11883,3 +11883,15 @@
     - Iowa Child and Dependent Care Credit now uses taxable income instead of net
       income.
   date: 2025-12-16 04:11:35
+- bump: patch
+  changes:
+    fixed:
+    - Arizona property tax credit now uses correct income definition per ARS 43-1072
+      and ITR 12-1, excluding only Social Security (not pensions, capital gains, or
+      exemptions)
+  date: 2025-12-16 13:23:24
+- bump: minor
+  changes:
+    added:
+    - Missouri TANF program.
+  date: 2025-12-16 15:06:15
