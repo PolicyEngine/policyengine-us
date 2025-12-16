@@ -1,0 +1,59 @@
+- name: Eligible when all conditions met
+  period: 2024-01
+  input:
+    state_code: MO
+    is_person_demographic_tanf_eligible: true
+    mo_tanf_income_eligible: true
+    mo_tanf_resources_eligible: true
+  output:
+    mo_tanf_eligible: true
+
+- name: Ineligible when not in Missouri
+  period: 2024-01
+  input:
+    state_code: NY
+    is_person_demographic_tanf_eligible: true
+    mo_tanf_income_eligible: true
+    mo_tanf_resources_eligible: true
+  output:
+    mo_tanf_eligible: false
+
+- name: Ineligible when not demographically eligible
+  period: 2024-01
+  input:
+    state_code: MO
+    is_person_demographic_tanf_eligible: false
+    mo_tanf_income_eligible: true
+    mo_tanf_resources_eligible: true
+  output:
+    mo_tanf_eligible: false
+
+- name: Ineligible when not income eligible
+  period: 2024-01
+  input:
+    state_code: MO
+    is_person_demographic_tanf_eligible: true
+    mo_tanf_income_eligible: false
+    mo_tanf_resources_eligible: true
+  output:
+    mo_tanf_eligible: false
+
+- name: Ineligible when resources exceed limit
+  period: 2024-01
+  input:
+    state_code: MO
+    is_person_demographic_tanf_eligible: true
+    mo_tanf_income_eligible: true
+    mo_tanf_resources_eligible: false
+  output:
+    mo_tanf_eligible: false
+
+- name: Ineligible when all conditions fail
+  period: 2024-01
+  input:
+    state_code: NY
+    is_person_demographic_tanf_eligible: false
+    mo_tanf_income_eligible: false
+    mo_tanf_resources_eligible: false
+  output:
+    mo_tanf_eligible: false

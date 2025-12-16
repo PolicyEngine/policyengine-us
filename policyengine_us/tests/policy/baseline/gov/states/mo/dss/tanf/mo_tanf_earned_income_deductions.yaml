@@ -1,0 +1,53 @@
+- name: No earned income
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 0
+    mo_tanf_child_care_deduction: 0
+  output:
+    mo_tanf_earned_income_deductions: 0
+
+- name: Earned income below $90
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 50
+    mo_tanf_child_care_deduction: 0
+  output:
+    mo_tanf_earned_income_deductions: 80
+
+- name: Earned income at $90
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 90
+    mo_tanf_child_care_deduction: 0
+  output:
+    mo_tanf_earned_income_deductions: 120
+
+- name: Earned income above $90 with 1/3 disregard
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 500
+    mo_tanf_child_care_deduction: 0
+  output:
+    mo_tanf_earned_income_deductions: 255.3
+
+- name: With child care deduction
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 500
+    mo_tanf_child_care_deduction: 175
+  output:
+    mo_tanf_earned_income_deductions: 430.3
+
+- name: High earned income
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 1_000
+    mo_tanf_child_care_deduction: 350
+  output:
+    mo_tanf_earned_income_deductions: 770.3
