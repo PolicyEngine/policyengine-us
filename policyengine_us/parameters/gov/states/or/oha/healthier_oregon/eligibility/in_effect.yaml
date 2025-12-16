@@ -1,0 +1,14 @@
+description: Whether Oregon Healthier Oregon program is in effect (full expansion to all ages)
+metadata:
+  unit: bool
+  period: year
+  label: OR Healthier Oregon in effect
+  reference:
+    - title: Oregon Health Authority - Healthier Oregon
+      href: https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx
+    - title: Oregon House Bill 3352
+      href: https://olis.oregonlegislature.gov/liz/2021R1/Downloads/MeasureDocument/HB3352/Enrolled
+
+values:
+  2020-01-01: false
+  2023-07-01: true  # Full expansion to all ages effective July 1, 2023

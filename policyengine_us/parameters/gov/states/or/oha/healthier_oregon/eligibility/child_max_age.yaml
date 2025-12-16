@@ -1,0 +1,11 @@
+description: Maximum age to be considered a child for Oregon Healthier Oregon
+metadata:
+  unit: year
+  period: year
+  label: OR Healthier Oregon child max age
+  reference:
+    - title: Oregon Health Authority - OHP Eligibility
+      href: https://www.oregon.gov/oha/hsd/ohp/pages/eligibility.aspx
+
+values:
+  2023-07-01: 18  # Children 0-18
