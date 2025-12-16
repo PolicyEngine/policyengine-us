@@ -141,3 +141,105 @@
     # OASDI portion = min($9,600, $12,000) = $9,600 (100% to OASDI)
     # Since taxable SS ($9,600) < 50% of gross ($12,000), all goes to OASDI
     tax_unit_taxable_social_security: 9_600
+
+# Direct unit tests for tob_revenue_oasdi output values
+- name: Unit test - OASDI revenue when taxable SS below 50% of gross
+  period: 2024
+  absolute_error_margin: 10
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Taxable SS = $2,500, 50% of gross = $10,000
+    # OASDI portion = min($2,500, $10,000) = $2,500 → 100% to OASDI
+    # Tax on $2,500 at 10% bracket = $250
+    # All TOB revenue goes to OASDI
+    tax_unit_taxable_social_security: 2_500
+    tob_revenue_oasdi: 250
+    tob_revenue_medicare_hi: 0
+
+- name: Unit test - OASDI revenue at 58.8% share (high income)
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Taxable SS = $25,500 (85% of $30k)
+    # 50% of gross = $15,000
+    # OASDI share = $15,000 / $25,500 = 58.8%
+    # Total TOB = $5,778 (higher marginal rate due to $100k emp income)
+    # OASDI = $5,778 × 58.8% = $3,399
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_oasdi: 3_399
+    tob_revenue_medicare_hi: 2_379
+    tob_revenue_total: 5_778
+
+- name: Unit test - OASDI revenue with zero taxable SS
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 15_000
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = $5,000 + $7,500 = $12,500 < $25,000 threshold
+    # No taxable SS → no TOB revenue
+    tax_unit_taxable_social_security: 0
+    tob_revenue_oasdi: 0
+    tob_revenue_medicare_hi: 0
+
+- name: Unit test - Joint filers OASDI allocation
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 40_000
+        employment_income: 80_000
+      person2:
+        age: 66
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = $80,000 + $20,000 (50% of SS) = $100,000
+    # Well above joint tier 2 threshold ($44k)
+    # Taxable SS = 85% × $40,000 = $34,000
+    # 50% of gross = $20,000
+    # OASDI share = $20,000 / $34,000 = 58.8%
+    tax_unit_taxable_social_security: 34_000

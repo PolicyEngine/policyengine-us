@@ -109,3 +109,106 @@
     # HI portion = $42,500 - $25,000 = $17,500
     # HI share = $17,500 / $42,500 = 41.2%
     tax_unit_taxable_social_security: 42_500
+
+# Direct unit tests for tob_revenue_medicare_hi output values
+- name: Unit test - Medicare HI revenue when taxable SS below 50% of gross
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Taxable SS = $2,500, 50% of gross = $10,000
+    # Since taxable SS < 50% of gross, all goes to OASDI
+    # Medicare HI gets zero
+    tax_unit_taxable_social_security: 2_500
+    tob_revenue_oasdi: 250
+    tob_revenue_medicare_hi: 0
+
+- name: Unit test - Medicare HI revenue at 41.2% share (high income)
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Taxable SS = $25,500 (85% of $30k)
+    # 50% of gross = $15,000
+    # OASDI portion = $15,000
+    # HI portion = $25,500 - $15,000 = $10,500
+    # HI share = $10,500 / $25,500 = 41.2%
+    # Total TOB = $5,778 (higher marginal rate due to $100k emp income)
+    # HI revenue = $5,778 × 41.2% = $2,379
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_medicare_hi: 2_379
+
+- name: Unit test - Medicare HI receives remainder after OASDI
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 40_000
+        employment_income: 80_000
+      person2:
+        age: 66
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Taxable SS = 85% × $40,000 = $34,000
+    # 50% of gross = $20,000
+    # OASDI portion = $20,000
+    # HI portion = $34,000 - $20,000 = $14,000
+    # HI share = $14,000 / $34,000 = 41.2%
+    tax_unit_taxable_social_security: 34_000
+
+- name: Unit test - Verify OASDI + HI = total TOB revenue
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Total TOB = $5,778
+    # OASDI = $3,399 (58.8%)
+    # HI = $2,379 (41.2%)
+    # Sum = $5,778 ✓
+    tob_revenue_total: 5_778
+    tob_revenue_oasdi: 3_399
+    tob_revenue_medicare_hi: 2_379
