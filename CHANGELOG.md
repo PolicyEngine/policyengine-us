@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.464.1] - 2025-12-16 04:11:35
+
+### Fixed
+
+- Iowa Child and Dependent Care Credit now uses taxable income instead of net income.
+
+## [1.464.0] - 2025-12-16 00:26:02
+
+### Added
+
+- Wisconsin Works (W-2) program with placement-based benefits and eligibility.
+
+## [1.463.0] - 2025-12-16 00:00:49
+
+### Added
+
+- Pennsylvania TANF.
+
+## [1.462.1] - 2025-12-15 23:24:43
+
+### Fixed
+
+- MA income tax now allows short-term capital losses to offset long-term capital gains in Part C
+
+## [1.462.0] - 2025-12-15 22:36:33
+
+### Fixed
+
+- Maine Dependent Exemption Credit now correctly includes Credit for Other Dependents (ODC) qualifying dependents age 17 and older, as required by Maine statute 36 M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and ODC).
+
+## [1.461.3] - 2025-12-15 22:10:21
+
+### Fixed
+
+- Fix DC Property Tax Credit incorrectly granting credit for negative AGI with zero rent/property taxes
+
+## [1.461.2] - 2025-12-15 21:42:35
+
+### Fixed
+
+- Montana income tax calculation with negative capital gains now correctly produces zero tax instead of phantom positive tax
+
+## [1.461.1] - 2025-12-15 21:03:17
+
+### Fixed
+
+- Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+
+## [1.461.0] - 2025-12-15 19:02:39
+
+### Added
+
+- Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi) using exact branching methodology
+- Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare HI allocation
+- LSR recursion guard to prevent infinite loops when branches calculate variables
+
+### Fixed
+
+- Labor supply behavioral response infinite recursion bug
+
+## [1.460.2] - 2025-12-15 18:31:12
+
+### Fixed
+
+- WV homestead excess property tax credit with negative income and zero property taxes
+
 ## [1.460.1] - 2025-12-13 04:31:57
 
 ### Fixed
@@ -13863,6 +13929,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.0...1.464.1
+[1.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.463.0...1.464.0
+[1.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.1...1.463.0
+[1.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.0...1.462.1
+[1.462.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.3...1.462.0
+[1.461.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.2...1.461.3
+[1.461.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.1...1.461.2
+[1.461.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.0...1.461.1
+[1.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.2...1.461.0
+[1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
 [1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
 [1.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.2...1.460.0
 [1.459.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.1...1.459.2
