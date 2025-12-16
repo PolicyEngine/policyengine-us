@@ -1,0 +1,43 @@
+- name: Family income below 400% FPL - eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000  # Below 400% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_isbe_income_eligible: [true, true]
+
+- name: Family income above 400% FPL - not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 150_000  # Above 400% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_isbe_income_eligible: [false, false]

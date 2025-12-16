@@ -1,16 +1,18 @@
 from policyengine_us.model_api import *
 
 
-class il_pi_eligible_child(Variable):
+class il_pi_demographic_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Child meets age requirements for Illinois PI"
+    label = "Meets demographic requirements for Illinois PI"
     definition_period = YEAR
     reference = "https://www.isbe.net/Pages/Birth-to-Age-3-Years.aspx"
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        # Children under age 3 (birth to age 3) are eligible.
+        # Eligible if child under 3 or pregnant woman.
         p = parameters(period).gov.states.il.isbe.pi.eligibility.age
         age = person("age", period)
-        return age < p.maximum
+        is_child_under_3 = age < p.maximum
+        is_pregnant = person("is_pregnant", period)
+        return is_child_under_3 | is_pregnant

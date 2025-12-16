@@ -1,0 +1,147 @@
+- name: Homeless child with high income (only 50 pts for homelessness)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 150_000  # High income to avoid income-based factors
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Only age-eligible child gets priority score; homeless (50 pts)
+    il_pi_priority_score: [0, 50]
+
+- name: Low income family child
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # Below 100% FPL
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Low income (25) + categorical benefits (25) + poverty (10) = 60 pts for child
+    il_pi_priority_score: [0, 60]
+
+- name: No risk factors (high income)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 150_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_priority_score: [0, 0]
+
+- name: Family of 3 with one eligible child and one ineligible child
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 20_000
+      child_eligible:
+        age: 1  # Under 3, eligible for PI
+      child_ineligible:
+        age: 4  # Age 4, not eligible for PI
+    households:
+      household:
+        members: [parent, child_eligible, child_ineligible]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [parent, child_eligible, child_ineligible]
+    tax_units:
+      tax_unit:
+        members: [parent, child_eligible, child_ineligible]
+  output:
+    # Adult: 0 (not demographic eligible)
+    # Child age 1: homeless (50) + low income (25) + poverty (10) + categorical (25) = 110 pts
+    # Child age 4: 0 (not demographic eligible - too old for PI)
+    il_pi_priority_score: [0, 110, 0]
+
+- name: Pregnant woman with priority factors
+  period: 2024
+  input:
+    people:
+      pregnant_woman:
+        age: 25
+        is_pregnant: true
+        employment_income: 15_000
+    households:
+      household:
+        members: [pregnant_woman]
+        state_code: IL
+        is_non_english_speaking_home: true
+    spm_units:
+      spm_unit:
+        members: [pregnant_woman]
+    tax_units:
+      tax_unit:
+        members: [pregnant_woman]
+  output:
+    # Non-English home (50) + low income (25) + poverty (10) + categorical (25) = 110 pts
+    il_pi_priority_score: [110]
+
+- name: Family with multiple highest priority factors
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 5_000  # Deep poverty
+      infant:
+        age: 0
+        is_in_foster_care: true
+        is_enrolled_in_early_intervention: true
+    households:
+      household:
+        members: [parent, infant]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+  output:
+    # Adult: 0 (not demographic eligible)
+    # Infant: homeless (50) + foster (50) + EI (50) + deep poverty (50) +
+    #         low income (25) + poverty (10) + categorical (25) = 260 pts
+    il_pi_priority_score: [0, 260]

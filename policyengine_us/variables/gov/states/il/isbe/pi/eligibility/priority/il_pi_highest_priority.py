@@ -7,9 +7,9 @@ class il_pi_highest_priority(Variable):
     label = "Has a highest priority factor for Illinois PI"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/Documents/prevention-initiative-manual.pdf"
+        "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=2",
     )
-    defined_for = StateCode.IL
+    defined_for = "il_pi_demographic_eligible"
 
     def formula(person, period, parameters):
         # Highest priority factors: foster care, homeless, deep poverty,

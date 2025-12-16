@@ -7,12 +7,12 @@ class il_pi_risk_eligible(Variable):
     label = "Meets risk factor requirements for Illinois PI"
     definition_period = YEAR
     reference = (
-        "https://www.isbe.net/Documents/prevention-initiative-manual.pdf"
+        "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=3",
     )
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        # Eligible if has at least minimum required risk factors.
+        # Eligible if priority score meets minimum (50 points).
         p = parameters(period).gov.states.il.isbe.pi.eligibility.risk_factors
-        risk_count = person("il_pi_risk_factor_count", period)
-        return risk_count >= p.minimum_required
+        priority_score = person("il_pi_priority_score", period)
+        return priority_score >= p.minimum_score
