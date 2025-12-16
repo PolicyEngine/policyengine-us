@@ -8,7 +8,7 @@ class mn_military_pension_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.27",
+        "https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.21",  # Subd. 21 - Military service pension; retirement pay
         "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1m-25.pdf",
     )
     defined_for = StateCode.MN
