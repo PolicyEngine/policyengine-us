@@ -45,7 +45,9 @@ class il_pfae_secondary_priority_factor_count(Variable):
         delay_without_iep = has_developmental_delay & ~has_iep
 
         # Factor 12: No prior formal early learning
-        no_prior_learning = person("has_no_prior_formal_early_learning", period)
+        no_prior_learning = person(
+            "has_no_prior_formal_early_learning", period
+        )
 
         factors = [
             is_low_income,

@@ -13,9 +13,11 @@ class il_pfae_age_eligible_child(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        # Children ages 3-5 (before kindergarten) are eligible for PFAE.
-        # 23 IAC § 235.10 defines eligible children as "at-risk children age 3
-        # through the age of eligibility for kindergarten."
+        # PFA/PFAE serves children ages 3-4, plus 5-year-olds not yet
+        # kindergarten eligible. Per 105 ILCS 5/10-20.12, children who
+        # turn 5 on or before September 1 are kindergarten eligible.
+        # Since PolicyEngine uses age in whole years without birth month,
+        # we include all 5-year-olds as a simplification (some are eligible).
         p = parameters(period).gov.states.il.isbe.pfae.eligibility
         age = person("age", period)
         return p.age_range.calc(age)
