@@ -1,0 +1,23 @@
+- name: Eligible with resources below limit
+  period: 2024-01
+  input:
+    state_code: MO
+    spm_unit_cash_assets: 500
+  output:
+    mo_tanf_resources_eligible: true
+
+- name: Eligible with resources at limit
+  period: 2024-01
+  input:
+    state_code: MO
+    spm_unit_cash_assets: 1_000
+  output:
+    mo_tanf_resources_eligible: true
+
+- name: Ineligible with resources above limit
+  period: 2024-01
+  input:
+    state_code: MO
+    spm_unit_cash_assets: 1_001
+  output:
+    mo_tanf_resources_eligible: false

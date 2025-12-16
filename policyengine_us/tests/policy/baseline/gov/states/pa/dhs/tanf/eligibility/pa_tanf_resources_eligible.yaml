@@ -1,0 +1,47 @@
+- name: Case 1, no assets.
+  period: 2024-01
+  input:
+    spm_unit_assets: 0
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Case 2, assets well below limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 500
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Case 3, assets just below limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 999
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Case 4, assets exactly at limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 1_000
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Case 5, assets just above limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 1_001
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: false
+
+- name: Case 6, assets well above limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 5_000
+    state_code: PA
+  output:
+    pa_tanf_resources_eligible: false

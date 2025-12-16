@@ -11767,3 +11767,131 @@
     added:
     - Add spm_unit_tenure_type variable at SPM unit level for local area calibration.
   date: 2025-12-11 18:30:32
+- bump: patch
+  changes:
+    changed:
+    - Split structural YAML tests into parallel CI jobs for better memory management.
+    - Add workflow concurrency to cancel in-progress CI runs when new commits are
+      pushed to the same PR.
+  date: 2025-12-12 04:32:17
+- bump: patch
+  changes:
+    fixed:
+    - Floor only business and rental income sources in MI household resources per
+      MI-1040CR form instructions.
+  date: 2025-12-12 14:10:11
+- bump: minor
+  changes:
+    added:
+    - ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap
+      to 600% FPL and phaseout to 9.25% at 700% FPL
+  date: 2025-12-12 14:32:00
+- bump: patch
+  changes:
+    fixed:
+    - Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+    - Fix IL HBWD disability eligibility to use medical definition without SGA test.
+  date: 2025-12-12 18:20:04
+- bump: patch
+  changes:
+    fixed:
+    - Fix IL AABD non-financial eligibility to require SSI status eligibility per
+      IDHS Policy Manual PM 11-01-00.
+    - Remove retirement_distributions from IL AABD asset sources (incorrectly included
+      income variable).
+    removed:
+    - Remove orphaned il_aabd_aged_blind_disabled_person variable and aged_age_threshold
+      parameter.
+  date: 2025-12-12 18:28:16
+- bump: minor
+  changes:
+    added:
+    - Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB,
+      and QI eligibility levels.
+    - State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY,
+      OR, VT have eliminated the asset test).
+  date: 2025-12-12 23:16:34
+- bump: patch
+  changes:
+    fixed:
+    - Update uv.lock during version bump so contributors don't need to run uv lock
+      --upgrade after pulling from master.
+    - Change push workflow concurrency to queue runs instead of cancelling to ensure
+      each merge completes.
+  date: 2025-12-13 04:31:57
+- bump: patch
+  changes:
+    fixed:
+    - WV homestead excess property tax credit with negative income and zero property
+      taxes
+  date: 2025-12-15 18:31:12
+- bump: minor
+  changes:
+    added:
+    - Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi)
+      using exact branching methodology
+    - Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare
+      HI allocation
+    - LSR recursion guard to prevent infinite loops when branches calculate variables
+    fixed:
+    - Labor supply behavioral response infinite recursion bug
+  date: 2025-12-15 19:02:39
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+  date: 2025-12-15 21:03:17
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax calculation with negative capital gains now correctly produces
+      zero tax instead of phantom positive tax
+  date: 2025-12-15 21:42:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix DC Property Tax Credit incorrectly granting credit for negative AGI with
+      zero rent/property taxes
+  date: 2025-12-15 22:10:21
+- bump: minor
+  changes:
+    fixed:
+    - Maine Dependent Exemption Credit now correctly includes Credit for Other Dependents
+      (ODC) qualifying dependents age 17 and older, as required by Maine statute 36
+      M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and
+      ODC).
+  date: 2025-12-15 22:36:33
+- bump: patch
+  changes:
+    fixed:
+    - MA income tax now allows short-term capital losses to offset long-term capital
+      gains in Part C
+  date: 2025-12-15 23:24:43
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania TANF.
+  date: 2025-12-16 00:00:49
+- bump: minor
+  changes:
+    added:
+    - Wisconsin Works (W-2) program with placement-based benefits and eligibility.
+  date: 2025-12-16 00:26:02
+- bump: patch
+  changes:
+    fixed:
+    - Iowa Child and Dependent Care Credit now uses taxable income instead of net
+      income.
+  date: 2025-12-16 04:11:35
+- bump: patch
+  changes:
+    fixed:
+    - Arizona property tax credit now uses correct income definition per ARS 43-1072
+      and ITR 12-1, excluding only Social Security (not pensions, capital gains, or
+      exemptions)
+  date: 2025-12-16 13:23:24
+- bump: minor
+  changes:
+    added:
+    - Missouri TANF program.
+  date: 2025-12-16 15:06:15
