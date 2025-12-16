@@ -1,37 +1,68 @@
-- name: Attributing the state adjusted gross income based on federal AGI
+# VA AGI for each person is calculated as:
+# Federal AGI + VA additions - VA subtractions (including age deduction)
+# This is the "Separate Virginia Adjusted Gross Income" used in the
+# Spouse Tax Adjustment Worksheet (Form 760 instructions, page 12)
+
+- name: Separate VAGI - two earners without VA subtractions
   period: 2021
   input:
     people:
       person1:
+        age: 40
         adjusted_gross_income_person: 10_000
       person2:
+        age: 40
         adjusted_gross_income_person: 30_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_agi: 30_000
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
-    va_agi_person: [7_500, 22_500]
+    # Each person's VA AGI = their federal AGI (no additions/subtractions)
+    va_agi_person: [10_000, 30_000]
 
-- name: One person without income
+- name: Separate VAGI - one person without income
   period: 2021
   input:
     people:
       person1:
+        age: 40
         adjusted_gross_income_person: 10_000
       person2:
+        age: 40
         adjusted_gross_income_person: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_agi: 8_000
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
-    va_agi_person: [8_000, 0]
+    # Person 1 VA AGI = $10K, Person 2 VA AGI = $0
+    va_agi_person: [10_000, 0]
+
+- name: Separate VAGI - elderly with age deduction
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 75
+        adjusted_gross_income_person: 20_000
+      person2:
+        age: 40
+        adjusted_gross_income_person: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Person 1: $20K - $12K age deduction = $8K
+    # Person 2: $30K (no age deduction)
+    va_agi_person: [8_000, 30_000]
