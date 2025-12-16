@@ -1,0 +1,50 @@
+- name: Case 1, eligible CSJ placement.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+  output:
+    wi_works: 653
+
+- name: Case 2, eligible W-2 Transition placement.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: W2_TRANSITION
+  output:
+    wi_works: 608
+
+- name: Case 3, eligible CMC placement.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: CMC
+  output:
+    wi_works: 673
+
+- name: Case 4, eligible ARP placement.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: ARP
+  output:
+    wi_works: 673
+
+- name: Case 5, not eligible.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: false
+  output:
+    wi_works: 0
+
+- name: Case 6, non-Wisconsin state.
+  period: 2025-01
+  input:
+    state_code: CA
+  output:
+    wi_works: 0

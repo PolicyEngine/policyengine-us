@@ -15,6 +15,7 @@ class mt_capital_gains_tax_indiv(Variable):
         # the tax for capital gains comes into effect after 2024
         if p.in_effect:
             capital_gains = person("long_term_capital_gains", period)
+            # No tax on zero or negative capital gains
             filing_status = person.tax_unit(
                 "state_filing_status_if_married_filing_separately_on_same_return",
                 period,
@@ -67,6 +68,7 @@ class mt_capital_gains_tax_indiv(Variable):
                 capital_gains_above_threshold * higher_rate
             )
 
-            return lower_capital_gains_tax + higher_capital_gains_tax
+            return max_(lower_capital_gains_tax + higher_capital_gains_tax, 0)
+            # Only apply tax if capital gains are positive
 
         return 0
