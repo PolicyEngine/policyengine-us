@@ -1,4 +1,4 @@
-- name: Homeless child with high income (only 50 pts for homelessness)
+- name: Case 1, homeless child with high income (only 50 pts for homelessness).
   period: 2024
   input:
     people:
@@ -15,6 +15,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,7 +23,7 @@
     # Only age-eligible child gets priority score; homeless (50 pts)
     il_pi_priority_score: [0, 50]
 
-- name: Low income family child
+- name: Case 2, low income family child.
   period: 2024
   input:
     people:
@@ -38,14 +39,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
   output:
-    # Low income (25) + categorical benefits (25) + poverty (10) = 60 pts for child
-    il_pi_priority_score: [0, 60]
+    # Low income (25) + poverty (10) = 35 pts for child
+    il_pi_priority_score: [0, 35]
 
-- name: No risk factors (high income)
+- name: Case 3, no risk factors (high income).
   period: 2024
   input:
     people:
@@ -61,87 +63,91 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
   output:
     il_pi_priority_score: [0, 0]
 
-- name: Family of 3 with one eligible child and one ineligible child
+- name: Case 4, family of 3 with one eligible child and one ineligible child.
   period: 2024
   input:
     people:
-      parent:
+      person1:
         age: 35
         employment_income: 20_000
-      child_eligible:
+      person2:
         age: 1  # Under 3, eligible for PI
-      child_ineligible:
+      person3:
         age: 4  # Age 4, not eligible for PI
     households:
       household:
-        members: [parent, child_eligible, child_ineligible]
+        members: [person1, person2, person3]
         state_code: IL
         is_homeless: true
     spm_units:
       spm_unit:
-        members: [parent, child_eligible, child_ineligible]
+        members: [person1, person2, person3]
+        il_tanf: 0
     tax_units:
       tax_unit:
-        members: [parent, child_eligible, child_ineligible]
+        members: [person1, person2, person3]
   output:
     # Adult: 0 (not demographic eligible)
-    # Child age 1: homeless (50) + low income (25) + poverty (10) + categorical (25) = 110 pts
+    # Child age 1: homeless (50) + low income (25) + poverty (10) = 85 pts
     # Child age 4: 0 (not demographic eligible - too old for PI)
-    il_pi_priority_score: [0, 110, 0]
+    il_pi_priority_score: [0, 85, 0]
 
-- name: Pregnant woman with priority factors
+- name: Case 5, pregnant woman with priority factors.
   period: 2024
   input:
     people:
-      pregnant_woman:
+      person1:
         age: 25
         is_pregnant: true
         employment_income: 15_000
     households:
       household:
-        members: [pregnant_woman]
+        members: [person1]
         state_code: IL
         is_non_english_speaking_home: true
     spm_units:
       spm_unit:
-        members: [pregnant_woman]
+        members: [person1]
+        il_tanf: 0
     tax_units:
       tax_unit:
-        members: [pregnant_woman]
+        members: [person1]
   output:
-    # Non-English home (50) + low income (25) + poverty (10) + categorical (25) = 110 pts
-    il_pi_priority_score: [110]
+    # Non-English home (50) + low income (25) + poverty (10) = 85 pts
+    il_pi_priority_score: [85]
 
-- name: Family with multiple highest priority factors
+- name: Case 6, family with multiple highest priority factors.
   period: 2024
   input:
     people:
-      parent:
+      person1:
         age: 28
         employment_income: 5_000  # Deep poverty
-      infant:
+      person2:
         age: 0
         is_in_foster_care: true
         is_enrolled_in_early_intervention: true
     households:
       household:
-        members: [parent, infant]
+        members: [person1, person2]
         state_code: IL
         is_homeless: true
     spm_units:
       spm_unit:
-        members: [parent, infant]
+        members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
-        members: [parent, infant]
+        members: [person1, person2]
   output:
     # Adult: 0 (not demographic eligible)
     # Infant: homeless (50) + foster (50) + EI (50) + deep poverty (50) +
-    #         low income (25) + poverty (10) + categorical (25) = 260 pts
-    il_pi_priority_score: [0, 260]
+    #         low income (25) + poverty (10) = 235 pts
+    il_pi_priority_score: [0, 235]

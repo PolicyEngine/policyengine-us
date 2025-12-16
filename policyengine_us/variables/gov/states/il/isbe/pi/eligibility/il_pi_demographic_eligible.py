@@ -11,8 +11,8 @@ class il_pi_demographic_eligible(Variable):
 
     def formula(person, period, parameters):
         # Eligible if child under 3 or pregnant woman.
-        p = parameters(period).gov.states.il.isbe.pi.eligibility.age
+        p = parameters(period).gov.states.il.isbe.pi.eligibility.age_threshold
         age = person("age", period)
-        is_child_under_3 = age < p.maximum
+        is_child_under_3 = age < p.child
         is_pregnant = person("is_pregnant", period)
         return is_child_under_3 | is_pregnant

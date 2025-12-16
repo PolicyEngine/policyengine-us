@@ -15,6 +15,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,8 +23,8 @@
     il_pi_demographic_eligible: [false, true]
     # Priority only applies to age-eligible (child under 3 or pregnant)
     il_pi_highest_priority: [false, true]
-    # EI (50) + poverty (10) + categorical benefits (25) = 85 pts for child only
-    il_pi_priority_score: [0, 85]
+    # EI (50) + poverty (10) = 60 pts for child only
+    il_pi_priority_score: [0, 60]
     il_pi_eligible: [false, true]
 
 - name: Case 2, pregnant woman in non-English speaking home.
@@ -42,14 +43,14 @@
     spm_units:
       spm_unit:
         members: [person1]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1]
   output:
     il_pi_highest_priority: [true]
-    # Non-English home (50) + low income (25) + poverty (10) + categorical benefits (25) = 110 pts
-    # But pregnant woman at $20k income - let me verify actual score
-    il_pi_priority_score: [85]
+    # Non-English home (50) + poverty (10) = 60 pts
+    il_pi_priority_score: [60]
     il_pi_eligible: [true]
 
 - name: Case 3, homeless family with toddler.
@@ -69,6 +70,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -76,8 +78,8 @@
     il_pi_demographic_eligible: [false, true]
     # Priority only for age-eligible child
     il_pi_highest_priority: [false, true]
-    # Homeless (50) + deep poverty (50) + low income (25) + poverty (10) + categorical (25) = 160 pts
-    il_pi_priority_score: [0, 160]
+    # Homeless (50) + deep poverty (50) + low income (25) + poverty (10) = 135 pts
+    il_pi_priority_score: [0, 135]
     il_pi_eligible: [false, true]
 
 - name: Case 4, higher income family no risk factors ineligible.
@@ -96,6 +98,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -121,6 +124,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -146,6 +150,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        il_tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -153,6 +158,6 @@
     il_pi_demographic_eligible: [false, true]
     # Priority only for age-eligible child
     il_pi_highest_priority: [false, true]
-    # Foster care (50) + categorical benefits (25) = 75 pts for child
-    il_pi_priority_score: [0, 75]
+    # Foster care (50) = 50 pts for child
+    il_pi_priority_score: [0, 50]
     il_pi_eligible: [false, true]
