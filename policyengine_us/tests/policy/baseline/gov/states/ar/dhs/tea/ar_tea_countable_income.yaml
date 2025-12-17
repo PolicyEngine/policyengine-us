@@ -1,0 +1,98 @@
+# Unit tests for ar_tea_countable_income
+# Total countable income = countable earned income + unearned income
+# Note: Earned income has already been reduced by 20% + 60% deductions
+# Unearned income has no deductions applied
+
+- name: Case 1, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_earned_income: 0
+  output:
+    ar_tea_countable_income: 0
+
+- name: Case 2, only earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_earned_income: 176
+  output:
+    ar_tea_countable_income: 176
+    # 176 (earned after disregards) + 0 (unearned) = 176
+
+- name: Case 3, only unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 150
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_earned_income: 0
+  output:
+    ar_tea_countable_income: 150
+    # 0 (earned) + 150 (unearned) = 150
+
+- name: Case 4, mixed earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_earned_income: 96
+  output:
+    ar_tea_countable_income: 196
+    # 96 (earned after disregards) + 100 (unearned) = 196
+
+- name: Case 5, income at eligibility threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_earned_income: 123
+  output:
+    ar_tea_countable_income: 223
+    # 123 + 100 = 223 (exactly at $223 income eligibility standard)
