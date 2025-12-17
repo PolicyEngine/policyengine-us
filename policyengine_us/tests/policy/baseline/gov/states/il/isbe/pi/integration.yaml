@@ -1,4 +1,4 @@
-- name: Case 1, low income family with infant in Early Intervention.
+- name: Case 1, single parent low income family with infant with developmental delay.
   period: 2024
   input:
     people:
@@ -7,7 +7,7 @@
         employment_income: 25_000
       person2:
         age: 1
-        is_enrolled_in_early_intervention: true
+        has_developmental_delay: true
     households:
       household:
         members: [person1, person2]
@@ -21,13 +21,11 @@
         members: [person1, person2]
   output:
     il_pi_demographic_eligible: [false, true]
-    # Priority only applies to age-eligible (child under 3 or pregnant)
-    il_pi_highest_priority: [false, true]
-    # EI (50) + poverty (10) = 60 pts for child only
-    il_pi_priority_score: [0, 60]
+    # Developmental delay (50) + household has disability (25) + single parent (10) + poverty (10) = 95 pts
+    il_pi_priority_score: [0, 95]
     il_pi_eligible: [false, true]
 
-- name: Case 2, pregnant woman in non-English speaking home.
+- name: Case 2, pregnant single woman in non-English speaking home.
   period: 2024
   input:
     people:
@@ -48,12 +46,11 @@
       tax_unit:
         members: [person1]
   output:
-    il_pi_highest_priority: [true]
-    # Non-English home (50) + poverty (10) = 60 pts
-    il_pi_priority_score: [60]
+    # Non-English home (50) + single parent (10) + poverty (10) = 70 pts
+    il_pi_priority_score: [70]
     il_pi_eligible: [true]
 
-- name: Case 3, homeless family with toddler.
+- name: Case 3, homeless single parent family with toddler.
   period: 2024
   input:
     people:
@@ -76,13 +73,11 @@
         members: [person1, person2]
   output:
     il_pi_demographic_eligible: [false, true]
-    # Priority only for age-eligible child
-    il_pi_highest_priority: [false, true]
-    # Homeless (50) + deep poverty (50) + low income (25) + poverty (10) = 135 pts
-    il_pi_priority_score: [0, 135]
+    # Homeless (50) + deep poverty (50) + low income (25) + single parent (10) + poverty (10) = 145 pts
+    il_pi_priority_score: [0, 145]
     il_pi_eligible: [false, true]
 
-- name: Case 4, higher income family no risk factors ineligible.
+- name: Case 4, higher income married couple no risk factors ineligible.
   period: 2024
   input:
     people:
@@ -90,22 +85,26 @@
         age: 35
         employment_income: 150_000
       person2:
+        age: 35
+        is_tax_unit_spouse: true
+      child:
         age: 1
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, child]
         state_code: IL
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1, person2, child]
         il_tanf: 0
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1, person2, child]
   output:
-    il_pi_demographic_eligible: [false, true]
-    il_pi_priority_score: [0, 0]
-    il_pi_eligible: [false, false]
+    il_pi_demographic_eligible: [false, false, true]
+    # Married couple with high income - no risk factors
+    il_pi_priority_score: [0, 0, 0]
+    il_pi_eligible: [false, false, false]
 
 - name: Case 5, child age 3 transitions out of PI.
   period: 2024
@@ -133,7 +132,7 @@
     # Child has developmental delay but too old for PI
     il_pi_eligible: [false, false]
 
-- name: Case 6, foster child infant highest priority.
+- name: Case 6, single parent foster child infant highest priority.
   period: 2024
   input:
     people:
@@ -156,8 +155,6 @@
         members: [person1, person2]
   output:
     il_pi_demographic_eligible: [false, true]
-    # Priority only for age-eligible child
-    il_pi_highest_priority: [false, true]
-    # Foster care (50) = 50 pts for child
-    il_pi_priority_score: [0, 50]
+    # Foster care (50) + single parent (10) = 60 pts for child
+    il_pi_priority_score: [0, 60]
     il_pi_eligible: [false, true]

@@ -19,8 +19,7 @@ class il_pi_highest_priority_score(Variable):
         is_homeless = household("is_homeless", period)
         # Factor 2: Youth in Care (foster care, child welfare)
         is_in_foster_care = person("is_in_foster_care", period)
-        # Factor 3: Early Intervention or developmental delay
-        is_enrolled_ei = person("is_enrolled_in_early_intervention", period)
+        # Factor 3: Developmental delay
         has_developmental_delay = person("has_developmental_delay", period)
         # Factor 4: Deep poverty (<=50% FPL) and/or receiving TANF
         is_deep_poverty = person("il_pi_is_deep_poverty", period)
@@ -30,7 +29,6 @@ class il_pi_highest_priority_score(Variable):
         highest_priority_factors = [
             is_homeless,
             is_in_foster_care,
-            is_enrolled_ei,
             has_developmental_delay,
             is_deep_poverty,
             is_non_english_home,

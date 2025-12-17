@@ -12,17 +12,24 @@ class il_pi_lower_priority_score(Variable):
     defined_for = "il_pi_demographic_eligible"
 
     def formula(person, period, parameters):
+        household = person.household
         spm_unit = person.spm_unit
 
         # Lower priority factors (10 pts each):
-        # Factor 33: Teen parent at birth of first child
-        was_teen = person("was_teen_parent_at_first_birth", period)
-        is_teen_parent_family = spm_unit.any(was_teen)
+        # Factor 33: Teen parent at birth of first child (Household-level variable)
+        # Parent was under 20 when first child was born
+        is_teen_parent_family = household(
+            "il_isbe_was_teen_parent_at_first_birth", period
+        )
+        # Factor 35: Parent/Caregiver is single parent
+        is_parent = spm_unit.members("is_tax_unit_head_or_spouse", period)
+        is_single_parent = spm_unit.sum(is_parent) == 1
         # Factor 36: Experiencing poverty (<=200% FPL)
         is_poverty = person("il_pi_is_poverty", period)
 
         lower_priority_factors = [
             is_teen_parent_family,
+            is_single_parent,
             is_poverty,
         ]
 
