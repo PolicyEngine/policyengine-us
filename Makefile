@@ -9,10 +9,9 @@ test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
 test-yaml-structural:
-	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib --exclude states,congress
+	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib --exclude states
 test-yaml-structural-heavy:
 	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib/states --batches 1
-	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/contrib/congress --batches 1
 test-yaml-no-structural-states:
 	python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 1 --exclude ny
 test-yaml-no-structural-other:

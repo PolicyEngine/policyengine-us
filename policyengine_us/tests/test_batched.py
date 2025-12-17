@@ -121,6 +121,24 @@ def split_into_batches(
 
         return batches
 
+    # Special handling for contrib/states - each subfolder is its own batch
+    # to allow garbage collection between state tests
+    # Memory usage per state varies significantly (1.3 GB - 5.2 GB measured)
+    # Note: contrib/congress runs all together (~6.3 GB total, under 7 GB limit)
+    if str(base_path).endswith("contrib/states"):
+        subdirs = sorted(
+            [item for item in base_path.iterdir() if item.is_dir()]
+        )
+        # Each state folder becomes its own batch
+        batches = [[str(subdir)] for subdir in subdirs]
+
+        # Also include any root-level YAML files as a separate batch
+        root_files = sorted(list(base_path.glob("*.yaml")))
+        if root_files:
+            batches.append([str(file) for file in root_files])
+
+        return batches if batches else [[str(base_path)]]
+
     # Special handling for reform tests - run all together in one batch
     if "reform" in str(base_path):
         return [[str(base_path)]]

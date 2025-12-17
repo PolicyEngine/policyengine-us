@@ -182,7 +182,7 @@ jobs:
           echo "Running non-structural YAML tests (other)..."
           uv run make test-yaml-no-structural-other
   Structural-Heavy:
-    name: Full Suite - Structural (States + Congress)
+    name: Full Suite - Structural (States)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -198,14 +198,14 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run heavy structural YAML tests (states + congress)
+      - name: Run structural YAML tests (states)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running heavy structural YAML tests..."
+          echo "Running structural YAML tests (contrib/states)..."
           uv run make test-yaml-structural-heavy
   Structural:
-    name: Full Suite - Structural (Other)
+    name: Full Suite - Structural (Other + Congress)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -221,9 +221,9 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run structural YAML tests
+      - name: Run structural YAML tests (other + congress)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running structural YAML tests..."
+          echo "Running structural YAML tests (contrib excl states)..."
           uv run make test-yaml-structural
