@@ -37,11 +37,10 @@ def split_into_batches(
     if exclude is None:
         exclude = []
 
-    # Special handling for contrib tests - split into 6 batches by memory usage
+    # Special handling for contrib tests - split into 7 batches by memory usage
     # Only apply to policy/contrib (structural tests), not baseline/contrib
     if str(base_path).endswith("policy/contrib"):
         # Define batches by memory usage (measured empirically)
-        # Batch 6 (crfb) is always alone due to high memory (8.9 GB)
         BATCH_1 = ["federal", "harris", "treasury"]  # ~9.0 GB
         BATCH_2 = ["ctc", "snap_ea", "ubi_center"]  # ~8.6 GB
         BATCH_3 = ["deductions", "aca", "snap"]  # ~8.1 GB
@@ -60,8 +59,9 @@ def split_into_batches(
             "reported_state_income_tax.yaml",
         ]
         BATCH_6 = ["crfb"]  # ~8.9 GB, always alone
+        BATCH_7 = ["congress"]  # ~6.3 GB
 
-        # Get all subdirectories (excluding states, congress which are in Heavy job)
+        # Get all subdirectories (excluding states which is in Heavy job)
         subdirs = sorted(
             [
                 item
@@ -91,7 +91,13 @@ def split_into_batches(
 
         # Collect known folders/files
         all_known = set(
-            BATCH_1 + BATCH_2 + BATCH_3 + BATCH_4 + BATCH_5_DEFINED + BATCH_6
+            BATCH_1
+            + BATCH_2
+            + BATCH_3
+            + BATCH_4
+            + BATCH_5_DEFINED
+            + BATCH_6
+            + BATCH_7
         )
 
         # Find unknown folders/files (new additions go to Batch 5)
@@ -112,10 +118,11 @@ def split_into_batches(
             get_batch_paths(BATCH_5_DEFINED, subdirs, root_files) + unknown
         )
         batch6 = get_batch_paths(BATCH_6, subdirs, root_files)
+        batch7 = get_batch_paths(BATCH_7, subdirs, root_files)
 
         # Return non-empty batches in order
         batches = []
-        for batch in [batch1, batch2, batch3, batch4, batch5, batch6]:
+        for batch in [batch1, batch2, batch3, batch4, batch5, batch6, batch7]:
             if batch:
                 batches.append(batch)
 

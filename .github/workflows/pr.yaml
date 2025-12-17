@@ -205,7 +205,7 @@ jobs:
           echo "Running structural YAML tests (contrib/states)..."
           uv run make test-yaml-structural-heavy
   Structural:
-    name: Full Suite - Structural (Other + Congress)
+    name: Full Suite - Structural (Other)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -221,7 +221,7 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run structural YAML tests (other + congress)
+      - name: Run structural YAML tests (other)
         env:
           PYTHONUNBUFFERED: 1
         run: |
