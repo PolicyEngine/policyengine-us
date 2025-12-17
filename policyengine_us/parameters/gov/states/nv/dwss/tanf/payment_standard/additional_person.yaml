@@ -5,9 +5,14 @@ metadata:
   period: month
   label: Nevada TANF payment allowance additional person increment
   reference:
-    - title: Nevada DWSS Eligibility and Payments Manual, Section C-140.1 TANF Need Standards Chart
+    - title: TANF Need Standards Chart (2025)
       href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2018)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2017)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/EP_Man_C-0140.pdf
 
-# "Each Add'l" row from C-140.1: +$66
+# "Each Add'l" row from C-140.1
 values:
+  2007-07-01: 65
   2018-04-01: 66

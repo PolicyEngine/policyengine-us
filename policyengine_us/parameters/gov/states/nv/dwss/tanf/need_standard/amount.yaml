@@ -7,25 +7,36 @@ metadata:
     - range(1, 9)
   label: Nevada TANF need standard amount
   reference:
-    - title: Nevada DWSS Eligibility and Payments Manual, Section C-140.1 TANF Need Standards Chart
+    - title: TANF Need Standards Chart (2025)
       href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2018)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2017)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/EP_Man_C-0140.pdf
 
 # 100% Need Standard from C-140.1 TANF Need Standards Chart
-# Effective April 1, 2018
 # For sizes > 8, use amount[8] + (size - 8) * additional_person increment
 1:
+  2015-04-01: 736
   2018-04-01: 759
 2:
+  2015-04-01: 996
   2018-04-01: 1_029
 3:
+  2015-04-01: 1_256
   2018-04-01: 1_299
 4:
+  2015-04-01: 1_516
   2018-04-01: 1_569
 5:
+  2015-04-01: 1_776
   2018-04-01: 1_839
 6:
+  2015-04-01: 2_036
   2018-04-01: 2_109
 7:
+  2015-04-01: 2_296
   2018-04-01: 2_379
 8:
+  2015-04-01: 2_556
   2018-04-01: 2_649

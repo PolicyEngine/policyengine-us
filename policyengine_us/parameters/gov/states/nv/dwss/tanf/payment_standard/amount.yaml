@@ -7,25 +7,36 @@ metadata:
     - range(1, 9)
   label: Nevada TANF payment allowance amount
   reference:
-    - title: Nevada DWSS Eligibility and Payments Manual, Section C-140.1 TANF Need Standards Chart
+    - title: TANF Need Standards Chart (2025)
       href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2018)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2017)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/EP_Man_C-0140.pdf
 
 # Payment Allowance from C-140.1 TANF Need Standards Chart
-# Effective April 1, 2018 - values unchanged through 2025
 # For sizes > 8, use amount[8] + (size - 8) * additional_person increment
 1:
+  2007-07-01: 253
   2018-04-01: 254
 2:
+  2007-07-01: 318
   2018-04-01: 320
 3:
+  2007-07-01: 383
   2018-04-01: 386
 4:
+  2007-07-01: 448
   2018-04-01: 452
 5:
+  2007-07-01: 513
   2018-04-01: 518
 6:
+  2007-07-01: 578
   2018-04-01: 584
 7:
+  2007-07-01: 643
   2018-04-01: 650
 8:
+  2007-07-01: 708
   2018-04-01: 716
