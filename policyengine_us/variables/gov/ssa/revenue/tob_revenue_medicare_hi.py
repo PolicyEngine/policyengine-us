@@ -25,7 +25,12 @@ class tob_revenue_medicare_hi(Variable):
         total_taxable = tier1 + tier2
 
         # Allocate total TOB based on tier 2 proportion
-        # Use where to handle division by zero
-        medicare_share = where(total_taxable > 0, tier2 / total_taxable, 0)
+        # Use np.divide with out/where to handle division by zero safely
+        medicare_share = np.divide(
+            tier2,
+            total_taxable,
+            out=np.zeros_like(tier2, dtype=np.float32),
+            where=total_taxable != 0,
+        )
 
         return total_tob * medicare_share

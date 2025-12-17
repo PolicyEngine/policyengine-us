@@ -30,10 +30,7 @@ class tob_revenue_total(Variable):
         # Delete all calculated variables to force recalculation
         for var_name in list(branch.tax_benefit_system.variables.keys()):
             if var_name not in branch.input_variables:
-                try:
-                    branch.delete_arrays(var_name)
-                except:
-                    pass
+                branch.delete_arrays(var_name)
 
         # Recalculate income tax without taxable SS
         income_tax_without_ss = branch.tax_unit("income_tax", period)

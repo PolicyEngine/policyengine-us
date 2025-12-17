@@ -1,6 +1,5 @@
-- name: OASDI revenue with zero income
+- name: Tier 2 with zero income
   period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
@@ -15,11 +14,10 @@
       household:
         members: [person1]
   output:
-    tob_revenue_oasdi: 0
+    taxable_social_security_tier_2: 0
 
-- name: OASDI revenue below threshold
+- name: Tier 2 below base threshold
   period: 2024
-  absolute_error_margin: 50
   input:
     people:
       person1:
@@ -34,11 +32,10 @@
       household:
         members: [person1]
   output:
-    tob_revenue_oasdi: 0
+    taxable_social_security_tier_2: 0
 
-- name: OASDI revenue in tier 1 only
+- name: Tier 2 in tier 1 range only
   period: 2024
-  absolute_error_margin: 100
   input:
     people:
       person1:
@@ -53,11 +50,10 @@
       household:
         members: [person1]
   output:
-    tob_revenue_oasdi: 450
+    taxable_social_security_tier_2: 850
 
-- name: OASDI revenue in tier 2
+- name: Tier 2 in tier 2 range
   period: 2024
-  absolute_error_margin: 200
   input:
     people:
       person1:
@@ -72,11 +68,10 @@
       household:
         members: [person1]
   output:
-    tob_revenue_oasdi: 750
+    taxable_social_security_tier_2: 21_000
 
-- name: OASDI revenue joint filers
+- name: Tier 2 joint filers in tier 2 range
   period: 2024
-  absolute_error_margin: 100
   input:
     people:
       person1:
@@ -98,9 +93,9 @@
       household:
         members: [person1, person2]
   output:
-    tob_revenue_oasdi: 720
+    taxable_social_security_tier_2: 28_000
 
-- name: OASDI revenue high income
+- name: Tier 2 with high income
   period: 2024
   absolute_error_margin: 100
   input:
@@ -117,23 +112,4 @@
       household:
         members: [person1]
   output:
-    tob_revenue_oasdi: 1_020
-
-- name: OASDI revenue - only tier 1 taxable
-  period: 2024
-  absolute_error_margin: 100
-  input:
-    people:
-      person1:
-        age: 67
-        social_security: 20_000
-        employment_income: 30_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-  output:
-    tob_revenue_oasdi: 540
+    taxable_social_security_tier_2: 29_500

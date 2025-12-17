@@ -1,0 +1,23 @@
+- name: Person in poverty (has poverty gap)
+  period: 2024
+  input:
+    people:
+      person: {}
+    spm_units:
+      spm_unit:
+        members: [person]
+        poverty_gap: 1_000
+  output:
+    in_poverty: true
+
+- name: Person not in poverty (no poverty gap)
+  period: 2024
+  input:
+    people:
+      person: {}
+    spm_units:
+      spm_unit:
+        members: [person]
+        poverty_gap: 0
+  output:
+    in_poverty: false
