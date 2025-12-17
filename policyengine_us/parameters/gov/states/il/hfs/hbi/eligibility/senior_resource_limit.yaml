@@ -1,0 +1,14 @@
+description: Illinois Health Benefits for Immigrant Seniors (HBIS) resource limit
+metadata:
+  unit: currency-USD
+  period: year
+  label: IL HBIS resource limit
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois Legal Aid - Health Benefits for Immigrant Seniors
+      href: https://www.illinoislegalaid.org/legal-information/health-benefits-immigrant-seniors
+
+values:
+  # Non-exempt resources of $17,500 or less per household
+  2020-12-01: 17_500
