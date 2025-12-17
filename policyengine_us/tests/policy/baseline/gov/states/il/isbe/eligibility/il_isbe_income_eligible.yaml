@@ -4,7 +4,7 @@
     state_code: IL
     employment_income: 20_000
   output:
-    il_pfae_income_eligible: true
+    il_isbe_income_eligible: true
 
 - name: Case 2, income above 400% FPL.
   period: 2024
@@ -12,4 +12,4 @@
     state_code: IL
     employment_income: 150_000
   output:
-    il_pfae_income_eligible: false
+    il_isbe_income_eligible: false

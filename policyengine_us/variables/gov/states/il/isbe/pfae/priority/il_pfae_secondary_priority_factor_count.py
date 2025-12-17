@@ -19,14 +19,16 @@ class il_pfae_secondary_priority_factor_count(Variable):
         # Factor 5: Income <= 100% FPL
         is_low_income = person("il_pfae_is_low_income", period)
 
-        # Factor 6: Parent didn't complete high school
-        parent_low_education = person(
+        # Factor 6: Parent didn't complete high school (Household-level variable)
+        parent_low_education = household(
             "parent_has_less_than_high_school_education", period
         )
 
-        # Factor 7: Teen parent at birth of first child
-        was_teen = person("was_teen_parent_at_first_birth", period)
-        parent_was_teen = spm_unit.any(was_teen)
+        # Factor 7: Teen parent at birth of first child (Household-level variable)
+        # Parent was under 20 when first child was born
+        was_teen_parent = household(
+            "il_isbe_was_teen_parent_at_first_birth", period
+        )
 
         # Factor 8: Child or parent born outside US
         born_outside_us = person("is_born_outside_us", period)
@@ -36,12 +38,12 @@ class il_pfae_secondary_priority_factor_count(Variable):
         is_non_english_home = household("is_non_english_speaking_home", period)
 
         # Factor 10: Active Duty Military family
-        is_military = person("is_military", period)
-        is_military_family = spm_unit.any(is_military)
+        is_active_duty_military = person("military_basic_pay", period) > 0
+        is_military_family = spm_unit.any(is_active_duty_military)
 
         # Factor 11: Developmental delay (without IEP)
         has_developmental_delay = person("has_developmental_delay", period)
-        has_iep = person("has_iep", period)
+        has_iep = person("has_individualized_education_program", period)
         delay_without_iep = has_developmental_delay & ~has_iep
 
         # Factor 12: No prior formal early learning
@@ -52,7 +54,7 @@ class il_pfae_secondary_priority_factor_count(Variable):
         factors = [
             is_low_income,
             parent_low_education,
-            parent_was_teen,
+            was_teen_parent,
             is_immigrant_family,
             is_non_english_home,
             is_military_family,

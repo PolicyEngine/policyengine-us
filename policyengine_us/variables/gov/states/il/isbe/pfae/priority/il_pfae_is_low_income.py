@@ -14,7 +14,8 @@ class il_pfae_is_low_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.isbe.pfae.eligibility.income
-        fpg = person.spm_unit("spm_unit_fpg", period)
-        income = person.spm_unit("il_isbe_countable_income", period)
+        spm_unit = person.spm_unit
+        fpg = spm_unit("spm_unit_fpg", period)
+        income = spm_unit("il_isbe_countable_income", period)
         threshold = fpg * p.low_income_rate
         return income <= threshold

@@ -25,7 +25,7 @@ class il_pfae_has_highest_priority_factor(Variable):
         is_in_foster_care = person("is_in_foster_care", period)
 
         # Factor 3: Has IEP
-        has_iep = person("has_iep", period)
+        has_iep = person("has_individualized_education_program", period)
 
         # Factor 4: Income <= 50% FPL OR receiving TANF
         is_deep_poverty = person("il_pfae_is_deep_poverty", period)

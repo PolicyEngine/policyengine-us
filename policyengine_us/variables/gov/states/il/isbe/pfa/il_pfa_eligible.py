@@ -11,7 +11,8 @@ class il_pfa_eligible(Variable):
         "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf",
     )
     defined_for = StateCode.IL
-    # PFA and PFAE have the same child eligibility criteria in practice.
-    # The difference is the level of service: PFA is half-day, PFAE is full-day.
-    # Whether a child gets PFA vs PFAE depends on program availability in their area.
+    # PFA and PFAE share identical eligibility criteria. The difference is
+    # service level: PFA provides half-day, PFAE provides full-day programs.
+    # A child receives one or the other based on local program availability,
+    # not both simultaneously.
     adds = ["il_pfae_eligible"]

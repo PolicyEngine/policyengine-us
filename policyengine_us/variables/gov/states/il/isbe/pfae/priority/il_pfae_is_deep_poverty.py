@@ -16,7 +16,8 @@ class il_pfae_is_deep_poverty(Variable):
         # Per the ISBE PDG enrollment form, Factor 4 includes "Family income at
         # or below 50% of the federal poverty guidelines."
         p = parameters(period).gov.states.il.isbe.pfae.eligibility.income
-        fpg = person.spm_unit("spm_unit_fpg", period)
-        income = person.spm_unit("il_isbe_countable_income", period)
+        spm_unit = person.spm_unit
+        fpg = spm_unit("spm_unit_fpg", period)
+        income = spm_unit("il_isbe_countable_income", period)
         threshold = fpg * p.deep_poverty_rate
         return income <= threshold

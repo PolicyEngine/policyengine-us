@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class has_iep(Variable):
+class has_individualized_education_program(Variable):
     value_type = bool
     entity = Person
     label = "Has an Individualized Education Program (IEP)"

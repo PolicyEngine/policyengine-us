@@ -29,7 +29,7 @@
   input:
     state_code: IL
     has_developmental_delay: true
-    has_iep: true
+    has_individualized_education_program: true
     employment_income: 50_000
   output:
     # IEP is 50-pt factor, so delay doesn't count as 25-pt
@@ -43,16 +43,7 @@
   output:
     il_pfae_secondary_priority_factor_count: 0
 
-- name: Case 6, teen parent factor.
-  period: 2024
-  input:
-    state_code: IL
-    employment_income: 50_000
-    was_teen_parent_at_first_birth: true
-  output:
-    il_pfae_secondary_priority_factor_count: 1
-
-- name: Case 7, immigrant family factor (child born outside US).
+- name: Case 6, immigrant family factor (child born outside US).
   period: 2024
   input:
     state_code: IL
@@ -61,7 +52,7 @@
   output:
     il_pfae_secondary_priority_factor_count: 1
 
-- name: Case 8, no prior formal early learning factor.
+- name: Case 7, no prior formal early learning factor.
   period: 2024
   input:
     state_code: IL
@@ -71,12 +62,22 @@
     # Child has NOT participated in formal early learning = 25 pts
     il_pfae_secondary_priority_factor_count: 1
 
-- name: Case 9, multiple new factors combined.
+- name: Case 8, teen parent at first birth factor.
   period: 2024
   input:
     state_code: IL
     employment_income: 50_000
-    was_teen_parent_at_first_birth: true
+    il_isbe_was_teen_parent_at_first_birth: true
+  output:
+    # Parent was under 20 when first child was born = 25 pts
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 9, multiple factors combined.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+    il_isbe_was_teen_parent_at_first_birth: true
     is_born_outside_us: true
     has_no_prior_formal_early_learning: true
   output:

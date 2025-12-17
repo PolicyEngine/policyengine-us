@@ -3,7 +3,7 @@
   input:
     state_code: IL
     age: 4
-    has_iep: true
+    has_individualized_education_program: true
     employment_income: 20_000
   output:
     il_pfae_eligible: true
@@ -34,7 +34,7 @@
   input:
     state_code: IL
     age: 6
-    has_iep: true
+    has_individualized_education_program: true
   output:
     il_pfae_eligible: false
 
@@ -43,7 +43,7 @@
   input:
     state_code: IL
     age: 4
-    has_iep: true
+    has_individualized_education_program: true
     employment_income: 150_000
   output:
     il_pfae_eligible: false
