@@ -28,14 +28,15 @@ class tob_revenue_medicare_hi(Variable):
         3. HI revenue = (2) - (1)
         """
         sim = tax_unit.simulation
+        p = parameters(period).gov.ssa.revenue
 
         # Get current values
         gross_ss = tax_unit("tax_unit_social_security", period)
         taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
 
-        # Calculate the "first 50%" cap
-        first_50_pct = 0.5 * gross_ss
-        capped_taxable_ss = min_(taxable_ss, first_50_pct)
+        # Calculate the OASDI share cap
+        oasdi_share = p.oasdi_share_of_gross_ss * gross_ss
+        capped_taxable_ss = min_(taxable_ss, oasdi_share)
 
         # === Current tax (with full taxable SS) ===
         tax_full_ss = tax_unit("income_tax", period)

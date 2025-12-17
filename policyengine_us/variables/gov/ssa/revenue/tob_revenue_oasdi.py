@@ -28,14 +28,15 @@ class tob_revenue_oasdi(Variable):
         3. OASDI revenue = (2) - (1)
         """
         sim = tax_unit.simulation
+        p = parameters(period).gov.ssa.revenue
 
         # Get current values
         gross_ss = tax_unit("tax_unit_social_security", period)
         taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
 
-        # Calculate the "first 50%" cap - the original 1983 tier
-        first_50_pct = 0.5 * gross_ss
-        capped_taxable_ss = min_(taxable_ss, first_50_pct)
+        # Calculate the OASDI share cap - the original 1983 tier
+        oasdi_share = p.oasdi_share_of_gross_ss * gross_ss
+        capped_taxable_ss = min_(taxable_ss, oasdi_share)
 
         # === Branch 1: Tax with NO taxable SS ===
         branch_no_ss = sim.get_branch("oasdi_no_ss", clone_system=True)

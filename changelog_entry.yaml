@@ -1,1 +1,4 @@
-
+- bump: patch
+  changes:
+    fixed:
+    - Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C. 401 note Section 121(e), correctly splitting TOB between OASDI and Medicare HI.
