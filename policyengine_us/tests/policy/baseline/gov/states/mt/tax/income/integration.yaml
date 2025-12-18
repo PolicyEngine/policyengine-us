@@ -342,3 +342,32 @@
         state_fips: 30
   output:
     mt_income_tax: 2_207
+
+- name: MT no income tax with negative capital gains (issue 6947)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        long_term_capital_gains: -8_159.1215
+        short_term_capital_gains: -3_253.09815
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        long_term_capital_gains: -8_159.1215
+        short_term_capital_gains: -3_253.09815
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30
+  output:
+    adjusted_gross_income: -3_000
+    mt_income_tax: 0
