@@ -18,9 +18,13 @@ class employer_ss_tax_income_tax_revenue(Variable):
         Calculate OASDI trust fund revenue from employer SS taxation.
 
         Method:
-        1. Get current income_tax
-        2. Branch: Add employer SS to AGI, recalculate income_tax
-        3. SS revenue = tax_with_ss - current_tax
+        1. Get current income_tax (with BOTH SS + Medicare in AGI from reform)
+        2. Branch: Neutralize employer_social_security_tax, recalculate income_tax
+        3. SS revenue = current_tax - tax_without_ss
+
+        This isolates the marginal tax contribution from employer SS by
+        neutralizing the source variable, letting the reform formula
+        naturally exclude SS when calculating gross income.
         """
         sim = tax_unit.simulation
 
@@ -29,17 +33,14 @@ class employer_ss_tax_income_tax_revenue(Variable):
         if not p.in_effect:
             return tax_unit.empty_array()
 
-        # Get employer SS contribution (person-level, sum to tax unit)
-        employer_ss = tax_unit.sum(
-            tax_unit.members("employer_social_security_tax", period)
-        )
-        taxable_ss = p.percentage * employer_ss
+        # Current tax (with reform - both SS and Medicare in AGI)
+        tax_full = tax_unit("income_tax", period)
 
-        # Current tax (baseline)
-        tax_baseline = tax_unit("income_tax", period)
+        # === Branch: Tax WITHOUT employer SS (neutralize source) ===
+        branch = sim.get_branch("without_employer_ss", clone_system=True)
 
-        # === Branch: Tax WITH employer SS added to AGI ===
-        branch = sim.get_branch("add_employer_ss", clone_system=True)
+        # Neutralize the source variable - reform formula will pick up 0 for SS
+        branch.tax_benefit_system.neutralize_variable("employer_social_security_tax")
 
         # Clear cached calculations
         input_vars = set(branch.input_variables)
@@ -50,17 +51,8 @@ class employer_ss_tax_income_tax_revenue(Variable):
                 except:
                     pass
 
-        # Get current AGI and add employer SS
-        current_agi = tax_unit("adjusted_gross_income", period)
-        new_agi = current_agi + taxable_ss
+        tax_without_ss = branch.tax_unit("income_tax", period)
+        del sim.branches["without_employer_ss"]
 
-        # Set the new AGI in the branch
-        tax_unit_pop = branch.populations["tax_unit"]
-        holder = tax_unit_pop.get_holder("adjusted_gross_income")
-        holder.set_input(period, new_agi)
-
-        tax_with_ss = branch.tax_unit("income_tax", period)
-        del sim.branches["add_employer_ss"]
-
-        # SS revenue = tax with SS - baseline tax
-        return max_(tax_with_ss - tax_baseline, 0)
+        # SS revenue = tax with full reform - tax without SS
+        return max_(tax_full - tax_without_ss, 0)
