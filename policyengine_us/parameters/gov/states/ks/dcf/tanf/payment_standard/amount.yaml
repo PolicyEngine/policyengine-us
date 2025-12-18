@@ -1,0 +1,24 @@
+description: Kansas provides this amount as the payment standard under the Temporary Assistance for Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 10)
+  label: Kansas TANF payment standard amount
+  reference:
+    - title: K.A.R. 30-4-100 - Payment Standards
+      href: https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-100
+    - title: K.A.R. 30-4-101 - Basic Standards
+      href: https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101
+    - title: KEESM Appendix F-4 - TAF Non-Shared Living Standards
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/F-4_TAFtable07_11.pdf
+
+1:
+  1997-03-01: 224
+2:
+  1997-03-01: 309
+3:
+  1997-03-01: 386
+4:
+  1997-03-01: 454

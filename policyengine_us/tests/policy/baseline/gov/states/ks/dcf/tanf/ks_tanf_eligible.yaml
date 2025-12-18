@@ -1,0 +1,63 @@
+# Kansas TANF eligibility test
+# Eligible if: has_demographic_eligible & income_eligible & resources_eligible
+# Source: K.A.R. 30-4-50, K.A.R. 30-4-70
+
+- name: Case 1, all eligibility conditions met.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+  output:
+    ks_tanf_eligible: true
+
+- name: Case 2, income ineligible.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: true
+    ks_tanf_income_eligible: false
+    ks_tanf_resources_eligible: true
+  output:
+    ks_tanf_eligible: false
+
+- name: Case 3, resources ineligible.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: false
+  output:
+    ks_tanf_eligible: false
+
+- name: Case 4, demographic ineligible.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: false
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+  output:
+    ks_tanf_eligible: false
+
+- name: Case 5, multiple conditions fail.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: false
+    ks_tanf_income_eligible: false
+    ks_tanf_resources_eligible: true
+  output:
+    ks_tanf_eligible: false
+
+- name: Case 6, all conditions fail.
+  period: 2025-01
+  input:
+    state_code: KS
+    is_demographic_tanf_eligible: false
+    ks_tanf_income_eligible: false
+    ks_tanf_resources_eligible: false
+  output:
+    ks_tanf_eligible: false

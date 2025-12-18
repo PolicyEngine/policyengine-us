@@ -1,0 +1,47 @@
+# Kansas TANF earned income deductions test
+# 60% earned income disregard (KEESM Implementation Memo 2008-0326)
+# Deduction amount = gross_earned_income * 0.60
+
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 0
+  output:
+    ks_tanf_earned_income_deductions: 0
+
+- name: Case 2, low earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 100
+  output:
+    # Deduction: 100 * 0.60 = 60
+    ks_tanf_earned_income_deductions: 60
+
+- name: Case 3, moderate earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 500
+  output:
+    # Deduction: 500 * 0.60 = 300
+    ks_tanf_earned_income_deductions: 300
+
+- name: Case 4, higher earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 1_000
+  output:
+    # Deduction: 1,000 * 0.60 = 600
+    ks_tanf_earned_income_deductions: 600
+
+- name: Case 5, very high earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 2_000
+  output:
+    # Deduction: 2,000 * 0.60 = 1,200
+    ks_tanf_earned_income_deductions: 1_200

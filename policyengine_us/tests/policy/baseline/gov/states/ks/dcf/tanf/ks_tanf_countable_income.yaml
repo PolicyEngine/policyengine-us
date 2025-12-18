@@ -1,0 +1,68 @@
+# Kansas TANF countable income test
+# Countable income = max_(gross_earned - deductions, 0) + unearned
+# With 60% disregard: countable_earned = gross_earned * 0.40
+
+- name: Case 1, no income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    ks_tanf_earned_income_deductions: 0
+  output:
+    ks_tanf_countable_income: 0
+
+- name: Case 2, unearned income only.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 300
+    ks_tanf_earned_income_deductions: 0
+  output:
+    # Unearned counts fully
+    ks_tanf_countable_income: 300
+
+- name: Case 3, earned income only.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 0
+    ks_tanf_earned_income_deductions: 300
+  output:
+    # Countable: max_(500 - 300, 0) + 0 = 200
+    ks_tanf_countable_income: 200
+
+- name: Case 4, combined earned and unearned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 200
+    ks_tanf_earned_income_deductions: 600
+  output:
+    # Countable: max_(1,000 - 600, 0) + 200 = 400 + 200 = 600
+    ks_tanf_countable_income: 600
+
+- name: Case 5, deductions exceed earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 100
+    tanf_gross_unearned_income: 150
+    ks_tanf_earned_income_deductions: 200
+  output:
+    # Countable: max_(100 - 200, 0) + 150 = 0 + 150 = 150
+    ks_tanf_countable_income: 150
+
+- name: Case 6, high earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 2_000
+    tanf_gross_unearned_income: 0
+    ks_tanf_earned_income_deductions: 1_200
+  output:
+    # Countable: max_(2,000 - 1,200, 0) + 0 = 800
+    ks_tanf_countable_income: 800

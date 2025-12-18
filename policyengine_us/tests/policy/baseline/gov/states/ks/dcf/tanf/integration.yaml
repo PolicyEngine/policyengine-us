@@ -1,0 +1,255 @@
+# Kansas TANF integration tests
+# Tests the complete calculation pipeline from inputs to final benefit
+# Key rules:
+# - 60% earned income disregard (countable = 40% of earned)
+# - Payment standards: 1=$224, 2=$309, 3=$386, 4=$454, 5+=$454+$61/person
+# - Resource limit: $3,000
+# - Minimum benefit threshold: $82/month
+
+- name: Case 1, family of 3 with no income, receives full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Intermediate values
+    spm_unit_size: 3
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 0
+    # Eligibility
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 386 - 0 = 386
+    ks_tanf: 386
+
+- name: Case 2, family of 3 with low earned income, receives partial benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 6_000  # $500/month
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Income calculation
+    # Gross earned: $6,000/year = $500/month
+    # Deductions: $500 * 0.60 = $300
+    # Countable earned: $500 - $300 = $200
+    ks_tanf_earned_income_deductions: 300
+    ks_tanf_countable_income: 200
+    # Payment standard for size 3: $386
+    ks_tanf_maximum_benefit: 386
+    # Eligibility
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 386 - 200 = 186
+    ks_tanf: 186
+
+- name: Case 3, family of 3 with income exceeding limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 12_000  # $1,000/month
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 200
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Income calculation
+    # Gross earned: $12,000/year = $1,000/month
+    # Deductions: $1,000 * 0.60 = $600
+    # Countable earned: $1,000 - $600 = $400
+    ks_tanf_earned_income_deductions: 600
+    ks_tanf_countable_income: 400
+    # Payment standard for size 3: $386
+    ks_tanf_maximum_benefit: 386
+    # Eligibility: countable ($400) > payment standard ($386)
+    ks_tanf_income_eligible: false
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: false
+    ks_tanf: 0
+
+- name: Case 4, family exceeding resource limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 5_000  # Exceeds $3,000 limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    spm_unit_size: 2
+    ks_tanf_maximum_benefit: 309
+    # Resources: $5,000 > $3,000 limit
+    ks_tanf_resources_eligible: false
+    ks_tanf_eligible: false
+    ks_tanf: 0
+
+- name: Case 5, family of 2 with unearned income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security: 2_400  # $200/month
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Unearned income has no disregard
+    # Countable: $200/month
+    ks_tanf_countable_income: 200
+    ks_tanf_maximum_benefit: 309
+    # Eligibility: countable ($200) < payment standard ($309)
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 309 - 200 = 109
+    ks_tanf: 109
+
+- name: Case 6, family at minimum benefit threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 9_120  # $760/month
+      person2:
+        age: 9
+        is_tax_unit_dependent: true
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Gross earned: $9,120/year = $760/month
+    # Deductions: $760 * 0.60 = $456
+    # Countable: $760 - $456 = $304
+    ks_tanf_earned_income_deductions: 456
+    ks_tanf_countable_income: 304
+    ks_tanf_maximum_benefit: 386
+    # Benefit: 386 - 304 = 82 (exactly at threshold)
+    ks_tanf_income_eligible: true
+    ks_tanf_eligible: true
+    ks_tanf: 82
+
+- name: Case 7, family benefit below minimum threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 9_600  # $800/month
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Gross earned: $9,600/year = $800/month
+    # Deductions: $800 * 0.60 = $480
+    # Countable: $800 - $480 = $320
+    ks_tanf_earned_income_deductions: 480
+    ks_tanf_countable_income: 320
+    ks_tanf_maximum_benefit: 386
+    # Potential benefit: 386 - 320 = 66 < $82 threshold
+    ks_tanf_income_eligible: true
+    ks_tanf_eligible: true
+    # Benefit = 0 due to minimum threshold
+    ks_tanf: 0
