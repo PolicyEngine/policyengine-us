@@ -1,0 +1,106 @@
+# Unit tests for taxable_social_security_tier_2
+# Tests the tier 2 (50-85%) taxation of Social Security benefits
+# Reference: IRC §86(a)(2)
+# Tier 2 = total_taxable_ss - tier_1
+
+- name: Below base threshold - no tier 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # No taxable SS at all → tier 2 = 0
+    taxable_social_security_tier_2: 0
+
+- name: In tier 1 only - no tier 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # In tier 1 only, total taxable = tier 1 = $2,500
+    # Tier 2 = $2,500 - $2,500 = $0
+    taxable_social_security_tier_2: 0
+
+- name: In tier 2 - significant tier 2 amount
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Total taxable = 85% * $30K = $25,500
+    # Tier 1 = $4,500 (bracket amount)
+    # Tier 2 = $25,500 - $4,500 = $21,000
+    taxable_social_security_tier_2: 21_000
+
+- name: Zero social security - no tier 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_2: 0
+
+- name: Joint filers in tier 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 40_000
+        employment_income: 60_000
+      person2:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = $60K + $20K (half SS) = $80K > $44K adjusted
+    # Total taxable = 85% * $40K = $34,000
+    # Tier 1 = bracket = min(..., 0.5 * ($44K - $32K)) = $6,000
+    # Tier 2 = $34,000 - $6,000 = $28,000
+    taxable_social_security_tier_2: 28_000
