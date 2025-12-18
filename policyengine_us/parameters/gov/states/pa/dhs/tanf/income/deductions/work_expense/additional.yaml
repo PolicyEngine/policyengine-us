@@ -1,0 +1,15 @@
+description: Pennsylvania deducts this additional amount for work expenses under the Temporary Assistance for Needy Families program.
+# Administrative policy effective September 2020. Not codified in PA Code; documented in state plan and handbook.
+
+values:
+  2020-09-26: 200
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania TANF additional work expense deduction
+  reference:
+    - title: PA DHS TANF State Plan 2024
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/tanf/tanf-state-plan-effective-october-1-2024.pdf#page=13
+    - title: PA DHS Cash Assistance Handbook Section 168.22, Work Expense Deduction
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/index.htm#t=160_Income_Deductions%2F160_2_TANF_Earned_Income_Deductions.htm%23160.21_TANF_Earned_Income_Disregard
