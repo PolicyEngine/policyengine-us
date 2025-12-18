@@ -40,7 +40,9 @@ class employer_ss_tax_income_tax_revenue(Variable):
         branch = sim.get_branch("without_employer_ss", clone_system=True)
 
         # Neutralize the source variable - reform formula will pick up 0 for SS
-        branch.tax_benefit_system.neutralize_variable("employer_social_security_tax")
+        branch.tax_benefit_system.neutralize_variable(
+            "employer_social_security_tax"
+        )
 
         # Clear cached calculations
         input_vars = set(branch.input_variables)
