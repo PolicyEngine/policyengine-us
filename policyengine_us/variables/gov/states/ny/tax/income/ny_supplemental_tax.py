@@ -1,5 +1,18 @@
 from policyengine_us.model_api import *
 from policyengine_core.taxscales import MarginalRateTaxScale
+import numpy as np
+
+
+def get_last_finite_threshold(scale):
+    """Get the last non-infinity threshold from a tax scale.
+
+    For NY tax scales, the last threshold may be infinity for certain years.
+    This function returns the last finite threshold value instead.
+    """
+    thresholds = scale.thresholds
+    if np.isinf(thresholds[-1]):
+        return thresholds[-2]
+    return thresholds[-1]
 
 
 class ny_supplemental_tax(Variable):
@@ -54,7 +67,11 @@ class ny_supplemental_tax(Variable):
         )
 
         # For AGI above the high threshold, apply flat top rate to all income
-        high_agi_threshold = p.high_agi_threshold
+        # Get the last finite threshold from each scale (handles infinity in 2022+)
+        high_agi_threshold = select(
+            in_each_status,
+            [get_last_finite_threshold(scale) for scale in scales],
+        )
         # Create array for marginal_rates lookup
         # Use +100 for float32 precision at $25M threshold
         high_agi_lookup = ny_agi * 0 + high_agi_threshold + 100
