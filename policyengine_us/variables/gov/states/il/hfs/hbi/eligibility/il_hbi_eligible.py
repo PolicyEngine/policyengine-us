@@ -22,8 +22,7 @@ class il_hbi_eligible(Variable):
     - HBIA (Health Benefits for Immigrant Adults): Ages 42-64 up to 138% FPL
     - HBIS (Health Benefits for Immigrant Seniors): Ages 65+ up to 100% FPL
 
-    Note: Ages 19-41 are not covered. HBIA ended July 2025, HBIS enrollment
-    is paused but existing enrollees can renew.
+    Note: Ages 19-41 are not covered.
     """
 
     def formula(person, period, parameters):
@@ -38,19 +37,19 @@ class il_hbi_eligible(Variable):
 
         # Determine age group for program-specific in_effect checks
         age = person("age", period)
-        child_max_age = p.child_max_age
-        adult_min_age = p.adult_min_age
-        adult_max_age = p.adult_max_age
-        senior_min_age = p.senior_min_age
+        child_max_age = p.child.max_age
+        adult_min_age = p.adult.min_age
+        adult_max_age = p.adult.max_age
+        senior_min_age = p.senior.min_age
 
         is_child = age <= child_max_age
         is_adult = (age >= adult_min_age) & (age <= adult_max_age)
         is_senior = age >= senior_min_age
 
         # Check if the relevant program is in effect for each age group
-        child_in_effect = p.child_in_effect
-        adult_in_effect = p.adult_in_effect
-        senior_in_effect = p.senior_in_effect
+        child_in_effect = p.child.in_effect
+        adult_in_effect = p.adult.in_effect
+        senior_in_effect = p.senior.in_effect
 
         program_in_effect = (
             (is_child & child_in_effect)

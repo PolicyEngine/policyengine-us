@@ -62,5 +62,46 @@
         spm_unit_net_income: 15_000
   output:
     il_hbi_eligible: [true]
-    # But cannot newly enroll (enrollment paused)
-    il_hbi_new_enrollment_eligible: [false]
+    # HBI-eligible people become Medicaid eligible and receive benefits
+    is_medicaid_eligible: [true]
+    medicaid_group: EXPANSION_ADULT
+
+- name: Illinois HBI child receives Medicaid benefits
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [child]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_net_income: 20_000
+  output:
+    il_hbi_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_group: CHILD
+
+- name: Illinois HBI senior receives Medicaid benefits
+  period: 2024
+  input:
+    people:
+      senior:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [senior]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [senior]
+        spm_unit_net_income: 10_000
+  output:
+    il_hbi_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_group: AGED_DISABLED
