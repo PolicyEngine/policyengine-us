@@ -1,7 +1,7 @@
 name: Pull request
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
 # Concurrency: auto-cancels previous runs when new commits are pushed
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
