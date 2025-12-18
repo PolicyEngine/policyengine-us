@@ -9,6 +9,8 @@ class is_chip_fcep_eligible_person(Variable):
     definition_period = YEAR
     reference = (
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
+        # 42 USC 1397ll defines targeted low-income pregnant woman without uninsured requirement
+        "https://uscode.house.gov/view.xhtml?req=(title:42+section:1397ll+edition:prelim)",
     )
 
     def formula(person, period, parameters):

@@ -10,6 +10,8 @@ class is_chip_eligible_standard_pregnant_person(Variable):
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
+        # 42 USC 1397ll defines targeted low-income pregnant woman without uninsured requirement
+        "https://uscode.house.gov/view.xhtml?req=(title:42+section:1397ll+edition:prelim)",
     )
 
     def formula(person, period, parameters):
