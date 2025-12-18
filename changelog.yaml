@@ -11905,3 +11905,13 @@
     removed:
     - Remove weekly uv.lock update workflow (accidentally merged)
   date: 2025-12-17 04:59:37
+- bump: patch
+  changes:
+    added:
+    - Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue
+      and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+    fixed:
+    - Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C.
+      401 note Section 121(e), correctly splitting TOB between OASDI and Medicare
+      HI.
+  date: 2025-12-18 15:12:11

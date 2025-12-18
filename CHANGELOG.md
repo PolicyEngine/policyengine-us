@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.465.3] - 2025-12-18 15:12:11
+
+### Added
+
+- Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+
+### Fixed
+
+- Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C. 401 note Section 121(e), correctly splitting TOB between OASDI and Medicare HI.
+
 ## [1.465.2] - 2025-12-17 04:59:37
 
 ## [1.465.1] - 2025-12-17 04:17:16
@@ -13949,6 +13959,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.2...1.465.3
 [1.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.1...1.465.2
 [1.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.0...1.465.1
 [1.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.2...1.465.0

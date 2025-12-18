@@ -1,8 +1,8 @@
 name: Push
 on:
   push:
-    branches: [master]
-# Concurrency: auto-cancels previous runs when new commits are pushed
+    branches: [main]
+# Concurrency: queues runs to ensure each merge completes its versioning/publishing
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
