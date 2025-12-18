@@ -10,8 +10,8 @@ class is_chip_eligible_standard_pregnant_person(Variable):
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
-        # Must not have other health insurance coverage
-        "https://www.healthcare.gov/medicaid-chip/childrens-health-insurance-program/",
+        # 42 USC 1397ll defines targeted low-income pregnant woman without uninsured requirement
+        "https://uscode.house.gov/view.xhtml?req=(title:42+section:1397ll+edition:prelim)",
     )
 
     def formula(person, period, parameters):
@@ -42,14 +42,10 @@ class is_chip_eligible_standard_pregnant_person(Variable):
         income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
-        # Must not have other health insurance coverage to qualify for CHIP
-        has_esi = person("has_esi", period)
-
         return (
             is_pregnant
             & state_has_pregnant_chip
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
-            & ~has_esi
         )
