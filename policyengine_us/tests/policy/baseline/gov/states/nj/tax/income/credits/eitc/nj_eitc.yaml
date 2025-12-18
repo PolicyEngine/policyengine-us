@@ -3,13 +3,14 @@
   absolute_error_margin: 0
   input:
     eitc: 100
+    eitc_phased_in: 1
+    eitc_reduction: 0
     eitc_eligible: true
     nj_childless_eitc_age_eligible: true
+    takes_up_eitc: true
     state_code: NJ
   output:
-    eitc: 100
-    nj_childless_eitc_age_eligible: true
-    nj_eitc: 240
+    nj_eitc: 40
 
 - name: New Jersey EITC, fraction of max zero-child federal EITC (doesn't qualify for federal EITC because too young)
   period: 2022
@@ -17,6 +18,8 @@
   input:
     eitc: 0
     eitc_eligible: false
+    eitc_phased_in: 1
+    eitc_reduction: 0
     nj_childless_eitc_age_eligible: true
     state_code: NJ
   output:
@@ -29,6 +32,8 @@
     filing_status: JOINT
     eitc: 0
     eitc_eligible: false
+    eitc_phased_in: 1
+    eitc_reduction: 0
     nj_childless_eitc_age_eligible: true
     state_code: NJ
   output:

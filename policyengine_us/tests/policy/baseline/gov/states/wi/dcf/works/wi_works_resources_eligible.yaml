@@ -1,0 +1,38 @@
+- name: Case 1, resources below limit.
+  period: 2025
+  input:
+    state_code: WI
+    wi_works_countable_resources: 2_000
+  output:
+    wi_works_resources_eligible: true
+
+- name: Case 2, resources at exactly limit.
+  period: 2025
+  input:
+    state_code: WI
+    wi_works_countable_resources: 2_500
+  output:
+    wi_works_resources_eligible: true
+
+- name: Case 3, resources above limit.
+  period: 2025
+  input:
+    state_code: WI
+    wi_works_countable_resources: 2_501
+  output:
+    wi_works_resources_eligible: false
+
+- name: Case 4, zero resources.
+  period: 2025
+  input:
+    state_code: WI
+    wi_works_countable_resources: 0
+  output:
+    wi_works_resources_eligible: true
+
+- name: Case 5, non-Wisconsin state.
+  period: 2025
+  input:
+    state_code: CA
+  output:
+    wi_works_resources_eligible: false
