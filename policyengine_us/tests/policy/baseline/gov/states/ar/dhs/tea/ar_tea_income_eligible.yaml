@@ -1,16 +1,13 @@
 # Unit tests for ar_tea_income_eligible
-# Arkansas TEA has two income tests:
-# 1. Gross income test: Gross income must be < 185% FPL
-# 2. Net income test: Countable income must be <= $223/month (all family sizes)
+# Arkansas TEA income eligibility: Countable income must be <= $513/month (all family sizes)
+# Income limit increased from $223 to $513 effective 01/01/2023
 
-- name: Case 1, zero income passes both tests.
+- name: Case 1, zero income is eligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 0
-        tanf_gross_unearned_income: 0
     households:
       household:
         members: [person1]
@@ -21,17 +18,14 @@
         ar_tea_countable_income: 0
   output:
     ar_tea_income_eligible: true
-    # Gross: 0 < 185% FPL -> pass
-    # Net: 0 <= 223 -> pass
+    # 0 <= 513 -> eligible
 
-- name: Case 2, low income passes both tests.
+- name: Case 2, countable income below limit is eligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 300
-        tanf_gross_unearned_income: 0
     households:
       household:
         members: [person1]
@@ -39,20 +33,73 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ar_tea_countable_income: 150
+        ar_tea_countable_income: 400
   output:
     ar_tea_income_eligible: true
-    # Gross: 300 < 185% FPL (~$2,322 for size 1) -> pass
-    # Net: 150 <= 223 -> pass
+    # 400 <= 513 -> eligible
 
-- name: Case 3, net income at threshold passes.
+- name: Case 3, countable income at threshold is eligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 500
-        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 513
+  output:
+    ar_tea_income_eligible: true
+    # 513 <= 513 -> eligible (at threshold is still eligible)
+
+- name: Case 4, countable income one dollar over threshold is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 514
+  output:
+    ar_tea_income_eligible: false
+    # 514 > 513 -> ineligible
+
+- name: Case 5, countable income well above threshold is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 700
+  output:
+    ar_tea_income_eligible: false
+    # 700 > 513 -> ineligible
+
+# 2022 tests - using old $223 income limit (before 01/01/2023 increase)
+
+- name: Case 6, 2022 countable income at old threshold is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
     households:
       household:
         members: [person1]
@@ -63,17 +110,14 @@
         ar_tea_countable_income: 223
   output:
     ar_tea_income_eligible: true
-    # Gross: 500 < 185% FPL -> pass
-    # Net: 223 <= 223 -> pass (at threshold is still eligible)
+    # 223 <= 223 -> eligible (at old threshold)
 
-- name: Case 4, net income one dollar over threshold fails.
-  period: 2024-01
+- name: Case 7, 2022 countable income one dollar over old threshold is ineligible.
+  period: 2022-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 500
-        tanf_gross_unearned_income: 0
     households:
       household:
         members: [person1]
@@ -84,17 +128,14 @@
         ar_tea_countable_income: 224
   output:
     ar_tea_income_eligible: false
-    # Gross: 500 < 185% FPL -> pass
-    # Net: 224 > 223 -> FAIL
+    # 224 > 223 -> ineligible (old threshold)
 
-- name: Case 5, gross income above 185% FPL fails.
-  period: 2024-01
+- name: Case 8, 2022 countable income of 400 is ineligible under old limit.
+  period: 2022-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 2_500
-        tanf_gross_unearned_income: 0
     households:
       household:
         members: [person1]
@@ -102,59 +143,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ar_tea_countable_income: 100
+        ar_tea_countable_income: 400
   output:
     ar_tea_income_eligible: false
-    # 185% FPL for size 1 in 2024: $15,060 * 1.85 / 12 = $2,321.75
-    # Gross: 2,500 >= 2,321.75 -> FAIL (even though net income would pass)
-
-- name: Case 6, family of 3 gross income below 185% FPL.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 3_000
-        tanf_gross_unearned_income: 0
-      person2:
-        age: 10
-      person3:
-        age: 8
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: AR
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ar_tea_countable_income: 150
-  output:
-    ar_tea_income_eligible: true
-    # 185% FPL for size 3 in 2024: $25,820 * 1.85 / 12 = $3,980.58
-    # Gross: 3,000 < 3,980.58 -> pass
-    # Net: 150 <= 223 -> pass
-
-- name: Case 7, family of 3 gross income above 185% FPL.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 4_500
-        tanf_gross_unearned_income: 0
-      person2:
-        age: 10
-      person3:
-        age: 8
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: AR
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ar_tea_countable_income: 100
-  output:
-    ar_tea_income_eligible: false
-    # 185% FPL for size 3 in 2024: $25,820 * 1.85 / 12 = $3,980.58
-    # Gross: 4,500 >= 3,980.58 -> FAIL
+    # 400 > 223 -> ineligible (but would be eligible under 2024 $513 limit)

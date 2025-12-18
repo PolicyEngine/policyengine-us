@@ -10,7 +10,4 @@ class ar_tea_countable_income(Variable):
     reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
     defined_for = StateCode.AR
 
-    def formula(spm_unit, period, parameters):
-        countable_earned = spm_unit("ar_tea_countable_earned_income", period)
-        unearned = spm_unit("tanf_gross_unearned_income", period)
-        return countable_earned + unearned
+    adds = ["ar_tea_countable_earned_income", "tanf_gross_unearned_income"]

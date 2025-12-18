@@ -11,7 +11,7 @@ class ar_tea(Variable):
     defined_for = "ar_tea_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per 208.00.13 Ark. Code R. Section 001, Section 6.1.1
+        # Per TEA Manual Section 2362 - Reduced Payment - Gross Income Trigger
         p = parameters(period).gov.states.ar.dhs.tea
 
         maximum_benefit = spm_unit("ar_tea_maximum_benefit", period)
@@ -23,12 +23,14 @@ class ar_tea(Variable):
         gross_income = gross_earned + unearned
 
         above_trigger = gross_income >= p.payment_standard.trigger.amount
-
-        # Apply 50% reduction to maximum payment when above trigger
-        effective_maximum = where(
-            above_trigger,
-            maximum_benefit * (1 - p.payment_standard.trigger.reduction_rate),
-            maximum_benefit,
+        reduced_payment = maximum_benefit * (
+            1 - p.payment_standard.trigger.reduction_rate
         )
 
-        return max_(effective_maximum - countable_income, 0)
+        # When gross income >= trigger: payment is 50% of max (no subtraction)
+        # When gross income < trigger: payment is max - countable income
+        return where(
+            above_trigger,
+            reduced_payment,
+            max_(maximum_benefit - countable_income, 0),
+        )

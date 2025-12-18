@@ -12,6 +12,14 @@ class ar_tea_eligible(Variable):
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("ar_tea_income_eligible", period)
         resources_eligible = spm_unit("ar_tea_resources_eligible", period)
-        # Use federal demographic eligibility (already SPM unit-level)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
-        return income_eligible & resources_eligible & demographic_eligible
+        # Must have at least one U.S. citizen or qualified immigrant
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+        )
+        return (
+            income_eligible
+            & resources_eligible
+            & demographic_eligible
+            & immigration_eligible
+        )
