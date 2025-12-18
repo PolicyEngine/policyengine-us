@@ -1,6 +1,6 @@
 # Kansas TANF eligibility test
-# Eligible if: has_demographic_eligible & income_eligible & resources_eligible
-# Source: K.A.R. 30-4-50, K.A.R. 30-4-70
+# Eligible if: demographic & gross_income & net_income & resources all pass
+# Source: K.A.R. 30-4-50, K.A.R. 30-4-70, K.S.A. 39-709
 
 - name: Case 1, all eligibility conditions met.
   period: 2025-01
@@ -11,6 +11,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ks_tanf_gross_income_eligible: true
         ks_tanf_income_eligible: true
         ks_tanf_resources_eligible: true
     households:
@@ -20,7 +21,7 @@
   output:
     ks_tanf_eligible: true
 
-- name: Case 2, income ineligible.
+- name: Case 2, gross income ineligible.
   period: 2025-01
   input:
     people:
@@ -29,6 +30,26 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ks_tanf_gross_income_eligible: false
+        ks_tanf_income_eligible: true
+        ks_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_tanf_eligible: false
+
+- name: Case 3, net income ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf_gross_income_eligible: true
         ks_tanf_income_eligible: false
         ks_tanf_resources_eligible: true
     households:
@@ -38,7 +59,7 @@
   output:
     ks_tanf_eligible: false
 
-- name: Case 3, resources ineligible.
+- name: Case 4, resources ineligible.
   period: 2025-01
   input:
     people:
@@ -47,6 +68,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ks_tanf_gross_income_eligible: true
         ks_tanf_income_eligible: true
         ks_tanf_resources_eligible: false
     households:
@@ -56,7 +78,7 @@
   output:
     ks_tanf_eligible: false
 
-- name: Case 4, demographic ineligible.
+- name: Case 5, demographic ineligible.
   period: 2025-01
   input:
     people:
@@ -65,25 +87,8 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ks_tanf_gross_income_eligible: true
         ks_tanf_income_eligible: true
-        ks_tanf_resources_eligible: true
-    households:
-      household:
-        members: [person1]
-        state_code: KS
-  output:
-    ks_tanf_eligible: false
-
-- name: Case 5, multiple conditions fail.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        is_person_demographic_tanf_eligible: false
-    spm_units:
-      spm_unit:
-        members: [person1]
-        ks_tanf_income_eligible: false
         ks_tanf_resources_eligible: true
     households:
       household:
@@ -101,6 +106,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ks_tanf_gross_income_eligible: false
         ks_tanf_income_eligible: false
         ks_tanf_resources_eligible: false
     households:

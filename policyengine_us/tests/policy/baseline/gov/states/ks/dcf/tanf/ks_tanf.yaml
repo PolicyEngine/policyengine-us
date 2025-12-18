@@ -1,6 +1,5 @@
 # Kansas TANF benefit calculation test
-# Benefit = max_(payment_standard - countable_income, 0)
-# Minimum benefit threshold: $82/month (KEESM 2512)
+# Benefit = floor(max(payment_standard - countable_income, 0))
 # Benefits rounded down to nearest dollar (KEESM 7400)
 # Source: KEESM 7110, K.A.R. 30-4-100
 
@@ -26,29 +25,18 @@
     # Benefit: 386 - 200 = 186
     ks_tanf: 186
 
-- name: Case 3, eligible with benefit at minimum threshold.
+- name: Case 3, eligible with small benefit.
   period: 2025-01
   input:
     state_code: KS
     ks_tanf_eligible: true
     ks_tanf_maximum_benefit: 386
-    ks_tanf_countable_income: 304
+    ks_tanf_countable_income: 350
   output:
-    # Benefit: 386 - 304 = 82 (exactly at threshold)
-    ks_tanf: 82
+    # Benefit: 386 - 350 = 36
+    ks_tanf: 36
 
-- name: Case 4, eligible with benefit below minimum threshold.
-  period: 2025-01
-  input:
-    state_code: KS
-    ks_tanf_eligible: true
-    ks_tanf_maximum_benefit: 386
-    ks_tanf_countable_income: 320
-  output:
-    # Benefit: 386 - 320 = 66 < 82, so benefit = 0
-    ks_tanf: 0
-
-- name: Case 5, ineligible, no benefit.
+- name: Case 4, ineligible, no benefit.
   period: 2025-01
   input:
     state_code: KS
@@ -58,7 +46,7 @@
   output:
     ks_tanf: 0
 
-- name: Case 6, eligible family of 4.
+- name: Case 5, eligible family of 4.
   period: 2025-01
   input:
     state_code: KS
@@ -69,7 +57,7 @@
     # Benefit: 454 - 150 = 304
     ks_tanf: 304
 
-- name: Case 7, income equals payment standard.
+- name: Case 6, income equals payment standard.
   period: 2025-01
   input:
     state_code: KS
@@ -77,16 +65,16 @@
     ks_tanf_maximum_benefit: 386
     ks_tanf_countable_income: 386
   output:
-    # Benefit: 386 - 386 = 0 (also below minimum)
+    # Benefit: 386 - 386 = 0
     ks_tanf: 0
 
-- name: Case 8, benefit slightly above minimum threshold.
+- name: Case 7, benefit with decimal rounding.
   period: 2025-01
   input:
     state_code: KS
     ks_tanf_eligible: true
     ks_tanf_maximum_benefit: 386
-    ks_tanf_countable_income: 303
+    ks_tanf_countable_income: 100.50
   output:
-    # Benefit: 386 - 303 = 83 (above threshold)
-    ks_tanf: 83
+    # Benefit: floor(386 - 100.50) = floor(285.50) = 285
+    ks_tanf: 285

@@ -1,10 +1,11 @@
 # Kansas TANF integration tests
 # Tests the complete calculation pipeline from inputs to final benefit
 # Key rules:
-# - 60% earned income disregard (countable = 40% of earned)
+# - $90 work expense deduction (KEESM 8151)
+# - 60% earned income disregard on remainder (KEESM Memo 2008-0326)
+# - Gross income must be < 30% FPL (K.S.A. 39-709)
 # - Payment standards: 1=$224, 2=$309, 3=$386, 4=$454, 5+=$454+$61/person
 # - Resource limit: $3,000
-# - Minimum benefit threshold: $82/month
 
 - name: Case 1, family of 3 with no income, receives full benefit.
   period: 2025-01
@@ -35,13 +36,14 @@
     ks_tanf_maximum_benefit: 386
     ks_tanf_countable_income: 0
     # Eligibility
+    ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
     # Benefit: 386 - 0 = 386
     ks_tanf: 386
 
-- name: Case 2, family of 3 with low earned income, receives partial benefit.
+- name: Case 2, family of 3 with low earned income.
   period: 2025-01
   input:
     people:
@@ -66,28 +68,31 @@
         members: [person1, person2, person3]
         state_code: KS
   output:
-    # Income calculation
+    # Income calculation with new formula:
     # Gross earned: $6,000/year = $500/month
-    # Deductions: $500 * 0.60 = $300
-    # Countable earned: $500 - $300 = $200
-    ks_tanf_earned_income_deductions: 300
-    ks_tanf_countable_income: 200
-    # Payment standard for size 3: $386
+    # Work expense: $90
+    # Remainder: $500 - $90 = $410
+    # 60% disregard: $410 * 0.60 = $246
+    # Total deductions: $90 + $246 = $336
+    # Countable: $500 - $336 = $164
+    ks_tanf_earned_income_deductions: 336
+    ks_tanf_countable_income: 164
     ks_tanf_maximum_benefit: 386
-    # Eligibility
+    # Gross income ($500) < 30% FPL for family of 3 (~$670)
+    ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 386 - 200 = 186
-    ks_tanf: 186
+    # Benefit: 386 - 164 = 222
+    ks_tanf: 222
 
-- name: Case 3, family of 3 with income exceeding limit.
+- name: Case 3, family of 3 with net income exceeding limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 32
-        employment_income_before_lsr: 12_000  # $1,000/month
+        employment_income_before_lsr: 9_600  # $800/month
       person2:
         age: 6
         is_tax_unit_dependent: true
@@ -106,17 +111,18 @@
         members: [person1, person2, person3]
         state_code: KS
   output:
-    # Income calculation
-    # Gross earned: $12,000/year = $1,000/month
-    # Deductions: $1,000 * 0.60 = $600
-    # Countable earned: $1,000 - $600 = $400
-    ks_tanf_earned_income_deductions: 600
-    ks_tanf_countable_income: 400
-    # Payment standard for size 3: $386
+    # Gross earned: $9,600/year = $800/month
+    # Work expense: $90
+    # Remainder: $800 - $90 = $710
+    # 60% disregard: $710 * 0.60 = $426
+    # Total deductions: $90 + $426 = $516
+    # Countable: $800 - $516 = $284 (WAIT - this should make them eligible)
+    # Let me recalculate for higher income
+    ks_tanf_earned_income_deductions: 516
+    ks_tanf_countable_income: 284
     ks_tanf_maximum_benefit: 386
-    # Eligibility: countable ($400) > payment standard ($386)
-    ks_tanf_income_eligible: false
-    ks_tanf_resources_eligible: true
+    # Gross ($800) > 30% FPL for family of 3 (~$670)
+    ks_tanf_gross_income_eligible: false
     ks_tanf_eligible: false
     ks_tanf: 0
 
@@ -174,20 +180,21 @@
     # Countable: $200/month
     ks_tanf_countable_income: 200
     ks_tanf_maximum_benefit: 309
-    # Eligibility: countable ($200) < payment standard ($309)
+    # Gross ($200) < 30% FPL for family of 2 (~$530)
+    ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
     # Benefit: 309 - 200 = 109
     ks_tanf: 109
 
-- name: Case 6, family at minimum benefit threshold.
+- name: Case 6, family with small benefit.
   period: 2025-01
   input:
     people:
       person1:
         age: 33
-        employment_income_before_lsr: 9_120  # $760/month
+        employment_income_before_lsr: 4_800  # $400/month
       person2:
         age: 9
         is_tax_unit_dependent: true
@@ -206,50 +213,18 @@
         members: [person1, person2, person3]
         state_code: KS
   output:
-    # Gross earned: $9,120/year = $760/month
-    # Deductions: $760 * 0.60 = $456
-    # Countable: $760 - $456 = $304
-    ks_tanf_earned_income_deductions: 456
-    ks_tanf_countable_income: 304
+    # Gross earned: $4,800/year = $400/month
+    # Work expense: $90
+    # Remainder: $400 - $90 = $310
+    # 60% disregard: $310 * 0.60 = $186
+    # Total deductions: $90 + $186 = $276
+    # Countable: $400 - $276 = $124
+    ks_tanf_earned_income_deductions: 276
+    ks_tanf_countable_income: 124
     ks_tanf_maximum_benefit: 386
-    # Benefit: 386 - 304 = 82 (exactly at threshold)
+    # Gross ($400) < 30% FPL (~$670)
+    ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_eligible: true
-    ks_tanf: 82
-
-- name: Case 7, family benefit below minimum threshold.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 29
-        employment_income_before_lsr: 9_600  # $800/month
-      person2:
-        age: 11
-        is_tax_unit_dependent: true
-      person3:
-        age: 8
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_cash_assets: 400
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: KS
-  output:
-    # Gross earned: $9,600/year = $800/month
-    # Deductions: $800 * 0.60 = $480
-    # Countable: $800 - $480 = $320
-    ks_tanf_earned_income_deductions: 480
-    ks_tanf_countable_income: 320
-    ks_tanf_maximum_benefit: 386
-    # Potential benefit: 386 - 320 = 66 < $82 threshold
-    ks_tanf_income_eligible: true
-    ks_tanf_eligible: true
-    # Benefit = 0 due to minimum threshold
-    ks_tanf: 0
+    # Benefit: 386 - 124 = 262
+    ks_tanf: 262

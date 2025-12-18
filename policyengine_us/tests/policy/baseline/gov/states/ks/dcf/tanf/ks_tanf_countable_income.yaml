@@ -1,6 +1,6 @@
 # Kansas TANF countable income test
 # Countable income = max_(gross_earned - deductions, 0) + unearned
-# With 60% disregard: countable_earned = gross_earned * 0.40
+# Deductions = $90 work expense + 60% of remainder (per KEESM 8151)
 
 - name: Case 1, no income.
   period: 2025-01
@@ -23,16 +23,16 @@
     # Unearned counts fully
     ks_tanf_countable_income: 300
 
-- name: Case 3, earned income only.
+- name: Case 3, earned income $500.
   period: 2025-01
   input:
     state_code: KS
     tanf_gross_earned_income: 500
     tanf_gross_unearned_income: 0
-    ks_tanf_earned_income_deductions: 300
+    ks_tanf_earned_income_deductions: 336
   output:
-    # Countable: max_(500 - 300, 0) + 0 = 200
-    ks_tanf_countable_income: 200
+    # Countable: max_(500 - 336, 0) + 0 = 164
+    ks_tanf_countable_income: 164
 
 - name: Case 4, combined earned and unearned income.
   period: 2025-01
@@ -40,29 +40,29 @@
     state_code: KS
     tanf_gross_earned_income: 1_000
     tanf_gross_unearned_income: 200
-    ks_tanf_earned_income_deductions: 600
+    ks_tanf_earned_income_deductions: 636
   output:
-    # Countable: max_(1,000 - 600, 0) + 200 = 400 + 200 = 600
-    ks_tanf_countable_income: 600
+    # Countable: max_(1000 - 636, 0) + 200 = 364 + 200 = 564
+    ks_tanf_countable_income: 564
 
-- name: Case 5, deductions exceed earned income.
+- name: Case 5, low earned income with deductions exceeding.
   period: 2025-01
   input:
     state_code: KS
-    tanf_gross_earned_income: 100
+    tanf_gross_earned_income: 50
     tanf_gross_unearned_income: 150
-    ks_tanf_earned_income_deductions: 200
+    ks_tanf_earned_income_deductions: 50
   output:
-    # Countable: max_(100 - 200, 0) + 150 = 0 + 150 = 150
+    # Countable: max_(50 - 50, 0) + 150 = 0 + 150 = 150
     ks_tanf_countable_income: 150
 
-- name: Case 6, high earned income.
+- name: Case 6, earned income exactly $90.
   period: 2025-01
   input:
     state_code: KS
-    tanf_gross_earned_income: 2_000
-    tanf_gross_unearned_income: 0
-    ks_tanf_earned_income_deductions: 1_200
+    tanf_gross_earned_income: 90
+    tanf_gross_unearned_income: 100
+    ks_tanf_earned_income_deductions: 90
   output:
-    # Countable: max_(2,000 - 1,200, 0) + 0 = 800
-    ks_tanf_countable_income: 800
+    # Countable: max_(90 - 90, 0) + 100 = 0 + 100 = 100
+    ks_tanf_countable_income: 100

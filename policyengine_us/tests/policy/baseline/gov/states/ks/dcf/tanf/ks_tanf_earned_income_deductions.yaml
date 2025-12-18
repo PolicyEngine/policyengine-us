@@ -1,6 +1,7 @@
 # Kansas TANF earned income deductions test
-# 60% earned income disregard (KEESM Implementation Memo 2008-0326)
-# Deduction amount = gross_earned_income * 0.60
+# Per KEESM 8151: $90 work expense deducted first
+# Per KEESM Implementation Memo 2008-0326: Then 60% of remainder disregarded
+# Total deductions = min(gross, $90) + max(gross - $90, 0) * 0.60
 
 - name: Case 1, no earned income.
   period: 2025-01
@@ -8,40 +9,63 @@
     state_code: KS
     tanf_gross_earned_income: 0
   output:
+    # No income, no deductions
     ks_tanf_earned_income_deductions: 0
 
-- name: Case 2, low earned income.
+- name: Case 2, earned income below $90.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 50
+  output:
+    # Work expense capped at gross: 50
+    # Remainder: 0, so 60% of 0 = 0
+    # Total: 50 + 0 = 50
+    ks_tanf_earned_income_deductions: 50
+
+- name: Case 3, earned income at $90.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 90
+  output:
+    # Work expense: 90
+    # Remainder: 0, so 60% of 0 = 0
+    # Total: 90 + 0 = 90
+    ks_tanf_earned_income_deductions: 90
+
+- name: Case 4, earned income $100.
   period: 2025-01
   input:
     state_code: KS
     tanf_gross_earned_income: 100
   output:
-    # Deduction: 100 * 0.60 = 60
-    ks_tanf_earned_income_deductions: 60
+    # Work expense: 90
+    # Remainder: 100 - 90 = 10
+    # 60% disregard: 10 * 0.60 = 6
+    # Total: 90 + 6 = 96
+    ks_tanf_earned_income_deductions: 96
 
-- name: Case 3, moderate earned income.
+- name: Case 5, earned income $500.
   period: 2025-01
   input:
     state_code: KS
     tanf_gross_earned_income: 500
   output:
-    # Deduction: 500 * 0.60 = 300
-    ks_tanf_earned_income_deductions: 300
+    # Work expense: 90
+    # Remainder: 500 - 90 = 410
+    # 60% disregard: 410 * 0.60 = 246
+    # Total: 90 + 246 = 336
+    ks_tanf_earned_income_deductions: 336
 
-- name: Case 4, higher earned income.
+- name: Case 6, earned income $1,000.
   period: 2025-01
   input:
     state_code: KS
     tanf_gross_earned_income: 1_000
   output:
-    # Deduction: 1,000 * 0.60 = 600
-    ks_tanf_earned_income_deductions: 600
-
-- name: Case 5, very high earned income.
-  period: 2025-01
-  input:
-    state_code: KS
-    tanf_gross_earned_income: 2_000
-  output:
-    # Deduction: 2,000 * 0.60 = 1,200
-    ks_tanf_earned_income_deductions: 1_200
+    # Work expense: 90
+    # Remainder: 1000 - 90 = 910
+    # 60% disregard: 910 * 0.60 = 546
+    # Total: 90 + 546 = 636
+    ks_tanf_earned_income_deductions: 636
