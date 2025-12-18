@@ -1,0 +1,30 @@
+description: Wisconsin provides this amount as the monthly payment under the Wisconsin Works program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Wisconsin Works payment amount
+  breakdown:
+    - wi_works_placement
+  reference:
+    - title: Wisconsin Statutes 49.148(1)(b)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iii/148/1/b
+    - title: W-2 Manual 7.4.1 - Community Service Jobs
+      href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm
+    - title: Wisconsin Administrative Code DCF 101.18(2)
+      href: https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/18/2
+
+CSJ:
+  2013-01-01: 653
+
+W2_TRANSITION:
+  2013-01-01: 608
+
+CMC:
+  2013-01-01: 673
+
+ARP:
+  2013-01-01: 673
+
+NONE:
+  2013-01-01: 0

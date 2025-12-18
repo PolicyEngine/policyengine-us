@@ -5,6 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.465.3] - 2025-12-18 15:12:11
+
+### Added
+
+- Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+
+### Fixed
+
+- Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C. 401 note Section 121(e), correctly splitting TOB between OASDI and Medicare HI.
+
+## [1.465.2] - 2025-12-17 04:59:37
+
+## [1.465.1] - 2025-12-17 04:17:16
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates
+
+## [1.465.0] - 2025-12-16 15:06:15
+
+### Added
+
+- Missouri TANF program.
+
+## [1.464.2] - 2025-12-16 13:23:24
+
+### Fixed
+
+- Arizona property tax credit now uses correct income definition per ARS 43-1072 and ITR 12-1, excluding only Social Security (not pensions, capital gains, or exemptions)
+
+## [1.464.1] - 2025-12-16 04:11:35
+
+### Fixed
+
+- Iowa Child and Dependent Care Credit now uses taxable income instead of net income.
+
+## [1.464.0] - 2025-12-16 00:26:02
+
+### Added
+
+- Wisconsin Works (W-2) program with placement-based benefits and eligibility.
+
+## [1.463.0] - 2025-12-16 00:00:49
+
+### Added
+
+- Pennsylvania TANF.
+
+## [1.462.1] - 2025-12-15 23:24:43
+
+### Fixed
+
+- MA income tax now allows short-term capital losses to offset long-term capital gains in Part C
+
+## [1.462.0] - 2025-12-15 22:36:33
+
+### Fixed
+
+- Maine Dependent Exemption Credit now correctly includes Credit for Other Dependents (ODC) qualifying dependents age 17 and older, as required by Maine statute 36 M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and ODC).
+
+## [1.461.3] - 2025-12-15 22:10:21
+
+### Fixed
+
+- Fix DC Property Tax Credit incorrectly granting credit for negative AGI with zero rent/property taxes
+
+## [1.461.2] - 2025-12-15 21:42:35
+
+### Fixed
+
+- Montana income tax calculation with negative capital gains now correctly produces zero tax instead of phantom positive tax
+
+## [1.461.1] - 2025-12-15 21:03:17
+
+### Fixed
+
+- Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+
 ## [1.461.0] - 2025-12-15 19:02:39
 
 ### Added
@@ -13881,6 +13959,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.2...1.465.3
+[1.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.1...1.465.2
+[1.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.0...1.465.1
+[1.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.2...1.465.0
+[1.464.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.1...1.464.2
+[1.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.0...1.464.1
+[1.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.463.0...1.464.0
+[1.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.1...1.463.0
+[1.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.0...1.462.1
+[1.462.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.3...1.462.0
+[1.461.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.2...1.461.3
+[1.461.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.1...1.461.2
+[1.461.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.0...1.461.1
 [1.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.2...1.461.0
 [1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
 [1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
