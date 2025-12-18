@@ -97,3 +97,36 @@
     medicaid_income_level: 0.90
   output:
     il_hbi_eligible: true
+
+- name: HBIS senior with resources above limit not eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 0.90
+    spm_unit_assets: 20_000
+  output:
+    il_hbi_eligible: false
+
+- name: HBIS senior with resources at limit eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 0.90
+    spm_unit_assets: 17_500
+  output:
+    il_hbi_eligible: true
+
+- name: HBIA adult with high resources still eligible (no resource test)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.00
+    spm_unit_assets: 100_000
+  output:
+    il_hbi_eligible: true

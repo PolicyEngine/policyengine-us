@@ -34,6 +34,7 @@ class il_hbi_eligible(Variable):
         )
         age_eligible = person("il_hbi_age_eligible", period)
         income_eligible = person("il_hbi_income_eligible", period)
+        resource_eligible = person("il_hbi_resource_eligible", period)
 
         # Determine age group for program-specific in_effect checks
         age = person("age", period)
@@ -61,5 +62,6 @@ class il_hbi_eligible(Variable):
             immigration_eligible
             & age_eligible
             & income_eligible
+            & resource_eligible
             & program_in_effect
         )
