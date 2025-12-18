@@ -20,6 +20,7 @@
 - name: Reform active - basic case
   period: 2024
   absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
   input:
     gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
     gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
@@ -41,6 +42,7 @@
 - name: Reform active - high income
   period: 2024
   absolute_error_margin: 50
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
   input:
     gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
     gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
@@ -63,6 +65,7 @@
 - name: Reform active - partial percentage
   period: 2024
   absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
   input:
     gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
     gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.5
