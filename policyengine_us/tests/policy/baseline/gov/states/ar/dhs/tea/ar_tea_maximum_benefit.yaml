@@ -1,0 +1,181 @@
+# Unit tests for ar_tea_maximum_benefit
+# Arkansas TEA payment standards by family size (full payment, before 50% reduction):
+# 1: $81, 2: $162, 3: $204, 4: $247, 5: $286
+# 6: $331, 7: $373, 8: $415, 9+: $457
+
+- name: Case 1, family size 1.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 1
+  output:
+    ar_tea_maximum_benefit: 81
+
+- name: Case 2, family size 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+  output:
+    ar_tea_maximum_benefit: 162
+
+- name: Case 3, family size 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    ar_tea_maximum_benefit: 204
+
+- name: Case 4, family size 4.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 4
+  output:
+    ar_tea_maximum_benefit: 247
+
+- name: Case 5, family size 5.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 5
+  output:
+    ar_tea_maximum_benefit: 286
+
+- name: Case 6, family size 6.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 6
+  output:
+    ar_tea_maximum_benefit: 331
+
+- name: Case 7, family size 7.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 7
+  output:
+    ar_tea_maximum_benefit: 373
+
+- name: Case 8, family size 8.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 8
+  output:
+    ar_tea_maximum_benefit: 415
+
+- name: Case 9, family size 9 or more.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 9
+  output:
+    ar_tea_maximum_benefit: 457
+
+- name: Case 10, family size 10 capped at 9 rate.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 10
+  output:
+    ar_tea_maximum_benefit: 457
+    # Family sizes 9+ all receive $457

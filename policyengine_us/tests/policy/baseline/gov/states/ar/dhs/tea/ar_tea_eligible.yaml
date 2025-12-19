@@ -1,0 +1,100 @@
+# Unit tests for ar_tea_eligible
+# Overall eligibility requires:
+# 1. Income eligibility (countable income <= $223)
+# 2. Resource eligibility (resources <= $3,000)
+# 3. Demographic eligibility (from federal baseline - SPM unit level)
+
+- name: Case 1, all requirements met.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_income_eligible: true
+        ar_tea_resources_eligible: true
+        is_demographic_tanf_eligible: true
+  output:
+    ar_tea_eligible: true
+
+- name: Case 2, income ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_income_eligible: false
+        ar_tea_resources_eligible: true
+        is_demographic_tanf_eligible: true
+  output:
+    ar_tea_eligible: false
+
+- name: Case 3, resources ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_income_eligible: true
+        ar_tea_resources_eligible: false
+        is_demographic_tanf_eligible: true
+  output:
+    ar_tea_eligible: false
+
+- name: Case 4, demographic ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_income_eligible: true
+        ar_tea_resources_eligible: true
+        is_demographic_tanf_eligible: false
+  output:
+    ar_tea_eligible: false
+
+- name: Case 5, multiple requirements not met.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_income_eligible: false
+        ar_tea_resources_eligible: false
+        is_demographic_tanf_eligible: true
+  output:
+    ar_tea_eligible: false
