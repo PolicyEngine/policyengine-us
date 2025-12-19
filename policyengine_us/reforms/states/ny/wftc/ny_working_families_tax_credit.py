@@ -475,7 +475,9 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(person, period, parameters):
             p = parameters(period).gov.contrib.states.ny.wftc.exemptions
             if p.in_effect:
-                child_dependent = person("is_qualifying_child_dependent", period)
+                child_dependent = person(
+                    "is_qualifying_child_dependent", period
+                )
                 wftc_eligible_child = person("ny_wftc_eligible_child", period)
                 return child_dependent & ~wftc_eligible_child
             return person("is_qualifying_child_dependent", period)
