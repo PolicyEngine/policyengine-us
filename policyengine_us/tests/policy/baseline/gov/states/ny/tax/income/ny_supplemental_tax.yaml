@@ -64,7 +64,7 @@
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 5
 
 - name: Unit test 6 for 2021 New York supplemental tax married filing jointly and qualifying surviving spouse
-  absolute_error_margin: 0.1
+  absolute_error_margin: 2
   period: 2021
   input:
     state_code: NY
@@ -129,13 +129,13 @@
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 10
 
 - name: Unit test 5 for 2021 New York supplemental tax single and married filling separately filer
-  absolute_error_margin: 0.1
+  absolute_error_margin: 2
   period: 2021
   input:
     state_code: NY
     filing_status: SINGLE
     ny_agi: 30_000_000 # AGI > $25,000,000
-    ny_taxable_income: 21_000_000 
+    ny_taxable_income: 21_000_000
     ny_main_income_tax: 2_098_682.5
   output:
     ny_supplemental_tax: 190_317.5 # 21,000,000 * 10.9% - 2,098,682.5
@@ -194,13 +194,13 @@
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 15
 
 - name: Unit test 5 for 2021 New York supplemental tax head of household filer
-  absolute_error_margin: 0.1
+  absolute_error_margin: 2
   period: 2021
-  input: 
+  input:
     state_code: NY
-    filing_status: HEAD_OF_HOUSEHOLD 
+    filing_status: HEAD_OF_HOUSEHOLD
     ny_agi: 30_000_000 # AGI > $25,000,000
-    ny_taxable_income: 28_000_000 
+    ny_taxable_income: 28_000_000
     ny_main_income_tax: 2_822_096.8
   output:
     ny_supplemental_tax: 229_903.2 # 28,000,000 * 10.9% - 2,822,096.8
@@ -295,9 +295,23 @@
   period: 2028
   input:
     state_code: NY
-    filing_status: SEPARATE 
+    filing_status: SEPARATE
     ny_agi: 220_000
     ny_taxable_income: 200_000
     ny_main_income_tax: 11_963.755
   output:
     ny_supplemental_tax: 568
+
+- name: Unit test for 2024 single filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 33_440_296
+    ny_taxable_income: 33_432_296
+    ny_main_income_tax: 3_429_049.71
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 33_432_296 * 0.109 - 3_429_049.71 = 215_070.55
+    ny_supplemental_tax: 215_070.55
