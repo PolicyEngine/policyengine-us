@@ -1,0 +1,14 @@
+description: Wisconsin excludes this amount of vehicle equity from countable resources under the Wisconsin Works program.
+
+values:
+  2025-01-01: 10_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin Works vehicle exclusion
+  reference:
+    - title: W-2 Manual 3.3.4 - Counting Assets
+      href: https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.3.4_COUNTING_ASSETS.htm
+    - title: Wisconsin Administrative Code DCF 101.09(3)(b)
+      href: https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/b
