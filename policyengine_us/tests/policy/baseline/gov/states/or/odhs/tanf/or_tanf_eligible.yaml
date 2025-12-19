@@ -1,0 +1,68 @@
+# Oregon TANF Overall Eligibility (OAR 461-135-0070)
+# Requires: demographic eligibility + citizenship + income eligibility + resources eligibility
+
+- name: All eligibility criteria met is eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    or_tanf_income_eligible: true
+    or_tanf_resources_eligible: true
+  output:
+    or_tanf_eligible: true
+
+- name: Not demographic eligible is not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    or_tanf_income_eligible: true
+    or_tanf_resources_eligible: true
+  output:
+    or_tanf_eligible: false
+
+- name: No citizen or legal immigrant is not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    or_tanf_income_eligible: true
+    or_tanf_resources_eligible: true
+  output:
+    or_tanf_eligible: false
+
+- name: Not income eligible is not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    or_tanf_income_eligible: false
+    or_tanf_resources_eligible: true
+  output:
+    or_tanf_eligible: false
+
+- name: Not resources eligible is not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    or_tanf_income_eligible: true
+    or_tanf_resources_eligible: false
+  output:
+    or_tanf_eligible: false
+
+- name: Multiple eligibility failures
+  period: 2024-01
+  input:
+    state_code: OR
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: false
+    or_tanf_income_eligible: false
+    or_tanf_resources_eligible: false
+  output:
+    or_tanf_eligible: false

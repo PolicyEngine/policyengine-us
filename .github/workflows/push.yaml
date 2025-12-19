@@ -1,11 +1,11 @@
 name: Push
 on:
   push:
-    branches: [master]
+    branches: [main]
 # Concurrency: queues runs to ensure each merge completes its versioning/publishing
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   Lint:
     runs-on: ubuntu-latest
@@ -43,8 +43,6 @@ jobs:
         run: uv pip install "yaml-changelog>=0.1.7" --system
       - name: Build changelog
         run: make changelog
-      - name: Update lock file
-        run: uv lock --upgrade
       - name: Update changelog
         uses: EndBug/add-and-commit@v9
         with:
@@ -55,7 +53,7 @@ jobs:
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
           fetch: false
   NonStructural-States:
-    name: Non-Structural YAML Tests (States)
+    name: States (excl NY) & Python
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -80,8 +78,14 @@ jobs:
         run: |
           echo "Running non-structural YAML tests (states)..."
           uv run make test-yaml-no-structural-states
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          uv run make test-other
   NonStructural-Other:
-    name: Non-Structural YAML Tests (Other)
+    name: Baseline (incl NY) & Reform
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -106,40 +110,8 @@ jobs:
         run: |
           echo "Running non-structural YAML tests (other)..."
           uv run make test-yaml-no-structural-other
-  Structural-and-Python:
-    name: Structural YAML & Python Tests
-    runs-on: ubuntu-latest
-    if: |
-      (github.repository == 'PolicyEngine/policyengine-us')
-      && (github.event.head_commit.message == 'Update PolicyEngine US')
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: uv sync --dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run structural YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running structural YAML tests..."
-          uv run make test-yaml-structural
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
   Structural-Heavy:
-    name: Structural YAML Tests (Heavy)
+    name: Structural (States + Congress)
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -164,12 +136,38 @@ jobs:
         run: |
           echo "Running heavy structural YAML tests..."
           uv run make test-yaml-structural-heavy
+  Structural:
+    name: Structural (Other)
+    runs-on: ubuntu-latest
+    if: |
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run structural YAML tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running structural YAML tests..."
+          uv run make test-yaml-structural
   Publish:
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [NonStructural-States, NonStructural-Other, Structural-and-Python, Structural-Heavy]
+    needs: [NonStructural-States, NonStructural-Other, Structural, Structural-Heavy]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

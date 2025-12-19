@@ -1,0 +1,81 @@
+- name: Case 1, no earnings.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 0
+    state_code: PA
+  output:
+    pa_tanf_earned_income_after_deductions_person: 0
+
+- name: Case 2, low earnings, enrolled recipient.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 12_000
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $12,000/12 = $1,000
+    # Step 1: $1,000 × 50% = $500 (EID: keep 50%)
+    # Step 2: $500 - $200 = $300 (WED)
+    pa_tanf_earned_income_after_deductions_person: 300
+
+- name: Case 3, low earnings, new applicant, not EID eligible.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 12_000
+    is_tanf_enrolled: false
+    state_code: PA
+  output:
+    # Monthly: $12,000/12 = $1,000
+    # New applicants with income above Standard of Need are not EID eligible
+    # No EID, no WED - full earned income is countable
+    pa_tanf_earned_income_after_deductions_person: 1_000
+
+- name: Case 4, high earnings, enrolled recipient.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 36_000
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $36,000/12 = $3,000
+    # Step 1: $3,000 × 50% = $1,500 (EID: keep 50%)
+    # Step 2: $1,500 - $200 = $1,300 (WED)
+    pa_tanf_earned_income_after_deductions_person: 1_300
+
+- name: Case 5, high earnings, new applicant, not EID eligible.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 36_000
+    is_tanf_enrolled: false
+    state_code: PA
+  output:
+    # Monthly: $36,000/12 = $3,000
+    # Not EID eligible - full earned income is countable
+    pa_tanf_earned_income_after_deductions_person: 3_000
+
+- name: Case 6, deductions exceed income, enrolled.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 2_400
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $2,400/12 = $200
+    # Step 1: $200 × 50% = $100 (EID: keep 50%)
+    # Step 2: $100 - $200 = -$100, clipped to 0 (WED)
+    pa_tanf_earned_income_after_deductions_person: 0
+
+- name: Case 7, very low earnings, new applicant, EID eligible.
+  period: 2024-01
+  input:
+    employment_income_before_lsr: 3_000
+    is_tanf_enrolled: false
+    spm_unit_size: 3
+    state_code: PA
+  output:
+    # Monthly: $3,000/12 = $250
+    # Group 2 size 3: Standard of Need = $587
+    # Eligibility test: $250 - $90 = $160 < $587 → EID eligible
+    # Step 1: $250 × 50% = $125 (EID: keep 50%)
+    # Step 2: $125 - $200 = -$75, clipped to 0 (WED)
+    pa_tanf_earned_income_after_deductions_person: 0
