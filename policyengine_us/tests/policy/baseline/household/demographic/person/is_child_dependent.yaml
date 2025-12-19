@@ -16,29 +16,105 @@
   output:
     is_child_dependent: true
 
-- name: Non-student dependent age ineligible.
+- name: Non-student dependent age ineligible with high income.
   period: 2021
-  input: 
-    is_tax_unit_dependent: true
-    age: 19
-    is_full_time_student: false
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income above qualifying relative threshold ($4,150 for 2021)
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
   output:
-    is_child_dependent: false
+    # Fails age test (19+ non-student) and income test (above threshold)
+    is_child_dependent: [false, false]
 
-- name: Student dependent age ineligible.
+- name: Student dependent age ineligible with high income.
   period: 2021
-  input: 
-    is_tax_unit_dependent: true
-    age: 24
-    is_full_time_student: true
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+      student:
+        age: 24
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income above qualifying relative threshold ($4,150 for 2021)
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
   output:
-    is_child_dependent: false
+    # Fails age test (24+ student) and income test (above threshold)
+    is_child_dependent: [false, false]
+
+- name: Non-student age ineligible but qualifies as qualifying relative.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income below qualifying relative threshold ($4,150 for 2021)
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Fails age test but qualifies as qualifying relative
+    is_child_dependent: [false, true]
 
 - name: Age eligible non-dependent.
   period: 2021
-  input: 
+  input:
     is_tax_unit_dependent: false
     age: 18
     is_full_time_student: false
   output:
+    is_child_dependent: false
+
+- name: Permanently disabled adult qualifies as child dependent.
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 30
+    is_full_time_student: false
+    is_permanently_and_totally_disabled: true
+  output:
+    # Per IRC 152(c)(3)(B), permanently disabled individuals are
+    # exempt from the age test for qualifying child status
+    is_child_dependent: true
+
+- name: Over-age disabled non-dependent does not qualify.
+  period: 2024
+  input:
+    is_tax_unit_dependent: false
+    age: 30
+    is_permanently_and_totally_disabled: true
+  output:
+    # Must still be a dependent to qualify
     is_child_dependent: false

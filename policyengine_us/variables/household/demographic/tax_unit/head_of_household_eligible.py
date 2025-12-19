@@ -10,11 +10,13 @@ class head_of_household_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         married = tax_unit("tax_unit_married", period)
-        has_child_dependents = (
+        # is_child_dependent includes qualifying children, qualifying
+        # relatives, and permanently disabled individuals
+        has_qualifying_person = (
             tax_unit("tax_unit_child_dependents", period) > 0
         )
         return (
-            has_child_dependents
+            has_qualifying_person
             & ~married
             & ~tax_unit("surviving_spouse_eligible", period)
         )
