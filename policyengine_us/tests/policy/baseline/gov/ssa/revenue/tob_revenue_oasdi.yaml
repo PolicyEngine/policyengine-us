@@ -1,6 +1,6 @@
 # Unit tests for tob_revenue_oasdi
 # Tests OASDI trust fund revenue allocation from SS benefit taxation
-# OASDI receives revenue proportional to tier 1's share of total taxable SS
+# Uses double-branching methodology per 42 U.S.C. 401 note
 
 - name: No SS benefits - zero OASDI revenue
   period: 2024
@@ -36,12 +36,12 @@
       household:
         members: [person1]
   output:
-    # No taxable SS → no TOB revenue → no OASDI share
+    # Combined income below threshold - no taxable SS
     tob_revenue_oasdi: 0
 
 - name: Tier 1 only - all revenue to OASDI
   period: 2024
-  absolute_error_margin: 50
+  absolute_error_margin: 10
   input:
     people:
       person1:
@@ -56,14 +56,13 @@
       household:
         members: [person1]
   output:
-    # In tier 1 only: tier1 = $2,500, tier2 = $0
-    # All taxable SS is tier 1 → 100% to OASDI
-    # Total TOB revenue all goes to OASDI
-    taxable_social_security_tier_1: 2_500
-    taxable_social_security_tier_2: 0
-    # tob_revenue_oasdi = tob_revenue_total (100% share)
+    # Taxable SS = $2,500 (in tier 1 only)
+    # Since taxable SS <= 50% of gross, all goes to OASDI
+    tax_unit_taxable_social_security: 2_500
+    tob_revenue_oasdi: 250
+    tob_revenue_medicare_hi: 0
 
-- name: In tier 2 - proportional split
+- name: High income single - branching allocation
   period: 2024
   absolute_error_margin: 100
   input:
@@ -80,7 +79,51 @@
       household:
         members: [person1]
   output:
-    # Tier 1 = $4,500, Tier 2 = $21,000, Total = $25,500
-    # OASDI share = 4,500 / 25,500 = 17.6%
-    # Total TOB ~$4,240 → OASDI = $4,240 * 0.176 = ~$748
-    tob_revenue_oasdi: 748
+    # Using branching: OASDI gets marginal tax on first 50% of gross
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_total: 4_240
+    tob_revenue_oasdi: 1_930
+    tob_revenue_medicare_hi: 2_310
+
+- name: Very high income - branching allocation
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Higher marginal rates affect the split
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_total: 5_778
+    tob_revenue_oasdi: 3_300
+    tob_revenue_medicare_hi: 2_478
+
+- name: Zero taxable SS - zero revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 15_000
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tax_unit_taxable_social_security: 0
+    tob_revenue_oasdi: 0
+    tob_revenue_medicare_hi: 0
