@@ -30,7 +30,7 @@
 
     # Eligibility chain
     mn_mfip_income_eligible: true
-    mn_mfip_resource_eligible: true
+    mn_mfip_resources_eligible: true
     mn_mfip_eligible: true
 
     # Final benefit
@@ -75,7 +75,7 @@
     # Eligibility
     # Countable (467.5) < FWL (1533.4) = true
     mn_mfip_income_eligible: true
-    mn_mfip_resource_eligible: true
+    mn_mfip_resources_eligible: true
     mn_mfip_eligible: true
 
     # Benefit calculation
@@ -196,7 +196,7 @@
         state_code: MN
   output:
     # Resources check (YEAR variable, so checking via eligibility)
-    mn_mfip_resource_eligible: false
+    mn_mfip_resources_eligible: false
 
     # Other eligibility factors would pass
     mn_mfip_income_eligible: true
@@ -234,7 +234,7 @@
     # Eligibility
     # Countable (1967.5) < FWL (1195.7) = false
     mn_mfip_income_eligible: false
-    mn_mfip_resource_eligible: true
+    mn_mfip_resources_eligible: true
     mn_mfip_eligible: false
     mn_mfip: 0
 

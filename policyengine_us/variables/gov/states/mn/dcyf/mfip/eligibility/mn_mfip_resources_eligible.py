@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mn_mfip_resource_eligible(Variable):
+class mn_mfip_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Minnesota MFIP due to resources"

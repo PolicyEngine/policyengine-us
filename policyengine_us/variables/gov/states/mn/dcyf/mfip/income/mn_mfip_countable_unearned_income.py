@@ -13,7 +13,7 @@ class mn_mfip_countable_unearned_income(Variable):
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
-        gross_unearned = spm_unit("tanf_gross_unearned_income", period)
+        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])
         disregard = spm_unit("mn_mfip_child_support_disregard", period)
         countable_child_support = max_(child_support - disregard, 0)
