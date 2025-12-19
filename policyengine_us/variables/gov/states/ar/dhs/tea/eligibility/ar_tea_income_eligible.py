@@ -12,6 +12,6 @@ class ar_tea_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Per 208.00.13 Ark. Code R. Section 001, Section 3.3
         p = parameters(period).gov.states.ar.dhs.tea.income
-        # Countable income must be at or below $223
+        # Countable income must be at or below the income limit
         countable_income = spm_unit("ar_tea_countable_income", period)
         return countable_income <= p.income_limit

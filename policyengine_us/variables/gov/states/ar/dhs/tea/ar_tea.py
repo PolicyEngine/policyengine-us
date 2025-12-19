@@ -18,9 +18,11 @@ class ar_tea(Variable):
         countable_income = spm_unit("ar_tea_countable_income", period)
 
         # Check if gross income triggers 50% payment reduction
-        gross_earned = spm_unit("tanf_gross_earned_income", period)
-        unearned = spm_unit("tanf_gross_unearned_income", period)
-        gross_income = gross_earned + unearned
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
+        )
 
         above_trigger = gross_income >= p.payment_standard.trigger.amount
         reduced_payment = maximum_benefit * (

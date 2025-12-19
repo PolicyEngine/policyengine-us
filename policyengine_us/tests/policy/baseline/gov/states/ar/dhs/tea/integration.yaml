@@ -39,7 +39,7 @@
     ar_tea_maximum_benefit: 204
     # Family size 3 -> $204 payment standard
     ar_tea: 204
-    # Gross income 0 < 446, so full payment
+    # Gross income 0 < 1,026, so no reduction
     # max(204 - 0, 0) = 204
 
 - name: Case 2, ongoing family of 3 with earned income below trigger receives partial benefit.
@@ -81,7 +81,7 @@
     # Benefit calculation
     ar_tea_maximum_benefit: 204
     ar_tea: 76
-    # Gross income 400 < 446, so full payment standard
+    # Gross income 400 < 1,026, so no reduction
     # max(204 - 128, 0) = 76
 
 - name: Case 3, ongoing family of 2 with earnings below trigger.
@@ -242,9 +242,8 @@
     # Benefit calculation
     ar_tea_maximum_benefit: 204
     ar_tea: 0
-    # Gross income 800 >= 446, so 50% reduction
-    # Reduced payment = 204 * 0.5 = 102
-    # max(102 - 256, 0) = 0
+    # Gross income 800 < 1,026, so no reduction
+    # max(204 - 256, 0) = 0 (countable income exceeds maximum benefit)
 
 - name: Case 7, resources exceed limit making family ineligible.
   period: 2024-01
@@ -316,7 +315,7 @@
     # Benefit calculation
     ar_tea_maximum_benefit: 204
     ar_tea: 0
-    # Gross income 400 < 446, so full payment standard
+    # Gross income 400 < 1,026, so no reduction
     # max(204 - 320, 0) = 0
 
 - name: Case 9, ongoing recipient with gross income above trigger.
@@ -516,3 +515,163 @@
     ar_tea: 81
     # Gross income 1,200 >= 1,026, so 50% reduction
     # 162 * 0.5 = 81 (per manual: "payment is 50% of the maximum")
+
+# Gross Income Trigger Boundary Tests
+
+- name: Boundary test, gross income $1,025 (one below trigger - no reduction).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_300
+        # Annual $12,300 = $1,025/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Income calculation chain
+    tanf_gross_earned_income: [1_025, 0, 0]
+    ar_tea_countable_earned_income: 328
+    # 1,025 * 0.80 * 0.40 = 328
+    ar_tea_countable_income: 328
+
+    # Eligibility chain
+    ar_tea_income_eligible: true
+    # 328 <= 513 -> eligible
+    ar_tea_eligible: true
+
+    # Benefit calculation
+    ar_tea_maximum_benefit: 204
+    ar_tea: 0
+    # Gross income 1,025 < 1,026, so NO reduction
+    # max(204 - 328, 0) = 0 (countable income exceeds maximum benefit)
+
+- name: Boundary test, gross income $1,027 (one above trigger - 50% reduction).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_324
+        # Annual $12,324 = $1,027/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Income calculation chain
+    tanf_gross_earned_income: [1_027, 0, 0]
+    ar_tea_countable_earned_income: 328.64
+    # 1,027 * 0.80 * 0.40 = 328.64
+    ar_tea_countable_income: 328.64
+
+    # Eligibility chain
+    ar_tea_income_eligible: true
+    # 328.64 <= 513 -> eligible
+    ar_tea_eligible: true
+
+    # Benefit calculation
+    ar_tea_maximum_benefit: 204
+    ar_tea: 102
+    # Gross income 1,027 >= 1,026, so 50% reduction
+    # 204 * 0.5 = 102 (no subtraction when above trigger)
+
+# Historical Trigger Tests (2022 - $446 threshold)
+
+- name: Historical test 2022, ongoing recipient below $446 trigger.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 5_340
+        # Annual $5,340 = $445/month (one below trigger)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Income calculation chain
+    tanf_gross_earned_income: [445, 0]
+    ar_tea_countable_earned_income: 142.4
+    # 445 * 0.80 * 0.40 = 142.4
+    ar_tea_countable_income: 142.4
+
+    # Eligibility chain
+    ar_tea_income_eligible: true
+    # 142.4 <= 223 -> eligible (2022 income limit)
+    ar_tea_eligible: true
+
+    # Benefit calculation
+    ar_tea_maximum_benefit: 162
+    ar_tea: 19.6
+    # Gross income 445 < 446, so NO reduction
+    # max(162 - 142.4, 0) = 19.6
+
+- name: Historical test 2022, ongoing recipient above $446 trigger.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 5_364
+        # Annual $5,364 = $447/month (one above trigger)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Income calculation chain
+    tanf_gross_earned_income: [447, 0]
+    ar_tea_countable_earned_income: 143.04
+    # 447 * 0.80 * 0.40 = 143.04
+    ar_tea_countable_income: 143.04
+
+    # Eligibility chain
+    ar_tea_income_eligible: true
+    # 143.04 <= 223 -> eligible (2022 income limit)
+    ar_tea_eligible: true
+
+    # Benefit calculation
+    ar_tea_maximum_benefit: 162
+    ar_tea: 81
+    # Gross income 447 >= 446, so 50% reduction
+    # 162 * 0.5 = 81 (no subtraction when above trigger)
