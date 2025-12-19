@@ -1,0 +1,62 @@
+- name: Eligible household with positive benefit
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 500
+    mi_fip_countable_income_for_benefit: 200
+  output:
+    mi_fip: 300
+
+- name: Eligible household at boundary - countable income equals payment standard
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 500
+    mi_fip_countable_income_for_benefit: 500
+  output:
+    mi_fip: 0
+
+- name: Eligible household with zero income
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 500
+    mi_fip_countable_income_for_benefit: 0
+  output:
+    mi_fip: 500
+
+- name: Eligible household with countable income exceeding payment standard
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 500
+    mi_fip_countable_income_for_benefit: 600
+  output:
+    mi_fip: 0
+
+- name: Ineligible household returns zero
+  period: 2025-01
+  input:
+    mi_fip_eligible: false
+    mi_fip_payment_standard: 500
+    mi_fip_countable_income_for_benefit: 200
+  output:
+    mi_fip: 0
+
+- name: Eligible household with small benefit amount
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 100
+    mi_fip_countable_income_for_benefit: 99
+  output:
+    mi_fip: 1
+
+- name: Eligible household with countable income one dollar below payment standard
+  period: 2025-01
+  input:
+    mi_fip_eligible: true
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 582
+  output:
+    mi_fip: 1
