@@ -1,0 +1,59 @@
+- name: Family size 1 - minimum table size
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 1
+  output:
+    ga_tanf_standard_of_need: 235
+
+- name: Family size 3 - mid-table value
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 3
+  output:
+    ga_tanf_standard_of_need: 424
+
+- name: Family size 11 - maximum table size boundary
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 11
+  output:
+    # Size 11 is the max_table_size, uses base amount directly
+    ga_tanf_standard_of_need: 860
+
+- name: Family size 12 - one person beyond max table size
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 12
+  output:
+    # Size 11 base ($860) + 1 additional person ($24) = $884
+    ga_tanf_standard_of_need: 884
+
+- name: Family size 13 - two persons beyond max table size
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 13
+  output:
+    # Size 11 base ($860) + 2 additional persons ($24 x 2 = $48) = $908
+    ga_tanf_standard_of_need: 908
+
+- name: Family size 15 - large family beyond max table size
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 15
+  output:
+    # Size 11 base ($860) + 4 additional persons ($24 x 4 = $96) = $956
+    ga_tanf_standard_of_need: 956
+
+- name: Only calculates for GA
+  period: 2025-01
+  input:
+    state_code: FL
+    spm_unit_size: 3
+  output:
+    ga_tanf_standard_of_need: 0

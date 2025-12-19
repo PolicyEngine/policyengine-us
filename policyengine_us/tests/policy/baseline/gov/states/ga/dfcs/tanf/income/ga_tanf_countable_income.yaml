@@ -1,0 +1,178 @@
+- name: No income results in zero countable income.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_countable_income: 0
+
+- name: Single worker with low earnings, no childcare.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Work expense: $250
+    # Countable: $300 - $250 = $50
+    ga_tanf_countable_income: 50
+
+- name: Two workers both deduct work expense.
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+      parent2:
+        age: 33
+        employment_income_before_lsr: 4_800  # $400/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: GA
+  output:
+    # Parent1: $500 - $250 = $250
+    # Parent2: $400 - $250 = $150
+    # Total: $250 + $150 = $400
+    ga_tanf_countable_income: 400
+
+- name: Earnings below work expense result in zero countable earned.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Work expense: $250
+    # Countable earned: max($200 - $250, 0) = $0
+    ga_tanf_countable_income: 0
+
+- name: Earned income with childcare deduction.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Earned after work: $500 - $250 = $250
+    # Childcare: $200
+    # Countable: max($250 - $200, 0) = $50
+    ga_tanf_countable_income: 50
+
+- name: Childcare exceeds earned income, results in zero.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Earned after work: $300 - $250 = $50
+    # Childcare: min($250, $200 max) = $200
+    # Countable: max($50 - $200, 0) = $0
+    ga_tanf_countable_income: 0
+
+- name: Unearned income only, no deductions applied.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 1_800  # $150/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # No work expense (no earnings)
+    # No childcare deduction applies to unearned
+    # Countable: $150
+    ga_tanf_countable_income: 150
+
+- name: Mixed earned and unearned, childcare deduction applies to earned only.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        child_support_received: 1_200  # $100/month
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Earned after work: $500 - $250 = $250
+    # Childcare (max $200): $200
+    # Net earned: max($250 - $200, 0) = $50
+    # Unearned: $100
+    # Total countable: $50 + $100 = $150
+    ga_tanf_countable_income: 150
