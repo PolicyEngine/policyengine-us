@@ -24,9 +24,9 @@ class il_pfae_secondary_priority_factor_count(Variable):
             "parent_has_less_than_high_school_education", period
         )
 
-        # Factor 7: Teen parent at birth of first child (Household-level variable)
+        # Factor 7: Teen parent at birth of first child
         # Parent was under 20 when first child was born
-        was_teen_parent = household(
+        was_teen_parent = spm_unit(
             "il_isbe_was_teen_parent_at_first_birth", period
         )
 
