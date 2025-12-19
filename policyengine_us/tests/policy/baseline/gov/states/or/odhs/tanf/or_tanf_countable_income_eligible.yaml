@@ -1,0 +1,73 @@
+# Oregon TANF Countable Income Eligibility (OAR 461-155-0030(2)(a))
+# Tests countable income < countable income limit
+
+- name: Zero countable income is eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 0
+  output:
+    or_tanf_countable_income_eligible: true
+
+- name: Countable income below limit is eligible
+  # 3-person countable income limit = $616
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 500
+  output:
+    or_tanf_countable_income_eligible: true
+
+- name: Countable income just below limit is eligible
+  # 3-person countable income limit = $616
+  # $615 < $616 = eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 615
+  output:
+    or_tanf_countable_income_eligible: true
+
+- name: Countable income at limit is not eligible
+  # 3-person countable income limit = $616
+  # $616 >= $616 = not eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 616
+  output:
+    or_tanf_countable_income_eligible: false
+
+- name: Countable income above limit is not eligible
+  # 3-person countable income limit = $616
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 700
+  output:
+    or_tanf_countable_income_eligible: false
+
+- name: Single person countable income test
+  # 1-person countable income limit = $345
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+    or_tanf_countable_income: 344
+  output:
+    or_tanf_countable_income_eligible: true
+
+- name: Large household with additional person increment
+  # 11-person countable income limit = $1,209 + $125 = $1,334
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+    or_tanf_countable_income: 1_333
+  output:
+    or_tanf_countable_income_eligible: true

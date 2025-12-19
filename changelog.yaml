@@ -11819,3 +11819,139 @@
     - Change push workflow concurrency to queue runs instead of cancelling to ensure
       each merge completes.
   date: 2025-12-13 04:31:57
+- bump: patch
+  changes:
+    fixed:
+    - WV homestead excess property tax credit with negative income and zero property
+      taxes
+  date: 2025-12-15 18:31:12
+- bump: minor
+  changes:
+    added:
+    - Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi)
+      using exact branching methodology
+    - Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare
+      HI allocation
+    - LSR recursion guard to prevent infinite loops when branches calculate variables
+    fixed:
+    - Labor supply behavioral response infinite recursion bug
+  date: 2025-12-15 19:02:39
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+  date: 2025-12-15 21:03:17
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax calculation with negative capital gains now correctly produces
+      zero tax instead of phantom positive tax
+  date: 2025-12-15 21:42:35
+- bump: patch
+  changes:
+    fixed:
+    - Fix DC Property Tax Credit incorrectly granting credit for negative AGI with
+      zero rent/property taxes
+  date: 2025-12-15 22:10:21
+- bump: minor
+  changes:
+    fixed:
+    - Maine Dependent Exemption Credit now correctly includes Credit for Other Dependents
+      (ODC) qualifying dependents age 17 and older, as required by Maine statute 36
+      M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and
+      ODC).
+  date: 2025-12-15 22:36:33
+- bump: patch
+  changes:
+    fixed:
+    - MA income tax now allows short-term capital losses to offset long-term capital
+      gains in Part C
+  date: 2025-12-15 23:24:43
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania TANF.
+  date: 2025-12-16 00:00:49
+- bump: minor
+  changes:
+    added:
+    - Wisconsin Works (W-2) program with placement-based benefits and eligibility.
+  date: 2025-12-16 00:26:02
+- bump: patch
+  changes:
+    fixed:
+    - Iowa Child and Dependent Care Credit now uses taxable income instead of net
+      income.
+  date: 2025-12-16 04:11:35
+- bump: patch
+  changes:
+    fixed:
+    - Arizona property tax credit now uses correct income definition per ARS 43-1072
+      and ITR 12-1, excluding only Social Security (not pensions, capital gains, or
+      exemptions)
+  date: 2025-12-16 13:23:24
+- bump: minor
+  changes:
+    added:
+    - Missouri TANF program.
+  date: 2025-12-16 15:06:15
+- bump: patch
+  changes:
+    added:
+    - Add scheduled GitHub Action workflow for weekly uv.lock updates
+  date: 2025-12-17 04:17:16
+- bump: patch
+  changes:
+    removed:
+    - Remove weekly uv.lock update workflow (accidentally merged)
+  date: 2025-12-17 04:59:37
+- bump: patch
+  changes:
+    added:
+    - Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue
+      and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+    fixed:
+    - Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C.
+      401 note Section 121(e), correctly splitting TOB between OASDI and Medicare
+      HI.
+  date: 2025-12-18 15:12:11
+- bump: patch
+  changes:
+    changed:
+    - Rebalance CI test jobs by moving NY state tests to NonStructural-Other and CRFB
+      structural tests to Structural-Heavy.
+  date: 2025-12-18 15:55:33
+- bump: patch
+  changes:
+    fixed:
+    - Updates the thresholds and marginal tax rates rates for the Missouri individual
+      income tax in `parameters/gov/states/mo/tax/income/rates.yaml`
+    - Adds the variable `mo_capital_gains_subtraction.py` and the parameter `parameters/gov/states/mo/tax/income/subtractions/net_capital_gain/rate.yaml`
+      for the 2025 inclusion a full deductibility of capital gains in calculating
+      Missouri adjusted gross income.
+    - Adds `agi_subtractions.yaml` list parameter with the two MO AGI subtractions
+      for 2025, and creates a `mo_agi_subtractions.py` variable (Person-level), which
+      is referenced in the `mo_adjusted_gross_income.py` calculation.
+    - Adds `mo_capital_gains_subtraction_person.py` to allocate the capital gains
+      subtraction proportionally to each person based on their share of long-term
+      capital gains, preventing overcounting in multi-person tax units.
+    - Updates the `parameters/gov/states/mo/tax/income/minimum_taxable_income.yaml`
+      parameter with the new 2025 value.
+    - Adds new legislative references
+  date: 2025-12-18 20:55:25
+- bump: minor
+  changes:
+    added:
+    - Indiana TANF program.
+  date: 2025-12-19 15:31:15
+- bump: minor
+  changes:
+    added:
+    - Implement Oregon TANF (Temporary Assistance for Needy Families) program with
+      income eligibility, resource limits, and benefit calculations.
+  date: 2025-12-19 15:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Works First (OWF) cash assistance program.
+  date: 2025-12-19 20:53:46
