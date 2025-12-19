@@ -1,0 +1,112 @@
+# Tests for in_tanf_countable_earned_income_for_eligibility
+# Applies: $90/earner (per person), then $30 + 1/3 per unit
+
+- name: Family of 3 with 1 earner - gets $90 work expense disregard
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        tanf_gross_earned_income: 400
+      parent2:
+        tanf_gross_earned_income: 0
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: [187.6, 187.6, 187.6]
+    # 1 earner: $400 - $90 = $310
+    # Unit total: $310
+    # $310 - $30 = $280
+    # $280 * 0.67 = $187.60
+
+- name: Family of 3 with 2 earners - each gets $90 (total $180 disregard)
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        tanf_gross_earned_income: 200
+      parent2:
+        tanf_gross_earned_income: 200
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: [127.3, 127.3, 127.3]
+    # Parent1: $200 - $90 = $110
+    # Parent2: $200 - $90 = $110
+    # Unit total: $220 (vs $310 if only 1 earner had $400)
+    # $220 - $30 = $190
+    # $190 * 0.67 = $127.30
+    # Key: 2 earners = $180 disregard, 1 earner = $90 disregard
+
+- name: Single earner with low income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 300
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: [120.6, 120.6]
+    # $300 - $90 = $210
+    # $210 - $30 = $180
+    # $180 * 0.67 = $120.60
+
+- name: Earner below work expense disregard
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 50
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: [0, 0]
+    # $50 - $90 = max(0, -40) = $0
+    # $0 - $30 = max(0, -30) = $0
+    # $0 * 0.67 = $0
+
+- name: Zero income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: [0, 0]

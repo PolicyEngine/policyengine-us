@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.467.0] - 2025-12-19 15:39:42
+
+### Added
+
+- Implement Oregon TANF (Temporary Assistance for Needy Families) program with income eligibility, resource limits, and benefit calculations.
+
+## [1.466.0] - 2025-12-19 15:31:15
+
+### Added
+
+- Indiana TANF program.
+
+## [1.465.5] - 2025-12-18 20:55:25
+
+### Fixed
+
+- Updates the thresholds and marginal tax rates rates for the Missouri individual income tax in `parameters/gov/states/mo/tax/income/rates.yaml`
+- Adds the variable `mo_capital_gains_subtraction.py` and the parameter `parameters/gov/states/mo/tax/income/subtractions/net_capital_gain/rate.yaml` for the 2025 inclusion a full deductibility of capital gains in calculating Missouri adjusted gross income.
+- Adds `agi_subtractions.yaml` list parameter with the two MO AGI subtractions for 2025, and creates a `mo_agi_subtractions.py` variable (Person-level), which is referenced in the `mo_adjusted_gross_income.py` calculation.
+- Adds `mo_capital_gains_subtraction_person.py` to allocate the capital gains subtraction proportionally to each person based on their share of long-term capital gains, preventing overcounting in multi-person tax units.
+- Updates the `parameters/gov/states/mo/tax/income/minimum_taxable_income.yaml` parameter with the new 2025 value.
+- Adds new legislative references
+
+## [1.465.4] - 2025-12-18 15:55:33
+
+### Changed
+
+- Rebalance CI test jobs by moving NY state tests to NonStructural-Other and CRFB structural tests to Structural-Heavy.
+
+## [1.465.3] - 2025-12-18 15:12:11
+
+### Added
+
+- Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+
+### Fixed
+
+- Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C. 401 note Section 121(e), correctly splitting TOB between OASDI and Medicare HI.
+
+## [1.465.2] - 2025-12-17 04:59:37
+
+## [1.465.1] - 2025-12-17 04:17:16
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates
+
 ## [1.465.0] - 2025-12-16 15:06:15
 
 ### Added
@@ -13941,6 +13988,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
+[1.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.5...1.466.0
+[1.465.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.4...1.465.5
+[1.465.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.3...1.465.4
+[1.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.2...1.465.3
+[1.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.1...1.465.2
+[1.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.0...1.465.1
 [1.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.2...1.465.0
 [1.464.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.1...1.464.2
 [1.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.0...1.464.1
