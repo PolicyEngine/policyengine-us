@@ -254,25 +254,25 @@
         members: [person1, person2, person3]
         state_code: KS
   output:
-    # Two earners - income is summed at SPM unit level
+    # Two earners - $90 work expense per employed person
     # Person1 gross: $300/month, Person2 gross: $200/month
     # Combined gross earned: $500/month
-    # Work expense: $90 (applied once to combined total)
-    # Remainder: $500 - $90 = $410
-    # 60% disregard: $410 * 0.60 = $246
-    # Total deductions: $90 + $246 = $336
-    # Countable earned: $500 - $336 = $164
+    # Work expense: $90 x 2 employed persons = $180
+    # Remainder: $500 - $180 = $320
+    # 60% disregard: $320 * 0.60 = $192
+    # Total deductions: $180 + $192 = $372
+    # Countable earned: $500 - $372 = $128
     spm_unit_size: 3
-    ks_tanf_earned_income_deductions: 336
-    ks_tanf_countable_income: 164
+    ks_tanf_earned_income_deductions: 372
+    ks_tanf_countable_income: 128
     ks_tanf_maximum_benefit: 386
     # Gross ($500) < 30% FPL for family of 3 (~$670)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 386 - 164 = 222
-    ks_tanf: 222
+    # Benefit: 386 - 128 = 258
+    ks_tanf: 258
 
 - name: Case 8, large family of 5.
   period: 2025-01

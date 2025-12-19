@@ -17,11 +17,16 @@ class ks_tanf_earned_income_deductions(Variable):
         # Per KEESM 8151: First deduct $90 work expense per employed person
         # Per KEESM Memo 2008-0326: Then apply 60% disregard to remainder
         # Total deductions = work_expense + (gross - work_expense) * 0.60
-        p = parameters(period).gov.states.ks.dcf.tanf
+        p = parameters(period).gov.states.ks.dcf.tanf.income.earned_income_disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-        # Apply $90 work expense (capped at gross earned)
-        work_expense = min_(gross_earned, p.work_expense_deduction.amount)
+        # Count employed persons (those with earnings > 0)
+        person_earned_income = spm_unit.members(
+            "tanf_gross_earned_income", period
+        )
+        employed_persons = spm_unit.sum(person_earned_income > 0)
+        # Apply $90 work expense per employed person (capped at gross earned)
+        work_expense = min_(gross_earned, p.flat * employed_persons)
         earned_after_work_expense = max_(gross_earned - work_expense, 0)
         # Apply 60% disregard to remainder
-        disregard = earned_after_work_expense * p.earned_income_disregard.rate
+        disregard = earned_after_work_expense * p.rate
         return work_expense + disregard

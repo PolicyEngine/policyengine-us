@@ -29,6 +29,6 @@ class ks_tanf_gross_income_eligible(Variable):
         fpg_additional = p_fpg.additional_person[state_group] / MONTHS_IN_YEAR
         monthly_fpg = fpg_first + (family_size - 1) * fpg_additional
         # Apply 30% threshold
-        p = parameters(period).gov.states.ks.dcf.tanf.gross_income_limit
-        threshold = monthly_fpg * p.rate
+        p = parameters(period).gov.states.ks.dcf.tanf.income
+        threshold = monthly_fpg * p.gross_income_limit
         return gross_income < threshold
