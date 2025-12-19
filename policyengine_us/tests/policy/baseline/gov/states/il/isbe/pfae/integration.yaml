@@ -29,6 +29,9 @@
     il_pfae_eligible: [false, true, false]
     # PFA eligibility mirrors PFAE
     il_pfa_eligible: [false, true, false]
+    # Benefit amounts (FY2024 values same as FY2025)
+    il_pfae: [0, 8_500, 0]
+    il_pfa: [0, 3_900, 0]
 
 - name: Case 2, family with two eligible children showing benefit amounts.
   period: 2025
