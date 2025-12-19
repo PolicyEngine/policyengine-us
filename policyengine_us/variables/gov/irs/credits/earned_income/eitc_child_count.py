@@ -15,7 +15,7 @@ class eitc_child_count(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_child = person("is_child_dependent", period)
+        is_child = person("is_qualifying_child_dependent", period)
         meets_eitc_identification_requirements = person(
             "meets_eitc_identification_requirements", period
         )

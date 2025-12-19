@@ -4,7 +4,7 @@
     state_code: OR
     adjusted_gross_income: 100_000
     is_disabled: true
-    is_child_dependent: true
+    is_qualifying_child_dependent: true
   output:
     or_disabled_child_dependent_exemptions: 1
 
@@ -14,6 +14,6 @@
     state_code: OR
     adjusted_gross_income: 100_001
     is_disabled: true
-    is_child_dependent: true
+    is_qualifying_child_dependent: true
   output:
     or_disabled_child_dependent_exemptions: 0

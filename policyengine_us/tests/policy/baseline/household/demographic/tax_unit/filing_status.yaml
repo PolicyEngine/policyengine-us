@@ -38,7 +38,7 @@
       person1:
         is_separated: true
         age: 40
-      person2: 
+      person2:
         age: 10
     tax_units:
       tax_unit:
@@ -48,3 +48,52 @@
         members: [person1, person2]
   output:
     filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Parent with 19-year-old non-student dependent (low income) qualifies for HOH.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Low income below $5,050 threshold for qualifying relative
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    # The 19-year-old non-student is too old to be a qualifying child but
+    # can still be a qualifying relative for HOH purposes
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Parent with high-income adult child does not qualify for HOH.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income over $5,050 threshold - fails qualifying relative test
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    # High-income adult child fails qualifying relative income test
+    filing_status: SINGLE

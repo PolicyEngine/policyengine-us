@@ -14,7 +14,7 @@ class co_family_affordability_credit(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        dependent = person("is_child_dependent", period)
+        dependent = person("is_qualifying_child_dependent", period)
         p = parameters(
             period
         ).gov.states.co.tax.income.credits.family_affordability

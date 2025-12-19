@@ -11,4 +11,4 @@ class ca_is_qualifying_child_for_caleitc(Variable):
 
     def formula(person, period, parameters):
         # CalEITC uses federal EITC rules regarding qualifying children
-        return person("is_child_dependent", period)
+        return person("is_qualifying_child_dependent", period)

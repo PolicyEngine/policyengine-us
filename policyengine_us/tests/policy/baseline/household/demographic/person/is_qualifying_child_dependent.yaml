@@ -1,0 +1,46 @@
+- name: Child under 19 is a qualifying child.
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 18
+    is_full_time_student: false
+  output:
+    is_qualifying_child_dependent: true
+
+- name: Full-time student under 24 is a qualifying child.
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 23
+    is_full_time_student: true
+  output:
+    is_qualifying_child_dependent: true
+
+- name: 19-year-old non-student is not a qualifying child.
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 19
+    is_full_time_student: false
+  output:
+    # Fails age test - 19 is not less than 19
+    is_qualifying_child_dependent: false
+
+- name: 24-year-old student is not a qualifying child.
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 24
+    is_full_time_student: true
+  output:
+    # Fails age test - 24 is not less than 24
+    is_qualifying_child_dependent: false
+
+- name: Non-dependent does not qualify.
+  period: 2024
+  input:
+    is_tax_unit_dependent: false
+    age: 10
+  output:
+    # defined_for requires is_tax_unit_dependent
+    is_qualifying_child_dependent: false
