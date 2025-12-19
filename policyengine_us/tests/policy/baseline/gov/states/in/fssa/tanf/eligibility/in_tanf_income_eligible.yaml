@@ -1,0 +1,74 @@
+# Tests for in_tanf_income_eligible
+# Combines countable income and benefit income tests
+
+- name: Passes both income tests
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_income_eligible: true
+
+- name: Fails countable income test only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_income_eligible: false
+
+- name: Fails benefit income test only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        in_tanf_countable_income_eligible: true
+        in_tanf_payment_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_income_eligible: false
+
+- name: Fails both income tests
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        in_tanf_countable_income_eligible: false
+        in_tanf_payment_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_income_eligible: false
