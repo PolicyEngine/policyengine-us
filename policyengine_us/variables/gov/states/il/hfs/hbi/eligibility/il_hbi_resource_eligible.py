@@ -4,22 +4,15 @@ from policyengine_us.model_api import *
 class il_hbi_resource_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Meets Illinois Health Benefits for Immigrants resource eligibility"
-    )
+    label = "Meets Illinois HBI resource eligibility"
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = [
-        "https://www.dhs.state.il.us/page.aspx?item=161600",
-        "https://www.illinoislegalaid.org/legal-information/health-benefits-immigrant-seniors",
-    ]
-    documentation = """
-    Illinois HBIS (Health Benefits for Immigrant Seniors) has a resource limit
-    of $17,500 or less in non-exempt resources per household.
-
-    This resource test only applies to seniors (age 65+) in the HBIS program.
-    Children (All Kids) and adults (HBIA) do not have a resource test.
-    """
+    reference = ("https://www.dhs.state.il.us/page.aspx?item=161600",)
+    # Illinois HBIS (Health Benefits for Immigrant Seniors) has a resource limit
+    # of $17,500 or less in non-exempt resources per household.
+    #
+    # This resource test only applies to seniors (age 65+) in the HBIS program.
+    # Children (All Kids) and adults (HBIA) do not have a resource test.
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.hfs.hbi.eligibility

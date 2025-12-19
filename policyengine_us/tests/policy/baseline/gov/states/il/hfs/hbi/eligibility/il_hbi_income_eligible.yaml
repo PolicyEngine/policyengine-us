@@ -1,3 +1,7 @@
+# Tests for il_hbi_income_eligible
+# Children and adults use MAGI (medicaid_income_level)
+# Seniors use AABD methodology (actual income with exemptions)
+
 - name: Child at 300% FPL eligible (under 318% limit)
   period: 2024
   input:
@@ -52,30 +56,35 @@
   output:
     il_hbi_income_eligible: false
 
-- name: Senior 70 at 90% FPL eligible (under 100% limit)
+# Senior tests use AABD methodology with actual income
+# 2024 FPL for 1 person = $15,060/year
+# AABD countable = gross unearned - $25/month flat exemption
+# 100% FPL requires $15,060 countable = $15,360 gross ($1,280/month)
+
+- name: Senior 70 with low Social Security income eligible
   period: 2024
   input:
     state_code: IL
     age: 70
-    medicaid_income_level: 0.90
+    social_security: 12_000  # ~80% FPL after AABD exemptions
   output:
     il_hbi_income_eligible: true
 
-- name: Senior 70 at 100% FPL eligible (at limit)
+- name: Senior 70 at approximately 100% FPL eligible (at limit)
   period: 2024
   input:
     state_code: IL
     age: 70
-    medicaid_income_level: 1.00
+    social_security: 15_360  # Countable = $15,060 (100% FPL)
   output:
     il_hbi_income_eligible: true
 
-- name: Senior 70 at 110% FPL not eligible (over limit)
+- name: Senior 70 over 100% FPL not eligible (over limit)
   period: 2024
   input:
     state_code: IL
     age: 70
-    medicaid_income_level: 1.10
+    social_security: 18_000  # Well over 100% FPL
   output:
     il_hbi_income_eligible: false
 

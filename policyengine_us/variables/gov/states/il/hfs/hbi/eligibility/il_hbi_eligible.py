@@ -7,23 +7,21 @@ class il_hbi_eligible(Variable):
     label = "Eligible for Illinois Health Benefits for Immigrants"
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = [
+    reference = (
         "https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html",
         "https://www.dhs.state.il.us/page.aspx?item=161600",
         "https://hfs.illinois.gov/medicalprograms/allkids/about.html",
-    ]
-    documentation = """
-    Illinois Health Benefits for Immigrants (HBI) is a state-funded program
-    providing health coverage to income-eligible residents who are not eligible
-    for federal Medicaid due to their immigration status.
-
-    The program includes three components:
-    - All Kids: Children 0-18 up to 318% FPL
-    - HBIA (Health Benefits for Immigrant Adults): Ages 42-64 up to 138% FPL
-    - HBIS (Health Benefits for Immigrant Seniors): Ages 65+ up to 100% FPL
-
-    Note: Ages 19-41 are not covered.
-    """
+    )
+    # Illinois Health Benefits for Immigrants (HBI) is a state-funded program
+    # providing health coverage to income-eligible residents who are not eligible
+    # for federal Medicaid due to their immigration status.
+    #
+    # The program includes three components:
+    # - All Kids: Children 0-18 up to 318% FPL
+    # - HBIA (Health Benefits for Immigrant Adults): Ages 42-64 up to 138% FPL
+    # - HBIS (Health Benefits for Immigrant Seniors): Ages 65+ up to 100% FPL
+    #
+    # Note: Ages 19-41 are not covered.
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.hfs.hbi.eligibility

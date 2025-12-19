@@ -1,3 +1,7 @@
+# Tests for il_hbi_eligible
+# Children and adults use MAGI (medicaid_income_level)
+# Seniors use AABD methodology (actual income with exemptions)
+
 - name: Undocumented child at 200% FPL eligible
   period: 2024
   input:
@@ -18,13 +22,13 @@
   output:
     il_hbi_eligible: true
 
-- name: Undocumented senior age 70 at 90% FPL eligible
+- name: Undocumented senior age 70 with low income eligible
   period: 2024
   input:
     state_code: IL
     age: 70
     immigration_status: UNDOCUMENTED
-    medicaid_income_level: 0.90
+    social_security: 12_000  # ~80% FPL after AABD exemptions
   output:
     il_hbi_eligible: true
 
@@ -64,7 +68,7 @@
     state_code: IL
     age: 70
     immigration_status: LEGAL_PERMANENT_RESIDENT
-    medicaid_income_level: 0.80
+    social_security: 10_000
   output:
     il_hbi_eligible: false
 
@@ -94,7 +98,7 @@
     state_code: IL
     age: 70
     immigration_status: UNDOCUMENTED
-    medicaid_income_level: 0.90
+    social_security: 12_000  # Under 100% FPL
   output:
     il_hbi_eligible: true
 
@@ -104,7 +108,7 @@
     state_code: IL
     age: 70
     immigration_status: UNDOCUMENTED
-    medicaid_income_level: 0.90
+    social_security: 12_000
     spm_unit_assets: 20_000
   output:
     il_hbi_eligible: false
@@ -115,7 +119,7 @@
     state_code: IL
     age: 70
     immigration_status: UNDOCUMENTED
-    medicaid_income_level: 0.90
+    social_security: 12_000
     spm_unit_assets: 17_500
   output:
     il_hbi_eligible: true

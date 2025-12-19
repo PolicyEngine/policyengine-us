@@ -1,13 +1,13 @@
-description: Whether Illinois Health Benefits for Immigrant Seniors (HBIS) program is in effect
+description: Illinois determines whether the Health Benefits for Immigrant Seniors program is active.
 metadata:
   unit: bool
   period: year
-  label: IL HBIS in effect
+  label: Illinois HBIS program in effect
   reference:
     - title: Illinois DHS - HBIA and HBIS Policy
       href: https://www.dhs.state.il.us/page.aspx?item=161600
-    - title: Illinois Legal Aid - Health Benefits for Immigrant Seniors
-      href: https://www.illinoislegalaid.org/legal-information/health-benefits-immigrant-seniors
+    - title: Illinois HFS - Health Benefits for Immigrants
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
 
 values:
   2020-01-01: false

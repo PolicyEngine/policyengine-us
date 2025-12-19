@@ -7,19 +7,17 @@ class il_hbi_age_eligible(Variable):
     label = "Meets Illinois Health Benefits for Immigrants age eligibility"
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = [
+    reference = (
         "https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html",
         "https://www.dhs.state.il.us/page.aspx?item=161600",
         "https://hfs.illinois.gov/medicalprograms/allkids/about.html",
-    ]
-    documentation = """
-    Illinois HBI covers specific age groups:
-    - Children: 0-18 (All Kids)
-    - Adults: 42-64 (HBIA)
-    - Seniors: 65+ (HBIS)
-
-    Note: Ages 19-41 are NOT covered by any Illinois immigrant health program.
-    """
+    )
+    # Illinois HBI covers specific age groups:
+    # - Children: 0-18 (All Kids)
+    # - Adults: 42-64 (HBIA)
+    # - Seniors: 65+ (HBIS)
+    #
+    # Note: Ages 19-41 are NOT covered by any Illinois immigrant health program.
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
