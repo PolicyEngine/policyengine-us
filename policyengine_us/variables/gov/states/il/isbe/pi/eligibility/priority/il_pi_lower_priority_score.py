@@ -16,9 +16,9 @@ class il_pi_lower_priority_score(Variable):
         spm_unit = person.spm_unit
 
         # Lower priority factors (10 pts each):
-        # Factor 33: Teen parent at birth of first child (Household-level variable)
+        # Factor 33: Teen parent at birth of first child (SPMUnit-level variable)
         # Parent was under 20 when first child was born
-        is_teen_parent_family = household(
+        is_teen_parent_family = spm_unit(
             "il_isbe_was_teen_parent_at_first_birth", period
         )
         # Factor 35: Parent/Caregiver is single parent
