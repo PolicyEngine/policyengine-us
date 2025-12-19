@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.469.0] - 2025-12-19 23:08:59
+
+### Added
+
+- Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+- New input variables for IEP status, developmental delay, non-English speaking home, parent education level, born outside US, and no prior formal early learning.
+
 ## [1.468.0] - 2025-12-19 20:53:46
 
 ### Added
@@ -13994,6 +14001,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0
 [1.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.467.0...1.468.0
 [1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
 [1.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.5...1.466.0
