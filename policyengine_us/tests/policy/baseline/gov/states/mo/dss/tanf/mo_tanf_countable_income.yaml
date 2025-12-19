@@ -1,0 +1,49 @@
+- name: No income results in zero countable income
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    mo_tanf_earned_income_deductions: 0
+  output:
+    mo_tanf_countable_income: 0
+
+- name: Unearned income only counts fully
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 500
+    mo_tanf_earned_income_deductions: 0
+  output:
+    mo_tanf_countable_income: 500
+
+- name: Earned income reduced by deductions
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 800
+    tanf_gross_unearned_income: 0
+    mo_tanf_earned_income_deductions: 300
+  output:
+    mo_tanf_countable_income: 500
+
+- name: Combined earned and unearned income
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 200
+    mo_tanf_earned_income_deductions: 400
+  output:
+    mo_tanf_countable_income: 800
+
+- name: Deductions cannot reduce below zero
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 100
+    tanf_gross_unearned_income: 0
+    mo_tanf_earned_income_deductions: 200
+  output:
+    mo_tanf_countable_income: 0
