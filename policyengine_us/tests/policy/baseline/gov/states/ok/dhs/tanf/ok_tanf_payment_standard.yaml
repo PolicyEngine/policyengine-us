@@ -1,0 +1,84 @@
+# Unit tests for Oklahoma TANF payment standard by family size
+# OAC 340:10-3-59: Payment standards from Schedule IX
+# Using "Adults and/or Children" rates (default for most cases)
+# https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
+
+- name: Family size 1
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 180
+
+- name: Family size 2
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 225
+
+- name: Family size 3
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 292
+
+- name: Family size 4
+  period: 2024-01
+  input:
+    spm_unit_size: 4
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 361
+
+- name: Family size 5
+  period: 2024-01
+  input:
+    spm_unit_size: 5
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 422
+
+- name: Family size 6
+  period: 2024-01
+  input:
+    spm_unit_size: 6
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 483
+
+- name: Family size 7
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 544
+
+- name: Family size 8
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 598
+
+- name: Family size 9 - maximum
+  period: 2024-01
+  input:
+    spm_unit_size: 9
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 650
+
+- name: Family size 10 - caps at 9+ rate
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    state_code: OK
+  output:
+    ok_tanf_payment_standard: 650

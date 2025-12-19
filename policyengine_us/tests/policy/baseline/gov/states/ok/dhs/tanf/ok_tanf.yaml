@@ -1,0 +1,136 @@
+# Unit tests for Oklahoma TANF benefit calculation
+# OAC 340:10-3-59: Benefit = Payment Standard - Countable Income
+# Minimum benefit: $10 (if calculated > 0 but < $10, no payment issues)
+# Maximum benefit: $650 (adults and/or children) or $720 (children only)
+# https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-59
+
+- name: Eligible - payment standard exceeds income
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 100
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 100 = 192
+    ok_tanf: 192
+
+- name: Documentation example - family of 3 with $700 earnings
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 230
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # Payment standard $292 - Countable income $230 = $62
+    ok_tanf: 62
+
+- name: Eligible - payment equals income, zero benefit
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 292
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 292 = 0
+    ok_tanf: 0
+
+- name: Eligible - income exceeds payment standard
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 400
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 400 = max(0, -108) = 0
+    ok_tanf: 0
+
+- name: Ineligible - no benefit regardless of income
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 0
+    ok_tanf_eligible: false
+    state_code: OK
+  output:
+    ok_tanf: 0
+
+- name: Full payment standard - no income
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 361
+    ok_tanf_countable_income: 0
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # Full payment for family of 4
+    ok_tanf: 361
+
+- name: Benefit below minimum ($10) results in zero
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 285
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 285 = 7, which is less than $10 minimum, so no payment
+    ok_tanf: 0
+
+- name: Benefit exactly at minimum threshold
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 282
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 282 = 10, meets minimum, benefit paid
+    ok_tanf: 10
+
+- name: Benefit just above minimum threshold
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 280
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 292 - 280 = 12, above minimum
+    ok_tanf: 12
+
+- name: Maximum benefit - family of 9+ (adults and children)
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 650
+    ok_tanf_countable_income: 0
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # Maximum benefit for adults and/or children cases
+    ok_tanf: 650
+
+- name: Single person household benefit
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 180
+    ok_tanf_countable_income: 50
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # 180 - 50 = 130
+    ok_tanf: 130
+
+- name: Large family with some income
+  period: 2024-01
+  input:
+    ok_tanf_payment_standard: 544
+    ok_tanf_countable_income: 300
+    ok_tanf_eligible: true
+    state_code: OK
+  output:
+    # Family of 7: 544 - 300 = 244
+    ok_tanf: 244

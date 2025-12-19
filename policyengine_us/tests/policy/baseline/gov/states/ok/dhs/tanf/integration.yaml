@@ -1,0 +1,292 @@
+# Integration tests for Oklahoma TANF - full pipeline testing
+# Tests realistic family scenarios with complete eligibility and benefit calculations
+# OAC 340:10: https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10
+# Note: Work expense based on hours: $120 (<30 hrs), $240 (30+ hrs)
+# Note: Minimum benefit is $10 - benefits below this are not issued
+
+- name: Scenario 1 - Single parent with 2 children, no income - full benefit
+  # Family of 3, no income, receives full payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    # Family size: 3
+    # Gross earned income: $0
+    # Countable income: $0
+    # Payment standard (family of 3): $292
+    # Benefit: $292 - $0 = $292 (>= $10 minimum)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ok_tanf_eligible: true
+    ok_tanf_payment_standard: 292
+    ok_tanf_countable_income: 0
+    ok_tanf: 292
+
+- name: Scenario 2 - Family of 3 with $700 monthly earnings (part-time)
+  # Standard earned income calculation with $120 work expense (<30 hrs)
+  # Benefits below $10 are not issued
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 8_400  # $700/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      person2:
+        age: 4
+        is_in_k12_school: true
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $700
+    # Work expense deduction: $120 (<30 hrs)
+    # After work expense: $700 - $120 = $580
+    # 50% disregard: $580 * 0.50 = $290
+    # Countable earned income: $290
+    # Payment standard (family of 3): $292
+    # Calculated benefit: $292 - $290 = $2
+    # But $2 < $10 minimum, so no payment issued
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ok_tanf_eligible: true
+    ok_tanf_countable_income: 290
+    ok_tanf_payment_standard: 292
+    ok_tanf: 0
+
+- name: Scenario 3 - Single parent with one child, $500 monthly earnings (part-time)
+  # Family of 2, uses $120 work expense (<30 hrs)
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      person2:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Family size: 2
+    # Monthly gross earned income: $500
+    # Work expense deduction: $120 (<30 hrs)
+    # After work expense: $500 - $120 = $380
+    # 50% disregard: $380 * 0.50 = $190
+    # Countable earned income: $190
+    # Payment standard (family of 2): $225
+    # Benefit: $225 - $190 = $35 (>= $10 minimum)
+    is_person_demographic_tanf_eligible: [false, true]
+    ok_tanf_eligible: true
+    ok_tanf_countable_income: 190
+    ok_tanf_payment_standard: 225
+    ok_tanf: 35
+
+- name: Scenario 4 - Family of 4 ineligible due to high gross income
+  # Gross income exceeds 185% of State Standard of Need
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 18_000  # $1,500/month - exceeds $1,476 limit
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+        is_in_k12_school: true
+      person4:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OK
+  output:
+    # Family size: 4
+    # Monthly gross income: $1,500
+    # Max gross income limit (185% of $798): $1,476
+    # Income exceeds limit, ineligible
+    is_person_demographic_tanf_eligible: [false, false, true, true]
+    ok_tanf_income_eligible: false
+    ok_tanf_eligible: false
+    ok_tanf: 0
+
+- name: Scenario 5 - Family just below income threshold, eligible but no benefit
+  # Gross income just under 185% limit, but countable exceeds payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 14_280  # $1,190/month - just under $1,193 limit
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      person2:
+        age: 7
+        is_in_k12_school: true
+      person3:
+        age: 5
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    # Family size: 3
+    # Monthly gross income: $1,190
+    # Max gross income limit (185% of $645): $1,193
+    # Just under limit, eligible
+    # Work expense: $120 (<30 hrs)
+    # After work expense: $1,190 - $120 = $1,070
+    # 50% disregard: $1,070 * 0.50 = $535
+    # Countable earned income: $535
+    # Payment standard: $292
+    # Benefit: max($292 - $535, 0) = $0 (eligible but no payment)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ok_tanf_income_eligible: true
+    ok_tanf_eligible: true
+    ok_tanf_countable_income: 535
+    ok_tanf: 0
+
+- name: Scenario 6 - Combined earned and unearned income (part-time)
+  # Tests handling of both income types
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income_before_lsr: 4_800  # $400/month earned
+        child_support_received: 1_200  # $100/month unearned
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      person2:
+        age: 4
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Family size: 2
+    # Monthly gross earned: $400, unearned: $100
+    # Total gross: $500 (under $923 limit)
+    # Work expense: $120 (<30 hrs)
+    # After work expense: $400 - $120 = $280
+    # 50% disregard: $280 * 0.50 = $140
+    # Countable earned: $140
+    # Countable income: $140 + $100 = $240
+    # Payment standard (family of 2): $225
+    # Benefit: max($225 - $240, 0) = $0 (eligible but no payment)
+    is_person_demographic_tanf_eligible: [false, true]
+    ok_tanf_eligible: true
+    ok_tanf_countable_income: 240
+    ok_tanf_payment_standard: 225
+    ok_tanf: 0
+
+- name: Scenario 7 - Large family of 5, partial benefit (part-time)
+  # Tests larger family size payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 9_600  # $800/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      person2:
+        age: 36
+      person3:
+        age: 14
+        is_in_k12_school: true
+      person4:
+        age: 10
+        is_in_k12_school: true
+      person5:
+        age: 5
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: OK
+  output:
+    # Family size: 5
+    # Monthly gross income: $800
+    # Max gross income limit (185% of $933): $1,726
+    # Under limit, eligible
+    # Work expense: $120 (<30 hrs)
+    # After work expense: $800 - $120 = $680
+    # 50% disregard: $680 * 0.50 = $340
+    # Countable earned: $340
+    # Payment standard (family of 5): $422
+    # Benefit: $422 - $340 = $82 (>= $10 minimum)
+    is_person_demographic_tanf_eligible: [false, false, true, true, true]
+    ok_tanf_income_eligible: true
+    ok_tanf_eligible: true
+    ok_tanf_countable_income: 340
+    ok_tanf_payment_standard: 422
+    ok_tanf: 82
