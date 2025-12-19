@@ -1,0 +1,33 @@
+description: Mississippi sets this amount as the need standard under the Temporary Assistance for Needy Families program.
+# NOTE: For households larger than 10, add $75 per person above 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: Mississippi TANF need standard amount
+  reference:
+    - title: Miss. Code. tit. 18, pt. 19 - TANF State Plan
+      href: https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19
+
+1:
+  2019-07-01: 339
+2:
+  2019-07-01: 460
+3:
+  2019-07-01: 581
+4:
+  2019-07-01: 702
+5:
+  2019-07-01: 823
+6:
+  2019-07-01: 944
+7:
+  2019-07-01: 1_065
+8:
+  2019-07-01: 1_186
+9:
+  2019-07-01: 1_307
+10:
+  2019-07-01: 1_428
