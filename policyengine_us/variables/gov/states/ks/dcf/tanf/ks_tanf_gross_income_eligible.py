@@ -15,9 +15,11 @@ class ks_tanf_gross_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Per K.S.A. 39-709 and Kansas TANF State Plan:
         # Gross income must be less than 30% of Federal Poverty Level
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        gross_income = gross_earned + gross_unearned
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
+        )
         # Get FPL for family size
         family_size = spm_unit("spm_unit_size", period.this_year)
         state_group = spm_unit.household("state_group_str", period.this_year)
