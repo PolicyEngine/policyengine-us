@@ -1,0 +1,160 @@
+# Edge case tests for oh_owf_initial_income_eligible
+# Tests initial income eligibility: gross income < (FPG * 50%)
+#
+# Formula inputs:
+# - tanf_gross_earned_income + tanf_gross_unearned_income = gross income
+# - oh_owf_fpg (monthly federal poverty guideline)
+# - income_limit_rate = 0.5 (50% of FPL)
+#
+# Uses strict less than (<), so income at threshold is NOT eligible
+
+- name: Case 1, zero income is eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33  # Family of 2 monthly FPG
+    state_code: OH
+  output:
+    # Threshold = 1703.33 * 0.5 = 851.67
+    # 0 < 851.67 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 2, income well below 50 percent FPL is eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 400
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 400 < 851.67 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 3, income just below 50 percent FPL threshold is eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 850
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 850 < 851.67 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 4, income exactly at 50 percent FPL threshold is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    tanf_gross_earned_income: 851.665
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 851.665 is NOT < 851.665 (strict less than)
+    oh_owf_initial_income_eligible: false
+
+- name: Case 5, income one cent above threshold is not eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 852
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 852 > 851.67 = false
+    oh_owf_initial_income_eligible: false
+
+- name: Case 6, income well above 50 percent FPL is not eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 1000 > 851.67 = false
+    oh_owf_initial_income_eligible: false
+
+- name: Case 7, single person household threshold test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    tanf_gross_earned_income: 627.5
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_255  # Single person monthly FPG (15060/12)
+    state_code: OH
+  output:
+    # Threshold = 1255 * 0.5 = 627.5
+    # 627.5 is NOT < 627.5 (strict less than)
+    oh_owf_initial_income_eligible: false
+
+- name: Case 8, single person just below threshold is eligible.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 627
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_255
+    state_code: OH
+  output:
+    # 627 < 627.5 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 9, unearned income only counts toward threshold.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 1_000
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 1000 > 851.67 = false
+    oh_owf_initial_income_eligible: false
+
+- name: Case 10, combined earned and unearned income below threshold.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 400
+    tanf_gross_unearned_income: 400
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 400 + 400 = 800 < 851.67 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 11, combined earned and unearned income exceeds threshold.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 400
+    tanf_gross_unearned_income: 500
+    oh_owf_fpg: 1_703.33
+    state_code: OH
+  output:
+    # 400 + 500 = 900 > 851.67 = false
+    oh_owf_initial_income_eligible: false
+
+- name: Case 12, large household with higher threshold.
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_200
+    tanf_gross_unearned_income: 0
+    # Family of 6: FPG = (15060 + 5380 * 5) / 12 = 3496.67/month
+    oh_owf_fpg: 3_496.67
+    state_code: OH
+  output:
+    # Threshold = 3496.67 * 0.5 = 1748.34
+    # 1200 < 1748.34 = true
+    oh_owf_initial_income_eligible: true
+
+- name: Case 13, large household at threshold boundary.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    tanf_gross_earned_income: 1_748.34
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 3_496.67
+    state_code: OH
+  output:
+    # Threshold = 3496.67 * 0.5 = 1748.335
+    # 1748.34 is NOT < 1748.335 (strict less than)
+    oh_owf_initial_income_eligible: false

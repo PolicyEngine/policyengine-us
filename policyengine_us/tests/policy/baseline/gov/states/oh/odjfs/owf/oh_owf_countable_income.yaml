@@ -1,0 +1,113 @@
+- name: Case 1, no income.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 0
+- name: Case 2, earned income only, low amount.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 6000
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 125.0
+- name: Case 3, earned income only, moderate amount.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 12000
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 375.0
+- name: Case 4, unearned income only.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    social_security: 6000
+    state_code: OH
+  output:
+    oh_owf_countable_income: 500.0
+- name: Case 5, both earned and unearned income.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 9600
+    social_security: 3600
+    state_code: OH
+  output:
+    oh_owf_countable_income: 575.0
+- name: Case 6, earned income below disregard threshold.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 2400
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 0
+- name: Case 7, earned income exactly at disregard threshold.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 3000
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 0
+- name: Case 8, high earned income.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 24000
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 875.0
+- name: Case 9, earned income one dollar over disregard threshold.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 3012
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 0.5
+- name: Case 10, very high earned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    employment_income_before_lsr: 100000
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 4041.67
+- name: Case 11, small unearned income only.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 0
+    social_security: 1200
+    state_code: OH
+  output:
+    oh_owf_countable_income: 100.0
+- name: Case 12, small earned income with small unearned income.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 3600
+    social_security: 1200
+    state_code: OH
+  output:
+    oh_owf_countable_income: 125.0
+- name: Case 13, earned income at boundary below disregard.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 2999
+    social_security: 0
+    state_code: OH
+  output:
+    oh_owf_countable_income: 0
+- name: Case 14, mixed income with high unearned component.
+  period: 2025-01
+  input:
+    employment_income_before_lsr: 6000
+    social_security: 12000
+    state_code: OH
+  output:
+    oh_owf_countable_income: 1125.0
