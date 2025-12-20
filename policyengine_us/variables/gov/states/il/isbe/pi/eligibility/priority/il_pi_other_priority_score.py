@@ -29,7 +29,9 @@ class il_pi_other_priority_score(Variable):
         is_active_duty_military = person("military_basic_pay", period) > 0
         is_military_family = spm_unit.any(is_active_duty_military)
         # Factor 11: Parent is currently age 21 or younger
-        is_young_parent_family = person("il_pi_is_young_parent_family", period)
+        is_young_parent_family = spm_unit(
+            "il_pi_is_young_parent_family", period
+        )
         # Factor 18: Member of household has developmental delay or disability
         has_developmental_delay = spm_unit(
             "il_pi_has_developmental_delay", period

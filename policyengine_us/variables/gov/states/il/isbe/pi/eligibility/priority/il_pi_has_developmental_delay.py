@@ -7,6 +7,7 @@ class il_pi_has_developmental_delay(Variable):
     label = "SPM unit has developmental delay or disability for Illinois PI"
     definition_period = YEAR
     reference = "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=2"
+    defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
         # Factor 18: Member of household has developmental delay or disability

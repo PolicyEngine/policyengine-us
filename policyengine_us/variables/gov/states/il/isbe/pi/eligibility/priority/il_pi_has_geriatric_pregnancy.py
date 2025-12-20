@@ -7,6 +7,7 @@ class il_pi_has_geriatric_pregnancy(Variable):
     label = "Household has geriatric pregnancy for Illinois PI"
     definition_period = YEAR
     reference = "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=3"
+    defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
         # Factor 28: Pregnant woman age 40 or over
