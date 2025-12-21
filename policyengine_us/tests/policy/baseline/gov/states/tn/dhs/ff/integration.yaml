@@ -1,9 +1,9 @@
 # TN Families First Integration Tests
-# For 2024-01:
-# - CNS size 2: $896, SPA: $142
-# - CNS size 3: $1,066, SPA: $185
-# - CNS size 5: $1,335, SPA: $264
-# - Earned income disregard: $150
+# For 2021+:
+# - CNS size 2: $1,370, SPA: $343
+# - CNS size 3: $1,549, SPA: $387
+# - CNS size 5: $1,885, SPA: $471
+# - Earned income disregard: $250
 # - Child care: $200 (under 2), $175 (2+)
 # - Minimum grant: $10
 # - GIS = CNS * 1.85
@@ -25,10 +25,10 @@
         state_code: TN
   output:
     # Size 2, no income
-    # Payment standard: SPA = $142
-    # Deficit: CNS ($896) - countable ($0) = $896
-    # Benefit: min($142, $896) = $142
-    tn_ff: 142
+    # Payment standard: SPA = $343
+    # Deficit: CNS ($1,370) - countable ($0) = $1,370
+    # Benefit: min($343, $1,370) = $343
+    tn_ff: 343
 
 - name: Case 2, no income family of 3 receives SPA.
   period: 2024-01
@@ -49,8 +49,8 @@
         state_code: TN
   output:
     # Size 3, no income
-    # Payment standard: SPA = $185
-    tn_ff: 185
+    # Payment standard: SPA = $387
+    tn_ff: 387
 
 - name: Case 3, earned income reduces benefit.
   period: 2024-01
@@ -70,13 +70,13 @@
         state_code: TN
   output:
     # Gross earned: $500/month
-    # Countable earned: $500 - $150 = $350
-    # Child care (age 3): $175
-    # Countable: max($350 - $175, 0) = $175
-    # Payment standard: SPA = $142
-    # Deficit: $896 - $175 = $721
-    # Benefit: min($142, $721) = $142
-    tn_ff: 142
+    # Countable earned: $500 - $250 = $250
+    # No child care claimed
+    # Countable: $250
+    # Payment standard: SPA = $343
+    # Deficit: $1,370 - $250 = $1,120
+    # Benefit: min($343, $1,120) = $343
+    tn_ff: 343
 
 - name: Case 4, income over GIS is ineligible.
   period: 2024-01
@@ -84,7 +84,7 @@
     people:
       person1:
         age: 28
-        tanf_gross_earned_income: 2_000
+        tanf_gross_earned_income: 3_000
       person2:
         age: 5
     spm_units:
@@ -95,17 +95,17 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Gross: $2,000/month > GIS ($896 * 1.85 = $1,657.60)
+    # Gross: $3,000/month > GIS ($1,370 * 1.85 = $2,534.50)
     # Ineligible
     tn_ff: 0
 
-- name: Case 5, unearned income fails net test.
+- name: Case 5, unearned income near CNS.
   period: 2024-01
   input:
     people:
       person1:
         age: 28
-        tanf_gross_unearned_income: 1_000
+        tanf_gross_unearned_income: 1_200
       person2:
         age: 9
     spm_units:
@@ -116,11 +116,12 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Unearned: $1,000/month
-    # Gross: $1,000 < GIS ($1,657.60) - passes
-    # Countable (no disregard for unearned): $1,000 >= CNS ($896)
-    # Fails net income test
-    tn_ff: 0
+    # Unearned: $1,200/month
+    # Gross: $1,200 < GIS ($2,534.50) - passes
+    # Countable (no disregard for unearned): $1,200 < CNS ($1,370) - passes
+    # Deficit: $1,370 - $1,200 = $170
+    # Benefit: min($343, $170) = $170 >= $10 minimum
+    tn_ff: 170
 
 - name: Case 6, large family with 4 children.
   period: 2024-01
@@ -145,8 +146,8 @@
         state_code: TN
   output:
     # Size 5, no income
-    # Payment standard: SPA = $264
-    tn_ff: 264
+    # Payment standard: SPA = $471
+    tn_ff: 471
 
 - name: Case 7, resources over limit is ineligible.
   period: 2024-01

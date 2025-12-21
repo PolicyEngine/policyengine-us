@@ -1,5 +1,6 @@
 # Tests for TN FF payment standard (SPA only)
 # NOTE: DGPA (Differential Grant Payment Amount) is not modeled
+# 2021 SPA = 25% of CNS per T.C.A. § 71-3-105(f)(2)(B)
 
 - name: Case 1, size 2 receives SPA.
   period: 2024-01
@@ -17,7 +18,8 @@
         members: [person1, person2]
         state_code: TN
   output:
-    tn_ff_payment_standard: 142
+    # SPA size 2 = $1,370 * 25% = $343
+    tn_ff_payment_standard: 343
 
 - name: Case 2, size 3 receives SPA.
   period: 2024-01
@@ -37,7 +39,8 @@
         members: [person1, person2, person3]
         state_code: TN
   output:
-    tn_ff_payment_standard: 185
+    # SPA size 3 = $1,549 * 25% = $387
+    tn_ff_payment_standard: 387
 
 - name: Case 3, size 4 receives SPA.
   period: 2024-01
@@ -59,7 +62,8 @@
         members: [person1, person2, person3, person4]
         state_code: TN
   output:
-    tn_ff_payment_standard: 226
+    # SPA size 4 = $1,752 * 25% = $438
+    tn_ff_payment_standard: 438
 
 - name: Case 4, size 5 receives SPA.
   period: 2024-01
@@ -83,7 +87,8 @@
         members: [person1, person2, person3, person4, person5]
         state_code: TN
   output:
-    tn_ff_payment_standard: 264
+    # SPA size 5 = $1,885 * 25% = $471
+    tn_ff_payment_standard: 471
 
 - name: Case 5, size 10 at maximum cap.
   period: 2024-01
@@ -117,4 +122,5 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: TN
   output:
-    tn_ff_payment_standard: 467
+    # SPA size 10 = $2,373 * 25% = $593
+    tn_ff_payment_standard: 593

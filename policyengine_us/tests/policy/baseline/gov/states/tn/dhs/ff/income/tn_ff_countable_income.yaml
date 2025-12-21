@@ -1,5 +1,5 @@
 # Tests for TN FF countable income
-# For 2024-01: Earned income disregard = $150
+# For 2021+: Earned income disregard = $250
 # Child care deduction: $200 for under 2, $175 for 2+
 # Formula: max(countable_earned - child_care, 0) + unearned
 
@@ -34,9 +34,9 @@
         members: [person1]
         state_code: TN
   output:
-    # Countable earned: $1,000 - $150 = $850
+    # Countable earned: $1,000 - $250 = $750
     # No child care, no unearned
-    tn_ff_countable_income: 850
+    tn_ff_countable_income: 750
 
 - name: Case 3, unearned income only.
   period: 2024-01
@@ -72,10 +72,10 @@
         members: [person1]
         state_code: TN
   output:
-    # Earned: $1,000 - $150 disregard = $850
+    # Earned: $1,000 - $250 disregard = $750
     # Unearned: $500
-    # Total: $850 + $500 = $1,350
-    tn_ff_countable_income: 1_350
+    # Total: $750 + $500 = $1,250
+    tn_ff_countable_income: 1_250
 
 - name: Case 5, earned income with child under 2.
   period: 2024-01
@@ -96,10 +96,10 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Earned: $1,500 - $150 = $1,350
+    # Earned: $1,500 - $250 = $1,250
     # Child care: $200 (for child under 2)
-    # Countable earned: $1,350 - $200 = $1,150
-    tn_ff_countable_income: 1_150
+    # Countable earned: $1,250 - $200 = $1,050
+    tn_ff_countable_income: 1_050
 
 - name: Case 6, earned income with child 2 or older.
   period: 2024-01
@@ -120,10 +120,10 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Earned: $1,500 - $150 = $1,350
+    # Earned: $1,500 - $250 = $1,250
     # Child care: $175 (for child 2+)
-    # Countable earned: $1,350 - $175 = $1,175
-    tn_ff_countable_income: 1_175
+    # Countable earned: $1,250 - $175 = $1,075
+    tn_ff_countable_income: 1_075
 
 - name: Case 7, earned income with multiple children.
   period: 2024-01
@@ -147,10 +147,10 @@
         members: [person1, person2, person3]
         state_code: TN
   output:
-    # Earned: $2,000 - $150 = $1,850
+    # Earned: $2,000 - $250 = $1,750
     # Child care: $200 (under 2) + $175 (2+) = $375
-    # Countable earned: $1,850 - $375 = $1,475
-    tn_ff_countable_income: 1_475
+    # Countable earned: $1,750 - $375 = $1,375
+    tn_ff_countable_income: 1_375
 
 - name: Case 8, child care exceeds countable earned.
   period: 2024-01
@@ -174,9 +174,9 @@
         members: [person1, person2, person3]
         state_code: TN
   output:
-    # Earned: $300 - $150 = $150
+    # Earned: $300 - $250 = $50
     # Child care: $200 + $175 = $375
-    # max($150 - $375, 0) = $0
+    # max($50 - $375, 0) = $0
     tn_ff_countable_income: 0
 
 - name: Case 9, low earned with high unearned.
@@ -195,7 +195,7 @@
         members: [person1]
         state_code: TN
   output:
-    # Earned: $200 - $150 = $50
+    # Earned: max($200 - $250, 0) = $0
     # Unearned: $800
-    # Total: $50 + $800 = $850
-    tn_ff_countable_income: 850
+    # Total: $0 + $800 = $800
+    tn_ff_countable_income: 800

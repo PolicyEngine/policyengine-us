@@ -1,6 +1,8 @@
 # Tests for TN Families First benefit calculation
-# For 2024-01:
-# - CNS size 2: $896, SPA: $142
+# For 2021+:
+# - CNS size 2: $1,370, SPA: $343
+# - Earned income disregard: $250
+# - Child care (age 2+): $175
 # - Minimum grant: $10
 # - Fill-the-gap: benefit = min(payment_standard, CNS - countable_income)
 
@@ -20,11 +22,11 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Deficit: $896 - $0 = $896
-    # Benefit: min($142, $896) = $142
-    tn_ff: 142
+    # Deficit: $1,370 - $0 = $1,370
+    # Benefit: min($343, $1,370) = $343
+    tn_ff: 343
 
-- name: Case 2, deficit less than SPA.
+- name: Case 2, earned income with child care.
   period: 2024-01
   input:
     people:
@@ -43,60 +45,12 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Countable: $900 - $150 - $175 = $575
-    # Deficit: $896 - $575 = $321
-    # Benefit: min($142, $321) = $142
-    tn_ff: 142
+    # Countable: $900 - $250 - $175 = $475
+    # Deficit: $1,370 - $475 = $895
+    # Benefit: min($343, $895) = $343
+    tn_ff: 343
 
-- name: Case 3, deficit smaller than SPA caps benefit.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 1_000
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month * 12
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    # Countable: $1,000 - $150 - $175 = $675
-    # Deficit: $896 - $675 = $221
-    # Benefit: min($142, $221) = $142
-    tn_ff: 142
-
-- name: Case 4, high income results in small deficit.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 1_100
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month * 12
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    # Countable: $1,100 - $150 - $175 = $775
-    # Deficit: $896 - $775 = $121
-    # Benefit: min($142, $121) = $121
-    tn_ff: 121
-
-- name: Case 5, benefit below minimum grant is zero.
+- name: Case 3, moderate income still gets full SPA.
   period: 2024-01
   input:
     people:
@@ -115,18 +69,18 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Countable: $1,200 - $150 - $175 = $875
-    # Deficit: $896 - $875 = $21
-    # Benefit: min($142, $21) = $21 >= $10 minimum
-    tn_ff: 21
+    # Countable: $1,200 - $250 - $175 = $775
+    # Deficit: $1,370 - $775 = $595
+    # Benefit: min($343, $595) = $343
+    tn_ff: 343
 
-- name: Case 6, benefit exactly at minimum grant.
+- name: Case 4, high income results in deficit below SPA.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 1_211
+        tanf_gross_earned_income: 1_500
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -139,9 +93,57 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Countable: $1,211 - $150 - $175 = $886
-    # Deficit: $896 - $886 = $10
-    # Benefit: min($142, $10) = $10 >= $10 minimum
+    # Countable: $1,500 - $250 - $175 = $1,075
+    # Deficit: $1,370 - $1,075 = $295
+    # Benefit: min($343, $295) = $295
+    tn_ff: 295
+
+- name: Case 5, income near CNS gives small benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_720
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,720 - $250 - $175 = $1,295
+    # Deficit: $1,370 - $1,295 = $75
+    # Benefit: min($343, $75) = $75 >= $10 minimum
+    tn_ff: 75
+
+- name: Case 6, benefit exactly at minimum grant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_785
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Countable: $1,785 - $250 - $175 = $1,360
+    # Deficit: $1,370 - $1,360 = $10
+    # Benefit: min($343, $10) = $10 >= $10 minimum
     tn_ff: 10
 
 - name: Case 7, benefit below minimum grant is zero.
@@ -150,7 +152,7 @@
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 1_212
+        tanf_gross_earned_income: 1_786
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -163,8 +165,8 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Countable: $1,212 - $150 - $175 = $887
-    # Deficit: $896 - $887 = $9
+    # Countable: $1,786 - $250 - $175 = $1,361
+    # Deficit: $1,370 - $1,361 = $9
     # Benefit: $9 < $10 minimum → $0
     tn_ff: 0
 
