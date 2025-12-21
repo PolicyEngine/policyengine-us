@@ -21,10 +21,8 @@
     # Income chain
     mn_mfip_countable_earned_income: 0
     mn_mfip_countable_unearned_income: 0
-    mn_mfip_countable_income: 0
-
     # Standards
-    mn_mfip_payment_standard: 1_087
+    mn_mfip_transitional_standard: 1_087
     mn_mfip_family_wage_level: 1_195.7
     # FWL = 1,087 * 1.10 = 1,195.70
 
@@ -65,10 +63,8 @@
     # After 50%: 935 * 0.5 = $467.50
     mn_mfip_countable_earned_income: 467.5
     mn_mfip_countable_unearned_income: 0
-    mn_mfip_countable_income: 467.5
-
     # Standards for family of 3
-    mn_mfip_payment_standard: 1_394
+    mn_mfip_transitional_standard: 1_394
     mn_mfip_family_wage_level: 1_533.4
     # FWL = 1,394 * 1.10 = 1,533.40
 
@@ -106,19 +102,17 @@
     # Demographics
     spm_unit_count_children: 2
 
-    # Child support disregard
-    # 2 children = $200 disregard
-    mn_mfip_child_support_disregard: 200
+    # Child support exclusion
+    # 2 children = $200 exclusion
+    mn_mfip_child_support_income_exclusion: 200
 
     # Income calculations
     # Child support: $400/month
     # Countable: max(400-200, 0) = $200
     mn_mfip_countable_earned_income: 0
     mn_mfip_countable_unearned_income: 200
-    mn_mfip_countable_income: 200
-
     # Standards for family of 3
-    mn_mfip_payment_standard: 1_394
+    mn_mfip_transitional_standard: 1_394
     mn_mfip_family_wage_level: 1_533.4
 
     # Eligibility
@@ -152,20 +146,18 @@
     # Demographics
     spm_unit_count_children: 1
 
-    # Child support disregard
-    # 1 child = $100 disregard
-    mn_mfip_child_support_disregard: 100
+    # Child support exclusion
+    # 1 child = $100 exclusion
+    mn_mfip_child_support_income_exclusion: 100
 
     # Income calculations
     # Earned: (800-65)*0.5 = $367.50
     mn_mfip_countable_earned_income: 367.5
 
-    # Child support: $250, disregard $100, countable $150
+    # Child support: $250, exclusion $100, countable $150
     mn_mfip_countable_unearned_income: 150
-    mn_mfip_countable_income: 517.5
-
     # Standards for family of 2
-    mn_mfip_payment_standard: 1_087
+    mn_mfip_transitional_standard: 1_087
     mn_mfip_family_wage_level: 1_195.7
 
     # Eligibility
@@ -226,8 +218,6 @@
     # Income calculations
     # Earned: (4000-65)*0.5 = $1,967.50
     mn_mfip_countable_earned_income: 1_967.5
-    mn_mfip_countable_income: 1_967.5
-
     # Standards for family of 2
     mn_mfip_family_wage_level: 1_195.7
 
@@ -275,7 +265,7 @@
     spm_unit_count_children: 8
 
     # Standards for family of 10
-    mn_mfip_payment_standard: 3_201
+    mn_mfip_transitional_standard: 3_201
     mn_mfip_family_wage_level: 3_521.1
     # FWL = 3,201 * 1.10 = 3,521.10
 

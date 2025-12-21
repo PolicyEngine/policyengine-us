@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mn_mfip_child_support_disregard(Variable):
+class mn_mfip_child_support_income_exclusion(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Minnesota MFIP child support disregard"
+    label = "Minnesota MFIP child support income exclusion"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -13,8 +13,12 @@ class mn_mfip_child_support_disregard(Variable):
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):
+        # Per MN Stat. 256P.06, Subd. 3:
+        # Child support up to $100 (1 child) or $200 (2+ children) is excluded.
         p = parameters(
             period
         ).gov.states.mn.dcyf.mfip.income.child_support_disregard
+        child_support = add(spm_unit, period, ["child_support_received"])
         children = spm_unit("spm_unit_count_children", period.this_year)
-        return p.amount.calc(children)
+        max_disregard = p.amount.calc(children)
+        return min_(child_support, max_disregard)

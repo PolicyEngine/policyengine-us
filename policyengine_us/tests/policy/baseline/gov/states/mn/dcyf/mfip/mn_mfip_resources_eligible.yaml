@@ -1,4 +1,4 @@
-- name: Case 1, no unearned income.
+- name: Case 1, no assets.
   period: 2025-01
   input:
     people:
@@ -9,77 +9,76 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_assets: 0
     households:
       household:
         members: [person1, person2]
         state_code: MN
   output:
-    mn_mfip_countable_unearned_income: 0
+    mn_mfip_resources_eligible: true
 
-- name: Case 2, child support below disregard for one child.
+- name: Case 2, assets below limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        child_support_received: 1_200  # $100/month
       person2:
         age: 8
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_assets: 5_000
     households:
       household:
         members: [person1, person2]
         state_code: MN
   output:
-    # Child support: $100/month
-    # Disregard for 1 child: $100
-    # Countable: max(100 - 100, 0) = 0
-    mn_mfip_countable_unearned_income: 0
+    # Assets: $5,000
+    # Limit: $10,000
+    # Eligible: 5,000 <= 10,000 = true
+    mn_mfip_resources_eligible: true
 
-- name: Case 3, child support above disregard for one child.
+- name: Case 3, assets at limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        child_support_received: 1_800  # $150/month
       person2:
         age: 8
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_assets: 10_000
     households:
       household:
         members: [person1, person2]
         state_code: MN
   output:
-    # Child support: $150/month
-    # Disregard for 1 child: $100
-    # Countable: max(150 - 100, 0) = 50
-    mn_mfip_countable_unearned_income: 50
+    # Assets: $10,000
+    # Limit: $10,000
+    # Eligible: 10,000 <= 10,000 = true
+    mn_mfip_resources_eligible: true
 
-- name: Case 4, child support with two children.
+- name: Case 4, assets above limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        child_support_received: 3_000  # $250/month
       person2:
         age: 8
-      person3:
-        age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
+        members: [person1, person2]
+        spm_unit_assets: 10_001
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         state_code: MN
   output:
-    # Child support: $250/month
-    # Disregard for 2+ children: $200
-    # Countable: max(250 - 200, 0) = 50
-    mn_mfip_countable_unearned_income: 50
+    # Assets: $10,001
+    # Limit: $10,000
+    # Eligible: 10,001 <= 10,000 = false
+    mn_mfip_resources_eligible: false
