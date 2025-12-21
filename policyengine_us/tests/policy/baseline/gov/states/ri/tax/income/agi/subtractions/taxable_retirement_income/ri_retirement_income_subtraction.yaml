@@ -15,3 +15,44 @@
     taxable_pension_income: 20_000
   output:
     ri_retirement_income_subtraction: 15_000
+
+# 2025 tests - Cap increased to $50,000 starting 2024
+- name: 2025 - Not eligible for retirement income modification
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: false
+    taxable_pension_income: 30_000
+  output:
+    ri_retirement_income_subtraction: 0
+
+- name: 2025 - Eligible with pension below cap
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 30_000
+  output:
+    ri_retirement_income_subtraction: 30_000
+
+- name: 2025 - Eligible with pension at cap
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 50_000
+  output:
+    ri_retirement_income_subtraction: 50_000
+
+- name: 2025 - Eligible with pension above cap (capped at $50,000)
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 75_000
+  output:
+    ri_retirement_income_subtraction: 50_000
