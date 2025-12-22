@@ -1,0 +1,182 @@
+- name: VA exemption reform - restrict to children under 18
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    gov.contrib.states.va.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.va.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VA
+  output:
+    # 1 personal (930) + 1 eligible dependent (930) + 1 older dependent (930)
+    va_personal_exemption: 2_790
+
+- name: VA exemption reform - restrict to children under 13
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    gov.contrib.states.va.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.va.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VA
+  output:
+    # 1 personal (930) + 1 eligible dependent (930) + 1 older dependent (930)
+    va_personal_exemption: 2_790
+
+- name: VA exemption reform - different amounts for dependent children
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 2_000
+    gov.contrib.states.va.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.va.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VA
+  output:
+    # 1 personal (930) + 2 eligible dependents (2_000 each = 4_000) = 4_930
+    va_personal_exemption: 4_930
+
+- name: VA exemption reform - AGI phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    gov.contrib.states.va.dependent_exemption.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.va.dependent_exemption.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 40
+        employment_income: 120_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: VA
+  output:
+    # Personal exemption: 930 (baseline)
+    # Dependent exemption before phaseout: 930
+    # Phaseout: (120_000 - 100_000) * 0.05 = 1_000 (only applies to dependent exemption)
+    # Dependent exemption after phaseout: max(930 - 1_000, 0) = 0
+    # Final: 930 (personal) + 0 (dependent) = 930
+    va_personal_exemption: 930
+
+- name: VA exemption reform - joint filing
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 2_000
+    gov.contrib.states.va.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.va.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      parent2:
+        age: 38
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_name: VA
+  output:
+    # 2 personal exemptions (930 * 2 = 1_860) + 1 eligible dependent (2_000) = 3_860
+    va_personal_exemption: 3_860
+
+- name: VA exemption reform - no age limit (all dependents eligible)
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 2_000
+    gov.contrib.states.va.dependent_exemption.age_limit.in_effect: false
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 22
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VA
+  output:
+    # 1 personal (930) + 2 eligible dependents (2_000 each = 4_000) = 4_930
+    # No older dependents since age limit is not in effect
+    va_personal_exemption: 4_930
