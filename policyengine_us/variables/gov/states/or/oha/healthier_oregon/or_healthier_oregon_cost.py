@@ -43,7 +43,14 @@ class or_healthier_oregon_cost_if_enrolled(Variable):
         is_pregnant = person("is_pregnant", period)
         is_disabled = person("is_ssi_recipient_for_medicaid", period)
 
-        is_child = age < 19
+        # Use the Oregon Healthier Oregon child_max_age parameter
+        p = (
+            parameters(period)
+            .gov.states["or"]
+            .oha.healthier_oregon.eligibility
+        )
+        is_child = age <= p.child_max_age
+        # 65 is the standard federal Medicaid aged threshold (42 USC 1382c)
         is_aged_disabled = is_disabled | (age >= 65)
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
         is_expansion_adult = (

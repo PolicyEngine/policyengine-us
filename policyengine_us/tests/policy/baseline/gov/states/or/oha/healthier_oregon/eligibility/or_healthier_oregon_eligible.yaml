@@ -79,3 +79,77 @@
     state_code: OR
   output:
     or_healthier_oregon_eligible: true
+
+# Income boundary tests
+
+- name: Boundary - Adult at 139% FPL NOT eligible (just above 138% limit)
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.39  # 139% FPL (just above 138% limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: false
+
+- name: Boundary - Child at exactly 305% FPL eligible
+  period: 2024
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 3.05  # 305% FPL (exactly at limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: true
+
+- name: Boundary - Child at 306% FPL NOT eligible (just above 305% limit)
+  period: 2024
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 3.06  # 306% FPL (just above 305% limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: false
+
+# Age boundary tests (cliff effect at age 18/19)
+
+- name: Age cliff - Age 18 at 200% FPL eligible (child limit 305%)
+  period: 2024
+  input:
+    age: 18
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 2.0  # 200% FPL (within 305% child limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: true
+
+- name: Age cliff - Age 19 at 200% FPL NOT eligible (adult limit 138%)
+  period: 2024
+  input:
+    age: 19
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 2.0  # 200% FPL (above 138% adult limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: false
+
+- name: Age cliff - Age 18 at 140% FPL eligible (still a child)
+  period: 2024
+  input:
+    age: 18
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.4  # 140% FPL (within 305% child limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: true
+
+- name: Age cliff - Age 19 at 140% FPL NOT eligible (adult over 138%)
+  period: 2024
+  input:
+    age: 19
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.4  # 140% FPL (above 138% adult limit)
+    state_code: OR
+  output:
+    or_healthier_oregon_eligible: false

@@ -27,6 +27,15 @@
   output:
     or_healthier_oregon_immigration_status_eligible: true
 
+# DACA_TPS combined status is eligible
+- name: DACA_TPS combined status eligible
+  period: 2024
+  input:
+    immigration_status: DACA_TPS
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: true
+
 # Citizens should use regular federal Medicaid
 - name: US citizen NOT eligible (uses federal Medicaid)
   period: 2024
@@ -50,6 +59,15 @@
   period: 2024
   input:
     immigration_status: REFUGEE
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: false
+
+# Asylees should use regular federal Medicaid
+- name: Asylee NOT eligible (uses federal Medicaid)
+  period: 2024
+  input:
+    immigration_status: ASYLEE
     state_code: OR
   output:
     or_healthier_oregon_immigration_status_eligible: false
