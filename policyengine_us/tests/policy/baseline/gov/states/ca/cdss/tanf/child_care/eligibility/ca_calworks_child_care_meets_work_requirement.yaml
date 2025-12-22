@@ -4,7 +4,7 @@
     people:
       person:
         ca_calworks_child_care_welfare_to_work: 0
-        earned_income: 1_000
+        earned_income_before_lsr: 1_000
     households:
       household:
         members: [person]
@@ -18,7 +18,7 @@
     people:
       person:
         ca_calworks_child_care_welfare_to_work: 20
-        earned_income: 0
+        earned_income_before_lsr: 0
     households:
       household:
         members: [person]
@@ -32,7 +32,7 @@
     people:
       person:
         ca_calworks_child_care_welfare_to_work: 0
-        earned_income: 0
+        earned_income_before_lsr: 0
     households:
       household:
         members: [person]

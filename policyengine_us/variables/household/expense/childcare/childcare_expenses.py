@@ -9,14 +9,7 @@ class childcare_expenses(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        pre_subsidy_childcare_expenses = add(
-            spm_unit, period, ["pre_subsidy_childcare_expenses"]
-        )
-        # States where we model childcare subsidies.
-        STATES_WITH_CHILD_CARE_SUBSIDIES = ["CA", "CO", "NE", "MA"]
-        subsidy_variables = [
-            i.lower() + "_child_care_subsidies"
-            for i in STATES_WITH_CHILD_CARE_SUBSIDIES
-        ]
-        subsidies = add(spm_unit, period, subsidy_variables)
-        return max_(pre_subsidy_childcare_expenses - subsidies, 0)
+        pre_subsidy = add(spm_unit, period, ["pre_subsidy_childcare_expenses"])
+        p = parameters(period).gov.household.expense.childcare
+        subsidies = add(spm_unit, period, p.subsidy_programs)
+        return max_(pre_subsidy - subsidies, 0)

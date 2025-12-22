@@ -13,3 +13,19 @@
     co_child_care_subsidies: 25
   output:
     childcare_expenses: 0
+
+- name: NC SCCA subsidy (annual)
+  period: 2024
+  input:
+    pre_subsidy_childcare_expenses: 1_200
+    nc_scca: 600  # Annual subsidy amount
+  output:
+    childcare_expenses: 600  # 1_200 - 600 = 600
+
+- name: NC SCCA subsidy (monthly)
+  period: 2024-01
+  input:
+    pre_subsidy_childcare_expenses: 1_200  # Annual input
+    nc_scca: 600  # Annual input
+  output:
+    childcare_expenses: 50  # Monthly: (1_200 - 600) / 12 = 50

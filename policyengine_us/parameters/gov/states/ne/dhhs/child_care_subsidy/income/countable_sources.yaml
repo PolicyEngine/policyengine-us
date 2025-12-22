@@ -1,0 +1,22 @@
+description: Nebraska includes these income sources as countable income under the Child Care Subsidy Program.
+values:
+  2021-01-01:
+    # Earned income (before LSR to avoid circular dependency)
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    # Unearned income per NAC 392-2-010
+    - social_security
+    - child_support_received
+    - unemployment_compensation
+    - pension_income
+    - alimony_income
+    # Excluded per NAC 392-2-010: children's earnings (age 18 or younger in school),
+    # Title I WIOA program income
+
+metadata:
+  unit: list
+  period: year
+  label: Nebraska Child Care Subsidy countable income sources
+  reference:
+    - title: NAC 392-2-010 - Income
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf

@@ -2,8 +2,8 @@
   period: 2024
   input:
     state_code: NC
-    employment_income: 0
-    self_employment_income: 0
+    employment_income_before_lsr: 0
+    self_employment_income_before_lsr: 0
     pension_income: 0
     veterans_benefits: 0
     unemployment_compensation: 0
@@ -24,8 +24,8 @@
   period: 2024
   input:
     state_code: NC
-    employment_income: 1_000
-    self_employment_income: 1_000
+    employment_income_before_lsr: 1_000
+    self_employment_income_before_lsr: 1_000
     pension_income: 1_000
     veterans_benefits: 1_000
     unemployment_compensation: 1_000
