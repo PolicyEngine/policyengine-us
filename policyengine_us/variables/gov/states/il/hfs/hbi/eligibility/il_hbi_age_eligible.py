@@ -24,15 +24,9 @@ class il_hbi_age_eligible(Variable):
 
         age = person("age", period)
 
-        # Age thresholds
-        child_max_age = p.child.max_age
-        adult_min_age = p.adult.min_age
-        adult_max_age = p.adult.max_age
-        senior_min_age = p.senior.min_age
-
         # Determine if in a covered age group
-        is_child = age <= child_max_age
-        is_adult = (age >= adult_min_age) & (age <= adult_max_age)
-        is_senior = age >= senior_min_age
+        is_child = age <= p.child.max_age
+        is_adult = (age >= p.adult.min_age) & (age <= p.adult.max_age)
+        is_senior = age >= p.senior.min_age
 
         return is_child | is_adult | is_senior

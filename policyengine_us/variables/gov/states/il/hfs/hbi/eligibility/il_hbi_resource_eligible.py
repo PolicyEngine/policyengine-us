@@ -18,17 +18,15 @@ class il_hbi_resource_eligible(Variable):
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         age = person("age", period)
-        senior_min_age = p.senior.min_age
-        is_senior = age >= senior_min_age
+        is_senior = age >= p.senior.min_age
 
         # Get household assets
         household_assets = person.spm_unit("spm_unit_assets", period)
-        resource_limit = p.senior.resource_limit
 
         # Seniors must meet the resource test
         # Non-seniors automatically pass (no resource test)
         return where(
             is_senior,
-            household_assets <= resource_limit,
+            household_assets <= p.senior.resource_limit,
             True,
         )

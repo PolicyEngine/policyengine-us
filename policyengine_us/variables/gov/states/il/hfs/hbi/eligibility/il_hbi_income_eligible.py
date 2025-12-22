@@ -26,15 +26,9 @@ class il_hbi_income_eligible(Variable):
         age = person("age", period)
 
         # Age thresholds
-        child_max_age = p.child.max_age
-        adult_min_age = p.adult.min_age
-        adult_max_age = p.adult.max_age
-        senior_min_age = p.senior.min_age
-
-        # Determine age category
-        is_child = age <= child_max_age
-        is_adult = (age >= adult_min_age) & (age <= adult_max_age)
-        is_senior = age >= senior_min_age
+        is_child = age <= p.child.max_age
+        is_adult = (age >= p.adult.min_age) & (age <= p.adult.max_age)
+        is_senior = age >= p.senior.min_age
 
         # Get appropriate income level based on age group
         # Children and adults use MAGI, seniors use AABD methodology
@@ -43,15 +37,14 @@ class il_hbi_income_eligible(Variable):
 
         income_level = where(is_senior, aabd_income_level, magi_income_level)
 
-        # Income limits by age group
-        child_limit = p.child.income_limit
-        adult_limit = p.adult.income_limit
-        senior_limit = p.senior.income_limit
-
         # Select appropriate income limit based on age
         income_limit = select(
             [is_child, is_adult, is_senior],
-            [child_limit, adult_limit, senior_limit],
+            [
+                p.child.income_limit,
+                p.adult.income_limit,
+                p.senior.income_limit,
+            ],
             default=0,  # Ages 19-41 not covered
         )
 
