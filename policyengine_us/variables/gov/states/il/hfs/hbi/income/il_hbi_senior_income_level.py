@@ -14,9 +14,7 @@ class il_hbi_senior_income_level(Variable):
 
     def formula(person, period, parameters):
         # Get monthly AABD-methodology income and annualize
-        income = person(
-            "il_hbi_senior_countable_income", period
-        )
+        income = person("il_hbi_senior_countable_income", period)
 
         # Get household FPL based on SPM unit size
         fpg = person.spm_unit("spm_unit_fpg", period)
