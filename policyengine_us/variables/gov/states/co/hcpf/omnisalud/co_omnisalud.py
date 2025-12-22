@@ -30,4 +30,4 @@ class co_omnisalud(Variable):
         # Sum monthly SLCSP to get annual amount
         slcsp_monthly = tax_unit("slcsp", period)
 
-        return where(eligible, slcsp_monthly * 12, 0)
+        return where(eligible, slcsp_monthly * MONTHS_IN_YEAR, 0)
