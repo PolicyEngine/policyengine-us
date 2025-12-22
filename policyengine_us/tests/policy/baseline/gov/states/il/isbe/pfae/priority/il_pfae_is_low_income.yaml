@@ -1,0 +1,15 @@
+- name: Case 1, income below 100% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 10_000
+  output:
+    il_pfae_is_low_income: true
+
+- name: Case 2, income above 100% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+  output:
+    il_pfae_is_low_income: false

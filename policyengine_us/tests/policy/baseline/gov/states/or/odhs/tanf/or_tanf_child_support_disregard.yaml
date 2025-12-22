@@ -1,0 +1,272 @@
+# Oregon TANF Child Support Disregard (OAR 461-145-0080)
+# Disregard up to $50 per dependent child per month, max $200 per household
+# Note: child_support_received is a YEAR variable, so monthly amounts are multiplied by 12
+
+- name: No child support results in zero disregard
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 0
+      child:
+        age: 5
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 0
+
+- name: One child with child support under per-child limit
+  # 1 child, child support = $30/month = $360/year
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($30, $50) = $30
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 360
+      child:
+        age: 5
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 30
+
+- name: One child with child support at per-child limit
+  # 1 child, child support = $50/month = $600/year
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($50, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 600
+      child:
+        age: 5
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: One child with child support above per-child limit
+  # 1 child, child support = $100/month = $1,200/year
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($100, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 1_200
+      child:
+        age: 5
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: Two children with child support under total limit
+  # 2 children, child support = $80/month = $960/year
+  # Max disregard = 2 * $50 = $100
+  # Disregard = min($80, $100) = $80
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 960
+      child1:
+        age: 8
+        child_support_received: 0
+      child2:
+        age: 5
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 80
+
+- name: Four children hits household max
+  # 4 children, child support = $250/month = $3,000/year
+  # Max by children = 4 * $50 = $200
+  # Household max = $200
+  # Max disregard = min($200, $200) = $200
+  # Disregard = min($250, $200) = $200
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 3_000
+      child1:
+        age: 10
+        child_support_received: 0
+      child2:
+        age: 8
+        child_support_received: 0
+      child3:
+        age: 5
+        child_support_received: 0
+      child4:
+        age: 3
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 200
+
+- name: Five children still capped at household max
+  # 5 children, child support = $300/month = $3,600/year
+  # Max by children = 5 * $50 = $250
+  # Household max = $200
+  # Max disregard = min($250, $200) = $200
+  # Disregard = min($300, $200) = $200
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        child_support_received: 3_600
+      child1:
+        age: 12
+        child_support_received: 0
+      child2:
+        age: 10
+        child_support_received: 0
+      child3:
+        age: 8
+        child_support_received: 0
+      child4:
+        age: 5
+        child_support_received: 0
+      child5:
+        age: 3
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 200
+
+# Age 18 boundary test - 18-year-old is NOT a minor child for child support disregard
+
+- name: Age 18 not counted as minor child for disregard
+  # 1 minor child (age 17) + 1 adult child (age 18)
+  # Child support = $150/month = $1,800/year
+  # Only 1 minor child counts for disregard
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($150, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        child_support_received: 1_800
+      child1:
+        age: 18
+        child_support_received: 0
+      child2:
+        age: 17
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: Age 17 counted as minor child - boundary test
+  # 1 minor child (age 17)
+  # Child support = $100/month = $1,200/year
+  # 1 minor child counts for disregard
+  # Max disregard = 1 * $50 = $50
+  # Disregard = min($100, $50) = $50
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        child_support_received: 1_200
+      child:
+        age: 17
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 50
+
+- name: All children age 18 or older - no minor children
+  # No minor children (both age 18+)
+  # Child support = $100/month = $1,200/year
+  # 0 minor children count for disregard
+  # Max disregard = 0 * $50 = $0
+  # Disregard = min($100, $0) = $0
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 45
+        child_support_received: 1_200
+      child1:
+        age: 20
+        child_support_received: 0
+      child2:
+        age: 18
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    or_tanf_child_support_disregard: 0

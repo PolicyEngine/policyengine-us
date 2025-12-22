@@ -1,0 +1,32 @@
+description: Oregon limits countable income to this amount based on need group size under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oregon TANF countable income limit
+  breakdown:
+    - range(1, 11)
+  reference:
+    - title: OAR 461-155-0030(2)(a) - Income and Payment Standards; REF, TANF
+      href: https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=268185
+
+1:
+  2011-07-01: 345
+2:
+  2011-07-01: 499
+3:
+  2011-07-01: 616
+4:
+  2011-07-01: 795
+5:
+  2011-07-01: 932
+6:
+  2011-07-01: 1_060
+7:
+  2011-07-01: 1_206
+8:
+  2011-07-01: 1_346
+9:
+  2011-07-01: 1_450
+10:
+  2011-07-01: 1_622

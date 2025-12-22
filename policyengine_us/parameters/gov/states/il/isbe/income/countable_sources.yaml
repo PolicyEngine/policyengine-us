@@ -1,0 +1,28 @@
+description: Illinois includes these income sources for countable income under the Illinois State Board of Education early childhood programs.
+values:
+  2015-01-01:
+    # Earned income
+    - employment_income
+    - self_employment_income
+    # Unearned income included per ISBE Household and Income Form
+    - child_support_received
+    - alimony_income
+    - pension_income
+    - retirement_distributions
+    - social_security
+    - ssi
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - strike_benefits
+    # Excluded: snap, wic, tanf (welfare benefits)
+    # Excluded: Federal education benefits, foster payments
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois ISBE countable income sources
+  reference:
+    - title: ISBE Household and Income Form (69-72)
+      href: https://www.isbe.net/Documents/69-72_hshld_income.pdf
