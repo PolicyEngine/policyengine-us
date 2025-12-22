@@ -58,3 +58,129 @@
     state_code: DC
   output:
     dc_medicaid_income_eligible: true  # Under 324% FPL for pregnant women
+
+# Income boundary tests
+
+- name: Boundary - Adult just below 215% FPL eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 2.14  # Just below 215% FPL limit
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true
+
+- name: Boundary - Adult at 216% FPL NOT eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 2.16  # Just above 215% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false
+
+- name: Boundary - Adult at exactly 138% FPL eligible in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.38  # Exactly at 138% FPL limit
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true
+
+- name: Boundary - Adult at 139% FPL NOT eligible in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.39  # Just above 138% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false
+
+- name: Boundary - Child just below 324% FPL eligible
+  period: 2026
+  input:
+    age: 10
+    is_pregnant: false
+    medicaid_income_level: 3.23  # Just below 324% FPL limit
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true
+
+- name: Boundary - Child at 325% FPL NOT eligible
+  period: 2026
+  input:
+    age: 10
+    is_pregnant: false
+    medicaid_income_level: 3.25  # Just above 324% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false
+
+- name: Boundary - Pregnant just below 324% FPL eligible
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: true
+    medicaid_income_level: 3.23  # Just below 324% FPL limit
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true
+
+- name: Boundary - Pregnant at 325% FPL NOT eligible
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: true
+    medicaid_income_level: 3.25  # Just above 324% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false
+
+# Age transition tests (child/adult at age 20/21)
+
+- name: Age cliff - Age 20 at 220% FPL eligible (child limit 324%)
+  period: 2025
+  input:
+    age: 20
+    is_pregnant: false
+    medicaid_income_level: 2.2  # 220% FPL (within 324% child limit)
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true
+
+- name: Age cliff - Age 21 at 220% FPL NOT eligible (adult limit 215%)
+  period: 2025
+  input:
+    age: 21
+    is_pregnant: false
+    medicaid_income_level: 2.2  # 220% FPL (above 215% adult limit)
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false
+
+# 2026 transition test
+
+- name: Policy change - Same income eligible in 2025, not in 2026
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.4  # 140% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: true  # Under 215% in 2025
+
+- name: Policy change - 140% FPL NOT eligible in 2026
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    medicaid_income_level: 1.4  # 140% FPL
+    state_code: DC
+  output:
+    dc_medicaid_income_eligible: false  # Above 138% in 2026

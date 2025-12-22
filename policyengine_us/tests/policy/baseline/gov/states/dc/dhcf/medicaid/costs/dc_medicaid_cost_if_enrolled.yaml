@@ -40,12 +40,22 @@
   output:
     dc_medicaid_cost_if_enrolled: 33_295.08  # DC-specific cost for aged/disabled
 
-- name: DC Medicaid young adult cost if enrolled
+- name: DC Medicaid young adult cost if enrolled (age 21)
   period: 2024
   absolute_error_margin: 0.01
   input:
-    age: 19
+    age: 21  # Age 21 is adult in DC (child_max_age = 20)
     dc_medicaid_enrolled: true
     state_code: DC
   output:
-    dc_medicaid_cost_if_enrolled: 7_472.53  # DC-specific cost for expansion adults (young adult 19+)
+    dc_medicaid_cost_if_enrolled: 7_472.53  # DC-specific cost for expansion adults (21+)
+
+- name: DC Medicaid age 19 cost if enrolled (child in DC)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 19  # Age 19 is still a child in DC (child_max_age = 20)
+    dc_medicaid_enrolled: true
+    state_code: DC
+  output:
+    dc_medicaid_cost_if_enrolled: 4_621.95  # DC-specific cost for children (age <= 20)

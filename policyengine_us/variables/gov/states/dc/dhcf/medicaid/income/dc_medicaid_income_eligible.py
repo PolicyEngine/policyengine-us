@@ -8,8 +8,7 @@ class dc_medicaid_income_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.DC
     reference = [
-        "https://dhcf.dc.gov/alliance",
-        "https://dhcf.dc.gov/sites/default/files/dc/sites/dhcf/publication/attachments/Alliance%20and%20ICP%20Program%20Changes%20Resource%20Document.pdf",
+        "https://dhcf.dc.gov/node/1796971",
     ]
 
     def formula(person, period, parameters):

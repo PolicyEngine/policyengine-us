@@ -11,7 +11,7 @@ class dc_medicaid_cost_if_enrolled(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "dc_medicaid_enrolled"
-    reference = "https://dhcf.dc.gov/alliance"
+    reference = "https://dhcf.dc.gov/node/1796971"
 
     def formula(person, period, parameters):
         # Reuse the exact same cost calculation as federal Medicaid
@@ -24,8 +24,10 @@ class dc_medicaid_cost_if_enrolled(Variable):
         is_pregnant = person("is_pregnant", period)
         is_disabled = person("is_ssi_recipient_for_medicaid", period)
 
-        # Map to appropriate group
-        is_child = age < 19
+        # Use DC's child_max_age parameter for consistency with income eligibility
+        p_elig = parameters(period).gov.states.dc.dhcf.medicaid.eligibility
+        is_child = age <= p_elig.child_max_age
+        # 65 is the standard federal Medicaid aged threshold (42 USC 1382c)
         is_aged_disabled = is_disabled | (age >= 65)
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
         is_expansion_adult = (
@@ -106,9 +108,14 @@ class dc_medicaid_cost_if_enrolled(Variable):
             default=0,
         )
 
-        # Calculate per capita cost
-        per_capita = p.totals.per_capita[group]
+        # Calculate per capita cost from spend/enroll, falling back to
+        # national average when enrollment is zero
+        default_per_capita = p.totals.per_capita[group]
         mask = enroll > 0
-        per_capita[mask] = spend[mask] / enroll[mask]
+        per_capita = where(
+            mask,
+            spend / np.maximum(enroll, 1),  # Avoid divide-by-zero
+            default_per_capita,
+        )
 
         return per_capita
