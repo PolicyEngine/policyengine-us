@@ -20,9 +20,6 @@ class ks_tanf_gross_income_eligible(Variable):
             period,
             ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
-        monthly_fpg = (
-            spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
-        )
+        fpg = spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.ks.dcf.tanf.income
-        threshold = monthly_fpg * p.gross_income_limit
-        return gross_income < threshold
+        return gross_income < fpg * p.gross_income_limit

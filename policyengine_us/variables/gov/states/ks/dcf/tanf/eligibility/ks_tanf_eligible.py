@@ -16,10 +16,9 @@ class ks_tanf_eligible(Variable):
     defined_for = StateCode.KS
 
     def formula(spm_unit, period, parameters):
-        # Per K.A.R. 30-4-70, K.A.R. 30-4-50, and K.S.A. 39-709:
-        # Must meet demographic, gross income, net income, and resource requirements
-        has_eligible_member = (
-            add(spm_unit, period, ["is_person_demographic_tanf_eligible"]) > 0
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         gross_income_eligible = spm_unit(
             "ks_tanf_gross_income_eligible", period
@@ -27,7 +26,8 @@ class ks_tanf_eligible(Variable):
         net_income_eligible = spm_unit("ks_tanf_income_eligible", period)
         resources_eligible = spm_unit("ks_tanf_resources_eligible", period)
         return (
-            has_eligible_member
+            demographic_eligible
+            & immigration_eligible
             & gross_income_eligible
             & net_income_eligible
             & resources_eligible
