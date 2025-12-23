@@ -1,0 +1,91 @@
+- name: Case 1, young parent family with parent age 20.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 20
+        is_parent: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_young_parent_family: true
+
+- name: Case 2, mixed age parents (30 and 20) eligible if any parent is young.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_parent: true
+      person2:
+        age: 20
+        is_parent: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Eligible because one parent is 20 (<=21)
+    il_pi_is_young_parent_family: true
+
+- name: Case 3, older parent age 25 not eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 25
+        is_parent: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_young_parent_family: false
+
+- name: Case 4, parent exactly 21 is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 21
+        is_parent: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_young_parent_family: true

@@ -11921,3 +11921,56 @@
     - Rebalance CI test jobs by moving NY state tests to NonStructural-Other and CRFB
       structural tests to Structural-Heavy.
   date: 2025-12-18 15:55:33
+- bump: patch
+  changes:
+    fixed:
+    - Updates the thresholds and marginal tax rates rates for the Missouri individual
+      income tax in `parameters/gov/states/mo/tax/income/rates.yaml`
+    - Adds the variable `mo_capital_gains_subtraction.py` and the parameter `parameters/gov/states/mo/tax/income/subtractions/net_capital_gain/rate.yaml`
+      for the 2025 inclusion a full deductibility of capital gains in calculating
+      Missouri adjusted gross income.
+    - Adds `agi_subtractions.yaml` list parameter with the two MO AGI subtractions
+      for 2025, and creates a `mo_agi_subtractions.py` variable (Person-level), which
+      is referenced in the `mo_adjusted_gross_income.py` calculation.
+    - Adds `mo_capital_gains_subtraction_person.py` to allocate the capital gains
+      subtraction proportionally to each person based on their share of long-term
+      capital gains, preventing overcounting in multi-person tax units.
+    - Updates the `parameters/gov/states/mo/tax/income/minimum_taxable_income.yaml`
+      parameter with the new 2025 value.
+    - Adds new legislative references
+  date: 2025-12-18 20:55:25
+- bump: minor
+  changes:
+    added:
+    - Indiana TANF program.
+  date: 2025-12-19 15:31:15
+- bump: minor
+  changes:
+    added:
+    - Implement Oregon TANF (Temporary Assistance for Needy Families) program with
+      income eligibility, resource limits, and benefit calculations.
+  date: 2025-12-19 15:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Works First (OWF) cash assistance program.
+  date: 2025-12-19 20:53:46
+- bump: minor
+  changes:
+    added:
+    - Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs
+      with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+    - New input variables for IEP status, developmental delay, non-English speaking
+      home, parent education level, born outside US, and no prior formal early learning.
+  date: 2025-12-19 23:08:59
+- bump: minor
+  changes:
+    added:
+    - Illinois Prevention Initiative (PI) program.
+  date: 2025-12-21 23:13:06
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing
+      incorrect fallback to first alphabetical county.
+  date: 2025-12-23 14:23:08

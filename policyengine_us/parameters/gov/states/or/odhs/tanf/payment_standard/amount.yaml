@@ -1,0 +1,32 @@
+description: Oregon sets this payment standard based on need group size under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oregon TANF payment standard
+  breakdown:
+    - range(1, 11)
+  reference:
+    - title: OAR 461-155-0030(5)(a) - Income and Payment Standards; REF, TANF
+      href: https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=268185
+
+1:
+  2011-07-01: 339
+2:
+  2011-07-01: 432
+3:
+  2011-07-01: 506
+4:
+  2011-07-01: 621
+5:
+  2011-07-01: 721
+6:
+  2011-07-01: 833
+7:
+  2011-07-01: 923
+8:
+  2011-07-01: 1_030
+9:
+  2011-07-01: 1_093
+10:
+  2011-07-01: 1_204
