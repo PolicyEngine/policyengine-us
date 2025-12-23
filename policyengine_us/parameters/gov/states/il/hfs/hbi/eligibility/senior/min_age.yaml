@@ -1,0 +1,14 @@
+description: Illinois sets the minimum age to this threshold under the Health Benefits for Immigrant Seniors program.
+metadata:
+  unit: year
+  period: year
+  label: Illinois HBIS minimum age
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrants
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
+
+values:
+  # HBIS covers seniors aged 65 and older
+  2020-12-01: 65

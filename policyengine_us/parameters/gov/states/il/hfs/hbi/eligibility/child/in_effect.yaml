@@ -1,0 +1,12 @@
+description: Illinois determines whether All Kids immigrant coverage is active.
+metadata:
+  unit: bool
+  period: year
+  label: Illinois All Kids immigrant coverage in effect
+  reference:
+    - title: Illinois HFS - About All Kids
+      href: https://hfs.illinois.gov/medicalprograms/allkids/about.html
+
+values:
+  # All Kids has been covering immigrant children since program inception
+  2006-01-01: true

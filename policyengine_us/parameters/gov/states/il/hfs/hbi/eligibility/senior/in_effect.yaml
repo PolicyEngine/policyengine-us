@@ -1,0 +1,16 @@
+description: Illinois determines whether the Health Benefits for Immigrant Seniors program is active.
+metadata:
+  unit: bool
+  period: year
+  label: Illinois HBIS program in effect
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrants
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
+
+values:
+  2020-01-01: false
+  # HBIS program started December 2020
+  2020-12-01: true
+  # Program remains in effect for existing enrollees (enrollment paused but not terminated)

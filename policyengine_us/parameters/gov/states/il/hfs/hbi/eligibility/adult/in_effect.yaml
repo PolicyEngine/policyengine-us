@@ -1,0 +1,17 @@
+description: Illinois determines whether the Health Benefits for Immigrant Adults program is active.
+metadata:
+  unit: bool
+  period: year
+  label: Illinois HBIA program in effect
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - HBIA FAQ
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants/hbiafaq.html
+
+values:
+  2020-01-01: false
+  # HBIA program started May 2022
+  2022-05-01: true
+  # Program terminated July 1, 2025
+  2025-07-01: false

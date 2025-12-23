@@ -1,0 +1,79 @@
+- name: Child age 10 eligible (All Kids)
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+  output:
+    il_hbi_age_eligible: true
+
+- name: Child age 18 eligible (All Kids max age)
+  period: 2024
+  input:
+    state_code: IL
+    age: 18
+  output:
+    il_hbi_age_eligible: true
+
+- name: Young adult age 19 NOT eligible (gap age)
+  period: 2024
+  input:
+    state_code: IL
+    age: 19
+  output:
+    il_hbi_age_eligible: false
+
+- name: Adult age 30 NOT eligible (gap age)
+  period: 2024
+  input:
+    state_code: IL
+    age: 30
+  output:
+    il_hbi_age_eligible: false
+
+- name: Adult age 41 NOT eligible (gap age)
+  period: 2024
+  input:
+    state_code: IL
+    age: 41
+  output:
+    il_hbi_age_eligible: false
+
+- name: Adult age 42 eligible (HBIA minimum)
+  period: 2024
+  input:
+    state_code: IL
+    age: 42
+  output:
+    il_hbi_age_eligible: true
+
+- name: Adult age 50 eligible (HBIA)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+  output:
+    il_hbi_age_eligible: true
+
+- name: Adult age 64 eligible (HBIA maximum)
+  period: 2024
+  input:
+    state_code: IL
+    age: 64
+  output:
+    il_hbi_age_eligible: true
+
+- name: Senior age 65 eligible (HBIS minimum)
+  period: 2024
+  input:
+    state_code: IL
+    age: 65
+  output:
+    il_hbi_age_eligible: true
+
+- name: Senior age 75 eligible (HBIS)
+  period: 2024
+  input:
+    state_code: IL
+    age: 75
+  output:
+    il_hbi_age_eligible: true

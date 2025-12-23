@@ -57,9 +57,26 @@ class medicaid_group(Variable):
             | (cat == cats.OLDER_CHILD)
         )
 
+        # Illinois HBI-specific mapping (for those who fail immigration check
+        # but are eligible via state-funded HBI program)
+        il_hbi_eligible = person("il_hbi_eligible", period)
+        age = person("age", period)
+        p_hbi = parameters(period).gov.states.il.hfs.hbi.eligibility
+        il_hbi_child = il_hbi_eligible & (age <= p_hbi.child.max_age)
+        il_hbi_adult = il_hbi_eligible & (
+            (age >= p_hbi.adult.min_age) & (age <= p_hbi.adult.max_age)
+        )
+        il_hbi_senior = il_hbi_eligible & (age >= p_hbi.senior.min_age)
+
         # Core mapping, in precedence order:
         return select(
-            [~eligible, disabled, non_expansion_adult, expansion_adult, child],
+            [
+                ~eligible,
+                disabled | il_hbi_senior,
+                non_expansion_adult,
+                expansion_adult | il_hbi_adult,
+                child | il_hbi_child,
+            ],
             [
                 MedicaidGroup.NONE,
                 MedicaidGroup.AGED_DISABLED,
