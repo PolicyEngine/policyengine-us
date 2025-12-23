@@ -1,0 +1,14 @@
+description: States with modeled child care subsidy programs that reduce out-of-pocket childcare expenses.
+values:
+  2020-01-01:
+  # With this list parameter, we don't need the wrapper variables anymore. Keep existing ones for API partner 
+    - ca_child_care_subsidies
+    - co_child_care_subsidies
+    - ma_child_care_subsidies
+    - nc_scca
+    - ne_child_care_subsidies
+
+metadata:
+  unit: list
+  period: year
+  label: Child care subsidy programs

@@ -1,0 +1,26 @@
+description: Colorado includes these income sources as countable income under the Child Care Assistance Program.
+values:
+  2020-01-01:
+    # Earned income (before LSR to avoid circular dependency)
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+    # Unearned income
+    - social_security
+    - pension_income
+    - veterans_benefits
+    - dividend_income
+    - interest_income
+    - rental_income
+    - alimony_income
+    - child_support_received
+    # Excluded per 3.111(J): SSI, children's earnings
+
+metadata:
+  unit: list
+  period: year
+  label: Colorado CCAP countable income sources
+  reference:
+    - title: 8 CCR 1403-1-3.111(I) - Income Inclusions
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=23
+    - title: 1400 CO Code Regs 8 CCR 1403-1-3.111
+      href: https://regulations.justia.com/states/colorado/1400/1403/rule-8-ccr-1403-1/applicant-rights/section-8-ccr-1403-1-3-111/

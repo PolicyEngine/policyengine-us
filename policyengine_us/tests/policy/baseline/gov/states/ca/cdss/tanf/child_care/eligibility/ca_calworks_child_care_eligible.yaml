@@ -48,10 +48,10 @@
 - name: Integration test - every person has to be eligible based on immigration status
   period: 2023
   input:
-    people: 
+    people:
       person1:
         immigration_status: CITIZEN
-        earned_income: 1_000
+        earned_income_before_lsr: 1_000
       person2:
         immigration_status: ASYLEE
         age: 2
@@ -72,7 +72,7 @@
     people: 
       person1:
         immigration_status: UNDOCUMENTED
-        earned_income: 1_000
+        earned_income_before_lsr: 1_000
       person2:
         immigration_status: ASYLEE
         age: 2

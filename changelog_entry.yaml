@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+    - Updated CA CalWORKs, CO CCAP, NE Child Care, and NC SCCA to use *_before_lsr income variables to avoid circular dependency issues in microsimulation.
+    - SNAP dependent care deduction now uses childcare_expenses (net of subsidies) instead of pre_subsidy_childcare_expenses.

@@ -2,7 +2,7 @@
   period: 2024
   input:
     spm_unit_fpg: 100
-    adjusted_gross_income: 185
+    ne_child_care_subsidy_countable_income: 185
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
@@ -11,7 +11,7 @@
   period: 2024
   input:
     spm_unit_fpg: 100
-    adjusted_gross_income: 183
+    ne_child_care_subsidy_countable_income: 183
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
@@ -20,7 +20,7 @@
   period: 2024
   input:
     spm_unit_fpg: 100
-    adjusted_gross_income: 186
+    ne_child_care_subsidy_countable_income: 186
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: false

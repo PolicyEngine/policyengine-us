@@ -14,7 +14,7 @@ class ne_child_care_subsidy(Variable):
         childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        income = spm_unit("spm_unit_net_income", period)
+        income = spm_unit("ne_child_care_subsidy_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         fpg_fraction = fpg * p.fpg_fraction.fee_free_limit
         income_above_fpg_fraction = income > fpg_fraction
