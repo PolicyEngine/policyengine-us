@@ -1,0 +1,85 @@
+- name: Case 1, low income only.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 10_000
+  output:
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 2, low income and low education.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 10_000
+    parent_has_less_than_high_school_education: true
+  output:
+    il_pfae_secondary_priority_factor_count: 2
+
+- name: Case 3, developmental delay without IEP.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+    employment_income: 50_000
+  output:
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 4, developmental delay with IEP not counted.
+  period: 2024
+  input:
+    state_code: IL
+    has_developmental_delay: true
+    has_individualized_education_program: true
+    employment_income: 50_000
+  output:
+    # IEP is 50-pt factor, so delay doesn't count as 25-pt
+    il_pfae_secondary_priority_factor_count: 0
+
+- name: Case 5, no secondary priority factors.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+  output:
+    il_pfae_secondary_priority_factor_count: 0
+
+- name: Case 6, immigrant family factor (child born outside US).
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+    is_born_outside_us: true
+  output:
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 7, no prior formal early learning factor.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+    has_no_prior_formal_early_learning: true
+  output:
+    # Child has NOT participated in formal early learning = 25 pts
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 8, teen parent at first birth factor.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+    il_isbe_was_teen_parent_at_first_birth: true
+  output:
+    # Parent was under 20 when first child was born = 25 pts
+    il_pfae_secondary_priority_factor_count: 1
+
+- name: Case 9, multiple factors combined.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 50_000
+    il_isbe_was_teen_parent_at_first_birth: true
+    is_born_outside_us: true
+    has_no_prior_formal_early_learning: true
+  output:
+    # Teen parent (1) + immigrant (1) + no prior learning (1) = 3
+    il_pfae_secondary_priority_factor_count: 3
