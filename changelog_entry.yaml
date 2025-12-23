@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing incorrect fallback to first alphabetical county.
