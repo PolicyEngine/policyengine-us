@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class or_healthier_oregon_immigration_status_eligible(Variable):
@@ -19,21 +20,14 @@ class or_healthier_oregon_immigration_status_eligible(Variable):
     """
 
     def formula(person, period, parameters):
+        p = (
+            parameters(period)
+            .gov.states["or"]
+            .oha.healthier_oregon.eligibility
+        )
         immigration_status = person("immigration_status", period)
-
-        # Oregon covers undocumented immigrants
-        undocumented = (
-            immigration_status
-            == immigration_status.possible_values.UNDOCUMENTED
+        immigration_status_str = immigration_status.decode_to_str()
+        return np.isin(
+            immigration_status_str,
+            p.qualified_immigration_statuses,
         )
-
-        # Oregon also covers DACA and TPS recipients
-        daca = immigration_status == immigration_status.possible_values.DACA
-        tps = immigration_status == immigration_status.possible_values.TPS
-        daca_tps = (
-            immigration_status == immigration_status.possible_values.DACA_TPS
-        )
-
-        # Only return true for non-federally-eligible statuses
-        # Citizens, LPRs, refugees use regular federal Medicaid
-        return undocumented | daca | tps | daca_tps

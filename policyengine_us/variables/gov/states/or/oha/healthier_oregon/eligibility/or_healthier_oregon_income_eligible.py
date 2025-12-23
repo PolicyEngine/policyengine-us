@@ -26,8 +26,7 @@ class or_healthier_oregon_income_eligible(Variable):
         income_level = person("medicaid_income_level", period)
 
         age = person("age", period)
-        child_max_age = p.child_max_age
-        is_child = age <= child_max_age
+        is_child = age <= p.child_max_age
 
         # Different income limits based on age
         income_limit = where(
