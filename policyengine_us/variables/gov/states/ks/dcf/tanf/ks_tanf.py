@@ -16,8 +16,6 @@ class ks_tanf(Variable):
     def formula(spm_unit, period, parameters):
         # Per K.A.R. 30-4-100 and KEESM 7110:
         # Benefit = Payment Standard - Countable Income
-        # Per KEESM 7400: Round down to nearest dollar
         maximum_benefit = spm_unit("ks_tanf_maximum_benefit", period)
         countable_income = spm_unit("ks_tanf_countable_income", period)
-        raw_benefit = max_(maximum_benefit - countable_income, 0)
-        return np.floor(raw_benefit)
+        return max_(maximum_benefit - countable_income, 0)

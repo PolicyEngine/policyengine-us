@@ -15,8 +15,11 @@ class ks_tanf_maximum_benefit(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per K.A.R. 30-4-100 and K.A.R. 30-4-101:
-        # Payment standard based on family size
-        # Using Rural Plan I/II rates (lowest cost counties)
+        # Payment standard = Basic allowance + Shelter allowance
+        # Using High Population Counties (Group III) rates for Non-shared Living
+        # Group III shelter = $109/month
+        # Counties: Butler, Jefferson, Leavenworth, McPherson, Miami, Osage,
+        #           Reno, Rice, Riley, Sedgwick, Shawnee, Wyandotte
         p = parameters(period).gov.states.ks.dcf.tanf.payment_standard
         max_size_in_table = parameters(
             period

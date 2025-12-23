@@ -1,6 +1,5 @@
 # Kansas TANF benefit calculation test
-# Benefit = floor(max(payment_standard - countable_income, 0))
-# Benefits rounded down to nearest dollar (KEESM 7400)
+# Benefit = max(payment_standard - countable_income, 0)
 # Source: KEESM 7110, K.A.R. 30-4-100
 
 - name: Case 1, eligible with no income, full benefit.
@@ -68,7 +67,7 @@
     # Benefit: 386 - 386 = 0
     ks_tanf: 0
 
-- name: Case 7, benefit with decimal rounding.
+- name: Case 7, benefit with decimal.
   period: 2025-01
   input:
     state_code: KS
@@ -76,5 +75,5 @@
     ks_tanf_maximum_benefit: 386
     ks_tanf_countable_income: 100.50
   output:
-    # Benefit: floor(386 - 100.50) = floor(285.50) = 285
-    ks_tanf: 285
+    # Benefit: 386 - 100.50 = 285.50
+    ks_tanf: 285.5
