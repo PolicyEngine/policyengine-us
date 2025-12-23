@@ -1,6 +1,6 @@
 # Tests for Colorado OmniSalud benefit calculation
 # The benefit equals the SLCSP (second lowest cost silver plan) premium
-# multiplied by 12 months for eligible individuals
+# for eligible individuals
 
 - name: Eligible undocumented adult receives SLCSP as annual benefit
   period: 2024
@@ -14,14 +14,14 @@
     tax_units:
       tax_unit:
         members: [adult]
-        slcsp: 500  # Monthly SLCSP
+        slcsp: 6_000  # Yearly SLCSP
     households:
       household:
         members: [adult]
         state_code: CO
   output:
     co_omnisalud_eligible: [true]
-    co_omnisalud: 6_000  # 500 * 12 months
+    co_omnisalud: 6_000
 
 - name: Ineligible citizen receives zero benefit
   period: 2024
@@ -35,7 +35,7 @@
     tax_units:
       tax_unit:
         members: [adult]
-        slcsp: 500
+        slcsp: 6_000
     households:
       household:
         members: [adult]
@@ -61,7 +61,7 @@
     tax_units:
       tax_unit:
         members: [citizen_adult, undocumented_spouse]
-        slcsp: 800  # Monthly SLCSP for couple
+        slcsp: 9_600  # Yearly SLCSP for couple
     households:
       household:
         members: [citizen_adult, undocumented_spouse]
@@ -70,7 +70,7 @@
     # Citizen is not eligible, undocumented spouse is eligible
     co_omnisalud_eligible: [false, true]
     # Tax unit gets benefit because at least one member is eligible
-    co_omnisalud: 9_600  # 800 * 12 months
+    co_omnisalud: 9_600
 
 - name: Income too high - no benefit
   period: 2024
@@ -84,7 +84,7 @@
     tax_units:
       tax_unit:
         members: [adult]
-        slcsp: 500
+        slcsp: 6_000
     households:
       household:
         members: [adult]
@@ -105,7 +105,7 @@
     tax_units:
       tax_unit:
         members: [adult]
-        slcsp: 500
+        slcsp: 6_000
     households:
       household:
         members: [adult]

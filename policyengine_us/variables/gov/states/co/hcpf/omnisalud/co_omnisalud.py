@@ -7,7 +7,8 @@ class co_omnisalud(Variable):
     label = "Colorado OmniSalud premium subsidy"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.CO
+    defined_for = "co_omnisalud_tax_unit_eligible"
+    adds = ["slcsp"]
     reference = [
         "https://connectforhealthco.com/get-started/omnisalud/",
         "https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf",
@@ -20,15 +21,3 @@ class co_omnisalud(Variable):
     The benefit value is equal to the second lowest cost silver plan (SLCSP)
     premium, similar to the federal ACA premium tax credit.
     """
-
-    def formula(tax_unit, period, parameters):
-        # Check if anyone in the tax unit is eligible
-        eligible = tax_unit.any(
-            tax_unit.members("co_omnisalud_eligible", period)
-        )
-
-        # The subsidy covers the full premium (SLCSP)
-        # Sum monthly SLCSP to get annual amount
-        slcsp_monthly = tax_unit("slcsp", period)
-
-        return where(eligible, slcsp_monthly * MONTHS_IN_YEAR, 0)
