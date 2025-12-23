@@ -1,0 +1,110 @@
+# Tests for TN FF resources eligibility
+# Resource limit: $2,000
+# Vehicle exemption: $4,600
+
+- name: Case 1, no assets is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_resources_eligible: true
+
+- name: Case 2, assets at vehicle exemption is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_600
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Countable: $4,600 - $4,600 = $0 <= $2,000
+    tn_ff_resources_eligible: true
+
+- name: Case 3, assets exactly at limit after exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 6_600
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Countable: $6,600 - $4,600 = $2,000 <= $2,000
+    tn_ff_resources_eligible: true
+
+- name: Case 4, assets one dollar over limit after exemption.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 6_601
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Countable: $6,601 - $4,600 = $2,001 > $2,000
+    tn_ff_resources_eligible: false
+
+- name: Case 5, moderate assets is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Countable: $5,000 - $4,600 = $400 <= $2,000
+    tn_ff_resources_eligible: true
+
+- name: Case 6, high assets is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Countable: $10,000 - $4,600 = $5,400 > $2,000
+    tn_ff_resources_eligible: false
