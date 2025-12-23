@@ -1,0 +1,31 @@
+- name: Case 1, has IEP.
+  period: 2024
+  input:
+    state_code: IL
+    has_individualized_education_program: true
+  output:
+    il_pfae_has_highest_priority_factor: true
+
+- name: Case 2, in foster care.
+  period: 2024
+  input:
+    state_code: IL
+    is_in_foster_care: true
+  output:
+    il_pfae_has_highest_priority_factor: true
+
+- name: Case 3, deep poverty.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 5_000
+  output:
+    il_pfae_has_highest_priority_factor: true
+
+- name: Case 4, no highest priority factors.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 30_000
+  output:
+    il_pfae_has_highest_priority_factor: false
