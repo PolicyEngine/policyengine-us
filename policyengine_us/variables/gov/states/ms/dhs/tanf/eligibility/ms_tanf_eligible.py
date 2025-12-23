@@ -8,6 +8,7 @@ class ms_tanf_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MS
     reference = (
+        "https://www.mdhs.ms.gov/wp-content/uploads/2018/02/MDHS_TANF-Eligibility-Flyer.pdf",
         "https://law.justia.com/codes/mississippi/title-43/chapter-17/section-43-17-1/",
         "https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19",
     )

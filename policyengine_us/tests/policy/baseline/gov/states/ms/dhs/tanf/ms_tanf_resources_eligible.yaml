@@ -3,7 +3,7 @@
 # Effective date: July 1, 2019
 
 - name: Case 1, zero resources.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 0
@@ -12,7 +12,7 @@
     ms_tanf_resources_eligible: true
 
 - name: Case 2, resources well below limit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 500
@@ -21,7 +21,7 @@
     ms_tanf_resources_eligible: true
 
 - name: Case 3, resources below limit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 1_500
@@ -30,7 +30,7 @@
     ms_tanf_resources_eligible: true
 
 - name: Case 4, resources exactly at limit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 2_000
@@ -39,7 +39,7 @@
     ms_tanf_resources_eligible: true
 
 - name: Case 5, resources slightly above limit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 2_001
@@ -48,7 +48,7 @@
     ms_tanf_resources_eligible: false
 
 - name: Case 6, resources well above limit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     spm_unit_assets: 5_000
@@ -57,7 +57,7 @@
     ms_tanf_resources_eligible: false
 
 - name: Case 7, not in Mississippi.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: NY
     spm_unit_assets: 500

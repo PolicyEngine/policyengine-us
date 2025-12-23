@@ -9,6 +9,7 @@ class ms_tanf_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.MS
     reference = (
+        "https://www.mdhs.ms.gov/wp-content/uploads/2018/02/MDHS_TANF-Eligibility-Flyer.pdf",
         "https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19",
     )
     # NOTE: Mississippi has 6-month and 3-month total earned income disregards

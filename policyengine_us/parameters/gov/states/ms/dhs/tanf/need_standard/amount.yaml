@@ -1,5 +1,4 @@
 description: Mississippi sets this amount as the need standard under the Temporary Assistance for Needy Families program.
-# NOTE: For households larger than 10, add $75 per person above 10
 
 metadata:
   unit: currency-USD
@@ -8,26 +7,40 @@ metadata:
     - range(1, 11)
   label: Mississippi TANF need standard amount
   reference:
-    - title: Miss. Code. tit. 18, pt. 19 - TANF State Plan
-      href: https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19
+    - title: MDHS TANF Eligibility Flyer (2018) - 100% Requirements Table
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2018/02/MDHS_TANF-Eligibility-Flyer.pdf
+    - title: Mississippi Department of Human Services - Applying for TANF (Gross Income Limits, values derived by dividing by 1.85)
+      href: https://www.mdhs.ms.gov/help/tanf/applying-for-tanf/
+# 2018 values from MDHS Eligibility Flyer (100% Requirements = Need Standard)
+# 2025 values derived from current MDHS website gross income limits / 1.85
 
 1:
-  2019-07-01: 339
+  2018-07-01: 218
+  2025-07-01: 339
 2:
-  2019-07-01: 460
+  2018-07-01: 293
+  2025-07-01: 460
 3:
-  2019-07-01: 581
+  2018-07-01: 368
+  2025-07-01: 581
 4:
-  2019-07-01: 702
+  2018-07-01: 443
+  2025-07-01: 702
 5:
-  2019-07-01: 823
+  2018-07-01: 518
+  2025-07-01: 823
 6:
-  2019-07-01: 944
+  2018-07-01: 593
+  2025-07-01: 944
 7:
-  2019-07-01: 1_065
+  2018-07-01: 668
+  2025-07-01: 1_065
 8:
-  2019-07-01: 1_186
+  2018-07-01: 743
+  2025-07-01: 1_186
 9:
-  2019-07-01: 1_307
+  2018-07-01: 818
+  2025-07-01: 1_307
 10:
-  2019-07-01: 1_428
+  2018-07-01: 893
+  2025-07-01: 1_428

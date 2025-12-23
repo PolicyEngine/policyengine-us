@@ -9,7 +9,7 @@
 # - Benefit: Maximum Payment Standard - Countable Income
 
 - name: Case 1, single parent with one child, no income, receives maximum benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -42,7 +42,7 @@
     ms_tanf: 236
 
 - name: Case 2, family of 3 with low earned income.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -81,7 +81,7 @@
     ms_tanf_eligible: true
 
 - name: Case 3, family of 3 with income at 185% threshold.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -118,7 +118,7 @@
     ms_tanf_eligible: true
 
 - name: Case 4, family of 3 with income above 185% threshold.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -154,7 +154,7 @@
     ms_tanf: 0
 
 - name: Case 5, family of 4 with resources at limit.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -192,7 +192,7 @@
     ms_tanf: 284
 
 - name: Case 6, family with resources exceeding limit.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -223,7 +223,7 @@
     ms_tanf: 0
 
 - name: Case 7, large family of 5 with mixed income.
-  period: 2024-01
+  period: 2026-01
   input:
     people:
       person1:

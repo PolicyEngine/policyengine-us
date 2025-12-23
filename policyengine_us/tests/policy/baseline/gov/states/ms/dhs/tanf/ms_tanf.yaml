@@ -4,7 +4,7 @@
 # Must be eligible (ms_tanf_eligible) to receive any benefit
 
 - name: Case 1, ineligible household receives zero benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: false
@@ -14,7 +14,7 @@
     ms_tanf: 0
 
 - name: Case 2, eligible household with no income receives maximum benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -25,7 +25,7 @@
     ms_tanf: 260
 
 - name: Case 3, eligible household with countable income receives reduced benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -36,7 +36,7 @@
     ms_tanf: 160
 
 - name: Case 4, eligible family of 2 with no income.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -47,7 +47,7 @@
     ms_tanf: 236
 
 - name: Case 5, eligible family of 2 with some income.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -58,7 +58,7 @@
     ms_tanf: 86
 
 - name: Case 6, eligible family of 4 with no income.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -69,7 +69,7 @@
     ms_tanf: 284
 
 - name: Case 7, eligible family of 4 with income.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -80,7 +80,7 @@
     ms_tanf: 84
 
 - name: Case 8, countable income equals maximum benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -91,7 +91,7 @@
     ms_tanf: 0
 
 - name: Case 9, countable income exceeds maximum benefit.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -102,7 +102,7 @@
     ms_tanf: 0
 
 - name: Case 10, single person eligible with small income.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
@@ -113,7 +113,7 @@
     ms_tanf: 150
 
 - name: Case 11, high income reduces benefit to near zero.
-  period: 2024-01
+  period: 2026-01
   input:
     state_code: MS
     ms_tanf_eligible: true
