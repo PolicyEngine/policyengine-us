@@ -1,0 +1,15 @@
+description: Illinois sets this age threshold for the teen parent risk factor under the Illinois State Board of Education early childhood programs.
+values:
+  2015-01-01: 20
+
+metadata:
+  unit: year
+  period: year
+  label: Illinois ISBE teen parent age threshold
+  reference:
+    # ISBE lists "teen parent" as a risk factor but does not define the age threshold.
+    # Using IDHS definition of teen parent as "under age 20".
+    - title: ISBE PFAE Eligibility Form Section 2 (25-point factors)
+      href: https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf#page=2
+    - title: IDHS Teen Parent Services Program (under age 20)
+      href: https://www.dhs.state.il.us/Page.aspx?item=32189

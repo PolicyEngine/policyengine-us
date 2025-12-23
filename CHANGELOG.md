@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.470.1] - 2025-12-23 14:23:08
+
+### Fixed
+
+- County variable now persists across periods when running over datasets, fixing incorrect fallback to first alphabetical county.
+
+## [1.470.0] - 2025-12-21 23:13:06
+
+### Added
+
+- Illinois Prevention Initiative (PI) program.
+
+## [1.469.0] - 2025-12-19 23:08:59
+
+### Added
+
+- Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+- New input variables for IEP status, developmental delay, non-English speaking home, parent education level, born outside US, and no prior formal early learning.
+
+## [1.468.0] - 2025-12-19 20:53:46
+
+### Added
+
+- Ohio Works First (OWF) cash assistance program.
+
+## [1.467.0] - 2025-12-19 15:39:42
+
+### Added
+
+- Implement Oregon TANF (Temporary Assistance for Needy Families) program with income eligibility, resource limits, and benefit calculations.
+
+## [1.466.0] - 2025-12-19 15:31:15
+
+### Added
+
+- Indiana TANF program.
+
 ## [1.465.5] - 2025-12-18 20:55:25
 
 ### Fixed
@@ -13976,6 +14013,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
+[1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
+[1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0
+[1.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.467.0...1.468.0
+[1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
+[1.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.5...1.466.0
 [1.465.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.4...1.465.5
 [1.465.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.3...1.465.4
 [1.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.2...1.465.3

@@ -11939,3 +11939,38 @@
       parameter with the new 2025 value.
     - Adds new legislative references
   date: 2025-12-18 20:55:25
+- bump: minor
+  changes:
+    added:
+    - Indiana TANF program.
+  date: 2025-12-19 15:31:15
+- bump: minor
+  changes:
+    added:
+    - Implement Oregon TANF (Temporary Assistance for Needy Families) program with
+      income eligibility, resource limits, and benefit calculations.
+  date: 2025-12-19 15:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Works First (OWF) cash assistance program.
+  date: 2025-12-19 20:53:46
+- bump: minor
+  changes:
+    added:
+    - Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs
+      with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+    - New input variables for IEP status, developmental delay, non-English speaking
+      home, parent education level, born outside US, and no prior formal early learning.
+  date: 2025-12-19 23:08:59
+- bump: minor
+  changes:
+    added:
+    - Illinois Prevention Initiative (PI) program.
+  date: 2025-12-21 23:13:06
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing
+      incorrect fallback to first alphabetical county.
+  date: 2025-12-23 14:23:08
