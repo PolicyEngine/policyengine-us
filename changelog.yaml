@@ -11968,3 +11968,9 @@
     added:
     - Illinois Prevention Initiative (PI) program.
   date: 2025-12-21 23:13:06
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing
+      incorrect fallback to first alphabetical county.
+  date: 2025-12-23 14:23:08
