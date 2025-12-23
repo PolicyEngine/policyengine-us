@@ -1,0 +1,26 @@
+- name: Case 1, age and income eligible.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    employment_income: 20_000
+  output:
+    il_pfae_basic_eligible: true
+
+- name: Case 2, age eligible but income too high.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    employment_income: 150_000
+  output:
+    il_pfae_basic_eligible: false
+
+- name: Case 3, income eligible but age too old.
+  period: 2024
+  input:
+    state_code: IL
+    age: 7
+    employment_income: 20_000
+  output:
+    il_pfae_basic_eligible: false

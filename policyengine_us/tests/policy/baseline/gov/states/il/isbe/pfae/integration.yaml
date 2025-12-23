@@ -1,0 +1,102 @@
+- name: Case 1, family with one eligible and one ineligible child.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 4
+        has_individualized_education_program: true
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Age eligibility: only person2 (age 4) is eligible
+    il_pfae_age_eligible_child: [false, true, false]
+    # Highest priority: person2 has IEP
+    il_pfae_has_highest_priority_factor: [false, true, false]
+    # PFAE eligibility: only person2 is eligible
+    il_pfae_eligible: [false, true, false]
+    # PFA eligibility mirrors PFAE
+    il_pfa_eligible: [false, true, false]
+    # Benefit amounts (FY2024 values same as FY2025)
+    il_pfae: [0, 8_500, 0]
+    il_pfa: [0, 3_900, 0]
+
+- name: Case 2, family with two eligible children showing benefit amounts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 15_000
+      person2:
+        age: 3
+        has_individualized_education_program: true
+      person3:
+        age: 5
+        is_in_foster_care: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Both children are age eligible
+    il_pfae_age_eligible_child: [false, true, true]
+    # Both have highest priority factors (IEP, foster care)
+    il_pfae_has_highest_priority_factor: [false, true, true]
+    # Both children are PFAE eligible
+    il_pfae_eligible: [false, true, true]
+    il_pfa_eligible: [false, true, true]
+    # Benefit amounts per eligible child (FY2025 values)
+    # PFAE: $8,500 per child
+    il_pfae: [0, 8_500, 8_500]
+    # PFA: $3,900 per child
+    il_pfa: [0, 3_900, 3_900]
+
+- name: Case 3, family with no eligible children.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+      person2:
+        age: 10
+      person3:
+        age: 2
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # No children in age range 3-5
+    il_pfae_age_eligible_child: [false, false, false]
+    # No PFAE eligibility
+    il_pfae_eligible: [false, false, false]
+    il_pfa_eligible: [false, false, false]
+    # No benefits
+    il_pfae: [0, 0, 0]
+    il_pfa: [0, 0, 0]
