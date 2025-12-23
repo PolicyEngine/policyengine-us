@@ -1,11 +1,13 @@
-description: Maximum age to be considered a child for Colorado OmniSalud
+description: Colorado OmniSalud defines children as individuals age 18 and under for eligibility purposes.
 metadata:
   unit: year
   period: year
-  label: CO OmniSalud child max age
+  label: CO OmniSalud child maximum age
   reference:
-    - title: Colorado OmniSalud 2025 Changes
+    - title: Colorado OmniSalud Guide 2024, p. 4
+      href: https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf
+    - title: Connect for Health Colorado OmniSalud 2025 Updates
       href: https://connectforhealthco.com/get-started/omnisalud/
 
 values:
-  2022-01-01: 18  # Children 0-18
+  2022-01-01: 18

@@ -7,6 +7,7 @@ class co_omnisalud(Variable):
     label = "Colorado OmniSalud premium subsidy"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CO
     reference = [
         "https://connectforhealthco.com/get-started/omnisalud/",
         "https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf",

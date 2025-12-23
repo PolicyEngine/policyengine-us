@@ -1,12 +1,14 @@
-description: Whether Colorado OmniSalud program is in effect
+description: Colorado OmniSalud launched in 2022 to provide health coverage access for immigrants ineligible for federal programs.
 metadata:
   unit: bool
   period: year
-  label: CO OmniSalud in effect
+  label: CO OmniSalud program in effect
   reference:
-    - title: Colorado OmniSalud Guide 2024
+    - title: Colorado OmniSalud Guide 2024, p. 1
       href: https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf
+    - title: Connect for Health Colorado OmniSalud Overview
+      href: https://connectforhealthco.com/get-started/omnisalud/
 
 values:
   2020-01-01: false
-  2022-01-01: true  # OmniSalud launched
+  2022-01-01: true

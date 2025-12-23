@@ -1,12 +1,14 @@
-description: Whether Colorado OmniSalud covers DACA recipients (they move to regular ACA in 2025)
+description: Colorado OmniSalud covers DACA recipients before 2025, after which they transition to the regular ACA marketplace.
 metadata:
   unit: bool
   period: year
-  label: CO OmniSalud covers DACA
+  label: CO OmniSalud covers DACA recipients
   reference:
-    - title: Colorado OmniSalud 2025 Changes
+    - title: Connect for Health Colorado OmniSalud 2025 Updates
       href: https://connectforhealthco.com/get-started/omnisalud/
+    - title: Colorado OmniSalud Guide 2024, p. 3
+      href: https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf
 
 values:
-  2022-01-01: true   # OmniSalud originally covered DACA
-  2025-01-01: false  # DACA recipients move to regular ACA marketplace
+  2022-01-01: true
+  2025-01-01: false
