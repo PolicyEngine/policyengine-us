@@ -1,0 +1,85 @@
+# Nebraska ADC Countable Earned Income Tests
+# Earned Income Disregard: 50% of gross earned income
+# Countable Earned = Gross Earned * (1 - 0.50) = Gross Earned * 0.50
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 0
+
+- name: Case 2, earned income with 50 percent disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 500
+    # Gross earned: $12,000/12 = $1,000/month
+    # After 50% disregard: $1,000 * 0.50 = $500
+
+- name: Case 3, moderate earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 300
+    # Gross earned: $7,200/12 = $600/month
+    # After 50% disregard: $600 * 0.50 = $300
+
+- name: Case 4, high earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 1_000
+    # Gross earned: $24,000/12 = $2,000/month
+    # After 50% disregard: $2,000 * 0.50 = $1,000

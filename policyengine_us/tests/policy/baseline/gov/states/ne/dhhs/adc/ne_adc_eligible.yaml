@@ -1,0 +1,130 @@
+# Nebraska ADC Eligibility Tests
+# Eligibility requires:
+# 1. Net earned income (after 50% disregard) < Need Standard
+# 2. Resources within limits ($4,000 for 1 person, $6,000 for 2+)
+
+- name: Case 1, no income is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_income_eligible: true
+    # Countable income ($0) < Need standard ($741)
+    ne_adc_eligible: true
+
+- name: Case 2, income below threshold is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month gross
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 500
+    # After 50% disregard: $1,000 * 0.50 = $500
+    # Countable income = $500
+    ne_adc_income_eligible: true
+    # Countable income ($500) < Need standard ($881)
+    ne_adc_eligible: true
+
+- name: Case 3, income above threshold is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month gross
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 1_000
+    # After 50% disregard: $2,000 * 0.50 = $1,000
+    # Countable income = $1,000
+    ne_adc_income_eligible: false
+    # Countable income ($1,000) > Need standard ($881)
+    ne_adc_eligible: false
+
+- name: Case 4, income exactly at threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 17_640  # $1,470/month -> $735 countable
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 735
+    # After 50% disregard: $1,470 * 0.50 = $735
+    # Countable income = $735
+    ne_adc_income_eligible: true
+    # Countable income ($735) < Need standard ($741)
+    ne_adc_eligible: true
+
+- name: Case 5, income just above threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 17_880  # $1,490/month -> $745 countable
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 745
+    # After 50% disregard: $1,490 * 0.50 = $745
+    # Countable income = $745
+    ne_adc_income_eligible: false
+    # Countable income ($745) > Need standard ($741)
+    ne_adc_eligible: false
