@@ -16,5 +16,4 @@ class ne_adc_payment_standard(Variable):
         p = parameters(period).gov.states.ne.dhhs.adc
         need_standard = spm_unit("ne_adc_need_standard", period)
         # Per Neb. Rev. Stat. 43-512: payment is 55% of standard of need
-        # Rounded to whole dollars
-        return np.ceil(need_standard * p.benefit.payment_standard_rate)
+        return need_standard * p.benefit.payment_standard_rate

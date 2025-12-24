@@ -18,6 +18,7 @@
 - name: Case 1, income exactly at need standard threshold is ineligible.
   # Tests strict less-than comparison: countable_income < need_standard
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -45,6 +46,7 @@
 
 - name: Case 2, income one dollar below need standard threshold.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -71,6 +73,7 @@
 
 - name: Case 3, income one dollar above need standard threshold.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -102,6 +105,7 @@
 
 - name: Case 4, resources exactly at $4,000 limit for single person.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -122,6 +126,7 @@
 
 - name: Case 5, resources one dollar above $4,000 limit for single person.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -147,6 +152,7 @@
 
 - name: Case 6, resources exactly at $6,000 limit for family of 2.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -170,6 +176,7 @@
 
 - name: Case 7, resources one dollar above $6,000 limit for family of 2.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -197,6 +204,7 @@
 
 - name: Case 8, zero earned income.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -219,6 +227,7 @@
 
 - name: Case 9, zero resources.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -245,6 +254,7 @@
 
 - name: Case 10, minimum family size of 1.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -267,6 +277,7 @@
 
 - name: Case 11, maximum family size of 14.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -314,6 +325,7 @@
 
 - name: Case 12, family size 15 exceeds parameter table caps at 14.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -367,7 +379,7 @@
 
 - name: Case 13, benefit exactly at $10 minimum threshold.
   period: 2024-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -399,7 +411,7 @@
   # Per Neb. Rev. Stat. 43-512: no payments less than $10/month
   # If benefit > 0 but < $10, return $10
   period: 2024-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -427,7 +439,7 @@
 
 - name: Case 15, calculated benefit of $5 is below minimum rounds up to $10.
   period: 2024-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -454,6 +466,7 @@
 
 - name: Case 16, zero benefit from ineligibility stays zero not minimum.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -581,6 +594,7 @@
 
 - name: Case 20, very small earned income disregard applied.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -603,6 +617,7 @@
 
 - name: Case 21, large earned income 50 percent disregard.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -693,6 +708,7 @@
   # Need unearned = $881 - $300 = $581, but that makes countable >= need_standard
   # For strict <, need total < $881
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -726,6 +742,7 @@
 
 - name: Case 25, resources one dollar below $4,000 limit for single person.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -746,6 +763,7 @@
 
 - name: Case 26, resources one dollar below $6,000 limit for family of 2.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -775,6 +793,7 @@
   # Two adults (ages 30 and 35) with no children or pregnant persons
   # Fails is_demographic_tanf_eligible because no one meets age limit
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -808,6 +827,7 @@
   # Family in Texas should get zero Nebraska ADC benefit
   # The defined_for = StateCode.NE constraint applies
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:

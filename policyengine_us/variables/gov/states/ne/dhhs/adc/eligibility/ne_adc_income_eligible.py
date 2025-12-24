@@ -14,8 +14,6 @@ class ne_adc_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per 468 NAC: countable income must be below standard of need
-        countable_earned = spm_unit("ne_adc_countable_earned_income", period)
-        unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        countable_income = countable_earned + unearned
+        countable_income = spm_unit("ne_adc_countable_income", period)
         need_standard = spm_unit("ne_adc_need_standard", period)
         return countable_income < need_standard

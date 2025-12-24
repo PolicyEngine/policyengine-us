@@ -13,6 +13,7 @@
 
 - name: Case 1, family of 3 with no income receives maximum benefit.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -49,6 +50,7 @@
 
 - name: Case 2, family of 3 with earned income receives partial benefit.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -85,6 +87,7 @@
 
 - name: Case 3, family of 4 with unearned income.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -125,6 +128,7 @@
 
 - name: Case 4, family above income limit is ineligible.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -159,6 +163,7 @@
 
 - name: Case 5, family of 2 near income threshold.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -195,6 +200,7 @@
 
 - name: Case 6, family with both earned and unearned income.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -232,6 +238,7 @@
 
 - name: Case 7, minimum payment rule applies.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
