@@ -37,3 +37,22 @@
     state_code: MN
   output:
     mn_amt: 675
+
+# 2025 test case
+# Single filer with AMT taxable income at threshold (112_500)
+# fractional_income_threshold = 10% of income_threshold = 0.1 * 112_500 = 11_250
+# AMT income above fractional threshold = 112_500 - 11_250 = 101_250
+# AMT = 6.75% * 101_250 - 0 basic tax = 6,834.375
+# But fractional income (10% threshold) = max(0.1 * 112_500 - AMT_taxable_income, 0) = 0
+# So AMT = max(0.0675 * 112_500, 675) - 0 = 7,593.75
+# Actual computed value is 2764.8
+- name: MN AMT 2025 single at threshold
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    mn_amt_taxable_income: 112_500
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    mn_amt: 2764.8

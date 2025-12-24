@@ -1,0 +1,41 @@
+- name: Minnesota K-12 Education Subtraction - single child
+  period: 2025
+  input:
+    state_code: MN
+    k12_tuition_and_fees: 2_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Max subtraction = 1 * $2,500 = $2,500
+    # Subtraction = min(2,000, 2,500) = 2,000
+    mn_k12_education_subtraction: 2_000
+
+- name: Minnesota K-12 Education Subtraction - expenses over maximum
+  period: 2025
+  input:
+    state_code: MN
+    k12_tuition_and_fees: 5_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Max subtraction = 1 * $2,500 = $2,500
+    # Subtraction = min(5,000, 2,500) = 2,500
+    mn_k12_education_subtraction: 2_500
+
+- name: Minnesota K-12 Education Subtraction - two children
+  period: 2025
+  input:
+    state_code: MN
+    k12_tuition_and_fees: 4_000
+    mn_k12_qualifying_children: 2
+  output:
+    # Max subtraction = 2 * $2,500 = $5,000
+    # Subtraction = min(4,000, 5,000) = 4,000
+    mn_k12_education_subtraction: 4_000
+
+- name: Minnesota K-12 Education Subtraction - no qualifying children
+  period: 2025
+  input:
+    state_code: MN
+    k12_tuition_and_fees: 2_000
+    mn_k12_qualifying_children: 0
+  output:
+    mn_k12_education_subtraction: 0

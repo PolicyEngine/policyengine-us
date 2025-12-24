@@ -1,0 +1,26 @@
+- name: Minnesota Active Duty Military Pay Subtraction - basic
+  period: 2025
+  input:
+    state_code: MN
+    military_service_income: 50_000
+  output:
+    # Full subtraction of active duty military pay
+    mn_active_duty_military_pay_subtraction: 50_000
+
+- name: Minnesota Active Duty Military Pay Subtraction - no military income
+  period: 2025
+  input:
+    state_code: MN
+    employment_income: 60_000
+  output:
+    mn_active_duty_military_pay_subtraction: 0
+
+- name: Minnesota Active Duty Military Pay Subtraction - with both employment and military
+  period: 2025
+  input:
+    state_code: MN
+    employment_income: 30_000
+    military_service_income: 40_000
+  output:
+    # Only the military service income is subtracted
+    mn_active_duty_military_pay_subtraction: 40_000
