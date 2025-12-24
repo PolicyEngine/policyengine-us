@@ -19,5 +19,5 @@ class ne_adc_resources_eligible(Variable):
         size = spm_unit("spm_unit_size", period)
         # Resource limits: $4,000 for 1 person, $6,000 for 2+ persons
         capped_size = min_(size, p.max_unit_size)
-        limit = p.resource_limit[capped_size]
+        limit = p.resources.limit[capped_size]
         return countable_resources <= limit

@@ -18,4 +18,4 @@ class ne_adc_need_standard(Variable):
         size = spm_unit("spm_unit_size", period)
         # Cap size at maximum defined in parameter table
         capped_size = min_(size, p.max_unit_size)
-        return p.need_standard[capped_size]
+        return p.benefit.need_standard[capped_size]
