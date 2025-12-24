@@ -7,13 +7,11 @@ class ne_adc_countable_earned_income(Variable):
     label = "Nebraska ADC countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=68-1726"
-    )
+    reference = "https://nebraskalegislature.gov/laws/statutes.php?statute=68-1726"
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ne.dhhs.adc.income
+        p = parameters(period).gov.states.ne.dhhs.adc
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         # Per Neb. Rev. Stat. 68-1726(3)(a)(ii): 50% of gross earned income
         # is disregarded for recipients

@@ -719,3 +719,110 @@
     # Total countable = $350 + $531 = $881
     # Countable ($881) < Need Standard ($881) -> false
     ne_adc_eligible: false
+
+# =============================================================================
+# RESOURCE BOUNDARY TESTS - ONE DOLLAR BELOW THRESHOLD
+# =============================================================================
+
+- name: Case 25, resources one dollar below $4,000 limit for single person.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_999
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: true
+    # Resources ($3,999) <= Limit ($4,000) -> true
+
+- name: Case 26, resources one dollar below $6,000 limit for family of 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: true
+    # Resources ($5,999) <= Limit ($6,000) -> true
+    ne_adc_eligible: true
+
+# =============================================================================
+# DEMOGRAPHIC ELIGIBILITY EDGE CASES
+# =============================================================================
+
+- name: Case 27, household with only adults fails demographic eligibility.
+  # Two adults (ages 30 and 35) with no children or pregnant persons
+  # Fails is_demographic_tanf_eligible because no one meets age limit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        employment_income_before_lsr: 0
+      person2:
+        age: 35
+        is_pregnant: false
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    is_demographic_tanf_eligible: false
+    # No eligible children (both adults over age limit) and no pregnant persons
+    ne_adc_eligible: false
+    # Fails demographic eligibility even if income/resources pass
+    ne_adc: 0
+
+# =============================================================================
+# STATE RESIDENCY EDGE CASES
+# =============================================================================
+
+- name: Case 28, non-Nebraska state returns zero benefit.
+  # Family in Texas should get zero Nebraska ADC benefit
+  # The defined_for = StateCode.NE constraint applies
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ne_adc: 0
+    # Family in Texas, not Nebraska -> ne_adc benefit is $0

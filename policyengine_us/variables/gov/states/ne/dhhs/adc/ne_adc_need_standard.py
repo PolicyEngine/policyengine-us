@@ -16,6 +16,6 @@ class ne_adc_need_standard(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.adc
         size = spm_unit("spm_unit_size", period)
-        # Cap size at maximum defined in parameter table (14)
-        capped_size = min_(size, 14)
+        # Cap size at maximum defined in parameter table
+        capped_size = min_(size, p.max_unit_size)
         return p.need_standard[capped_size]
