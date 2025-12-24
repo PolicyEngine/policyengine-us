@@ -1,0 +1,21 @@
+description: New Mexico provides this one-time diversion payment in lieu of ongoing cash assistance under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: New Mexico TANF diversion payment amount
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  reference:
+    - title: 8.102.100 NMAC - General Provisions
+      href: https://www.srca.nm.gov/parts/title08/08.102.0100.html
+
+brackets:
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 1_500
+  - threshold:
+      2020-01-01: 4
+    amount:
+      2020-01-01: 2_500

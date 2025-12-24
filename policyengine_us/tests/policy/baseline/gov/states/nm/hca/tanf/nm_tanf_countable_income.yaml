@@ -1,0 +1,57 @@
+# New Mexico Works (TANF) Countable Income Unit Tests
+# Tests the net countable income calculation after all deductions
+# Source: 8.102.520 NMAC - Income
+
+- name: Case 1, no income results in zero countable income.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_tanf_countable_earned_income: 0
+    nm_tanf_countable_unearned_income: 0
+    nm_tanf_child_care_deduction: 0
+  output:
+    nm_tanf_countable_income: 0
+
+- name: Case 2, earned income only after deduction.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_tanf_countable_earned_income: 437.5
+    nm_tanf_countable_unearned_income: 0
+    nm_tanf_child_care_deduction: 0
+  output:
+    # Countable earned + countable unearned - child care deduction
+    nm_tanf_countable_income: 437.5
+
+- name: Case 3, both earned and unearned income.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_tanf_countable_earned_income: 300
+    nm_tanf_countable_unearned_income: 200
+    nm_tanf_child_care_deduction: 0
+  output:
+    # $300 + $200 = $500
+    nm_tanf_countable_income: 500
+
+- name: Case 4, child care deduction reduces countable income.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_tanf_countable_earned_income: 500
+    nm_tanf_countable_unearned_income: 100
+    nm_tanf_child_care_deduction: 200
+  output:
+    # $500 + $100 - $200 = $400
+    nm_tanf_countable_income: 400
+
+- name: Case 5, child care deduction cannot make income negative.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_tanf_countable_earned_income: 100
+    nm_tanf_countable_unearned_income: 50
+    nm_tanf_child_care_deduction: 200
+  output:
+    # $100 + $50 - $200 = -$50, but capped at $0
+    nm_tanf_countable_income: 0

@@ -1,0 +1,362 @@
+# New Mexico Works (TANF) Countable Unearned Income Unit Tests
+# Tests the countable unearned income calculation with child support disregard
+# Source: 8.102.520.10 NMAC
+# Child support disregard: $50
+# Child support passthrough: $100 (1 child) or $200 (2+ children)
+
+- name: Case 1, no unearned income results in zero countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_tanf_countable_unearned_income: 0
+
+- name: Case 2, unearned income without child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000  # $500/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Social security is fully countable (no disregard)
+    nm_tanf_countable_unearned_income: 500
+
+- name: Case 3, child support with one child gets disregard and passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # Passthrough (1 child): $100
+    # Disregard: $50
+    # Countable: $300 - $100 - $50 = $150
+    nm_tanf_countable_unearned_income: 150
+
+- name: Case 4, child support with multiple children gets higher passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 4_800  # $400/month
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $400/month
+    # Passthrough (2+ children): $200
+    # Disregard: $50
+    # Countable: $400 - $200 - $50 = $150
+    nm_tanf_countable_unearned_income: 150
+
+- name: Case 5, child support below disregard and passthrough is not counted.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $100/month
+    # Passthrough (1 child): $100
+    # Disregard: $50
+    # Total reduction: $150, but only $100 child support
+    # Countable: max($100 - $150, 0) = $0
+    nm_tanf_countable_unearned_income: 0
+
+- name: Case 6, mixed unearned income with child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400  # $200/month
+        social_security: 1_800  # $150/month
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Social security: $150/month (fully countable)
+    # Child support: $200/month
+    # Passthrough (1 child): $100
+    # Disregard: $50
+    # Countable child support: $200 - $100 - $50 = $50
+    # Total countable: $150 + $50 = $200
+    nm_tanf_countable_unearned_income: 200
+
+# Edge Cases: Child count boundaries and special scenarios
+
+- name: Case 7, household with zero children has no child support passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month (unusual but possible)
+      person2:
+        age: 20  # Adult, not a child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 0 children = passthrough from scale = $0
+    # Disregard: $50
+    # Countable: $300 - $0 - $50 = $250
+    nm_tanf_countable_unearned_income: 250
+
+- name: Case 8, exactly one child at passthrough boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month (exactly = passthrough + disregard)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $150/month
+    # 1 child passthrough: $100
+    # Disregard: $50
+    # Total deduction: $150
+    # Countable: $150 - $150 = $0
+    nm_tanf_countable_unearned_income: 0
+
+- name: Case 9, exactly two children at passthrough boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_000  # $250/month (exactly = passthrough + disregard)
+      person2:
+        age: 12
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $250/month
+    # 2 children passthrough: $200
+    # Disregard: $50
+    # Total deduction: $250
+    # Countable: $250 - $250 = $0
+    nm_tanf_countable_unearned_income: 0
+
+- name: Case 10, three or more children still gets $200 passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        child_support_received: 6_000  # $500/month
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    # Child support: $500/month
+    # 3 children: passthrough caps at $200 (same as 2 children)
+    # Disregard: $50
+    # Countable: $500 - $200 - $50 = $250
+    nm_tanf_countable_unearned_income: 250
+
+- name: Case 11, child support exactly one dollar above deduction limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_812  # $151/month
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $151/month
+    # 1 child passthrough: $100
+    # Disregard: $50
+    # Countable: $151 - $100 - $50 = $1
+    nm_tanf_countable_unearned_income: 1
+
+- name: Case 12, very large child support amount.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        child_support_received: 12_000  # $1,000/month
+      person2:
+        age: 10
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $1,000/month
+    # 2 children passthrough: $200
+    # Disregard: $50
+    # Countable: $1,000 - $200 - $50 = $750
+    nm_tanf_countable_unearned_income: 750
+
+- name: Case 13, child at boundary age 17 counts as child for passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 17  # Still under 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 1 child (age 17 < 18): passthrough $100
+    # Disregard: $50
+    # Countable: $300 - $100 - $50 = $150
+    nm_tanf_countable_unearned_income: 150
+
+- name: Case 14, person at age 18 does not count as child for passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 18  # Not under 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 0 children (age 18 >= 18): passthrough $0
+    # Disregard: $50
+    # Countable: $300 - $0 - $50 = $250
+    nm_tanf_countable_unearned_income: 250
+
+- name: Case 15, child support exactly at disregard only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month = exactly disregard
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $50/month
+    # 1 child passthrough: $100
+    # Disregard: $50
+    # Total max deduction: $150
+    # Actual deduction limited to child support: $50
+    # Countable: $0
+    nm_tanf_countable_unearned_income: 0
