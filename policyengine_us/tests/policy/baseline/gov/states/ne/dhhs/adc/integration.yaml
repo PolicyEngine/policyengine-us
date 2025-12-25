@@ -1,4 +1,6 @@
 # Nebraska ADC (Aid to Dependent Children) Integration Tests
+# These tests verify the FULL calculation pipeline with all intermediate values.
+#
 # Gap Budgeting Methodology:
 #   Step 1: Net Earned Income = Gross Earned * (1 - disregard_rate)
 #           - Initial applicants: 20% disregard (countable = 80%)
@@ -40,18 +42,13 @@
   output:
     spm_unit_size: 3
     ne_adc_need_standard: 881
-    # Need standard for size 3 = $881
     ne_adc_payment_standard: 485
-    # Payment standard = $881 * 0.55 = $484.55, rounded to $485
     ne_adc_countable_earned_income: 0
-    # No earned income, no unearned income
     ne_adc_income_eligible: true
-    # Countable income ($0) < Need standard ($881) -> Eligible
     ne_adc_eligible: true
     ne_adc: 485
     # Gap = $881 - $0 = $881
     # Benefit = min($881, $485) = $485
-    # Final = $485 - $0 = $485
 
 - name: Case 2, family of 3 with earned income receives partial benefit.
   period: 2024-01
@@ -80,16 +77,12 @@
     ne_adc_need_standard: 881
     ne_adc_payment_standard: 485
     ne_adc_countable_earned_income: 500
-    # Gross earned = $1,000/month
     # After 50% disregard: $1,000 * 0.50 = $500
-    # Countable income = Earned ($500) + Unearned ($0) = $500
     ne_adc_income_eligible: true
-    # Countable income ($500) < Need standard ($881) -> Eligible
     ne_adc_eligible: true
     ne_adc: 381
     # Gap = $881 - $500 = $381
     # Benefit = min($381, $485) = $381
-    # Final = $381 - $0 = $381
 
 - name: Case 3, family of 4 with unearned income.
   period: 2024-01
@@ -120,12 +113,8 @@
   output:
     spm_unit_size: 4
     ne_adc_need_standard: 1_021
-    # Need standard for size 4 = $1,021
     ne_adc_payment_standard: 562
-    # Payment standard = $1,021 * 0.55 = $561.55, rounded to $562
     ne_adc_countable_earned_income: 0
-    # Social security: $6,000/12 = $500/month unearned
-    # Countable income = Earned ($0) + Unearned ($500) = $500
     ne_adc_income_eligible: true
     ne_adc_eligible: true
     ne_adc: 62
@@ -160,14 +149,11 @@
     ne_adc_need_standard: 881
     ne_adc_payment_standard: 485
     ne_adc_countable_earned_income: 1_000
-    # Gross earned = $2,000/month
     # After 50% disregard: $2,000 * 0.50 = $1,000
-    # Countable income = $1,000
     ne_adc_income_eligible: false
-    # Countable income ($1,000) > Need standard ($881) -> Ineligible
+    # Countable ($1,000) > Need Standard ($881)
     ne_adc_eligible: false
     ne_adc: 0
-    # Gap = $881 - $1,000 = -$119 (negative, not eligible)
 
 - name: Case 5, family of 2 near income threshold.
   period: 2024-01
@@ -192,15 +178,10 @@
   output:
     spm_unit_size: 2
     ne_adc_need_standard: 741
-    # Need standard for size 2 = $741
     ne_adc_payment_standard: 408
-    # Payment standard = $741 * 0.55 = $407.55, rounded to $408
     ne_adc_countable_earned_income: 700
-    # Gross earned = $1,400/month
     # After 50% disregard: $1,400 * 0.50 = $700
-    # Countable income = $700
     ne_adc_income_eligible: true
-    # Countable income ($700) < Need standard ($741) -> Eligible
     ne_adc_eligible: true
     ne_adc: 41
     # Gap = $741 - $700 = $41
@@ -234,10 +215,7 @@
     ne_adc_need_standard: 881
     ne_adc_payment_standard: 485
     ne_adc_countable_earned_income: 300
-    # Gross earned = $600/month
     # After 50% disregard: $600 * 0.50 = $300
-    # Unearned: $2,400/12 = $200/month
-    # Countable income = Earned ($300) + Unearned ($200) = $500
     ne_adc_income_eligible: true
     ne_adc_eligible: true
     ne_adc: 285
@@ -271,191 +249,10 @@
     ne_adc_need_standard: 741
     ne_adc_payment_standard: 408
     ne_adc_countable_earned_income: 330
-    # Gross earned = $660/month
     # After 50% disregard: $660 * 0.50 = $330
-    # Unearned: $4,800/12 = $400/month
-    # Countable income = Earned ($330) + Unearned ($400) = $730
     ne_adc_income_eligible: true
-    # Countable income ($730) < Need standard ($741) -> Eligible
     ne_adc_eligible: true
     ne_adc: 8
     # Gap = $741 - $330 = $411
     # Benefit = min($411, $408) = $408
     # Final = $408 - $400 = $8
-
-# =============================================================================
-# EDGE CASES - INCOME BOUNDARY TESTS
-# =============================================================================
-
-- name: Edge case, income exactly at need standard threshold is ineligible.
-  # Tests strict less-than comparison: countable_income < need_standard
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 17_784  # $1,482/month -> $741 countable
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 1_000
-        is_tanf_enrolled: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    ne_adc_need_standard: 741
-    ne_adc_countable_earned_income: 741
-    # Gross: $17,784/12 = $1,482/month
-    # After 50% disregard (ongoing recipient): $1,482 * 0.50 = $741
-    ne_adc_income_eligible: false
-    # Countable ($741) < Need Standard ($741) -> false (not strictly less)
-    ne_adc_eligible: false
-    ne_adc: 0
-
-- name: Edge case, income one dollar below need standard threshold.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 17_760  # $1,480/month -> $740 countable
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 1_000
-        is_tanf_enrolled: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    ne_adc_need_standard: 741
-    ne_adc_countable_earned_income: 740
-    # Gross: $17,760/12 = $1,480/month
-    # After 50% disregard (ongoing recipient): $1,480 * 0.50 = $740
-    ne_adc_income_eligible: true
-    # Countable ($740) < Need Standard ($741) -> true
-    ne_adc_eligible: true
-
-- name: Edge case, income one dollar above need standard threshold.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 17_808  # $1,484/month -> $742 countable
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 1_000
-        is_tanf_enrolled: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    ne_adc_need_standard: 741
-    ne_adc_countable_earned_income: 742
-    # Gross: $17,808/12 = $1,484/month
-    # After 50% disregard (ongoing recipient): $1,484 * 0.50 = $742
-    ne_adc_income_eligible: false
-    # Countable ($742) < Need Standard ($741) -> false
-    ne_adc_eligible: false
-    ne_adc: 0
-
-# =============================================================================
-# EDGE CASES - ZERO VALUE TESTS
-# =============================================================================
-
-- name: Edge case, zero earned income.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    ne_adc_countable_earned_income: 0
-    ne_adc_income_eligible: true
-    ne_adc_eligible: true
-
-- name: Edge case, zero resources.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    ne_adc_resources_eligible: true
-    # Resources ($0) <= Limit ($6,000) -> true
-    ne_adc_eligible: true
-
-# =============================================================================
-# EDGE CASES - MIXED INCOME BOUNDARY
-# =============================================================================
-
-- name: Edge case, mixed income exactly at threshold.
-  # Countable = earned_after_disregard + unearned = need_standard
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 8_400  # $700/month -> $350 countable earned
-        social_security: 6_372  # $531/month unearned
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_assets: 1_000
-        is_tanf_enrolled: true
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NE
-  output:
-    ne_adc_need_standard: 881
-    ne_adc_countable_earned_income: 350
-    # Gross = $700, after 50% disregard (ongoing recipient) = $350
-    ne_adc_income_eligible: false
-    # Total countable = $350 + $531 = $881
-    # Countable ($881) < Need Standard ($881) -> false
-    ne_adc_eligible: false

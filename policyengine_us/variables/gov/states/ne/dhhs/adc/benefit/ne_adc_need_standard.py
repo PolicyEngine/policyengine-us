@@ -15,7 +15,7 @@ class ne_adc_need_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.adc
-        size = spm_unit("spm_unit_size", period)
+        size = spm_unit("spm_unit_size", period.this_year)
         # Parameter table defines sizes 1-10; for larger sizes, add increment per person
         max_table_size = p.max_unit_size
         capped_size = min_(size, max_table_size)

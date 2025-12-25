@@ -1,12 +1,12 @@
 # Nebraska ADC Eligibility Tests
 # Eligibility requires:
-# 1. Net earned income (after disregard) < Need Standard
-#    - Initial applicants: 20% disregard (countable = 80%)
-#    - Ongoing recipients: 50% disregard (countable = 50%)
-# 2. Resources within limits ($4,000 for 1 person, $6,000 for 2+)
+# 1. Demographic eligibility (children or pregnant)
+# 2. Immigration eligibility (citizen or legal immigrant)
+# 3. Income eligibility (countable income < need standard)
+# 4. Resource eligibility ($4,000 for 1 person, $6,000 for 2+)
 #
-# NOTE: These tests model ONGOING recipients (is_tanf_enrolled: true)
-#       who receive the 50% earned income disregard.
+# NOTE: These tests focus on COMBINED eligibility checks.
+# Individual component tests are in their respective files.
 
 - name: Case 1, no income is eligible.
   period: 2024-01
@@ -28,259 +28,108 @@
         state_code: NE
   output:
     ne_adc_income_eligible: true
-    # Countable income ($0) < Need standard ($741)
+    ne_adc_resources_eligible: true
     ne_adc_eligible: true
 
-- name: Case 2, income below threshold is eligible.
+- name: Case 2, income ineligible fails overall.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 12_000  # $1,000/month gross
+        employment_income_before_lsr: 24_000  # $2,000/month -> $1,000 countable
       person2:
         age: 10
-      person3:
-        age: 8
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_cash_assets: 2_000
-        is_tanf_enrolled: true
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NE
-  output:
-    ne_adc_countable_earned_income: 500
-    # After 50% disregard: $1,000 * 0.50 = $500
-    # Countable income = $500
-    ne_adc_income_eligible: true
-    # Countable income ($500) < Need standard ($881)
-    ne_adc_eligible: true
-
-- name: Case 3, income above threshold is ineligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 24_000  # $2,000/month gross
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         spm_unit_cash_assets: 1_000
         is_tanf_enrolled: true
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_countable_earned_income: 1_000
-    # After 50% disregard: $2,000 * 0.50 = $1,000
-    # Countable income = $1,000
     ne_adc_income_eligible: false
-    # Countable income ($1,000) > Need standard ($881)
+    ne_adc_resources_eligible: true
     ne_adc_eligible: false
 
-- name: Case 4, income exactly at threshold.
+- name: Case 3, resources ineligible fails overall.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 17_640  # $1,470/month -> $735 countable
+        employment_income_before_lsr: 0
       person2:
         age: 10
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_cash_assets: 1_000
-        is_tanf_enrolled: true
+        spm_unit_assets: 7_000  # Above $6,000 limit
     households:
       household:
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_countable_earned_income: 735
-    # After 50% disregard: $1,470 * 0.50 = $735
-    # Countable income = $735
     ne_adc_income_eligible: true
-    # Countable income ($735) < Need standard ($741)
-    ne_adc_eligible: true
+    ne_adc_resources_eligible: false
+    ne_adc_eligible: false
 
-- name: Case 5, income just above threshold.
+# =============================================================================
+# EDGE CASES - INITIAL VS ONGOING RECIPIENT DISREGARD
+# =============================================================================
+
+- name: Edge case, initial applicant fails but ongoing recipient would pass.
+  # Same income: initial applicant (80% countable) fails, ongoing (50% countable) passes
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 17_880  # $1,490/month -> $745 countable
+        employment_income_before_lsr: 14_400  # $1,200/month gross
       person2:
         age: 10
     spm_units:
       spm_unit:
         members: [person1, person2]
         spm_unit_cash_assets: 1_000
-        is_tanf_enrolled: true
+        is_tanf_enrolled: false  # Initial applicant
     households:
       household:
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_countable_earned_income: 745
-    # After 50% disregard: $1,490 * 0.50 = $745
-    # Countable income = $745
+    ne_adc_countable_earned_income: 960
+    # After 20% disregard: $1,200 * 0.80 = $960
     ne_adc_income_eligible: false
-    # Countable income ($745) > Need standard ($741)
+    # Countable ($960) > Need Standard ($741) -> FAILS
     ne_adc_eligible: false
 
-# =============================================================================
-# EDGE CASES - RESOURCE BOUNDARIES (SINGLE PERSON $4,000 LIMIT)
-# =============================================================================
-
-- name: Edge case, resources exactly at $4,000 limit for single person.
+- name: Edge case, ongoing recipient passes with same income as failing initial applicant.
+  # Same income as above: ongoing recipient (50% countable) passes
   period: 2024-01
-  absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 4_000
-    households:
-      household:
-        members: [person1]
-        state_code: NE
-  output:
-    spm_unit_size: 1
-    ne_adc_resources_eligible: true
-    # Resources ($4,000) <= Limit ($4,000) -> true
-
-- name: Edge case, resources one dollar above $4,000 limit for single person.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 4_001
-    households:
-      household:
-        members: [person1]
-        state_code: NE
-  output:
-    spm_unit_size: 1
-    ne_adc_resources_eligible: false
-    # Resources ($4,001) <= Limit ($4,000) -> false
-    ne_adc_eligible: false
-
-- name: Edge case, resources one dollar below $4,000 limit for single person.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 3_999
-    households:
-      household:
-        members: [person1]
-        state_code: NE
-  output:
-    spm_unit_size: 1
-    ne_adc_resources_eligible: true
-    # Resources ($3,999) <= Limit ($4,000) -> true
-
-# =============================================================================
-# EDGE CASES - RESOURCE BOUNDARIES (TWO+ PERSONS $6,000 LIMIT)
-# =============================================================================
-
-- name: Edge case, resources exactly at $6,000 limit for family of 2.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
+        employment_income_before_lsr: 14_400  # $1,200/month gross
       person2:
         age: 10
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 6_000
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true  # Ongoing recipient
     households:
       household:
         members: [person1, person2]
         state_code: NE
   output:
-    spm_unit_size: 2
-    ne_adc_resources_eligible: true
-    # Resources ($6,000) <= Limit ($6,000) -> true
-    ne_adc_eligible: true
-
-- name: Edge case, resources one dollar above $6,000 limit for family of 2.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 6_001
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    spm_unit_size: 2
-    ne_adc_resources_eligible: false
-    # Resources ($6,001) <= Limit ($6,000) -> false
-    ne_adc_eligible: false
-
-- name: Edge case, resources one dollar below $6,000 limit for family of 2.
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_assets: 5_999
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NE
-  output:
-    spm_unit_size: 2
-    ne_adc_resources_eligible: true
-    # Resources ($5,999) <= Limit ($6,000) -> true
+    ne_adc_countable_earned_income: 600
+    # After 50% disregard: $1,200 * 0.50 = $600
+    ne_adc_income_eligible: true
+    # Countable ($600) < Need Standard ($741) -> PASSES
     ne_adc_eligible: true
 
 # =============================================================================
