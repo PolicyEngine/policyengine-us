@@ -1,9 +1,16 @@
 # Nebraska ADC Countable Earned Income Tests
-# Earned Income Disregard: 50% of gross earned income
-# Countable Earned = Gross Earned * (1 - 0.50) = Gross Earned * 0.50
+# Per Neb. Rev. Stat. 68-1726(3)(a):
+# - (i) Initial applicants: 20% disregard
+# - (ii) Ongoing recipients: 50% disregard
 
-- name: Case 1, no earned income.
+# =============================================================================
+# ONGOING RECIPIENT TESTS (is_tanf_enrolled: true, 50% disregard)
+# Countable Earned = Gross Earned * (1 - 0.50) = Gross Earned * 0.50
+# =============================================================================
+
+- name: Case 1, ongoing recipient with no earned income.
   period: 2024-01
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -14,6 +21,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -21,7 +29,7 @@
   output:
     ne_adc_countable_earned_income: 0
 
-- name: Case 2, earned income with 50 percent disregard.
+- name: Case 2, ongoing recipient with earned income 50 percent disregard.
   period: 2024-01
   input:
     people:
@@ -33,6 +41,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -42,7 +51,7 @@
     # Gross earned: $12,000/12 = $1,000/month
     # After 50% disregard: $1,000 * 0.50 = $500
 
-- name: Case 3, moderate earned income.
+- name: Case 3, ongoing recipient with moderate earned income.
   period: 2024-01
   input:
     people:
@@ -54,6 +63,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -63,7 +73,7 @@
     # Gross earned: $7,200/12 = $600/month
     # After 50% disregard: $600 * 0.50 = $300
 
-- name: Case 4, high earned income.
+- name: Case 4, ongoing recipient with high earned income.
   period: 2024-01
   input:
     people:
@@ -75,6 +85,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -83,3 +94,142 @@
     ne_adc_countable_earned_income: 1_000
     # Gross earned: $24,000/12 = $2,000/month
     # After 50% disregard: $2,000 * 0.50 = $1,000
+
+# =============================================================================
+# INITIAL APPLICANT TESTS (is_tanf_enrolled: false, 20% disregard)
+# Countable Earned = Gross Earned * (1 - 0.20) = Gross Earned * 0.80
+# =============================================================================
+
+- name: Case 5, initial applicant with no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 0
+
+- name: Case 6, initial applicant with earned income 20 percent disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 800
+    # Gross earned: $12,000/12 = $1,000/month
+    # After 20% disregard: $1,000 * 0.80 = $800
+
+- name: Case 7, initial applicant with moderate earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 480
+    # Gross earned: $7,200/12 = $600/month
+    # After 20% disregard: $600 * 0.80 = $480
+
+- name: Case 8, initial applicant with high earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 1_600
+    # Gross earned: $24,000/12 = $2,000/month
+    # After 20% disregard: $2,000 * 0.80 = $1,600
+
+# =============================================================================
+# EDGE CASES - EARNED INCOME DISREGARD
+# =============================================================================
+
+- name: Edge case, very small earned income disregard applied.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24  # $2/month gross
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 1
+    # Gross = $2, after 50% disregard (ongoing recipient) = $1
+
+- name: Edge case, large earned income 50 percent disregard.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 60_000  # $5,000/month gross
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_countable_earned_income: 2_500
+    # Gross = $5,000, after 50% disregard (ongoing recipient) = $2,500

@@ -1,7 +1,12 @@
 # Nebraska ADC Eligibility Tests
 # Eligibility requires:
-# 1. Net earned income (after 50% disregard) < Need Standard
+# 1. Net earned income (after disregard) < Need Standard
+#    - Initial applicants: 20% disregard (countable = 80%)
+#    - Ongoing recipients: 50% disregard (countable = 50%)
 # 2. Resources within limits ($4,000 for 1 person, $6,000 for 2+)
+#
+# NOTE: These tests model ONGOING recipients (is_tanf_enrolled: true)
+#       who receive the 50% earned income disregard.
 
 - name: Case 1, no income is eligible.
   period: 2024-01
@@ -16,6 +21,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -40,6 +46,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_cash_assets: 2_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -67,6 +74,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
@@ -92,6 +100,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -117,6 +126,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
@@ -128,3 +138,179 @@
     ne_adc_income_eligible: false
     # Countable income ($745) > Need standard ($741)
     ne_adc_eligible: false
+
+# =============================================================================
+# EDGE CASES - RESOURCE BOUNDARIES (SINGLE PERSON $4,000 LIMIT)
+# =============================================================================
+
+- name: Edge case, resources exactly at $4,000 limit for single person.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: true
+    # Resources ($4,000) <= Limit ($4,000) -> true
+
+- name: Edge case, resources one dollar above $4,000 limit for single person.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_001
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: false
+    # Resources ($4,001) <= Limit ($4,000) -> false
+    ne_adc_eligible: false
+
+- name: Edge case, resources one dollar below $4,000 limit for single person.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_999
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: true
+    # Resources ($3,999) <= Limit ($4,000) -> true
+
+# =============================================================================
+# EDGE CASES - RESOURCE BOUNDARIES (TWO+ PERSONS $6,000 LIMIT)
+# =============================================================================
+
+- name: Edge case, resources exactly at $6,000 limit for family of 2.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: true
+    # Resources ($6,000) <= Limit ($6,000) -> true
+    ne_adc_eligible: true
+
+- name: Edge case, resources one dollar above $6,000 limit for family of 2.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: false
+    # Resources ($6,001) <= Limit ($6,000) -> false
+    ne_adc_eligible: false
+
+- name: Edge case, resources one dollar below $6,000 limit for family of 2.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: true
+    # Resources ($5,999) <= Limit ($6,000) -> true
+    ne_adc_eligible: true
+
+# =============================================================================
+# EDGE CASES - DEMOGRAPHIC ELIGIBILITY
+# =============================================================================
+
+- name: Edge case, household with only adults fails demographic eligibility.
+  # Two adults (ages 30 and 35) with no children or pregnant persons
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        employment_income_before_lsr: 0
+      person2:
+        age: 35
+        is_pregnant: false
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    is_demographic_tanf_eligible: false
+    # No eligible children (both adults over age limit) and no pregnant persons
+    ne_adc_eligible: false
+    ne_adc: 0

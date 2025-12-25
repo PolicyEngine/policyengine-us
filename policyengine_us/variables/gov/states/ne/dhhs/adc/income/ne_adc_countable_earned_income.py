@@ -13,8 +13,13 @@ class ne_adc_countable_earned_income(Variable):
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ne.dhhs.adc
+        p = parameters(
+            period
+        ).gov.states.ne.dhhs.adc.income.earned_income_disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-        # Per Neb. Rev. Stat. 68-1726(3)(a)(ii): 50% of gross earned income
-        # is disregarded for recipients
-        return gross_earned * (1 - p.income.earned_income_disregard)
+        is_enrolled = spm_unit("is_tanf_enrolled", period)
+        # Per Neb. Rev. Stat. 68-1726(3)(a):
+        # (i) 20% disregard for initial applicants
+        # (ii) 50% disregard for ongoing recipients
+        disregard_rate = where(is_enrolled, p.ongoing, p.initial)
+        return gross_earned * (1 - disregard_rate)
