@@ -1,0 +1,192 @@
+# Idaho TAFI Grant Standard
+# Per IDAPA 16.03.08.248-252, grant calculation depends on income type:
+# - No income: Maximum Grant ($309)
+# - Unearned only: Maximum Grant ($309) - Unearned Income
+# - Earned income: Work Incentive Table - (60% x Earned) - Unearned, capped at $309
+
+- name: Case 1, no income uses maximum grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 309
+    # No income -> Maximum Grant = $309
+
+- name: Case 2, unearned income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_200  # $100/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 209
+    # Unearned only: 309 - 100 = 209
+
+- name: Case 3, earned income only, family of 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 89
+    # Work Incentive (size 3): 389
+    # 60% of earned: 500 * 0.60 = 300
+    # Grant: 389 - 300 - 0 = 89
+    # Capped at min(89, 309) = 89
+
+- name: Case 4, earned income only, family of 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_000  # $250/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 159
+    # Work Incentive (size 2): 309
+    # 60% of earned: 250 * 0.60 = 150
+    # Grant: 309 - 150 - 0 = 159
+
+- name: Case 5, mixed income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        social_security: 1_200    # $100/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 49
+    # Work Incentive (size 3): 389
+    # 60% of earned: 400 * 0.60 = 240
+    # Grant: 389 - 240 - 100 = 49
+
+- name: Case 6, large family with earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 289
+    # Work Incentive (size 4): 469
+    # 60% of earned: 300 * 0.60 = 180
+    # Grant: 469 - 180 - 0 = 289
+
+- name: Case 7, large family where result exceeds maximum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: 409
+    # Work Incentive (size 4): 469
+    # 60% of earned: 100 * 0.60 = 60
+    # Grant: 469 - 60 - 0 = 409 (uncapped - capping in id_tafi)
+
+- name: Case 8, negative result for high earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi_grant_standard: -91
+    # Work Incentive (size 3): 389
+    # 60% of earned: 800 * 0.60 = 480
+    # Grant: 389 - 480 - 0 = -91 (uncapped - floor to 0 in id_tafi)

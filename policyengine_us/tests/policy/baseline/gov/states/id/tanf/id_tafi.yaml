@@ -1,0 +1,185 @@
+# Idaho TAFI Final Benefit Amount
+# Per IDAPA 16.03.08.248-254:
+# - Maximum Grant: $309 (flat regardless of family size)
+# - Minimum Payment: $10 (if less, no payment made)
+# - Grant calculation varies by income type
+
+- name: Case 1, no income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi: 309
+    # No income -> Maximum Grant = $309
+
+- name: Case 2, unearned income reduces benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_800  # $150/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi: 159
+    # Unearned only: 309 - 150 = 159
+
+- name: Case 3, earned income with 60 percent rate.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi: 89
+    # Work Incentive (size 3): 389
+    # 60% of earned: 500 * 0.60 = 300
+    # Grant: 389 - 300 = 89
+
+- name: Case 4, benefit at minimum threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_588  # $299/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi: 10
+    # Grant: 309 - 299 = 10
+    # At minimum, still paid
+
+- name: Case 5, benefit below minimum gets zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_636  # $303/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi: 0
+    # Grant: 309 - 303 = 6
+    # Below minimum ($10) -> no payment
+
+- name: Case 6, high income results in zero benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi: 0
+    # Work Incentive (size 3): 389
+    # 60% of earned: 800 * 0.60 = 480
+    # Grant: 389 - 480 = -91 -> 0
+
+- name: Case 7, large family with low income gets max benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    id_tafi: 309
+    # Work Incentive (size 4): 469
+    # 60% of earned: 100 * 0.60 = 60
+    # Grant: 469 - 60 = 409 -> capped at 309
+
+- name: Case 8, mixed income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi: 49
+    # Work Incentive (size 3): 389
+    # 60% of earned: 400 * 0.60 = 240
+    # Grant: 389 - 240 - 100 = 49

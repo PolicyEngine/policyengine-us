@@ -1,0 +1,289 @@
+# Idaho TAFI Work Incentive Table Amount
+# Per IDAPA 16.03.08.251, this table is used for families with earned income
+# Values by household size:
+# 1-2: $309, 3: $389, 4: $469, 5: $547, 6: $628,
+# 7: $708, 8: $787, 9: $867, 10: $947, 11+: $947 + $80 per additional
+
+- name: Case 1, household of 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 309
+
+- name: Case 2, household of 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 309
+    # Household size 2 uses same value as size 1
+
+- name: Case 3, household of 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 389
+
+- name: Case 4, household of 4.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 469
+
+- name: Case 5, household of 5.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 547
+
+- name: Case 6, household of 6.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+      person6:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 628
+
+- name: Case 7, household of 10 at table maximum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 947
+
+# Edge cases for household sizes beyond table (11+)
+
+- name: Case 8, household of 11 uses additional person amount.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+      person11:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 1_027
+    # Size 10: $947, Size 11: $947 + ($80 * 1) = $1,027
+
+- name: Case 9, household of 12.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 16
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 4
+      person11:
+        age: 2
+      person12:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 1_107
+    # Size 10: $947, Size 12: $947 + ($80 * 2) = $1,107
+
+- name: Case 10, household of 15 extreme size.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 16
+      person5:
+        age: 15
+      person6:
+        age: 14
+      person7:
+        age: 13
+      person8:
+        age: 12
+      person9:
+        age: 11
+      person10:
+        age: 10
+      person11:
+        age: 9
+      person12:
+        age: 8
+      person13:
+        age: 7
+      person14:
+        age: 5
+      person15:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 1_347
+    # Size 10: $947, Size 15: $947 + ($80 * 5) = $1,347
