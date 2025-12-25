@@ -14,4 +14,4 @@ class nm_tanf_net_income_eligible(Variable):
         # the standard of need (payment standard)
         countable_income = spm_unit("nm_tanf_countable_income", period)
         payment_standard = spm_unit("nm_tanf_maximum_benefit", period)
-        return countable_income < payment_standard
+        return countable_income <= payment_standard

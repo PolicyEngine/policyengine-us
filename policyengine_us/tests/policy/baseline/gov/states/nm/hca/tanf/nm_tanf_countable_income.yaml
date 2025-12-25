@@ -45,7 +45,7 @@
     # $500 + $100 - $200 = $400
     nm_tanf_countable_income: 400
 
-- name: Case 5, child care deduction cannot make income negative.
+- name: Case 5, child care deduction only applies to earned income.
   period: 2024-01
   input:
     state_code: NM
@@ -53,5 +53,5 @@
     nm_tanf_countable_unearned_income: 50
     nm_tanf_child_care_deduction: 200
   output:
-    # $100 + $50 - $200 = -$50, but capped at $0
-    nm_tanf_countable_income: 0
+    # Child care deduction only applies to earned income: max($100 - $200, 0) + $50 = $50
+    nm_tanf_countable_income: 50

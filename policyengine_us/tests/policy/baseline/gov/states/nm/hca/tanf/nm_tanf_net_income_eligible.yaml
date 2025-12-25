@@ -46,7 +46,7 @@
     # $300 < $549 = eligible
     nm_tanf_net_income_eligible: true
 
-- name: Case 3, countable income equals payment standard is ineligible.
+- name: Case 3, countable income equals payment standard is eligible.
   period: 2024-01
   input:
     people:
@@ -68,8 +68,8 @@
         members: [person1, person2, person3, person4]
         state_code: NM
   output:
-    # Formula uses strict less-than: $663 is not < $663 = ineligible
-    nm_tanf_net_income_eligible: false
+    # With <= comparison: $663 <= $663 = eligible (at the limit is OK)
+    nm_tanf_net_income_eligible: true
 
 - name: Case 4, countable income exceeds payment standard is ineligible.
   period: 2024-01
@@ -177,8 +177,8 @@
         members: [person1]
         state_code: NM
   output:
-    # $0 is not < $0 = ineligible (edge case: both zero)
-    nm_tanf_net_income_eligible: false
+    # With <= comparison: $0 <= $0 = eligible (edge case: both zero)
+    nm_tanf_net_income_eligible: true
 
 - name: Case 9, very small countable income is eligible.
   period: 2024-01

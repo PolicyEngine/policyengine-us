@@ -15,4 +15,4 @@ class nm_tanf_gross_income_eligible(Variable):
         gross_income = spm_unit("nm_tanf_gross_income", period)
         fpg = spm_unit("tanf_fpg", period)
         gross_income_limit = fpg * p.gross_limit.rate
-        return gross_income < gross_income_limit
+        return gross_income <= gross_income_limit
