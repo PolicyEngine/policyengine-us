@@ -1,0 +1,53 @@
+- name: If married, the lower income limit is $23,664, the upper income limit is $26,628. ($24_000 eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+    va_map_mb_income: 24_000
+  output:
+    va_map_mb_qi_income_eligibility: true
+
+- name: If married, the lower income limit is $23,664, the upper income limit is $26,628. ($23_000 not eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+    va_map_mb_income: 23_000
+  output:
+    va_map_mb_qi_income_eligibility: false
+
+- name: If married, the lower income limit is $23,664, the upper income limit is $26,628. ($27_000 not eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+    va_map_mb_income: 27_000
+  output:
+    va_map_mb_qi_income_eligibility: false
+
+- name: If not married, the lower income limit is $17,496, the upper income limit is $19,692. ($19_000 eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+    va_map_mb_income: 19_000
+  output:
+    va_map_mb_qi_income_eligibility: true
+
+- name: If not married, the lower income limit is $17,496, the upper income limit is $19,692. ($17_000 not eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+    va_map_mb_income: 17_000
+  output:
+    va_map_mb_qi_income_eligibility: false
+
+- name: If not married, the lower income limit is $17,496, the upper income limit is $19,692. ($20_000 not eligbile)
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+    va_map_mb_income: 20_000
+  output:
+    va_map_mb_qi_income_eligibility: false

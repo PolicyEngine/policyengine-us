@@ -1,0 +1,96 @@
+- name: Age under 65, not blind, not disabled, is not eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 64
+        is_blind: false
+        is_disabled: false
+        ssi: 0
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+  output:
+    va_map_abd_demographic_eligibility: false
+
+- name: Age over 65, not blind, not disabled, but receiving ssi is not eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 65
+        is_blind: false
+        is_disabled: false
+        ssi: 2_000
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+  output:
+    va_map_abd_demographic_eligibility: false
+
+- name: Age 65, not blind, not disabled, is eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 65
+        is_blind: false
+        is_disabled: false
+        ssi: 0
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+  output:
+    va_map_abd_demographic_eligibility: true
+
+- name: Age 64, blind, not disabled, is eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 64
+        is_blind: true
+        is_disabled: false
+        ssi: 0
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+  output:
+    va_map_abd_demographic_eligibility: true
+
+- name: Age 64, not blind, disabled, is eligible.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 64
+        is_blind: false
+        is_disabled: true
+        ssi: 0
+    households:
+      household:
+        members: [parent]
+        state_code: VA
+  output:
+    va_map_abd_demographic_eligibility: true
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 65
+        is_blind: true
+        is_disabled: true
+        ssi: 0
+    households:
+      household:
+        members: [parent]
+        state_code: DC
+  output:
+    va_map_abd_demographic_eligibility: false
+

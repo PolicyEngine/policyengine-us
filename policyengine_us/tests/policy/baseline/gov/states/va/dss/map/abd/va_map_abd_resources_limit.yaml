@@ -1,0 +1,15 @@
+- name: If not married
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+  output:
+    va_map_abd_resources_limit: 2_000
+
+- name: If married
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+  output:
+    va_map_abd_resources_limit: 3_000
