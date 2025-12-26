@@ -1,0 +1,151 @@
+# Nebraska ADC Benefit Amount Edge Cases
+# These test specific edge cases NOT covered in integration.yaml
+#
+# Gap Budgeting Methodology:
+#   Step 1: Net Earned Income = Gross Earned * (1 - disregard_rate)
+#   Step 2: Gap = Need Standard - Net Earned Income
+#   Step 3: Benefit = min(Gap, Payment Standard)
+#   Step 4: Final Benefit = Benefit - Unearned Income
+
+# =============================================================================
+# EDGE CASES - GAP BUDGETING
+# =============================================================================
+
+- name: Edge case, gap less than payment standard benefit equals gap.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 8_400  # $700/month -> $350 countable
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 741
+    ne_adc_payment_standard: 408
+    ne_adc_countable_earned_income: 350
+    # Gross = $700, after 50% disregard = $350
+    ne_adc_maximum_benefit: 391
+    # Gap = $741 - $350 = $391
+    # Benefit = min($391, $408) = $391 (gap < payment standard)
+    ne_adc: 391
+
+- name: Edge case, gap greater than payment standard benefit equals payment standard.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 741
+    ne_adc_payment_standard: 408
+    ne_adc_countable_earned_income: 0
+    ne_adc_maximum_benefit: 408
+    # Gap = $741 - $0 = $741
+    # Benefit = min($741, $408) = $408 (gap > payment standard)
+    ne_adc: 408
+
+# =============================================================================
+# EDGE CASES - UNEARNED INCOME
+# =============================================================================
+
+- name: Edge case, unearned income exactly wipes out max benefit.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        social_security: 4_896  # $408/month unearned = payment standard
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 408
+    ne_adc_maximum_benefit: 408
+    # Gap = $741 - $0 = $741
+    # Benefit = min($741, $408) = $408
+    ne_adc: 0
+    # Final = $408 - $408 = $0
+
+- name: Edge case, unearned income exceeds max benefit no negative.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        social_security: 6_000  # $500/month unearned > payment standard
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 408
+    ne_adc_maximum_benefit: 408
+    ne_adc: 0
+    # Final = $408 - $500 = -$92 -> $0 (no negative benefits)
+
+# =============================================================================
+# EDGE CASES - STATE RESIDENCY
+# =============================================================================
+
+- name: Edge case, non-Nebraska state returns zero benefit.
+  # Family in Texas should get zero Nebraska ADC benefit
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ne_adc: 0
+    # Family in Texas, not Nebraska -> ne_adc benefit is $0

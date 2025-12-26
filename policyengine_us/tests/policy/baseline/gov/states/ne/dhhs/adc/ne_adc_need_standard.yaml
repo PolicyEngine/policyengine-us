@@ -1,0 +1,159 @@
+# Nebraska ADC Need Standard Tests
+# The need standard is a lookup by family size
+# Values effective July 1, 2021:
+#   Size 1: $601, Size 2: $741, Size 3: $881, Size 4: $1,021, etc.
+#   Formula: $601 + ($140 * (size - 1))
+
+- name: Case 1, single person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 601
+    # Need standard for size 1 = $601
+
+- name: Case 2, family of 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 741
+    # Need standard for size 2 = $741
+
+- name: Case 3, family of 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 881
+    # Need standard for size 3 = $881
+
+- name: Case 4, family of 4.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 1_021
+    # Need standard for size 4 = $1,021
+
+- name: Case 5, large family of 7.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: NE
+  output:
+    ne_adc_need_standard: 1_441
+    # Need standard for size 7 = $1,441
+
+- name: Edge case, family size 14 uses additional person increment.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 17
+      person4:
+        age: 16
+      person5:
+        age: 15
+      person6:
+        age: 14
+      person7:
+        age: 13
+      person8:
+        age: 12
+      person9:
+        age: 11
+      person10:
+        age: 10
+      person11:
+        age: 9
+      person12:
+        age: 8
+      person13:
+        age: 7
+      person14:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: NE
+  output:
+    spm_unit_size: 14
+    ne_adc_need_standard: 2_421
+    # Need standard for size 14 = $1,861 + 4*$140 = $2,421

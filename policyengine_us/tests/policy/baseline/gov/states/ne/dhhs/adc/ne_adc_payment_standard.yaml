@@ -1,0 +1,88 @@
+# Nebraska ADC Payment Standard Tests
+# Payment standard = Need Standard * 0.55 (55%)
+# Values effective September 1, 2015:
+#   Size 1: $331, Size 2: $408, Size 3: $485, Size 4: $562, etc.
+
+- name: Case 1, single person household.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 331
+    # Need standard $601 * 0.55 = $330.55, rounded to $331
+
+- name: Case 2, family of 2.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 408
+    # Need standard $741 * 0.55 = $407.55, rounded to $408
+
+- name: Case 3, family of 3.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 485
+    # Need standard $881 * 0.55 = $484.55, rounded to $485
+
+- name: Case 4, family of 4.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 562
+    # Need standard $1,021 * 0.55 = $561.55, rounded to $562

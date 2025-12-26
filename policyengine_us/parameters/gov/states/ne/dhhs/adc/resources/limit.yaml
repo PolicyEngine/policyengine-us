@@ -1,0 +1,21 @@
+description: Nebraska limits countable resources to this amount under the Aid to Dependent Children program.
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  label: Nebraska ADC resource limit
+  reference:
+    - title: Neb. Rev. Stat. 68-1726(1)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1726
+
+brackets:
+  - threshold:
+      2021-07-01: 1
+    amount:
+      2021-07-01: 4_000
+  - threshold:
+      2021-07-01: 2
+    amount:
+      2021-07-01: 6_000
