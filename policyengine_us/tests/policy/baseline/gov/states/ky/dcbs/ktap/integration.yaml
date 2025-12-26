@@ -1,0 +1,161 @@
+# Kentucky TANF (K-TAP) Integration Tests
+# Per 921 KAR 2:016 - Standards of need and amount for KTAP
+# Tests the complete benefit calculation pipeline
+# Note: Tests use YEAR period; MONTH variables are automatically annualized
+#
+# Key Formulas (monthly):
+#   Countable Earned = max(sum_gross_earned - $175, 0) * 0.5 (50% disregard)
+#   Countable Unearned = max(gross_unearned - min(child_support, $50), 0)
+#   Countable Income = countable_earned + countable_unearned
+#   Benefit = payment_maximum if countable_income == 0 (per KRS 205.200(2))
+#           = min(0.55 * (need_standard - countable_income), payment_maximum) otherwise
+
+- name: Case 1, single parent with two children, no income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Family size 3
+    # Monthly values annualized (* 12)
+    ky_ktap_standard_of_need: 631 * 12
+    ky_ktap_payment_maximum: 524 * 12
+    # Earned: max($0 - $175, 0) * 0.5 = $0/month
+    ky_ktap_countable_earned_income: 0
+    ky_ktap_countable_unearned_income: 0
+    ky_ktap_countable_income: 0
+    # Income eligibility: $0 < $1,169 limit
+    ky_ktap_income_eligible: true
+    # Resource eligibility: $0 < $10,000 limit
+    ky_ktap_resource_eligible: true
+    ky_ktap_eligible: true
+    # Per KRS 205.200(2): families with no income get payment_maximum
+    # Monthly benefit: $524 (payment maximum)
+    # Annual benefit: $524 * 12 = $6,288
+    ky_ktap: 524 * 12
+
+- name: Case 2, adults only household, no eligible children.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 0
+      person2:
+        age: 42
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_ktap_standard_of_need: 552 * 12
+    ky_ktap_payment_maximum: 450 * 12
+    ky_ktap_countable_earned_income: 0
+    ky_ktap_countable_unearned_income: 0
+    ky_ktap_countable_income: 0
+    # Income eligible but demographically ineligible (no children)
+    ky_ktap_income_eligible: true
+    ky_ktap_resource_eligible: true
+    ky_ktap_eligible: false
+    ky_ktap: 0
+
+- name: Case 3, single parent with one child, with earned income.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 28
+        # Monthly income: $600, Annual: $7,200
+        # Use employment_income_before_lsr for TANF calculations
+        employment_income_before_lsr: 7_200
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_ktap_standard_of_need: 552 * 12
+    ky_ktap_payment_maximum: 450 * 12
+    # Monthly earned: $600, minus $175 deduction = $425
+    # Then 50% disregard: $425 * 0.5 = $212.50
+    # Annual: $212.50 * 12 = $2,550
+    ky_ktap_countable_earned_income: 212.5 * 12
+    ky_ktap_countable_unearned_income: 0
+    # Total countable: $212.50/month * 12 = $2,550/year
+    ky_ktap_countable_income: 212.5 * 12
+    # Gross income: $600/month vs limit $1,021/month = eligible
+    ky_ktap_income_eligible: true
+    # Resources: $500 < $10,000 limit
+    ky_ktap_resource_eligible: true
+    ky_ktap_eligible: true
+    # Deficit: $552 need - $212.50 countable = $339.50
+    # Benefit: min(0.55 * $339.50, $450) = min($186.725, $450) = $186.725/month
+    # Annual: $186.725 * 12 = $2,240.70
+    ky_ktap: 186.725 * 12
+
+- name: Case 4, family with child support income.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 0
+        # Monthly child support: $200, Annual: $2,400
+        child_support_received: 2_400
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: KY
+  output:
+    # Family size 3
+    ky_ktap_standard_of_need: 631 * 12
+    ky_ktap_payment_maximum: 524 * 12
+    ky_ktap_countable_earned_income: 0
+    # Monthly child support $200, pass-through exclusion $50
+    # Countable: $200 - $50 = $150/month
+    # Annual: $150 * 12 = $1,800
+    ky_ktap_countable_unearned_income: 150 * 12
+    ky_ktap_countable_income: 150 * 12
+    # Gross income: $200/month < $1,169 limit
+    ky_ktap_income_eligible: true
+    ky_ktap_resource_eligible: true
+    ky_ktap_eligible: true
+    # Deficit: $631 - $150 = $481
+    # Benefit: min(0.55 * $481, $524) = min($264.55, $524) = $264.55/month
+    # Annual: $264.55 * 12 = $3,174.60
+    ky_ktap: 264.55 * 12
