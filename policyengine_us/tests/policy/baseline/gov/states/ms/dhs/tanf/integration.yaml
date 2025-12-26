@@ -1,0 +1,267 @@
+# Mississippi TANF Integration Tests
+#
+# Program Rules:
+# - Income eligibility: Gross income <= 185% of need standard
+# - Need standards by size: 1=$339, 2=$460, 3=$581, 4=$702, 5=$823
+# - Income limits by size: 1=$627, 2=$851, 3=$1,074, 4=$1,298, 5=$1,523
+# - Payment standards: First person $200, second $36, each additional $24
+# - Resource limit: $2,000
+# - Benefit: Maximum Payment Standard - Countable Income
+
+- name: Case 1, single parent with one child, no income, receives maximum benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Household size: 2
+    spm_unit_size: 2
+    # Payment standard: $200 + $36 = $236
+    ms_tanf_maximum_benefit: 236
+    # Resources: $500 <= $2,000
+    ms_tanf_resources_eligible: true
+    # Income: $0 <= $851 (185% of $460)
+    ms_tanf_income_eligible: true
+    # Final benefit: $236 - $0 = $236
+    ms_tanf_eligible: true
+    ms_tanf: 236
+
+- name: Case 2, family of 3 with low earned income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000
+        # Annual income: $6,000 -> Monthly: $500
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Household size: 3
+    spm_unit_size: 3
+    # Payment standard: $200 + $36 + $24 = $260
+    ms_tanf_maximum_benefit: 260
+    # Resources: $800 <= $2,000
+    ms_tanf_resources_eligible: true
+    # Gross income: $500/month
+    # Limit: $581 * 1.85 = $1,074.85
+    # $500 <= $1,074.85
+    ms_tanf_income_eligible: true
+    # Final eligibility
+    ms_tanf_eligible: true
+
+- name: Case 3, family of 3 with income at 185% threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_888
+        # Annual income: $12,888 -> Monthly: $1,074
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Household size: 3
+    spm_unit_size: 3
+    # Payment standard: $200 + $36 + $24 = $260
+    ms_tanf_maximum_benefit: 260
+    # Gross income: $1,074/month
+    # Limit: $581 * 1.85 = $1,074.85
+    # $1,074 <= $1,074.85 = true (exactly at threshold)
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: true
+    ms_tanf_eligible: true
+
+- name: Case 4, family of 3 with income above 185% threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 15_000
+        # Annual income: $15,000 -> Monthly: $1,250
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Household size: 3
+    spm_unit_size: 3
+    # Gross income: $1,250/month
+    # Limit: $581 * 1.85 = $1,074.85
+    # $1,250 > $1,074.85 = false
+    ms_tanf_income_eligible: false
+    ms_tanf_resources_eligible: true
+    ms_tanf_eligible: false
+    ms_tanf: 0
+
+- name: Case 5, family of 4 with resources at limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+  output:
+    # Household size: 4
+    spm_unit_size: 4
+    # Payment standard: $200 + $36 + $24 + $24 = $284
+    ms_tanf_maximum_benefit: 284
+    # Resources: $2,000 <= $2,000
+    ms_tanf_resources_eligible: true
+    # Income: $0/month <= $1,298.7
+    ms_tanf_income_eligible: true
+    ms_tanf_eligible: true
+    # Benefit: $284 - $0 = $284
+    ms_tanf: 284
+
+- name: Case 6, family with resources exceeding limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Household size: 2
+    spm_unit_size: 2
+    # Resources: $3,000 > $2,000
+    ms_tanf_resources_eligible: false
+    # Income: $0 <= $851 = true
+    ms_tanf_income_eligible: true
+    # Fails resources test, so ineligible
+    ms_tanf_eligible: false
+    ms_tanf: 0
+
+- name: Case 7, large family of 5 with mixed income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000
+        # Annual: $6,000 -> Monthly: $500
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+      person5:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_assets: 200
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+  output:
+    # Household size: 5
+    spm_unit_size: 5
+    # Payment standard: $200 + $36 + ($24 * 3) = $308
+    ms_tanf_maximum_benefit: 308
+    # Resources: $200 <= $2,000
+    ms_tanf_resources_eligible: true
+    # Gross income: $500/month
+    # Limit: $823 * 1.85 = $1,522.55
+    # $500 <= $1,522.55 = true
+    ms_tanf_income_eligible: true
+    ms_tanf_eligible: true

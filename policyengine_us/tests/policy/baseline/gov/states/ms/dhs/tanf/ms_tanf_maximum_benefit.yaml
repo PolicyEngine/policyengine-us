@@ -1,0 +1,113 @@
+# Mississippi TANF maximum benefit (payment standard) tests
+# Per MS Code 43-17-5(1):
+# - First person: $200
+# - Second person: $36
+# - Each additional person: $24
+
+- name: Case 1, family of 1.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+  output:
+    # $200 (first person only)
+    ms_tanf_maximum_benefit: 200
+
+- name: Case 2, family of 2.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 2
+  output:
+    # $200 + $36 = $236
+    ms_tanf_maximum_benefit: 236
+
+- name: Case 3, family of 3.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+  output:
+    # $200 + $36 + $24 = $260
+    ms_tanf_maximum_benefit: 260
+
+- name: Case 4, family of 4.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 4
+  output:
+    # $200 + $36 + $24 + $24 = $284
+    ms_tanf_maximum_benefit: 284
+
+- name: Case 5, family of 5.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 5
+  output:
+    # $200 + $36 + ($24 * 3) = $308
+    ms_tanf_maximum_benefit: 308
+
+- name: Case 6, family of 6.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 6
+  output:
+    # $200 + $36 + ($24 * 4) = $332
+    ms_tanf_maximum_benefit: 332
+
+- name: Case 7, family of 7.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 7
+  output:
+    # $200 + $36 + ($24 * 5) = $356
+    ms_tanf_maximum_benefit: 356
+
+- name: Case 8, family of 8.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 8
+  output:
+    # $200 + $36 + ($24 * 6) = $380
+    ms_tanf_maximum_benefit: 380
+
+- name: Case 9, family of 9.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 9
+  output:
+    # $200 + $36 + ($24 * 7) = $404
+    ms_tanf_maximum_benefit: 404
+
+- name: Case 10, family of 10.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 10
+  output:
+    # $200 + $36 + ($24 * 8) = $428
+    ms_tanf_maximum_benefit: 428
+
+- name: Case 11, family of 11.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 11
+  output:
+    # $200 + $36 + ($24 * 9) = $452
+    ms_tanf_maximum_benefit: 452
+
+- name: Case 12, not in Mississippi.
+  period: 2026-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+  output:
+    # Not in MS, returns 0 (defined_for = MS)
+    ms_tanf_maximum_benefit: 0
