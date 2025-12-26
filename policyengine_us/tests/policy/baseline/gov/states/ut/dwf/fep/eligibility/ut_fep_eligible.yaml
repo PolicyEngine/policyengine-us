@@ -1,0 +1,56 @@
+# Unit tests for ut_fep_eligible (final eligibility determination)
+# Utah TANF eligibility requires:
+#   - Demographic eligibility (uses federal baseline)
+#   - Income eligibility (gross and net tests)
+#   - Resource eligibility
+# Reference: Utah Admin. Code R986-200
+
+- name: All eligibility criteria met - eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    is_demographic_tanf_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_resources_eligible: true
+  output:
+    ut_fep_eligible: true
+
+- name: Demographic ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    is_demographic_tanf_eligible: false
+    ut_fep_income_eligible: true
+    ut_fep_resources_eligible: true
+  output:
+    ut_fep_eligible: false
+
+- name: Income ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    is_demographic_tanf_eligible: true
+    ut_fep_income_eligible: false
+    ut_fep_resources_eligible: true
+  output:
+    ut_fep_eligible: false
+
+- name: Resource ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    is_demographic_tanf_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_resources_eligible: false
+  output:
+    ut_fep_eligible: false
+
+- name: All criteria not met - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    is_demographic_tanf_eligible: false
+    ut_fep_income_eligible: false
+    ut_fep_resources_eligible: false
+  output:
+    ut_fep_eligible: false

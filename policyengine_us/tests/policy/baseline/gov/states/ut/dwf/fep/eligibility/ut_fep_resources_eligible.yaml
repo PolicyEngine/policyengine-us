@@ -1,0 +1,47 @@
+# Unit tests for ut_fep_resources_eligible (resource/asset test)
+# Countable resources must not exceed $2,000
+# Reference: Utah Admin. Code R986-200-230
+
+- name: No resources - eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_assets: 0
+  output:
+    ut_fep_resources_eligible: true
+
+- name: Resources below limit - eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_assets: 1_500
+  output:
+    # Resources = 1,500 <= 2,000 - eligible
+    ut_fep_resources_eligible: true
+
+- name: Resources at limit - eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_assets: 2_000
+  output:
+    # Resources = 2,000 <= 2,000 - eligible
+    ut_fep_resources_eligible: true
+
+- name: Resources above limit - ineligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_assets: 2_001
+  output:
+    # Resources = 2,001 > 2,000 - ineligible
+    ut_fep_resources_eligible: false
+
+- name: Resources significantly above limit - ineligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_assets: 5_000
+  output:
+    # Resources = 5,000 > 2,000 - ineligible
+    ut_fep_resources_eligible: false
