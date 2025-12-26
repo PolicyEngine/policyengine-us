@@ -1,0 +1,48 @@
+# Unit tests for nv_tanf_income_eligible
+# Tests gross income (130% FPL) and net income (need standard) tests
+
+- name: Zero income (eligible)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    nv_tanf_countable_income: 0
+  output:
+    nv_tanf_income_eligible: true
+
+- name: Passes both tests (eligible)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 0
+    nv_tanf_countable_income: 800
+  output:
+    nv_tanf_income_eligible: true
+
+- name: Fails gross income test (above 130% FPL)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 3_000
+    tanf_gross_unearned_income: 0
+    nv_tanf_countable_income: 2_400
+  output:
+    # 130% FPL for size 3: ~$2,887/month
+    nv_tanf_income_eligible: false
+
+- name: Fails net income test (above need standard)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 2_000
+    tanf_gross_unearned_income: 0
+    nv_tanf_countable_income: 1_500
+  output:
+    # Need standard for size 3: $1,299/month
+    nv_tanf_income_eligible: false
