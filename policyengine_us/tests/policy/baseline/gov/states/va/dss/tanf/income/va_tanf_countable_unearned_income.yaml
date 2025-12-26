@@ -1,0 +1,77 @@
+- name: No unearned income (only $1,000 ssi), child support, or interest income, $0 per year
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 1_000
+    child_support_received: 0
+  output:
+    va_tanf_countable_unearned_income: 0
+
+- name: 1,600 unearned income, 1,000 child support, 100 interest income, and not UP-TANF family, $1,600 per year
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 100
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_000
+  output:
+    va_tanf_countable_unearned_income: 1_600
+
+
+- name: 1,600 unearned income, 1,500 child support, and 150 interest income, and not UP-TANF family, $1,930 per year
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 150
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_500
+  output:
+    va_tanf_countable_unearned_income: 1_930
+
+
+- name: 1,600 unearned income, 1,500 child support, and 150 interest income, and UP-TANF family, $1,730 per year
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: true
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 150
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_500
+  output:
+    va_tanf_countable_unearned_income: 1_730
