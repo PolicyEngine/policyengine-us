@@ -1,0 +1,103 @@
+- name: Crisis payment during eligible period
+  period: 2025-01  # January - crisis eligible
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap_crisis_payment: [0, 800]  # Up to maximum $800
+
+- name: Higher crisis payment for very low income household
+  period: 2025-02  # February - crisis eligible
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 15_000  # Very low income
+    state_code: ME
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap_crisis_payment: [400, 800]  # Higher payment for very low income
+
+- name: Lower crisis payment for higher income household
+  period: 2025-12  # December - crisis eligible
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 45_000  # Higher income within eligibility
+    state_code: ME
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap_crisis_payment: [0, 400]  # Lower payment for higher income
+
+- name: Maximum crisis payment for zero income
+  period: 2025-03  # March - crisis eligible
+  input:
+    spm_unit_size: 5
+    irs_gross_income: 0
+    state_code: ME
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap_crisis_payment: [600, 800]  # Near maximum for zero income
+
+- name: No crisis payment when not crisis eligible
+  period: 2025-07  # July - not crisis eligible
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_crisis_eligible: false
+  output:
+    me_liheap_crisis_payment: 0
+
+- name: No crisis payment for ineligible household during winter
+  period: 2025-01  # January - winter period
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 80_000  # Over income limit
+    state_code: ME
+    me_liheap_crisis_eligible: false
+  output:
+    me_liheap_crisis_payment: 0
+
+- name: Crisis payment for vulnerable household - elderly
+  period: 2025-11  # November - crisis eligible
+  input:
+    spm_unit_size: 1
+    age: 80
+    irs_gross_income: 25_000
+    state_code: ME
+    me_liheap_crisis_eligible: true
+    me_liheap_vulnerable_household: true
+  output:
+    me_liheap_crisis_payment: [400, 800]  # Priority for vulnerable
+
+- name: Crisis payment for vulnerable household - young children
+  period: 2025-04  # April - crisis eligible
+  input:
+    spm_unit_size: 4
+    age: [30, 28, 3, 1]  # Parents with young children
+    irs_gross_income: 55_000
+    state_code: ME
+    me_liheap_crisis_eligible: true
+    me_liheap_vulnerable_household: true
+  output:
+    me_liheap_crisis_payment: [200, 800]  # Priority for vulnerable
+
+- name: Large household crisis payment
+  period: 2025-02  # February - crisis eligible
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 75_000
+    state_code: ME
+    me_liheap_crisis_eligible: true
+  output:
+    me_liheap_crisis_payment: [200, 800]  # Larger households may get higher payments
+
+- name: Non-Maine resident gets no crisis payment
+  period: 2025-01  # January
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: FL  # Florida
+    me_liheap_crisis_eligible: false
+  output:
+    me_liheap_crisis_payment: 0
