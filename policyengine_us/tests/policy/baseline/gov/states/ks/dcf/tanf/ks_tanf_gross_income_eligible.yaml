@@ -1,0 +1,70 @@
+# Kansas TANF gross income eligibility test
+# Gross income must be less than 30% of Federal Poverty Level
+# Source: K.S.A. 39-709, Kansas TANF State Plan FFY 2024-2026
+# 2025 FPL (contiguous US): $15,650 first person + $5,580 per additional
+# 30% monthly thresholds: 1=$391, 2=$530, 3=$670, 4=$809
+
+- name: Case 1, no income, eligible.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    spm_unit_size: 3
+  output:
+    ks_tanf_gross_income_eligible: true
+
+- name: Case 2, income below 30% FPL for family of 3.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 400
+    tanf_gross_unearned_income: 100
+    spm_unit_size: 3
+  output:
+    # Gross: $500, threshold ~$670 (30% of $26,810/12)
+    ks_tanf_gross_income_eligible: true
+
+- name: Case 3, income above 30% FPL for family of 3.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 600
+    tanf_gross_unearned_income: 200
+    spm_unit_size: 3
+  output:
+    # Gross: $800 > threshold ~$670
+    ks_tanf_gross_income_eligible: false
+
+- name: Case 4, single person low income.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 300
+    tanf_gross_unearned_income: 0
+    spm_unit_size: 1
+  output:
+    # Gross: $300, threshold ~$391 (30% of $15,650/12)
+    ks_tanf_gross_income_eligible: true
+
+- name: Case 5, single person at threshold.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 400
+    tanf_gross_unearned_income: 0
+    spm_unit_size: 1
+  output:
+    # Gross: $400 > threshold ~$391
+    ks_tanf_gross_income_eligible: false
+
+- name: Case 6, family of 4 below threshold.
+  period: 2025-01
+  input:
+    state_code: KS
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+    spm_unit_size: 4
+  output:
+    # Gross: $700, threshold ~$809 (30% of $32,390/12)
+    ks_tanf_gross_income_eligible: true

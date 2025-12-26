@@ -1,0 +1,363 @@
+# Kansas TANF integration tests
+# Tests the complete calculation pipeline from inputs to final benefit
+# Key rules:
+# - $90 work expense deduction (KEESM 7211)
+# - 60% earned income disregard on remainder (KEESM Memo 2008-0326)
+# - Dependent care deduction - no cap (KEESM 7224)
+# - Gross income must be < 30% FPL (K.S.A. 39-709)
+# - Payment standards (High Population Counties, Group III):
+#   1=$241, 2=$326, 3=$403, 4=$471, 5+=$471+$61/person
+# - Resource limit: $3,000
+
+- name: Case 1, family of 3 with no income, receives full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Intermediate values
+    spm_unit_size: 3
+    ks_tanf_maximum_benefit: 403
+    ks_tanf_countable_income: 0
+    # Eligibility
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 403 - 0 = 403
+    ks_tanf: 403
+
+- name: Case 2, family of 3 with low earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Income calculation:
+    # Gross earned: $6,000/year = $500/month
+    # Work expense: $90
+    # Remainder: $500 - $90 = $410
+    # 60% disregard: $410 * 0.60 = $246
+    # After deductions: $410 - $246 = $164
+    ks_tanf_earned_income_after_deductions: [164, 0, 0]
+    ks_tanf_countable_earned_income: 164
+    ks_tanf_countable_income: 164
+    ks_tanf_maximum_benefit: 403
+    # Gross income ($500) < 30% FPL for family of 3 (~$670)
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 403 - 164 = 239
+    ks_tanf: 239
+
+- name: Case 3, family of 3 with net income exceeding limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 200
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Gross earned: $9,600/year = $800/month
+    # Work expense: $90
+    # Remainder: $800 - $90 = $710
+    # After 60% disregard: $710 * 0.40 = $284
+    ks_tanf_earned_income_after_deductions: [284, 0, 0]
+    ks_tanf_countable_earned_income: 284
+    ks_tanf_countable_income: 284
+    ks_tanf_maximum_benefit: 403
+    # Gross ($800) > 30% FPL for family of 3 (~$670)
+    ks_tanf_gross_income_eligible: false
+    ks_tanf_eligible: false
+    ks_tanf: 0
+
+- name: Case 4, family exceeding resource limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 5_000  # Exceeds $3,000 limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    spm_unit_size: 2
+    ks_tanf_maximum_benefit: 326
+    # Resources: $5,000 > $3,000 limit
+    ks_tanf_resources_eligible: false
+    ks_tanf_eligible: false
+    ks_tanf: 0
+
+- name: Case 5, family of 2 with unearned income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security: 2_400  # $200/month
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Unearned income has no disregard
+    # Countable: $200/month
+    ks_tanf_countable_income: 200
+    ks_tanf_maximum_benefit: 326
+    # Gross ($200) < 30% FPL for family of 2 (~$530)
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 326 - 200 = 126
+    ks_tanf: 126
+
+- name: Case 6, family with small benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 9
+        is_tax_unit_dependent: true
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Gross earned: $4,800/year = $400/month
+    # Work expense: $90
+    # Remainder: $400 - $90 = $310
+    # After 60% disregard: $310 * 0.40 = $124
+    ks_tanf_earned_income_after_deductions: [124, 0, 0]
+    ks_tanf_countable_earned_income: 124
+    ks_tanf_countable_income: 124
+    ks_tanf_maximum_benefit: 403
+    # Gross ($400) < 30% FPL (~$670)
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 403 - 124 = 279
+    ks_tanf: 279
+
+- name: Case 7, household with two earners.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 2_400  # $200/month
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Two earners - deductions applied per person
+    # Person1: $300 - $90 = $210, $210 * 0.40 = $84
+    # Person2: $200 - $90 = $110, $110 * 0.40 = $44
+    # Countable earned: $84 + $44 = $128
+    spm_unit_size: 3
+    ks_tanf_earned_income_after_deductions: [84, 44, 0]
+    ks_tanf_countable_earned_income: 128
+    ks_tanf_countable_income: 128
+    ks_tanf_maximum_benefit: 403
+    # Gross ($500) < 30% FPL for family of 3 (~$670)
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 403 - 128 = 275
+    ks_tanf: 275
+
+- name: Case 8, large family of 5.
+  period: 2025-01
+  input:
+    people:
+      adult1:
+        age: 35
+        employment_income_before_lsr: 7_200  # $600/month
+      adult2:
+        age: 32
+      child1:
+        age: 12
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3]
+        spm_unit_cash_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child1, child2, child3]
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3]
+        state_code: KS
+  output:
+    # Large family tests the additional-person formula for 5+ members
+    # Payment standard for 5: $471 + $61 = $532
+    # Gross earned: $7,200/year = $600/month
+    # adult1: $600 - $90 = $510, $510 * 0.40 = $204
+    spm_unit_size: 5
+    ks_tanf_earned_income_after_deductions: [204, 0, 0, 0, 0]
+    ks_tanf_countable_earned_income: 204
+    ks_tanf_countable_income: 204
+    ks_tanf_maximum_benefit: 532
+    # Gross ($600) < 30% FPL for family of 5 (~$890)
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 532 - 204 = 328
+    ks_tanf: 328
+
+- name: Case 9, family with dependent care expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+        spm_unit_pre_subsidy_childcare_expenses: 1_200  # $100/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Per KEESM 7224: Dependent care applied AFTER $90 and 60% disregards
+    # There is NO cap on dependent care in Kansas TANF
+    #
+    # Gross earned: $6,000/year = $500/month
+    # person1: $500 - $90 = $410, $410 * 0.40 = $164
+    # Dependent care: $100/month (no cap)
+    # Countable earned: $164 - $100 = $64
+    spm_unit_size: 3
+    ks_tanf_earned_income_after_deductions: [164, 0, 0]
+    ks_tanf_countable_earned_income: 64
+    ks_tanf_countable_income: 64
+    ks_tanf_maximum_benefit: 403
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_resources_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 403 - 64 = 339
+    ks_tanf: 339

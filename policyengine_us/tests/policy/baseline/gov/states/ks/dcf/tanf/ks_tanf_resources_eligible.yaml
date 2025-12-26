@@ -1,0 +1,42 @@
+# Kansas TANF resources eligibility test
+# Resource limit: $3,000 (KEESM 5110)
+
+- name: Case 1, resources below limit.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_cash_assets: 1_000
+  output:
+    ks_tanf_resources_eligible: true
+
+- name: Case 2, resources at limit.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_cash_assets: 3_000
+  output:
+    ks_tanf_resources_eligible: true
+
+- name: Case 3, resources above limit.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_cash_assets: 3_001
+  output:
+    ks_tanf_resources_eligible: false
+
+- name: Case 4, no resources.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_cash_assets: 0
+  output:
+    ks_tanf_resources_eligible: true
+
+- name: Case 5, resources significantly above limit.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_cash_assets: 10_000
+  output:
+    ks_tanf_resources_eligible: false

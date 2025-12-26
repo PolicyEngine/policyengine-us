@@ -1,0 +1,30 @@
+description: Kansas provides this amount as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 10)
+  label: Kansas TANF payment standard amount
+  reference:
+    - title: K.A.R. 30-4-100 - Payment Standards
+      href: https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-100
+    - title: K.A.R. 30-4-101 - Basic Standards
+      href: https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101
+    - title: KEESM 7400 - Standards for Budgetary Requirements
+      href: https://content.dcf.ks.gov/ees/keesm/current/keesm7400.htm
+    - title: KEESM Appendix F-4 - TAF Non-Shared Living Standards
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/F-4_TAFtable07_11.pdf#page=1
+    - title: Kansas TANF State Plan FFY 2024-2026
+      href: https://www.dcf.ks.gov/services/ees/Documents/Reports/TANF%20State%20Plan%20FFY%202024%20-%202026.pdf#page=29
+
+# Using High Population Counties (Group III) values for Non-shared Living Arrangements
+# Per K.A.R. 30-4-101: Basic allowance + $109 shelter (Group III)
+1:
+  1997-03-01: 241
+2:
+  1997-03-01: 326
+3:
+  1997-03-01: 403
+4:
+  1997-03-01: 471
