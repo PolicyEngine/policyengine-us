@@ -6,6 +6,7 @@ AK:
   # Alaska is not in the list, indicating it has not elected to BBCE.
   # Non-BBCE states are entered as negative .infinity asset limit.
   2020-07-01: -.inf
+  2025-07-01: 2
 AZ:
   2020-07-01: 1.85
 AR:
@@ -64,8 +65,7 @@ MN:
   2020-07-01: 1.65
   2022-09-01: 2
 MO:
-  2020-07-01: -.inf
-  2024-07-01: -.inf  # Non-BBCE.
+  2020-07-01: -.inf # Non-BBCE
 MS:
   2020-07-01: -.inf # Non-BBCE.
 MT:
@@ -84,6 +84,8 @@ NJ:
   2020-07-01: 1.85
 NM:
   2020-07-01: 1.65
+  2024-10-01: 2
+  # https://www.hca.nm.gov/2024/09/23/governor-expands-snap-access-increases-benefits-for-new-mexicans/
 NY:
   # 150% for those with earned income.
   # 200% for those with dependent care expenses, not currently entered.
@@ -107,11 +109,12 @@ RI:
   2020-07-01: 1.85
 SC:
   2020-07-01: 1.3
+SD:
+  2020-07-01: -.inf  # Non-BBCE.
 TX:
   2020-07-01: 1.65
 TN:
-  2020-07-01: -.inf
-  2023-07-01: -.inf # Non-BBCE.
+  2020-07-01: -.inf # Non-BBCE
 UT:
   2020-07-01: -.inf # Non-BBCE.
 VT:
@@ -132,6 +135,8 @@ WY:
 
 metadata:
   unit: /1
+  period: year
+  label: SNAP BBCE gross income limit
   reference:
     - title: USDA Broad-Based Categorical Eligibility (BBCE)
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
