@@ -1,0 +1,71 @@
+name: Weekly uv.lock Update
+
+on:
+  schedule:
+    # Every Wednesday at 5 PM EST (10 PM UTC)
+    - cron: "0 22 * * 3"
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  update-lock:
+    name: Update uv.lock
+    runs-on: ubuntu-latest
+    if: github.repository == 'PolicyEngine/policyengine-us'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          token: ${{ secrets.POLICYENGINE_GITHUB }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Update lock file
+        run: uv lock --upgrade
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet uv.lock; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.POLICYENGINE_GITHUB }}
+          commit-message: "Update uv.lock dependencies"
+          branch: bot/weekly-uv-lock-update
+          delete-branch: true
+          title: "chore: Weekly uv.lock update"
+          body: |
+            ## Summary
+
+            Automated weekly update of `uv.lock` dependencies.
+
+            Related to #7000
+
+            ## Changes
+
+            This PR updates the `uv.lock` file with the latest compatible dependency versions.
+
+            ## Review
+
+            - Review the lock file changes to ensure no unexpected dependency updates
+            - If unwanted, simply close this PR - master remains unchanged
+
+            ---
+            Generated automatically by GitHub Actions
+          labels: |
+            dependencies
+            automated
