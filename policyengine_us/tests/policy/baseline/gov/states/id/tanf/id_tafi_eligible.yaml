@@ -3,7 +3,7 @@
 # - Demographic: Must have minor child (or be pregnant)
 # - Immigration: Must be citizen or legal immigrant
 # - Resources: Must have assets <= $5,000
-# Note: Minimum payment threshold ($10) is enforced in id_tafi, not eligibility
+# - Income: Grant standard must be positive
 
 - name: Case 1, family with child and no income is eligible.
   period: 2025-01
@@ -23,7 +23,7 @@
   output:
     id_tafi_eligible: true
     # Has child (demographic eligible)
-    # No income (income eligible - grant >= $10)
+    # No income (income eligible - grant > 0)
     # Default resources (resource eligible)
 
 - name: Case 2, single adult without child is ineligible.
@@ -101,7 +101,7 @@
         state_code: ID
   output:
     id_tafi_eligible: true
-    # Eligible (has child, resources OK), but benefit = $0 due to min payment
+    # Has child, resources OK, grant = 309 - 303 = $6 > 0
 
 - name: Case 6, income resulting in $10 grant is eligible.
   period: 2025-01
@@ -160,3 +160,24 @@
   output:
     id_tafi_eligible: true
     # 18-year-old in school counts as dependent child
+
+- name: Case 9, undocumented immigrant family is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: false
+    # No citizen or legal immigrant in household

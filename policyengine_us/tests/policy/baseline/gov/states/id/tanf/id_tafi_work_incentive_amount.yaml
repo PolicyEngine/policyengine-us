@@ -4,7 +4,7 @@
 # 7: $708, 8: $787, 9: $867, 10: $947, 11+: $947 + $80 per additional
 # Note: Sizes 2-5 are tested in integration.yaml
 
-- name: Case 1, household of 1.
+- name: Case 1, household of 1 (minimum size).
   period: 2025-01
   input:
     people:
@@ -20,7 +20,33 @@
   output:
     id_tafi_work_incentive_amount: 309
 
-- name: Case 2, household of 10 at table maximum.
+- name: Case 2, household of 6 (mid-table value).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 628
+
+- name: Case 3, household of 10 at table maximum.
   period: 2025-01
   input:
     people:
@@ -54,7 +80,7 @@
   output:
     id_tafi_work_incentive_amount: 947
 
-- name: Case 3, household of 11 uses overflow formula.
+- name: Case 4, household of 11 uses overflow formula.
   period: 2025-01
   input:
     people:

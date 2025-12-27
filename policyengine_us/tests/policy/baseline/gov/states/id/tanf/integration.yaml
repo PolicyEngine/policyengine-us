@@ -2,7 +2,6 @@
 # Tests complete benefit calculation pipeline per IDAPA 16.03.08
 # Key rules:
 # - Maximum Grant: $309 (flat, regardless of family size)
-# - Minimum Payment: $10 (if less, no payment)
 # - Earned Income: 60% of gross is subtracted from Work Incentive amount
 # - Unearned Income: 100% is subtracted
 # - Work Incentive Table used for families with earned income
@@ -249,5 +248,5 @@
     # Grant = 389 - 600 - 0 = -211 (uncapped)
     id_tafi_grant_standard: -211
 
-    # Floored to 0, below $10 minimum
+    # Floored to 0 (ineligible)
     id_tafi: 0

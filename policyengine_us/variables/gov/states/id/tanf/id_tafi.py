@@ -7,7 +7,9 @@ class id_tafi(Variable):
     label = "Idaho Temporary Assistance for Families in Idaho (TAFI)"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.248"
+    reference = (
+        "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.248"
+    )
     defined_for = "id_tafi_eligible"
 
     def formula(spm_unit, period, parameters):
