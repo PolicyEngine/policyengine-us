@@ -1,0 +1,139 @@
+# Unit tests for loss_limited_net_capital_gains_person
+# This variable allocates the tax unit's loss-limited capital gains
+# proportionally to each person based on their share of total net capital gains/losses.
+# Loss limit is $3,000 ($1,500 for married filing separately).
+# Inputs are person-level: long_term_capital_gains and short_term_capital_gains
+
+- name: Single person with positive capital gains - no limitation applied
+  period: 2024
+  input:
+    long_term_capital_gains: 10_000
+    filing_status: SINGLE
+  output:
+    loss_limited_net_capital_gains_person: 10_000
+
+- name: Single person with small loss within limit - no limitation applied
+  period: 2024
+  input:
+    long_term_capital_gains: -2_000
+    filing_status: SINGLE
+  output:
+    loss_limited_net_capital_gains_person: -2_000
+
+- name: Single person with loss exceeding limit - limited to -3000
+  period: 2024
+  input:
+    long_term_capital_gains: -10_000
+    filing_status: SINGLE
+  output:
+    # Loss is limited to -$3,000 for single filers
+    loss_limited_net_capital_gains_person: -3_000
+
+- name: Joint filers both with losses - limited to -3000 and allocated proportionally
+  period: 2024
+  input:
+    people:
+      person1:
+        long_term_capital_gains: -6_000
+      person2:
+        long_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Total loss is -$10,000, limited to -$3,000
+    # person1 has 60% of losses (-6000/-10000), person2 has 40% (-4000/-10000)
+    # person1: -3000 * 0.6 = -1800
+    # person2: -3000 * 0.4 = -1200
+    loss_limited_net_capital_gains_person: [-1_800, -1_200]
+
+- name: Married filing separately with loss - limited to -1500
+  period: 2024
+  input:
+    long_term_capital_gains: -5_000
+    filing_status: SEPARATE
+  output:
+    # Loss limit is $1,500 for married filing separately
+    loss_limited_net_capital_gains_person: -1_500
+
+- name: Zero capital gains - returns zero
+  period: 2024
+  input:
+    long_term_capital_gains: 0
+    short_term_capital_gains: 0
+    filing_status: SINGLE
+  output:
+    loss_limited_net_capital_gains_person: 0
+
+- name: Tax unit with net positive - each person keeps their original amount
+  period: 2024
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 8_000
+      person2:
+        long_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Total is +$6,000 (positive), so no loss limitation applies
+    # Each person keeps their original capital gains
+    loss_limited_net_capital_gains_person: [8_000, -2_000]
+
+- name: Head of household with loss exceeding limit
+  period: 2024
+  input:
+    long_term_capital_gains: -7_500
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Loss limit is $3,000 for head of household
+    loss_limited_net_capital_gains_person: -3_000
+
+- name: Surviving spouse with loss exceeding limit
+  period: 2024
+  input:
+    long_term_capital_gains: -12_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Loss limit is $3,000 for surviving spouse
+    loss_limited_net_capital_gains_person: -3_000
+
+- name: Joint filers with unequal losses - proportional allocation
+  period: 2024
+  input:
+    people:
+      person1:
+        long_term_capital_gains: -9_000
+      person2:
+        long_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Total loss is -$10,000, limited to -$3,000
+    # person1 has 90% of losses (-9000/-10000), person2 has 10% (-1000/-10000)
+    # person1: -3000 * 0.9 = -2700
+    # person2: -3000 * 0.1 = -300
+    loss_limited_net_capital_gains_person: [-2_700, -300]
+
+- name: Loss exactly at limit - no adjustment needed
+  period: 2024
+  input:
+    long_term_capital_gains: -3_000
+    filing_status: SINGLE
+  output:
+    loss_limited_net_capital_gains_person: -3_000
+
+- name: Mixed short and long term gains
+  period: 2024
+  input:
+    long_term_capital_gains: 5_000
+    short_term_capital_gains: 3_000
+    filing_status: SINGLE
+  output:
+    # Total gains: 5000 + 3000 = 8000 (positive, no limitation)
+    loss_limited_net_capital_gains_person: 8_000
