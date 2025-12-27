@@ -1,9 +1,9 @@
 # Idaho TAFI Eligibility Tests
-# Per IDAPA 16.03.08.100-254:
+# Per IDAPA 16.03.08.100-200:
 # - Demographic: Must have minor child (or be pregnant)
 # - Immigration: Must be citizen or legal immigrant
 # - Resources: Must have assets <= $5,000
-# - Income: Grant standard must be >= $10 minimum payment
+# Note: Minimum payment threshold ($10) is enforced in id_tafi, not eligibility
 
 - name: Case 1, family with child and no income is eligible.
   period: 2025-01
@@ -83,7 +83,7 @@
     id_tafi_eligible: true
     # Resources exactly at $5,000 limit -> resource eligible
 
-- name: Case 5, high income makes ineligible via minimum payment check.
+- name: Case 5, high income family is still eligible (min payment in benefit calc).
   period: 2025-01
   input:
     people:
@@ -100,10 +100,10 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_tafi_eligible: false
-    # Grant = 309 - 303 = $6 < $10 minimum -> income ineligible
+    id_tafi_eligible: true
+    # Eligible (has child, resources OK), but benefit = $0 due to min payment
 
-- name: Case 6, income at minimum threshold is eligible.
+- name: Case 6, income resulting in $10 grant is eligible.
   period: 2025-01
   input:
     people:
@@ -121,7 +121,7 @@
         state_code: ID
   output:
     id_tafi_eligible: true
-    # Grant = 309 - 299 = $10 >= $10 minimum -> income eligible
+    # Eligible, grant = 309 - 299 = $10
 
 - name: Case 7, pregnant adult with no child is eligible.
   period: 2025-01

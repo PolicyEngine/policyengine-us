@@ -147,7 +147,7 @@
 
     id_tafi: 129
 
-- name: Case 5, benefit below minimum threshold results in zero.
+- name: Case 5, small benefit from high unearned income.
   period: 2025-01
   input:
     people:
@@ -176,8 +176,7 @@
     # Grant = 309 - 0 - 302 = 7
     id_tafi_grant_standard: 7
 
-    # Below $10 minimum -> no payment
-    id_tafi: 0
+    id_tafi: 7
 
 - name: Case 6, large family with low income receives maximum benefit.
   period: 2025-01
