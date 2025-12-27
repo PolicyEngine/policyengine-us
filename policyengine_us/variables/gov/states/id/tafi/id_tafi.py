@@ -13,7 +13,7 @@ class id_tafi(Variable):
     defined_for = "id_tafi_eligible"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.id.tanf
+        p = parameters(period).gov.states.id.tafi
         grant_standard = spm_unit("id_tafi_grant_standard", period)
         # Cap at maximum grant
         return min_(grant_standard, p.maximum_grant)

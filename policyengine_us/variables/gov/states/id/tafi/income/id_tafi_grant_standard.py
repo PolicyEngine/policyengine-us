@@ -15,21 +15,17 @@ class id_tafi_grant_standard(Variable):
     defined_for = StateCode.ID
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.id.tanf
+        p = parameters(period).gov.states.id.tafi
         countable_earned = spm_unit("id_tafi_countable_earned_income", period)
         countable_unearned = spm_unit(
             "id_tafi_countable_unearned_income", period
         )
         work_incentive = spm_unit("id_tafi_work_incentive_amount", period)
 
-        has_earned_income = countable_earned > 0
-
-        # Per IDAPA 16.03.08.252: Families with earned income use work incentive table
-        earned_income_grant = (
-            work_incentive - countable_earned - countable_unearned
+        # With earned: work_incentive - earned; Without: maximum_grant
+        base = where(
+            countable_earned > 0,
+            work_incentive - countable_earned,
+            p.maximum_grant,
         )
-
-        # Per IDAPA 16.03.08.249-250: Families without earned income use maximum grant
-        no_earned_grant = max_(p.maximum_grant - countable_unearned, 0)
-
-        return where(has_earned_income, earned_income_grant, no_earned_grant)
+        return max_(base - countable_unearned, 0)

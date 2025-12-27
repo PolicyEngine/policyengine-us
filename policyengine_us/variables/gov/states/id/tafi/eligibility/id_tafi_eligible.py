@@ -13,7 +13,7 @@ class id_tafi_eligible(Variable):
     defined_for = StateCode.ID
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.id.tanf
+        p = parameters(period).gov.states.id.tafi
         # Demographic eligibility - use federal baseline (IDAPA 16.03.08.125)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 

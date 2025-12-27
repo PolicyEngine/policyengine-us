@@ -245,8 +245,8 @@
     # Work incentive for size 3
     id_tafi_work_incentive_amount: 389
 
-    # Grant = 389 - 600 - 0 = -211 (uncapped)
-    id_tafi_grant_standard: -211
+    # Grant = max(389 - 600 - 0, 0) = 0
+    id_tafi_grant_standard: 0
 
-    # Floored to 0 (ineligible)
+    # Ineligible (grant_standard = 0)
     id_tafi: 0
