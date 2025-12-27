@@ -1,0 +1,183 @@
+# Idaho TAFI Eligibility Tests
+# Per IDAPA 16.03.08.100-200:
+# - Demographic: Must have minor child (or be pregnant)
+# - Immigration: Must be citizen or legal immigrant
+# - Resources: Must have assets <= $5,000
+# - Income: Grant standard must be positive
+
+- name: Case 1, family with child and no income is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # Has child (demographic eligible)
+    # No income (income eligible - grant > 0)
+    # Default resources (resource eligible)
+
+- name: Case 2, single adult without child is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_eligible: false
+    # No minor child -> demographic ineligible
+
+- name: Case 3, resources over limit makes ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: false
+    # Resources over $5,000 limit -> resource ineligible
+
+- name: Case 4, resources at limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # Resources exactly at $5,000 limit -> resource eligible
+
+- name: Case 5, high income family is still eligible (min payment in benefit calc).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_636  # $303/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # Has child, resources OK, grant = 309 - 303 = $6 > 0
+
+- name: Case 6, income resulting in $10 grant is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_588  # $299/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # Eligible, grant = 309 - 299 = $10
+
+- name: Case 7, pregnant adult with no child is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # Pregnant -> demographic eligible
+
+- name: Case 8, family with teenager student under 19 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: true
+    # 18-year-old in school counts as dependent child
+
+- name: Case 9, undocumented immigrant family is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_eligible: false
+    # No citizen or legal immigrant in household
