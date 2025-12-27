@@ -1,0 +1,14 @@
+description: West Virginia limits resources to this amount under the Temporary Assistance for Needy Families program.
+
+values:
+  2024-01-01: 2_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: West Virginia TANF resource limit
+  reference:
+    - title: WV DHHR Bureau for Family Assistance - WV WORKS
+      href: https://dhhr.wv.gov/bcf/Services/familyassistance/Pages/WV-WORKS.aspx
+    - title: WV Income Maintenance Manual Chapter 11
+      href: https://dhhr.wv.gov/bcf/Services/familyassistance/PolicyManual/Pages/Chapter-11.aspx

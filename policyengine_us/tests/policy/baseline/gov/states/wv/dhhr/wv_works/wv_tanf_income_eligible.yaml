@@ -1,0 +1,262 @@
+# Unit tests for wv_tanf_income_eligible
+# Tests gross income against 100% Standard of Need (SON)
+# Income limits by household size:
+#   Size 1=$581, 2=$786, 3=$991, 4=$1,196, 5=$1,401, 6=$1,606, 7=$1,811, 8=$2,016
+# Source: WV Income Maintenance Manual Chapter 10, Appendix A
+
+- name: Case 1, no income is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $0
+    # Limit for size 2: $786
+    # 0 <= 786 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 2, income below limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $500 + $200 = $700
+    # Limit for size 3: $991
+    # 700 <= 991 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 3, income at exact limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 786
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $786
+    # Limit for size 2: $786
+    # 786 <= 786 = eligible (at threshold)
+    wv_tanf_income_eligible: true
+
+- name: Case 4, income above limit is ineligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 800
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $800
+    # Limit for size 2: $786
+    # 800 > 786 = ineligible
+    wv_tanf_income_eligible: false
+
+- name: Case 5, single person at threshold.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 1
+    tanf_gross_earned_income: 581
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $581
+    # Limit for size 1: $581
+    # 581 <= 581 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 6, family of four just over limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 4
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $1,000 + $200 = $1,200
+    # Limit for size 4: $1,196
+    # 1,200 > 1,196 = ineligible
+    wv_tanf_income_eligible: false
+
+- name: Case 7, large family eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 5
+    tanf_gross_earned_income: 1_200
+    tanf_gross_unearned_income: 100
+  output:
+    # Gross income: $1,200 + $100 = $1,300
+    # Limit for size 5: $1,401
+    # 1,300 <= 1,401 = eligible
+    wv_tanf_income_eligible: true
+
+# Edge Cases - Boundary Conditions
+
+- name: Case 8, boundary - size 1 one dollar below limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 1
+    tanf_gross_earned_income: 580
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $580
+    # Limit for size 1: $581
+    # 580 <= 581 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 9, boundary - size 1 one dollar above limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 1
+    tanf_gross_earned_income: 582
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $582
+    # Limit for size 1: $581
+    # 582 > 581 = ineligible
+    wv_tanf_income_eligible: false
+
+- name: Case 10, boundary - size 2 one dollar below limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 785
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $785
+    # Limit for size 2: $786
+    # 785 <= 786 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 11, boundary - size 2 one dollar above limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 787
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $787
+    # Limit for size 2: $786
+    # 787 > 786 = ineligible
+    wv_tanf_income_eligible: false
+
+# Edge Cases - Maximum Household Size (8)
+
+- name: Case 12, boundary - size 8 exactly at limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 8
+    tanf_gross_earned_income: 2_016
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,016
+    # Limit for size 8: $2,016
+    # 2,016 <= 2,016 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 13, boundary - size 8 one dollar below limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 8
+    tanf_gross_earned_income: 2_015
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,015
+    # Limit for size 8: $2,016
+    # 2,015 <= 2,016 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 14, boundary - size 8 one dollar above limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 8
+    tanf_gross_earned_income: 2_017
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,017
+    # Limit for size 8: $2,016
+    # 2,017 > 2,016 = ineligible
+    wv_tanf_income_eligible: false
+
+# Edge Cases - Household Size Exceeding Max (Uses Capped Size)
+
+- name: Case 15, boundary - size 9 uses size 8 limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 9
+    tanf_gross_earned_income: 2_016
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,016
+    # Size 9 capped to size 8, limit: $2,016
+    # 2,016 <= 2,016 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 16, boundary - size 10 uses size 8 limit and exceeds it.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 10
+    tanf_gross_earned_income: 2_100
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,100
+    # Size 10 capped to size 8, limit: $2,016
+    # 2,100 > 2,016 = ineligible
+    wv_tanf_income_eligible: false
+
+# Edge Cases - Zero Values
+
+- name: Case 17, zero income for any size is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 8
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $0
+    # Limit for size 8: $2,016
+    # 0 <= 2,016 = eligible
+    wv_tanf_income_eligible: true
+
+# Edge Cases - Mixed Income Near Threshold
+
+- name: Case 18, boundary - mixed income exactly at size 4 limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 4
+    tanf_gross_earned_income: 996
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $996 + $200 = $1,196
+    # Limit for size 4: $1,196
+    # 1,196 <= 1,196 = eligible
+    wv_tanf_income_eligible: true
+
+- name: Case 19, boundary - mixed income one dollar over size 4 limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 4
+    tanf_gross_earned_income: 997
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $997 + $200 = $1,197
+    # Limit for size 4: $1,196
+    # 1,197 > 1,196 = ineligible
+    wv_tanf_income_eligible: false

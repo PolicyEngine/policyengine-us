@@ -1,0 +1,809 @@
+# Integration tests for WV Works (West Virginia TANF)
+# Tests full calculation pipeline from raw inputs to benefit amount
+#
+# Program Rules:
+# - Income limit: 100% Standard of Need (SON)
+# - 40% earned income disregard
+# - Benefit = Payment Standard - (60% x Countable Income) + ($25 x Children)
+#
+# Income Limits (100% SON): Size 1=$581, 2=$786, 3=$991, 4=$1,196, 5=$1,401
+#   Size 6=$1,606, 7=$1,811, 8=$2,016
+# Payment Standards: Size 1=$417, 2=$480, 3=$542, 4=$612, 5=$670
+#   Size 6=$734, 7=$793, 8=$811
+#
+# Sources:
+# - WV Income Maintenance Manual Chapter 10, Appendix A
+# - WV DHHR WV WORKS Program Page
+# - Sage Calculator WV TANF
+
+- name: Case 1, single parent with one child no income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    # Gross earned: $0/month
+    tanf_gross_earned_income: [0, 0]
+
+    # Gross income: $0
+    # Income limit for size 2: $786
+    # 0 <= 786 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 0 x 0.60 + 0 = 0
+    wv_tanf_countable_income: 0
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 2: $480
+    # Reduction: 0.60 x 0 = 0
+    # Child addition: $25 x 1 = $25
+    # Benefit: 480 - 0 + 25 = $505
+    wv_tanf: 505
+
+- name: Case 2, single parent with two children and earnings.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # Income calculations
+    # Person1 earned: $9,600/year = $800/month
+    tanf_gross_earned_income: [800, 0, 0]
+
+    # Gross income: $800
+    # Income limit for size 3: $991
+    # 800 <= 991 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 800 x 0.60 = 480
+    wv_tanf_countable_income: 480
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 3: $542
+    # Reduction: 0.60 x 480 = 288
+    # Child addition: $25 x 2 = $50
+    # Benefit: 542 - 288 + 50 = $304
+    wv_tanf: 304
+
+- name: Case 3, family of four at income threshold.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 11_952  # $996/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 33
+        employment_income_before_lsr: 2_400  # $200/month
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WV
+  output:
+    # Income calculations
+    # Person1: $996/month, Person2: $200/month
+    tanf_gross_earned_income: [996, 200, 0, 0]
+
+    # Gross income: $996 + $200 = $1,196
+    # Income limit for size 4: $1,196
+    # 1,196 <= 1,196 = income eligible (at threshold)
+    wv_tanf_income_eligible: true
+
+    # Countable income: 1,196 x 0.60 = 717.6
+    wv_tanf_countable_income: 717.6
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 4: $612
+    # Reduction: 0.60 x 717.6 = 430.56
+    # Child addition: $25 x 2 = $50
+    # Benefit: 612 - 430.56 + 50 = 231.44
+    wv_tanf: 231.44
+
+- name: Case 4, income just over threshold is ineligible.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 10_000  # $833.33/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    # Person1: $10,000/year = $833.33/month
+    tanf_gross_earned_income: [833.33, 0]
+
+    # Gross income: $833.33
+    # Income limit for size 2: $786
+    # 833.33 > 786 = income ineligible
+    wv_tanf_income_eligible: false
+
+    # Still calculate countable income
+    wv_tanf_countable_income: 500  # 833.33 x 0.60 = 500
+
+    # Not eligible
+    wv_tanf_eligible: false
+    wv_tanf: 0
+
+- name: Case 5, mixed earned and unearned income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 4_800  # $400/month earned
+        social_security: 2_400  # $200/month unearned
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 9
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # Income calculations
+    # Earned: $400/month, Unearned: $200/month
+    tanf_gross_earned_income: [400, 0, 0]
+    tanf_gross_unearned_income: [200, 0, 0]
+
+    # Gross income: $400 + $200 = $600
+    # Income limit for size 3: $991
+    # 600 <= 991 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income:
+    # Earned after disregard: 400 x 0.60 = 240
+    # Unearned: 200 (no disregard)
+    # Total countable: 240 + 200 = 440
+    wv_tanf_countable_income: 440
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 3: $542
+    # Reduction: 0.60 x 440 = 264
+    # Child addition: $25 x 2 = $50
+    # Benefit: 542 - 264 + 50 = 328
+    wv_tanf: 328
+
+- name: Case 6, large family with five children.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+      person3:
+        age: 14
+        is_tax_unit_dependent: true
+      person4:
+        age: 11
+        is_tax_unit_dependent: true
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+      person6:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [500, 0, 0, 0, 0, 0]
+
+    # Gross income: $500
+    # Income limit for size 6: $1,606
+    # 500 <= 1,606 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 500 x 0.60 = 300
+    wv_tanf_countable_income: 300
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 6: $734
+    # Reduction: 0.60 x 300 = 180
+    # Child addition: $25 x 5 = $125
+    # Benefit: 734 - 180 + 125 = 679
+    wv_tanf: 679
+
+- name: Case 7, benefit reduced to zero by high countable income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [800, 0]
+
+    # Gross income: $800
+    # Income limit for size 2: $786
+    # 800 > 786 = income ineligible
+    wv_tanf_income_eligible: false
+
+    # Countable income: 800 x 0.60 = 480
+    wv_tanf_countable_income: 480
+
+    # Not eligible due to gross income test
+    wv_tanf_eligible: false
+    wv_tanf: 0
+
+# Edge Cases - Maximum Household Size (8)
+
+- name: Case 8, boundary - maximum household size 8.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [0, 0, 0, 0, 0, 0, 0, 0]
+
+    # Gross income: $0
+    # Income limit for size 8: $2,016
+    # 0 <= 2,016 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 0
+    wv_tanf_countable_income: 0
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 8: $811
+    # Reduction: 0.60 x 0 = 0
+    # Child addition: $25 x 7 = $175
+    # Benefit: 811 - 0 + 175 = 986
+    wv_tanf: 986
+
+# Edge Cases - Household Exceeding Maximum Size (Uses Capped Size 8)
+
+- name: Case 9, boundary - household size 10 uses size 8 parameters.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+      person4:
+        age: 15
+        is_tax_unit_dependent: true
+      person5:
+        age: 13
+        is_tax_unit_dependent: true
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+      person7:
+        age: 9
+        is_tax_unit_dependent: true
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+      person9:
+        age: 5
+        is_tax_unit_dependent: true
+      person10:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [500, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    # Gross income: $500
+    # Size 10 capped to 8, income limit: $2,016
+    # 500 <= 2,016 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 500 x 0.60 = 300
+    wv_tanf_countable_income: 300
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Size 10 capped to 8, payment standard: $811
+    # Reduction: 0.60 x 300 = 180
+    # Child addition: $25 x 8 = $200
+    # Benefit: 811 - 180 + 200 = 831
+    wv_tanf: 831
+
+# Edge Cases - Adults Only (No Children - Demographic Ineligible)
+
+- name: Case 10, boundary - adults only household is demographic ineligible.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 32
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [0, 0]
+
+    # Gross income: $0
+    # Income limit for size 2: $786
+    # 0 <= 786 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 0
+    wv_tanf_countable_income: 0
+
+    # Demographic eligibility: No children = not eligible
+    wv_tanf_eligible: false
+    wv_tanf: 0
+
+# Edge Cases - Only Unearned Income
+
+- name: Case 11, boundary - only unearned income with no disregard.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 0
+        social_security: 6_000  # $500/month unearned
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    # No earned income
+    tanf_gross_earned_income: [0, 0]
+    tanf_gross_unearned_income: [500, 0]
+
+    # Gross income: $500
+    # Income limit for size 2: $786
+    # 500 <= 786 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income:
+    # Earned after disregard: 0
+    # Unearned: 500 (no disregard)
+    # Total countable: 500
+    wv_tanf_countable_income: 500
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 2: $480
+    # Reduction: 0.60 x 500 = 300
+    # Child addition: $25 x 1 = $25
+    # Benefit: 480 - 300 + 25 = 205
+    wv_tanf: 205
+
+# Edge Cases - Income Exactly One Dollar Below/Above Threshold
+
+- name: Case 12, boundary - income one dollar below size 2 limit.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_420  # $785/month (one dollar below $786 limit)
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [785, 0]
+
+    # Gross income: $785
+    # Income limit for size 2: $786
+    # 785 <= 786 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 785 x 0.60 = 471
+    wv_tanf_countable_income: 471
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 2: $480
+    # Reduction: 0.60 x 471 = 282.6
+    # Child addition: $25 x 1 = $25
+    # Benefit: 480 - 282.6 + 25 = 222.4
+    wv_tanf: 222.4
+
+- name: Case 13, boundary - income one dollar above size 2 limit.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_444  # $787/month (one dollar above $786 limit)
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [787, 0]
+
+    # Gross income: $787
+    # Income limit for size 2: $786
+    # 787 > 786 = income ineligible
+    wv_tanf_income_eligible: false
+
+    # Countable income: 787 x 0.60 = 472.2
+    wv_tanf_countable_income: 472.2
+
+    # Not eligible
+    wv_tanf_eligible: false
+    wv_tanf: 0
+
+# Edge Cases - Benefit Reduced to Zero (Eligible but High Countable Income)
+
+- name: Case 14, boundary - eligible with benefit reduced to zero.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        social_security: 9_360  # $780/month unearned (below $786 limit)
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [0, 0]
+    tanf_gross_unearned_income: [780, 0]
+
+    # Gross income: $780
+    # Income limit for size 2: $786
+    # 780 <= 786 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income (unearned has no disregard): 780
+    wv_tanf_countable_income: 780
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 2: $480
+    # Reduction: 0.60 x 780 = 468
+    # Child addition: $25 x 1 = $25
+    # Raw benefit: 480 - 468 + 25 = 37
+    wv_tanf: 37
+
+# Edge Cases - Zero Income for All Household Sizes
+
+- name: Case 15, boundary - single person zero income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 20
+        is_pregnant: true
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [0]
+
+    # Gross income: $0
+    # Income limit for size 1: $581
+    # 0 <= 581 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income: 0
+    wv_tanf_countable_income: 0
+
+    # Eligibility (pregnant person is demographically eligible)
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 1: $417
+    # Reduction: 0.60 x 0 = 0
+    # Child addition: $25 x 0 = $0
+    # Benefit: 417 - 0 + 0 = 417
+    wv_tanf: 417
+
+# Edge Cases - High Earned + High Unearned
+
+- name: Case 16, boundary - mixed income near threshold.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 5_400  # $450/month earned
+        social_security: 3_600  # $300/month unearned
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WV
+  output:
+    # Income calculations
+    tanf_gross_earned_income: [450, 0, 0, 0]
+    tanf_gross_unearned_income: [300, 0, 0, 0]
+
+    # Gross income: $450 + $300 = $750
+    # Income limit for size 4: $1,196
+    # 750 <= 1,196 = income eligible
+    wv_tanf_income_eligible: true
+
+    # Countable income:
+    # Earned after disregard: 450 x 0.60 = 270
+    # Unearned: 300 (no disregard)
+    # Total countable: 270 + 300 = 570
+    wv_tanf_countable_income: 570
+
+    # Eligibility
+    wv_tanf_eligible: true
+
+    # Benefit calculation
+    # Payment standard size 4: $612
+    # Reduction: 0.60 x 570 = 342
+    # Child addition: $25 x 3 = $75
+    # Benefit: 612 - 342 + 75 = 345
+    wv_tanf: 345
