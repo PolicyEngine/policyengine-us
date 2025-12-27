@@ -6,4 +6,5 @@ class household_weight(Variable):
     entity = Household
     label = "Household weight"
     definition_period = YEAR
+    default_value = 1
     uprating = "calibration.gov.census.populations.total"
