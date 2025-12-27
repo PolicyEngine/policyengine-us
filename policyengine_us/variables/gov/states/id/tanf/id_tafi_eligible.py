@@ -25,10 +25,9 @@ class id_tafi_eligible(Variable):
         # Resources eligibility (IDAPA 16.03.08.200)
         resources_eligible = spm_unit("id_tafi_resources_eligible", period)
 
-        # Income eligibility via grant calculation (IDAPA 16.03.08.254)
-        # A payment is not made when the grant amount is less than $10
+        # Income eligibility - grant calculation must result in positive amount
         grant_standard = spm_unit("id_tafi_grant_standard", period)
-        income_eligible = grant_standard >= p.minimum_payment
+        income_eligible = grant_standard > 0
 
         return (
             demographic_eligible

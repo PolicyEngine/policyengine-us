@@ -20,4 +20,6 @@ class id_tafi(Variable):
         # Per IDAPA 16.03.08.252: Grant is capped at maximum grant
         # and rounded down to the next lowest dollar
         capped_grant = min_(grant_standard, p.maximum_grant)
-        return np.floor(max_(capped_grant, 0))
+        floored_grant = np.floor(max_(capped_grant, 0))
+        # Per IDAPA 16.03.08.254: No payment when grant is less than $10
+        return where(floored_grant >= 10, floored_grant, 0)
