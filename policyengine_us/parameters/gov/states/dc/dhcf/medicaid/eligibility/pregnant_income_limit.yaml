@@ -1,0 +1,13 @@
+description: DC limits Medicaid/Alliance for pregnant women to this percentage of the Federal Poverty Level
+metadata:
+  unit: /1
+  period: year
+  label: DC Medicaid/Alliance income limit for pregnant women
+  reference:
+    - title: DC Health Care Alliance - Program Changes
+      href: https://dhcf.dc.gov/node/1796971
+    - title: KFF Medicaid/CHIP Eligibility Limits for Pregnant Women - DC at 324% FPL
+      href: https://www.kff.org/medicaid/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level/
+
+values:
+  2021-01-01: 3.24  # 324% FPL for pregnant women regardless of immigration status

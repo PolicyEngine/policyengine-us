@@ -1,0 +1,12 @@
+description: DC limits new Medicaid/Alliance applicants (excluding pregnant women) to this maximum age
+metadata:
+  unit: year
+  period: year
+  label: DC Medicaid/Alliance maximum age for new applicants
+  reference:
+    - title: DC Health Care Alliance - Program Changes (effective October 1, 2025)
+      href: https://dhcf.dc.gov/node/1796971
+
+values:
+  2021-01-01: .inf  # No age restriction before October 1, 2025
+  2026-01-01: 25    # New applicants 26+ not eligible starting October 1, 2025 (modeled as 2026)

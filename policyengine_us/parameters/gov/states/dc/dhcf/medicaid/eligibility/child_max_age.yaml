@@ -1,0 +1,11 @@
+description: DC considers individuals up to this age as children for Medicaid eligibility purposes
+metadata:
+  unit: year
+  period: year
+  label: DC Medicaid maximum age for child eligibility
+  reference:
+    - title: DC Health Care Alliance - Program Changes (children 0-20)
+      href: https://dhcf.dc.gov/node/1796971
+
+values:
+  2021-01-01: 20  # Children aged 0-20 are eligible for higher income limits

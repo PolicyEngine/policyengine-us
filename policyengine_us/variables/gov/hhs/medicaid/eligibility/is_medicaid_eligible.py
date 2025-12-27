@@ -18,6 +18,7 @@ class is_medicaid_eligible(Variable):
             "is_medicaid_immigration_status_eligible", period
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
+
         p = parameters(period).gov.hhs.medicaid.eligibility
         if p.work_requirements.applies:
             work_requirement_eligible = person(

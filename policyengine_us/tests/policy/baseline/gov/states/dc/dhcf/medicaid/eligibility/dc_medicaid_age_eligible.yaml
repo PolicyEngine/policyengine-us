@@ -1,0 +1,92 @@
+# Minimal unit tests for age eligibility
+- name: Age 25 eligible in 2025
+  period: 2025
+  input:
+    age: 25
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # No age restriction yet
+
+- name: Age 30 eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # No age restriction yet
+
+- name: Age 25 eligible in 2026
+  period: 2026
+  input:
+    age: 25
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # Under 26
+
+- name: Age 30 not eligible in 2026 (new applicant)
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: false  # Over 25, not enrolled
+
+- name: Age 30 eligible in 2026 (already enrolled)
+  period: 2026
+  input:
+    age: 30
+    is_pregnant: false
+    dc_medicaid_enrolled: true  # Grandfathered
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # Grandfathered
+
+- name: Pregnant woman any age eligible
+  period: 2026
+  input:
+    age: 35
+    is_pregnant: true
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # Pregnant women exempt
+
+# Age boundary tests at 25/26 threshold in 2026
+
+- name: Boundary - Age exactly 26 NOT eligible in 2026 (new applicant)
+  period: 2026
+  input:
+    age: 26
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: false  # Over 25, new applicant
+
+- name: Boundary - Age exactly 26 eligible in 2026 (grandfathered)
+  period: 2026
+  input:
+    age: 26
+    is_pregnant: false
+    dc_medicaid_enrolled: true  # Grandfathered
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # Grandfathered enrollee
+
+- name: Boundary - Age 0 (newborn) eligible
+  period: 2026
+  input:
+    age: 0
+    is_pregnant: false
+    dc_medicaid_enrolled: false
+    state_code: DC
+  output:
+    dc_medicaid_age_eligible: true  # Newborn eligible
