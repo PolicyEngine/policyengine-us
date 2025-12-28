@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.475.0] - 2025-12-28 22:16:11
+
+### Added
+
+- Added Oklahoma TANF (Temporary Assistance for Needy Families) program
+
 ## [1.474.0] - 2025-12-28 21:35:08
 
 ### Added
@@ -14037,6 +14043,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.474.0...1.475.0
 [1.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.473.0...1.474.0
 [1.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.472.0...1.473.0
 [1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
