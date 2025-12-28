@@ -1,0 +1,667 @@
+# Integration tests for Emergency Medicaid
+# Per 42 USC 1396b(v), Emergency Medicaid provides coverage for individuals who:
+# 1. Are NOT eligible for regular Medicaid due to immigration status
+# 2. Meet all other Medicaid eligibility requirements (income, categorical)
+# 3. Have an emergency medical condition
+#
+# References:
+# - 42 USC 1396b(v): https://www.law.cornell.edu/uscode/text/42/1396b#v
+# - 42 CFR 440.255: https://www.law.cornell.edu/cfr/text/42/440.255
+# - 8 USC 1611(b)(1)(A): https://www.law.cornell.edu/uscode/text/8/1611#b_1_A
+#
+# 2025 FPL for 1 person in contiguous US: $15,650
+# 133% FPL (Medicaid adult threshold): ~$20,815
+# 138% FPL (with 5% disregard): ~$21,597
+
+# ============================================================
+# ELIGIBLE CASES - Integration tests showing full pipeline
+# ============================================================
+
+- name: Case 1, undocumented single adult with emergency condition and low income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 18_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Using CO (Medicaid expansion state) instead of TX (non-expansion)
+        # CO does NOT cover undocumented immigrants
+        state_code: CO
+  output:
+    # Immigration status check
+    # Undocumented immigrants are not eligible for regular Medicaid in CO
+    is_medicaid_immigration_status_eligible: [false]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Income: $18,000 < ~$21,597 (138% FPL with 5% disregard), meets income requirement
+    # Medicaid category should be ADULT (age 35, income-eligible in expansion state)
+    # Therefore eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 2, US citizen with emergency condition should get regular Medicaid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Citizens are eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Should NOT be eligible for Emergency Medicaid (gets regular Medicaid instead)
+    is_emergency_medicaid_eligible: [false]
+
+- name: Case 3, undocumented adult without emergency condition.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Undocumented, not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    # No emergency condition
+    has_emergency_medical_condition: [false]
+    # Not eligible - missing emergency condition requirement
+    is_emergency_medicaid_eligible: [false]
+
+- name: Case 4, undocumented pregnant woman in labor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_000
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Undocumented, not eligible for regular Medicaid in AZ
+    is_medicaid_immigration_status_eligible: [false]
+    # Pregnant with emergency condition (labor and delivery is emergency per statute)
+    is_pregnant: [true]
+    has_emergency_medical_condition: [true]
+    # Income $20,000 is below pregnant woman threshold (typically 133-319% FPL)
+    # Eligible for Emergency Medicaid for labor and delivery
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 5, undocumented adult with income too high.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Undocumented, not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Income $50,000 >> ~$20,815 (133% FPL for single adult)
+    # Does not meet Medicaid income eligibility - medicaid_category should be NONE
+    # Not eligible for Emergency Medicaid due to income
+    is_emergency_medicaid_eligible: [false]
+
+- name: Case 6, DACA recipient with emergency condition.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 16_000
+        immigration_status: DACA
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Using NV (Medicaid expansion state) instead of GA (non-expansion)
+        # NV does NOT cover undocumented/DACA immigrants
+        state_code: NV
+  output:
+    # DACA recipients generally not eligible for regular Medicaid in most states
+    is_medicaid_immigration_status_eligible: [false]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Income $16,000 < ~$21,597 (138% FPL with 5% disregard), meets income requirement
+    # Eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 7, legal permanent resident should get regular Medicaid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 14_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # LPRs are eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Should NOT be eligible for Emergency Medicaid (gets regular Medicaid instead)
+    is_emergency_medicaid_eligible: [false]
+
+# ============================================================
+# EDGE CASES - Zero income
+# ============================================================
+
+- name: Case 8, undocumented adult with zero income and emergency.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Using CO instead of CA (CA covers undocumented immigrants)
+        # CO is a Medicaid expansion state that does NOT cover undocumented
+        state_code: CO
+  output:
+    # Zero income - definitely meets income requirements
+    # Undocumented, not eligible for regular Medicaid in CO
+    is_medicaid_immigration_status_eligible: [false]
+    # Has emergency condition
+    has_emergency_medical_condition: [true]
+    # Should be eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]
+
+# ============================================================
+# EDGE CASES - Multiple people in household
+# ============================================================
+
+- name: Case 9, mixed household with citizen parent and undocumented child.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: false
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Person1 (citizen) is eligible for regular Medicaid
+    # Person2 (undocumented child) is NOT eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true, false]
+    # Person1 has no emergency, Person2 has emergency
+    has_emergency_medical_condition: [false, true]
+    # Person1: Citizen, so not eligible for Emergency Medicaid (gets regular)
+    # Person2: Undocumented child with emergency, should be eligible
+    is_emergency_medicaid_eligible: [false, true]
+
+- name: Case 10, household with two undocumented adults only one with emergency.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+      person2:
+        age: 38
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # Both undocumented, neither eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false, false]
+    # Person1 has emergency, Person2 does not
+    has_emergency_medical_condition: [true, false]
+    # Combined income $35,000 for 2-person household
+    # 2-person FPL = $21,150, 138% FPL = $29,187
+    # Income level = $35,000 / $21,150 = 1.65 (165% FPL) > 138% limit
+    # Both have medicaid_category = NONE due to income exceeding limit
+    # Neither eligible for Emergency Medicaid (no valid Medicaid category)
+    is_emergency_medicaid_eligible: [false, false]
+
+- name: Case 11, household with undocumented parent and citizen child.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 18_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Person1 (undocumented) NOT eligible for regular Medicaid
+    # Person2 (citizen child) IS eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false, true]
+    # Both have emergency conditions
+    has_emergency_medical_condition: [true, true]
+    # Person1: FL has no Medicaid expansion (adult income limit = -inf)
+    #   So person1 has medicaid_category = NONE, not eligible for Emergency Medicaid
+    # Person2: Citizen child - gets regular Medicaid, NOT Emergency Medicaid
+    is_emergency_medicaid_eligible: [false, false]
+
+# ============================================================
+# EDGE CASES - Large household
+# ============================================================
+
+- name: Case 12, large household with mixed immigration status and emergency conditions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 40_000
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: false
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+      person3:
+        age: 16
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: false
+      person4:
+        age: 12
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: true
+      person5:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    # Person1: Citizen - eligible for regular Medicaid
+    # Person2: Undocumented - NOT eligible for regular Medicaid
+    # Person3: Undocumented - NOT eligible for regular Medicaid
+    # Person4: Citizen - eligible for regular Medicaid
+    # Person5: Undocumented - NOT eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true, false, false, true, false]
+    # Emergency conditions: 1=F, 2=T, 3=F, 4=T, 5=T
+    has_emergency_medical_condition: [false, true, false, true, true]
+    # Person1: Citizen, no emergency - NOT eligible for Emergency Medicaid
+    # Person2: Undocumented, emergency - ELIGIBLE for Emergency Medicaid
+    # Person3: Undocumented, no emergency - NOT eligible
+    # Person4: Citizen, emergency - gets regular Medicaid instead
+    # Person5: Undocumented, emergency - ELIGIBLE for Emergency Medicaid
+    is_emergency_medicaid_eligible: [false, true, false, false, true]
+
+# ============================================================
+# EDGE CASES - All immigration status types in household
+# ============================================================
+
+- name: Case 13, TPS recipient with emergency condition.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: TPS
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # TPS generally not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # Should be eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 14, refugee with emergency should get regular Medicaid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 12_000
+        immigration_status: REFUGEE
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Refugees ARE eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true]
+    has_emergency_medical_condition: [true]
+    # Should NOT be eligible for Emergency Medicaid (gets regular instead)
+    is_emergency_medicaid_eligible: [false]
+
+- name: Case 15, asylee with emergency should get regular Medicaid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 10_000
+        immigration_status: ASYLEE
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Asylees ARE eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [true]
+    has_emergency_medical_condition: [true]
+    # Should NOT be eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [false]
+
+# ============================================================
+# EDGE CASES - Age boundaries
+# ============================================================
+
+- name: Case 16, undocumented newborn with emergency.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Undocumented infant not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # Should be eligible for Emergency Medicaid (if meets Medicaid category)
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 17, undocumented elderly person with emergency.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        employment_income: 10_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Undocumented elderly not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # Should be eligible for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]
+
+# ============================================================
+# EDGE CASES - Income boundary conditions
+# ============================================================
+
+- name: Case 18, undocumented adult at exactly FPL threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_815
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Undocumented, not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # Income at 133% FPL threshold (~$20,815 for single adult in 2025)
+    # Whether eligible depends on exact Medicaid income calculation
+    is_emergency_medicaid_eligible: [true]
+
+- name: Case 19, undocumented adult just above FPL threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Undocumented, not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # Income $25,000 > ~$21,597 (138% FPL with 5% disregard)
+    # Should NOT be eligible - income too high, no Medicaid category
+    is_emergency_medicaid_eligible: [false]
+
+# ============================================================
+# EDGE CASES - Disabled and SSI recipients
+# ============================================================
+
+- name: Case 20, undocumented disabled adult with emergency.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 0
+        is_disabled: true
+        immigration_status: UNDOCUMENTED
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Changed from NY to TX because NY covers undocumented immigrants
+        # TX does not cover undocumented immigrants
+        state_code: TX
+  output:
+    # Undocumented in TX, not eligible for regular Medicaid
+    is_medicaid_immigration_status_eligible: [false]
+    has_emergency_medical_condition: [true]
+    # TX does not expand Medicaid for adults (income limit = -inf)
+    # So medicaid_category = NONE for adults
+    # However, disabled people may qualify under senior_or_disabled category
+    # Need to check if disabled person qualifies for Emergency Medicaid
+    is_emergency_medicaid_eligible: [true]

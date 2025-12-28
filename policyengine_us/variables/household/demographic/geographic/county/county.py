@@ -23,6 +23,15 @@ class county(Variable):
     def formula(household, period, parameters):
         simulation: Simulation = household.simulation
 
+        # When running over a dataset, use stored county data if available
+        # (geographic variables like county are time-invariant for households)
+        if simulation.is_over_dataset:
+            holder = simulation.get_holder("county")
+            known_periods = holder.get_known_periods()
+            if len(known_periods) > 0:
+                last_known_period = sorted(known_periods)[-1]
+                return holder.get_array(last_known_period)
+
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
