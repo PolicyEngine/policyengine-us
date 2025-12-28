@@ -1,0 +1,143 @@
+# Unit tests for ar_tea_countable_earned_income
+# Arkansas TEA applies sequential earned income deductions:
+# - Initial applicants (not enrolled): 20% work-related expense deduction only
+# - Ongoing recipients (enrolled): 20% work expense + 60% work incentive deduction
+#   Combined for ongoing: Net = Gross x 0.80 x 0.40 = Gross x 0.32
+
+- name: Case 1, zero earned income (initial applicant).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+  output:
+    ar_tea_countable_earned_income: 0
+
+- name: Case 2, initial applicant with low income (20% deduction only).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 300
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+  output:
+    ar_tea_countable_earned_income: 240
+    # Initial applicant: 300 * 0.80 = 240 (only 20% work expense)
+
+- name: Case 3, ongoing recipient with low income (20% + 60% deductions).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 300
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    ar_tea_countable_earned_income: 96
+    # Ongoing recipient:
+    # Step 1: 300 * 0.80 = 240 (after 20% work expense)
+    # Step 2: 240 * 0.40 = 96 (after 60% work incentive)
+
+- name: Case 4, ongoing recipient documentation example with 550 gross earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 550
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    ar_tea_countable_earned_income: 176
+    # Step 1: 550 * 0.80 = 440 (after 20% work expense)
+    # Step 2: 440 * 0.40 = 176 (after 60% work incentive)
+
+- name: Case 5, initial applicant with 550 gross earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 550
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+  output:
+    ar_tea_countable_earned_income: 440
+    # Initial applicant: 550 * 0.80 = 440 (only 20% work expense)
+
+- name: Case 6, ongoing recipient with gross income at trigger threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 446
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    ar_tea_countable_earned_income: 142.72
+    # Step 1: 446 * 0.80 = 356.8 (after 20% work expense)
+    # Step 2: 356.8 * 0.40 = 142.72 (after 60% work incentive)
+
+- name: Case 7, ongoing recipient higher earnings yielding net above eligibility standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 800
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    ar_tea_countable_earned_income: 256
+    # Step 1: 800 * 0.80 = 640 (after 20% work expense)
+    # Step 2: 640 * 0.40 = 256 (after 60% work incentive)
+    # Note: 256 > 223 eligibility standard, so would be income ineligible

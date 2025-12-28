@@ -1,0 +1,304 @@
+# Integration tests for Utah TANF (Family Employment Program)
+# Tests the complete benefit calculation pipeline from inputs to final benefit
+# Reference: Utah Admin. Code R986-200
+#
+# Key Program Parameters (October 2022):
+#   - Gross income limit: 185% of Standard Needs Budget (SNB)
+#   - Net income limit: 100% of SNB (strict less than)
+#   - Payment standard: 87.5% of SNB
+#   - Work expense deduction: $100 per employed person
+#   - Earned income disregard: 50% of remaining earned income
+#   - Resource limit: $2,000
+
+- name: Case 1 - Single parent with one child, no income, receives maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Family size = 2
+    # Gross income = 0, Gross limit = $843 -> PASS
+    # No earnings, so no deductions
+    # Countable income = 0, Net limit = $456 -> PASS
+    # Resources = $500 <= $2,000 -> PASS
+    # Eligible = true
+    # Benefit = Payment standard ($531) - Countable income (0) = $531
+    ut_fep_payment_standard: 531
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 0
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 531
+
+- name: Case 2 - Single parent with two children, moderate earnings, partial benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 600
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Family size = 3
+    # Gross income = $600, Gross limit = $1,050 -> PASS
+    # After work expense = max(600 - 100, 0) = 500
+    # Countable earned = 500 * 0.50 = 250
+    # Countable income = 250 + 0 (unearned) = 250
+    # Net limit = $568 (100% SNB), $250 < $568 -> PASS
+    # Resources = $1,000 <= $2,000 -> PASS
+    # Eligible = true
+    # Benefit = Payment standard ($662) - Countable income ($250) = $412
+    ut_fep_payment_standard: 662
+    ut_fep_countable_earned_income: 250
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 250
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 412
+
+- name: Case 3 - Two-parent family with three children, both employed.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 33
+        tanf_gross_earned_income: 300
+        tanf_gross_unearned_income: 0
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+      person5:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: UT
+  output:
+    # Family size = 5
+    # Gross income = $400 + $300 = $700, Gross limit = $1,400 -> PASS
+    # After work expense = max(400-100,0) + max(300-100,0) = 300 + 200 = 500
+    # Countable earned = 500 * 0.50 = 250
+    # Countable income = 250 + 0 (unearned) = 250
+    # Net limit = $757 (100% SNB), $250 < $757 -> PASS
+    # Resources = $1,500 <= $2,000 -> PASS
+    # Eligible = true
+    # Benefit = Payment standard ($882) - Countable income ($250) = $632
+    ut_fep_payment_standard: 882
+    ut_fep_countable_earned_income: 250
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 250
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 632
+
+- name: Case 4 - Ineligible due to gross income exceeding 185% SNB.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        tanf_gross_earned_income: 1_200
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Family size = 2
+    # Gross income = $1,200, Gross limit = $843 (185% SNB)
+    # $1,200 > $843 -> FAIL gross income test
+    # Ineligible, benefit = $0
+    ut_fep_payment_standard: 531
+    ut_fep_gross_income_eligible: false
+    ut_fep_income_eligible: false
+    ut_fep_eligible: false
+    ut_fep: 0
+
+- name: Case 5 - Ineligible due to gross income with mixed income sources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 29
+        tanf_gross_earned_income: 800
+        tanf_gross_unearned_income: 200
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Family size = 2
+    # Gross income = $800 + $200 = $1,000
+    # Gross limit = $843 (185% SNB for size 2)
+    # $1,000 > $843 -> FAIL gross income test
+    ut_fep_payment_standard: 531
+    ut_fep_gross_income_eligible: false
+    ut_fep_income_eligible: false
+    ut_fep_eligible: false
+    ut_fep: 0
+
+- name: Case 6 - Ineligible due to excess resources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 27
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Family size = 2
+    # Gross income = $400, Gross limit = $843 -> PASS
+    # After work expense = max(400 - 100, 0) = 300
+    # Countable earned = 300 * 0.50 = 150
+    # Countable income = 150 + 0 (unearned) = 150
+    # Net limit = $456, $150 < $456 -> PASS
+    # Resources = $3,000 > $2,000 -> FAIL
+    # Ineligible due to excess resources
+    ut_fep_payment_standard: 531
+    ut_fep_countable_earned_income: 150
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 150
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: false
+    ut_fep_income_eligible: true
+    ut_fep_eligible: false
+    ut_fep: 0
+
+- name: Case 7 - Large family with unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 400
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+      person5:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_assets: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: UT
+  output:
+    # Family size = 5
+    # Gross income = $400 (unearned only), Gross limit = $1,400 -> PASS
+    # No earned income, so no deductions apply
+    # Countable income = $400 (unearned passes through)
+    # Net limit = $757, $400 < $757 -> PASS
+    # Resources = $1,200 <= $2,000 -> PASS
+    # Eligible = true
+    # Benefit = Payment standard ($882) - Countable income ($400) = $482
+    ut_fep_payment_standard: 882
+    ut_fep_countable_earned_income: 0
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 400
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 482
