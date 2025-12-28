@@ -1,0 +1,24 @@
+description: Minnesota disregards this amount of child support per month based on the number of children under the Minnesota Family Investment Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Minnesota MFIP child support disregard by number of children
+  reference:
+    - title: Minnesota Statute 256P.06, Subd. 3 (xiii)
+      href: https://www.revisor.mn.gov/statutes/cite/256P.06#stat.256P.06.3
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 100
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 200
