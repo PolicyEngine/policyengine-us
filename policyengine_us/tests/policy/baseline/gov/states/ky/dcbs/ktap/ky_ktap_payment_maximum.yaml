@@ -1,0 +1,154 @@
+# Kentucky TANF (K-TAP) Payment Standard (Maximum) by Family Size
+# Per 921 KAR 2:016 Section 9(2)(a)
+# Family sizes 1-7 have specific values; 7+ uses maximum
+
+- name: Case 1, family size 1 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Family size 1: $372/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 372
+
+- name: Case 2, family size 2 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2: $450/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 450
+
+- name: Case 3, family size 3 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Family size 3: $524/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 524
+
+- name: Case 4, family size 4 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KY
+  output:
+    # Family size 4: $656/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 656
+
+- name: Case 5, family size 5 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KY
+  output:
+    # Family size 5: $766/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 766
+
+- name: Case 6, family size 6 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: KY
+  output:
+    # Family size 6: $864/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 864
+
+- name: Case 7, family size 7 payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: KY
+  output:
+    # Family size 7+: $964/month per 921 KAR 2:016
+    ky_ktap_payment_maximum: 964
+
+- name: Case 8, non-KY state returns zero.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Not in Kentucky, should return 0
+    ky_ktap_payment_maximum: 0

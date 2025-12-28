@@ -1,0 +1,65 @@
+- name: Case 1, no child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_mfip_child_support_income_exclusion: 0
+
+- name: Case 2, child support above limit with one child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Child support: $150/month
+    # Max exclusion for 1 child: $100
+    # Exclusion: min(150, 100) = 100
+    mn_mfip_child_support_income_exclusion: 100
+
+- name: Case 3, child support above limit with two children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_000  # $250/month
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Child support: $250/month
+    # Max exclusion for 2+ children: $200
+    # Exclusion: min(250, 200) = 200
+    mn_mfip_child_support_income_exclusion: 200
