@@ -101,6 +101,12 @@ from .reconciliation import (
 from .states.mi.surtax import (
     create_mi_surtax_reform,
 )
+from .local.ny.mamdani_income_tax import (
+    create_nyc_mamdani_income_tax_reform,
+)
+from .states.ut import (
+    create_ut_refundable_eitc_reform,
+)
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
@@ -115,9 +121,13 @@ from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
 )
+from .states.de.dependent_credit.de_dependent_credit_reform import (
+    create_de_dependent_credit_reform_fn,
+)
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
+    create_aca_ptc_700_fpl_cliff_reform,
 )
 
 
@@ -250,6 +260,12 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mi_surtax = create_mi_surtax_reform(parameters, period)
 
+    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
+        parameters, period
+    )
+
+    ut_refundable_eitc = create_ut_refundable_eitc_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -264,10 +280,16 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    de_dependent_credit = create_de_dependent_credit_reform_fn(
+        parameters, period
+    )
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
     aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
+        parameters, period
+    )
+    aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
         parameters, period
     )
 
@@ -316,6 +338,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
+        nyc_mamdani_income_tax,
+        ut_refundable_eitc,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -323,8 +347,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_minimum_refundable_amount,
         ri_ctc,
         ri_exemption,
+        de_dependent_credit,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
+        aca_ptc_700_fpl_cliff,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

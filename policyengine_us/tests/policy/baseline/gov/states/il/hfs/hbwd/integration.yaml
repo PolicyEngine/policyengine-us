@@ -1,0 +1,183 @@
+- name: Case 1, eligible working disabled individual.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 28
+    is_disabled: true
+    employment_income: 24_000  # $2,000/month
+    social_security_disability: 12_000  # $1,000/month
+    spm_unit_cash_assets: 15_000
+  output:
+    # Eligibility components
+    il_hbwd_age_eligible: true
+    il_hbwd_disability_eligible: true
+    il_hbwd_employment_eligible: true
+    il_hbwd_income_eligible: true
+    il_hbwd_asset_eligible: true
+    il_hbwd_eligible: true
+    # Income calculation
+    il_hbwd_gross_earned_income: 2_000  # 24,000 / 12
+    il_hbwd_countable_income: 2_728.13
+    # Earned: $2,000 - $211.55 (expenses) - $50 (exemptions) = $1,738.45
+    # Unearned: $1,000 - $10 (remaining flat exemption)
+    # Total: ~$2,728.13
+    # Premium calculation
+    il_hbwd_premium: 113
+    # Earned $1,713.45 → bracket 6 (1501-1750) → $38
+    # Unearned $1,000 → bracket 4 (1001-1250) → $75
+    # Total: $38 + $75 = $113
+
+- name: Case 2, couple with one eligible member.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 30_000  # $2,500/month
+        social_security_disability: 9_600  # $800/month
+      person2:
+        age: 43
+        is_disabled: false
+        employment_income: 36_000  # $3,000/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_hbwd_eligible: [true, false]
+    # person1: disabled + employed = eligible
+    # person2: not disabled = ineligible
+    il_hbwd_disability_eligible: [true, false]
+    il_hbwd_employment_eligible: [true, true]
+    il_hbwd_income_eligible: [true, true]
+    il_hbwd_asset_eligible: [true, true]
+
+- name: Case 3, self-employed individual with childcare expenses.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+        self_employment_income: 30_000  # $2,500/month
+        monthly_hours_worked: 160  # Full-time
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_920  # $160/month
+        spm_unit_cash_assets: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_dependents: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_hbwd_age_eligible: [true, false]
+    il_hbwd_disability_eligible: [true, false]
+    il_hbwd_employment_eligible: [true, false]
+    il_hbwd_eligible: [true, false]
+    # Income calculation for person1
+    il_hbwd_gross_earned_income: [2_500, 0]
+    # $30,000 / 12 = $2,500
+    il_hbwd_countable_earned_income: [2_193.44, 0]
+    # Gross: $2,500
+    # After expenses and exemptions: $2,193.44
+
+- name: Case 4, near income limit boundary.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 50
+    is_disabled: true
+    employment_income: 48_000  # $4,000/month
+    social_security_disability: 4_800  # $400/month
+    spm_unit_cash_assets: 20_000
+  output:
+    il_hbwd_age_eligible: true
+    il_hbwd_disability_eligible: true
+    il_hbwd_employment_eligible: true
+    il_hbwd_eligible: true
+    il_hbwd_income_eligible: true
+    # Total income after deductions: ~$4,089
+    # 350% FPL for single (2024): ~$4,393
+    # Just under limit → eligible
+    il_hbwd_premium: 100
+    # Premium: $100
+
+- name: Case 5, eligible with high income after exemptions.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    employment_income: 60_000  # $5,000/month
+    spm_unit_cash_assets: 10_000
+  output:
+    il_hbwd_age_eligible: true
+    il_hbwd_disability_eligible: true
+    il_hbwd_employment_eligible: true
+    il_hbwd_asset_eligible: true
+    il_hbwd_income_eligible: true
+    # Countable income after expenses and exemptions: ~$4,618
+    # With exemptions, now under 350% FPL limit
+    il_hbwd_eligible: true
+
+- name: Case 6, SSDI recipient with part-time work.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 55
+    is_disabled: false
+    social_security_disability: 18_000  # $1,500/month SSDI
+    employment_income: 12_000  # $1,000/month part-time
+    spm_unit_cash_assets: 5_000
+  output:
+    il_hbwd_age_eligible: true
+    il_hbwd_disability_eligible: true  # Via SSDI receipt
+    il_hbwd_employment_eligible: true
+    il_hbwd_income_eligible: true
+    il_hbwd_asset_eligible: true
+    il_hbwd_eligible: true
+    # Income calculation
+    il_hbwd_gross_earned_income: 1_000
+    il_hbwd_countable_income: 2_349.95
+    # Earned after expenses and exemptions: ~$850
+    # Unearned: $1,500
+    # Total: ~$2,349.95
+    il_hbwd_premium: 132
+    # Earned $824.95 → bracket 3 (751-1000) → $19
+    # Unearned $1,500 → bracket 6 (1501-1750) → $113
+    # Total: $19 + $113 = $132
+
+- name: Case 7, ineligible too young.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 15
+    is_disabled: true
+    employment_income: 12_000  # $1,000/month
+    spm_unit_cash_assets: 5_000
+  output:
+    il_hbwd_age_eligible: false
+    il_hbwd_disability_eligible: true
+    il_hbwd_employment_eligible: true
+    il_hbwd_income_eligible: true
+    il_hbwd_asset_eligible: true
+    il_hbwd_eligible: false
+    # Age < 16 → ineligible despite meeting other criteria

@@ -22,5 +22,5 @@ class co_care_worker_credit(Variable):
         return where(
             joint_with_two_eligible_care_workers,
             p.amount.joint,
-            p.amount.single,
+            p.amount.non_joint,
         )

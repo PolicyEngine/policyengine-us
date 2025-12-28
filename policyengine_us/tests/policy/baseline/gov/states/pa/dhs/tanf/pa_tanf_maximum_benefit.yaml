@@ -1,0 +1,92 @@
+- name: Case 1, single person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 205
+
+- name: Case 2, two person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 316
+
+- name: Case 3, three person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 403
+
+- name: Case 4, four person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 4
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 497
+
+- name: Case 5, five person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 5
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 589
+
+- name: Case 6, six person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 6
+    state_code: PA
+  output:
+    pa_tanf_maximum_benefit: 670
+
+- name: Case 7, seven person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    state_code: PA
+  output:
+    # Base (6) = $670 + (1 × $83) = $753
+    pa_tanf_maximum_benefit: 753
+
+- name: Case 8, eight person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: PA
+  output:
+    # Base (6) = $670 + (2 × $83) = $836
+    pa_tanf_maximum_benefit: 836
+
+- name: Case 9, nine person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 9
+    state_code: PA
+  output:
+    # Base (6) = $670 + (3 × $83) = $919
+    pa_tanf_maximum_benefit: 919
+
+- name: Case 10, ten person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    state_code: PA
+  output:
+    # Base (6) = $670 + (4 × $83) = $1,002
+    pa_tanf_maximum_benefit: 1_002
+
+- name: Case 11, very large household.
+  period: 2024-01
+  input:
+    spm_unit_size: 12
+    state_code: PA
+  output:
+    # Base (6) = $670 + (6 × $83) = $1,168
+    pa_tanf_maximum_benefit: 1_168

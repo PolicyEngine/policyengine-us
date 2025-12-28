@@ -1,0 +1,12 @@
+description: Missouri does not issue TANF payments below this amount.
+
+values:
+  2024-01-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Missouri TANF minimum payment
+  reference:
+    - title: Missouri DSS Manual 0210.010.15 - Payment Determination
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-010-15/

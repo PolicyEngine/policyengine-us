@@ -1,0 +1,43 @@
+- name: Family experiencing poverty (below 200% FPL)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000  # Below 200% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_poverty: [true, true]
+
+- name: Family above poverty threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000  # Above 200% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_poverty: [false, false]

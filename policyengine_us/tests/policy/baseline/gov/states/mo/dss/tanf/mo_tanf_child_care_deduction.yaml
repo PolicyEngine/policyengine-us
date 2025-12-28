@@ -1,0 +1,187 @@
+- name: No childcare expenses results in zero deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: 0
+
+- name: Childcare expenses below max for one child age 2+
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $100/month * 12 = $1,200/year
+        childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Max is $175/month, actual is $100/month, so deduction is $100
+    mo_tanf_child_care_deduction: 100
+
+- name: Childcare expenses at max for one child age 2+
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $175/month * 12 = $2,100/year
+        childcare_expenses: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: 175
+
+- name: Childcare expenses above max for one child age 2+
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $300/month * 12 = $3,600/year
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Max is $175/month, actual is $300/month, so deduction is capped at $175
+    mo_tanf_child_care_deduction: 175
+
+- name: One child under age 2 with expenses at max
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $200/month * 12 = $2,400/year
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Max for under 2 is $200/month
+    mo_tanf_child_care_deduction: 200
+
+- name: Mixed age children with high expenses
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $500/month * 12 = $6,000/year
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Max is $200 (under 2) + $175 (age 2+) = $375/month
+    # Actual is $500/month, so capped at $375
+    mo_tanf_child_care_deduction: 375
+
+- name: Mixed age children with low expenses
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $250/month * 12 = $3,000/year
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Max is $375/month, actual is $250/month, so deduction is $250
+    mo_tanf_child_care_deduction: 250
+
+- name: Child age 18 does not qualify for deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $200/month * 12 = $2,400/year
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Max is $0 (age 18+), so no deduction even with expenses
+    mo_tanf_child_care_deduction: 0
+
+- name: No children results in zero deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $200/month * 12 = $2,400/year
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_tanf_child_care_deduction: 0

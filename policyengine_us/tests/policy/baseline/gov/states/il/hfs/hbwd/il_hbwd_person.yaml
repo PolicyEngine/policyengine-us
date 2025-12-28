@@ -1,0 +1,34 @@
+- name: Case 1, HBWD person with premium.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 1_000
+    il_hbwd_countable_unearned_income: 1_200
+  output:
+    il_hbwd_person: -100
+    # Premium: $100 (earned $25 + unearned $75)
+    # Earned $1,000 → bracket 4 → $25
+    # Unearned $1,200 → bracket 4 → $75
+    # Benefit: -$100 (cost to individual)
+
+- name: Case 2, HBWD person not eligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    il_hbwd_eligible: false
+  output:
+    il_hbwd_person: 0
+    # Not eligible → no premium → no cost
+
+- name: Case 3, HBWD person with zero premium.
+  period: 2024-01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 100
+    il_hbwd_countable_unearned_income: 0
+  output:
+    il_hbwd_person: 0
+    # Both income in first bracket → $0 premium
