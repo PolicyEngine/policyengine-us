@@ -1,0 +1,34 @@
+description: West Virginia limits gross income to this amount under the WV Works program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: West Virginia WV Works standard of need amount
+  reference:
+    - title: WV Income Maintenance Manual Chapter 10, Appendix A
+      href: https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/744/ch10_apa.pdf#page=1
+    - title: WV Income Maintenance Manual (2024)
+      href: https://bfa.wv.gov/media/2766/download?inline#page=404
+
+1:
+  2024-01-01: 581
+2:
+  2024-01-01: 786
+3:
+  2024-01-01: 991
+4:
+  2024-01-01: 1_196
+5:
+  2024-01-01: 1_401
+6:
+  2024-01-01: 1_606
+7:
+  2024-01-01: 1_811
+8:
+  2024-01-01: 2_016
+9:
+  2024-01-01: 2_221
+10:
+  2024-01-01: 2_426

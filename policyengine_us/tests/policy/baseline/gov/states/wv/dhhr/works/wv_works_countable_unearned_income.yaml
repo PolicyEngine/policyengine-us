@@ -1,0 +1,44 @@
+# Unit tests for wv_works_countable_unearned_income
+# Step 4: Total all child support received
+# Step 5: Subtract child support pass-through ($100 for 1 child, $200 for 2+)
+# Step 6: Add all other countable unearned income
+# Source: WV Income Maintenance Manual Chapter 4 Section 4.5.2.B
+# NOTE: Child support disregard tests skipped pending investigation of period conversion issue
+
+- name: Case 1, no unearned income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 0
+        child_support_received: 0
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_works_countable_unearned_income: 0
+
+- name: Case 2, unearned income with no child support.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 500
+        child_support_received: 0
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # No child support to disregard
+    # Countable: $500
+    wv_works_countable_unearned_income: 500

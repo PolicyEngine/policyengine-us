@@ -8,80 +8,80 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: false
+    wv_works_eligible: false
     spm_unit_size: 3
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
     spm_unit_count_children: 2
   output:
-    wv_tanf: 0
+    wv_works: 0
 
 - name: Case 2, eligible with no income gets maximum plus child addition.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 3
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
     spm_unit_count_children: 2
   output:
     # Payment standard for size 3: $542
     # 60% of countable income: 0.60 x 0 = 0
     # Child addition: $25 x 2 = $50
     # Benefit = 542 - 0 + 50 = 592
-    wv_tanf: 592
+    wv_works: 592
 
 - name: Case 3, eligible with some countable income.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 3
-    wv_tanf_countable_income: 300
+    wv_works_countable_income: 300
     spm_unit_count_children: 2
   output:
     # Payment standard for size 3: $542
     # 60% of countable income: 0.60 x 300 = 180
     # Child addition: $25 x 2 = $50
     # Benefit = 542 - 180 + 50 = 412
-    wv_tanf: 412
+    wv_works: 412
 
 - name: Case 4, single parent with one child.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 2
-    wv_tanf_countable_income: 200
+    wv_works_countable_income: 200
     spm_unit_count_children: 1
   output:
     # Payment standard for size 2: $480
     # 60% of countable income: 0.60 x 200 = 120
     # Child addition: $25 x 1 = $25
     # Benefit = 480 - 120 + 25 = 385
-    wv_tanf: 385
+    wv_works: 385
 
 - name: Case 5, high countable income reduces benefit to minimum.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 3
-    wv_tanf_countable_income: 900
+    wv_works_countable_income: 900
     spm_unit_count_children: 2
   output:
     # Payment standard for size 3: $542
     # 60% of countable income: 0.60 x 900 = 540
     # Child addition: $25 x 2 = $50
     # Benefit = 542 - 540 + 50 = 52
-    wv_tanf: 52
+    wv_works: 52
 
 - name: Case 6, income exceeds benefit reduction capability.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 2
-    wv_tanf_countable_income: 850
+    wv_works_countable_income: 850
     spm_unit_count_children: 1
   output:
     # Payment standard for size 2: $480
@@ -89,22 +89,22 @@
     # Child addition: $25 x 1 = $25
     # Raw benefit = 480 - 510 + 25 = -5
     # Benefit capped at 0 (no negative benefits)
-    wv_tanf: 0
+    wv_works: 0
 
 - name: Case 7, large family with four children.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 5
-    wv_tanf_countable_income: 400
+    wv_works_countable_income: 400
     spm_unit_count_children: 4
   output:
     # Payment standard for size 5: $670
     # 60% of countable income: 0.60 x 400 = 240
     # Child addition: $25 x 4 = $100
     # Benefit = 670 - 240 + 100 = 530
-    wv_tanf: 530
+    wv_works: 530
 
 # Edge Cases - Maximum Household Size (8)
 
@@ -112,46 +112,46 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 8
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
     spm_unit_count_children: 7
   output:
     # Payment standard for size 8: $811
     # 60% of countable income: 0.60 x 0 = 0
     # Child addition: $25 x 7 = $175
     # Benefit = 811 - 0 + 175 = 986
-    wv_tanf: 986
+    wv_works: 986
 
 - name: Case 9, boundary - household size 9 uses size 8 payment standard.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 9
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
     spm_unit_count_children: 8
   output:
     # Size capped to 8, payment standard: $811
     # 60% of countable income: 0.60 x 0 = 0
     # Child addition: $25 x 8 = $200
     # Benefit = 811 - 0 + 200 = 1,011
-    wv_tanf: 1_011
+    wv_works: 1_011
 
 - name: Case 10, boundary - household size 10 uses size 8 payment standard.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 10
-    wv_tanf_countable_income: 200
+    wv_works_countable_income: 200
     spm_unit_count_children: 9
   output:
     # Size capped to 8, payment standard: $811
     # 60% of countable income: 0.60 x 200 = 120
     # Child addition: $25 x 9 = $225
     # Benefit = 811 - 120 + 225 = 916
-    wv_tanf: 916
+    wv_works: 916
 
 # Edge Cases - Zero Children
 
@@ -159,31 +159,31 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 1
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
     spm_unit_count_children: 0
   output:
     # Payment standard for size 1: $417
     # 60% of countable income: 0.60 x 0 = 0
     # Child addition: $25 x 0 = $0
     # Benefit = 417 - 0 + 0 = 417
-    wv_tanf: 417
+    wv_works: 417
 
 - name: Case 12, boundary - zero children with income.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 1
-    wv_tanf_countable_income: 300
+    wv_works_countable_income: 300
     spm_unit_count_children: 0
   output:
     # Payment standard for size 1: $417
     # 60% of countable income: 0.60 x 300 = 180
     # Child addition: $25 x 0 = $0
     # Benefit = 417 - 180 + 0 = 237
-    wv_tanf: 237
+    wv_works: 237
 
 # Edge Cases - Negative Benefit (Capped at Zero)
 
@@ -191,24 +191,24 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 2
-    wv_tanf_countable_income: 841.67
+    wv_works_countable_income: 841.67
     spm_unit_count_children: 1
   output:
     # Payment standard for size 2: $480
     # 60% of countable income: 0.60 x 841.67 = 505 (rounded)
     # Child addition: $25 x 1 = $25
     # Benefit = 480 - 505 + 25 = 0
-    wv_tanf: 0
+    wv_works: 0
 
 - name: Case 14, boundary - high income drives benefit deeply negative.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 2
-    wv_tanf_countable_income: 1_500
+    wv_works_countable_income: 1_500
     spm_unit_count_children: 1
   output:
     # Payment standard for size 2: $480
@@ -216,15 +216,15 @@
     # Child addition: $25 x 1 = $25
     # Raw benefit = 480 - 900 + 25 = -395
     # Benefit capped at 0
-    wv_tanf: 0
+    wv_works: 0
 
 - name: Case 15, boundary - very high countable income.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 3
-    wv_tanf_countable_income: 2_000
+    wv_works_countable_income: 2_000
     spm_unit_count_children: 2
   output:
     # Payment standard for size 3: $542
@@ -232,7 +232,7 @@
     # Child addition: $25 x 2 = $50
     # Raw benefit = 542 - 1,200 + 50 = -608
     # Benefit capped at 0
-    wv_tanf: 0
+    wv_works: 0
 
 # Edge Cases - Many Children (High Child Supplement)
 
@@ -240,31 +240,31 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 8
-    wv_tanf_countable_income: 500
+    wv_works_countable_income: 500
     spm_unit_count_children: 7
   output:
     # Payment standard for size 8: $811
     # 60% of countable income: 0.60 x 500 = 300
     # Child addition: $25 x 7 = $175
     # Benefit = 811 - 300 + 175 = 686
-    wv_tanf: 686
+    wv_works: 686
 
 - name: Case 17, boundary - child supplement prevents zero benefit.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 4
-    wv_tanf_countable_income: 1_100
+    wv_works_countable_income: 1_100
     spm_unit_count_children: 3
   output:
     # Payment standard for size 4: $612
     # 60% of countable income: 0.60 x 1,100 = 660
     # Child addition: $25 x 3 = $75
     # Benefit = 612 - 660 + 75 = 27
-    wv_tanf: 27
+    wv_works: 27
 
 # Edge Cases - Small Benefit Values
 
@@ -272,28 +272,28 @@
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 3
-    wv_tanf_countable_income: 985
+    wv_works_countable_income: 985
     spm_unit_count_children: 2
   output:
     # Payment standard for size 3: $542
     # 60% of countable income: 0.60 x 985 = 591
     # Child addition: $25 x 2 = $50
     # Benefit = 542 - 591 + 50 = 1
-    wv_tanf: 1
+    wv_works: 1
 
 - name: Case 19, boundary - fractional benefit.
   period: 2025-01
   input:
     state_code: WV
-    wv_tanf_eligible: true
+    wv_works_eligible: true
     spm_unit_size: 2
-    wv_tanf_countable_income: 750
+    wv_works_countable_income: 750
     spm_unit_count_children: 1
   output:
     # Payment standard for size 2: $480
     # 60% of countable income: 0.60 x 750 = 450
     # Child addition: $25 x 1 = $25
     # Benefit = 480 - 450 + 25 = 55
-    wv_tanf: 55
+    wv_works: 55

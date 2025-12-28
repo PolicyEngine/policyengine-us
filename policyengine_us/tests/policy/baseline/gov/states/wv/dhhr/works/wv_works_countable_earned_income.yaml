@@ -1,0 +1,91 @@
+# Unit tests for wv_works_countable_earned_income
+# Step 1: Add gross earned income
+# Step 2: Subtract 40% (Earned Income Disregard)
+# Step 3: Subtract Dependent Care Deduction (not modeled)
+# Formula: countable = gross_earned * (1 - 0.4) = gross_earned * 0.6
+# Source: WV Income Maintenance Manual Chapter 4 Section 4.5.2.A.1
+
+- name: Case 1, no earned income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Gross earned: $0
+    # Countable: $0 * 0.6 = $0
+    wv_works_countable_earned_income: 0
+
+- name: Case 2, basic earned income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Gross earned: $1,000
+    # Countable: $1,000 * 0.6 = $600
+    wv_works_countable_earned_income: 600
+
+- name: Case 3, higher earned income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_500
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Gross earned: $2,500
+    # Countable: $2,500 * 0.6 = $1,500
+    wv_works_countable_earned_income: 1_500
+
+- name: Case 4, small earned income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Gross earned: $100
+    # Countable: $100 * 0.6 = $60
+    wv_works_countable_earned_income: 60
+
+- name: Case 5, verify 40% disregard precision.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 333
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # Gross earned: $333
+    # Countable: $333 * 0.6 = $199.8
+    wv_works_countable_earned_income: 199.8

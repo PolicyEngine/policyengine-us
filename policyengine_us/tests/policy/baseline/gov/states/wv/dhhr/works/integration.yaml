@@ -46,20 +46,20 @@
     # Gross income: $0
     # Income limit for size 2: $786
     # 0 <= 786 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 0 x 0.60 + 0 = 0
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 2: $480
     # Reduction: 0.60 x 0 = 0
     # Child addition: $25 x 1 = $25
     # Benefit: 480 - 0 + 25 = $505
-    wv_tanf: 505
+    wv_works: 505
 
 - name: Case 2, single parent with two children and earnings.
   period: 2025-01
@@ -94,20 +94,20 @@
     # Gross income: $800
     # Income limit for size 3: $991
     # 800 <= 991 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 800 x 0.60 = 480
-    wv_tanf_countable_income: 480
+    wv_works_countable_income: 480
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 3: $542
     # Reduction: 0.60 x 480 = 288
     # Child addition: $25 x 2 = $50
     # Benefit: 542 - 288 + 50 = $304
-    wv_tanf: 304
+    wv_works: 304
 
 - name: Case 3, family of four at income threshold.
   period: 2025-01
@@ -146,20 +146,20 @@
     # Gross income: $996 + $200 = $1,196
     # Income limit for size 4: $1,196
     # 1,196 <= 1,196 = income eligible (at threshold)
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 1,196 x 0.60 = 717.6
-    wv_tanf_countable_income: 717.6
+    wv_works_countable_income: 717.6
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 4: $612
     # Reduction: 0.60 x 717.6 = 430.56
     # Child addition: $25 x 2 = $50
     # Benefit: 612 - 430.56 + 50 = 231.44
-    wv_tanf: 231.44
+    wv_works: 231.44
 
 - name: Case 4, income just over threshold is ineligible.
   period: 2025-01
@@ -191,14 +191,14 @@
     # Gross income: $833.33
     # Income limit for size 2: $786
     # 833.33 > 786 = income ineligible
-    wv_tanf_income_eligible: false
+    wv_works_income_eligible: false
 
     # Still calculate countable income
-    wv_tanf_countable_income: 500  # 833.33 x 0.60 = 500
+    wv_works_countable_income: 500  # 833.33 x 0.60 = 500
 
     # Not eligible
-    wv_tanf_eligible: false
-    wv_tanf: 0
+    wv_works_eligible: false
+    wv_works: 0
 
 - name: Case 5, mixed earned and unearned income.
   period: 2025-01
@@ -235,23 +235,23 @@
     # Gross income: $400 + $200 = $600
     # Income limit for size 3: $991
     # 600 <= 991 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income:
     # Earned after disregard: 400 x 0.60 = 240
     # Unearned: 200 (no disregard)
     # Total countable: 240 + 200 = 440
-    wv_tanf_countable_income: 440
+    wv_works_countable_income: 440
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 3: $542
     # Reduction: 0.60 x 440 = 264
     # Child addition: $25 x 2 = $50
     # Benefit: 542 - 264 + 50 = 328
-    wv_tanf: 328
+    wv_works: 328
 
 - name: Case 6, large family with five children.
   period: 2025-01
@@ -294,20 +294,20 @@
     # Gross income: $500
     # Income limit for size 6: $1,606
     # 500 <= 1,606 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 500 x 0.60 = 300
-    wv_tanf_countable_income: 300
+    wv_works_countable_income: 300
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 6: $734
     # Reduction: 0.60 x 300 = 180
     # Child addition: $25 x 5 = $125
     # Benefit: 734 - 180 + 125 = 679
-    wv_tanf: 679
+    wv_works: 679
 
 - name: Case 7, benefit reduced to zero by high countable income.
   period: 2025-01
@@ -338,14 +338,14 @@
     # Gross income: $800
     # Income limit for size 2: $786
     # 800 > 786 = income ineligible
-    wv_tanf_income_eligible: false
+    wv_works_income_eligible: false
 
     # Countable income: 800 x 0.60 = 480
-    wv_tanf_countable_income: 480
+    wv_works_countable_income: 480
 
     # Not eligible due to gross income test
-    wv_tanf_eligible: false
-    wv_tanf: 0
+    wv_works_eligible: false
+    wv_works: 0
 
 # Edge Cases - Maximum Household Size (8)
 
@@ -396,20 +396,20 @@
     # Gross income: $0
     # Income limit for size 8: $2,016
     # 0 <= 2,016 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 0
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 8: $811
     # Reduction: 0.60 x 0 = 0
     # Child addition: $25 x 7 = $175
     # Benefit: 811 - 0 + 175 = 986
-    wv_tanf: 986
+    wv_works: 986
 
 # Edge Cases - Household Exceeding Maximum Size (Uses Capped Size 8)
 
@@ -467,20 +467,20 @@
     # Gross income: $500
     # Size 10 capped to 8, income limit: $2,016
     # 500 <= 2,016 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 500 x 0.60 = 300
-    wv_tanf_countable_income: 300
+    wv_works_countable_income: 300
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Size 10 capped to 8, payment standard: $811
     # Reduction: 0.60 x 300 = 180
     # Child addition: $25 x 8 = $200
     # Benefit: 811 - 180 + 200 = 831
-    wv_tanf: 831
+    wv_works: 831
 
 # Edge Cases - Adults Only (No Children - Demographic Ineligible)
 
@@ -514,14 +514,14 @@
     # Gross income: $0
     # Income limit for size 2: $786
     # 0 <= 786 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 0
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
 
     # Demographic eligibility: No children = not eligible
-    wv_tanf_eligible: false
-    wv_tanf: 0
+    wv_works_eligible: false
+    wv_works: 0
 
 # Edge Cases - Only Unearned Income
 
@@ -557,23 +557,23 @@
     # Gross income: $500
     # Income limit for size 2: $786
     # 500 <= 786 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income:
     # Earned after disregard: 0
     # Unearned: 500 (no disregard)
     # Total countable: 500
-    wv_tanf_countable_income: 500
+    wv_works_countable_income: 500
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 2: $480
     # Reduction: 0.60 x 500 = 300
     # Child addition: $25 x 1 = $25
     # Benefit: 480 - 300 + 25 = 205
-    wv_tanf: 205
+    wv_works: 205
 
 # Edge Cases - Income Exactly One Dollar Below/Above Threshold
 
@@ -606,20 +606,20 @@
     # Gross income: $785
     # Income limit for size 2: $786
     # 785 <= 786 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 785 x 0.60 = 471
-    wv_tanf_countable_income: 471
+    wv_works_countable_income: 471
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 2: $480
     # Reduction: 0.60 x 471 = 282.6
     # Child addition: $25 x 1 = $25
     # Benefit: 480 - 282.6 + 25 = 222.4
-    wv_tanf: 222.4
+    wv_works: 222.4
 
 - name: Case 13, boundary - income one dollar above size 2 limit.
   period: 2025-01
@@ -650,14 +650,14 @@
     # Gross income: $787
     # Income limit for size 2: $786
     # 787 > 786 = income ineligible
-    wv_tanf_income_eligible: false
+    wv_works_income_eligible: false
 
     # Countable income: 787 x 0.60 = 472.2
-    wv_tanf_countable_income: 472.2
+    wv_works_countable_income: 472.2
 
     # Not eligible
-    wv_tanf_eligible: false
-    wv_tanf: 0
+    wv_works_eligible: false
+    wv_works: 0
 
 # Edge Cases - Benefit Reduced to Zero (Eligible but High Countable Income)
 
@@ -692,20 +692,20 @@
     # Gross income: $780
     # Income limit for size 2: $786
     # 780 <= 786 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income (unearned has no disregard): 780
-    wv_tanf_countable_income: 780
+    wv_works_countable_income: 780
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 2: $480
     # Reduction: 0.60 x 780 = 468
     # Child addition: $25 x 1 = $25
     # Raw benefit: 480 - 468 + 25 = 37
-    wv_tanf: 37
+    wv_works: 37
 
 # Edge Cases - Zero Income for All Household Sizes
 
@@ -736,20 +736,20 @@
     # Gross income: $0
     # Income limit for size 1: $581
     # 0 <= 581 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income: 0
-    wv_tanf_countable_income: 0
+    wv_works_countable_income: 0
 
     # Eligibility (pregnant person is demographically eligible)
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 1: $417
     # Reduction: 0.60 x 0 = 0
     # Child addition: $25 x 0 = $0
     # Benefit: 417 - 0 + 0 = 417
-    wv_tanf: 417
+    wv_works: 417
 
 # Edge Cases - High Earned + High Unearned
 
@@ -790,20 +790,20 @@
     # Gross income: $450 + $300 = $750
     # Income limit for size 4: $1,196
     # 750 <= 1,196 = income eligible
-    wv_tanf_income_eligible: true
+    wv_works_income_eligible: true
 
     # Countable income:
     # Earned after disregard: 450 x 0.60 = 270
     # Unearned: 300 (no disregard)
     # Total countable: 270 + 300 = 570
-    wv_tanf_countable_income: 570
+    wv_works_countable_income: 570
 
     # Eligibility
-    wv_tanf_eligible: true
+    wv_works_eligible: true
 
     # Benefit calculation
     # Payment standard size 4: $612
     # Reduction: 0.60 x 570 = 342
     # Child addition: $25 x 3 = $75
     # Benefit: 612 - 342 + 75 = 345
-    wv_tanf: 345
+    wv_works: 345

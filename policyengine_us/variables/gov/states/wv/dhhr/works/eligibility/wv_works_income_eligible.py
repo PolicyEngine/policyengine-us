@@ -1,18 +1,16 @@
 from policyengine_us.model_api import *
 
 
-class wv_tanf_income_eligible(Variable):
+class wv_works_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "West Virginia WV Works income eligible"
     definition_period = MONTH
-    reference = (
-        "https://dhhr.wv.gov/bcf/Services/familyassistance/Pages/WV-WORKS.aspx"
-    )
+    reference = "https://bfa.wv.gov/media/2766/download?inline#page=588"
     defined_for = StateCode.WV
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.wv.dhhr.wv_works
+        p = parameters(period).gov.states.wv.dhhr.works
         gross_income = add(
             spm_unit,
             period,
