@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.472.0] - 2025-12-28 21:07:30
+
+### Added
+
+- Add Kentucky TANF (K-TAP) program
+
 ## [1.471.0] - 2025-12-26 20:04:36
 
 ### Added
@@ -14019,6 +14025,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
 [1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
 [1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
 [1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
