@@ -1,0 +1,84 @@
+# Unit tests for ut_fep_net_income_eligible (100% SNB net income test)
+# Net income must be < 100% of Standard Needs Budget (strict less than)
+# Reference: Utah Admin. Code R986-200-239
+#
+# 2022 Net Income Limits (100% SNB):
+#   Size 1: $329, Size 2: $456, Size 3: $568
+#   Size 4: $665, Size 5: $757, Size 6: $834
+
+- name: Net income zero - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    ut_fep_countable_income: 0
+  output:
+    # Net limit for size 3 = $568
+    # Net income = 0 < 568 - eligible
+    ut_fep_net_income_eligible: true
+
+- name: Net income below limit - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    ut_fep_countable_income: 400
+  output:
+    # Net limit for size 3 = $568
+    # Net income = 400 < 568 - eligible
+    ut_fep_net_income_eligible: true
+
+- name: Net income at limit - ineligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    ut_fep_countable_income: 568
+  output:
+    # Net limit for size 3 = $568
+    # Net income = 568 NOT < 568 - ineligible (strict less than)
+    ut_fep_net_income_eligible: false
+
+- name: Net income above limit - ineligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    ut_fep_countable_income: 600
+  output:
+    # Net limit for size 3 = $568
+    # Net income = 600 > 568 - ineligible
+    ut_fep_net_income_eligible: false
+
+- name: Net income just below limit - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    ut_fep_countable_income: 567
+  output:
+    # Net limit for size 3 = $568
+    # Net income = 567 < 568 - eligible
+    ut_fep_net_income_eligible: true
+
+- name: Net income at limit for family size 1.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 1
+    ut_fep_countable_income: 329
+  output:
+    # Net limit for size 1 = $329
+    # Net income = 329 NOT < 329 - ineligible (strict less than)
+    ut_fep_net_income_eligible: false
+
+- name: Net income below limit for family size 5.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 5
+    ut_fep_countable_income: 500
+  output:
+    # Net limit for size 5 = $757
+    # Net income = 500 < 757 - eligible
+    ut_fep_net_income_eligible: true

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.474.0] - 2025-12-28 21:35:08
+
+### Added
+
+- Adds Utah Temporary Assistance for Needy Families (TANF) program.
+
+## [1.473.0] - 2025-12-28 21:23:14
+
+### Added
+
+- Minnesota Family Investment Program (MFIP).
+
 ## [1.472.0] - 2025-12-28 21:07:30
 
 ### Added
@@ -14025,6 +14037,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.473.0...1.474.0
+[1.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.472.0...1.473.0
 [1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
 [1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
 [1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
