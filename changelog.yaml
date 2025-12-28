@@ -11963,3 +11963,19 @@
     - New input variables for IEP status, developmental delay, non-English speaking
       home, parent education level, born outside US, and no prior formal early learning.
   date: 2025-12-19 23:08:59
+- bump: minor
+  changes:
+    added:
+    - Illinois Prevention Initiative (PI) program.
+  date: 2025-12-21 23:13:06
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing
+      incorrect fallback to first alphabetical county.
+  date: 2025-12-23 14:23:08
+- bump: minor
+  changes:
+    added:
+    - Add Emergency Medicaid eligibility for undocumented immigrants
+  date: 2025-12-26 20:04:36

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.471.0] - 2025-12-26 20:04:36
+
+### Added
+
+- Add Emergency Medicaid eligibility for undocumented immigrants
+
+## [1.470.1] - 2025-12-23 14:23:08
+
+### Fixed
+
+- County variable now persists across periods when running over datasets, fixing incorrect fallback to first alphabetical county.
+
+## [1.470.0] - 2025-12-21 23:13:06
+
+### Added
+
+- Illinois Prevention Initiative (PI) program.
+
 ## [1.469.0] - 2025-12-19 23:08:59
 
 ### Added
@@ -14001,6 +14019,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
+[1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
+[1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
 [1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0
 [1.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.467.0...1.468.0
 [1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
