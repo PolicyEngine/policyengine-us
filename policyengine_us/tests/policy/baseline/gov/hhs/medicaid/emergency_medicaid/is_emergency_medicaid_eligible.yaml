@@ -1,0 +1,376 @@
+# Unit tests for is_emergency_medicaid_eligible variable
+# Per 42 USC 1396b(v)(2), Emergency Medicaid eligibility requires:
+# 1. Person is NOT eligible for regular Medicaid due to immigration status
+# 2. Person meets other Medicaid eligibility requirements (income, categorical)
+# 3. Person has an emergency medical condition
+#
+# Reference: https://www.law.cornell.edu/uscode/text/42/1396b#v
+
+# ============================================================
+# ELIGIBLE CASES - Undocumented/ineligible immigrants with emergency
+# ============================================================
+
+- name: Case 1, undocumented immigrant with emergency condition and low income.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 2, DACA recipient with emergency condition.
+  period: 2025
+  input:
+    immigration_status: DACA
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 3, TPS recipient with emergency condition.
+  period: 2025
+  input:
+    immigration_status: TPS
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 4, DACA-TPS combined status with emergency condition.
+  period: 2025
+  input:
+    immigration_status: DACA_TPS
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+# ============================================================
+# ELIGIBLE CASES - All Medicaid Category Types
+# ============================================================
+
+- name: Case 5, undocumented infant with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: INFANT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 6, undocumented young child with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: YOUNG_CHILD
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 7, undocumented older child with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: OLDER_CHILD
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 8, undocumented young adult with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: YOUNG_ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 9, undocumented parent with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: PARENT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 10, undocumented pregnant woman with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: PREGNANT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 11, undocumented SSI recipient with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+- name: Case 12, undocumented senior or disabled with emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+# ============================================================
+# INELIGIBLE CASES - US citizens and qualified aliens
+# (Should get regular Medicaid, not Emergency Medicaid)
+# ============================================================
+
+- name: Case 13, US citizen should get regular Medicaid not Emergency Medicaid.
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 14, legal permanent resident eligible for regular Medicaid.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 15, refugee should get regular Medicaid not Emergency Medicaid.
+  period: 2025
+  input:
+    immigration_status: REFUGEE
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 16, asylee should get regular Medicaid not Emergency Medicaid.
+  period: 2025
+  input:
+    immigration_status: ASYLEE
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 17, deportation withheld status eligible for regular Medicaid.
+  period: 2025
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 18, Cuban-Haitian entrant eligible for regular Medicaid.
+  period: 2025
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 19, conditional entrant eligible for regular Medicaid.
+  period: 2025
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 20, paroled one year eligible for regular Medicaid.
+  period: 2025
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+# ============================================================
+# INELIGIBLE CASES - No emergency medical condition
+# ============================================================
+
+- name: Case 21, undocumented immigrant without emergency condition.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: false
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 22, DACA recipient without emergency condition.
+  period: 2025
+  input:
+    immigration_status: DACA
+    has_emergency_medical_condition: false
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+# ============================================================
+# INELIGIBLE CASES - No Medicaid category eligibility
+# ============================================================
+
+- name: Case 23, undocumented immigrant with emergency but no Medicaid category.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 24, DACA recipient with emergency but no Medicaid category.
+  period: 2025
+  input:
+    immigration_status: DACA
+    has_emergency_medical_condition: true
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 25, TPS recipient with emergency but no Medicaid category.
+  period: 2025
+  input:
+    immigration_status: TPS
+    has_emergency_medical_condition: true
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+# ============================================================
+# EDGE CASES - Program enabled check (pre-1987)
+# ============================================================
+
+- name: Case 26, program not enabled before 1987.
+  period: 1986
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 27, program enabled starting 1987.
+  period: 1987
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: true
+
+# ============================================================
+# EDGE CASES - All conditions must be met
+# ============================================================
+
+- name: Case 28, all conditions false.
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    has_emergency_medical_condition: false
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 29, only emergency condition true.
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    has_emergency_medical_condition: true
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 30, only medicaid category met.
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    has_emergency_medical_condition: false
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 31, only immigration ineligible.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: false
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 32, emergency and immigration ineligible but no category.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: true
+    medicaid_category: NONE
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 33, category and immigration ineligible but no emergency.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    has_emergency_medical_condition: false
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: false
+  output:
+    is_emergency_medicaid_eligible: false
+
+- name: Case 34, category and emergency but immigration eligible.
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    has_emergency_medical_condition: true
+    medicaid_category: ADULT
+    is_medicaid_immigration_status_eligible: true
+  output:
+    is_emergency_medicaid_eligible: false
