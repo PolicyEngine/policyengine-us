@@ -1,0 +1,39 @@
+# Unit tests for hi_tanf_eligible variable
+# Tests Hawaii TANF eligibility determination
+# Source: HRS Section 346-53; Hawaii DHS TANF page
+
+- name: Case 1, eligible with minor child and income under limit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_gross_income_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    hi_tanf_eligible: true
+
+- name: Case 2, ineligible due to income exceeding limit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_gross_income_eligible: false
+    is_demographic_tanf_eligible: true
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 3, ineligible due to no eligible child.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_gross_income_eligible: true
+    is_demographic_tanf_eligible: false
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 4, ineligible due to both income and demographics.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_gross_income_eligible: false
+    is_demographic_tanf_eligible: false
+  output:
+    hi_tanf_eligible: false

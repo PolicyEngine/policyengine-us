@@ -1,0 +1,17 @@
+description: Hawaii applies an asset test for eligibility under the Temporary Assistance for Needy Families program.
+
+values:
+  2007-07-01: true
+  2013-04-18: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Hawaii TANF applies asset test
+  reference:
+    - title: Hawaii DHS TANF Program Page
+      href: https://humanservices.hawaii.gov/bessd/tanf/
+
+# NOTE: Hawaii eliminated the asset/resource test effective April 18, 2013
+# Prior to this date, an asset test was applied for TANF eligibility
+# Since April 2013, assets are disregarded under TANF and TAONF programs

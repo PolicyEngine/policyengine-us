@@ -1,0 +1,17 @@
+description: Hawaii adds this amount to the Standard of Need for each person beyond the maximum table size under the Temporary Assistance for Needy Families program.
+
+values:
+  2007-07-01: 326
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Hawaii TANF Standard of Need additional person amount
+  reference:
+    - title: 2006 HHS Poverty Guidelines for Hawaii
+      href: https://aspe.hhs.gov/2006-hhs-poverty-guidelines
+    - title: Hawaii Revised Statutes Section 346-53
+      href: https://law.justia.com/codes/hawaii/title-20/chapter-346/section-346-53/
+
+# For household sizes above 10, add $326 per additional person
+# This is derived from the 2006 Hawaii FPL: $3,910/year per additional person = $326/month

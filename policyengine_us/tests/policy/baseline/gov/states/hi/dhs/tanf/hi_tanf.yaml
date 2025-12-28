@@ -1,0 +1,86 @@
+# Unit tests for hi_tanf variable
+# Tests benefit calculation: SOA - Countable Income (floor at 0)
+# Uses Reduced SOA = 80% of full SOA (48% of Standard of Need)
+# Source: HRS Section 346-53; Hawaii TANF State Plan
+
+# Reduced SOA values by household size (80% of full SOA):
+# 1 person: $360
+# 2 people: $485
+# 3 people: $610
+# 4 people: $735
+
+- name: Case 1, ineligible gets zero benefit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: false
+    hi_tanf_maximum_benefit: 485
+    hi_tanf_countable_income: 0
+  output:
+    hi_tanf: 0
+
+- name: Case 2, eligible with no income gets maximum benefit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 485
+    hi_tanf_countable_income: 0
+  output:
+    # Benefit = 485 - 0 = 485
+    hi_tanf: 485
+
+- name: Case 3, eligible with some income gets partial benefit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 610
+    hi_tanf_countable_income: 300
+  output:
+    # Benefit = 610 - 300 = 310
+    hi_tanf: 310
+
+- name: Case 4, eligible but income equals SOA gets zero.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 485
+    hi_tanf_countable_income: 485
+  output:
+    # Benefit = 485 - 485 = 0
+    hi_tanf: 0
+
+- name: Case 5, eligible but income exceeds SOA gets zero.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 360
+    hi_tanf_countable_income: 500
+  output:
+    # Benefit = max(360 - 500, 0) = 0
+    hi_tanf: 0
+
+- name: Case 6, single person maximum benefit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 360
+    hi_tanf_countable_income: 100
+  output:
+    # Benefit = 360 - 100 = 260
+    hi_tanf: 260
+
+- name: Case 7, family of four with partial benefit.
+  period: 2024-01
+  input:
+    state_code: HI
+    hi_tanf_eligible: true
+    hi_tanf_maximum_benefit: 735
+    hi_tanf_countable_income: 400
+  output:
+    # Benefit = 735 - 400 = 335
+    hi_tanf: 335
