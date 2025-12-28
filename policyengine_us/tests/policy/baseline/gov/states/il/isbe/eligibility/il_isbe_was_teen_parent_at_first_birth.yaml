@@ -1,0 +1,310 @@
+# Edge case tests for il_isbe_was_teen_parent_at_first_birth
+# Tests if parent was under age 20 when their oldest child was born
+# Formula: has_children & (head_age - oldest_child_age < 20)
+# Threshold: teen_parent_age_threshold = 20
+
+- name: Case 1, parent was teen at birth.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+      person2:
+        age: 17
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 35, oldest child age 17
+    # Age at first birth: 35 - 17 = 18
+    # 18 < 20 = TRUE (was teen parent)
+    il_isbe_was_teen_parent_at_first_birth: true
+
+- name: Case 2, parent was NOT teen at birth.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+      person2:
+        age: 17
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 45, oldest child age 17
+    # Age at first birth: 45 - 17 = 28
+    # 28 < 20 = FALSE (was not teen parent)
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 3, boundary exactly 19 at birth should be TRUE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 36
+        is_tax_unit_head: true
+      person2:
+        age: 17
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 36, oldest child age 17
+    # Age at first birth: 36 - 17 = 19
+    # 19 < 20 = TRUE (was teen parent)
+    il_isbe_was_teen_parent_at_first_birth: true
+
+- name: Case 4, boundary exactly 20 at birth should be FALSE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 37
+        is_tax_unit_head: true
+      person2:
+        age: 17
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 37, oldest child age 17
+    # Age at first birth: 37 - 17 = 20
+    # 20 < 20 = FALSE (20 is NOT less than 20)
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 5, no children in household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # No children (is_child requires age < 18)
+    # has_children = FALSE
+    # Result: FALSE regardless of age
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 6, multiple children uses oldest child age.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 17
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Parent age 35, children ages 5 and 17
+    # Oldest child is 17 (rank 0 with -age ordering)
+    # Age at first birth: 35 - 17 = 18
+    # 18 < 20 = TRUE
+    il_isbe_was_teen_parent_at_first_birth: true
+
+- name: Case 7, all adults no children under 18.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 18
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Person2 is 18, is_child requires age < 18
+    # No qualifying children
+    # has_children = FALSE
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 8, newborn with parent exactly 20 at birth.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+      person2:
+        age: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 20, child age 0
+    # Age at first birth: 20 - 0 = 20
+    # 20 < 20 = FALSE (exactly at threshold)
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 9, young parent with young child was teen.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 21
+        is_tax_unit_head: true
+      person2:
+        age: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 21, child age 2
+    # Age at first birth: 21 - 2 = 19
+    # 19 < 20 = TRUE
+    il_isbe_was_teen_parent_at_first_birth: true
+
+- name: Case 10, newborn with parent exactly 19 at birth.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_head: true
+      person2:
+        age: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 19, child age 0
+    # Age at first birth: 19 - 0 = 19
+    # 19 < 20 = TRUE
+    il_isbe_was_teen_parent_at_first_birth: true
+
+- name: Case 11, three children uses oldest.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 3
+      person3:
+        age: 10
+      person4:
+        age: 16
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    # Parent age 40, children ages 3, 10, 16
+    # Oldest child is 16
+    # Age at first birth: 40 - 16 = 24
+    # 24 < 20 = FALSE
+    il_isbe_was_teen_parent_at_first_birth: false
+
+- name: Case 12, boundary 21 at birth should be FALSE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head: true
+      person2:
+        age: 17
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Parent age 38, oldest child age 17
+    # Age at first birth: 38 - 17 = 21
+    # 21 < 20 = FALSE
+    il_isbe_was_teen_parent_at_first_birth: false
