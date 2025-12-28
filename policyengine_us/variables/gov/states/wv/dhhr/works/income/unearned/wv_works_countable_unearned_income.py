@@ -12,29 +12,11 @@ class wv_works_countable_unearned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wv.dhhr.works.income
-        # Step 4: Total all child support received
-        child_support_received = add(
-            spm_unit, period, ["child_support_received"]
-        )
-        # Step 5: Subtract child support pass-through ($100 for 1 child, $200 for 2+)
-        dependent_children = spm_unit(
-            "spm_unit_count_children", period.this_year
-        )
-        # Use select instead of bracket calc for clarity
-        child_support_disregard = select(
-            [dependent_children >= 2, dependent_children >= 1],
-            [
-                p.child_support_disregard.calc(2),
-                p.child_support_disregard.calc(1),
-            ],
-            default=0,
-        )
-        actual_disregard = min_(
-            child_support_disregard, child_support_received
-        )
-        countable_child_support = child_support_received - actual_disregard
-        # Step 6: Add all other countable unearned income
-        other_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        # Subtract child support since it's already counted above
-        other_unearned_without_cs = other_unearned - child_support_received
-        return max_(countable_child_support + other_unearned_without_cs, 0)
+        # Step 4-5: Child support disregard ($100 for 1 child, $200 for 2+)
+        child_support = add(spm_unit, period, ["child_support_received"])
+        children = spm_unit("spm_unit_count_children", period.this_year)
+        max_disregard = p.child_support_disregard.calc(children)
+        actual_disregard = min_(max_disregard, child_support)
+        # Step 6: Gross unearned (includes child support) minus disregard
+        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
+        return max_(gross_unearned - actual_disregard, 0)

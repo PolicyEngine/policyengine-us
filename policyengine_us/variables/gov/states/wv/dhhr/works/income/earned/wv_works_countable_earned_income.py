@@ -16,5 +16,6 @@ class wv_works_countable_earned_income(Variable):
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         # Step 2: Subtract 40% (Earned Income Disregard)
         after_disregard = gross_earned * (1 - p.earned_income_disregard.rate)
-        # Step 3: Subtract Dependent Care Deduction (not modeled)
-        return max_(after_disregard, 0)
+        # Step 3: Subtract Dependent Care Deduction (no maximum, per Section 4.5.2.A.2)
+        dependent_care = spm_unit("childcare_expenses", period)
+        return max_(after_disregard - dependent_care, 0)
