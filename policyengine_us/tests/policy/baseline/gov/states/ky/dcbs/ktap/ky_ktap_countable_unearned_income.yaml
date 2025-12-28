@@ -1,0 +1,118 @@
+# Kentucky TANF (K-TAP) Countable Unearned Income
+# Per 921 KAR 2:016 Section 5(2)(v)
+# Child Support Pass-Through: First $50 of child support is excluded monthly
+# Formula: max(gross_unearned - min(child_support, 50), 0)
+# Note: child_support_received is a YEAR variable, values below are annual
+
+- name: Case 1, no unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 0
+        child_support_received: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ktap_countable_unearned_income: 0
+
+- name: Case 2, unearned income with no child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 200
+        child_support_received: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # No child support to exclude
+    ky_ktap_countable_unearned_income: 200
+
+- name: Case 3, child support below pass-through limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 100
+        child_support_received: 360  # $30/month * 12 = $360/year
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $100 gross - $30 monthly exclusion (under $50 limit) = $70
+    ky_ktap_countable_unearned_income: 70
+
+- name: Case 4, child support at pass-through limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 150
+        child_support_received: 600  # $50/month * 12 = $600/year
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $150 gross - $50 monthly exclusion (at limit) = $100
+    ky_ktap_countable_unearned_income: 100
+
+- name: Case 5, child support above pass-through limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 300
+        child_support_received: 1_200  # $100/month * 12 = $1200/year
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $300 gross - $50 max monthly exclusion = $250
+    ky_ktap_countable_unearned_income: 250
+
+- name: Case 6, two persons with unearned income and child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 200
+        child_support_received: 900  # $75/month * 12 = $900/year
+      person2:
+        tanf_gross_unearned_income: 100
+        child_support_received: 300  # $25/month * 12 = $300/year
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Gross unearned: $200 + $100 = $300/month
+    # Child support: $75 + $25 = $100/month
+    # Exclusion: min($100, $50) = $50
+    # Countable: $300 - $50 = $250
+    ky_ktap_countable_unearned_income: 250
+
+- name: Case 7, non-KY state returns zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 500
+        child_support_received: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_ktap_countable_unearned_income: 0
