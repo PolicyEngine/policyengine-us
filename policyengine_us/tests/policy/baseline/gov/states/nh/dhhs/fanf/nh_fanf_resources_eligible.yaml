@@ -1,0 +1,99 @@
+# Tests for NH FANF resources eligibility
+# Resource limit: $1,000 countable resources
+# Source: FAM 403; CLASP reports
+
+- name: Case 1, zero resources is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 0
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 2, resources below limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 500
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 3, resources at limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 1_000
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 4, resources above limit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 1_001
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Case 5, high resources is ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 5_000
+  output:
+    nh_fanf_resources_eligible: false
+
+# --- Edge Case Tests ---
+
+- name: Edge case, resources one dollar below limit.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $999 is $1 below the $1,000 limit
+    spm_unit_assets: 999
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Edge case, resources one cent below limit.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $999.99 is 1 cent below the $1,000 limit
+    spm_unit_assets: 999.99
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Edge case, resources one cent above limit.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $1,000.01 is 1 cent above the $1,000 limit
+    spm_unit_assets: 1_000.01
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Edge case, minimum positive resources.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $1 in resources
+    spm_unit_assets: 1
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Edge case, very high resources.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $100,000 in resources
+    spm_unit_assets: 100_000
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Edge case, fractional resources well below limit.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $0.50 in resources
+    spm_unit_assets: 0.50
+  output:
+    nh_fanf_resources_eligible: true

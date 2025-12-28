@@ -1,0 +1,84 @@
+# Tests for NH FANF countable earned income
+# NH applies a 50% earned income disregard for recipients
+# Formula: Countable Earned Income = Gross Earned Income * (1 - 0.50)
+# Source: SR 97-03 Dated 02/97; FAM 603
+
+- name: Case 1, zero earned income.
+  period: 2024-01
+  input:
+    state_code: NH
+    tanf_gross_earned_income: 0
+  output:
+    nh_fanf_countable_earned_income: 0
+
+- name: Case 2, earned income with 50 percent disregard.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $1,000/month gross earned income
+    tanf_gross_earned_income: 1_000
+  output:
+    # 1,000 * (1 - 0.50) = 500
+    nh_fanf_countable_earned_income: 500
+
+- name: Case 3, higher earned income.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $2,000/month gross earned income
+    tanf_gross_earned_income: 2_000
+  output:
+    # 2,000 * (1 - 0.50) = 1,000
+    nh_fanf_countable_earned_income: 1_000
+
+- name: Case 4, low earned income.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $200/month gross earned income
+    tanf_gross_earned_income: 200
+  output:
+    # 200 * (1 - 0.50) = 100
+    nh_fanf_countable_earned_income: 100
+
+# --- Edge Case Tests ---
+
+- name: Edge case, minimum positive income.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $1/month gross earned income
+    tanf_gross_earned_income: 1
+  output:
+    # 1 * (1 - 0.50) = 0.50
+    nh_fanf_countable_earned_income: 0.50
+
+- name: Edge case, odd dollar amount with decimal result.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $3/month gross earned income
+    tanf_gross_earned_income: 3
+  output:
+    # 3 * (1 - 0.50) = 1.50
+    nh_fanf_countable_earned_income: 1.50
+
+- name: Edge case, large earned income.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $10,000/month gross earned income
+    tanf_gross_earned_income: 10_000
+  output:
+    # 10,000 * (1 - 0.50) = 5,000
+    nh_fanf_countable_earned_income: 5_000
+
+- name: Edge case, very small fractional amount.
+  period: 2024-01
+  input:
+    state_code: NH
+    # $0.02/month (2 cents)
+    tanf_gross_earned_income: 0.02
+  output:
+    # 0.02 * 0.50 = 0.01
+    nh_fanf_countable_earned_income: 0.01

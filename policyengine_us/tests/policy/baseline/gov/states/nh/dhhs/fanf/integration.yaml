@@ -1,0 +1,205 @@
+# Integration tests for NH FANF (Financial Assistance to Needy Families)
+# Tests the complete benefit calculation pipeline with real-world scenarios
+# Sources: RSA 167:77-g; FAM 601; FAM 603; SR 97-03
+
+- name: Case 1, single parent with one child, no income, maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Payment Standard: FPG for 2 = 20,440, 60% = 12,264/12 = 1,022
+    nh_fanf_payment_standard: 1_022
+    nh_fanf_countable_income: 0
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    nh_fanf: 1_022
+
+- name: Case 2, single parent with earnings, 50 percent disregard applied.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        # Annual employment income of $12,000 = $1,000/month
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Payment Standard for 2 = 1,022
+    nh_fanf_payment_standard: 1_022
+    # person1 earned: 1,000/month * 0.50 = 500; person2 = 0
+    nh_fanf_countable_earned_income: [500, 0]
+    nh_fanf_countable_income: 500
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    nh_fanf: 522
+
+- name: Case 3, family of three with moderate income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        # Annual employment income of $18,000 = $1,500/month
+        employment_income_before_lsr: 18_000
+      person2:
+        age: 10
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # Payment Standard for 3: FPG 25,820 * 0.60 / 12 = 1,291
+    nh_fanf_payment_standard: 1_291
+    # person1 earned: 1,500/month * 0.50 = 750; person2/3 = 0
+    nh_fanf_countable_earned_income: [750, 0, 0]
+    nh_fanf_countable_income: 750
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    nh_fanf: 541
+
+- name: Case 4, income above threshold, ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        # Annual employment income of $36,000 = $3,000/month
+        employment_income_before_lsr: 36_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # person1 earned: 3,000/month * 0.50 = 1,500; person2 = 0
+    nh_fanf_countable_earned_income: [1_500, 0]
+    nh_fanf_countable_income: 1_500
+    nh_fanf_income_eligible: false
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: false
+    nh_fanf: 0
+
+- name: Case 5, SSI recipient excluded from income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        # SSI is YEAR-defined, annual amount
+        ssi: 10_000
+        employment_income_before_lsr: 0
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # SSI excluded; no other income
+    nh_fanf_countable_earned_income: [0, 0]
+    nh_fanf_countable_income: 0
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    nh_fanf: 1_022
+
+- name: Case 6, resources over limit, ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 29
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    nh_fanf_countable_income: 0
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: false
+    nh_fanf_eligible: false
+    nh_fanf: 0
+
+- name: Case 7, family of four with both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+        # Annual employment income of $9,600 = $800/month
+        employment_income_before_lsr: 9_600
+        # Annual social security = $2,400 = $200/month
+        social_security: 2_400
+      person2:
+        age: 36
+      person3:
+        age: 14
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NH
+  output:
+    # Payment Standard for 4: FPG 31,200 * 0.60 / 12 = 1,560
+    nh_fanf_payment_standard: 1_560
+    # person1 earned: 800/month * 0.50 = 400; others = 0
+    nh_fanf_countable_earned_income: [400, 0, 0, 0]
+    # 400 earned + 200 unearned = 600
+    nh_fanf_countable_income: 600
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    nh_fanf: 960
