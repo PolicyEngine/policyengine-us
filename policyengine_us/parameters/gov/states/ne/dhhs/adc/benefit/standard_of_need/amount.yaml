@@ -1,0 +1,46 @@
+description: Nebraska sets this amount as the standard of need under the Aid to Dependent Children program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: Nebraska ADC standard of need
+  reference:
+    - title: Neb. Rev. Stat. 43-513(1)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=43-513
+    - title: 468-000-209 (2021)
+      href: https://dhhs.ne.gov/Documents/468-000-209.pdf
+    - title: Title 468 NAC Chapter 3 (2025)
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20468%20-%20Aid%20to%20Dependent%20Children.pdf#page=9
+
+1:
+  2021-07-01: 601
+  2025-07-01: 727
+2:
+  2021-07-01: 741
+  2025-07-01: 897
+3:
+  2021-07-01: 881
+  2025-07-01: 1_067
+4:
+  2021-07-01: 1_021
+  2025-07-01: 1_237
+5:
+  2021-07-01: 1_161
+  2025-07-01: 1_407
+6:
+  2021-07-01: 1_301
+  2025-07-01: 1_577
+7:
+  2021-07-01: 1_441
+  2025-07-01: 1_747
+8:
+  2021-07-01: 1_581
+  2025-07-01: 1_917
+9:
+  2021-07-01: 1_721
+  2025-07-01: 2_087
+10:
+  2021-07-01: 1_861
+  2025-07-01: 2_257
