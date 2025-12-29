@@ -1,0 +1,1047 @@
+# Oklahoma Income Tax Edge Case Tests
+# Auto-generated comprehensive edge case tests for boundary conditions,
+# extreme values, and error handling scenarios.
+#
+# Coverage includes:
+# - Pension subtraction boundaries ($10k/$20k limits, year transition)
+# - Tax bracket boundaries (all thresholds for single/joint)
+# - Credit income limits (property tax, sales tax, child credit)
+# - Special cases (zero income, high income, part-year, disabled)
+
+###############################################################################
+# PENSION SUBTRACTION EDGE CASES
+# Limit changed from $10,000 to $20,000 per person effective 2024 (HB 2020)
+###############################################################################
+
+- name: Edge Case - Pension exactly at $20,000 limit (2025)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_pension_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Exactly at $20,000 limit = full subtraction
+    ok_pension_subtraction: 20_000
+
+- name: Edge Case - Pension $1 over $20,000 limit (2025)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_pension_income: 20_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # $20,001 pension, capped at $20,000 limit
+    ok_pension_subtraction: 20_000
+
+- name: Edge Case - Pension exactly at old $10,000 limit (2023)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        taxable_pension_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 2023 uses old $10,000 limit - exactly at limit
+    ok_pension_subtraction: 10_000
+
+- name: Edge Case - Pension $1 over old $10,000 limit (2023)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        taxable_pension_income: 10_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 2023 uses old $10,000 limit - $1 over = capped
+    ok_pension_subtraction: 10_000
+
+- name: Edge Case - Year transition boundary 2023 vs 2024 (same pension amount)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        taxable_pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 2024 uses new $20,000 limit - $15,000 fully deductible
+    # (In 2023 this would be capped at $10,000)
+    ok_pension_subtraction: 15_000
+
+- name: Edge Case - Two spouses each exactly at $20,000 pension limit (2025)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        taxable_pension_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 66
+        taxable_pension_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Each spouse at $20,000 limit = $40,000 total subtraction
+    ok_pension_subtraction: 40_000
+
+- name: Edge Case - Pension zero amount
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_pension_subtraction: 0
+
+###############################################################################
+# TAX BRACKET BOUNDARY EDGE CASES - SINGLE FILER
+# 2025 Single brackets: $0 (0.25%), $1,000 (0.75%), $2,500 (1.75%),
+#                       $3,750 (2.75%), $4,900 (3.75%), $7,200 (4.75%)
+###############################################################################
+
+- name: Edge Case - Single bracket boundary at exactly $1,000
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 1_000
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    ok_income_tax_before_credits: 2.5
+
+- name: Edge Case - Single bracket $1 over $1,000 threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 1_001
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1 = $0.0075
+    # Total: $2.5075 (rounded to $2.51)
+    ok_income_tax_before_credits: 2.5075
+
+- name: Edge Case - Single bracket boundary at exactly $2,500
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 2_500
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # Total: $13.75
+    ok_income_tax_before_credits: 13.75
+
+- name: Edge Case - Single bracket $1 over $2,500 threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 2_501
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # 1.75% on $1 = $0.0175
+    # Total: $13.7675
+    ok_income_tax_before_credits: 13.7675
+
+- name: Edge Case - Single bracket boundary at exactly $3,750
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 3_750
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # 1.75% on $1,250 = $21.875
+    # Total: $35.625
+    ok_income_tax_before_credits: 35.625
+
+- name: Edge Case - Single bracket $1 over $3,750 threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 3_751
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # 1.75% on $1,250 = $21.875
+    # 2.75% on $1 = $0.0275
+    # Total: $35.6525
+    ok_income_tax_before_credits: 35.6525
+
+- name: Edge Case - Single bracket boundary at exactly $4,900
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 4_900
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # 1.75% on $1,250 = $21.875
+    # 2.75% on $1,150 = $31.625
+    # Total: $67.25
+    ok_income_tax_before_credits: 67.25
+
+- name: Edge Case - Single bracket $1 over $4,900 threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 4_901
+    state_code: OK
+  output:
+    # $67.25 at $4,900 + 3.75% on $1 = $67.2875
+    ok_income_tax_before_credits: 67.2875
+
+- name: Edge Case - Single bracket boundary at exactly $7,200
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 7_200
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    # 0.75% on $1,500 = $11.25
+    # 1.75% on $1,250 = $21.875
+    # 2.75% on $1,150 = $31.625
+    # 3.75% on $2,300 = $86.25
+    # Total: $153.50
+    ok_income_tax_before_credits: 153.5
+
+- name: Edge Case - Single bracket $1 over $7,200 threshold (enters top bracket)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 7_201
+    state_code: OK
+  output:
+    # $153.50 at $7,200 + 4.75% on $1 = $153.5475
+    ok_income_tax_before_credits: 153.5475
+
+###############################################################################
+# TAX BRACKET BOUNDARY EDGE CASES - JOINT FILER
+# 2025 Joint brackets: $0 (0.25%), $2,000 (0.75%), $5,000 (1.75%),
+#                      $7,500 (2.75%), $9,800 (3.75%), $14,400 (4.75%)
+###############################################################################
+
+- name: Edge Case - Joint bracket boundary at exactly $2,000
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 2_000
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    ok_income_tax_before_credits: 5
+
+- name: Edge Case - Joint bracket $1 over $2,000 threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 2_001
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    # 0.75% on $1 = $0.0075
+    # Total: $5.0075
+    ok_income_tax_before_credits: 5.0075
+
+- name: Edge Case - Joint bracket boundary at exactly $5,000
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 5_000
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    # 0.75% on $3,000 = $22.50
+    # Total: $27.50
+    ok_income_tax_before_credits: 27.5
+
+- name: Edge Case - Joint bracket $1 over $5,000 threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 5_001
+    state_code: OK
+  output:
+    # $27.50 at $5,000 + 1.75% on $1 = $27.5175
+    ok_income_tax_before_credits: 27.5175
+
+- name: Edge Case - Joint bracket boundary at exactly $7,500
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 7_500
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    # 0.75% on $3,000 = $22.50
+    # 1.75% on $2,500 = $43.75
+    # Total: $71.25
+    ok_income_tax_before_credits: 71.25
+
+- name: Edge Case - Joint bracket $1 over $7,500 threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 7_501
+    state_code: OK
+  output:
+    # $71.25 at $7,500 + 2.75% on $1 = $71.2775
+    ok_income_tax_before_credits: 71.2775
+
+- name: Edge Case - Joint bracket boundary at exactly $9,800
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 9_800
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    # 0.75% on $3,000 = $22.50
+    # 1.75% on $2,500 = $43.75
+    # 2.75% on $2,300 = $63.25
+    # Total: $134.50
+    ok_income_tax_before_credits: 134.5
+
+- name: Edge Case - Joint bracket $1 over $9,800 threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 9_801
+    state_code: OK
+  output:
+    # $134.50 at $9,800 + 3.75% on $1 = $134.5375
+    ok_income_tax_before_credits: 134.5375
+
+- name: Edge Case - Joint bracket boundary at exactly $14,400
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 14_400
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    # 0.75% on $3,000 = $22.50
+    # 1.75% on $2,500 = $43.75
+    # 2.75% on $2,300 = $63.25
+    # 3.75% on $4,600 = $172.50
+    # Total: $307.00
+    ok_income_tax_before_credits: 307
+
+- name: Edge Case - Joint bracket $1 over $14,400 threshold (enters top bracket)
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 14_401
+    state_code: OK
+  output:
+    # $307.00 at $14,400 + 4.75% on $1 = $307.0475
+    ok_income_tax_before_credits: 307.0475
+
+###############################################################################
+# PROPERTY TAX CREDIT EDGE CASES
+# Income limit: $12,000
+# Age requirement: 65+ OR disabled
+# Maximum credit: $200
+###############################################################################
+
+- name: Edge Case - PTC income exactly at $12,000 limit
+  period: 2025
+  input:
+    age_head: 68
+    ok_gross_income: 12_000
+    real_estate_taxes: 500
+    state_code: OK
+  output:
+    # Income exactly at $12,000 limit = eligible
+    # Excess = max(0, $500 - 0.01 * $12,000) = max(0, $500 - $120) = $380
+    # Credit = min($200, $380) = $200
+    ok_ptc: 200
+
+- name: Edge Case - PTC income $1 over $12,000 limit (ineligible)
+  period: 2025
+  input:
+    age_head: 68
+    ok_gross_income: 12_001
+    real_estate_taxes: 500
+    state_code: OK
+  output:
+    # Income $12,001 > $12,000 limit = ineligible
+    ok_ptc: 0
+
+- name: Edge Case - PTC age exactly 65 (eligible)
+  period: 2025
+  input:
+    age_head: 65
+    ok_gross_income: 10_000
+    real_estate_taxes: 400
+    state_code: OK
+  output:
+    # Age 65 (exactly at minimum) = eligible
+    # Excess = max(0, $400 - 0.01 * $10,000) = max(0, $400 - $100) = $300
+    # Credit = min($200, $300) = $200
+    ok_ptc: 200
+
+- name: Edge Case - PTC age 64 not disabled (ineligible)
+  period: 2025
+  input:
+    age_head: 64
+    head_is_disabled: false
+    ok_gross_income: 10_000
+    real_estate_taxes: 400
+    state_code: OK
+  output:
+    # Age 64 (under 65), not disabled = ineligible
+    ok_ptc: 0
+
+- name: Edge Case - PTC age 64 but disabled (eligible)
+  period: 2025
+  input:
+    age_head: 64
+    head_is_disabled: true
+    ok_gross_income: 10_000
+    real_estate_taxes: 400
+    state_code: OK
+  output:
+    # Age 64, but disabled qualifies
+    # Excess = max(0, $400 - 0.01 * $10,000) = $300
+    # Credit = min($200, $300) = $200
+    ok_ptc: 200
+
+- name: Edge Case - PTC zero real estate taxes
+  period: 2025
+  input:
+    age_head: 70
+    ok_gross_income: 8_000
+    real_estate_taxes: 0
+    state_code: OK
+  output:
+    # No real estate taxes = no credit
+    # Excess = max(0, $0 - 0.01 * $8,000) = max(0, -$80) = $0
+    ok_ptc: 0
+
+- name: Edge Case - PTC zero income (maximum benefit)
+  period: 2025
+  input:
+    age_head: 70
+    ok_gross_income: 0
+    real_estate_taxes: 300
+    state_code: OK
+  output:
+    # Zero income = full property tax credit up to max
+    # Excess = max(0, $300 - 0.01 * $0) = $300
+    # Credit = min($200, $300) = $200
+    ok_ptc: 200
+
+- name: Edge Case - PTC spouse age 65+ qualifies household
+  period: 2025
+  input:
+    age_head: 55
+    age_spouse: 65
+    ok_gross_income: 10_000
+    real_estate_taxes: 350
+    state_code: OK
+  output:
+    # Head 55, spouse 65+ = eligible (spouse qualifies)
+    # Excess = max(0, $350 - 0.01 * $10,000) = $250
+    # Credit = min($200, $250) = $200
+    ok_ptc: 200
+
+###############################################################################
+# SALES TAX CREDIT EDGE CASES
+# Income limit 1: $20,000 (general)
+# Income limit 2: $50,000 (elderly 65+, disabled, or has dependents)
+# Credit: $40 per exemption
+###############################################################################
+
+- name: Edge Case - STC income exactly at $20,000 limit (general)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 40
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 20_000
+    state_code: OK
+  output:
+    # Single, no special qualifications, exactly at $20,000 = eligible
+    # 1 exemption * $40 = $40
+    ok_stc: 40
+
+- name: Edge Case - STC income $1 over $20,000 limit (general - ineligible)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 40
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 20_001
+    state_code: OK
+  output:
+    # Single, no special qualifications, $1 over $20,000 = ineligible
+    ok_stc: 0
+
+- name: Edge Case - STC income exactly at $50,000 limit (elderly)
+  period: 2025
+  input:
+    filing_status: JOINT
+    greater_age_head_spouse: 68
+    tax_unit_dependents: 0
+    tax_unit_size: 2
+    ok_gross_income: 50_000
+    state_code: OK
+  output:
+    # Elderly (68), exactly at $50,000 = eligible
+    # 2 exemptions * $40 = $80
+    ok_stc: 80
+
+- name: Edge Case - STC income $1 over $50,000 limit (elderly - ineligible)
+  period: 2025
+  input:
+    filing_status: JOINT
+    greater_age_head_spouse: 68
+    tax_unit_dependents: 0
+    tax_unit_size: 2
+    ok_gross_income: 50_001
+    state_code: OK
+  output:
+    # Elderly, $1 over $50,000 limit = ineligible
+    ok_stc: 0
+
+- name: Edge Case - STC age exactly 65 qualifies for higher limit
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 65
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 35_000
+    state_code: OK
+  output:
+    # Age 65 (exactly at minimum for elderly) qualifies for $50,000 limit
+    # Income $35,000 < $50,000 = eligible
+    # 1 exemption * $40 = $40
+    ok_stc: 40
+
+- name: Edge Case - STC age 64 not elderly, no dependents, under $20k
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 64
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 18_000
+    state_code: OK
+  output:
+    # Age 64 (not elderly), no dependents, under $20k limit = eligible
+    # 1 exemption * $40 = $40
+    ok_stc: 40
+
+- name: Edge Case - STC age 64 not elderly, no dependents, between limits
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 64
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 25_000
+    state_code: OK
+  output:
+    # Age 64, no dependents/disability - only $20k limit applies
+    # Income $25,000 > $20,000 = ineligible
+    ok_stc: 0
+
+- name: Edge Case - STC with dependents qualifies for higher limit
+  period: 2025
+  input:
+    filing_status: JOINT
+    greater_age_head_spouse: 35
+    tax_unit_dependents: 2
+    tax_unit_size: 4
+    ok_gross_income: 45_000
+    state_code: OK
+  output:
+    # Has dependents, qualifies for $50,000 limit
+    # Income $45,000 < $50,000 = eligible
+    # 4 exemptions * $40 = $160
+    ok_stc: 160
+
+- name: Edge Case - STC zero income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    greater_age_head_spouse: 40
+    tax_unit_dependents: 0
+    tax_unit_size: 1
+    ok_gross_income: 0
+    state_code: OK
+  output:
+    # Zero income = eligible
+    # 1 exemption * $40 = $40
+    ok_stc: 40
+
+###############################################################################
+# CHILD CARE/CHILD TAX CREDIT EDGE CASES
+# AGI limit: $100,000
+# Credit = greater of 5% CTC or 20% CDCC
+# Prorated for part-year residents (OK AGI / Federal AGI)
+###############################################################################
+
+- name: Edge Case - Child credit AGI exactly at $100,000 limit
+  period: 2025
+  input:
+    adjusted_gross_income: 100_000
+    ok_agi: 100_000
+    cdcc_potential: 2_000
+    ctc_value: 3_000
+    state_code: OK
+  output:
+    # AGI exactly at $100,000 = eligible
+    # 5% CTC: $3,000 * 0.05 = $150
+    # 20% CDCC: $2,000 * 0.20 = $400
+    # Greater is CDCC: $400
+    ok_child_care_child_tax_credit: 400
+
+- name: Edge Case - Child credit AGI $1 over $100,000 limit
+  period: 2025
+  input:
+    adjusted_gross_income: 100_001
+    ok_agi: 100_001
+    cdcc_potential: 2_000
+    ctc_value: 3_000
+    state_code: OK
+  output:
+    # AGI $100,001 > $100,000 limit = ineligible
+    ok_child_care_child_tax_credit: 0
+
+- name: Edge Case - Child credit zero federal AGI (division protection)
+  period: 2025
+  input:
+    adjusted_gross_income: 0
+    ok_agi: 0
+    cdcc_potential: 1_000
+    ctc_value: 2_000
+    state_code: OK
+  output:
+    # Zero AGI should handle gracefully without division error
+    # When AGI is zero, the formula uses ratio = 0
+    ok_child_care_child_tax_credit: 0
+
+- name: Edge Case - Child credit equal CTC and CDCC amounts
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    ok_agi: 50_000
+    cdcc_potential: 750
+    ctc_value: 3_000
+    state_code: OK
+  output:
+    # 5% CTC: $3,000 * 0.05 = $150
+    # 20% CDCC: $750 * 0.20 = $150
+    # Equal amounts - uses max_ which gives $150
+    ok_child_care_child_tax_credit: 150
+
+- name: Edge Case - Child credit part-year resident 50% ratio
+  period: 2025
+  input:
+    adjusted_gross_income: 80_000
+    ok_agi: 40_000
+    cdcc_potential: 2_000
+    ctc_value: 4_000
+    state_code: OK
+  output:
+    # Part-year: OK AGI / Fed AGI = $40,000 / $80,000 = 0.5
+    # 5% CTC: $4,000 * 0.05 = $200
+    # 20% CDCC: $2,000 * 0.20 = $400
+    # Greater is CDCC: $400
+    # Prorated: $400 * 0.5 = $200
+    ok_child_care_child_tax_credit: 200
+
+- name: Edge Case - Child credit part-year with OK AGI higher than Fed AGI (capped at 1)
+  period: 2025
+  input:
+    adjusted_gross_income: 40_000
+    ok_agi: 50_000
+    cdcc_potential: 2_000
+    ctc_value: 3_000
+    state_code: OK
+  output:
+    # OK AGI > Fed AGI - ratio capped at 1.0
+    # 5% CTC: $3,000 * 0.05 = $150
+    # 20% CDCC: $2,000 * 0.20 = $400
+    # Greater is CDCC: $400
+    # Prorate capped at 1.0: $400 * 1.0 = $400
+    ok_child_care_child_tax_credit: 400
+
+###############################################################################
+# EITC EDGE CASES
+# Oklahoma EITC = 5% of federal EITC * (OK AGI / Federal AGI ratio)
+###############################################################################
+
+- name: Edge Case - EITC zero federal AGI (division protection)
+  period: 2025
+  input:
+    adjusted_gross_income: 0
+    ok_agi: 0
+    ok_federal_eitc: 0
+    state_code: OK
+  output:
+    # Zero AGI should handle gracefully
+    ok_eitc: 0
+
+- name: Edge Case - EITC part-year resident 75% ratio
+  period: 2025
+  input:
+    adjusted_gross_income: 20_000
+    ok_agi: 15_000
+    ok_federal_eitc: 3_000
+    state_code: OK
+  output:
+    # Ratio = $15,000 / $20,000 = 0.75
+    # OK EITC = $3,000 * 0.05 * 0.75 = $112.50
+    ok_eitc: 112.5
+
+- name: Edge Case - EITC OK AGI exceeds Federal AGI (ratio capped)
+  period: 2025
+  input:
+    adjusted_gross_income: 15_000
+    ok_agi: 20_000
+    ok_federal_eitc: 2_500
+    state_code: OK
+  output:
+    # Ratio = $20,000 / $15,000 = 1.33, capped at 1.0
+    # OK EITC = $2,500 * 0.05 * 1.0 = $125
+    ok_eitc: 125
+
+###############################################################################
+# SPECIAL CASES - ZERO INCOME
+###############################################################################
+
+- name: Edge Case - Zero income single filer
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 0
+    state_code: OK
+  output:
+    ok_income_tax_before_credits: 0
+
+- name: Edge Case - Zero taxable income joint filer
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 0
+    state_code: OK
+  output:
+    ok_income_tax_before_credits: 0
+
+###############################################################################
+# SPECIAL CASES - VERY HIGH INCOME
+###############################################################################
+
+- name: Edge Case - Very high income single ($1 million)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 1_000_000
+    state_code: OK
+  output:
+    # Tax at $7,200 threshold = $153.50
+    # 4.75% on ($1,000,000 - $7,200) = 4.75% * $992,800 = $47,158
+    # Total: $153.50 + $47,158 = $47,311.50
+    ok_income_tax_before_credits: 47_311.5
+
+- name: Edge Case - Very high income joint ($2 million)
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 2_000_000
+    state_code: OK
+  output:
+    # Tax at $14,400 threshold = $307.00
+    # 4.75% on ($2,000,000 - $14,400) = 4.75% * $1,985,600 = $94,316
+    # Total: $307 + $94,316 = $94,623
+    ok_income_tax_before_credits: 94_623
+
+###############################################################################
+# SPECIAL CASES - DISABLED FILERS
+###############################################################################
+
+- name: Edge Case - Disabled filer under 65 eligible for PTC
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        is_disabled: true
+        employment_income: 8_000
+        real_estate_taxes: 400
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        ok_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 40
+  output:
+    # Disabled qualifies for property tax credit regardless of age
+    # Income under $12,000, disabled = eligible
+    ok_ptc: 200
+
+- name: Edge Case - Disabled filer under 65 eligible for higher STC limit
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        is_disabled: true
+        employment_income: 35_000
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        ok_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 40
+  output:
+    # Disabled qualifies for $50,000 STC income limit
+    # Income $35,000 < $50,000 = eligible
+    # 1 exemption * $40 = $40
+    ok_stc: 40
+
+###############################################################################
+# STANDARD DEDUCTION EDGE CASES
+###############################################################################
+
+- name: Edge Case - Standard deduction single exactly $6,350
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: OK
+  output:
+    ok_standard_deduction: 6_350
+
+- name: Edge Case - Standard deduction joint exactly $12,700
+  period: 2025
+  input:
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_standard_deduction: 12_700
+
+- name: Edge Case - Standard deduction HOH exactly $9,350
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: OK
+  output:
+    ok_standard_deduction: 9_350
+
+- name: Edge Case - Standard deduction MFS exactly $6,350
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    state_code: OK
+  output:
+    ok_standard_deduction: 6_350
+
+- name: Edge Case - Standard deduction surviving spouse exactly $12,700
+  period: 2025
+  input:
+    filing_status: SURVIVING_SPOUSE
+    state_code: OK
+  output:
+    ok_standard_deduction: 12_700
+
+###############################################################################
+# EXEMPTIONS EDGE CASES
+###############################################################################
+
+- name: Edge Case - Single person exemption ($1,000)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 1 person * $1,000 = $1,000
+    ok_exemptions: 1_000
+
+- name: Edge Case - Large family exemptions (6 people)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+      child1:
+        is_tax_unit_dependent: true
+        age: 15
+      child2:
+        is_tax_unit_dependent: true
+        age: 12
+      child3:
+        is_tax_unit_dependent: true
+        age: 8
+      child4:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4]
+        state_code: OK
+  output:
+    # 6 people * $1,000 = $6,000
+    ok_exemptions: 6_000
