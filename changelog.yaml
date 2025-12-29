@@ -12048,3 +12048,11 @@
     - Illinois Health Benefits for Immigrants (HBI) program covering All Kids, HBIA
       (adults 42-64), and HBIS (seniors 65+).
   date: 2025-12-29 16:26:00
+- bump: patch
+  changes:
+    changed:
+    - Update Virginia 2025 income tax parameters with 2025 Form 760 references
+    - Add rebate values for 2024 ($200/$400) and 2025 ($0)
+    - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
+      deduction, rebate, and exemptions
+  date: 2025-12-29 19:18:44
