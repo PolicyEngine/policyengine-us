@@ -24,3 +24,14 @@
     va_low_income_tax_credit: 100
   output:
     va_non_refundable_eitc_if_claimed: 400
+
+# 2025 tests - per 2025 Form 760 Instructions page 31
+- name: VA 2025 Non-refundable EITC at 20%
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 4_000
+    va_low_income_tax_credit: 0
+  output:
+    # 2025: 20% of federal EITC
+    va_non_refundable_eitc_if_claimed: 800
