@@ -12056,3 +12056,8 @@
     - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
       deduction, rebate, and exemptions
   date: 2025-12-29 19:18:44
+- bump: patch
+  changes:
+    removed:
+    - Revert Virginia 2025 income tax parameter updates for proper review process
+  date: 2025-12-29 20:01:21
