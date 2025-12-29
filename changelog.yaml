@@ -12069,3 +12069,9 @@
     - Added South Dakota to BBCE parameters as non-BBCE state.
     - Added and backdated Maryland SUA and LUA values.
   date: 2025-12-29 21:31:29
+- bump: minor
+  changes:
+    fixed:
+    - Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for
+      income eligibility determination per ARS 43-1073.
+  date: 2025-12-29 22:22:39

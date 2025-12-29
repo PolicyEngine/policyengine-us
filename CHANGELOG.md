@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.485.0] - 2025-12-29 22:22:39
+
+### Fixed
+
+- Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for income eligibility determination per ARS 43-1073.
+
 ## [1.484.3] - 2025-12-29 21:31:29
 
 ### Added
@@ -14115,6 +14121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0
 [1.484.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.2...1.484.3
 [1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2
 [1.484.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.0...1.484.1
