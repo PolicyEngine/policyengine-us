@@ -22,7 +22,7 @@ class ct_tfa_income_eligible(Variable):
         )
         # Existing recipient income check
         # Pre 2024, gross earning <= 100% fpg
-        # Starting 2024, gross earning <= 240% ## for 6 months (not modeled)
+        # Starting 2024, gross earning <= 230% FPL
         gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         fpg = spm_unit("tanf_fpg", period)
 

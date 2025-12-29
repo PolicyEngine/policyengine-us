@@ -12,7 +12,7 @@ class ct_tfa_payment_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ct.dss.tfa.payment
-        size = spm_unit("spm_unit_size", period)
-        capped_unit_size = min_(size, 8)
+        size = spm_unit("spm_unit_size", period.this_year)
+        capped_unit_size = min_(size, p.max_unit_size)
 
         return p.amount[capped_unit_size]

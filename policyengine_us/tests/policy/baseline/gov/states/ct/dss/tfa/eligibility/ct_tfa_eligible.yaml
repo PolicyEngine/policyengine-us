@@ -73,3 +73,22 @@
         state_code: CT
   output:
     ct_tfa_eligible: false
+
+- name: Case 5, not resources eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        ct_tfa_resources_eligible: false
+        ct_tfa_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: false
