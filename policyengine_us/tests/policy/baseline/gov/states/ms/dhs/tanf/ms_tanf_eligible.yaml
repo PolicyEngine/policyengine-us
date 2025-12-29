@@ -1,0 +1,86 @@
+# Mississippi TANF overall eligibility tests
+# Eligible when:
+# - In Mississippi (defined_for = MS)
+# - Has eligible household member (is_person_demographic_tanf_eligible)
+# - Meets income test (ms_tanf_income_eligible)
+# - Meets resources test (ms_tanf_resources_eligible)
+
+- name: Case 1, eligible when all conditions met.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: true
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: true
+  output:
+    ms_tanf_eligible: true
+
+- name: Case 2, ineligible when not in Mississippi.
+  period: 2026-01
+  input:
+    state_code: NY
+    is_person_demographic_tanf_eligible: true
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: true
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 3, ineligible when not demographically eligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: false
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: true
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 4, ineligible when income test fails.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: true
+    ms_tanf_income_eligible: false
+    ms_tanf_resources_eligible: true
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 5, ineligible when resources test fails.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: true
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: false
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 6, ineligible when all tests fail.
+  period: 2026-01
+  input:
+    state_code: NY
+    is_person_demographic_tanf_eligible: false
+    ms_tanf_income_eligible: false
+    ms_tanf_resources_eligible: false
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 7, ineligible when income and resources fail.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: true
+    ms_tanf_income_eligible: false
+    ms_tanf_resources_eligible: false
+  output:
+    ms_tanf_eligible: false
+
+- name: Case 8, ineligible when demographic and resources fail.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_person_demographic_tanf_eligible: false
+    ms_tanf_income_eligible: true
+    ms_tanf_resources_eligible: false
+  output:
+    ms_tanf_eligible: false
