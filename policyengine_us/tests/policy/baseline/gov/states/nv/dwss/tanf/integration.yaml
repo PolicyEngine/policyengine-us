@@ -228,3 +228,41 @@
     nv_tanf_income_eligible: true
     nv_tanf_eligible: true
     nv_tanf: 10_176
+
+- name: Two earners with separate work expense deductions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800
+      person2:
+        age: 30
+        employment_income_before_lsr: 7_200
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # Person 1: $4,800/12 = $400/month
+    #   Work expense: max($90, $400 x 0.2) = max($90, $80) = $90
+    #   Earned after disregard: $400 - $90 = $310/month = $3,720/year
+    # Person 2: $7,200/12 = $600/month
+    #   Work expense: max($90, $600 x 0.2) = max($90, $120) = $120
+    #   Earned after disregard: $600 - $120 = $480/month = $5,760/year
+    nv_tanf_earned_income_after_disregard: [3_720, 5_760, 0]
+    # Total countable earned: $3,720 + $5,760 = $9,480/year
+    nv_tanf_countable_earned_income: 9_480
+    nv_tanf_countable_income: 9_480
+    nv_tanf_income_eligible: true
+    nv_tanf_eligible: true
+    # Benefit: $4,632 - $9,480 = -$4,848, capped at $0
+    nv_tanf: 0
