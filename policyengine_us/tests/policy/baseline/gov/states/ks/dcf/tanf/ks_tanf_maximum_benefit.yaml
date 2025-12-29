@@ -1,0 +1,72 @@
+# Kansas TANF maximum benefit (payment standard) test
+# Payment standards for Non-shared Living, High Population Counties (Group III)
+# Source: K.A.R. 30-4-100, K.A.R. 30-4-101, Kansas TANF State Plan FFY 2024-2026 p.29
+# Family size 1: $241, 2: $326, 3: $403, 4: $471, 5+: $471 + $61 per person
+
+- name: Case 1, family of 1.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 1
+  output:
+    ks_tanf_maximum_benefit: 241
+
+- name: Case 2, family of 2.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 2
+  output:
+    ks_tanf_maximum_benefit: 326
+
+- name: Case 3, family of 3.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 3
+  output:
+    ks_tanf_maximum_benefit: 403
+
+- name: Case 4, family of 4.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 4
+  output:
+    ks_tanf_maximum_benefit: 471
+
+- name: Case 5, family of 5.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 5
+  output:
+    # 471 + 61 = 532
+    ks_tanf_maximum_benefit: 532
+
+- name: Case 6, family of 6.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 6
+  output:
+    # 471 + 61*2 = 593
+    ks_tanf_maximum_benefit: 593
+
+- name: Case 7, family of 7.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 7
+  output:
+    # 471 + 61*3 = 654
+    ks_tanf_maximum_benefit: 654
+
+- name: Case 8, family of 8.
+  period: 2025-01
+  input:
+    state_code: KS
+    spm_unit_size: 8
+  output:
+    # 471 + 61*4 = 715
+    ks_tanf_maximum_benefit: 715

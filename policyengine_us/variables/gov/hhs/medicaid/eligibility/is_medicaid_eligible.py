@@ -18,17 +18,23 @@ class is_medicaid_eligible(Variable):
             "is_medicaid_immigration_status_eligible", period
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
-
+        il_hbi_eligible = person("il_hbi_eligible", period)
         p = parameters(period).gov.hhs.medicaid.eligibility
         if p.work_requirements.applies:
             work_requirement_eligible = person(
                 "medicaid_work_requirement_eligible", period
             )
             return (
-                categorically_eligible
-                & immigration_status_eligible
-                & work_requirement_eligible
-            ) | ca_ffyp_eligible
+                (
+                    categorically_eligible
+                    & immigration_status_eligible
+                    & work_requirement_eligible
+                )
+                | ca_ffyp_eligible
+                | il_hbi_eligible
+            )
         return (
-            categorically_eligible & immigration_status_eligible
-        ) | ca_ffyp_eligible
+            (categorically_eligible & immigration_status_eligible)
+            | ca_ffyp_eligible
+            | il_hbi_eligible
+        )
