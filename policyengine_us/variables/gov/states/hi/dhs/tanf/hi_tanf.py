@@ -8,8 +8,7 @@ class hi_tanf(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://law.justia.com/codes/hawaii/title-20/chapter-346/section-346-53/",
-        "https://humanservices.hawaii.gov/bessd/tanf/",
+        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=22",
     )
     defined_for = "hi_tanf_eligible"
 

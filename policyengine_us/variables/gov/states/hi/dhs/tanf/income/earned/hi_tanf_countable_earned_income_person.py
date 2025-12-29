@@ -8,8 +8,7 @@ class hi_tanf_countable_earned_income_person(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://humanservices.hawaii.gov/wp-content/uploads/2019/03/HAR-17-676-INCOME.pdf",
-        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=20",
+        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=19",
     )
     defined_for = StateCode.HI
 
@@ -27,7 +26,5 @@ class hi_tanf_countable_earned_income_person(Variable):
 
         # Step 3: Apply 55% earned income disregard
         # NOTE: 55% applies for months 1-24; 36% applies after month 24
-        # PolicyEngine cannot track months of receipt, so 55% is used as default
-        countable_earned = after_flat * (1 - p.eidr_rate)
-
-        return max_(countable_earned, 0)
+        # 55% is used as default here
+        return after_flat * (1 - p.eidr_rate)

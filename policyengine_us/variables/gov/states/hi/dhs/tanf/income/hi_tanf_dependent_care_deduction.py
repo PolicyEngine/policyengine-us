@@ -8,7 +8,6 @@ class hi_tanf_dependent_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://humanservices.hawaii.gov/wp-content/uploads/2019/03/HAR-17-676-INCOME.pdf#page=6",
         "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=20",
     )
     defined_for = StateCode.HI
@@ -32,7 +31,7 @@ class hi_tanf_dependent_care_deduction(Variable):
         adult_hours = where(is_adult, hours, 0)
         max_adult_hours = spm_unit.max(adult_hours)
 
-        # Per HAR 17-676, full-time = 32+ hours/week
+        # Full-time = 32+ hours/week
         # Rate is $175 (full-time) or $165 (part-time) per child
         rate = p.amount.calc(max_adult_hours)
         max_deduction = num_children * rate

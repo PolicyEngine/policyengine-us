@@ -8,8 +8,7 @@ class hi_tanf_maximum_benefit(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://law.justia.com/codes/hawaii/title-20/chapter-346/section-346-53/",
-        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf",
+        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=22",
     )
     defined_for = StateCode.HI
 
@@ -23,4 +22,8 @@ class hi_tanf_maximum_benefit(Variable):
         son = p.standard_of_need.amount[capped_size]
 
         # Standard of Assistance = SON × 48%
+        # NOTE: SOA is reduced by 20% after the family receives their initial
+        # two full months of benefits for mandatory work-required households.
+        # This reduction cannot be modeled as PolicyEngine cannot track
+        # cumulative months of benefit receipt.
         return son * p.standard_of_assistance.rate

@@ -7,8 +7,7 @@ class hi_tanf_gross_income_eligible(Variable):
     label = "Hawaii TANF gross income eligibility"
     definition_period = MONTH
     reference = (
-        "https://law.justia.com/codes/hawaii/title-20/chapter-346/section-346-53/",
-        "https://humanservices.hawaii.gov/bessd/tanf/",
+        "https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=19",
     )
     defined_for = StateCode.HI
 

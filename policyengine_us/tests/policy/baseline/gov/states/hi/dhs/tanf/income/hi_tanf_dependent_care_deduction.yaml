@@ -2,7 +2,7 @@
 # Deduction is actual childcare expenses, capped at rate per child per month
 # Rate: $175 (full-time, 32+ hrs) or $165 (part-time, <32 hrs)
 # Uses MAX of adult hours - if either parent is full-time, use full-time rate
-# Per HAR 17-676 and Hawaii TANF State Plan
+# Per Hawaii TANF State Plan
 
 - name: Case 1, no childcare expenses.
   period: 2024-01
@@ -265,3 +265,57 @@
   output:
     # MAX(25, 20) = 25 hrs = part-time, $165 cap
     hi_tanf_dependent_care_deduction: 165
+
+- name: Case 11, exactly 31 hours (just under full-time threshold).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 31
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 31 hrs < 32 threshold = part-time, $165 cap
+    hi_tanf_dependent_care_deduction: 165
+
+- name: Case 12, three children, full-time parent.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 10
+      person3:
+        age: 7
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # $8,400/year = $700/month, above 3 × $175 = $525 cap
+        childcare_expenses: 8_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: HI
+  output:
+    # 40 hrs = full-time, $175 per child
+    # $700/month > $525 cap, capped at 3 children × $175 = $525
+    hi_tanf_dependent_care_deduction: 525
