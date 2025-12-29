@@ -7,8 +7,8 @@ class nh_fanf_resources_eligible(Variable):
     label = "New Hampshire FANF resources eligible"
     definition_period = YEAR
     reference = (
-        "https://www.dhhs.nh.gov/fam_htm/",
         "https://www.dhhs.nh.gov/sr_htm/html/sr_97-03_dated_02_97.htm",
+        "https://www.dhhs.nh.gov/fam_htm/newfam.htm",
     )
     defined_for = StateCode.NH
 

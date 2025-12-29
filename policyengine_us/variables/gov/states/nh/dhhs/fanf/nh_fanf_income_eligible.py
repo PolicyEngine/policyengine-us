@@ -8,7 +8,7 @@ class nh_fanf_income_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://gc.nh.gov/rsa/html/xii/167/167-77-g.htm",
-        "https://www.dhhs.nh.gov/fam_htm/",
+        "https://www.dhhs.nh.gov/fam_htm/newfam.htm",
     )
     defined_for = StateCode.NH
 

@@ -8,8 +8,8 @@ class nh_fanf_countable_earned_income(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
+        "https://www.dhhs.nh.gov/famar_htm/html/603_01_earned_income_disregards_eid_sr_97-03_02_97_fam_a.htm",
         "https://www.dhhs.nh.gov/sr_htm/html/sr_97-03_dated_02_97.htm",
-        "https://www.dhhs.nh.gov/fam_htm/",
     )
     defined_for = StateCode.NH
 

@@ -203,3 +203,101 @@
     nh_fanf_resources_eligible: true
     nh_fanf_eligible: true
     nh_fanf: 960
+
+- name: Case 8, SSI recipient with earnings, SSI excluded but earnings counted.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        # SSI should be excluded from income
+        ssi: 10_000
+        # Annual employment income of $6,000 = $500/month
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # person1 earned: 500/month * 0.50 = 250; person2 = 0
+    # SSI excluded from unearned income
+    nh_fanf_countable_earned_income: [250, 0]
+    nh_fanf_countable_income: 250
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    # 1,022 - 250 = 772
+    nh_fanf: 772
+
+- name: Case 9, two parents both with earnings, disregard applies to each.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        # Annual $6,000 = $500/month
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 33
+        # Annual $4,800 = $400/month
+        employment_income_before_lsr: 4_800
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # Payment Standard for 3: 1,291
+    nh_fanf_payment_standard: 1_291
+    # person1: 500 * 0.50 = 250; person2: 400 * 0.50 = 200; person3 = 0
+    nh_fanf_countable_earned_income: [250, 200, 0]
+    # 250 + 200 = 450 total countable
+    nh_fanf_countable_income: 450
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    # 1,291 - 450 = 841
+    nh_fanf: 841
+
+- name: Case 10, unearned income only, no earned income disregard applies.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 0
+        # Annual social security = $4,800 = $400/month
+        social_security: 4_800
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_payment_standard: 1_022
+    # No earned income, so no disregard applies
+    nh_fanf_countable_earned_income: [0, 0]
+    # Unearned counted in full: 400
+    nh_fanf_countable_income: 400
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    nh_fanf_eligible: true
+    # 1,022 - 400 = 622
+    nh_fanf: 622
