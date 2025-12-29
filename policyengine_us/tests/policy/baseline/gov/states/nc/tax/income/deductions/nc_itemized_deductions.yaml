@@ -1,4 +1,4 @@
-- name: Real estate taxes capped 
+- name: Real estate taxes capped
   period: 2022
   input:
     filing_status: JOINT
@@ -10,7 +10,7 @@
   output:
     nc_itemized_deductions: 19_000
 
-- name: Real estate taxes and mortgage capped 
+- name: Real estate taxes and mortgage capped
   period: 2022
   input:
     filing_status: SURVIVING_SPOUSE

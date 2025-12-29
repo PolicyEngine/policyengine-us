@@ -1,0 +1,65 @@
+- name: Pre capital gains subtraction law
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 0
+
+- name: Post capital gains subtraction law
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 1_000
+
+- name: Post capital gains subtraction law - married couple
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 6_000
+        short_term_capital_gains: 0
+      person2:
+        long_term_capital_gains: 4_000
+        short_term_capital_gains: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Tax unit level subtraction should be full 10_000
+    mo_capital_gains_subtraction: 10_000
+    # Person level subtraction should be allocated by LTCG share
+    mo_capital_gains_subtraction_person: [6_000, 4_000]

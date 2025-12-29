@@ -1,0 +1,95 @@
+# Idaho TAFI Countable Unearned Income
+# Per IDAPA 16.03.08.250, unearned income is counted at 100%
+# No deductions applied to unearned income
+
+- name: Case 1, no unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_unearned_income: 0
+
+- name: Case 2, social security income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        social_security: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_unearned_income: 500
+    # Monthly: 6,000 / 12 = 500
+    # No deductions, full amount counted
+
+- name: Case 3, child support income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        child_support_received: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_unearned_income: 300
+    # Monthly: 3,600 / 12 = 300
+    # Full amount counted
+
+- name: Case 4, multiple unearned income sources.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        social_security: 4_800         # $400/month
+        child_support_received: 2_400  # $200/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_unearned_income: 600
+    # Social Security: 400/month
+    # Child support: 200/month
+    # Total: 600/month (no deductions)
+
+- name: Case 5, unearned income from multiple household members.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        social_security: 3_600  # $300/month
+      person2:
+        social_security: 2_400  # $200/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_countable_unearned_income: 500
+    # Person1: 300/month, Person2: 200/month
+    # Total: 500/month

@@ -1,0 +1,63 @@
+# Tests for in_tanf_payment_eligible
+# Uses payment disregards: 75% earned income (only 25% counts)
+# Compares to payment standard
+
+- name: Family of 3 with zero countable income - eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 0
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: true
+    # Countable income ($0) < standard of need ($320) → eligible
+
+- name: Family of 3 with income below standard of need - eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 300
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: true
+    # Countable income ($300) < standard of need ($320) → eligible
+
+- name: Family of 3 with income at standard of need - not eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 320
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: false
+    # Countable income ($320) >= standard of need ($320) → not eligible
+
+- name: Family of 3 with income above standard of need - not eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 400
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: false
+    # Countable income ($400) > standard of need ($320) → not eligible
+
+- name: Family of 1 below standard of need - eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    in_tanf_countable_income_for_payment: 150
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: true
+    # Countable income ($150) < standard of need ($155) → eligible
+
+- name: Family of 2 below standard of need - eligible
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    in_tanf_countable_income_for_payment: 250
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: true
+    # Countable income ($250) < standard of need ($255) → eligible

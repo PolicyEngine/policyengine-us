@@ -1,0 +1,83 @@
+- name: No earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income: 0
+
+- name: Earned income with 75% disregard - $400 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income: 100
+    # 75% disregard: Only count 25% of $400 = $100
+
+- name: Earned income with 75% disregard - $1000 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income: 250
+    # 75% disregard: Only count 25% of $1,000 = $250
+
+- name: Earned income with 75% disregard - $500 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income: 125
+    # 75% disregard: Only count 25% of $500 = $125
+
+- name: Low earned income - $200 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income: 50
+    # 75% disregard: Only count 25% of $200 = $50

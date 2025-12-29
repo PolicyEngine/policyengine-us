@@ -1,0 +1,23 @@
+description: Minnesota deducts up to this amount of dependent care expenses per child from earned income under the Minnesota Family Investment Program, depending on child age.
+
+metadata:
+  period: month
+  label: Minnesota MFIP dependent care deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Minnesota Statute 142G.16, Subd.1 (b)(2)
+      href: https://www.revisor.mn.gov/statutes/cite/142G.16
+    - title: Minnesota DHS Combined Manual 0018.09 - Dependent Care Deduction
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001809
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 200
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 175
