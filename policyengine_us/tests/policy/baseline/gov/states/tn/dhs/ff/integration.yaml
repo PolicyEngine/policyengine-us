@@ -189,3 +189,30 @@
   output:
     # No child under 18
     tn_ff: 0
+
+- name: Case 9, historical 2020 parameters (pre-2021 values).
+  period: 2020-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Pre-2021 values: CNS size 3 = $1,066, SPA = $185, disregard = $150
+    # GIS = $1,066 * 1.85 = $1,972.10
+    # Gross: $500 < $1,972.10 - passes
+    # Countable: $500 - $150 = $350 < $1,066 - passes
+    # Deficit: $1,066 - $350 = $716
+    # Benefit: min($185, $716) = $185
+    tn_ff: 185

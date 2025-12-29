@@ -5,28 +5,9 @@
 # - Child care (age 2+): $175
 # - Minimum grant: $10
 # - Fill-the-gap: benefit = min(payment_standard, CNS - countable_income)
+# Note: Basic scenarios (no income, no child) tested in integration.yaml
 
-- name: Case 1, no income receives full SPA.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    # Deficit: $1,370 - $0 = $1,370
-    # Benefit: min($343, $1,370) = $343
-    tn_ff: 343
-
-- name: Case 2, earned income with child care.
+- name: Case 1, earned income with child care.
   period: 2024-01
   input:
     people:
@@ -50,7 +31,7 @@
     # Benefit: min($343, $895) = $343
     tn_ff: 343
 
-- name: Case 3, moderate income still gets full SPA.
+- name: Case 2, moderate income still gets full SPA.
   period: 2024-01
   input:
     people:
@@ -74,7 +55,7 @@
     # Benefit: min($343, $595) = $343
     tn_ff: 343
 
-- name: Case 4, high income results in deficit below SPA.
+- name: Case 3, high income results in deficit below SPA.
   period: 2024-01
   input:
     people:
@@ -98,7 +79,7 @@
     # Benefit: min($343, $295) = $295
     tn_ff: 295
 
-- name: Case 5, income near CNS gives small benefit.
+- name: Case 4, income near CNS gives small benefit.
   period: 2024-01
   input:
     people:
@@ -122,7 +103,7 @@
     # Benefit: min($343, $75) = $75 >= $10 minimum
     tn_ff: 75
 
-- name: Case 6, benefit exactly at minimum grant.
+- name: Case 5, benefit exactly at minimum grant.
   period: 2024-01
   input:
     people:
@@ -146,7 +127,7 @@
     # Benefit: min($343, $10) = $10 >= $10 minimum
     tn_ff: 10
 
-- name: Case 7, benefit below minimum grant is zero.
+- name: Case 6, benefit below minimum grant is zero.
   period: 2024-01
   input:
     people:
@@ -168,22 +149,4 @@
     # Countable: $1,786 - $250 - $175 = $1,361
     # Deficit: $1,370 - $1,361 = $9
     # Benefit: $9 < $10 minimum → $0
-    tn_ff: 0
-
-- name: Case 8, ineligible due to no child.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 25
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
     tn_ff: 0

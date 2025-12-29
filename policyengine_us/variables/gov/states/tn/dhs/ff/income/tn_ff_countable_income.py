@@ -8,6 +8,7 @@ class tn_ff_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.TN
+    reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=19"
 
     def formula(spm_unit, period, parameters):
         # Get countable earned income (after $250 disregard)

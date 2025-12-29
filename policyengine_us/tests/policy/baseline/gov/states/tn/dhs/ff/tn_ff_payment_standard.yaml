@@ -124,3 +124,81 @@
   output:
     # SPA size 10 = $2,373 * 25% = $593
     tn_ff_payment_standard: 593
+
+- name: Case 6, size 11 capped at size 10.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 1
+      person3:
+        age: 3
+      person4:
+        age: 5
+      person5:
+        age: 7
+      person6:
+        age: 9
+      person7:
+        age: 11
+      person8:
+        age: 13
+      person9:
+        age: 15
+      person10:
+        age: 17
+      person11:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: TN
+  output:
+    # Size 11 capped at max_family_size = 10
+    # SPA size 10 = $593
+    tn_ff_payment_standard: 593
+
+- name: Case 7, size 12 capped at size 10.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 1
+      person3:
+        age: 2
+      person4:
+        age: 4
+      person5:
+        age: 6
+      person6:
+        age: 8
+      person7:
+        age: 10
+      person8:
+        age: 12
+      person9:
+        age: 14
+      person10:
+        age: 16
+      person11:
+        age: 3
+      person12:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: TN
+  output:
+    # Size 12 capped at max_family_size = 10
+    # SPA size 10 = $593
+    tn_ff_payment_standard: 593

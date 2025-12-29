@@ -8,7 +8,7 @@ class tn_ff_child_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.TN
-    reference = "https://wioaplans.ed.gov/node/545036"
+    reference = "https://wioaplans.dol.gov/node/545036"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tn.dhs.ff.income.deductions

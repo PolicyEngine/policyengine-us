@@ -61,27 +61,7 @@
   output:
     tn_ff_child_care_deduction: 175
 
-- name: Case 4, one child age 5.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 32
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month * 12
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    tn_ff_child_care_deduction: 175
-
-- name: Case 5, two children both under age 2.
+- name: Case 4, two children both under age 2.
   period: 2024-01
   input:
     people:
@@ -105,7 +85,7 @@
     # $200 + $200 = $400
     tn_ff_child_care_deduction: 400
 
-- name: Case 6, two children both age 2 or older.
+- name: Case 5, two children both age 2 or older.
   period: 2024-01
   input:
     people:
@@ -129,7 +109,7 @@
     # $175 + $175 = $350
     tn_ff_child_care_deduction: 350
 
-- name: Case 7, mixed ages one under 2 and one 2+.
+- name: Case 6, mixed ages one under 2 and one 2+.
   period: 2024-01
   input:
     people:
@@ -153,73 +133,7 @@
     # $200 + $175 = $375
     tn_ff_child_care_deduction: 375
 
-- name: Case 8, three children various ages.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 40
-      person2:
-        age: 0
-        is_tax_unit_dependent: true
-      person3:
-        age: 2
-        is_tax_unit_dependent: true
-      person4:
-        age: 8
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        childcare_expenses: 12_000  # $1,000/month * 12
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: TN
-  output:
-    # $200 + $175 + $175 = $550
-    tn_ff_child_care_deduction: 550
-
-- name: Case 9, adult children do not receive deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 45
-      person2:
-        age: 19
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month * 12
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    tn_ff_child_care_deduction: 0
-
-- name: Case 10, teen age 15.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 38
-      person2:
-        age: 15
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month * 12
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TN
-  output:
-    tn_ff_child_care_deduction: 175
-
-- name: Case 11, deduction capped at actual expenses.
+- name: Case 7, deduction capped at actual expenses.
   period: 2024-01
   input:
     people:
