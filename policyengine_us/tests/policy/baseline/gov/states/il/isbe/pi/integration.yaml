@@ -1,0 +1,187 @@
+- name: Case 1, single parent low income family with infant with developmental delay.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 25_000
+      person2:
+        age: 1
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_demographic_eligible: [false, true]
+    # Developmental delay (50) + household has disability (25) + single parent (10) + poverty (10) = 95 pts
+    il_pi_priority_score: [0, 95]
+    il_pi_eligible: [false, true]
+
+- name: Case 2, pregnant single woman in non-English speaking home.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 22
+        is_pregnant: true
+        employment_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        is_non_english_speaking_home: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Non-English home (50) + single parent (10) + poverty (10) = 70 pts
+    il_pi_priority_score: [70]
+    il_pi_eligible: [true]
+
+- name: Case 3, homeless single parent family with toddler.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+      person2:
+        age: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_demographic_eligible: [false, true]
+    # Homeless (50) + deep poverty (50) + low income (25) + single parent (10) + poverty (10) = 145 pts
+    il_pi_priority_score: [0, 145]
+    il_pi_eligible: [false, true]
+
+- name: Case 4, higher income married couple no risk factors ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 150_000
+      person2:
+        age: 35
+        is_tax_unit_spouse: true
+      child:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child]
+  output:
+    il_pi_demographic_eligible: [false, false, true]
+    # Married couple with high income - no risk factors
+    il_pi_priority_score: [0, 0, 0]
+    il_pi_eligible: [false, false, false]
+
+- name: Case 5, child age 3 transitions out of PI.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 3
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_demographic_eligible: [false, false]
+    # Child has developmental delay but too old for PI
+    il_pi_eligible: [false, false]
+
+- name: Case 6, single parent foster child infant highest priority.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+      person2:
+        age: 0
+        is_in_foster_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_demographic_eligible: [false, true]
+    # Foster care (50) + single parent (10) = 60 pts for child
+    il_pi_priority_score: [0, 60]
+    il_pi_eligible: [false, true]
+
+- name: Case 7, 45 points ineligible boundary case.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 21
+        employment_income: 25_000
+        is_parent: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_demographic_eligible: [false, true]
+    # Young parent age 21 (25) + single parent (10) + poverty (10) = 45 pts (below 50 threshold)
+    il_pi_priority_score: [0, 45]
+    il_pi_eligible: [false, false]

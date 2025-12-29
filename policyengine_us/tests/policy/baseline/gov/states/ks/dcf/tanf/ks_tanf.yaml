@@ -1,0 +1,79 @@
+# Kansas TANF benefit calculation test
+# Benefit = max(payment_standard - countable_income, 0)
+# Source: KEESM 7110, K.A.R. 30-4-100
+
+- name: Case 1, eligible with no income, full benefit.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 0
+  output:
+    # Benefit: 386 - 0 = 386
+    ks_tanf: 386
+
+- name: Case 2, eligible with partial income.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 200
+  output:
+    # Benefit: 386 - 200 = 186
+    ks_tanf: 186
+
+- name: Case 3, eligible with small benefit.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 350
+  output:
+    # Benefit: 386 - 350 = 36
+    ks_tanf: 36
+
+- name: Case 4, ineligible, no benefit.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: false
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 0
+  output:
+    ks_tanf: 0
+
+- name: Case 5, eligible family of 4.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 454
+    ks_tanf_countable_income: 150
+  output:
+    # Benefit: 454 - 150 = 304
+    ks_tanf: 304
+
+- name: Case 6, income equals payment standard.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 386
+  output:
+    # Benefit: 386 - 386 = 0
+    ks_tanf: 0
+
+- name: Case 7, benefit with decimal.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 100.50
+  output:
+    # Benefit: 386 - 100.50 = 285.50
+    ks_tanf: 285.5

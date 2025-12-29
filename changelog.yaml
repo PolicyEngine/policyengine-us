@@ -11950,3 +11950,72 @@
     - Implement Oregon TANF (Temporary Assistance for Needy Families) program with
       income eligibility, resource limits, and benefit calculations.
   date: 2025-12-19 15:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Works First (OWF) cash assistance program.
+  date: 2025-12-19 20:53:46
+- bump: minor
+  changes:
+    added:
+    - Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs
+      with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+    - New input variables for IEP status, developmental delay, non-English speaking
+      home, parent education level, born outside US, and no prior formal early learning.
+  date: 2025-12-19 23:08:59
+- bump: minor
+  changes:
+    added:
+    - Illinois Prevention Initiative (PI) program.
+  date: 2025-12-21 23:13:06
+- bump: patch
+  changes:
+    fixed:
+    - County variable now persists across periods when running over datasets, fixing
+      incorrect fallback to first alphabetical county.
+  date: 2025-12-23 14:23:08
+- bump: minor
+  changes:
+    added:
+    - Add Emergency Medicaid eligibility for undocumented immigrants
+  date: 2025-12-26 20:04:36
+- bump: minor
+  changes:
+    added:
+    - Add Kentucky TANF (K-TAP) program
+  date: 2025-12-28 21:07:30
+- bump: minor
+  changes:
+    added:
+    - Minnesota Family Investment Program (MFIP).
+  date: 2025-12-28 21:23:14
+- bump: minor
+  changes:
+    added:
+    - Adds Utah Temporary Assistance for Needy Families (TANF) program.
+  date: 2025-12-28 21:35:08
+- bump: minor
+  changes:
+    added:
+    - Added Oklahoma TANF (Temporary Assistance for Needy Families) program
+  date: 2025-12-28 22:16:11
+- bump: minor
+  changes:
+    added:
+    - Implement Arkansas Transitional Employment Assistance (TEA/TANF) program
+  date: 2025-12-28 22:18:45
+- bump: minor
+  changes:
+    added:
+    - Add Kansas TANF program.
+  date: 2025-12-28 22:37:09
+- bump: minor
+  changes:
+    added:
+    - Nebraska Aid to Dependent Children (ADC) program.
+  date: 2025-12-28 22:59:09
+- bump: minor
+  changes:
+    added:
+    - Add Mississippi TANF program.
+  date: 2025-12-28 23:17:19

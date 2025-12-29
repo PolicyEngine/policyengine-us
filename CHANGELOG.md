@@ -5,6 +5,85 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.479.0] - 2025-12-28 23:17:19
+
+### Added
+
+- Add Mississippi TANF program.
+
+## [1.478.0] - 2025-12-28 22:59:09
+
+### Added
+
+- Nebraska Aid to Dependent Children (ADC) program.
+
+## [1.477.0] - 2025-12-28 22:37:09
+
+### Added
+
+- Add Kansas TANF program.
+
+## [1.476.0] - 2025-12-28 22:18:45
+
+### Added
+
+- Implement Arkansas Transitional Employment Assistance (TEA/TANF) program
+
+## [1.475.0] - 2025-12-28 22:16:11
+
+### Added
+
+- Added Oklahoma TANF (Temporary Assistance for Needy Families) program
+
+## [1.474.0] - 2025-12-28 21:35:08
+
+### Added
+
+- Adds Utah Temporary Assistance for Needy Families (TANF) program.
+
+## [1.473.0] - 2025-12-28 21:23:14
+
+### Added
+
+- Minnesota Family Investment Program (MFIP).
+
+## [1.472.0] - 2025-12-28 21:07:30
+
+### Added
+
+- Add Kentucky TANF (K-TAP) program
+
+## [1.471.0] - 2025-12-26 20:04:36
+
+### Added
+
+- Add Emergency Medicaid eligibility for undocumented immigrants
+
+## [1.470.1] - 2025-12-23 14:23:08
+
+### Fixed
+
+- County variable now persists across periods when running over datasets, fixing incorrect fallback to first alphabetical county.
+
+## [1.470.0] - 2025-12-21 23:13:06
+
+### Added
+
+- Illinois Prevention Initiative (PI) program.
+
+## [1.469.0] - 2025-12-19 23:08:59
+
+### Added
+
+- Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+- New input variables for IEP status, developmental delay, non-English speaking home, parent education level, born outside US, and no prior formal early learning.
+
+## [1.468.0] - 2025-12-19 20:53:46
+
+### Added
+
+- Ohio Works First (OWF) cash assistance program.
+
 ## [1.467.0] - 2025-12-19 15:39:42
 
 ### Added
@@ -13988,6 +14067,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.478.0...1.479.0
+[1.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.477.0...1.478.0
+[1.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.476.0...1.477.0
+[1.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.475.0...1.476.0
+[1.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.474.0...1.475.0
+[1.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.473.0...1.474.0
+[1.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.472.0...1.473.0
+[1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
+[1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
+[1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
+[1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
+[1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0
+[1.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.467.0...1.468.0
 [1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
 [1.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.5...1.466.0
 [1.465.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.4...1.465.5
