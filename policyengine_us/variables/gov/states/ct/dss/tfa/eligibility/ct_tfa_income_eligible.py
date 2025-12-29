@@ -6,7 +6,7 @@ class ct_tfa_income_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Connecticut Temporary Family Assistance (TFA) due to income"
     definition_period = MONTH
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf?rev=f9c7a2028b6e409689d213d1966d6818&hash=9DDB6100DBC3D983F7946E33D702B2C8#page=10"
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf"
     defined_for = StateCode.CT
 
     def formula(spm_unit, period, parameters):
@@ -23,7 +23,7 @@ class ct_tfa_income_eligible(Variable):
         # Existing recipient income check
         # Pre 2024, gross earning <= 100% fpg
         # Starting 2024, gross earning <= 240% ## for 6 months (not modeled)
-        gross_earnings = spm_unit("ct_tfa_gross_earnings", period)
+        gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         fpg = spm_unit("tanf_fpg", period)
 
         fpg_limit = p.income_limit_rate * fpg

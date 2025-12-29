@@ -1,0 +1,103 @@
+- name: Case 1, household of 3, earning less than 171% of fpg.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 133
+    tanf_gross_earned_income: 2_000
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_payment_standard: 833
+    ct_tfa: 700 # 833 -133
+
+- name: Case 2, household of 3, earning higher than 171% of fpg.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 133
+    tanf_gross_earned_income: 3_600
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_payment_standard: 833
+    ct_tfa: 560 # 700 * (1-0.2)
+
+- name: Case 3, household of 3, not eligible for tfa.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: false
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 133
+    tanf_gross_earned_income: 5_000
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_payment_standard: 833
+    ct_tfa: 0
+
+- name: Case 4, integration test. 
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_200  # $100 monthly
+      person2:
+        age: 35
+        employment_income_before_lsr: 2_400  # $200 monthly
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: [10, 110, 0]
+    ct_tfa_eligible: true
+    tanf_fpg: 2_071.67
+    ct_tfa_payment_standard: 833
+    ct_tfa: 833
+
+- name: Case 5, integration test, not eligible case. 
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 12_000  # $1000 monthly
+      person2:
+        age: 35
+        employment_income_before_lsr: 4_800  # $400 monthly
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: [910, 310, 0]
+    ct_tfa_countable_income_at_application: 1_220
+    ct_tfa_need_standard: 1_139.42
+    ct_tfa_eligible: false
+    ct_tfa: 0

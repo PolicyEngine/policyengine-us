@@ -7,7 +7,7 @@ class ct_tfa(Variable):
     label = "Connecticut Temporary Family Assistance (TFA) benefit amount"
     unit = USD
     definition_period = MONTH
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/economic-security/ct-tanf-state-plan-2024---2026---41524-amendment.pdf?rev=f9c7a2028b6e409689d213d1966d6818&hash=9DDB6100DBC3D983F7946E33D702B2C8#page=10"
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf"
     defined_for = "ct_tfa_eligible"
 
     def formula(spm_unit, period, parameters):
@@ -20,7 +20,7 @@ class ct_tfa(Variable):
         )
         benefit_amount = max_(payment_standard - countable_unearned_income, 0)
         # When gross earnings are between 171% and 230% of FPG, reduce the benefit by 20%
-        gross_earnings = spm_unit("ct_tfa_gross_earnings", period)
+        gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         fpg = spm_unit("tanf_fpg", period)
         high_income_threshold = p.rate * fpg
         high_income = gross_earnings >= high_income_threshold

@@ -1,0 +1,38 @@
+- name: Case 1, get all $90 deduction.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 100
+    state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: 10
+
+- name: Case 2, get deduction of up to gross earned income.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 80
+    state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: 0
+
+- name: Case 3, deduction applies to each members. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_200  # $100 monthly
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: [10, 0]

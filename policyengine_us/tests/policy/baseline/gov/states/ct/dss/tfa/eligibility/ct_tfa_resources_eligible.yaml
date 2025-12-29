@@ -1,0 +1,15 @@
+- name: Not eligible.
+  period: 2024-01
+  input:
+    spm_unit_assets: 6_001
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
+
+- name: Eligible.
+  period: 2024-01
+  input:
+    spm_unit_assets: 6_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
