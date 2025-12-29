@@ -108,12 +108,17 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Deductions applied at unit level (total income first, then deductions):
-    # Total gross = 1_500 + 500 = 2_000
-    # Step 1: 20% = 2_000 * 0.20 = 400, After: 2_000 - 400 = 1_600
-    # Step 2: $200 flat, After: 1_600 - 200 = 1_400
-    # Step 3: 55% = 1_400 * 0.55 = 770, After: 1_400 - 770 = 630
-    hi_tanf_countable_earned_income: 630
+    # Deductions applied per person, then aggregated:
+    # Person1: $1,500 gross
+    #   Step 1: 20% = 1,500 × 0.80 = 1,200
+    #   Step 2: $200 flat = 1,200 - 200 = 1,000
+    #   Step 3: 55% = 1,000 × 0.45 = 450
+    # Person2: $500 gross
+    #   Step 1: 20% = 500 × 0.80 = 400
+    #   Step 2: $200 flat = 400 - 200 = 200
+    #   Step 3: 55% = 200 × 0.45 = 90
+    # Total: 450 + 90 = 540
+    hi_tanf_countable_earned_income: 540
 
 - name: Case 6, small earned income where flat deduction creates floor at zero.
   period: 2024-01

@@ -18,9 +18,11 @@ class hi_tanf_gross_income_eligible(Variable):
         gross_income = spm_unit("hi_tanf_gross_income", period)
 
         # Gross income limit = 185% of Standard of Need
-        unit_size = spm_unit.nb_persons()
+        unit_size = spm_unit("spm_unit_size", period)
         capped_size = min_(unit_size, p.max_unit_size)
         standard_of_need = p.standard_of_need.amount[capped_size]
-        gross_income_limit = standard_of_need * p.income.limit.gross.rate
+        gross_income_limit = (
+            standard_of_need * p.eligibility.gross_income_limit_rate
+        )
 
         return gross_income <= gross_income_limit

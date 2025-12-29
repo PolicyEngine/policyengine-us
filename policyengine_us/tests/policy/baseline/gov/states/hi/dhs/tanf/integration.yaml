@@ -50,9 +50,10 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 0
-    hi_tanf_maximum_benefit: 485
+    # 1265 × 0.48 × 0.80 = 485.76
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    hi_tanf: 485
+    hi_tanf: 485.76
 
 - name: Case 2, single parent with child, moderate earned income.
   period: 2024-01
@@ -88,10 +89,11 @@
     # Step 3: 55% = 1_000 * 0.55 = 550, After: 1_000 - 550 = 450
     hi_tanf_countable_earned_income: 450
     hi_tanf_countable_income: 450
-    hi_tanf_maximum_benefit: 485
+    # 1265 × 0.48 × 0.80 = 485.76
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 485 - 450 = 35
-    hi_tanf: 35
+    # Benefit = 485.76 - 450 = 35.76
+    hi_tanf: 35.76
 
 - name: Case 3, family of 3 with income exceeding SOA.
   period: 2024-01
@@ -130,9 +132,10 @@
     # Step 3: 55% = 990, After: 810
     hi_tanf_countable_earned_income: 810
     hi_tanf_countable_income: 810
-    hi_tanf_maximum_benefit: 610
+    # 1590 × 0.48 × 0.80 = 610.56
+    hi_tanf_maximum_benefit: 610.56
     hi_tanf_eligible: true
-    # Benefit = max(610 - 810, 0) = 0 (countable income exceeds SOA)
+    # Benefit = max(610.56 - 810, 0) = 0 (countable income exceeds SOA)
     hi_tanf: 0
 
 - name: Case 4, family of 3 over gross income limit.
@@ -197,10 +200,11 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 400
-    hi_tanf_maximum_benefit: 485
+    # 1265 × 0.48 × 0.80 = 485.76
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 485 - 400 = 85
-    hi_tanf: 85
+    # Benefit = 485.76 - 400 = 85.76
+    hi_tanf: 85.76
 
 - name: Case 6, family with both earned and unearned income.
   period: 2024-01
@@ -241,7 +245,8 @@
     hi_tanf_countable_earned_income: 270
     # Total countable = 270 + 300 = 570
     hi_tanf_countable_income: 570
-    hi_tanf_maximum_benefit: 610
+    # 1590 × 0.48 × 0.80 = 610.56
+    hi_tanf_maximum_benefit: 610.56
     hi_tanf_eligible: true
-    # Benefit = 610 - 570 = 40
-    hi_tanf: 40
+    # Benefit = 610.56 - 570 = 40.56
+    hi_tanf: 40.56

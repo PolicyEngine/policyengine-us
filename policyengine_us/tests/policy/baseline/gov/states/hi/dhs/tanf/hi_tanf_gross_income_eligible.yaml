@@ -168,3 +168,41 @@
   output:
     # 3000 > 2941.50 = ineligible
     hi_tanf_gross_income_eligible: false
+
+- name: Case 8, single person just below threshold (should be eligible).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_737
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 1737 < 1737.15 = eligible (just below limit)
+    hi_tanf_gross_income_eligible: true
+
+- name: Case 9, single person just over threshold ($0.01 over).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_737.16
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 1737.16 > 1737.15 = ineligible
+    hi_tanf_gross_income_eligible: false
