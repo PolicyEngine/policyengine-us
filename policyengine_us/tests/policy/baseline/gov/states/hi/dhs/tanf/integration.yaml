@@ -4,16 +4,16 @@
 # Hawaii TANF Key Values:
 # - Standard of Need (SON): 100% of 2006 Hawaii FPL (frozen)
 # - Gross Income Limit: 185% of SON
-# - Reduced Standard of Assistance (SOA): 80% of full SOA (48% of SON)
+# - Standard of Assistance (SOA): 48% of SON
 #
 # Income Standards by Household Size:
-# | Size | SON    | Gross Limit (185%) | Reduced SOA |
-# |------|--------|-------------------|-------------|
-# | 1    | $939   | $1,737            | $360        |
-# | 2    | $1,265 | $2,340            | $485        |
-# | 3    | $1,590 | $2,941            | $610        |
-# | 4    | $1,916 | $3,544            | $735        |
-# | 5    | $2,242 | $4,147            | $860        |
+# | Size | SON    | Gross Limit (185%) | SOA (48%) |
+# |------|--------|-------------------|-----------|
+# | 1    | $939   | $1,737            | $450.72   |
+# | 2    | $1,265 | $2,340            | $607.20   |
+# | 3    | $1,590 | $2,941            | $763.20   |
+# | 4    | $1,916 | $3,544            | $919.68   |
+# | 5    | $2,242 | $4,147            | $1,076.16 |
 #
 # Earned Income Deductions (applied in order):
 # 1. 20% standard deduction from gross earned
@@ -50,10 +50,10 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 0
-    # 1265 × 0.48 × 0.80 = 485.76
-    hi_tanf_maximum_benefit: 485.76
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
     hi_tanf_eligible: true
-    hi_tanf: 485.76
+    hi_tanf: 607.2
 
 - name: Case 2, single parent with child, moderate earned income.
   period: 2024-01
@@ -89,11 +89,11 @@
     # Step 3: 55% = 1_000 * 0.55 = 550, After: 1_000 - 550 = 450
     hi_tanf_countable_earned_income: 450
     hi_tanf_countable_income: 450
-    # 1265 × 0.48 × 0.80 = 485.76
-    hi_tanf_maximum_benefit: 485.76
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
     hi_tanf_eligible: true
-    # Benefit = 485.76 - 450 = 35.76
-    hi_tanf: 35.76
+    # Benefit = 607.2 - 450 = 157.2
+    hi_tanf: 157.2
 
 - name: Case 3, family of 3 with income exceeding SOA.
   period: 2024-01
@@ -132,10 +132,10 @@
     # Step 3: 55% = 990, After: 810
     hi_tanf_countable_earned_income: 810
     hi_tanf_countable_income: 810
-    # 1590 × 0.48 × 0.80 = 610.56
-    hi_tanf_maximum_benefit: 610.56
+    # 1590 × 0.48 = 763.2
+    hi_tanf_maximum_benefit: 763.2
     hi_tanf_eligible: true
-    # Benefit = max(610.56 - 810, 0) = 0 (countable income exceeds SOA)
+    # Benefit = max(763.2 - 810, 0) = 0 (countable income exceeds SOA)
     hi_tanf: 0
 
 - name: Case 4, family of 3 over gross income limit.
@@ -200,11 +200,11 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 400
-    # 1265 × 0.48 × 0.80 = 485.76
-    hi_tanf_maximum_benefit: 485.76
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
     hi_tanf_eligible: true
-    # Benefit = 485.76 - 400 = 85.76
-    hi_tanf: 85.76
+    # Benefit = 607.2 - 400 = 207.2
+    hi_tanf: 207.2
 
 - name: Case 6, family with both earned and unearned income.
   period: 2024-01
@@ -245,8 +245,52 @@
     hi_tanf_countable_earned_income: 270
     # Total countable = 270 + 300 = 570
     hi_tanf_countable_income: 570
-    # 1590 × 0.48 × 0.80 = 610.56
-    hi_tanf_maximum_benefit: 610.56
+    # 1590 × 0.48 = 763.2
+    hi_tanf_maximum_benefit: 763.2
     hi_tanf_eligible: true
-    # Benefit = 610.56 - 570 = 40.56
-    hi_tanf: 40.56
+    # Benefit = 763.2 - 570 = 193.2
+    hi_tanf: 193.2
+
+- name: Case 7, family with dependent care deduction in full pipeline.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+        tanf_gross_unearned_income: 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $1,800/year = $150/month childcare
+        childcare_expenses: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 1_500
+    hi_tanf_gross_income_eligible: true
+    # Dependent care: min(150, 1 child × $175) = 150
+    hi_tanf_dependent_care_deduction: 150
+    # Earned deductions for $1,500:
+    # Step 1: 20% = 300, After: 1,200
+    # Step 2: $200 flat, After: 1,000
+    # Step 3: 55% = 550, After: 450
+    # After dependent care: max(450 - 150, 0) = 300
+    hi_tanf_countable_earned_income: 300
+    hi_tanf_countable_income: 300
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
+    hi_tanf_eligible: true
+    # Benefit = 607.2 - 300 = 307.2
+    hi_tanf: 307.2

@@ -13,11 +13,4 @@ class hi_tanf_countable_income(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(spm_unit, period, parameters):
-        # Countable earned income (with all deductions applied)
-        countable_earned = spm_unit("hi_tanf_countable_earned_income", period)
-
-        # Unearned income (no deductions for Hawaii TANF)
-        gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-
-        return countable_earned + gross_unearned
+    adds = ["hi_tanf_countable_earned_income", "tanf_gross_unearned_income"]
