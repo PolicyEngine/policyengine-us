@@ -1,5 +1,4 @@
-description: A household is eligible for the Standard Utility Allowance if it has
-  separate heating and cooling costs.
+description: A household is eligible for the Standard Utility Allowance if it has separate heating and cooling costs.
 AK:
   2010-01-01: 0
   2021-10-01: 349
@@ -119,15 +118,18 @@ MA:
   2023-10-01: 852
   2024-10-01: 890
 MD:
+  # Maryland does not follow the fiscal year; SUA is effective January 1.
   2010-01-01: 0
-  2021-10-01: 388
-  2023-01-01: 551
+  2021-01-01: 388
+  2022-01-01: 431
+  2023-01-01: 505
   2024-01-01: 551
+  2025-01-01: 557
 ME:
   2010-01-01: 0
   2021-10-01: 844
-  2023-10-01: 1011
-  2024-10-01: 1047
+  2023-10-01: 1_011
+  2024-10-01: 1_047
 MI:
   2010-01-01: 0
   2021-10-01: 569
@@ -256,8 +258,8 @@ VI:
 VT:
   2010-01-01: 0
   2021-10-01: 875
-  2023-10-01: 1020
-  2024-10-01: 1067
+  2023-10-01: 1_020
+  2024-10-01: 1_067
 WA:
   2010-01-01: 0
   2021-10-01: 458
