@@ -1,0 +1,202 @@
+# Maine TANF Countable Earned Income Tests
+# Tests the $108 flat deduction + 50% disregard on remaining earned income
+# Source: 22 M.R.S. Section 3762(3)(B)(7-D)
+
+- name: Case 1, zero earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # No earned income, no disregard applied
+    me_tanf_countable_earned_income: 0
+
+- name: Case 2, earned income below flat deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 100  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $100 - $108 = -$8, clipped to $0
+    # After 50% disregard: $0 * 0.5 = $0
+    me_tanf_countable_earned_income: 0
+
+- name: Case 3, earned income exactly at flat deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 108  # $108/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $108 - $108 = $0
+    # After 50% disregard: $0 * 0.5 = $0
+    me_tanf_countable_earned_income: 0
+
+- name: Case 4, earned income above flat deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $500 - $108 = $392
+    # After 50% disregard: $392 * 0.5 = $196
+    me_tanf_countable_earned_income: 196
+
+- name: Case 5, moderate earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $1,000 - $108 = $892
+    # After 50% disregard: $892 * 0.5 = $446
+    me_tanf_countable_earned_income: 446
+
+- name: Case 6, high earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 2_000  # $2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $2,000 - $108 = $1,892
+    # After 50% disregard: $1,892 * 0.5 = $946
+    me_tanf_countable_earned_income: 946
+
+# === EDGE CASES ===
+
+- name: Case 7, earned income one dollar above flat deduction boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 109  # $109/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $109 - $108 = $1
+    # After 50% disregard: $1 * 0.5 = $0.50
+    me_tanf_countable_earned_income: 0.5
+
+- name: Case 8, earned income one dollar below flat deduction boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 107  # $107/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $107 - $108 = -$1, clipped to $0
+    # After 50% disregard: $0 * 0.5 = $0
+    me_tanf_countable_earned_income: 0
+
+- name: Case 9, very high earned income stress test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 10_000  # $10,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $10,000 - $108 = $9,892
+    # After 50% disregard: $9,892 * 0.5 = $4,946
+    me_tanf_countable_earned_income: 4_946
+
+- name: Case 10, small positive earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1  # $1/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $1 - $108 = -$107, clipped to $0
+    # After 50% disregard: $0 * 0.5 = $0
+    me_tanf_countable_earned_income: 0
+
+- name: Case 11, earned income results in odd cent calculation.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 110  # $110/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $110 - $108 = $2
+    # After 50% disregard: $2 * 0.5 = $1
+    me_tanf_countable_earned_income: 1

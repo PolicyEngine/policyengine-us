@@ -1,0 +1,127 @@
+# Maine TANF Child-Only Case Tests
+# Tests whether the case is a child-only case (no adult in assistance unit)
+# Source: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
+
+- name: Case 1, adult-included case (not child-only).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: false
+
+- name: Case 2, child-only case (no adults).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 15
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: true
+
+- name: Case 3, single child (child-only).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: true
+
+- name: Case 4, single adult (not child-only).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: false
+
+- name: Case 5, two adults with children (not child-only).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: false
+
+- name: Case 6, exactly 18 year old (adult, not child-only).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_tanf_child_only_case: false
+
+- name: Case 7, non-Maine state.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    me_tanf_child_only_case: false

@@ -1,0 +1,349 @@
+# Maine TANF Countable Income Tests
+# Tests income after all deductions (earned income after disregard + unearned income - child care)
+# Source: 22 M.R.S. Section 3762(3)(B)(7-D)
+#
+# Note: tanf_gross_unearned_income is a MONTH variable, so input monthly values directly
+
+- name: Case 1, zero income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 0
+        me_tanf_child_care_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_tanf_countable_income: 0
+
+- name: Case 2, only earned income after disregard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 200
+        me_tanf_child_care_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $200 + $0 - $0 = $200
+    me_tanf_countable_income: 200
+
+- name: Case 3, only unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_000  # $250/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 0
+        me_tanf_child_care_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $0 + $250 - $0 = $250
+    me_tanf_countable_income: 250
+
+- name: Case 4, earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_800  # $150/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 200
+        me_tanf_child_care_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $200 + $150 - $0 = $350
+    me_tanf_countable_income: 350
+
+- name: Case 5, income with child care deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 300
+        me_tanf_child_care_deduction: 175
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $300 + $0 - $175 = $125
+    me_tanf_countable_income: 125
+
+- name: Case 6, child care deduction exceeds income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 100
+        me_tanf_child_care_deduction: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $100 + $0 - $200 = -$100, clipped to $0
+    me_tanf_countable_income: 0
+
+- name: Case 7, all income types with child care deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_400  # $200/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 400
+        me_tanf_child_care_deduction: 175
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $400 + $200 - $175 = $425
+    me_tanf_countable_income: 425
+
+# === EDGE CASES ===
+
+- name: Case 8, child support pass-through below limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Earned: $100
+    # Unearned: includes child support $30/month
+    # Child support pass-through: min($30, $50) = $30 excluded
+    # Countable unearned = $30 - $30 = $0
+    # Total: $100 + $0 = $100
+    me_tanf_countable_income: 100
+
+- name: Case 9, child support pass-through at limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Earned: $100
+    # Unearned: child support $50/month
+    # Child support pass-through: min($50, $50) = $50 excluded
+    # Countable unearned = $50 - $50 = $0
+    # Total: $100 + $0 = $100
+    me_tanf_countable_income: 100
+
+- name: Case 10, child support pass-through above limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Earned: $100
+    # Unearned: child support $100/month
+    # Child support pass-through: min($100, $50) = $50 excluded
+    # Countable unearned = $100 - $50 = $50
+    # Total: $100 + $50 = $150
+    me_tanf_countable_income: 150
+
+- name: Case 11, very high income levels.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12_000  # $1,000/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 2_000
+        me_tanf_child_care_deduction: 375
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $2,000 + $1,000 - $375 = $2,625
+    me_tanf_countable_income: 2_625
+
+- name: Case 12, child care deduction larger than total income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 600  # $50/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 50
+        me_tanf_child_care_deduction: 375
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $50 + $50 - $375 = -$275, clipped to $0
+    me_tanf_countable_income: 0
+
+- name: Case 13, small fractional amounts.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12  # $1/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 0.50
+        me_tanf_child_care_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $0.50 + $1 - $0 = $1.50
+    me_tanf_countable_income: 1.5
+
+- name: Case 14, mixed child support with other unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month (YEAR variable)
+        social_security: 3_600  # $300/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Earned: $200
+    # Unearned total: $100 (child support) + $300 (SS) = $400
+    # Child support pass-through: min($100, $50) = $50 excluded
+    # Countable unearned = $400 - $50 = $350
+    # Total: $200 + $350 = $550
+    me_tanf_countable_income: 550
+
+- name: Case 15, zero child support receives no pass-through.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 0
+        social_security: 6_000  # $500/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_countable_earned_income: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Earned: $100
+    # Unearned: $500 (SS only)
+    # Child support pass-through: min($0, $50) = $0 excluded
+    # Countable unearned = $500 - $0 = $500
+    # Total: $100 + $500 = $600
+    me_tanf_countable_income: 600

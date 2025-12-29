@@ -1,0 +1,38 @@
+description: Maine provides up to this maximum benefit amount for child-only households under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: Maine TANF maximum benefit child-only
+  reference:
+    - title: 22 M.R.S. Section 3762(3)(B)(8)
+      href: https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html
+    - title: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-331-app-Charts
+
+1:
+  2023-10-01: 205
+  2024-10-01: 254
+2:
+  2023-10-01: 390
+  2024-10-01: 483
+3:
+  2023-10-01: 575
+  2024-10-01: 712
+4:
+  2023-10-01: 756
+  2024-10-01: 936
+5:
+  2023-10-01: 944
+  2024-10-01: 1_169
+6:
+  2023-10-01: 1_127
+  2024-10-01: 1_396
+7:
+  2023-10-01: 1_312
+  2024-10-01: 1_625
+8:
+  2023-10-01: 1_495
+  2024-10-01: 1_851

@@ -1,0 +1,244 @@
+# Maine TANF Benefit Tests
+# Tests benefit calculation: min(Maximum Benefit, Standard of Need - Countable Income)
+# Source: 22 M.R.S. Section 3762(3)(B)(8)
+
+- name: Case 1, zero income receives maximum benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $0) = min($895, $1,030) = $895
+    me_tanf: 895
+
+- name: Case 2, low income with benefit below maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 400
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $400) = min($895, $630) = $630
+    me_tanf: 630
+
+- name: Case 3, moderate income with benefit below maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 700
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $700) = min($895, $330) = $330
+    me_tanf: 330
+
+- name: Case 4, income at standard of need receives zero benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 1_030
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $1,030) = min($895, $0) = $0
+    me_tanf: 0
+
+- name: Case 5, income above standard of need receives zero benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 1_200
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $1,200) = min($895, -$170) clipped = $0
+    me_tanf: 0
+
+- name: Case 6, ineligible household receives zero benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: false
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    me_tanf: 0
+
+- name: Case 7, small household with full maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 489
+    me_tanf_maximum_benefit: 425
+  output:
+    # min($425, $489 - $0) = $425
+    me_tanf: 425
+
+- name: Case 8, large household with full maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 1_296
+    me_tanf_maximum_benefit: 1_127
+  output:
+    # min($1,127, $1,296 - $0) = $1,127
+    me_tanf: 1_127
+
+- name: Case 9, child-only case with zero income.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 817
+    me_tanf_maximum_benefit: 712
+  output:
+    # min($712, $817 - $0) = $712
+    me_tanf: 712
+
+- name: Case 10, benefit constrained by maximum benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 100
+    me_tanf_standard_of_need: 1_296
+    me_tanf_maximum_benefit: 1_127
+  output:
+    # min($1,127, $1,296 - $100) = min($1,127, $1,196) = $1,127
+    me_tanf: 1_127
+
+- name: Case 11, ineligible household receives zero benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: false
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # defined_for = "me_tanf_eligible" means ineligible returns 0
+    me_tanf: 0
+
+# === EDGE CASES ===
+
+- name: Case 12, income one dollar below standard of need.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 1_029
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $1,029) = min($895, $1) = $1
+    me_tanf: 1
+
+- name: Case 13, benefit exactly equals maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 135
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $135) = min($895, $895) = $895
+    me_tanf: 895
+
+- name: Case 14, benefit one dollar below maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 136
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $136) = min($895, $894) = $894
+    me_tanf: 894
+
+- name: Case 15, very large household size 10 child-only.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 2_657  # Size 10 child-only
+    me_tanf_maximum_benefit: 2_307  # Size 10 child-only max
+  output:
+    # min($2,307, $2,657 - $0) = $2,307
+    me_tanf: 2_307
+
+- name: Case 16, very large household size 10 adult-included.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 2_875  # Size 10 adult-included
+    me_tanf_maximum_benefit: 2_496  # Size 10 adult-included max
+  output:
+    # min($2,496, $2,875 - $0) = $2,496
+    me_tanf: 2_496
+
+- name: Case 17, small benefit with partial income.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 480
+    me_tanf_standard_of_need: 489
+    me_tanf_maximum_benefit: 425
+  output:
+    # min($425, $489 - $480) = min($425, $9) = $9
+    me_tanf: 9
+
+- name: Case 18, fractional benefit calculation.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 488.5
+    me_tanf_standard_of_need: 489
+    me_tanf_maximum_benefit: 425
+  output:
+    # min($425, $489 - $488.5) = min($425, $0.5) = $0.5
+    me_tanf: 0.5
+
+- name: Case 19, income significantly exceeds standard of need.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 5_000
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $5,000) = min($895, -$3,970) clipped = $0
+    me_tanf: 0
+
+- name: Case 20, child-only size 1 with zero income.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 290  # Size 1 child-only
+    me_tanf_maximum_benefit: 254  # Size 1 child-only max
+  output:
+    # min($254, $290 - $0) = $254
+    me_tanf: 254
