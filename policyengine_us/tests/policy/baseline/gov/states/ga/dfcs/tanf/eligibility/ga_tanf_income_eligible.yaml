@@ -158,3 +158,50 @@
     # Net earned: ($600 - $250) - $200 = $150
     # Countable: $150 < $356 ✅
     ga_tanf_income_eligible: true
+
+- name: Gross income exactly at GIC boundary passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_408  # $784/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $424 × 1.85 = $784.40
+    # Gross: $784 <= $784.40 ✅ PASSES gross test
+    # Countable: $784 - $250 = $534 >= $424 ❌ FAILS net test
+    ga_tanf_income_eligible: false
+
+- name: Gross income one dollar above GIC boundary fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_420  # $785/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $424 × 1.85 = $784.40
+    # Gross: $785 > $784.40 ❌ FAILS gross test
+    ga_tanf_income_eligible: false

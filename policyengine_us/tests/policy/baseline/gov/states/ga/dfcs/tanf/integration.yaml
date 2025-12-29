@@ -395,6 +395,73 @@
     ga_tanf: 280
     # Benefit = MIN(424 - 0, 280) = 280
 
+- name: Case 13a, two parent household both working each receive work expense deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $784.40, SON = $424, FM = $280
+    # Person1: $400 - $250 = $150 after disregard
+    ga_tanf_earned_income_after_disregard: [150, 250, 0]
+    # Person2: $500 - $250 = $250 after disregard
+    # Gross income: $400 + $500 = $900 > $784.40 ❌ FAILS GIC
+    ga_tanf_income_eligible: false
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: false
+    ga_tanf: 0
+
+- name: Case 13b, two parent household both working with lower income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 4_200  # $350/month
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $784.40, SON = $424, FM = $280
+    # Gross income: $300 + $350 = $650 < $784.40 ✅ PASSES GIC
+    # Person1: $300 - $250 = $50 after disregard
+    # Person2: $350 - $250 = $100 after disregard
+    ga_tanf_earned_income_after_disregard: [50, 100, 0]
+    # Countable: $50 + $100 = $150 < $424 ✅ PASSES net test
+    ga_tanf_countable_income: 150
+    ga_tanf_standard_of_need: 424
+    ga_tanf_income_eligible: true
+    ga_tanf_resources_eligible: true
+    ga_tanf_eligible: true
+    ga_tanf_family_maximum: 280
+    ga_tanf: 274
+    # Benefit = MIN(424 - 150, 280) = MIN(274, 280) = 274
+
 - name: Case 14, family exceeds resource limit ineligible.
   period: 2025-01
   input:
