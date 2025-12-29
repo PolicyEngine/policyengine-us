@@ -1,0 +1,125 @@
+- name: Case 1, eligible family with child and low income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_mfip_eligible: true
+
+- name: Case 2, ineligible due to no children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_mfip_eligible: false
+
+- name: Case 3, ineligible due to excess resources.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 15_000  # Over $10,000 limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_mfip_eligible: false
+
+- name: Case 4, ineligible due to excess income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 60_000  # $5,000/month gross
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Family wage level for 2: $1,196
+    # Gross earned: $5,000
+    # After disregard: (5000-65)*0.5 = $2,467.50
+    # Countable income exceeds FWL
+    mn_mfip_eligible: false
+
+- name: Case 5, eligible mixed-status family (citizen child).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Per MN Stat. 142G.11, a member must be citizen or qualified noncitizen
+    # Child is citizen, so unit is eligible
+    mn_mfip_eligible: true
+
+- name: Case 6, ineligible all undocumented.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # No member is citizen or qualified noncitizen
+    mn_mfip_eligible: false

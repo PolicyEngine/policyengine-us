@@ -1,0 +1,116 @@
+# Idaho TAFI Countable Earned Income
+# Per IDAPA 16.03.08.252: "subtracting sixty percent (60%) of gross earned income"
+# The 60% is what gets subtracted from the Work Incentive amount
+# Formula: Countable Earned = Gross Earned * 0.60
+
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+        self_employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 0
+    # No income = 0 countable
+
+- name: Case 2, single earner with employment income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 300
+    # Monthly earned: 6,000 / 12 = 500
+    # 60% counted: 500 * 0.60 = 300
+
+- name: Case 3, two earners in household.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        employment_income_before_lsr: 6_000   # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 900
+    # Person1: 1,000/month, Person2: 500/month
+    # Total earned: 1,500/month
+    # 60% counted: 1,500 * 0.60 = 900
+
+- name: Case 4, self-employment income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        self_employment_income_before_lsr: 9_600  # $800/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 480
+    # Monthly self-employment: 9,600 / 12 = 800
+    # 60% counted: 800 * 0.60 = 480
+
+- name: Case 5, mixed employment and self-employment.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000       # $500/month
+        self_employment_income_before_lsr: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 480
+    # Total earned: 500 + 300 = 800/month
+    # 60% counted: 800 * 0.60 = 480
+
+- name: Case 6, low income edge case.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_countable_earned_income: 60
+    # Monthly earned: 1,200 / 12 = 100
+    # 60% counted: 100 * 0.60 = 60

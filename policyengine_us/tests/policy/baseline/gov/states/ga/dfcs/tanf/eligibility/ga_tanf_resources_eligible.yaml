@@ -1,0 +1,31 @@
+- name: Resources exactly at limit are eligible.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_cash_assets: 1_000
+  output:
+    ga_tanf_resources_eligible: true
+
+- name: Resources one dollar over limit are ineligible.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_cash_assets: 1_001
+  output:
+    ga_tanf_resources_eligible: false
+
+- name: Zero resources are eligible.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_cash_assets: 0
+  output:
+    ga_tanf_resources_eligible: true
+
+- name: Resources one dollar under limit are eligible.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_cash_assets: 999
+  output:
+    ga_tanf_resources_eligible: true
