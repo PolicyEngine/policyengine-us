@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.482.0] - 2025-12-29 13:39:35
+
+### Added
+
+- Idaho Temporary Assistance for Families in Idaho (TAFI) program, implementing income eligibility, resource limits, and benefit calculation (closes
+
 ## [1.481.0] - 2025-12-29 02:02:32
 
 ### Added
@@ -14079,6 +14085,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.481.0...1.482.0
 [1.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.480.0...1.481.0
 [1.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.479.0...1.480.0
 [1.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.478.0...1.479.0
