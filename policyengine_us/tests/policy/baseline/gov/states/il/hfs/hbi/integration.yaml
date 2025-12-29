@@ -1,0 +1,107 @@
+- name: Illinois family with undocumented members - child eligible, adult in gap
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        immigration_status: UNDOCUMENTED
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_net_income: 20_000
+  output:
+    # Parent age 35 is in the gap - not eligible
+    # Child is eligible
+    il_hbi_eligible: [false, true]
+    il_hbi_age_eligible: [false, true]
+
+- name: Illinois family - senior eligible, younger adult not
+  period: 2024
+  input:
+    people:
+      senior:
+        age: 70
+        immigration_status: UNDOCUMENTED
+      adult_child:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [senior, adult_child]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [senior, adult_child]
+        spm_unit_net_income: 10_000
+  output:
+    # Senior is eligible, adult age 40 is in the gap
+    il_hbi_eligible: [true, false]
+    il_hbi_age_eligible: [true, false]
+
+- name: Illinois HBIA-eligible adult in 2024
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 50
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [adult]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [adult]
+        spm_unit_net_income: 15_000
+  output:
+    il_hbi_eligible: [true]
+    # HBI-eligible people become Medicaid eligible and receive benefits
+    is_medicaid_eligible: [true]
+    medicaid_group: EXPANSION_ADULT
+
+- name: Illinois HBI child receives Medicaid benefits
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [child]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_net_income: 20_000
+  output:
+    il_hbi_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_group: CHILD
+
+- name: Illinois HBI senior receives Medicaid benefits
+  period: 2024
+  input:
+    people:
+      senior:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [senior]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [senior]
+        spm_unit_net_income: 10_000
+  output:
+    il_hbi_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_group: AGED_DISABLED

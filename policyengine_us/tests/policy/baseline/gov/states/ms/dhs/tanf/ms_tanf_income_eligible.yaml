@@ -1,0 +1,158 @@
+# Mississippi TANF income eligibility tests
+# Gross income limit = Need Standard x 1.85 (185%)
+# Need standards by size: 1=$339, 2=$460, 3=$581, 4=$702
+# Income limits by size: 1=$627, 2=$851, 3=$1,074, 4=$1,298
+
+- name: Case 1, single person with zero income.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $339 * 1.85 = $627.15
+    ms_tanf_income_eligible: true
+
+- name: Case 2, single person with income at limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+    tanf_gross_earned_income: 627
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $339 * 1.85 = $627.15
+    # Income: $627 <= $627.15 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 3, single person with income above limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+    tanf_gross_earned_income: 628
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $339 * 1.85 = $627.15
+    # Income: $628 > $627.15 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 4, family of 2 with income below limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 2
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+  output:
+    # Limit: $460 * 1.85 = $851
+    # Income: $700 <= $851 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 5, family of 2 with income at limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 2
+    tanf_gross_earned_income: 600
+    tanf_gross_unearned_income: 251
+  output:
+    # Limit: $460 * 1.85 = $851
+    # Income: $851 <= $851 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 6, family of 2 with income above limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 2
+    tanf_gross_earned_income: 600
+    tanf_gross_unearned_income: 252
+  output:
+    # Limit: $460 * 1.85 = $851
+    # Income: $852 > $851 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 7, family of 3 with income below limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+    tanf_gross_earned_income: 800
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $581 * 1.85 = $1,074.85
+    # Income: $800 <= $1,074.85 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 8, family of 3 with income at limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_074
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $581 * 1.85 = $1,074.85
+    # Income: $1,074 <= $1,074.85 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 9, family of 3 with income above limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_075
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $581 * 1.85 = $1,074.85
+    # Income: $1,075 > $1,074.85 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 10, family of 4 with income below limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 4
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 200
+  output:
+    # Limit: $702 * 1.85 = $1,298.7
+    # Income: $1,200 <= $1,298.7 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 11, family of 4 with income above limit.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 4
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 300
+  output:
+    # Limit: $702 * 1.85 = $1,298.7
+    # Income: $1,300 > $1,298.7 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 12, family of 11 need standard capped at size 10.
+  period: 2026-01
+  input:
+    state_code: MS
+    spm_unit_size: 11
+    tanf_gross_earned_income: 2_641
+    tanf_gross_unearned_income: 0
+  output:
+    # Limit: $1,428 * 1.85 = $2,641.80 (uses size 10 need standard)
+    # Income: $2,641 <= $2,641.80 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 13, not in Mississippi.
+  period: 2026-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 0
+  output:
+    # Not in MS, returns false (defined_for = MS)
+    ms_tanf_income_eligible: false
