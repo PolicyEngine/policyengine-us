@@ -78,3 +78,16 @@
     state_code: CA
   output:
     mi_fip_earned_income_after_deductions_for_benefit_person: 0
+
+- name: Historical 20% ongoing rate before 2011
+  period: 2010-01
+  input:
+    tanf_gross_earned_income: 500
+    state_code: MI
+  output:
+    # $500 gross
+    # Flat deduction = $200
+    # Remainder = $500 - $200 = $300
+    # 20% deduction (pre-2011) = $300 * 0.2 = $60
+    # Countable = $500 - $200 - $60 = $240
+    mi_fip_earned_income_after_deductions_for_benefit_person: 240

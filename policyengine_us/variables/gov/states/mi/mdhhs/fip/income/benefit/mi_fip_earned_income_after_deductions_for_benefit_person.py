@@ -11,8 +11,8 @@ class mi_fip_earned_income_after_deductions_for_benefit_person(Variable):
     definition_period = MONTH
     defined_for = StateCode.MI
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf",
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/518.pdf#page=5",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf#page=4",
     )
 
     def formula(person, period, parameters):

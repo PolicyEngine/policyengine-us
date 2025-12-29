@@ -237,3 +237,58 @@
         state_code: CA
   output:
     mi_fip_payment_standard: 0
+
+- name: Historical 2017 payment standard for three person household
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # 2017 payment standard for family of 3: $492
+    # (compared to 2024-12-01 value of $583)
+    mi_fip_payment_standard: 492
+
+- name: Historical 2017 payment standard beyond bracket
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 7
+      person7:
+        age: 5
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: MI
+  output:
+    # 2017 size 7 payment = $905
+    # 2017 additional person = $80
+    # Total = $905 + $80 = $985
+    mi_fip_payment_standard: 985
