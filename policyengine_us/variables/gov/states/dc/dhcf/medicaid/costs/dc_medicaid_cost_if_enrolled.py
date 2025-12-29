@@ -27,8 +27,13 @@ class dc_medicaid_cost_if_enrolled(Variable):
         # Use DC's child_max_age parameter for consistency with income eligibility
         p_elig = parameters(period).gov.states.dc.dhcf.medicaid.eligibility
         is_child = age <= p_elig.child_max_age
-        # 65 is the standard federal Medicaid aged threshold (42 USC 1382c)
-        is_aged_disabled = is_disabled | (age >= 65)
+        # Get aged threshold from the federal Medicaid adult age range parameter
+        # (the last threshold where adult status becomes false)
+        p_adult = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.categories.adult.age_range
+        aged_threshold = p_adult.thresholds[-1]
+        is_aged_disabled = is_disabled | (age >= aged_threshold)
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
         is_expansion_adult = (
             ~is_child & ~is_aged_disabled & ~is_non_expansion_adult
@@ -114,7 +119,7 @@ class dc_medicaid_cost_if_enrolled(Variable):
         mask = enroll > 0
         per_capita = where(
             mask,
-            spend / np.maximum(enroll, 1),  # Avoid divide-by-zero
+            spend / max_(enroll, 1),  # Avoid divide-by-zero
             default_per_capita,
         )
 

@@ -17,8 +17,7 @@ class dc_medicaid_income_eligible(Variable):
 
         age = person("age", period)
         is_pregnant = person("is_pregnant", period)
-        child_max_age = p.child_max_age
-        is_child = age <= child_max_age
+        is_child = age <= p.child_max_age
 
         # Different income limits based on category
         # NOTE: NO grandfathering for income - if income exceeds new limit,
