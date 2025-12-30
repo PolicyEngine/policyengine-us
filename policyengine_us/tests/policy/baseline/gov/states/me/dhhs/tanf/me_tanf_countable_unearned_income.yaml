@@ -1,5 +1,5 @@
 # Maine TANF Countable Unearned Income Tests
-# Tests gross unearned income minus child support pass-through
+# Tests gross unearned income minus child support deduction
 # Source: 22 M.R.S. Section 3762(3)(B)(7-D)
 #
 # Note: tanf_gross_unearned_income is a MONTH variable
@@ -39,10 +39,10 @@
         members: [person1, person2]
         state_code: ME
   output:
-    # $250 unearned, no child support pass-through
+    # $250 unearned, no child support deduction
     me_tanf_countable_unearned_income: 250
 
-- name: Case 3, child support below pass-through limit.
+- name: Case 3, child support below deduction limit.
   period: 2025-01
   input:
     people:
@@ -60,11 +60,11 @@
         state_code: ME
   output:
     # Child support $30/month
-    # Pass-through: min($30, $50) = $30 excluded
+    # Deduction: min($30, $50) = $30 excluded
     # Countable = $30 - $30 = $0
     me_tanf_countable_unearned_income: 0
 
-- name: Case 4, child support at pass-through limit.
+- name: Case 4, child support at deduction limit.
   period: 2025-01
   input:
     people:
@@ -82,11 +82,11 @@
         state_code: ME
   output:
     # Child support $50/month
-    # Pass-through: min($50, $50) = $50 excluded
+    # Deduction: min($50, $50) = $50 excluded
     # Countable = $50 - $50 = $0
     me_tanf_countable_unearned_income: 0
 
-- name: Case 5, child support above pass-through limit.
+- name: Case 5, child support above deduction limit.
   period: 2025-01
   input:
     people:
@@ -104,7 +104,7 @@
         state_code: ME
   output:
     # Child support $100/month
-    # Pass-through: min($100, $50) = $50 excluded
+    # Deduction: min($100, $50) = $50 excluded
     # Countable = $100 - $50 = $50
     me_tanf_countable_unearned_income: 50
 
@@ -127,11 +127,11 @@
         state_code: ME
   output:
     # Unearned total: $100 (child support) + $300 (SS) = $400
-    # Pass-through: min($100, $50) = $50 excluded
+    # Deduction: min($100, $50) = $50 excluded
     # Countable = $400 - $50 = $350
     me_tanf_countable_unearned_income: 350
 
-- name: Case 7, child support one dollar above pass-through limit.
+- name: Case 7, child support one dollar above deduction limit.
   period: 2025-01
   input:
     people:
@@ -149,7 +149,7 @@
         state_code: ME
   output:
     # Child support $51/month
-    # Pass-through: min($51, $50) = $50 excluded
+    # Deduction: min($51, $50) = $50 excluded
     # Countable = $51 - $50 = $1
     me_tanf_countable_unearned_income: 1
 

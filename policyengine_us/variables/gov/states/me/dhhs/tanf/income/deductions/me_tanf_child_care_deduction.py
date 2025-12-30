@@ -21,12 +21,8 @@ class me_tanf_child_care_deduction(Variable):
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period)
 
-        # Get age-based amount from bracket parameter
-        age_based_amount = p.amount.calc(age)
-
         # Special needs children get the higher amount (bracket 0 = $200)
-        infant_amount = p.amount.calc(0)
-        max_per_child = where(is_disabled, infant_amount, age_based_amount)
+        max_per_child = where(is_disabled, p.amount.amounts[0], p.amount.calc(age))
 
         # Only children count toward the deduction cap
         max_deduction_per_person = max_per_child * is_child

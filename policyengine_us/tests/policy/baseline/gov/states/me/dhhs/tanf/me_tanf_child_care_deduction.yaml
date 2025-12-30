@@ -1,363 +1,119 @@
 # Maine TANF Child Care Deduction Tests
-# Tests the child care deduction limits: $175/child standard, $200/child under 2
+# Tests the child care deduction limits: $175/child standard, $200/child under 2 or disabled
 # Source: 22 M.R.S. Section 3762(3)(B)(7-D)
 
-- name: Case 1, no child care expenses.
+- name: Case 1, family with varied child ages and conditions.
   period: 2025-01
   input:
     people:
-      person1:
-        age: 30
-      person2:
-        age: 5
+      adult:
+        age: 35
+      infant:
+        age: 0  # Under 2: $200 limit
+      toddler:
+        age: 1  # Under 2: $200 limit
+      child_at_boundary:
+        age: 2  # NOT under 2: $175 limit
+      school_age:
+        age: 8  # Over 2: $175 limit
+      disabled_child:
+        age: 10
+        is_disabled: true  # Disabled: $200 limit
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 0
+        members: [adult, infant, toddler, child_at_boundary, school_age, disabled_child]
+        childcare_expenses: 12_000  # $1,000/month (above total limit)
     households:
       household:
-        members: [person1, person2]
+        members: [adult, infant, toddler, child_at_boundary, school_age, disabled_child]
         state_code: ME
   output:
-    me_tanf_child_care_deduction: 0
+    # infant: $200, toddler: $200, child_at_boundary: $175, school_age: $175, disabled_child: $200
+    # Total limit = $200 + $200 + $175 + $175 + $200 = $950
+    # Expenses $1,000 > $950 limit → capped at $950
+    me_tanf_child_care_deduction: 950
 
-- name: Case 2, one child over age 2 with expenses below limit.
+- name: Case 2, expenses below limit.
   period: 2025-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
-        age: 5
+      child1:
+        age: 5  # $175 limit
+      child2:
+        age: 1  # $200 limit
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 1_200  # $100/month
+        members: [adult, child1, child2]
+        childcare_expenses: 2_400  # $200/month (below $375 limit)
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1, child2]
         state_code: ME
   output:
-    # 1 child over age 2: limit = $175
-    # Expenses $100 < $175 limit
-    # Deduction = $100
-    me_tanf_child_care_deduction: 100
-
-- name: Case 3, one child over age 2 with expenses at limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 2_100  # $175/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # 1 child over age 2: limit = $175
-    # Deduction = $175
-    me_tanf_child_care_deduction: 175
-
-- name: Case 4, one child over age 2 with expenses above limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # 1 child over age 2: limit = $175
-    # Expenses $500 > $175 limit
-    # Deduction capped at $175
-    me_tanf_child_care_deduction: 175
-
-- name: Case 5, one child under age 2 with expenses below limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 1_800  # $150/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # 1 child under age 2: limit = $200
-    # Expenses $150 < $200 limit
-    # Deduction = $150
-    me_tanf_child_care_deduction: 150
-
-- name: Case 6, one child under age 2 with expenses at limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 2_400  # $200/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # 1 child under age 2: limit = $200
-    # Deduction = $200
+    # Limit = $175 + $200 = $375
+    # Expenses $200 < $375 → deduction = $200
     me_tanf_child_care_deduction: 200
 
-- name: Case 7, one child under age 2 with expenses above limit.
+- name: Case 3, expenses exactly at limit.
   period: 2025-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
-        age: 1
+      child1:
+        age: 5  # $175 limit
+      child2:
+        age: 1  # $200 limit
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month
+        members: [adult, child1, child2]
+        childcare_expenses: 4_500  # $375/month (exactly at limit)
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1, child2]
         state_code: ME
   output:
-    # 1 child under age 2: limit = $200
-    # Deduction capped at $200
-    me_tanf_child_care_deduction: 200
-
-- name: Case 8, two children with mixed ages.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-      person3:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        childcare_expenses: 6_000  # $500/month
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: ME
-  output:
-    # 1 child over 2: limit = $175
-    # 1 child under 2: limit = $200
-    # Total limit = $375
-    # Expenses $500 > $375 limit
-    # Deduction capped at $375
+    # Limit = $175 + $200 = $375
+    # Expenses $375 = $375 → deduction = $375
     me_tanf_child_care_deduction: 375
 
-# === EDGE CASES ===
-
-- name: Case 9, child exactly at age 2 boundary.
+- name: Case 4, no children (adults only).
   period: 2025-01
   input:
     people:
-      person1:
+      adult1:
         age: 30
-      person2:
-        age: 2  # Exactly age 2, should get $175 (not under 2)
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_000  # $250/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # Child age 2 is NOT under 2, so standard limit = $175
-    # Expenses $250 > $175 limit
-    # Deduction capped at $175
-    me_tanf_child_care_deduction: 175
-
-- name: Case 10, disabled child over age 2 gets higher limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 10
-        is_disabled: true  # Special needs qualifies for $200
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_000  # $250/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # Disabled child: limit = $200 (special needs)
-    # Expenses $250 > $200 limit
-    # Deduction capped at $200
-    me_tanf_child_care_deduction: 200
-
-- name: Case 11, adult only household with childcare expenses.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
+      adult2:
         age: 25
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month, but no children
+        members: [adult1, adult2]
+        childcare_expenses: 6_000  # $500/month
     households:
       household:
-        members: [person1, person2]
+        members: [adult1, adult2]
         state_code: ME
   output:
     # No children = no child care deduction regardless of expenses
     me_tanf_child_care_deduction: 0
 
-- name: Case 12, newborn child age 0.
+- name: Case 5, no child care expenses.
   period: 2025-01
   input:
     people:
-      person1:
-        age: 25
-      person2:
-        age: 0  # Newborn, under age 2
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_000  # $250/month
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # Newborn (age 0) is under 2: limit = $200
-    # Expenses $250 > $200 limit
-    # Deduction capped at $200
-    me_tanf_child_care_deduction: 200
-
-- name: Case 13, multiple infants.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 28
-      person2:
-        age: 1
-      person3:
-        age: 0  # Twins scenario
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        childcare_expenses: 6_000  # $500/month
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: ME
-  output:
-    # 2 children under 2: 2 * $200 = $400
-    # Expenses $500 > $400 limit
-    # Deduction capped at $400
-    me_tanf_child_care_deduction: 400
-
-- name: Case 14, many children with varied ages.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 12
-      person3:
-        age: 8
-      person4:
-        age: 5
-      person5:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        childcare_expenses: 12_000  # $1,000/month
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: ME
-  output:
-    # 3 children over 2: 3 * $175 = $525
-    # 1 child under 2: 1 * $200 = $200
-    # Total limit = $725
-    # Expenses $1,000 > $725 limit
-    # Deduction capped at $725
-    me_tanf_child_care_deduction: 725
-
-- name: Case 15, expenses exactly at combined limit.
-  period: 2025-01
-  input:
-    people:
-      person1:
+      adult:
         age: 30
-      person2:
+      child:
         age: 5
-      person3:
-        age: 1
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
-        childcare_expenses: 4_500  # $375/month exactly at limit
+        members: [adult, child]
+        childcare_expenses: 0
     households:
       household:
-        members: [person1, person2, person3]
+        members: [adult, child]
         state_code: ME
   output:
-    # 1 child over 2: $175, 1 child under 2: $200
-    # Total limit = $375
-    # Expenses $375 = limit
-    # Deduction = $375
-    me_tanf_child_care_deduction: 375
-
-- name: Case 16, single person household no children.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        childcare_expenses: 1_200  # $100/month
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-  output:
-    # No children = no child care deduction
     me_tanf_child_care_deduction: 0

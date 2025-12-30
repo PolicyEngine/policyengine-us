@@ -14,23 +14,14 @@ class me_tanf_countable_earned_income(Variable):
     defined_for = StateCode.ME
 
     def formula(spm_unit, period, parameters):
-        # Per 22 M.R.S. Section 3762(3)(B)(7-D): Month 7+ disregard
-        # Step 1: Flat deduction of $108
-        # Step 2: 50% disregard of remaining earnings
-        # Step 3: Child care deduction (work-related expense)
-        # NOTE: First 6 months of employment have higher disregards (100%/75%)
-        # that cannot be tracked in PolicyEngine
-        p = parameters(period).gov.states.me.dhhs.tanf.earned_income
-
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-
-        # Apply flat deduction first
-        after_flat = max_(gross_earned - p.flat_deduction, 0)
-
-        # Apply percentage disregard (50% excluded = 50% counted)
-        after_disregard = after_flat * (1 - p.percentage_disregard)
+        # Per 22 M.R.S. Section 3762(3)(B)(7-D):
+        # Each employed person gets $108 flat + 50% disregard (applied per person)
+        # Then child care deduction applies at household level
+        earned_after_disregard = add(
+            spm_unit, period, ["me_tanf_earned_income_after_disregard_person"]
+        )
 
         # Subtract child care deduction (work-related expense)
         child_care_deduction = spm_unit("me_tanf_child_care_deduction", period)
 
-        return max_(after_disregard - child_care_deduction, 0)
+        return max_(earned_after_disregard - child_care_deduction, 0)

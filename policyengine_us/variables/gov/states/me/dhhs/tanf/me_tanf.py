@@ -21,4 +21,7 @@ class me_tanf(Variable):
         maximum_benefit = spm_unit("me_tanf_maximum_benefit", period)
 
         computed_benefit = max_(standard_of_need - countable_income, 0)
+        # NOTE: Maine also provides a Special Need Housing Allowance (SNHA) of up
+        # to $300/month for households with housing costs >= 50% of countable
+        # income. SNHA is not modeled. See 10-144 C.M.R. Chapter 331, Section G(4).
         return min_(computed_benefit, maximum_benefit)

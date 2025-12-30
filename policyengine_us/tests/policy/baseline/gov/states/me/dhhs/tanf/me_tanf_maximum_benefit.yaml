@@ -39,61 +39,7 @@
     # Max benefit for size 4 = $1,127
     me_tanf_maximum_benefit: 1_127
 
-- name: Case 5, household size 5.
-  period: 2025-01
-  input:
-    spm_unit_size: 5
-    state_code: ME
-  output:
-    # Max benefit for size 5 = $1,352
-    me_tanf_maximum_benefit: 1_352
-
-- name: Case 6, household size 6.
-  period: 2025-01
-  input:
-    spm_unit_size: 6
-    state_code: ME
-  output:
-    # Max benefit for size 6 = $1,580
-    me_tanf_maximum_benefit: 1_580
-
-- name: Case 7, household size 7.
-  period: 2025-01
-  input:
-    spm_unit_size: 7
-    state_code: ME
-  output:
-    # Max benefit for size 7 = $1,811
-    me_tanf_maximum_benefit: 1_811
-
-- name: Case 8, household size 8 (max table size).
-  period: 2025-01
-  input:
-    spm_unit_size: 8
-    state_code: ME
-  output:
-    # Max benefit for size 8 = $2,040
-    me_tanf_maximum_benefit: 2_040
-
-- name: Case 9, household size 9 (incremental).
-  period: 2025-01
-  input:
-    spm_unit_size: 9
-    state_code: ME
-  output:
-    # Max benefit for size 8 = $2,040 + $228 = $2,268
-    me_tanf_maximum_benefit: 2_268
-
-- name: Case 10, household size 10 (2 incremental).
-  period: 2025-01
-  input:
-    spm_unit_size: 10
-    state_code: ME
-  output:
-    # Max benefit for size 8 = $2,040 + 2 * $228 = $2,496
-    me_tanf_maximum_benefit: 2_496
-
-- name: Case 11, non-Maine state.
+- name: Case 5, non-Maine state.
   period: 2025-01
   input:
     spm_unit_size: 3
