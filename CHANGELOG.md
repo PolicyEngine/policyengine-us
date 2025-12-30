@@ -5,6 +5,100 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.484.2] - 2025-12-29 20:01:21
+
+## [1.484.1] - 2025-12-29 19:18:44
+
+### Changed
+
+- Update Virginia 2025 income tax parameters with 2025 Form 760 references
+- Add rebate values for 2024 ($200/$400) and 2025 ($0)
+- Add 2025 tests for standard deduction, EITC, military benefit subtraction, age deduction, rebate, and exemptions
+
+## [1.484.0] - 2025-12-29 16:26:00
+
+### Added
+
+- Illinois Health Benefits for Immigrants (HBI) program covering All Kids, HBIA (adults 42-64), and HBIS (seniors 65+).
+
+## [1.483.0] - 2025-12-29 14:52:56
+
+### Added
+
+- Minnesota 2025 income tax parameter updates and new programs including K-12 Education Credit/Subtraction, 529 Contribution Subtraction, Military Pension Subtraction, and Active Duty Military Pay Subtraction.
+
+## [1.482.0] - 2025-12-29 13:39:35
+
+### Added
+
+- Idaho Temporary Assistance for Families in Idaho (TAFI) program, implementing income eligibility, resource limits, and benefit calculation (closes
+
+## [1.481.0] - 2025-12-29 02:02:32
+
+### Added
+
+- Michigan Family Independence Program (FIP/TANF)
+
+## [1.480.0] - 2025-12-29 02:00:46
+
+### Added
+
+- Georgia TANF program implementation
+
+## [1.479.0] - 2025-12-28 23:17:19
+
+### Added
+
+- Add Mississippi TANF program.
+
+## [1.478.0] - 2025-12-28 22:59:09
+
+### Added
+
+- Nebraska Aid to Dependent Children (ADC) program.
+
+## [1.477.0] - 2025-12-28 22:37:09
+
+### Added
+
+- Add Kansas TANF program.
+
+## [1.476.0] - 2025-12-28 22:18:45
+
+### Added
+
+- Implement Arkansas Transitional Employment Assistance (TEA/TANF) program
+
+## [1.475.0] - 2025-12-28 22:16:11
+
+### Added
+
+- Added Oklahoma TANF (Temporary Assistance for Needy Families) program
+
+## [1.474.0] - 2025-12-28 21:35:08
+
+### Added
+
+- Adds Utah Temporary Assistance for Needy Families (TANF) program.
+
+## [1.473.0] - 2025-12-28 21:23:14
+
+### Added
+
+- Minnesota Family Investment Program (MFIP).
+
+## [1.472.0] - 2025-12-28 21:07:30
+
+### Added
+
+- Add Kentucky TANF (K-TAP) program
+
+## [1.471.0] - 2025-12-26 20:04:36
+
+### Added
+
+- Add Emergency Medicaid eligibility for undocumented immigrants
+
 ## [1.470.1] - 2025-12-23 14:23:08
 
 ### Fixed
@@ -14013,6 +14107,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2
+[1.484.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.0...1.484.1
+[1.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.483.0...1.484.0
+[1.483.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.482.0...1.483.0
+[1.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.481.0...1.482.0
+[1.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.480.0...1.481.0
+[1.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.479.0...1.480.0
+[1.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.478.0...1.479.0
+[1.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.477.0...1.478.0
+[1.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.476.0...1.477.0
+[1.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.475.0...1.476.0
+[1.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.474.0...1.475.0
+[1.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.473.0...1.474.0
+[1.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.472.0...1.473.0
+[1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
+[1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
 [1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
 [1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
 [1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0

@@ -1,0 +1,33 @@
+- name: Minnesota Military Pension Subtraction - retirement pay only
+  period: 2025
+  input:
+    state_code: MN
+    military_retirement_pay: 25_000
+  output:
+    # Full subtraction of military retirement pay
+    mn_military_pension_subtraction: 25_000
+
+- name: Minnesota Military Pension Subtraction - with survivor benefits
+  period: 2025
+  input:
+    state_code: MN
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 5_000
+  output:
+    # Full subtraction of retirement pay + survivor benefits
+    mn_military_pension_subtraction: 25_000
+
+- name: Minnesota Military Pension Subtraction - survivor benefits only
+  period: 2025
+  input:
+    state_code: MN
+    military_retirement_pay_survivors: 15_000
+  output:
+    mn_military_pension_subtraction: 15_000
+
+- name: Minnesota Military Pension Subtraction - no military pension
+  period: 2025
+  input:
+    state_code: MN
+  output:
+    mn_military_pension_subtraction: 0
