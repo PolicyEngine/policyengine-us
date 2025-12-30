@@ -26,11 +26,11 @@
       person1:
         is_tax_unit_head: true
         age: 45
-        head_is_disabled: true
         employment_income: 20_000
     tax_units:
       tax_unit:
         members: [person1]
+        head_is_disabled: true
     households:
       household:
         members: [person1]
