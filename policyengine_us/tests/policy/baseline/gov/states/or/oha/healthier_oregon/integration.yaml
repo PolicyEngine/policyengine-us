@@ -2,7 +2,7 @@
 
 - name: Undocumented adult gets healthcare benefit value
   period: 2024
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person:
@@ -16,7 +16,7 @@
   output:
     or_healthier_oregon_eligible: [true]
     # Cost should be non-zero (Oregon expansion adult rate)
-    or_healthier_oregon_cost: [7_475]  # Oregon expansion adult per capita cost
+    or_healthier_oregon_cost: [7_475.23]  # Oregon expansion adult per capita cost
 
 - name: Undocumented child gets higher income limit
   period: 2024
