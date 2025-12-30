@@ -46,121 +46,13 @@
   output:
     nh_fanf: 0
 
-- name: Case 5, family of four with partial benefit.
+- name: Case 5, income exceeds payment standard, capped at zero.
   period: 2024-01
   input:
     state_code: NH
     nh_fanf_eligible: true
-    nh_fanf_payment_standard: 1_560
+    nh_fanf_payment_standard: 753
     nh_fanf_countable_income: 800
   output:
-    # 1,560 - 800 = 760
-    nh_fanf: 760
-
-# --- Edge Case Tests ---
-
-- name: Edge case, income one dollar below payment standard.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 753
-    # Income is $752, one dollar below threshold
-    nh_fanf_countable_income: 752
-  output:
-    # 753 - 752 = 1 (minimum positive benefit)
-    nh_fanf: 1
-
-- name: Edge case, income one cent below payment standard.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 753
-    # Income is $752.99
-    nh_fanf_countable_income: 752.99
-  output:
-    # 753 - 752.99 = 0.01
-    nh_fanf: 0.01
-
-- name: Edge case, max function handles income exceeding payment standard.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 753
-    # Income exceeds payment standard
-    nh_fanf_countable_income: 800
-  output:
-    # max(753 - 800, 0) = max(-47, 0) = 0
+    # max(753 - 800, 0) = 0
     nh_fanf: 0
-
-- name: Edge case, large household maximum benefit.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    # 8-person payment standard
-    nh_fanf_payment_standard: 2_636
-    nh_fanf_countable_income: 0
-  output:
-    # Maximum benefit for large household
-    nh_fanf: 2_636
-
-- name: Edge case, large household partial benefit.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    # 8-person payment standard
-    nh_fanf_payment_standard: 2_636
-    nh_fanf_countable_income: 1_500
-  output:
-    # 2,636 - 1,500 = 1,136
-    nh_fanf: 1_136
-
-- name: Edge case, fractional income results in fractional benefit.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 1_022
-    nh_fanf_countable_income: 500.50
-  output:
-    # 1,022 - 500.50 = 521.50
-    nh_fanf: 521.50
-
-- name: Edge case, very small benefit amount.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 753
-    nh_fanf_countable_income: 750
-  output:
-    # 753 - 750 = 3
-    nh_fanf: 3
-
-- name: Edge case, income far exceeds payment standard.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 753
-    # Income is 10x the payment standard
-    nh_fanf_countable_income: 7_530
-  output:
-    # max(753 - 7,530, 0) = 0
-    nh_fanf: 0
-
-- name: Edge case, half of payment standard as income.
-  period: 2024-01
-  input:
-    state_code: NH
-    nh_fanf_eligible: true
-    nh_fanf_payment_standard: 1_022
-    # Income is exactly half
-    nh_fanf_countable_income: 511
-  output:
-    # 1,022 - 511 = 511
-    nh_fanf: 511

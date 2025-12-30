@@ -13,7 +13,4 @@ class nh_fanf_countable_income(Variable):
     )
     defined_for = StateCode.NH
 
-    adds = [
-        "nh_fanf_countable_earned_income",
-        "tanf_gross_unearned_income",
-    ]
+    adds = ["nh_fanf_countable_earned_income", "tanf_gross_unearned_income"]
