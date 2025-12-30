@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixed:
+    - ACA required contribution percentage now correctly handles flat brackets (e.g.,
+      0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
+      rates into independent parameters.
