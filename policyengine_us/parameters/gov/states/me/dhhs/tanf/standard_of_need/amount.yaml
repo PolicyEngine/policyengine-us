@@ -1,14 +1,12 @@
-description: Maine provides this amount as the standard of need for adult-included households under the Temporary Assistance for Needy Families program.
+description: Maine provides this amount as the standard of need under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 9)
-  label: Maine TANF standard of need adult-included
+  label: Maine TANF standard of need amount
   reference:
-    - title: 22 M.R.S. Section 3762
-      href: https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html
     - title: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
       href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-331-app-Charts
 

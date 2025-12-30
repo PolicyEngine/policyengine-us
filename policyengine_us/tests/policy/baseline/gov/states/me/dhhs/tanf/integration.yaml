@@ -40,14 +40,13 @@
     # Gross earned = $1,000/month
     # After $108 flat deduction = $1,000 - $108 = $892
     # After 50% disregard = $892 * 0.5 = $446
-    me_tanf_countable_earned_income: 446
+    # Child care: 2 children over age 2: 2 * $175 = $350
+    # After child care: $446 - $350 = $96
+    me_tanf_countable_earned_income: 96
 
-    # Child care deduction:
-    # 2 children over age 2: 2 * $175 = $350
-    # Expenses $350/month, limit $350 = $350
     me_tanf_child_care_deduction: 350
 
-    # Countable income = $446 + $0 (unearned) - $350 (child care) = $96
+    # Countable income = $96 (earned) + $0 (unearned) = $96
     me_tanf_countable_income: 96
 
     # Income eligibility: $96 <= $1,030
@@ -102,44 +101,7 @@
     # Benefit = min($1,127, $1,296 - $0) = $1,127
     me_tanf: 1_127
 
-- name: Case 3, child-only case with two children.
-  period: 2025-01
-  absolute_error_margin: 1
-  input:
-    people:
-      person1:
-        age: 10
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-      person2:
-        age: 7
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # Child-only case: only children in SPMUnit
-    # Size 2, child-only:
-    # Standard of Need = $553
-    # Maximum Benefit = $483
-
-    me_tanf_child_only_case: true
-    me_tanf_countable_income: 0
-    me_tanf_income_eligible: true
-    me_tanf_eligible: true
-
-    # Benefit = min($483, $553 - $0) = $483
-    me_tanf: 483
-
-- name: Case 4, income just above limit makes ineligible.
+- name: Case 3, income just above limit makes ineligible.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -179,7 +141,7 @@
     me_tanf_eligible: false
     me_tanf: 0
 
-- name: Case 5, income just below limit is eligible.
+- name: Case 4, income just below limit is eligible.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -226,7 +188,7 @@
     # Benefit = min($895, $1,030 - $746) = min($895, $284) = $284
     me_tanf: 284
 
-- name: Case 6, mixed earned and unearned income.
+- name: Case 5, mixed earned and unearned income.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -278,7 +240,7 @@
     # Benefit = min($1,127, $1,296 - $496) = min($1,127, $800) = $800
     me_tanf: 800
 
-- name: Case 7, resources over limit makes ineligible.
+- name: Case 6, resources over limit makes ineligible.
   period: 2025-01
   input:
     people:
@@ -306,7 +268,7 @@
     me_tanf_eligible: false
     me_tanf: 0
 
-- name: Case 8, pregnant woman with no children.
+- name: Case 7, pregnant woman with no children.
   period: 2025-01
   input:
     people:
@@ -338,7 +300,7 @@
     # Benefit = min($425, $489 - $0) = $425
     me_tanf: 425
 
-- name: Case 9, family with infant using higher child care deduction.
+- name: Case 8, family with infant using higher child care deduction.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -372,14 +334,14 @@
     # Gross earned = $800/month
     # After $108 flat deduction = $800 - $108 = $692
     # After 50% disregard = $692 * 0.5 = $346
-    me_tanf_countable_earned_income: 346
-
-    # Child care deduction:
-    # 1 child under age 2: max $200
+    # Child care: 1 child under age 2: max $200
     # Expenses $300/month, limit $200 = $200
+    # After child care: $346 - $200 = $146
+    me_tanf_countable_earned_income: 146
+
     me_tanf_child_care_deduction: 200
 
-    # Countable income = $346 - $200 = $146
+    # Countable income = $146 (earned) + $0 (unearned) = $146
     me_tanf_countable_income: 146
     me_tanf_income_eligible: true
     me_tanf_eligible: true
@@ -389,7 +351,7 @@
 
 # === EDGE CASES ===
 
-- name: Case 10, large household of 9 with zero income.
+- name: Case 9, large household of 9 with zero income.
   period: 2025-01
   input:
     people:
@@ -454,7 +416,7 @@
     # Benefit = min($2,268, $2,612 - $0) = $2,268
     me_tanf: 2_268
 
-- name: Case 11, single parent with earned income at flat deduction boundary.
+- name: Case 10, single parent with earned income at flat deduction boundary.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -495,7 +457,7 @@
     # Benefit = min($669, $769 - $0) = $669
     me_tanf: 669
 
-- name: Case 12, child age exactly 2 gets standard child care deduction.
+- name: Case 11, child age exactly 2 gets standard child care deduction.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -525,9 +487,10 @@
     me_tanf_child_care_deduction: 175
 
     # Earned: ($500 - $108) * 0.5 = $196
-    me_tanf_countable_earned_income: 196
+    # After child care: $196 - $175 = $21
+    me_tanf_countable_earned_income: 21
 
-    # Countable = $196 - $175 = $21
+    # Countable = $21 (earned) + $0 (unearned) = $21
     me_tanf_countable_income: 21
     me_tanf_income_eligible: true
     me_tanf_eligible: true
@@ -535,7 +498,7 @@
     # Benefit = min($669, $769 - $21) = min($669, $748) = $669
     me_tanf: 669
 
-- name: Case 13, resources exactly at limit.
+- name: Case 12, resources exactly at limit.
   period: 2025-01
   input:
     people:
@@ -565,7 +528,7 @@
     me_tanf_eligible: true
     me_tanf: 669
 
-- name: Case 14, child support pass-through edge case.
+- name: Case 13, child support pass-through edge case.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -607,7 +570,7 @@
     # Benefit = min($669, $769 - $246) = min($669, $523) = $523
     me_tanf: 523
 
-- name: Case 15, disabled child gets higher child care deduction.
+- name: Case 14, disabled child gets higher child care deduction.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -638,9 +601,10 @@
     me_tanf_child_care_deduction: 200
 
     # Earned: ($800 - $108) * 0.5 = $346
-    me_tanf_countable_earned_income: 346
+    # After child care: $346 - $200 = $146
+    me_tanf_countable_earned_income: 146
 
-    # Countable = $346 - $200 = $146
+    # Countable = $146 (earned) + $0 (unearned) = $146
     me_tanf_countable_income: 146
     me_tanf_income_eligible: true
     me_tanf_eligible: true
@@ -648,40 +612,7 @@
     # Benefit = min($669, $769 - $146) = min($669, $623) = $623
     me_tanf: 623
 
-- name: Case 16, single child household.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 8
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-    spm_units:
-      spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-  output:
-    # Child-only case: 1 child only in SPMUnit
-    # Size 1, child-only:
-    # Standard of Need = $290
-    # Maximum Benefit = $254
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 290
-    me_tanf_maximum_benefit: 254
-    me_tanf_countable_income: 0
-    me_tanf_income_eligible: true
-    me_tanf_eligible: true
-
-    # Benefit = min($254, $290 - $0) = $254
-    me_tanf: 254
-
-- name: Case 17, zero earned income only unearned.
+- name: Case 15, zero earned income only unearned.
   period: 2025-01
   absolute_error_margin: 1
   input:
@@ -724,3 +655,92 @@
 
     # Benefit = min($895, $1,030 - $500) = min($895, $530) = $530
     me_tanf: 530
+
+- name: Case 16, non-citizen household ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED_IMMIGRANT
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED_IMMIGRANT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # No citizen or legal immigrant in household
+    # Immigration eligibility fails
+    me_tanf_eligible: false
+    me_tanf: 0
+
+- name: Case 17, multi-earner household with child care.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 7_200  # $600/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income_before_lsr: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    # Size 4, adult-included:
+    # Standard of Need = $1,296
+    # Maximum Benefit = $1,127
+
+    # Earned income calculation (both earners combined):
+    # Person 1: $600/month
+    # Person 2: $400/month
+    # Total gross earned = $1,000/month
+    # After $108 flat deduction = $1,000 - $108 = $892
+    # After 50% disregard = $892 * 0.5 = $446
+    # Child care: Child age 4: $175 max, Child age 1 (under 2): $200 max
+    # Combined limit = $175 + $200 = $375
+    # Expenses $500/month, limit $375 = $375
+    # After child care: $446 - $375 = $71
+    me_tanf_countable_earned_income: 71
+
+    me_tanf_child_care_deduction: 375
+
+    # Countable income = $71 (earned) + $0 (unearned) = $71
+    me_tanf_countable_income: 71
+    me_tanf_income_eligible: true
+    me_tanf_eligible: true
+
+    # Benefit = min($1,127, $1,296 - $71) = min($1,127, $1,225) = $1,127
+    me_tanf: 1_127

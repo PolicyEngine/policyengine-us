@@ -1,9 +1,9 @@
 # Maine TANF Standard of Need Tests
-# Tests lookup by household size for adult-included and child-only cases
+# Tests lookup by household size
 # FFY 2025 values (effective 2024-10-01)
 # Source: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
 
-- name: Case 1, household size 1 adult-included.
+- name: Case 1, household size 1.
   period: 2025-01
   input:
     people:
@@ -17,11 +17,10 @@
         members: [person1]
         state_code: ME
   output:
-    # SON for size 1, adult-included = $489
-    me_tanf_child_only_case: false
+    # SON for size 1 = $489
     me_tanf_standard_of_need: 489
 
-- name: Case 2, household size 2 adult-included.
+- name: Case 2, household size 2.
   period: 2025-01
   input:
     people:
@@ -37,11 +36,10 @@
         members: [person1, person2]
         state_code: ME
   output:
-    # SON for size 2, adult-included = $769
-    me_tanf_child_only_case: false
+    # SON for size 2 = $769
     me_tanf_standard_of_need: 769
 
-- name: Case 3, household size 3 adult-included.
+- name: Case 3, household size 3.
   period: 2025-01
   input:
     people:
@@ -59,11 +57,10 @@
         members: [person1, person2, person3]
         state_code: ME
   output:
-    # SON for size 3, adult-included = $1,030
-    me_tanf_child_only_case: false
+    # SON for size 3 = $1,030
     me_tanf_standard_of_need: 1_030
 
-- name: Case 4, household size 4 adult-included.
+- name: Case 4, household size 4.
   period: 2025-01
   input:
     people:
@@ -83,95 +80,91 @@
         members: [person1, person2, person3, person4]
         state_code: ME
   output:
-    # SON for size 4, adult-included = $1,296
-    me_tanf_child_only_case: false
+    # SON for size 4 = $1,296
     me_tanf_standard_of_need: 1_296
 
-- name: Case 5, household size 1 child-only.
+- name: Case 5, household size 5.
   period: 2025-01
   input:
     people:
       person1:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-  output:
-    # SON for size 1, child-only = $290
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 290
-
-- name: Case 6, household size 2 child-only.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 15
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-  output:
-    # SON for size 2, child-only = $553
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 553
-
-- name: Case 7, household size 3 child-only.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 16
-      person2:
-        age: 12
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: ME
-  output:
-    # SON for size 3, child-only = $817
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 817
-
-- name: Case 8, household size 4 child-only.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
+        age: 35
       person2:
         age: 14
       person3:
-        age: 10
+        age: 12
       person4:
+        age: 9
+      person5:
         age: 6
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5]
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5]
         state_code: ME
   output:
-    # SON for size 4, child-only = $1,077
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 1_077
+    # SON for size 5 = $1,557
+    me_tanf_standard_of_need: 1_557
 
-- name: Case 9, household size 8 adult-included.
+- name: Case 6, household size 6.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 36
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ME
+  output:
+    # SON for size 6 = $1,820
+    me_tanf_standard_of_need: 1_820
+
+- name: Case 7, household size 7.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 17
+      person4:
+        age: 14
+      person5:
+        age: 11
+      person6:
+        age: 8
+      person7:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: ME
+  output:
+    # SON for size 7 = $2,085
+    me_tanf_standard_of_need: 2_085
+
+- name: Case 8, household size 8 (max table size).
   period: 2025-01
   input:
     people:
@@ -199,11 +192,10 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: ME
   output:
-    # SON for size 8, adult-included = $2,349
-    me_tanf_child_only_case: false
+    # SON for size 8 = $2,349
     me_tanf_standard_of_need: 2_349
 
-- name: Case 10, household size 9 adult-included.
+- name: Case 9, household size 9 (incremental).
   period: 2025-01
   input:
     people:
@@ -234,78 +226,9 @@
         state_code: ME
   output:
     # SON for size 8 = $2,349 + $263 each additional = $2,612
-    me_tanf_child_only_case: false
     me_tanf_standard_of_need: 2_612
 
-# === EDGE CASES ===
-
-- name: Case 11, household size 8 child-only boundary.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
-      person2:
-        age: 15
-      person3:
-        age: 13
-      person4:
-        age: 11
-      person5:
-        age: 9
-      person6:
-        age: 7
-      person7:
-        age: 5
-      person8:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        state_code: ME
-  output:
-    # SON for size 8, child-only = $2,131
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 2_131
-
-- name: Case 12, household size 9 child-only with incremental.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
-      person2:
-        age: 15
-      person3:
-        age: 13
-      person4:
-        age: 11
-      person5:
-        age: 9
-      person6:
-        age: 7
-      person7:
-        age: 5
-      person8:
-        age: 3
-      person9:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        state_code: ME
-  output:
-    # SON for size 8, child-only = $2,131 + $263 each additional = $2,394
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 2_394
-
-- name: Case 13, very large household size 10 adult-included.
+- name: Case 10, household size 10 (2 incremental).
   period: 2025-01
   input:
     people:
@@ -337,212 +260,23 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: ME
   output:
-    # SON for size 8 = $2,349 + 2 * $263 = $2,349 + $526 = $2,875
-    me_tanf_child_only_case: false
+    # SON for size 8 = $2,349 + 2 * $263 = $2,875
     me_tanf_standard_of_need: 2_875
 
-- name: Case 14, very large household size 12 adult-included.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 50
-      person2:
-        age: 48
-      person3:
-        age: 17
-      person4:
-        age: 16
-      person5:
-        age: 15
-      person6:
-        age: 14
-      person7:
-        age: 13
-      person8:
-        age: 12
-      person9:
-        age: 10
-      person10:
-        age: 8
-      person11:
-        age: 6
-      person12:
-        age: 4
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
-        state_code: ME
-  output:
-    # SON for size 8 = $2,349 + 4 * $263 = $2,349 + $1,052 = $3,401
-    me_tanf_child_only_case: false
-    me_tanf_standard_of_need: 3_401
-
-- name: Case 15, very large household size 10 child-only.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
-      person2:
-        age: 16
-      person3:
-        age: 15
-      person4:
-        age: 14
-      person5:
-        age: 12
-      person6:
-        age: 10
-      person7:
-        age: 8
-      person8:
-        age: 6
-      person9:
-        age: 4
-      person10:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        state_code: ME
-  output:
-    # SON for size 8, child-only = $2,131 + 2 * $263 = $2,131 + $526 = $2,657
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 2_657
-
-- name: Case 16, sizes 5 adult-included.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 14
-      person3:
-        age: 12
-      person4:
-        age: 9
-      person5:
-        age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: ME
-  output:
-    # SON for size 5, adult-included = $1,557
-    me_tanf_child_only_case: false
-    me_tanf_standard_of_need: 1_557
-
-- name: Case 17, sizes 5 child-only.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
-      person2:
-        age: 14
-      person3:
-        age: 11
-      person4:
-        age: 8
-      person5:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: ME
-  output:
-    # SON for size 5, child-only = $1,344
-    me_tanf_child_only_case: true
-    me_tanf_standard_of_need: 1_344
-
-- name: Case 18, size 6 adult-included.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 38
-      person2:
-        age: 36
-      person3:
-        age: 15
-      person4:
-        age: 12
-      person5:
-        age: 8
-      person6:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6]
-        state_code: ME
-  output:
-    # SON for size 6, adult-included = $1,820
-    me_tanf_child_only_case: false
-    me_tanf_standard_of_need: 1_820
-
-- name: Case 19, size 7 adult-included.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 42
-      person2:
-        age: 40
-      person3:
-        age: 17
-      person4:
-        age: 14
-      person5:
-        age: 11
-      person6:
-        age: 8
-      person7:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7]
-        state_code: ME
-  output:
-    # SON for size 7, adult-included = $2,085
-    me_tanf_child_only_case: false
-    me_tanf_standard_of_need: 2_085
-
-- name: Case 20, non-Maine state.
+- name: Case 11, non-Maine state.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
       person2:
-        age: 8
-      person3:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
+        members: [person1, person2]
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         state_code: TX
   output:
     # Non-Maine state returns 0

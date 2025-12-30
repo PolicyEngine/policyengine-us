@@ -1,206 +1,103 @@
 # Maine TANF Maximum Benefit Tests
-# Tests lookup by household size for adult-included and child-only cases
+# Tests lookup by household size
 # FFY 2025 values (effective 2024-10-01)
 # Source: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
 
-- name: Case 1, household size 1 adult-included.
+- name: Case 1, household size 1.
   period: 2025-01
   input:
-    state_code: ME
     spm_unit_size: 1
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 1, adult-included = $425
+    # Max benefit for size 1 = $425
     me_tanf_maximum_benefit: 425
 
-- name: Case 2, household size 2 adult-included.
+- name: Case 2, household size 2.
   period: 2025-01
   input:
-    state_code: ME
     spm_unit_size: 2
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 2, adult-included = $669
+    # Max benefit for size 2 = $669
     me_tanf_maximum_benefit: 669
 
-- name: Case 3, household size 3 adult-included.
+- name: Case 3, household size 3.
   period: 2025-01
   input:
-    state_code: ME
     spm_unit_size: 3
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 3, adult-included = $895
+    # Max benefit for size 3 = $895
     me_tanf_maximum_benefit: 895
 
-- name: Case 4, household size 4 adult-included.
+- name: Case 4, household size 4.
   period: 2025-01
   input:
-    state_code: ME
     spm_unit_size: 4
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 4, adult-included = $1,127
+    # Max benefit for size 4 = $1,127
     me_tanf_maximum_benefit: 1_127
 
-- name: Case 5, household size 1 child-only.
+- name: Case 5, household size 5.
   period: 2025-01
   input:
-    state_code: ME
-    spm_unit_size: 1
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 1, child-only = $254
-    me_tanf_maximum_benefit: 254
-
-- name: Case 6, household size 2 child-only.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 2
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 2, child-only = $483
-    me_tanf_maximum_benefit: 483
-
-- name: Case 7, household size 3 child-only.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 3
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 3, child-only = $712
-    me_tanf_maximum_benefit: 712
-
-- name: Case 8, household size 4 child-only.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 4
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 4, child-only = $936
-    me_tanf_maximum_benefit: 936
-
-- name: Case 9, household size 8 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 8
-    me_tanf_child_only_case: false
-  output:
-    # Max benefit for size 8, adult-included = $2,040
-    me_tanf_maximum_benefit: 2_040
-
-- name: Case 10, household size 9 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 9
-    me_tanf_child_only_case: false
-  output:
-    # Max benefit for size 8 = $2,040 + $228 each additional = $2,268
-    me_tanf_maximum_benefit: 2_268
-
-# === EDGE CASES ===
-
-- name: Case 11, household size 8 child-only boundary.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 8
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 8, child-only = $1,851
-    me_tanf_maximum_benefit: 1_851
-
-- name: Case 12, household size 9 child-only with incremental.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 9
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 8, child-only = $1,851 + $228 each additional = $2,079
-    me_tanf_maximum_benefit: 2_079
-
-- name: Case 13, very large household size 10 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 10
-    me_tanf_child_only_case: false
-  output:
-    # Max benefit for size 8 = $2,040 + 2 * $228 = $2,040 + $456 = $2,496
-    me_tanf_maximum_benefit: 2_496
-
-- name: Case 14, very large household size 12 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 12
-    me_tanf_child_only_case: false
-  output:
-    # Max benefit for size 8 = $2,040 + 4 * $228 = $2,040 + $912 = $2,952
-    me_tanf_maximum_benefit: 2_952
-
-- name: Case 15, very large household size 10 child-only.
-  period: 2025-01
-  input:
-    state_code: ME
-    spm_unit_size: 10
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 8, child-only = $1,851 + 2 * $228 = $1,851 + $456 = $2,307
-    me_tanf_maximum_benefit: 2_307
-
-- name: Case 16, size 5 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
     spm_unit_size: 5
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 5, adult-included = $1,352
+    # Max benefit for size 5 = $1,352
     me_tanf_maximum_benefit: 1_352
 
-- name: Case 17, size 5 child-only.
+- name: Case 6, household size 6.
   period: 2025-01
   input:
-    state_code: ME
-    spm_unit_size: 5
-    me_tanf_child_only_case: true
-  output:
-    # Max benefit for size 5, child-only = $1,169
-    me_tanf_maximum_benefit: 1_169
-
-- name: Case 18, size 6 adult-included.
-  period: 2025-01
-  input:
-    state_code: ME
     spm_unit_size: 6
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 6, adult-included = $1,580
+    # Max benefit for size 6 = $1,580
     me_tanf_maximum_benefit: 1_580
 
-- name: Case 19, size 7 adult-included.
+- name: Case 7, household size 7.
   period: 2025-01
   input:
-    state_code: ME
     spm_unit_size: 7
-    me_tanf_child_only_case: false
+    state_code: ME
   output:
-    # Max benefit for size 7, adult-included = $1,811
+    # Max benefit for size 7 = $1,811
     me_tanf_maximum_benefit: 1_811
 
-- name: Case 20, extreme household size 20.
+- name: Case 8, household size 8 (max table size).
   period: 2025-01
   input:
+    spm_unit_size: 8
     state_code: ME
-    spm_unit_size: 20
-    me_tanf_child_only_case: false
   output:
-    # Max benefit for size 8 = $2,040 + 12 * $228 = $2,040 + $2,736 = $4,776
-    me_tanf_maximum_benefit: 4_776
+    # Max benefit for size 8 = $2,040
+    me_tanf_maximum_benefit: 2_040
+
+- name: Case 9, household size 9 (incremental).
+  period: 2025-01
+  input:
+    spm_unit_size: 9
+    state_code: ME
+  output:
+    # Max benefit for size 8 = $2,040 + $228 = $2,268
+    me_tanf_maximum_benefit: 2_268
+
+- name: Case 10, household size 10 (2 incremental).
+  period: 2025-01
+  input:
+    spm_unit_size: 10
+    state_code: ME
+  output:
+    # Max benefit for size 8 = $2,040 + 2 * $228 = $2,496
+    me_tanf_maximum_benefit: 2_496
+
+- name: Case 11, non-Maine state.
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    state_code: TX
+  output:
+    # Non-Maine state returns 0
+    me_tanf_maximum_benefit: 0
