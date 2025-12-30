@@ -1,0 +1,178 @@
+# Unit tests for Rhode Island TANF payment standard by family size
+# 218-RICR-20-00-2: Payment standards effective 2025
+# Subsidized housing: $65 reduction
+# https://dhs.ri.gov/programs-and-services/ri-works-program
+
+- name: Case 1, family size 1.
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 510
+
+- name: Case 2, family size 2.
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 701
+
+- name: Case 3, family size 3.
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 865
+
+- name: Case 4, family size 4.
+  period: 2025-01
+  input:
+    spm_unit_size: 4
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 990
+
+- name: Case 5, family size 5.
+  period: 2025-01
+  input:
+    spm_unit_size: 5
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 1_115
+
+- name: Case 6, family size 6.
+  period: 2025-01
+  input:
+    spm_unit_size: 6
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 1_240
+
+- name: Case 7, family size 7.
+  period: 2025-01
+  input:
+    spm_unit_size: 7
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 1_364
+
+- name: Case 8, family size 8.
+  period: 2025-01
+  input:
+    spm_unit_size: 8
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_tanf_payment_standard: 1_489
+
+- name: Case 9, family size 9 incremental.
+  period: 2025-01
+  input:
+    spm_unit_size: 9
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + $125 = $1,614
+    ri_tanf_payment_standard: 1_614
+
+- name: Case 10, family size 1 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Standard: $510 - $65 reduction = $445
+    ri_tanf_payment_standard: 445
+
+- name: Case 11, family size 3 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Standard: $865 - $65 reduction = $800
+    ri_tanf_payment_standard: 800
+
+- name: Case 12, family size 5 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 5
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Standard: $1,115 - $65 reduction = $1,050
+    ri_tanf_payment_standard: 1_050
+
+# Edge cases for large families beyond size 8
+
+- name: Case 13, family size 10 incremental.
+  period: 2025-01
+  input:
+    spm_unit_size: 10
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + 2 additional * $125 = $1,489 + $250 = $1,739
+    ri_tanf_payment_standard: 1_739
+
+- name: Case 14, family size 12 very large.
+  period: 2025-01
+  input:
+    spm_unit_size: 12
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + 4 additional * $125 = $1,489 + $500 = $1,989
+    ri_tanf_payment_standard: 1_989
+
+- name: Case 15, family size 10 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 10
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Size 10 standard: $1,739 - $65 reduction = $1,674
+    ri_tanf_payment_standard: 1_674
+
+- name: Case 16, family size 8 with subsidized housing at max table.
+  period: 2025-01
+  input:
+    spm_unit_size: 8
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Size 8: $1,489 - $65 reduction = $1,424
+    ri_tanf_payment_standard: 1_424
+
+- name: Case 17, family size 15 extreme case.
+  period: 2025-01
+  input:
+    spm_unit_size: 15
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + 7 additional * $125 = $1,489 + $875 = $2,364
+    ri_tanf_payment_standard: 2_364
+
+- name: Case 18, family size 9 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 9
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Size 9: $1,614 - $65 reduction = $1,549
+    ri_tanf_payment_standard: 1_549

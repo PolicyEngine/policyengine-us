@@ -1,0 +1,40 @@
+description: Rhode Island provides this amount as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 20)
+  label: Rhode Island TANF payment standard amount
+  reference:
+    - title: 218-RICR-20-00-2 Rhode Island Works Rules and Regulations
+      href: https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+    - title: Rhode Island Works Benefits Increase FY 2025
+      href: https://dhs.ri.gov/press-releases/rhode-island-works-families-see-increase-benefits-fy-2025-state-budget
+    - title: RI Works 30% Benefit Increase 2021
+      href: https://dhs.ri.gov/press-releases/ri-works-benefit-increase-almost-here
+
+1:
+  2021-07-01: 425
+  2024-09-01: 510
+2:
+  2021-07-01: 584
+  2024-09-01: 701
+3:
+  2021-07-01: 721
+  2024-09-01: 865
+4:
+  2021-07-01: 825
+  2024-09-01: 990
+5:
+  2021-07-01: 929
+  2024-09-01: 1_115
+6:
+  2021-07-01: 1_033
+  2024-09-01: 1_240
+7:
+  2021-07-01: 1_137
+  2024-09-01: 1_364
+8:
+  2021-07-01: 1_241
+  2024-09-01: 1_489

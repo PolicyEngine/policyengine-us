@@ -1,0 +1,165 @@
+# Unit tests for Rhode Island TANF benefit calculation
+# 218-RICR-20-00-2: Benefit = Payment Standard - Countable Income
+# Minimum benefit threshold: $10
+# https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+
+- name: Case 1, eligible full benefit no income.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 0
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $865 - $0 = $865
+    ri_tanf: 865
+
+- name: Case 2, eligible partial benefit.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 500
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $865 - $500 = $365
+    ri_tanf: 365
+
+- name: Case 3, eligible benefit above minimum threshold.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 701
+    ri_tanf_countable_income: 680
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $701 - $680 = $21 (>= $10 minimum)
+    ri_tanf: 21
+
+- name: Case 4, eligible benefit below minimum threshold.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 701
+    ri_tanf_countable_income: 695
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: $701 - $695 = $6 (< $10 minimum)
+    # No payment issued
+    ri_tanf: 0
+
+- name: Case 5, eligible benefit exactly at minimum.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 855
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $865 - $855 = $10 (= $10 minimum, payment issued)
+    ri_tanf: 10
+
+- name: Case 6, income exceeds payment standard.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 701
+    ri_tanf_countable_income: 800
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: max($701 - $800, 0) = $0
+    ri_tanf: 0
+
+- name: Case 7, ineligible receives no benefit.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 0
+    ri_tanf_eligible: false
+    state_code: RI
+  output:
+    # Ineligible, no benefit
+    ri_tanf: 0
+
+- name: Case 8, subsidized housing reduced payment.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 800  # $865 - $65 reduction
+    ri_tanf_countable_income: 200
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $800 - $200 = $600
+    ri_tanf: 600
+
+# Edge cases for $10 minimum benefit threshold
+
+- name: Case 9, benefit at $9 just below minimum threshold.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 856
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: $865 - $856 = $9 (< $10 minimum)
+    # No payment issued - below minimum threshold
+    ri_tanf: 0
+
+- name: Case 10, benefit at $11 just above minimum threshold.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 854
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: $865 - $854 = $11 (>= $10 minimum)
+    # Payment issued
+    ri_tanf: 11
+
+- name: Case 11, benefit at $1 far below minimum threshold.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 864
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: $865 - $864 = $1 (< $10 minimum)
+    # No payment issued
+    ri_tanf: 0
+
+- name: Case 12, income exactly equals payment standard.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 865
+    ri_tanf_countable_income: 865
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Calculated benefit: $865 - $865 = $0
+    # No payment (zero benefit)
+    ri_tanf: 0
+
+- name: Case 13, very large benefit with maximum family.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 1_489  # Family of 8
+    ri_tanf_countable_income: 0
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Full payment standard for family of 8
+    ri_tanf: 1_489
+
+- name: Case 14, large family beyond size 8 with additional persons.
+  period: 2025-01
+  input:
+    ri_tanf_payment_standard: 1_739  # Family of 10: $1,489 + 2 * $125
+    ri_tanf_countable_income: 500
+    ri_tanf_eligible: true
+    state_code: RI
+  output:
+    # Benefit: $1,739 - $500 = $1,239
+    ri_tanf: 1_239
