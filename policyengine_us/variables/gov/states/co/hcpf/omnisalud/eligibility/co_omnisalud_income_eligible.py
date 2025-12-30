@@ -13,7 +13,7 @@ class co_omnisalud_income_eligible(Variable):
     ]
     documentation = """
     Colorado OmniSalud provides financial assistance (SilverEnhanced Savings)
-    to individuals with income at or below 150% of the Federal Poverty Level.
+    to individuals with income below 150% of the Federal Poverty Level.
     Those with higher income can still enroll but pay full premium.
     """
 
@@ -23,4 +23,4 @@ class co_omnisalud_income_eligible(Variable):
         income_level = person("medicaid_income_level", period)
         income_limit = p.income_limit
 
-        return income_level <= income_limit
+        return income_level < income_limit

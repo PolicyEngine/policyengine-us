@@ -66,13 +66,13 @@
   output:
     co_omnisalud_eligible: false
 
-- name: Eligible at exactly 150% FPL
+- name: NOT eligible at exactly 150% FPL
   period: 2024
   input:
     age: 30
     immigration_status: UNDOCUMENTED
     is_pregnant: false
-    medicaid_income_level: 1.5  # 150% FPL (exactly at limit)
+    medicaid_income_level: 1.5  # 150% FPL (at limit, not below)
     state_code: CO
   output:
-    co_omnisalud_eligible: true
+    co_omnisalud_eligible: false
