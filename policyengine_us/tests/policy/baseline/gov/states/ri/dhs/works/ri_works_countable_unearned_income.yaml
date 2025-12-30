@@ -268,3 +268,80 @@
     # Monthly SS: $100, Monthly UI: $100
     # Total countable unearned: $200
     ri_works_countable_unearned_income: 200
+
+# Edge cases: Multiple child support recipients in same household
+
+- name: Case 13, two people receive child support above $50 total.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 480  # $40/month
+      person2:
+        age: 28
+        child_support_received: 480  # $40/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Total child support: $40 + $40 = $80/month
+    # $50 exclusion applies to total: min($80, $50) = $50
+    # Countable: $80 - $50 = $30
+    ri_works_countable_unearned_income: 30
+
+- name: Case 14, two people receive child support below $50 total.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 28
+        child_support_received: 180  # $15/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Total child support: $30 + $15 = $45/month
+    # $50 exclusion applies: min($45, $50) = $45
+    # Countable: $45 - $45 = $0
+    ri_works_countable_unearned_income: 0
+
+- name: Case 15, two people receive large child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 720  # $60/month
+      person2:
+        age: 28
+        child_support_received: 720  # $60/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Total child support: $60 + $60 = $120/month
+    # $50 exclusion applies to total: min($120, $50) = $50
+    # Countable: $120 - $50 = $70
+    ri_works_countable_unearned_income: 70
