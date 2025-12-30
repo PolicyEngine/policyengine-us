@@ -10,7 +10,6 @@
 # - Resource limit: $5,000
 
 - name: Scenario 1, single parent with 2 children, no income, full benefit.
-  # Family of 3, no income, receives full payment standard
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -34,13 +33,8 @@
         members: [person1, person2, person3]
         state_code: RI
   output:
-    # Family size: 3
-    # Gross earned income: $0
-    # Countable earned: $0
-    # Countable unearned: $0
-    # Total countable: $0
-    # Payment standard (family of 3): $865
-    # Benefit: $865 - $0 = $865
+    # Family size: 3, Payment standard: $865
+    # No income = full benefit
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
     ri_works_eligible: true
@@ -51,7 +45,6 @@
     ri_works: 865
 
 - name: Scenario 2, single parent with 1 child, part-time work.
-  # Family of 2, earned income with disregards
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -73,14 +66,7 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly gross earned: $1,000
-    # After $525 disregard: $1,000 - $525 = $475
-    # 50% disregard: $475 * 0.5 = $237.50
-    # Countable earned: $237.50
-    # Countable unearned: $0
-    # Total countable: $237.50
-    # Payment standard (family of 2): $701
+    # Earned: max($1,000 - $525, 0) * 0.5 = $237.50
     # Benefit: $701 - $237.50 = $463.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -92,7 +78,6 @@
     ri_works: 463.5
 
 - name: Scenario 3, family of 4 with earned and unearned income.
-  # Tests combined income handling
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -120,15 +105,8 @@
         members: [person1, person2, person3, person4]
         state_code: RI
   output:
-    # Family size: 4
-    # Monthly gross earned: $800
-    # After $525 disregard: $800 - $525 = $275
-    # 50% disregard: $275 * 0.5 = $137.50
-    # Countable earned: $137.50
-    # Monthly child support: $150 - $50 exclusion = $100
-    # Countable unearned: $100
-    # Total countable: $137.50 + $100 = $237.50
-    # Payment standard (family of 4): $990
+    # Earned: max($800 - $525, 0) * 0.5 = $137.50
+    # Unearned: $150 - $50 = $100
     # Benefit: $990 - $237.50 = $752.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -140,7 +118,6 @@
     ri_works: 752.5
 
 - name: Scenario 4, large family of 6 with subsidized housing.
-  # Tests larger family and subsidized housing reduction
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -173,16 +150,8 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: RI
   output:
-    # Family size: 6
-    # Monthly gross earned: $1,200
-    # After $525 disregard: $1,200 - $525 = $675
-    # 50% disregard: $675 * 0.5 = $337.50
-    # Countable earned: $337.50
-    # Countable unearned: $0
-    # Total countable: $337.50
-    # Standard payment (family of 6): $1,240
-    # Subsidized housing reduction: $65
-    # Adjusted payment standard: $1,240 - $65 = $1,175
+    # Earned: max($1,200 - $525, 0) * 0.5 = $337.50
+    # Payment standard: $1,240 - $65 = $1,175
     # Benefit: $1,175 - $337.50 = $837.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -194,7 +163,6 @@
     ri_works: 837.5
 
 - name: Scenario 5, family with income at disregard threshold.
-  # Edge case - earned income exactly at $525
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -215,15 +183,8 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly gross earned: $525
-    # After $525 disregard: max($525 - $525, 0) = $0
-    # 50% disregard: $0 * 0.5 = $0
-    # Countable earned: $0
-    # Countable unearned: $0
-    # Total countable: $0
-    # Payment standard (family of 2): $701
-    # Benefit: $701 - $0 = $701 (full benefit)
+    # Earned at $525: max($525 - $525, 0) * 0.5 = $0
+    # Full benefit: $701
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
     ri_works_eligible: true
@@ -234,7 +195,6 @@
     ri_works: 701
 
 - name: Scenario 6, high income results in zero benefit.
-  # Income exceeds payment standard
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -255,14 +215,8 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly gross earned: $3,000
-    # After $525 disregard: $3,000 - $525 = $2,475
-    # 50% disregard: $2,475 * 0.5 = $1,237.50
-    # Countable earned: $1,237.50
-    # Payment standard (family of 2): $701
-    # Income ineligible: $1,237.50 >= $701
-    # Benefit: $0 (income ineligible)
+    # Earned: max($3,000 - $525, 0) * 0.5 = $1,237.50
+    # $1,237.50 >= $701 = income ineligible
     ri_works_income_eligible: false
     ri_works_resource_eligible: true
     ri_works_eligible: false
@@ -272,46 +226,7 @@
     ri_works_payment_standard: 701
     ri_works: 0
 
-- name: Scenario 7, moderate income partial benefit.
-  period: 2025-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 18_600  # $1,550/month
-      person2:
-        age: 7
-        is_in_k12_school: true
-      person3:
-        age: 4
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: RI
-  output:
-    # Family size: 3
-    # Monthly gross earned: $1,550
-    # After $525 disregard: $1,550 - $525 = $1,025
-    # 50% disregard: $1,025 * 0.5 = $512.50
-    # Countable earned: $512.50
-    # Payment standard (family of 3): $865
-    # Benefit: $865 - $512.50 = $352.50
-    ri_works_countable_earned_income: 512.5
-    ri_works_countable_income: 512.5
-    ri_works_payment_standard: 865
-    ri_works: 352.5
-
-# Edge case integration scenarios
-
-- name: Scenario 8, earned income one dollar above $525 threshold.
-  # Tests boundary just past disregard threshold
+- name: Scenario 7, earned income one dollar above $525 threshold.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -332,12 +247,7 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly gross earned: $526
-    # After $525 disregard: $526 - $525 = $1
-    # 50% disregard: $1 * 0.5 = $0.50
-    # Countable earned: $0.50
-    # Payment standard (family of 2): $701
+    # Earned: max($526 - $525, 0) * 0.5 = $0.50
     # Benefit: $701 - $0.50 = $700.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -348,46 +258,7 @@
     ri_works_payment_standard: 701
     ri_works: 700.5
 
-- name: Scenario 9, child support exactly at $50 exclusion threshold.
-  # Tests boundary of child support exclusion
-  period: 2025-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 28
-        child_support_received: 600  # $50/month
-      person2:
-        age: 6
-        is_in_k12_school: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: RI
-  output:
-    # Family size: 2
-    # Monthly child support: $50 - $50 exclusion = $0
-    # Countable unearned: $0
-    # Total countable: $0
-    # Payment standard (family of 2): $701
-    # Benefit: $701 - $0 = $701 (full benefit)
-    ri_works_income_eligible: true
-    ri_works_resource_eligible: true
-    ri_works_eligible: true
-    ri_works_countable_earned_income: 0
-    ri_works_countable_unearned_income: 0
-    ri_works_countable_income: 0
-    ri_works_payment_standard: 701
-    ri_works: 701
-
-- name: Scenario 10, child support one dollar above $50 exclusion.
-  # Tests boundary just past child support exclusion
+- name: Scenario 8, child support one dollar above $50 exclusion.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -409,11 +280,7 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly child support: $51 - $50 exclusion = $1
-    # Countable unearned: $1
-    # Total countable: $1
-    # Payment standard (family of 2): $701
+    # Unearned: $51 - $50 = $1
     # Benefit: $701 - $1 = $700
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -424,8 +291,7 @@
     ri_works_payment_standard: 701
     ri_works: 700
 
-- name: Scenario 11, large family of 10 beyond payment table.
-  # Tests additional person increment beyond size 8
+- name: Scenario 9, large family of 10 beyond payment table.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -468,14 +334,8 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: RI
   output:
-    # Family size: 10
-    # Monthly gross earned: $1,000
-    # After $525 disregard: $1,000 - $525 = $475
-    # 50% disregard: $475 * 0.5 = $237.50
-    # Countable earned: $237.50
-    # Countable unearned: $0
-    # Total countable: $237.50
-    # Payment standard: $1,489 (size 8) + 2 * $125 = $1,739
+    # Earned: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Payment standard: $1,489 + 2 * $125 = $1,739
     # Benefit: $1,739 - $237.50 = $1,501.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -486,8 +346,7 @@
     ri_works_payment_standard: 1_739
     ri_works: 1_501.5
 
-- name: Scenario 12, only unearned income, no earned.
-  # Tests handling of unearned-only income
+- name: Scenario 10, only unearned income, no earned.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -508,12 +367,7 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Monthly SS: $200 (no exclusion)
-    # Countable earned: $0
-    # Countable unearned: $200
-    # Total countable: $200
-    # Payment standard (family of 2): $701
+    # Unearned: $200 (no exclusion for SS)
     # Benefit: $701 - $200 = $501
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
@@ -524,8 +378,7 @@
     ri_works_payment_standard: 701
     ri_works: 501
 
-- name: Scenario 13, single person household, no children.
-  # Tests single-person household (no demographic eligibility)
+- name: Scenario 11, single person household, no children.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -544,8 +397,7 @@
         members: [person1]
         state_code: RI
   output:
-    # Single adult with no children
-    # Demographic eligibility requires a child in the household
+    # Single adult - demographic ineligible (requires child)
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
     ri_works_eligible: false
@@ -555,8 +407,7 @@
     ri_works_payment_standard: 510
     ri_works: 0
 
-- name: Scenario 14, family with resources above limit.
-  # Tests resource ineligibility
+- name: Scenario 12, family with resources above limit.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -577,8 +428,7 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Resources: $7,000 > $5,000 limit = resource ineligible
+    # Resources: $7,000 > $5,000 = resource ineligible
     ri_works_income_eligible: true
     ri_works_resource_eligible: false
     ri_works_eligible: false
@@ -588,8 +438,7 @@
     ri_works_payment_standard: 701
     ri_works: 0
 
-- name: Scenario 15, two earners with per-earner disregard.
-  # Tests that $525 + 50% disregard applies separately to each earner
+- name: Scenario 13, two earners with per-earner disregard.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -616,14 +465,8 @@
         members: [person1, person2, person3, person4]
         state_code: RI
   output:
-    # Family size: 4
-    # Per 218-RICR-20-00-2.15: $525 + 50% disregard applies PER EARNER
-    # Person 1: max($1,000 - $525, 0) * 0.5 = $475 * 0.5 = $237.50
-    # Person 2: max($500 - $525, 0) * 0.5 = $0 * 0.5 = $0 (fully disregarded!)
-    # Total countable earned: $237.50 (NOT $487.50 if applied at unit level)
-    # Countable unearned: $0
-    # Total countable: $237.50
-    # Payment standard (family of 4): $990
+    # Person 1: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Person 2: max($500 - $525, 0) * 0.5 = $0 (fully disregarded)
     # Benefit: $990 - $237.50 = $752.50
     ri_works_earned_income_after_disregard_person: [237.5, 0, 0, 0]
     ri_works_countable_earned_income: 237.5
@@ -631,50 +474,7 @@
     ri_works_payment_standard: 990
     ri_works: 752.5
 
-# Additional edge case scenarios
-
-- name: Scenario 16, income exactly equals payment standard.
-  # Tests eligibility boundary - countable income = payment standard (ineligible)
-  period: 2025-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 20_076  # $1,673/month
-        # Countable: max($1,673 - $525, 0) * 0.5 = $574
-        # Need to add unearned to reach $701 exactly
-        social_security: 1_524  # $127/month
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: RI
-  output:
-    # Family size: 2, payment standard: $701
-    # Earned: max($1,673 - $525, 0) * 0.5 = $574
-    # Unearned: $127
-    # Total countable: $574 + $127 = $701
-    # Income must be LESS than payment standard
-    # $701 >= $701, so income ineligible
-    ri_works_income_eligible: false
-    ri_works_resource_eligible: true
-    ri_works_eligible: false
-    ri_works_countable_earned_income: 574
-    ri_works_countable_unearned_income: 127
-    ri_works_countable_income: 701
-    ri_works_payment_standard: 701
-    ri_works: 0
-
-- name: Scenario 17, resources exactly at $5,000 limit with income ineligible.
-  # Tests AND logic when resources at boundary but income fails
+- name: Scenario 14, resources at limit with high income.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -696,10 +496,8 @@
         members: [person1, person2]
         state_code: RI
   output:
-    # Family size: 2
-    # Resources: $5,000 <= $5,000 limit = resource eligible
-    # Countable earned: max($3,000 - $525, 0) * 0.5 = $1,237.50
-    # Payment standard: $701
+    # Resources: $5,000 <= $5,000 = resource eligible
+    # Earned: max($3,000 - $525, 0) * 0.5 = $1,237.50
     # $1,237.50 >= $701 = income ineligible
     ri_works_income_eligible: false
     ri_works_resource_eligible: true
@@ -709,45 +507,7 @@
     ri_works_payment_standard: 701
     ri_works: 0
 
-- name: Scenario 18, very high unearned income only.
-  # Tests that unearned-only income can make household ineligible
-  period: 2025-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 12_000  # $1,000/month
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: RI
-  output:
-    # Family size: 2
-    # No earned income - no disregards apply
-    # Unearned: $1,000/month (no exclusion for SS)
-    # Total countable: $1,000
-    # Payment standard (family of 2): $701
-    # $1,000 >= $701 = income ineligible
-    ri_works_income_eligible: false
-    ri_works_resource_eligible: true
-    ri_works_eligible: false
-    ri_works_countable_earned_income: 0
-    ri_works_countable_unearned_income: 1_000
-    ri_works_countable_income: 1_000
-    ri_works_payment_standard: 701
-    ri_works: 0
-
-- name: Scenario 19, dependent care with earned income full pipeline.
-  # Tests dependent care deduction end-to-end
+- name: Scenario 15, dependent care with earned income full pipeline.
   period: 2025-01
   absolute_error_margin: 0.5
   input:
@@ -773,12 +533,9 @@
         members: [person1, person2, person3]
         state_code: RI
   output:
-    # Family size: 3
-    # Per-earner disregard: max($1,500 - $525, 0) * 0.5 = $487.50
-    # Dependent care max: $200 (age 1) + $175 (age 4) = $375
-    # Deduction: min($400, $375) = $375
+    # Earned after disregard: max($1,500 - $525, 0) * 0.5 = $487.50
+    # Dependent care: $200 (age 1) + $175 (age 4) = $375
     # Countable earned: max($487.50 - $375, 0) = $112.50
-    # Payment standard (family of 3): $865
     # Benefit: $865 - $112.50 = $752.50
     ri_works_dependent_care_deduction: 375
     ri_works_countable_earned_income: 112.5

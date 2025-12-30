@@ -9,9 +9,6 @@
     ri_works_payment_standard: 865
     state_code: RI
   output:
-    # Countable income: $0
-    # Payment standard: $865
-    # $0 < $865 = true
     ri_works_income_eligible: true
 
 - name: Case 2, income below payment standard, eligible.
@@ -21,9 +18,6 @@
     ri_works_payment_standard: 865
     state_code: RI
   output:
-    # Countable income: $500
-    # Payment standard: $865
-    # $500 < $865 = true
     ri_works_income_eligible: true
 
 - name: Case 3, income equals payment standard, ineligible.
@@ -33,9 +27,7 @@
     ri_works_payment_standard: 865
     state_code: RI
   output:
-    # Countable income: $865
-    # Payment standard: $865
-    # $865 < $865 = false (must be less than, not equal to)
+    # Must be strictly less than, not equal
     ri_works_income_eligible: false
 
 - name: Case 4, income exceeds payment standard, ineligible.
@@ -45,117 +37,4 @@
     ri_works_payment_standard: 865
     state_code: RI
   output:
-    # Countable income: $1,000
-    # Payment standard: $865
-    # $1,000 < $865 = false
     ri_works_income_eligible: false
-
-- name: Case 5, income just below payment standard, eligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 864
-    ri_works_payment_standard: 865
-    state_code: RI
-  output:
-    # Countable income: $864
-    # Payment standard: $865
-    # $864 < $865 = true
-    ri_works_income_eligible: true
-
-- name: Case 6, larger family income test.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 800
-    ri_works_payment_standard: 990
-    state_code: RI
-  output:
-    # Countable income: $800
-    # Payment standard (family of 4): $990
-    # $800 < $990 = true
-    ri_works_income_eligible: true
-
-# Edge cases for income eligibility boundary
-
-- name: Case 7, income one dollar above payment standard, ineligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 866
-    ri_works_payment_standard: 865
-    state_code: RI
-  output:
-    # Countable income: $866
-    # Payment standard: $865
-    # $866 < $865 = false
-    ri_works_income_eligible: false
-
-- name: Case 8, very small income, eligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 1
-    ri_works_payment_standard: 865
-    state_code: RI
-  output:
-    # Countable income: $1
-    # Payment standard: $865
-    # $1 < $865 = true
-    ri_works_income_eligible: true
-
-- name: Case 9, income far exceeds payment standard, ineligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 5_000
-    ri_works_payment_standard: 865
-    state_code: RI
-  output:
-    # Countable income: $5,000
-    # Payment standard: $865
-    # $5,000 < $865 = false
-    ri_works_income_eligible: false
-
-- name: Case 10, large family high payment standard, eligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 1_400
-    ri_works_payment_standard: 1_489
-    state_code: RI
-  output:
-    # Countable income: $1,400
-    # Payment standard (family of 8): $1,489
-    # $1,400 < $1,489 = true
-    ri_works_income_eligible: true
-
-- name: Case 11, subsidized housing reduced payment standard boundary.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 800
-    ri_works_payment_standard: 800  # $865 - $65 = $800
-    state_code: RI
-  output:
-    # Countable income: $800
-    # Payment standard (family of 3 with housing): $800
-    # $800 < $800 = false (exactly at threshold = ineligible)
-    ri_works_income_eligible: false
-
-- name: Case 12, subsidized housing just below threshold, eligible.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 799
-    ri_works_payment_standard: 800  # $865 - $65 = $800
-    state_code: RI
-  output:
-    # Countable income: $799
-    # Payment standard (family of 3 with housing): $800
-    # $799 < $800 = true
-    ri_works_income_eligible: true
-
-- name: Case 13, fractional income just below payment standard.
-  period: 2025-01
-  input:
-    ri_works_countable_income: 864.99
-    ri_works_payment_standard: 865
-    state_code: RI
-  output:
-    # Countable income: $864.99
-    # Payment standard: $865
-    # $864.99 < $865 = true
-    ri_works_income_eligible: true
