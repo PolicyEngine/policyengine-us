@@ -1,0 +1,32 @@
+# Unit tests for Rhode Island TANF earned income after disregard per person
+# 218-RICR-20-00-2.15: $525 flat + 50% disregard per earner
+# https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+
+- name: Case 1, multiple earners with various income levels.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0  # Zero income
+      person2:
+        tanf_gross_earned_income: 400  # Below flat disregard
+      person3:
+        tanf_gross_earned_income: 525  # Exactly at flat disregard
+      person4:
+        tanf_gross_earned_income: 526  # One dollar above
+      person5:
+        tanf_gross_earned_income: 1_000  # Moderate income
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    # Person 1: max(0 - 525, 0) * 0.5 = 0
+    # Person 2: max(400 - 525, 0) * 0.5 = 0
+    # Person 3: max(525 - 525, 0) * 0.5 = 0
+    # Person 4: max(526 - 525, 0) * 0.5 = 0.5
+    # Person 5: max(1000 - 525, 0) * 0.5 = 237.5
+    ri_works_earned_income_after_disregard_person: [0, 0, 0, 0.5, 237.5]
