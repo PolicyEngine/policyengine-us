@@ -24,6 +24,16 @@ brackets:
       2015-01-01: 0.02
       2021-01-01: 0
       2026-01-01: 0.021
+  # Threshold just before 133% to keep rate flat per statute
+  # (26 USC 36B says "Up to 133%" has initial=final=2%, not interpolated)
+  - threshold:
+      2015-01-01: 1.329999
+      2021-01-01: null
+      2026-01-01: 1.329999
+    amount:
+      2015-01-01: 0.02
+      2021-01-01: null
+      2026-01-01: 0.021
   - threshold:
       2015-01-01: 1.33
       2021-01-01: null
