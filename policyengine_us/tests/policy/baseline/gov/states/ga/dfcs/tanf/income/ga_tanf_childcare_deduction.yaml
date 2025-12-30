@@ -1,0 +1,317 @@
+# Unit tests for ga_tanf_childcare_deduction variable
+# Tests childcare deduction based on:
+# - $200/month max for each child under age 2
+# - $175/month max for each child age 2+
+# - Returns min(childcare_expenses, total_childcare_deduction)
+
+- name: No dependents results in zero childcare deduction
+  period: 2025-01
+  input:
+    people:
+      adult:
+        age: 30
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [adult]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [adult]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 0
+    # No dependents, so no childcare deduction even with expenses
+
+- name: One child under 2, expenses exceed max, capped at $200
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 200
+    # Max for child under 2: $200
+    # min(300, 200) = $200
+
+- name: One child under 2, expenses below max, actual expenses
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 1_800  # $150/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 150
+    # Max for child under 2: $200
+    # Expenses: $150
+    # min(150, 200) = $150
+
+- name: One child age 2 or older, expenses exceed max, capped at $175
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 175
+    # Max for child age 2+: $175
+    # min(250, 175) = $175
+
+- name: One child age 2 or older, expenses below max, actual expenses
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 1_200  # $100/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 100
+    # Max for child age 2+: $175
+    # Expenses: $100
+    # min(100, 175) = $100
+
+- name: Two children (one under 2, one age 2+), high expenses, capped at $375
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+      toddler:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, infant, toddler]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [parent, infant, toddler]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 375
+    # Infant (under 2): $200 max
+    # Toddler (age 2+): $175 max
+    # Total max: $200 + $175 = $375
+    # min(500, 375) = $375
+
+- name: Child exactly at age 2 boundary uses $175 rate
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 175
+    # Age 2 exactly: $175 max (age 2 or above)
+    # min(200, 175) = $175
+
+- name: Multiple children same age category (both under 2)
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      infant1:
+        age: 0
+        is_tax_unit_dependent: true
+      infant2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, infant1, infant2]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [parent, infant1, infant2]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 400
+    # Two infants under 2: $200 + $200 = $400 max
+    # min(500, 400) = $400
+
+- name: Multiple children same age category (both age 2+)
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 350
+    # Two children age 2+: $175 + $175 = $350 max
+    # min(500, 350) = $350
+
+- name: Zero childcare expenses results in zero deduction
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 0
+    # Max for child under 2: $200
+    # Expenses: $0
+    # min(0, 200) = $0
+
+- name: Expenses exactly at max for child under 2
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400  # $200/month exactly
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 200
+    # Max for child under 2: $200
+    # Expenses: $200
+    # min(200, 200) = $200
+
+- name: Expenses exactly at max for child age 2+
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_100  # $175/month exactly
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 175
+    # Max for child age 2+: $175
+    # Expenses: $175
+    # min(175, 175) = $175
+
+- name: Non-dependent child not counted for deduction
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 1
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_tanf_childcare_deduction: 0
+    # Child is not a dependent, so no deduction
+    # Total max: $0
+    # min(200, 0) = $0
