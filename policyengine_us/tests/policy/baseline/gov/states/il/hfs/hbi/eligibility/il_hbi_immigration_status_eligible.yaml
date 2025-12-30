@@ -1,0 +1,63 @@
+- name: Undocumented immigrant eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: UNDOCUMENTED
+  output:
+    il_hbi_immigration_status_eligible: true
+
+- name: DACA recipient eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: DACA
+  output:
+    il_hbi_immigration_status_eligible: true
+
+- name: TPS holder eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: TPS
+  output:
+    il_hbi_immigration_status_eligible: true
+
+- name: DACA/TPS combined status eligible
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: DACA_TPS
+  output:
+    il_hbi_immigration_status_eligible: true
+
+- name: Citizen not eligible for HBI (uses regular Medicaid)
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: CITIZEN
+  output:
+    il_hbi_immigration_status_eligible: false
+
+- name: Legal Permanent Resident not eligible for HBI
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    il_hbi_immigration_status_eligible: false
+
+- name: Refugee not eligible for HBI (uses regular Medicaid)
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: REFUGEE
+  output:
+    il_hbi_immigration_status_eligible: false
+
+- name: Asylee not eligible for HBI (uses regular Medicaid)
+  period: 2024
+  input:
+    state_code: IL
+    immigration_status: ASYLEE
+  output:
+    il_hbi_immigration_status_eligible: false
