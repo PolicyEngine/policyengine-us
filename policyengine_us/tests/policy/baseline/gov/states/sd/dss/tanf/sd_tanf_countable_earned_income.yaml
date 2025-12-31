@@ -1,0 +1,234 @@
+# Unit tests for South Dakota TANF countable earned income
+# Formula: max(0, gross_earned - $90) x 0.80
+# First $90 is deducted, then 20% of remainder is disregarded (keeping 80%)
+# Source: NCCP TANF Profile - South Dakota (August 2024)
+# https://www.nccp.org/wp-content/uploads/2024/08/TANF-profile-South-Dakota-.pdf#page=1
+# Note: Uses employment_income_before_lsr as input (federal TANF baseline)
+
+- name: Case 1, zero earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $0
+    # After $90 deduction: max(0 - 90, 0) = $0
+    # After 20% disregard: $0 x 0.80 = $0
+    sd_tanf_countable_earned_income: 0
+
+- name: Case 2, earned income at flat deduction threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_080  # $90/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $90
+    # After $90 deduction: max(90 - 90, 0) = $0
+    # After 20% disregard: $0 x 0.80 = $0
+    sd_tanf_countable_earned_income: 0
+
+- name: Case 3, earned income below flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 600  # $50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $50
+    # After $90 deduction: max(50 - 90, 0) = $0
+    # After 20% disregard: $0 x 0.80 = $0
+    sd_tanf_countable_earned_income: 0
+
+- name: Case 4, earned income $500 per month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $500
+    # After $90 deduction: max(500 - 90, 0) = $410
+    # After 20% disregard: $410 x 0.80 = $328
+    sd_tanf_countable_earned_income: 328
+
+- name: Case 5, earned income $1000 per month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $1,000
+    # After $90 deduction: max(1000 - 90, 0) = $910
+    # After 20% disregard: $910 x 0.80 = $728
+    sd_tanf_countable_earned_income: 728
+
+- name: Case 6, documentation example $400 per month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $400
+    # After $90 deduction: max(400 - 90, 0) = $310
+    # After 20% disregard: $310 x 0.80 = $248
+    sd_tanf_countable_earned_income: 248
+
+# =============================================================================
+# EDGE CASES - Boundary Testing
+# =============================================================================
+
+- name: Case 7, edge case - income $1 below flat deduction ($89).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_068  # $89/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $89
+    # After $90 deduction: max(89 - 90, 0) = max(-1, 0) = $0
+    # After 20% disregard: $0 x 0.80 = $0
+    # Boundary test: income just below $90 threshold
+    sd_tanf_countable_earned_income: 0
+
+- name: Case 8, edge case - income $1 above flat deduction ($91).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_092  # $91/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $91
+    # After $90 deduction: max(91 - 90, 0) = $1
+    # After 20% disregard: $1 x 0.80 = $0.80
+    # Boundary test: income just above $90 threshold
+    sd_tanf_countable_earned_income: 0.8
+
+- name: Case 9, edge case - very high income ($5,000 per month).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 60_000  # $5,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $5,000
+    # After $90 deduction: max(5000 - 90, 0) = $4,910
+    # After 20% disregard: $4,910 x 0.80 = $3,928
+    # Extreme value test: ensures formula handles large amounts correctly
+    sd_tanf_countable_earned_income: 3_928
+
+- name: Case 10, edge case - income exactly at flat deduction from single dollar.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_080  # $90/month exactly
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Gross earned: $90 (exactly at threshold)
+    # After $90 deduction: max(90 - 90, 0) = $0
+    # After 20% disregard: $0 x 0.80 = $0
+    # This verifies max_() handles the zero boundary correctly
+    sd_tanf_countable_earned_income: 0

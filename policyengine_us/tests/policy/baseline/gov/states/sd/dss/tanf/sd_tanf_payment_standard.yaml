@@ -1,0 +1,275 @@
+# Unit tests for South Dakota TANF payment standard by family size and living arrangement
+# Source: ARSD 67:10:05:03 - Payment Standards (effective 2023-07-01)
+# https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-03
+# Note: Tests default to independent living; shared living tests specify sd_tanf_is_shared_living
+# IMPORTANT: Must create actual people since variable uses spm_unit.nb_persons()
+
+- name: Case 1, family size 1, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 512
+
+- name: Case 2, family size 2, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 627
+
+- name: Case 3, family size 3, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 701
+
+- name: Case 4, family size 4, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 775
+
+- name: Case 5, family size 5, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+      person4:
+        age: 10
+      person5:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 848
+
+- name: Case 6, family size 6, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+      person4:
+        age: 10
+      person5:
+        age: 12
+      person6:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 922
+
+- name: Case 7, family size 12, independent living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 1_361
+
+- name: Case 8, family size 13 uses additional person increment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+      person12:
+        age: 3
+      person13:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: SD
+  output:
+    # Base for 12 = $1,361
+    # Additional person increment = $53
+    # Total = $1,361 + $53 = $1,414
+    sd_tanf_payment_standard: 1_414
+
+- name: Case 9, family size 3, shared living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        sd_tanf_is_shared_living: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 507
+
+- name: Case 10, family size 5, shared living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 8
+      person4:
+        age: 10
+      person5:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        sd_tanf_is_shared_living: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 654
+
+- name: Case 11, family size 1, shared living.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        sd_tanf_is_shared_living: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_tanf_payment_standard: 317

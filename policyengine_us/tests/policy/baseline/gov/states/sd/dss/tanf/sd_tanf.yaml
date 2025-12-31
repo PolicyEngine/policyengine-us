@@ -1,0 +1,233 @@
+# Unit tests for South Dakota TANF benefit calculation
+# Formula: Benefit = max(Payment Standard - Countable Income, 0)
+# Source: ARSD 67:10:05:03 - Payment Standards
+# https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-03
+
+- name: Case 1, family of 3, zero income, full benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 0 = 701
+    sd_tanf: 701
+
+- name: Case 2, family of 3, $400 earned income.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 248  # (400-90) × 0.80
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 248 = 453
+    sd_tanf: 453
+
+- name: Case 3, family of 3, $800 gross earned income.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 568  # (800-90) × 0.80
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 568 = 133
+    sd_tanf: 133
+
+- name: Case 4, income exceeds payment standard.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 800
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: max(701 - 800, 0) = 0
+    sd_tanf: 0
+
+- name: Case 5, not eligible, no benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: false
+    state_code: SD
+  output:
+    # Not eligible, no benefit
+    sd_tanf: 0
+
+- name: Case 6, family of 1, no income.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 512
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 512 - 0 = 512
+    sd_tanf: 512
+
+- name: Case 7, family of 5, moderate income.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 848
+    sd_tanf_countable_income: 400
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 848 - 400 = 448
+    sd_tanf: 448
+
+- name: Case 8, income at payment standard threshold.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 701
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 701 = 0
+    sd_tanf: 0
+
+- name: Case 9, shared living, family of 3.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 507  # Shared living rate
+    sd_tanf_countable_income: 200
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 507 - 200 = 307
+    sd_tanf: 307
+
+- name: Case 10, documentation example family with earned and unearned.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 348  # From docs: $248 earned + $100 unearned
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 348 = 353
+    sd_tanf: 353
+
+# =============================================================================
+# EDGE CASES - Benefit Calculation Boundaries
+# =============================================================================
+
+- name: Case 11, edge case - benefit results in exactly $1.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 700
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 700 = $1 (minimum positive benefit)
+    # Edge case: tests the smallest positive benefit amount
+    sd_tanf: 1
+
+- name: Case 12, edge case - benefit results in exactly $0.01.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 700.99
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 700.99 = $0.01
+    # Edge case: tests very small benefit amounts
+    sd_tanf: 0.01
+
+- name: Case 13, edge case - income $1 below payment standard.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 848  # Family of 5
+    sd_tanf_countable_income: 847
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 848 - 847 = $1
+    # Edge case: just $1 of benefit remaining
+    sd_tanf: 1
+
+- name: Case 14, edge case - high income exceeds payment by $1.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 702
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: max(701 - 702, 0) = max(-1, 0) = $0
+    # Edge case: income $1 over threshold results in $0 benefit
+    sd_tanf: 0
+
+- name: Case 15, edge case - very high income well above threshold.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 5_000
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: max(701 - 5000, 0) = max(-4299, 0) = $0
+    # Edge case: ensures max_() correctly handles very negative values
+    sd_tanf: 0
+
+- name: Case 16, edge case - maximum benefit for large family (size 12).
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 1_361  # Family of 12 (max table value)
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 1,361 - 0 = $1,361 (maximum from table)
+    sd_tanf: 1_361
+
+- name: Case 17, edge case - maximum benefit for very large family (size 15).
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 1_520  # Family of 15 (1361 + 3×53)
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 1,520 - 0 = $1,520 (uses increment formula)
+    sd_tanf: 1_520
+
+- name: Case 18, edge case - partial benefit for large family.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 1_361  # Family of 12
+    sd_tanf_countable_income: 1_000
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 1,361 - 1,000 = $361
+    sd_tanf: 361
+
+- name: Case 19, edge case - shared living minimum benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 317  # Shared living, family of 1
+    sd_tanf_countable_income: 316
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 317 - 316 = $1 (minimum positive)
+    sd_tanf: 1
+
+- name: Case 20, edge case - shared living maximum benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 1_167  # Shared living, family of 12
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 1,167 - 0 = $1,167 (maximum shared living)
+    sd_tanf: 1_167
