@@ -11,7 +11,7 @@ class or_healthier_oregon_group(Variable):
     1. Aged/Disabled - SSI recipients or age 65+
     2. Non-Expansion Adult - pregnant adults
     3. Expansion Adult - other adults
-    4. Child - age <= child_max_age parameter
+    4. Child - age < child_max_age parameter (under 19)
     """
 
     value_type = Enum
@@ -36,10 +36,9 @@ class or_healthier_oregon_group(Variable):
             .gov.states["or"]
             .oha.healthier_oregon.eligibility
         )
-        is_child = age <= p.child_max_age
+        is_child = age < p.child_max_age
 
-        # 65 is the standard federal Medicaid aged threshold (42 USC 1382c)
-        is_aged_disabled = is_disabled | (age >= 65)
+        is_aged_disabled = is_disabled | (age >= p.aged_threshold)
 
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
 

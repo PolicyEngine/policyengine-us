@@ -7,7 +7,7 @@ used by:
 - Other state Medicaid-like programs
 """
 
-from policyengine_us.model_api import select
+from policyengine_us.model_api import *
 
 
 def calculate_per_capita_cost(
