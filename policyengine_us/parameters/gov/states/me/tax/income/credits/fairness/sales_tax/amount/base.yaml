@@ -9,6 +9,8 @@ SINGLE:
     rounding:
       type: downwards
       interval: 5
+  metadata:
+    label: Single
 JOINT:
   values:
     2021-01-01: 180
@@ -20,6 +22,8 @@ JOINT:
     rounding:
       type: downwards
       interval: 5
+  metadata:
+    label: Joint
 SEPARATE:
   values:
     2021-01-01: 0
@@ -28,6 +32,8 @@ SEPARATE:
     rounding:
       type: downwards
       interval: 5
+  metadata:
+    label: Separate
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 180
@@ -39,6 +45,8 @@ HEAD_OF_HOUSEHOLD:
     rounding:
       type: downwards
       interval: 5
+  metadata:
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 180
@@ -51,22 +59,24 @@ SURVIVING_SPOUSE:
       type: downwards
       interval: 5
 
+  metadata:
+    label: Surviving spouse
 metadata:
   unit: currency-USD
   reference:
     # Legal specifies inflation unadjusted amounts
-    - title: §5213-A. Sales tax fairness credit (A-1) 
-      href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
-    - title: §5403. Annual adjustments for inflation 5(A)
-      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
-    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
-    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
-    - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
-    - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+  - title: §5213-A. Sales tax fairness credit (A-1)
+    href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+  - title: §5403. Annual adjustments for inflation 5(A)
+    href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+  - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+  - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
+  - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+  - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
   period: year
   label: Maine sales tax fairness credit base amount
   breakdown:

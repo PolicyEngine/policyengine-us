@@ -1,14 +1,14 @@
-description: DC limits its Child Tax Credit to filers with taxable income below the following amount, based on filing status. 
+description: DC limits its Child Tax Credit to filers with taxable income below the following amount, based on filing status.
 metadata:
   label: DC Child Tax Credit taxable income threshold
   unit: currency_USD
   period: year
   breakdown:
-    - filing_status
+  - filing_status
   reference:
-    - title: Code of the District of Columbia § 47-1806.17(e)(5)
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17#(e)(5)
-    
+  - title: Code of the District of Columbia § 47-1806.17(e)(5)
+    href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17#(e)(5)
+
 SINGLE:
   values:
     2025-01-01: 160_000
@@ -18,6 +18,7 @@ SINGLE:
       rounding:
         type: downwards
         interval: 100
+    label: Single
 JOINT:
   values:
     2025-01-01: 240_000
@@ -27,6 +28,7 @@ JOINT:
       rounding:
         type: downwards
         interval: 100
+    label: Joint
 SEPARATE:
   values:
     2025-01-01: 120_000
@@ -36,6 +38,7 @@ SEPARATE:
       rounding:
         type: downwards
         interval: 100
+    label: Separate
 HEAD_OF_HOUSEHOLD:
   values:
     2025-01-01: 160_000
@@ -45,6 +48,7 @@ HEAD_OF_HOUSEHOLD:
       rounding:
         type: downwards
         interval: 100
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2025-01-01: 160_000
@@ -54,3 +58,4 @@ SURVIVING_SPOUSE:
       rounding:
         type: downwards
         interval: 100
+    label: Surviving spouse

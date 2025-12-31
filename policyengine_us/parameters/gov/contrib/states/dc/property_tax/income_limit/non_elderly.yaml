@@ -10,44 +10,49 @@ JOINT:
   values:
     2025-01-01: 65_600
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 25
+    label: Joint
 HEAD_OF_HOUSEHOLD:
   values:
     2025-01-01: 65_600
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 25
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2025-01-01: 65_600
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 25
+    label: Surviving spouse
 SINGLE:
   values:
     2025-01-01: 65_600
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 25
+    label: Single
 SEPARATE:
   values:
     2025-01-01: 65_600
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: downwards
         interval: 25
+    label: Separate

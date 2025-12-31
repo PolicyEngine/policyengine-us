@@ -4,18 +4,19 @@ metadata:
   uprating: gov.irs.uprating
   period: year
   reference:
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
-      href: https://www.law.cornell.edu/uscode/text/26/151#d_1
+  - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
+    href: https://www.law.cornell.edu/uscode/text/26/151#d_1
     # TCJA sets to zero.
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
+  - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
+    href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
+  - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
-      href: https://www.cbo.gov/data/budget-economic-data
+    href: https://www.cbo.gov/data/budget-economic-data
     # OBBB permanently sets value to zero.
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+  - title: H.R.1 - One Big Beautiful Bill Act
+    href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
 
+  label: Personal and dependent exemption amount
 values:
   2013-01-01: 3_900
   2014-01-01: 3_950

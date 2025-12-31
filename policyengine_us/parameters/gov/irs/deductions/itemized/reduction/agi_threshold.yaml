@@ -27,6 +27,7 @@ SINGLE:
       rounding:
         type: downwards
         interval: 50
+    label: Single
 JOINT:
   values:
     2009-01-01: 250_200
@@ -54,6 +55,7 @@ JOINT:
         type: downwards
         interval: 50
 
+    label: Joint
 SEPARATE:
   values:
     2009-01-01: 125_100
@@ -82,8 +84,9 @@ SEPARATE:
         type: downwards
         interval: 50
 
+    label: Separate
 HEAD_OF_HOUSEHOLD:
-  values: 
+  values:
     2009-01-01: 208_500
     2010-01-01: 0
     2013-01-01: 275_000
@@ -110,6 +113,7 @@ HEAD_OF_HOUSEHOLD:
         type: downwards
         interval: 50
 
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2009-01-01: 250_200
@@ -138,28 +142,29 @@ SURVIVING_SPOUSE:
         type: downwards
         interval: 50
 
+    label: Surviving spouse
 metadata:
   breakdown:
-    - filing_status
+  - filing_status
   unit: currency-USD
   period: year
   label: IRS itemized deductions reduction threshold
   reference:
-    - title: 2009 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2009.pdf#page=6
-    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions, (b)
-      href: https://www.law.cornell.edu/uscode/text/26/68#b
+  - title: 2009 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2009.pdf#page=6
+  - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions, (b)
+    href: https://www.law.cornell.edu/uscode/text/26/68#b
     # The pease limitation was repealed from 2010 to 2012 as well as from 2017 to 2025
-    - title: 2010 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2010.pdf#page=6
-    - title: 2011 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2011.pdf#page=6
-    - title: 2012 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2012.pdf#page=6
-    - title: 2013 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2013.pdf#page=6
-    - title: 2014 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2014.pdf#page=6
-    - title: 2015 Form 1040 - Limit on Itemized Deductions
-      href: https://www.irs.gov/pub/irs-prior/i1040gi--2015.pdf#page=6
-  
+  - title: 2010 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2010.pdf#page=6
+  - title: 2011 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2011.pdf#page=6
+  - title: 2012 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2012.pdf#page=6
+  - title: 2013 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2013.pdf#page=6
+  - title: 2014 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2014.pdf#page=6
+  - title: 2015 Form 1040 - Limit on Itemized Deductions
+    href: https://www.irs.gov/pub/irs-prior/i1040gi--2015.pdf#page=6
+

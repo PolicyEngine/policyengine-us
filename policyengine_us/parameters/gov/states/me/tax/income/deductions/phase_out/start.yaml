@@ -4,30 +4,30 @@ metadata:
   period: year
   label: Maine standard/itemized exemption phase-out start
   reference:
-    - title: Maine §5125. Itemized deductions 6 - Phase-out
-      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html
-    - title: §5403. Annual adjustments for inflation 4
-      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
-    - title: Maine form 1040 Schedule 2 (2024)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_sched_2%20_ff.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2023)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2022)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf#page=1
-    - title: Instructions for Form 1040ME (2021)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
-    - title: Maine form 1040 Schedule 2 (2020)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_2_dwnldff.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2019)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_2_dwnldff.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2018)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040_2_d.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2017)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_sch2_d_sept18.pdf#page=1
-    - title: Maine form 1040 Schedule 2 (2016)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040%20sched%202_download.pdf#page=1
+  - title: Maine §5125. Itemized deductions 6 - Phase-out
+    href: https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html
+  - title: §5403. Annual adjustments for inflation 4
+    href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+  - title: Maine form 1040 Schedule 2 (2024)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_sched_2%20_ff.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2023)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2022)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf#page=1
+  - title: Instructions for Form 1040ME (2021)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+  - title: Maine form 1040 Schedule 2 (2020)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_2_dwnldff.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2019)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_2_dwnldff.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2018)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040_2_d.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2017)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_sch2_d_sept18.pdf#page=1
+  - title: Maine form 1040 Schedule 2 (2016)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040%20sched%202_download.pdf#page=1
   breakdown:
-    - filing_status
+  - filing_status
 SINGLE:
   values:
     2016-01-01: 70_000
@@ -43,6 +43,8 @@ SINGLE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Single
 SEPARATE:
   values:
     2016-01-01: 70_000
@@ -58,6 +60,8 @@ SEPARATE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Separate
 HEAD_OF_HOUSEHOLD:
   values:
     2016-01-01: 105_000
@@ -73,6 +77,8 @@ HEAD_OF_HOUSEHOLD:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Head of household
 JOINT:
   values:
     2016-01-01: 140_000
@@ -88,6 +94,8 @@ JOINT:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Joint
 SURVIVING_SPOUSE:
   values:
     2016-01-01: 140_000
@@ -103,3 +111,5 @@ SURVIVING_SPOUSE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Surviving spouse

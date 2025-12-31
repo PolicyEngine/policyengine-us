@@ -8,7 +8,7 @@ metadata:
     rounding:
       type: nearest
       interval: 10
-  propagate_metadata_to_children: true 
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -35,6 +35,8 @@ JOINT:
     2023-01-01: 5_840
     2024-01-01: 5_840
     2025-01-01: 5_840
+  metadata:
+    label: Joint
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 4_130
@@ -42,6 +44,8 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 4_560
     2024-01-01: 4_560
     2025-01-01: 4_560
+  metadata:
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 5_290
@@ -49,6 +53,8 @@ SURVIVING_SPOUSE:
     2023-01-01: 5_840
     2024-01-01: 5_840
     2025-01-01: 5_840
+  metadata:
+    label: Surviving spouse
 SINGLE:
   values:
     2021-01-01: 4_130
@@ -56,6 +62,8 @@ SINGLE:
     2023-01-01: 4_560
     2024-01-01: 4_560
     2025-01-01: 4_560
+  metadata:
+    label: Single
 SEPARATE:
   values:
     2021-01-01: 2_645
@@ -63,3 +71,5 @@ SEPARATE:
     2023-01-01: 2_920
     2024-01-01: 2_920
     2025-01-01: 2_920
+  metadata:
+    label: Separate

@@ -18,6 +18,8 @@ HEAD_OF_HOUSEHOLD:
     2028-01-01: 41_212
     2029-01-01: 41_624
     2030-01-01: 10_000
+  metadata:
+    label: Head of household
 JOINT:
   values:
     2013-01-01: .inf
@@ -33,6 +35,8 @@ JOINT:
     2028-01-01: 41_212
     2029-01-01: 41_624
     2030-01-01: 10_000
+  metadata:
+    label: Joint
 SEPARATE:
   values:
     2013-01-01: .inf
@@ -48,6 +52,8 @@ SEPARATE:
     2028-01-01: 20_606
     2029-01-01: 20_812
     2030-01-01: 5_000
+  metadata:
+    label: Separate
 SINGLE:
   values:
     2013-01-01: .inf
@@ -63,6 +69,8 @@ SINGLE:
     2028-01-01: 41_212
     2029-01-01: 41_624
     2030-01-01: 10_000
+  metadata:
+    label: Single
 SURVIVING_SPOUSE:
   values:
     2013-01-01: .inf
@@ -78,3 +86,5 @@ SURVIVING_SPOUSE:
     2028-01-01: 41_212
     2029-01-01: 41_624
     2030-01-01: 10_000
+  metadata:
+    label: Surviving spouse

@@ -4,54 +4,59 @@ metadata:
   unit: currency-USD
   label: Colorado family affordability tax credit income-based reduction start
   breakdown:
-    - filing_status
+  - filing_status
   reference:
-    - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
-      href: https://leg.colorado.gov/bills/hb24-1311
-    - title: 2024 Colorado Child Tax Credit Instructions, Section C
-      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2024.pdf#page=3
+  - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
+    href: https://leg.colorado.gov/bills/hb24-1311
+  - title: 2024 Colorado Child Tax Credit Instructions, Section C
+    href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2024.pdf#page=3
 SINGLE:
   values:
     2024-01-01: 15_000
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: nearest
         interval: 1_000
+    label: Single
 HEAD_OF_HOUSEHOLD:
   values:
     2024-01-01: 15_000
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: nearest
         interval: 1_000
+    label: Head of household
 JOINT:
   values:
     2024-01-01: 25_000
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: nearest
         interval: 1_000
+    label: Joint
 SURVIVING_SPOUSE:
   values:
     2024-01-01: 15_000
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: nearest
         interval: 1_000
+    label: Surviving spouse
 SEPARATE:
   values:
     2024-01-01: 15_000
   metadata:
-    uprating: 
+    uprating:
       parameter: gov.irs.uprating
       rounding:
         type: nearest
         interval: 1_000
+    label: Separate

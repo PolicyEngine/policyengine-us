@@ -22,6 +22,8 @@ SINGLE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Single
 JOINT:
   values:
     2021-01-01: 18_100
@@ -33,6 +35,8 @@ JOINT:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Joint
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 13_550
@@ -44,6 +48,8 @@ HEAD_OF_HOUSEHOLD:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Head of household
 SEPARATE:
   values:
     2021-01-01: 9_050
@@ -55,6 +61,8 @@ SEPARATE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Separate
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 9_050
@@ -66,3 +74,5 @@ SURVIVING_SPOUSE:
     rounding:
       type: downwards
       interval: 50
+  metadata:
+    label: Surviving spouse

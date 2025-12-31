@@ -34,6 +34,8 @@ JOINT:
     2023-01-01: 27_650
     2024-01-01: 29_150
     2025-01-01: 29_900
+  metadata:
+    label: Joint
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 18_800
@@ -41,6 +43,8 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 20_800
     2024-01-01: 21_900
     2025-01-01: 22_500
+  metadata:
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 25_050
@@ -48,6 +52,8 @@ SURVIVING_SPOUSE:
     2023-01-01: 27_650
     2024-01-01: 29_150
     2025-01-01: 29_900
+  metadata:
+    label: Surviving spouse
 SINGLE:
   values:
     2021-01-01: 12_525
@@ -55,6 +61,8 @@ SINGLE:
     2023-01-01: 13_825
     2024-01-01: 14_575
     2025-01-01: 14_950
+  metadata:
+    label: Single
 SEPARATE:
   values:
     2021-01-01: 12_525
@@ -62,3 +70,5 @@ SEPARATE:
     2023-01-01: 13_825
     2024-01-01: 14_575
     2025-01-01: 14_950
+  metadata:
+    label: Separate

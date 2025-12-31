@@ -1,28 +1,38 @@
 description: Wisconsin uses this base income in phase-out of unemployment compensation subtraction.
 metadata:
   breakdown:
-    - filing_status
+  - filing_status
   period: year
   unit: currency-USD
   reference:
-    - title: 2021 Wisconsin Form 1 Schedule SB instructions
-      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=2
-    - title: 2022 Wisconsin Form 1 Schedule SB instructions
-      href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=1
-    - title: 2024 Wisconsin Form 1 Schedule SB instructions
-      href: https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleSB-Inst.pdf#page=2
+  - title: 2021 Wisconsin Form 1 Schedule SB instructions
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=2
+  - title: 2022 Wisconsin Form 1 Schedule SB instructions
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=1
+  - title: 2024 Wisconsin Form 1 Schedule SB instructions
+    href: https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleSB-Inst.pdf#page=2
 SINGLE:
   values:
     2021-01-01: 12_000
+  metadata:
+    label: Single
 JOINT:
   values:
     2021-01-01: 18_000
+  metadata:
+    label: Joint
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 18_000
+  metadata:
+    label: Surviving spouse
 SEPARATE:
   values:
     2021-01-01: 12_000
+  metadata:
+    label: Separate
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 12_000
+  metadata:
+    label: Head of household

@@ -4,19 +4,19 @@ metadata:
   period: year
   unit: currency-USD
   breakdown:
-    - filing_status
+  - filing_status
   reference:
-    - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
-      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=10
-    - title: 2022 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
-      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=10
-    - title: 2023 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
-      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf#page=10
-    - title: 2024 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
-      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=10
+  - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+    href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=10
+  - title: 2022 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+    href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=10
+  - title: 2023 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+    href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf#page=10
+  - title: 2024 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+    href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=10
       # Legal code specifies amount with inflation adjustments..
-    - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(ii) 
-      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
+  - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(ii)
+    href: https://legislature.vermont.gov/statutes/section/32/151/05811
 
 JOINT:
   values:
@@ -29,6 +29,7 @@ JOINT:
     rounding:
       type: downwards
       interval: 50
+    label: Joint
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 9_500
@@ -40,6 +41,7 @@ HEAD_OF_HOUSEHOLD:
     rounding:
       type: downwards
       interval: 50
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 12_700
@@ -47,10 +49,11 @@ SURVIVING_SPOUSE:
     2023-01-01: 14_050
     2024-01-01: 14_850
   metadata:
-    uprating: gov.irs.uprating  
+    uprating: gov.irs.uprating
     rounding:
       type: downwards
       interval: 50
+    label: Surviving spouse
 SINGLE:
   values:
     2021-01-01: 6_350
@@ -62,6 +65,7 @@ SINGLE:
     rounding:
       type: downwards
       interval: 50
+    label: Single
 SEPARATE:
   values:
     2021-01-01: 6_350
@@ -73,3 +77,4 @@ SEPARATE:
     rounding:
       type: downwards
       interval: 50
+    label: Separate

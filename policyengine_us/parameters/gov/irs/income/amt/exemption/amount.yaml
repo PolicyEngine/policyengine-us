@@ -9,29 +9,29 @@ metadata:
       type: nearest
       interval: 100
   reference:
-    - title: 26 U.S. Code § 55(d) - Alternative minimum tax exemption
-      href: https://www.law.cornell.edu/uscode/text/26/55#d
-    - title: 2026 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=16
-    - title: 2025 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=10
-    - title: 2024 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
-    - title: 2023 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=11
-    - title: 2022 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=12
-    - title: 2021 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
-    - title: 2020 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=11
-    - title: 2018 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-18-22.pdf#page=2
-    - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (d)
-      href: https://www.law.cornell.edu/uscode/text/26/55#d
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
+  - title: 26 U.S. Code § 55(d) - Alternative minimum tax exemption
+    href: https://www.law.cornell.edu/uscode/text/26/55#d
+  - title: 2026 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=16
+  - title: 2025 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=10
+  - title: 2024 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
+  - title: 2023 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=11
+  - title: 2022 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=12
+  - title: 2021 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
+  - title: 2020 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=11
+  - title: 2018 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-18-22.pdf#page=2
+  - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (d)
+    href: https://www.law.cornell.edu/uscode/text/26/55#d
+  - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
-      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
+    href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
 HEAD_OF_HOUSEHOLD:
   values:
     # (d)(1)
@@ -50,6 +50,8 @@ HEAD_OF_HOUSEHOLD:
     2024-01-01: 85_700
     2025-01-01: 88_100
     2026-01-01: 90_100
+  metadata:
+    label: Head of household
 JOINT:
   values:
     2013-01-01: 80_800
@@ -66,6 +68,8 @@ JOINT:
     2024-01-01: 133_300
     2025-01-01: 137_000
     2026-01-01: 140_200
+  metadata:
+    label: Joint
 SEPARATE:
   values:
     2013-01-01: 40_400
@@ -82,6 +86,8 @@ SEPARATE:
     2024-01-01: 66_650
     2025-01-01: 68_500
     2026-01-01: 70_100
+  metadata:
+    label: Separate
 SINGLE:
   values:
     2013-01-01: 51_900
@@ -98,6 +104,8 @@ SINGLE:
     2024-01-01: 85_700
     2025-01-01: 88_100
     2026-01-01: 90_100
+  metadata:
+    label: Single
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 80_800
@@ -114,3 +122,5 @@ SURVIVING_SPOUSE:
     2024-01-01: 133_300
     2025-01-01: 137_000
     2026-01-01: 140_200
+  metadata:
+    label: Surviving spouse

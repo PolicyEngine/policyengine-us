@@ -1,8 +1,8 @@
 description: List of programs that qualify a household for an increased rebate under California's Clean Vehicle Rebate Project.
 values:
   2016-01-01:
-    - medicaid
-    - ssi
+  - medicaid
+  - ssi
     # Also:
     # - tanf # Not yet implemented in California.
     # Medi-Cal (Income Qualified Medi-Cal Only)
@@ -16,3 +16,4 @@ metadata:
   reference:
   - title: CVRP Info | Eligibility & Requirements
     href: https://cleanvehiclerebate.org/en/eligibility-guidelines
+  label: Categorical eligibility

@@ -5,24 +5,24 @@ metadata:
   period: year
   label: Student loan interest deduction amount
   breakdown:
-    - filing_status
+  - filing_status
   reference:
-    - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
-      href: https://www.law.cornell.edu/uscode/text/26/221
-    - title: 2026 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=23
-    - title: 2023 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
-    - title: 2022 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=18
-    - title: 2021 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=18
-    - title: 2020 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=17
-    - title: 2019 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=20
-    - title: 2024 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
+  - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
+    href: https://www.law.cornell.edu/uscode/text/26/221
+  - title: 2026 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=23
+  - title: 2023 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
+  - title: 2022 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=18
+  - title: 2021 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=18
+  - title: 2020 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=17
+  - title: 2019 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=20
+  - title: 2024 IRS data release
+    href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
 
 JOINT:
   values:
@@ -38,6 +38,7 @@ JOINT:
       rounding:
         type: downwards
         interval: 5_000
+    label: Joint
 SINGLE:
   values:
     2002-01-01: 50_000
@@ -52,6 +53,7 @@ SINGLE:
         type: downwards
         interval: 5_000
 # Married couples must file jointly under (e)(2) to receive the deduction
+    label: Single
 SEPARATE:
   2002-01-01: 0
 HEAD_OF_HOUSEHOLD:
@@ -67,6 +69,7 @@ HEAD_OF_HOUSEHOLD:
       rounding:
         type: downwards
         interval: 5_000
+    label: Head of household
 SURVIVING_SPOUSE:
   values:
     2002-01-01: 50_000
@@ -80,3 +83,4 @@ SURVIVING_SPOUSE:
       rounding:
         type: downwards
         interval: 5_000
+    label: Surviving spouse

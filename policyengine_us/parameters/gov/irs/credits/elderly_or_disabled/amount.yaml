@@ -2,14 +2,20 @@ description: Initial amount of Section 22 income
 one_qualified:
   values:
     2010-01-01: 5_000
+  metadata:
+    label: One qualified
 two_qualified:
   values:
     2010-01-01: 7_500
+  metadata:
+    label: Two qualified
 separate:
   values:
     2010-01-01: 3_750
+  metadata:
+    label: Separate
 metadata:
   unit: currency-USD
   reference:
-    - title: 26 U.S. Code § 22(c)(2)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/22#c_2_A
+  - title: 26 U.S. Code § 22(c)(2)(A)
+    href: https://www.law.cornell.edu/uscode/text/26/22#c_2_A

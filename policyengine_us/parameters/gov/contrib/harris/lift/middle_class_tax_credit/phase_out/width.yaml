@@ -5,9 +5,9 @@ metadata:
   breakdown:
   - filing_status
   label: Middle Class Tax Credit phase-out width
-  reference: 
-    - title: S.4 - LIFT (Livable Incomes for Families Today) the Middle Class Act SEC. 36A. (a)(2)(A)
-      href: https://www.congress.gov/bill/116th-congress/senate-bill/4/text
+  reference:
+  - title: S.4 - LIFT (Livable Incomes for Families Today) the Middle Class Act SEC. 36A. (a)(2)(A)
+    href: https://www.congress.gov/bill/116th-congress/senate-bill/4/text
 
 SINGLE:
   values:
@@ -18,6 +18,7 @@ SINGLE:
       rounding:
         type: nearest
         interval: 50
+    label: Single
 HEAD_OF_HOUSEHOLD:
   values:
     2019-01-01: 20_000
@@ -27,6 +28,7 @@ HEAD_OF_HOUSEHOLD:
       rounding:
         type: nearest
         interval: 50
+    label: Head of household
 JOINT:
   values:
     2019-01-01: 40_000
@@ -36,6 +38,7 @@ JOINT:
       rounding:
         type: nearest
         interval: 50
+    label: Joint
 SURVIVING_SPOUSE:
   values:
     2019-01-01: 20_000
@@ -45,6 +48,7 @@ SURVIVING_SPOUSE:
       rounding:
         type: nearest
         interval: 50
+    label: Surviving spouse
 SEPARATE:
   values:
     2019-01-01: 20_000
@@ -54,3 +58,4 @@ SEPARATE:
       rounding:
         type: nearest
         interval: 50
+    label: Separate
