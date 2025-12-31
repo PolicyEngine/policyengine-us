@@ -1,0 +1,253 @@
+# Unit tests for Delaware TANF child support disregard
+# 16 Del. Admin. Code SS 4000-4008: First $50 of child support is disregarded
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+- name: Child support above disregard - disregard $50
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400  # $200/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $200/month
+    # Disregard: min($200, $50) = $50
+    de_tanf_child_support_disregard: 50
+
+- name: Child support below disregard - disregard actual amount
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $30/month
+    # Disregard: min($30, $50) = $30
+    de_tanf_child_support_disregard: 30
+
+- name: No child support - no disregard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # No child support, no disregard
+    de_tanf_child_support_disregard: 0
+
+# ============================================================================
+# EDGE CASE TESTS: $50 Disregard Boundaries
+# ============================================================================
+
+- name: Edge case - child support exactly at $50
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $50/month
+    # Disregard: min($50, $50) = $50
+    de_tanf_child_support_disregard: 50
+
+- name: Edge case - child support $1 below $50
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 588  # $49/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $49/month
+    # Disregard: min($49, $50) = $49
+    de_tanf_child_support_disregard: 49
+
+- name: Edge case - child support $1 above $50
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 612  # $51/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $51/month
+    # Disregard: min($51, $50) = $50
+    de_tanf_child_support_disregard: 50
+
+# ============================================================================
+# EDGE CASE TESTS: Small Amounts
+# ============================================================================
+
+- name: Edge case - minimal child support ($1)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 12  # $1/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $1/month
+    # Disregard: min($1, $50) = $1
+    de_tanf_child_support_disregard: 1
+
+- name: Edge case - child support $10
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 120  # $10/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $10/month
+    # Disregard: min($10, $50) = $10
+    de_tanf_child_support_disregard: 10
+
+# ============================================================================
+# EDGE CASE TESTS: Large Amounts
+# ============================================================================
+
+- name: Edge case - child support $100 (double the max)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $100/month
+    # Disregard: min($100, $50) = $50
+    de_tanf_child_support_disregard: 50
+
+- name: Edge case - very high child support ($500)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $500/month
+    # Disregard: min($500, $50) = $50
+    de_tanf_child_support_disregard: 50
+
+# ============================================================================
+# EDGE CASE TESTS: Multiple Recipients
+# ============================================================================
+
+- name: Edge case - two people receiving child support
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 10
+        child_support_received: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Total child support: $100 + $50 = $150/month
+    # Disregard: min($150, $50) = $50
+    # Note: The disregard is applied to total child support, not per person
+    de_tanf_child_support_disregard: 50
+
+- name: Edge case - household total below $50 disregard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 120  # $10/month
+      person2:
+        age: 10
+        child_support_received: 240  # $20/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Total child support: $10 + $20 = $30/month
+    # Disregard: min($30, $50) = $30
+    de_tanf_child_support_disregard: 30

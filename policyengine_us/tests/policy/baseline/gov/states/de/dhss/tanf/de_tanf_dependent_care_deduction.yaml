@@ -1,0 +1,474 @@
+# Unit tests for Delaware TANF dependent care deduction
+# 16 Del. Admin. Code SS 4000-4008: Dependent care expenses up to limits
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Limits: $200/month for child under age 2, $175/month for child age 2+
+# Note: childcare_expenses is annual, so multiply monthly amount by 12
+# Note: Uses monthly_age for age calculation
+
+- name: No childcare expenses - no deduction
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_dependent_care_deduction: 0
+
+- name: Child under 2 - max $200 deduction
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Max deduction for child under 2 is $200/month
+    # Expenses ($300/mo) > max ($200), so deduction = $200
+    de_tanf_dependent_care_deduction: 200
+
+- name: Child age 2+ - max $175 deduction
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Max deduction for child age 2+ is $175/month
+    # Expenses ($300/mo) > max ($175), so deduction = $175
+    de_tanf_dependent_care_deduction: 175
+
+- name: Expenses less than max - deduct actual expenses
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 1_800  # $150/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Max deduction for child under 2 is $200/month
+    # Expenses ($150/mo) < max ($200), so deduction = $150
+    de_tanf_dependent_care_deduction: 150
+
+- name: Two children - combined deduction
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month annual
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Child1 (under 2): max $200
+    # Child2 (age 2+): max $175
+    # Total max: $375
+    # Expenses ($500/mo) > max ($375), so deduction = $375
+    de_tanf_dependent_care_deduction: 375
+
+- name: Child age 2 exactly - uses 2+ threshold
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_400  # $200/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child age 2 uses the 2+ threshold ($175)
+    # Expenses ($200/mo) > max ($175), so deduction = $175
+    de_tanf_dependent_care_deduction: 175
+
+# ============================================================================
+# EDGE CASE TESTS: Age Boundaries
+# ============================================================================
+
+- name: Edge case - newborn (age 0)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Newborn (age 0) uses under-2 threshold ($200)
+    # Expenses ($300/mo) > max ($200), so deduction = $200
+    de_tanf_dependent_care_deduction: 200
+
+- name: Edge case - child age 1 (under 2 threshold)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Age 1 (under 2) uses $200 threshold
+    de_tanf_dependent_care_deduction: 200
+
+- name: Edge case - child age 2 exactly (at 2+ boundary)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Age 2 uses 2+ threshold ($175)
+    de_tanf_dependent_care_deduction: 175
+
+- name: Edge case - older child (age 10)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Age 10 uses 2+ threshold ($175)
+    de_tanf_dependent_care_deduction: 175
+
+# ============================================================================
+# EDGE CASE TESTS: Expense Amount Boundaries
+# ============================================================================
+
+- name: Edge case - expenses exactly at $200 limit (under 2)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_400  # $200/month exactly
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Expenses = max, deduction = $200
+    de_tanf_dependent_care_deduction: 200
+
+- name: Edge case - expenses exactly at $175 limit (age 2+)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_100  # $175/month exactly
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Expenses = max, deduction = $175
+    de_tanf_dependent_care_deduction: 175
+
+- name: Edge case - expenses $1 below $200 limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_388  # $199/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Expenses ($199) < max ($200), deduction = $199
+    de_tanf_dependent_care_deduction: 199
+
+- name: Edge case - expenses $1 above $175 limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_112  # $176/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Expenses ($176) > max ($175), deduction = $175
+    de_tanf_dependent_care_deduction: 175
+
+- name: Edge case - minimal expenses ($1)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 12  # $1/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Expenses ($1) < max ($200), deduction = $1
+    de_tanf_dependent_care_deduction: 1
+
+# ============================================================================
+# EDGE CASE TESTS: Multiple Children Scenarios
+# ============================================================================
+
+- name: Edge case - three children under 2
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+      person4:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 9_600  # $800/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # Three children under 2: 3 * $200 = $600 max
+    # Expenses ($800) > max ($600), deduction = $600
+    de_tanf_dependent_care_deduction: 600
+
+- name: Edge case - three children all age 2+
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 9_600  # $800/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # Three children age 2+: 3 * $175 = $525 max
+    # Expenses ($800) > max ($525), deduction = $525
+    de_tanf_dependent_care_deduction: 525
+
+- name: Edge case - mixed ages (2 under 2, 1 over 2)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 9_600  # $800/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # Two under 2: 2 * $200 = $400
+    # One age 2+: 1 * $175 = $175
+    # Total max: $575
+    # Expenses ($800) > max ($575), deduction = $575
+    de_tanf_dependent_care_deduction: 575
+
+# ============================================================================
+# EDGE CASE TESTS: Non-Dependent Children
+# ============================================================================
+
+- name: Edge case - child not a dependent (should not count)
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: false  # Not a dependent
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Child is not a tax unit dependent, so no deduction applies
+    de_tanf_dependent_care_deduction: 0
+
+- name: Edge case - one dependent, one non-dependent
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true  # Is dependent
+      person3:
+        age: 3
+        is_tax_unit_dependent: false  # Not dependent
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_800  # $400/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Only person2 counts as dependent (under 2): max $200
+    # Expenses ($400) > max ($200), deduction = $200
+    de_tanf_dependent_care_deduction: 200
+
+# ============================================================================
+# EDGE CASE TESTS: Zero Dependents
+# ============================================================================
+
+- name: Edge case - no dependents with childcare expenses
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # No dependents, so no deduction regardless of expenses
+    de_tanf_dependent_care_deduction: 0

@@ -1,0 +1,201 @@
+# Unit tests for Delaware TANF benefit calculation
+# 16 Del. Admin. Code SS 4000-4008: Grant calculation
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Formula:
+# 1. Deficit = Standard of Need - Net Income
+# 2. Remainder = Deficit * 50%
+# 3. Grant = min(Remainder, Payment Standard)
+
+- name: Eligible - zero income, receives payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 0
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: $1,666
+    # Payment Standard: $338
+    # Net income: $0
+    # Deficit: $1,666 - $0 = $1,666
+    # Remainder: $1,666 * 0.50 = $833
+    # Grant: min($833, $338) = $338
+    de_tanf: 338
+
+- name: Documentation example - family of 3 with $500 net income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 500
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: $1,666
+    # Payment Standard: $338
+    # Net income: $500
+    # Deficit: $1,666 - $500 = $1,166
+    # Remainder: $1,166 * 0.50 = $583
+    # Grant: min($583, $338) = $338
+    de_tanf: 338
+
+- name: Partial benefit when remainder less than payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 1_200
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: $1,666
+    # Payment Standard: $338
+    # Net income: $1,200
+    # Deficit: $1,666 - $1,200 = $466
+    # Remainder: $466 * 0.50 = $233
+    # Grant: min($233, $338) = $233
+    de_tanf: 233
+
+- name: Net income exceeds Standard of Need - zero benefit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 1_800
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: $1,666
+    # Net income: $1,800
+    # Deficit: max($1,666 - $1,800, 0) = $0
+    # Remainder: $0 * 0.50 = $0
+    # Grant: $0
+    de_tanf: 0
+
+- name: Ineligible - no benefit regardless of income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 0
+        de_tanf_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_tanf: 0
+
+- name: Family of 1 - full payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_countable_net_income: 0
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Family size: 1
+    # Standard of Need: $979
+    # Payment Standard: $201
+    # Deficit: $979 - $0 = $979
+    # Remainder: $979 * 0.50 = $489.50
+    # Grant: min($489.50, $201) = $201
+    de_tanf: 201
+
+- name: Family of 5 - partial benefit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        de_tanf_countable_net_income: 1_500
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    # Family size: 5
+    # Standard of Need: $2,354
+    # Payment Standard: $475
+    # Net income: $1,500
+    # Deficit: $2,354 - $1,500 = $854
+    # Remainder: $854 * 0.50 = $427
+    # Grant: min($427, $475) = $427
+    de_tanf: 427

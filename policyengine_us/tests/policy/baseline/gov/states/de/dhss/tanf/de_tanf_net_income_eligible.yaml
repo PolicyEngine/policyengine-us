@@ -1,0 +1,142 @@
+# Unit tests for Delaware TANF net income eligibility
+# 16 Del. Admin. Code SS 4000-4008: For applicants, net income compared to Payment Standard
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Note: Using applicant standard (Payment Standard) as default
+
+- name: Family of 3 - net income below payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $200 < $338
+    de_tanf_net_income_eligible: true
+
+- name: Family of 3 - net income above payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $400 > $338
+    de_tanf_net_income_eligible: false
+
+- name: Family of 2 - at exact limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_countable_net_income: 270
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family size: 2
+    # Payment standard: $270/month
+    # Net income: $270 = $270
+    de_tanf_net_income_eligible: true
+
+- name: Family of 1 - no income
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_countable_net_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Family size: 1
+    # Payment standard: $201/month
+    # Net income: $0 < $201
+    de_tanf_net_income_eligible: true
+
+- name: Edge case - family of 3 net income exactly at payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 338
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $338 = $338
+    de_tanf_net_income_eligible: true
+
+- name: Edge case - family of 3 net income $1 above payment standard
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_net_income: 339
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $339 > $338
+    de_tanf_net_income_eligible: false

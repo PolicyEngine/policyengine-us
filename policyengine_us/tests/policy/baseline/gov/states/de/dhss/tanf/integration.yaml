@@ -1,0 +1,326 @@
+# Integration tests for Delaware TANF - full pipeline testing
+# Tests realistic family scenarios with complete eligibility and benefit calculations
+# 16 Del. Admin. Code SS 4000-4008: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Delaware DHSS TANF: https://dhss.delaware.gov/dss/tanf/
+# Note: Parameters effective 2025-10-01
+# Note: Work expense = $90/earner, Dependent care = $200 (under 2) or $175 (2+)
+# Note: Child support disregard = $50/month
+# Note: Benefit = min(50% of (Standard of Need - Net Income), Payment Standard)
+
+- name: Scenario 1 - Single parent with 2 children, no income - full benefit
+  # Family of 3, no income, receives full payment standard
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Gross income: $0
+    # Gross income limit: $3,082 -> Gross eligible: Yes
+    # Net income: $0
+    # Payment standard: $338 -> Net eligible: Yes
+    # Standard of Need: $1,666
+    # Deficit: $1,666 - $0 = $1,666
+    # Remainder: $1,666 * 0.50 = $833
+    # Benefit: min($833, $338) = $338
+    is_person_demographic_tanf_eligible: [false, true, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 0
+    de_tanf_gross_income_eligible: true
+    de_tanf_countable_net_income: 0
+    de_tanf_net_income_eligible: true
+    de_tanf_eligible: true
+    de_tanf: 338
+
+- name: Scenario 2 - Family of 3 with $1,500 monthly earnings
+  # Standard earned income calculation with $90 work expense
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 4
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_800  # $400/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $1,500
+    # Gross income limit: $3,082 -> Gross eligible: Yes
+    # Work expense deduction: $90
+    # After work expense: $1,500 - $90 = $1,410
+    # Dependent care deduction: $175 (child 4) + $175 (child 2) = $350
+    # But max deduction capped at actual expenses: min($350, $400) = $350
+    # Net earned: $1,410 - $350 = $1,060
+    # Net income: $1,060
+    # Payment standard: $338 -> Net eligible: No
+    is_person_demographic_tanf_eligible: [false, true, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 1_500
+    de_tanf_gross_income_eligible: true
+    de_tanf_earned_income_deduction: 90
+    de_tanf_dependent_care_deduction: 350
+    de_tanf_countable_net_income: 1_060
+    de_tanf_net_income_eligible: false
+    de_tanf_eligible: false
+    de_tanf: 0
+
+- name: Scenario 3 - Family of 3 with $800 monthly earnings - partial benefit
+  # Lower income family that qualifies for partial benefit
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+        is_in_k12_school: true
+      person3:
+        age: 6
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $800
+    # Gross income limit: $3,082 -> Gross eligible: Yes
+    # Work expense deduction: $90
+    # Net income: $800 - $90 = $710
+    # Payment standard: $338 -> Net eligible: No
+    # Note: Family is NOT eligible because net income ($710) > payment standard ($338)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 800
+    de_tanf_gross_income_eligible: true
+    de_tanf_earned_income_deduction: 90
+    de_tanf_countable_net_income: 710
+    de_tanf_net_income_eligible: false
+    de_tanf_eligible: false
+    de_tanf: 0
+
+- name: Scenario 4 - Family of 4 ineligible due to high gross income
+  # Gross income exceeds 185% of Standard of Need
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 48_000  # $4,000/month - exceeds $3,719 limit
+      person2:
+        age: 38
+      person3:
+        age: 12
+        is_in_k12_school: true
+      person4:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # Family size: 4
+    # Monthly gross income: $4,000
+    # Max gross income limit: $3,719
+    # Income exceeds limit -> Ineligible
+    is_person_demographic_tanf_eligible: [false, false, true, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 4_000
+    de_tanf_gross_income_eligible: false
+    de_tanf_eligible: false
+    de_tanf: 0
+
+- name: Scenario 5 - Family with child support and childcare - full calculation
+  # Tests handling of both income types and deductions
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income_before_lsr: 6_000  # $500/month earned
+        child_support_received: 1_800  # $150/month unearned
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_800  # $150/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family size: 2
+    # Monthly gross earned: $500, unearned (child support): $150
+    # Total gross: $650 (under $2,446 limit)
+    # Work expense: $90
+    # After work expense: $500 - $90 = $410
+    # Dependent care: min($150, $200) = $150 (child under 2)
+    # Net earned: $410 - $150 = $260
+    # Child support disregard: $50
+    # Net unearned: $150 - $50 = $100
+    # Net income: $260 + $100 = $360
+    # Payment standard: $270 -> Net eligible: No
+    is_person_demographic_tanf_eligible: [false, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 650
+    de_tanf_gross_income_eligible: true
+    de_tanf_earned_income_deduction: 90
+    de_tanf_dependent_care_deduction: 150
+    de_tanf_countable_net_income: 360
+    de_tanf_net_income_eligible: false
+    de_tanf_eligible: false
+    de_tanf: 0
+
+- name: Scenario 6 - Large family of 5 with modest income
+  # Tests larger family size payment standard and benefit calculation
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 36
+      person3:
+        age: 14
+        is_in_k12_school: true
+      person4:
+        age: 10
+        is_in_k12_school: true
+      person5:
+        age: 5
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    # Family size: 5
+    # Monthly gross income: $400
+    # Max gross income limit: $4,355 -> Gross eligible: Yes
+    # Work expense: $90
+    # Net income: $400 - $90 = $310
+    # Payment standard: $475 -> Net eligible: Yes
+    # Standard of Need: $2,354
+    # Deficit: $2,354 - $310 = $2,044
+    # Remainder: $2,044 * 0.50 = $1,022
+    # Benefit: min($1,022, $475) = $475
+    is_person_demographic_tanf_eligible: [false, false, true, true, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 400
+    de_tanf_gross_income_eligible: true
+    de_tanf_earned_income_deduction: 90
+    de_tanf_countable_net_income: 310
+    de_tanf_net_income_eligible: true
+    de_tanf_eligible: true
+    de_tanf: 475
+
+- name: Scenario 7 - Two earners with low income - partial benefit
+  # Tests two-earner household deductions
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 3_000  # $250/month
+      person2:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      person3:
+        age: 4
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Monthly gross: $250 + $200 = $450
+    # Gross income limit: $3,082 -> Gross eligible: Yes
+    # Work expense: $90 * 2 = $180
+    # Net income: $450 - $180 = $270
+    # Payment standard: $338 -> Net eligible: Yes
+    # Standard of Need: $1,666
+    # Deficit: $1,666 - $270 = $1,396
+    # Remainder: $1,396 * 0.50 = $698
+    # Benefit: min($698, $338) = $338
+    is_person_demographic_tanf_eligible: [false, false, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_countable_gross_income: 450
+    de_tanf_gross_income_eligible: true
+    de_tanf_earned_income_deduction: 180
+    de_tanf_countable_net_income: 270
+    de_tanf_net_income_eligible: true
+    de_tanf_eligible: true
+    de_tanf: 338

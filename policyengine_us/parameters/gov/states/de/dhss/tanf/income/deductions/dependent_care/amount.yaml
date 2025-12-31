@@ -1,0 +1,23 @@
+description: Delaware deducts up to this amount of dependent care expenses per dependent from countable income under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: Delaware TANF dependent care deduction amount
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility and Grant Amounts in TANF
+      href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+    - title: WorkWorld - Delaware Earned Income Disregards TANF
+      href: https://help.workworldapp.com/wwwebhelp/de_earned_income_disregards_tanf_and_ga.htm
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 200
+  - threshold:
+      2024-10-01: 2
+    amount:
+      2024-10-01: 175

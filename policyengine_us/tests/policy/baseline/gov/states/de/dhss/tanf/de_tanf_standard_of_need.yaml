@@ -1,0 +1,107 @@
+# Unit tests for Delaware TANF standard of need
+# 16 Del. Admin. Code SS 4000-4008: Standard of need by family size
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Standard of need by family size:
+# Size 1: $979, Size 2: $1,322, Size 3: $1,666, Size 4: $2,010, Size 5: $2,354
+# Size 6: $2,697, Size 7: $3,041, Size 8: $3,385, Size 9: $3,729, Size 10: $4,073
+# Max unit size: 10 (sizes > 10 use size 10 values)
+
+- name: Family size 1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_standard_of_need: 979
+
+- name: Family size 2
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_standard_of_need: 1_322
+
+- name: Family size 3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_tanf_standard_of_need: 1_666
+
+- name: Family size 4
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    de_tanf_standard_of_need: 2_010
+
+- name: Family size 5
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    de_tanf_standard_of_need: 2_354

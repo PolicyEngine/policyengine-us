@@ -1,0 +1,117 @@
+# Unit tests for Delaware TANF eligibility determination
+# 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+- name: Eligible - has eligible child, income eligible, resources eligible
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_gross_income_eligible: true
+        de_tanf_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_eligible: true
+
+- name: Ineligible - no eligible child
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_gross_income_eligible: true
+        de_tanf_net_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_eligible: false
+
+- name: Ineligible - gross income exceeds limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_gross_income_eligible: false
+        de_tanf_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_eligible: false
+
+- name: Ineligible - net income exceeds limit
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_gross_income_eligible: true
+        de_tanf_net_income_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_eligible: false
+
+- name: Ineligible - fails all requirements
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_gross_income_eligible: false
+        de_tanf_net_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_eligible: false
+
+- name: Eligible - pregnant woman with no children
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: true  # Pregnant in 9th month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_gross_income_eligible: true
+        de_tanf_net_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_eligible: true

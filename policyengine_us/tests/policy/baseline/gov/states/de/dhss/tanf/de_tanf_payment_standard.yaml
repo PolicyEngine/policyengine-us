@@ -1,0 +1,107 @@
+# Unit tests for Delaware TANF payment standard
+# 16 Del. Admin. Code SS 4000-4008: Payment standard by family size
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Payment standards by family size:
+# Size 1: $201, Size 2: $270, Size 3: $338, Size 4: $407, Size 5: $475
+# Size 6: $544, Size 7: $612, Size 8: $681, Size 9: $750, Size 10: $819
+# Max unit size: 10 (sizes > 10 use size 10 values)
+
+- name: Family size 1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 201
+
+- name: Family size 2
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 270
+
+- name: Family size 3
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 338
+
+- name: Family size 4
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 407
+
+- name: Family size 5
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 475
