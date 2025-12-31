@@ -1,0 +1,190 @@
+# North Dakota TANF Standard of Need Unit Tests
+#
+# The Standard of Need is calculated as 50% of the Federal Poverty Level
+# divided by 12 to get the monthly amount.
+#
+# IMPORTANT: For period 2024-01, tanf_fpg uses the prior October's FPL values
+# (2023-10-01), which are the 2023 FPL values.
+#
+# 2023 FPG (Contiguous US) - used for 2024-01:
+# - 1 person: $14,580/year
+# - Additional person: $5,140/year
+#
+# Standard of Need = FPL * 0.50 / 12
+
+- name: Case 1, single person standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # FPL for 1 person (2023): $14,580/year
+    # Standard of Need: $14,580 * 0.50 / 12 = $607.50/month
+    nd_tanf_standard_of_need: 607.50
+
+- name: Case 2, two person household standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # FPL for 2 persons (2023): $14,580 + $5,140 = $19,720/year
+    # Standard of Need: $19,720 * 0.50 / 12 = $821.67/month
+    nd_tanf_standard_of_need: 821.67
+
+- name: Case 3, three person household standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    # FPL for 3 persons (2023): $14,580 + 2*$5,140 = $24,860/year
+    # Standard of Need: $24,860 * 0.50 / 12 = $1,035.83/month
+    nd_tanf_standard_of_need: 1_035.83
+
+- name: Case 4, four person household standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # FPL for 4 persons (2023): $14,580 + 3*$5,140 = $30,000/year
+    # Standard of Need: $30,000 * 0.50 / 12 = $1,250.00/month
+    nd_tanf_standard_of_need: 1_250
+
+- name: Case 5, five person household standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 14
+      person4:
+        age: 11
+      person5:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ND
+  output:
+    # FPL for 5 persons (2023): $14,580 + 4*$5,140 = $35,140/year
+    # Standard of Need: $35,140 * 0.50 / 12 = $1,464.17/month
+    nd_tanf_standard_of_need: 1_464.17
+
+- name: Case 6, six person household standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 16
+      person4:
+        age: 13
+      person5:
+        age: 10
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ND
+  output:
+    # FPL for 6 persons (2023): $14,580 + 5*$5,140 = $40,280/year
+    # Standard of Need: $40,280 * 0.50 / 12 = $1,678.33/month
+    nd_tanf_standard_of_need: 1_678.33
+
+- name: Case 7, large household (8 persons) standard of need.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 9
+      person7:
+        age: 6
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: ND
+  output:
+    # FPL for 8 persons (2023): $14,580 + 7*$5,140 = $50,560/year
+    # Standard of Need: $50,560 * 0.50 / 12 = $2,106.67/month
+    nd_tanf_standard_of_need: 2_106.67

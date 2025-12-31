@@ -1,0 +1,83 @@
+# North Dakota TANF Countable Income Unit Tests
+#
+# Countable Income = Countable Earned Income + Countable Unearned Income
+#
+# NOTE: Tests must include people and proper entity structure for
+# defined_for = StateCode.ND to work correctly.
+
+- name: Case 1, no income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_earned_income: 0
+        nd_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_tanf_countable_income: 0
+
+- name: Case 2, earned income only.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_earned_income: 500
+        nd_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_tanf_countable_income: 500
+
+- name: Case 3, unearned income only.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_earned_income: 0
+        nd_tanf_countable_unearned_income: 300
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_tanf_countable_income: 300
+
+- name: Case 4, mixed earned and unearned income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_earned_income: 450
+        nd_tanf_countable_unearned_income: 200
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Total: $450 + $200 = $650
+    nd_tanf_countable_income: 650

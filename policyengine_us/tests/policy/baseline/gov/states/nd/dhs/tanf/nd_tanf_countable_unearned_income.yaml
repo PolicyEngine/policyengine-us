@@ -1,0 +1,86 @@
+# North Dakota TANF Countable Unearned Income Unit Tests
+#
+# Unearned income is counted without deductions in ND TANF.
+# This variable sums unearned income from household members.
+
+- name: Case 1, no unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_tanf_countable_unearned_income: 0
+
+- name: Case 2, social security dependents benefits.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly: $300; Annual: $3,600
+        social_security_dependents: 3_600
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # Unearned: $3,600 / 12 = $300/month
+    nd_tanf_countable_unearned_income: 300
+
+- name: Case 3, child support received.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        # Monthly: $400; Annual: $4,800
+        child_support_received: 4_800
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # Unearned: $4,800 / 12 = $400/month
+    nd_tanf_countable_unearned_income: 400
+
+- name: Case 4, multiple unearned income sources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        # Monthly: $250 + $150 = $400
+        social_security_dependents: 3_000
+        child_support_received: 1_800
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # Unearned: ($3,000 + $1,800) / 12 = $400/month
+    nd_tanf_countable_unearned_income: 400
