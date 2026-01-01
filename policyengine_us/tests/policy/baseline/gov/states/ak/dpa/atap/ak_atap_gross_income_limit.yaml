@@ -1,0 +1,156 @@
+# Unit tests for Alaska ATAP gross income limit (185% standard)
+# 7 AAC 45.520 - Qualifying standards
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+# Gross income must not exceed 185% standard for eligibility
+
+- name: Case 1, adult-included family of 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Adult-included size 2: $1,522
+    ak_atap_gross_income_limit: 1_522
+
+- name: Case 2, adult-included family of 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Adult-included size 3: $1,739
+    ak_atap_gross_income_limit: 1_739
+
+- name: Case 3, adult-included family of 4.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    # Adult-included size 4: $1,956
+    ak_atap_gross_income_limit: 1_956
+
+- name: Case 4, child-only unit with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Child-only 1 child: $956
+    ak_atap_gross_income_limit: 956
+
+- name: Case 5, child-only unit with 2 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 12
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child-only 2 children: $1,173
+    ak_atap_gross_income_limit: 1_173
+
+- name: Case 6, child-only unit with 3 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 14
+      person2:
+        age: 10
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Child-only 3 children: $1,390
+    ak_atap_gross_income_limit: 1_390
+
+- name: Case 7, large adult-included family of 5.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AK
+  output:
+    # Adult-included size 5: $2,173
+    ak_atap_gross_income_limit: 2_173

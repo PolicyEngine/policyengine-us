@@ -1,0 +1,157 @@
+# Unit tests for Alaska ATAP maximum payment
+# 7 AAC 45.523 - Maximum payment levels
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.523
+# One caretaker: $821 base + $102 per additional child
+# Child-only: $452 base + $102 per additional child
+
+- name: Case 1, one caretaker with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Base payment: $821
+    ak_atap_maximum_payment: 821
+
+- name: Case 2, one caretaker with 2 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Base $821 + 1 additional child ($102) = $923
+    ak_atap_maximum_payment: 923
+
+- name: Case 3, one caretaker with 3 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    # Base $821 + 2 additional children ($102 * 2) = $1,025
+    ak_atap_maximum_payment: 1_025
+
+- name: Case 4, child-only unit with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Child-only base: $452
+    ak_atap_maximum_payment: 452
+
+- name: Case 5, child-only unit with 2 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 12
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child-only base $452 + 1 additional ($102) = $554
+    ak_atap_maximum_payment: 554
+
+- name: Case 6, child-only unit with 3 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 14
+      person2:
+        age: 10
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Child-only base $452 + 2 additional ($102 * 2) = $656
+    ak_atap_maximum_payment: 656
+
+- name: Case 7, one caretaker with 4 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AK
+  output:
+    # Base $821 + 3 additional children ($102 * 3) = $1,127
+    ak_atap_maximum_payment: 1_127

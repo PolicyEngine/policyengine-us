@@ -1,0 +1,158 @@
+# Unit tests for Alaska ATAP need standard
+# 7 AAC 45.520 - Qualifying standards
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+# Need standard varies by unit type (adult-included vs child-only) and size
+
+- name: Case 1, adult-included family of 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Adult-included size 2: $823
+    ak_atap_need_standard: 823
+
+- name: Case 2, adult-included family of 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Adult-included size 3: $940
+    ak_atap_need_standard: 940
+
+- name: Case 3, adult-included family of 4.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    # Adult-included size 4: $1,057
+    ak_atap_need_standard: 1_057
+
+- name: Case 4, child-only unit with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Child-only 1 child: $517
+    ak_atap_need_standard: 517
+
+- name: Case 5, child-only unit with 2 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child-only 2 children: $634
+    ak_atap_need_standard: 634
+
+- name: Case 6, child-only unit with 3 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 12
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_is_child_only_unit: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Child-only 3 children: $751
+    ak_atap_need_standard: 751
+
+- name: Case 7, large adult-included family of 6.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 7
+      person6:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        ak_atap_is_child_only_unit: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AK
+  output:
+    # Adult-included size 6: $1,291
+    ak_atap_need_standard: 1_291

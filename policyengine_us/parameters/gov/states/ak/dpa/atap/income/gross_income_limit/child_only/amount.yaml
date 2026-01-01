@@ -1,0 +1,20 @@
+description: Alaska limits gross income to this amount under the Alaska Temporary Assistance Program for child-only assistance units.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 5)
+  label: Alaska ATAP child-only gross income limit amount
+  reference:
+    - title: 7 AAC 45.520 - Qualifying standards
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+
+1:
+  2021-01-01: 956
+2:
+  2021-01-01: 1_173
+3:
+  2021-01-01: 1_390
+4:
+  2021-01-01: 1_607
