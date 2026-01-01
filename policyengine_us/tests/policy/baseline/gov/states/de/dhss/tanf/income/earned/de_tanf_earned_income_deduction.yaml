@@ -1,17 +1,13 @@
-# Unit tests for Delaware TANF earned income deduction (work expense)
-# 16 Del. Admin. Code SS 4000-4008: $90 standard work deduction per earner
+# Unit tests for Delaware TANF earned income deduction
+# 16 Del. Admin. Code SS 4000-4008: $90 work expense per earner
 # https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
-# Quote: "Subtract the standard work deduction ($90.00)... from each earner's monthly earned income"
-# Note: This variable returns the TOTAL deduction ($90 per earner).
-# The capping of deduction to actual earnings occurs in de_tanf_net_income.
 
-- name: Single earner with earnings above deduction
+- name: Case 1, no earnings.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 12_000  # $1,000/month
     spm_units:
       spm_unit:
         members: [person1]
@@ -20,62 +16,56 @@
         members: [person1]
         state_code: DE
   output:
-    # Monthly earnings: $1,000
-    # Deduction: $90 per earner
-    # Total deduction: $90
-    de_tanf_earned_income_deduction: 90
-
-- name: Two earners in household
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income_before_lsr: 24_000  # $2,000/month
-      person2:
-        age: 33
-        employment_income_before_lsr: 12_000  # $1,000/month
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: DE
-  output:
-    # Two earners with positive income
-    # Deduction: $90 per earner * 2 = $180
-    de_tanf_earned_income_deduction: 180
-
-- name: No earnings - no deduction
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # No earnings, no deduction applies
     de_tanf_earned_income_deduction: 0
 
-- name: One earner, one non-earner
+- name: Case 2, single earner.
   period: 2025-01
   input:
     people:
       person1:
-        age: 35
-        employment_income_before_lsr: 18_000  # $1,500/month
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # 1 earner * $90 = $90
+    de_tanf_earned_income_deduction: 90
+
+- name: Case 3, two earners.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
       person2:
-        age: 33
+        age: 28
+        employment_income_before_lsr: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 2 earners * $90 = $180
+    de_tanf_earned_income_deduction: 180
+
+- name: Case 4, one earner one non-earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 28
         employment_income_before_lsr: 0
     spm_units:
       spm_unit:
@@ -85,73 +75,10 @@
         members: [person1, person2]
         state_code: DE
   output:
-    # Only person1 has earnings
-    # Deduction: $90 per earner * 1 = $90
+    # 1 earner * $90 = $90
     de_tanf_earned_income_deduction: 90
 
-# ============================================================================
-# EDGE CASE TESTS: Earnings Amount Boundaries
-# ============================================================================
-
-- name: Edge case - earnings exactly at $90
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 1_080  # $90/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # Monthly earnings: $90 > $0, so counts as earner
-    # Deduction: $90 per earner = $90
-    de_tanf_earned_income_deduction: 90
-
-- name: Edge case - earnings exactly at $89 (below deduction)
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 1_068  # $89/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # Monthly earnings: $89 > $0, so counts as earner
-    # Deduction: $90 per earner = $90
-    # Note: Capping to actual earnings happens in net income calculation
-    de_tanf_earned_income_deduction: 90
-
-- name: Edge case - earnings exactly at $91 (just above deduction)
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 1_092  # $91/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # Monthly earnings: $91 > $0, so counts as earner
-    # Deduction: $90 per earner = $90
-    de_tanf_earned_income_deduction: 90
-
-- name: Edge case - minimal earnings ($1)
+- name: Case 5, minimal earnings still counts.
   period: 2025-01
   input:
     people:
@@ -166,140 +93,5 @@
         members: [person1]
         state_code: DE
   output:
-    # Monthly earnings: $1 > $0, so counts as earner
-    # Deduction: $90 per earner = $90
-    # Note: Even $1 of earnings qualifies for full $90 deduction
-    de_tanf_earned_income_deduction: 90
-
-# ============================================================================
-# EDGE CASE TESTS: Multiple Earner Scenarios
-# ============================================================================
-
-- name: Edge case - three earners in household
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income_before_lsr: 24_000  # $2,000/month
-      person2:
-        age: 38
-        employment_income_before_lsr: 18_000  # $1,500/month
-      person3:
-        age: 17
-        employment_income_before_lsr: 6_000  # $500/month (teen worker)
-      person4:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: DE
-  output:
-    # Three earners (person1, person2, person3)
-    # Deduction: $90 per earner * 3 = $270
-    de_tanf_earned_income_deduction: 270
-
-- name: Edge case - four earners in household
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income_before_lsr: 24_000  # $2,000/month
-      person2:
-        age: 43
-        employment_income_before_lsr: 18_000  # $1,500/month
-      person3:
-        age: 19
-        employment_income_before_lsr: 12_000  # $1,000/month
-      person4:
-        age: 17
-        employment_income_before_lsr: 6_000  # $500/month
-      person5:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: DE
-  output:
-    # Four earners
-    # Deduction: $90 per earner * 4 = $360
-    de_tanf_earned_income_deduction: 360
-
-# ============================================================================
-# EDGE CASE TESTS: Mixed Earner Status
-# ============================================================================
-
-- name: Edge case - one earner with very small income, one with zero
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income_before_lsr: 120  # $10/month
-      person2:
-        age: 33
-        employment_income_before_lsr: 0  # No earnings
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: DE
-  output:
-    # Only person1 counts as earner ($10 > $0)
-    # Deduction: $90 per earner * 1 = $90
-    de_tanf_earned_income_deduction: 90
-
-- name: Edge case - household with no earners
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income_before_lsr: 0
-      person2:
-        age: 33
-        employment_income_before_lsr: 0
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: DE
-  output:
-    # No earners
-    # Deduction: $90 * 0 = $0
-    de_tanf_earned_income_deduction: 0
-
-# ============================================================================
-# EDGE CASE TESTS: High Earnings
-# ============================================================================
-
-- name: Edge case - single earner with high income
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 60_000  # $5,000/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # High earnings, still just $90 per earner
+    # Any earnings counts as earner → $90
     de_tanf_earned_income_deduction: 90

@@ -2,45 +2,7 @@
 # 16 Del. Admin. Code SS 4000-4002: Resource limit is $10,000
 # https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4002
 
-- name: Resources below limit - eligible
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 5_000
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # Resource limit: $10,000
-    # Resources: $5,000 < $10,000
-    de_tanf_resources_eligible: true
-
-- name: Resources above limit - ineligible
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_assets: 15_000
-    households:
-      household:
-        members: [person1]
-        state_code: DE
-  output:
-    # Resource limit: $10,000
-    # Resources: $15,000 > $10,000
-    de_tanf_resources_eligible: false
-
-- name: Zero resources - eligible
+- name: Case 1, no resources.
   period: 2025-01
   input:
     people:
@@ -55,14 +17,9 @@
         members: [person1]
         state_code: DE
   output:
-    # Zero resources is always below any positive limit
     de_tanf_resources_eligible: true
 
-# ============================================================================
-# EDGE CASE TESTS: Resource Limit Boundaries
-# ============================================================================
-
-- name: Edge case - resources exactly at $10,000 limit
+- name: Case 2, at boundary.
   period: 2025-01
   input:
     people:
@@ -77,11 +34,10 @@
         members: [person1]
         state_code: DE
   output:
-    # Resource limit: $10,000
-    # Resources: $10,000 = $10,000
+    # $10,000 = $10,000 limit → eligible
     de_tanf_resources_eligible: true
 
-- name: Edge case - resources $1 below limit
+- name: Case 3, below boundary.
   period: 2025-01
   input:
     people:
@@ -96,11 +52,10 @@
         members: [person1]
         state_code: DE
   output:
-    # Resource limit: $10,000
-    # Resources: $9,999 < $10,000
+    # $9,999 < $10,000 limit → eligible
     de_tanf_resources_eligible: true
 
-- name: Edge case - resources $1 above limit
+- name: Case 4, above boundary.
   period: 2025-01
   input:
     people:
@@ -115,6 +70,5 @@
         members: [person1]
         state_code: DE
   output:
-    # Resource limit: $10,000
-    # Resources: $10,001 > $10,000
+    # $10,001 > $10,000 limit → ineligible
     de_tanf_resources_eligible: false

@@ -6,36 +6,7 @@
 # 2. Remainder = Deficit * 50%
 # 3. Grant = min(Remainder, Payment Standard)
 
-- name: Eligible - zero income, receives payment standard
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-      person3:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        de_tanf_countable_income: 0
-        de_tanf_eligible: true
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: DE
-  output:
-    # Family size: 3
-    # Standard of Need: $1,666
-    # Payment Standard: $338
-    # Net income: $0
-    # Deficit: $1,666 - $0 = $1,666
-    # Remainder: $1,666 * 0.50 = $833
-    # Grant: min($833, $338) = $338
-    de_tanf: 338
-
-- name: Documentation example - family of 3 with $500 net income
+- name: Case 1, family of 3 with $500 net income.
   period: 2025-01
   input:
     people:
@@ -64,7 +35,7 @@
     # Grant: min($583, $338) = $338
     de_tanf: 338
 
-- name: Partial benefit when remainder less than payment standard
+- name: Case 2, partial benefit when remainder less than payment standard.
   absolute_error_margin: 0.1
   period: 2025-01
   input:
@@ -94,7 +65,7 @@
     # Grant: min($232.81, $338) = $232.81
     de_tanf: 232.81
 
-- name: Net income exceeds Standard of Need - zero benefit
+- name: Case 3, net income exceeds standard of need.
   period: 2025-01
   input:
     people:
@@ -122,7 +93,7 @@
     # Grant: $0
     de_tanf: 0
 
-- name: Ineligible - no benefit regardless of income
+- name: Case 4, ineligible receives no benefit.
   period: 2025-01
   input:
     people:
@@ -144,7 +115,7 @@
   output:
     de_tanf: 0
 
-- name: Family of 1 - full payment standard
+- name: Case 5, family of 1 full payment standard.
   period: 2025-01
   input:
     people:
@@ -168,7 +139,60 @@
     # Grant: min($489.50, $201) = $201
     de_tanf: 201
 
-- name: Family of 5 - partial benefit
+- name: Case 6, remainder exactly equals payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_income: 989.625
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: $1,665.625
+    # Countable income: $989.625
+    # Deficit: $1,665.625 - $989.625 = $676
+    # Remainder: $676 * 0.50 = $338
+    # Payment Standard: $338
+    # Grant: min($338, $338) = $338
+    de_tanf: 338
+
+- name: Case 7, countable income exactly equals standard of need.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_countable_income: 1_665.625
+        de_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Deficit: $1,665.625 - $1,665.625 = $0
+    # Remainder: $0 * 0.50 = $0
+    de_tanf: 0
+
+- name: Case 8, minimum non-zero benefit scenario.
   absolute_error_margin: 0.1
   period: 2025-01
   input:
@@ -176,28 +200,21 @@
       person1:
         age: 30
       person2:
-        age: 10
+        age: 5
       person3:
-        age: 8
-      person4:
-        age: 6
-      person5:
-        age: 4
+        age: 3
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        de_tanf_countable_income: 1_500
+        members: [person1, person2, person3]
+        de_tanf_countable_income: 1_663.625
         de_tanf_eligible: true
     households:
       household:
-        members: [person1, person2, person3, person4, person5]
+        members: [person1, person2, person3]
         state_code: DE
   output:
-    # Family size: 5
-    # Standard of Need: $2,353.125
-    # Payment Standard: $475
-    # Countable income: $1,500
-    # Deficit: $2,353.125 - $1,500 = $853.125
-    # Remainder: $853.125 * 0.50 = $426.56
-    # Grant: min($426.56, $475) = $426.56
-    de_tanf: 426.56
+    # Standard of Need: $1,665.625
+    # Countable income: $1,663.625
+    # Deficit: $1,665.625 - $1,663.625 = $2
+    # Remainder: $2 * 0.50 = $1
+    de_tanf: 1

@@ -2,7 +2,7 @@
 # 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility
 # https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
 
-- name: Eligible - has eligible child, income eligible, resources eligible
+- name: Case 1, has eligible child, income eligible, resources eligible.
   period: 2025-01
   input:
     people:
@@ -22,7 +22,7 @@
   output:
     de_tanf_eligible: true
 
-- name: Ineligible - no eligible child
+- name: Case 2, no eligible child.
   period: 2025-01
   input:
     people:
@@ -40,7 +40,7 @@
   output:
     de_tanf_eligible: false
 
-- name: Ineligible - gross income exceeds limit
+- name: Case 3, gross income exceeds limit.
   period: 2025-01
   input:
     people:
@@ -60,7 +60,7 @@
   output:
     de_tanf_eligible: false
 
-- name: Ineligible - net income exceeds limit
+- name: Case 4, net income exceeds limit.
   period: 2025-01
   input:
     people:
@@ -80,7 +80,7 @@
   output:
     de_tanf_eligible: false
 
-- name: Ineligible - fails all requirements
+- name: Case 5, fails all requirements.
   period: 2025-01
   input:
     people:
@@ -98,7 +98,7 @@
   output:
     de_tanf_eligible: false
 
-- name: Eligible - pregnant woman with no children
+- name: Case 6, pregnant woman with no children.
   period: 2025-01
   input:
     people:
@@ -116,7 +116,7 @@
   output:
     de_tanf_eligible: true
 
-- name: Ineligible - resources exceed $10,000 limit
+- name: Case 7, resources exceed $10,000 limit.
   period: 2025-01
   input:
     people:
@@ -135,4 +135,31 @@
         members: [person1, person2]
         state_code: DE
   output:
+    de_tanf_eligible: false
+
+# ============================================================================
+# EDGE CASE TESTS: Immigration Eligibility
+# ============================================================================
+
+- name: Case 8, no citizen or legal immigrant in unit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+        is_citizen_or_legal_immigrant: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_gross_income_eligible: true
+        de_tanf_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Has eligible child but no citizen/legal immigrant in unit
     de_tanf_eligible: false
