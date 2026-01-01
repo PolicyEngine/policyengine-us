@@ -82,8 +82,8 @@
     # Gross: $150
     # After $90: $60
     # After $30: $30
-    # 1/3 disregard: $10
-    # Person1 countable: $20
-    # Childcare: $200 > $20
-    # Countable: max($20 - $200, 0) = $0
+    # 0.33 disregard: $9.9
+    # Person1 countable: $20.1
+    # Childcare: $175 > $20.1
+    # Countable: max($20.1 - $175, 0) = $0
     de_tanf_countable_earned_income: 0

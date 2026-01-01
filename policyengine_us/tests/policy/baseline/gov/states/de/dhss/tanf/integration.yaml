@@ -396,7 +396,7 @@
     # Monthly gross earned: $500
     # After $90: $410
     # After $30: $380
-    # 1/3 disregard: $125.4
+    # 0.33 disregard: $125.4
     # Countable earned: $254.6
     # Countable total: $254.6
     # Standard of Need: $1,665.625
@@ -661,16 +661,16 @@
     # RECIPIENT PATH (countable income vs standard of need):
     # After $90: $600 - $90 = $510
     # After $30: $510 - $30 = $480
-    # 1/3 disregard: $480 / 3 = $160
-    # Countable earned: $480 - $160 = $320
+    # 0.33 disregard: $480 * 0.33 = $158.4
+    # Countable earned: $480 - $158.4 = $321.6
     # Standard of Need (size 3): $1,665.625
-    # $320 < $1,665.625 -> ELIGIBLE as recipient
-    # Deficit: $1,665.625 - $320 = $1,345.625
-    # Remainder: $1,345.625 * 0.50 = $672.81
-    # Benefit: min($672.81, $338) = $338
+    # $321.6 < $1,665.625 -> ELIGIBLE as recipient
+    # Deficit: $1,665.625 - $321.6 = $1,344.025
+    # Remainder: $1,344.025 * 0.50 = $672.01
+    # Benefit: min($672.01, $338) = $338
     de_tanf_gross_income: 600
-    de_tanf_countable_earned_income: 320
-    de_tanf_countable_income: 320
+    de_tanf_countable_earned_income: 321.6
+    de_tanf_countable_income: 321.6
     de_tanf_standard_of_need: 1_665.625
     de_tanf_net_income_eligible: true
     de_tanf_eligible: true
