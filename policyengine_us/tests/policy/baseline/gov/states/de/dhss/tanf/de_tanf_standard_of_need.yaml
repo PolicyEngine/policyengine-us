@@ -20,7 +20,9 @@
         members: [person1]
         state_code: DE
   output:
-    de_tanf_standard_of_need: 979
+    # FPG size 1 = $15,650/year = $1,304.17/month
+    # 75% = $978.125
+    de_tanf_standard_of_need: 978.125
 
 - name: Family size 2
   period: 2025-01
@@ -38,7 +40,9 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_tanf_standard_of_need: 1_322
+    # FPG size 2 = $21,150/year = $1,762.50/month
+    # 75% = $1,321.875
+    de_tanf_standard_of_need: 1_321.875
 
 - name: Family size 3
   period: 2025-01
@@ -58,7 +62,9 @@
         members: [person1, person2, person3]
         state_code: DE
   output:
-    de_tanf_standard_of_need: 1_666
+    # FPG size 3 = $26,650/year = $2,220.83/month
+    # 75% = $1,665.625
+    de_tanf_standard_of_need: 1_665.625
 
 - name: Family size 4
   period: 2025-01
@@ -80,7 +86,9 @@
         members: [person1, person2, person3, person4]
         state_code: DE
   output:
-    de_tanf_standard_of_need: 2_010
+    # FPG size 4 = $32,150/year = $2,679.17/month
+    # 75% = $2,009.375
+    de_tanf_standard_of_need: 2_009.375
 
 - name: Family size 5
   period: 2025-01
@@ -104,4 +112,6 @@
         members: [person1, person2, person3, person4, person5]
         state_code: DE
   output:
-    de_tanf_standard_of_need: 2_354
+    # FPG size 5 = $37,650/year = $3,137.50/month
+    # 75% = $2,353.125
+    de_tanf_standard_of_need: 2_353.125

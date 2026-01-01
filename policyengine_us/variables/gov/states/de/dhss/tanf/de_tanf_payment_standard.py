@@ -8,8 +8,7 @@ class de_tanf_payment_standard(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/delaware/"
-        "16-Del-Admin-Code-SS-4000-4008",
+        "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008",
         "https://dhss.delaware.gov/dss/tanf/",
     )
     defined_for = StateCode.DE
@@ -18,4 +17,8 @@ class de_tanf_payment_standard(Variable):
         p = parameters(period).gov.states.de.dhss.tanf.payment_standard
         unit_size = spm_unit("spm_unit_size", period)
         capped_unit_size = min_(unit_size, p.max_unit_size)
-        return p.amount[capped_unit_size]
+        base_amount = p.amount[capped_unit_size]
+        # For each additional person beyond max_unit_size, add $69
+        additional_persons = max_(unit_size - p.max_unit_size, 0)
+        additional_amount = additional_persons * p.additional_person
+        return base_amount + additional_amount

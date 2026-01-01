@@ -19,7 +19,7 @@
   output:
     # Resource limit: $10,000
     # Resources: $5,000 < $10,000
-    de_tanf_resource_eligible: true
+    de_tanf_resources_eligible: true
 
 - name: Resources above limit - ineligible
   period: 2025-01
@@ -38,7 +38,7 @@
   output:
     # Resource limit: $10,000
     # Resources: $15,000 > $10,000
-    de_tanf_resource_eligible: false
+    de_tanf_resources_eligible: false
 
 - name: Zero resources - eligible
   period: 2025-01
@@ -56,7 +56,7 @@
         state_code: DE
   output:
     # Zero resources is always below any positive limit
-    de_tanf_resource_eligible: true
+    de_tanf_resources_eligible: true
 
 # ============================================================================
 # EDGE CASE TESTS: Resource Limit Boundaries
@@ -79,7 +79,7 @@
   output:
     # Resource limit: $10,000
     # Resources: $10,000 = $10,000
-    de_tanf_resource_eligible: true
+    de_tanf_resources_eligible: true
 
 - name: Edge case - resources $1 below limit
   period: 2025-01
@@ -98,7 +98,7 @@
   output:
     # Resource limit: $10,000
     # Resources: $9,999 < $10,000
-    de_tanf_resource_eligible: true
+    de_tanf_resources_eligible: true
 
 - name: Edge case - resources $1 above limit
   period: 2025-01
@@ -117,4 +117,4 @@
   output:
     # Resource limit: $10,000
     # Resources: $10,001 > $10,000
-    de_tanf_resource_eligible: false
+    de_tanf_resources_eligible: false

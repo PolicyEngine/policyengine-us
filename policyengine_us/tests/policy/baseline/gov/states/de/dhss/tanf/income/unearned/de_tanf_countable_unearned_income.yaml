@@ -1,0 +1,97 @@
+# Unit tests for Delaware TANF countable unearned income
+# 16 Del. Admin. Code SS 4000-4008: First $50 of child support is disregarded
+
+- name: Case 1, no unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_countable_unearned_income: 0
+
+- name: Case 2, unearned income without child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Social Security: $100/month, no child support disregard
+    de_tanf_countable_unearned_income: 100
+
+- name: Case 3, child support below $50.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $30/month
+    # Disregard: min($30, $50) = $30
+    # Countable: $30 - $30 = $0
+    de_tanf_countable_unearned_income: 0
+
+- name: Case 4, child support above $50.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Child support: $100/month
+    # Disregard: min($100, $50) = $50
+    # Countable: $100 - $50 = $50
+    de_tanf_countable_unearned_income: 50
+
+- name: Case 5, mixed unearned income with child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_200  # $100/month
+        child_support_received: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Social Security: $100/month + Child support: $100/month = $200 gross
+    # Disregard: min($100, $50) = $50
+    # Countable: $200 - $50 = $150
+    de_tanf_countable_unearned_income: 150

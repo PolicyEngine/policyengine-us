@@ -19,7 +19,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        de_tanf_countable_net_income: 0
+        de_tanf_countable_income: 0
         de_tanf_eligible: true
     households:
       household:
@@ -48,7 +48,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        de_tanf_countable_net_income: 500
+        de_tanf_countable_income: 500
         de_tanf_eligible: true
     households:
       household:
@@ -65,6 +65,7 @@
     de_tanf: 338
 
 - name: Partial benefit when remainder less than payment standard
+  absolute_error_margin: 0.1
   period: 2025-01
   input:
     people:
@@ -77,7 +78,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        de_tanf_countable_net_income: 1_200
+        de_tanf_countable_income: 1_200
         de_tanf_eligible: true
     households:
       household:
@@ -85,13 +86,13 @@
         state_code: DE
   output:
     # Family size: 3
-    # Standard of Need: $1,666
+    # Standard of Need: $1,665.625
     # Payment Standard: $338
-    # Net income: $1,200
-    # Deficit: $1,666 - $1,200 = $466
-    # Remainder: $466 * 0.50 = $233
-    # Grant: min($233, $338) = $233
-    de_tanf: 233
+    # Countable income: $1,200
+    # Deficit: $1,665.625 - $1,200 = $465.625
+    # Remainder: $465.625 * 0.50 = $232.81
+    # Grant: min($232.81, $338) = $232.81
+    de_tanf: 232.81
 
 - name: Net income exceeds Standard of Need - zero benefit
   period: 2025-01
@@ -106,7 +107,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        de_tanf_countable_net_income: 1_800
+        de_tanf_countable_income: 1_800
         de_tanf_eligible: true
     households:
       household:
@@ -134,7 +135,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        de_tanf_countable_net_income: 0
+        de_tanf_countable_income: 0
         de_tanf_eligible: false
     households:
       household:
@@ -152,7 +153,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        de_tanf_countable_net_income: 0
+        de_tanf_countable_income: 0
         de_tanf_eligible: true
     households:
       household:
@@ -168,6 +169,7 @@
     de_tanf: 201
 
 - name: Family of 5 - partial benefit
+  absolute_error_margin: 0.1
   period: 2025-01
   input:
     people:
@@ -184,7 +186,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        de_tanf_countable_net_income: 1_500
+        de_tanf_countable_income: 1_500
         de_tanf_eligible: true
     households:
       household:
@@ -192,10 +194,10 @@
         state_code: DE
   output:
     # Family size: 5
-    # Standard of Need: $2,354
+    # Standard of Need: $2,353.125
     # Payment Standard: $475
-    # Net income: $1,500
-    # Deficit: $2,354 - $1,500 = $854
-    # Remainder: $854 * 0.50 = $427
-    # Grant: min($427, $475) = $427
-    de_tanf: 427
+    # Countable income: $1,500
+    # Deficit: $2,353.125 - $1,500 = $853.125
+    # Remainder: $853.125 * 0.50 = $426.56
+    # Grant: min($426.56, $475) = $426.56
+    de_tanf: 426.56

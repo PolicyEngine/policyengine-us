@@ -43,9 +43,9 @@
     # Benefit: min($833, $338) = $338
     is_person_demographic_tanf_eligible: [false, true, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 0
+    de_tanf_gross_income: 0
     de_tanf_gross_income_eligible: true
-    de_tanf_countable_net_income: 0
+    de_tanf_net_income: 0
     de_tanf_net_income_eligible: true
     de_tanf_eligible: true
     de_tanf: 338
@@ -90,11 +90,11 @@
     # Payment standard: $338 -> Net eligible: No
     is_person_demographic_tanf_eligible: [false, true, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 1_500
+    de_tanf_gross_income: 1_500
     de_tanf_gross_income_eligible: true
     de_tanf_earned_income_deduction: 90
     de_tanf_dependent_care_deduction: 350
-    de_tanf_countable_net_income: 1_060
+    de_tanf_net_income: 1_060
     de_tanf_net_income_eligible: false
     de_tanf_eligible: false
     de_tanf: 0
@@ -134,10 +134,10 @@
     # Note: Family is NOT eligible because net income ($710) > payment standard ($338)
     is_person_demographic_tanf_eligible: [false, true, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 800
+    de_tanf_gross_income: 800
     de_tanf_gross_income_eligible: true
     de_tanf_earned_income_deduction: 90
-    de_tanf_countable_net_income: 710
+    de_tanf_net_income: 710
     de_tanf_net_income_eligible: false
     de_tanf_eligible: false
     de_tanf: 0
@@ -176,7 +176,7 @@
     # Income exceeds limit -> Ineligible
     is_person_demographic_tanf_eligible: [false, false, true, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 4_000
+    de_tanf_gross_income: 4_000
     de_tanf_gross_income_eligible: false
     de_tanf_eligible: false
     de_tanf: 0
@@ -219,11 +219,11 @@
     # Payment standard: $270 -> Net eligible: No
     is_person_demographic_tanf_eligible: [false, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 650
+    de_tanf_gross_income: 650
     de_tanf_gross_income_eligible: true
     de_tanf_earned_income_deduction: 90
     de_tanf_dependent_care_deduction: 150
-    de_tanf_countable_net_income: 360
+    de_tanf_net_income: 360
     de_tanf_net_income_eligible: false
     de_tanf_eligible: false
     de_tanf: 0
@@ -271,10 +271,10 @@
     # Benefit: min($1,022, $475) = $475
     is_person_demographic_tanf_eligible: [false, false, true, true, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 400
+    de_tanf_gross_income: 400
     de_tanf_gross_income_eligible: true
     de_tanf_earned_income_deduction: 90
-    de_tanf_countable_net_income: 310
+    de_tanf_net_income: 310
     de_tanf_net_income_eligible: true
     de_tanf_eligible: true
     de_tanf: 475
@@ -317,10 +317,47 @@
     # Benefit: min($698, $338) = $338
     is_person_demographic_tanf_eligible: [false, false, true]
     is_demographic_tanf_eligible: true
-    de_tanf_countable_gross_income: 450
+    de_tanf_gross_income: 450
     de_tanf_gross_income_eligible: true
     de_tanf_earned_income_deduction: 180
-    de_tanf_countable_net_income: 270
+    de_tanf_net_income: 270
     de_tanf_net_income_eligible: true
     de_tanf_eligible: true
     de_tanf: 338
+
+- name: Scenario 8 - Family ineligible due to high assets
+  # Resources exceed $10,000 limit per 16 Del. Admin. Code SS 4000-4002
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+      person2:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 15_000  # Exceeds $10,000 resource limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family size: 2
+    # Income eligible: Yes (no income)
+    # Resources: $15,000 > $10,000 limit -> Resource ineligible
+    is_person_demographic_tanf_eligible: [false, true]
+    is_demographic_tanf_eligible: true
+    de_tanf_gross_income: 0
+    de_tanf_gross_income_eligible: true
+    de_tanf_net_income: 0
+    de_tanf_net_income_eligible: true
+    de_tanf_resources_eligible: false
+    de_tanf_eligible: false
+    de_tanf: 0

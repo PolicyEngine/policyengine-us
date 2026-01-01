@@ -8,10 +8,8 @@ class de_tanf_dependent_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/delaware/"
-        "16-Del-Admin-Code-SS-4000-4008",
-        "https://help.workworldapp.com/wwwebhelp/"
-        "de_earned_income_disregards_tanf_and_ga.htm",
+        "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008",
+        "https://help.workworldapp.com/wwwebhelp/de_earned_income_disregards_tanf_and_ga.htm",
     )
     defined_for = StateCode.DE
 
@@ -25,11 +23,10 @@ class de_tanf_dependent_care_deduction(Variable):
         age = person("monthly_age", period)
 
         # Calculate maximum deduction per dependent based on age
-        max_per_dependent = p.dependent_care.amount.calc(age)
+        max_per_dependent = p.dependent_care.calc(age)
         total_max = spm_unit.sum(max_per_dependent * is_dependent)
 
-        # Cap at actual childcare expenses (converted to monthly)
-        childcare_expenses = spm_unit("childcare_expenses", period.this_year)
-        monthly_childcare = childcare_expenses / MONTHS_IN_YEAR
+        # Cap at actual childcare expenses
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
-        return min_(monthly_childcare, total_max)
+        return min_(childcare_expenses, total_max)

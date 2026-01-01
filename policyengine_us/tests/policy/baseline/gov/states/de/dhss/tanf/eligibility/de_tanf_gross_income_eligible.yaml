@@ -51,13 +51,13 @@
     # Monthly gross income: $3,333 > $3,082
     de_tanf_gross_income_eligible: false
 
-- name: Family of 2 - at exact limit
+- name: Family of 2 - just below limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 29_352  # $2,446/month (exact limit)
+        employment_income_before_lsr: 29_340  # $2,445/month
       person2:
         age: 5
     spm_units:
@@ -69,8 +69,9 @@
         state_code: DE
   output:
     # Family size: 2
-    # Gross income limit: $2,446/month
-    # Monthly gross income: $2,446 = $2,446
+    # Standard of Need: $1,321.875
+    # Gross income limit: $1,321.875 * 1.85 = $2,445.47/month
+    # Monthly gross income: $2,445 < $2,445.47
     de_tanf_gross_income_eligible: true
 
 - name: Family of 1 - no income
@@ -150,13 +151,13 @@
     # Monthly gross income: $3,081 < $3,082
     de_tanf_gross_income_eligible: true
 
-- name: Edge case - family of 3 gross income exactly at limit
+- name: Edge case - family of 3 gross income just below limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 36_984  # $3,082/month
+        employment_income_before_lsr: 36_900  # $3,075/month
       person2:
         age: 5
       person3:
@@ -170,8 +171,8 @@
         state_code: DE
   output:
     # Family size: 3
-    # Gross income limit: $3,082/month
-    # Monthly gross income: $3,082 = $3,082
+    # Gross income limit: ~$3,081/month
+    # Monthly gross income: $3,075 < $3,081
     de_tanf_gross_income_eligible: true
 
 - name: Edge case - family of 3 gross income $1 over limit
@@ -202,13 +203,13 @@
 # EDGE CASE TESTS: Family Size Boundaries
 # ============================================================================
 
-- name: Edge case - family size 1 at exact limit
+- name: Edge case - family size 1 just below limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 21_732  # $1,811/month
+        employment_income_before_lsr: 21_600  # $1,800/month
     spm_units:
       spm_unit:
         members: [person1]
@@ -218,8 +219,9 @@
         state_code: DE
   output:
     # Family size: 1
-    # Gross income limit: $1,811/month
-    # Monthly gross income: $1,811 = $1,811
+    # Standard of Need: $978.125
+    # Gross income limit: $978.125 * 1.85 = $1,809.53/month
+    # Monthly gross income: $1,800 < $1,809.53
     de_tanf_gross_income_eligible: true
 
 - name: Edge case - family size 1 $1 over limit
@@ -242,13 +244,13 @@
     # Monthly gross income: $1,812 > $1,811
     de_tanf_gross_income_eligible: false
 
-- name: Edge case - family size 10 at exact limit
+- name: Edge case - family size 10 just below limit.
   period: 2025-01
   input:
     people:
       person1:
         age: 35
-        employment_income_before_lsr: 90_420  # $7,535/month
+        employment_income_before_lsr: 90_000  # $7,500/month
       person2:
         age: 33
       person3:
@@ -276,8 +278,8 @@
         state_code: DE
   output:
     # Family size: 10
-    # Gross income limit: $7,535/month
-    # Monthly gross income: $7,535 = $7,535
+    # Gross income limit: ~$7,530/month
+    # Monthly gross income: $7,500 < $7,530
     de_tanf_gross_income_eligible: true
 
 - name: Edge case - family size 10 $1 over limit

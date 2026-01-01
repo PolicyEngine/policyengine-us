@@ -3,7 +3,7 @@
 # https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
 # Quote: "Subtract the standard work deduction ($90.00)... from each earner's monthly earned income"
 # Note: This variable returns the TOTAL deduction ($90 per earner).
-# The capping of deduction to actual earnings occurs in de_tanf_countable_net_income.
+# The capping of deduction to actual earnings occurs in de_tanf_net_income.
 
 - name: Single earner with earnings above deduction
   period: 2025-01

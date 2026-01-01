@@ -7,6 +7,8 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   reference:
+    - title: Delaware DHSS Administrative Notice A-07-2022 - October 2022 COLA (TANF Maximum Dependent Care Deductions)
+      href: https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/OCT2022COLA.pdf
     - title: 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility and Grant Amounts in TANF
       href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
     - title: WorkWorld - Delaware Earned Income Disregards TANF
@@ -14,10 +16,10 @@ metadata:
 
 brackets:
   - threshold:
-      2024-10-01: 0
+      2009-10-01: 0
     amount:
-      2024-10-01: 200
+      2009-10-01: 200
   - threshold:
-      2024-10-01: 2
+      2009-10-01: 2
     amount:
-      2024-10-01: 175
+      2009-10-01: 175

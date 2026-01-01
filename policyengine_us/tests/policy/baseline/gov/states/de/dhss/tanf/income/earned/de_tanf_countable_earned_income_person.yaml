@@ -1,0 +1,101 @@
+# Unit tests for Delaware TANF countable earned income per person
+# 16 Del. Admin. Code SS 4000-4008: $90 work expense + $30 flat + 1/3 disregard
+
+- name: Case 1, no earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_countable_earned_income_person: 0
+
+- name: Case 2, earnings below $90.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $50
+    # After $90 work expense: max($50 - $90, 0) = $0
+    de_tanf_countable_earned_income_person: 0
+
+- name: Case 3, earnings between $90 and $120.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $100
+    # After $90: $100 - $90 = $10
+    # After $30: max($10 - $30, 0) = $0
+    de_tanf_countable_earned_income_person: 0
+
+- name: Case 4, earnings above $120 with all disregards.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $500
+    # After $90: $500 - $90 = $410
+    # After $30: $410 - $30 = $380
+    # 1/3 disregard: $380 * 0.33 = $125.4
+    # Countable: $380 - $125.4 = $254.6
+    de_tanf_countable_earned_income_person: 254.6
+
+- name: Case 5, higher earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $1,000
+    # After $90: $1,000 - $90 = $910
+    # After $30: $910 - $30 = $880
+    # 1/3 disregard: $880 * 0.33 = $290.4
+    # Countable: $880 - $290.4 = $589.6
+    de_tanf_countable_earned_income_person: 589.6

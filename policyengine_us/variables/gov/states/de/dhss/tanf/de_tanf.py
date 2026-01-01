@@ -7,29 +7,24 @@ class de_tanf(Variable):
     label = "Delaware TANF"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/delaware/"
-        "16-Del-Admin-Code-SS-4000-4008"
-    )
+    reference = "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008"
     defined_for = "de_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per DSSM 4008: Grant calculation
-        # Step 1: Deficit = Standard of Need - Net Income
-        # Step 2: Remainder = Deficit * 50%
-        # Step 3: Grant = min(Remainder, Payment Standard)
+        # Per DSSM 4008 / State Plan Exhibit 1 Step 3 (Benefit Calculation):
+        # Net income = countable earned ($90 + $30 + 1/3 + childcare) + unearned
         p = parameters(period).gov.states.de.dhss.tanf
 
+        countable_income = spm_unit("de_tanf_countable_income", period)
+
+        # Deficit = Standard of Need - Net Income
         standard_of_need = spm_unit("de_tanf_standard_of_need", period)
-        net_income = spm_unit("de_tanf_countable_net_income", period)
+        deficit = max_(standard_of_need - countable_income, 0)
 
-        # Step 1: Calculate deficit
-        deficit = max_(standard_of_need - net_income, 0)
-
-        # Step 2: Calculate remainder (50% of deficit)
+        # Remainder = Deficit * 50%
         remainder = deficit * p.benefit.deficit_rate
 
-        # Step 3: Grant is lesser of remainder or payment standard
+        # Grant = min(Remainder, Payment Standard)
         payment_standard = spm_unit("de_tanf_payment_standard", period)
 
         return min_(remainder, payment_standard)
