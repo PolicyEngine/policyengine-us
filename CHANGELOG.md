@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.485.3] - 2026-01-02 19:33:52
+
+### Fixed
+
+- Remove non-existent labels from weekly uv.lock workflow PR creation.
+
 ## [1.485.2] - 2026-01-02 19:06:03
 
 ### Fixed
@@ -14133,6 +14139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
 [1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
 [1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1
 [1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0

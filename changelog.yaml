@@ -12088,3 +12088,8 @@
     - Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR
       creation.
   date: 2026-01-02 19:06:03
+- bump: patch
+  changes:
+    fixed:
+    - Remove non-existent labels from weekly uv.lock workflow PR creation.
+  date: 2026-01-02 19:33:52
