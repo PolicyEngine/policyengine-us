@@ -1,0 +1,459 @@
+# Wyoming TANF Benefit Amount Tests
+# Tests the final benefit calculation
+# Formula: max_(payment_standard - countable_income, 0) if eligible else 0
+# Source: Wyoming DFS Policy Manual Section 1101
+
+- name: Case 1, eligible family with no income receives full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 2, shelter qualified): $847
+    # Benefit: max(847 - 0, 0) = $847
+    wy_tanf: 847
+
+- name: Case 2, eligible family with earned income receives partial benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(1000 - 600, 0) = $400
+    # Payment standard (size 2, shelter qualified): $847
+    # Benefit: max(847 - 400, 0) = $447
+    wy_tanf: 447
+
+- name: Case 3, ineligible family due to income over limit receives zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 30_000  # $2,500/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(2500 - 600, 0) = $1,900
+    # Income limit (size 2): $1,447
+    # $1,900 > $1,447 -> Not income eligible -> $0 benefit
+    wy_tanf: 0
+
+- name: Case 4, shelter disqualified family receives lower benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: false
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 2, shelter disqualified): $542
+    # Benefit: max(542 - 0, 0) = $542
+    wy_tanf: 542
+
+- name: Case 5, married couple with child gets larger disregard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Countable earned: max(1500 - 1200, 0) = $300 (married couple disregard)
+    # Payment standard (size 3, shelter qualified): $902
+    # Benefit: max(902 - 300, 0) = $602
+    wy_tanf: 602
+
+- name: Case 6, income just below threshold to still receive benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_540  # $2,045/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(2045 - 600, 0) = $1,445
+    # Income limit (size 2): $1,447
+    # $1,445 < $1,447 -> Income eligible
+    # Payment standard (size 2, shelter qualified): $847
+    # Benefit: max(847 - 1445, 0) = max(-598, 0) = $0
+    # They are income eligible but benefit is $0 because countable > max benefit
+    wy_tanf: 0
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+- name: Edge case 1, zero income zero resources full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard: $847
+    # Benefit: max(847 - 0, 0) = $847
+    wy_tanf: 847
+
+- name: Edge case 2, countable income equals payment standard results in zero benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 17_364  # $1,447/month -> countable = $847
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(1447 - 600, 0) = $847
+    # Payment standard (size 2, shelter qualified): $847
+    # Benefit: max(847 - 847, 0) = $0
+    # Income eligible ($847 < $1,447 limit) but benefit is $0
+    wy_tanf: 0
+
+- name: Edge case 3, benefit of exactly $1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 17_352  # $1,446/month -> countable = $846
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(1446 - 600, 0) = $846
+    # Payment standard: $847
+    # Benefit: max(847 - 846, 0) = $1
+    wy_tanf: 1
+
+- name: Edge case 4, ineligible due to resources over limit receives zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+        spm_unit_assets: 5_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets exceed $5,000 limit -> Not resource eligible -> $0 benefit
+    wy_tanf: 0
+
+- name: Edge case 5, large household size 8 full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+      person8:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 8, shelter qualified): $1,015
+    # Benefit: max(1015 - 0, 0) = $1,015
+    wy_tanf: 1_015
+
+- name: Edge case 6, size 12 household (max) full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 9
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 12, shelter qualified): $1,243
+    # Benefit: max(1243 - 0, 0) = $1,243
+    wy_tanf: 1_243
+
+- name: Edge case 7, very high income makes family ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 120_000  # $10,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(10000 - 600, 0) = $9,400
+    # Income limit: $1,447
+    # $9,400 >> $1,447 -> Not income eligible -> $0
+    wy_tanf: 0
+
+- name: Edge case 8, pregnant woman with no children receives full benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 1, shelter qualified): $512
+    # Benefit: max(512 - 0, 0) = $512
+    wy_tanf: 512
+
+- name: Edge case 9, unearned income only reduces benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000  # $500/month unearned
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: $0
+    # Unearned: $500
+    # Total countable: $500
+    # Payment standard: $847
+    # Benefit: max(847 - 500, 0) = $347
+    # Note: No disregard applies to unearned income
+    wy_tanf: 347
+
+- name: Edge case 10, shelter disqualified large family.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        wy_tanf_shelter_qualified: false
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 6, shelter disqualified): $614
+    # Benefit: max(614 - 0, 0) = $614
+    wy_tanf: 614
+
+- name: Edge case 11, mixed earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month earned
+        social_security: 2_400  # $200/month unearned
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_tanf_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(800 - 600, 0) = $200
+    # Unearned: $200
+    # Total countable: 200 + 200 = $400
+    # Payment standard: $847
+    # Benefit: max(847 - 400, 0) = $447
+    wy_tanf: 447
