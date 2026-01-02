@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.485.4] - 2026-01-02 21:22:24
+
+### Fixed
+
+- ACA required contribution percentage now correctly handles flat brackets (e.g., 0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final rates into independent parameters.
+
 ## [1.485.3] - 2026-01-02 19:33:52
 
 ### Fixed
@@ -14139,6 +14145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
 [1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
 [1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
 [1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1

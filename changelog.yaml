@@ -12093,3 +12093,10 @@
     fixed:
     - Remove non-existent labels from weekly uv.lock workflow PR creation.
   date: 2026-01-02 19:33:52
+- bump: patch
+  changes:
+    fixed:
+    - ACA required contribution percentage now correctly handles flat brackets (e.g.,
+      0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
+      rates into independent parameters.
+  date: 2026-01-02 21:22:24
