@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: master
+          ref: main
           token: ${{ secrets.POLICYENGINE_GITHUB }}
 
       - name: Install uv
@@ -39,33 +39,49 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b bot/weekly-uv-lock-update
+          git add uv.lock
+          git commit -m "Update uv.lock dependencies"
+          git push -f origin bot/weekly-uv-lock-update
+
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.POLICYENGINE_GITHUB }}
-          commit-message: "Update uv.lock dependencies"
-          branch: bot/weekly-uv-lock-update
-          delete-branch: true
-          title: "chore: Weekly uv.lock update"
-          body: |
-            ## Summary
+        env:
+          GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
+        run: |
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head bot/weekly-uv-lock-update --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists, skipping creation"
+            exit 0
+          fi
 
-            Automated weekly update of `uv.lock` dependencies.
+          gh pr create \
+            --title "chore: Weekly uv.lock update" \
+            --body "$(cat <<'EOF'
+          ## Summary
 
-            Related to #7000
+          Automated weekly update of `uv.lock` dependencies.
 
-            ## Changes
+          Related to #7000
 
-            This PR updates the `uv.lock` file with the latest compatible dependency versions.
+          ## Changes
 
-            ## Review
+          This PR updates the `uv.lock` file with the latest compatible dependency versions.
 
-            - Review the lock file changes to ensure no unexpected dependency updates
-            - If unwanted, simply close this PR - master remains unchanged
+          ## Review
 
-            ---
-            Generated automatically by GitHub Actions
-          labels: |
-            dependencies
-            automated
+          - Review the lock file changes to ensure no unexpected dependency updates
+          - If unwanted, simply close this PR - main remains unchanged
+
+          ---
+          Generated automatically by GitHub Actions
+          EOF
+          )" \
+            --label "dependencies" \
+            --label "automated"
