@@ -6,10 +6,22 @@ class sd_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for South Dakota TANF"
     definition_period = MONTH
-    reference = "https://www.nccp.org/wp-content/uploads/2024/08/TANF-profile-South-Dakota-.pdf#page=1"
+    reference = "https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-01-05"
     defined_for = StateCode.SD
 
     def formula(spm_unit, period, parameters):
-        countable_income = spm_unit("sd_tanf_countable_income", period)
-        payment_standard = spm_unit("sd_tanf_payment_standard", period)
-        return countable_income <= payment_standard
+        # Use federal demographic eligibility (minor child or pregnant)
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+        # Per ARSD 67:10:01:05: Must be US citizen or qualified alien
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+        )
+        income_eligible = spm_unit("sd_tanf_income_eligible", period)
+        resources_eligible = spm_unit("sd_tanf_resources_eligible", period)
+
+        return (
+            demographic_eligible
+            & immigration_eligible
+            & income_eligible
+            & resources_eligible
+        )

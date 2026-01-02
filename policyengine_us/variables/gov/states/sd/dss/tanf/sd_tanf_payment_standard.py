@@ -19,8 +19,8 @@ class sd_tanf_payment_standard(Variable):
 
         max_table_size = p.max_table_size
         base_size = min_(family_size, max_table_size)
-        independent_amount = p.independent_living.calc(base_size)
-        shared_amount = p.shared_living.calc(base_size)
+        independent_amount = p.independent_living[base_size]
+        shared_amount = p.shared_living[base_size]
 
         extra_persons = max_(family_size - max_table_size, 0)
         increment = p.additional_person_increment * extra_persons

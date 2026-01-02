@@ -7,7 +7,7 @@ class sd_tanf_countable_earned_income(Variable):
     label = "South Dakota TANF countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.nccp.org/wp-content/uploads/2024/08/TANF-profile-South-Dakota-.pdf#page=1"
+    reference = "https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-03-05"
     defined_for = StateCode.SD
 
     def formula(spm_unit, period, parameters):

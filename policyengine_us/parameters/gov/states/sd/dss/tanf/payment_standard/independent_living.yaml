@@ -1,61 +1,58 @@
 description: South Dakota provides this amount as the payment standard for independent living arrangements under the Temporary Assistance for Needy Families program.
 
 metadata:
-  amount_unit: currency-USD
+  unit: currency-USD
   period: month
   label: South Dakota TANF independent living payment standard
-  type: single_amount
-  threshold_unit: person
   reference:
-    - title: ARSD 67:10:05:03 - Payment Standards
-      href: https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-03
+    - title: ARSD 67:10:05:03 - Independent Living Payment Standards
+      href: https://sdlegislature.gov/Rules/Administrative/67:10:05:03
 
-brackets:
-  - threshold:
-      2023-07-01: 1
-    amount:
-      2023-07-01: 512
-  - threshold:
-      2023-07-01: 2
-    amount:
-      2023-07-01: 627
-  - threshold:
-      2023-07-01: 3
-    amount:
-      2023-07-01: 701
-  - threshold:
-      2023-07-01: 4
-    amount:
-      2023-07-01: 775
-  - threshold:
-      2023-07-01: 5
-    amount:
-      2023-07-01: 848
-  - threshold:
-      2023-07-01: 6
-    amount:
-      2023-07-01: 922
-  - threshold:
-      2023-07-01: 7
-    amount:
-      2023-07-01: 996
-  - threshold:
-      2023-07-01: 8
-    amount:
-      2023-07-01: 1_070
-  - threshold:
-      2023-07-01: 9
-    amount:
-      2023-07-01: 1_141
-  - threshold:
-      2023-07-01: 10
-    amount:
-      2023-07-01: 1_213
-  - threshold:
-      2023-07-01: 11
-    amount:
-      2023-07-01: 1_287
-  - threshold:
-      2023-07-01: 12
-    amount:
-      2023-07-01: 1_361
+1:
+  values:
+    2023-07-01: 512
+    2025-07-01: 461
+2:
+  values:
+    2023-07-01: 627
+    2025-07-01: 564
+3:
+  values:
+    2023-07-01: 701
+    2025-07-01: 631
+4:
+  values:
+    2023-07-01: 775
+    2025-07-01: 698
+5:
+  values:
+    2023-07-01: 848
+    2025-07-01: 763
+6:
+  values:
+    2023-07-01: 922
+    2025-07-01: 830
+7:
+  values:
+    2023-07-01: 996
+    2025-07-01: 896
+8:
+  values:
+    2023-07-01: 1_070
+    2025-07-01: 963
+9:
+  values:
+    2023-07-01: 1_141
+    2025-07-01: 1_027
+10:
+  values:
+    2023-07-01: 1_213
+    2025-07-01: 1_092
+11:
+  values:
+    2023-07-01: 1_287
+    2025-07-01: 1_158
+12:
+  values:
+    2023-07-01: 1_361
+    2025-07-01: 1_225
