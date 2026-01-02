@@ -1,0 +1,78 @@
+# Vermont TANF Countable Income
+# Total countable = Countable Earned + Countable Unearned
+# Source: 33 V.S.A. Section 1103
+
+- name: Case 1, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_tanf_countable_earned_income: 0
+        vt_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_tanf_countable_income: 0
+
+- name: Case 2, earned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_tanf_countable_earned_income: 487.5
+        vt_tanf_countable_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Only earned income: $487.50
+    vt_tanf_countable_income: 487.5
+
+- name: Case 3, unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_tanf_countable_earned_income: 0
+        vt_tanf_countable_unearned_income: 350
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Only unearned income: $350
+    vt_tanf_countable_income: 350
+
+- name: Case 4, mixed earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_tanf_countable_earned_income: 487.5
+        vt_tanf_countable_unearned_income: 350
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Earned: $487.50 + Unearned: $350 = $837.50
+    vt_tanf_countable_income: 837.5

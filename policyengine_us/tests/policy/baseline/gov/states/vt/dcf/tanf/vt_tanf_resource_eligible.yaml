@@ -1,0 +1,153 @@
+# Vermont TANF Resource Eligibility
+# Resource limit: $9,000
+# Source: 33 V.S.A. Section 1103(a)(1)
+
+- name: Case 1, zero assets eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $0 <= $9,000 limit
+    vt_tanf_resource_eligible: true
+
+- name: Case 2, assets below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $5,000 <= $9,000 limit
+    vt_tanf_resource_eligible: true
+
+- name: Case 3, assets at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $9,000 = $9,000 limit (at limit is eligible)
+    vt_tanf_resource_eligible: true
+
+- name: Case 4, assets above limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $10,000 > $9,000 limit
+    vt_tanf_resource_eligible: false
+
+- name: Case 5, assets one dollar above limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 9_001
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $9,001 > $9,000 limit
+    vt_tanf_resource_eligible: false
+
+- name: Case 6, assets one dollar below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 8_999
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $8,999 <= $9,000 limit
+    vt_tanf_resource_eligible: true
+
+- name: Case 7, large family with assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 7_500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    # Assets: $7,500 <= $9,000 limit
+    vt_tanf_resource_eligible: true
+
+- name: Case 8, high assets ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $50,000 > $9,000 limit
+    vt_tanf_resource_eligible: false

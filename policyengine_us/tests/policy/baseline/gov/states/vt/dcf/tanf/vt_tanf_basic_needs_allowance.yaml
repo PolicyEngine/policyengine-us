@@ -1,0 +1,286 @@
+# Vermont TANF Basic Needs Allowance
+# Varies by household size
+# Source: Code Vt. R. 13-170-220-X Rule 2244.1
+
+- name: Case 1, household size 1.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Basic needs for size 1: $644
+    vt_tanf_basic_needs_allowance: 644
+
+- name: Case 2, household size 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Basic needs for size 2: $879
+    vt_tanf_basic_needs_allowance: 879
+
+- name: Case 3, household size 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # Basic needs for size 3: $1,030
+    vt_tanf_basic_needs_allowance: 1_030
+
+- name: Case 4, household size 4.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_size: 4
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    # Basic needs for size 4: $1,162
+    vt_tanf_basic_needs_allowance: 1_162
+
+- name: Case 5, household size 5.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_size: 5
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: VT
+  output:
+    # Basic needs for size 5: $1,247
+    vt_tanf_basic_needs_allowance: 1_247
+
+# ============================================================
+# EDGE CASES - Larger household sizes and additional person logic
+# ============================================================
+
+- name: Case 6, household size 6.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        spm_unit_size: 6
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: VT
+  output:
+    # Basic needs for size 6: $1,378
+    vt_tanf_basic_needs_allowance: 1_378
+
+- name: Case 7, household size 7.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 17
+      person4:
+        age: 14
+      person5:
+        age: 11
+      person6:
+        age: 8
+      person7:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        spm_unit_size: 7
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: VT
+  output:
+    # Basic needs for size 7: $1,537
+    vt_tanf_basic_needs_allowance: 1_537
+
+- name: Case 8, household size 8 (max from parameter table).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 7
+      person8:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        spm_unit_size: 8
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VT
+  output:
+    # Basic needs for size 8: $2,458 (max from parameter table)
+    # No additional person amount added
+    vt_tanf_basic_needs_allowance: 2_458
+
+- name: Case 9, household size 9 (tests additional person logic).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 48
+      person2:
+        age: 46
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 10
+      person7:
+        age: 8
+      person8:
+        age: 5
+      person9:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        spm_unit_size: 9
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: VT
+  output:
+    # Basic needs for size 9:
+    # Base for size 8: $2,458
+    # Additional persons: 9 - 8 = 1
+    # Additional amount: 1 * $236 = $236
+    # Total: $2,458 + $236 = $2,694
+    vt_tanf_basic_needs_allowance: 2_694
+
+- name: Case 10, household size 10 (tests additional person logic with 2 extra).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 48
+      person3:
+        age: 17
+      person4:
+        age: 16
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 7
+      person9:
+        age: 4
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        spm_unit_size: 10
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: VT
+  output:
+    # Basic needs for size 10:
+    # Base for size 8: $2,458
+    # Additional persons: 10 - 8 = 2
+    # Additional amount: 2 * $236 = $472
+    # Total: $2,458 + $472 = $2,930
+    vt_tanf_basic_needs_allowance: 2_930
