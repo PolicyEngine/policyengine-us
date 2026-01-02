@@ -12082,3 +12082,9 @@
     removed:
     - Remove uv.lock freshness check from PR CI workflow.
   date: 2026-01-02 18:29:05
+- bump: patch
+  changes:
+    fixed:
+    - Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR
+      creation.
+  date: 2026-01-02 19:06:03
