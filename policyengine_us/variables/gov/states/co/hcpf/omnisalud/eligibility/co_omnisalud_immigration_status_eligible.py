@@ -41,8 +41,7 @@ class co_omnisalud_immigration_status_eligible(Variable):
         is_daca = daca | daca_tps
 
         # Children and pregnant individuals move to Health First Colorado in 2025
-        child_max_age = p.child_max_age
-        is_child = age <= child_max_age
+        is_child = age <= p.child_max_age
 
         # Determine if person's status is covered by OmniSalud
         # Undocumented adults are always covered

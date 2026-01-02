@@ -21,6 +21,5 @@ class co_omnisalud_income_eligible(Variable):
         p = parameters(period).gov.states.co.hcpf.omnisalud.eligibility
         # Use ACA MAGI as the income measure
         income_level = person("medicaid_income_level", period)
-        income_limit = p.income_limit
 
-        return income_level < income_limit
+        return income_level < p.income_limit
