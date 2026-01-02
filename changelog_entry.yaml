@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    removed:
+      - Remove uv.lock freshness check from PR CI workflow.
+    added:
+      - Add scheduled GitHub Action workflow for weekly uv.lock updates.
