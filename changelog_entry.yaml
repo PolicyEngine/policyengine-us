@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR creation.
