@@ -22,18 +22,12 @@ class dc_medicaid_age_eligible(Variable):
 
         # New applicants over max age are not eligible starting 10/1/2025
         # Exception for pregnant women of any age
-        max_age_new_applicants = p.max_age_new_applicants
-
         # People over max_age can stay enrolled if already in the program
         # but new applicants over max_age cannot enroll
         # When max_age_new_applicants is infinity (before 10/1/2025),
         # the age <= max_age_new_applicants check will always pass
-        age_eligible = (
-            (age <= max_age_new_applicants)
+        return (
+            (age <= p.max_age_new_applicants)
             | is_pregnant
-            | (
-                is_currently_enrolled & (age > max_age_new_applicants)
-            )  # Only grandfather those over max age
+            | (is_currently_enrolled & (age > p.max_age_new_applicants))
         )
-
-        return age_eligible

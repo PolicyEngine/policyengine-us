@@ -11,7 +11,7 @@ class dc_medicaid_cost_if_enrolled(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "dc_medicaid_enrolled"
-    reference = "https://dhcf.dc.gov/node/1796971"
+    reference = "https://dhcf.dc.gov/node/1809101"
 
     def formula(person, period, parameters):
         # Reuse the exact same cost calculation as federal Medicaid
