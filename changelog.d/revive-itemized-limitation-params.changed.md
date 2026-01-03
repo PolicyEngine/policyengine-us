@@ -1,0 +1,1 @@
+Consolidate itemized deduction limitation parameters under `deductions/itemized/limitation/` (replacing the duplicate `reduction/` folder) and rename OBBB parameters from `amended_structure/` to `obbb/`. Also adds 2009 values and the TCJA-era suspension to `applicable_amount.yaml`, and fixes YAML formatting issues.
