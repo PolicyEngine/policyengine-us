@@ -6,12 +6,11 @@ class nd_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for North Dakota TANF"
     definition_period = MONTH
-    reference = "https://www.hhs.nd.gov/applyforhelp/tanf/temporary-assistance-needy-families-program-faqs"
+    reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_110_15.htm"
     defined_for = StateCode.ND
 
     def formula(spm_unit, period, parameters):
-        # Use federal demographic eligibility (age thresholds match federal)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         income_eligible = spm_unit("nd_tanf_income_eligible", period)
-        resource_eligible = spm_unit("nd_tanf_resource_eligible", period)
-        return demographic_eligible & income_eligible & resource_eligible
+        resources_eligible = spm_unit("nd_tanf_resources_eligible", period)
+        return demographic_eligible & income_eligible & resources_eligible

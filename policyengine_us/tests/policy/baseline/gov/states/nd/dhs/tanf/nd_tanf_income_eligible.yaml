@@ -1,7 +1,8 @@
 # North Dakota TANF Income Eligibility Unit Tests
 #
 # Income eligible when: Countable Income < Standard of Need (strict less than)
-# Standard of Need = 50% of Federal Poverty Level (monthly)
+# Standard of Need: 2D table lookup by caretakers × children
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
 #
 # NOTE: Tests must include people and proper entity structure for
 # defined_for = StateCode.ND to work correctly.

@@ -7,7 +7,7 @@ class nd_tanf_countable_income(Variable):
     label = "North Dakota TANF countable income"
     unit = USD
     definition_period = MONTH
-    reference = "https://nd.gov/dhs/policymanuals/40019/Archive%20Documents/2023%20-%20ML%203749/400_19_110_20.htm"
+    reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_110_20.htm"
     defined_for = StateCode.ND
 
     adds = [

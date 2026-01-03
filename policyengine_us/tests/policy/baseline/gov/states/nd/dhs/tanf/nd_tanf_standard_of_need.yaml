@@ -1,18 +1,12 @@
 # North Dakota TANF Standard of Need Unit Tests
 #
-# The Standard of Need is calculated as 50% of the Federal Poverty Level
-# divided by 12 to get the monthly amount.
+# The Standard of Need is determined by a 2D table lookup based on:
+# - Number of caretakers (adults aged 18+)
+# - Number of children (under 18)
 #
-# IMPORTANT: For period 2024-01, tanf_fpg uses the prior October's FPL values
-# (2023-10-01), which are the 2023 FPL values.
-#
-# 2023 FPG (Contiguous US) - used for 2024-01:
-# - 1 person: $14,580/year
-# - Additional person: $5,140/year
-#
-# Standard of Need = FPL * 0.50 / 12
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
 
-- name: Case 1, single person standard of need.
+- name: Case 1, single adult no children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -27,11 +21,10 @@
         members: [person1]
         state_code: ND
   output:
-    # FPL for 1 person (2023): $14,580/year
-    # Standard of Need: $14,580 * 0.50 / 12 = $607.50/month
-    nd_tanf_standard_of_need: 607.50
+    # 1 caretaker, 0 children → $523
+    nd_tanf_standard_of_need: 523
 
-- name: Case 2, two person household standard of need.
+- name: Case 2, one adult with one child.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -48,11 +41,10 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # FPL for 2 persons (2023): $14,580 + $5,140 = $19,720/year
-    # Standard of Need: $19,720 * 0.50 / 12 = $821.67/month
-    nd_tanf_standard_of_need: 821.67
+    # 1 caretaker, 1 child → $739
+    nd_tanf_standard_of_need: 739
 
-- name: Case 3, three person household standard of need.
+- name: Case 3, one adult with two children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -71,11 +63,10 @@
         members: [person1, person2, person3]
         state_code: ND
   output:
-    # FPL for 3 persons (2023): $14,580 + 2*$5,140 = $24,860/year
-    # Standard of Need: $24,860 * 0.50 / 12 = $1,035.83/month
-    nd_tanf_standard_of_need: 1_035.83
+    # 1 caretaker, 2 children → $962
+    nd_tanf_standard_of_need: 962
 
-- name: Case 4, four person household standard of need.
+- name: Case 4, two adults with two children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -96,11 +87,10 @@
         members: [person1, person2, person3, person4]
         state_code: ND
   output:
-    # FPL for 4 persons (2023): $14,580 + 3*$5,140 = $30,000/year
-    # Standard of Need: $30,000 * 0.50 / 12 = $1,250.00/month
-    nd_tanf_standard_of_need: 1_250
+    # 2 caretakers, 2 children → $1,175
+    nd_tanf_standard_of_need: 1_175
 
-- name: Case 5, five person household standard of need.
+- name: Case 5, two adults with three children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -123,11 +113,10 @@
         members: [person1, person2, person3, person4, person5]
         state_code: ND
   output:
-    # FPL for 5 persons (2023): $14,580 + 4*$5,140 = $35,140/year
-    # Standard of Need: $35,140 * 0.50 / 12 = $1,464.17/month
-    nd_tanf_standard_of_need: 1_464.17
+    # 2 caretakers, 3 children → $1,393
+    nd_tanf_standard_of_need: 1_393
 
-- name: Case 6, six person household standard of need.
+- name: Case 6, two adults with four children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -152,11 +141,10 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: ND
   output:
-    # FPL for 6 persons (2023): $14,580 + 5*$5,140 = $40,280/year
-    # Standard of Need: $40,280 * 0.50 / 12 = $1,678.33/month
-    nd_tanf_standard_of_need: 1_678.33
+    # 2 caretakers, 4 children → $1,612
+    nd_tanf_standard_of_need: 1_612
 
-- name: Case 7, large household (8 persons) standard of need.
+- name: Case 7, two adults with six children.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -185,6 +173,25 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: ND
   output:
-    # FPL for 8 persons (2023): $14,580 + 7*$5,140 = $50,560/year
-    # Standard of Need: $50,560 * 0.50 / 12 = $2,106.67/month
-    nd_tanf_standard_of_need: 2_106.67
+    # 2 caretakers, 6 children → $2,049
+    nd_tanf_standard_of_need: 2_049
+
+- name: Case 8, child-only case no caretakers.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 0 caretakers, 2 children → $536
+    nd_tanf_standard_of_need: 536

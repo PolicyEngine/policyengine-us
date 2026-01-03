@@ -28,7 +28,7 @@
         state_code: ND
   output:
     # $0 <= $6,000 = true
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
 
 - name: Case 2, one person resources exactly at $3,000 limit.
   period: 2024-01
@@ -47,7 +47,7 @@
         state_code: ND
   output:
     # $3,000 <= $3,000 = true (at limit)
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
 
 - name: Case 3, one person resources one dollar over $3,000 limit.
   period: 2024-01
@@ -66,7 +66,7 @@
         state_code: ND
   output:
     # $3,001 <= $3,000 = false (over limit)
-    nd_tanf_resource_eligible: false
+    nd_tanf_resources_eligible: false
 
 - name: Case 4, two person resources exactly at $6,000 limit.
   period: 2024-01
@@ -86,7 +86,7 @@
         state_code: ND
   output:
     # $6,000 <= $6,000 = true (at limit)
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
 
 - name: Case 5, two person resources one dollar over $6,000 limit.
   period: 2024-01
@@ -106,7 +106,7 @@
         state_code: ND
   output:
     # $6,001 <= $6,000 = false (over limit)
-    nd_tanf_resource_eligible: false
+    nd_tanf_resources_eligible: false
 
 - name: Case 6, three person resources exactly at $6,025 limit.
   period: 2024-01
@@ -129,7 +129,7 @@
   output:
     # Limit for 3 persons: $6,000 + $25 * (3-2) = $6,025
     # $6,025 <= $6,025 = true (at limit)
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
 
 - name: Case 7, three person resources one dollar over $6,025 limit.
   period: 2024-01
@@ -152,7 +152,7 @@
   output:
     # Limit for 3 persons: $6,000 + $25 * (3-2) = $6,025
     # $6,026 <= $6,025 = false (over limit)
-    nd_tanf_resource_eligible: false
+    nd_tanf_resources_eligible: false
 
 - name: Case 8, large household (8 persons) resources at limit.
   period: 2024-01
@@ -185,7 +185,7 @@
   output:
     # Limit for 8 persons: $6,000 + $25 * (8-2) = $6,000 + $150 = $6,150
     # $6,150 <= $6,150 = true (at limit)
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
 
 - name: Case 9, large household (8 persons) resources over limit.
   period: 2024-01
@@ -218,4 +218,4 @@
   output:
     # Limit for 8 persons: $6,000 + $25 * (8-2) = $6,150
     # $6,151 <= $6,150 = false (over limit)
-    nd_tanf_resource_eligible: false
+    nd_tanf_resources_eligible: false

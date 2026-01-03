@@ -4,25 +4,11 @@
 # Key Parameters (2024-01):
 # - Standard Employment Expense: max(27% of gross earned, $180)
 # - Time Limited Percentage (TLP) disregard: 50% of remaining earned income
-# - Standard of Need: 50% of Federal Poverty Level
-# - Income Eligibility: Countable income < Standard of Need (strict less than)
+# - Standard of Need: 2D table lookup by caretakers × children
+# - Income Eligibility: Countable income < Standard of Need
 # - Minimum benefit: $10
-# - Housing supplement: $50 (when applicable)
 #
-# IMPORTANT: For period 2024-01, tanf_fpg uses the prior October's FPL values
-# (2023-10-01), which are the 2023 FPL values.
-#
-# 2023 FPG (Contiguous US) - used for 2024-01:
-# - 1 person: $14,580/year
-# - Additional person: $5,140/year
-# - Family of 3: $14,580 + 2*$5,140 = $24,860/year
-#
-# Standard of Need (50% FPL) for family of 3:
-# - Annual: $24,860 * 0.50 = $12,430
-# - Monthly: $12,430 / 12 = $1,035.83
-#
-# NOTE: Uses employment_income_before_lsr as input since that is what
-# tanf_gross_earned_income expects.
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
 
 - name: Case 1, family of 3 with no income receives full benefit.
   period: 2024-01
@@ -43,16 +29,15 @@
         members: [person1, person2, person3]
         state_code: ND
   output:
-    # FPL for family of 3 (2023): $14,580 + 2*$5,140 = $24,860/year
-    # Standard of Need (50% FPL): $24,860 * 0.50 / 12 = $1,035.83/month
-    nd_tanf_standard_of_need: 1_035.83
+    # 1 caretaker, 2 children → Standard of Need = $962
+    nd_tanf_standard_of_need: 962
     nd_tanf_countable_earned_income: 0
     nd_tanf_countable_unearned_income: 0
     nd_tanf_countable_income: 0
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = Standard of Need - Countable Income = $1,035.83 - $0 = $1,035.83
-    nd_tanf: 1_035.83
+    # Benefit = $962 - $0 = $962
+    nd_tanf: 962
 
 - name: Case 2, family of 3 with moderate earned income.
   period: 2024-01
@@ -75,6 +60,8 @@
         members: [person1, person2, person3]
         state_code: ND
   output:
+    # 1 caretaker, 2 children → Standard of Need = $962
+    nd_tanf_standard_of_need: 962
     # Gross monthly earned income: $18,000 / 12 = $1,500
     # Standard Employment Expense: max($1,500 * 0.27, $180) = max($405, $180) = $405
     # After SEE: $1,500 - $405 = $1,095
@@ -83,13 +70,11 @@
     nd_tanf_countable_earned_income: 547.50
     nd_tanf_countable_unearned_income: 0
     nd_tanf_countable_income: 547.50
-    # Standard of Need (family of 3, 2023 FPL): $1,035.83
-    nd_tanf_standard_of_need: 1_035.83
-    # Income eligible: $547.50 < $1,035.83 = true
+    # Income eligible: $547.50 < $962 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $1,035.83 - $547.50 = $488.33
-    nd_tanf: 488.33
+    # Benefit = $962 - $547.50 = $414.50
+    nd_tanf: 414.50
 
 - name: Case 3, family of 3 with earned and unearned income.
   period: 2024-01
@@ -114,6 +99,8 @@
         members: [person1, person2, person3]
         state_code: ND
   output:
+    # 1 caretaker, 2 children → Standard of Need = $962
+    nd_tanf_standard_of_need: 962
     # Gross monthly earned income: $12,000 / 12 = $1,000
     # Standard Employment Expense: max($1,000 * 0.27, $180) = max($270, $180) = $270
     # After SEE: $1,000 - $270 = $730
@@ -124,12 +111,11 @@
     nd_tanf_countable_unearned_income: 200
     # Total countable: $365 + $200 = $565
     nd_tanf_countable_income: 565
-    nd_tanf_standard_of_need: 1_035.83
-    # Income eligible: $565 < $1,035.83 = true
+    # Income eligible: $565 < $962 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $1,035.83 - $565 = $470.83
-    nd_tanf: 470.83
+    # Benefit = $962 - $565 = $397
+    nd_tanf: 397
 
 - name: Case 4, low earned income applies minimum $180 deduction.
   period: 2024-01
@@ -150,6 +136,8 @@
         members: [person1, person2]
         state_code: ND
   output:
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
     # Gross monthly earned income: $6,000 / 12 = $500
     # Standard Employment Expense: max($500 * 0.27, $180) = max($135, $180) = $180
     # After SEE: $500 - $180 = $320
@@ -158,13 +146,10 @@
     nd_tanf_countable_earned_income: 160
     nd_tanf_countable_unearned_income: 0
     nd_tanf_countable_income: 160
-    # FPL for family of 2 (2023): $14,580 + $5,140 = $19,720/year
-    # Standard of Need (50% FPL): $19,720 * 0.50 / 12 = $821.67/month
-    nd_tanf_standard_of_need: 821.67
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $821.67 - $160 = $661.67
-    nd_tanf: 661.67
+    # Benefit = $739 - $160 = $579
+    nd_tanf: 579
 
 - name: Case 5, income resulting in low benefit but above minimum.
   period: 2024-01
@@ -173,8 +158,8 @@
     people:
       person1:
         age: 32
-        # Monthly: $2,000; Annual: $24,000
-        employment_income_before_lsr: 24_000
+        # Monthly: $1,400; Annual: $16,800
+        employment_income_before_lsr: 16_800
       person2:
         age: 2
     spm_units:
@@ -185,19 +170,20 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # Monthly earned: $24,000 / 12 = $2,000
-    # SEE: max($2,000 * 0.27, $180) = $540
-    # After SEE: $2,000 - $540 = $1,460
-    # TLP: $1,460 * 0.50 = $730
-    # Countable earned: $730
-    nd_tanf_countable_earned_income: 730
-    nd_tanf_countable_income: 730
-    nd_tanf_standard_of_need: 821.67
-    # Income eligible: $730 < $821.67 = true
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
+    # Monthly earned: $16,800 / 12 = $1,400
+    # SEE: max($1,400 * 0.27, $180) = max($378, $180) = $378
+    # After SEE: $1,400 - $378 = $1,022
+    # TLP: $1,022 * 0.50 = $511
+    # Countable earned: $1,022 - $511 = $511
+    nd_tanf_countable_earned_income: 511
+    nd_tanf_countable_income: 511
+    # Income eligible: $511 < $739 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $821.67 - $730 = $91.67
-    nd_tanf: 91.67
+    # Benefit = $739 - $511 = $228
+    nd_tanf: 228
 
 - name: Case 6, income over eligibility limit results in zero benefit.
   period: 2024-01
@@ -220,20 +206,21 @@
         members: [person1, person2, person3]
         state_code: ND
   output:
+    # 1 caretaker, 2 children → Standard of Need = $962
+    nd_tanf_standard_of_need: 962
     # Monthly earned: $36,000 / 12 = $3,000
     # SEE: max($3,000 * 0.27, $180) = max($810, $180) = $810
     # After SEE: $3,000 - $810 = $2,190
     # TLP: $2,190 * 0.50 = $1,095
-    # Countable earned: $1,095
+    # Countable earned: $2,190 - $1,095 = $1,095
     nd_tanf_countable_earned_income: 1_095
     nd_tanf_countable_income: 1_095
-    nd_tanf_standard_of_need: 1_035.83
-    # Income eligible: $1,095 < $1,035.83 = false
+    # Income eligible: $1,095 < $962 = false
     nd_tanf_income_eligible: false
     nd_tanf_eligible: false
     nd_tanf: 0
 
-- name: Case 7, single person household with unearned income only.
+- name: Case 7, pregnant woman with unearned income only.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -251,23 +238,20 @@
         members: [person1]
         state_code: ND
   output:
+    # 1 caretaker, 0 children → Standard of Need = $523
+    nd_tanf_standard_of_need: 523
     # No earned income, so no deductions
     nd_tanf_countable_earned_income: 0
     # Countable unearned: $4,800 / 12 = $400
     nd_tanf_countable_unearned_income: 400
     nd_tanf_countable_income: 400
-    # FPL for 1 person (2023): $14,580/year
-    # Standard of Need (50% FPL): $14,580 * 0.50 / 12 = $607.50/month
-    nd_tanf_standard_of_need: 607.50
-    # Income eligible: $400 < $607.50 = true
+    # Income eligible: $400 < $523 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $607.50 - $400 = $207.50
-    nd_tanf: 207.50
+    # Benefit = $523 - $400 = $123
+    nd_tanf: 123
 
-# Edge Case Integration Tests
-
-- name: Case 8, large household (8 persons) with moderate income.
+- name: Case 8, large household with moderate income.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -298,24 +282,23 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: ND
   output:
-    # FPL for 8 persons (2023): $14,580 + 7*$5,140 = $50,560/year
-    # Standard of Need (50% FPL): $50,560 * 0.50 / 12 = $2,106.67/month
-    nd_tanf_standard_of_need: 2_106.67
+    # 2 caretakers, 6 children → Standard of Need = $2,049
+    nd_tanf_standard_of_need: 2_049
     # Monthly earned: $24,000 / 12 = $2,000
     # SEE: max($2,000 * 0.27, $180) = max($540, $180) = $540
     # After SEE: $2,000 - $540 = $1,460
     # TLP: $1,460 * 0.50 = $730
-    # Countable earned: $730
+    # Countable earned: $1,460 - $730 = $730
     nd_tanf_countable_earned_income: 730
     nd_tanf_countable_unearned_income: 0
     nd_tanf_countable_income: 730
-    # Income eligible: $730 < $2,106.67 = true
+    # Income eligible: $730 < $2,049 = true
     nd_tanf_income_eligible: true
     # Resource limit for 8 persons: $6,000 + $25 * 6 = $6,150
-    nd_tanf_resource_eligible: true
+    nd_tanf_resources_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $2,106.67 - $730 = $1,376.67
-    nd_tanf: 1_376.67
+    # Benefit = $2,049 - $730 = $1,319
+    nd_tanf: 1_319
 
 - name: Case 9, ineligible due to resources exceeding limit.
   period: 2024-01
@@ -336,13 +319,13 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # Standard of Need for 2 persons (2023 FPL): $821.67
-    nd_tanf_standard_of_need: 821.67
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
     nd_tanf_countable_income: 0
     nd_tanf_income_eligible: true
     # Resource limit for 2 persons: $6,000
     # $6,500 > $6,000 = false
-    nd_tanf_resource_eligible: false
+    nd_tanf_resources_eligible: false
     nd_tanf_eligible: false
     nd_tanf: 0
 
@@ -365,8 +348,8 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # Standard of Need for 2 persons (2023 FPL): $821.67
-    nd_tanf_standard_of_need: 821.67
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
     # Monthly gross: $1,200 / 12 = $100
     # SEE: max($100 * 0.27, $180) = max($27, $180) = $180
     # After SEE: max($100 - $180, 0) = $0 (clipped)
@@ -377,8 +360,8 @@
     nd_tanf_countable_income: 0
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $821.67 - $0 = $821.67
-    nd_tanf: 821.67
+    # Benefit = $739 - $0 = $739
+    nd_tanf: 739
 
 - name: Case 11, benefit just below minimum threshold receives zero.
   period: 2024-01
@@ -388,10 +371,10 @@
       person1:
         age: 30
         # Target: benefit < $10
-        # For 2 person (2023 FPL): Standard = $821.67
-        # If countable = $815, benefit = $6.67 < $10
-        # Using unearned income: $815 * 12 = $9,780
-        social_security_dependents: 9_780
+        # Standard of Need = $739
+        # If countable = $732, benefit = $7 < $10
+        # Using unearned income: $732 * 12 = $8,784
+        social_security_dependents: 8_784
       person2:
         age: 5
     spm_units:
@@ -402,16 +385,17 @@
         members: [person1, person2]
         state_code: ND
   output:
-    nd_tanf_standard_of_need: 821.67
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
     nd_tanf_countable_earned_income: 0
-    # Countable unearned: $9,780 / 12 = $815
-    nd_tanf_countable_unearned_income: 815
-    nd_tanf_countable_income: 815
-    # Income eligible: $815 < $821.67 = true
+    # Countable unearned: $8,784 / 12 = $732
+    nd_tanf_countable_unearned_income: 732
+    nd_tanf_countable_income: 732
+    # Income eligible: $732 < $739 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $821.67 - $815 = $6.67
-    # $6.67 < $10 minimum, so no benefit issued
+    # Benefit = $739 - $732 = $7
+    # $7 < $10 minimum, so no benefit issued
     nd_tanf: 0
 
 - name: Case 12, benefit exactly at minimum threshold is issued.
@@ -421,9 +405,9 @@
     people:
       person1:
         age: 28
-        # Target countable: $821.67 - $10 = $811.67
-        # Unearned: $811.67 * 12 = $9,740.04 (round to $9,740)
-        social_security_dependents: 9_740
+        # Target countable: $739 - $10 = $729
+        # Unearned: $729 * 12 = $8,748
+        social_security_dependents: 8_748
       person2:
         age: 3
     spm_units:
@@ -434,14 +418,164 @@
         members: [person1, person2]
         state_code: ND
   output:
-    nd_tanf_standard_of_need: 821.67
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
     nd_tanf_countable_earned_income: 0
-    # Countable unearned: $9,740 / 12 = $811.67
-    nd_tanf_countable_unearned_income: 811.67
-    nd_tanf_countable_income: 811.67
-    # Income eligible: $811.67 < $821.67 = true
+    # Countable unearned: $8,748 / 12 = $729
+    nd_tanf_countable_unearned_income: 729
+    nd_tanf_countable_income: 729
+    # Income eligible: $729 < $739 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $821.67 - $811.67 = $10.00
+    # Benefit = $739 - $729 = $10.00
     # $10.00 >= $10 minimum, so benefit is issued
     nd_tanf: 10
+
+- name: Case 13, two working parents (multiple earners).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly: $1,000; Annual: $12,000
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 33
+        # Monthly: $800; Annual: $9,600
+        employment_income_before_lsr: 9_600
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # 2 caretakers, 2 children → Standard of Need = $1,175
+    nd_tanf_standard_of_need: 1_175
+    # Person 1: $1,000/month
+    # SEE: max($1,000 * 0.27, $180) = max($270, $180) = $270
+    # After SEE: $1,000 - $270 = $730
+    # TLP: $730 * 0.50 = $365
+    # Countable: $730 - $365 = $365
+    # Person 2: $800/month
+    # SEE: max($800 * 0.27, $180) = max($216, $180) = $216
+    # After SEE: $800 - $216 = $584
+    # TLP: $584 * 0.50 = $292
+    # Countable: $584 - $292 = $292
+    # Total countable earned: $365 + $292 = $657
+    nd_tanf_countable_earned_income: 657
+    nd_tanf_countable_income: 657
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $1,175 - $657 = $518
+    nd_tanf: 518
+
+- name: Case 14, child-only household (zero caretakers).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+      person2:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 0 caretakers, 2 children → Standard of Need = $536
+    nd_tanf_standard_of_need: 536
+    nd_tanf_countable_earned_income: 0
+    nd_tanf_countable_income: 0
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $536 - $0 = $536
+    nd_tanf: 536
+
+- name: Case 15, three adults caps caretakers at two.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 42
+      person3:
+        age: 20
+      person4:
+        age: 12
+      person5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ND
+  output:
+    # 3 adults in household, but caretakers capped at 2
+    # 2 caretakers (capped), 2 children → Standard of Need = $1,175
+    nd_tanf_standard_of_need: 1_175
+    nd_tanf_countable_income: 0
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $1,175 - $0 = $1,175
+    nd_tanf: 1_175
+
+- name: Case 16, eleven children caps at ten.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 17
+      person3:
+        age: 16
+      person4:
+        age: 15
+      person5:
+        age: 14
+      person6:
+        age: 13
+      person7:
+        age: 11
+      person8:
+        age: 9
+      person9:
+        age: 7
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: ND
+  output:
+    # 1 caretaker, 11 children in household, but children capped at 10
+    # 1 caretaker, 10 children (capped) → Standard of Need = $2,702
+    nd_tanf_standard_of_need: 2_702
+    nd_tanf_countable_income: 0
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $2,702 - $0 = $2,702
+    nd_tanf: 2_702

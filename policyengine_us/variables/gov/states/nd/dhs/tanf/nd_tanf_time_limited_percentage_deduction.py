@@ -9,13 +9,13 @@ class nd_tanf_time_limited_percentage_deduction(Variable):
     definition_period = MONTH
     reference = (
         "https://www.nd.gov/dhs/policymanuals/40019/400_19_05.htm",
-        "https://nd.gov/dhs/policymanuals/40019/Archive%20Documents/2016%20-%20ML3482/400_19_145_15%20ML%203482.htm",
+        "https://www.nd.gov/dhs/policymanuals/40019/400_19_145_15.htm",
     )
     defined_for = StateCode.ND
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nd.dhs.tanf.income.deductions
-        # Per 400-19-05: TLP disregard is applied to earned income AFTER
+        # TLP disregard is applied to earned income AFTER
         # the Standard Employment Expense Allowance
         # NOTE: TLP operates on a 13-month cycle and decreases over time.
         # PolicyEngine cannot track this, so we apply the 50% rate assuming

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nd_tanf_resource_eligible(Variable):
+class nd_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for North Dakota TANF due to resources"
@@ -16,8 +16,6 @@ class nd_tanf_resource_eligible(Variable):
         resources = spm_unit("spm_unit_assets", period.this_year)
         unit_size = spm_unit("spm_unit_size", period.this_year)
 
-        # Resource limits: $3,000 for 1 person, $6,000 for 2+,
-        # plus $25 for each additional person beyond 2
         limit = where(
             unit_size == 1,
             p.one_person,
