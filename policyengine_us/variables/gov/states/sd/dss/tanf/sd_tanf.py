@@ -7,7 +7,7 @@ class sd_tanf(Variable):
     label = "South Dakota Temporary Assistance for Needy Families (TANF)"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-02"
+    reference = "https://sdlegislature.gov/Rules/Administrative/67:10:05:02"
     defined_for = "sd_tanf_eligible"
 
     def formula(spm_unit, period, parameters):

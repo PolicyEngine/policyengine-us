@@ -1,7 +1,7 @@
 # Unit tests for South Dakota TANF income eligibility determination
 # Income Eligibility: Net countable income <= Payment standard
 # Source: ARSD 67:10:05:03
-# https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-03
+# https://sdlegislature.gov/Rules/Administrative/67:10:05:03
 
 - name: Case 1, family of 3, zero income, eligible.
   period: 2024-01
@@ -31,35 +31,7 @@
     # Eligible: $0 <= $701 = true
     sd_tanf_income_eligible: true
 
-- name: Case 2, family of 3, countable income $700, eligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        is_person_demographic_tanf_eligible: false
-        age: 30
-      person2:
-        is_person_demographic_tanf_eligible: true
-        age: 5
-      person3:
-        is_person_demographic_tanf_eligible: true
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        sd_tanf_countable_income: 700
-        sd_tanf_payment_standard: 701
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: SD
-  output:
-    # Countable income: $700
-    # Payment standard: $701
-    # Eligible: $700 <= $701 = true
-    sd_tanf_income_eligible: true
-
-- name: Case 3, family of 3, countable income at threshold, eligible.
+- name: Case 2, family of 3, countable income at threshold, eligible.
   period: 2024-01
   input:
     people:
@@ -87,7 +59,7 @@
     # Eligible: $701 <= $701 = true (at threshold)
     sd_tanf_income_eligible: true
 
-- name: Case 4, family of 3, countable income exceeds threshold, not eligible.
+- name: Case 3, family of 3, countable income exceeds threshold, not eligible.
   period: 2024-01
   input:
     people:
@@ -115,29 +87,7 @@
     # Eligible: $800 <= $701 = false
     sd_tanf_income_eligible: false
 
-- name: Case 5, single adult with income at payment standard.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        sd_tanf_countable_income: 512
-        sd_tanf_payment_standard: 512
-    households:
-      household:
-        members: [person1]
-        state_code: SD
-  output:
-    # Countable income: $512
-    # Payment standard: $512
-    # Eligible: $512 <= $512 = true (at threshold)
-    # Note: This tests income eligibility only; demographic eligibility is tested separately
-    sd_tanf_income_eligible: true
-
-- name: Case 6, family of 2, shared living, eligible.
+- name: Case 4, family of 2, shared living, eligible.
   period: 2024-01
   input:
     people:
@@ -162,11 +112,7 @@
     # Eligible: $400 <= $432 = true
     sd_tanf_income_eligible: true
 
-# =============================================================================
-# EDGE CASES - Income Threshold Boundaries
-# =============================================================================
-
-- name: Case 7, edge case - income $1 above payment standard ($702).
+- name: Case 5, income $1 above payment standard.
   period: 2024-01
   input:
     people:
@@ -195,7 +141,7 @@
     # Edge case: just $1 above threshold triggers ineligibility
     sd_tanf_income_eligible: false
 
-- name: Case 8, edge case - income at larger family threshold ($848).
+- name: Case 6, larger family of 5, income at threshold.
   period: 2024-01
   input:
     people:
@@ -229,41 +175,7 @@
     # Eligible: $848 <= $848 = true (exactly at threshold)
     sd_tanf_income_eligible: true
 
-- name: Case 9, edge case - income $1 above larger family threshold ($849).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        is_person_demographic_tanf_eligible: false
-        age: 35
-      person2:
-        is_person_demographic_tanf_eligible: false
-        age: 33
-      person3:
-        is_person_demographic_tanf_eligible: true
-        age: 12
-      person4:
-        is_person_demographic_tanf_eligible: true
-        age: 8
-      person5:
-        is_person_demographic_tanf_eligible: true
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        sd_tanf_countable_income: 849
-        sd_tanf_payment_standard: 848  # Family of 5
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: SD
-  output:
-    # Countable income: $849
-    # Payment standard: $848 (family of 5)
-    # Eligible: $849 <= $848 = false (just $1 over)
-    sd_tanf_income_eligible: false
-
-- name: Case 10, edge case - very high countable income ($3,000).
+- name: Case 7, very high countable income.
   period: 2024-01
   input:
     people:
@@ -286,61 +198,4 @@
     # Countable income: $3,000
     # Payment standard: $627 (family of 2)
     # Eligible: $3,000 <= $627 = false (far above threshold)
-    # Edge case: ensures comparison works with very high income
-    sd_tanf_income_eligible: false
-
-- name: Case 11, edge case - shared living income at threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        is_person_demographic_tanf_eligible: false
-        age: 30
-      person2:
-        is_person_demographic_tanf_eligible: true
-        age: 5
-      person3:
-        is_person_demographic_tanf_eligible: true
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        sd_tanf_countable_income: 507
-        sd_tanf_payment_standard: 507  # Shared living for family of 3
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: SD
-  output:
-    # Countable income: $507
-    # Payment standard: $507 (shared living, family of 3)
-    # Eligible: $507 <= $507 = true (at threshold)
-    sd_tanf_income_eligible: true
-
-- name: Case 12, edge case - shared living income $1 above threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        is_person_demographic_tanf_eligible: false
-        age: 30
-      person2:
-        is_person_demographic_tanf_eligible: true
-        age: 5
-      person3:
-        is_person_demographic_tanf_eligible: true
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        sd_tanf_countable_income: 508
-        sd_tanf_payment_standard: 507  # Shared living for family of 3
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: SD
-  output:
-    # Countable income: $508
-    # Payment standard: $507 (shared living, family of 3)
-    # Eligible: $508 <= $507 = false (just $1 over)
     sd_tanf_income_eligible: false

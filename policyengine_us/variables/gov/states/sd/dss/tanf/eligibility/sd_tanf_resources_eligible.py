@@ -6,7 +6,7 @@ class sd_tanf_resources_eligible(Variable):
     entity = SPMUnit
     label = "South Dakota TANF resources eligible"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-04-03"
+    reference = "https://sdlegislature.gov/Rules/Administrative/67:10:04:03"
     defined_for = StateCode.SD
 
     def formula(spm_unit, period, parameters):

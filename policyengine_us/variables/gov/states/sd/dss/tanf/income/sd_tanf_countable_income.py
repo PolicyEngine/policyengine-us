@@ -7,10 +7,10 @@ class sd_tanf_countable_income(Variable):
     label = "South Dakota TANF countable income"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/south-dakota/ARSD-67-10-05-02"
+    reference = "https://sdlegislature.gov/Rules/Administrative/67:10:05:02"
     defined_for = StateCode.SD
 
     adds = [
         "sd_tanf_countable_earned_income",
-        "tanf_gross_unearned_income",
+        "sd_tanf_countable_unearned_income",
     ]
