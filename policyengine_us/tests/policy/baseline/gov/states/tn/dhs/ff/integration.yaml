@@ -216,3 +216,37 @@
     # Deficit: $1,066 - $350 = $716
     # Benefit: min($185, $716) = $185
     tn_ff: 185
+
+- name: Case 10, earned income with childcare deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 800
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Size 3: CNS = $1,549, SPA = $387
+    # GIS = $1,549 * 1.85 = $2,865.65
+    # Gross: $800 < $2,865.65 - passes
+    # Child care deduction: $200 (under 2) + $175 (age 4) = $375
+    # Countable earned: $800 - $250 (disregard) - $375 (childcare) = $175
+    # Countable: $175 < CNS ($1,549) - passes
+    # Deficit: $1,549 - $175 = $1,374
+    # Benefit: min($387, $1,374) = $387
+    tn_ff_child_care_deduction: 375
+    tn_ff_countable_earned_income: 175
+    tn_ff: 387

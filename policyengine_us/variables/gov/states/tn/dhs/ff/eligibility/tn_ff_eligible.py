@@ -10,16 +10,14 @@ class tn_ff_eligible(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-
         # Must meet demographic requirements (minor child with parent/relative)
         # Use federal demographic eligibility directly
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 
         # Must have at least one citizen or legal immigrant
         # Use federal immigration eligibility directly
-        has_citizen = spm_unit.any(
-            person("is_citizen_or_legal_immigrant", period)
+        has_citizen = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Must meet income eligibility

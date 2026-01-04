@@ -1,16 +1,18 @@
 # Tests for TN FF countable earned income
-# For 2021+: Earned income disregard = $250
+# Formula: max(earned_income_after_disregard - child_care_deduction, 0)
+# Child care deduction: $200 for under 2, $175 for 2+
 
-- name: Case 1, no earned income.
+- name: Case 1, no earned income, no childcare.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 0
     spm_units:
       spm_unit:
         members: [person1]
+        tn_ff_earned_income_after_disregard: 0
+        tn_ff_child_care_deduction: 0
     households:
       household:
         members: [person1]
@@ -18,113 +20,97 @@
   output:
     tn_ff_countable_earned_income: 0
 
-- name: Case 2, earned income exactly equal to disregard.
+- name: Case 2, earned income, no childcare.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 250
     spm_units:
       spm_unit:
         members: [person1]
+        tn_ff_earned_income_after_disregard: 750
+        tn_ff_child_care_deduction: 0
     households:
       household:
         members: [person1]
         state_code: TN
   output:
-    # $250 - $250 = $0
-    tn_ff_countable_earned_income: 0
-
-- name: Case 3, earned income one dollar above disregard.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 251
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: TN
-  output:
-    # $251 - $250 = $1
-    tn_ff_countable_earned_income: 1
-
-- name: Case 4, earned income below disregard.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 100
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: TN
-  output:
-    # max($100 - $250, 0) = $0
-    tn_ff_countable_earned_income: 0
-
-- name: Case 5, moderate earned income.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        tanf_gross_earned_income: 1_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: TN
-  output:
-    # $1,000 - $250 = $750
+    # $750 - $0 = $750
     tn_ff_countable_earned_income: 750
 
-- name: Case 6, high earned income.
+- name: Case 3, earned income with childcare deduction.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 2_500
     spm_units:
       spm_unit:
         members: [person1]
+        tn_ff_earned_income_after_disregard: 1_000
+        tn_ff_child_care_deduction: 200
     households:
       household:
         members: [person1]
         state_code: TN
   output:
-    # $2,500 - $250 = $2,250
-    tn_ff_countable_earned_income: 2_250
+    # $1,000 - $200 = $800
+    tn_ff_countable_earned_income: 800
 
-- name: Case 7, multiple people with earned income.
+- name: Case 4, childcare deduction exceeds earned income.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        tanf_gross_earned_income: 1_000
-      person2:
-        age: 28
-        tanf_gross_earned_income: 500
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1]
+        tn_ff_earned_income_after_disregard: 100
+        tn_ff_child_care_deduction: 375
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: TN
   output:
-    # ($1,000 + $500) - $250 = $1,250
-    tn_ff_countable_earned_income: 1_250
+    # max($100 - $375, 0) = $0
+    tn_ff_countable_earned_income: 0
+
+- name: Case 5, childcare deduction equals earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tn_ff_earned_income_after_disregard: 200
+        tn_ff_child_care_deduction: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $200 - $200 = $0
+    tn_ff_countable_earned_income: 0
+
+- name: Case 6, multiple children childcare deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tn_ff_earned_income_after_disregard: 1_500
+        tn_ff_child_care_deduction: 375
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $1,500 - $375 = $1,125
+    tn_ff_countable_earned_income: 1_125

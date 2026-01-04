@@ -7,16 +7,14 @@ class tn_ff(Variable):
     label = "Tennessee Families First"
     unit = USD
     definition_period = MONTH
-    documentation = (
-        "Tennessee Families First TANF benefit using fill-the-gap methodology. "
-        "The benefit equals the minimum of: (1) the payment standard (SPA or DGPA), "
-        "or (2) the deficit (Consolidated Need Standard minus countable income). "
-        "No payment is made if the calculated benefit is less than the minimum grant."
-    )
     reference = "https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20"
     defined_for = "tn_ff_eligible"
 
     def formula(spm_unit, period, parameters):
+        # Tennessee Families First TANF benefit using fill-the-gap methodology.
+        # The benefit equals the minimum of: (1) the payment standard (SPA or DGPA),
+        # or (2) the deficit (Consolidated Need Standard minus countable income).
+        # No payment is made if the calculated benefit is less than the minimum grant.
         # Get payment standard (SPA or DGPA based on eligibility)
         payment_standard = spm_unit("tn_ff_payment_standard", period)
 

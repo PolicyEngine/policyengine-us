@@ -7,7 +7,7 @@ class tn_ff_countable_resources(Variable):
     label = "Tennessee Families First countable resources"
     unit = USD
     definition_period = MONTH
-    reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf"
+    reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=1"
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):

@@ -33,7 +33,9 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Gross: $2,000 > GIS ($1,657.60)
+    # GIS size 2 = $1,370 * 1.85 = $2,534.50
+    # Gross: $2,000 < $2,534.50 - passes GIS test
+    # Countable: $2,000 - $250 = $1,750 > CNS ($1,370) - fails
     tn_ff_eligible: false
 
 - name: Case 3, resources over limit is ineligible.

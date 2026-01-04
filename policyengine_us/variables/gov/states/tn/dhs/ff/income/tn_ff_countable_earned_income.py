@@ -11,6 +11,8 @@ class tn_ff_countable_earned_income(Variable):
     reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=19"
 
     def formula(spm_unit, period, parameters):
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-        p = parameters(period).gov.states.tn.dhs.ff.income.deductions
-        return max_(gross_earned - p.earned_income_disregard, 0)
+        earned_after_disregard = spm_unit(
+            "tn_ff_earned_income_after_disregard", period
+        )
+        child_care_deduction = spm_unit("tn_ff_child_care_deduction", period)
+        return max_(earned_after_disregard - child_care_deduction, 0)
