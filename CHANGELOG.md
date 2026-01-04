@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
 ## [1.486.0] - 2026-01-04 20:46:59
 
 ### Added
@@ -14151,6 +14157,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
 [1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
 [1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
 [1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
