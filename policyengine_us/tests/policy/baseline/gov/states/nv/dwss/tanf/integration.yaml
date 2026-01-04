@@ -9,6 +9,33 @@
 # - Work expense deduction: max($90, 20% of gross earned income)
 # - Benefit = Payment Allowance - Countable Income
 
+- name: Single person household (size 1)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # Payment allowance (size 1): $254/month = $3,048/year
+    nv_tanf_payment_standard: 3_048
+    # Need standard (size 1): $759/month = $9,108/year
+    nv_tanf_need_standard: 9_108
+    nv_tanf_countable_income: 0
+    nv_tanf_income_eligible: true
+    nv_tanf_resources_eligible: true
+    nv_tanf_eligible: true
+    nv_tanf: 3_048
+
 - name: Family of 3 with no income
   period: 2025
   input:
@@ -36,7 +63,7 @@
     nv_tanf_need_standard: 15_588
     nv_tanf_countable_income: 0
     nv_tanf_income_eligible: true
-    nv_tanf_resource_eligible: true
+    nv_tanf_resources_eligible: true
     nv_tanf_eligible: true
     nv_tanf: 4_632
 
@@ -63,7 +90,7 @@
         state_code: NV
   output:
     # Assets $15,000 > $10,000 limit
-    nv_tanf_resource_eligible: false
+    nv_tanf_resources_eligible: false
     nv_tanf_eligible: false
     nv_tanf: 0
 

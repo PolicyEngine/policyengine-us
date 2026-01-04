@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class nv_tanf_resource_eligible(Variable):
+class nv_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Nevada TANF resource eligible"
+    label = "Nevada TANF resources eligible"
     definition_period = MONTH
     reference = "https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-R/S/"
     defined_for = StateCode.NV

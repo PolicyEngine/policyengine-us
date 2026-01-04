@@ -7,7 +7,7 @@
     state_code: NV
     is_demographic_tanf_eligible: true
     nv_tanf_income_eligible: true
-    nv_tanf_resource_eligible: true
+    nv_tanf_resources_eligible: true
   output:
     nv_tanf_eligible: true
 
@@ -17,7 +17,7 @@
     state_code: NV
     is_demographic_tanf_eligible: true
     nv_tanf_income_eligible: false
-    nv_tanf_resource_eligible: true
+    nv_tanf_resources_eligible: true
   output:
     nv_tanf_eligible: false
 
@@ -27,7 +27,7 @@
     state_code: NV
     is_demographic_tanf_eligible: true
     nv_tanf_income_eligible: true
-    nv_tanf_resource_eligible: false
+    nv_tanf_resources_eligible: false
   output:
     nv_tanf_eligible: false
 
@@ -37,7 +37,7 @@
     state_code: NV
     is_demographic_tanf_eligible: false
     nv_tanf_income_eligible: true
-    nv_tanf_resource_eligible: true
+    nv_tanf_resources_eligible: true
   output:
     nv_tanf_eligible: false
 
@@ -52,7 +52,7 @@
         members: [person1]
         is_demographic_tanf_eligible: true
         nv_tanf_income_eligible: true
-        nv_tanf_resource_eligible: true
+        nv_tanf_resources_eligible: true
     households:
       household:
         members: [person1]
