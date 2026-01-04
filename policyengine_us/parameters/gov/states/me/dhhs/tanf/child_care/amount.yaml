@@ -1,0 +1,24 @@
+description: Maine deducts up to this amount of child care expenses per child from countable income under the Temporary Assistance for Needy Families program, depending on child age.
+
+metadata:
+  period: month
+  label: Maine TANF child care deduction amount per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 22 M.R.S. Section 3762(3)(B)(7-D)(d)
+      href: https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html
+
+# Age-based brackets:
+# - Under age 2: $200/month (also applies to children with special needs, handled in variable)
+# - Age 2+: $175/month
+brackets:
+  - threshold:
+      2023-10-01: 0
+    amount:
+      2023-10-01: 200
+  - threshold:
+      2023-10-01: 2
+    amount:
+      2023-10-01: 175
