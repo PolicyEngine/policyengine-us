@@ -11,32 +11,23 @@ class nd_tanf_standard_of_need(Variable):
     defined_for = StateCode.ND
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.nd.dhs.tanf.benefit.standard_of_need
+        p = parameters(period).gov.states.nd.dhs.tanf.benefit
         person = spm_unit.members
-        age = person("age", period.this_year)
 
-        # Count caretakers (adults) and children in the unit
-        is_adult = age >= 18
-        is_child = age < 18
-        caretaker_count = spm_unit.sum(is_adult)
+        # Children: dependents who meet TANF demographic eligibility
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_tanf_eligible = person(
+            "is_person_demographic_tanf_eligible", period
+        )
+        is_child = is_dependent & is_tanf_eligible
         child_count = spm_unit.sum(is_child)
 
-        # Cap caretakers at 2 and children at 10 to match 400-19-110-05 table structure.
-        # Table has 0/1/2 caretakers and 0-10 children; larger families use max values.
-        caretaker_count_capped = min_(caretaker_count, 2)
-        child_count_capped = min_(child_count, 10)
+        # Caretakers: head or spouse of tax unit
+        is_caretaker = person("is_tax_unit_head_or_spouse", period)
+        caretaker_count = spm_unit.sum(is_caretaker)
 
-        # Look up standard of need based on caretaker count and children
-        return select(
-            [
-                caretaker_count_capped == 0,
-                caretaker_count_capped == 1,
-                caretaker_count_capped == 2,
-            ],
-            [
-                p.caretakers_0.calc(child_count_capped),
-                p.caretakers_1.calc(child_count_capped),
-                p.caretakers_2.calc(child_count_capped),
-            ],
-            default=0,
-        )
+        # Cap to match 400-19-110-05 table structure (0-2 caretakers, 0-10 children)
+        caretaker_count_capped = min_(caretaker_count, 2).astype(int)
+        child_count_capped = min_(child_count, p.max_children).astype(int)
+
+        return p.standard_of_need[caretaker_count_capped][child_count_capped]

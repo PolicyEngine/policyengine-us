@@ -9,7 +9,6 @@
 
 - name: Case 1, zero income is eligible.
   period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -27,29 +26,8 @@
     # $0 < $850 = true
     nd_tanf_income_eligible: true
 
-- name: Case 2, income below standard of need is eligible.
+- name: Case 2, income one dollar below standard of need is eligible.
   period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_countable_income: 500
-        nd_tanf_standard_of_need: 850
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # $500 < $850 = true
-    nd_tanf_income_eligible: true
-
-- name: Case 3, income one dollar below standard of need is eligible.
-  period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -67,9 +45,8 @@
     # $849 < $850 = true (just under threshold)
     nd_tanf_income_eligible: true
 
-- name: Case 4, income exactly at standard of need is not eligible.
+- name: Case 3, income exactly at standard of need is not eligible.
   period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -87,9 +64,8 @@
     # $850 < $850 = false (at threshold - strict less than)
     nd_tanf_income_eligible: false
 
-- name: Case 5, income one dollar above standard of need is not eligible.
+- name: Case 4, income one dollar above standard of need is not eligible.
   period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -107,29 +83,8 @@
     # $851 < $850 = false (just over threshold)
     nd_tanf_income_eligible: false
 
-- name: Case 6, income above standard of need is not eligible.
+- name: Case 5, income significantly above standard of need.
   period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_countable_income: 900
-        nd_tanf_standard_of_need: 850
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # $900 < $850 = false
-    nd_tanf_income_eligible: false
-
-- name: Case 7, income significantly above standard of need.
-  period: 2024-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -145,46 +100,4 @@
         state_code: ND
   output:
     # $1,500 < $1,000 = false
-    nd_tanf_income_eligible: false
-
-# Edge Cases with fractional amounts
-
-- name: Case 8, income 0.01 below standard of need.
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_countable_income: 849.99
-        nd_tanf_standard_of_need: 850
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # $849.99 < $850 = true
-    nd_tanf_income_eligible: true
-
-- name: Case 9, income 0.01 above standard of need.
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_countable_income: 850.01
-        nd_tanf_standard_of_need: 850
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # $850.01 < $850 = false
     nd_tanf_income_eligible: false

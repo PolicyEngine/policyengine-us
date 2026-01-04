@@ -81,3 +81,26 @@
   output:
     # No dependent child and not pregnant
     nd_tanf_eligible: false
+
+- name: Case 5, ineligible due to immigration status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_tanf_income_eligible: true
+        nd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # No one meets immigration requirements
+    nd_tanf_eligible: false

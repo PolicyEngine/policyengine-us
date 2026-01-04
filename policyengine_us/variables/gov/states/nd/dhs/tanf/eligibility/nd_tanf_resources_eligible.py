@@ -15,10 +15,7 @@ class nd_tanf_resources_eligible(Variable):
         p = parameters(period).gov.states.nd.dhs.tanf.resources.limit
         resources = spm_unit("spm_unit_assets", period.this_year)
         unit_size = spm_unit("spm_unit_size", period.this_year)
-
-        limit = where(
-            unit_size == 1,
-            p.one_person,
-            p.two_persons + max_(unit_size - 2, 0) * p.per_additional_person,
-        )
-        return resources <= limit
+        capped_size = min_(unit_size, 2)
+        base_limit = p.base[capped_size]
+        additional = max_(unit_size - 2, 0) * p.increment
+        return resources <= base_limit + additional
