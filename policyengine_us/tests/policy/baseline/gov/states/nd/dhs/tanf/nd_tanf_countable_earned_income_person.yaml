@@ -68,3 +68,47 @@
     # TLP: $0 * 0.50 = $0
     # Countable: $0
     nd_tanf_countable_earned_income_person: 0
+
+# SEE Breakpoint boundary tests
+# Breakpoint where 27% equals $180: $180 / 0.27 = $666.67
+# Below breakpoint: $180 minimum applies
+# Above breakpoint: 27% applies
+
+- name: Case 7, just below SEE breakpoint ($665).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 665
+  output:
+    # SEE: max($665 * 0.27, $180) = max($179.55, $180) = $180
+    # After SEE: $665 - $180 = $485
+    # TLP: $485 * 0.50 = $242.50
+    # Countable: $485 - $242.50 = $242.50
+    nd_tanf_countable_earned_income_person: 242.50
+
+- name: Case 8, just above SEE breakpoint ($667).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 667
+  output:
+    # SEE: max($667 * 0.27, $180) = max($180.09, $180) = $180.09
+    # After SEE: $667 - $180.09 = $486.91
+    # TLP: $486.91 * 0.50 = $243.455
+    # Countable: $486.91 - $243.455 = $243.455
+    nd_tanf_countable_earned_income_person: 243.46
+
+- name: Case 9, well above SEE breakpoint ($700).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 700
+  output:
+    # SEE: max($700 * 0.27, $180) = max($189, $180) = $189
+    # After SEE: $700 - $189 = $511
+    # TLP: $511 * 0.50 = $255.50
+    # Countable: $511 - $255.50 = $255.50
+    nd_tanf_countable_earned_income_person: 255.50

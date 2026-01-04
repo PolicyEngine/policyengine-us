@@ -104,3 +104,49 @@
   output:
     # No one meets immigration requirements
     nd_tanf_eligible: false
+
+- name: Case 6, mixed citizenship household still eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_tanf_income_eligible: true
+        nd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # At least one person (child) meets immigration requirements
+    nd_tanf_eligible: true
+
+- name: Case 7, legal permanent resident is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_tanf_income_eligible: true
+        nd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # Both parent (LPR) and child (citizen) meet immigration requirements
+    nd_tanf_eligible: true

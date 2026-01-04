@@ -842,3 +842,124 @@
     nd_tanf_eligible: true
     # Benefit = $739 - $0 = $739 (full benefit)
     nd_tanf: 739
+
+- name: Case 24, maximum possible benefit (2 caretakers, 10 children).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 16
+      person5:
+        age: 15
+      person6:
+        age: 14
+      person7:
+        age: 12
+      person8:
+        age: 10
+      person9:
+        age: 8
+      person10:
+        age: 6
+      person11:
+        age: 4
+      person12:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: ND
+  output:
+    # 2 caretakers, 10 children (capped) → Maximum Standard of Need = $2,922
+    nd_tanf_standard_of_need: 2_922
+    nd_tanf_countable_earned_income: 0
+    nd_tanf_countable_unearned_income: 0
+    nd_tanf_countable_income: 0
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Maximum benefit = $2,922 - $0 = $2,922
+    nd_tanf: 2_922
+
+- name: Case 25, self-employment income included in earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # Self-employment: $1,200/month = $14,400/year
+        self_employment_income_before_lsr: 14_400
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    # 1 caretaker, 2 children → Standard of Need = $962
+    nd_tanf_standard_of_need: 962
+    # Gross self-employment: $14,400 / 12 = $1,200/month
+    # SEE: max($1,200 * 0.27, $180) = max($324, $180) = $324
+    # After SEE: $1,200 - $324 = $876
+    # TLP: $876 * 0.50 = $438
+    # Countable earned: $876 - $438 = $438
+    nd_tanf_countable_earned_income: 438
+    nd_tanf_countable_unearned_income: 0
+    nd_tanf_countable_income: 438
+    # Income eligible: $438 < $962 = true
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $962 - $438 = $524
+    nd_tanf: 524
+
+- name: Case 26, mixed employment and self-employment income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        # Employment: $800/month = $9,600/year
+        employment_income_before_lsr: 9_600
+        # Self-employment: $400/month = $4,800/year
+        self_employment_income_before_lsr: 4_800
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 1 caretaker, 1 child → Standard of Need = $739
+    nd_tanf_standard_of_need: 739
+    # Total gross earned: ($9,600 + $4,800) / 12 = $1,200/month
+    # SEE: max($1,200 * 0.27, $180) = max($324, $180) = $324
+    # After SEE: $1,200 - $324 = $876
+    # TLP: $876 * 0.50 = $438
+    # Countable earned: $876 - $438 = $438
+    nd_tanf_countable_earned_income: 438
+    nd_tanf_countable_unearned_income: 0
+    nd_tanf_countable_income: 438
+    # Income eligible: $438 < $739 = true
+    nd_tanf_income_eligible: true
+    nd_tanf_eligible: true
+    # Benefit = $739 - $438 = $301
+    nd_tanf: 301
