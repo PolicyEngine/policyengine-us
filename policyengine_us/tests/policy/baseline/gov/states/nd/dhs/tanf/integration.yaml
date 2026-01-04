@@ -6,7 +6,6 @@
 # - Time Limited Percentage (TLP) disregard: 50% of remaining earned income
 # - Standard of Need: 2D table lookup by caretakers × children
 # - Income Eligibility: Countable income < Standard of Need
-# - Minimum benefit: $10
 #
 # Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
 
@@ -363,17 +362,14 @@
     # Benefit = $739 - $0 = $739
     nd_tanf: 739
 
-- name: Case 11, benefit just below minimum threshold receives zero.
+- name: Case 11, small benefit with high unearned income.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # Target: benefit < $10
-        # Standard of Need = $739
-        # If countable = $732, benefit = $7 < $10
-        # Using unearned income: $732 * 12 = $8,784
+        # Unearned income: $732 * 12 = $8,784
         social_security_dependents: 8_784
       person2:
         age: 5
@@ -395,19 +391,17 @@
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
     # Benefit = $739 - $732 = $7
-    # $7 < $10 minimum, so no benefit issued
-    nd_tanf: 0
+    nd_tanf: 7
 
-- name: Case 12, benefit exactly at minimum threshold is issued.
+- name: Case 12, very small benefit with high unearned income.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 28
-        # Target countable: $739 - $10 = $729
-        # Unearned: $729 * 12 = $8,748
-        social_security_dependents: 8_748
+        # Unearned: $735 * 12 = $8,820
+        social_security_dependents: 8_820
       person2:
         age: 3
     spm_units:
@@ -421,15 +415,14 @@
     # 1 caretaker, 1 child → Standard of Need = $739
     nd_tanf_standard_of_need: 739
     nd_tanf_countable_earned_income: 0
-    # Countable unearned: $8,748 / 12 = $729
-    nd_tanf_countable_unearned_income: 729
-    nd_tanf_countable_income: 729
-    # Income eligible: $729 < $739 = true
+    # Countable unearned: $8,820 / 12 = $735
+    nd_tanf_countable_unearned_income: 735
+    nd_tanf_countable_income: 735
+    # Income eligible: $735 < $739 = true
     nd_tanf_income_eligible: true
     nd_tanf_eligible: true
-    # Benefit = $739 - $729 = $10.00
-    # $10.00 >= $10 minimum, so benefit is issued
-    nd_tanf: 10
+    # Benefit = $739 - $735 = $4
+    nd_tanf: 4
 
 - name: Case 13, two working parents (multiple earners).
   period: 2024-01

@@ -1,7 +1,6 @@
 # North Dakota TANF Benefit Amount Unit Tests
 #
 # Benefit = max(Standard of Need - Countable Income, 0)
-# If benefit < $10, no benefit is issued (minimum benefit rule)
 #
 # NOTE: Tests must include people and proper entity structure for
 # defined_for = StateCode.ND to work correctly.
@@ -110,7 +109,7 @@
     # Benefit = max($850 - $900, 0) = $0
     nd_tanf: 0
 
-- name: Case 6, benefit below minimum threshold receives zero.
+- name: Case 6, small benefit is issued.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -129,49 +128,4 @@
         state_code: ND
   output:
     # Benefit = $850 - $845 = $5
-    # $5 < $10 minimum, so no benefit issued
-    nd_tanf: 0
-
-- name: Case 7, benefit at minimum threshold is issued.
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_eligible: true
-        nd_tanf_standard_of_need: 850
-        nd_tanf_countable_income: 840
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # Benefit = $850 - $840 = $10
-    # $10 >= $10 minimum, so benefit is issued
-    nd_tanf: 10
-
-- name: Case 8, benefit just above minimum threshold.
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        nd_tanf_eligible: true
-        nd_tanf_standard_of_need: 850
-        nd_tanf_countable_income: 835
-    households:
-      household:
-        members: [person1]
-        state_code: ND
-  output:
-    # Benefit = $850 - $835 = $15
-    # $15 >= $10 minimum, so benefit is issued
-    nd_tanf: 15
+    nd_tanf: 5

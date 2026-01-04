@@ -11,8 +11,6 @@ class nd_tanf(Variable):
     defined_for = "nd_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.nd.dhs.tanf.benefit
         standard_of_need = spm_unit("nd_tanf_standard_of_need", period)
         countable_income = spm_unit("nd_tanf_countable_income", period)
-        gross_benefit = max_(standard_of_need - countable_income, 0)
-        return where(gross_benefit >= p.minimum, gross_benefit, 0)
+        return max_(standard_of_need - countable_income, 0)
