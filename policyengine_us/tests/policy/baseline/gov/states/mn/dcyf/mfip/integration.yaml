@@ -1,0 +1,276 @@
+- name: Case 1, basic eligible family with no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Demographics
+    spm_unit_count_children: 1
+
+    # Income chain
+    mn_mfip_countable_earned_income: 0
+    mn_mfip_countable_unearned_income: 0
+    # Standards
+    mn_mfip_transitional_standard: 1_087
+    mn_mfip_family_wage_level: 1_195.7
+    # FWL = 1,087 * 1.10 = 1,195.70
+
+    # Eligibility chain
+    mn_mfip_income_eligible: true
+    mn_mfip_resources_eligible: true
+    mn_mfip_eligible: true
+
+    # Final benefit
+    mn_mfip: 1_087
+
+- name: Case 2, family with earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Demographics
+    spm_unit_count_children: 2
+
+    # Income calculations
+    # Gross earned: $1,000/month
+    # After flat: max(1000-65, 0) = $935
+    # After 50%: 935 * 0.5 = $467.50
+    mn_mfip_countable_earned_income: 467.5
+    mn_mfip_countable_unearned_income: 0
+    # Standards for family of 3
+    mn_mfip_transitional_standard: 1_394
+    mn_mfip_family_wage_level: 1_533.4
+    # FWL = 1,394 * 1.10 = 1,533.40
+
+    # Eligibility
+    # Countable (467.5) < FWL (1533.4) = true
+    mn_mfip_income_eligible: true
+    mn_mfip_resources_eligible: true
+    mn_mfip_eligible: true
+
+    # Benefit calculation
+    # Earned-based: min(1533.4-467.5, 1394) = min(1065.9, 1394) = 1,065.90
+    # Final: max(1065.9 - 0, 0) = 1,065.90
+    mn_mfip: 1_065.9
+
+- name: Case 3, family with child support income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 4_800  # $400/month
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Demographics
+    spm_unit_count_children: 2
+
+    # Child support exclusion
+    # 2 children = $200 exclusion
+    mn_mfip_child_support_income_exclusion: 200
+
+    # Income calculations
+    # Child support: $400/month
+    # Countable: max(400-200, 0) = $200
+    mn_mfip_countable_earned_income: 0
+    mn_mfip_countable_unearned_income: 200
+    # Standards for family of 3
+    mn_mfip_transitional_standard: 1_394
+    mn_mfip_family_wage_level: 1_533.4
+
+    # Eligibility
+    mn_mfip_income_eligible: true
+    mn_mfip_eligible: true
+
+    # Benefit calculation
+    # Earned-based: min(1533.4-0, 1394) = 1,394
+    # Final: max(1394 - 200, 0) = 1,194
+    mn_mfip: 1_194
+
+- name: Case 4, family with both earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 9_600  # $800/month
+        child_support_received: 3_000  # $250/month
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Demographics
+    spm_unit_count_children: 1
+
+    # Child support exclusion
+    # 1 child = $100 exclusion
+    mn_mfip_child_support_income_exclusion: 100
+
+    # Income calculations
+    # Earned: (800-65)*0.5 = $367.50
+    mn_mfip_countable_earned_income: 367.5
+
+    # Child support: $250, exclusion $100, countable $150
+    mn_mfip_countable_unearned_income: 150
+    # Standards for family of 2
+    mn_mfip_transitional_standard: 1_087
+    mn_mfip_family_wage_level: 1_195.7
+
+    # Eligibility
+    # Countable (517.5) < FWL (1195.7) = true
+    mn_mfip_income_eligible: true
+    mn_mfip_eligible: true
+
+    # Benefit calculation
+    # Earned-based: min(1195.7-367.5, 1087) = min(828.2, 1087) = 828.20
+    # Final: max(828.2 - 150, 0) = 678.20
+    mn_mfip: 678.2
+
+- name: Case 5, ineligible due to excess resources.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 12_000  # Over $10,000 limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Resources check (YEAR variable, so checking via eligibility)
+    mn_mfip_resources_eligible: false
+
+    # Other eligibility factors would pass
+    mn_mfip_income_eligible: true
+
+    # But overall ineligible
+    mn_mfip_eligible: false
+    mn_mfip: 0
+
+- name: Case 6, ineligible due to excess income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 48_000  # $4,000/month
+      person2:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Income calculations
+    # Earned: (4000-65)*0.5 = $1,967.50
+    mn_mfip_countable_earned_income: 1_967.5
+    # Standards for family of 2
+    mn_mfip_family_wage_level: 1_195.7
+
+    # Eligibility
+    # Countable (1967.5) < FWL (1195.7) = false
+    mn_mfip_income_eligible: false
+    mn_mfip_resources_eligible: true
+    mn_mfip_eligible: false
+    mn_mfip: 0
+
+- name: Case 7, large family at max table size.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 36
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        spm_unit_assets: 8_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: MN
+  output:
+    # Demographics (8 children)
+    spm_unit_count_children: 8
+
+    # Standards for family of 10
+    mn_mfip_transitional_standard: 3_201
+    mn_mfip_family_wage_level: 3_521.1
+    # FWL = 3,201 * 1.10 = 3,521.10
+
+    # Eligibility
+    mn_mfip_eligible: true
+
+    # Full benefit
+    mn_mfip: 3_201

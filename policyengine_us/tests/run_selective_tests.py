@@ -60,6 +60,11 @@ class SelectiveTestRunner:
                 "file_pattern": r"policyengine_us/variables/household/",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/household",
             },
+            # Match household variables to microsimulation tests (for dataset-level tests)
+            {
+                "file_pattern": r"policyengine_us/variables/household/",
+                "test_pattern": r"policyengine_us/tests/microsimulation",
+            },
             # Match reforms in specific states
             {
                 "file_pattern": r"policyengine_us/reforms/states/([^/]+)",

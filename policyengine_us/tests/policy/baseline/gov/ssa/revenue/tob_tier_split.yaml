@@ -1,21 +1,9 @@
-# Test that TOB revenue split matches Trustees Report projections
-# Per 2025 Trustees Report (via CBPP):
-#   - OASDI (tier 1): ~59% of total TOB revenue ($60.8B / $103.4B)
-#   - Medicare HI (tier 2): ~41% of total TOB revenue ($42.6B / $103.4B)
+# Test that TOB revenue split uses double-branching methodology
+# Per 42 U.S.C. 401 note (Section 121(e) of PL 98-21):
+#   - OASDI receives tax on "first 50%" of gross SS benefits
+#   - Medicare HI receives tax on remaining portion (1993 amendments)
 #
-# The statutory allocation is:
-#   - Tier 1 (first 50% of benefits taxable): Revenue to OASDI
-#   - Tier 2 (additional 35%, up to 85% taxable): Revenue to Medicare HI
-#
-# For a single retiree with $30K SS and $50K wages:
-#   - Combined income = $50K + $15K (half SS) = $65K
-#   - Above adjusted base ($34K), so 85% of SS taxable = $25,500
-#   - Tier 1 should be ~59% of taxable ($15,045)
-#   - Tier 2 should be ~41% of taxable ($10,455)
-#
-# BUG: Current implementation has tier_2 with only `subtracts` and no `adds`,
-# which computes: 0 - total - tier1 = NEGATIVE (wrong!)
-# Should be: adds=["tax_unit_taxable_social_security"], subtracts=["tier_1"]
+# The split depends on marginal tax rates, so varies by income level
 
 - name: TOB tier split - single retiree in tier 2
   period: 2024
@@ -34,16 +22,13 @@
       household:
         members: [person1]
   output:
-    # Total taxable SS should be 85% of $30K = $25,500
+    # Total taxable SS = 85% of $30K = $25,500
     tax_unit_taxable_social_security: 25_500
-    # Tier 1 (OASDI portion) - statutory bracket amount for single filer in tier 2
-    # = min(0.5 * $30K, 0.5 * ($34K - $25K)) = min($15K, $4.5K) = $4,500
+    # IRC 86 tier calculations (for taxable income)
     taxable_social_security_tier_1: 4_500
-    # Tier 2 (Medicare HI portion) = total - tier1 = $25,500 - $4,500 = $21,000
-    # This is where the bug manifests - with only subtracts, it computes negative!
     taxable_social_security_tier_2: 21_000
 
-- name: TOB revenue split follows tier proportions
+- name: TOB revenue split using branching methodology
   period: 2024
   absolute_error_margin: 100
   input:
@@ -60,16 +45,14 @@
       household:
         members: [person1]
   output:
-    # With tiers at ~18% tier1 / ~82% tier2 for this individual case,
-    # the TOB revenue should split proportionally.
-    # Total TOB revenue ~$4,240 (from existing test)
-    # OASDI share: $4,240 * (4,500 / 25,500) = $748
-    # Medicare HI share: $4,240 * (21,000 / 25,500) = $3,492
-    tob_revenue_total: 4240
-    tob_revenue_oasdi: 748
-    tob_revenue_medicare_hi: 3492
+    # Using double-branching per 42 U.S.C. 401 note
+    # OASDI = tax(with 50% cap) - tax(with 0% SS)
+    # HI = tax(with full SS) - tax(with 50% cap)
+    tob_revenue_total: 4_240
+    tob_revenue_oasdi: 1_930
+    tob_revenue_medicare_hi: 2_310
 
-- name: Verify tier2 is positive (regression test for subtracts bug)
+- name: Verify tier2 is positive (regression test)
   period: 2024
   input:
     people:
@@ -85,6 +68,5 @@
       household:
         members: [person1]
   output:
-    # Tier 2 MUST be positive (total - tier1)
-    # If buggy subtracts computes 0 - total - tier1, this will be negative and fail
-    taxable_social_security_tier_2: 12_500  # Approximate, will fail if negative
+    # Tier 2 must be positive
+    taxable_social_security_tier_2: 12_500

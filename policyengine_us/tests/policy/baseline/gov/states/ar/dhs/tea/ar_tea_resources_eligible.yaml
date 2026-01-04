@@ -1,0 +1,97 @@
+# Unit tests for ar_tea_resources_eligible
+# Arkansas TEA has a fixed resource limit of $3,000 for ALL family sizes
+# Countable resources exclude:
+# - Family homestead (residence)
+# - One operable vehicle
+# - Household goods and personal effects
+# - Resources of SSI recipients
+
+- name: Case 1, zero resources is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+  output:
+    ar_tea_resources_eligible: true
+    # 0 <= 3,000 -> eligible
+
+- name: Case 2, resources well below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_500
+  output:
+    ar_tea_resources_eligible: true
+    # 1,500 <= 3,000 -> eligible
+
+- name: Case 3, resources exactly at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_000
+  output:
+    ar_tea_resources_eligible: true
+    # 3,000 <= 3,000 -> eligible (at limit is still eligible)
+
+- name: Case 4, resources one dollar over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_001
+  output:
+    ar_tea_resources_eligible: false
+    # 3,001 > 3,000 -> ineligible
+
+- name: Case 5, resources well above limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+  output:
+    ar_tea_resources_eligible: false
+    # 10,000 > 3,000 -> ineligible

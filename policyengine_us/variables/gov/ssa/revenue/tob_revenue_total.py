@@ -6,15 +6,19 @@ class tob_revenue_total(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Total trust fund revenue from SS benefit taxation"
-    documentation = "Tax revenue from taxation of Social Security benefits using branching methodology"
+    documentation = (
+        "Tax revenue from taxation of Social Security benefits using "
+        "branching methodology per 42 U.S.C. 401 note."
+    )
     unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/42/401"
 
     def formula(tax_unit, period, parameters):
         """
-        Calculate trust fund revenue using branching + neutralization.
+        Calculate total trust fund revenue using branching + neutralization.
 
-        This is the CORRECT way to isolate TOB revenue, superior to the
-        average effective tax rate approximation.
+        This isolates the tax impact of including taxable SS in AGI by
+        comparing tax with and without taxable SS.
         """
         sim = tax_unit.simulation
 
@@ -27,9 +31,10 @@ class tob_revenue_total(Variable):
             "tax_unit_taxable_social_security"
         )
 
-        # Delete all calculated variables to force recalculation
+        # Delete non-input cached variables to force recalculation
+        input_vars = set(branch.input_variables)
         for var_name in list(branch.tax_benefit_system.variables.keys()):
-            if var_name not in branch.input_variables:
+            if var_name not in input_vars:
                 try:
                     branch.delete_arrays(var_name)
                 except:

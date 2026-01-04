@@ -1,0 +1,127 @@
+# Unit tests for ut_fep_countable_earned_income
+# Utah applies earned income deductions then counts the remainder:
+#   1. Work expense allowance: $100 per employed person
+#   2. 50% earned income disregard on remaining earned income
+# Formula: sum(max(person_earned - 100, 0)) * 0.5
+# Reference: Utah Admin. Code R986-200-239(2)(a) and R986-200-239(2)(b)
+
+- name: No earned income - zero countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # No earnings = no countable earned income
+    ut_fep_countable_earned_income: 0
+
+- name: Single employed person with $500 earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # After work expense = max(500 - 100, 0) = 400
+    # Countable = 400 * 0.50 = 200
+    ut_fep_countable_earned_income: 200
+
+- name: Single employed person with $1,000 earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # After work expense = max(1000 - 100, 0) = 900
+    # Countable = 900 * 0.50 = 450
+    ut_fep_countable_earned_income: 450
+
+- name: Two employed persons with earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 600
+      person2:
+        tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Person1 after work expense = max(600 - 100, 0) = 500
+    # Person2 after work expense = max(400 - 100, 0) = 300
+    # Total after work expense = 800
+    # Countable = 800 * 0.50 = 400
+    ut_fep_countable_earned_income: 400
+
+- name: Earnings less than work expense deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 80
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # After work expense = max(80 - 100, 0) = 0
+    # Countable = 0 * 0.50 = 0
+    ut_fep_countable_earned_income: 0
+
+- name: Earnings exactly equal to work expense.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 100
+      person2:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # After work expense = max(100 - 100, 0) = 0
+    # Countable = 0 * 0.50 = 0
+    ut_fep_countable_earned_income: 0

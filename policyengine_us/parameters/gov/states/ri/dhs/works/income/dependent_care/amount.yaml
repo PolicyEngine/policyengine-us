@@ -1,0 +1,23 @@
+description: Rhode Island deducts up to this amount of dependent care expenses per child from countable income under the Rhode Island Works program.
+
+metadata:
+  period: month
+  label: Rhode Island Works dependent care deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 218-RICR-20-00-2.15.5(B)(2) Dependent Care Deduction
+      href: https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+    - title: Rhode Island Works Program Eligibility
+      href: https://dhs.ri.gov/programs-and-services/ri-works-program/eligibility-how-apply
+
+brackets:
+  - threshold:
+      2019-01-01: 0
+    amount:
+      2019-01-01: 200
+  - threshold:
+      2019-01-01: 2
+    amount:
+      2019-01-01: 175

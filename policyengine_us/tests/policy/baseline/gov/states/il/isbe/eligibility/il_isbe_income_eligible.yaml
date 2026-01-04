@@ -1,0 +1,15 @@
+- name: Case 1, income well below 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 20_000
+  output:
+    il_isbe_income_eligible: true
+
+- name: Case 2, income above 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 150_000
+  output:
+    il_isbe_income_eligible: false
