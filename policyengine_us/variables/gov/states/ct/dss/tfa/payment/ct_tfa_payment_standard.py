@@ -7,7 +7,7 @@ class ct_tfa_payment_standard(Variable):
     label = "Connecticut Temporary Family Assistance (TFA) payment standard"
     unit = USD
     definition_period = MONTH
-    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf"
+    reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=53"
     defined_for = StateCode.CT
 
     def formula(spm_unit, period, parameters):
