@@ -12100,3 +12100,9 @@
       0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
       rates into independent parameters.
   date: 2026-01-02 21:22:24
+- bump: minor
+  changes:
+    added:
+    - Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI
+      thresholds (6% rate above $150k joint, $75k other).
+  date: 2026-01-04 20:46:59
