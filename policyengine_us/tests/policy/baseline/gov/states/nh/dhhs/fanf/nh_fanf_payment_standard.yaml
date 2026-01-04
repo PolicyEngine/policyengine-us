@@ -1,0 +1,116 @@
+# Tests for NH FANF payment standard
+# Per RSA 167:77-g, the payment standard equals 60% of FPG for household size
+# Formula: Payment Standard = FPG * 0.60 / 12 (monthly)
+# 2024 FPG: First person = $15,060, Each additional = $5,380
+# Source: RSA 167:77-g; SR 24-07 Dated 03/24
+
+- name: Case 1, single person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # 15,060 * 0.60 / 12 = 753
+    nh_fanf_payment_standard: 753
+
+- name: Case 2, two person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # (15,060 + 5,380) * 0.60 / 12 = 1,022
+    nh_fanf_payment_standard: 1_022
+
+- name: Case 3, three person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # (15,060 + 5,380*2) * 0.60 / 12 = 1,291
+    nh_fanf_payment_standard: 1_291
+
+- name: Case 4, four person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NH
+  output:
+    # (15,060 + 5,380*3) * 0.60 / 12 = 1,560
+    nh_fanf_payment_standard: 1_560
+
+- name: Case 5, large 8-person household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 8
+      person8:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NH
+  output:
+    # (15,060 + 5,380*7) * 0.60 / 12 = 2,636
+    nh_fanf_payment_standard: 2_636

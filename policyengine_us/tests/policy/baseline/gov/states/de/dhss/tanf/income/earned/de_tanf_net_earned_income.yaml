@@ -1,0 +1,105 @@
+# Unit tests for Delaware TANF net earned income (applicant eligibility)
+# Gross earned - $90 work expense - childcare (no $30 or 1/3 disregard)
+
+- name: Case 1, no earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_net_earned_income: 0
+
+- name: Case 2, earnings below work expense.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $50
+    # Work expense: $90 (1 earner)
+    # Net: max($50 - $90, 0) = $0
+    de_tanf_net_earned_income: 0
+
+- name: Case 3, earnings above work expense.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Gross: $500
+    # Work expense: $90
+    # Net: $500 - $90 = $410
+    de_tanf_net_earned_income: 410
+
+- name: Case 4, earnings with childcare.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_800  # $150/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Gross: $500
+    # Work expense: $90
+    # Childcare: $150
+    # Net: $500 - $90 - $150 = $260
+    de_tanf_net_earned_income: 260
+
+- name: Case 5, two earners.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Gross: $500 + $300 = $800
+    # Work expense: $90 * 2 = $180
+    # Net: $800 - $180 = $620
+    de_tanf_net_earned_income: 620
