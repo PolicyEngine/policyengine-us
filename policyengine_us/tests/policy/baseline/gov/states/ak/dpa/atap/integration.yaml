@@ -5,6 +5,7 @@
 # Note: Child support passthrough: first $50 not counted
 # Note: Minimum benefit is $10 - benefits below this are not issued
 # Note: Benefit = (Need Standard - Countable Income) * (Max for 2 / Need for 2)
+# Note: Tests assume continuing recipients (is_tanf_enrolled: true) for $150 + 33% rule
 
 - name: Scenario 1 - Single parent with 2 children, earned income $800 per month.
   # Tests standard work incentive deduction with moderate income
@@ -23,6 +24,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -102,10 +104,6 @@
       person1:
         age: 10
         is_in_k12_school: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-        ak_atap_is_child_only_unit: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -114,22 +112,25 @@
         members: [person1]
         state_code: AK
   output:
+    ak_atap_unit_type: CHILD_ONLY
     # Child-only unit with 1 child
     # 185% limit (1 child): $956
     # Need standard (1 child): $517
     # Maximum payment (1 child): $452
     #
-    # No income, so full benefit:
-    # = ($517 - $0) * ($452 / $517)
-    # = $517 * 0.8743
-    # = $452 (rounded down)
+    # No income, so full benefit per 7 AAC 45.525:
+    # Formula: (Need - Countable) * (Max for 2 / Need for 2)
+    # For child-only: Need_for_2 = $634, Max_for_2 = $452 + $102 = $554
+    # = ($517 - $0) * ($554 / $634)
+    # = $517 * 0.8738
+    # = $451.74 -> $451 (floor)
     is_person_demographic_tanf_eligible: [true]
     ak_atap_gross_income_limit: 956
     ak_atap_need_standard: 517
     ak_atap_maximum_payment: 452
     ak_atap_countable_income: 0
     ak_atap_eligible: true
-    ak_atap: 452
+    ak_atap: 451
 
 - name: Scenario 4 - Family just under need standard, minimal benefit.
   # Tests benefit calculation near zero threshold
@@ -146,6 +147,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -211,13 +213,14 @@
     #   = ($940 - $0) * ($821 / $823)
     #   = $940 * 0.99757
     #   = $937.71 -> $937
+    # But capped at maximum_payment = $923
     is_person_demographic_tanf_eligible: [false, true, true]
     ak_atap_gross_income_limit: 1_739
     ak_atap_need_standard: 940
     ak_atap_maximum_payment: 923
     ak_atap_countable_income: 0
     ak_atap_eligible: true
-    ak_atap: 937
+    ak_atap: 923
 
 - name: Scenario 6 - Income exactly at need standard results in zero benefit.
   # Tests edge case where countable income equals need standard
@@ -234,6 +237,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -282,6 +286,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        is_tanf_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -317,3 +322,45 @@
     ak_atap_countable_income: 217.50
     ak_atap_eligible: true
     ak_atap: 720
+
+- name: Scenario 8 - Pregnant woman with no children, zero income.
+  # Tests pregnant woman only standards (special category per 7 AAC 45.520)
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman only unit (no children)
+    # Gross income limit: $1,089
+    # Need standard: $589
+    # Maximum payment: $514
+    #
+    # No income, so full benefit per 7 AAC 45.525:
+    # Formula: (Need - Countable) * (Max for 2 / Need for 2)
+    # For pregnant_only: Need_for_2 = $589, Max_for_2 = $514
+    # = ($589 - $0) * ($514 / $589)
+    # = $589 * 0.8727
+    # = $514.00 -> $514 (floor)
+    ak_atap_unit_type: PREGNANT_WOMAN
+    ak_atap_gross_income_limit: 1_089
+    ak_atap_need_standard: 589
+    ak_atap_maximum_payment: 514
+    ak_atap_countable_income: 0
+    ak_atap_gross_income_eligible: true
+    ak_atap_net_income_eligible: true
+    ak_atap_eligible: true
+    ak_atap: 514

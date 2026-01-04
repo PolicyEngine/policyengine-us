@@ -21,8 +21,8 @@ class ak_atap_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
-        # Resource eligibility
-        resource_eligible = spm_unit("ak_atap_resource_eligible", period)
+        # Resources eligibility
+        resources_eligible = spm_unit("ak_atap_resources_eligible", period)
 
         # Gross income test (185% standard)
         gross_income_eligible = spm_unit(
@@ -35,7 +35,7 @@ class ak_atap_eligible(Variable):
         return (
             demographic
             & immigration
-            & resource_eligible
+            & resources_eligible
             & gross_income_eligible
             & net_income_eligible
         )

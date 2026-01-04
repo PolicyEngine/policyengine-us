@@ -3,7 +3,7 @@
 # https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
 # Need standard varies by unit type (adult-included vs child-only) and size
 
-- name: Case 1, adult-included family of 2.
+- name: Case 1, one-parent family of 2.
   period: 2024-01
   input:
     people:
@@ -11,19 +11,15 @@
         age: 30
       person2:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2]
         state_code: AK
   output:
-    # Adult-included size 2: $823
+    # One-parent size 2: $823
     ak_atap_need_standard: 823
 
-- name: Case 2, adult-included family of 3.
+- name: Case 2, one-parent family of 3.
   period: 2024-01
   input:
     people:
@@ -33,19 +29,15 @@
         age: 5
       person3:
         age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # Adult-included size 3: $940
+    # One-parent size 3: $940
     ak_atap_need_standard: 940
 
-- name: Case 3, adult-included family of 4.
+- name: Case 3, one-parent family of 4.
   period: 2024-01
   input:
     people:
@@ -57,16 +49,12 @@
         age: 8
       person4:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3, person4]
         state_code: AK
   output:
-    # Adult-included size 4: $1,057
+    # One-parent size 4: $1,057
     ak_atap_need_standard: 1_057
 
 - name: Case 4, child-only unit with 1 child.
@@ -75,10 +63,6 @@
     people:
       person1:
         age: 8
-    spm_units:
-      spm_unit:
-        members: [person1]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1]
@@ -95,10 +79,6 @@
         age: 10
       person2:
         age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1, person2]
@@ -117,10 +97,6 @@
         age: 8
       person3:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1, person2, person3]
@@ -129,7 +105,7 @@
     # Child-only 3 children: $751
     ak_atap_need_standard: 751
 
-- name: Case 7, large adult-included family of 6.
+- name: Case 7, large one-parent family of 6.
   period: 2024-01
   input:
     people:
@@ -145,14 +121,45 @@
         age: 7
       person6:
         age: 4
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6]
         state_code: AK
   output:
-    # Adult-included size 6: $1,291
+    # One-parent size 6: $1,291
     ak_atap_need_standard: 1_291
+
+- name: Case 8, pregnant woman only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman only: $589
+    ak_atap_need_standard: 589
+
+- name: Case 9, two-parent incapacitated with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 33
+        is_disabled: false
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Incapacitated parent size 3: $1,057
+    ak_atap_need_standard: 1_057

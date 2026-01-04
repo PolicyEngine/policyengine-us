@@ -14,7 +14,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: true
         ak_atap_net_income_eligible: true
     households:
@@ -33,7 +33,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: true
         ak_atap_net_income_eligible: true
     households:
@@ -55,7 +55,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: false
         ak_atap_net_income_eligible: true
     households:
@@ -77,7 +77,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: true
         ak_atap_net_income_eligible: false
     households:
@@ -99,7 +99,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: false
         ak_atap_net_income_eligible: false
     households:
@@ -119,7 +119,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ak_atap_resource_eligible: false
+        ak_atap_resources_eligible: false
         ak_atap_gross_income_eligible: false
         ak_atap_net_income_eligible: false
     households:
@@ -143,7 +143,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        ak_atap_resource_eligible: true
+        ak_atap_resources_eligible: true
         ak_atap_gross_income_eligible: true
         ak_atap_net_income_eligible: true
     households:
@@ -165,7 +165,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ak_atap_resource_eligible: false
+        ak_atap_resources_eligible: false
         ak_atap_gross_income_eligible: true
         ak_atap_net_income_eligible: true
     households:

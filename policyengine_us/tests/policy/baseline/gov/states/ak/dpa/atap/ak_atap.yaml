@@ -167,10 +167,9 @@
         state_code: AK
   output:
     # ($940 - $0) * ($821 / $823) = $940 * 0.99757 = $937.71 -> $937
-    # Wait, need to recalculate - formula uses need standard for 2 and max payment for 2
-    # For size 3: Need = $940, Payment = $923
-    # Formula: ($940 - $0) * ($821 / $823) = $937.71 -> $937
-    ak_atap: 937
+    # But capped at maximum_payment of $923
+    # min($937, $923) = $923
+    ak_atap: 923
 
 - name: Case 8, child-only unit full benefit.
   period: 2024-01
@@ -184,7 +183,7 @@
       spm_unit:
         members: [person1, person2]
         ak_atap_eligible: true
-        ak_atap_is_child_only_unit: true
+        ak_atap_unit_type: CHILD_ONLY
         ak_atap_need_standard: 634
         ak_atap_countable_income: 0
         ak_atap_maximum_payment: 554

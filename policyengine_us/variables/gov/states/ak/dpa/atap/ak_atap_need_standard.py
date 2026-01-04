@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ak.dpa.atap.ak_atap_unit_type import (
+    AKATAPUnitType,
+)
 
 
 class ak_atap_need_standard(Variable):
@@ -12,9 +15,8 @@ class ak_atap_need_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ak.dpa.atap.income.need_standard
-        unit_size = spm_unit("ak_atap_unit_size", period)
-        is_child_only = spm_unit("ak_atap_is_child_only_unit", period)
-        is_pregnant_only = spm_unit("ak_atap_is_pregnant_woman_only", period)
+        unit_size = spm_unit("spm_unit_size", period)
+        unit_type = spm_unit("ak_atap_unit_type", period)
 
         # Child-only: use child_only table (sizes 1-4+)
         child_only_capped = min_(unit_size, 4)
@@ -23,12 +25,25 @@ class ak_atap_need_standard(Variable):
         # Pregnant woman only: single value
         pregnant_standard = p.pregnant_woman.amount
 
-        # Adult-included: use adult_included table (sizes 2-11+)
+        # Adult-included (one-parent or two-parent able): use adult_included table (sizes 2-11+)
         adult_capped = clip(unit_size, 2, 11)
         adult_standard = p.adult_included.amount[adult_capped]
 
-        return where(
-            is_pregnant_only,
-            pregnant_standard,
-            where(is_child_only, child_only_standard, adult_standard),
+        # Incapacitated parent: use incapacitated_parent table (sizes 3-4+)
+        # Minimum size 3 = 2 parents + 1 child
+        incap_capped = clip(unit_size, 3, 4)
+        incapacitated_standard = p.incapacitated_parent.amount[incap_capped]
+
+        return select(
+            [
+                unit_type == AKATAPUnitType.PREGNANT_WOMAN,
+                unit_type == AKATAPUnitType.CHILD_ONLY,
+                unit_type == AKATAPUnitType.TWO_PARENT_INCAPACITATED,
+            ],
+            [
+                pregnant_standard,
+                child_only_standard,
+                incapacitated_standard,
+            ],
+            default=adult_standard,
         )

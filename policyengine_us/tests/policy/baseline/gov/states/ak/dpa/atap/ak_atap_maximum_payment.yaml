@@ -12,10 +12,6 @@
         age: 30
       person2:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2]
@@ -34,10 +30,6 @@
         age: 8
       person3:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3]
@@ -58,10 +50,6 @@
         age: 8
       person4:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -76,10 +64,6 @@
     people:
       person1:
         age: 10
-    spm_units:
-      spm_unit:
-        members: [person1]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1]
@@ -96,10 +80,6 @@
         age: 12
       person2:
         age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1, person2]
@@ -118,10 +98,6 @@
         age: 10
       person3:
         age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        ak_atap_is_child_only_unit: true
     households:
       household:
         members: [person1, person2, person3]
@@ -144,10 +120,6 @@
         age: 8
       person5:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        ak_atap_is_child_only_unit: false
     households:
       household:
         members: [person1, person2, person3, person4, person5]
@@ -155,3 +127,56 @@
   output:
     # Base $821 + 3 additional children ($102 * 3) = $1,127
     ak_atap_maximum_payment: 1_127
+
+- name: Case 8, pregnant woman only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman only: $514
+    ak_atap_maximum_payment: 514
+
+- name: Case 9, two-parent incapacitated with 1 child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 33
+        is_disabled: false
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Incapacitated: $821 + $102 = $923
+    ak_atap_maximum_payment: 923
+
+- name: Case 10, two-parent able in non-summer.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Two-parent able non-summer: $821 (same as one caretaker)
+    ak_atap_maximum_payment: 821

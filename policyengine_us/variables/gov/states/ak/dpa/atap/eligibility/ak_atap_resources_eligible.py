@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ak_atap_resource_eligible(Variable):
+class ak_atap_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Alaska ATAP resource eligible"
+    label = "Alaska ATAP resources eligible"
     definition_period = MONTH
     reference = (
         "https://www.akleg.gov/basis/statutes.asp#47.27.010",
