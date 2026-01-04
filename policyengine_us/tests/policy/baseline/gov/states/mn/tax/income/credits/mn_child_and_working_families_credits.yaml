@@ -268,8 +268,127 @@
         mn_wfc_eligible: true
         filing_status: HEAD_OF_HOUSEHOLD
     households:
-      household:  
+      household:
         members: [person1, person2, person3]
         state_code: MN
-  output:  
+  output:
     mn_child_and_working_families_credits: 3_850
+
+# 2025 test case to verify updated parameter values
+# Per 2025 Schedule M1CWFC:
+# - Earned income max for WFC: $9,480 (Line 3)
+# - WFC phase-in rate: 4% (Line 4)
+# - CTC amount per child: $1,750 (Line 8)
+# - Joint phaseout threshold: $37,910 (Line 11)
+# - Non-joint phaseout threshold: $31,950 (Line 11)
+# - Phase-out rate: 12% for CTC eligible (Line 13)
+# - Qualifying older child amounts:
+#   - 1 child: $1,000
+#   - 2 children: $2,270
+#   - 3+ children: $2,710
+- name: 2025 Joint filers with one CTC-eligible child, eligible for WFC, no phase-out
+  # Calculation:
+  # WFC: min($10,000, $9,480) * 0.04 = $9,480 * 0.04 = $379.20
+  # CTC: 1 child * $1,750 = $1,750
+  # Total before phaseout: $379.20 + $1,750 = $2,129.20
+  # No phaseout since AGI ($10,000) < joint threshold ($37,910)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 48
+        is_child_dependent: false
+      person2:
+        age: 40
+        is_child_dependent: false
+      person3:
+        age: 5
+        is_child_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 2_129.2
+
+- name: 2025 Joint filers with one CTC-eligible child and one qualifying older child, no phase-out
+  # Calculation:
+  # WFC base: min($10,000, $9,480) * 0.04 = $379.20
+  # WFC older child (1 child): $1,000
+  # WFC total: $379.20 + $1,000 = $1,379.20
+  # CTC: 1 child * $1,750 = $1,750
+  # Total before phaseout: $1,379.20 + $1,750 = $3,129.20
+  # No phaseout since AGI ($10,000) < joint threshold ($37,910)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 48
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+      person3:
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+      person4:
+        age: 19
+        is_child_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 3_129.2
+
+- name: 2025 Single filer with one CTC-eligible child, partial phase-out
+  # Calculation:
+  # WFC base: min($40,000, $9,480) * 0.04 = $379.20
+  # CTC: 1 child * $1,750 = $1,750
+  # Total before phaseout: $379.20 + $1,750 = $2,129.20
+  # Phaseout: max(AGI, earned_income) - threshold = $40,000 - $31,950 = $8,050
+  # Phaseout amount: $8,050 * 0.12 = $966
+  # Final credit: $2,129.20 - $966 = $1,163.20
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 48
+        is_child_dependent: false
+      person2:
+        age: 5
+        is_child_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 40_000
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 1_163.2

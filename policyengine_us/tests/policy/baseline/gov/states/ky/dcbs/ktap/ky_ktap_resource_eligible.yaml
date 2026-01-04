@@ -1,0 +1,104 @@
+# Kentucky TANF (K-TAP) Resource Eligibility
+# Per 921 KAR 2:016 Section 3
+# Resource Limit: $10,000 in liquid assets
+
+- name: Case 1, no assets is resource eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ktap_resource_eligible: true
+
+- name: Case 2, assets below limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $5,000 < $10,000 limit
+    ky_ktap_resource_eligible: true
+
+- name: Case 3, assets at limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $10,000 = $10,000 limit (at threshold, still eligible)
+    ky_ktap_resource_eligible: true
+
+- name: Case 4, assets above limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_001
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $10,001 > $10,000 limit
+    ky_ktap_resource_eligible: false
+
+- name: Case 5, high assets is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $25,000 > $10,000 limit
+    ky_ktap_resource_eligible: false
+
+- name: Case 6, non-KY state returns false.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_ktap_resource_eligible: false

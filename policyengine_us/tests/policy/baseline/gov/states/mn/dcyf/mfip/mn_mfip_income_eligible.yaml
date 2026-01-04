@@ -1,0 +1,66 @@
+- name: Case 1, no income is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Countable income: $0
+    # Family wage level for 2: $1,196
+    # 0 < 1,196 = true
+    mn_mfip_income_eligible: true
+
+- name: Case 2, income just below family wage level.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 28_464  # $2,372/month gross
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Gross: $2,372/month
+    # After disregard: (2372-65)*0.5 = $1,153.50
+    # FWL for 2: $1,196
+    # 1,153.50 < 1,196 = true
+    mn_mfip_income_eligible: true
+
+- name: Case 3, income above family wage level.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month gross
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Gross: $3,000/month
+    # After disregard: (3000-65)*0.5 = $1,467.50
+    # FWL for 2: $1,196
+    # 1,467.50 < 1,196 = false
+    mn_mfip_income_eligible: false

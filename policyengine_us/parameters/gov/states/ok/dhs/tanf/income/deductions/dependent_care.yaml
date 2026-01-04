@@ -1,0 +1,21 @@
+description: Oklahoma deducts this amount of dependent care expenses under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: Oklahoma TANF dependent care deduction
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: OAC 340:10-3-33(b) - Dependent Care Expense Deduction
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-33
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 200
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 175
