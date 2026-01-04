@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.490.0] - 2026-01-04 22:20:49
+
+### Added
+
+- South Dakota Temporary Assistance for Needy Families (TANF) program
+
+## [1.489.0] - 2026-01-04 22:11:59
+
+### Added
+
+- Implemented Maine TANF program
+
+## [1.488.0] - 2026-01-04 22:05:35
+
+### Added
+
+- Add New Hampshire FANF (Financial Assistance to Needy Families) program with eligibility determination, payment standard (60% FPG), earned income disregards, and benefit calculation.
+
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
+## [1.486.0] - 2026-01-04 20:46:59
+
+### Added
+
+- Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI thresholds (6% rate above $150k joint, $75k other).
+
+## [1.485.4] - 2026-01-02 21:22:24
+
+### Fixed
+
+- ACA required contribution percentage now correctly handles flat brackets (e.g., 0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final rates into independent parameters.
+
+## [1.485.3] - 2026-01-02 19:33:52
+
+### Fixed
+
+- Remove non-existent labels from weekly uv.lock workflow PR creation.
+
+## [1.485.2] - 2026-01-02 19:06:03
+
+### Fixed
+
+- Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR creation.
+
+## [1.485.1] - 2026-01-02 18:29:05
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates.
+
 ## [1.485.0] - 2025-12-29 22:22:39
 
 ### Fixed
@@ -14121,6 +14175,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.490.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.489.0...1.490.0
+[1.489.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.488.0...1.489.0
+[1.488.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.487.0...1.488.0
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
+[1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
+[1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
+[1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
+[1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
+[1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1
 [1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0
 [1.484.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.2...1.484.3
 [1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2

@@ -1,0 +1,150 @@
+# Unit tests for South Dakota TANF overall eligibility
+# Combines: demographic + immigration + income + resources
+# Source: ARSD 67:10:01:05
+# https://sdlegislature.gov/Rules/Administrative/67:10:01:05
+
+- name: Case 1, all eligibility criteria met.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        sd_tanf_income_eligible: true
+        sd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Demographic: true
+    # Immigration: at least one citizen = true
+    # Income: true
+    # Resources: true
+    # All criteria met = eligible
+    sd_tanf_eligible: true
+
+- name: Case 2, not demographically eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: false
+        sd_tanf_income_eligible: true
+        sd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Demographic: false (no minor child or pregnancy)
+    # Other criteria met but demographic fails
+    sd_tanf_eligible: false
+
+- name: Case 3, not income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        sd_tanf_income_eligible: false
+        sd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Income: false (exceeds payment standard)
+    # Other criteria met but income fails
+    sd_tanf_eligible: false
+
+- name: Case 4, not resources eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        sd_tanf_income_eligible: true
+        sd_tanf_resources_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Resources: false (exceeds $2,000 limit)
+    # Other criteria met but resources fails
+    sd_tanf_eligible: false
+
+- name: Case 5, no citizen or legal immigrant in unit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        sd_tanf_income_eligible: true
+        sd_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Immigration: no citizen or legal immigrant = false
+    # Other criteria met but immigration fails
+    sd_tanf_eligible: false
+
+- name: Case 6, multiple criteria fail.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: false
+        sd_tanf_income_eligible: false
+        sd_tanf_resources_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Multiple criteria fail
+    sd_tanf_eligible: false
