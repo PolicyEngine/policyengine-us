@@ -19,8 +19,8 @@ class ak_atap_countable_unearned_income(Variable):
         p = parameters(period).gov.states.ak.dpa.atap.income
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])
-        # Exclude up to $50 of child support (passthrough)
+        # Exclude up to $50 of child support (deduction)
         child_support_exclusion = min_(
-            child_support, p.child_support_passthrough
+            child_support, p.child_support_deduction
         )
         return gross_unearned - child_support_exclusion
