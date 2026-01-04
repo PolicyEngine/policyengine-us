@@ -1,0 +1,15 @@
+description: Illinois sets the minimum age to this threshold under the Health Benefits for Immigrant Adults program.
+metadata:
+  unit: year
+  period: year
+  label: Illinois HBIA minimum age
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrant Adults
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants/healthbenefitsforimmigrantadults.html
+
+values:
+  # HBIA covers adults aged 42-64
+  2022-05-01: 55
+  2022-07-01: 42

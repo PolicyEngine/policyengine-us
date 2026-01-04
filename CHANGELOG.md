@@ -5,6 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
+## [1.486.0] - 2026-01-04 20:46:59
+
+### Added
+
+- Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI thresholds (6% rate above $150k joint, $75k other).
+
+## [1.485.4] - 2026-01-02 21:22:24
+
+### Fixed
+
+- ACA required contribution percentage now correctly handles flat brackets (e.g., 0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final rates into independent parameters.
+
+## [1.485.3] - 2026-01-02 19:33:52
+
+### Fixed
+
+- Remove non-existent labels from weekly uv.lock workflow PR creation.
+
+## [1.485.2] - 2026-01-02 19:06:03
+
+### Fixed
+
+- Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR creation.
+
+## [1.485.1] - 2026-01-02 18:29:05
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates.
+
+## [1.485.0] - 2025-12-29 22:22:39
+
+### Fixed
+
+- Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for income eligibility determination per ARS 43-1073.
+
+## [1.484.3] - 2025-12-29 21:31:29
+
+### Added
+
+- Updated SNAP BBCE gross income limits for New Mexico (200% FPL effective 2024-10-01) and Alaska (200% FPL effective 2025-07-01).
+- Added South Dakota to BBCE parameters as non-BBCE state.
+- Added and backdated Maryland SUA and LUA values.
+
+## [1.484.2] - 2025-12-29 20:01:21
+
+## [1.484.1] - 2025-12-29 19:18:44
+
+### Changed
+
+- Update Virginia 2025 income tax parameters with 2025 Form 760 references
+- Add rebate values for 2024 ($200/$400) and 2025 ($0)
+- Add 2025 tests for standard deduction, EITC, military benefit subtraction, age deduction, rebate, and exemptions
+
+## [1.484.0] - 2025-12-29 16:26:00
+
+### Added
+
+- Illinois Health Benefits for Immigrants (HBI) program covering All Kids, HBIA (adults 42-64), and HBIS (seniors 65+).
+
+## [1.483.0] - 2025-12-29 14:52:56
+
+### Added
+
+- Minnesota 2025 income tax parameter updates and new programs including K-12 Education Credit/Subtraction, 529 Contribution Subtraction, Military Pension Subtraction, and Active Duty Military Pay Subtraction.
+
+## [1.482.0] - 2025-12-29 13:39:35
+
+### Added
+
+- Idaho Temporary Assistance for Families in Idaho (TAFI) program, implementing income eligibility, resource limits, and benefit calculation (closes
+
 ## [1.481.0] - 2025-12-29 02:02:32
 
 ### Added
@@ -14079,6 +14157,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
+[1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
+[1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
+[1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
+[1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
+[1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1
+[1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0
+[1.484.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.2...1.484.3
+[1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2
+[1.484.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.0...1.484.1
+[1.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.483.0...1.484.0
+[1.483.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.482.0...1.483.0
+[1.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.481.0...1.482.0
 [1.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.480.0...1.481.0
 [1.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.479.0...1.480.0
 [1.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.478.0...1.479.0

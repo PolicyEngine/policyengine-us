@@ -1,0 +1,14 @@
+description: Illinois limits non-exempt resources to this amount per household under the Health Benefits for Immigrant Seniors program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois HBIS resource limit
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrants
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
+
+values:
+  # Non-exempt resources of $17,500 or less per household
+  2020-12-01: 17_500

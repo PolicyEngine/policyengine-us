@@ -12029,3 +12029,85 @@
     added:
     - Michigan Family Independence Program (FIP/TANF)
   date: 2025-12-29 02:02:32
+- bump: minor
+  changes:
+    added:
+    - Idaho Temporary Assistance for Families in Idaho (TAFI) program, implementing
+      income eligibility, resource limits, and benefit calculation (closes
+  date: 2025-12-29 13:39:35
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2025 income tax parameter updates and new programs including K-12
+      Education Credit/Subtraction, 529 Contribution Subtraction, Military Pension
+      Subtraction, and Active Duty Military Pay Subtraction.
+  date: 2025-12-29 14:52:56
+- bump: minor
+  changes:
+    added:
+    - Illinois Health Benefits for Immigrants (HBI) program covering All Kids, HBIA
+      (adults 42-64), and HBIS (seniors 65+).
+  date: 2025-12-29 16:26:00
+- bump: patch
+  changes:
+    changed:
+    - Update Virginia 2025 income tax parameters with 2025 Form 760 references
+    - Add rebate values for 2024 ($200/$400) and 2025 ($0)
+    - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
+      deduction, rebate, and exemptions
+  date: 2025-12-29 19:18:44
+- bump: patch
+  changes:
+    removed:
+    - Revert Virginia 2025 income tax parameter updates for proper review process
+  date: 2025-12-29 20:01:21
+- bump: patch
+  changes:
+    added:
+    - Updated SNAP BBCE gross income limits for New Mexico (200% FPL effective 2024-10-01)
+      and Alaska (200% FPL effective 2025-07-01).
+    - Added South Dakota to BBCE parameters as non-BBCE state.
+    - Added and backdated Maryland SUA and LUA values.
+  date: 2025-12-29 21:31:29
+- bump: minor
+  changes:
+    fixed:
+    - Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for
+      income eligibility determination per ARS 43-1073.
+  date: 2025-12-29 22:22:39
+- bump: patch
+  changes:
+    added:
+    - Add scheduled GitHub Action workflow for weekly uv.lock updates.
+    removed:
+    - Remove uv.lock freshness check from PR CI workflow.
+  date: 2026-01-02 18:29:05
+- bump: patch
+  changes:
+    fixed:
+    - Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR
+      creation.
+  date: 2026-01-02 19:06:03
+- bump: patch
+  changes:
+    fixed:
+    - Remove non-existent labels from weekly uv.lock workflow PR creation.
+  date: 2026-01-02 19:33:52
+- bump: patch
+  changes:
+    fixed:
+    - ACA required contribution percentage now correctly handles flat brackets (e.g.,
+      0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
+      rates into independent parameters.
+  date: 2026-01-02 21:22:24
+- bump: minor
+  changes:
+    added:
+    - Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI
+      thresholds (6% rate above $150k joint, $75k other).
+  date: 2026-01-04 20:46:59
+- bump: minor
+  changes:
+    added:
+    - Hawaii TANF (Temporary Assistance for Needy Families) program
+  date: 2026-01-04 21:45:18

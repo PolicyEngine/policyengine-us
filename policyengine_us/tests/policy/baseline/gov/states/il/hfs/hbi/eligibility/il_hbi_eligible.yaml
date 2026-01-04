@@ -1,0 +1,136 @@
+# Tests for il_hbi_eligible
+# Children and adults use MAGI (medicaid_income_level)
+# Seniors use AABD methodology (actual income with exemptions)
+
+- name: Undocumented child at 200% FPL eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 2.00
+  output:
+    il_hbi_eligible: true
+
+- name: DACA adult age 50 at 100% FPL eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: DACA
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_eligible: true
+
+- name: Undocumented senior age 70 with low income eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    social_security: 12_000  # ~80% FPL after AABD exemptions
+  output:
+    il_hbi_eligible: true
+
+- name: Citizen child not eligible (uses regular Medicaid)
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    immigration_status: CITIZEN
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_eligible: false
+
+- name: Undocumented adult age 30 not eligible (gap age)
+  period: 2024
+  input:
+    state_code: IL
+    age: 30
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_eligible: false
+
+- name: Undocumented adult over income limit not eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.50
+  output:
+    il_hbi_eligible: false
+
+- name: LPR senior not eligible (not covered immigration status)
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    social_security: 10_000
+  output:
+    il_hbi_eligible: false
+
+- name: HBIA adult eligible in 2024 (program still in effect)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_eligible: true
+
+- name: HBIA adult not eligible in 2026 (program ended July 2025)
+  period: 2026
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_eligible: false
+
+- name: HBIS senior still eligible in 2026 (program continues)
+  period: 2026
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    social_security: 12_000  # Under 100% FPL
+  output:
+    il_hbi_eligible: true
+
+- name: HBIS senior with resources above limit not eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    social_security: 12_000
+    spm_unit_assets: 20_000
+  output:
+    il_hbi_eligible: false
+
+- name: HBIS senior with resources at limit eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    immigration_status: UNDOCUMENTED
+    social_security: 12_000
+    spm_unit_assets: 17_500
+  output:
+    il_hbi_eligible: true
+
+- name: HBIA adult with high resources still eligible (no resource test)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 1.00
+    spm_unit_assets: 100_000
+  output:
+    il_hbi_eligible: true
