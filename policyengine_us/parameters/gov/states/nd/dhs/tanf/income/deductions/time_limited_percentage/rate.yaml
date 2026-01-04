@@ -1,14 +1,13 @@
 description: North Dakota excludes this share of earned income as a time limited percentage disregard under the Temporary Assistance for Needy Families program.
+
+values:
+  2020-01-01: 0.5
 # NOTE: TLP is actually a declining 12-month disregard cycle:
 #   - Months 1-6: 50%
 #   - Months 7-9: 35%
 #   - Months 10-12: 25%
 #   - Month 13+: 0%
-# PolicyEngine cannot track months on TANF across periods, so we use 50%
-# (the rate for months 1-6) as a simplification.
-
-values:
-  2020-01-01: 0.5
+# This parameter uses 50% (the rate for months 1-6).
 
 metadata:
   unit: /1
