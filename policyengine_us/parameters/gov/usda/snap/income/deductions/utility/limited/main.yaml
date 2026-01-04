@@ -85,10 +85,11 @@ IL:
   2023-10-01: 386
   2024-10-01: 445
 IN:
+  # Indiana does not follow the fiscal year; SUA is effective May 1.
   2010-01-01: 0
-  2021-10-01: 259
+  2021-05-01: 259
   2023-05-01: 276
-  2024-10-01: 274
+  2024-05-01: 274
 KS:
   2010-01-01: 0
   2021-10-01: 286
@@ -110,9 +111,14 @@ MA:
   2023-10-01: 520
   2024-10-01: 542
 MD:
+  # Maryland does not follow the fiscal year; LUA is effective January 1.
   2010-01-01: 0
-  2021-10-01: 238
-  2023-01-01: 337
+  2020-01-01: 240
+  2021-01-01: 238
+  2022-01-01: 264
+  2023-01-01: 309
+  2024-01-01: 337
+  2025-01-01: 341
 ME:
   2010-01-01: 0
   2021-10-01: 285
@@ -266,6 +272,7 @@ WY:
 metadata:
   unit: currency-USD
   period: month
+  label: SNAP limited utility allowance
   reference:
   - name: USDA | Food and Nutrition Service | SNAP | Standard Utility Allowances
     href: https://www.fns.usda.gov/snap/eligibility/deduction/standard-utility-allowances
