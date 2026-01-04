@@ -12075,3 +12075,56 @@
     - Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for
       income eligibility determination per ARS 43-1073.
   date: 2025-12-29 22:22:39
+- bump: patch
+  changes:
+    added:
+    - Add scheduled GitHub Action workflow for weekly uv.lock updates.
+    removed:
+    - Remove uv.lock freshness check from PR CI workflow.
+  date: 2026-01-02 18:29:05
+- bump: patch
+  changes:
+    fixed:
+    - Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR
+      creation.
+  date: 2026-01-02 19:06:03
+- bump: patch
+  changes:
+    fixed:
+    - Remove non-existent labels from weekly uv.lock workflow PR creation.
+  date: 2026-01-02 19:33:52
+- bump: patch
+  changes:
+    fixed:
+    - ACA required contribution percentage now correctly handles flat brackets (e.g.,
+      0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
+      rates into independent parameters.
+  date: 2026-01-02 21:22:24
+- bump: minor
+  changes:
+    added:
+    - Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI
+      thresholds (6% rate above $150k joint, $75k other).
+  date: 2026-01-04 20:46:59
+- bump: minor
+  changes:
+    added:
+    - Hawaii TANF (Temporary Assistance for Needy Families) program
+  date: 2026-01-04 21:45:18
+- bump: minor
+  changes:
+    added:
+    - Add New Hampshire FANF (Financial Assistance to Needy Families) program with
+      eligibility determination, payment standard (60% FPG), earned income disregards,
+      and benefit calculation.
+  date: 2026-01-04 22:05:35
+- bump: minor
+  changes:
+    added:
+    - Implemented Maine TANF program
+  date: 2026-01-04 22:11:59
+- bump: minor
+  changes:
+    added:
+    - South Dakota Temporary Assistance for Needy Families (TANF) program
+  date: 2026-01-04 22:20:49
