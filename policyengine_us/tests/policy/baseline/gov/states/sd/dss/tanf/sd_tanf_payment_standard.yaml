@@ -1,0 +1,88 @@
+# Unit tests for South Dakota TANF payment standard by family size and living arrangement
+# Source: ARSD 67:10:05:03 - Payment Standards
+# https://sdlegislature.gov/Rules/Administrative/67:10:05:03
+
+- name: Case 1, family size 1, independent living.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 512
+
+- name: Case 2, family size 3, independent living.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 701
+
+- name: Case 3, family size 5, independent living.
+  period: 2024-01
+  input:
+    spm_unit_size: 5
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 848
+
+- name: Case 4, family size 13, independent living.
+  period: 2024-01
+  input:
+    spm_unit_size: 13
+    state_code: SD
+  output:
+    # Base for 12: $1,361 + increment $53 = $1,414
+    sd_tanf_payment_standard: 1_414
+
+- name: Case 5, family size 1, shared living.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    sd_tanf_is_shared_living: true
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 317
+
+- name: Case 6, family size 3, shared living.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    sd_tanf_is_shared_living: true
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 507
+
+- name: Case 7, family size 1, independent living, 2025 cut.
+  period: 2026-01
+  input:
+    spm_unit_size: 1
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 461
+
+- name: Case 8, family size 3, independent living, 2025 cut.
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 631
+
+- name: Case 9, family size 3, shared living, 2025 cut.
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    sd_tanf_is_shared_living: true
+    state_code: SD
+  output:
+    sd_tanf_payment_standard: 456
+
+- name: Case 10, family size 13, independent living, 2025 cut.
+  period: 2026-01
+  input:
+    spm_unit_size: 13
+    state_code: SD
+  output:
+    # Base for 12: $1,225 + increment $53 = $1,278
+    sd_tanf_payment_standard: 1_278

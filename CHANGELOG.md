@@ -5,6 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.496.2] - 2026-01-05 16:26:06
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.1] - 2026-01-05 15:41:57
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.0] - 2026-01-05 00:21:45
+
+### Added
+
+- Tennessee TANF (Families First) program implementation
+
+## [1.495.0] - 2026-01-05 00:20:33
+
+### Added
+
+- Nevada TANF (Temporary Assistance for Needy Families) program
+
+## [1.494.0] - 2026-01-05 00:18:02
+
+### Added
+
+- West Virginia Works program implementation
+
+## [1.493.0] - 2026-01-05 00:02:11
+
+### Added
+
+- Connecticut Temporary Family Assistance (TFA/TANF)
+
+## [1.492.0] - 2026-01-04 23:28:13
+
+### Added
+
+- Implement Rhode Island TANF (Rhode Island Works) program
+
+## [1.491.0] - 2026-01-04 22:56:53
+
+### Added
+
+- Add Delaware TANF (Temporary Assistance for Needy Families)
+
+## [1.490.0] - 2026-01-04 22:20:49
+
+### Added
+
+- South Dakota Temporary Assistance for Needy Families (TANF) program
+
+## [1.489.0] - 2026-01-04 22:11:59
+
+### Added
+
+- Implemented Maine TANF program
+
+## [1.488.0] - 2026-01-04 22:05:35
+
+### Added
+
+- Add New Hampshire FANF (Financial Assistance to Needy Families) program with eligibility determination, payment standard (60% FPG), earned income disregards, and benefit calculation.
+
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
+## [1.486.0] - 2026-01-04 20:46:59
+
+### Added
+
+- Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI thresholds (6% rate above $150k joint, $75k other).
+
+## [1.485.4] - 2026-01-02 21:22:24
+
+### Fixed
+
+- ACA required contribution percentage now correctly handles flat brackets (e.g., 0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final rates into independent parameters.
+
+## [1.485.3] - 2026-01-02 19:33:52
+
+### Fixed
+
+- Remove non-existent labels from weekly uv.lock workflow PR creation.
+
+## [1.485.2] - 2026-01-02 19:06:03
+
+### Fixed
+
+- Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR creation.
+
+## [1.485.1] - 2026-01-02 18:29:05
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates.
+
+## [1.485.0] - 2025-12-29 22:22:39
+
+### Fixed
+
+- Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for income eligibility determination per ARS 43-1073.
+
+## [1.484.3] - 2025-12-29 21:31:29
+
+### Added
+
+- Updated SNAP BBCE gross income limits for New Mexico (200% FPL effective 2024-10-01) and Alaska (200% FPL effective 2025-07-01).
+- Added South Dakota to BBCE parameters as non-BBCE state.
+- Added and backdated Maryland SUA and LUA values.
+
 ## [1.484.2] - 2025-12-29 20:01:21
 
 ## [1.484.1] - 2025-12-29 19:18:44
@@ -14107,6 +14223,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.496.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.1...1.496.2
+[1.496.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.0...1.496.1
+[1.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.495.0...1.496.0
+[1.495.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.494.0...1.495.0
+[1.494.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.493.0...1.494.0
+[1.493.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.492.0...1.493.0
+[1.492.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.491.0...1.492.0
+[1.491.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.490.0...1.491.0
+[1.490.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.489.0...1.490.0
+[1.489.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.488.0...1.489.0
+[1.488.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.487.0...1.488.0
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
+[1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
+[1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
+[1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
+[1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
+[1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1
+[1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0
+[1.484.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.2...1.484.3
 [1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2
 [1.484.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.0...1.484.1
 [1.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.483.0...1.484.0

@@ -1,0 +1,74 @@
+# Unit tests for Delaware TANF resource eligibility
+# 16 Del. Admin. Code SS 4000-4002: Resource limit is $10,000
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4002
+
+- name: Case 1, no resources.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_resources_eligible: true
+
+- name: Case 2, at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # $10,000 = $10,000 limit → eligible
+    de_tanf_resources_eligible: true
+
+- name: Case 3, below boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 9_999
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # $9,999 < $10,000 limit → eligible
+    de_tanf_resources_eligible: true
+
+- name: Case 4, above boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_001
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # $10,001 > $10,000 limit → ineligible
+    de_tanf_resources_eligible: false

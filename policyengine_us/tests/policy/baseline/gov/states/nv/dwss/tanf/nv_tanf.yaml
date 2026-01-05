@@ -1,0 +1,44 @@
+# Unit tests for nv_tanf
+# Tests benefit calculation: max(0, payment_standard - countable_income)
+
+- name: Eligible with no income (full benefit)
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 0
+  output:
+    nv_tanf: 386
+
+- name: Eligible with partial income
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 200
+  output:
+    # $386 - $200 = $186
+    nv_tanf: 186
+
+- name: Eligible but income exceeds payment standard
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 500
+  output:
+    # max($386 - $500, 0) = $0
+    nv_tanf: 0
+
+- name: Not eligible
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: false
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 0
+  output:
+    nv_tanf: 0
