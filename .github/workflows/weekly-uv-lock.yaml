@@ -42,16 +42,12 @@ jobs:
       - name: Create changelog entry
         if: steps.changes.outputs.changed == 'true'
         run: |
-          cat > changelog_entry.yaml << 'EOF'
-          - bump: patch
-            changes:
-              changed:
-              - Updated uv.lock dependencies.
-          EOF
-
-      - name: Format code
-        if: steps.changes.outputs.changed == 'true'
-        run: make format
+          printf '%s\n' \
+            '- bump: patch' \
+            '  changes:' \
+            '    changed:' \
+            '    - Updated uv.lock dependencies.' \
+            '' > changelog_entry.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true'
