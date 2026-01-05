@@ -1,0 +1,95 @@
+# Ohio 2025 Child and Dependent Care Credit Tests
+# Based on 2025 IT 1040 Booklet and ORC 5747.054
+#
+# Ohio CDCC Match Rates by Modified AGI:
+# - MAGI < $20,000: 100% of federal CDCC (potential)
+# - MAGI $20,000 - $39,999: 25% of federal CDCC (potential)
+# - MAGI >= $40,000: 0% (no credit)
+
+- name: 2025 - Full eligibility - MAGI under $20,000
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 15_000
+    cdcc_potential: 2_000
+  output:
+    # 100% of $2,000 = $2,000
+    oh_cdcc: 2_000
+
+- name: 2025 - Full eligibility - MAGI at $19,999
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 19_999
+    cdcc_potential: 3_000
+  output:
+    # 100% of $3,000 = $3,000
+    oh_cdcc: 3_000
+
+- name: 2025 - Reduced eligibility - MAGI exactly $20,000
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 20_000
+    cdcc_potential: 2_000
+  output:
+    # 25% of $2,000 = $500
+    oh_cdcc: 500
+
+- name: 2025 - Reduced eligibility - MAGI $30,000
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 30_000
+    cdcc_potential: 4_000
+  output:
+    # 25% of $4,000 = $1,000
+    oh_cdcc: 1_000
+
+- name: 2025 - Reduced eligibility - MAGI $39,999
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 39_999
+    cdcc_potential: 2_000
+  output:
+    # 25% of $2,000 = $500
+    oh_cdcc: 500
+
+- name: 2025 - Not eligible - MAGI exactly $40,000
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 40_000
+    cdcc_potential: 2_000
+  output:
+    # 0% - no credit
+    oh_cdcc: 0
+
+- name: 2025 - Not eligible - MAGI $75,000
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 75_000
+    cdcc_potential: 6_000
+  output:
+    # 0% - no credit above $40,000 MAGI
+    oh_cdcc: 0
+
+- name: 2025 - Zero federal CDCC potential
+  period: 2025
+  input:
+    state_code: OH
+    oh_modified_agi: 15_000
+    cdcc_potential: 0
+  output:
+    oh_cdcc: 0
+
+- name: 2025 - Non-Ohio resident
+  period: 2025
+  input:
+    state_code: CA
+    oh_modified_agi: 15_000
+    cdcc_potential: 2_000
+  output:
+    oh_cdcc: 0

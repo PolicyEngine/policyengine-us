@@ -1,0 +1,70 @@
+# Ohio 2025 Earned Income Tax Credit Tests
+# Based on 2025 IT 1040 Booklet and ORC 5747.71
+#
+# Ohio EITC = 30% of federal EITC
+
+- name: 2025 - No federal EITC
+  period: 2025
+  input:
+    state_code: OH
+    eitc: 0
+  output:
+    oh_eitc: 0
+
+- name: 2025 - Federal EITC of $100
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    eitc: 100
+  output:
+    # 30% of $100 = $30
+    oh_eitc: 30
+
+- name: 2025 - Federal EITC of $1,000
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    eitc: 1_000
+  output:
+    # 30% of $1,000 = $300
+    oh_eitc: 300
+
+- name: 2025 - Federal EITC of $3,500
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    eitc: 3_500
+  output:
+    # 30% of $3,500 = $1,050
+    oh_eitc: 1_050
+
+- name: 2025 - Federal EITC of $7,830 (max for 3+ children 2024)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    eitc: 7_830
+  output:
+    # 30% of $7,830 = $2,349
+    oh_eitc: 2_349
+
+- name: 2025 - Non-Ohio resident is ineligible
+  period: 2025
+  input:
+    state_code: NY
+    eitc: 1_000
+  output:
+    oh_eitc: 0
+
+- name: 2025 - Small federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    eitc: 632
+  output:
+    # 30% of $632 = $189.60
+    oh_eitc: 189.6

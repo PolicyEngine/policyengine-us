@@ -1,0 +1,115 @@
+# Ohio 2025 Joint Filing Credit Tests
+# Based on 2025 IT 1040 Booklet and ORC 5747.05(E)
+#
+# Joint Filing Credit Rates by (MAGI less exemptions):
+# - $0 - $25,000: 20%
+# - $25,001 - $50,000: 15%
+# - $50,001 - $75,000: 10%
+# - Over $75,000: 5%
+# Maximum credit: $650
+
+- name: 2025 - Eligible - lowest bracket (20%)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 25_000
+    oh_personal_exemptions: 5_000
+    oh_tax_before_joint_filing_credit: 2_000
+  output:
+    # MAGI less exemptions = $25,000 - $5,000 = $20,000 -> 20%
+    # 20% of $2,000 = $400
+    oh_joint_filing_credit: 400
+
+- name: 2025 - Eligible - second bracket (15%)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 50_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 3_000
+  output:
+    # MAGI less exemptions = $50,000 - $10,000 = $40,000 -> 15%
+    # 15% of $3,000 = $450
+    oh_joint_filing_credit: 450
+
+- name: 2025 - Eligible - third bracket (10%)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 67_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 4_000
+  output:
+    # MAGI less exemptions = $67,000 - $10,000 = $57,000 -> 10%
+    # 10% of $4,000 = $400
+    oh_joint_filing_credit: 400
+
+- name: 2025 - Eligible - fourth bracket (5%)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 100_000
+    oh_personal_exemptions: 5_000
+    oh_tax_before_joint_filing_credit: 5_000
+  output:
+    # MAGI less exemptions = $100,000 - $5,000 = $95,000 -> 5%
+    # 5% of $5,000 = $250
+    oh_joint_filing_credit: 250
+
+- name: 2025 - Capped at maximum $650
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 40_000
+    oh_personal_exemptions: 5_000
+    oh_tax_before_joint_filing_credit: 6_000
+  output:
+    # MAGI less exemptions = $40,000 - $5,000 = $35,000 -> 15%
+    # 15% of $6,000 = $900, but capped at $650
+    oh_joint_filing_credit: 650
+
+- name: 2025 - High tax capped at $650 in 20% bracket
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 20_000
+    oh_personal_exemptions: 5_000
+    oh_tax_before_joint_filing_credit: 10_000
+  output:
+    # MAGI less exemptions = $20,000 - $5,000 = $15,000 -> 20%
+    # 20% of $10,000 = $2,000, but capped at $650
+    oh_joint_filing_credit: 650
+
+- name: 2025 - Not eligible for joint filing credit
+  period: 2025
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: false
+    oh_modified_agi: 47_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 4_000
+  output:
+    oh_joint_filing_credit: 0
+
+- name: 2025 - Zero tax before credit
+  period: 2025
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 30_000
+    oh_personal_exemptions: 5_000
+    oh_tax_before_joint_filing_credit: 0
+  output:
+    oh_joint_filing_credit: 0

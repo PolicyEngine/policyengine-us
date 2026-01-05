@@ -1,0 +1,189 @@
+# Ohio 2025 Pension Based Retirement Income Credit Tests
+# Based on 2025 IT 1040 Booklet and ORC 5747.055(B)
+#
+# Retirement Income Credit Schedule:
+# - $0 - $500: $0
+# - $501 - $1,500: $25
+# - $1,501 - $3,000: $50
+# - $3,001 - $5,000: $80
+# - $5,001 - $8,000: $130
+# - Over $8,000: $200
+#
+# Income limit: MAGI less exemptions < $100,000
+
+- name: 2025 - No retirement income (below $500)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 400
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 50_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 0
+
+- name: 2025 - Retirement income $501-$1,500 bracket
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 50_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 25
+
+- name: 2025 - Retirement income $1,501-$3,000 bracket
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 2_500
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 60_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 50
+
+- name: 2025 - Retirement income $3,001-$5,000 bracket
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 50_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 80
+
+- name: 2025 - Retirement income $5,001-$8,000 bracket
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 6_500
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 50_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 130
+
+- name: 2025 - Retirement income over $8,000 (maximum credit)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 50_000
+        oh_personal_exemptions: 0
+  output:
+    oh_pension_based_retirement_income_credit: 200
+
+- name: 2025 - Combined pension from head and spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        taxable_pension_income: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 75_000
+        oh_personal_exemptions: 0
+  output:
+    # Combined: $3,000 + $2,500 = $5,500 -> $130 credit (bracket 5)
+    oh_pension_based_retirement_income_credit: 130
+
+- name: 2025 - Ineligible - MAGI over limit
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 100_000
+        oh_personal_exemptions: 0
+  output:
+    # MAGI less exemptions = $100,000, at threshold so not eligible
+    oh_pension_based_retirement_income_credit: 0
+
+- name: 2025 - Eligible - high MAGI reduced by exemptions
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_pension_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 105_000
+        oh_personal_exemptions: 10_000
+  output:
+    # MAGI less exemptions = $105,000 - $10,000 = $95,000 < $100,000
+    oh_pension_based_retirement_income_credit: 200

@@ -1,0 +1,300 @@
+# Ohio 2025 Income Tax Integration Tests
+# Based on 2025 IT 1040 Booklet and Ohio Revised Code Chapter 5747
+#
+# These tests verify the complete tax calculation flow for 2025
+# including exemptions, tax rates, and various credits
+
+- name: 2025 Integration - Booklet example $68,050 income
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 68_050
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $68,050
+    # Exemption: 1 * $2,100 (MAGI $40,001-$80,000) = $2,100
+    # Taxable income: $68,050 - $2,100 = $65,950
+    # Tax: $342 base + 2.75% of ($65,950 - $26,050) = $342 + $1,097.25 = $1,439.25
+    oh_taxable_income: 65_950
+    oh_income_tax_before_non_refundable_credits: 1_439
+
+- name: 2025 Integration - Married couple with children (low income)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 33
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        tax_unit_childcare_expenses: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: OH
+  output:
+    # Total income: $35,000
+    # Exemptions: 4 * $2,350 (MAGI <= $40,000) = $9,400
+    # Taxable income: $35,000 - $9,400 = $25,600
+    # Tax: 0.0131287 * $25,600 = $336.09 (below $26,050 threshold)
+    # Exemption credit eligible: (35,000 - 9,400) = $25,600 < $30,000 -> 4 * $20 = $80
+    oh_personal_exemptions: 9_400
+    oh_taxable_income: 25_600
+    oh_exemption_credit: 80
+
+- name: 2025 Integration - Senior with pension income
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 20_000
+        taxable_pension_income: 25_000
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Total income: $45,000
+    # Exemption: 1 * $2,100 (MAGI $40,001-$80,000) = $2,100
+    # Taxable income: $45,000 - $2,100 = $42,900
+    # Tax: $342 + 2.75% of ($42,900 - $26,050) = $342 + $463.38 = $805.38
+    # Senior citizen credit: $50 (age 68, MAGI less exemptions < $100k)
+    # Retirement income credit: $25,000 pension -> $200 credit
+    oh_personal_exemptions: 2_100
+    oh_taxable_income: 42_900
+    oh_senior_citizen_credit: 50
+    oh_pension_based_retirement_income_credit: 200
+
+- name: 2025 Integration - High income married couple with joint filing credit
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 48
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Total income: $150,000
+    # Exemptions: 2 * $1,850 (MAGI > $80,000) = $3,700
+    # Taxable income: $150,000 - $3,700 = $146,300
+    # Tax on $100,000: $2,375.63
+    # Tax on excess: 3.15% of ($146,300 - $100,000) = $1,458.45
+    # Total tax before credits: $3,834.08
+    oh_personal_exemptions: 3_700
+    oh_taxable_income: 146_300
+
+- name: 2025 Integration - Low income family with EITC
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 18_000
+        is_tax_unit_head: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: OH
+  output:
+    # Income: $18,000
+    # Exemptions: 2 * $2,350 (MAGI <= $40,000) = $4,700
+    # Taxable income: $18,000 - $4,700 = $13,300
+    # Tax: 0.0131287 * $13,300 = $174.61
+    oh_personal_exemptions: 4_700
+    oh_taxable_income: 13_300
+
+- name: 2025 Integration - Family with CDCC (full rate)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        is_tax_unit_head: true
+      person2:
+        age: 28
+        employment_income: 4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        tax_unit_childcare_expenses: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: OH
+  output:
+    # Income: $19,000
+    # Exemptions: 3 * $2,350 (MAGI <= $40,000) = $7,050
+    # MAGI < $20,000 -> 100% CDCC match
+    oh_personal_exemptions: 7_050
+
+- name: 2025 Integration - Family with non-public school tuition
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 55_000
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 10
+        non_public_school_tuition: 2_500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: OH
+  output:
+    # Income: $80,000
+    # Exemptions: 3 * $2,100 (MAGI $40,001-$80,000) = $6,300
+    # Taxable income: $80,000 - $6,300 = $73,700
+    # Tax: $342 + 2.75% of ($73,700 - $26,050) = $342 + $1,310.38 = $1,652.38
+    # Non-public school credit: $80,000 >= $50,000 -> cap $1,500, tuition $2,500 -> $1,500
+    oh_personal_exemptions: 6_300
+    oh_taxable_income: 73_700
+    oh_non_public_school_credits: 1_500
+
+- name: 2025 Integration - Single person at zero bracket threshold
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 26_050
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $26,050
+    # Exemption: 1 * $2,350 (MAGI <= $40,000) = $2,350
+    # Taxable income: $26,050 - $2,350 = $23,700
+    # Tax: 0.0131287 * $23,700 = $311.15 (still in implied first bracket)
+    oh_personal_exemptions: 2_350
+    oh_taxable_income: 23_700
+
+- name: 2025 Integration - Very high income household
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 250_000
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        employment_income: 150_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Total income: $400,000
+    # Exemptions: 2 * $1,850 (MAGI > $80,000) = $3,700
+    # Taxable income: $400,000 - $3,700 = $396,300
+    # Tax on $100,000: $2,375.63
+    # Tax on excess: 3.15% of ($396,300 - $100,000) = $9,333.45
+    # Total tax before credits: $11,709.08
+    oh_personal_exemptions: 3_700
+    oh_taxable_income: 396_300
