@@ -1,196 +1,11 @@
 # Tests Florida TCA final benefit amount
 # Formula: Benefit = max(Payment Standard - Net Countable Income, 0)
 # Source: Florida Statutes 414.095(12), FAC 65A-4.220
+#
+# NOTE: Basic scenarios (zero income, earned income, shelter tiers, eligibility)
+# are covered in integration.yaml. This file tests edge cases of the benefit formula.
 
-- name: Case 1, zero income receives full payment standard.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 12_000  # $1,000/month (>$50 tier)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 241
-    # Payment standard: $241 (size 2, >$50 shelter)
-    # Countable income: $0
-    # Benefit: 241 - 0 = $241
-
-- name: Case 2, partial benefit with earned income.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 6_000  # $500/month
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 136
-    # Payment standard: $241 (size 2, >$50 shelter)
-    # Countable earned: max(max(500-90,0)-200,0)*0.5 = 105
-    # Benefit: 241 - 105 = $136
-
-- name: Case 3, small benefit with unearned income.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 2_820  # $235/month annual
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 6
-    # Payment standard: $241
-    # Countable income: $235
-    # Benefit: 241 - 235 = $6
-
-- name: Case 4, benefit of $10.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 2_772  # $231/month annual
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 10
-    # Payment standard: $241
-    # Countable income: $231
-    # Benefit: 241 - 231 = $10
-
-- name: Case 5, ineligible due to income over limit.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 12_000  # $1,000/month
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 0
-    # Payment standard: $241
-    # Countable earned: max(max(1000-90,0)-200,0)*0.5 = 355
-    # 355 > 241 -> Ineligible, $0
-
-- name: Case 6, zero shelter tier lower payment.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 0  # Zero shelter
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 158
-    # Payment standard: $158 (size 2, $0 shelter tier)
-    # Countable income: $0
-    # Benefit: $158
-
-- name: Case 7, family of 3 with moderate income.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 4_800  # $400/month
-        rent: 12_000
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca: 248
-    # Payment standard: $303 (size 3, >$50 shelter)
-    # Countable earned: max(max(400-90,0)-200,0)*0.5 = 55
-    # Benefit: 303 - 55 = $248
-
-# ============================================================
-# Edge Cases
-# ============================================================
-
-- name: Case 8, benefit of $9.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 2_784  # $232/month annual
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 9
-    # Payment standard: $241
-    # Countable income: $232
-    # Benefit: 241 - 232 = $9
-
-- name: Case 9, benefit of $11.
+- name: Case 1, benefit of $11.
   period: 2024-01
   input:
     people:
@@ -213,7 +28,7 @@
     # Countable income: $230
     # Benefit: 241 - 230 = $11
 
-- name: Case 10, benefit of $1.
+- name: Case 2, benefit of $1.
   period: 2024-01
   input:
     people:
@@ -236,7 +51,7 @@
     # Countable income: $240
     # Benefit: 241 - 240 = $1
 
-- name: Case 11, maximum family size 13 full benefit.
+- name: Case 3, maximum family size 13 full benefit.
   period: 2024-01
   input:
     people:
@@ -279,54 +94,8 @@
     # Payment standard: $919 (size 13, >$50 shelter)
     # Countable income: $0
     # Benefit: $919
-    # Tests: maximum possible benefit
 
-- name: Case 12, very high income clearly ineligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 120_000  # $10,000/month
-        rent: 12_000
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 0
-    # Gross test: $10,000 > 185% FPL ($3,151) -> Fail
-    # Ineligible -> $0
-
-- name: Case 13, minimum payment with zero shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 0  # Zero shelter
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca: 158
-    # Payment standard: $158 (size 2, $0 shelter)
-    # Countable income: $0
-    # Benefit: $158
-    # Tests: zero shelter tier payment standard
-
-- name: Case 14, income results in exactly zero benefit.
+- name: Case 4, income results in exactly zero benefit.
   period: 2024-01
   input:
     people:
@@ -349,7 +118,7 @@
     # Countable income: $241
     # Benefit: 241 - 241 = $0
 
-- name: Case 15, income exceeds payment standard negative clip.
+- name: Case 5, income exceeds payment standard negative clip.
   period: 2024-01
   input:
     people:
@@ -371,4 +140,3 @@
     # Payment standard: $241
     # Countable income: $300
     # Calculated benefit: max(241 - 300, 0) = 0
-    # Tests: negative benefit clipped to zero

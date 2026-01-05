@@ -2,7 +2,7 @@
 # Asset limit: $2,000 in countable resources
 # Source: FAC 65A-1.716, Florida DCF TCA Page
 
-- name: Zero assets eligible
+- name: Case 1, zero assets eligible.
   period: 2024-01
   input:
     people:
@@ -19,7 +19,7 @@
   output:
     fl_tca_resources_eligible: true
 
-- name: One dollar below limit eligible
+- name: Case 2, one dollar below limit eligible.
   period: 2024-01
   input:
     people:
@@ -36,7 +36,7 @@
   output:
     fl_tca_resources_eligible: true
 
-- name: At limit eligible
+- name: Case 3, at limit eligible.
   period: 2024-01
   input:
     people:
@@ -53,7 +53,7 @@
   output:
     fl_tca_resources_eligible: true
 
-- name: One dollar above limit ineligible
+- name: Case 4, one dollar above limit ineligible.
   period: 2024-01
   input:
     people:

@@ -4,7 +4,7 @@
 
 # Payment standard for size 2, >$50 shelter: $241
 
-- name: Zero income eligible
+- name: Case 1, zero income eligible.
   period: 2024-01
   input:
     people:
@@ -23,7 +23,7 @@
   output:
     fl_tca_net_income_eligible: true
 
-- name: One dollar below threshold eligible
+- name: Case 2, one dollar below threshold eligible.
   period: 2024-01
   input:
     people:
@@ -43,7 +43,7 @@
   output:
     fl_tca_net_income_eligible: true
 
-- name: At threshold ineligible
+- name: Case 3, at threshold ineligible.
   period: 2024-01
   input:
     people:
@@ -63,7 +63,7 @@
   output:
     fl_tca_net_income_eligible: false
 
-- name: One dollar above threshold ineligible
+- name: Case 4, one dollar above threshold ineligible.
   period: 2024-01
   input:
     people:

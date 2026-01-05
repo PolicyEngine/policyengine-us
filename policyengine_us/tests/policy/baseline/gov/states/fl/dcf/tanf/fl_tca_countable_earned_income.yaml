@@ -199,3 +199,31 @@
   output:
     fl_tca_countable_earned_income: 5
     # $300: After $90 = 210, after $200 = 10, * 0.5 = $5
+
+- name: Case 14, earned income $89 (one dollar below $90 disregard).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_068  # $89/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $89: After $90 = max(89-90, 0) = 0
+
+- name: Case 15, earned income $91 (one dollar above $90 disregard).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_092  # $91/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $91: After $90 = 1, after $200 = max(1-200, 0) = 0

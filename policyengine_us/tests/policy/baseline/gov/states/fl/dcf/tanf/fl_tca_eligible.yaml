@@ -137,3 +137,23 @@
     # Size 4, >$50 shelter payment standard: $364
     # Countable income: max(max(1000-90,0)-200,0)*0.5 = 355
     # Net test: 355 < $364 -> Pass
+
+- name: Case 7, adult-only household ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: false
+    # No dependent child -> demographic ineligible
