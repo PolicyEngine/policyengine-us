@@ -1,0 +1,15 @@
+description: Connecticut limits the Temporary Family Assistance program to existing applicant with income below this percentage of federal poverty level.
+
+values:
+  2018-01-01: 1
+  2024-01-01: 2.3
+
+metadata:
+  unit: /1
+  period: month
+  label: Connecticut TFA income limit fpg rate
+  reference:
+    - title: State of Connecticut TANF State Plan 2024-2026
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10
+    - title: Connecticut General Statutes § 17b-112
+      href: https://cga.ct.gov/current/pub/chap_319s.htm#sec_17b-112
