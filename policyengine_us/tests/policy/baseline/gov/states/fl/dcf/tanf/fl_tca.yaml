@@ -1,6 +1,5 @@
 # Tests Florida TCA final benefit amount
 # Formula: Benefit = max(Payment Standard - Net Countable Income, 0)
-# Minimum grant: $10 (if less than $10, pay $0)
 # Source: Florida Statutes 414.095(12), FAC 65A-4.220
 
 - name: Case 1, zero income receives full payment standard.
@@ -43,12 +42,12 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca: 91
+    fl_tca: 136
     # Payment standard: $241 (size 2, >$50 shelter)
-    # Countable earned: max(500 - 200, 0) * 0.5 = 150
-    # Benefit: 241 - 150 = $91
+    # Countable earned: max(max(500-90,0)-200,0)*0.5 = 105
+    # Benefit: 241 - 105 = $136
 
-- name: Case 3, benefit below minimum results in zero.
+- name: Case 3, small benefit with unearned income.
   period: 2024-01
   input:
     people:
@@ -66,13 +65,12 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca: 0
+    fl_tca: 6
     # Payment standard: $241
     # Countable income: $235
-    # Calculated benefit: 241 - 235 = $6
-    # $6 < $10 minimum -> $0
+    # Benefit: 241 - 235 = $6
 
-- name: Case 4, benefit exactly at minimum.
+- name: Case 4, benefit of $10.
   period: 2024-01
   input:
     people:
@@ -93,8 +91,7 @@
     fl_tca: 10
     # Payment standard: $241
     # Countable income: $231
-    # Calculated benefit: 241 - 231 = $10
-    # $10 >= $10 minimum -> $10
+    # Benefit: 241 - 231 = $10
 
 - name: Case 5, ineligible due to income over limit.
   period: 2024-01
@@ -116,8 +113,8 @@
   output:
     fl_tca: 0
     # Payment standard: $241
-    # Countable earned: max(1000 - 200, 0) * 0.5 = 400
-    # 400 > 241 -> Ineligible, $0
+    # Countable earned: max(max(1000-90,0)-200,0)*0.5 = 355
+    # 355 > 241 -> Ineligible, $0
 
 - name: Case 6, zero shelter tier lower payment.
   period: 2024-01
@@ -161,16 +158,16 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca: 203
+    fl_tca: 248
     # Payment standard: $303 (size 3, >$50 shelter)
-    # Countable earned: max(400 - 200, 0) * 0.5 = 100
-    # Benefit: 303 - 100 = $203
+    # Countable earned: max(max(400-90,0)-200,0)*0.5 = 55
+    # Benefit: 303 - 55 = $248
 
 # ============================================================
 # Edge Cases
 # ============================================================
 
-- name: Case 8, benefit exactly at $9 below minimum.
+- name: Case 8, benefit of $9.
   period: 2024-01
   input:
     people:
@@ -188,14 +185,12 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca: 0
+    fl_tca: 9
     # Payment standard: $241
     # Countable income: $232
-    # Calculated benefit: 241 - 232 = $9
-    # $9 < $10 minimum -> $0
-    # Tests: one dollar below minimum threshold
+    # Benefit: 241 - 232 = $9
 
-- name: Case 9, benefit exactly at $11 above minimum.
+- name: Case 9, benefit of $11.
   period: 2024-01
   input:
     people:
@@ -216,11 +211,9 @@
     fl_tca: 11
     # Payment standard: $241
     # Countable income: $230
-    # Calculated benefit: 241 - 230 = $11
-    # $11 >= $10 minimum -> $11
-    # Tests: one dollar above minimum threshold
+    # Benefit: 241 - 230 = $11
 
-- name: Case 10, benefit exactly at $1 below minimum.
+- name: Case 10, benefit of $1.
   period: 2024-01
   input:
     people:
@@ -238,12 +231,10 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca: 0
+    fl_tca: 1
     # Payment standard: $241
     # Countable income: $240
-    # Calculated benefit: 241 - 240 = $1
-    # $1 < $10 minimum -> $0
-    # Tests: very low benefit below minimum
+    # Benefit: 241 - 240 = $1
 
 - name: Case 11, maximum family size 13 full benefit.
   period: 2024-01
@@ -309,9 +300,8 @@
         state_code: FL
   output:
     fl_tca: 0
-    # Gross test: 10,000 - 90 = 9,910 > 185% FPL ($3,151) -> Fail
+    # Gross test: $10,000 > 185% FPL ($3,151) -> Fail
     # Ineligible -> $0
-    # Tests: clearly ineligible high income
 
 - name: Case 13, minimum payment with zero shelter.
   period: 2024-01
@@ -357,9 +347,7 @@
     fl_tca: 0
     # Payment standard: $241
     # Countable income: $241
-    # Calculated benefit: 241 - 241 = $0
-    # $0 < $10 minimum -> $0 (though already zero)
-    # Tests: exact income equals payment standard
+    # Benefit: 241 - 241 = $0
 
 - name: Case 15, income exceeds payment standard negative clip.
   period: 2024-01

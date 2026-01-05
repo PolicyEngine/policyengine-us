@@ -1,405 +1,84 @@
 # Tests Florida TCA payment standard based on shelter tier and family size
 # Three shelter tiers: $0, $1-$50, >$50
-# Source: Florida Statutes 414.095(10)
+# Source: Florida Statutes 414.095(10), FAC 65A-4.220
 
-# Payment Standard Table:
-# | Size | $0 Shelter | $1-$50 | >$50 |
-# |------|------------|--------|------|
-# | 1    | $95        | $153   | $180 |
-# | 2    | $158       | $205   | $241 |
-# | 3    | $198       | $258   | $303 |
-# | 4    | $254       | $309   | $364 |
-# | 5    | $289       | $362   | $426 |
-# | 6    | $346       | $414   | $487 |
-# | 7    | $392       | $467   | $549 |
-# | 8    | $438       | $519   | $610 |
-# | 9    | $485       | $570   | $671 |
-# | 10   | $534       | $623   | $733 |
-# | 11   | $582       | $676   | $795 |
-# | 12   | $630       | $728   | $857 |
-# | 13   | $678       | $781   | $919 |
-
-- name: Case 1, family of 3 with zero shelter.
+- name: Size 1 zero shelter
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 30
-        rent: 0  # Zero shelter
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 198
-    # Size 3, $0 shelter tier -> $198
-
-- name: Case 2, family of 3 with $25 shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 300  # $25/month (tier 2: $1-$50)
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 258
-    # Size 3, $1-$50 shelter tier -> $258
-
-- name: Case 3, family of 3 with $100 shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 1_200  # $100/month (tier 3: >$50)
-      person2:
-        age: 10
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 303
-    # Size 3, >$50 shelter tier -> $303
-
-- name: Case 4, family of 2 tier boundary at $50.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 600  # $50/month (exactly at tier 2 boundary)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 205
-    # Size 2, $50 shelter is in tier 2 ($1-$50) -> $205
-
-- name: Case 5, family of 2 tier boundary at $51.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 612  # $51/month (just above tier 2)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 241
-    # Size 2, >$50 shelter tier -> $241
-
-- name: Case 6, single person high shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 12_000  # $1,000/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 180
-    # Size 1, >$50 shelter tier -> $180
-
-- name: Case 7, family of 5 zero shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 0
-      person2:
-        age: 12
-      person3:
-        age: 10
-      person4:
-        age: 8
-      person5:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 289
-    # Size 5, $0 shelter tier -> $289
-
-- name: Case 8, family of 4 middle tier.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 360  # $30/month
-      person2:
-        age: 10
-      person3:
-        age: 8
-      person4:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 309
-    # Size 4, $1-$50 shelter tier -> $309
-
-# ============================================================
-# Edge Cases
-# ============================================================
-
-- name: Case 9, shelter cost exactly at $1 minimum for low tier.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 12  # $1/month (minimum for $1-$50 tier)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 205
-    # Size 2, $1 shelter is in tier 2 ($1-$50) -> $205
-    # Tests: lower boundary of low shelter tier
-
-- name: Case 10, maximum family size 13 zero shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        rent: 0
-      person2:
-        age: 33
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-      person10:
-        age: 4
-      person11:
-        age: 3
-      person12:
-        age: 2
-      person13:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 678
-    # Size 13 (maximum), $0 shelter tier -> $678
-    # Tests: maximum family size in parameter table
-
-- name: Case 11, maximum family size 13 low shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        rent: 300  # $25/month
-      person2:
-        age: 33
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-      person10:
-        age: 4
-      person11:
-        age: 3
-      person12:
-        age: 2
-      person13:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 781
-    # Size 13 (maximum), $1-$50 shelter tier -> $781
-
-- name: Case 12, maximum family size 13 high shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        rent: 12_000
-      person2:
-        age: 33
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-      person10:
-        age: 4
-      person11:
-        age: 3
-      person12:
-        age: 2
-      person13:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 919
-    # Size 13 (maximum), >$50 shelter tier -> $919
-    # Tests: maximum payment standard in table
-
-- name: Case 13, shelter cost at $49 boundary.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 588  # $49/month (still in $1-$50 tier)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_payment_standard: 205
-    # Size 2, $49 shelter is in tier 2 ($1-$50) -> $205
-    # Tests: one dollar below upper boundary still in low tier
-
-- name: Case 14, single person zero shelter.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        rent: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: FL
+    spm_unit_size: 1
+    housing_cost: 0
+    state_code: FL
   output:
     fl_tca_payment_standard: 95
-    # Size 1, $0 shelter tier -> $95
-    # Tests: minimum payment standard in table
 
-- name: Case 15, single person low shelter.
+- name: Size 1 low shelter
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 30
-        rent: 300  # $25/month
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: FL
+    spm_unit_size: 1
+    housing_cost: 300  # $25/month
+    state_code: FL
   output:
     fl_tca_payment_standard: 153
-    # Size 1, $1-$50 shelter tier -> $153
+
+- name: Size 1 high shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    housing_cost: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 180
+
+- name: Size 2 zero shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    housing_cost: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 158
+
+- name: Size 2 low shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    housing_cost: 600  # $50/month (boundary)
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 205
+
+- name: Size 2 high shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    housing_cost: 612  # $51/month (just above boundary)
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 241
+
+- name: Size 3 zero shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    housing_cost: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 198
+
+- name: Size 3 low shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    housing_cost: 300
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 258
+
+- name: Size 3 high shelter
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    housing_cost: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 303

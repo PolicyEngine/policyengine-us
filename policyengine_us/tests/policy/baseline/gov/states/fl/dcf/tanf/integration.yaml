@@ -66,24 +66,23 @@
         state_code: FL
   output:
     # Income calculations
-    fl_tca_countable_earned_income: 150
+    fl_tca_countable_earned_income: 105
     # Earned: $500/month
-    # Disregard: $200 + 50% of (500-200) = $200 + $150 = $350
-    # Countable: 500 - 350 = 150 (or: max(500-200,0) * 0.5 = 150)
-    fl_tca_countable_income: 150
-    # 150 + 0 = 150
+    # After $90: 410, after $200: 210, * 0.5 = 105
+    fl_tca_countable_income: 105
+    # 105 + 0 = 105
 
     # Eligibility tests
     fl_tca_gross_income_eligible: true
-    # Gross: 500 - 90 = 410 < $3,151 -> Pass
+    # Gross: $500 < $3,151 -> Pass
     fl_tca_net_income_eligible: true
-    # Countable: 150 < 241 -> Pass
+    # Countable: 105 < 241 -> Pass
     fl_tca_eligible: true
 
     # Benefit calculation
     fl_tca_payment_standard: 241
-    fl_tca: 91
-    # Benefit: 241 - 150 = $91
+    fl_tca: 136
+    # Benefit: 241 - 105 = $136
 
 - name: Case 3, family of 3 with zero shelter obligation.
   period: 2024-01
@@ -185,15 +184,15 @@
         state_code: FL
   output:
     # Income calculations
-    fl_tca_countable_earned_income: 400
-    # max(1000-200, 0) * 0.5 = 400
-    fl_tca_countable_income: 400
+    fl_tca_countable_earned_income: 355
+    # After $90: 910, after $200: 710, * 0.5 = 355
+    fl_tca_countable_income: 355
 
     # Eligibility tests
     fl_tca_gross_income_eligible: true
-    # 1000 - 90 = 910 < $3,151 -> Pass
+    # Gross: $1,000 < $3,151 -> Pass
     fl_tca_net_income_eligible: false
-    # 400 > $241 -> Fail
+    # 355 > $241 -> Fail
     fl_tca_eligible: false
     # Failed net test
 
@@ -220,17 +219,17 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 1_900
-    # max(4000-200, 0) * 0.5 = 1,900
-    fl_tca_countable_income: 1_900
+    fl_tca_countable_earned_income: 1_855
+    # After $90: 3910, after $200: 3710, * 0.5 = 1,855
+    fl_tca_countable_income: 1_855
     fl_tca_gross_income_eligible: false
-    # 4000 - 90 = 3910 > $3,151 -> Fail
+    # Gross: $4,000 > $3,151 -> Fail
     fl_tca_net_income_eligible: false
-    # 1900 > $241 -> Also fails
+    # 1,855 > $241 -> Also fails
     fl_tca_eligible: false
     fl_tca: 0
 
-- name: Case 8, benefit below $10 minimum.
+- name: Case 8, small benefit with unearned income.
   period: 2024-01
   input:
     people:
@@ -256,9 +255,8 @@
     # 235 < $241 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 0
-    # Calculated benefit: 241 - 235 = $6
-    # $6 < $10 minimum -> $0
+    fl_tca: 6
+    # Benefit: 241 - 235 = $6
 
 - name: Case 9, two parents with two children eligible.
   period: 2024-01
@@ -282,20 +280,20 @@
         members: [person1, person2, person3, person4]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 50
-    # max(300-200, 0) * 0.5 = 50
-    fl_tca_countable_income: 50
+    fl_tca_countable_earned_income: 5
+    # After $90: 210, after $200: 10, * 0.5 = 5
+    fl_tca_countable_income: 5
     fl_tca_gross_income_eligible: true
-    # 300 - 90 = 210 < 185% FPL for 4 ($4,810) -> Pass
+    # Gross: $300 < 185% FPL for 4 ($4,810) -> Pass
     fl_tca_net_income_eligible: true
-    # 50 < $364 -> Pass
+    # 5 < $364 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 364
     # Size 4, >$50 shelter
-    fl_tca: 314
-    # 364 - 50 = $314
+    fl_tca: 359
+    # 364 - 5 = $359
 
-- name: Case 10, mixed income sources with benefit below minimum.
+- name: Case 10, mixed income sources.
   period: 2024-01
   input:
     people:
@@ -316,19 +314,18 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 100
-    # max(400-200, 0) * 0.5 = 100
-    fl_tca_countable_income: 300
-    # 100 + 200 = 300
+    fl_tca_countable_earned_income: 55
+    # After $90: 310, after $200: 110, * 0.5 = 55
+    fl_tca_countable_income: 255
+    # 55 + 200 = 255
     fl_tca_gross_income_eligible: true
-    # (400 - 90) + 200 = 510 < $3,981 -> Pass
+    # Gross: 400 + 200 = 600 < $3,981 -> Pass
     fl_tca_net_income_eligible: true
-    # 300 < $303 -> Pass
+    # 255 < $303 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 303
-    fl_tca: 0
-    # Calculated: 303 - 300 = $3
-    # $3 < $10 minimum -> $0
+    fl_tca: 48
+    # Benefit: 303 - 255 = $48
 
 - name: Case 11, larger family size 5 zero income.
   period: 2024-01
@@ -365,7 +362,7 @@
 # Edge Case Integration Tests
 # ============================================================
 
-- name: Case 12, earned income exactly $200 full disregard.
+- name: Case 12, earned income $200 below $290 threshold.
   period: 2024-01
   input:
     people:
@@ -384,16 +381,16 @@
         state_code: FL
   output:
     fl_tca_countable_earned_income: 0
-    # max(200-200, 0) * 0.5 = 0
+    # After $90: 110, after $200: 0, * 0.5 = 0
     fl_tca_countable_income: 0
     fl_tca_gross_income_eligible: true
-    # 200 - 90 = 110 < $3,151 -> Pass
+    # Gross: $200 < $3,151 -> Pass
     fl_tca_net_income_eligible: true
     # 0 < 241 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
     fl_tca: 241
-    # Full benefit when earned income exactly at disregard
+    # Full benefit when earned income below $290 threshold
 
 - name: Case 13, shelter cost exactly at $50 boundary.
   period: 2024-01
@@ -445,7 +442,7 @@
     # $51 shelter is in >$50 tier -> $241
     fl_tca: 241
 
-- name: Case 15, benefit exactly at $10 minimum.
+- name: Case 15, benefit of $10.
   period: 2024-01
   input:
     people:
@@ -471,9 +468,9 @@
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
     fl_tca: 10
-    # 241 - 231 = $10 (exactly at minimum)
+    # Benefit: 241 - 231 = $10
 
-- name: Case 16, benefit $9 below minimum.
+- name: Case 16, benefit of $9.
   period: 2024-01
   input:
     people:
@@ -497,8 +494,8 @@
     fl_tca_net_income_eligible: true
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 0
-    # 241 - 232 = $9 < $10 minimum -> $0
+    fl_tca: 9
+    # Benefit: 241 - 232 = $9
 
 - name: Case 17, multiple earners with varying income.
   period: 2024-01
@@ -521,21 +518,18 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 150
+    fl_tca_countable_earned_income: 105
     # Combined: 300 + 200 = 500
-    # Countable: max(500-200, 0) * 0.5 = 150
-    fl_tca_countable_income: 150
+    # After $90: 410, after $200: 210, * 0.5 = 105
+    fl_tca_countable_income: 105
     fl_tca_gross_income_eligible: true
-    # Per-earner $90 deduction:
-    # Person1: max(300-90, 0) = 210
-    # Person2: max(200-90, 0) = 110
-    # Adjusted: 210 + 110 = 320 < $3,981 -> Pass
+    # Gross: $500 < $3,981 -> Pass
     fl_tca_net_income_eligible: true
-    # 150 < 303 -> Pass
+    # 105 < 303 -> Pass
     fl_tca_eligible: true
     fl_tca_payment_standard: 303
-    fl_tca: 153
-    # 303 - 150 = $153
+    fl_tca: 198
+    # 303 - 105 = $198
 
 - name: Case 18, assets at limit with income.
   period: 2024-01
@@ -556,17 +550,17 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 50
-    # max(300-200, 0) * 0.5 = 50
-    fl_tca_countable_income: 50
-    fl_tca_resource_eligible: true
+    fl_tca_countable_earned_income: 5
+    # After $90: 210, after $200: 10, * 0.5 = 5
+    fl_tca_countable_income: 5
+    fl_tca_resources_eligible: true
     # 2,000 <= 2,000 -> Pass
     fl_tca_gross_income_eligible: true
     fl_tca_net_income_eligible: true
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 191
-    # 241 - 50 = $191
+    fl_tca: 236
+    # 241 - 5 = $236
 
 - name: Case 19, assets over limit ineligible.
   period: 2024-01
@@ -587,7 +581,7 @@
         state_code: FL
   output:
     fl_tca_countable_income: 0
-    fl_tca_resource_eligible: false
+    fl_tca_resources_eligible: false
     # 2,001 > 2,000 -> Fail
     fl_tca_gross_income_eligible: true
     fl_tca_net_income_eligible: true

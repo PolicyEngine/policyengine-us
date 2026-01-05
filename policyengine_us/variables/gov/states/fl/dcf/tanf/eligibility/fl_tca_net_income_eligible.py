@@ -8,7 +8,7 @@ class fl_tca_net_income_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0414/Sections/0414.095.html",
-        "https://flrules.org/gateway/RuleNo.asp?id=65A-4.220",
+        "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-65A-4-220",
     )
     defined_for = StateCode.FL
 

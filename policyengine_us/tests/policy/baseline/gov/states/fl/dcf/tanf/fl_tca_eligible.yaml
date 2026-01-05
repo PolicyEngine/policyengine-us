@@ -42,8 +42,8 @@
         state_code: FL
   output:
     fl_tca_eligible: false
-    # Gross test: 1000 - 90 = 910 < 185% FPL ($3,151) -> Pass
-    # Net test: max(1000 - 200, 0) * 0.5 = 400 > $241 -> Fail
+    # Gross test: $1,000 < 185% FPL ($3,151) -> Pass
+    # Net test: max(max(1000-90,0)-200,0)*0.5 = 355 > $241 -> Fail
     # Must pass BOTH tests
 
 - name: Case 3, fails gross income test.
@@ -65,7 +65,7 @@
         state_code: FL
   output:
     fl_tca_eligible: false
-    # Gross test: 4000 - 90 = 3910 > 185% FPL ($3,151) -> Fail
+    # Gross test: $4,000 > 185% FPL ($3,151) -> Fail
 
 - name: Case 4, parent with one child eligible.
   period: 2024-01
@@ -108,8 +108,8 @@
         state_code: FL
   output:
     fl_tca_eligible: true
-    # Gross test: 500 - 90 = 410 < 185% FPL -> Pass
-    # Net test: max(500 - 200, 0) * 0.5 = 150 < $241 -> Pass
+    # Gross test: $500 < 185% FPL -> Pass
+    # Net test: max(max(500-90,0)-200,0)*0.5 = 105 < $241 -> Pass
 
 - name: Case 6, larger family with higher thresholds.
   period: 2024-01
@@ -133,7 +133,7 @@
         members: [person1, person2, person3, person4]
         state_code: FL
   output:
-    fl_tca_eligible: false
+    fl_tca_eligible: true
     # Size 4, >$50 shelter payment standard: $364
-    # Countable income: max(1000 - 200, 0) * 0.5 = 400
-    # Net test: 400 > $364 -> Fail
+    # Countable income: max(max(1000-90,0)-200,0)*0.5 = 355
+    # Net test: 355 < $364 -> Pass

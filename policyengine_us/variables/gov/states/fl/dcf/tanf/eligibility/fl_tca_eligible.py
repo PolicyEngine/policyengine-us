@@ -28,7 +28,7 @@ class fl_tca_eligible(Variable):
         net_income_eligible = spm_unit("fl_tca_net_income_eligible", period)
 
         # Must pass resource test
-        resource_eligible = spm_unit("fl_tca_resource_eligible", period)
+        resource_eligible = spm_unit("fl_tca_resources_eligible", period)
 
         return (
             demographic_eligible

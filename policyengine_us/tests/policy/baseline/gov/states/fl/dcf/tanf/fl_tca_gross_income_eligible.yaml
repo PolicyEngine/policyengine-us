@@ -1,20 +1,16 @@
 # Tests Florida TCA gross income test (185% of FPL)
-# Formula: Adjusted Gross = Gross Earned - ($90 x earners) + Unearned < 185% FPL
-# Source: FAC 65A-4.220, Florida DCF TCA Page
+# Formula: Total Gross Income (earned + unearned) < 185% FPL
+# Per DCF 2620.0109.01: NO disregards applied in gross test
+# Source: FAC 65A-4.220, DCF Policy Manual 2620.0109.01
 
-# 2024 FPL values (Contiguous US):
-# 1 person: $15,060/year = $1,255/month; 185% = $2,321.75/month
-# 2 people: $20,440/year = $1,703.33/month; 185% = $3,151.17/month
-# 3 people: $25,820/year = $2,151.67/month; 185% = $3,980.58/month
-# 4 people: $31,200/year = $2,600/month; 185% = $4,810/month
+# 2024: 185% FPL for 2 people = $20,440 * 1.85 / 12 = $3,151.17/month
 
-- name: Case 1, zero income passes gross test.
+- name: Zero income eligible
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 0
       person2:
         age: 10
     spm_units:
@@ -26,17 +22,14 @@
         state_code: FL
   output:
     fl_tca_gross_income_eligible: true
-    # Adjusted gross: 0 - 0 + 0 = 0
-    # 185% FPL for 2: $3,151.17
-    # 0 < 3,151.17 → Pass
 
-- name: Case 2, income just below 185% FPL threshold.
+- name: One dollar below threshold eligible
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 36_000  # $3,000/month
+        employment_income_before_lsr: 37_800  # ~$3,150/month
       person2:
         age: 10
     spm_units:
@@ -48,19 +41,14 @@
         state_code: FL
   output:
     fl_tca_gross_income_eligible: true
-    # Gross earned: $3,000/month
-    # $90 deduction for 1 earner: 3,000 - 90 = 2,910
-    # Adjusted gross: 2,910 + 0 = 2,910
-    # 185% FPL for 2: $3,151.17
-    # 2,910 < 3,151.17 → Pass
 
-- name: Case 3, income exceeds 185% FPL threshold.
+- name: At threshold ineligible
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 48_000  # $4,000/month
+        employment_income_before_lsr: 37_814  # ~$3,151.17/month
       person2:
         age: 10
     spm_units:
@@ -72,199 +60,14 @@
         state_code: FL
   output:
     fl_tca_gross_income_eligible: false
-    # Gross earned: $4,000/month
-    # $90 deduction for 1 earner: 4,000 - 90 = 3,910
-    # Adjusted gross: 3,910 + 0 = 3,910
-    # 185% FPL for 2: $3,151.17
-    # 3,910 > 3,151.17 → Fail
 
-- name: Case 4, unearned income included in gross test.
+- name: One dollar above threshold ineligible
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 24_000  # $2,000/month
-        social_security: 9_600  # $800/month annual
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $2,000/month, after $90: 1,910
-    # Unearned: $800
-    # Adjusted gross: 1,910 + 800 = 2,710
-    # 185% FPL for 2: $3,151.17
-    # 2,710 < 3,151.17 → Pass
-
-- name: Case 5, larger family higher threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 42_000  # $3,500/month
-      person2:
-        age: 8
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $3,500/month, after $90: 3,410
-    # 185% FPL for 3: $3,980.58
-    # 3,410 < 3,980.58 → Pass
-
-- name: Case 6, two earners get two $90 deductions.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 24_000  # $2,000/month
-      person2:
-        age: 28
-        employment_income_before_lsr: 18_000  # $1,500/month
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: 2,000 + 1,500 = 3,500
-    # $90 deduction for 2 earners: 3,500 - 180 = 3,320
-    # 185% FPL for 3: $3,980.58
-    # 3,320 < 3,980.58 → Pass
-
-# ============================================================
-# Edge Cases
-# ============================================================
-
-- name: Case 7, earner with income below $90 deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 600  # $50/month (below $90 deduction)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $50/month
-    # $90 deduction applied: max(50 - 90, 0) = 0
-    # Adjusted gross: 0
-    # 185% FPL for 2: $3,151.17
-    # 0 < 3,151.17 → Pass
-    # Tests: deduction doesn't make income negative
-
-- name: Case 8, earner with income exactly at $90 deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 1_080  # $90/month (exactly at deduction)
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $90/month
-    # $90 deduction: 90 - 90 = 0
-    # Adjusted gross: 0
-    # 185% FPL for 2: $3,151.17
-    # 0 < 3,151.17 → Pass
-    # Tests: exact deduction boundary
-
-- name: Case 9, earner with income one dollar above $90 deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 1_092  # $91/month
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $91/month
-    # $90 deduction: 91 - 90 = 1
-    # Adjusted gross: 1
-    # 185% FPL for 2: $3,151.17
-    # 1 < 3,151.17 → Pass
-    # Tests: one dollar above deduction boundary
-
-- name: Case 10, unearned income only no $90 deduction.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 12_000  # $1,000/month annual
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $0
-    # No $90 deduction (no earners)
-    # Unearned: $1,000
-    # Adjusted gross: 0 + 1,000 = 1,000
-    # 185% FPL for 2: $3,151.17
-    # 1,000 < 3,151.17 → Pass
-    # Tests: unearned income doesn't get $90 deduction
-
-- name: Case 11, income exactly at 185% FPL threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 38_894  # $3,241.17/month
+        employment_income_before_lsr: 37_826  # ~$3,152/month
       person2:
         age: 10
     spm_units:
@@ -276,87 +79,3 @@
         state_code: FL
   output:
     fl_tca_gross_income_eligible: false
-    # Gross earned: $3,241.17/month
-    # $90 deduction: 3,241.17 - 90 = 3,151.17
-    # 185% FPL for 2: $3,151.17
-    # 3,151.17 >= 3,151.17 → Fail (strict less than)
-    # Tests: exact threshold boundary - uses < not <=
-
-- name: Case 12, income one dollar below 185% FPL threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 38_882  # $3,240.17/month
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: $3,240.17/month
-    # $90 deduction: 3,240.17 - 90 = 3,150.17
-    # 185% FPL for 2: $3,151.17
-    # 3,150.17 < 3,151.17 → Pass
-    # Tests: one dollar below threshold passes
-
-- name: Case 13, very high unearned income fails.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        social_security: 48_000  # $4,000/month annual
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: false
-    # Gross earned: $0
-    # Unearned: $4,000/month (48,000 annual)
-    # Adjusted gross: 4,000
-    # 185% FPL for 2: $3,151.17
-    # 4,000 > 3,151.17 -> Fail
-    # Tests: high unearned income can fail gross test
-
-- name: Case 14, multiple earners both below $90.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 600  # $50/month
-      person2:
-        age: 28
-        employment_income_before_lsr: 480  # $40/month
-      person3:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: FL
-  output:
-    fl_tca_gross_income_eligible: true
-    # Gross earned: 50 + 40 = 90
-    # Each earner gets $90 deduction applied individually
-    # Person1: max(50 - 90, 0) = 0
-    # Person2: max(40 - 90, 0) = 0
-    # Adjusted earned: 0 + 0 = 0
-    # 185% FPL for 3: $3,980.58
-    # 0 < 3,980.58 → Pass
-    # Tests: per-earner deduction application

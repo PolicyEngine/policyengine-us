@@ -1,14 +1,14 @@
 from policyengine_us.model_api import *
 
 
-class fl_tca_resource_eligible(Variable):
+class fl_tca_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Florida TCA resource eligible"
     definition_period = MONTH
     reference = (
+        "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-65A-1-716",
         "https://www.myflfamilies.com/services/public-assistance/temporary-cash-assistance",
-        "https://flrules.org/gateway/RuleNo.asp?id=65A-4.208",
     )
     defined_for = StateCode.FL
 
