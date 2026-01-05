@@ -230,13 +230,15 @@
   output:
     # AGI: $55,000
     # Standard deduction: $6,180 (HOH)
-    # Exemptions: $9,160 (HOH base) + $2,320 (dependent) = $11,480
-    # Taxable income: $55,000 - $6,180 - $11,480 = $37,340
-    # Tax: $23,000 * 0.052 + ($37,340 - $23,000) * 0.0558
-    #    = $1,196 + $14,340 * 0.0558 = $1,196 + $800.17 = $1,996.17
-    ks_exemptions: 11_480
-    ks_taxable_income: 37_340
-    ks_income_tax_before_credits: 1_996.17
+    # Exemptions: $9,160 (HOH base) + $2,320 (dependent) + $2,320 (HOH additional) = $13,800
+    # Per Kansas K-40 instructions, HOH filers get an additional $2,320 exemption
+    # Reference: 2025 Form K-40 instructions, Exemptions and Dependents section
+    # Taxable income: $55,000 - $6,180 - $13,800 = $35,020
+    # Tax: $23,000 * 0.052 + ($35,020 - $23,000) * 0.0558
+    #    = $1,196 + $12,020 * 0.0558 = $1,196 + $670.72 = $1,866.72
+    ks_exemptions: 13_800
+    ks_taxable_income: 35_020
+    ks_income_tax_before_credits: 1_866.72
 
 # =============================================================================
 # MARRIED FILING SEPARATELY TESTS
@@ -346,8 +348,12 @@
         state_code: KS
   output:
     # Kansas EITC = 17% of federal EITC
-    # The federal EITC for 1 child varies, but the 17% rate should apply
-    ks_refundable_eitc: 712.25
+    # Federal EITC for this scenario: ~$4,064
+    # Total Kansas EITC: $4,064 * 0.17 = ~$691
+    # This is split into nonrefundable (offsets tax liability) and refundable portions
+    # ks_nonrefundable_eitc offsets tax first, remainder is refundable
+    # Total EITC = ks_nonrefundable_eitc + ks_refundable_eitc
+    ks_total_eitc: 691
 
 # =============================================================================
 # FOOD SALES TAX CREDIT SUNSET VERIFICATION
@@ -447,10 +453,14 @@
         state_code: KS
   output:
     # Very low income - should be below zero tax threshold
-    # Taxable income would be negative due to exemptions
+    # Taxable income: $5,000 - $3,605 - $9,160 = negative, clipped to $0
+    # Tax before credits: $0
+    # Refundable EITC still applies, resulting in negative income tax (refund)
+    # Federal EITC for $5,000 income: ~$383 (34% phase-in for single filer no children)
+    # Kansas refundable EITC: $383 * 0.17 = ~$65
     ks_taxable_income: 0
     ks_income_tax_before_credits: 0
-    ks_income_tax: 0
+    ks_income_tax: -65.025
 
 # =============================================================================
 # SOCIAL SECURITY EXEMPTION TEST (100% exempt from 2024+)
@@ -483,9 +493,10 @@
     # Social Security is fully exempt from Kansas tax
     # Only pension income is taxed
     # AGI (for KS): $20,000 (pension only, SS subtracted)
-    # Standard deduction: $3,605
+    # Standard deduction: $3,605 + $850 (elderly extra) = $4,455
+    # Person is 68, so they qualify for the elderly extra standard deduction
     # Exemptions: $9,160
-    # Taxable income: $20,000 - $3,605 - $9,160 = $7,235
-    # Tax: $7,235 * 0.052 = $376.22
-    ks_taxable_income: 7_235
-    ks_income_tax_before_credits: 376.22
+    # Taxable income: $20,000 - $4,455 - $9,160 = $6,385
+    # Tax: $6,385 * 0.052 = $332.02
+    ks_taxable_income: 6_385
+    ks_income_tax_before_credits: 332.02
