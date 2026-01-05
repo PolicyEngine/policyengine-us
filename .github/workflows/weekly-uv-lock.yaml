@@ -39,14 +39,28 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Create changelog entry
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          cat > changelog_entry.yaml << 'EOF'
+          - bump: patch
+            changes:
+              changed:
+              - Updated uv.lock dependencies.
+          EOF
+
+      - name: Format code
+        if: steps.changes.outputs.changed == 'true'
+        run: make format
+
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b bot/weekly-uv-lock-update
-          git add uv.lock
-          git commit -m "Update uv.lock dependencies"
+          git add uv.lock changelog_entry.yaml
+          git commit -m "chore: Update uv.lock dependencies"
           git push -f origin bot/weekly-uv-lock-update
 
       - name: Create Pull Request
