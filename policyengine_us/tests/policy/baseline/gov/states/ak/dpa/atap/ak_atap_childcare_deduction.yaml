@@ -92,7 +92,29 @@
     # Disregard = min($300, $200) = $200 (capped)
     ak_atap_childcare_deduction: 200
 
-- name: Case 5, one child age 2 or older, expenses below cap.
+- name: Case 5, one child exactly age 2 (boundary), expenses at cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month annual = $2,400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 2: cap = $175/month (age 2 and older)
+    # Monthly expenses = $2,400 / 12 = $200
+    # Disregard = min($200, $175) = $175 (capped at $175)
+    ak_atap_childcare_deduction: 175
+
+- name: Case 6, one child age 2 or older, expenses below cap.
   period: 2024-01
   input:
     people:
@@ -114,7 +136,7 @@
     # Disregard = min($100, $175) = $100
     ak_atap_childcare_deduction: 100
 
-- name: Case 6, one child age 2 or older, expenses above cap.
+- name: Case 7, one child age 2 or older, expenses above cap.
   period: 2024-01
   input:
     people:
@@ -136,7 +158,7 @@
     # Disregard = min($250, $175) = $175 (capped)
     ak_atap_childcare_deduction: 175
 
-- name: Case 7, two children mixed ages, expenses above combined cap.
+- name: Case 8, two children mixed ages, expenses above combined cap.
   period: 2024-01
   input:
     people:
@@ -162,7 +184,7 @@
     # Disregard = min($400, $375) = $375 (capped at combined limit)
     ak_atap_childcare_deduction: 375
 
-- name: Case 8, two children mixed ages, expenses below combined cap.
+- name: Case 9, two children mixed ages, expenses below combined cap.
   period: 2024-01
   input:
     people:
@@ -188,7 +210,7 @@
     # Disregard = min($300, $375) = $300 (expenses below cap)
     ak_atap_childcare_deduction: 300
 
-- name: Case 9, zero childcare expenses.
+- name: Case 10, zero childcare expenses.
   period: 2024-01
   input:
     people:

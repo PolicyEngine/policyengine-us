@@ -99,6 +99,36 @@
     # Size 8: $3,351
     ak_atap_need_standard: 3_351
 
+- name: Family size 9 (first beyond table, uses additional_person)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: AK
+  output:
+    # Size 9: $3,351 (size 8) + 1 * $242 = $3,593
+    ak_atap_need_standard: 3_593
+
 - name: Family size 10 (beyond table, uses additional_person)
   period: 2026-01
   input:

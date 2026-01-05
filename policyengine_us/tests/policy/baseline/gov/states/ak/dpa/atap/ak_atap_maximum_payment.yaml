@@ -71,6 +71,36 @@
     # 3 dependents: $821 + 2 * $102 = $1,025
     ak_atap_maximum_payment: 1_025
 
+- name: Family size 9 (1 adult, 8 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: AK
+  output:
+    # 8 dependents: $821 + 7 * $102 = $1,535
+    ak_atap_maximum_payment: 1_535
+
 - name: Family size 10 (1 adult, 9 dependents)
   period: 2026-01
   input:

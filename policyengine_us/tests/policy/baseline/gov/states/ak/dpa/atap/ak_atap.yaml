@@ -1,8 +1,8 @@
 # Unit tests for Alaska ATAP final benefit amount
 # 7 AAC 45.525 - Determining the amount of payment
 # https://www.law.cornell.edu/regulations/alaska/7-AAC-45.525
-# Formula: (Need Standard - Countable Income) * (Max Payment / Need Standard)
-# The ratio (Max Payment / Need Standard) is the "ratable reduction" (~43% for 2026)
+# Formula: (Need Standard - Countable Income) * (Size 2 Max / Size 2 Need)
+# The ratio uses fixed size-2 values: $821 / $1,908 = 0.4303 for 2026
 
 - name: Ineligible receives zero
   period: 2026-01
@@ -97,6 +97,7 @@
 
 - name: Family of 3 zero income
   period: 2026-01
+  absolute_error_margin: 0.1
   input:
     people:
       adult:
@@ -111,14 +112,13 @@
         ak_atap_eligible: true
         ak_atap_need_standard: 2_149
         ak_atap_countable_income: 0
-        ak_atap_maximum_payment: 923
     households:
       household:
         members: [adult, child1, child2]
         state_code: AK
   output:
-    # ($2,149 - $0) * ($923 / $2,149) = $2,149 * 0.4295 = $923
-    ak_atap: 923
+    # ($2,149 - $0) * ($821 / $1,908) = $2,149 * 0.4303 = $924.70
+    ak_atap: 924.70
 
 - name: Family of 3 with $500 countable income
   period: 2026-01
@@ -137,11 +137,10 @@
         ak_atap_eligible: true
         ak_atap_need_standard: 2_149
         ak_atap_countable_income: 500
-        ak_atap_maximum_payment: 923
     households:
       household:
         members: [adult, child1, child2]
         state_code: AK
   output:
-    # ($2,149 - $500) * ($923 / $2,149) = $1,649 * 0.4295 = $708.26
-    ak_atap: 708.26
+    # ($2,149 - $500) * ($821 / $1,908) = $1,649 * 0.4303 = $709.55
+    ak_atap: 709.55
