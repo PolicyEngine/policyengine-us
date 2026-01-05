@@ -32,7 +32,7 @@ class mn_minnesotacare_children_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.mn.dhs.minnesotacare.kids.eligibility
+        ).gov.states.mn.dhs.minnesotacare.child.eligibility
 
         # Program must be in effect (started January 1, 2025)
         in_effect = p.in_effect
