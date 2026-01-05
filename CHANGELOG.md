@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.497.0] - 2026-01-05 21:26:26
+
+### Added
+
+- Create reform to separate dependent children from Virginia personal exemption.
+
 ## [1.496.2] - 2026-01-05 16:26:06
 
 ### Changed
@@ -14223,6 +14229,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.2...1.497.0
 [1.496.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.1...1.496.2
 [1.496.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.0...1.496.1
 [1.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.495.0...1.496.0
