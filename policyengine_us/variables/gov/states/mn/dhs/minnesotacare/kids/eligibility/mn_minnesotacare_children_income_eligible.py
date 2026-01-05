@@ -19,7 +19,7 @@ class mn_minnesotacare_children_income_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.mn.dhs.minnesotacare.children.eligibility
+        ).gov.states.mn.dhs.minnesotacare.kids.eligibility
 
         # Use MAGI-based income level (as fraction of FPL)
         income_level = person("medicaid_income_level", period)
