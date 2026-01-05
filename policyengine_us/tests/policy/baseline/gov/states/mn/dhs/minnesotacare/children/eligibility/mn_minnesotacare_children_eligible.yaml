@@ -43,7 +43,7 @@
   output:
     mn_minnesotacare_children_eligible: false
 
-- name: Ineligible - undocumented adult (must be under 19)
+- name: Ineligible - undocumented adult (must be under 18)
   period: 2025
   input:
     households:

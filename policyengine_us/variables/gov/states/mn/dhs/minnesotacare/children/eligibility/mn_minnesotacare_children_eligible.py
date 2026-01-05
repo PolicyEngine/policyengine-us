@@ -37,7 +37,7 @@ class mn_minnesotacare_children_eligible(Variable):
         # Program must be in effect (started January 1, 2025)
         in_effect = p.in_effect
 
-        # Must be under age 19
+        # Must be under age 18 per subdivision 10(c)
         age = person("age", period)
         age_eligible = age < p.age_limit
 
