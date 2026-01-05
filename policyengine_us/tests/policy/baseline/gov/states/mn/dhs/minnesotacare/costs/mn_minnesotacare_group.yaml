@@ -1,0 +1,44 @@
+- name: Eligible child maps to CHILD group
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+  output:
+    mn_minnesotacare_group: CHILD
+
+- name: Ineligible person maps to NONE group
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [adult]
+    people:
+      adult:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+  output:
+    mn_minnesotacare_group: NONE
+
+- name: Undocumented child over income maps to NONE
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 2.5  # Over 200% FPL
+  output:
+    mn_minnesotacare_group: NONE
