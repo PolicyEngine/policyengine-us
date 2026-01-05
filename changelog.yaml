@@ -12100,3 +12100,71 @@
       0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final
       rates into independent parameters.
   date: 2026-01-02 21:22:24
+- bump: minor
+  changes:
+    added:
+    - Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI
+      thresholds (6% rate above $150k joint, $75k other).
+  date: 2026-01-04 20:46:59
+- bump: minor
+  changes:
+    added:
+    - Hawaii TANF (Temporary Assistance for Needy Families) program
+  date: 2026-01-04 21:45:18
+- bump: minor
+  changes:
+    added:
+    - Add New Hampshire FANF (Financial Assistance to Needy Families) program with
+      eligibility determination, payment standard (60% FPG), earned income disregards,
+      and benefit calculation.
+  date: 2026-01-04 22:05:35
+- bump: minor
+  changes:
+    added:
+    - Implemented Maine TANF program
+  date: 2026-01-04 22:11:59
+- bump: minor
+  changes:
+    added:
+    - South Dakota Temporary Assistance for Needy Families (TANF) program
+  date: 2026-01-04 22:20:49
+- bump: minor
+  changes:
+    added:
+    - Add Delaware TANF (Temporary Assistance for Needy Families)
+  date: 2026-01-04 22:56:53
+- bump: minor
+  changes:
+    added:
+    - Implement Rhode Island TANF (Rhode Island Works) program
+  date: 2026-01-04 23:28:13
+- bump: minor
+  changes:
+    added:
+    - Connecticut Temporary Family Assistance (TFA/TANF)
+  date: 2026-01-05 00:02:11
+- bump: minor
+  changes:
+    added:
+    - West Virginia Works program implementation
+  date: 2026-01-05 00:18:02
+- bump: minor
+  changes:
+    added:
+    - Nevada TANF (Temporary Assistance for Needy Families) program
+  date: 2026-01-05 00:20:33
+- bump: minor
+  changes:
+    added:
+    - Tennessee TANF (Families First) program implementation
+  date: 2026-01-05 00:21:45
+- bump: patch
+  changes:
+    changed:
+    - Updated weekly uv.lock workflow to include changelog entry.
+  date: 2026-01-05 15:41:57
+- bump: patch
+  changes:
+    changed:
+    - Updated weekly uv.lock workflow to include changelog entry.
+  date: 2026-01-05 16:26:06
