@@ -13,12 +13,14 @@ class mn_minnesotacare_children_eligible(Variable):
     ]
     documentation = """
     MinnesotaCare provides state-funded health coverage for undocumented
-    children under age 19 with family income at or below 200% FPL.
+    children under age 18 with family income at or below 200% FPL.
 
     The 2023 Minnesota Legislature expanded MinnesotaCare to include
     undocumented individuals, with coverage beginning January 1, 2025.
-    While coverage for undocumented adults was later restricted effective
-    June 15, 2025, children under 19 continue to be eligible.
+    Per subdivision 10(c), undocumented noncitizens age 18 or older have
+    restricted eligibility (only those enrolled as of June 15, 2025, and
+    losing eligibility January 1, 2026). Children under 18 continue to
+    be eligible.
 
     Per Minnesota Statutes 256L.04 subdivision 10:
     "Notwithstanding subdivisions 1 and 7, eligible persons include families

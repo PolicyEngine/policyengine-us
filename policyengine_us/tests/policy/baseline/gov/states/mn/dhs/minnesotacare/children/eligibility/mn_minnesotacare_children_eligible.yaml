@@ -88,7 +88,22 @@
   output:
     mn_minnesotacare_children_eligible: true
 
-- name: Eligible 18-year-old (still under 19)
+- name: Eligible 17-year-old (still under 18)
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [teen]
+    people:
+      teen:
+        age: 17
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+  output:
+    mn_minnesotacare_children_eligible: true
+
+- name: Ineligible 18-year-old (at age limit)
   period: 2025
   input:
     households:
@@ -98,21 +113,6 @@
     people:
       teen:
         age: 18
-        immigration_status: UNDOCUMENTED
-        medicaid_income_level: 1.5
-  output:
-    mn_minnesotacare_children_eligible: true
-
-- name: Ineligible 19-year-old (at age limit)
-  period: 2025
-  input:
-    households:
-      household:
-        state_code: MN
-        members: [teen]
-    people:
-      teen:
-        age: 19
         immigration_status: UNDOCUMENTED
         medicaid_income_level: 1.5
   output:
