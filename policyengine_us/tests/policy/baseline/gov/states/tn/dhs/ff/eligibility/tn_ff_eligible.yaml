@@ -1,0 +1,166 @@
+- name: Case 1, eligible household with no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: true
+
+- name: Case 2, income over limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # GIS size 2 = $1,370 * 1.85 = $2,534.50
+    # Gross: $2,000 < $2,534.50 - passes GIS test
+    # Countable: $2,000 - $250 = $1,750 > CNS ($1,370) - fails
+    tn_ff_eligible: false
+
+- name: Case 3, resources over limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: false
+
+- name: Case 4, no child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: false
+
+- name: Case 5, child exactly age 17 is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: true
+
+- name: Case 6, child exactly age 18 is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: false
+
+- name: Case 7, multiple children with youngest under 18.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
+      person3:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    tn_ff_eligible: true
+
+- name: Case 8, single adult is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_eligible: false
+
+- name: Case 9, parent with infant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 22
+      person2:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_eligible: true
