@@ -1,0 +1,70 @@
+# Unit tests for wv_works_eligible
+# Tests combined eligibility determination
+# Requires: income eligible + demographic eligible + resource eligible + immigration eligible
+# Source: WV DHHR WV WORKS Program Page; WV Income Maintenance Manual Chapters 15, 11, 18
+
+- name: Case 1, all eligibility criteria met.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: true
+    is_demographic_tanf_eligible: true
+    wv_works_resources_eligible: true
+    is_citizen_or_legal_immigrant: true
+  output:
+    wv_works_eligible: true
+
+- name: Case 2, income ineligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: false
+    is_demographic_tanf_eligible: true
+    wv_works_resources_eligible: true
+    is_citizen_or_legal_immigrant: true
+  output:
+    wv_works_eligible: false
+
+- name: Case 3, no eligible child or pregnant woman.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: true
+    is_demographic_tanf_eligible: false
+    wv_works_resources_eligible: true
+    is_citizen_or_legal_immigrant: true
+  output:
+    wv_works_eligible: false
+
+- name: Case 4, resources over limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: true
+    is_demographic_tanf_eligible: true
+    wv_works_resources_eligible: false
+    is_citizen_or_legal_immigrant: true
+  output:
+    wv_works_eligible: false
+
+- name: Case 5, not a citizen or legal immigrant.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: true
+    is_demographic_tanf_eligible: true
+    wv_works_resources_eligible: true
+    is_citizen_or_legal_immigrant: false
+  output:
+    wv_works_eligible: false
+
+- name: Case 6, multiple eligibility failures.
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_income_eligible: false
+    is_demographic_tanf_eligible: false
+    wv_works_resources_eligible: false
+    is_citizen_or_legal_immigrant: false
+  output:
+    wv_works_eligible: false
