@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ak.dpa.atap.ak_atap_unit_type import (
-    AKATAPUnitType,
-)
 
 
 class ak_atap_gross_income_limit(Variable):
@@ -14,36 +11,7 @@ class ak_atap_gross_income_limit(Variable):
     defined_for = StateCode.AK
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ak.dpa.atap.income.gross_income_limit
-        unit_size = spm_unit("spm_unit_size", period)
-        unit_type = spm_unit("ak_atap_unit_type", period)
-
-        # Child-only: use child_only table (sizes 1-4+)
-        child_only_capped = min_(unit_size, 4)
-        child_only_limit = p.child_only.amount[child_only_capped]
-
-        # Pregnant woman only: single value
-        pregnant_limit = p.pregnant_woman.amount
-
-        # Adult-included (one-parent or two-parent able): use adult_included table (sizes 2-11+)
-        adult_capped = clip(unit_size, 2, 11)
-        adult_limit = p.adult_included.amount[adult_capped]
-
-        # Incapacitated parent: use incapacitated_parent table (sizes 3-4+)
-        # Minimum size 3 = 2 parents + 1 child
-        incap_capped = clip(unit_size, 3, 4)
-        incapacitated_limit = p.incapacitated_parent.amount[incap_capped]
-
-        return select(
-            [
-                unit_type == AKATAPUnitType.PREGNANT_WOMAN,
-                unit_type == AKATAPUnitType.CHILD_ONLY,
-                unit_type == AKATAPUnitType.TWO_PARENT_INCAPACITATED,
-            ],
-            [
-                pregnant_limit,
-                child_only_limit,
-                incapacitated_limit,
-            ],
-            default=adult_limit,
-        )
+        # Per 7 AAC 45.520: Gross income limit is 185% of need standard
+        p = parameters(period).gov.states.ak.dpa.atap
+        need_standard = spm_unit("ak_atap_need_standard", period)
+        return need_standard * p.gross_income_limit_rate

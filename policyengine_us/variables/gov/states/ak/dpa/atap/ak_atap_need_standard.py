@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ak.dpa.atap.ak_atap_unit_type import (
-    AKATAPUnitType,
-)
 
 
 class ak_atap_need_standard(Variable):
@@ -14,36 +11,17 @@ class ak_atap_need_standard(Variable):
     defined_for = StateCode.AK
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ak.dpa.atap.income.need_standard
+        p = parameters(period).gov.states.ak.dpa.atap.need_standard
         unit_size = spm_unit("spm_unit_size", period)
-        unit_type = spm_unit("ak_atap_unit_type", period)
 
-        # Child-only: use child_only table (sizes 1-4+)
-        child_only_capped = min_(unit_size, 4)
-        child_only_standard = p.child_only.amount[child_only_capped]
+        # Adult-included standards: sizes 2-8, with additional amount for larger units
+        # Size 1 is not eligible (must have at least 1 adult + 1 child)
+        max_unit_size = p.max_unit_size
+        capped_size = clip(unit_size, 2, max_unit_size)
+        base_standard = p.amount[capped_size]
 
-        # Pregnant woman only: single value
-        pregnant_standard = p.pregnant_woman.amount
+        # Add additional amount for each person beyond max table size
+        extra_persons = max_(unit_size - max_unit_size, 0)
+        additional = extra_persons * p.additional_person
 
-        # Adult-included (one-parent or two-parent able): use adult_included table (sizes 2-11+)
-        adult_capped = clip(unit_size, 2, 11)
-        adult_standard = p.adult_included.amount[adult_capped]
-
-        # Incapacitated parent: use incapacitated_parent table (sizes 3-4+)
-        # Minimum size 3 = 2 parents + 1 child
-        incap_capped = clip(unit_size, 3, 4)
-        incapacitated_standard = p.incapacitated_parent.amount[incap_capped]
-
-        return select(
-            [
-                unit_type == AKATAPUnitType.PREGNANT_WOMAN,
-                unit_type == AKATAPUnitType.CHILD_ONLY,
-                unit_type == AKATAPUnitType.TWO_PARENT_INCAPACITATED,
-            ],
-            [
-                pregnant_standard,
-                child_only_standard,
-                incapacitated_standard,
-            ],
-            default=adult_standard,
-        )
+        return where(unit_size >= 2, base_standard + additional, 0)

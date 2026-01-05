@@ -16,10 +16,9 @@ class ak_atap_childcare_deduction(Variable):
         # - $175/month per child age 2 and older
         p = parameters(period).gov.states.ak.dpa.atap.income.deductions
         person = spm_unit.members
+        dependent = person("is_tax_unit_dependent", period)
         age = person("age", period.this_year)
-        is_child = person("is_child", period.this_year)
-        # Only count children, not adults
-        max_per_child = p.child_care_disregard.calc(age) * is_child
-        total_max_disregard = spm_unit.sum(max_per_child)
         childcare_expenses = spm_unit("childcare_expenses", period)
+        max_per_dependent = p.childcare.calc(age) * dependent
+        total_max_disregard = spm_unit.sum(max_per_dependent)
         return min_(childcare_expenses, total_max_disregard)

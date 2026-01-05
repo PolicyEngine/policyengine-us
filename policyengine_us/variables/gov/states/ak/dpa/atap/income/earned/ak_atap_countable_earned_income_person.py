@@ -14,13 +14,13 @@ class ak_atap_countable_earned_income_person(Variable):
         # Per 7 AAC 45.480: Deductions depend on applicant status
         # (a)(1) New applicants: $90 flat deduction
         # (a)(2) + (b) Continuing recipients: $150 flat + percentage
-        p = parameters(period).gov.states.ak.dpa.atap.income.deductions
+        p = parameters(period).gov.states.ak.dpa.atap.income
         gross_earned = person("tanf_gross_earned_income", period)
         is_enrolled = person.spm_unit("is_tanf_enrolled", period)
 
         # New applicants: $90 flat deduction only
         new_applicant_countable = max_(
-            gross_earned - p.initial_work_deduction, 0
+            gross_earned - p.deductions.initial_work_deduction, 0
         )
 
         # Continuing recipients: $150 flat + percentage of remainder
@@ -31,12 +31,11 @@ class ak_atap_countable_earned_income_person(Variable):
         #   Tier 4 (months 37-48): $150 + 15%
         #   Tier 5 (months 49-60): $150 + 10%
         #   Beyond 60 months: $150 only (0%)
-        # PolicyEngine models only Tier 1 (most favorable rate) as benefit
-        # receipt history cannot be tracked in static microsimulation.
-        after_flat = max_(gross_earned - p.work_incentive_flat, 0)
-        percent_disregard = after_flat * p.work_incentive_percent
+        #   Only Tier 1 is modeled.
+        after_flat = max_(gross_earned - p.work_incentive.flat, 0)
+        percent_disregard = after_flat * p.work_incentive.rate
         continuing_countable = max_(
-            gross_earned - p.work_incentive_flat - percent_disregard, 0
+            gross_earned - p.work_incentive.flat - percent_disregard, 0
         )
 
         return where(

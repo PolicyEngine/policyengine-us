@@ -2,7 +2,7 @@ description: Alaska excludes up to this amount of child care expenses per child 
 
 metadata:
   period: month
-  label: Alaska ATAP child care disregard amount
+  label: Alaska ATAP childcare deduction amount
   type: single_amount
   threshold_unit: year
   amount_unit: currency-USD
@@ -12,10 +12,10 @@ metadata:
 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2005-01-01: 0
     amount:
-      2021-01-01: 200
+      2005-01-01: 200
   - threshold:
-      2021-01-01: 2
+      2005-01-01: 2
     amount:
-      2021-01-01: 175
+      2005-01-01: 175

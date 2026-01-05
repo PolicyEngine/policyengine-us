@@ -1,199 +1,147 @@
 # Unit tests for Alaska ATAP final benefit amount
 # 7 AAC 45.525 - Determining the amount of payment
 # https://www.law.cornell.edu/regulations/alaska/7-AAC-45.525
-# Formula: (Need Standard - Countable Income) * (Max Payment for 2) / (Need Standard for 2)
-# Rounding: Round down to nearest dollar
-# Minimum: $10 (benefits below $10 are not issued)
+# Formula: (Need Standard - Countable Income) * (Max Payment / Need Standard)
+# The ratio (Max Payment / Need Standard) is the "ratable reduction" (~43% for 2026)
 
-- name: Case 1, ineligible receives zero.
-  period: 2024-01
+- name: Ineligible receives zero
+  period: 2026-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
+      child1:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [adult, child1]
         ak_atap_eligible: false
-        ak_atap_need_standard: 823
+        ak_atap_need_standard: 1_908
         ak_atap_countable_income: 0
         ak_atap_maximum_payment: 821
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1]
         state_code: AK
   output:
-    # Ineligible = $0
     ak_atap: 0
 
-- name: Case 2, eligible with zero income receives full benefit.
-  period: 2024-01
+- name: Zero income receives maximum payment
+  period: 2026-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
+      child1:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [adult, child1]
         ak_atap_eligible: true
-        ak_atap_need_standard: 823
+        ak_atap_need_standard: 1_908
         ak_atap_countable_income: 0
         ak_atap_maximum_payment: 821
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1]
         state_code: AK
   output:
-    # ($823 - $0) * ($821 / $823) = $823 * 0.99757 = $821
+    # ($1,908 - $0) * ($821 / $1,908) = $1,908 * 0.4303 = $821
     ak_atap: 821
 
-- name: Case 3, eligible with partial income.
-  period: 2024-01
+- name: Partial income reduces benefit
+  period: 2026-01
+  absolute_error_margin: 0.1
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
+      child1:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [adult, child1]
         ak_atap_eligible: true
-        ak_atap_need_standard: 823
-        ak_atap_countable_income: 400
-        ak_atap_maximum_payment: 821
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 1_000
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1]
         state_code: AK
   output:
-    # ($823 - $400) * ($821 / $823) = $423 * 0.99757 = $421.97 -> $421
-    ak_atap: 421
+    # ($1,908 - $1,000) * ($821 / $1,908) = $908 * 0.4303 = $390.67
+    ak_atap: 390.67
 
-- name: Case 4, income at need standard receives zero.
-  period: 2024-01
+- name: Income at need standard receives zero
+  period: 2026-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
+      child1:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [adult, child1]
         ak_atap_eligible: true
-        ak_atap_need_standard: 823
-        ak_atap_countable_income: 823
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 1_908
         ak_atap_maximum_payment: 821
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1]
         state_code: AK
   output:
-    # ($823 - $823) * ($821 / $823) = $0
+    # ($1,908 - $1,908) * ratio = $0
     ak_atap: 0
 
-- name: Case 5, benefit below minimum not issued.
-  period: 2024-01
+- name: Family of 3 zero income
+  period: 2026-01
   input:
     people:
-      person1:
+      adult:
         age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_eligible: true
-        ak_atap_need_standard: 823
-        ak_atap_countable_income: 815
-        ak_atap_maximum_payment: 821
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AK
-  output:
-    # ($823 - $815) * ($821 / $823) = $8 * 0.99757 = $7.98 < $10 minimum
-    # Benefit not issued = $0
-    ak_atap: 0
-
-- name: Case 6, benefit at minimum threshold.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ak_atap_eligible: true
-        ak_atap_need_standard: 823
-        ak_atap_countable_income: 812
-        ak_atap_maximum_payment: 821
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AK
-  output:
-    # ($823 - $812) * ($821 / $823) = $11 * 0.99757 = $10.97 -> $10 (>= minimum)
-    ak_atap: 10
-
-- name: Case 7, family of 3 full benefit.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
+      child1:
         age: 8
-      person3:
+      child2:
         age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
+        members: [adult, child1, child2]
         ak_atap_eligible: true
-        ak_atap_need_standard: 940
+        ak_atap_need_standard: 2_149
         ak_atap_countable_income: 0
         ak_atap_maximum_payment: 923
     households:
       household:
-        members: [person1, person2, person3]
+        members: [adult, child1, child2]
         state_code: AK
   output:
-    # ($940 - $0) * ($821 / $823) = $940 * 0.99757 = $937.71 -> $937
-    # But capped at maximum_payment of $923
-    # min($937, $923) = $923
+    # ($2,149 - $0) * ($923 / $2,149) = $2,149 * 0.4295 = $923
     ak_atap: 923
 
-- name: Case 8, child-only unit full benefit.
-  period: 2024-01
+- name: Family of 3 with $500 countable income
+  period: 2026-01
+  absolute_error_margin: 0.1
   input:
     people:
-      person1:
-        age: 10
-      person2:
-        age: 6
+      adult:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [adult, child1, child2]
         ak_atap_eligible: true
-        ak_atap_unit_type: CHILD_ONLY
-        ak_atap_need_standard: 634
-        ak_atap_countable_income: 0
-        ak_atap_maximum_payment: 554
+        ak_atap_need_standard: 2_149
+        ak_atap_countable_income: 500
+        ak_atap_maximum_payment: 923
     households:
       household:
-        members: [person1, person2]
+        members: [adult, child1, child2]
         state_code: AK
   output:
-    # Child-only 2 children: Need = $634, Payment = $554
-    # For child-only, uses child-only standards
-    # ($634 - $0) * ($452 / $517) = $634 * 0.8743 = $554.35 -> $554
-    # Note: Child-only uses child-only need for 1 ($517) and max for 1 ($452)
-    ak_atap: 554
+    # ($2,149 - $500) * ($923 / $2,149) = $1,649 * 0.4295 = $708.26
+    ak_atap: 708.26
