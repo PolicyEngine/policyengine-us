@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: hua7450/weekly-uv-lock-changelog  # TEMP: Change back to main before merging
           token: ${{ secrets.POLICYENGINE_GITHUB }}
 
       - name: Install uv
@@ -42,16 +42,12 @@ jobs:
       - name: Create changelog entry
         if: steps.changes.outputs.changed == 'true'
         run: |
-          cat > changelog_entry.yaml << 'EOF'
-          - bump: patch
-            changes:
-              changed:
-              - Updated uv.lock dependencies.
-          EOF
-
-      - name: Format code
-        if: steps.changes.outputs.changed == 'true'
-        run: make format
+          printf '%s\n' \
+            '- bump: patch' \
+            '  changes:' \
+            '    changed:' \
+            '    - Updated uv.lock dependencies.' \
+            '' > changelog_entry.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true'
