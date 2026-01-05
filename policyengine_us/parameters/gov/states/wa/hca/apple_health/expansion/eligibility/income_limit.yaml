@@ -1,0 +1,16 @@
+description: >-
+  Washington Apple Health Expansion income limit as fraction of FPL.
+  Uses MAGI-based income at or below 138% FPL (includes 5% disregard
+  already built into the threshold).
+metadata:
+  unit: /1
+  period: year
+  label: Washington Apple Health Expansion income limit as fraction of FPL
+  reference:
+    - title: WAC 182-525-0300 - Apple Health expansion coverage
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-525-0300
+    - title: HCA Income Standards (HCA 19-0096)
+      href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards.pdf
+
+values:
+  2024-06-21: 1.38
