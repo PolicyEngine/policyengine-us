@@ -60,7 +60,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b bot/weekly-uv-lock-update
           git add uv.lock changelog_entry.yaml
-          git commit -m "chore: Update uv.lock dependencies"
+          git commit -m "Update uv.lock dependencies"
           git push -f origin bot/weekly-uv-lock-update
 
       - name: Create Pull Request
@@ -76,7 +76,7 @@ jobs:
           fi
 
           gh pr create \
-            --title "chore: Weekly uv.lock update" \
+            --title "Weekly uv.lock update" \
             --body "$(cat <<'EOF'
           ## Summary
 
