@@ -1,0 +1,14 @@
+description: Louisiana deducts this amount from gross earned income for each employed member for the first six months of employment under the Family Independence Temporary Assistance Program.
+# NOTE: PolicyEngine applies this deduction without tracking employment months.
+# In reality, this deduction is only available for the first 6 consecutive months of employment.
+
+values:
+  2000-07-01: 900
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Louisiana TANF time-limited earned income deduction
+  reference:
+    - title: Louisiana Department of Health FITAP Page
+      href: https://ldh.la.gov/page/fitap

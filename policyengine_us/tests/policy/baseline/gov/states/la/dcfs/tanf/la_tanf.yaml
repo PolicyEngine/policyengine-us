@@ -1,0 +1,422 @@
+# Louisiana TANF Benefit Unit Tests
+# Tests final benefit calculation: Benefit = Flat Grant - Countable Income
+# Minimum benefit: $10 (benefits below this are not issued)
+# Reference: https://ldh.la.gov/page/fitap
+
+- name: Case 1, eligible with no income gets full benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 376
+
+- name: Case 2, eligible with partial income gets partial benefit.
+  # Flat grant: $376
+  # Countable income: $200
+  # Benefit: $376 - $200 = $176
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 176
+
+- name: Case 3, eligible with income equal to flat grant gets zero.
+  # Flat grant: $376
+  # Countable income: $376
+  # Benefit: $376 - $376 = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 376
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Case 4, ineligible household gets zero benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: false
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Case 5, benefit exactly at minimum threshold.
+  # Flat grant: $376
+  # Countable income: $366
+  # Benefit: $376 - $366 = $10 (at minimum)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 366
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 10
+
+- name: Case 6, benefit below minimum is not issued.
+  # Flat grant: $376
+  # Countable income: $370
+  # Calculated benefit: $376 - $370 = $6
+  # $6 < $10 minimum, so no payment issued
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 370
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Case 7, larger family with higher flat grant.
+  # Flat grant (family of 4): $568
+  # Countable income: $250
+  # Benefit: $568 - $250 = $318
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 568
+        la_tanf_countable_income: 250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    la_tanf: 318
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+- name: Edge case, benefit just at minimum threshold of ten dollars.
+  # Flat grant: $244 (size 1)
+  # Countable income: $234
+  # Calculated benefit: $244 - $234 = $10 (exactly at minimum)
+  # $10 >= $10 minimum, so payment issued
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 244
+        la_tanf_countable_income: 234
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf: 10
+
+- name: Edge case, benefit at nine dollars is below minimum.
+  # Flat grant: $244 (size 1)
+  # Countable income: $235
+  # Calculated benefit: $244 - $235 = $9
+  # $9 < $10 minimum, so no payment issued
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 244
+        la_tanf_countable_income: 235
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Edge case, benefit at eleven dollars just above minimum.
+  # Flat grant: $244 (size 1)
+  # Countable income: $233
+  # Calculated benefit: $244 - $233 = $11
+  # $11 > $10 minimum, so full $11 payment issued
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 244
+        la_tanf_countable_income: 233
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf: 11
+
+- name: Edge case, benefit at one dollar is below minimum.
+  # Flat grant: $376
+  # Countable income: $375
+  # Calculated benefit: $376 - $375 = $1
+  # $1 < $10 minimum, so no payment issued
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 375
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Edge case, very large family size 9 with no income gets full benefit.
+  # Flat grant (family of 9): $954
+  # Countable income: $0
+  # Benefit: $954 - $0 = $954 (maximum possible for size 9)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 954
+        la_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: LA
+  output:
+    la_tanf: 954
+
+- name: Edge case, very large family size 10 with no income at cap.
+  # Flat grant (family of 10+): $954 (capped at size 10)
+  # Countable income: $0
+  # Benefit: $954 - $0 = $954 (maximum possible)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 954
+        la_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: LA
+  output:
+    la_tanf: 954
+
+- name: Edge case, income exceeds flat grant resulting in zero benefit.
+  # Flat grant: $376
+  # Countable income: $400 (exceeds flat grant)
+  # Calculated benefit: max($376 - $400, 0) = max(-$24, 0) = $0
+  # Note: This household would be income ineligible anyway
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 376
+        la_tanf_countable_income: 400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Edge case, very high income far exceeding flat grant.
+  # Flat grant: $568 (family of 4)
+  # Countable income: $2,000 (very high, exceeds flat grant by $1,432)
+  # Calculated benefit: max($568 - $2,000, 0) = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 568
+        la_tanf_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    la_tanf: 0
+
+- name: Edge case, single person full benefit no income.
+  # Flat grant (family of 1): $244
+  # Countable income: $0
+  # Benefit: $244 - $0 = $244
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        la_tanf_eligible: true
+        la_tanf_flat_grant: 244
+        la_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf: 244

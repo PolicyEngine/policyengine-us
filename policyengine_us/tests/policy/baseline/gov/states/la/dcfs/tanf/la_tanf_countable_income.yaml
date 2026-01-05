@@ -1,0 +1,56 @@
+# Louisiana TANF Countable Income Unit Tests
+# Tests total countable income = countable earned + unearned income
+# Unearned income counted dollar-for-dollar (no disregards)
+# Reference: https://ldh.la.gov/page/fitap
+
+- name: Case 1, no income results in zero countable income.
+  period: 2024-01
+  input:
+    state_code: LA
+    la_tanf_countable_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    la_tanf_countable_income: 0
+
+- name: Case 2, only countable earned income.
+  period: 2024-01
+  input:
+    state_code: LA
+    la_tanf_countable_earned_income: 300
+    tanf_gross_unearned_income: 0
+  output:
+    la_tanf_countable_income: 300
+
+- name: Case 3, only unearned income.
+  # Unearned income counted in full
+  period: 2024-01
+  input:
+    state_code: LA
+    la_tanf_countable_earned_income: 0
+    tanf_gross_unearned_income: 200
+  output:
+    la_tanf_countable_income: 200
+
+- name: Case 4, both earned and unearned income.
+  # Countable earned: $300
+  # Unearned: $150
+  # Total countable: $300 + $150 = $450
+  period: 2024-01
+  input:
+    state_code: LA
+    la_tanf_countable_earned_income: 300
+    tanf_gross_unearned_income: 150
+  output:
+    la_tanf_countable_income: 450
+
+- name: Case 5, larger combined income.
+  # Countable earned: $480
+  # Unearned: $250
+  # Total countable: $480 + $250 = $730
+  period: 2024-01
+  input:
+    state_code: LA
+    la_tanf_countable_earned_income: 480
+    tanf_gross_unearned_income: 250
+  output:
+    la_tanf_countable_income: 730

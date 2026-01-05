@@ -1,0 +1,256 @@
+# Louisiana TANF Countable Earned Income Unit Tests
+# Tests earned income after deductions for LA FITAP program
+# Deductions: $120 standard + $900 time-limited per employed member per month
+# Reference: https://ldh.la.gov/page/fitap
+# NOTE: Time-limited deduction normally only available for 6 months of employment,
+# but PolicyEngine cannot track employment duration, so it's applied always.
+
+- name: Case 1, no earned income results in zero countable earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 0
+
+- name: Case 2, single earner with deductions exceeding income.
+  # Monthly gross: $800
+  # Deductions: $120 + $900 = $1,020
+  # Countable: max($800 - $1,020, 0) = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 9_600  # $800/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 0
+
+- name: Case 3, single earner with income exceeding deductions.
+  # Monthly gross: $1,500
+  # Deductions: $120 + $900 = $1,020
+  # Countable: $1,500 - $1,020 = $480
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 18_000  # $1,500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 480
+
+- name: Case 4, two earners with income exceeding deductions.
+  # Person 1 monthly gross: $1,200
+  # Person 1 deductions: $120 + $900 = $1,020
+  # Person 1 countable: max($1,200 - $1,020, 0) = $180
+  # Person 2 monthly gross: $800
+  # Person 2 deductions: $120 + $900 = $1,020
+  # Person 2 countable: max($800 - $1,020, 0) = $0
+  # Total countable earned: $180
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        employment_income_before_lsr: 9_600  # $800/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: [180, 0]
+
+- name: Case 5, earner at exact deduction threshold.
+  # Monthly gross: $1,020
+  # Deductions: $120 + $900 = $1,020
+  # Countable: $1,020 - $1,020 = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_240  # $1,020/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 0
+
+- name: Case 6, self-employment income treated same as wages.
+  # Monthly gross: $1,500 (self-employment)
+  # Deductions: $120 + $900 = $1,020
+  # Countable: $1,500 - $1,020 = $480
+  period: 2024-01
+  input:
+    people:
+      person1:
+        self_employment_income_before_lsr: 18_000  # $1,500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 480
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+- name: Edge case, zero income explicitly results in zero deduction and countable.
+  # Verifies that zero gross earned income produces zero countable earned income.
+  # Deductions should not apply when there is no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+        self_employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 0
+
+- name: Edge case, income exactly one dollar over deduction threshold.
+  # Monthly gross: $1,021 (exactly $1 over $1,020 deduction)
+  # Deductions: $120 + $900 = $1,020
+  # Countable: $1,021 - $1,020 = $1
+  # Tests boundary condition at deduction threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_252  # $1,021/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 1
+
+- name: Edge case, very high income far exceeds deduction.
+  # Monthly gross: $10,000 (extreme income scenario)
+  # Deductions: $120 + $900 = $1,020
+  # Countable: $10,000 - $1,020 = $8,980
+  # Tests that high income is handled correctly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 120_000  # $10,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 8_980
+
+- name: Edge case, multiple earners where one has zero income.
+  # Person 1 monthly gross: $1,500 (employed)
+  # Person 1 deductions: $120 + $900 = $1,020
+  # Person 1 countable: $1,500 - $1,020 = $480
+  # Person 2 monthly gross: $0 (not employed, no deduction)
+  # Person 2 countable: $0
+  # Total countable earned: $480
+  # Verifies deductions only apply to employed members
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: [480, 0]
+
+- name: Edge case, two high earners both exceed deduction threshold.
+  # Person 1 monthly gross: $2,000
+  # Person 1 deductions: $120 + $900 = $1,020
+  # Person 1 countable: $2,000 - $1,020 = $980
+  # Person 2 monthly gross: $1,500
+  # Person 2 deductions: $120 + $900 = $1,020
+  # Person 2 countable: $1,500 - $1,020 = $480
+  # Total countable earned: $980 + $480 = $1,460
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        employment_income_before_lsr: 18_000  # $1,500/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: [980, 480]
+
+- name: Edge case, combined employment and self-employment same person.
+  # Person 1 monthly gross: $900 employment + $600 self-employment = $1,500 total
+  # Deductions: $120 + $900 = $1,020 (single set applied to total earned)
+  # Countable: $1,500 - $1,020 = $480
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 10_800  # $900/month
+        self_employment_income_before_lsr: 7_200  # $600/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_tanf_countable_earned_income: 480
