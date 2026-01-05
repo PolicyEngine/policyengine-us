@@ -1,0 +1,77 @@
+- name: Minnesota K-12 Education Credit - single child at income threshold
+  period: 2025
+  input:
+    state_code: MN
+    adjusted_gross_income: 75_000
+    k12_tuition_and_fees: 2_500
+    mn_k12_qualifying_children: 1
+  output:
+    # Credit = min(expenses * 75%, child_count * $1,500)
+    # = min(2,500 * 0.75, 1 * 1,500)
+    # = min(1,875, 1,500)
+    # = 1,500
+    mn_k12_education_credit: 1_500
+
+- name: Minnesota K-12 Education Credit - single child with phase-out
+  period: 2025
+  input:
+    state_code: MN
+    adjusted_gross_income: 78_000
+    k12_tuition_and_fees: 3_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Base credit limit = 1 * $1,500 = $1,500
+    # Excess income = 78,000 - 75,820 = 2,180
+    # Phase-out (1 child) = 2,180 * 0.25 = 545
+    # Credit limit after phase-out = 1,500 - 545 = 955
+    # Expense credit = 3,000 * 0.75 = 2,250
+    # Credit = min(2,250, 955) = 955
+    mn_k12_education_credit: 955
+
+- name: Minnesota K-12 Education Credit - two children
+  period: 2025
+  input:
+    state_code: MN
+    adjusted_gross_income: 60_000
+    k12_tuition_and_fees: 5_000
+    mn_k12_qualifying_children: 2
+  output:
+    # Credit = min(expenses * 75%, child_count * $1,500)
+    # = min(5,000 * 0.75, 2 * 1,500)
+    # = min(3,750, 3,000)
+    # = 3,000
+    mn_k12_education_credit: 3_000
+
+- name: Minnesota K-12 Education Credit - income over limit (ineligible)
+  period: 2025
+  input:
+    state_code: MN
+    adjusted_gross_income: 85_000
+    k12_tuition_and_fees: 2_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Income limit for 1 child = $81,820
+    # AGI $85,000 > $81,820, so ineligible
+    mn_k12_education_credit: 0
+
+- name: Minnesota K-12 Education Credit - married filing separately (ineligible)
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SEPARATE
+    adjusted_gross_income: 50_000
+    k12_tuition_and_fees: 2_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Married filing separately are not eligible
+    mn_k12_education_credit: 0
+
+- name: Minnesota K-12 Education Credit - no qualifying children
+  period: 2025
+  input:
+    state_code: MN
+    adjusted_gross_income: 50_000
+    k12_tuition_and_fees: 2_000
+    mn_k12_qualifying_children: 0
+  output:
+    mn_k12_education_credit: 0

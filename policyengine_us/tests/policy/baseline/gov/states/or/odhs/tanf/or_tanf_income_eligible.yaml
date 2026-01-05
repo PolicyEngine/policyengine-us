@@ -1,0 +1,211 @@
+# Oregon TANF Income Eligibility (OAR 461-160-0100)
+# Standard test: countable income < countable limit AND adjusted income < adjusted limit
+# ELI test (for enrolled recipients with earned income): countable income < ELI limit (2 × payment standard)
+
+- name: Zero income passes both tests
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 0
+    or_tanf_adjusted_income: 0
+  output:
+    or_tanf_income_eligible: true
+
+- name: Countable income below limit and adjusted income below limit is eligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($400) < $616 - passes
+  # Adjusted income ($300) < $485 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 400
+    or_tanf_adjusted_income: 300
+  output:
+    or_tanf_income_eligible: true
+
+- name: Countable income at or above limit is ineligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($616) >= $616 - fails
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 616
+    or_tanf_adjusted_income: 300
+  output:
+    or_tanf_income_eligible: false
+
+- name: Adjusted income at or above limit is ineligible
+  # 3-person household:
+  # Countable income limit = $616
+  # Adjusted income limit = $485
+  # Countable income ($500) < $616 - passes
+  # Adjusted income ($485) >= $485 - fails
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 500
+    or_tanf_adjusted_income: 485
+  output:
+    or_tanf_income_eligible: false
+
+- name: Just below both limits is eligible
+  # 3-person household:
+  # Countable income ($615) < $616 - passes
+  # Adjusted income ($484) < $485 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    or_tanf_countable_income: 615
+    or_tanf_adjusted_income: 484
+  output:
+    or_tanf_income_eligible: true
+
+- name: Single person household income test
+  # 1-person household:
+  # Countable income limit = $345
+  # Adjusted income limit = $326
+  # Countable income ($300) < $345 - passes
+  # Adjusted income ($250) < $326 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 1
+    or_tanf_countable_income: 300
+    or_tanf_adjusted_income: 250
+  output:
+    or_tanf_income_eligible: true
+
+# ELI (Exit Limit Increase) test cases
+# ELI applies when enrolled in TANF AND has earned income
+# ELI limit = payment_standard × eli_multiplier (2)
+
+- name: ELI eligible - income above standard limit but below ELI limit
+  # 3-person household:
+  # Standard countable limit = $616
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($800) > $616 (fails standard) but < $1,012 (passes ELI)
+  # With ELI, family remains eligible
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 800
+    or_tanf_adjusted_income: 500
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: true
+
+- name: ELI eligible - income at ELI limit is ineligible
+  # 3-person household:
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($1,012) >= $1,012 - fails ELI test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 1_012
+    or_tanf_adjusted_income: 600
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: false
+
+- name: ELI eligible - income just below ELI limit is eligible
+  # 3-person household:
+  # ELI limit = $506 × 2 = $1,012
+  # Countable income ($1,011) < $1,012 - passes ELI test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 1_011
+    or_tanf_adjusted_income: 600
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: true
+
+- name: Not ELI eligible - enrolled but no earned income uses standard test
+  # 3-person household with only unearned income (not ELI eligible)
+  # Standard countable limit = $616
+  # Countable income ($700) >= $616 - fails standard test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: true
+    or_tanf_countable_income: 700
+    or_tanf_adjusted_income: 400
+  output:
+    or_tanf_income_eligible: false
+
+- name: Not enrolled with earned income - uses standard test not ELI
+  # New applicant (not enrolled) with earned income
+  # ELI does NOT apply to new applicants
+  # Standard countable limit = $616
+  # Countable income ($700) >= $616 - fails standard test
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 3
+    is_tanf_enrolled: false
+    or_tanf_countable_income: 700
+    or_tanf_adjusted_income: 400
+    employment_income_before_lsr: 6_000
+  output:
+    or_tanf_income_eligible: false
+
+# Household size > 10 (additional person increment tests)
+
+- name: Eleven person household income test with additional person increment
+  # 11-person household:
+  # Countable income limit = $1,209 (size 10) + $125 = $1,334
+  # Adjusted income limit = $1,150 (size 10) + $110 = $1,260
+  # Countable income ($1,200) < $1,334 - passes
+  # Adjusted income ($1,100) < $1,260 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+    or_tanf_countable_income: 1_200
+    or_tanf_adjusted_income: 1_100
+  output:
+    or_tanf_income_eligible: true
+
+- name: Twelve person household income test
+  # 12-person household:
+  # Countable income limit = $1,209 + 2 × $125 = $1,459
+  # Adjusted income limit = $1,150 + 2 × $110 = $1,370
+  # Countable income ($1,400) < $1,459 - passes
+  # Adjusted income ($1,300) < $1,370 - passes
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 12
+    or_tanf_countable_income: 1_400
+    or_tanf_adjusted_income: 1_300
+  output:
+    or_tanf_income_eligible: true
+
+- name: Eleven person household fails adjusted income test
+  # 11-person household:
+  # Adjusted income limit = $1,150 + $110 = $1,260
+  # Adjusted income ($1,260) >= $1,260 - fails
+  period: 2024-01
+  input:
+    state_code: OR
+    spm_unit_size: 11
+    or_tanf_countable_income: 1_200
+    or_tanf_adjusted_income: 1_260
+  output:
+    or_tanf_income_eligible: false

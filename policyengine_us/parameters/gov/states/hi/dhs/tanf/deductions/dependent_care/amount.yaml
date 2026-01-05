@@ -1,0 +1,25 @@
+description: Hawaii deducts up to this amount for dependent care expenses based on employment hours under the Temporary Assistance for Needy Families program.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: currency-USD
+  period: month
+  label: Hawaii TANF dependent care deduction amount
+  reference:
+    - title: Hawaii TANF State Plan 10.2.2 (Effective October 1, 2023)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=20
+    - title: HAR 17-676-2 Earned income (1)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2019/03/HAR-17-676-INCOME.pdf#page=6
+
+# Full-time = 32+ hours/week per HAR 17-676
+# Part-time = less than 32 hours/week
+brackets:
+  - threshold:
+      2007-07-01: 0
+    amount:
+      2007-07-01: 165  # Part-time
+  - threshold:
+      2007-07-01: 32
+    amount:
+      2007-07-01: 175  # Full-time

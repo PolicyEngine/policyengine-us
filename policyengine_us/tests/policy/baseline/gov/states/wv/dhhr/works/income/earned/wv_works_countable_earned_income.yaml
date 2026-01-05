@@ -1,0 +1,79 @@
+# Unit tests for wv_works_countable_earned_income
+# Formula: max(gross_earned * 0.60 - childcare_expenses, 0)
+# Step 1: Gross earned income
+# Step 2: Subtract 40% earned income disregard (keep 60%)
+# Step 3: Subtract dependent care deduction (no maximum cap per Section 4.5.2.A.2)
+# Note: childcare_expenses is YEAR-defined, auto-converts to monthly (÷12)
+# Source: WV Income Maintenance Manual Section 4.5.2
+
+- name: Case 1, no childcare expenses applies only 40% disregard.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    tanf_gross_earned_income: 1_000
+    childcare_expenses: 0
+  output:
+    # Step 1: Gross earned = $1,000/month
+    # Step 2: After 40% disregard = 1,000 * 0.60 = $600
+    # Step 3: Childcare = $0/month
+    # Countable = 600 - 0 = $600
+    wv_works_countable_earned_income: 600
+
+- name: Case 2, childcare partially reduces countable income.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    tanf_gross_earned_income: 1_000
+    childcare_expenses: 2_400  # $200/month
+  output:
+    # Step 1: Gross earned = $1,000/month
+    # Step 2: After 40% disregard = 1,000 * 0.60 = $600
+    # Step 3: Childcare = $2,400/year ÷ 12 = $200/month
+    # Countable = 600 - 200 = $400
+    wv_works_countable_earned_income: 400
+
+- name: Case 3, childcare equals after-disregard amount.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    tanf_gross_earned_income: 1_000
+    childcare_expenses: 7_200  # $600/month
+  output:
+    # Step 1: Gross earned = $1,000/month
+    # Step 2: After 40% disregard = 1,000 * 0.60 = $600
+    # Step 3: Childcare = $7,200/year ÷ 12 = $600/month
+    # Countable = 600 - 600 = $0
+    wv_works_countable_earned_income: 0
+
+- name: Case 4, childcare exceeds after-disregard floors at zero.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    tanf_gross_earned_income: 1_000
+    childcare_expenses: 9_600  # $800/month
+  output:
+    # Step 1: Gross earned = $1,000/month
+    # Step 2: After 40% disregard = 1,000 * 0.60 = $600
+    # Step 3: Childcare = $9,600/year ÷ 12 = $800/month
+    # Raw = 600 - 800 = -$200
+    # Countable = max(-200, 0) = $0
+    wv_works_countable_earned_income: 0
+
+- name: Case 5, zero earned income with childcare still returns zero.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    tanf_gross_earned_income: 0
+    childcare_expenses: 2_400  # $200/month
+  output:
+    # Step 1: Gross earned = $0
+    # Step 2: After 40% disregard = 0 * 0.60 = $0
+    # Step 3: Childcare = $200/month
+    # Raw = 0 - 200 = -$200
+    # Countable = max(-200, 0) = $0
+    wv_works_countable_earned_income: 0

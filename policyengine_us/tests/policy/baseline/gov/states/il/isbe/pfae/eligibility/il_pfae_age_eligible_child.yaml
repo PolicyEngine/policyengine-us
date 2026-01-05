@@ -1,0 +1,39 @@
+- name: Case 1, eligible child age 3.
+  period: 2024
+  input:
+    age: 3
+    state_code: IL
+  output:
+    il_pfae_age_eligible_child: true
+
+- name: Case 2, eligible child age 4.
+  period: 2024
+  input:
+    age: 4
+    state_code: IL
+  output:
+    il_pfae_age_eligible_child: true
+
+- name: Case 3, eligible child age 5.
+  period: 2024
+  input:
+    age: 5
+    state_code: IL
+  output:
+    il_pfae_age_eligible_child: true
+
+- name: Case 4, ineligible child age 2 too young.
+  period: 2024
+  input:
+    age: 2
+    state_code: IL
+  output:
+    il_pfae_age_eligible_child: false
+
+- name: Case 5, ineligible child age 6 too old.
+  period: 2024
+  input:
+    age: 6
+    state_code: IL
+  output:
+    il_pfae_age_eligible_child: false

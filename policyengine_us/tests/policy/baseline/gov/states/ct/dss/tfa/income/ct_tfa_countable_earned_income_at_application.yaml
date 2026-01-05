@@ -1,0 +1,109 @@
+# Edge case tests for CT TFA countable earned income at application
+# Deduction: $90 per person
+
+- name: Case 1, income greater than deduction.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 100
+    state_code: CT
+  output:
+    # 100 - 90 = 10
+    ct_tfa_countable_earned_income_at_application: 10
+
+- name: Case 2, income less than deduction.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 80
+    state_code: CT
+  output:
+    # max(80 - 90, 0) = 0
+    ct_tfa_countable_earned_income_at_application: 0
+
+- name: Case 3, income exactly at deduction amount.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 90
+    state_code: CT
+  output:
+    # 90 - 90 = 0
+    ct_tfa_countable_earned_income_at_application: 0
+
+- name: Case 4, income one dollar above deduction.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 91
+    state_code: CT
+  output:
+    # 91 - 90 = 1
+    ct_tfa_countable_earned_income_at_application: 1
+
+- name: Case 5, zero income.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 0
+    state_code: CT
+  output:
+    # max(0 - 90, 0) = 0
+    ct_tfa_countable_earned_income_at_application: 0
+
+- name: Case 6, very high income.
+  period: 2024-01
+  input:
+    tanf_gross_earned_income: 10_000
+    state_code: CT
+  output:
+    # 10_000 - 90 = 9_910
+    ct_tfa_countable_earned_income_at_application: 9_910
+
+- name: Case 7, deduction applies to each member.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_200  # $100 monthly
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # person1: 100 - 90 = 10
+    # person2: 0 - 90 = 0 (capped at 0)
+    ct_tfa_countable_earned_income_at_application: [10, 0]
+
+- name: Case 8, multiple earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 2_400  # $200 monthly
+      person2:
+        age: 35
+        employment_income_before_lsr: 1_200  # $100 monthly
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # person1: 200 - 90 = 110
+    # person2: 100 - 90 = 10
+    # person3: 0 - 90 = 0 (capped at 0)
+    ct_tfa_countable_earned_income_at_application: [110, 10, 0]

@@ -1,0 +1,45 @@
+# Unit tests for Rhode Island TANF benefit calculation
+# 218-RICR-20-00-2: Benefit = Payment Standard - Countable Income
+# https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+
+- name: Case 1, eligible full benefit no income.
+  period: 2025-01
+  input:
+    ri_works_payment_standard: 865
+    ri_works_countable_income: 0
+    ri_works_eligible: true
+    state_code: RI
+  output:
+    ri_works: 865
+
+- name: Case 2, eligible partial benefit.
+  period: 2025-01
+  input:
+    ri_works_payment_standard: 865
+    ri_works_countable_income: 500
+    ri_works_eligible: true
+    state_code: RI
+  output:
+    # $865 - $500 = $365
+    ri_works: 365
+
+- name: Case 3, income exceeds payment standard.
+  period: 2025-01
+  input:
+    ri_works_payment_standard: 701
+    ri_works_countable_income: 800
+    ri_works_eligible: true
+    state_code: RI
+  output:
+    # max($701 - $800, 0) = $0
+    ri_works: 0
+
+- name: Case 4, ineligible receives no benefit.
+  period: 2025-01
+  input:
+    ri_works_payment_standard: 865
+    ri_works_countable_income: 0
+    ri_works_eligible: false
+    state_code: RI
+  output:
+    ri_works: 0

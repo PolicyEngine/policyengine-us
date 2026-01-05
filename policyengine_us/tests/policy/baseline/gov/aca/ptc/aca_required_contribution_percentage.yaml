@@ -1,3 +1,35 @@
+- name: Flat at 100% FPL in 2026 (should be 2.1%, not interpolated)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.0
+  output:
+    aca_required_contribution_percentage: 0.021
+
+- name: Flat at 120% FPL in 2026 (should still be 2.1%)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.2
+  output:
+    aca_required_contribution_percentage: 0.021
+
+- name: Jump to 3.14% at 133% FPL in 2026
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.33
+  output:
+    aca_required_contribution_percentage: 0.0314
+
+- name: Flat at 100% FPL in 2019 (pre-ARPA, should be 2%)
+  period: 2019
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.0
+  output:
+    aca_required_contribution_percentage: 0.02
+
 - name: aca_required_contribution_percentage unit test 1
   period: 2022
   absolute_error_margin: 0.00001

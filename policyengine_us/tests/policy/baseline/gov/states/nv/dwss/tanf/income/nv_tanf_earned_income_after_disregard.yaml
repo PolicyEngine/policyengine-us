@@ -1,0 +1,93 @@
+# Unit tests for nv_tanf_earned_income_after_disregard
+# Tests work expense deduction: max($90, 20% of gross earned) per person
+
+- name: Zero income
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 0
+  output:
+    nv_tanf_earned_income_after_disregard: 0
+    nv_tanf_countable_earned_income: 0
+
+- name: Low income uses $90 flat deduction
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 300
+  output:
+    # max($90, $300 x 0.2) = max($90, $60) = $90
+    # $300 - $90 = $210
+    nv_tanf_earned_income_after_disregard: 210
+    nv_tanf_countable_earned_income: 210
+
+- name: Case 3, crossover point ($450).
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 450
+  output:
+    # max($90, $450 x 0.2) = max($90, $90) = $90
+    # $450 - $90 = $360
+    nv_tanf_earned_income_after_disregard: 360
+    nv_tanf_countable_earned_income: 360
+
+- name: Case 4, just below crossover ($449) uses flat.
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 449
+  output:
+    # max($90, $449 x 0.2) = max($90, $89.80) = $90
+    # $449 - $90 = $359
+    nv_tanf_earned_income_after_disregard: 359
+    nv_tanf_countable_earned_income: 359
+
+- name: Case 5, just above crossover ($451) uses 20%.
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 451
+  output:
+    # max($90, $451 x 0.2) = max($90, $90.20) = $90.20
+    # $451 - $90.20 = $360.80
+    nv_tanf_earned_income_after_disregard: 360.8
+    nv_tanf_countable_earned_income: 360.8
+
+- name: Higher income uses 20% deduction
+  period: 2025-01
+  input:
+    state_code: NV
+    tanf_gross_earned_income: 500
+  output:
+    # max($90, $500 x 0.2) = max($90, $100) = $100
+    # $500 - $100 = $400
+    nv_tanf_earned_income_after_disregard: 400
+    nv_tanf_countable_earned_income: 400
+
+- name: Two earners - deduction applied per person
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        tanf_gross_earned_income: 400
+      parent2:
+        tanf_gross_earned_income: 600
+      child:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NV
+  output:
+    # Parent 1: max($90, $400 x 0.2) = max($90, $80) = $90 deduction
+    #   Earned income after disregard: $400 - $90 = $310
+    # Parent 2: max($90, $600 x 0.2) = max($90, $120) = $120 deduction
+    #   Earned income after disregard: $600 - $120 = $480
+    # Child: $0 - $0 = $0
+    nv_tanf_earned_income_after_disregard: [310, 480, 0]
+    # Total: $310 + $480 = $790
+    nv_tanf_countable_earned_income: 790

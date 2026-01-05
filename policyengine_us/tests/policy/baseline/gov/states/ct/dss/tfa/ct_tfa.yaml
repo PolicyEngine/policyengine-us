@@ -1,0 +1,97 @@
+# Tests for CT TFA benefit calculation
+# Benefit = payment_standard - countable_unearned_income
+# High earner (>= 171% FPG): 20% reduction
+
+- name: Case 1, below 171 percent FPG, no reduction.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 0
+    tanf_gross_earned_income: 3_500
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    ct_tfa: 833
+
+- name: Case 2, above 171 percent FPG, gets 20 percent reduction.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 0
+    tanf_gross_earned_income: 3_600
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    # 833 * 0.8 = 666.4
+    ct_tfa: 666.4
+
+- name: Case 3, unearned income deducted from payment.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 200
+    tanf_gross_earned_income: 1_000
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    # 833 - 200 = 633
+    ct_tfa: 633
+
+- name: Case 4, unearned income exceeds payment, benefit zero.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 900
+    tanf_gross_earned_income: 500
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    # max(833 - 900, 0) = 0
+    ct_tfa: 0
+
+- name: Case 5, high earner with unearned income.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 133
+    tanf_gross_earned_income: 3_600
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    # (833 - 133) * 0.8 = 700 * 0.8 = 560
+    ct_tfa: 560
+
+- name: Case 6, high earner with unearned exceeding payment, zero floor.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    ct_tfa_eligible: true
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 900
+    tanf_gross_earned_income: 3_600
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+    # max(833 - 900, 0) * 0.8 = 0 * 0.8 = 0
+    ct_tfa: 0
+
+- name: Case 7, not eligible.
+  period: 2024-01
+  input:
+    ct_tfa_eligible: false
+    spm_unit_size: 3
+    ct_tfa_countable_unearned_income: 100
+    tanf_gross_earned_income: 500
+    state_code: CT
+  output:
+    ct_tfa: 0
