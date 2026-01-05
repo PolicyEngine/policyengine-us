@@ -1,0 +1,848 @@
+# Kentucky 2025 Income Tax Integration Tests
+# Tests verify the 2025 parameter values and complete tax calculation pipeline
+#
+# 2025 Kentucky Tax Parameters:
+# - Tax rate: 4% (0.04)
+# - Standard deduction: $3,270
+# - Personal credits: Aged $40, Blind $40, Military $20
+# - Dependent care credit: 20% of federal
+# - Tuition tax credit: 25% of federal
+# - Pension income exclusion threshold: $31,110
+#
+# Family Size Tax Credit (FSTC) - based on FPG:
+# - Size 1: $15,650 (FPG first person)
+# - Size 2: $21,150 (FPG + 1 additional = $15,650 + $5,500)
+# - Size 3: $26,650 (FPG + 2 additional = $15,650 + $11,000)
+# - Size 4+: $32,150 (capped at 4, FPG + 3 additional = $15,650 + $16,500)
+#
+# FSTC Phase-out:
+# <= 100% of threshold: 100% credit
+# > 100% to <= 104%: 90% credit
+# > 104% to <= 108%: 80% credit
+# > 108% to <= 112%: 70% credit
+# > 112% to <= 116%: 60% credit
+# > 116% to <= 120%: 50% credit
+# > 120% to <= 124%: 40% credit
+# > 124% to <= 127%: 30% credit
+# > 127% to <= 130%: 20% credit
+# > 130% to <= 133%: 10% credit
+# > 133%: 0% credit
+
+# ==============================================================================
+# SCENARIO 1: Single filer with standard deduction - verify 4% rate and $3,270 deduction
+# ==============================================================================
+
+- name: 2025 KY single filer - standard deduction
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $50,000
+    # Standard deduction: $3,270
+    # Taxable income: $50,000 - $3,270 = $46,730
+    # Tax before credits: $46,730 * 0.04 = $1,869.20
+    # FSTC: Income $50,000 > 133% of $15,650 ($20,815), so 0% credit
+    # Final tax: $1,869.20
+    ky_standard_deduction_indiv: [3_270]
+    ky_taxable_income_indiv: [46_730]
+    ky_income_tax_before_non_refundable_credits_unit: 1_869.20
+    ky_income_tax: 1_869.20
+
+- name: 2025 KY single filer - lower income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $30,000
+    # Standard deduction: $3,270
+    # Taxable income: $30,000 - $3,270 = $26,730
+    # Tax before credits: $26,730 * 0.04 = $1,069.20
+    # FSTC: Income $30,000 > 133% of $15,650 ($20,815), so 0% credit
+    # Final tax: $1,069.20
+    ky_standard_deduction_indiv: [3_270]
+    ky_taxable_income_indiv: [26_730]
+    ky_income_tax_before_non_refundable_credits_unit: 1_069.20
+    ky_income_tax: 1_069.20
+
+# ==============================================================================
+# SCENARIO 2: MFJ filer - verify standard deduction applies once (to head)
+# ==============================================================================
+
+- name: 2025 KY married filing jointly - optimization picks separate filing
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 60_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Kentucky optimizes between joint vs separate filing:
+    # Joint filing: Combined $100,000 - $3,270 = $96,730, tax = $3,869.20
+    # Separate filing:
+    #   Person1: $60,000 - $3,270 = $56,730, tax = $2,269.20
+    #   Person2: $40,000 - $3,270 = $36,730, tax = $1,469.20
+    #   Combined: $3,738.40
+    # Since $3,738.40 < $3,869.20, KY picks separate filing
+    ky_standard_deduction_joint: [3_270, 0]
+    ky_taxable_income_joint: [96_730, 0]
+    # ky_files_separately becomes true, so the unit uses individual rates
+    ky_income_tax_before_non_refundable_credits_unit: 3_738.40
+    ky_income_tax: 3_738.40
+
+- name: 2025 KY married filing separately
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 36
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Filing separately: each gets standard deduction
+    # Person1: $50,000 - $3,270 = $46,730, tax = $1,869.20
+    # Person2: $30,000 - $3,270 = $26,730, tax = $1,069.20
+    # Combined tax: $2,938.40
+    ky_standard_deduction_indiv: [3_270, 3_270]
+    ky_taxable_income_indiv: [46_730, 26_730]
+    ky_income_tax_before_non_refundable_credits_unit: 2_938.40
+    ky_income_tax: 2_938.40
+
+# ==============================================================================
+# SCENARIO 3: Family Size Tax Credit - test at 100%, 115%, 130% of poverty threshold
+# ==============================================================================
+
+# Test at 100% of threshold - full credit
+- name: 2025 KY FSTC - single at 100% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_650
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $15,650 (exactly at FPG for 1 person)
+    # Taxable income: $15,650 - $3,270 = $12,380
+    # Tax before credits: $12,380 * 0.04 = $495.20
+    # FSTC rate: 100% (income at 100% of threshold)
+    # FSTC: $495.20 * 1.0 = $495.20
+    # Final tax: $495.20 - $495.20 = $0
+    ky_family_size_tax_credit_rate: 1.0
+    ky_taxable_income_indiv: [12_380]
+    ky_income_tax_before_non_refundable_credits_unit: 495.20
+    ky_family_size_tax_credit: 495.20
+    ky_income_tax: 0
+
+# Test at 115% of threshold - 60% credit
+- name: 2025 KY FSTC - single at 115% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 17_998  # 115% of $15,650 = $17,997.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $17,998 (115% of $15,650)
+    # Taxable income: $17,998 - $3,270 = $14,728
+    # Tax before credits: $14,728 * 0.04 = $589.12
+    # FSTC rate: 60% (income > 112% and <= 116% of threshold)
+    # FSTC: $589.12 * 0.6 = $353.47
+    # Final tax: $589.12 - $353.47 = $235.65
+    ky_family_size_tax_credit_rate: 0.6
+    ky_taxable_income_indiv: [14_728]
+    ky_income_tax_before_non_refundable_credits_unit: 589.12
+    ky_family_size_tax_credit: 353.47
+    ky_income_tax: 235.65
+
+# Test at 130% of threshold - 20% credit
+- name: 2025 KY FSTC - single at 130% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_345  # 130% of $15,650 = $20,345
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $20,345 (130% of $15,650)
+    # Taxable income: $20,345 - $3,270 = $17,075
+    # Tax before credits: $17,075 * 0.04 = $683
+    # FSTC rate: 20% (income > 127% and <= 130% of threshold)
+    # FSTC: $683 * 0.2 = $136.60
+    # Final tax: $683 - $136.60 = $546.40
+    ky_family_size_tax_credit_rate: 0.2
+    ky_taxable_income_indiv: [17_075]
+    ky_income_tax_before_non_refundable_credits_unit: 683
+    ky_family_size_tax_credit: 136.60
+    ky_income_tax: 546.40
+
+# Test at 135% of threshold - 0% credit (phased out)
+- name: 2025 KY FSTC - single at 135% of threshold (phased out)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_128  # 135% of $15,650 = $21,127.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $21,128 (135% of $15,650)
+    # FSTC rate: 0% (income > 133% of threshold)
+    ky_family_size_tax_credit_rate: 0
+    ky_family_size_tax_credit: 0
+
+# Test family of 3 - threshold is $26,650
+- name: 2025 KY FSTC - family of 3 at 100% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 26_650
+        is_tax_unit_head: true
+      person2:
+        age: 33
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: KY
+  output:
+    # Income: $26,650 (exactly at FPG for 3 people: $15,650 + 2*$5,500)
+    # FSTC rate: 100% (income at 100% of threshold)
+    ky_family_size_tax_credit_rate: 1.0
+
+# Test family of 4+ - threshold is capped at $32,150
+- name: 2025 KY FSTC - family of 5 at 90% rate
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 33_500  # 104.2% of $32,150 cap
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2, child3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3]
+        state_code: KY
+  output:
+    # Income: $33,500 (104.2% of $32,150 cap for 4+ people)
+    # Family size 5 is capped at 4 for FSTC threshold
+    # FSTC rate: 90% (income > 100% and <= 104% of threshold)
+    ky_family_size_tax_credit_rate: 0.9
+
+# ==============================================================================
+# SCENARIO 4: Personal Tax Credits - aged (65+), blind, military
+# ==============================================================================
+
+- name: 2025 KY personal credits - aged single filer
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Aged credit: $40 (age >= 65)
+    # Taxable income: $40,000 - $3,270 = $36,730
+    # Tax before credits: $36,730 * 0.04 = $1,469.20
+    # Personal credits: $40 (aged)
+    # FSTC: $40,000 > 133% of $15,650, so 0% - but applied AFTER personal credits
+    # FSTC base = max($1,469.20 - $40, 0) = $1,429.20
+    # FSTC = $1,429.20 * 0 = $0
+    # Final tax: $1,469.20 - $40 - $0 = $1,429.20
+    ky_aged_personal_tax_credits: [40]
+    ky_personal_tax_credits: 40
+    ky_taxable_income_indiv: [36_730]
+    ky_income_tax_before_non_refundable_credits_unit: 1_469.20
+    ky_income_tax: 1_429.20
+
+- name: 2025 KY personal credits - blind filer
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 45_000
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Blind credit: $40
+    # Taxable income: $45,000 - $3,270 = $41,730
+    # Tax before credits: $41,730 * 0.04 = $1,669.20
+    # Personal credits: $40 (blind)
+    # Final tax: $1,669.20 - $40 = $1,629.20
+    ky_blind_personal_tax_credits: [40]
+    ky_personal_tax_credits: 40
+    ky_income_tax: 1_629.20
+
+- name: 2025 KY personal credits - military filer
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 55_000
+        military_service_income: 5_000  # Part of employment income from military service
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Military credit: $20 (for filers with military service income > 0)
+    # Employment income: $55,000 (includes $5,000 military service income)
+    # Kentucky subtracts military_service_income from federal AGI:
+    # KY AGI = $55,000 - $5,000 = $50,000
+    # Taxable income: $50,000 - $3,270 = $46,730
+    # Tax before credits: $46,730 * 0.04 = $1,869.20
+    # Personal credits: $20 (military)
+    # Final tax: $1,869.20 - $20 = $1,849.20
+    ky_military_personal_tax_credits: [20]
+    ky_personal_tax_credits: 20
+    ky_agi: [50_000]
+    ky_taxable_income_indiv: [46_730]
+    ky_income_tax: 1_849.20
+
+- name: 2025 KY personal credits - aged and blind MFJ
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        is_blind: true
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Person1: aged ($40) + blind ($40) = $80
+    # Person2: aged ($40) = $40
+    # Total personal credits: $120
+    # Joint taxable income: $50,000 - $3,270 = $46,730
+    # Tax before credits: $46,730 * 0.04 = $1,869.20
+    # Final tax: $1,869.20 - $120 = $1,749.20
+    ky_aged_personal_tax_credits: [40, 40]
+    ky_blind_personal_tax_credits: [40, 0]
+    ky_personal_tax_credits: 120
+    ky_income_tax: 1_749.20
+
+# ==============================================================================
+# SCENARIO 5: Dependent Care Credit - 20% of federal
+# ==============================================================================
+
+- name: 2025 KY dependent care credit
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        is_tax_unit_head: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        cdcc: 1_000  # Federal credit taken
+    households:
+      household:
+        members: [person1, child1]
+        state_code: KY
+  output:
+    # KY CDCC = 20% of federal CDCC
+    # KY CDCC = $1,000 * 0.2 = $200
+    ky_cdcc: 200
+
+- name: 2025 KY dependent care credit with higher federal credit
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        cdcc: 2_100  # Federal credit for 2 qualifying children
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: KY
+  output:
+    # KY CDCC = 20% of federal CDCC
+    # KY CDCC = $2,100 * 0.2 = $420
+    ky_cdcc: 420
+
+# ==============================================================================
+# SCENARIO 6: Pension Income Exclusion - under and over $31,110
+# ==============================================================================
+
+- name: 2025 KY pension exclusion - pension under threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Pension income: $25,000
+    # Exclusion threshold: $31,110
+    # Exclusion: min($25,000, $31,110) = $25,000 (full pension excluded)
+    ky_pension_income_exclusion: [25_000]
+
+- name: 2025 KY pension exclusion - pension over threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Pension income: $45,000
+    # Exclusion threshold: $31,110
+    # Exclusion: min($45,000, $31,110) = $31,110 (capped at threshold)
+    ky_pension_income_exclusion: [31_110]
+
+- name: 2025 KY pension exclusion - exactly at threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_private_pension_income: 31_110
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Pension income: $31,110 (exactly at threshold)
+    # Exclusion: $31,110 (full pension excluded)
+    ky_pension_income_exclusion: [31_110]
+
+- name: 2025 KY pension and other retirement income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_private_pension_income: 20_000
+        taxable_ira_distributions: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Pension: $20,000, IRA: $15,000
+    # Total retirement income for exclusion: $35,000
+    # Exclusion: min($35,000, $31,110) = $31,110 (capped at threshold)
+    ky_pension_income_exclusion: [31_110]
+
+# ==============================================================================
+# SCENARIO 7: Combined credits scenario - integration test
+# ==============================================================================
+
+- name: 2025 KY comprehensive - elderly with pension and FSTC
+  period: 2025
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 28_000
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 66
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Income: $28,000 pension + $5,000 wages = $33,000
+    # Pension exclusion: $28,000 (under $31,110 threshold)
+    # KY AGI after exclusion: $33,000 - $28,000 = $5,000
+    # But FSTC uses modified AGI (fed AGI or KY AGI, whichever higher)
+    # Personal credits: $40 + $40 = $80 (both aged)
+    ky_pension_income_exclusion: [28_000, 0]
+    ky_aged_personal_tax_credits: [40, 40]
+    ky_personal_tax_credits: 80
+
+- name: 2025 KY comprehensive - family with all credits
+  period: 2025
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 18_000
+        is_blind: true
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 35
+        employment_income: 3_000
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+        cdcc: 500
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: KY
+  output:
+    # Income: $21,000
+    # FSTC threshold for 3: $26,650
+    # Income ratio: $21,000 / $26,650 = 78.8% - qualifies for 100% FSTC
+    # Personal credits: $40 (aged) + $40 (blind) = $80
+    # KY CDCC: $500 * 0.2 = $100
+    ky_family_size_tax_credit_rate: 1.0
+    ky_aged_personal_tax_credits: [40, 0, 0]
+    ky_blind_personal_tax_credits: [40, 0, 0]
+    ky_personal_tax_credits: 80
+    ky_cdcc: 100
+
+# ==============================================================================
+# SCENARIO 8: Tuition Tax Credit - 25% of federal education credits
+# ==============================================================================
+
+- name: 2025 KY tuition tax credit - single student
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ky_tuition_tax_credit_eligible: true
+        american_opportunity_credit: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Federal education credit: $2,000 (tax_unit level)
+    # KY tuition credit: $2,000 * 0.25 = $500
+    ky_tuition_tax_credit: 500
+
+- name: 2025 KY tuition tax credit - lifetime learning
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ky_tuition_tax_credit_eligible: true
+        lifetime_learning_credit: 1_600
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Federal education credit: $1,600 (tax_unit level)
+    # KY tuition credit: $1,600 * 0.25 = $400
+    ky_tuition_tax_credit: 400
+
+# ==============================================================================
+# SCENARIO 9: Verify 2024 vs 2025 standard deduction difference
+# ==============================================================================
+
+- name: 2024 KY standard deduction (comparison)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 2024 standard deduction: $3,160
+    # Taxable income: $50,000 - $3,160 = $46,840
+    # Tax: $46,840 * 0.04 = $1,873.60
+    ky_standard_deduction_indiv: [3_160]
+    ky_taxable_income_indiv: [46_840]
+    ky_income_tax: 1_873.60
+
+- name: 2025 KY standard deduction (comparison)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 2025 standard deduction: $3,270 (+$110 from 2024)
+    # Taxable income: $50,000 - $3,270 = $46,730
+    # Tax: $46,730 * 0.04 = $1,869.20
+    # Tax savings from deduction increase: $110 * 0.04 = $4.40
+    ky_standard_deduction_indiv: [3_270]
+    ky_taxable_income_indiv: [46_730]
+    ky_income_tax: 1_869.20
+
+# ==============================================================================
+# SCENARIO 10: Edge cases and boundary tests
+# ==============================================================================
+
+- name: 2025 KY zero income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_taxable_income_indiv: [0]
+    ky_income_tax: 0
+
+- name: 2025 KY income below standard deduction
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Income: $2,000
+    # Standard deduction: $3,270
+    # Taxable income: max($2,000 - $3,270, 0) = $0
+    ky_standard_deduction_indiv: [3_270]
+    ky_taxable_income_indiv: [0]
+    ky_income_tax: 0
+
+- name: 2025 KY FSTC at exactly 104% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 16_276  # 104% of $15,650 = $16,276
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # At exactly 104%, should get 90% rate (bracket uses right=True)
+    ky_family_size_tax_credit_rate: 0.9
