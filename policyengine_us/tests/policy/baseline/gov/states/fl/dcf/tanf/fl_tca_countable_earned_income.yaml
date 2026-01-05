@@ -1,0 +1,200 @@
+# Tests the $200 + 50% earned income disregard for Florida TCA
+# Formula: Countable = max(Gross Earned - $200, 0) * 0.5
+# Source: Florida Statutes 414.095(11)
+
+- name: Case 1, zero earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $0 earned → $0 countable (nothing to disregard)
+
+- name: Case 2, earned income exactly at disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 2_400  # $200/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $200/month earned: max(200 - 200, 0) * 0.5 = 0
+
+- name: Case 3, earned income above disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 150
+    # $500/month earned: max(500 - 200, 0) * 0.5 = 300 * 0.5 = $150
+
+- name: Case 4, higher earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 400
+    # $1,000/month earned: max(1000 - 200, 0) * 0.5 = 800 * 0.5 = $400
+
+- name: Case 5, below disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $100/month earned: max(100 - 200, 0) * 0.5 = 0 * 0.5 = $0
+
+- name: Case 6, multiple earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        employment_income_before_lsr: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 300
+    # Combined: $800/month earned
+    # Per FL Statute 414.095(11): disregard is per assistance GROUP
+    # Countable = max(800 - 200, 0) * 0.5 = 600 * 0.5 = $300
+
+# ============================================================
+# Edge Cases
+# ============================================================
+
+- name: Case 7, earned income one dollar above disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 2_412  # $201/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0.5
+    # $201/month earned: max(201 - 200, 0) * 0.5 = 1 * 0.5 = $0.50
+    # Tests boundary: smallest positive countable earned income
+
+- name: Case 8, very small earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12  # $1/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $1/month earned: max(1 - 200, 0) * 0.5 = 0 * 0.5 = $0
+    # Tests: very small income fully disregarded
+
+- name: Case 9, very high earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 60_000  # $5,000/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 2_400
+    # $5,000/month earned: max(5000 - 200, 0) * 0.5 = 4800 * 0.5 = $2,400
+    # Tests: high income scenario
+
+- name: Case 10, multiple earners one very small.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        employment_income_before_lsr: 600  # $50/month (below $90 gross test deduction)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 175
+    # Combined: $550/month earned
+    # Countable = max(550 - 200, 0) * 0.5 = 350 * 0.5 = $175
+    # Tests: small earner contribution to total
+
+- name: Case 11, multiple earners both at disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+      person2:
+        employment_income_before_lsr: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # Combined: $200/month earned (exactly at threshold)
+    # Countable = max(200 - 200, 0) * 0.5 = 0
+    # Tests: combined income at exact threshold
+
+- name: Case 12, income one dollar below disregard threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 2_388  # $199/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $199/month earned: max(199 - 200, 0) * 0.5 = 0 * 0.5 = $0
+    # Tests boundary: one dollar below threshold still zero countable

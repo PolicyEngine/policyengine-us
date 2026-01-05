@@ -1,0 +1,318 @@
+# Tests Florida TCA net income test (payment standard test)
+# Net countable income must be less than payment standard
+# Source: Florida Statutes 414.095(12), FAC 65A-4.220
+
+# Payment standards for >$50 shelter (highest tier):
+# Size 1: $180, Size 2: $241, Size 3: $303, Size 4: $364
+
+- name: Case 1, zero income passes net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000  # $1,000/month (>$50, highest tier)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable income: 0
+    # Payment standard for size 2, >$50 shelter: $241
+    # 0 < 241 -> Pass
+
+- name: Case 2, income below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        rent: 12_000  # $1,000/month (>$50, highest tier)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable earned: max(500 - 200, 0) * 0.5 = 150
+    # Payment standard for size 2, >$50 shelter: $241
+    # 150 < 241 -> Pass
+
+- name: Case 3, income exceeds payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable earned: max(1000 - 200, 0) * 0.5 = 400
+    # Payment standard for size 2, >$50 shelter: $241
+    # 400 > 241 -> Fail
+
+- name: Case 4, unearned income counts toward net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_000  # $250/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable earned: 0
+    # Countable unearned: 250
+    # Total countable: 250
+    # Payment standard for size 2, >$50 shelter: $241
+    # 250 > 241 -> Fail
+
+- name: Case 5, larger family higher payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        rent: 12_000
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable earned: max(1000 - 200, 0) * 0.5 = 400
+    # Payment standard for size 3, >$50 shelter: $303
+    # 400 > 303 -> Fail
+
+- name: Case 6, income at exact payment standard boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_892  # $241/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable income: 241
+    # Payment standard: $241
+    # 241 >= 241 -> Fail (must be LESS THAN, not equal)
+
+# ============================================================
+# Edge Cases
+# ============================================================
+
+- name: Case 7, income one dollar below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_880  # $240/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable income: 240
+    # Payment standard: $241
+    # 240 < 241 -> Pass
+    # Tests: one dollar below threshold passes
+
+- name: Case 8, income one dollar above payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_904  # $242/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable income: 242
+    # Payment standard: $241
+    # 242 > 241 -> Fail
+    # Tests: one dollar above threshold fails
+
+- name: Case 9, mixed income just below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_080  # $340/month -> countable = 70
+        social_security: 2_040  # $170/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable earned: max(340 - 200, 0) * 0.5 = 70
+    # Countable unearned: 170
+    # Total: 70 + 170 = 240
+    # Payment standard: $241
+    # 240 < 241 -> Pass
+    # Tests: mixed income at boundary
+
+- name: Case 10, zero shelter lower payment standard boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_896  # $158/month annual
+        rent: 0  # Zero shelter tier
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable income: 158
+    # Payment standard for size 2, $0 shelter: $158
+    # 158 >= 158 -> Fail (exact boundary fails)
+    # Tests: lower tier payment standard boundary
+
+- name: Case 11, zero shelter one dollar below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_884  # $157/month annual
+        rent: 0  # Zero shelter tier
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable income: 157
+    # Payment standard for size 2, $0 shelter: $158
+    # 157 < 158 -> Pass
+    # Tests: one dollar below lower tier threshold
+
+- name: Case 12, single person high shelter boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_160  # $180/month annual
+        rent: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+    # Countable income: 180
+    # Payment standard for size 1, >$50 shelter: $180
+    # 180 >= 180 -> Fail
+    # Tests: single person payment standard boundary
+
+- name: Case 13, single person one dollar below threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_148  # $179/month annual
+        rent: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+    # Countable income: 179
+    # Payment standard for size 1, >$50 shelter: $180
+    # 179 < 180 -> Pass
+    # Tests: single person just below threshold

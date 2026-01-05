@@ -1,0 +1,83 @@
+# Tests Florida TCA total countable income
+# Countable Income = Countable Earned + Countable Unearned
+# Source: Florida Statutes 414.095, FAC 65A-4.210
+
+- name: Case 1, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+        social_security: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+
+- name: Case 2, earned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 150
+    # Countable earned: max(500 - 200, 0) * 0.5 = 150
+    # Countable unearned: 0
+    # Total: 150
+
+- name: Case 3, unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        social_security: 6_000  # $500/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 500
+    # Countable earned: 0
+    # Countable unearned: 500
+    # Total: 500
+
+- name: Case 4, both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month
+        social_security: 2_400  # $200/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 600
+    # Countable earned: max(1000 - 200, 0) * 0.5 = 400
+    # Countable unearned: 200
+    # Total: 400 + 200 = 600
+
+- name: Case 5, earned income below disregard with unearned.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+        social_security: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 300
+    # Countable earned: max(100 - 200, 0) * 0.5 = 0
+    # Countable unearned: 300
+    # Total: 0 + 300 = 300

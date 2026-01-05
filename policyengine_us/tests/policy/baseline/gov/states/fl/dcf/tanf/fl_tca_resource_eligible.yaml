@@ -1,0 +1,172 @@
+# Tests Florida TCA resource eligibility
+# Asset limit: $2,000 in countable resources
+# Source: FAC 65A-4.208, Florida DCF TCA Page
+
+- name: Case 1, zero assets eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: true
+    # Assets: $0
+    # Limit: $2,000
+    # 0 <= 2,000 → Eligible
+
+- name: Case 2, assets below limit eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: true
+    # Assets: $1,500
+    # Limit: $2,000
+    # 1,500 <= 2,000 → Eligible
+
+- name: Case 3, assets above limit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: false
+    # Assets: $3,000
+    # Limit: $2,000
+    # 3,000 > 2,000 → Ineligible
+
+# ============================================================
+# Edge Cases
+# ============================================================
+
+- name: Case 4, assets exactly at $2,000 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: true
+    # Assets: $2,000
+    # Limit: $2,000
+    # 2,000 <= 2,000 → Eligible (at boundary)
+    # Tests: exact boundary uses <= not <
+
+- name: Case 5, assets one dollar above limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_001
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: false
+    # Assets: $2,001
+    # Limit: $2,000
+    # 2,001 > 2,000 → Ineligible
+    # Tests: one dollar over limit fails
+
+- name: Case 6, assets one dollar below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_999
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: true
+    # Assets: $1,999
+    # Limit: $2,000
+    # 1,999 <= 2,000 → Eligible
+    # Tests: one dollar below limit passes
+
+- name: Case 7, very high assets clearly ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: false
+    # Assets: $50,000
+    # Limit: $2,000
+    # 50,000 > 2,000 → Ineligible
+    # Tests: high asset scenario
+
+- name: Case 8, very small assets eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resource_eligible: true
+    # Assets: $1
+    # Limit: $2,000
+    # 1 <= 2,000 → Eligible
+    # Tests: minimal assets
