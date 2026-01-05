@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: hua7450/weekly-uv-lock-changelog  # TEMP: Change back to main before merging
+          ref: main
           token: ${{ secrets.POLICYENGINE_GITHUB }}
 
       - name: Install uv
