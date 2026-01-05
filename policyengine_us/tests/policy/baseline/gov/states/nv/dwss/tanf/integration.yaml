@@ -9,12 +9,13 @@
 # - Work expense deduction: max($90, 20% of gross earned income)
 # - Benefit = Payment Allowance - Countable Income
 
-- name: Single person household (size 1)
+- name: Single person household (size 1, pregnant)
   period: 2025
   input:
     people:
       person1:
-        age: 30
+        age: 25
+        is_pregnant: true
     spm_units:
       spm_unit:
         members: [person1]
