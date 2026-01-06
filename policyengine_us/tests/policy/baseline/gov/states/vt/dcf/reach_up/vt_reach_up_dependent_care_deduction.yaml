@@ -87,3 +87,27 @@
     # 2 participants = $350 max
     # min($250, $350) = $250
     vt_reach_up_dependent_care_deduction: 250
+
+- name: Case 5, two participants childcare above double max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # 2 participants = $350 max
+    # min($500, $350) = $350 (capped)
+    vt_reach_up_dependent_care_deduction: 350

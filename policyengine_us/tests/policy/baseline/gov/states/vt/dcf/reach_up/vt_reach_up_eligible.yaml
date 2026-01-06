@@ -99,3 +99,29 @@
   output:
     # Pregnant women within 30 days of due date may qualify
     vt_reach_up_eligible: true
+
+- name: Case 5, ineligible due to resources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_reach_up_income_eligible: true
+        spm_unit_assets: 10_000  # Above $9,000 limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Assets exceed $9,000 resource limit
+    vt_reach_up_eligible: false
