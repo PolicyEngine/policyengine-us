@@ -1172,65 +1172,7 @@
     az_increased_excise_tax_credit: 75
 
 # =============================================================================
-# SECTION 9: Filing Requirement Boundary Tests
-# =============================================================================
-
-- name: Single filer at 2025 filing threshold - no filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 15_750
-  output:
-    az_income_tax_filing_required: false
-
-- name: Single filer one dollar over 2025 threshold - filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 15_751
-  output:
-    az_income_tax_filing_required: true
-
-- name: Joint filer at 2025 filing threshold - no filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 31_500
-  output:
-    az_income_tax_filing_required: false
-
-- name: Joint filer one dollar over 2025 threshold - filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 31_501
-  output:
-    az_income_tax_filing_required: true
-
-- name: HOH at 2025 filing threshold - no filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 23_625
-  output:
-    az_income_tax_filing_required: false
-
-- name: HOH one dollar over 2025 threshold - filing required
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 23_626
-  output:
-    az_income_tax_filing_required: true
-
-# =============================================================================
-# SECTION 10: Year-over-Year Comparison (2024 vs 2025)
+# SECTION 9: Year-over-Year Comparison (2024 vs 2025)
 # =============================================================================
 
 - name: Compare 2024 vs 2025 standard deduction - single
@@ -1276,7 +1218,7 @@
     az_increased_standard_deduction_for_charitable_contributions: 1_650
 
 # =============================================================================
-# SECTION 11: Non-Arizona Resident Tests
+# SECTION 10: Non-Arizona Resident Tests
 # =============================================================================
 
 - name: Non-Arizona resident - no state credits

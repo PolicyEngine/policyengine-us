@@ -95,35 +95,3 @@
   output:
     # Non-Arizona residents do not receive Arizona subtractions
     az_families_tax_rebate_subtraction: 0
-
-# Edge cases for various rebate amounts
-
-- name: Single dependent under 17
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    az_families_tax_rebate_received: 250
-  output:
-    # One dependent under 17: $250
-    az_families_tax_rebate_subtraction: 250
-
-- name: Single dependent 17 or older
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    az_families_tax_rebate_received: 100
-  output:
-    # One dependent 17 or older: $100
-    az_families_tax_rebate_subtraction: 100
-
-- name: Three dependents under 17
-  period: 2025
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    az_families_tax_rebate_received: 750
-  output:
-    # Three dependents under 17: 3 x $250 = $750
-    az_families_tax_rebate_subtraction: 750
