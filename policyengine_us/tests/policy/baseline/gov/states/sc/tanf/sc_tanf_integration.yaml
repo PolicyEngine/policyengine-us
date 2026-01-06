@@ -1,0 +1,94 @@
+- name: Single parent of 2 children.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      parent: 
+        age: 40
+        employment_income: 0
+        retirement_distributions: 0
+        child_support_received: 0 
+      child1:
+        age: 10
+        is_child_dependent: true
+      child2: 
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1,child2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [parent, child1,child2]
+        household_vehicles_value: 0 
+        household_vehicles_owned: 0
+        state_code: SC
+  output:
+    sc_tanf: 3_747.6
+    # (12880+4540*2)*9*0.3372*0.5/12 + (13590+4720*2)*3*0.50*0.3372/12 
+
+- name: Single parent of 3 childre, one child is not eligible.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      parent: 
+        age: 40
+        employment_income: 0
+        retirement_distributions: 0
+        child_support_received: 0 
+      child1:
+        age: 10
+        is_child_dependent: true
+      child2: 
+        age: 8
+        is_child_dependent: true
+      child3:
+        age: 16
+        is_child_dependent: false 
+    spm_units:
+      spm_unit:
+        members: [parent, child1,child2,child3]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [parent, child1,child2,child3]
+        household_vehicles_value: 0
+        household_vehicles_owned: 0
+        state_code: SC
+  output:
+    sc_tanf: 3_747.6
+
+- name: Single parent of 3 children.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      parent: 
+        age: 40
+        employment_income: 0
+        retirement_distributions: 0
+        child_support_received: 0 
+      child1:
+        age: 10
+        is_child_dependent: true
+      child2: 
+        age: 8
+        is_child_dependent: true
+      child3:
+        age: 12
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1,child2,child3]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [parent, child1,child2,child3]
+        household_vehicles_value: 3_200
+        household_vehicles_owned: 2
+        state_code: SC
+  output:
+    sc_tanf: 0
+    

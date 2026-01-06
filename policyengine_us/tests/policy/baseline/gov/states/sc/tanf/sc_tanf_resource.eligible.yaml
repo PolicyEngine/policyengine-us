@@ -1,0 +1,50 @@
+- name: Case 1, household of 2 adults and 2 vehicles, below the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 2_000
+    retirement_distributions: 0
+    household_vehicles_value: 6_000
+    household_vehicles_owned: 2
+    spm_unit_count_adults: 2 
+  output:
+    sc_tanf_resource_eligible: true
+
+- name: Case 2, household of 2 adults and 3 vehicles, above the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 1_000
+    retirement_distributions: 0
+    household_vehicles_value: 6_000
+    household_vehicles_owned: 3
+    spm_unit_count_adults: 2
+  output:
+    sc_tanf_resource_eligible: false
+    # avg vehicles value = 6000/3 = 2000
+    # total resources = 2000+ 1000 = 3000 > 2500
+
+- name: Case 3, household of 2 adults and 2 vehicles, above the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 2_600
+    retirement_distributions: 0
+    household_vehicles_value: 6_000
+    household_vehicles_owned: 2
+    spm_unit_count_adults: 2
+  output:
+    sc_tanf_resource_eligible: false
+    
+- name: Case 4, household of 2 adults and no vehicle, below the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 2_000
+    retirement_distributions: 0
+    household_vehicles_value: 0
+    household_vehicles_owned: 0
+    spm_unit_count_adults: 2 
+  output:
+    sc_tanf_resource_eligible: true
+    

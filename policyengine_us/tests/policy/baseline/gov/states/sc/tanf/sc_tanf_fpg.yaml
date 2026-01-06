@@ -1,0 +1,45 @@
+- name: Household of 3, all child are qualify. 
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      parent: 
+        employment_income: 0
+      child1:
+        is_child_dependent: true
+        age: 10
+      child2: 
+        is_child_dependent: true
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    sc_tanf_fpg: 22_227.5
+
+- name: Household of 2, only one child is qualify. 
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      parent:
+        employment_income: 0
+      child1:
+        is_child_dependent: true
+        age: 10
+      child2: 
+        is_child_dependent: false
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: SC
+  output:
+    sc_tanf_fpg: 17_642.5

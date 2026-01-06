@@ -1,0 +1,48 @@
+- name: Case 1, no earned income is eligible.
+  period: 2022
+  input:
+    state_code: SC
+    state_group_str: CONTIGUOUS_US
+    sc_tanf_net_income: 0 
+    sc_tanf_earned_income: 0 
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: true
+
+- name: Case 2, did not pass the gross income test.
+  period: 2022
+  input:
+    state_code: SC
+    state_group_str: CONTIGUOUS_US
+    sc_tanf_net_income: 19_200
+    sc_tanf_earned_income: 24_000
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: false
+    # gross income limit for size 2 is 16300
+    # need standard: 762*3 + 725*9 = 8811
+  
+- name: Case 3, pass gross income test but higher than the need standard.
+  period: 2022
+  input:
+    state_code: SC
+    state_group_str: CONTIGUOUS_US
+    sc_tanf_net_income: 9_200
+    sc_tanf_earned_income: 12_000
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: false
+    # need standard for size 2 is 8811. 
+    # gross income limit for size 2 is 16300. 
+    
+
+- name: Case 4, pass need standard test and gross income test.
+  period: 2022
+  input:
+    state_code: SC
+    state_group_str: CONTIGUOUS_US
+    sc_tanf_net_income: 8_000
+    sc_tanf_earned_income: 10_750
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: true

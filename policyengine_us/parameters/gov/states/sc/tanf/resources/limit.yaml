@@ -1,0 +1,11 @@
+description: South Carolina limits TANF to households with up to this resource amount.
+values:
+  2021-10-01: 2_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Carolina TANF household resource limit  
+  reference:
+    - title: The South Carolina Department of Social Services TANF Policy Manual 
+      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=90

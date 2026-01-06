@@ -1,0 +1,47 @@
+- name: Case 1, no earned income, then total net income is 0.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    state_code: SC
+    sc_tanf_earned_income: 0
+    sc_tanf_unearned_income: 0
+    child_support_received: 0
+  output:
+    sc_tanf_net_income: 0
+
+- name: Case 2, have $24000 earned income.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    state_code: SC
+    sc_tanf_earned_income: 24_000
+    sc_tanf_unearned_income: 0
+    child_support_received: 0
+  output:
+    sc_tanf_net_income: 19_200
+  # 4*0.5*24000/12 + 8*24000/12 - 800 = 19200
+
+- name: Case 3, have $12000 earned income.
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    state_code: SC
+    sc_tanf_earned_income: 12_000
+    sc_tanf_unearned_income: 0
+    child_support_received: 0
+  output:
+    sc_tanf_net_income: 9_200
+  # 4*0.5*12000/12 + 8*12000/12 - 800 = 9200
+
+- name: Case 4, have some earned income, unearned income and child support. 
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    state_code: SC
+    sc_tanf_earned_income: 10_750
+    sc_tanf_unearned_income: 2_000
+    child_support_received: 1_000
+  output:
+    sc_tanf_net_income: 9_158
+  # 4*0.5*10750/12 + 8*10750/12 - 800 = 8158
+  # 8158 + 2000 - 1000 = 9158
