@@ -1,7 +1,7 @@
 # Wyoming POWER Payment Standard Tests
 # Tests the payment standard lookup by household size and shelter status
-# Shelter Qualified: 1=$512, 2=$847, 3-4=$902, 5-6=$959, 7-12=$1,015
-# Shelter Disqualified: 1=$298, 2=$541, 3-4=$620, 5-6=$702, 7-12=$783
+# Shelter Qualified: 1=$512, 2=$847, 3-4=$902, 5-6=$959, 7+=$1,015
+# Shelter Disqualified: 1=$298, 2=$541, 3-4=$620, 5-6=$702, 7+=$783
 # Source: Wyoming DFS Table II POWER Income Limits (July 1, 2025 - June 30, 2026)
 
 - name: Case 1, size 1 shelter qualified.
@@ -39,7 +39,7 @@
         members: [person1]
         state_code: WY
   output:
-    # Size 1, shelter disqualified -> $328
+    # Size 1, shelter disqualified -> $298
     wy_power_payment_standard: 298
 
 - name: Case 3, size 2 shelter qualified.
@@ -79,7 +79,7 @@
         members: [person1, person2]
         state_code: WY
   output:
-    # Size 2, shelter disqualified -> $542
+    # Size 2, shelter disqualified -> $541
     wy_power_payment_standard: 541
 
 - name: Case 5, size 3 shelter qualified (same as size 4).
@@ -173,7 +173,7 @@
         members: [person1, person2, person3]
         state_code: WY
   output:
-    # Size 3, shelter disqualified -> $576
+    # Size 3, shelter disqualified -> $620
     wy_power_payment_standard: 620
 
 # =============================================================================
@@ -307,7 +307,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
         state_code: WY
   output:
-    # Size 12, shelter qualified -> $1,243 (max defined size)
+    # Size 12, shelter qualified -> $1,015 (max defined size)
     wy_power_payment_standard: 1_015
 
 - name: Edge case 5, size 12 shelter disqualified (at max_unit_size).
@@ -413,7 +413,7 @@
         members: [person1, person2, person3, person4]
         state_code: WY
   output:
-    # Size 4, shelter disqualified -> $576 (same as size 3)
+    # Size 4, shelter disqualified -> $620 (same as size 3)
     wy_power_payment_standard: 620
 
 - name: Edge case 8, size 9 shelter qualified.
@@ -447,7 +447,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
         state_code: WY
   output:
-    # Size 9, shelter qualified -> $1,072
+    # Size 9, shelter qualified -> $1,015
     wy_power_payment_standard: 1_015
 
 - name: Edge case 9, size 10 shelter qualified.
@@ -483,7 +483,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: WY
   output:
-    # Size 10, shelter qualified -> $1,129
+    # Size 10, shelter qualified -> $1,015
     wy_power_payment_standard: 1_015
 
 - name: Edge case 10, size 11 shelter qualified.
@@ -521,7 +521,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
         state_code: WY
   output:
-    # Size 11, shelter qualified -> $1,186
+    # Size 11, shelter qualified -> $1,015
     wy_power_payment_standard: 1_015
 
 - name: Edge case 11, size 11 shelter disqualified.
@@ -559,5 +559,94 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
         state_code: WY
   output:
-    # Size 11, shelter disqualified -> $758
+    # Size 11, shelter disqualified -> $783
     wy_power_payment_standard: 783
+
+# =============================================================================
+# SIZE TRANSITION TESTS
+# =============================================================================
+
+- name: Edge case 12, size 6 to 7 transition shelter qualified (payment increases).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        wy_power_shelter_qualified: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WY
+  output:
+    # Size 7, shelter qualified -> $1,015 (up from $959 for size 6)
+    # This is the last breakpoint before the cap
+    wy_power_payment_standard: 1_015
+
+- name: Edge case 13, size 5 shelter disqualified.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        wy_power_shelter_qualified: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    # Size 5, shelter disqualified -> $702 (same as size 6)
+    wy_power_payment_standard: 702
+
+- name: Edge case 14, size 6 shelter disqualified same as size 5.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        wy_power_shelter_qualified: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WY
+  output:
+    # Size 6, shelter disqualified -> $702 (same as size 5)
+    wy_power_payment_standard: 702

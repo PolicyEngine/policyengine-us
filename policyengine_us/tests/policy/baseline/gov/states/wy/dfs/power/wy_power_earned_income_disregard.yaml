@@ -224,3 +224,56 @@
     # Large household (12 people), single parent -> $600 disregard
     # Disregard is based on marital status, not household size
     wy_power_earned_income_disregard: 600
+
+- name: Edge case 6, married couple with multiple children still gets $1,200 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WY
+  output:
+    # Married couple with 4 children -> $1,200 disregard (not more)
+    # Multiple children do NOT increase the disregard
+    # It stays at $1,200 regardless of number of children
+    wy_power_earned_income_disregard: 1_200
+
+- name: Edge case 7, newborn (age 0) counts as child for married couple disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 26
+      person3:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Married couple with newborn (age 0) -> $1,200 disregard
+    # Age 0 counts as a minor child (< 18)
+    wy_power_earned_income_disregard: 1_200

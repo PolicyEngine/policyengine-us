@@ -346,3 +346,50 @@
     # Total countable: 0 + 800 = $800
     # NOTE: $600 disregard does NOT reduce unearned income
     wy_power_countable_income: 800
+
+- name: Edge case 10, earned income of $1 is fully disregarded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12  # $1/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(1 - 600, 0) = $0 (fully disregarded)
+    # Unearned: $0
+    # Total countable: $0
+    wy_power_countable_income: 0
+
+- name: Edge case 11, unearned income of $1 fully counts (no disregard).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12  # $1/month unearned
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: $0
+    # Unearned: $1/month (no disregard applies)
+    # Total countable: $1
+    # NOTE: Disregard does NOT apply to unearned income
+    wy_power_countable_income: 1

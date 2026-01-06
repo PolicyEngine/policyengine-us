@@ -226,7 +226,7 @@
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 25_212  # $2,101/month -> countable = $1,501
+        employment_income_before_lsr: 25_212  # $2,101/month -> countable = $901
       person2:
         age: 28
       person3:
@@ -242,11 +242,10 @@
         members: [person1, person2, person3, person4]
         state_code: WY
   output:
-    # Countable income: max(2101 - 600, 0) = $1,501 (note: single parent, not married)
-    # Wait, this is married with child -> $1,200 disregard
+    # Married couple with children → $1,200 disregard
     # Countable income: max(2101 - 1200, 0) = $901
     # Income limit for size 4: $1,502 (same as size 3)
-    # $901 < $1,502 -> Eligible
+    # $901 < $1,502 → Eligible
     wy_power_income_eligible: true
 
 - name: Edge case 4, size 8 household (large family).
@@ -475,3 +474,83 @@
     # Income limit for size 2: $1,447
     # $9,400 >> $1,447 -> Not eligible
     wy_power_income_eligible: false
+
+- name: Edge case 11, size 1 income exactly at limit ($1,112) is NOT eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        employment_income_before_lsr: 20_544  # $1,712/month -> countable = $1,112
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    # Countable income: max(1712 - 600, 0) = $1,112
+    # Income limit for size 1: $1,112
+    # $1,112 = $1,112 → Not eligible (must be strictly less than)
+    wy_power_income_eligible: false
+
+- name: Edge case 12, size 5 income exactly at limit ($1,559) is NOT eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 25_908  # $2,159/month -> countable = $1,559
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    # Countable income: max(2159 - 600, 0) = $1,559
+    # Income limit for size 5: $1,559
+    # $1,559 = $1,559 → Not eligible (exactly at threshold)
+    wy_power_income_eligible: false
+
+- name: Edge case 13, size 5 income one dollar below limit ($1,558) is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 25_896  # $2,158/month -> countable = $1,558
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    # Countable income: max(2158 - 600, 0) = $1,558
+    # Income limit for size 5: $1,559
+    # $1,558 < $1,559 → Eligible (one dollar under)
+    wy_power_income_eligible: true

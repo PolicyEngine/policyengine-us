@@ -230,10 +230,10 @@
 
     # ======== BENEFIT CALCULATION ========
     wy_power_payment_standard: 620
-    # Size 3, shelter DISQUALIFIED -> $576 (vs $902 for shelter qualified)
+    # Size 3, shelter DISQUALIFIED -> $620 (vs $902 for shelter qualified)
 
     wy_power: 620
-    # max(576 - 0, 0) = $576
+    # max(620 - 0, 0) = $620
 
 - name: Case 6, family exceeds income limit is ineligible.
   period: 2026-01
@@ -489,13 +489,13 @@
     wy_power_countable_income: 400
     # max(1000 - 600, 0) = $400
     wy_power_income_eligible: true
-    # $400 < $1,839 (size 12 limit)
+    # $400 < $1,615 (size 12 limit)
     wy_power_resource_eligible: true
     wy_power_eligible: true
     wy_power_payment_standard: 1_015
     # Size 12, shelter qualified
     wy_power: 615
-    # max(1243 - 400, 0) = $843
+    # max(1015 - 400, 0) = $615
 
 - name: Edge case 6, married couple without child gets $600 disregard.
   period: 2026-01

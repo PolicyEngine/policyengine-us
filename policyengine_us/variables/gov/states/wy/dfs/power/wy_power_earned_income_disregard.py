@@ -8,7 +8,7 @@ class wy_power_earned_income_disregard(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://codes.findlaw.com/wy/title-42-welfare/wy-st-sect-42-2-103.html",
+        "https://wyoleg.gov/statutes/compress/title42.pdf#page=5",
         "https://dfs.wyo.gov/about/policy-manuals/snap-and-power-policy-manual/",
     )
     defined_for = StateCode.WY

@@ -9,3 +9,16 @@ class wy_power_shelter_qualified(Variable):
     reference = "https://dfs.wyo.gov/about/policy-manuals/snap-and-power-policy-manual/"
     defined_for = StateCode.WY
     default_value = True
+    documentation = """
+    Shelter qualified (Code N) applies when the unit is responsible for paying
+    all or a portion of shelter costs.
+
+    Set to False (shelter disqualified) when:
+    - Code Y: Unit has no obligation to pay shelter costs (completely furnished)
+    - Code R: Unit lives in government housing subsidy
+    - Code M: Minor parent with dependent children living with parent(s),
+              adult relative, or court-appointed guardian/custodian
+    - Code S: Unit excludes an individual due to receiving SSI
+
+    Per ARW Chapter 1, Section 9.
+    """

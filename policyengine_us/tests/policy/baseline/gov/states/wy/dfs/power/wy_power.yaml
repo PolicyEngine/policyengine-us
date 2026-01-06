@@ -457,3 +457,78 @@
     # Payment standard: $847
     # Benefit: max(847 - 400, 0) = $447
     wy_power: 447
+
+- name: Edge case 12, countable income $1 above payment standard but below income limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 17_376  # $1,448/month -> countable = $848
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_power_shelter_qualified: true
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable earned: max(1448 - 600, 0) = $848
+    # Income limit (size 2): $1,447
+    # $848 < $1,447 → INCOME ELIGIBLE
+    # Payment standard (size 2, shelter qualified): $847
+    # Benefit: max(847 - 848, 0) = $0
+    # Family is eligible but receives $0 benefit (benefit cliff)
+    wy_power_income_eligible: true
+    wy_power_eligible: true
+    wy_power: 0
+
+- name: Edge case 13, maximum possible benefit (size 12, zero income, shelter qualified).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 9
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        wy_power_shelter_qualified: true
+        spm_unit_is_married: false
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: WY
+  output:
+    # Countable income: $0
+    # Payment standard (size 12, shelter qualified): $1,015 (maximum)
+    # Benefit: max(1015 - 0, 0) = $1,015 (maximum possible benefit)
+    wy_power_payment_standard: 1_015
+    wy_power_countable_income: 0
+    wy_power: 1_015
