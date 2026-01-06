@@ -16,7 +16,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_cash_assets: 1_000
+        spm_unit_assets: 1_000
     households:
       household:
         members: [person1, person2, person3]
@@ -47,7 +47,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_cash_assets: 1_000
+        spm_unit_assets: 1_000
     households:
       household:
         members: [person1, person2, person3]
@@ -78,7 +78,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_cash_assets: 1_000
+        spm_unit_assets: 1_000
     households:
       household:
         members: [person1, person2]
@@ -92,3 +92,85 @@
     # need_standard = 851.67
     # gross_income_limit = 851.67 * 1.85 = 1575.58
     # 2,000 > 1,575.58 -> not eligible
+
+- name: Case 4, single pregnant person with no income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        employment_income_before_lsr: 0
+        retirement_distributions: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1]
+        household_vehicles_value: 0
+        household_vehicles_owned: 0
+        state_code: SC
+  output:
+    sc_tanf: 253.89
+    # tanf_fpg for size 1 (2025-01) = 1255/month
+    # need_standard = 1255 * 0.5 = 627.50
+    # benefit = 627.50 * 0.4046 = 253.89
+
+- name: Case 5, unearned income only.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        taxable_social_security: 3_600
+        retirement_distributions: 0
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 223.20
+    # monthly unearned = 3,600/12 = 300
+    # tanf_fpg for size 2 = 1703.33
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # countable_income = 0 (earned) + 300 (unearned) = 300
+    # excess = 851.67 - 300 = 551.67
+    # benefit = 551.67 * 0.4046 = 223.20
+
+- name: Case 6, historical payment rate (pre-Oct 2024).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        retirement_distributions: 0
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 277.07
+    # tanf_fpg for size 2 (2024-01, uses 2023-10 FPG) = 1643.33/month
+    # need_standard = 1643.33 * 0.5 = 821.67
+    # benefit = 821.67 * 0.3372 = 277.07 (old rate)

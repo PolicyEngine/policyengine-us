@@ -31,3 +31,17 @@
     # monthly earned = 24,000 / 12 = 2,000
     # gross_income_limit = 1,575.58
     # 2,000 > 1,575.58 -> not eligible
+
+- name: Case 4, gross income exactly at limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: SC
+    spm_unit_size: 2
+    sc_tanf_gross_income: 1_575.58
+  output:
+    sc_tanf_gross_income_eligible: true
+    # tanf_fpg for size 2 = 1703.33
+    # need_standard = 1703.33 * 0.5 = 851.665
+    # gross_income_limit = 851.665 * 1.85 = 1575.58
+    # 1575.58 <= 1575.58 -> eligible (uses <=)
