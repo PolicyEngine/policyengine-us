@@ -6,6 +6,6 @@ class sc_tanf_unearned_income(Variable):
     entity = SPMUnit
     label = "South Carolina TANF unearned income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.SC
     adds = "gov.states.sc.tanf.income.unearned"

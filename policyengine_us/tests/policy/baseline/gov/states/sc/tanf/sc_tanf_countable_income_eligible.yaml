@@ -1,5 +1,5 @@
 - name: Case 1, no income is eligible.
-  period: 2024
+  period: 2025-01
   input:
     state_code: SC
     spm_unit_size: 2
@@ -7,25 +7,24 @@
     sc_tanf_countable_income_eligible: true
 
 - name: Case 2, countable income below need standard.
-  period: 2024
+  period: 2025-01
   input:
     state_code: SC
     spm_unit_size: 2
-    sc_tanf_countable_income: 10_000
+    sc_tanf_countable_income: 800
   output:
     sc_tanf_countable_income_eligible: true
-    # FPG for 2 people (2024) = 20,440
-    # need_standard = 20,440 * 0.5 = 10,220
-    # 10,000 < 10,220 -> eligible
+    # tanf_fpg for size 2 (2025-01) = 1703.33/month
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # 800 < 851.67 -> eligible
 
 - name: Case 3, countable income above need standard.
-  period: 2024
+  period: 2025-01
   input:
     state_code: SC
     spm_unit_size: 2
-    sc_tanf_countable_income: 11_000
+    sc_tanf_countable_income: 900
   output:
     sc_tanf_countable_income_eligible: false
-    # FPG for 2 people (2024) = 20,440
-    # need_standard = 20,440 * 0.5 = 10,220
-    # 11,000 >= 10,220 -> not eligible
+    # need_standard = 851.67
+    # 900 >= 851.67 -> not eligible

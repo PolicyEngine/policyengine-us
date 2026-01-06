@@ -5,7 +5,7 @@ class sc_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for the South Carolina TANF program"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.SC
 
     def formula(spm_unit, period, parameters):

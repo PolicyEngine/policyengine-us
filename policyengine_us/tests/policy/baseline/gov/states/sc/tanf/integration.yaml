@@ -1,94 +1,94 @@
-- name: Single parent of 2 children.
-  absolute_error_margin: 1
-  period: 2022
+- name: Case 1, single parent of 2 children with no income.
+  absolute_error_margin: 0.1
+  period: 2025-01
   input:
     people:
-      parent: 
+      person1:
         age: 40
-        employment_income: 0
+        employment_income_before_lsr: 0
         retirement_distributions: 0
-        child_support_received: 0 
-      child1:
+      person2:
         age: 10
         is_child_dependent: true
-      child2: 
+      person3:
         age: 8
         is_child_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child1,child2]
+        members: [person1, person2, person3]
         spm_unit_cash_assets: 1_000
     households:
       household:
-        members: [parent, child1,child2]
-        household_vehicles_value: 0 
-        household_vehicles_owned: 0
-        state_code: SC
-  output:
-    sc_tanf: 3_747.6
-    # (12880+4540*2)*9*0.3372*0.5/12 + (13590+4720*2)*3*0.50*0.3372/12 
-
-- name: Single parent of 3 childre, one child is not eligible.
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      parent: 
-        age: 40
-        employment_income: 0
-        retirement_distributions: 0
-        child_support_received: 0 
-      child1:
-        age: 10
-        is_child_dependent: true
-      child2: 
-        age: 8
-        is_child_dependent: true
-      child3:
-        age: 16
-        is_child_dependent: false 
-    spm_units:
-      spm_unit:
-        members: [parent, child1,child2,child3]
-        spm_unit_cash_assets: 1_000
-    households:
-      household:
-        members: [parent, child1,child2,child3]
+        members: [person1, person2, person3]
         household_vehicles_value: 0
         household_vehicles_owned: 0
         state_code: SC
   output:
-    sc_tanf: 3_747.6
+    sc_tanf: 435.28
+    # tanf_fpg for size 3 (2025-01, uses 2024-10 FPG) = 2151.67/month
+    # need_standard = 2151.67 * 0.5 = 1075.83
+    # benefit = 1075.83 * 0.4046 = 435.49
 
-- name: Single parent of 3 children.
-  absolute_error_margin: 1
-  period: 2022
+- name: Case 2, single parent with earned income.
+  absolute_error_margin: 0.1
+  period: 2025-01
   input:
     people:
-      parent: 
+      person1:
         age: 40
-        employment_income: 0
+        employment_income_before_lsr: 6_000
         retirement_distributions: 0
-        child_support_received: 0 
-      child1:
+      person2:
         age: 10
         is_child_dependent: true
-      child2: 
+      person3:
         age: 8
-        is_child_dependent: true
-      child3:
-        age: 12
         is_child_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child1,child2,child3]
+        members: [person1, person2, person3]
         spm_unit_cash_assets: 1_000
     households:
       household:
-        members: [parent, child1,child2,child3]
-        household_vehicles_value: 3_200
-        household_vehicles_owned: 2
+        members: [person1, person2, person3]
+        household_vehicles_value: 0
+        household_vehicles_owned: 0
+        state_code: SC
+  output:
+    sc_tanf: 334.13
+    # monthly earned = 6,000/12 = 500
+    # January (month 1) uses 50% disregard
+    # countable_earned = 500 * 0.5 = 250
+    # countable_income = 250
+    # need_standard = 1075.83
+    # excess = 1075.83 - 250 = 825.83
+    # benefit = 825.83 * 0.4046 = 334.13
+
+- name: Case 3, income above gross limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 24_000
+        retirement_distributions: 0
+      person2:
+        age: 10
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        household_vehicles_value: 0
+        household_vehicles_owned: 0
         state_code: SC
   output:
     sc_tanf: 0
-    
+    # monthly earned = 24,000/12 = 2,000
+    # tanf_fpg for size 2 = 1703.33
+    # need_standard = 851.67
+    # gross_income_limit = 851.67 * 1.85 = 1575.58
+    # 2,000 > 1,575.58 -> not eligible

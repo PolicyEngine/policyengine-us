@@ -6,11 +6,9 @@ class sc_tanf(Variable):
     entity = SPMUnit
     label = "South Carolina TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "sc_tanf_eligible"
-    reference = (
-        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
-    )
+    reference = "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf
