@@ -1,0 +1,24 @@
+description: Arizona requires full-year or part-year resident individuals to file a tax return if their gross income exceeds this threshold, depending on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arizona filing requirement gross income threshold
+  breakdown:
+    - az_filing_status
+  reference:
+    - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf
+    - title: Arizona Department of Revenue - Filing Individual Returns
+      href: https://azdor.gov/individuals/income-tax-filing-assistance/filing-individual-returns
+SINGLE:
+  2024-01-01: 14_600
+  2025-01-01: 15_750
+HEAD_OF_HOUSEHOLD:
+  2024-01-01: 21_900
+  2025-01-01: 23_625
+JOINT:
+  2024-01-01: 29_200
+  2025-01-01: 31_500
+SEPARATE:
+  2024-01-01: 14_600
+  2025-01-01: 15_750
