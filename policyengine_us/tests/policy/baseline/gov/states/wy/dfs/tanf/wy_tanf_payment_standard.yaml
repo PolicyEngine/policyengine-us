@@ -486,3 +486,79 @@
   output:
     # Size 10, shelter qualified -> $1,129
     wy_tanf_payment_standard: 1_129
+
+- name: Edge case 10, size 11 shelter qualified.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 17
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 4
+      person10:
+        age: 3
+      person11:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        wy_tanf_shelter_qualified: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WY
+  output:
+    # Size 11, shelter qualified -> $1,186
+    wy_tanf_payment_standard: 1_186
+
+- name: Edge case 11, size 11 shelter disqualified.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 17
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 4
+      person10:
+        age: 3
+      person11:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        wy_tanf_shelter_qualified: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WY
+  output:
+    # Size 11, shelter disqualified -> $758
+    wy_tanf_payment_standard: 758
