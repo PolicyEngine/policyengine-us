@@ -127,7 +127,7 @@
     # Gross earned income: $2,000/month
 
     wy_power_earned_income_disregard: 1_200
-    # Married couple with child in common -> $1,200 flat disregard
+    # Married couple -> $1,200 flat disregard
 
     # ======== TOTAL COUNTABLE INCOME ========
     wy_power_countable_income: 800
@@ -553,7 +553,7 @@
         state_code: WY
   output:
     wy_power_earned_income_disregard: 1_200
-    # Married couple with child -> $1,200 disregard
+    # Married couple -> $1,200 disregard
     wy_power_countable_income: 600
     # Combined earned: $1,000 + $800 = $1,800
     # max(1800 - 1200, 0) = $600
