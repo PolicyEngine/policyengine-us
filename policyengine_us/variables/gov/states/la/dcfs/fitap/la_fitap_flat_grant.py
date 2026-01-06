@@ -14,16 +14,17 @@ class la_fitap_flat_grant(Variable):
         p = parameters(period).gov.states.la.dcfs.fitap.flat_grant
         size = spm_unit("spm_unit_size", period.this_year)
 
-        # For size > 18: grant[18] + grant[excess] - adjustment
+        # For size > max_table_size: grant[max] + grant[excess] - adjustment
         is_over_max = size > p.max_table_size
 
         # Base amount (capped at max_table_size)
         capped_size = min_(size, p.max_table_size)
         base_amount = p.amount[capped_size]
 
-        # Excess calculation for size > 18
+        # Excess calculation for size > max_table_size
         excess_size = max_(size - p.max_table_size, 1)
-        excess_amount = p.amount[min_(excess_size, p.max_table_size)]
+        capped_excess_size = min_(excess_size, p.max_table_size)
+        excess_amount = p.amount[capped_excess_size]
 
         return where(
             is_over_max,

@@ -55,3 +55,20 @@
     state_code: LA
   output:
     la_fitap_flat_grant: 1_822
+
+- name: Case 8, post-2022 size 1 (minimum household)
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 244
+
+- name: Case 9, pre-2022 size 19 exceeds table (tests $50 adjustment)
+  # grant[18] + grant[1] - adjustment = 839 + 122 - 50 = 911
+  period: 2017-01
+  input:
+    spm_unit_size: 19
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 911

@@ -258,3 +258,79 @@
     la_fitap_income_eligible: true
     la_fitap_eligible: true
     la_fitap: 304
+
+- name: Scenario 8 - Zero-benefit edge case (income exactly equals flat grant).
+  # Income eligible but zero benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 16_752  # $1,396/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Monthly gross earned: $1,396
+    # Deductions: $1,020
+    # Countable earned: $1,396 - $1,020 = $376
+    # Countable income: $376
+    # Flat grant (family of 2): $376
+    # $376 <= $376 = income eligible (at boundary)
+    # Benefit: $376 - $376 = $0
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [376, 0]
+    la_fitap_countable_income: 376
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 0
+
+- name: Scenario 9 - Two earners both above $1,020 threshold.
+  # Both employed members have positive countable earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 15_600  # $1,300/month
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Family size: 3
+    # Person 1 monthly gross: $1,500
+    # Person 1 countable earned: max($1,500 - $1,020, 0) = $480
+    # Person 2 monthly gross: $1,300
+    # Person 2 countable earned: max($1,300 - $1,020, 0) = $280
+    # Total countable earned: $480 + $280 = $760
+    # Countable income: $760
+    # Flat grant (family of 3): $484
+    # $760 > $484 = income ineligible
+    la_fitap_flat_grant: 484
+    la_fitap_earned_income_after_disregard: [480, 280, 0]
+    la_fitap_countable_income: 760
+    la_fitap_income_eligible: false
+    la_fitap_eligible: false
+    la_fitap: 0
