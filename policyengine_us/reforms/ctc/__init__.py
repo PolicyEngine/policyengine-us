@@ -13,3 +13,6 @@ from .ctc_per_child_phase_in import (
 from .ctc_minimum_refundable_amount import (
     create_ctc_minimum_refundable_amount_reform,
 )
+from .ctc_linear_phase_out import (
+    create_ctc_linear_phase_out_reform,
+)

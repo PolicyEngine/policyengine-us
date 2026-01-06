@@ -1,0 +1,17 @@
+description: Maximum EITC for joint filers by child count under the Streamlined EITC reform.
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 4_993
+
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Streamlined EITC maximum (joint filers)

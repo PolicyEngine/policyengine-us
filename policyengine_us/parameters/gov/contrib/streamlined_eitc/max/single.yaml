@@ -1,0 +1,17 @@
+description: Maximum EITC for single/head of household filers by child count under the Streamlined EITC reform.
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 3_995
+
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Streamlined EITC maximum (single/HOH filers)
