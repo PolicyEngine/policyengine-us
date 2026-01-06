@@ -1,4 +1,8 @@
-- name: OK eitc unit test 1
+# Oklahoma EITC Tests
+# Oklahoma EITC = 5% of federal EITC * (OK AGI / Federal AGI ratio)
+# Per Form 511-EIC and Schedule 511-G
+
+- name: OK EITC - unit test - part-year resident ratio
   period: 2021
   input:
     adjusted_gross_income: 40_000
@@ -6,16 +10,17 @@
     ok_federal_eitc: 2_000
     state_code: OK
   output:
+    # OK EITC = $2,000 * 5% * (30,000 / 40,000) = $75
     ok_eitc: 2_000 * 0.05 * (30_000 / 40_000)
 
-- name: Integration test
+- name: OK EITC - 2024 - HOH with one child
   absolute_error_margin: 2
   period: 2024
   input:
     people:
       person1:
         age: 40
-        employment_income: 20000
+        employment_income: 20_000
         ssi: 0
         wic: 0
         deductible_mortgage_interest: 0
@@ -42,5 +47,41 @@
         members: [person1, person2]
         state_fips: 40
   output:
+    # Federal EITC for 1 child at $20k income ~ $3,480
+    # OK EITC = $3,480 * 5% = $174
     ok_eitc: 174
     ok_income_tax: -239.7
+
+# 2025 EITC Tests
+
+- name: OK EITC - 2025 - full year resident
+  period: 2025
+  input:
+    adjusted_gross_income: 25_000
+    ok_agi: 25_000
+    ok_federal_eitc: 3_000
+    state_code: OK
+  output:
+    # Full resident: OK EITC = $3,000 * 5% * 1.0 = $150
+    ok_eitc: 150
+
+- name: OK EITC - 2025 - zero income
+  period: 2025
+  input:
+    adjusted_gross_income: 0
+    ok_agi: 0
+    ok_federal_eitc: 0
+    state_code: OK
+  output:
+    ok_eitc: 0
+
+- name: OK EITC - 2025 - high earner no EITC
+  period: 2025
+  input:
+    adjusted_gross_income: 80_000
+    ok_agi: 80_000
+    ok_federal_eitc: 0
+    state_code: OK
+  output:
+    # No federal EITC = no OK EITC
+    ok_eitc: 0

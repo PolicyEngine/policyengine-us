@@ -1,4 +1,9 @@
-- name: OK property tax credit unit test 1
+# Oklahoma Property Tax Credit Tests (Form 538-H)
+# Eligibility: Age 65+ OR totally disabled
+# Income limit: $12,000 gross household income
+# Maximum credit: $200
+
+- name: OK PTC - 2021 - spouse age 65+ qualifies
   period: 2021
   input:
     age_head: 60
@@ -7,9 +12,11 @@
     real_estate_taxes: 900
     state_code: OK
   output:
+    # Spouse is 65, income under $12,000
+    # Real estate taxes $900 > $200 max, so credit = $200
     ok_ptc: 200
 
-- name: OK property tax credit unit test 2
+- name: OK PTC - 2022 - neither elderly nor disabled
   period: 2022
   input:
     age_head: 60
@@ -17,9 +24,10 @@
     real_estate_taxes: 900
     state_code: OK
   output:
+    # Head is 60 (under 65), not disabled = no credit
     ok_ptc: 0
 
-- name: OK property tax credit unit test 3
+- name: OK PTC - 2022 - disabled qualifies
   period: 2022
   input:
     head_is_disabled: true
@@ -27,4 +35,74 @@
     real_estate_taxes: 200
     state_code: OK
   output:
+    # Disabled qualifies, income under $12,000
+    # Real estate taxes $200, credit = min($200, $200) = $100
     ok_ptc: 100
+
+# 2025 Property Tax Credit Tests
+# Credit formula: min(maximum_credit, max(0, real_estate_taxes - income_fraction * income))
+# Where income_fraction = 0.01 (1%)
+
+- name: OK PTC - 2025 - elderly qualifies with max credit
+  period: 2025
+  input:
+    age_head: 68
+    ok_gross_income: 10_000
+    real_estate_taxes: 500
+    state_code: OK
+  output:
+    # Age 68 (65+), income $10,000 (under $12,000)
+    # Excess = max(0, $500 - 0.01 * $10,000) = max(0, $500 - $100) = $400
+    # Credit = min($200, $400) = $200
+    ok_ptc: 200
+
+- name: OK PTC - 2025 - elderly with low property tax
+  period: 2025
+  input:
+    age_head: 70
+    ok_gross_income: 8_000
+    real_estate_taxes: 150
+    state_code: OK
+  output:
+    # Age 70, income under $12,000
+    # Excess = max(0, $150 - 0.01 * $8,000) = max(0, $150 - $80) = $70
+    # Credit = min($200, $70) = $70
+    ok_ptc: 70
+
+- name: OK PTC - 2025 - income over limit
+  period: 2025
+  input:
+    age_head: 72
+    ok_gross_income: 15_000
+    real_estate_taxes: 800
+    state_code: OK
+  output:
+    # Income $15,000 > $12,000 limit = no credit
+    ok_ptc: 0
+
+- name: OK PTC - 2025 - exactly at income limit
+  period: 2025
+  input:
+    age_head: 65
+    ok_gross_income: 12_000
+    real_estate_taxes: 400
+    state_code: OK
+  output:
+    # Income exactly at $12,000 limit = eligible
+    # Excess = max(0, $400 - 0.01 * $12,000) = max(0, $400 - $120) = $280
+    # Credit = min($200, $280) = $200
+    ok_ptc: 200
+
+- name: OK PTC - 2025 - disabled under 65
+  period: 2025
+  input:
+    age_head: 55
+    head_is_disabled: true
+    ok_gross_income: 9_000
+    real_estate_taxes: 300
+    state_code: OK
+  output:
+    # Disabled (age irrelevant), income $9,000 (under $12,000)
+    # Excess = max(0, $300 - 0.01 * $9,000) = max(0, $300 - $90) = $210
+    # Credit = min($200, $210) = $200
+    ok_ptc: 200
