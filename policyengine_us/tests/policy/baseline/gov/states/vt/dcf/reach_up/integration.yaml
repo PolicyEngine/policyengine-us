@@ -562,3 +562,74 @@
 
     # Benefit: $1,676.48 - $0 = $1,676 (full benefit)
     vt_reach_up: 1_676
+
+- name: Case 10, two-parent family with childcare expenses.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        housing_cost: 6_000  # $500/month (capped at $400)
+        childcare_expenses: 3_600  # $300/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # Basic needs for size 3: $1,236
+    vt_reach_up_basic_needs_allowance: 1_236
+
+    # Housing: min($500, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    vt_reach_up_payment_standard: 811
+
+    # Per-person earned income disregard:
+    # Person 1: max_($800 - $350, 0) * 0.75 = $337.50
+    # Person 2: max_($500 - $350, 0) * 0.75 = $112.50
+    # Sum before dependent care: $450
+    vt_reach_up_countable_earned_income_person: [337.5, 112.5, 0]
+
+    # Dependent care deduction:
+    # 2 participants (head/spouse) x $175 = $350 max
+    # Actual expenses: $300
+    # Deduction: min($300, $350) = $300
+    vt_reach_up_dependent_care_deduction: 300
+
+    # Countable earned: max_($450 - $300, 0) = $150
+    vt_reach_up_countable_earned_income: 150
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $150
+    vt_reach_up_countable_income: 150
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $811.456 - $150 = $661.46
+    vt_reach_up: 661
