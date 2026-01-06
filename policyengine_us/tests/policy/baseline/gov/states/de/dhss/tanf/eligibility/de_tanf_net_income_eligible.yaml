@@ -1,0 +1,246 @@
+# Unit tests for Delaware TANF net income eligibility
+# 16 Del. Admin. Code SS 4000-4008: For applicants, net income compared to Payment Standard
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Note: Using applicant standard (Payment Standard) as default
+
+- name: Case 1, net income below payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_net_income: 200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $200 < $338
+    de_tanf_net_income_eligible: true
+
+- name: Case 2, net income above payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_net_income: 400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $400 > $338
+    de_tanf_net_income_eligible: false
+
+- name: Case 3, at exact limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf_net_income: 270
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family size: 2
+    # Payment standard: $270/month
+    # Net income: $270 = $270
+    de_tanf_net_income_eligible: true
+
+- name: Case 4, no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_tanf_net_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Family size: 1
+    # Payment standard: $201/month
+    # Net income: $0 < $201
+    de_tanf_net_income_eligible: true
+
+- name: Case 5, family of 3 net income exactly at payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_net_income: 338
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $338 = $338
+    de_tanf_net_income_eligible: true
+
+- name: Case 6, family of 3 net income $1 above payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        de_tanf_net_income: 339
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Payment standard: $338/month
+    # Net income: $339 > $338
+    de_tanf_net_income_eligible: false
+
+# ============================================================================
+# RECIPIENT (ENROLLED) ELIGIBILITY PATH TESTS
+# Recipients use countable income compared to Standard of Need
+# ============================================================================
+
+- name: Case 7, countable income below Standard of Need.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        de_tanf_countable_income: 1_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: ~$1,665.625/month
+    # Countable income: $1,500 < Standard of Need
+    de_tanf_net_income_eligible: true
+
+- name: Case 8, countable income above Standard of Need.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        de_tanf_countable_income: 1_700
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size: 3
+    # Standard of Need: ~$1,665.625/month
+    # Countable income: $1,700 > Standard of Need
+    de_tanf_net_income_eligible: false
+
+- name: Case 9, countable income exactly at Standard of Need.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        de_tanf_countable_income: 1_665.625
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Countable income = Standard of Need, should be eligible (<=)
+    de_tanf_net_income_eligible: true
+
+- name: Case 10, eligible but applicant would be ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        de_tanf_net_income: 500
+        de_tanf_countable_income: 300
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # As recipient: $300 < $1,665.625 (Standard of Need) = eligible
+    # As applicant: $500 > $338 (Payment Standard) = would be ineligible
+    de_tanf_net_income_eligible: true

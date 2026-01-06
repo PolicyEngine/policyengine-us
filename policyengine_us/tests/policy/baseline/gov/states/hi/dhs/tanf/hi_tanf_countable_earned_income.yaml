@@ -1,0 +1,122 @@
+# Unit tests for hi_tanf_countable_earned_income variable (SPMUnit level)
+# Tests aggregation of person-level earned income and dependent care deduction
+# Person-level deduction tests are in hi_tanf_countable_earned_income_person.yaml
+# Source: HAR 17-676-72; Hawaii TANF State Plan
+
+- name: Case 1, multiple earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+      person2:
+        age: 28
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Deductions applied per person, then aggregated:
+    # Person1: $1,500 gross
+    #   Step 1: 20% = 1,500 × 0.80 = 1,200
+    #   Step 2: $200 flat = 1,200 - 200 = 1,000
+    #   Step 3: 55% = 1,000 × 0.45 = 450
+    # Person2: $500 gross
+    #   Step 1: 20% = 500 × 0.80 = 400
+    #   Step 2: $200 flat = 400 - 200 = 200
+    #   Step 3: 55% = 200 × 0.45 = 90
+    # Total: 450 + 90 = 540
+    # No childcare expenses, so no dependent care deduction
+    hi_tanf_countable_earned_income: 540
+
+- name: Case 2, earned income with dependent care deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $1,200/year = $100/month childcare
+        childcare_expenses: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Person1 earned after deductions: 270
+    # Dependent care: min(100, 1 child × $175) = 100
+    # Final: max(270 - 100, 0) = 170
+    hi_tanf_countable_earned_income: 170
+
+- name: Case 3, dependent care deduction capped at per-child max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $6,000/year = $500/month childcare, exceeds $175 cap
+        childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Person1 earned after deductions: 450
+    # Dependent care: min(500, 1 child × $175) = 175
+    # Final: max(450 - 175, 0) = 275
+    hi_tanf_countable_earned_income: 275
+
+- name: Case 4, dependent care deduction cannot reduce earned below zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Low income, after deductions = 0
+        tanf_gross_earned_income: 200
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Person1 earned after deductions: 0 (income too low)
+    # Dependent care: min(200, 175) = 175
+    # Final: max(0 - 175, 0) = 0 (floored at zero)
+    hi_tanf_countable_earned_income: 0

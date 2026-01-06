@@ -1,0 +1,14 @@
+description: Connecticut limits the Temporary Family Assistance program to households with up to this resource amount.
+
+values:
+  2023-10-01: 6_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Connecticut TFA resource limit
+  reference:
+    - title: State of Connecticut TANF State Plan 2024-2026
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10
+    - title: Connecticut General Statutes § 17b-112
+      href: https://cga.ct.gov/current/pub/chap_319s.htm#sec_17b-112

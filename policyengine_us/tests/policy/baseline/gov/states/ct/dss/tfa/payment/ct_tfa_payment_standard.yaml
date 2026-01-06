@@ -1,0 +1,35 @@
+# Tests for CT TFA payment standard
+# Payment amounts by size: 1=$489, 2=$661, 3=$833, 4=$1,044, 5=$1,177, 6=$1,349, 7=$1,520, 8=$1,693
+# Maximum unit size: 8 (capped)
+
+- name: Case 1, household size 1.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 489
+
+- name: Case 2, household size 3.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 833
+
+- name: Case 3, household size 8, at maximum.
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 1_693
+
+- name: Case 4, household size 10, capped at 8.
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    state_code: CT
+  output:
+    ct_tfa_payment_standard: 1_693
