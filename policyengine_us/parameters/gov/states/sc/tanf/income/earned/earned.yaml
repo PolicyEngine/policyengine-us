@@ -1,13 +1,12 @@
-description: South Carolina counts these income sources as earned income under the TANF program.
+description: South Carolina counts these income sources as earned income under the Temporary Assistance for Needy Families program.
 values:
-  2021-01-01:
-    - employment_income
-    - self_employment_income
+  1996-07-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
 metadata:
   unit: list
   period: year 
   label: South Carolina TANF earned income 
   reference:
     - title: The South Carolina Department of Social Services TANF Policy Manual 
-      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=100
- 
+      href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=100

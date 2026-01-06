@@ -4,7 +4,7 @@
     state_code: SC
     is_demographic_tanf_eligible: true
     sc_tanf_income_eligible: true
-    sc_tanf_resource_eligible: true
+    sc_tanf_resources_eligible: true
   output:
     sc_tanf_eligible: true
 
@@ -14,7 +14,7 @@
     state_code: SC
     is_demographic_tanf_eligible: false
     sc_tanf_income_eligible: true
-    sc_tanf_resource_eligible: true
+    sc_tanf_resources_eligible: true
   output:
     sc_tanf_eligible: false
 
@@ -24,7 +24,7 @@
     state_code: SC
     is_demographic_tanf_eligible: true
     sc_tanf_income_eligible: false
-    sc_tanf_resource_eligible: true
+    sc_tanf_resources_eligible: true
   output:
     sc_tanf_eligible: false
 
@@ -34,7 +34,7 @@
     state_code: SC
     is_demographic_tanf_eligible: false
     sc_tanf_income_eligible: true
-    sc_tanf_resource_eligible: false
+    sc_tanf_resources_eligible: false
   output:
     sc_tanf_eligible: false
     

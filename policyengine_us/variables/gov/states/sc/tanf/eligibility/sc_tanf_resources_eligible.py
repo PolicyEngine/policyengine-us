@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_tanf_resource_eligible(Variable):
+class sc_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "South Carolina TANF resource eligible"
+    label = "South Carolina TANF resources eligible"
     definition_period = YEAR
     defined_for = StateCode.SC
 

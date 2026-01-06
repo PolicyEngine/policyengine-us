@@ -3,10 +3,9 @@
   period: 2022
   input:
     state_code: SC
-    sc_tanf_net_income: 0 
+    sc_tanf_countable_income: 0
     sc_tanf_eligible: true
     spm_unit_size: 2
-    state_group_str: CONTIGUOUS_US
   output:
     sc_tanf: 2974.5
     # tanf = (12880+4540)*9*0.3372*0.5/12 + (13590+4720)*3*0.50.3372/12 = 2974.5255
@@ -16,10 +15,9 @@
   period: 2022
   input:
     state_code: SC
-    sc_tanf_net_income: 19_200
+    sc_tanf_countable_income: 19_200
     sc_tanf_eligible: false
     spm_unit_size: 2
-    state_group_str: CONTIGUOUS_US
   output:
     sc_tanf: 0
 
@@ -28,10 +26,9 @@
   period: 2022
   input:
     state_code: SC
-    sc_tanf_net_income: 8_158
+    sc_tanf_countable_income: 8_158
     sc_tanf_eligible: true
     spm_unit_size: 2
-    state_group_str: CONTIGUOUS_US
   output:
     sc_tanf: 223.6
 

@@ -2,8 +2,7 @@
   period: 2022
   input:
     state_code: SC
-    state_group_str: CONTIGUOUS_US
-    sc_tanf_net_income: 0 
+    sc_tanf_countable_income: 0 
     sc_tanf_earned_income: 0 
     spm_unit_size: 2
   output:
@@ -13,8 +12,7 @@
   period: 2022
   input:
     state_code: SC
-    state_group_str: CONTIGUOUS_US
-    sc_tanf_net_income: 19_200
+    sc_tanf_countable_income: 19_200
     sc_tanf_earned_income: 24_000
     spm_unit_size: 2
   output:
@@ -26,8 +24,7 @@
   period: 2022
   input:
     state_code: SC
-    state_group_str: CONTIGUOUS_US
-    sc_tanf_net_income: 9_200
+    sc_tanf_countable_income: 9_200
     sc_tanf_earned_income: 12_000
     spm_unit_size: 2
   output:
@@ -40,8 +37,7 @@
   period: 2022
   input:
     state_code: SC
-    state_group_str: CONTIGUOUS_US
-    sc_tanf_net_income: 8_000
+    sc_tanf_countable_income: 8_000
     sc_tanf_earned_income: 10_750
     spm_unit_size: 2
   output:

@@ -1,6 +1,6 @@
-description: South Carolina accounts for the following resources under the TANF program.
+description: South Carolina counts these resources under the Temporary Assistance for Needy Families program.
 values:
-  2021-01-01:
+  1996-07-01:
     - spm_unit_cash_assets
     - retirement_distributions
     #- Lump sum payments
@@ -17,6 +17,7 @@ metadata:
   period: year
   label: South Carolina TANF household resources
   reference:
-    - title: The South Carolina Department of Social Services TANF Policy Manual 
-      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=91
-      
+    - title: S.C. Code Regs. § 114-1140(C)
+      href: https://www.law.cornell.edu/regulations/south-carolina/S-C-Code-Regs-114-1140
+    - title: The South Carolina Department of Social Services TANF Policy Manual
+      href: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=91
