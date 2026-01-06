@@ -1,7 +1,8 @@
 description: Wisconsin limits capital losses to this amount, based on filing status.
 metadata:
-  unit: currency-USD
   label: Wisconsin capital loss limit
+  breakdown: [filing_status]
+  unit: currency-USD
   period: year
   reference:
     - title: 2021 Wisconsin Form 1 Schedule WD, Line 28

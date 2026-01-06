@@ -16,9 +16,10 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 150_000
 
 metadata:
+  label: New York itemized deduction higher incremental reduction lower income threshold
+  breakdown: [filing_status]
   unit: currency-USD
   period: year
-  label: New York itemized deduction higher incremental reduction lower income threshold
   reference:
     - title: SECTION 615 New York itemized deduction of a resident individual (f)(1)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
