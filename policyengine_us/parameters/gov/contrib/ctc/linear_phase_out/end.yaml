@@ -1,0 +1,19 @@
+description: The CTC fully phases out at this income, by filing status.
+
+SINGLE:
+  2020-01-01: 240_000
+JOINT:
+  2020-01-01: 440_000
+SEPARATE:
+  2020-01-01: 175_000
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 240_000
+SURVIVING_SPOUSE:
+  2020-01-01: 440_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: CTC full phase-out income
+  breakdown:
+    - filing_status

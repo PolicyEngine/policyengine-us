@@ -19,6 +19,7 @@ from .biden.budget_2025 import (
 )
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
+from .eitc import create_streamlined_eitc_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
@@ -65,6 +66,7 @@ from .ctc import (
     create_ctc_per_child_phase_in_reform,
     create_ctc_per_child_phase_out_reform,
     create_ctc_minimum_refundable_amount_reform,
+    create_ctc_linear_phase_out_reform,
 )
 from .snap import (
     create_abolish_snap_deductions_reform,
@@ -298,6 +300,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
         parameters, period
     )
+    streamlined_eitc = create_streamlined_eitc_reform(parameters, period)
+    ctc_linear_phase_out = create_ctc_linear_phase_out_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -358,6 +364,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
+        streamlined_eitc,
+        ctc_linear_phase_out,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
