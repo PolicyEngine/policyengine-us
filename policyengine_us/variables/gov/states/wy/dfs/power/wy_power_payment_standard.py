@@ -14,22 +14,14 @@ class wy_power_payment_standard(Variable):
     defined_for = StateCode.WY
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.wy.dfs.power
+        p = parameters(period).gov.states.wy.dfs.power.payment_standard
         unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_unit_size)
         shelter_qualified = spm_unit("wy_power_shelter_qualified", period)
-
         # Per Section 905: Two payment schedules based on shelter status
         # Per Table II: Sizes 7-12 have same payment standard
-        shelter_qualified_amount = (
-            p.benefit.payment_standard.shelter_qualified[capped_size]
-        )
-        shelter_disqualified_amount = (
-            p.benefit.payment_standard.shelter_disqualified[capped_size]
-        )
-
         return where(
             shelter_qualified,
-            shelter_qualified_amount,
-            shelter_disqualified_amount,
+            p.shelter_qualified[capped_size],
+            p.shelter_disqualified[capped_size],
         )

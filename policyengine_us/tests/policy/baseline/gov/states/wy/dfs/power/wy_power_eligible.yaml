@@ -1,317 +1,69 @@
 # Wyoming POWER Overall Eligibility Tests
-# Tests the combined eligibility check
-# Must pass: income eligibility AND resource eligibility AND demographic eligibility
+# Must pass: demographic AND immigration AND income AND resources
 # Source: Wyoming DFS Policy Manual
 
-- name: Case 1, meets all eligibility criteria.
+- name: Case 1, all criteria pass.
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 2_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # Income: $0 < $1,447 → Income eligible: true
-    # Resources: $2,000 < $5,000 → Resources eligible: true
-    # Has child under 18 → Demographic eligible: true
-    # All checks pass → Eligible: true
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
+  output:
     wy_power_eligible: true
 
-- name: Case 2, fails income eligibility.
+- name: Case 2, fails income.
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 30_000  # $2,500/month
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 2_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # Income: max(2500-600,0) = $1,900 > $1,447 → Income eligible: false
-    # Resources: $2,000 < $5,000 → Resources eligible: true
-    # Income check fails → Eligible: false
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wy_power_income_eligible: false
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
+  output:
     wy_power_eligible: false
 
-- name: Case 3, fails resource eligibility.
+- name: Case 3, fails resources.
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 6_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # Income: $0 < $1,447 → Income eligible: true
-    # Resources: $6,000 > $5,000 → Resources eligible: false
-    # Resources check fails → Eligible: false
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wy_power_income_eligible: true
-    wy_power_resource_eligible: false
+    wy_power_resources_eligible: false
+  output:
     wy_power_eligible: false
 
-- name: Case 4, fails both income and resource eligibility.
+- name: Case 4, fails demographic (no child, not pregnant).
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 30_000  # $2,500/month
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 8_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
+    state_code: WY
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
   output:
-    # Both checks fail → Eligible: false
-    wy_power_income_eligible: false
-    wy_power_resource_eligible: false
     wy_power_eligible: false
 
-- name: Case 5, pregnant woman with no children is eligible.
+- name: Case 5, fails immigration (no citizens).
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 25
-        is_pregnant: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1]
-        state_code: WY
-  output:
-    # Income: $0 < $1,112 → Income eligible: true
-    # Resources: $1,000 < $5,000 → Resources eligible: true
-    # Pregnant → Demographic eligible: true
-    # All checks pass → Eligible: true
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true
-    wy_power_eligible: true
-
-- name: Case 6, married couple with child barely under income limit.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 27_600  # $2,300/month
-      person2:
-        age: 28
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        spm_unit_is_married: true
-        spm_unit_assets: 4_000
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: WY
+    wy_power_resources_eligible: true
   output:
-    # Countable income: max(2300 - 1200, 0) = $1,100
-    # Income limit for size 3: $1,502
-    # $1,100 < $1,502 → Income eligible: true
-    # Resources: $4,000 < $5,000 → Resources eligible: true
-    wy_power_income_eligible: true
-    wy_power_resource_eligible: true
-    wy_power_eligible: true
-
-# =============================================================================
-# EDGE CASES - Demographic Eligibility
-# =============================================================================
-
-- name: Edge case 1, adult-only household without pregnancy is ineligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_pregnant: false
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1]
-        state_code: WY
-  output:
-    # No minor child AND not pregnant → Demographic ineligible
-    # Even though income and resources pass, demographic fails
-    wy_power_income_eligible: true
-    wy_power_resource_eligible: true
     wy_power_eligible: false
 
-- name: Edge case 2, two adults without children and not pregnant is ineligible.
+- name: Case 6, non-Wyoming state.
   period: 2026-01
   input:
-    people:
-      person1:
-        age: 30
-        is_pregnant: false
-      person2:
-        age: 28
-        is_pregnant: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: true
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # Married couple with no children, neither pregnant → Demographic ineligible
+    state_code: CO
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
+  output:
     wy_power_eligible: false
-
-# =============================================================================
-# EDGE CASES - Immigration Eligibility
-# =============================================================================
-
-- name: Edge case 3, all non-citizens in household makes family ineligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_citizen_or_legal_immigrant: false
-      person2:
-        age: 10
-        is_citizen_or_legal_immigrant: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # All household members are non-citizens → Immigration check fails
-    wy_power_income_eligible: true
-    wy_power_resource_eligible: true
-    wy_power_eligible: false
-
-- name: Edge case 4, mixed immigration status with at least one citizen is eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_citizen_or_legal_immigrant: false
-      person2:
-        age: 10
-        is_citizen_or_legal_immigrant: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # At least one citizen (child) → Immigration check passes
-    wy_power_income_eligible: true
-    wy_power_resource_eligible: true
-    wy_power_eligible: true
-
-# =============================================================================
-# EDGE CASES - State Code
-# =============================================================================
-
-- name: Edge case 5, non-Wyoming state code results in zero benefit.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CO
-  output:
-    # defined_for = StateCode.WY means non-WY returns default (false/0)
-    wy_power_eligible: false
-
-# =============================================================================
-# EDGE CASES - Age Boundaries
-# =============================================================================
-
-- name: Edge case 6, household with newborn child (age 0) is eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 25
-      person2:
-        age: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    # Newborn (age 0) counts as minor child → Demographic eligible
-    wy_power_income_eligible: true
-    wy_power_resource_eligible: true
-    wy_power_eligible: true

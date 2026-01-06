@@ -17,11 +17,11 @@ class wy_power_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("wy_power_income_eligible", period)
-        resource_eligible = spm_unit("wy_power_resource_eligible", period)
+        resources_eligible = spm_unit("wy_power_resources_eligible", period)
 
         return (
             demographic_eligible
             & immigration_eligible
             & income_eligible
-            & resource_eligible
+            & resources_eligible
         )

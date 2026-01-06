@@ -1,7 +1,7 @@
-# Wyoming POWER (POWER Program) Integration Tests
+# Wyoming POWER (Personal Opportunities With Employment Responsibilities) Integration Tests
 # Comprehensive scenarios testing the complete benefit calculation pipeline
+# Per Section 1101: Eligible when countable income < payment standard (maximum benefit level)
 # Sources:
-# - Wyoming Statute 42-2-103 (earned income disregard)
 # - Wyoming DFS Policy Manual Section 1101 (payment computation)
 # - Wyoming DFS Table II POWER Income Limits (benefit schedules)
 
@@ -16,7 +16,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 2_000
     households:
@@ -36,9 +36,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    # Countable income ($0) < Income limit ($1,447 for size 2) -> Pass
+    # Countable income ($0) < Payment standard ($847 for size 2) -> Pass
 
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     # Assets ($2,000) < Resource limit ($5,000) -> Pass
 
     wy_power_eligible: true
@@ -65,7 +65,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 1_500
     households:
@@ -85,9 +85,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    # Countable income ($400) < Income limit ($1,502 for size 3) -> Pass
+    # Countable income ($400) < Payment standard ($902 for size 3) -> Pass
 
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     # Assets ($1,500) < Resource limit ($5,000) -> Pass
 
     wy_power_eligible: true
@@ -115,7 +115,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        spm_unit_is_married: true
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 3_000
     households:
@@ -135,9 +135,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    # Countable income ($800) < Income limit ($1,502 for size 4) -> Pass
+    # Countable income ($800) < Payment standard ($902 for size 4) -> Pass
 
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     # Assets ($3,000) < Resource limit ($5,000) -> Pass
 
     wy_power_eligible: true
@@ -161,7 +161,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 500
     households:
@@ -182,9 +182,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    # Countable income ($600) < Income limit ($1,447 for size 2) -> Pass
+    # Countable income ($600) < Payment standard ($847 for size 2) -> Pass
 
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     # Assets ($500) < Resource limit ($5,000) -> Pass
 
     wy_power_eligible: true
@@ -209,7 +209,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: false  # Living with relatives, no shelter cost
         spm_unit_assets: 1_000
     households:
@@ -225,7 +225,8 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true
+    # Countable income ($0) < Payment standard ($620 for size 3 shelter disqualified)
+    wy_power_resources_eligible: true
     wy_power_eligible: true
 
     # ======== BENEFIT CALCULATION ========
@@ -235,7 +236,7 @@
     wy_power: 620
     # max(620 - 0, 0) = $620
 
-- name: Case 6, family exceeds income limit is ineligible.
+- name: Case 6, family countable income exceeds payment standard is ineligible.
   period: 2026-01
   input:
     people:
@@ -247,7 +248,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 2_000
     households:
@@ -264,9 +265,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: false
-    # Countable income ($1,900) > Income limit ($1,447 for size 2) -> FAIL
+    # Countable income ($1,900) > Payment standard ($847 for size 2) -> FAIL
 
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     # Assets ($2,000) < Resource limit ($5,000) -> Pass
 
     wy_power_eligible: false
@@ -290,7 +291,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 6_000  # Exceeds $5,000 limit
     households:
@@ -306,9 +307,9 @@
 
     # ======== ELIGIBILITY CHECKS ========
     wy_power_income_eligible: true
-    # Countable income ($0) < Income limit ($1,447) -> Pass
+    # Countable income ($0) < Payment standard ($847) -> Pass
 
-    wy_power_resource_eligible: false
+    wy_power_resources_eligible: false
     # Assets ($6,000) > Resource limit ($5,000) -> FAIL
 
     wy_power_eligible: false
@@ -324,7 +325,7 @@
 # EDGE CASE INTEGRATION TESTS
 # =============================================================================
 
-- name: Edge case 1, income exactly at threshold results in $0 benefit but eligible.
+- name: Edge case 1, countable income exactly at payment standard is NOT eligible.
   period: 2026-01
   input:
     people:
@@ -336,7 +337,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 1_000
     households:
@@ -350,16 +351,15 @@
     # max(1447 - 600, 0) = $847
 
     # ======== ELIGIBILITY ========
-    wy_power_income_eligible: true
-    # $847 < $1,447 income limit -> PASS
-    wy_power_resource_eligible: true
-    wy_power_eligible: true
+    wy_power_income_eligible: false
+    # $847 = $847 payment standard -> NOT eligible (must be strictly less than)
+    wy_power_resources_eligible: true
+    wy_power_eligible: false
 
     # ======== BENEFIT ========
     wy_power_payment_standard: 847
     wy_power: 0
-    # max(847 - 847, 0) = $0
-    # They ARE eligible but benefit is $0 because countable = payment standard
+    # Not eligible -> $0
 
 - name: Edge case 2, resources exactly at $5,000 limit is eligible.
   period: 2026-01
@@ -372,7 +372,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 5_000  # Exactly at limit
     households:
@@ -383,7 +383,7 @@
     wy_power_earned_income_disregard: 600
     wy_power_countable_income: 0
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true  # At limit = eligible (<=)
+    wy_power_resources_eligible: true  # At limit = eligible (<=)
     wy_power_eligible: true
     wy_power_payment_standard: 847
     wy_power: 847
@@ -399,7 +399,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 5_001
     households:
@@ -410,7 +410,7 @@
     wy_power_earned_income_disregard: 600
     wy_power_countable_income: 0
     wy_power_income_eligible: true
-    wy_power_resource_eligible: false  # Over limit = ineligible
+    wy_power_resources_eligible: false  # Over limit = ineligible
     wy_power_eligible: false
     wy_power_payment_standard: 847
     wy_power: 0
@@ -427,7 +427,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 1_000
     households:
@@ -439,7 +439,7 @@
     wy_power_countable_income: 0
     # max(600 - 600, 0) = $0 countable earned
     wy_power_income_eligible: true
-    wy_power_resource_eligible: true
+    wy_power_resources_eligible: true
     wy_power_eligible: true
     wy_power_payment_standard: 847
     wy_power: 847
@@ -477,7 +477,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
-        spm_unit_is_married: false
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 2_000
     households:
@@ -489,15 +489,15 @@
     wy_power_countable_income: 400
     # max(1000 - 600, 0) = $400
     wy_power_income_eligible: true
-    # $400 < $1,615 (size 12 limit)
-    wy_power_resource_eligible: true
+    # $400 < $1,015 payment standard for size 12
+    wy_power_resources_eligible: true
     wy_power_eligible: true
     wy_power_payment_standard: 1_015
     # Size 12, shelter qualified
     wy_power: 615
     # max(1015 - 400, 0) = $615
 
-- name: Edge case 6, married couple without child gets $600 disregard.
+- name: Edge case 6, married couple without born child gets $1,200 disregard.
   period: 2026-01
   input:
     people:
@@ -510,7 +510,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_is_married: true  # Married but no child yet
         wy_power_shelter_qualified: true
         spm_unit_assets: 1_000
     households:
@@ -518,18 +517,17 @@
         members: [person1, person2]
         state_code: WY
   output:
-    wy_power_earned_income_disregard: 600
-    # Married but no child under 18 -> $600 disregard (not $1,200)
-    wy_power_countable_income: 900
-    # max(1500 - 600, 0) = $900
+    wy_power_earned_income_disregard: 1_200
+    # Married couple (2 heads/spouses) -> $1,200 disregard
+    wy_power_countable_income: 300
+    # max(1500 - 1200, 0) = $300
     wy_power_income_eligible: true
-    # $900 < $1,447 (size 2 limit)
-    wy_power_resource_eligible: true
+    # $300 < $847 payment standard for size 2 -> eligible
+    wy_power_resources_eligible: true
     wy_power_eligible: true
     wy_power_payment_standard: 847
-    wy_power: 0
-    # max(847 - 900, 0) = $0
-    # Eligible but countable income exceeds payment standard
+    wy_power: 547
+    # max(847 - 300, 0) = $547
 
 - name: Edge case 7, both parents working with combined income.
   period: 2026-01
@@ -546,7 +544,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_is_married: true
+
         wy_power_shelter_qualified: true
         spm_unit_assets: 2_000
     households:
@@ -560,39 +558,9 @@
     # Combined earned: $1,000 + $800 = $1,800
     # max(1800 - 1200, 0) = $600
     wy_power_income_eligible: true
-    # $600 < $1,502 (size 3 limit)
-    wy_power_resource_eligible: true
+    # $600 < $902 payment standard for size 3
+    wy_power_resources_eligible: true
     wy_power_eligible: true
     wy_power_payment_standard: 902
     wy_power: 302
     # max(902 - 600, 0) = $302
-
-- name: Edge case 8, income exactly at income limit is NOT eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income_before_lsr: 24_564  # $2,047/month -> countable = $1,447
-      person2:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_is_married: false
-        wy_power_shelter_qualified: true
-        spm_unit_assets: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WY
-  output:
-    wy_power_earned_income_disregard: 600
-    wy_power_countable_income: 1_447
-    # max(2047 - 600, 0) = $1,447
-    wy_power_income_eligible: false
-    # $1,447 = $1,447 limit -> NOT eligible (must be strictly less than)
-    wy_power_resource_eligible: true
-    wy_power_eligible: false
-    wy_power_payment_standard: 847
-    wy_power: 0

@@ -9,7 +9,7 @@ class wy_power(Variable):
     definition_period = MONTH
     reference = (
         "https://dfs.wyo.gov/about/policy-manuals/snap-and-power-policy-manual/",
-        "https://codes.findlaw.com/wy/title-42-welfare/wy-st-sect-42-2-103.html",
+        "https://dfs.wyo.gov/accordions/snap-and-power-policy-manual-1100-extended-menu/",
     )
     defined_for = "wy_power_eligible"
 

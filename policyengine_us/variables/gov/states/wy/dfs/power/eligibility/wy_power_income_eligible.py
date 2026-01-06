@@ -13,9 +13,11 @@ class wy_power_income_eligible(Variable):
     defined_for = StateCode.WY
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.wy.dfs.power
+        # Income eligible if countable income < payment standard
+        # (i.e., household would receive a positive benefit)
+        # Note: The "Maximum Earned Income Limit" in Table II equals
+        # payment_standard + earned_income_disregard, which is the
+        # break-even point for earned-income-only households.
         countable_income = spm_unit("wy_power_countable_income", period)
-        unit_size = spm_unit("spm_unit_size", period.this_year)
-        capped_size = min_(unit_size, p.max_unit_size)
-        income_limit = p.eligibility.income.limit[capped_size]
-        return countable_income < income_limit
+        payment_standard = spm_unit("wy_power_payment_standard", period)
+        return countable_income < payment_standard
