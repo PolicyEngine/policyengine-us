@@ -3,7 +3,7 @@
   input:
     assessed_property_value: 143_000
     state_code: MI
-  output: 
+  output:
     mi_homestead_property_tax_credit_eligible: true
 
 - name: property value larger than max
@@ -11,5 +11,96 @@
   input:
     assessed_property_value: 143_001
     state_code: MI
-  output: 
+  output:
     mi_homestead_property_tax_credit_eligible: false
+
+# 2025 test cases - property value limit is $165,400
+- name: 2025 property value at limit, eligible
+  period: 2025
+  input:
+    assessed_property_value: 165_400
+    state_code: MI
+  output:
+    # 2025 property value limit: $165,400
+    mi_homestead_property_tax_credit_eligible: true
+
+- name: 2025 property value above limit, ineligible
+  period: 2025
+  input:
+    assessed_property_value: 165_401
+    state_code: MI
+  output:
+    # Property value exceeds 2025 limit of $165,400
+    mi_homestead_property_tax_credit_eligible: false
+
+- name: 2025 property value well below limit
+  period: 2025
+  input:
+    assessed_property_value: 100_000
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_eligible: true
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Property Value Limit ($165,400)
+# ============================================================================
+
+# Edge case: Property value exactly at limit (boundary test)
+- name: Case 1, 2025 edge case property value exactly at $165,400 limit.
+  period: 2025
+  input:
+    assessed_property_value: 165_400
+    state_code: MI
+  output:
+    # Boundary: exactly at $165,400 = eligible (uses <= comparison)
+    mi_homestead_property_tax_credit_eligible: true
+
+# Edge case: Property value one dollar below limit
+- name: Case 2, 2025 edge case property value $165,399 just under limit.
+  period: 2025
+  input:
+    assessed_property_value: 165_399
+    state_code: MI
+  output:
+    # Just under limit: $165,399 < $165,400 = eligible
+    mi_homestead_property_tax_credit_eligible: true
+
+# Edge case: Property value one dollar above limit
+- name: Case 3, 2025 edge case property value $165,401 just over limit.
+  period: 2025
+  input:
+    assessed_property_value: 165_401
+    state_code: MI
+  output:
+    # Just over limit: $165,401 > $165,400 = ineligible
+    mi_homestead_property_tax_credit_eligible: false
+
+# Edge case: Zero property value (renter or no property)
+- name: Case 4, 2025 edge case zero property value.
+  period: 2025
+  input:
+    assessed_property_value: 0
+    state_code: MI
+  output:
+    # Zero property value: $0 <= $165,400 = eligible
+    mi_homestead_property_tax_credit_eligible: true
+
+# Edge case: Very high property value (stress test)
+- name: Case 5, 2025 edge case very high property value $500,000.
+  period: 2025
+  input:
+    assessed_property_value: 500_000
+    state_code: MI
+  output:
+    # High value: $500,000 > $165,400 = ineligible
+    mi_homestead_property_tax_credit_eligible: false
+
+# Edge case: Property value at 50% of limit
+- name: Case 6, 2025 edge case property value at half of limit.
+  period: 2025
+  input:
+    assessed_property_value: 82_700
+    state_code: MI
+  output:
+    # Half of limit: $82,700 < $165,400 = eligible
+    mi_homestead_property_tax_credit_eligible: true

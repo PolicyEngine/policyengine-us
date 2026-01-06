@@ -45,7 +45,7 @@
       state_code: MI
   output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 20000 + 40000) + 20000 + 30000
     mi_retirement_benefits_deduction_tier_one_amount: 110_000
-    
+
 - name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits deduction larger than sum of taxable public pension income and taxable private pension income
   period: 2022
   input:
@@ -69,3 +69,326 @@
       state_code: MI
   output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 30000 + 40000) + 20000 + 30000
     mi_retirement_benefits_deduction_tier_one_amount: 110_922
+
+# 2025 test cases
+# Single/HOH/Separate/Surviving Spouse limit: $65,897
+# Joint limit: $131,794
+- name: 2025 single filer with tier 1 retirement deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 50_000
+        taxable_private_pension_income: 10_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # 2025 single limit: $65,897
+    # Calculation: min($65,897 - $2,000 military - $50,000 public = $13,897, $10,000 private) + $50,000 public
+    # = min($13,897, $10,000) + $50,000 = $10,000 + $50,000 = $60,000
+    mi_retirement_benefits_deduction_tier_one_amount: 60_000
+
+- name: 2025 joint filers with tier 1 retirement deduction at limit
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 40_000
+        taxable_private_pension_income: 25_000
+        military_retirement_pay: 3_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 20_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # 2025 joint limit: $131,794
+    # Total public pension: $40,000 + $30,000 = $70,000
+    # Total private pension: $25,000 + $20,000 = $45,000
+    # Total military: $3,000 + $2,000 = $5,000
+    # Remaining after military and public: $131,794 - $5,000 - $70,000 = $56,794
+    # min($56,794, $45,000) + $70,000 = $45,000 + $70,000 = $115,000
+    mi_retirement_benefits_deduction_tier_one_amount: 115_000
+
+- name: 2025 head of household with tier 1 retirement deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 40_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # 2025 HOH limit: $65,897
+    # Remaining after public: $65,897 - $30,000 = $35,897
+    # min($35,897, $40,000) + $30,000 = $35,897 + $30,000 = $65,897
+    mi_retirement_benefits_deduction_tier_one_amount: 65_897
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Retirement Benefits Tier One
+# Single/HOH/Separate/Surviving Spouse limit: $65,897
+# Joint limit: $131,794
+# ============================================================================
+
+# Edge case: Pension income exactly at single limit
+- name: Case 1, 2025 edge case pension exactly at $65,897 single limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 65_897
+        taxable_private_pension_income: 0
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Public pension exactly at limit = fully deducted
+    # $65,897 public + $0 private = $65,897
+    mi_retirement_benefits_deduction_tier_one_amount: 65_897
+
+# Edge case: Pension income one dollar above single limit
+- name: Case 2, 2025 edge case pension $65,898 just above single limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 65_898
+        taxable_private_pension_income: 1_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Public pension exceeds limit by $1
+    # Deduction is capped by limit: public is fully deductible up to limit
+    # Remaining cap after public: $65,897 - $65,898 = -$1 (no room for private)
+    # Total: $65,898 (all public is deductible) + min(max(0, -1), 1000) = $65,898
+    mi_retirement_benefits_deduction_tier_one_amount: 65_898
+
+# Edge case: Joint filers pension exactly at joint limit
+- name: Case 3, 2025 edge case joint pension exactly at $131,794 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 65_897
+        taxable_private_pension_income: 0
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_public_pension_income: 65_897
+        taxable_private_pension_income: 0
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # Joint limit: $131,794
+    # Total public: $65,897 + $65,897 = $131,794 (exactly at limit)
+    # Total deduction: $131,794
+    mi_retirement_benefits_deduction_tier_one_amount: 131_794
+
+# Edge case: Zero pension income
+- name: Case 4, 2025 edge case zero pension income.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 0
+        taxable_private_pension_income: 0
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Zero pension = zero deduction
+    mi_retirement_benefits_deduction_tier_one_amount: 0
+
+# Edge case: Pension income significantly exceeds limit
+- name: Case 5, 2025 edge case pension $200,000 exceeding single limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 150_000
+        taxable_private_pension_income: 50_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Public pension: $150,000 (all deductible, exceeds cap but public is fully deductible)
+    # Remaining cap: $65,897 - $150,000 = -$84,103 (no room for private)
+    # Total: $150,000 public + $0 private = $150,000
+    mi_retirement_benefits_deduction_tier_one_amount: 150_000
+
+# Edge case: Only military retirement (reduces cap)
+- name: Case 6, 2025 edge case military retirement only.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 0
+        taxable_private_pension_income: 50_000
+        military_retirement_pay: 20_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Cap: $65,897
+    # Military reduces cap: $65,897 - $20,000 = $45,897
+    # Public: $0 (further reduces: $45,897 - $0 = $45,897)
+    # Private capped: min($45,897, $50,000) = $45,897
+    # Total: $0 public + $45,897 private = $45,897
+    mi_retirement_benefits_deduction_tier_one_amount: 45_897
+
+# Edge case: Surviving spouse with pension at limit
+- name: Case 7, 2025 edge case surviving spouse at single limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 40_000
+        taxable_private_pension_income: 30_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Surviving spouse uses single limit: $65,897
+    # Remaining after public: $65,897 - $40,000 = $25,897
+    # Private capped: min($25,897, $30,000) = $25,897
+    # Total: $40,000 + $25,897 = $65,897
+    mi_retirement_benefits_deduction_tier_one_amount: 65_897
+
+# Edge case: Married filing separately at single limit
+- name: Case 8, 2025 edge case married filing separately at single limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 35_000
+        taxable_private_pension_income: 35_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # MFS uses single limit: $65,897
+    # Remaining after public: $65,897 - $35,000 = $30,897
+    # Private capped: min($30,897, $35,000) = $30,897
+    # Total: $35,000 + $30,897 = $65,897
+    mi_retirement_benefits_deduction_tier_one_amount: 65_897
+
+# Edge case: Only private pension (no public)
+- name: Case 9, 2025 edge case only private pension.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 0
+        taxable_private_pension_income: 80_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Cap: $65,897
+    # Remaining after public (0): $65,897 - $0 = $65,897
+    # Private capped: min($65,897, $80,000) = $65,897
+    # Total: $0 + $65,897 = $65,897
+    mi_retirement_benefits_deduction_tier_one_amount: 65_897
+
+# Edge case: Small pension amounts
+- name: Case 10, 2025 edge case small pension amounts.
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 1_000
+        taxable_private_pension_income: 500
+        military_retirement_pay: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Small amounts all deductible
+    # Cap: $65,897 - $100 military = $65,797
+    # After public: $65,797 - $1,000 = $64,797
+    # Private: min($64,797, $500) = $500
+    # Total: $1,000 + $500 = $1,500
+    mi_retirement_benefits_deduction_tier_one_amount: 1_500
