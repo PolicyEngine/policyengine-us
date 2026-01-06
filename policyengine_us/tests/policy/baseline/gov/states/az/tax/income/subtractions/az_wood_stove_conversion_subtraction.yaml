@@ -16,7 +16,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 350
+    az_wood_stove_conversion_expense: 350
   output:
     # Conversion cost of $350 is under the $500 limit
     az_wood_stove_conversion_subtraction: 350
@@ -25,7 +25,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 500
+    az_wood_stove_conversion_expense: 500
   output:
     # Conversion cost of $500 equals the maximum subtraction
     az_wood_stove_conversion_subtraction: 500
@@ -34,7 +34,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 750
+    az_wood_stove_conversion_expense: 750
   output:
     # Conversion cost of $750 exceeds the $500 limit - capped
     az_wood_stove_conversion_subtraction: 500
@@ -43,7 +43,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 2_500
+    az_wood_stove_conversion_expense: 2_500
   output:
     # Conversion cost of $2,500 exceeds the $500 limit - capped
     az_wood_stove_conversion_subtraction: 500
@@ -52,7 +52,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 100
+    az_wood_stove_conversion_expense: 100
   output:
     # Small conversion cost of $100 fully deductible
     az_wood_stove_conversion_subtraction: 100
@@ -61,7 +61,7 @@
   period: 2025
   input:
     state_code: AZ
-    az_wood_stove_conversion_expenses: 0
+    az_wood_stove_conversion_expense: 0
   output:
     az_wood_stove_conversion_subtraction: 0
 
@@ -69,7 +69,7 @@
   period: 2025
   input:
     state_code: CA
-    az_wood_stove_conversion_expenses: 500
+    az_wood_stove_conversion_expense: 500
   output:
     # Non-Arizona residents do not receive Arizona subtractions
     az_wood_stove_conversion_subtraction: 0
@@ -81,7 +81,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_wood_stove_conversion_expenses: 600
+    az_wood_stove_conversion_expense: 600
   output:
     # All filing statuses have same $500 limit
     az_wood_stove_conversion_subtraction: 500
@@ -91,7 +91,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_wood_stove_conversion_expenses: 400
+    az_wood_stove_conversion_expense: 400
   output:
     # All filing statuses have same $500 limit - $400 is under limit
     az_wood_stove_conversion_subtraction: 400

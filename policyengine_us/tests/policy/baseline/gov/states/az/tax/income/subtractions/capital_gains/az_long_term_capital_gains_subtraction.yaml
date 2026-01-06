@@ -21,3 +21,52 @@
     long_term_capital_gains: -1_000
   output:
     az_long_term_capital_gains_subtraction: 0
+
+# =============================================================================
+# 2025 Tax Year Tests
+# Capital Gains Subtraction: 25% of net long-term capital gains (unchanged)
+# Per A.R.S. 43-1022(22)
+# =============================================================================
+
+- name: 2025 - Basic capital gains subtraction
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 40_000
+  output:
+    # $40,000 * 25% = $10,000
+    az_long_term_capital_gains_subtraction: 10_000
+
+- name: 2025 - Large capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 100_000
+  output:
+    # $100,000 * 25% = $25,000
+    az_long_term_capital_gains_subtraction: 25_000
+
+- name: 2025 - Small capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 4_000
+  output:
+    # $4,000 * 25% = $1,000
+    az_long_term_capital_gains_subtraction: 1_000
+
+- name: 2025 - Zero capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 0
+  output:
+    az_long_term_capital_gains_subtraction: 0
+
+- name: 2025 - Negative capital gains (loss) not subtracted
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: -5_000
+  output:
+    az_long_term_capital_gains_subtraction: 0
