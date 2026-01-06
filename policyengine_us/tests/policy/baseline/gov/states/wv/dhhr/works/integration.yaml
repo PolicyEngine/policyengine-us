@@ -1,0 +1,301 @@
+# Integration tests for WV Works (West Virginia TANF)
+# Tests full calculation pipeline from raw inputs to benefit amount
+#
+# Program Rules:
+# - Income limit: 100% Standard of Need (SON)
+# - 40% earned income disregard
+# - Dependent care deduction (no cap)
+# - Child support disregard ($100/1 child, $200/2+ children)
+# - Benefit = Payment Standard - Countable Income
+#
+# Sources:
+# - WV Income Maintenance Manual Chapter 10, Appendix A
+# - WV Income Maintenance Manual Section 4.5.2 (Income), Section 4.5.3 (Benefit)
+
+- name: Case 1, single parent with one child no income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    wv_works_countable_income: 0
+    wv_works_eligible: true
+    # Payment standard size 2: $480
+    wv_works: 480
+
+- name: Case 2, single parent with two children and earnings.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    # Countable earned: 800 * 0.60 = 480
+    wv_works_countable_income: 480
+    wv_works_eligible: true
+    # Payment standard size 3: $542
+    # Benefit: 542 - 480 = $62
+    wv_works: 62
+
+- name: Case 3, mixed earned and unearned income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 4_800  # $400/month earned
+        social_security: 2_400  # $200/month unearned
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 9
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    # Earned after disregard: 400 * 0.60 = 240
+    # Unearned: 200
+    # Total: 240 + 200 = 440
+    wv_works_countable_income: 440
+    wv_works_eligible: true
+    # Payment standard size 3: $542
+    # Benefit: 542 - 440 = $102
+    wv_works: 102
+
+- name: Case 4, household size 11 uses size 10 limits.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+      person4:
+        age: 15
+        is_tax_unit_dependent: true
+      person5:
+        age: 13
+        is_tax_unit_dependent: true
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+      person7:
+        age: 9
+        is_tax_unit_dependent: true
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+      person9:
+        age: 5
+        is_tax_unit_dependent: true
+      person10:
+        age: 3
+        is_tax_unit_dependent: true
+      person11:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    # Countable earned: 500 * 0.60 = 300
+    wv_works_countable_income: 300
+    wv_works_eligible: true
+    # Size 11 uses size 10 payment standard: $811
+    # Benefit: 811 - 300 = $511
+    wv_works: 511
+
+- name: Case 5, adults only household is demographic ineligible.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    wv_works_countable_income: 0
+    # No children = not eligible
+    wv_works_eligible: false
+    wv_works: 0
+
+- name: Case 6, single pregnant person.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 20
+        is_pregnant: true
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    wv_works_countable_income: 0
+    wv_works_eligible: true
+    # Payment standard size 1: $417
+    wv_works: 417
+
+- name: Case 7, child support disregard reduces countable income.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 0
+        child_support_received: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    # Child support: $400, 2+ children = $200 max disregard
+    # Countable = 400 - 200 = $200
+    wv_works_countable_income: 200
+    wv_works_eligible: true
+    # Payment standard size 3: $542
+    # Benefit: 542 - 200 = $342
+    wv_works: 342
+
+- name: Case 8, mixed income with childcare and child support.
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month earned
+        child_support_received: 1_800  # $150/month
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_200  # $100/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_works_income_eligible: true
+    # Earned: 500 * 0.60 = 300, minus $100 childcare = $200
+    wv_works_countable_earned_income: 200
+    # Child support: $150, 1 child = $100 disregard
+    # Countable unearned = 150 - 100 = $50
+    wv_works_countable_unearned_income: 50
+    # Total: 200 + 50 = $250
+    wv_works_countable_income: 250
+    wv_works_eligible: true
+    # Payment standard size 2: $480
+    # Benefit: 480 - 250 = $230
+    wv_works: 230
