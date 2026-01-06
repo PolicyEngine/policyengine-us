@@ -1,0 +1,275 @@
+# Arizona 2025 Income Tax Integration Tests
+# Tests end-to-end 2025 Arizona income tax calculations
+# Verifies interactions between new 2025 subtractions, deductions, and credits
+#
+# 2025 Key Values:
+# - Standard Deduction: Single $15,000, Joint $30,000, HOH $22,500, Separate $15,000
+# - Charitable Contribution Rate: 34%
+# - Tax Rate: 2.5% flat rate
+# - Filing Thresholds: Single $15,750, Joint $31,500, HOH $23,625, Separate $15,750
+
+# Basic 2025 tax calculation - single filer
+
+- name: Single filer basic 2025 tax calculation
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $60,000
+    adjusted_gross_income: 60_000
+    # AZ filing status = SINGLE
+    az_filing_status: SINGLE
+    # AZ base standard deduction for single = $15,000
+    az_base_standard_deduction: 15_000
+    # AZ taxable income = AGI - standard deduction = $60,000 - $15,000 = $45,000
+    az_taxable_income: 45_000
+    # AZ income tax = $45,000 * 2.5% = $1,125
+    az_income_tax_before_non_refundable_credits: 1_125
+
+# Joint filer with charitable contributions
+
+- name: Joint filer 2025 with charitable deduction increase
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 80_000
+      person2:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Federal AGI = $120,000
+    adjusted_gross_income: 120_000
+    # AZ filing status = JOINT
+    az_filing_status: JOINT
+    # AZ base standard deduction for joint = $30,000
+    az_base_standard_deduction: 30_000
+    # Increased standard deduction for charitable = $5,000 * 34% = $1,700
+    az_increased_standard_deduction_for_charitable_contributions: 1_700
+    # Total standard deduction = $30,000 + $1,700 = $31,700
+    az_standard_deduction: 31_700
+
+# Head of household with dependents
+
+- name: Head of household 2025 with dependents
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 75_000
+      child1:
+        age: 8
+      child2:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: AZ
+  output:
+    # Federal AGI = $75,000
+    adjusted_gross_income: 75_000
+    # AZ filing status = HEAD_OF_HOUSEHOLD (surviving spouse treated as HOH)
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    # AZ base standard deduction for HOH = $22,500
+    az_base_standard_deduction: 22_500
+    # Dependent tax credit: 2 children under 17 * $100 = $200
+    az_dependent_tax_credit: 200
+
+# Elderly taxpayer with aged exemption
+
+- name: Single elderly filer 2025 with aged exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $50,000
+    adjusted_gross_income: 50_000
+    # AZ filing status = SINGLE
+    az_filing_status: SINGLE
+    # AZ base standard deduction for single = $15,000
+    az_base_standard_deduction: 15_000
+    # Aged exemption (65+) = $2,100
+    az_aged_exemption: 2_100
+    # AZ AGI = $50,000 - $2,100 = $47,900
+    az_agi: 47_900
+
+# Married couple with multiple credits
+
+- name: Joint filers 2025 with family tax credit eligible
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 30
+        employment_income: 9_000
+      spouse2:
+        age: 28
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $17,000
+    adjusted_gross_income: 17_000
+    # AZ filing status = JOINT
+    az_filing_status: JOINT
+    # Income $17,000 < $20,000 limit for 0-1 dependents - family credit eligible
+    az_family_tax_credit_eligible: true
+    # Family tax credit: 2 people * $40 = $80 (max $240 for joint)
+    az_family_tax_credit: 80
+
+# Separate filer calculation
+
+- name: Separate filer 2025 basic calculation
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $45,000
+    adjusted_gross_income: 45_000
+    # AZ filing status = SEPARATE
+    az_filing_status: SEPARATE
+    # AZ base standard deduction for separate = $15,000
+    az_base_standard_deduction: 15_000
+    # AZ taxable income = $45,000 - $15,000 = $30,000
+    az_taxable_income: 30_000
+    # AZ income tax = $30,000 * 2.5% = $750
+    az_income_tax_before_non_refundable_credits: 750
+
+# Low income taxpayer - excise tax credit eligible
+
+- name: Low income single 2025 with excise tax credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $12,000
+    adjusted_gross_income: 12_000
+    # AZ filing status = SINGLE
+    az_filing_status: SINGLE
+    # Income $12,000 < $12,500 limit for single - excise credit eligible
+    az_increased_excise_tax_credit_eligible: true
+    # Excise tax credit: 1 person * $25 = $25
+    az_increased_excise_tax_credit: 25
+
+# Multiple exemptions test
+
+- name: Joint elderly couple 2025 with aged exemptions
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 70
+        employment_income: 25_000
+      spouse2:
+        age: 67
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $45,000
+    adjusted_gross_income: 45_000
+    # AZ filing status = JOINT
+    az_filing_status: JOINT
+    # AZ base standard deduction for joint = $30,000
+    az_base_standard_deduction: 30_000
+    # Aged exemption: 2 * $2,100 = $4,200
+    az_aged_exemption: 4_200
+    # AZ AGI = $45,000 - $4,200 = $40,800
+    az_agi: 40_800
+
+# Complex scenario with charitable contributions and dependent
+
+- name: HOH 2025 with charitable and dependent credits
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 85_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        charitable_deduction: 3_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: AZ
+  output:
+    # Federal AGI = $85,000
+    adjusted_gross_income: 85_000
+    # AZ filing status = HEAD_OF_HOUSEHOLD
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    # AZ base standard deduction for HOH = $22,500
+    az_base_standard_deduction: 22_500
+    # Increased standard deduction for charitable = $3,000 * 34% = $1,020
+    az_increased_standard_deduction_for_charitable_contributions: 1_020
+    # Total standard deduction = $22,500 + $1,020 = $23,520
+    az_standard_deduction: 23_520
+    # Dependent tax credit: 1 child under 17 * $100 = $100
+    az_dependent_tax_credit: 100

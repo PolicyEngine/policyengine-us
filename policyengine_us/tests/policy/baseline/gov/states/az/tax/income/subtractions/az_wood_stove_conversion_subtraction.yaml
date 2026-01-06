@@ -1,0 +1,97 @@
+# Arizona Wood Stove/Fireplace Conversion Subtraction Tests
+# Per A.R.S. 43-1027 and 2025 Form 140 Instructions (Other Subtractions - Item E)
+#
+# Maximum subtraction: $500
+#
+# Qualifying conversions:
+# 1. Qualified gas fired fireplace (natural gas or LPG through permanent burner)
+# 2. Qualified wood stove/fireplace meeting EPA standards (40 CFR Part 60)
+#
+# Requirements:
+# - Conversion on property located in Arizona
+# - Cost exclusive of taxes, interest, and finance charges
+# - Effective for taxable years from and after December 31, 1993
+
+- name: Wood stove conversion under limit
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 350
+  output:
+    # Conversion cost of $350 is under the $500 limit
+    az_wood_stove_conversion_subtraction: 350
+
+- name: Wood stove conversion at limit
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 500
+  output:
+    # Conversion cost of $500 equals the maximum subtraction
+    az_wood_stove_conversion_subtraction: 500
+
+- name: Wood stove conversion over limit
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 750
+  output:
+    # Conversion cost of $750 exceeds the $500 limit - capped
+    az_wood_stove_conversion_subtraction: 500
+
+- name: Expensive fireplace conversion over limit
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 2_500
+  output:
+    # Conversion cost of $2,500 exceeds the $500 limit - capped
+    az_wood_stove_conversion_subtraction: 500
+
+- name: Small conversion expense
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 100
+  output:
+    # Small conversion cost of $100 fully deductible
+    az_wood_stove_conversion_subtraction: 100
+
+- name: Zero conversion expenses
+  period: 2025
+  input:
+    state_code: AZ
+    az_wood_stove_conversion_expenses: 0
+  output:
+    az_wood_stove_conversion_subtraction: 0
+
+- name: Non-Arizona resident - no subtraction
+  period: 2025
+  input:
+    state_code: CA
+    az_wood_stove_conversion_expenses: 500
+  output:
+    # Non-Arizona residents do not receive Arizona subtractions
+    az_wood_stove_conversion_subtraction: 0
+
+# Joint vs Single filers - same limit applies to all filing statuses
+
+- name: Joint filer with conversion expense
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_wood_stove_conversion_expenses: 600
+  output:
+    # All filing statuses have same $500 limit
+    az_wood_stove_conversion_subtraction: 500
+
+- name: Head of household with conversion expense
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_wood_stove_conversion_expenses: 400
+  output:
+    # All filing statuses have same $500 limit - $400 is under limit
+    az_wood_stove_conversion_subtraction: 400
