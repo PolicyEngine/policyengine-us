@@ -9,7 +9,7 @@ def create_streamlined_eitc() -> Reform:
     - Maximum credit varies by filing status: single vs married
 
     To model the full policy, set these existing IRS parameters:
-    - gov.irs.credits.eitc.phase_in_rate (34% for 1+ children)
+    - gov.irs.credits.eitc.phase_in_rate
     - gov.irs.credits.eitc.phase_out.start (phase-out start for single)
     - gov.irs.credits.eitc.phase_out.joint_bonus (additional amount for married)
     - gov.irs.credits.eitc.phase_out.rate (phase-out rate)

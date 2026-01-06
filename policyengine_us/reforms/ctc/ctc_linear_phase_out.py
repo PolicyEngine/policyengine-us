@@ -5,7 +5,7 @@ from policyengine_core.periods import period as period_
 def create_ctc_linear_phase_out() -> Reform:
     """
     CTC Linear Phase-Out Reform:
-    - Changes CTC phase-out from $50 per $1,000 increment to linear phase-out
+    - Replaces the standard CTC phase-out with a linear phase-out
     - Uses existing IRS threshold for phase-out start
     - Adds new parameter for phase-out end threshold by filing status
 
