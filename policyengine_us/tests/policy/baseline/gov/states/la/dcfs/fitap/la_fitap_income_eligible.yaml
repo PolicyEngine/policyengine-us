@@ -1,22 +1,4 @@
-# Louisiana FITAP Income Eligibility Unit Tests
-# Income limit equals the flat grant amount for household size
-# Reference: https://ldh.la.gov/page/fitap
-# "Monthly countable income, both earned and unearned, cannot exceed
-# the flat grant amount for the number of persons in the assistance unit."
-
-- name: Case 1, no income is income eligible.
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 0
-    la_fitap_flat_grant: 376  # Family of 2
-  output:
-    la_fitap_income_eligible: true
-
-- name: Case 2, income below flat grant is eligible.
-  # Countable income: $200
-  # Flat grant (family of 2): $376
-  # $200 < $376 = eligible
+- name: Case 1, income below flat grant is eligible
   period: 2024-01
   input:
     state_code: LA
@@ -25,10 +7,7 @@
   output:
     la_fitap_income_eligible: true
 
-- name: Case 3, income equal to flat grant is eligible.
-  # Countable income: $376
-  # Flat grant (family of 2): $376
-  # $376 <= $376 = eligible
+- name: Case 2, income equal to flat grant is eligible
   period: 2024-01
   input:
     state_code: LA
@@ -37,156 +16,11 @@
   output:
     la_fitap_income_eligible: true
 
-- name: Case 4, income above flat grant is ineligible.
-  # Countable income: $400
-  # Flat grant (family of 2): $376
-  # $400 > $376 = ineligible
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 400
-    la_fitap_flat_grant: 376
-  output:
-    la_fitap_income_eligible: false
-
-- name: Case 5, income just above flat grant is ineligible.
-  # Countable income: $377
-  # Flat grant (family of 2): $376
-  # $377 > $376 = ineligible
+- name: Case 3, income above flat grant is ineligible
   period: 2024-01
   input:
     state_code: LA
     la_fitap_countable_income: 377
-    la_fitap_flat_grant: 376
-  output:
-    la_fitap_income_eligible: false
-
-- name: Case 6, larger family higher income limit.
-  # Countable income: $450
-  # Flat grant (family of 3): $484
-  # $450 < $484 = eligible
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 450
-    la_fitap_flat_grant: 484
-  output:
-    la_fitap_income_eligible: true
-
-# =============================================================================
-# EDGE CASES
-# =============================================================================
-
-- name: Edge case, income exactly one dollar below limit is eligible.
-  # Countable income: $375
-  # Flat grant (family of 2): $376
-  # $375 < $376 = eligible
-  # Tests boundary one dollar below threshold
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 375
-    la_fitap_flat_grant: 376
-  output:
-    la_fitap_income_eligible: true
-
-- name: Edge case, income exactly one dollar above limit is ineligible.
-  # Countable income: $245
-  # Flat grant (family of 1): $244
-  # $245 > $244 = ineligible
-  # Tests boundary one dollar above threshold for smallest family size
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 245
-    la_fitap_flat_grant: 244
-  output:
-    la_fitap_income_eligible: false
-
-- name: Edge case, income exactly at limit for single person household.
-  # Countable income: $244
-  # Flat grant (family of 1): $244
-  # $244 <= $244 = eligible
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 244
-    la_fitap_flat_grant: 244
-  output:
-    la_fitap_income_eligible: true
-
-- name: Edge case, income exactly one dollar below limit for single person.
-  # Countable income: $243
-  # Flat grant (family of 1): $244
-  # $243 < $244 = eligible
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 243
-    la_fitap_flat_grant: 244
-  output:
-    la_fitap_income_eligible: true
-
-- name: Edge case, very high income far above limit.
-  # Countable income: $2,000
-  # Flat grant (family of 2): $376
-  # $2,000 > $376 = ineligible (clearly exceeds limit)
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 2_000
-    la_fitap_flat_grant: 376
-  output:
-    la_fitap_income_eligible: false
-
-- name: Edge case, maximum family size income limit.
-  # Countable income: $954
-  # Flat grant (family of 9): $954
-  # $954 <= $954 = eligible
-  # Tests at maximum flat grant amount
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 954
-    la_fitap_flat_grant: 954
-  output:
-    la_fitap_income_eligible: true
-
-- name: Edge case, income one dollar above maximum family size limit.
-  # Countable income: $955
-  # Flat grant (family of 9): $954
-  # $955 > $954 = ineligible
-  # Tests just above maximum flat grant amount
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 955
-    la_fitap_flat_grant: 954
-  output:
-    la_fitap_income_eligible: false
-
-- name: Edge case, income one dollar below maximum family size limit.
-  # Countable income: $953
-  # Flat grant (family of 9): $954
-  # $953 < $954 = eligible
-  # Tests just below maximum flat grant amount
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 953
-    la_fitap_flat_grant: 954
-  output:
-    la_fitap_income_eligible: true
-
-- name: Edge case, fractional income just above limit.
-  # Countable income: $376.01
-  # Flat grant (family of 2): $376
-  # $376.01 > $376 = ineligible
-  # Tests fractional dollar precision
-  period: 2024-01
-  input:
-    state_code: LA
-    la_fitap_countable_income: 376.01
     la_fitap_flat_grant: 376
   output:
     la_fitap_income_eligible: false

@@ -7,10 +7,10 @@ class la_fitap_countable_income(Variable):
     label = "Louisiana FITAP countable income"
     unit = USD
     definition_period = MONTH
-    reference = "https://ldh.la.gov/page/fitap"
+    reference = "https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229"
     defined_for = StateCode.LA
 
     adds = [
-        "la_fitap_countable_earned_income",
+        "la_fitap_earned_income_after_disregard",
         "tanf_gross_unearned_income",
     ]

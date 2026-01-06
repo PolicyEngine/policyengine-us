@@ -1,377 +1,57 @@
-# Louisiana FITAP Flat Grant Unit Tests
-# Tests flat grant amounts by household size (effective January 2022)
-# Reference: https://ldh.la.gov/page/fitap
-# Reference: https://www.dcfs.louisiana.gov/news/louisiana-to-increase-tanf-cash-assistance-benefits-beginning-january-2022
-
-- name: Case 1, household size 1 flat grant.
-  period: 2024-01
+- name: Case 1, pre-2022 size 1
+  period: 2017-01
   input:
-    people:
-      person1:
-        age: 25
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: LA
+    spm_unit_size: 1
+    state_code: LA
   output:
-    la_fitap_flat_grant: 244
+    la_fitap_flat_grant: 122
 
-- name: Case 2, household size 2 flat grant.
-  period: 2024-01
+- name: Case 2, pre-2022 size 3
+  period: 2017-01
   input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: LA
+    spm_unit_size: 3
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 240
+
+- name: Case 3, pre-2022 size 20 exceeds table
+  # grant[18] + grant[2] - adjustment = 839 + 188 - 50 = 977
+  period: 2017-01
+  input:
+    spm_unit_size: 20
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 977
+
+- name: Case 4, post-2022 size 2
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_code: LA
   output:
     la_fitap_flat_grant: 376
 
-- name: Case 3, household size 3 flat grant.
-  period: 2024-01
+- name: Case 5, post-2022 size 4
+  period: 2022-01
   input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 8
-      person3:
-        age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 484
-
-- name: Case 4, household size 4 flat grant.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 33
-      person3:
-        age: 10
-      person4:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: LA
+    spm_unit_size: 4
+    state_code: LA
   output:
     la_fitap_flat_grant: 568
 
-- name: Case 5, household size 5 flat grant.
-  period: 2024-01
+- name: Case 6, post-2022 size 18 max in table
+  period: 2022-01
   input:
-    people:
-      person1:
-        age: 40
-      person2:
-        age: 38
-      person3:
-        age: 15
-      person4:
-        age: 12
-      person5:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: LA
+    spm_unit_size: 18
+    state_code: LA
   output:
-    la_fitap_flat_grant: 654
+    la_fitap_flat_grant: 1_678
 
-- name: Case 6, household size 6 flat grant.
-  period: 2024-01
+- name: Case 7, post-2022 size 19 exceeds table
+  # grant[18] + grant[1] - adjustment = 1678 + 244 - 100 = 1822
+  period: 2022-01
   input:
-    people:
-      person1:
-        age: 40
-      person2:
-        age: 38
-      person3:
-        age: 16
-      person4:
-        age: 14
-      person5:
-        age: 10
-      person6:
-        age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6]
-        state_code: LA
+    spm_unit_size: 19
+    state_code: LA
   output:
-    la_fitap_flat_grant: 732
-
-- name: Case 7, household size 9 flat grant (max in table).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 45
-      person2:
-        age: 43
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 954
-
-- name: Case 8, pre-2022 flat grant (historical).
-  # Before January 2022, benefits were half current amounts
-  period: 2021-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 188
-
-# =============================================================================
-# EDGE CASES
-# =============================================================================
-
-- name: Edge case, single person household minimum size.
-  # Tests that single-person household gets the minimum flat grant.
-  # Size 1 = $244
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 244
-
-- name: Edge case, household size 7 flat grant.
-  # Size 7 = $804
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 40
-      person2:
-        age: 38
-      person3:
-        age: 16
-      person4:
-        age: 14
-      person5:
-        age: 12
-      person6:
-        age: 10
-      person7:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 804
-
-- name: Edge case, household size 8 flat grant.
-  # Size 8 = $882
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 42
-      person2:
-        age: 40
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 882
-
-- name: Edge case, household size 10 at cap.
-  # Size 10 = $954 (same as size 9, cap applies)
-  # This tests that size 10 returns the capped value
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 45
-      person2:
-        age: 43
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-      person10:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 954
-
-- name: Edge case, household size 11 exceeds cap.
-  # Size 11 should cap at size 10 value = $954
-  # Tests that sizes beyond 10 still receive the maximum flat grant
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 45
-      person2:
-        age: 43
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-      person9:
-        age: 5
-      person10:
-        age: 3
-      person11:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 954
-
-- name: Edge case, very large household size 12 still caps at size 10.
-  # Size 12 should cap at size 10 value = $954
-  # Tests extreme household sizes are handled correctly
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 48
-      person2:
-        age: 46
-      person3:
-        age: 17
-      person4:
-        age: 16
-      person5:
-        age: 15
-      person6:
-        age: 14
-      person7:
-        age: 12
-      person8:
-        age: 10
-      person9:
-        age: 8
-      person10:
-        age: 6
-      person11:
-        age: 4
-      person12:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
-        state_code: LA
-  output:
-    la_fitap_flat_grant: 954
+    la_fitap_flat_grant: 1_822

@@ -1,16 +1,3 @@
-# Louisiana FITAP Integration Tests
-# Full pipeline testing from gross income to final benefit
-# Reference: https://ldh.la.gov/page/fitap
-# Reference: https://www.legis.la.gov/legis/Law.aspx?d=100599
-#
-# Key Policy Rules:
-# - Income limit = flat grant amount for household size
-# - Benefit = Flat Grant - Countable Income
-# - Earned income deductions: $120 standard + $900 time-limited per employed member
-# - Unearned income counted dollar-for-dollar (no disregards)
-# - Minimum benefit: $10 (benefits below this are not issued)
-# - No resource test (all resources excluded)
-
 - name: Scenario 1 - Single parent with one child, no income, full benefit.
   # Family of 2, no income, receives full flat grant
   period: 2024-01
@@ -39,7 +26,7 @@
     # Income limit: $376
     # Benefit: $376 - $0 = $376
     la_fitap_flat_grant: 376
-    la_fitap_countable_earned_income: [0, 0]
+    la_fitap_earned_income_after_disregard: [0, 0]
     la_fitap_countable_income: 0
     la_fitap_income_eligible: true
     la_fitap_eligible: true
@@ -76,7 +63,7 @@
     # $180 <= $376 = income eligible
     # Benefit: $376 - $180 = $196
     la_fitap_flat_grant: 376
-    la_fitap_countable_earned_income: [180, 0]
+    la_fitap_earned_income_after_disregard: [180, 0]
     la_fitap_countable_income: 180
     la_fitap_income_eligible: true
     la_fitap_eligible: true
@@ -113,7 +100,7 @@
     # Flat grant (family of 3): $484
     # Benefit: $484 - $0 = $484
     la_fitap_flat_grant: 484
-    la_fitap_countable_earned_income: [0, 0, 0]
+    la_fitap_earned_income_after_disregard: [0, 0, 0]
     la_fitap_countable_income: 0
     la_fitap_income_eligible: true
     la_fitap_eligible: true
@@ -148,7 +135,7 @@
     # Flat grant / Income limit (family of 2): $376
     # $780 > $376 = income ineligible
     la_fitap_flat_grant: 376
-    la_fitap_countable_earned_income: [780, 0]
+    la_fitap_earned_income_after_disregard: [780, 0]
     la_fitap_countable_income: 780
     la_fitap_income_eligible: false
     la_fitap_eligible: false
@@ -183,7 +170,7 @@
     # $200 <= $376 = income eligible
     # Benefit: $376 - $200 = $176
     la_fitap_flat_grant: 376
-    la_fitap_countable_earned_income: [0, 0]
+    la_fitap_earned_income_after_disregard: [0, 0]
     la_fitap_countable_income: 200
     la_fitap_income_eligible: true
     la_fitap_eligible: true
@@ -226,7 +213,7 @@
     # $280 <= $484 = income eligible
     # Benefit: $484 - $280 = $204
     la_fitap_flat_grant: 484
-    la_fitap_countable_earned_income: [280, 0, 0]
+    la_fitap_earned_income_after_disregard: [280, 0, 0]
     la_fitap_countable_income: 280
     la_fitap_income_eligible: true
     la_fitap_eligible: true
@@ -266,7 +253,7 @@
     # $180 <= $484 = income eligible
     # Benefit: $484 - $180 = $304
     la_fitap_flat_grant: 484
-    la_fitap_countable_earned_income: [80, 0, 0]
+    la_fitap_earned_income_after_disregard: [80, 0, 0]
     la_fitap_countable_income: 180
     la_fitap_income_eligible: true
     la_fitap_eligible: true

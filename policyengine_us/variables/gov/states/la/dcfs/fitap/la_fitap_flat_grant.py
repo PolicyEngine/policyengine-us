@@ -7,14 +7,26 @@ class la_fitap_flat_grant(Variable):
     label = "Louisiana FITAP flat grant"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://ldh.la.gov/page/fitap",
-        "https://www.dcfs.louisiana.gov/news/louisiana-to-increase-tanf-cash-assistance-benefits-beginning-january-2022",
-    )
+    reference = "https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229"
     defined_for = StateCode.LA
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.la.dcfs.fitap.flat_grant
         size = spm_unit("spm_unit_size", period.this_year)
-        capped_size = min_(size, 10)
-        return p.amount[capped_size]
+
+        # For size > 18: grant[18] + grant[excess] - adjustment
+        is_over_max = size > p.max_table_size
+
+        # Base amount (capped at max_table_size)
+        capped_size = min_(size, p.max_table_size)
+        base_amount = p.amount[capped_size]
+
+        # Excess calculation for size > 18
+        excess_size = max_(size - p.max_table_size, 1)
+        excess_amount = p.amount[min_(excess_size, p.max_table_size)]
+
+        return where(
+            is_over_max,
+            base_amount + excess_amount - p.excess_adjustment,
+            base_amount,
+        )
