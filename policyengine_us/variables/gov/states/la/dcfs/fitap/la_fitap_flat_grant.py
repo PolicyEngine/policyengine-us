@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_tanf_flat_grant(Variable):
+class la_fitap_flat_grant(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Louisiana TANF flat grant"
+    label = "Louisiana FITAP flat grant"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -14,7 +14,7 @@ class la_tanf_flat_grant(Variable):
     defined_for = StateCode.LA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.la.dcfs.tanf.flat_grant
+        p = parameters(period).gov.states.la.dcfs.fitap.flat_grant
         size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(size, 10)
         return p.amount[capped_size]

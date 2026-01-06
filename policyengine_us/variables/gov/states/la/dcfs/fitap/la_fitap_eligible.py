@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_tanf_eligible(Variable):
+class la_fitap_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Louisiana TANF eligible"
+    label = "Louisiana FITAP eligible"
     definition_period = MONTH
     reference = "https://ldh.la.gov/page/fitap"
     defined_for = StateCode.LA
@@ -19,7 +19,7 @@ class la_tanf_eligible(Variable):
         )
 
         # Income eligibility (countable income <= flat grant)
-        income_eligible = spm_unit("la_tanf_income_eligible", period)
+        income_eligible = spm_unit("la_fitap_income_eligible", period)
 
         # NOTE: Louisiana excludes all resources from eligibility
         # determination, so no resource test is needed.

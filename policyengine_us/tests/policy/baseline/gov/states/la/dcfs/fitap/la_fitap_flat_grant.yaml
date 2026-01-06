@@ -1,4 +1,4 @@
-# Louisiana TANF Flat Grant Unit Tests
+# Louisiana FITAP Flat Grant Unit Tests
 # Tests flat grant amounts by household size (effective January 2022)
 # Reference: https://ldh.la.gov/page/fitap
 # Reference: https://www.dcfs.louisiana.gov/news/louisiana-to-increase-tanf-cash-assistance-benefits-beginning-january-2022
@@ -17,7 +17,7 @@
         members: [person1]
         state_code: LA
   output:
-    la_tanf_flat_grant: 244
+    la_fitap_flat_grant: 244
 
 - name: Case 2, household size 2 flat grant.
   period: 2024-01
@@ -35,7 +35,7 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf_flat_grant: 376
+    la_fitap_flat_grant: 376
 
 - name: Case 3, household size 3 flat grant.
   period: 2024-01
@@ -55,7 +55,7 @@
         members: [person1, person2, person3]
         state_code: LA
   output:
-    la_tanf_flat_grant: 484
+    la_fitap_flat_grant: 484
 
 - name: Case 4, household size 4 flat grant.
   period: 2024-01
@@ -77,7 +77,7 @@
         members: [person1, person2, person3, person4]
         state_code: LA
   output:
-    la_tanf_flat_grant: 568
+    la_fitap_flat_grant: 568
 
 - name: Case 5, household size 5 flat grant.
   period: 2024-01
@@ -101,7 +101,7 @@
         members: [person1, person2, person3, person4, person5]
         state_code: LA
   output:
-    la_tanf_flat_grant: 654
+    la_fitap_flat_grant: 654
 
 - name: Case 6, household size 6 flat grant.
   period: 2024-01
@@ -127,7 +127,7 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: LA
   output:
-    la_tanf_flat_grant: 732
+    la_fitap_flat_grant: 732
 
 - name: Case 7, household size 9 flat grant (max in table).
   period: 2024-01
@@ -159,7 +159,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
         state_code: LA
   output:
-    la_tanf_flat_grant: 954
+    la_fitap_flat_grant: 954
 
 - name: Case 8, pre-2022 flat grant (historical).
   # Before January 2022, benefits were half current amounts
@@ -178,7 +178,7 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf_flat_grant: 188
+    la_fitap_flat_grant: 188
 
 # =============================================================================
 # EDGE CASES
@@ -200,7 +200,7 @@
         members: [person1]
         state_code: LA
   output:
-    la_tanf_flat_grant: 244
+    la_fitap_flat_grant: 244
 
 - name: Edge case, household size 7 flat grant.
   # Size 7 = $804
@@ -229,7 +229,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7]
         state_code: LA
   output:
-    la_tanf_flat_grant: 804
+    la_fitap_flat_grant: 804
 
 - name: Edge case, household size 8 flat grant.
   # Size 8 = $882
@@ -260,7 +260,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: LA
   output:
-    la_tanf_flat_grant: 882
+    la_fitap_flat_grant: 882
 
 - name: Edge case, household size 10 at cap.
   # Size 10 = $954 (same as size 9, cap applies)
@@ -296,7 +296,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: LA
   output:
-    la_tanf_flat_grant: 954
+    la_fitap_flat_grant: 954
 
 - name: Edge case, household size 11 exceeds cap.
   # Size 11 should cap at size 10 value = $954
@@ -334,7 +334,7 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
         state_code: LA
   output:
-    la_tanf_flat_grant: 954
+    la_fitap_flat_grant: 954
 
 - name: Edge case, very large household size 12 still caps at size 10.
   # Size 12 should cap at size 10 value = $954
@@ -374,4 +374,4 @@
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
         state_code: LA
   output:
-    la_tanf_flat_grant: 954
+    la_fitap_flat_grant: 954

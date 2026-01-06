@@ -1,4 +1,4 @@
-# Louisiana TANF (FITAP) Integration Tests
+# Louisiana FITAP Integration Tests
 # Full pipeline testing from gross income to final benefit
 # Reference: https://ldh.la.gov/page/fitap
 # Reference: https://www.legis.la.gov/legis/Law.aspx?d=100599
@@ -38,12 +38,12 @@
     # Flat grant (family of 2): $376
     # Income limit: $376
     # Benefit: $376 - $0 = $376
-    la_tanf_flat_grant: 376
-    la_tanf_countable_earned_income: [0, 0]
-    la_tanf_countable_income: 0
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 376
+    la_fitap_flat_grant: 376
+    la_fitap_countable_earned_income: [0, 0]
+    la_fitap_countable_income: 0
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 376
 
 - name: Scenario 2 - Single parent with one child, $1,200/month earnings, partial benefit.
   # Earned income with full deductions applied
@@ -75,12 +75,12 @@
     # Income limit: $376
     # $180 <= $376 = income eligible
     # Benefit: $376 - $180 = $196
-    la_tanf_flat_grant: 376
-    la_tanf_countable_earned_income: [180, 0]
-    la_tanf_countable_income: 180
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 196
+    la_fitap_flat_grant: 376
+    la_fitap_countable_earned_income: [180, 0]
+    la_fitap_countable_income: 180
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 196
 
 - name: Scenario 3 - Single parent with two children, earnings under deduction threshold.
   # Earned income fully offset by deductions
@@ -112,12 +112,12 @@
     # Countable income: $0
     # Flat grant (family of 3): $484
     # Benefit: $484 - $0 = $484
-    la_tanf_flat_grant: 484
-    la_tanf_countable_earned_income: [0, 0, 0]
-    la_tanf_countable_income: 0
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 484
+    la_fitap_flat_grant: 484
+    la_fitap_countable_earned_income: [0, 0, 0]
+    la_fitap_countable_income: 0
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 484
 
 - name: Scenario 4 - Family with income above limit, ineligible.
   # Countable income exceeds flat grant amount
@@ -147,15 +147,15 @@
     # Countable income: $780
     # Flat grant / Income limit (family of 2): $376
     # $780 > $376 = income ineligible
-    la_tanf_flat_grant: 376
-    la_tanf_countable_earned_income: [780, 0]
-    la_tanf_countable_income: 780
-    la_tanf_income_eligible: false
-    la_tanf_eligible: false
-    la_tanf: 0
+    la_fitap_flat_grant: 376
+    la_fitap_countable_earned_income: [780, 0]
+    la_fitap_countable_income: 780
+    la_fitap_income_eligible: false
+    la_fitap_eligible: false
+    la_fitap: 0
 
 - name: Scenario 5 - Family with unearned income only (no deductions).
-  # Unearned income has no deductions in LA TANF
+  # Unearned income has no deductions in LA FITAP
   period: 2024-01
   input:
     people:
@@ -182,12 +182,12 @@
     # Flat grant (family of 2): $376
     # $200 <= $376 = income eligible
     # Benefit: $376 - $200 = $176
-    la_tanf_flat_grant: 376
-    la_tanf_countable_earned_income: [0, 0]
-    la_tanf_countable_income: 200
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 176
+    la_fitap_flat_grant: 376
+    la_fitap_countable_earned_income: [0, 0]
+    la_fitap_countable_income: 200
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 176
 
 - name: Scenario 6 - Two earners, combined income with deductions.
   # Both employed members get deductions
@@ -225,12 +225,12 @@
     # Flat grant (family of 3): $484
     # $280 <= $484 = income eligible
     # Benefit: $484 - $280 = $204
-    la_tanf_flat_grant: 484
-    la_tanf_countable_earned_income: [280, 0, 0]
-    la_tanf_countable_income: 280
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 204
+    la_fitap_flat_grant: 484
+    la_fitap_countable_earned_income: [280, 0, 0]
+    la_fitap_countable_income: 280
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 204
 
 - name: Scenario 7 - Mixed income (earned and unearned), eligible.
   # Combination of earned income with deductions and unearned without
@@ -265,9 +265,9 @@
     # Flat grant (family of 3): $484
     # $180 <= $484 = income eligible
     # Benefit: $484 - $180 = $304
-    la_tanf_flat_grant: 484
-    la_tanf_countable_earned_income: [80, 0, 0]
-    la_tanf_countable_income: 180
-    la_tanf_income_eligible: true
-    la_tanf_eligible: true
-    la_tanf: 304
+    la_fitap_flat_grant: 484
+    la_fitap_countable_earned_income: [80, 0, 0]
+    la_fitap_countable_income: 180
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 304

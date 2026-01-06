@@ -1,4 +1,4 @@
-# Louisiana TANF Benefit Unit Tests
+# Louisiana FITAP Benefit Unit Tests
 # Tests final benefit calculation: Benefit = Flat Grant - Countable Income
 # Minimum benefit: $10 (benefits below this are not issued)
 # Reference: https://ldh.la.gov/page/fitap
@@ -14,15 +14,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 0
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 0
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 376
+    la_fitap: 376
 
 - name: Case 2, eligible with partial income gets partial benefit.
   # Flat grant: $376
@@ -38,15 +38,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 200
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 200
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 176
+    la_fitap: 176
 
 - name: Case 3, eligible with income equal to flat grant gets zero.
   # Flat grant: $376
@@ -62,15 +62,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 376
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 376
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Case 4, ineligible household gets zero benefit.
   period: 2024-01
@@ -83,15 +83,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: false
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 0
+        la_fitap_eligible: false
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 0
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Case 5, benefit exactly at minimum threshold.
   # Flat grant: $376
@@ -107,15 +107,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 366
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 366
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 10
+    la_fitap: 10
 
 - name: Case 6, benefit below minimum is not issued.
   # Flat grant: $376
@@ -132,15 +132,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 370
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 370
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Case 7, larger family with higher flat grant.
   # Flat grant (family of 4): $568
@@ -160,15 +160,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 568
-        la_tanf_countable_income: 250
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 568
+        la_fitap_countable_income: 250
     households:
       household:
         members: [person1, person2, person3, person4]
         state_code: LA
   output:
-    la_tanf: 318
+    la_fitap: 318
 
 # =============================================================================
 # EDGE CASES
@@ -187,15 +187,15 @@
     spm_units:
       spm_unit:
         members: [person1]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 244
-        la_tanf_countable_income: 234
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 244
+        la_fitap_countable_income: 234
     households:
       household:
         members: [person1]
         state_code: LA
   output:
-    la_tanf: 10
+    la_fitap: 10
 
 - name: Edge case, benefit at nine dollars is below minimum.
   # Flat grant: $244 (size 1)
@@ -210,15 +210,15 @@
     spm_units:
       spm_unit:
         members: [person1]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 244
-        la_tanf_countable_income: 235
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 244
+        la_fitap_countable_income: 235
     households:
       household:
         members: [person1]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Edge case, benefit at eleven dollars just above minimum.
   # Flat grant: $244 (size 1)
@@ -233,15 +233,15 @@
     spm_units:
       spm_unit:
         members: [person1]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 244
-        la_tanf_countable_income: 233
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 244
+        la_fitap_countable_income: 233
     households:
       household:
         members: [person1]
         state_code: LA
   output:
-    la_tanf: 11
+    la_fitap: 11
 
 - name: Edge case, benefit at one dollar is below minimum.
   # Flat grant: $376
@@ -258,15 +258,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 375
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 375
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Edge case, very large family size 9 with no income gets full benefit.
   # Flat grant (family of 9): $954
@@ -296,15 +296,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 954
-        la_tanf_countable_income: 0
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 954
+        la_fitap_countable_income: 0
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
         state_code: LA
   output:
-    la_tanf: 954
+    la_fitap: 954
 
 - name: Edge case, very large family size 10 with no income at cap.
   # Flat grant (family of 10+): $954 (capped at size 10)
@@ -336,15 +336,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 954
-        la_tanf_countable_income: 0
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 954
+        la_fitap_countable_income: 0
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         state_code: LA
   output:
-    la_tanf: 954
+    la_fitap: 954
 
 - name: Edge case, income exceeds flat grant resulting in zero benefit.
   # Flat grant: $376
@@ -361,15 +361,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 376
-        la_tanf_countable_income: 400
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 376
+        la_fitap_countable_income: 400
     households:
       household:
         members: [person1, person2]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Edge case, very high income far exceeding flat grant.
   # Flat grant: $568 (family of 4)
@@ -389,15 +389,15 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 568
-        la_tanf_countable_income: 2_000
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 568
+        la_fitap_countable_income: 2_000
     households:
       household:
         members: [person1, person2, person3, person4]
         state_code: LA
   output:
-    la_tanf: 0
+    la_fitap: 0
 
 - name: Edge case, single person full benefit no income.
   # Flat grant (family of 1): $244
@@ -411,12 +411,12 @@
     spm_units:
       spm_unit:
         members: [person1]
-        la_tanf_eligible: true
-        la_tanf_flat_grant: 244
-        la_tanf_countable_income: 0
+        la_fitap_eligible: true
+        la_fitap_flat_grant: 244
+        la_fitap_countable_income: 0
     households:
       household:
         members: [person1]
         state_code: LA
   output:
-    la_tanf: 244
+    la_fitap: 244

@@ -1,4 +1,4 @@
-# Louisiana TANF Income Eligibility Unit Tests
+# Louisiana FITAP Income Eligibility Unit Tests
 # Income limit equals the flat grant amount for household size
 # Reference: https://ldh.la.gov/page/fitap
 # "Monthly countable income, both earned and unearned, cannot exceed
@@ -8,10 +8,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 0
-    la_tanf_flat_grant: 376  # Family of 2
+    la_fitap_countable_income: 0
+    la_fitap_flat_grant: 376  # Family of 2
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Case 2, income below flat grant is eligible.
   # Countable income: $200
@@ -20,10 +20,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 200
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 200
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Case 3, income equal to flat grant is eligible.
   # Countable income: $376
@@ -32,10 +32,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 376
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 376
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Case 4, income above flat grant is ineligible.
   # Countable income: $400
@@ -44,10 +44,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 400
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 400
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
 
 - name: Case 5, income just above flat grant is ineligible.
   # Countable income: $377
@@ -56,10 +56,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 377
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 377
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
 
 - name: Case 6, larger family higher income limit.
   # Countable income: $450
@@ -68,10 +68,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 450
-    la_tanf_flat_grant: 484
+    la_fitap_countable_income: 450
+    la_fitap_flat_grant: 484
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 # =============================================================================
 # EDGE CASES
@@ -85,10 +85,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 375
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 375
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Edge case, income exactly one dollar above limit is ineligible.
   # Countable income: $245
@@ -98,10 +98,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 245
-    la_tanf_flat_grant: 244
+    la_fitap_countable_income: 245
+    la_fitap_flat_grant: 244
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
 
 - name: Edge case, income exactly at limit for single person household.
   # Countable income: $244
@@ -110,10 +110,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 244
-    la_tanf_flat_grant: 244
+    la_fitap_countable_income: 244
+    la_fitap_flat_grant: 244
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Edge case, income exactly one dollar below limit for single person.
   # Countable income: $243
@@ -122,10 +122,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 243
-    la_tanf_flat_grant: 244
+    la_fitap_countable_income: 243
+    la_fitap_flat_grant: 244
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Edge case, very high income far above limit.
   # Countable income: $2,000
@@ -134,10 +134,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 2_000
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 2_000
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
 
 - name: Edge case, maximum family size income limit.
   # Countable income: $954
@@ -147,10 +147,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 954
-    la_tanf_flat_grant: 954
+    la_fitap_countable_income: 954
+    la_fitap_flat_grant: 954
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Edge case, income one dollar above maximum family size limit.
   # Countable income: $955
@@ -160,10 +160,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 955
-    la_tanf_flat_grant: 954
+    la_fitap_countable_income: 955
+    la_fitap_flat_grant: 954
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
 
 - name: Edge case, income one dollar below maximum family size limit.
   # Countable income: $953
@@ -173,10 +173,10 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 953
-    la_tanf_flat_grant: 954
+    la_fitap_countable_income: 953
+    la_fitap_flat_grant: 954
   output:
-    la_tanf_income_eligible: true
+    la_fitap_income_eligible: true
 
 - name: Edge case, fractional income just above limit.
   # Countable income: $376.01
@@ -186,7 +186,7 @@
   period: 2024-01
   input:
     state_code: LA
-    la_tanf_countable_income: 376.01
-    la_tanf_flat_grant: 376
+    la_fitap_countable_income: 376.01
+    la_fitap_flat_grant: 376
   output:
-    la_tanf_income_eligible: false
+    la_fitap_income_eligible: false
