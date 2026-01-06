@@ -1,0 +1,299 @@
+# Wyoming POWER Resources Eligibility Tests
+# Tests the resource/asset eligibility check
+# Resource Limit: $5,000 for assistance unit
+# Uses LESS THAN OR EQUAL (<=) - at limit = eligible
+# Source: Wyoming Statute 42-2-103, Wyoming DFS Policy Manual
+
+- name: Case 1, resources below limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($2,000) < Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Case 2, resources exactly at limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($5,000) = Resource limit ($5,000) -> Pass (at or below)
+    wy_power_resource_eligible: true
+
+- name: Case 3, resources above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($5,001) > Resource limit ($5,000) -> Fail
+    wy_power_resource_eligible: false
+
+- name: Case 4, zero resources.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($0) < Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Case 5, large family with resources at limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_assets: 4_999
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    # Assets ($4,999) < Resource limit ($5,000) -> Pass
+    # Note: Same $5,000 limit applies regardless of family size
+    wy_power_resource_eligible: true
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+- name: Edge case 1, resources one dollar below limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 4_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($4,999) < Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Edge case 2, resources one dollar over limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($5,001) > Resource limit ($5,000) -> Fail
+    wy_power_resource_eligible: false
+
+- name: Edge case 3, very high resources far exceeds limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($50,000) >> Resource limit ($5,000) -> Fail
+    wy_power_resource_eligible: false
+
+- name: Edge case 4, large household size 12 at max_unit_size.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 9
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: WY
+  output:
+    # Assets ($5,000) = Resource limit ($5,000) -> Pass
+    # Resource limit is same ($5,000) regardless of household size
+    wy_power_resource_eligible: true
+
+- name: Edge case 5, single pregnant person with zero resources.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    # Assets ($0) < Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Edge case 6, married couple at exactly $5,000.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_is_married: true
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Assets ($5,000) = Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Edge case 7, fractional dollar amount below limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 4_999.99
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($4,999.99) < Resource limit ($5,000) -> Pass
+    wy_power_resource_eligible: true
+
+- name: Edge case 8, fractional dollar amount just over limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000.01
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Assets ($5,000.01) > Resource limit ($5,000) -> Fail
+    wy_power_resource_eligible: false
