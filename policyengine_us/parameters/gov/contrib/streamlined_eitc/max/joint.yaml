@@ -1,4 +1,4 @@
-description: Maximum EITC for joint filers by child count.
+description: The EITC is capped at this amount for joint filers, based on number of children.
 
 brackets:
   - threshold:
@@ -12,6 +12,7 @@ brackets:
 
 metadata:
   type: single_amount
+  period: year
   threshold_unit: child
   amount_unit: currency-USD
   label: Streamlined EITC maximum (joint filers)
