@@ -15,7 +15,7 @@ class az_adoption_expense_subtraction(Variable):
         p = parameters(period).gov.states.az.tax.income.subtractions.adoption
 
         filing_status = tax_unit("az_filing_status", period)
-        expenses = tax_unit("az_adoption_expenses", period)
+        expenses = tax_unit("qualified_adoption_expenses", period)
 
         max_amount = p.max_amount[filing_status]
 

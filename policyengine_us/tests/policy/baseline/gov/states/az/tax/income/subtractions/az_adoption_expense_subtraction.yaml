@@ -17,7 +17,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 25_000
+    qualified_adoption_expenses: 25_000
   output:
     # Expense of $25,000 is under the $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 25_000
@@ -27,7 +27,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 40_000
+    qualified_adoption_expenses: 40_000
   output:
     # Expense of $40,000 equals the limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -37,7 +37,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 55_000
+    qualified_adoption_expenses: 55_000
   output:
     # Expense of $55,000 exceeds the $40,000 limit - capped
     az_adoption_expense_subtraction: 40_000
@@ -47,7 +47,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adoption_expenses: 35_000
+    qualified_adoption_expenses: 35_000
   output:
     # Joint filers also have $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 35_000
@@ -57,7 +57,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adoption_expenses: 40_000
+    qualified_adoption_expenses: 40_000
   output:
     # Joint filers have same $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -67,7 +67,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_adoption_expenses: 40_000
+    qualified_adoption_expenses: 40_000
   output:
     # HOH has same $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -77,7 +77,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    az_adoption_expenses: 40_000
+    qualified_adoption_expenses: 40_000
   output:
     # Separate filers have same $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -89,7 +89,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 3_000
+    qualified_adoption_expenses: 3_000
   output:
     # Expense of $3,000 is under the $5,000 limit for 2026+
     az_adoption_expense_subtraction: 3_000
@@ -99,7 +99,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 5_000
+    qualified_adoption_expenses: 5_000
   output:
     # Single/HOH limit is $5,000 for 2026+
     az_adoption_expense_subtraction: 5_000
@@ -109,7 +109,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 8_000
+    qualified_adoption_expenses: 8_000
   output:
     # Expense of $8,000 exceeds the $5,000 limit for Single in 2026+
     az_adoption_expense_subtraction: 5_000
@@ -119,7 +119,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_adoption_expenses: 7_500
+    qualified_adoption_expenses: 7_500
   output:
     # HOH limit is $5,000 for 2026+ - expense capped
     az_adoption_expense_subtraction: 5_000
@@ -129,7 +129,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adoption_expenses: 10_000
+    qualified_adoption_expenses: 10_000
   output:
     # Joint limit is $10,000 for 2026+
     az_adoption_expense_subtraction: 10_000
@@ -139,7 +139,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adoption_expenses: 15_000
+    qualified_adoption_expenses: 15_000
   output:
     # Expense of $15,000 exceeds the $10,000 limit for Joint in 2026+
     az_adoption_expense_subtraction: 10_000
@@ -149,7 +149,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 0
+    qualified_adoption_expenses: 0
   output:
     az_adoption_expense_subtraction: 0
 
@@ -158,7 +158,7 @@
   input:
     state_code: CA
     filing_status: SINGLE
-    az_adoption_expenses: 25_000
+    qualified_adoption_expenses: 25_000
   output:
     # Non-Arizona residents do not receive Arizona subtractions
     az_adoption_expense_subtraction: 0

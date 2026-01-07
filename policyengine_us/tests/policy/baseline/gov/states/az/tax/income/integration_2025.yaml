@@ -31,7 +31,6 @@
 # - 529 contributions: $2,000/$4,000
 # - 529A ABLE: $2,000/$4,000
 # - Adoption expenses: $40,000 max (2023-2025)
-# - Wood stove: $500 max
 
 # =============================================================================
 # SECTION 1: Standard Deduction Tests
@@ -1018,7 +1017,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adoption_expenses: 40_000
+    qualified_adoption_expenses: 40_000
   output:
     # Joint filers have same $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -1028,29 +1027,10 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adoption_expenses: 25_000
+    qualified_adoption_expenses: 25_000
   output:
     # All filing statuses have $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 25_000
-
-# Wood Stove Conversion Subtraction ($500 max)
-
-- name: Wood stove conversion subtraction
-  period: 2025
-  input:
-    state_code: AZ
-    az_wood_stove_conversion_expense: 750
-  output:
-    # Capped at $500 max
-    az_wood_stove_conversion_subtraction: 500
-
-- name: Wood stove conversion under limit
-  period: 2025
-  input:
-    state_code: AZ
-    az_wood_stove_conversion_expense: 350
-  output:
-    az_wood_stove_conversion_subtraction: 350
 
 # =============================================================================
 # SECTION 8: Complex End-to-End Scenarios
