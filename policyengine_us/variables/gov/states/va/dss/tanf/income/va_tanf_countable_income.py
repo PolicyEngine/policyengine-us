@@ -8,6 +8,7 @@ class va_tanf_countable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=50"
 
     def formula(spm_unit, period, parameters):
         countable_earned_income = spm_unit(

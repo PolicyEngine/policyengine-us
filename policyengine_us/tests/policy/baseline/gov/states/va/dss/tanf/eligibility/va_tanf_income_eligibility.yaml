@@ -28,6 +28,26 @@
   output:
     va_tanf_income_eligibility: false
 
+- name: Income exactly $1 below need standard is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_need_standard: 1_000
+    va_tanf_countable_earned_income: 499
+    va_tanf_countable_unearned_income: 500
+  output:
+    va_tanf_income_eligibility: true
+
+- name: Income exactly $1 above need standard is not eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_need_standard: 1_000
+    va_tanf_countable_earned_income: 500
+    va_tanf_countable_unearned_income: 501
+  output:
+    va_tanf_income_eligibility: false
+
 - name: Only calculate for VA.
   period: 2023
   input:

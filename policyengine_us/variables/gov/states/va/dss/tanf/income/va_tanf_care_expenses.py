@@ -8,6 +8,7 @@ class va_tanf_care_expenses(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=56"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.va.dss.tanf.income.deduction

@@ -8,6 +8,7 @@ class va_tanf_countable_unearned_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=58"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.va.dss.tanf.income
@@ -20,7 +21,7 @@ class va_tanf_countable_unearned_income(Variable):
         )
         p = p.deduction.unearned
         child_support_disregard = p.monthly_child_support * MONTHS_IN_YEAR
-        interest_income_disregard = p.montly_interest_income * MONTHS_IN_YEAR
+        interest_income_disregard = p.monthly_interest_income * MONTHS_IN_YEAR
         # gross unearned minus child support & interest income
         gross_unearned_after_disregard = (
             gross_unearned

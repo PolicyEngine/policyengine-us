@@ -8,6 +8,7 @@ class va_tanf(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "va_tanf_eligibility"
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
     def formula(spm_unit, period, parameters):
         # the calculated payment
@@ -22,7 +23,7 @@ class va_tanf(Variable):
         p = parameters(period).gov.states.va.dss.tanf
         minimum = p.va_tanf_minimum_payment * MONTHS_IN_YEAR
         county = spm_unit.household("county_str", period)
-        if_group3 = county in p.localities.group3
+        if_group3 = np.isin(county, p.localities.group3)
         maximum = (
             where(
                 up_tanf_eligibility,

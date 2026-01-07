@@ -1,0 +1,277 @@
+# Virginia TANF Integration Tests
+# Tests the full TANF calculation pipeline end-to-end
+
+- name: Group III locality - Single parent family with moderate earned income
+  period: 2023
+  input:
+    people:
+      mother:
+        is_mother: true
+        age: 30
+        earned_income: 12_000
+        work_hours_per_week: 40
+      child1:
+        is_child: true
+        age: 5
+      child2:
+        is_child: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [mother, child1, child2]
+    households:
+      household:
+        members: [mother, child1, child2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $1,017/month * 12 = $12,204/year
+    va_tanf_need_standard: 12_204
+    #
+    # Grant standard: $508/month * 12 = $6,096/year
+    va_tanf_grant_standard: 6_096
+    #
+    # Full-time (40 hours >= 30 hours threshold)
+    va_tanf_is_full_time: true
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
+    #   After flat: max($12,000 - $2,004, 0) = $9,996
+    #   After 20%: $9,996 * (1 - 0.2) = $7,996.80
+    va_tanf_countable_earned_income: 7_996.8
+    #
+    # Care expenses (full-time, 2 children age 2+): $175 * 2 * 12 = $4,200/year
+    va_tanf_care_expenses: 4_200
+    #
+    # Countable income: max($7,996.80 - $4,200 + $0, 0) = $3,796.80
+    va_tanf_countable_income: 3_796.8
+    #
+    # Income eligibility: $3,796.80 <= $12,204? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $6,096 - $3,796.80 = $2,299.20
+    # Minimum: $120, Maximum: $8,940
+    # $2,299.20 >= $120 and <= $8,940, so benefit = $2,299.20
+    va_tanf: 2_299.2
+
+- name: Group II locality - Single parent family with part-time work
+  period: 2023
+  input:
+    people:
+      mother:
+        is_mother: true
+        age: 28
+        earned_income: 6_000
+        work_hours_per_week: 20
+      child1:
+        is_child: true
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [mother, child1]
+    households:
+      household:
+        members: [mother, child1]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $663/month * 12 = $7,956/year
+    va_tanf_need_standard: 7_956
+    #
+    # Grant standard: $332/month * 12 = $3,984/year
+    va_tanf_grant_standard: 3_984
+    #
+    # Part-time (20 hours < 30 hours threshold)
+    va_tanf_is_full_time: false
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
+    #   After flat: max($6,000 - $2,004, 0) = $3,996
+    #   After 20%: $3,996 * 0.8 = $3,196.80
+    va_tanf_countable_earned_income: 3_196.8
+    #
+    # Care expenses (part-time, 1 child): $120 * 1 * 12 = $1,440/year
+    va_tanf_care_expenses: 1_440
+    #
+    # Countable income: max($3,196.80 - $1,440 + $0, 0) = $1,756.80
+    va_tanf_countable_income: 1_756.8
+    #
+    # Income eligibility: $1,756.80 <= $7,956? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $3,984 - $1,756.80 = $2,227.20
+    # Minimum: $120, Maximum (Group II): $7,500
+    # $2,227.20 >= $120 and <= $7,500, so benefit = $2,227.20
+    va_tanf: 2_227.2
+
+- name: TANF-UP scenario - Two unemployed parents in Group III locality
+  period: 2023
+  input:
+    people:
+      father:
+        is_father: true
+        age: 35
+        earned_income: 0
+        work_hours_per_week: 0
+        is_disabled: false
+      mother:
+        is_mother: true
+        age: 32
+        earned_income: 0
+        work_hours_per_week: 0
+        is_disabled: false
+      child1:
+        is_child: true
+        age: 8
+      child2:
+        is_child: true
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [father, mother, child1, child2]
+    households:
+      household:
+        members: [father, mother, child1, child2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 4
+    # Group III locality (Arlington County)
+    # TANF-UP eligible: both parents have no earnings and are not disabled
+    va_up_tanf_eligibility: true
+    #
+    # Need standard (Group III, size 4): $1,178/month * 12 = $14,136/year
+    va_tanf_need_standard: 14_136
+    #
+    # UP Grant standard (Group III, size 4): $513/month * 12 = $6,156/year
+    va_tanf_up_grant_standard: 6_156
+    #
+    # Part-time (0 hours < 30 hours)
+    va_tanf_is_full_time: false
+    #
+    # No earned income, so countable earned = 0
+    va_tanf_countable_earned_income: 0
+    #
+    # Care expenses (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
+    va_tanf_care_expenses: 2_880
+    #
+    # Countable income: max(0 - $2,880 + 0, 0) = $0
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $14,136? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit (TANF-UP): $6,156 - $0 = $6,156
+    # Maximum UP (Group III): $648 * 12 = $7,776
+    # $6,156 >= $120 and <= $7,776, so benefit = $6,156
+    va_tanf: 6_156
+
+- name: Income exceeds need standard - Not eligible
+  period: 2023
+  input:
+    people:
+      mother:
+        is_mother: true
+        age: 35
+        earned_income: 30_000
+        work_hours_per_week: 40
+      child1:
+        is_child: true
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [mother, child1]
+    households:
+      household:
+        members: [mother, child1]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month * 12 = $10,104/year
+    va_tanf_need_standard: 10_104
+    #
+    # Grant standard: $422/month * 12 = $5,064/year
+    va_tanf_grant_standard: 5_064
+    #
+    # Full-time (40 hours >= 30 hours)
+    va_tanf_is_full_time: true
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
+    #   After flat: $30,000 - $2,004 = $27,996
+    #   After 20%: $27,996 * 0.8 = $22,396.80
+    va_tanf_countable_earned_income: 22_396.8
+    #
+    # Care expenses (full-time, 1 child age 10): $175 * 12 = $2,100/year
+    va_tanf_care_expenses: 2_100
+    #
+    # Countable income: max($22,396.80 - $2,100 + $0, 0) = $20,296.80
+    va_tanf_countable_income: 20_296.8
+    #
+    # Income eligibility: $20,296.80 <= $10,104? NO
+    va_tanf_income_eligibility: false
+    #
+    # Not eligible, so benefit = $0
+    va_tanf: 0
+
+- name: Group II locality - Family with infant (higher care deduction)
+  period: 2023
+  input:
+    people:
+      mother:
+        is_mother: true
+        age: 25
+        earned_income: 8_000
+        work_hours_per_week: 35
+      infant:
+        is_child: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [mother, infant]
+    households:
+      household:
+        members: [mother, infant]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $663/month * 12 = $7,956/year
+    va_tanf_need_standard: 7_956
+    #
+    # Grant standard: $332/month * 12 = $3,984/year
+    va_tanf_grant_standard: 3_984
+    #
+    # Full-time (35 hours >= 30 hours)
+    va_tanf_is_full_time: true
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
+    #   After flat: $8,000 - $2,004 = $5,996
+    #   After 20%: $5,996 * 0.8 = $4,796.80
+    va_tanf_countable_earned_income: 4_796.8
+    #
+    # Care expenses (full-time, infant under 2): $200 * 12 = $2,400/year
+    va_tanf_care_expenses: 2_400
+    #
+    # Countable income: max($4,796.80 - $2,400 + $0, 0) = $2,396.80
+    va_tanf_countable_income: 2_396.8
+    #
+    # Income eligibility: $2,396.80 <= $7,956? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $3,984 - $2,396.80 = $1,587.20
+    # Minimum: $120, Maximum (Group II): $7,500
+    # $1,587.20 >= $120 and <= $7,500, so benefit = $1,587.20
+    va_tanf: 1_587.2

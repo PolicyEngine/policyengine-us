@@ -7,6 +7,7 @@ class va_tanf_is_full_time(Variable):
     label = "VA TANF full-time employee"
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=55"
 
     def formula(spm_unit, period, parameters):
         p = parameters(

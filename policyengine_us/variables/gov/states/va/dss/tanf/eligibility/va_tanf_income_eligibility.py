@@ -7,6 +7,7 @@ class va_tanf_income_eligibility(Variable):
     label = "VA TANF income eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
     def formula(spm_unit, period, parameters):
         income = add(

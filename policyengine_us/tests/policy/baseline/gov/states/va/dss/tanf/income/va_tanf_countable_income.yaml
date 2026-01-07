@@ -8,7 +8,7 @@
   output:
     va_tanf_countable_income: 2_600
 
-- name: $100 earned income, $400 care expenses, and $0 unearned income, $2,600 total countable income.
+- name: $100 earned income, $400 care expenses, and $0 unearned income, $0 total countable income.
   period: 2023
   input:
     state_code: VA
@@ -16,7 +16,7 @@
     va_tanf_care_expenses: 400
     va_tanf_countable_unearned_income: 0
   output:
-    dc_tanf_countable_income: 0
+    va_tanf_countable_income: 0
 
 - name: Only calculated for VA.
   period: 2023
@@ -26,4 +26,4 @@
     va_tanf_care_expenses: 400
     va_tanf_countable_unearned_income: 1_000
   output:
-    dc_tanf_countable_income: 0
+    va_tanf_countable_income: 0

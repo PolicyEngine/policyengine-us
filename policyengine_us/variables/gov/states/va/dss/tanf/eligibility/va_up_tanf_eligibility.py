@@ -5,9 +5,9 @@ class va_up_tanf_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
     label = "VA UP-TANF eligibility"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
+    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=3"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

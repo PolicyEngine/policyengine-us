@@ -93,3 +93,32 @@
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
     va_tanf: 6_528
+
+# Boundary tests for minimum payment threshold ($10/month = $120/year)
+- name: Payment exactly at minimum threshold ($120/year) is paid.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 2_120
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 2_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Grant standard $2,120 - countable income $2,000 = $120 payment
+    # $120 >= $120 minimum, so payment is made
+    va_tanf: 120
+
+- name: Payment $1 below minimum threshold ($119/year) results in zero.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 2_119
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 2_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Grant standard $2,119 - countable income $2,000 = $119 payment
+    # $119 < $120 minimum, so no payment
+    va_tanf: 0
