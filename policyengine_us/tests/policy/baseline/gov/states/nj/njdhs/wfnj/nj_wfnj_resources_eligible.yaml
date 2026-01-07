@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_countable_resources: 2_000
+    spm_unit_assets: 2_000
   output:
     nj_wfnj_resources_eligible: true
 
@@ -10,7 +10,7 @@
   period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_countable_resources: 4_000
+    spm_unit_assets: 4_000
   output:
     nj_wfnj_resources_eligible: false
 
@@ -18,6 +18,6 @@
   period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_countable_resources: 0
+    spm_unit_assets: 0
   output:
     nj_wfnj_resources_eligible: true

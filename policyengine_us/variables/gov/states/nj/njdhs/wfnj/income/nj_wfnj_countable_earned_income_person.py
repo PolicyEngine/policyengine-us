@@ -16,7 +16,7 @@ class nj_wfnj_countable_earned_income_person(Variable):
         p = parameters(
             period
         ).gov.states.nj.njdhs.wfnj.income.earned_income_deduction
-        gross_earned = person("tanf_gross_earned_income", period)
+        gross_earned = person("nj_wfnj_gross_earned_income", period)
         month = period.start.month
 
         # Calendar month proxy for enrollment months (assuming ≥20 hrs/week).

@@ -13,7 +13,5 @@ class nj_wfnj_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.njdhs.wfnj.eligibility.resources
-        countable_resources = spm_unit(
-            "nj_wfnj_countable_resources", period.this_year
-        )
-        return countable_resources <= p.limit
+        resources = spm_unit("spm_unit_assets", period.this_year)
+        return resources <= p.limit

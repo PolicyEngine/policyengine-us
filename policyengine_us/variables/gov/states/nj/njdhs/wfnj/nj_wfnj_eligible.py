@@ -15,9 +15,7 @@ class nj_wfnj_eligible(Variable):
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("nj_wfnj_income_eligible", period)
         resources_eligible = spm_unit("nj_wfnj_resources_eligible", period)
-        demographic_eligible = spm_unit(
-            "is_demographic_tanf_eligible", period
-        )
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         has_citizen_or_legal_immigrant = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )

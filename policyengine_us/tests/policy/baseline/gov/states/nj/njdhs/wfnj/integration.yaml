@@ -23,8 +23,6 @@
     nj_wfnj_maximum_benefit: 425
     # Maximum allowable income for 2 people: $638/month
     nj_wfnj_maximum_allowable_income: 638
-    # Countable resources: $1,000 (from spm_unit_assets)
-    nj_wfnj_countable_resources: 1_000
     # Resources eligible: $1,000 <= $2,000
     nj_wfnj_resources_eligible: true
     # No income
@@ -44,11 +42,10 @@
       person1:
         age: 35
         is_citizen_or_legal_immigrant: true
-        tanf_gross_earned_income: 200
+        employment_income_before_lsr: 2_400  # $200/month annual
       person2:
         age: 32
         is_citizen_or_legal_immigrant: true
-        tanf_gross_earned_income: 0
       person3:
         age: 8
         is_citizen_or_legal_immigrant: true
@@ -103,7 +100,6 @@
         state_code: NJ
   output:
     # Resources: $5,000 > $2,000 limit
-    nj_wfnj_countable_resources: 5_000
     nj_wfnj_resources_eligible: false
     # Income eligible (no income)
     nj_wfnj_income_eligible: true

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class nj_wfnj_gross_earned_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     label = "New Jersey WFNJ gross earned income"
     unit = USD
     definition_period = MONTH
