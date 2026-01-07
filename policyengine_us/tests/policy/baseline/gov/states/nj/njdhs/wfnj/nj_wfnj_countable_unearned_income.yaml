@@ -112,3 +112,25 @@
         state_code: NJ
   output:
     nj_wfnj_countable_unearned_income: 0
+
+- name: Case 7, three children uses same $200 cap as two children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # Gross: $300, 3 children -> max $200 disregard (same as 2+)
+    # Disregard: min(300, 200) = $200, Countable: $300 - $200 = $100
+    nj_wfnj_countable_unearned_income: 100
