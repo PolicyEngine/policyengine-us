@@ -15,14 +15,6 @@ class nj_wfnj(Variable):
     def formula(spm_unit, period, parameters):
         eligible = spm_unit("nj_wfnj_eligible", period)
         maximum_benefit = spm_unit("nj_wfnj_maximum_benefit", period)
-        countable_income = add(
-            spm_unit,
-            period,
-            [
-                "nj_wfnj_countable_earned_income",
-                "nj_wfnj_countable_gross_unearned_income",
-            ],
-        )
-        # Benefit = maximum benefit - countable income
+        countable_income = spm_unit("nj_wfnj_countable_income", period)
         benefit = max_(maximum_benefit - countable_income, 0)
         return where(eligible, benefit, 0)

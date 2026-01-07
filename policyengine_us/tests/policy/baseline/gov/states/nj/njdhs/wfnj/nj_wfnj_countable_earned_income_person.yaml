@@ -1,9 +1,9 @@
 # NOTE: The earned income disregard is based on months of employment, not calendar
 # months. PolicyEngine cannot track employment duration, so we use calendar months
-# as a proxy:
-#   - January (month 1): 100% disregard (first_month_percent = 1.0)
-#   - February-July (months 2-7): 75% disregard (consecutive_month_percent = 0.75)
-#   - August-December (months 8-12): 50% disregard (additional_percent = 0.5)
+# as a proxy. The tiered disregards are defined in a bracket parameter:
+#   - January (month 1): 100% disregard
+#   - February-July (months 2-7): 75% disregard
+#   - August-December (months 8-12): 50% disregard
 
 - name: Case 1, January with 100% disregard.
   period: 2024-01
