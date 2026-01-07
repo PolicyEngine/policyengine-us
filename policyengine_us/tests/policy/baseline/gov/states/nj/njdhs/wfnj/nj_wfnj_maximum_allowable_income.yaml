@@ -1,23 +1,40 @@
-- name: If no children and one adult, New Jersey WFNJ maximum allowable income is $321/mo.
-  period: 2023
+- name: Case 1, single person household max income is $321/month.
+  period: 2024-01
   input:
     state_code: NJ
     spm_unit_size: 1
   output:
-    nj_wfnj_maximum_allowable_income: 321 * 12
+    nj_wfnj_maximum_allowable_income: 321
 
-- name: If not eligible, we don't calculate it.
-  period: 2023
+- name: Case 2, non-NJ state returns zero.
+  period: 2024-01
   input:
     state_code: CO
     spm_unit_size: 1
   output:
     nj_wfnj_maximum_allowable_income: 0
 
-- name: If 10 people, maximum allowable income is $1442 + 2 * $99 = $1640 per month.
-  period: 2023
+- name: Case 3, family of 3 max income is $839/month.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 3
+  output:
+    nj_wfnj_maximum_allowable_income: 839
+
+- name: Case 4, family of 8 (max table size) max income is $1,442/month.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 8
+  output:
+    nj_wfnj_maximum_allowable_income: 1_442
+
+- name: Case 5, family of 10 uses additional per person rate.
+  period: 2024-01
   input:
     state_code: NJ
     spm_unit_size: 10
   output:
-    nj_wfnj_maximum_allowable_income: 1_640 * 12
+    # $1,442 + 2 * $99 = $1,640
+    nj_wfnj_maximum_allowable_income: 1_640

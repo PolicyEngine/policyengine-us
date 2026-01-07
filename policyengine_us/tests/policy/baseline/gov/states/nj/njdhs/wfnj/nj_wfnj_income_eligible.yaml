@@ -1,54 +1,59 @@
-- name: Household with no income is eligible. (0+0<1)
-  period: 2023
+- name: Case 1, household with no income is eligible.
+  period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_maximum_allowable_income: 1
+    nj_wfnj_maximum_allowable_income: 100
+    nj_wfnj_maximum_benefit: 100
     nj_wfnj_countable_earned_income: 0
     nj_wfnj_countable_gross_unearned_income: 0
   output:
+    # 0 + 0 = 0 <= 100 and 0 < 100
     nj_wfnj_income_eligible: true
 
-
-- name: Household with income exceeding maximum allowable income is ineligible. (1+1>1)
-  period: 2023
+- name: Case 2, household with income exceeding maximum allowable income is ineligible.
+  period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_maximum_allowable_income: 1
-    nj_wfnj_countable_earned_income: 1
-    nj_wfnj_countable_gross_unearned_income: 1
+    nj_wfnj_maximum_allowable_income: 100
+    nj_wfnj_maximum_benefit: 200
+    nj_wfnj_countable_earned_income: 50
+    nj_wfnj_countable_gross_unearned_income: 60
   output:
+    # 50 + 60 = 110 > 100, fails income test
     nj_wfnj_income_eligible: false
 
-
-- name: Household with income equals maximum allowable income is eligible. (1+0=1)
-  period: 2023
+- name: Case 3, household with income at maximum allowable income is eligible.
+  period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_maximum_allowable_income: 1
-    nj_wfnj_countable_earned_income: 1
+    nj_wfnj_maximum_allowable_income: 100
+    nj_wfnj_maximum_benefit: 200
+    nj_wfnj_countable_earned_income: 100
     nj_wfnj_countable_gross_unearned_income: 0
   output:
+    # 100 <= 100 and 100 < 200
     nj_wfnj_income_eligible: true
 
-- name: Household with income equals maximum allowable income and income equals maximum benefit is ineligible.
-  period: 2023
+- name: Case 4, household with income equal to maximum benefit is ineligible.
+  period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_maximum_allowable_income: 1
-    nj_wfnj_maximum_benefit: 1
-    nj_wfnj_countable_earned_income: 1
+    nj_wfnj_maximum_allowable_income: 200
+    nj_wfnj_maximum_benefit: 100
+    nj_wfnj_countable_earned_income: 100
     nj_wfnj_countable_gross_unearned_income: 0
   output:
+    # 100 <= 200 but 100 >= 100 (not < max_benefit)
     nj_wfnj_income_eligible: false
 
-
-- name: Household with income less than maximum allowable income and income less than maximum benefit is eligible. 
-  period: 2023
+- name: Case 5, household with income below both thresholds is eligible.
+  period: 2024-01
   input:
     state_code: NJ
-    nj_wfnj_maximum_allowable_income: 3
-    nj_wfnj_maximum_benefit: 2
-    nj_wfnj_countable_earned_income: 1
-    nj_wfnj_countable_gross_unearned_income: 0
+    nj_wfnj_maximum_allowable_income: 300
+    nj_wfnj_maximum_benefit: 200
+    nj_wfnj_countable_earned_income: 50
+    nj_wfnj_countable_gross_unearned_income: 50
   output:
+    # 100 <= 300 and 100 < 200
     nj_wfnj_income_eligible: true

@@ -8,7 +8,9 @@ class nj_wfnj_countable_earned_income_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NJ
-    reference = "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-8"
+    reference = (
+        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-8"
+    )
 
     def formula(person, period, parameters):
         p = parameters(
