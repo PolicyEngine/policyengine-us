@@ -1,0 +1,43 @@
+- name: NJ WFNJ January (month 1) - 100% disregard
+  period: 2024-01
+  input:
+    state_code: NJ
+    tanf_gross_earned_income: 1_000
+  output:
+    nj_wfnj_countable_earned_income_person: 0
+
+- name: NJ WFNJ February (month 2) - 75% disregard
+  period: 2024-02
+  input:
+    state_code: NJ
+    tanf_gross_earned_income: 1_000
+  output:
+    # 1000 * (1 - 0.75) = 250
+    nj_wfnj_countable_earned_income_person: 250
+
+- name: NJ WFNJ July (month 7) - 75% disregard
+  period: 2024-07
+  input:
+    state_code: NJ
+    tanf_gross_earned_income: 1_000
+  output:
+    # 1000 * (1 - 0.75) = 250
+    nj_wfnj_countable_earned_income_person: 250
+
+- name: NJ WFNJ August (month 8) - 50% disregard
+  period: 2024-08
+  input:
+    state_code: NJ
+    tanf_gross_earned_income: 1_000
+  output:
+    # 1000 * (1 - 0.50) = 500
+    nj_wfnj_countable_earned_income_person: 500
+
+- name: NJ WFNJ December (month 12) - 50% disregard
+  period: 2024-12
+  input:
+    state_code: NJ
+    tanf_gross_earned_income: 1_000
+  output:
+    # 1000 * (1 - 0.50) = 500
+    nj_wfnj_countable_earned_income_person: 500

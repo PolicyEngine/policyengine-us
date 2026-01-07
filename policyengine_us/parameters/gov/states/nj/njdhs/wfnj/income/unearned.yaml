@@ -1,0 +1,19 @@
+description: New Jersey WFNJ counts these income sources as unearned income.
+
+metadata:
+  unit: list
+  reference:
+    - title: N.J.A.C. 10:90-3.9
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-9
+
+values:
+  2021-01-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security

@@ -1,0 +1,30 @@
+description: New Jersey limits its WFNJ program to households with this maximum benefit, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: New Jersey WFNJ monthly maximum benefit
+  reference:
+    - title: N.J.A.C. 10:90-3.3
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3
+    - title: New Jersey State Plan for WFNJ (2021-2023)
+      href: https://www.nj.gov/humanservices/dfd/programs/workfirstnj/tanf_2021_23_st_plan.pdf#page=63
+
+1:
+  2023-01-01: 214
+2:
+  2023-01-01: 425
+3:
+  2023-01-01: 559
+4:
+  2023-01-01: 644
+5:
+  2023-01-01: 728
+6:
+  2023-01-01: 814
+7:
+  2023-01-01: 894
+8:
+  2023-01-01: 961
