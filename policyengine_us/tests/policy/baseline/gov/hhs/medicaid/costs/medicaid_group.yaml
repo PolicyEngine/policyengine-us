@@ -1,0 +1,55 @@
+# Test: Pregnant person in Medicaid expansion state
+# Expected: Should be assigned NON_EXPANSION_ADULT, not EXPANSION_ADULT
+# Reasoning: Pregnancy Medicaid should take precedence over expansion adult
+# per the parameter file covered.yaml which lists is_pregnant_for_medicaid first
+
+- name: Pregnant person in expansion state gets pregnancy Medicaid (not expansion)
+  period: 2024
+  input:
+    households:
+      household:
+        state_code: CA  # California has Medicaid expansion
+        members: [person]
+    people:
+      person:
+        age: 30
+        is_pregnant: true
+        is_pregnant_for_medicaid: true
+        is_medicaid_eligible: true
+  output:
+    medicaid_category: PREGNANT
+    medicaid_group: NON_EXPANSION_ADULT
+
+- name: Non-pregnant adult in expansion state gets expansion Medicaid
+  period: 2024
+  input:
+    households:
+      household:
+        state_code: CA  # California has Medicaid expansion
+        members: [person]
+    people:
+      person:
+        age: 30
+        is_pregnant: false
+        is_adult_for_medicaid: true
+        is_medicaid_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_group: EXPANSION_ADULT
+
+- name: Pregnant person in non-expansion state still gets pregnancy Medicaid
+  period: 2024
+  input:
+    households:
+      household:
+        state_code: TX  # Texas does not have Medicaid expansion
+        members: [person]
+    people:
+      person:
+        age: 30
+        is_pregnant: true
+        is_pregnant_for_medicaid: true
+        is_medicaid_eligible: true
+  output:
+    medicaid_category: PREGNANT
+    medicaid_group: NON_EXPANSION_ADULT

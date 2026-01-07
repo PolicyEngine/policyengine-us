@@ -11,7 +11,7 @@ class MedicaidCategory(Enum):
     PARENT = "Parent"
     PREGNANT = "Pregnant"
     SSI_RECIPIENT = "SSI recipient"
-    SENIOR_OR_DISABLED = " Senior or disabled"
+    SENIOR_OR_DISABLED = "Senior or disabled"
     NONE = "None"
 
 
@@ -40,20 +40,15 @@ class medicaid_category(Variable):
             is_optional_senior_or_disabled_for_medicaid=MedicaidCategory.SENIOR_OR_DISABLED,
         )
 
-        # Ensure parametric reforms to the list of categories prevent those
-        # categories from being selected.
-
-        variable_to_category = {
-            name: category
-            for name, category in variable_to_category.items()
-            if name in categories
-        }
+        # Iterate in the order defined by the parameter file (covered.yaml)
+        # to ensure correct precedence (e.g., pregnant before expansion adult)
+        ordered_variables = [
+            name for name in categories if name in variable_to_category
+        ]
 
         return select(
-            [
-                person(variable, period)
-                for variable in variable_to_category.keys()
-            ]
+            [person(variable, period) for variable in ordered_variables]
             + [True],
-            list(variable_to_category.values()) + [MedicaidCategory.NONE],
+            [variable_to_category[variable] for variable in ordered_variables]
+            + [MedicaidCategory.NONE],
         )
