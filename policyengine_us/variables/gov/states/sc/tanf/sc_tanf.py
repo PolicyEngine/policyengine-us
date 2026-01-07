@@ -12,7 +12,7 @@ class sc_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf
-        # Compute need standard based on ferderal poverty guidlines
+        # Compute need standard based on federal poverty guidelines
         fpg = spm_unit("tanf_fpg", period)
         need_standard = fpg * p.income.need_standard.rate
         countable_income = spm_unit("sc_tanf_countable_income", period)

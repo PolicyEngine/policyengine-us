@@ -6,7 +6,6 @@
       person1:
         age: 40
         employment_income_before_lsr: 0
-        retirement_distributions: 0
       person2:
         age: 10
         is_child_dependent: true
@@ -20,8 +19,6 @@
     households:
       household:
         members: [person1, person2, person3]
-        household_vehicles_value: 0
-        household_vehicles_owned: 0
         state_code: SC
   output:
     sc_tanf: 435.28
@@ -37,7 +34,6 @@
       person1:
         age: 40
         employment_income_before_lsr: 6_000
-        retirement_distributions: 0
       person2:
         age: 10
         is_child_dependent: true
@@ -51,8 +47,6 @@
     households:
       household:
         members: [person1, person2, person3]
-        household_vehicles_value: 0
-        household_vehicles_owned: 0
         state_code: SC
   output:
     sc_tanf: 334.13
@@ -71,7 +65,6 @@
       person1:
         age: 40
         employment_income_before_lsr: 24_000
-        retirement_distributions: 0
       person2:
         age: 10
         is_child_dependent: true
@@ -82,8 +75,6 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 0
-        household_vehicles_owned: 0
         state_code: SC
   output:
     sc_tanf: 0
@@ -102,7 +93,6 @@
         age: 25
         is_pregnant: true
         employment_income_before_lsr: 0
-        retirement_distributions: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -110,8 +100,6 @@
     households:
       household:
         members: [person1]
-        household_vehicles_value: 0
-        household_vehicles_owned: 0
         state_code: SC
   output:
     sc_tanf: 253.89
@@ -128,7 +116,6 @@
         age: 35
         employment_income_before_lsr: 0
         taxable_social_security: 3_600
-        retirement_distributions: 0
       person2:
         age: 8
         is_child_dependent: true
@@ -157,7 +144,6 @@
       person1:
         age: 35
         employment_income_before_lsr: 0
-        retirement_distributions: 0
       person2:
         age: 8
         is_child_dependent: true
@@ -174,3 +160,65 @@
     # tanf_fpg for size 2 (2024-01, uses 2023-10 FPG) = 1643.33/month
     # need_standard = 1643.33 * 0.5 = 821.67
     # benefit = 821.67 * 0.3372 = 277.07 (old rate)
+
+- name: Case 7, two-parent household with 4 children (family of 6).
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income_before_lsr: 0
+      parent2:
+        age: 33
+        employment_income_before_lsr: 0
+      child1:
+        age: 14
+        is_child_dependent: true
+      child2:
+        age: 12
+        is_child_dependent: true
+      child3:
+        age: 8
+        is_child_dependent: true
+      child4:
+        age: 5
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: SC
+  output:
+    sc_tanf: 707
+    # tanf_fpg for size 6 (2025-01) = 3496/month (from Section 8.15 table)
+    # need_standard = 3496 * 0.5 = 1748
+    # benefit = 1748 * 0.4046 = 707.24
+
+- name: Case 8, ineligible due to immigration status.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+        is_child_dependent: true
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 0
+    # Both members are undocumented, so no one qualifies as
+    # citizen or legal immigrant -> ineligible

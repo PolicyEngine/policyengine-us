@@ -11,6 +11,6 @@ class sc_tanf_gross_income(Variable):
     reference = "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
 
     adds = [
-        "sc_tanf_earned_income",
-        "sc_tanf_unearned_income",
+        "sc_tanf_gross_earned_income",
+        "sc_tanf_gross_unearned_income",
     ]
