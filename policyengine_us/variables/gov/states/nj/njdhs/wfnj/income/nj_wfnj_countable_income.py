@@ -11,9 +11,10 @@ class nj_wfnj_countable_income(Variable):
     reference = (
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3",
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-8",
+        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-1",
     )
 
     adds = [
         "nj_wfnj_countable_earned_income_person",
-        "tanf_gross_unearned_income",
+        "nj_wfnj_countable_unearned_income",
     ]
