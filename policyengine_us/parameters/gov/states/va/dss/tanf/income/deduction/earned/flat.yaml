@@ -1,0 +1,30 @@
+description: Virginia excludes this amount of earnings from TANF countable income, based on household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia TANF monthly flat earnings exclusion
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  reference:
+    - title: Virginia TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=29
+
+brackets:
+  - amount:
+      2020-07-01: 167
+    threshold:
+      2020-07-01: 1
+  - amount:
+      2020-07-01: 178
+    threshold:
+      2020-07-01: 4
+  - amount:
+      2020-07-01: 209
+    threshold:
+      2020-07-01: 5
+  - amount:
+      2020-07-01: 240
+    threshold:
+      2020-07-01: 6
