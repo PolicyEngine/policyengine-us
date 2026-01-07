@@ -14,13 +14,12 @@ class nj_wfnj_countable_earned_income_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.njdhs.wfnj.income
-        gross_earned = person("nj_wfnj_gross_earned_income", period)
+        gross_earned = person("tanf_gross_earned_income", period)
         month = period.start.month
 
         # Calendar month proxy for enrollment months (assuming ≥20 hrs/week).
         # N.J.A.C. 10:90-3.8 provides tiered disregards based on months enrolled.
-        # PolicyEngine cannot track actual enrollment duration, so we use
-        # calendar months as a proxy:
+        # Use calendar months as a proxy:
         # - January (month 1): 100% disregard
         # - February-July (months 2-7): 75% disregard
         # - August-December (months 8-12): 50% disregard

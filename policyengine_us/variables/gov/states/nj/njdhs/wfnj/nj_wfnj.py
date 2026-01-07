@@ -7,14 +7,12 @@ class nj_wfnj(Variable):
     label = "New Jersey WFNJ benefit"
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.NJ
+    defined_for = "nj_wfnj_eligible"
     reference = (
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3"
     )
 
     def formula(spm_unit, period, parameters):
-        eligible = spm_unit("nj_wfnj_eligible", period)
-        maximum_benefit = spm_unit("nj_wfnj_maximum_benefit", period)
+        payment_levels = spm_unit("nj_wfnj_payment_levels", period)
         countable_income = spm_unit("nj_wfnj_countable_income", period)
-        benefit = max_(maximum_benefit - countable_income, 0)
-        return where(eligible, benefit, 0)
+        return max_(payment_levels - countable_income, 0)

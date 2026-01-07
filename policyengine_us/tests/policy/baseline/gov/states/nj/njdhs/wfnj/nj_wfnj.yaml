@@ -25,10 +25,7 @@
   output:
     nj_wfnj_eligible: true
     # Maximum benefit for 2 people: $425
-    nj_wfnj_maximum_benefit: 425
-    # Countable income: $0
-    nj_wfnj_countable_earned_income: 0
-    nj_wfnj_countable_gross_unearned_income: 0
+    nj_wfnj_payment_levels: 425
     # Benefit = $425 - $0 = $425
     nj_wfnj: 425
 
@@ -46,6 +43,7 @@
         spm_unit_size: 1
         spm_unit_assets: 500
         is_demographic_tanf_eligible: true
+        is_tanf_enrolled: true  # Enrolled for ongoing test
     households:
       household:
         members: [person1]
@@ -53,9 +51,7 @@
   output:
     nj_wfnj_eligible: true
     # Maximum benefit for 1 person: $214
-    nj_wfnj_maximum_benefit: 214
-    # Unearned income: $1,200/12 = $100/month
-    nj_wfnj_countable_gross_unearned_income: 100
+    nj_wfnj_payment_levels: 214
     # Benefit = $214 - $100 = $114
     nj_wfnj: 114
 
@@ -86,7 +82,7 @@
     nj_wfnj_eligible: false
     nj_wfnj: 0
 
-- name: Case 4, income exceeds max benefit - clipped to zero.
+- name: Case 4, enrolled but income exceeds max benefit - clipped to zero.
   period: 2024-01
   input:
     people:
@@ -100,20 +96,84 @@
         spm_unit_size: 1
         spm_unit_assets: 500
         is_demographic_tanf_eligible: true
+        is_tanf_enrolled: true  # Enrolled - uses countable income test
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
     # Maximum benefit for 1: $214
-    nj_wfnj_maximum_benefit: 214
-    # Maximum allowable income for 1: $321
-    nj_wfnj_maximum_allowable_income: 321
-    # Unearned income: $2,640/12 = $220/month
-    nj_wfnj_countable_gross_unearned_income: 220
-    # Income $220 <= $321, but $220 >= $214 max benefit
-    # Income eligibility requires: income < max benefit
+    nj_wfnj_payment_levels: 214
+    # Enrolled: countable income $220 >= $214 max benefit
     nj_wfnj_income_eligible: false
     nj_wfnj_eligible: false
     # Ineligible, so benefit = 0
     nj_wfnj: 0
+
+- name: Case 5, minimum benefit of $1.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: true
+        social_security: 2_556  # $213/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 1
+        spm_unit_assets: 500
+        is_demographic_tanf_eligible: true
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_wfnj_eligible: true
+    # Benefit = $214 - $213 = $1
+    nj_wfnj: 1
+
+- name: Case 6, maximum benefit (large household, zero income).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+      person2:
+        age: 32
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+      person5:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+      person6:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+      person7:
+        age: 4
+        is_citizen_or_legal_immigrant: true
+      person8:
+        age: 2
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        spm_unit_size: 8
+        spm_unit_assets: 1_000
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NJ
+  output:
+    nj_wfnj_eligible: true
+    # Maximum benefit for 8 people: $961
+    nj_wfnj_payment_levels: 961
+    nj_wfnj: 961

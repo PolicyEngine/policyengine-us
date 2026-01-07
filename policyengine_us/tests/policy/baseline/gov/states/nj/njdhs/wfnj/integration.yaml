@@ -20,15 +20,12 @@
         state_code: NJ
   output:
     # Maximum benefit for 2 people: $425/month
-    nj_wfnj_maximum_benefit: 425
-    # Maximum allowable income for 2 people: $638/month
-    nj_wfnj_maximum_allowable_income: 638
+    nj_wfnj_payment_levels: 425
+    # Gross income eligible: $0 <= $638
+    nj_wfnj_gross_income_eligible: true
     # Resources eligible: $1,000 <= $2,000
     nj_wfnj_resources_eligible: true
-    # No income
-    nj_wfnj_countable_earned_income: 0
-    nj_wfnj_countable_gross_unearned_income: 0
-    # Income eligible: 0 <= 638 and 0 < 425
+    # Income eligible: gross income $0 <= $638 max allowable
     nj_wfnj_income_eligible: true
     # Overall eligible
     nj_wfnj_eligible: true
@@ -61,15 +58,12 @@
         state_code: NJ
   output:
     # Maximum benefit for 3 people: $559/month
-    nj_wfnj_maximum_benefit: 559
-    # Maximum allowable income for 3 people: $839/month
-    nj_wfnj_maximum_allowable_income: 839
+    nj_wfnj_payment_levels: 559
+    # Gross income eligible: $200 <= $839
+    nj_wfnj_gross_income_eligible: true
     # January = 100% disregard, so countable earned = 0
     nj_wfnj_countable_earned_income_person: [0, 0, 0]
-    nj_wfnj_countable_earned_income: 0
-    # No unearned income
-    nj_wfnj_countable_gross_unearned_income: 0
-    # Income eligible: 0 <= 839 and 0 < 559
+    # Income eligible: gross income $200 <= $839 max allowable
     nj_wfnj_income_eligible: true
     # Resources eligible: $500 <= $2,000
     nj_wfnj_resources_eligible: true
@@ -107,7 +101,7 @@
     nj_wfnj_eligible: false
     nj_wfnj: 0
 
-- name: Case 4, ineligible due to high income.
+- name: Case 4, ineligible due to high income (new applicant).
   period: 2024-01
   input:
     people:
@@ -129,18 +123,16 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    # Max benefit for 2: $425, max allowable income: $638
-    nj_wfnj_maximum_benefit: 425
-    nj_wfnj_maximum_allowable_income: 638
-    # Unearned: $12,000/12 = $1,000/month
-    nj_wfnj_countable_gross_unearned_income: 1_000
-    # Income: $1,000 > $638 max allowable
+    # Max benefit for 2: $425
+    nj_wfnj_payment_levels: 425
+    # Gross income: $1,000/month > $638 max allowable
+    nj_wfnj_gross_income_eligible: false
     nj_wfnj_income_eligible: false
     nj_wfnj_resources_eligible: true
     nj_wfnj_eligible: false
     nj_wfnj: 0
 
-- name: Case 5, eligible with unearned income reducing benefit.
+- name: Case 5, enrolled with unearned income reducing benefit.
   period: 2024-01
   input:
     people:
@@ -154,17 +146,15 @@
         spm_unit_size: 1
         spm_unit_assets: 500
         is_demographic_tanf_eligible: true
+        is_tanf_enrolled: true  # Enrolled - uses countable income test
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
-    # Max benefit for 1: $214, max allowable income: $321
-    nj_wfnj_maximum_benefit: 214
-    nj_wfnj_maximum_allowable_income: 321
-    # Unearned: $2,400/12 = $200/month
-    nj_wfnj_countable_gross_unearned_income: 200
-    # Income: $200 <= $321 and $200 < $214
+    # Max benefit for 1: $214
+    nj_wfnj_payment_levels: 214
+    # Enrolled: countable income $200 < $214 max benefit
     nj_wfnj_income_eligible: true
     nj_wfnj_resources_eligible: true
     nj_wfnj_eligible: true

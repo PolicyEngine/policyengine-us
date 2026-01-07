@@ -140,3 +140,29 @@
     nj_wfnj_resources_eligible: true
     # No citizen or legal immigrant in household
     nj_wfnj_eligible: false
+
+- name: Case 6, mixed citizen and non-citizen household - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true  # At least one citizen
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        spm_unit_assets: 1_000
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_wfnj_income_eligible: true
+    nj_wfnj_resources_eligible: true
+    # At least one citizen or legal immigrant in household
+    nj_wfnj_eligible: true
