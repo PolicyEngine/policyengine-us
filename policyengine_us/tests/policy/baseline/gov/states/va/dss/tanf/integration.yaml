@@ -1,8 +1,9 @@
 # Virginia TANF Integration Tests
 # Tests the full TANF calculation pipeline end-to-end
+# Uses 2021-01 period to validate base values (multiplier = 1.0)
 
 - name: Group III locality - Single parent family with moderate earned income
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -28,38 +29,38 @@
     # Family size: 3
     # Group III locality (Arlington County)
     #
-    # Need standard: $1,017/month * 12 = $12,204/year
-    va_tanf_need_standard: 12_204
+    # Need standard: $1,017/month
+    va_tanf_need_standard: 1_017
     #
-    # Grant standard: $508/month * 12 = $6,096/year
-    va_tanf_grant_standard: 6_096
+    # Grant standard: $508/month
+    va_tanf_grant_standard: 508
     #
     # Full-time (40 hours >= 30 hours threshold)
     va_tanf_is_full_time: true
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
-    #   After flat: max($12,000 - $2,004, 0) = $9,996
-    #   After 20%: $9,996 * (1 - 0.2) = $7,996.80
-    #   After childcare ($4,200): max($7,996.80 - $4,200, 0) = $3,796.80
-    va_tanf_countable_earned_income: 3_796.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $12,000/12 = $1,000/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($1,000 - $167, 0) = $833
+    #   After 20%: $833 * 0.8 = $666.40
+    #   Childcare (full-time, 2 children age 2+): $175 * 2 = $350/month
+    #   After childcare: max($666.40 - $350, 0) = $316.40
+    va_tanf_countable_earned_income: 316.4
     #
-    # Childcare deduction (full-time, 2 children age 2+): $175 * 2 * 12 = $4,200/year
-    va_tanf_childcare_deduction: 4_200
+    # Childcare deduction: $350/month
+    va_tanf_childcare_deduction: 350
     #
-    # Countable income: $3,796.80 + $0 = $3,796.80
-    va_tanf_countable_income: 3_796.8
+    # Countable income: $316.40 + $0 = $316.40
+    va_tanf_countable_income: 316.4
     #
-    # Income eligibility: $3,796.80 <= $12,204? YES
+    # Income eligibility: $316.40 <= $1,017? YES (and gross $1,000 <= $1,017)
     va_tanf_income_eligibility: true
     #
-    # Benefit: $6,096 - $3,796.80 = $2,299.20
-    # Minimum: $120, Maximum: $8,940
-    # $2,299.20 >= $120 and <= $8,940, so benefit = $2,299.20
-    va_tanf: 2_299.2
+    # Benefit: $508 - $316.40 = $191.60
+    va_tanf: 191.6
 
 - name: Group II locality - Single parent family with part-time work
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -82,38 +83,38 @@
     # Family size: 2
     # Group II locality (Pittsylvania County)
     #
-    # Need standard: $663/month * 12 = $7,956/year
-    va_tanf_need_standard: 7_956
+    # Need standard: $663/month
+    va_tanf_need_standard: 663
     #
-    # Grant standard: $332/month * 12 = $3,984/year
-    va_tanf_grant_standard: 3_984
+    # Grant standard: $332/month
+    va_tanf_grant_standard: 332
     #
     # Part-time (20 hours < 30 hours threshold)
     va_tanf_is_full_time: false
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
-    #   After flat: max($6,000 - $2,004, 0) = $3,996
-    #   After 20%: $3,996 * 0.8 = $3,196.80
-    #   After childcare ($1,440): max($3,196.80 - $1,440, 0) = $1,756.80
-    va_tanf_countable_earned_income: 1_756.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $6,000/12 = $500/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: max($500 - $167, 0) = $333
+    #   After 20%: $333 * 0.8 = $266.40
+    #   Childcare (part-time, 1 child): $120/month
+    #   After childcare: max($266.40 - $120, 0) = $146.40
+    va_tanf_countable_earned_income: 146.4
     #
-    # Childcare deduction (part-time, 1 child): $120 * 1 * 12 = $1,440/year
-    va_tanf_childcare_deduction: 1_440
+    # Childcare deduction: $120/month
+    va_tanf_childcare_deduction: 120
     #
-    # Countable income: $1,756.80 + $0 = $1,756.80
-    va_tanf_countable_income: 1_756.8
+    # Countable income: $146.40 + $0 = $146.40
+    va_tanf_countable_income: 146.4
     #
-    # Income eligibility: $1,756.80 <= $7,956? YES
+    # Income eligibility: $146.40 <= $663? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $3,984 - $1,756.80 = $2,227.20
-    # Minimum: $120, Maximum (Group II): $7,500
-    # $2,227.20 >= $120 and <= $7,500, so benefit = $2,227.20
-    va_tanf: 2_227.2
+    # Benefit: $332 - $146.40 = $185.60
+    va_tanf: 185.6
 
 - name: TANF-UP scenario - Two able-bodied adults in Group III locality
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -147,35 +148,35 @@
     # TANF-UP eligible: both parents are able-bodied (not disabled)
     va_up_tanf_eligibility: true
     #
-    # Need standard (Group III, size 4): $1,178/month * 12 = $14,136/year
-    va_tanf_need_standard: 14_136
+    # Need standard (Group III, size 4): $1,178/month
+    va_tanf_need_standard: 1_178
     #
-    # UP Grant standard (Group III, size 4): $513/month * 12 = $6,156/year
-    va_tanf_up_grant_standard: 6_156
+    # UP Grant standard (Group III, size 4): $513/month
+    va_tanf_up_grant_standard: 513
     #
     # Part-time (0 hours < 30 hours)
     va_tanf_is_full_time: false
     #
-    # No earned income, after childcare deduction still $0
+    # No earned income
     va_tanf_countable_earned_income: 0
     #
-    # Childcare deduction (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
-    va_tanf_childcare_deduction: 2_880
+    # Childcare deduction (part-time, 2 children age 2+): $120 * 2 = $240/month
+    va_tanf_childcare_deduction: 240
     #
     # Countable income: $0 + $0 = $0
     va_tanf_countable_income: 0
     #
-    # Income eligibility: $0 <= $14,136? YES
+    # Income eligibility: $0 <= $1,178? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit (TANF-UP): $6,156 - $0 = $6,156
-    # Maximum UP (Group III): $648 * 12 = $7,776
-    # $6,156 >= $120 and <= $7,776, so benefit = $6,156
-    va_tanf: 6_156
+    # Benefit (TANF-UP): $513 - $0 = $513
+    # Maximum UP (Group III): $648/month
+    # $513 >= $10 and <= $648, so benefit = $513
+    va_tanf: 513
 
 - name: Income exceeds need standard - Not eligible
   absolute_error_margin: 0.01
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -198,36 +199,40 @@
     # Family size: 2
     # Group III locality (Arlington County)
     #
-    # Need standard: $842/month * 12 = $10,104/year
-    va_tanf_need_standard: 10_104
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
     #
-    # Grant standard: $422/month * 12 = $5,064/year
-    va_tanf_grant_standard: 5_064
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
     #
     # Full-time (40 hours >= 30 hours)
     va_tanf_is_full_time: true
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
-    #   After flat: $30,000 - $2,004 = $27,996
-    #   After 20%: $27,996 * 0.8 = $22,396.80
-    #   After childcare ($2,100): max($22,396.80 - $2,100, 0) = $20,296.80
-    va_tanf_countable_earned_income: 20_296.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $30,000/12 = $2,500/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $2,500 - $167 = $2,333
+    #   After 20%: $2,333 * 0.8 = $1,866.40
+    #   Childcare (full-time, 1 child): $175/month
+    #   After childcare: max($1,866.40 - $175, 0) = $1,691.40
+    va_tanf_countable_earned_income: 1_691.4
     #
-    # Childcare deduction (full-time, 1 child age 10): $175 * 12 = $2,100/year
-    va_tanf_childcare_deduction: 2_100
+    # Childcare deduction: $175/month
+    va_tanf_childcare_deduction: 175
     #
-    # Countable income: $20,296.80 + $0 = $20,296.80
-    va_tanf_countable_income: 20_296.8
+    # Countable income: $1,691.40 + $0 = $1,691.40
+    va_tanf_countable_income: 1_691.4
     #
-    # Income eligibility: $20,296.80 <= $10,104? NO
+    # Income eligibility:
+    #   Step 1: gross $2,500 <= need $842? NO (fails)
     va_tanf_income_eligibility: false
     #
     # Not eligible, so benefit = $0
     va_tanf: 0
 
 - name: Group II locality - Family with infant (higher care deduction)
-  period: 2023
+  absolute_error_margin: 0.01
+  period: 2021-01
   input:
     people:
       person1:
@@ -250,40 +255,40 @@
     # Family size: 2
     # Group II locality (Pittsylvania County)
     #
-    # Need standard: $663/month * 12 = $7,956/year
-    va_tanf_need_standard: 7_956
+    # Need standard: $663/month
+    va_tanf_need_standard: 663
     #
-    # Grant standard: $332/month * 12 = $3,984/year
-    va_tanf_grant_standard: 3_984
+    # Grant standard: $332/month
+    va_tanf_grant_standard: 332
     #
     # Full-time (35 hours >= 30 hours)
     va_tanf_is_full_time: true
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
-    #   After flat: $7,000 - $2,004 = $4,996
-    #   After 20%: $4,996 * 0.8 = $3,996.80
-    #   After childcare ($2,400): max($3,996.80 - $2,400, 0) = $1,596.80
-    va_tanf_countable_earned_income: 1_596.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $7,000/12 = $583.33/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $583.33 - $167 = $416.33
+    #   After 20%: $416.33 * 0.8 = $333.07
+    #   Childcare (full-time, infant under 2): $200/month
+    #   After childcare: max($333.07 - $200, 0) = $133.07
+    va_tanf_countable_earned_income: 133.07
     #
-    # Childcare deduction (full-time, infant under 2): $200 * 12 = $2,400/year
-    va_tanf_childcare_deduction: 2_400
+    # Childcare deduction: $200/month
+    va_tanf_childcare_deduction: 200
     #
-    # Countable income: $1,596.80 + $0 = $1,596.80
-    va_tanf_countable_income: 1_596.8
+    # Countable income: $133.07 + $0 = $133.07
+    va_tanf_countable_income: 133.07
     #
     # Income eligibility:
-    #   Step 1: gross_income ($7,000) <= need_standard ($7,956)? YES
-    #   Step 2: countable_income ($1,596.80) <= grant_standard ($3,984)? YES
+    #   Step 1: gross $583.33 <= need $663? YES
+    #   Step 2: countable $133.07 <= grant $332? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $3,984 - $1,596.80 = $2,387.20
-    # Minimum: $120, Maximum (Group II): $7,500
-    # $2,387.20 >= $120 and <= $7,500, so benefit = $2,387.20
-    va_tanf: 2_387.2
+    # Benefit: $332 - $133.07 = $198.93
+    va_tanf: 198.93
 
 - name: Family with earned and unearned income (child support)
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -310,44 +315,44 @@
     # Family size: 3
     # Group III locality (Arlington County)
     #
-    # Need standard: $1,017/month * 12 = $12,204/year
-    va_tanf_need_standard: 12_204
+    # Need standard: $1,017/month
+    va_tanf_need_standard: 1_017
     #
-    # Grant standard: $508/month * 12 = $6,096/year
-    va_tanf_grant_standard: 6_096
+    # Grant standard: $508/month
+    va_tanf_grant_standard: 508
     #
     # Part-time (25 hours < 30 hours threshold)
     va_tanf_is_full_time: false
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
-    #   After flat: max($6,000 - $2,004, 0) = $3,996
-    #   After 20%: $3,996 * 0.8 = $3,196.80
-    #   After childcare ($2,880): max($3,196.80 - $2,880, 0) = $316.80
-    va_tanf_countable_earned_income: 316.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $6,000/12 = $500/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($500 - $167, 0) = $333
+    #   After 20%: $333 * 0.8 = $266.40
+    #   Childcare (part-time, 2 children age 2+): $120 * 2 = $240/month
+    #   After childcare: max($266.40 - $240, 0) = $26.40
+    va_tanf_countable_earned_income: 26.4
     #
-    # Unearned income:
-    #   Child support received: $2,400/year = $200/month
-    #   Child support disregard: $100/month * 12 = $1,200/year
-    #   Countable child support: $2,400 - $1,200 = $1,200/year
-    va_tanf_countable_unearned_income: 1_200
+    # Unearned income (monthly):
+    #   Child support received: $2,400/12 = $200/month
+    #   Child support disregard: $100/month
+    #   Countable child support: $200 - $100 = $100/month
+    va_tanf_countable_unearned_income: 100
     #
-    # Childcare deduction (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
-    va_tanf_childcare_deduction: 2_880
+    # Childcare deduction: $240/month
+    va_tanf_childcare_deduction: 240
     #
-    # Countable income: $316.80 + $1,200 = $1,516.80
-    va_tanf_countable_income: 1_516.8
+    # Countable income: $26.40 + $100 = $126.40
+    va_tanf_countable_income: 126.4
     #
-    # Income eligibility: $1,516.80 <= $12,204? YES
+    # Income eligibility: Step 1: gross earned $500 + countable unearned $100 = $600 <= $1,017? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $6,096 - $1,516.80 = $4,579.20
-    # Minimum: $120, Maximum: $8,940
-    # $4,579.20 >= $120 and <= $8,940, so benefit = $4,579.20
-    va_tanf: 4_579.2
+    # Benefit: $508 - $126.40 = $381.60
+    va_tanf: 381.6
 
 - name: Large family (size 8) in Group III locality
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -391,41 +396,43 @@
     # Family size: 8
     # Group III locality (Fairfax County)
     #
-    # Need standard (size 8): $1,868/month * 12 = $22,416/year
-    va_tanf_need_standard: 22_416
+    # Need standard (size 8): $1,868/month
+    va_tanf_need_standard: 1_868
     #
-    # Grant standard (size 8): $933/month * 12 = $11,196/year
-    va_tanf_grant_standard: 11_196
+    # Grant standard (size 8): $933/month
+    va_tanf_grant_standard: 933
     #
     # Full-time (30 hours >= 30 hours threshold)
     va_tanf_is_full_time: true
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 8, uses size 6+ rate): $240/month * 12 = $2,880/year
-    #   After flat: max($10,000 - $2,880, 0) = $7,120
-    #   After 20%: $7,120 * 0.8 = $5,696
-    #   After childcare ($14,700): max($5,696 - $14,700, 0) = $0
+    # Earned income deduction (monthly):
+    #   Gross earned: $10,000/12 = $833.33/month
+    #   Flat exclusion (size 8, uses size 6+ rate): $240/month
+    #   After flat: max($833.33 - $240, 0) = $593.33
+    #   After 20%: $593.33 * 0.8 = $474.67
+    #   Childcare (full-time):
+    #     - 1 disabled adult: $175/month
+    #     - 6 children age 2+: $175 * 6 = $1,050/month
+    #     Total: $1,225/month
+    #   After childcare: max($474.67 - $1,225, 0) = $0
     va_tanf_countable_earned_income: 0
     #
-    # Childcare deduction (full-time):
-    #   - 1 disabled adult: $175/month
-    #   - 6 children age 2+: $175 * 6 = $1,050/month
-    #   Total: ($175 + $1,050) * 12 = $14,700/year
-    va_tanf_childcare_deduction: 14_700
+    # Childcare deduction: $1,225/month
+    va_tanf_childcare_deduction: 1_225
     #
     # Countable income: $0 + $0 = $0
     va_tanf_countable_income: 0
     #
-    # Income eligibility: $0 <= $22,416? YES
+    # Income eligibility: $0 <= $1,868? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $11,196 - $0 = $11,196
-    # Maximum (Group III): $745 * 12 = $8,940
-    # $11,196 > $8,940, so capped at $8,940
-    va_tanf: 8_940
+    # Benefit: $933 - $0 = $933
+    # Maximum (Group III): $745/month
+    # $933 > $745, so capped at $745
+    va_tanf: 745
 
 - name: Family with disabled adult as care recipient
-  period: 2023
+  period: 2021-01
   input:
     people:
       person1:
@@ -454,35 +461,35 @@
     # Family size: 3
     # Group II locality (Pittsylvania County)
     #
-    # Need standard: $836/month * 12 = $10,032/year
-    va_tanf_need_standard: 10_032
+    # Need standard: $836/month
+    va_tanf_need_standard: 836
     #
-    # Grant standard: $417/month * 12 = $5,004/year
-    va_tanf_grant_standard: 5_004
+    # Grant standard: $417/month
+    va_tanf_grant_standard: 417
     #
     # Full-time (35 hours >= 30 hours threshold)
     va_tanf_is_full_time: true
     #
-    # Earned income deduction:
-    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
-    #   After flat: max($9,000 - $2,004, 0) = $6,996
-    #   After 20%: $6,996 * 0.8 = $5,596.80
-    #   After childcare ($4,200): max($5,596.80 - $4,200, 0) = $1,396.80
-    va_tanf_countable_earned_income: 1_396.8
+    # Earned income deduction (monthly):
+    #   Gross earned: $9,000/12 = $750/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($750 - $167, 0) = $583
+    #   After 20%: $583 * 0.8 = $466.40
+    #   Childcare (full-time):
+    #     - 1 disabled adult age 50 (2+): $175/month
+    #     - 1 child age 12 (2+): $175/month
+    #     Total: $350/month
+    #   After childcare: max($466.40 - $350, 0) = $116.40
+    va_tanf_countable_earned_income: 116.4
     #
-    # Childcare deduction (full-time):
-    #   - 1 disabled adult age 50 (2+): $175/month
-    #   - 1 child age 12 (2+): $175/month
-    #   Total: ($175 + $175) * 12 = $4,200/year
-    va_tanf_childcare_deduction: 4_200
+    # Childcare deduction: $350/month
+    va_tanf_childcare_deduction: 350
     #
-    # Countable income: $1,396.80 + $0 = $1,396.80
-    va_tanf_countable_income: 1_396.8
+    # Countable income: $116.40 + $0 = $116.40
+    va_tanf_countable_income: 116.4
     #
-    # Income eligibility: $1,396.80 <= $10,032? YES
+    # Income eligibility: $116.40 <= $836? YES
     va_tanf_income_eligibility: true
     #
-    # Benefit: $5,004 - $1,396.80 = $3,607.20
-    # Minimum: $120, Maximum (Group II): $7,500
-    # $3,607.20 >= $120 and <= $7,500, so benefit = $3,607.20
-    va_tanf: 3_607.2
+    # Benefit: $417 - $116.40 = $300.60
+    va_tanf: 300.6

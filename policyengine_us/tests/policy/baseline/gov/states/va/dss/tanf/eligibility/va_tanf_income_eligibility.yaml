@@ -1,20 +1,19 @@
 # VA TANF Income Eligibility Tests
 # Two-step test:
-#   Step 1: gross_income (gross_earned + countable_unearned) <= need_standard
+#   Step 1: va_tanf_gross_income <= need_standard
 #   Step 2: countable_income <= grant_standard (or up_grant_standard if UP eligible)
 
 - name: Case 1, no income is eligible.
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 0
-    va_tanf_countable_unearned_income: 0
+    va_tanf_gross_income: 0
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 0
     va_up_tanf_eligibility: false
     va_tanf_grant_standard: 6_000
   output:
-    # Step 1: 0 + 0 = 0 <= 12,000? YES
+    # Step 1: 0 <= 12,000? YES
     # Step 2: 0 <= 6,000? YES
     va_tanf_income_eligibility: true
 
@@ -22,14 +21,13 @@
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 10_000
-    va_tanf_countable_unearned_income: 2_000
+    va_tanf_gross_income: 12_000
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 5_000
     va_up_tanf_eligibility: false
     va_tanf_grant_standard: 6_000
   output:
-    # Step 1: 10,000 + 2,000 = 12,000 <= 12,000? YES
+    # Step 1: 12,000 <= 12,000? YES
     # Step 2: 5,000 <= 6,000? YES
     va_tanf_income_eligibility: true
 
@@ -37,28 +35,26 @@
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 11_000
-    va_tanf_countable_unearned_income: 2_000
+    va_tanf_gross_income: 13_000
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 5_000
     va_up_tanf_eligibility: false
     va_tanf_grant_standard: 6_000
   output:
-    # Step 1: 11,000 + 2,000 = 13,000 <= 12,000? NO (fails step 1)
+    # Step 1: 13,000 <= 12,000? NO (fails step 1)
     va_tanf_income_eligibility: false
 
 - name: Case 4, countable income exceeds grant standard - not eligible.
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 8_000
-    va_tanf_countable_unearned_income: 2_000
+    va_tanf_gross_income: 10_000
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 7_000
     va_up_tanf_eligibility: false
     va_tanf_grant_standard: 6_000
   output:
-    # Step 1: 8,000 + 2,000 = 10,000 <= 12,000? YES
+    # Step 1: 10,000 <= 12,000? YES
     # Step 2: 7,000 <= 6,000? NO (fails step 2)
     va_tanf_income_eligibility: false
 
@@ -66,15 +62,14 @@
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 6_000
-    va_tanf_countable_unearned_income: 2_000
+    va_tanf_gross_income: 8_000
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 4_500
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 6_000
     va_tanf_up_grant_standard: 5_000
   output:
-    # Step 1: 6,000 + 2,000 = 8,000 <= 12,000? YES
+    # Step 1: 8,000 <= 12,000? YES
     # Step 2 (UP): 4,500 <= 5,000? YES
     va_tanf_income_eligibility: true
 
@@ -82,15 +77,14 @@
   period: 2023
   input:
     state_code: VA
-    tanf_gross_earned_income: 6_000
-    va_tanf_countable_unearned_income: 2_000
+    va_tanf_gross_income: 8_000
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 5_500
     va_up_tanf_eligibility: true
     va_tanf_grant_standard: 6_000
     va_tanf_up_grant_standard: 5_000
   output:
-    # Step 1: 6,000 + 2,000 = 8,000 <= 12,000? YES
+    # Step 1: 8,000 <= 12,000? YES
     # Step 2 (UP): 5,500 <= 5,000? NO (fails step 2)
     va_tanf_income_eligibility: false
 
@@ -98,8 +92,7 @@
   period: 2023
   input:
     state_code: MD
-    tanf_gross_earned_income: 0
-    va_tanf_countable_unearned_income: 0
+    va_tanf_gross_income: 0
     va_tanf_need_standard: 12_000
     va_tanf_countable_income: 0
     va_up_tanf_eligibility: false

@@ -11,17 +11,8 @@ class va_tanf_income_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         # Two-step income test per Virginia TANF Manual Section 305.1
-        # Step 1: Gross income (with disregards only) <= Need Standard
-        person = spm_unit.members
-        gross_earned = spm_unit.sum(
-            person("tanf_gross_earned_income", period)
-        )
-        # Countable unearned already has disregards applied
-        # (child support, unemployment for TANF-UP)
-        countable_unearned = spm_unit(
-            "va_tanf_countable_unearned_income", period
-        )
-        gross_income = gross_earned + countable_unearned
+        # Step 1: Gross income <= Need Standard
+        gross_income = spm_unit("va_tanf_gross_income", period)
         need_standard = spm_unit("va_tanf_need_standard", period)
         step1_pass = gross_income <= need_standard
 
@@ -31,7 +22,9 @@ class va_tanf_income_eligibility(Variable):
         up_eligible = spm_unit("va_up_tanf_eligibility", period)
         grant_standard = spm_unit("va_tanf_grant_standard", period)
         up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
-        applicable_grant = where(up_eligible, up_grant_standard, grant_standard)
+        applicable_grant = where(
+            up_eligible, up_grant_standard, grant_standard
+        )
         step2_pass = countable_income <= applicable_grant
 
         return step1_pass & step2_pass

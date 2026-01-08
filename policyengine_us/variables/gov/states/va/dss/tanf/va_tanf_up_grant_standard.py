@@ -29,4 +29,7 @@ class va_tanf_up_grant_standard(Variable):
             p.up_grant_standard.group2.addition,
         )
 
-        return main + additional * addition
+        base_amount = main + additional * addition
+        # Apply standard multiplier for increases since July 2020 base
+        multiplier = p.standard_multiplier
+        return base_amount * multiplier
