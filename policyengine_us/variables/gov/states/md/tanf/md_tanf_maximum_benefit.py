@@ -4,11 +4,11 @@ from policyengine_us.model_api import *
 class md_tanf_maximum_benefit(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF maximum benefit"
+    label = "Maryland TCA maximum benefit"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0908%20Grant%20Determination%20rev%2011.22.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx"
 
     def formula(spm_unit, period, parameters):
         people = spm_unit("spm_unit_size", period.this_year)

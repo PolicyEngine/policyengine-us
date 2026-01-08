@@ -1,4 +1,4 @@
-description: Maryland excludes this share of earnings from TANF countable earned income, for individuals without self employment income.
+description: Maryland excludes this share of earnings from countable earned income under the Temporary Cash Assistance program for enrolled recipients without self-employment income.
 
 values:
   2022-11-01: 0.4
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: /1
   period: month
-  label: Maryland TANF earnings exclusion percent for non-self-employed individuals
+  label: Maryland TCA continuous earnings exclusion rate
   reference:
-    - title: Maryland TEMPORARY CASH ASSISTANCE MANUAL 904.1 DEDUCTIONS FROM EARNED INCOME
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc
+    - title: COMAR 07.03.03.13 - Income
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx

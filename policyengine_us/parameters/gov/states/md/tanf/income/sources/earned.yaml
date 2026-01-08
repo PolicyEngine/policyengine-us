@@ -1,4 +1,4 @@
-description: Maryland TANF counts these income sources as earned income.
+description: Maryland counts these income sources as earned income under the Temporary Cash Assistance program.
 
 values:
   2022-11-01:
@@ -9,7 +9,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Maryland TANF earned income sources
+  label: Maryland TCA earned income sources
   reference:
-    - title: Maryland Temporary Cash Assistance Manual - Section 0902 Earned Income
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0902%20TCA%20Earned%20Income%20rev%2011.22.doc
+    - title: COMAR 07.03.03.13 - Income
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx

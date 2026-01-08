@@ -5,9 +5,9 @@ class md_tanf_is_child(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH
-    label = "Is a child under Maryland TANF program"
+    label = "Is a child under Maryland TCA program"
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0300-Technical-Eligibility/0307%20Age%20rev%2011.22.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.07.aspx"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.md.tanf
@@ -18,8 +18,9 @@ class md_tanf_is_child(Variable):
         age_eligible = age < p.age_limit
         k12 = person("is_in_k12_school", period)
         k12_age_eligible = k12 & age_eligible
-        # Age 19 and a full-time student
+        # Age 19 and a full-time secondary school student
+        # Per COMAR 07.03.03.07, extended eligibility is for secondary school
+        # students only - college students do not qualify
         years_19 = age == p.age_limit
-        full_time_student = person("is_full_time_college_student", period)
-        school_enrolled_19_year_old = full_time_student & years_19
-        return child | school_enrolled_19_year_old | k12_age_eligible
+        secondary_school_enrolled_19_year_old = k12 & years_19
+        return child | secondary_school_enrolled_19_year_old | k12_age_eligible

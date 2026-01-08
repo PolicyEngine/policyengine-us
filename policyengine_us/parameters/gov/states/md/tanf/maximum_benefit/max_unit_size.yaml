@@ -1,4 +1,4 @@
-description: Maryland caps TANF grant standard lookup at this household size, with additional amounts for larger households.
+description: Maryland caps the grant standard lookup at this household size under the Temporary Cash Assistance program.
 
 values:
   2021-10-01: 8
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: person
   period: year
-  label: Maryland TANF maximum unit size for grant standard lookup
+  label: Maryland TCA maximum unit size for grant standard lookup
   reference:
-    - title: Maryland Temporary Cash Assistance Manual - Grant Standards
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0908%20Grant%20Determination%20rev%2011.22.doc
+    - title: COMAR 07.03.03.17 - Benefit Schedules
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx

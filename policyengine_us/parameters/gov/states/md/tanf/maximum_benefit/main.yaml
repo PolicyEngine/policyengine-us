@@ -1,4 +1,4 @@
-description: Maryland provides this amount as the monthly grant standard under the Temporary Assistance for Needy Families program.
+description: Maryland provides this amount as the monthly grant standard under the Temporary Cash Assistance program.
 
 1:
   2021-10-01: 328
@@ -20,9 +20,9 @@ description: Maryland provides this amount as the monthly grant standard under t
 metadata:
   unit: currency-USD
   period: month
-  label: Maryland TANF grant standard
+  label: Maryland TCA grant standard
   breakdown:
     - range(1, 9)
   reference:
-    - title: Maryland Temporary Cash Assistance Manual - Section 0908 Grant Determination
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0908%20Grant%20Determination%20rev%2011.22.doc
+    - title: COMAR 07.03.03.17 - Benefit Schedules
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx

@@ -4,11 +4,11 @@ from policyengine_us.model_api import *
 class md_tanf_continuous_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF continuous earnings deduction"
+    label = "Maryland TCA continuous earnings deduction"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.tanf.income.deductions.earned

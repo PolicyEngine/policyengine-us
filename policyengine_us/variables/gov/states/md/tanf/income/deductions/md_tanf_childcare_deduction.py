@@ -4,22 +4,25 @@ from policyengine_us.model_api import *
 class md_tanf_childcare_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF childcare deduction"
+    label = "Maryland TCA childcare deduction"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx"
 
     def formula(spm_unit, period, parameters):
-        children = spm_unit("md_tanf_count_children", period)
+        # Per COMAR 07.03.03.13, childcare deduction is only available
+        # for households with children. The deduction is based on the
+        # employment hours of the assistance unit member.
+        has_children = spm_unit("md_tanf_count_children", period) > 0
         person = spm_unit.members
         work_hours = person("work_hours_per_week", period)
-        # Get the policy parameters.
         p = parameters(period).gov.states.md.tanf.income.deductions
         full_time = spm_unit.any(work_hours >= p.earned.fulltime_hours)
 
-        return children * where(
+        deduction = where(
             full_time,
             p.childcare_expenses.full_time,
             p.childcare_expenses.part_time,
         )
+        return where(has_children, deduction, 0)

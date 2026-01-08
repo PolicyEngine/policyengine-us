@@ -1,0 +1,87 @@
+- name: Case 1, household with children and demographic eligibility is eligible.
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_eligible: true
+
+- name: Case 2, household with no children is not eligible.
+  period: 2023-01
+  input:
+    people:
+      adult1:
+        age: 30
+      adult2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_eligible: false
+
+- name: Case 3, single person with no children is not eligible.
+  period: 2023-01
+  input:
+    people:
+      adult:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_eligible: false
+
+- name: Case 4, household with 19 year old secondary school student is eligible.
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 40
+      student:
+        age: 19
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, student]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per COMAR 07.03.03.07, 19-year-old secondary school students count as children
+    md_tanf_eligible: true
+
+- name: Case 5, household with 19 year old college student is not eligible.
+  period: 2023-01
+  input:
+    people:
+      parent:
+        age: 40
+      student:
+        age: 19
+        is_full_time_college_student: true
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [parent, student]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per COMAR 07.03.03.07, college students do not count as children at age 19
+    md_tanf_eligible: false

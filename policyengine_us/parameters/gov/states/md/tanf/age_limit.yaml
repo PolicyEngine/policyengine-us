@@ -1,4 +1,4 @@
-description: Maryland limits TANF eligibility to children below this age threshold.
+description: Maryland limits eligibility to children below this age threshold under the Temporary Cash Assistance program.
 
 values:
   2022-11-01: 19
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: year
   period: year
-  label: Maryland TANF age limit
+  label: Maryland TCA age limit
   reference:
-    - title: Maryland Temporary Cash Assistance Manual - Section 0307 Age
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0300-Technical-Eligibility/0307%20Age%20rev%2011.22.doc
+    - title: COMAR 07.03.03.07 - Age Requirements
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.07.aspx

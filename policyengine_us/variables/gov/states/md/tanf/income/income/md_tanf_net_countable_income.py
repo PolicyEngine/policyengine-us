@@ -4,11 +4,11 @@ from policyengine_us.model_api import *
 class md_tanf_net_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF net countable income"
+    label = "Maryland TCA net countable income"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0902%20TCA%20Earned%20Income%20rev%2011.22.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx"
 
     def formula(spm_unit, period, parameters):
         # Get gross income for the SPM unit.

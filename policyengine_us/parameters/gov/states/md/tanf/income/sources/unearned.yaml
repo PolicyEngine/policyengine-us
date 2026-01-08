@@ -1,4 +1,4 @@
-description: Maryland TANF counts these income sources as unearned income.
+description: Maryland counts these income sources as unearned income under the Temporary Cash Assistance program.
 
 values:
   2022-11-01:
@@ -12,7 +12,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Maryland TANF unearned income sources
+  label: Maryland TCA unearned income sources
   reference:
-    - title: Maryland Temporary Cash Assistance Manual - Section 0903 Unearned Income
-      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0903%20Unearned%20Income%2011.22.doc
+    - title: COMAR 07.03.03.13 - Income
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx

@@ -4,10 +4,10 @@ from policyengine_us.model_api import *
 class md_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Maryland TANF eligible"
+    label = "Maryland TCA eligible"
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0300-Technical-Eligibility/0300%20Technical%20Eligibility%20Overview%20rev%2011.22.doc"
+    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.03.aspx"
 
     def formula(spm_unit, period, parameters):
         has_children = spm_unit("md_tanf_count_children", period) > 0
