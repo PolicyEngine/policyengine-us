@@ -6,8 +6,8 @@ class md_tanf(Variable):
     entity = SPMUnit
     label = "Maryland TANF"
     unit = USD
-    definition_period = YEAR
-    defined_for = StateCode.MD
+    definition_period = MONTH
+    defined_for = "md_tanf_eligible"
     reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0907%20Income%20Calculation%20of%20Ineligible%20Member%20rev%2011.22.doc"
 
     def formula(spm_unit, period, parameters):

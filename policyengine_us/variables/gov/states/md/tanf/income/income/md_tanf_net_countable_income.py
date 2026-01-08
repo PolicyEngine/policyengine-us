@@ -6,7 +6,7 @@ class md_tanf_net_countable_income(Variable):
     entity = SPMUnit
     label = "Maryland TANF net countable income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MD
     reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0902%20TCA%20Earned%20Income%20rev%2011.22.doc"
 
@@ -24,11 +24,9 @@ class md_tanf_net_countable_income(Variable):
         )
         # Get childcare deductions for the SPM unit.
         childcare_deduction = spm_unit("md_tanf_childcare_deduction", period)
-
-        return max_(
-            gross_earned_income
-            + gross_unearned_income
-            - continuous_deductions
-            - childcare_deduction,
+        # Apply deductions to earned income only, then add unearned
+        countable_earned = max_(
+            gross_earned_income - continuous_deductions - childcare_deduction,
             0,
         )
+        return countable_earned + gross_unearned_income

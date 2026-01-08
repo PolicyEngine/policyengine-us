@@ -6,7 +6,7 @@ class md_tanf_gross_earned_income_deduction(Variable):
     entity = SPMUnit
     label = "Maryland TANF earned income deduction"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MD
     reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc"
 

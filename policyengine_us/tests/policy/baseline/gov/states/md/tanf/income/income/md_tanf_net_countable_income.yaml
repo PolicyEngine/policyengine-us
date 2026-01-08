@@ -1,5 +1,5 @@
-- name: Case 1, earned income minus continuous deductions equals net countable income.
-  period: 2023
+- name: Case 1, earned income minus continuous deductions.
+  period: 2023-01
   input:
     spm_units:
       spm_unit:
@@ -11,10 +11,12 @@
       household:
         state_code: MD
   output:
+    # Countable earned = max($100 - $40 - $0, 0) = $60
+    # Total = $60 + $0 = $60
     md_tanf_net_countable_income: 60
 
 - name: Case 2, earned and unearned income minus deductions.
-  period: 2023
+  period: 2023-01
   input:
     spm_units:
       spm_unit:
@@ -26,10 +28,12 @@
       household:
         state_code: MD
   output:
+    # Countable earned = max($100 - $40 - $10, 0) = $50
+    # Total = $50 + $50 = $100
     md_tanf_net_countable_income: 100
 
-- name: Case 3, large deductions result in zero net income (not negative).
-  period: 2023
+- name: Case 3, deductions exceed earned income, only unearned counted.
+  period: 2023-01
   input:
     spm_units:
       spm_unit:
@@ -41,4 +45,6 @@
       household:
         state_code: MD
   output:
-    md_tanf_net_countable_income: 0
+    # Countable earned = max($80 - $100 - $50, 0) = $0
+    # Total = $0 + $20 = $20
+    md_tanf_net_countable_income: 20

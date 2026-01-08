@@ -5,7 +5,7 @@ class md_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Maryland TANF eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MD
     reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0300-Technical-Eligibility/0300%20Technical%20Eligibility%20Overview%20rev%2011.22.doc"
 

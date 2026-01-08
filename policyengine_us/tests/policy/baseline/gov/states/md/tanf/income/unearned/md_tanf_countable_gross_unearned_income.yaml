@@ -1,5 +1,5 @@
 - name: Case 1, gross unearned income passes through to countable.
-  period: 2023
+  period: 2023-01
   input:
     spm_units:
       spm_unit:
@@ -11,7 +11,7 @@
     md_tanf_countable_gross_unearned_income: 100
 
 - name: Case 2, zero gross unearned income.
-  period: 2023
+  period: 2023-01
   input:
     spm_units:
       spm_unit:

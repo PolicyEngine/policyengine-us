@@ -6,7 +6,7 @@ class md_tanf_gross_unearned(Variable):
     entity = SPMUnit
     label = "Maryland TANF gross unearned income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MD
     reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0903%20Unearned%20Income%2011.22.doc"
 

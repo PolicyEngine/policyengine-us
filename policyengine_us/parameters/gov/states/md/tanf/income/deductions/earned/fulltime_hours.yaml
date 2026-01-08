@@ -1,11 +1,11 @@
-description: Maryland requires this number of monthly work hours for full-time classification under the TANF program.
+description: Maryland requires this number of weekly work hours for full-time classification under the TANF program.
 
 values:
-  2022-11-01: 100
+  2022-11-01: 25
 
 metadata:
   unit: hour
-  period: month
+  period: week
   label: Maryland TANF full-time work hours threshold
   reference:
     - title: Maryland Temporary Cash Assistance Manual - Section 904.1 Deductions from Earned Income

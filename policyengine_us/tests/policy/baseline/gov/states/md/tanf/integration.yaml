@@ -1,11 +1,11 @@
 - name: Integration test, single parent with one child, part-time work.
-  period: 2024
+  period: 2024-01
   input:
     people:
       parent:
         age: 30
         employment_income: 12_000
-        work_hours_per_week: 30
+        work_hours_per_week: 20
       child:
         age: 5
     spm_units:
@@ -20,7 +20,7 @@
     md_tanf_eligible: true
 
 - name: Integration test, household with no children is ineligible.
-  period: 2024
+  period: 2024-01
   input:
     people:
       adult1:

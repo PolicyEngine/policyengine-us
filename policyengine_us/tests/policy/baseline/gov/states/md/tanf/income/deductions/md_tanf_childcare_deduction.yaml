@@ -1,11 +1,11 @@
-- name:  No children, part-time work, $0 deductions
-  period: 2023
+- name: Case 1, no children, no deduction.
+  period: 2023-01
   input:
     people:
       person1:
-        work_hours_per_week: 50
+        work_hours_per_week: 30
       person2:
-        work_hours_per_week: 60
+        work_hours_per_week: 40
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -16,14 +16,14 @@
   output:
     md_tanf_childcare_deduction: 0
 
-- name:  2 children, part-time work, $200 deductions
-  period: 2023
+- name: Case 2, two children, part-time work.
+  period: 2023-01
   input:
     people:
       person1:
-        work_hours_per_week: 50
+        work_hours_per_week: 20
       person2:
-        work_hours_per_week: 60
+        work_hours_per_week: 15
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,16 +32,17 @@
       household:
         state_code: MD
   output:
+    # 2 children × $100/child (part-time) = $200/month
     md_tanf_childcare_deduction: 200
 
-- name:  2 children, full-time work, $400 deductions
-  period: 2023
+- name: Case 3, two children, full-time work.
+  period: 2023-01
   input:
     people:
       person1:
-        work_hours_per_week: 100
+        work_hours_per_week: 30
       person2:
-        work_hours_per_week: 60
+        work_hours_per_week: 20
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -50,7 +51,5 @@
       household:
         state_code: MD
   output:
+    # 2 children × $200/child (full-time, any member >= 25 hours) = $400/month
     md_tanf_childcare_deduction: 400
-
-
-
