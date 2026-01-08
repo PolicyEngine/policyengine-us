@@ -264,9 +264,10 @@
     # Total CTC = $1,000 - $247.50 = $752.50
     ny_ctc_post_2024: 752.5
 
-- name: Case 7, geothermal credit 2025 under new cap.
-  # Test geothermal credit after July 1, 2025 with $10,000 cap
-  # $15,000 expenditures * 25% = $3,750 (under $10,000 cap)
+- name: Case 7, geothermal credit 2025 under cap.
+  # Test geothermal credit with annual period 2025
+  # Annual period uses start-of-year cap of $5,000
+  # $15,000 expenditures * 25% = $3,750 (under $5,000 cap)
   period: 2025
   input:
     people:
