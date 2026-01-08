@@ -10,7 +10,7 @@
   output:
     va_tanf: 0
 
-- name: If tanf eligible, payment less than $10 * 12, then they get zero.
+- name: If tanf eligible, small payment is still paid.
   period: 2023
   input:
     va_tanf_eligibility: true
@@ -20,9 +20,10 @@
     va_tanf_countable_income: 2_000
     county_str: ARLINGTON_COUNTY_VA
   output:
-    va_tanf: 0
+    # Grant standard $2,100 - countable income $2,000 = $100 payment
+    va_tanf: 100
 
-- name: If up tanf eligible, payment less than $10 * 12, then they get zero.
+- name: If up tanf eligible, small payment is still paid.
   period: 2023
   input:
     va_tanf_eligibility: true
@@ -32,7 +33,8 @@
     va_tanf_countable_income: 2_000
     county_str: ARLINGTON_COUNTY_VA
   output:
-    va_tanf: 0
+    # UP grant standard $2,100 - countable income $2,000 = $100 payment
+    va_tanf: 100
 
 - name: If tanf eligible, living in group3, payment less than maximum payment, then they get the difference.
   period: 2023
@@ -94,8 +96,8 @@
   output:
     va_tanf: 6_528
 
-# Boundary tests for minimum payment threshold ($10/month = $120/year)
-- name: Payment exactly at minimum threshold ($120/year) is paid.
+# Boundary tests for small payments
+- name: Small payment of $120/year is paid.
   period: 2023
   input:
     va_tanf_eligibility: true
@@ -106,10 +108,9 @@
     county_str: ARLINGTON_COUNTY_VA
   output:
     # Grant standard $2,120 - countable income $2,000 = $120 payment
-    # $120 >= $120 minimum, so payment is made
     va_tanf: 120
 
-- name: Payment $1 below minimum threshold ($119/year) results in zero.
+- name: Small payment of $119/year is paid.
   period: 2023
   input:
     va_tanf_eligibility: true
@@ -120,5 +121,4 @@
     county_str: ARLINGTON_COUNTY_VA
   output:
     # Grant standard $2,119 - countable income $2,000 = $119 payment
-    # $119 < $120 minimum, so no payment
-    va_tanf: 0
+    va_tanf: 119

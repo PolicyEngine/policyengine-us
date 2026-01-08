@@ -6,7 +6,7 @@ class va_tanf(Variable):
     entity = SPMUnit
     label = "VA TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "va_tanf_eligibility"
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
@@ -19,26 +19,22 @@ class va_tanf(Variable):
         countable_income = spm_unit("va_tanf_countable_income", period)
         payment = max_(grant - countable_income, 0)
 
-        # compute the minimum and maximum payment
+        # compute the maximum payment
         p = parameters(period).gov.states.va.dss.tanf
-        minimum = p.va_tanf_minimum_payment * MONTHS_IN_YEAR
         county = spm_unit.household("county_str", period)
         if_group3 = np.isin(county, p.localities.group3)
-        maximum = (
+        maximum = where(
+            up_tanf_eligibility,
             where(
-                up_tanf_eligibility,
-                where(
-                    if_group3,
-                    p.up_grant_standard.group3.max,
-                    p.up_grant_standard.group2.max,
-                ),
-                where(
-                    if_group3,
-                    p.grant_standard.group3.max,
-                    p.grant_standard.group2.max,
-                ),
-            )
-            * MONTHS_IN_YEAR
+                if_group3,
+                p.up_grant_standard.group3.max,
+                p.up_grant_standard.group2.max,
+            ),
+            where(
+                if_group3,
+                p.grant_standard.group3.max,
+                p.grant_standard.group2.max,
+            ),
         )
 
-        return min_(where(payment >= minimum, payment, 0), maximum)
+        return min_(payment, maximum)

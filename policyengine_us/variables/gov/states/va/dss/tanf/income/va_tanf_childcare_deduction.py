@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class va_tanf_care_expenses(Variable):
+class va_tanf_childcare_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA TANF care expenses"
+    label = "VA TANF childcare deduction"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=56"
 
@@ -15,7 +15,7 @@ class va_tanf_care_expenses(Variable):
         is_full_time = spm_unit("va_tanf_is_full_time", period)
         person = spm_unit.members
         child = person("is_child", period)
-        age = person("age", period)
+        age = person("age", period.this_year)
         adult = person("is_adult", period)
         disabled = person("is_disabled", period)
         disabled_adult = (adult) & (disabled)
@@ -27,8 +27,7 @@ class va_tanf_care_expenses(Variable):
         part_time_care_expenses = spm_unit.sum(
             p.care_expenses_part_time * care_recipient
         )
-        monthly_care_expenses = where(
+
+        return where(
             is_full_time, full_time_care_expenses, part_time_care_expenses
         )
-
-        return monthly_care_expenses * MONTHS_IN_YEAR

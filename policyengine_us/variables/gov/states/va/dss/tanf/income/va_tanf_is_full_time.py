@@ -5,7 +5,7 @@ class va_tanf_is_full_time(Variable):
     value_type = bool
     entity = SPMUnit
     label = "VA TANF full-time employee"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=55"
 
@@ -14,6 +14,6 @@ class va_tanf_is_full_time(Variable):
             period
         ).gov.states.va.dss.tanf.income.deduction.full_time_work_hours
         person = spm_unit.members
-        person_work_hour = person("work_hours_per_week", period)
+        person_work_hour = person("work_hours_per_week", period.this_year)
         child = person("is_child", period)
         return spm_unit.any((person_work_hour >= p) & (~child))

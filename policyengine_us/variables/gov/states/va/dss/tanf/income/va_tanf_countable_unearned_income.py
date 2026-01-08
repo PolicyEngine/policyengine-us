@@ -6,30 +6,27 @@ class va_tanf_countable_unearned_income(Variable):
     entity = SPMUnit
     label = "VA TANF countable unearned income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=58"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.va.dss.tanf.income
-        up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
-        gross_unearned = add(spm_unit, period, p.unearned)
+        p = parameters(period).gov.states.va.dss.tanf.income.deduction.unearned
+        person = spm_unit.members
+        gross_unearned = spm_unit.sum(
+            person("tanf_gross_unearned_income", period)
+        )
+        # Apply child support disregard
         child_support = add(spm_unit, period, ["child_support_received"])
-        interest_income = add(spm_unit, period, ["interest_income"])
+        child_support_disregard = min_(child_support, p.monthly_child_support)
+        countable_unearned = gross_unearned - child_support_disregard
+        # For TANF-UP, also disregard unemployment compensation
+        up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
         unemployment_compensation = add(
             spm_unit, period, ["unemployment_compensation"]
         )
-        p = p.deduction.unearned
-        child_support_disregard = p.monthly_child_support * MONTHS_IN_YEAR
-        interest_income_disregard = p.monthly_interest_income * MONTHS_IN_YEAR
-        # gross unearned minus child support & interest income
-        gross_unearned_after_disregard = (
-            gross_unearned
-            - min_(child_support, child_support_disregard)
-            - min_(interest_income, interest_income_disregard)
-        )
         return where(
             up_tanf_eligibility,
-            gross_unearned_after_disregard - unemployment_compensation,
-            gross_unearned_after_disregard,
+            countable_unearned - unemployment_compensation,
+            countable_unearned,
         )

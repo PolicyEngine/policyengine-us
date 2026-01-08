@@ -5,13 +5,33 @@ class va_tanf_income_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
     label = "VA TANF income eligibility"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
     def formula(spm_unit, period, parameters):
-        # Care expenses must be disregarded in both initial eligibility
-        # and payment calculation per manual page 50 section 5.
-        income = spm_unit("va_tanf_countable_income", period)
+        # Two-step income test per Virginia TANF Manual Section 305.1
+        # Step 1: Gross income (with disregards only) <= Need Standard
+        person = spm_unit.members
+        gross_earned = spm_unit.sum(
+            person("tanf_gross_earned_income", period)
+        )
+        # Countable unearned already has disregards applied
+        # (child support, unemployment for TANF-UP)
+        countable_unearned = spm_unit(
+            "va_tanf_countable_unearned_income", period
+        )
+        gross_income = gross_earned + countable_unearned
         need_standard = spm_unit("va_tanf_need_standard", period)
-        return income <= need_standard
+        step1_pass = gross_income <= need_standard
+
+        # Step 2: Countable income (after all deductions) <= Grant Standard
+        countable_income = spm_unit("va_tanf_countable_income", period)
+        # Use appropriate grant standard based on UP eligibility
+        up_eligible = spm_unit("va_up_tanf_eligibility", period)
+        grant_standard = spm_unit("va_tanf_grant_standard", period)
+        up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
+        applicable_grant = where(up_eligible, up_grant_standard, grant_standard)
+        step2_pass = countable_income <= applicable_grant
+
+        return step1_pass & step2_pass

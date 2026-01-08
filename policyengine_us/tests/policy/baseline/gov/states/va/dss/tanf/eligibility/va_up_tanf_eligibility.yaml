@@ -1,17 +1,21 @@
-- name: Single abled mother household with 0 earned income does not qualify for UP-TANF program.
-  period: 2023
+# Virginia TANF-UP eligibility requires two able-bodied adults (head + spouse)
+# Reference: VA TANF Manual 701.1, 701.3
+# https://www.dss.virginia.gov/files/division/bp/tanf/manual/700_07-20.pdf#page=2
+
+- name: Case 1, single adult - not eligible (no spouse).
+  period: 2023-01
   input:
     people:
       person1:
-        earned_income: 0
-        is_mother: true
+        age: 30
         is_disabled: false
       person2:
-        earned_income: 0
-        is_child: true
-        is_disabled: false
+        age: 5
     spm_units:
       spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
         members: [person1, person2]
     households:
       household:
@@ -20,76 +24,23 @@
   output:
     va_up_tanf_eligibility: false
 
-- name: Abled mother and disabled father household with 0 earned income does not qualify for UP-TANF program.
-  period: 2023
+- name: Case 2, two able-bodied adults - eligible.
+  period: 2023-01
   input:
     people:
       person1:
-        earned_income: 0
-        is_mother: true
+        age: 35
         is_disabled: false
       person2:
-        earned_income: 0
-        is_father: true
-        is_disabled: true
-      person3:
-        earned_income: 0
-        is_child: true
+        age: 32
         is_disabled: false
+      person3:
+        age: 5
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: VA
-  output:
-    va_up_tanf_eligibility: false
-
-- name: Two Abled parents household with 100 earned income does not qualify for UP-TANF program.
-  period: 2023
-  input:
-    people:
-      person1:
-        earned_income: 100
-        is_mother: true
-        is_disabled: false
-      person2:
-        earned_income: 0
-        is_father: true
-        is_disabled: false
-      person3:
-        earned_income: 0
-        is_child: true
-        is_disabled: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: VA
-  output:
-    va_up_tanf_eligibility: false
-
-- name: Two Abled parents household with 0 earned income qualifies for UP-TANF program.
-  period: 2023
-  input:
-    people:
-      person1:
-        earned_income: 0
-        is_mother: true
-        is_disabled: false
-      person2:
-        earned_income: 0
-        is_father: true
-        is_disabled: false
-      person3:
-        earned_income: 0
-        is_child: true
-        is_disabled: false
-    spm_units:
-      spm_unit:
+    tax_units:
+      tax_unit:
         members: [person1, person2, person3]
     households:
       household:
@@ -98,24 +49,98 @@
   output:
     va_up_tanf_eligibility: true
 
-- name: Only consider household in VA.
-  period: 2023
+- name: Case 3, head able-bodied, spouse disabled - not eligible.
+  period: 2023-01
   input:
     people:
       person1:
-        earned_income: 0
-        is_mother: true
+        age: 35
         is_disabled: false
       person2:
-        earned_income: 0
-        is_father: true
-        is_disabled: false
+        age: 32
+        is_disabled: true
       person3:
-        earned_income: 0
-        is_child: true
-        is_disabled: false
+        age: 5
     spm_units:
       spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Case 4, head disabled, spouse able-bodied - not eligible.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 32
+        is_disabled: false
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Case 5, both adults disabled - not eligible.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+      person2:
+        age: 32
+        is_disabled: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Case 6, not VA state - not eligible.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: false
+      person2:
+        age: 32
+        is_disabled: false
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
         members: [person1, person2, person3]
     households:
       household:
@@ -123,3 +148,230 @@
         state_code: AZ
   output:
     va_up_tanf_eligibility: false
+
+- name: Case 7, two able-bodied adults with multiple children - eligible.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 38
+        is_disabled: false
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: true
+
+#############################################
+# EXPERIMENTS: How is_tax_unit_head_or_spouse is determined
+#############################################
+
+# Experiment 1: Verify head/spouse determined by age (older = head)
+- name: Experiment 1, age determines head vs spouse.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # person1 (35) = head, person2 (32) = spouse, person3 (5) = neither
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]
+    is_tax_unit_head_or_spouse: [true, true, false]
+    va_up_tanf_eligibility: true
+
+# Experiment 2: What if younger person listed first?
+- name: Experiment 2, younger person listed first still works.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 45
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # person2 (45) = head, person1 (28) = spouse (by age, not order)
+    is_tax_unit_head: [false, true, false]
+    is_tax_unit_spouse: [true, false, false]
+    is_tax_unit_head_or_spouse: [true, true, false]
+    va_up_tanf_eligibility: true
+
+# Experiment 3: What if both adults same age?
+- name: Experiment 3, same age adults.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Both age 30, first listed becomes head
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]
+    is_tax_unit_head_or_spouse: [true, true, false]
+    va_up_tanf_eligibility: true
+
+# Experiment 4: Only children in household (edge case)
+- name: Experiment 4, only children - no head or spouse.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 15
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Both are children, no head or spouse
+    is_tax_unit_head: [false, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_head_or_spouse: [false, false]
+    va_up_tanf_eligibility: false
+
+# Experiment 5: One adult, one teenager (17)
+- name: Experiment 5, adult with teenager.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 17
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # person1 = head, person2 (17) = child, no spouse
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, false, false]
+    is_tax_unit_head_or_spouse: [true, false, false]
+    va_up_tanf_eligibility: false
+
+# Experiment 6: Two adults age 18 (just became adults)
+- name: Experiment 6, two young adults age 18.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 18
+      person2:
+        age: 18
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Both 18 = adults, one head, one spouse
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]
+    is_tax_unit_head_or_spouse: [true, true, false]
+    va_up_tanf_eligibility: true
+
+# Experiment 7: Three adults in household
+- name: Experiment 7, three adults - only head and spouse count.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 48
+      person3:
+        age: 25
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # person1 (50) = head, person2 (48) = spouse, person3 (25) = dependent
+    is_tax_unit_head: [true, false, false, false]
+    is_tax_unit_spouse: [false, true, false, false]
+    is_tax_unit_head_or_spouse: [true, true, false, false]
+    va_up_tanf_eligibility: true

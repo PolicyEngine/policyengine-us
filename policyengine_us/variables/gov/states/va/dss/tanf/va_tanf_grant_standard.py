@@ -6,12 +6,12 @@ class va_tanf_grant_standard(Variable):
     entity = SPMUnit
     label = "VA TANF grant standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
     def formula(spm_unit, period, parameters):
-        unit_size = spm_unit("spm_unit_size", period)
+        unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf
         ceiling = min_(unit_size, p.max_unit_size)
         additional = unit_size - ceiling
@@ -29,5 +29,4 @@ class va_tanf_grant_standard(Variable):
             p.grant_standard.group2.addition,
         )
 
-        monthly = main + additional * addition
-        return monthly * MONTHS_IN_YEAR
+        return main + additional * addition

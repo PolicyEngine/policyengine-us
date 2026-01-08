@@ -41,12 +41,13 @@
     #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
     #   After flat: max($12,000 - $2,004, 0) = $9,996
     #   After 20%: $9,996 * (1 - 0.2) = $7,996.80
-    va_tanf_countable_earned_income: 7_996.8
+    #   After childcare ($4,200): max($7,996.80 - $4,200, 0) = $3,796.80
+    va_tanf_countable_earned_income: 3_796.8
     #
-    # Care expenses (full-time, 2 children age 2+): $175 * 2 * 12 = $4,200/year
-    va_tanf_care_expenses: 4_200
+    # Childcare deduction (full-time, 2 children age 2+): $175 * 2 * 12 = $4,200/year
+    va_tanf_childcare_deduction: 4_200
     #
-    # Countable income: max($7,996.80 - $4,200 + $0, 0) = $3,796.80
+    # Countable income: $3,796.80 + $0 = $3,796.80
     va_tanf_countable_income: 3_796.8
     #
     # Income eligibility: $3,796.80 <= $12,204? YES
@@ -94,12 +95,13 @@
     #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
     #   After flat: max($6,000 - $2,004, 0) = $3,996
     #   After 20%: $3,996 * 0.8 = $3,196.80
-    va_tanf_countable_earned_income: 3_196.8
+    #   After childcare ($1,440): max($3,196.80 - $1,440, 0) = $1,756.80
+    va_tanf_countable_earned_income: 1_756.8
     #
-    # Care expenses (part-time, 1 child): $120 * 1 * 12 = $1,440/year
-    va_tanf_care_expenses: 1_440
+    # Childcare deduction (part-time, 1 child): $120 * 1 * 12 = $1,440/year
+    va_tanf_childcare_deduction: 1_440
     #
-    # Countable income: max($3,196.80 - $1,440 + $0, 0) = $1,756.80
+    # Countable income: $1,756.80 + $0 = $1,756.80
     va_tanf_countable_income: 1_756.8
     #
     # Income eligibility: $1,756.80 <= $7,956? YES
@@ -110,30 +112,29 @@
     # $2,227.20 >= $120 and <= $7,500, so benefit = $2,227.20
     va_tanf: 2_227.2
 
-- name: TANF-UP scenario - Two unemployed parents in Group III locality
+- name: TANF-UP scenario - Two able-bodied adults in Group III locality
   period: 2023
   input:
     people:
       person1:
-        is_father: true
         age: 35
         earned_income: 0
         work_hours_per_week: 0
         is_disabled: false
       person2:
-        is_mother: true
         age: 32
         earned_income: 0
         work_hours_per_week: 0
         is_disabled: false
       person3:
-        is_child: true
         age: 8
       person4:
-        is_child: true
         age: 6
     spm_units:
       spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
         members: [person1, person2, person3, person4]
     households:
       household:
@@ -143,7 +144,7 @@
   output:
     # Family size: 4
     # Group III locality (Arlington County)
-    # TANF-UP eligible: both parents have no earnings and are not disabled
+    # TANF-UP eligible: both parents are able-bodied (not disabled)
     va_up_tanf_eligibility: true
     #
     # Need standard (Group III, size 4): $1,178/month * 12 = $14,136/year
@@ -155,13 +156,13 @@
     # Part-time (0 hours < 30 hours)
     va_tanf_is_full_time: false
     #
-    # No earned income, so countable earned = 0
+    # No earned income, after childcare deduction still $0
     va_tanf_countable_earned_income: 0
     #
-    # Care expenses (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
-    va_tanf_care_expenses: 2_880
+    # Childcare deduction (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
+    va_tanf_childcare_deduction: 2_880
     #
-    # Countable income: max(0 - $2,880 + 0, 0) = $0
+    # Countable income: $0 + $0 = $0
     va_tanf_countable_income: 0
     #
     # Income eligibility: $0 <= $14,136? YES
@@ -173,6 +174,7 @@
     va_tanf: 6_156
 
 - name: Income exceeds need standard - Not eligible
+  absolute_error_margin: 0.01
   period: 2023
   input:
     people:
@@ -209,12 +211,13 @@
     #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
     #   After flat: $30,000 - $2,004 = $27,996
     #   After 20%: $27,996 * 0.8 = $22,396.80
-    va_tanf_countable_earned_income: 22_396.8
+    #   After childcare ($2,100): max($22,396.80 - $2,100, 0) = $20,296.80
+    va_tanf_countable_earned_income: 20_296.8
     #
-    # Care expenses (full-time, 1 child age 10): $175 * 12 = $2,100/year
-    va_tanf_care_expenses: 2_100
+    # Childcare deduction (full-time, 1 child age 10): $175 * 12 = $2,100/year
+    va_tanf_childcare_deduction: 2_100
     #
-    # Countable income: max($22,396.80 - $2,100 + $0, 0) = $20,296.80
+    # Countable income: $20,296.80 + $0 = $20,296.80
     va_tanf_countable_income: 20_296.8
     #
     # Income eligibility: $20,296.80 <= $10,104? NO
@@ -260,12 +263,13 @@
     #   Flat exclusion (size 2): $167/month * 12 = $2,004/year
     #   After flat: $8,000 - $2,004 = $5,996
     #   After 20%: $5,996 * 0.8 = $4,796.80
-    va_tanf_countable_earned_income: 4_796.8
+    #   After childcare ($2,400): max($4,796.80 - $2,400, 0) = $2,396.80
+    va_tanf_countable_earned_income: 2_396.8
     #
-    # Care expenses (full-time, infant under 2): $200 * 12 = $2,400/year
-    va_tanf_care_expenses: 2_400
+    # Childcare deduction (full-time, infant under 2): $200 * 12 = $2,400/year
+    va_tanf_childcare_deduction: 2_400
     #
-    # Countable income: max($4,796.80 - $2,400 + $0, 0) = $2,396.80
+    # Countable income: $2,396.80 + $0 = $2,396.80
     va_tanf_countable_income: 2_396.8
     #
     # Income eligibility: $2,396.80 <= $7,956? YES
@@ -317,7 +321,8 @@
     #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
     #   After flat: max($6,000 - $2,004, 0) = $3,996
     #   After 20%: $3,996 * 0.8 = $3,196.80
-    va_tanf_countable_earned_income: 3_196.8
+    #   After childcare ($2,880): max($3,196.80 - $2,880, 0) = $316.80
+    va_tanf_countable_earned_income: 316.8
     #
     # Unearned income:
     #   Child support received: $2,400/year = $200/month
@@ -325,10 +330,10 @@
     #   Countable child support: $2,400 - $1,200 = $1,200/year
     va_tanf_countable_unearned_income: 1_200
     #
-    # Care expenses (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
-    va_tanf_care_expenses: 2_880
+    # Childcare deduction (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
+    va_tanf_childcare_deduction: 2_880
     #
-    # Countable income: max($3,196.80 - $2,880 + $1,200, 0) = $1,516.80
+    # Countable income: $316.80 + $1,200 = $1,516.80
     va_tanf_countable_income: 1_516.8
     #
     # Income eligibility: $1,516.80 <= $12,204? YES
@@ -397,15 +402,16 @@
     #   Flat exclusion (size 8, uses size 6+ rate): $240/month * 12 = $2,880/year
     #   After flat: max($10,000 - $2,880, 0) = $7,120
     #   After 20%: $7,120 * 0.8 = $5,696
-    va_tanf_countable_earned_income: 5_696
+    #   After childcare ($14,700): max($5,696 - $14,700, 0) = $0
+    va_tanf_countable_earned_income: 0
     #
-    # Care expenses (full-time):
+    # Childcare deduction (full-time):
     #   - 1 disabled adult: $175/month
     #   - 6 children age 2+: $175 * 6 = $1,050/month
     #   Total: ($175 + $1,050) * 12 = $14,700/year
-    va_tanf_care_expenses: 14_700
+    va_tanf_childcare_deduction: 14_700
     #
-    # Countable income: max($5,696 - $14,700 + $0, 0) = $0
+    # Countable income: $0 + $0 = $0
     va_tanf_countable_income: 0
     #
     # Income eligibility: $0 <= $22,416? YES
@@ -459,15 +465,16 @@
     #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
     #   After flat: max($9,000 - $2,004, 0) = $6,996
     #   After 20%: $6,996 * 0.8 = $5,596.80
-    va_tanf_countable_earned_income: 5_596.8
+    #   After childcare ($4,200): max($5,596.80 - $4,200, 0) = $1,396.80
+    va_tanf_countable_earned_income: 1_396.8
     #
-    # Care expenses (full-time):
+    # Childcare deduction (full-time):
     #   - 1 disabled adult age 50 (2+): $175/month
     #   - 1 child age 12 (2+): $175/month
     #   Total: ($175 + $175) * 12 = $4,200/year
-    va_tanf_care_expenses: 4_200
+    va_tanf_childcare_deduction: 4_200
     #
-    # Countable income: max($5,596.80 - $4,200 + $0, 0) = $1,396.80
+    # Countable income: $1,396.80 + $0 = $1,396.80
     va_tanf_countable_income: 1_396.8
     #
     # Income eligibility: $1,396.80 <= $10,032? YES

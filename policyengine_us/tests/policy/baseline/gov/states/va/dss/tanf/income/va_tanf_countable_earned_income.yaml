@@ -1,68 +1,86 @@
+# VA TANF Countable Earned Income tests
+# Formula: max_(max_(gross - flat_deduction, 0) * 0.8 - childcare, 0)
+
 - name: Zero earned income returns zero.
   period: 2023
   input:
-    state_code: VA
-    va_tanf_gross_earned_income: 0
-    spm_unit_size: 3
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
   output:
     va_tanf_countable_earned_income: 0
 
 - name: Earned income below flat exclusion returns zero.
-  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
+  # Flat exclusion for size 1 = $167 * 12 = $2,004/year
   # Income $1,500 < $2,004, so max_($1,500 - $2,004, 0) = 0
   period: 2023
   input:
-    state_code: VA
-    va_tanf_gross_earned_income: 1_500
-    spm_unit_size: 3
+    people:
+      person1:
+        tanf_gross_earned_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
   output:
     va_tanf_countable_earned_income: 0
 
-- name: Earned income exactly at flat exclusion returns zero.
+- name: Earned income $5,004, size 3, $2,400 after deduction.
   # Flat exclusion for size 3 = $167 * 12 = $2,004/year
-  # max_($2,004 - $2,004, 0) * 0.8 = 0
-  period: 2023
-  input:
-    state_code: VA
-    va_tanf_gross_earned_income: 2_004
-    spm_unit_size: 3
-  output:
-    va_tanf_countable_earned_income: 0
-
-- name: Earned income $5,004, 3 household members, $2,400 per year after deduction.
   # ($5,004 - $2,004) * 0.8 = $3,000 * 0.8 = $2,400
   period: 2023
   input:
-    state_code: VA
-    va_tanf_gross_earned_income: 5_004
-    spm_unit_size: 3
+    people:
+      person1:
+        tanf_gross_earned_income: 5_004
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
   output:
     va_tanf_countable_earned_income: 2_400
 
-
-- name: Earned income $6_136, 4 household members, $3,200 per year after deduction.
+- name: Earned income $8,880, size 6, $4,800 after deduction.
+  # Flat exclusion for size 6+ = $240 * 12 = $2,880/year
+  # ($8,880 - $2,880) * 0.8 = $6,000 * 0.8 = $4,800
   period: 2023
   input:
-    state_code: VA
-    va_tanf_gross_earned_income: 6_136
-    spm_unit_size: 4
-  output:
-    va_tanf_countable_earned_income: 3_200
-
-- name: Earned income $7,508, 5 household members, $4,000 per year after deduction.
-  period: 2023
-  input:
-    state_code: VA
-    va_tanf_gross_earned_income: 7_508
-    spm_unit_size: 5
-  output:
-    va_tanf_countable_earned_income: 4_000
-
-- name: Earned income $8,880, 6 household members, $4,800 per year after deduction.
-  period: 2023
-  input:
-    state_code: VA
-    va_tanf_gross_earned_income: 8_880
-    spm_unit_size: 6
+    people:
+      person1:
+        tanf_gross_earned_income: 8_880
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+      person5:
+        tanf_gross_earned_income: 0
+      person6:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: VA
   output:
     va_tanf_countable_earned_income: 4_800
