@@ -1,0 +1,37 @@
+- name: "Person1 10 child support, Person2 0 child support, not enrolled, 100 gross unearned, 100 countable gross unearned"
+  period: 2023
+  input:
+    people: 
+      person1: 
+        child_support_received: 10
+      person2:
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        md_tanf_gross_unearned: 100
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_countable_gross_unearned_income: 100
+
+- name: "Person1 10 child support, Person2 0 child support, enrolled, 100 gross unearned, 110 countable gross unearned"
+  period: 2023
+  input:
+    people: 
+      person1: 
+        child_support_received: 10
+      person2:
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        md_tanf_gross_unearned: 100
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_countable_gross_unearned_income: 110

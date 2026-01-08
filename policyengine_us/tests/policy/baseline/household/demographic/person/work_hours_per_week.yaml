@@ -1,0 +1,15 @@
+- name: work 4 days per week, 8 hours per day, work hours per week is 32
+  period: 2022
+  input:
+    work_days_per_week: 4
+    work_hours_per_day: 8
+  output:
+    work_hours_per_week: 32
+
+- name: work 4 days per week, 0 hours per day, work hours per week is 0
+  period: 2022
+  input:
+    work_days_per_week: 4
+    work_hours_per_day: 0
+  output:
+    work_hours_per_week: 0
