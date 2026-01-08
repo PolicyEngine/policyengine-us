@@ -11,23 +11,16 @@ class va_tanf_childcare_deduction(Variable):
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=56"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.va.dss.tanf.income.deduction
-        is_full_time = spm_unit("va_tanf_is_full_time", period)
+        p = parameters(
+            period
+        ).gov.states.va.dss.tanf.income.deductions.dependent_care
         person = spm_unit.members
-        child = person("is_child", period)
         age = person("age", period.this_year)
-        adult = person("is_adult", period)
-        disabled = person("is_disabled", period)
-        disabled_adult = (adult) & (disabled)
-        care_recipient = (child) | (disabled_adult)
-
-        full_time_care_expenses = spm_unit.sum(
-            p.care_expenses_full_time.calc(age) * care_recipient
+        dependent = person("is_tax_unit_dependent", period)
+        disabled_adult = person("is_adult", period) & person(
+            "is_disabled", period
         )
-        part_time_care_expenses = spm_unit.sum(
-            p.care_expenses_part_time * care_recipient
-        )
-
-        return where(
-            is_full_time, full_time_care_expenses, part_time_care_expenses
-        )
+        care_recipient = dependent | disabled_adult
+        childcare_expenses = spm_unit("childcare_expenses", period)
+        max_deduction = spm_unit.sum(p.full_time.calc(age) * care_recipient)
+        return min_(childcare_expenses, max_deduction)

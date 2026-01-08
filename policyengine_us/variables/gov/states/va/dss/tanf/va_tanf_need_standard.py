@@ -31,5 +31,5 @@ class va_tanf_need_standard(Variable):
 
         base_amount = main + additional * addition
         # Apply standard multiplier for increases since July 2020 base
-        multiplier = p.standard_multiplier
-        return base_amount * multiplier
+
+        return base_amount * p.standard_multiplier

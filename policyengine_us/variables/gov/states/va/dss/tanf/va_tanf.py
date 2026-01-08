@@ -27,13 +27,13 @@ class va_tanf(Variable):
             up_tanf_eligibility,
             where(
                 if_group3,
-                p.up_grant_standard.group3.max,
-                p.up_grant_standard.group2.max,
+                p.payment.up_grant_standard.group3.max,
+                p.payment.up_grant_standard.group2.max,
             ),
             where(
                 if_group3,
-                p.grant_standard.group3.max,
-                p.grant_standard.group2.max,
+                p.payment.grant_standard.group3.max,
+                p.payment.grant_standard.group2.max,
             ),
         )
 

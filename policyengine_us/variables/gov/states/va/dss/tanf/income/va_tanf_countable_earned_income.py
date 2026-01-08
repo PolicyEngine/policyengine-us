@@ -16,7 +16,7 @@ class va_tanf_countable_earned_income(Variable):
             person("tanf_gross_earned_income", period)
         )
         unit_size = spm_unit("spm_unit_size", period.this_year)
-        p = parameters(period).gov.states.va.dss.tanf.income.deduction.earned
+        p = parameters(period).gov.states.va.dss.tanf.income.deductions.earned
         # Step 1: Apply flat deduction by unit size
         flat_exclusion = p.flat.calc(unit_size)
         earnings_after_flat = max_(gross_earnings - flat_exclusion, 0)

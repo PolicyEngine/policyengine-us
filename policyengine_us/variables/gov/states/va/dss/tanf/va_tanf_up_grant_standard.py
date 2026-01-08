@@ -20,16 +20,16 @@ class va_tanf_up_grant_standard(Variable):
         if_group3 = np.isin(county, p.localities.group3)
         main = where(
             if_group3,
-            p.up_grant_standard.group3.main[ceiling],
-            p.up_grant_standard.group2.main[ceiling],
+            p.payment.up_grant_standard.group3.main[ceiling],
+            p.payment.up_grant_standard.group2.main[ceiling],
         )
         addition = where(
             if_group3,
-            p.up_grant_standard.group3.addition,
-            p.up_grant_standard.group2.addition,
+            p.payment.up_grant_standard.group3.addition,
+            p.payment.up_grant_standard.group2.addition,
         )
 
         base_amount = main + additional * addition
         # Apply standard multiplier for increases since July 2020 base
-        multiplier = p.standard_multiplier
-        return base_amount * multiplier
+
+        return base_amount * p.standard_multiplier

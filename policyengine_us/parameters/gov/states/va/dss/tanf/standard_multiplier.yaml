@@ -6,31 +6,23 @@ metadata:
   label: Virginia TANF standard of assistance multiplier
   reference:
     - title: Virginia TANF Interim Working Group Report - January 2023
-      href: https://rga.lis.virginia.gov/Published/2023/RD197/PDF
+      href: https://rga.lis.virginia.gov/Published/2023/RD81/PDF#page=4
     - title: SB30 Budget Amendment 340#1s - 2022 TANF Standards Increase
       href: https://budget.lis.virginia.gov/amendment/2022/1/SB30/Introduced/CA/340/1s/
     - title: SB800 Budget Amendment 341#1s - 2023 TANF Standards Increase
       href: https://budget.lis.virginia.gov/amendment/2023/1/SB800/Introduced/FA/341/1s/
 
-# Multipliers calculated relative to 2020-07-01 base values in parameter tables
-# Historical increases: Jan 2016 (+2.5%), Jul 2016 (+2.5%), Jul 2017 (+2.5%),
+# Multipliers calculated relative to 2020-07-01 base values in parameter tables                                                                                             
+# Historical increases: Jan 2016 (+2.5%), Jul 2016 (+2.5%), Jul 2017 (+2.5%),                                                                                               
 # Jul 2019 (+5%), Jul 2020 (+15%), Jul 2021 (+10%), Jul 2022 (+5%), Jul 2023 (+10%)
 values:
-  # Pre-2016 base (before any increases since 2016)
+  # Pre-2016 base (before any increases since 2016) 
   1996-01-01: 0.7691
-  # January 2016: +2.5%
   2016-01-01: 0.7883
-  # July 2016: +2.5%
   2016-07-01: 0.808
-  # July 2017: +2.5%
   2017-07-01: 0.8282
-  # July 2019: +5%
   2019-07-01: 0.8696
-  # July 2020: +15% (base year for parameter tables)
   2020-07-01: 1.0
-  # July 2021: +10%
   2021-07-01: 1.1
-  # July 2022: +5%
   2022-07-01: 1.155
-  # July 2023: +10%
   2023-07-01: 1.2705
