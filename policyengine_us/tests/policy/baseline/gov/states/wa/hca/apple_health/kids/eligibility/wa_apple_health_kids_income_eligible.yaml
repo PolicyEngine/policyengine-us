@@ -1,0 +1,49 @@
+# Tests for Washington Apple Health for Kids income eligibility
+
+- name: Income at 150% FPL is eligible (free tier)
+  period: 2024
+  input:
+    medicaid_income_level: 1.5
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: true
+
+- name: Income at 215% FPL is eligible (free tier boundary with 5pp disregard)
+  period: 2024
+  input:
+    medicaid_income_level: 2.15
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: true
+
+- name: Income at 265% FPL is eligible (Tier 1 boundary)
+  period: 2024
+  input:
+    medicaid_income_level: 2.65
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: true
+
+- name: Income at 317% FPL is eligible (Tier 2 maximum)
+  period: 2024
+  input:
+    medicaid_income_level: 3.17
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: true
+
+- name: Income at 318% FPL is NOT eligible
+  period: 2024
+  input:
+    medicaid_income_level: 3.18
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: false
+
+- name: Income at 400% FPL is NOT eligible
+  period: 2024
+  input:
+    medicaid_income_level: 4.0
+    state_code: WA
+  output:
+    wa_apple_health_kids_income_eligible: false
