@@ -2,20 +2,20 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         earned_income: 1_000
-      parent2:
+      person2:
         earned_income: 2_000
-      child:
+      person3:
         earned_income: 300
-        is_child : true
+        is_child: true
         is_full_time_student: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_gross_earned_income: 3_000
@@ -24,20 +24,20 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         earned_income: 1_000
-      parent2:
+      person2:
         earned_income: 2_000
-      child:
+      person3:
         earned_income: 300
-        is_child : true
+        is_child: true
         is_full_time_student: false
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_gross_earned_income: 3_300
@@ -47,18 +47,18 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         earned_income: 1_000
-      parent2:
+      person2:
         earned_income: 2_000
-      parent3:
+      person3:
         earned_income: 1_000
     spm_units:
       spm_unit:
-        members: [parent1, parent2, parent3]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [parent1, parent2, parent3]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_gross_earned_income: 4_000

@@ -2,18 +2,18 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         work_hours_per_week: 0
         is_mother: true
-      parent2:
+      person2:
         work_hours_per_week: 0
         is_father: true
-      child:
+      person3:
         work_hours_per_week: 0
         is_child: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_is_full_time: false
@@ -22,18 +22,18 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         work_hours_per_week: 40
         is_mother: true
-      parent2:
+      person2:
         work_hours_per_week: 0
         is_father: true
-      child:
+      person3:
         work_hours_per_week: 0
         is_child: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_is_full_time: true
@@ -42,18 +42,18 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         work_hours_per_week: 29
         is_mother: true
-      parent2:
+      person2:
         work_hours_per_week: 0
         is_father: true
-      child:
+      person3:
         work_hours_per_week: 30
         is_child: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     va_tanf_is_full_time: false
@@ -62,18 +62,18 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         work_hours_per_week: 30
         is_mother: true
-      parent2:
+      person2:
         work_hours_per_week: 0
         is_father: true
-      child:
+      person3:
         work_hours_per_week: 0
         is_child: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: VA
   output:
     # 30 hours >= 30 threshold, so classified as full-time

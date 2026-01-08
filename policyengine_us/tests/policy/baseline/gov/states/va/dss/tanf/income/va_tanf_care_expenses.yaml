@@ -2,20 +2,20 @@
   period: 2023
   input:
     people:
-      parent:
+      person1:
         is_adult: true
         is_disabled: false
         age: 25
-      child:
+      person2:
         is_child: true
         age: 1
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
         va_tanf_is_full_time: true
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: VA
   output:
     va_tanf_care_expenses: 2_400
@@ -24,27 +24,27 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         is_adult: true
         is_disabled: false
         age: 25
-      parent2:
+      person2:
         is_adult: true
         is_disabled: true
         age: 25
-      child1:
+      person3:
         is_child: true
         age: 1
-      child2:
+      person4:
         is_child: true
         age: 2
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         va_tanf_is_full_time: true
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: VA
   output:
     va_tanf_care_expenses: 6_600
@@ -53,27 +53,27 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         is_adult: true
         is_disabled: false
         age: 25
-      parent2:
+      person2:
         is_adult: true
         is_disabled: true
         age: 25
-      child1:
+      person3:
         is_child: true
         age: 1
-      child2:
+      person4:
         is_child: true
         age: 3
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         va_tanf_is_full_time: false
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: VA
   output:
     va_tanf_care_expenses: 4_320

@@ -5,23 +5,23 @@
   period: 2023
   input:
     people:
-      mother:
+      person1:
         is_mother: true
         age: 30
         earned_income: 12_000
         work_hours_per_week: 40
-      child1:
+      person2:
         is_child: true
         age: 5
-      child2:
+      person3:
         is_child: true
         age: 3
     spm_units:
       spm_unit:
-        members: [mother, child1, child2]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [mother, child1, child2]
+        members: [person1, person2, person3]
         state_code: VA
         county_str: ARLINGTON_COUNTY_VA
   output:
@@ -61,20 +61,20 @@
   period: 2023
   input:
     people:
-      mother:
+      person1:
         is_mother: true
         age: 28
         earned_income: 6_000
         work_hours_per_week: 20
-      child1:
+      person2:
         is_child: true
         age: 4
     spm_units:
       spm_unit:
-        members: [mother, child1]
+        members: [person1, person2]
     households:
       household:
-        members: [mother, child1]
+        members: [person1, person2]
         state_code: VA
         county_str: PITTSYLVANIA_COUNTY_VA
   output:
@@ -114,30 +114,30 @@
   period: 2023
   input:
     people:
-      father:
+      person1:
         is_father: true
         age: 35
         earned_income: 0
         work_hours_per_week: 0
         is_disabled: false
-      mother:
+      person2:
         is_mother: true
         age: 32
         earned_income: 0
         work_hours_per_week: 0
         is_disabled: false
-      child1:
+      person3:
         is_child: true
         age: 8
-      child2:
+      person4:
         is_child: true
         age: 6
     spm_units:
       spm_unit:
-        members: [father, mother, child1, child2]
+        members: [person1, person2, person3, person4]
     households:
       household:
-        members: [father, mother, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: VA
         county_str: ARLINGTON_COUNTY_VA
   output:
@@ -176,20 +176,20 @@
   period: 2023
   input:
     people:
-      mother:
+      person1:
         is_mother: true
         age: 35
         earned_income: 30_000
         work_hours_per_week: 40
-      child1:
+      person2:
         is_child: true
         age: 10
     spm_units:
       spm_unit:
-        members: [mother, child1]
+        members: [person1, person2]
     households:
       household:
-        members: [mother, child1]
+        members: [person1, person2]
         state_code: VA
         county_str: ARLINGTON_COUNTY_VA
   output:
@@ -227,20 +227,20 @@
   period: 2023
   input:
     people:
-      mother:
+      person1:
         is_mother: true
         age: 25
         earned_income: 8_000
         work_hours_per_week: 35
-      infant:
+      person2:
         is_child: true
         age: 1
     spm_units:
       spm_unit:
-        members: [mother, infant]
+        members: [person1, person2]
     households:
       household:
-        members: [mother, infant]
+        members: [person1, person2]
         state_code: VA
         county_str: PITTSYLVANIA_COUNTY_VA
   output:
@@ -275,3 +275,205 @@
     # Minimum: $120, Maximum (Group II): $7,500
     # $1,587.20 >= $120 and <= $7,500, so benefit = $1,587.20
     va_tanf: 1_587.2
+
+- name: Family with earned and unearned income (child support)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 32
+        earned_income: 6_000
+        work_hours_per_week: 25
+        child_support_received: 2_400
+      person2:
+        is_child: true
+        age: 7
+      person3:
+        is_child: true
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $1,017/month * 12 = $12,204/year
+    va_tanf_need_standard: 12_204
+    #
+    # Grant standard: $508/month * 12 = $6,096/year
+    va_tanf_grant_standard: 6_096
+    #
+    # Part-time (25 hours < 30 hours threshold)
+    va_tanf_is_full_time: false
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
+    #   After flat: max($6,000 - $2,004, 0) = $3,996
+    #   After 20%: $3,996 * 0.8 = $3,196.80
+    va_tanf_countable_earned_income: 3_196.8
+    #
+    # Unearned income:
+    #   Child support received: $2,400/year = $200/month
+    #   Child support disregard: $100/month * 12 = $1,200/year
+    #   Countable child support: $2,400 - $1,200 = $1,200/year
+    va_tanf_countable_unearned_income: 1_200
+    #
+    # Care expenses (part-time, 2 children age 2+): $120 * 2 * 12 = $2,880/year
+    va_tanf_care_expenses: 2_880
+    #
+    # Countable income: max($3,196.80 - $2,880 + $1,200, 0) = $1,516.80
+    va_tanf_countable_income: 1_516.8
+    #
+    # Income eligibility: $1,516.80 <= $12,204? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $6,096 - $1,516.80 = $4,579.20
+    # Minimum: $120, Maximum: $8,940
+    # $4,579.20 >= $120 and <= $8,940, so benefit = $4,579.20
+    va_tanf: 4_579.2
+
+- name: Large family (size 8) in Group III locality
+  period: 2023
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 38
+        earned_income: 10_000
+        work_hours_per_week: 30
+      person2:
+        is_father: true
+        age: 40
+        earned_income: 0
+        work_hours_per_week: 0
+        is_disabled: true
+      person3:
+        is_child: true
+        age: 16
+      person4:
+        is_child: true
+        age: 14
+      person5:
+        is_child: true
+        age: 11
+      person6:
+        is_child: true
+        age: 8
+      person7:
+        is_child: true
+        age: 5
+      person8:
+        is_child: true
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VA
+        county_str: FAIRFAX_COUNTY_VA
+  output:
+    # Family size: 8
+    # Group III locality (Fairfax County)
+    #
+    # Need standard (size 8): $1,868/month * 12 = $22,416/year
+    va_tanf_need_standard: 22_416
+    #
+    # Grant standard (size 8): $933/month * 12 = $11,196/year
+    va_tanf_grant_standard: 11_196
+    #
+    # Full-time (30 hours >= 30 hours threshold)
+    va_tanf_is_full_time: true
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 8, uses size 6+ rate): $240/month * 12 = $2,880/year
+    #   After flat: max($10,000 - $2,880, 0) = $7,120
+    #   After 20%: $7,120 * 0.8 = $5,696
+    va_tanf_countable_earned_income: 5_696
+    #
+    # Care expenses (full-time):
+    #   - 1 disabled adult: $175/month
+    #   - 6 children age 2+: $175 * 6 = $1,050/month
+    #   Total: ($175 + $1,050) * 12 = $14,700/year
+    va_tanf_care_expenses: 14_700
+    #
+    # Countable income: max($5,696 - $14,700 + $0, 0) = $0
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $22,416? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $11,196 - $0 = $11,196
+    # Maximum (Group III): $745 * 12 = $8,940
+    # $11,196 > $8,940, so capped at $8,940
+    va_tanf: 8_940
+
+- name: Family with disabled adult as care recipient
+  period: 2023
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 45
+        earned_income: 9_000
+        work_hours_per_week: 35
+      person2:
+        is_father: true
+        age: 50
+        earned_income: 0
+        work_hours_per_week: 0
+        is_disabled: true
+      person3:
+        is_child: true
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $836/month * 12 = $10,032/year
+    va_tanf_need_standard: 10_032
+    #
+    # Grant standard: $417/month * 12 = $5,004/year
+    va_tanf_grant_standard: 5_004
+    #
+    # Full-time (35 hours >= 30 hours threshold)
+    va_tanf_is_full_time: true
+    #
+    # Earned income deduction:
+    #   Flat exclusion (size 3): $167/month * 12 = $2,004/year
+    #   After flat: max($9,000 - $2,004, 0) = $6,996
+    #   After 20%: $6,996 * 0.8 = $5,596.80
+    va_tanf_countable_earned_income: 5_596.8
+    #
+    # Care expenses (full-time):
+    #   - 1 disabled adult age 50 (2+): $175/month
+    #   - 1 child age 12 (2+): $175/month
+    #   Total: ($175 + $175) * 12 = $4,200/year
+    va_tanf_care_expenses: 4_200
+    #
+    # Countable income: max($5,596.80 - $4,200 + $0, 0) = $1,396.80
+    va_tanf_countable_income: 1_396.8
+    #
+    # Income eligibility: $1,396.80 <= $10,032? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $5,004 - $1,396.80 = $3,607.20
+    # Minimum: $120, Maximum (Group II): $7,500
+    # $3,607.20 >= $120 and <= $7,500, so benefit = $3,607.20
+    va_tanf: 3_607.2

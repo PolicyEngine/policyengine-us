@@ -1,13 +1,13 @@
-description: Virginia provides up to this amount to families living in group II localities under the TANF program, depending on household size.
+description: Virginia provides up to this amount to families living in group II localities under the Temporary Assistance for Needy Families Unemployed Parent program, by household size.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 11)
-  label: Virginia TANF group II localities assistance
+  label: Virginia TANF-UP group II localities assistance
   reference:
-    - title: Virginia TANF Guidance Manual - Need and Amount of Assistance 
+    - title: Virginia TANF Manual, p. 25 - UP Grant Standards
       href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=25
 
 1: 
