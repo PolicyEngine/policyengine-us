@@ -1,4 +1,36 @@
+- name: Zero earned income returns zero.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_gross_earned_income: 0
+    spm_unit_size: 3
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Earned income below flat exclusion returns zero.
+  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
+  # Income $1,500 < $2,004, so max_($1,500 - $2,004, 0) = 0
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_gross_earned_income: 1_500
+    spm_unit_size: 3
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Earned income exactly at flat exclusion returns zero.
+  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
+  # max_($2,004 - $2,004, 0) * 0.8 = 0
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_gross_earned_income: 2_004
+    spm_unit_size: 3
+  output:
+    va_tanf_countable_earned_income: 0
+
 - name: Earned income $5,004, 3 household members, $2,400 per year after deduction.
+  # ($5,004 - $2,004) * 0.8 = $3,000 * 0.8 = $2,400
   period: 2023
   input:
     state_code: VA

@@ -1,4 +1,4 @@
-- name: If one person and lives in Arlington, grand standard is $316 * 12/yr.
+- name: If one person and lives in Arlington, grant standard is $316 * 12/yr.
   period: 2023
   input:
     state_code: VA
@@ -7,7 +7,7 @@
   output:
     va_tanf_grant_standard: 316 * 12
 
-- name: If ten person and lives in Fairfax, grand standard is $1,085 * 12/yr.
+- name: If ten person and lives in Fairfax, grant standard is $1,085 * 12/yr.
   period: 2023
   input:
     state_code: VA
@@ -16,7 +16,17 @@
   output:
     va_tanf_grant_standard: 1_085 * 12
 
-- name: If twelve person and lives in Montgomery, grand standard is $1,247 * 12/yr.
+- name: If eleven person and lives in Arlington, grant standard is ($1,085 + $81) * 12/yr.
+  # Family size 11 = main[10] + 1 * addition = $1,085 + $81 = $1,166/month
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 11
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_166 * 12
+
+- name: If twelve person and lives in Montgomery, grant standard is $1,247 * 12/yr.
   period: 2023
   input:
     state_code: VA
@@ -25,7 +35,7 @@
   output:
     va_tanf_grant_standard: 1_247 * 12
 
-- name: If one person and lives in Bedford, grand standard is $226 * 12/yr.
+- name: If one person and lives in Bedford, grant standard is $226 * 12/yr.
   period: 2023
   input:
     state_code: VA
@@ -34,7 +44,7 @@
   output:
     va_tanf_grant_standard: 226 * 12
 
-- name: If ten person and lives in Frederick, grand standard is $975 * 12/yr.
+- name: If ten person and lives in Frederick, grant standard is $975 * 12/yr.
   period: 2023
   input:
     state_code: VA
@@ -43,7 +53,17 @@
   output:
     va_tanf_grant_standard: 975 * 12
 
-- name: If twelve person and lives in Pittsylvania, grand standard is $1,137 * 12/yr.
+- name: If eleven person and lives in Bedford, grant standard is ($975 + $81) * 12/yr.
+  # Family size 11 = main[10] + 1 * addition = $975 + $81 = $1,056/month
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 11
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_056 * 12
+
+- name: If twelve person and lives in Pittsylvania, grant standard is $1,137 * 12/yr.
   period: 2023
   input:
     state_code: VA
