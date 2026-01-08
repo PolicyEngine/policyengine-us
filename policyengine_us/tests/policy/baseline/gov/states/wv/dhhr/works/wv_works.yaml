@@ -1,0 +1,82 @@
+# Unit tests for wv_works (final benefit amount)
+# Formula: Benefit = max(Payment Standard - Countable Income, 0)
+# Payment Standards by household size:
+#   Size 1=$417, 2=$480, 3=$542, 4=$612, 5=$670, 6=$734, 7=$793, 8-10=$811
+# Source: WV Income Maintenance Manual Chapter 10 Appendix A, Section 4.5.3.B
+
+- name: Case 1, not eligible receives zero.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: false
+    spm_unit_size: 3
+    wv_works_countable_income: 0
+  output:
+    wv_works: 0
+
+- name: Case 2, eligible with no income gets maximum benefit.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: true
+    spm_unit_size: 3
+    wv_works_countable_income: 0
+  output:
+    # Payment standard for size 3: $542
+    # Benefit = 542 - 0 = 542
+    wv_works: 542
+
+- name: Case 3, eligible with some countable income.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: true
+    spm_unit_size: 3
+    wv_works_countable_income: 300
+  output:
+    # Payment standard for size 3: $542
+    # Benefit = 542 - 300 = 242
+    wv_works: 242
+
+- name: Case 4, high countable income reduces benefit to zero.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: true
+    spm_unit_size: 3
+    wv_works_countable_income: 600
+  output:
+    # Payment standard for size 3: $542
+    # Raw benefit = 542 - 600 = -58
+    # Benefit capped at 0
+    wv_works: 0
+
+- name: Case 5, household size 10 uses max payment standard.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: true
+    spm_unit_size: 10
+    wv_works_countable_income: 200
+  output:
+    # Payment standard for size 10: $811
+    # Benefit = 811 - 200 = 611
+    wv_works: 611
+
+- name: Case 6, household size 12 uses size 10 payment standard.
+  absolute_error_margin: 0.3
+  period: 2025-01
+  input:
+    state_code: WV
+    wv_works_eligible: true
+    spm_unit_size: 12
+    wv_works_countable_income: 100
+  output:
+    # Size capped at 10, payment standard: $811
+    # Benefit = 811 - 100 = 711
+    wv_works: 711

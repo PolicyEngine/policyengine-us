@@ -1,0 +1,181 @@
+# Integration tests for CT TFA program
+# Tests the complete benefit calculation pipeline with realistic household structures
+
+- name: Integration test - eligible family with two earners
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 1_200
+      person2:
+        age: 35
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_tfa_countable_earned_income_at_application: [10, 110, 0]
+    ct_tfa_eligible: true
+    ct_tfa_payment_standard: 833
+    ct_tfa: 833
+
+- name: Integration test - single parent with one child, zero income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_tfa_income_eligible: true
+    ct_tfa_resources_eligible: true
+    ct_tfa_eligible: true
+    ct_tfa_payment_standard: 661
+    ct_tfa: 661
+
+- name: Integration test - existing recipient high earner gets 20% reduction
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      parent:
+        age: 30
+        # 171% FPG for size 2 = 1,643.33 * 1.71 = 2,810.09
+        # Monthly: 2,900 > 2,810.09, so high earner
+        employment_income_before_lsr: 34_800
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_tfa_eligible: true
+    ct_tfa_payment_standard: 661
+    # 661 * 0.8 = 528.8
+    ct_tfa: 528.8
+
+- name: Integration test - maximum household size (8 people)
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        is_tax_unit_dependent: true
+      child4:
+        age: 10
+        is_tax_unit_dependent: true
+      child5:
+        age: 8
+        is_tax_unit_dependent: true
+      child6:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6]
+        state_code: CT
+  output:
+    ct_tfa_payment_standard: 1_693
+    ct_tfa_eligible: true
+    ct_tfa: 1_693
+
+- name: Integration test - only unearned income, no earned
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      parent:
+        age: 30
+        social_security: 2_400  # $200/month unearned
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_tfa_eligible: true
+    ct_tfa_payment_standard: 661
+    # 661 - 200 = 461
+    ct_tfa: 461
+
+- name: Integration test - ineligible due to resources exceeding limit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 6_001  # One dollar above $6,000 limit
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
+    ct_tfa_eligible: false
+    ct_tfa: 0

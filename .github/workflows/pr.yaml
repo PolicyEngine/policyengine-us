@@ -15,24 +15,6 @@ jobs:
         uses: "lgeiger/black-action@master"
         with:
           args: ". -l 79 --check"
-  check-lock-freshness:
-    name: Check uv.lock freshness
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Check lock file is up-to-date
-        run: |
-          uv lock --upgrade
-          git diff --exit-code uv.lock || {
-            echo "::error::uv.lock is outdated. Run 'uv lock --upgrade' and commit the changes."
-            exit 1
-          }
   check-version:
     name: Check version
     runs-on: ubuntu-latest

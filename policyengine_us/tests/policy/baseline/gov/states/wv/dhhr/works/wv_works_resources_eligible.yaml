@@ -1,0 +1,52 @@
+# Unit tests for wv_works_resources_eligible
+# Tests resource/asset eligibility against $2,000 limit
+# Source: WV Income Maintenance Manual Chapter 11
+
+- name: Case 1, no assets is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_assets: 0
+  output:
+    wv_works_resources_eligible: true
+
+- name: Case 2, assets below limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_assets: 1_500
+  output:
+    # Assets: $1,500
+    # Limit: $2,000
+    # 1,500 <= 2,000 = eligible
+    wv_works_resources_eligible: true
+
+- name: Case 3, assets at exact limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_assets: 2_000
+  output:
+    # Assets: $2,000
+    # Limit: $2,000
+    # 2,000 <= 2,000 = eligible
+    wv_works_resources_eligible: true
+
+- name: Case 4, assets above limit is ineligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_assets: 2_001
+  output:
+    # Assets: $2,001
+    # Limit: $2,000
+    # 2,001 > 2,000 = ineligible
+    wv_works_resources_eligible: false
+
+- name: Case 5, assets well above limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_assets: 10_000
+  output:
+    wv_works_resources_eligible: false
