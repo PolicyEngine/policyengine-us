@@ -1,0 +1,115 @@
+# Tests for Colorado OmniSalud benefit calculation
+# The benefit equals the SLCSP (second lowest cost silver plan) premium
+# for eligible individuals
+
+- name: Eligible undocumented adult receives SLCSP as annual benefit
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: false
+        medicaid_income_level: 1.0  # 100% FPL - under 150% limit
+    tax_units:
+      tax_unit:
+        members: [adult]
+        slcsp: 6_000  # Yearly SLCSP
+    households:
+      household:
+        members: [adult]
+        state_code: CO
+  output:
+    co_omnisalud_eligible: [true]
+    co_omnisalud: 6_000
+
+- name: Ineligible citizen receives zero benefit
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: false
+        medicaid_income_level: 1.0  # 100% FPL
+    tax_units:
+      tax_unit:
+        members: [adult]
+        slcsp: 6_000
+    households:
+      household:
+        members: [adult]
+        state_code: CO
+  output:
+    co_omnisalud_eligible: [false]
+    co_omnisalud: 0
+
+- name: Tax unit with one eligible member receives benefit
+  period: 2024
+  input:
+    people:
+      citizen_adult:
+        age: 35
+        immigration_status: CITIZEN
+        is_pregnant: false
+        medicaid_income_level: 1.0  # 100% FPL
+      undocumented_spouse:
+        age: 32
+        immigration_status: UNDOCUMENTED
+        is_pregnant: false
+        medicaid_income_level: 1.0  # 100% FPL
+    tax_units:
+      tax_unit:
+        members: [citizen_adult, undocumented_spouse]
+        slcsp: 9_600  # Yearly SLCSP for couple
+    households:
+      household:
+        members: [citizen_adult, undocumented_spouse]
+        state_code: CO
+  output:
+    # Citizen is not eligible, undocumented spouse is eligible
+    co_omnisalud_eligible: [false, true]
+    # Tax unit gets benefit because at least one member is eligible
+    co_omnisalud: 9_600
+
+- name: Income too high - no benefit
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: false
+        medicaid_income_level: 2.0  # 200% FPL - above 150% limit
+    tax_units:
+      tax_unit:
+        members: [adult]
+        slcsp: 6_000
+    households:
+      household:
+        members: [adult]
+        state_code: CO
+  output:
+    co_omnisalud_eligible: [false]
+    co_omnisalud: 0
+
+- name: Program not in effect before 2022
+  period: 2021
+  input:
+    people:
+      adult:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: false
+        medicaid_income_level: 1.0  # 100% FPL
+    tax_units:
+      tax_unit:
+        members: [adult]
+        slcsp: 6_000
+    households:
+      household:
+        members: [adult]
+        state_code: CO
+  output:
+    co_omnisalud_eligible: [false]
+    co_omnisalud: 0
