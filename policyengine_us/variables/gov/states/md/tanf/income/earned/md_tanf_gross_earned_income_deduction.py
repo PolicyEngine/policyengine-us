@@ -8,6 +8,7 @@ class md_tanf_gross_earned_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
+    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc"
 
     def formula(spm_unit, period, parameters):
         # Get TANF enrollment status.
@@ -22,12 +23,8 @@ class md_tanf_gross_earned_income_deduction(Variable):
         # Get the policy parameters.
         p = parameters(period).gov.states.md.tanf.income.deductions.earned
         percent = select(
-            # First arg: list of conditions
             [~is_tanf_enrolled, has_self_employment_income],
-            # Second arg: list of values to return if the corresponding condition is True
             [p.new, p.self_employed],
-            # Third arg: default value to return if none of the conditions are True
             default=p.not_self_employed,
         )
-        # Multiply earned income by percent deduction.
         return earned_income * percent

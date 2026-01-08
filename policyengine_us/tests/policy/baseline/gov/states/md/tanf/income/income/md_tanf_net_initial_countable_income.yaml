@@ -1,16 +1,8 @@
-- name: No alimony, child support, or childcare, initial deductions of $40, earned income of $100, $60 per year
+- name: Case 1, earned income minus initial deductions equals net initial countable income.
   period: 2023
   input:
-    people:
-      person1:
-        alimony_income: 0
-        child_support_received: 0
-      person2:
-        alimony_income: 0
-        child_support_received: 0
     spm_units:
       spm_unit:
-        members: [person1, person2]
         md_tanf_childcare_deduction: 0
         md_tanf_initial_earnings_deduction: 40
         md_tanf_countable_gross_earned_income: 100
@@ -21,48 +13,32 @@
   output:
     md_tanf_net_initial_countable_income: 60
 
-- name: No alimony or childcare, child support of $10, initial deductions of $40, earned income of $100, $50 per year
+- name: Case 2, earned and unearned income minus deductions.
   period: 2023
   input:
-    people:
-      person1:
-        alimony_income: 0
-        child_support_received: 10
-      person2:
-        alimony_income: 0
-        child_support_received: 0
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        md_tanf_childcare_deduction: 0
+        md_tanf_childcare_deduction: 10
         md_tanf_initial_earnings_deduction: 40
         md_tanf_countable_gross_earned_income: 100
-        md_tanf_countable_gross_unearned_income: 0
+        md_tanf_countable_gross_unearned_income: 50
     households:
       household:
         state_code: MD
   output:
-    md_tanf_net_initial_countable_income: 50
+    md_tanf_net_initial_countable_income: 100
 
-- name: No childcare or child support, alimony of $10, initial deductions of $40, earned income of $100, $50 per year
+- name: Case 3, large deductions result in zero net income (not negative).
   period: 2023
   input:
-    people:
-      person1:
-        alimony_income: 10
-        child_support_received: 0
-      person2:
-        alimony_income: 0
-        child_support_received: 0
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        md_tanf_childcare_deduction: 0
-        md_tanf_initial_earnings_deduction: 40
-        md_tanf_countable_gross_earned_income: 100
-        md_tanf_countable_gross_unearned_income: 0
+        md_tanf_childcare_deduction: 50
+        md_tanf_initial_earnings_deduction: 100
+        md_tanf_countable_gross_earned_income: 80
+        md_tanf_countable_gross_unearned_income: 20
     households:
       household:
         state_code: MD
   output:
-    md_tanf_net_initial_countable_income: 50
+    md_tanf_net_initial_countable_income: 0

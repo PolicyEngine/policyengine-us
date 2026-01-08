@@ -1,12 +1,12 @@
-description: Maryland excludes this portion of the childcare expenses from TANF countable earned income for full-time enrollees.
+description: Maryland provides this monthly childcare deduction per child for full-time workers under the TANF program.
 
 values:
   2022-11-01: 200
 
 metadata:
-  period: year
+  period: month
   unit: currency-USD
-  label: Maryland TANF childcare expense exclusion for full-time enrollees
+  label: Maryland TANF childcare deduction for full-time workers
   reference:
-    - title: Maryland TEMPORARY CASH ASSISTANCE MANUAL 904.1 DEDUCTIONS FROM EARNED INCOME
+    - title: Maryland Temporary Cash Assistance Manual - Section 904.1 Deductions from Earned Income
       href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc

@@ -1,0 +1,43 @@
+- name: Integration test, single parent with one child, part-time work.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        work_hours_per_week: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_is_child: [false, true]
+    md_tanf_count_children: 1
+    md_tanf_eligible: true
+
+- name: Integration test, household with no children is ineligible.
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 12_000
+      adult2:
+        age: 28
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_is_child: [false, false]
+    md_tanf_count_children: 0
+    md_tanf_eligible: false
+    md_tanf_maximum_benefit: 0
+    md_tanf: 0

@@ -1,87 +1,63 @@
-- name: "Net gross earnings of 6000, family size of 3"
+- name: Case 1, net countable income of 6_000, family size of 3, receives 1_632 benefit.
   period: 2023
   input:
     people:
       person1:
-        employment_income: 12000
+        employment_income: 12_000
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 1200
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
-      person3: 
+      person3:
         employment_income: 0
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        md_tanf_maximum_benefit: 7632
-        childcare_expenses: 2400
-        md_tanf_net_countable_income: 6000
+        md_tanf_maximum_benefit: 7_632
+        md_tanf_net_countable_income: 6_000
     households:
       household:
         state_code: MD
   output:
-    md_tanf: 1632
+    md_tanf: 1_632
 
-- name: "Net gross earnings of 1560, family size of 2"
+- name: Case 2, net countable income of 1_560, family size of 2, receives 4_476 benefit.
   period: 2023
   input:
     people:
       person1:
-        employment_income: 3600
+        employment_income: 3_600
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
-        md_tanf_maximum_benefit: 6036
-        childcare_expenses: 600
-        md_tanf_net_countable_income: 1560
-    households: 
+        md_tanf_maximum_benefit: 6_036
+        md_tanf_net_countable_income: 1_560
+    households:
       household:
         state_code: MD
   output:
-    md_tanf: 4476
+    md_tanf: 4_476
 
-- name: "Net gross earnings of 7000, family size of 2"
+- name: Case 3, net countable income exceeds maximum benefit, receives 0.
   period: 2023
   input:
     people:
       person1:
-        employment_income: 11000
+        employment_income: 11_000
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
-        #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 0
-        alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
-        md_tanf_maximum_benefit: 6036
-        childcare_expenses: 2400
-        md_tanf_net_countable_income: 6600
+        md_tanf_maximum_benefit: 6_036
+        md_tanf_net_countable_income: 6_600
     households:
       household:
         state_code: MD

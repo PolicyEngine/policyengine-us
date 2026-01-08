@@ -1,9 +1,12 @@
-description: Maryland provides the TANF benefit for children below this age threshold.
+description: Maryland limits TANF eligibility to children below this age threshold.
+
 values:
   2022-11-01: 19
+
 metadata:
-  unit: age
+  unit: year
+  period: year
   label: Maryland TANF age limit
   reference:
-    - title: Family investment administration temporary cash assistance manual - Age
+    - title: Maryland Temporary Cash Assistance Manual - Section 0307 Age
       href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0300-Technical-Eligibility/0307%20Age%20rev%2011.22.doc

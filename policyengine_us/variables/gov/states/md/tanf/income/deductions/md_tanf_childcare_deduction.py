@@ -1,8 +1,6 @@
 from policyengine_us.model_api import *
 
 
-# reference: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc
-#            page 1
 class md_tanf_childcare_deduction(Variable):
     value_type = float
     entity = SPMUnit
@@ -10,6 +8,7 @@ class md_tanf_childcare_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
+    reference = "https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc"
 
     def formula(spm_unit, period, parameters):
         children = spm_unit("md_tanf_count_children", period)

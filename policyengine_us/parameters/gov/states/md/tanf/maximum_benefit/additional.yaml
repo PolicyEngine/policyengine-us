@@ -1,4 +1,4 @@
-description: Maryland TANF grant standard additional amount per child over 10.
+description: Maryland provides this additional amount per person for households exceeding the maximum unit size.
 
 values:
   2021-10-01: 136
@@ -6,6 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: month
+  label: Maryland TANF additional grant amount per person
   reference:
-    - title: Family Investment Programs Income Guidelines as of October 01, 2021
-      href: https://dhs.maryland.gov/documents/Supplemental%20Nutrition%20Assistance%20Program%20(SNAP)/October-2020-Income-Guidelines-1-1.pdf
+    - title: Maryland Temporary Cash Assistance Manual - Section 0908 Grant Determination
+      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0908%20Grant%20Determination%20rev%2011.22.doc
