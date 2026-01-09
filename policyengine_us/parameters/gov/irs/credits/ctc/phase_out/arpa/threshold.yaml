@@ -11,7 +11,8 @@ SURVIVING_SPOUSE:
   0000-01-01: 150_000
 metadata:
   label: CTC phase-out threshold (ARPA)
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

@@ -11,7 +11,8 @@ SURVIVING_SPOUSE:
   2013-01-01: 200_000
 metadata:
   label: Additional Medicare Tax rate exclusion
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   reference:
     # Employee:

@@ -26,7 +26,8 @@ SURVIVING_SPOUSE:
     label: WFTCA surviving spouse filer amount
 metadata:
   label: Bonus guaranteed deduction
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

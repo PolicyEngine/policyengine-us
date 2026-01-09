@@ -21,5 +21,6 @@ SURVIVING_SPOUSE:
   2021-01-01: 0
 metadata:
   label: Unemployment compensation exemption cutoff
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD

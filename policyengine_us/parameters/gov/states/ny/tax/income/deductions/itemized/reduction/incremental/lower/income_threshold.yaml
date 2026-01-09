@@ -17,7 +17,8 @@ HEAD_OF_HOUSEHOLD:
 
 metadata:
   label: New York itemized deduction higher incremental reduction lower income threshold
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

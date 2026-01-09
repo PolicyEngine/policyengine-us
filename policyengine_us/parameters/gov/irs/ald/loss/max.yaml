@@ -1,7 +1,8 @@
 description: Maximum amount of business losses deductible
 metadata:
   label: Business loss limitation
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

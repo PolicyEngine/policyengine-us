@@ -26,7 +26,8 @@ HEAD_OF_HOUSEHOLD:
   2025-01-01: 90_000
 metadata:
   label: Social Security Benefits Credit phase-out threshold
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

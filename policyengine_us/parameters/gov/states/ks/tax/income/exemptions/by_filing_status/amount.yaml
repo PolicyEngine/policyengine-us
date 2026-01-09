@@ -20,7 +20,8 @@ SEPARATE:
 
 metadata:
   label: Kansas personal exemption by filing status amount
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   period: year
   unit: currency-USD
   reference:

@@ -315,7 +315,8 @@ WY:
 
 metadata:
   label: HHS SMI 4-person household
-  breakdown: [state_code]
+  breakdown:
+    - state_code
   unit: currency-USD
   period: year
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income

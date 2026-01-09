@@ -1,7 +1,8 @@
 description: Maximum amount of state and local income, sales and real estate tax deductions allowed.
 metadata:
   label: SALT cap
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
 HEAD_OF_HOUSEHOLD:

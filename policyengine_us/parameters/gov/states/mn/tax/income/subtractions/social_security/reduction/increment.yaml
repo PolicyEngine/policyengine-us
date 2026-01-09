@@ -1,7 +1,8 @@
 description: Minnesota reduces the social security subtraction in these increments of adjusted gross income.
 metadata:
   label: Minnesota social security subtraction reduction increment
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: bool
   period: year
   reference:

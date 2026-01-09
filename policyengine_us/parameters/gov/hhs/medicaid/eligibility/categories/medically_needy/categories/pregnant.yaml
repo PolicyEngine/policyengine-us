@@ -1,7 +1,8 @@
 description: Whether pregnant people can qualify for Medicaid under the 'medically needy' pathway.
 metadata:
   label: Medicaid medically needy pathway for pregnant people
-  breakdown: [state_code]
+  breakdown:
+    - state_code
   unit: bool
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"

@@ -26,7 +26,8 @@ SURVIVING_SPOUSE:
     label: WFTCA surviving spouse filer phase-out threshold
 metadata:
   label: Bonus guaranteed deduction phase-out threshold
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:

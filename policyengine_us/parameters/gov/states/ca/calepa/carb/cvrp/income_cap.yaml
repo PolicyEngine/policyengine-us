@@ -19,7 +19,8 @@ SEPARATE:
 
 metadata:
   label: California Clean Vehicle Rebate income cap
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   reference:
   - title: CVRP Info | Eligibility & Requirements

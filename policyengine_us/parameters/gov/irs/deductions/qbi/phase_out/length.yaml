@@ -1,7 +1,8 @@
 description: Dollar gap between upper and lower threshold of pre-QBID taxable income
 metadata:
   label: QBID phase-out length
-  breakdown: [filing_status]
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   reference:
