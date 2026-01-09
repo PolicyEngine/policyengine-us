@@ -1,4 +1,6 @@
-- bump: minor
+- bump: patch
   changes:
-    added:
-      - Add Florida Temporary Cash Assistance (TCA) program.
+    changed:
+      - Add 2025 references to all Missouri income tax parameters.
+      - Add 2025 value for mo_max_social_security_benefit ($48,216).
+      - Add 2025 test cases for Missouri income tax and capital gains subtraction.
