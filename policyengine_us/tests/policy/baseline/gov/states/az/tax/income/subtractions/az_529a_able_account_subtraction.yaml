@@ -12,7 +12,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_able_account_contributions: 1_500
+    able_contributions: 1_500
   output:
     # Contribution of $1,500 is under the $2,000 limit for single filers
     az_529a_able_account_subtraction: 1_500
@@ -22,7 +22,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_able_account_contributions: 2_000
+    able_contributions: 2_000
   output:
     # Contribution of $2,000 equals the limit for single filers
     az_529a_able_account_subtraction: 2_000
@@ -32,7 +32,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_able_account_contributions: 3_000
+    able_contributions: 3_000
   output:
     # Contribution of $3,000 exceeds the $2,000 limit - capped at $2,000
     az_529a_able_account_subtraction: 2_000
@@ -42,7 +42,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_able_account_contributions: 2_500
+    able_contributions: 2_500
   output:
     # HOH has same $2,000 limit as single - contribution capped
     az_529a_able_account_subtraction: 2_000
@@ -52,7 +52,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_able_account_contributions: 3_500
+    able_contributions: 3_500
   output:
     # Joint filers have $4,000 limit - $3,500 is under limit
     az_529a_able_account_subtraction: 3_500
@@ -62,7 +62,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_able_account_contributions: 4_000
+    able_contributions: 4_000
   output:
     # Joint filers have $4,000 limit
     az_529a_able_account_subtraction: 4_000
@@ -72,7 +72,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_able_account_contributions: 5_000
+    able_contributions: 5_000
   output:
     # Joint filers have $4,000 limit - contribution capped
     az_529a_able_account_subtraction: 4_000
@@ -82,7 +82,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    az_able_account_contributions: 2_000
+    able_contributions: 2_000
   output:
     # Separate filers have $4,000 combined limit per beneficiary
     # Individual contribution of $2,000 is under combined limit
@@ -93,7 +93,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    az_able_account_contributions: 4_000
+    able_contributions: 4_000
   output:
     # Separate filers have $4,000 combined limit per beneficiary
     az_529a_able_account_subtraction: 4_000
@@ -103,7 +103,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_able_account_contributions: 0
+    able_contributions: 0
   output:
     az_529a_able_account_subtraction: 0
 
@@ -112,7 +112,7 @@
   input:
     state_code: CA
     filing_status: SINGLE
-    az_able_account_contributions: 1_500
+    able_contributions: 1_500
   output:
     # Non-Arizona residents do not receive Arizona subtractions
     az_529a_able_account_subtraction: 0
