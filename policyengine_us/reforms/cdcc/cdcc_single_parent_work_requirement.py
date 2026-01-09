@@ -11,28 +11,42 @@ def create_cdcc_single_parent_work_requirement() -> Reform:
 
     This reform: Changes the cap to the maximum of the two spouses' earnings,
     allowing families to qualify if at least one parent works.
+
+    Note: We override cdcc_relevant_expenses directly (rather than
+    min_head_spouse_earned) to avoid affecting state programs that also
+    use min_head_spouse_earned.
     """
 
-    class min_head_spouse_earned(Variable):
+    class cdcc_relevant_expenses(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Greater of head and spouse's earnings (reform)"
+        label = "CDCC-relevant care expenses"
         unit = USD
         definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/21#c",
+            "https://www.law.cornell.edu/uscode/text/26/21#d_1",
+        )
 
         def formula(tax_unit, period, parameters):
+            expenses = tax_unit("tax_unit_childcare_expenses", period)
+            cdcc_limit = tax_unit("cdcc_limit", period)
+            eligible_capped_expenses = min_(expenses, cdcc_limit)
+
+            # Reform: Use max of head/spouse earnings instead of min
+            # This allows eligibility if at least one parent works
             is_joint = tax_unit("tax_unit_is_joint", period)
             head_earnings = tax_unit("head_earned", period)
             spouse_earnings = tax_unit("spouse_earned", period)
-            # Use max_ instead of min_ to allow eligibility if at least
-            # one parent works
-            return where(
+            earnings_cap = where(
                 is_joint, max_(head_earnings, spouse_earnings), head_earnings
             )
 
+            return min_(eligible_capped_expenses, earnings_cap)
+
     class reform(Reform):
         def apply(self):
-            self.update_variable(min_head_spouse_earned)
+            self.update_variable(cdcc_relevant_expenses)
 
     return reform
 
@@ -43,9 +57,12 @@ def create_cdcc_single_parent_work_requirement_reform(
     if bypass:
         return create_cdcc_single_parent_work_requirement()
 
-    # This reform can be controlled by a parameter if needed
-    # For now, always return None unless bypassed
-    return None
+    p = parameters(period).gov.contrib.cdcc.single_parent_work_requirement
+
+    if p.in_effect:
+        return create_cdcc_single_parent_work_requirement()
+    else:
+        return None
 
 
 cdcc_single_parent_work_requirement = (
