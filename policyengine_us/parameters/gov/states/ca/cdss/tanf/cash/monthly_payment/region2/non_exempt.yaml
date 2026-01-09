@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: California CalWORKs monthly payment level - non-exempt map region 2
   reference:
     - title: County of San Diego CalWORKS Program Guide | CalWORKs Payment Standards Chart
