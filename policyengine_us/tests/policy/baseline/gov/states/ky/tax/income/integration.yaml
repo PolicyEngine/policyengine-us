@@ -94,7 +94,7 @@
   output:
     ky_agi: [20_000, 25_000]
     # If filing a joint return, only one standard deduction is allowed.
-    # default: older perpon is head
+    # default: older person is head
     ky_standard_deduction_joint: [0, 2_770]
     ky_itemized_deductions_joint: [0, 0] 
     ky_taxable_income_joint: [0, 42_230]
@@ -164,7 +164,7 @@
   output:
     ky_agi: [20_000, 25_000, 0]
     # If filing a joint return, only one standard deduction is allowed.
-    # default: older perpon is head
+    # default: older person is head
     ky_standard_deduction_joint: [0, 2_770, 0]
     ky_itemized_deductions_joint: [0, 0, 0] 
     ky_taxable_income_joint: [0, 42_230, 0]
