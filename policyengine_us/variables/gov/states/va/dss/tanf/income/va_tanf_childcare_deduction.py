@@ -18,7 +18,7 @@ class va_tanf_childcare_deduction(Variable):
         age = person("age", period.this_year)
         dependent = person("is_tax_unit_dependent", period)
         disabled_adult = person("is_adult", period) & person(
-            "is_disabled", period
+            "is_disabled", period.this_year
         )
         care_recipient = dependent | disabled_adult
         childcare_expenses = spm_unit("childcare_expenses", period)

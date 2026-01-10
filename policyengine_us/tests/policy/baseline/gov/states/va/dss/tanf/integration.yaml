@@ -326,7 +326,7 @@
     # Countable income: $0 + $100 = $100
     va_tanf_countable_income: 100
     #
-    # Income eligibility: Step 1: gross earned $500 + countable unearned $100 = $600 <= $1,017? YES
+    # Income eligibility: Step 1: gross earned $500 + gross unearned $200 = $700 <= $1,017? YES
     va_tanf_income_eligibility: true
     #
     # Benefit: $508 - $100 = $408
@@ -572,3 +572,150 @@
     #
     # Benefit: $422 - $365 = $57
     va_tanf: 57
+
+- name: TANF-UP scenario in Group II locality
+  period: 2021-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person2:
+        age: 28
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person3:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group II locality (Pittsylvania County)
+    # TANF-UP eligible: two able-bodied adults
+    va_up_tanf_eligibility: true
+    #
+    # Need standard (Group II, size 3): $836/month
+    va_tanf_need_standard: 836
+    #
+    # UP Grant standard (Group II, size 3): $363/month
+    va_tanf_up_grant_standard: 363
+    #
+    # No income
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $836? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit (TANF-UP): $363 - $0 = $363
+    va_tanf: 363
+
+- name: Single person household (pregnant woman)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 22
+        employment_income_before_lsr: 3_600
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 1
+    # Group III locality (Arlington County)
+    #
+    # Need standard (size 1): $631/month
+    va_tanf_need_standard: 631
+    #
+    # Grant standard (size 1): $316/month
+    va_tanf_grant_standard: 316
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $3,600/12 = $300/month
+    #   Flat exclusion (size 1): $167/month
+    #   After flat: max($300 - $167, 0) = $133
+    #   After 20%: $133 * 0.8 = $106.40
+    va_tanf_countable_earned_income: 106.4
+    #
+    # Countable income: $106.40
+    va_tanf_countable_income: 106.4
+    #
+    # Income eligibility:
+    #   Step 1: gross $300 <= need $631? YES
+    #   Step 2: countable $106.40 <= grant $316? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $316 - $106.40 = $209.60
+    va_tanf: 209.6
+
+- name: Step 1 passes but Step 2 fails (high unearned income)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 30
+        employment_income_before_lsr: 4_800
+        child_support_received: 4_800
+      person2:
+        is_child: true
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # Gross income (monthly):
+    #   Gross earned: $4,800/12 = $400/month
+    #   Gross unearned: $4,800/12 = $400/month
+    #   Total gross: $800/month
+    #
+    # Step 1: $800 <= $842? YES (passes)
+    #
+    # Countable earned:
+    #   After flat ($167): max($400 - $167, 0) = $233
+    #   After 20%: $233 * 0.8 = $186.40
+    va_tanf_countable_earned_income: 186.4
+    #
+    # Countable unearned:
+    #   Child support: $400 - $100 disregard = $300
+    va_tanf_countable_unearned_income: 300
+    #
+    # Total countable: $186.40 + $300 = $486.40
+    va_tanf_countable_income: 486.4
+    #
+    # Step 2: $486.40 <= $422? NO (fails)
+    va_tanf_income_eligibility: false
+    #
+    # Not eligible
+    va_tanf: 0

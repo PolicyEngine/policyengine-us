@@ -12,6 +12,6 @@ class va_up_tanf_eligibility(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        disabled = person("is_disabled", period)
+        disabled = person("is_disabled", period.this_year)
         able_bodied_adult = head_or_spouse & ~disabled
         return spm_unit.sum(able_bodied_adult) > 1

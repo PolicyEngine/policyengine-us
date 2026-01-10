@@ -11,10 +11,7 @@ class va_tanf_countable_earned_income(Variable):
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=55"
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        gross_earnings = spm_unit.sum(
-            person("tanf_gross_earned_income", period)
-        )
+        gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf.income.deductions.earned
         # Step 1: Apply flat deduction by unit size

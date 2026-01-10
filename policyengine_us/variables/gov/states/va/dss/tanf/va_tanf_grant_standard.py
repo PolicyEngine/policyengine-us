@@ -13,6 +13,7 @@ class va_tanf_grant_standard(Variable):
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf
+        # Access July 2020 base values
         p_grant_standard = (
             parameters.gov.states.va.dss.tanf.payment.grant_standard(
                 f"2020-10-01"

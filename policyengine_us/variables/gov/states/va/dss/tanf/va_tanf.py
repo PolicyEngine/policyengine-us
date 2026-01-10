@@ -21,6 +21,7 @@ class va_tanf(Variable):
 
         # compute the maximum payment
         p = parameters(period).gov.states.va.dss.tanf
+        # Access July 2020 base values
         p_payment = parameters.gov.states.va.dss.tanf.payment(f"2020-10-01")
         county = spm_unit.household("county_str", period)
         if_group3 = np.isin(county, p.localities.group3)
