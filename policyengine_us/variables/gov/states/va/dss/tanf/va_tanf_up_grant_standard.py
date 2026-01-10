@@ -13,6 +13,11 @@ class va_tanf_up_grant_standard(Variable):
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf
+        p_up_grant_standard = (
+            parameters.gov.states.va.dss.tanf.payment.up_grant_standard(
+                f"2020-10-01"
+            )
+        )
         ceiling = min_(unit_size, p.max_unit_size)
         additional = unit_size - ceiling
 
@@ -20,13 +25,13 @@ class va_tanf_up_grant_standard(Variable):
         if_group3 = np.isin(county, p.localities.group3)
         main = where(
             if_group3,
-            p.payment.up_grant_standard.group3.main[ceiling],
-            p.payment.up_grant_standard.group2.main[ceiling],
+            p_up_grant_standard.group3.main[ceiling],
+            p_up_grant_standard.group2.main[ceiling],
         )
         addition = where(
             if_group3,
-            p.payment.up_grant_standard.group3.addition,
-            p.payment.up_grant_standard.group2.addition,
+            p_up_grant_standard.group3.addition,
+            p_up_grant_standard.group2.addition,
         )
 
         base_amount = main + additional * addition

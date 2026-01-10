@@ -122,3 +122,43 @@
   output:
     # Grant standard $2,119 - countable income $2,000 = $119 payment
     va_tanf: 119
+
+- name: Case 11, payment exactly at Group III maximum.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 9_940
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 1_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Grant standard $9,940 - countable income $1,000 = $8,940 (exactly at max)
+    # Max Group III: $745/month = $8,940/year
+    va_tanf: 8_940
+
+- name: Case 12, zero countable income gets full grant below max.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 6_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 0
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Grant standard $6,000 - countable income $0 = $6,000 payment
+    va_tanf: 6_000
+
+- name: Case 13, grant equals countable income.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 4_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Grant standard $4,000 - countable income $4,000 = $0 payment
+    va_tanf: 0

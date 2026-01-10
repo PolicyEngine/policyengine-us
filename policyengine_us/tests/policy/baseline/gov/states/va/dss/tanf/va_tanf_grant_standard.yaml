@@ -94,3 +94,14 @@
     county_str: ARLINGTON_COUNTY_VA
   output:
     va_tanf_grant_standard: 364.98
+
+# Test multiplier effect for 2018 period (multiplier = 0.8282)
+- name: Grant standard in 2018-01 for size 3 in Group III locality.
+  # Base $508 * 0.8282 = $420.726/month
+  period: 2018-01
+  input:
+    state_code: VA
+    spm_unit_size: 3
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 420.726

@@ -10,7 +10,6 @@
         is_mother: true
         age: 30
         employment_income_before_lsr: 12_000
-        work_hours_per_week: 40
       person2:
         is_child: true
         age: 5
@@ -115,12 +114,10 @@
       person1:
         age: 35
         employment_income_before_lsr: 0
-        work_hours_per_week: 0
         is_disabled: false
       person2:
         age: 32
         employment_income_before_lsr: 0
-        work_hours_per_week: 0
         is_disabled: false
       person3:
         age: 8
@@ -176,7 +173,6 @@
         is_mother: true
         age: 35
         employment_income_before_lsr: 30_000
-        work_hours_per_week: 40
       person2:
         is_child: true
         age: 10
@@ -230,7 +226,6 @@
         is_mother: true
         age: 25
         employment_income_before_lsr: 7_000
-        work_hours_per_week: 35
       person2:
         is_child: true
         age: 1
@@ -284,7 +279,6 @@
         is_mother: true
         age: 32
         employment_income_before_lsr: 6_000
-        work_hours_per_week: 25
         child_support_received: 2_400
       person2:
         is_child: true
@@ -346,12 +340,10 @@
         is_mother: true
         age: 38
         employment_income_before_lsr: 10_000
-        work_hours_per_week: 30
       person2:
         is_father: true
         age: 40
         employment_income_before_lsr: 0
-        work_hours_per_week: 0
         is_disabled: true
       person3:
         is_child: true
@@ -423,12 +415,10 @@
         is_mother: true
         age: 45
         employment_income_before_lsr: 9_000
-        work_hours_per_week: 35
       person2:
         is_father: true
         age: 50
         employment_income_before_lsr: 0
-        work_hours_per_week: 0
         is_disabled: true
       person3:
         is_child: true
@@ -474,3 +464,111 @@
     #
     # Benefit: $417 - $116.40 = $300.60
     va_tanf: 300.6
+
+- name: Family with only unearned income (child support)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 35
+        employment_income_before_lsr: 0
+        child_support_received: 1_800
+      person2:
+        is_child: true
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # No earned income
+    va_tanf_countable_earned_income: 0
+    #
+    # Unearned income (monthly):
+    #   Child support: $1,800/12 = $150/month
+    #   Disregard: min($150, $100) = $100
+    #   Countable: $150 - $100 = $50/month
+    va_tanf_countable_unearned_income: 50
+    #
+    # Childcare deduction: $0 (no expenses)
+    va_tanf_childcare_deduction: 0
+    #
+    # Countable income: $0 + $50 = $50
+    va_tanf_countable_income: 50
+    #
+    # Income eligibility:
+    #   Step 1: gross $150 <= need $842? YES
+    #   Step 2: countable $50 <= grant $422? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $422 - $50 = $372
+    va_tanf: 372
+
+- name: Gross income exactly at need standard boundary
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 30
+        employment_income_before_lsr: 10_104
+      person2:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $10,104/12 = $842/month (exactly at need standard)
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $842 - $167 = $675
+    #   After 20%: $675 * 0.8 = $540
+    #   Childcare: min($175, $175) = $175/month
+    #   After childcare: max($540 - $175, 0) = $365
+    va_tanf_countable_earned_income: 365
+    #
+    # Childcare deduction: $175/month
+    va_tanf_childcare_deduction: 175
+    #
+    # Countable income: $365 + $0 = $365
+    va_tanf_countable_income: 365
+    #
+    # Income eligibility:
+    #   Step 1: gross $842 <= need $842? YES (at boundary)
+    #   Step 2: countable $365 <= grant $422? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $422 - $365 = $57
+    va_tanf: 57
