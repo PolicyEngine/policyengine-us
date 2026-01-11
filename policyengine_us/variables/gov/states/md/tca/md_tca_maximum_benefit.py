@@ -11,9 +11,9 @@ class md_tca_maximum_benefit(Variable):
     reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx"
 
     def formula(spm_unit, period, parameters):
-        people = spm_unit("spm_unit_size", period.this_year)
+        size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.md.tca.maximum_benefit
-        capped_people = min_(people, p.max_unit_size).astype(int)
-        additional_people = people - capped_people
-        base = p.main[capped_people]
-        return base + p.additional * additional_people
+        capped_size = min_(size, p.max_table_size)
+        additional_size = size - capped_size
+        base = p.main[capped_size]
+        return base + p.additional * additional_size

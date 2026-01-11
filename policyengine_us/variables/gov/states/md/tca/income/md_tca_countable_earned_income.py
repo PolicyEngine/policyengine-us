@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class md_tca_earnings_deduction(Variable):
+class md_tca_countable_earned_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TCA earnings deduction"
+    label = "Maryland TCA countable earned income"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MD
@@ -15,8 +15,10 @@ class md_tca_earnings_deduction(Variable):
         # vs regular employment. We apply the employment rate to all earned
         # income as a simplification.
         p = parameters(period).gov.states.md.tca.income.deductions.earned
-        earned_income = add(spm_unit, period, ["tanf_gross_earned_income"])
+        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         is_enrolled = spm_unit("is_tanf_enrolled", period)
-        # 20% for new applicants, 40% for enrolled recipients
-        rate = where(is_enrolled, p.not_self_employed, p.new)
-        return earned_income * rate
+        # 20% disregard for applicants, 40% disregard for enrolled recipients
+        rate = where(is_enrolled, p.recipient, p.applicant)
+        after_disregard = gross_earned * (1 - rate)
+        childcare_deduction = spm_unit("md_tca_childcare_deduction", period)
+        return max_(after_disregard - childcare_deduction, 0)

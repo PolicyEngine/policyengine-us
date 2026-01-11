@@ -47,8 +47,8 @@
       household:
         state_code: MD
   output:
-    # $1,372 (8-person max) + 2 * $136 = $1,644 per month
-    md_tca_maximum_benefit: 1_644
+    # $1,599 per month (explicit table value for 10-person household)
+    md_tca_maximum_benefit: 1_599
 
 - name: Case 3, exactly at cap (8 persons).
   period: 2024-01
@@ -111,5 +111,5 @@
       household:
         state_code: MD
   output:
-    # $1,372 (8-person) + $136 (1 additional) = $1,508
-    md_tca_maximum_benefit: 1_508
+    # $1,480 per month (explicit table value for 9-person household)
+    md_tca_maximum_benefit: 1_480

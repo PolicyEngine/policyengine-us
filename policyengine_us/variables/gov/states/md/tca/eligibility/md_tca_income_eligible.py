@@ -11,7 +11,7 @@ class md_tca_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per COMAR 07.03.03.13, eligibility is based on comparing
-        # net countable income to the grant standard
-        net_income = spm_unit("md_tca_net_countable_income", period)
+        # countable income to the grant standard
+        countable_income = spm_unit("md_tca_countable_income", period)
         grant_standard = spm_unit("md_tca_maximum_benefit", period)
-        return net_income <= grant_standard
+        return countable_income <= grant_standard
