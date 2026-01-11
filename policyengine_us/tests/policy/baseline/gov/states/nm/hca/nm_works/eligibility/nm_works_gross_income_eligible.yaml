@@ -100,3 +100,24 @@
     # 85% FPL for size 4: 0.85 * $2,503.33 = $2,127.83
     # $2,000 < $2,128 = eligible
     nm_works_gross_income_eligible: true
+
+- name: Case 6, income one dollar above limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_works_gross_income: 1_397
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # 85% FPL for size 2: 0.85 * $1,643.33 = $1,396.83
+    # $1,397 > $1,396.83 = ineligible
+    nm_works_gross_income_eligible: false
