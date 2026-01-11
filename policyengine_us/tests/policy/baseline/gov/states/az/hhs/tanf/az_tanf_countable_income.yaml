@@ -8,7 +8,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       person2:
         age: 5
     spm_units:
@@ -27,7 +27,7 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month annual
+        employment_income_before_lsr: 6_000  # $500/month annual
       person2:
         age: 5
     spm_units:
@@ -71,7 +71,7 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month annual
+        employment_income_before_lsr: 6_000  # $500/month annual
         child_support_received: 1_200  # $100/month annual unearned
       person2:
         age: 5
@@ -94,7 +94,7 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month annual
+        employment_income_before_lsr: 6_000  # $500/month annual
         child_support_received: 1_200  # $100/month annual unearned
       person2:
         age: 1

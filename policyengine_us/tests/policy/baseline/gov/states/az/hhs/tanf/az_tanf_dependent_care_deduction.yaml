@@ -122,13 +122,13 @@
     people:
       person1:
         age: 30
+        pre_subsidy_care_expenses: 200  # $200/month
       person2:
         age: 65
         is_disabled: true
     spm_units:
       spm_unit:
         members: [person1, person2]
-        care_expenses: 2_400  # $200/month annual
     households:
       household:
         members: [person1, person2]
@@ -136,4 +136,26 @@
   output:
     # Disabled adult: max $175/month
     # Expenses ($200/mo) > max ($175), so deduction = $175
+    az_tanf_dependent_care_deduction: 175
+
+- name: Case 7, child exactly at age 2 boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month annual
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Child at age 2: $175/month max (not $200)
+    # Expenses ($250/mo) > max ($175), so deduction = $175
     az_tanf_dependent_care_deduction: 175

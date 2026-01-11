@@ -15,8 +15,8 @@ class az_tanf_payment_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         # Arizona uses monthly 1992 FPG baseline for payment standard
-        fpg_baseline = spm_unit("az_tanf_fpg_baseline", period)
-        monthly_fpg_baseline = fpg_baseline / MONTHS_IN_YEAR
+        # az_tanf_fpg_baseline is YEAR, auto-converted to monthly when called from MONTH context
+        monthly_fpg_baseline = spm_unit("az_tanf_fpg_baseline", period)
 
         p = parameters(
             period

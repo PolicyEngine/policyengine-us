@@ -8,13 +8,11 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -36,9 +34,8 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -61,13 +58,11 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # $2,000/month annual
+        employment_income_before_lsr: 24_000  # $2,000/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -93,13 +88,11 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -122,9 +115,8 @@
     people:
       person1:
         age: 25
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_citizen: true
         is_pregnant: true
     spm_units:
       spm_unit:
@@ -148,16 +140,13 @@
     people:
       person1:
         age: 30
-        employment_income: 3_600  # $300/month annual
+        employment_income_before_lsr: 3_600  # $300/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
       person3:
         age: 3
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -176,3 +165,114 @@
     # Payment standard (A1): ~$347
     # $147 < $347 - eligible
     az_tanf_eligible: true
+
+- name: Case 7, ineligible due to undocumented immigration status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Both members undocumented - fails immigration eligibility
+    az_tanf_eligible: false
+
+- name: Case 8, eligible legal permanent resident.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # LPR is qualified alien - eligible
+    az_tanf_eligible: true
+
+- name: Case 9, resources exactly at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000  # Exactly at $2,000 limit
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Resources exactly at $2,000 limit - eligible
+    az_tanf_eligible: true
+
+- name: Case 10, resources one dollar over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_001  # $1 over limit
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Resources $1 over limit - ineligible
+    az_tanf_eligible: false

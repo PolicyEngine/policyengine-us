@@ -9,13 +9,11 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -42,13 +40,11 @@
     people:
       person1:
         age: 30
-        employment_income: 3_600  # $300/month annual
+        employment_income_before_lsr: 3_600  # $300/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -73,13 +69,11 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # $2,000/month annual
+        employment_income_before_lsr: 24_000  # $2,000/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -103,16 +97,13 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
       person3:
         age: 3
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -139,14 +130,12 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         child_support_received: 1_200  # $100/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -172,13 +161,11 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -205,13 +192,11 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month annual
+        employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
         is_parent_of_filer_or_spouse: true
-        is_citizen: true
       person2:
         age: 5
-        is_citizen: true
     spm_units:
       spm_unit:
         members: [person1, person2]
