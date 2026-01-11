@@ -310,3 +310,145 @@
     al_tanf_income_eligible: true
     al_tanf_eligible: true
     al_tanf: 144
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1 - Family of 17, max_unit_size capping.
+  # Tests that family size caps at 16 for payment standard lookup
+  # Code: al_tanf.py:16 uses min_(unit_size, p.max_unit_size) where max is 16
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+      person2:
+        age: 38
+      person3:
+        age: 17
+        is_in_k12_school: true
+      person4:
+        age: 16
+        is_in_k12_school: true
+      person5:
+        age: 15
+        is_in_k12_school: true
+      person6:
+        age: 14
+        is_in_k12_school: true
+      person7:
+        age: 13
+        is_in_k12_school: true
+      person8:
+        age: 12
+        is_in_k12_school: true
+      person9:
+        age: 11
+        is_in_k12_school: true
+      person10:
+        age: 10
+        is_in_k12_school: true
+      person11:
+        age: 9
+        is_in_k12_school: true
+      person12:
+        age: 8
+        is_in_k12_school: true
+      person13:
+        age: 7
+        is_in_k12_school: true
+      person14:
+        age: 6
+        is_in_k12_school: true
+      person15:
+        age: 5
+        is_in_k12_school: true
+      person16:
+        age: 4
+      person17:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
+        state_code: AL
+  output:
+    # Family size: 17 (but capped at 16 for payment standard lookup)
+    # Gross earned income: $0
+    # Countable income: $0
+    # Payment standard (capped at 16 persons): $968
+    # Benefit: $968 - $0 = $968
+    # Note: Without capping, there's no payment standard for 17 people
+    al_tanf_gross_earned_income: 0
+    al_tanf_work_expense_deduction: 0
+    al_tanf_countable_earned_income: 0
+    al_tanf_countable_income: 0
+    al_tanf_income_eligible: true
+    al_tanf_eligible: true
+    al_tanf: 968
+
+- name: Edge Case 2 - Family of 8 with partial benefit.
+  # Tests payment standard lookup for larger family size
+  # Payment standard for family of 8: $584
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 4_800  # $400/month
+      person2:
+        age: 40
+      person3:
+        age: 16
+        is_in_k12_school: true
+      person4:
+        age: 14
+        is_in_k12_school: true
+      person5:
+        age: 12
+        is_in_k12_school: true
+      person6:
+        age: 10
+        is_in_k12_school: true
+      person7:
+        age: 8
+        is_in_k12_school: true
+      person8:
+        age: 5
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: AL
+  output:
+    # Family size: 8
+    # Monthly gross earned income: $400
+    # Work expense deduction: $400 * 0.20 = $80
+    # Countable earned income: $400 - $80 = $320
+    # Countable income: $320
+    # Payment standard (family of 8): $584
+    # $320 <= $584, eligible
+    # Benefit: $584 - $320 = $264
+    is_person_demographic_tanf_eligible: [false, false, true, true, true, true, true, true]
+    al_tanf_gross_earned_income: 400
+    al_tanf_work_expense_deduction: 80
+    al_tanf_countable_earned_income: 320
+    al_tanf_countable_income: 320
+    al_tanf_income_eligible: true
+    al_tanf_eligible: true
+    al_tanf: 264

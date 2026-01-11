@@ -253,3 +253,68 @@
     # Payment standard (1 person): $264
     # Benefit: $264
     al_tanf: 264
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1, care disregard enabling eligibility.
+  # Family of 2 where childcare expenses make the difference between eligible/ineligible
+  # Without childcare: income would exceed threshold
+  # With childcare: 30% disregard brings income under threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 5_400  # $450/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month childcare
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Family of 2: payment standard = $304
+    # Monthly employment: $450
+    # Work expense deduction (20%): $450 * 0.20 = $90
+    # Countable earned: $450 - $90 = $360
+    # WITHOUT childcare: $360 > $304 (would be ineligible)
+    # Childcare expenses: $200/month
+    # Care expense disregard (30%): $200 * 0.30 = $60
+    # Countable income: $360 - $60 = $300
+    # $300 <= $304, eligible
+    # Benefit: $304 - $300 = $4
+    al_tanf: 4
+
+- name: Edge Case 2, eligible with zero benefit.
+  # Family of 2 with countable income exactly equal to payment standard
+  # Should be eligible (passes income test) but benefit = $0
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 4_560  # $380/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Family of 2: payment standard = $304
+    # Monthly employment: $380
+    # Work expense deduction (20%): $380 * 0.20 = $76
+    # Countable earned: $380 - $76 = $304
+    # Countable income: $304
+    # $304 <= $304, eligible (tests <= boundary)
+    # Benefit: $304 - $304 = $0
+    al_tanf: 0

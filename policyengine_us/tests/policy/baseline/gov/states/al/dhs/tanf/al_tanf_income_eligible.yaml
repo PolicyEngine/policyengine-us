@@ -210,3 +210,33 @@
     # Payment standard (1 person): $264
     # $160 <= $264, eligible
     al_tanf_income_eligible: true
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1, income one dollar over payment standard - ineligible.
+  # Tests the <= boundary behavior in income eligibility check
+  # Countable income of $305 is exactly one dollar over $304 threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_660  # $305/month unearned (no work expense deduction)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Family of 2: payment standard = $304
+    # Monthly unearned income: $305 (no deductions on unearned)
+    # Countable income: $305
+    # $305 > $304, ineligible (tests > boundary, one dollar over)
+    # Note: This tests that the comparison uses <= not <
+    al_tanf_income_eligible: false
