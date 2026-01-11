@@ -21,9 +21,8 @@ class md_tca_eligible(Variable):
 
         # Must meet immigration status eligibility (citizen or qualified alien)
         # Per COMAR 07.03.17.09 and 8 USC 1641
-        person = spm_unit.members
-        immigration_eligible = spm_unit.any(
-            person("is_citizen_or_legal_immigrant", period.this_year)
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Note: Per COMAR 07.03.03.12, individual assets are EXCLUDED

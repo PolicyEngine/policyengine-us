@@ -1,16 +1,8 @@
 - name: Case 1, one-person household.
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-        md_tca_eligible: true
-    households:
-      household:
-        state_code: MD
+    spm_unit_size: 1
+    state_code: MD
   output:
     # $328 per month
     md_tca_maximum_benefit: 328
@@ -18,98 +10,36 @@
 - name: Case 2, ten-person household.
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 28
-      person3:
-        age: 10
-      person4:
-        age: 8
-      person5:
-        age: 6
-      person6:
-        age: 5
-      person7:
-        age: 4
-      person8:
-        age: 3
-      person9:
-        age: 2
-      person10:
-        age: 1
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        md_tca_eligible: true
-    households:
-      household:
-        state_code: MD
+    spm_unit_size: 10
+    state_code: MD
   output:
     # $1,599 per month (explicit table value for 10-person household)
     md_tca_maximum_benefit: 1_599
 
-- name: Case 3, exactly at cap (8 persons).
+- name: Case 3, eight-person household.
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 33
-      person3:
-        age: 14
-      person4:
-        age: 12
-      person5:
-        age: 10
-      person6:
-        age: 8
-      person7:
-        age: 6
-      person8:
-        age: 4
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        md_tca_eligible: true
-    households:
-      household:
-        state_code: MD
+    spm_unit_size: 8
+    state_code: MD
   output:
-    # 8-person cap = $1,372 (no additional)
+    # $1,372 per month
     md_tca_maximum_benefit: 1_372
 
-- name: Case 4, one above cap (9 persons).
+- name: Case 4, nine-person household.
   period: 2024-01
   input:
-    people:
-      person1:
-        age: 35
-      person2:
-        age: 33
-      person3:
-        age: 14
-      person4:
-        age: 12
-      person5:
-        age: 10
-      person6:
-        age: 8
-      person7:
-        age: 6
-      person8:
-        age: 4
-      person9:
-        age: 2
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        md_tca_eligible: true
-    households:
-      household:
-        state_code: MD
+    spm_unit_size: 9
+    state_code: MD
   output:
     # $1,480 per month (explicit table value for 9-person household)
     md_tca_maximum_benefit: 1_480
+
+- name: Case 5, 22-person household (beyond max table size).
+  period: 2024-01
+  input:
+    spm_unit_size: 22
+    state_code: MD
+  output:
+    # Max table size is 21, so use main[21] + additional * (22 - 21)
+    # 2_983 + 136 * 1 = 3_119
+    md_tca_maximum_benefit: 3_119
