@@ -1,6 +1,7 @@
-# New Mexico Works (TANF) Countable Income Unit Tests
-# Tests the net countable income calculation after all deductions
+# New Mexico Works Countable Income Unit Tests
+# Tests the net countable income calculation (sum of earned and unearned)
 # Source: 8.102.520 NMAC - Income
+# Note: Childcare deduction is now applied in nm_works_countable_earned_income
 
 - name: Case 1, no income results in zero countable income.
   period: 2024-01
@@ -8,19 +9,17 @@
     state_code: NM
     nm_works_countable_earned_income: 0
     nm_works_countable_unearned_income: 0
-    nm_works_child_care_deduction: 0
   output:
     nm_works_countable_income: 0
 
-- name: Case 2, earned income only after deduction.
+- name: Case 2, earned income only.
   period: 2024-01
   input:
     state_code: NM
     nm_works_countable_earned_income: 437.5
     nm_works_countable_unearned_income: 0
-    nm_works_child_care_deduction: 0
   output:
-    # Countable earned + countable unearned - child care deduction
+    # Countable earned + countable unearned
     nm_works_countable_income: 437.5
 
 - name: Case 3, both earned and unearned income.
@@ -29,29 +28,26 @@
     state_code: NM
     nm_works_countable_earned_income: 300
     nm_works_countable_unearned_income: 200
-    nm_works_child_care_deduction: 0
   output:
     # $300 + $200 = $500
     nm_works_countable_income: 500
 
-- name: Case 4, child care deduction reduces countable income.
+- name: Case 4, unearned income only.
   period: 2024-01
   input:
     state_code: NM
-    nm_works_countable_earned_income: 500
-    nm_works_countable_unearned_income: 100
-    nm_works_child_care_deduction: 200
+    nm_works_countable_earned_income: 0
+    nm_works_countable_unearned_income: 150
   output:
-    # $500 + $100 - $200 = $400
-    nm_works_countable_income: 400
+    # $0 + $150 = $150
+    nm_works_countable_income: 150
 
-- name: Case 5, child care deduction only applies to earned income.
+- name: Case 5, large income amounts.
   period: 2024-01
   input:
     state_code: NM
-    nm_works_countable_earned_income: 100
-    nm_works_countable_unearned_income: 50
-    nm_works_child_care_deduction: 200
+    nm_works_countable_earned_income: 1_500
+    nm_works_countable_unearned_income: 500
   output:
-    # Child care deduction only applies to earned income: max($100 - $200, 0) + $50 = $50
-    nm_works_countable_income: 50
+    # $1,500 + $500 = $2,000
+    nm_works_countable_income: 2_000

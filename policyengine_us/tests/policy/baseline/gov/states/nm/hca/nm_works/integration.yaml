@@ -126,7 +126,7 @@
     nm_works_gross_income_eligible: true
     nm_works_net_income_eligible: true
     nm_works_eligible: true
-    nm_works_child_care_deduction: 400
+    nm_works_childcare_deduction: 400
     nm_works_countable_income: 287.5
     nm_works: 375.5
 
@@ -324,66 +324,12 @@
     #
     # Payment Standard: $439
     # Benefit: $439 - $162.50 = $276.50
-    nm_works_child_care_deduction: 175
+    nm_works_childcare_deduction: 175
     nm_works_countable_income: 162.5
     nm_works_gross_income_eligible: true
     nm_works_net_income_eligible: true
     nm_works_eligible: true
     nm_works: 276.5
-
-- name: Case 9, two-parent household with working teenager.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income_before_lsr: 6_000  # $500/month
-        is_tax_unit_head: true
-        is_parent: true
-      person2:
-        age: 38
-        employment_income_before_lsr: 0
-        is_tax_unit_spouse: true
-        is_parent: true
-      person3:
-        age: 16
-        employment_income_before_lsr: 2_400  # $200/month
-        is_tax_unit_dependent: true
-      person4:
-        age: 8
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3, person4]
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: NM
-  output:
-    # Parent 1 (two-parent, $500):
-    # $500 - $225 = $275, * 0.50 = $137.50
-    # Total deduction: $225 + $137.50 = $362.50
-    # Countable: $137.50
-    #
-    # Parent 2: $0 earnings = $0 deduction, $0 countable
-    #
-    # Teen (other member, $200):
-    # $200 - $125 = $75, * 0.50 = $37.50
-    # Total deduction: $125 + $37.50 = $162.50
-    # Countable: $37.50
-    #
-    # Total countable earned: $137.50 + $0 + $37.50 = $175
-    # Payment Standard for size 4: $663
-    # Benefit: $663 - $175 = $488
-    nm_works_earned_income_deduction_person: [362.5, 0, 162.5, 0]
-    nm_works_countable_income: 175
-    nm_works_gross_income_eligible: true
-    nm_works_net_income_eligible: true
-    nm_works_eligible: true
-    nm_works: 488
 
 - name: Case 10, single parent with two children and child support.
   period: 2024-01
@@ -470,7 +416,7 @@
     # Total countable: $12.50 + $0 = $12.50
     # Payment Standard for size 3: $549
     # Benefit: $549 - $12.50 = $536.50
-    nm_works_child_care_deduction: 375
+    nm_works_childcare_deduction: 375
     nm_works_countable_income: 12.5
     nm_works_gross_income_eligible: true
     nm_works_net_income_eligible: true

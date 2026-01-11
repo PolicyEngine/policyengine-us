@@ -13,4 +13,5 @@ class nm_works_countable_earned_income(Variable):
     def formula(spm_unit, period, parameters):
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         earned_deduction = spm_unit("nm_works_earned_income_deduction", period)
-        return max_(gross_earned - earned_deduction, 0)
+        childcare_deduction = spm_unit("nm_works_childcare_deduction", period)
+        return max_(gross_earned - earned_deduction - childcare_deduction, 0)
