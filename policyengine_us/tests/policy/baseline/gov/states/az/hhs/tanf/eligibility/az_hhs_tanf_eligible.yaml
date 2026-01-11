@@ -1,0 +1,35 @@
+- name: The family meets both payment standard and fpg standard restrictions
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    az_tanf_earned_income: 175
+    az_payment_standard_threshold: 278
+    az_fpg_rate: 1
+    state_code: AZ
+  output:
+    az_hhs_tanf_eligible: true
+
+- name: The family earning is above payment standard
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    az_tanf_earned_income: 175
+    az_payment_standard_threshold: 150
+    az_fpg_rate: 1
+    state_code: AZ
+  output:
+    az_hhs_tanf_eligible: false
+
+- name: The family earning is above payment standard
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    az_tanf_earned_income: 175
+    az_payment_standard_threshold: 278
+    az_fpg_rate: 1.3
+    state_code: AZ
+  output:
+    az_hhs_tanf_eligible: true

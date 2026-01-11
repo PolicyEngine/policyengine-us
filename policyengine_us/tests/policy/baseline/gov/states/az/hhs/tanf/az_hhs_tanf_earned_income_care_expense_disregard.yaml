@@ -1,0 +1,240 @@
+- name: Spend 190 on an 1 year old kid
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_280
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 190
+
+- name: Spend 210 on an 1 year old kid, capped at max
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_520
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard:  200
+
+- name: Spend 170 on a 2 year old kid
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_040
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 170
+
+- name: Spend 180 on a 2 years old kid, capped at max
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_160
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
+
+- name: Spend 170 on an disabled adult
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_040
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard:  170
+
+- name: Spend 180 on an adult with disability, capped at max
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 2_160
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
+
+- name: Spend 180 on an adult with disability, one not eligible adult
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+      person2:
+        age: 20
+        az_tanf_eligible_child: false
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_160
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
+
+- name: Spend 180 on an adult with disability, and spend 190 on an 1 year old kid
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+      person2:
+        age: 1
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 4_440
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 370
+
+- name: Spend 180 on an adult with disability, and spend 190 on an 2 year old kid (Both capped at max)
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+      person2:
+        age: 2
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 4_440
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 350
+
+- name: Both adults are not eligible for the cash assistance program
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: false
+      person2:
+        age: 25
+        az_tanf_eligible_child: false
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 0
+
+- name: The household have no care expense even though they have eligible menbers
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+      person2:
+        age: 1
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 0
+
