@@ -1,0 +1,12 @@
+description: Arizona limits resources to this amount under the Temporary Assistance for Needy Families program.
+
+values:
+  2022-10-01: 2_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Arizona TANF resource limit
+  reference:
+    - title: Arizona Department of Economic Security - Cash Assistance (CA) Eligibility
+      href: https://az.db101.org/az/programs/income_support/tanf/program2.htm

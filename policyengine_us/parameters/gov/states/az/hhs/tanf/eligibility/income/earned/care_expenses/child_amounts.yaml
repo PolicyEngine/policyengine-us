@@ -1,10 +1,11 @@
-description: Arizona sets different thresholds for the amount of care expense disregard for children under different age for payment standard eligibility test.
+description: Arizona deducts this amount of dependent care expenses under the Temporary Assistance for Needy Families program.
+
 metadata:
   type: single_amount
-  label: Arizona Cash Assistance care expense income subtraction threshold for children under or over age threshold
   period: month
   threshold_unit: year
   amount_unit: currency-USD
+  label: Arizona TANF child dependent care deduction
   reference:
     - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
       href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/Dependent_Care_Amount_for_CA.html#wwpID0E0HO0HA

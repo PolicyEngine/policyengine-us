@@ -1,0 +1,232 @@
+# Unit tests for Arizona TANF benefit amount
+# Benefit = Payment Standard - Countable Income (if eligible)
+# Reference: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+
+- name: Case 1, full benefit with no income.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Family of 2, with shelter (A1)
+    # Payment standard: ~$276
+    # Countable income: $0
+    # Benefit: $276 - $0 = $276
+    az_tanf: 276
+
+- name: Case 2, partial benefit with income.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_600  # $300/month annual
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $300 - $90 = $210, * 0.70 = $147
+    # Payment standard (A1 for family of 2): ~$276
+    # Benefit: $276 - $147 = $129
+    az_tanf: 129
+
+- name: Case 3, no benefit due to high income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month annual
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # High income - ineligible, benefit = 0
+    az_tanf: 0
+
+- name: Case 4, larger family full benefit.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+      person3:
+        age: 3
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+        housing_cost: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Family of 3, with shelter (A1)
+    # Payment standard: ~$347
+    # Countable income: $0
+    # Benefit: $347
+    az_tanf: 347
+
+- name: Case 5, benefit with unearned income.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        child_support_received: 1_200  # $100/month annual
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Unearned income (no disregard): $100
+    # Payment standard (A1 for family of 2): ~$276
+    # Benefit: $276 - $100 = $176
+    az_tanf: 176
+
+- name: Case 6, benefit with lower payment standard (A2 - no shelter).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Family of 2, no shelter (A2)
+    # Payment standard: ~$176
+    # Countable income: $0
+    # Benefit: $176
+    az_tanf: 176
+
+- name: Case 7, eligible but zero benefit.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # $500/month annual
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+        is_citizen: true
+      person2:
+        age: 5
+        is_citizen: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+        housing_cost: 0  # A2 lower standard
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $500 - $90 = $410, * 0.70 = $287
+    # Payment standard (A2 for family of 2): ~$176
+    # $287 > $176 - income exceeds payment standard
+    # Benefit: max($176 - $287, 0) = $0
+    az_tanf: 0
