@@ -1,0 +1,170 @@
+# Unit tests for Alabama TANF countable earned income
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=30
+# Countable earned income = gross earned - work expense deduction (20%)
+# Self-employment has 40% operating expense deduction applied first
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_tanf_countable_earned_income: 0
+
+- name: Case 2, employment income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment income: $1,000
+    # Work expense deduction: $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    al_tanf_countable_earned_income: 800
+
+- name: Case 3, self-employment income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000  # $1,000/month gross
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly self-employment gross: $1,000
+    # Self-employment deduction (40%): $1,000 * 0.40 = $400
+    # Net self-employment: $1,000 - $400 = $600
+    # Work expense deduction: $600 * 0.20 = $120
+    # Countable earned: $600 - $120 = $480
+    al_tanf_countable_earned_income: 480
+
+- name: Case 4, combined employment and self-employment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # $500/month
+        self_employment_income: 6_000  # $500/month gross
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Employment income: $500/month
+    # Self-employment gross: $500/month
+    # Self-employment deduction (40%): $500 * 0.40 = $200
+    # Net self-employment: $500 - $200 = $300
+    # Total gross earned: $500 + $300 = $800
+    # Work expense deduction: $800 * 0.20 = $160
+    # Countable earned: $800 - $160 = $640
+    al_tanf_countable_earned_income: 640
+
+- name: Case 5, low income - work expense exceeds earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 600  # $50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment income: $50
+    # Work expense deduction: $50 * 0.20 = $10
+    # Countable earned: $50 - $10 = $40
+    al_tanf_countable_earned_income: 40
+
+- name: Case 6, two earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000  # $1,000/month
+      person2:
+        age: 32
+        employment_income: 6_000  # $500/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # Person1: $1,000/month
+    # Person2: $500/month
+    # Total earned: $1,500
+    # Work expense deduction: $1,500 * 0.20 = $300
+    # Countable earned: $1,500 - $300 = $1,200
+    al_tanf_countable_earned_income: 1_200
+
+- name: Case 7, high self-employment income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 24_000  # $2,000/month gross
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly self-employment gross: $2,000
+    # Self-employment deduction (40%): $2,000 * 0.40 = $800
+    # Net self-employment: $2,000 - $800 = $1,200
+    # Work expense deduction: $1,200 * 0.20 = $240
+    # Countable earned: $1,200 - $240 = $960
+    al_tanf_countable_earned_income: 960

@@ -1,0 +1,207 @@
+# Unit tests for Alabama TANF countable income
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2023/10/DHR-FAD-595-Oct.23.pdf#page=2
+# Countable income = countable earned + unearned - 30% care expense disregard
+# Care expenses include childcare and care expenses
+
+- name: Case 1, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_tanf_countable_income: 0
+
+- name: Case 2, earned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction (20%): $500 * 0.20 = $100
+    # Countable earned: $500 - $100 = $400
+    # No unearned, no care expenses
+    # Countable income: $400
+    al_tanf_countable_income: 400
+
+- name: Case 3, unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400  # $200/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # No earned income
+    # Unearned (child support): $200/month
+    # Countable income: $200
+    al_tanf_countable_income: 200
+
+- name: Case 4, earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # $500/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction (20%): $500 * 0.20 = $100
+    # Countable earned: $500 - $100 = $400
+    # Unearned: $100
+    # Countable income: $400 + $100 = $500
+    al_tanf_countable_income: 500
+
+- name: Case 5, income with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $1,000
+    # Work expense deduction (20%): $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    # Childcare expenses: $500/month
+    # Care expense disregard (30%): $500 * 0.30 = $150
+    # Countable income: $800 - $150 = $650
+    al_tanf_countable_income: 650
+
+- name: Case 6, income with care expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # $1,000/month
+        care_expenses: 300  # $300/month (for disabled family member)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $1,000
+    # Work expense deduction (20%): $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    # Care expenses: $300/month
+    # Care expense disregard (30%): $300 * 0.30 = $90
+    # Countable income: $800 - $90 = $710
+    al_tanf_countable_income: 710
+
+- name: Case 7, all income types with care expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # $500/month
+        self_employment_income: 6_000  # $500/month gross
+        child_support_received: 1_200  # $100/month
+        care_expenses: 200  # $200/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Employment: $500/month
+    # Self-employment gross: $500/month
+    # Self-employment deduction (40%): $500 * 0.40 = $200
+    # Net self-employment: $500 - $200 = $300
+    # Total gross earned: $500 + $300 = $800
+    # Work expense deduction (20%): $800 * 0.20 = $160
+    # Countable earned: $800 - $160 = $640
+    # Unearned: $100
+    # Total before care disregard: $640 + $100 = $740
+    # Care expenses: $300 + $200 = $500
+    # Care expense disregard (30%): $500 * 0.30 = $150
+    # Countable income: $740 - $150 = $590
+    al_tanf_countable_income: 590
+
+- name: Case 8, care expenses exceed income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_200  # $100/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $100
+    # Work expense deduction (20%): $100 * 0.20 = $20
+    # Countable earned: $100 - $20 = $80
+    # Childcare expenses: $500/month
+    # Care expense disregard (30%): $500 * 0.30 = $150
+    # Countable income: max($80 - $150, 0) = $0
+    al_tanf_countable_income: 0
