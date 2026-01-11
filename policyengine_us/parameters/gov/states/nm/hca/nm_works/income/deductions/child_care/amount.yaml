@@ -1,0 +1,21 @@
+description: New Mexico deducts up to this amount of child care expenses per child from countable income under the New Mexico Works program.
+
+metadata:
+  period: month
+  label: New Mexico Works child care deduction amount
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 8.102.520.12 NMAC - Earned Income Deductions
+      href: https://www.srca.nm.gov/parts/title08/08.102.0520.html
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 200
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 175
