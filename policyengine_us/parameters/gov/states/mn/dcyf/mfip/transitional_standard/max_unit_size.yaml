@@ -1,0 +1,14 @@
+description: Minnesota provides increased Minnesota Family Investment Program Transitional Standard amounts for assistance units with less than or equal to this number of members.
+
+metadata:
+  unit: int
+  period: month
+  label: Minnesota MFIP Transitional Standard max unit size
+  reference:
+    - title: Minnesota House Research - Minnesota Family Investment Program
+      href: https://www.house.mn.gov/hrd/pubs/pap_mfip.pdf#page=5
+    - title: Minnesota Combined Manual MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_002009
+
+values:
+  2024-10-01: 10

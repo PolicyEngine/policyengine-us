@@ -1,0 +1,103 @@
+# Maine TANF Standard of Need Tests
+# Tests lookup by household size
+# FFY 2025 values (effective 2024-10-01)
+# Source: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
+
+- name: Case 1, household size 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # SON for size 1 = $489
+    me_tanf_standard_of_need: 489
+
+- name: Case 2, household size 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # SON for size 2 = $769
+    me_tanf_standard_of_need: 769
+
+- name: Case 3, household size 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    # SON for size 3 = $1,030
+    me_tanf_standard_of_need: 1_030
+
+- name: Case 4, household size 4.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    # SON for size 4 = $1,296
+    me_tanf_standard_of_need: 1_296
+
+- name: Case 5, non-Maine state.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Non-Maine state returns 0
+    me_tanf_standard_of_need: 0

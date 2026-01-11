@@ -1,0 +1,93 @@
+# Unit test for Utah Family Employment Program (TANF)
+# Based on October 2022 payment standards
+#
+# Test case: Family of 3, single parent, $1,000/month earned income
+# Gross income = $1,000/month (earned)
+# Gross limit for 3 = $1,050 -> PASS gross test
+# After work expense = max(1000 - 100, 0) = 900
+# Countable earned = 900 * 0.50 = 450
+# Countable income = 450 + 0 (unearned) = 450
+# Net limit for 3 = $568 -> PASS net test (450 < 568)
+# Payment standard for 3 = $662/month
+# Benefit = $662 - $450 = $212/month
+# Annual values = monthly * 12
+
+- name: Utah TANF - eligible family of 3
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: UT
+  output:
+    ut_fep_countable_earned_income: 450 * 12  # $450/month * 12
+    ut_fep_countable_income: 450 * 12  # $450/month * 12
+    ut_fep_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_eligible: true
+    ut_fep_payment_standard: 662 * 12  # $662/month * 12
+    ut_fep: 212 * 12  # $212/month * 12
+
+# Test case: Family over gross income limit
+# Gross income = $1,200/month (earned)
+# Gross limit for 3 = $1,050/month -> FAIL gross test
+
+- name: Utah TANF - ineligible due to gross income
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: UT
+  output:
+    ut_fep_income_eligible: false
+    ut_fep_eligible: false
+    ut_fep: 0
+
+# Test case: Family over resource limit
+
+- name: Utah TANF - ineligible due to resources
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      child1:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+        spm_unit_assets: 2_500  # Over $2,000 limit
+    households:
+      household:
+        members: [parent, child1]
+        state_code: UT
+  output:
+    ut_fep_resources_eligible: false
+    ut_fep_eligible: false
+    ut_fep: 0

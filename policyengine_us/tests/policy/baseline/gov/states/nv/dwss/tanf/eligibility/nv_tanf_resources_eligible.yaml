@@ -1,0 +1,26 @@
+# Unit tests for nv_tanf_resources_eligible
+# Tests resource limit of $10,000
+
+- name: No assets (eligible)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_assets: 0
+  output:
+    nv_tanf_resources_eligible: true
+
+- name: Assets at limit (eligible)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_assets: 10_000
+  output:
+    nv_tanf_resources_eligible: true
+
+- name: Assets over limit (ineligible)
+  period: 2025-01
+  input:
+    state_code: NV
+    spm_unit_assets: 10_001
+  output:
+    nv_tanf_resources_eligible: false

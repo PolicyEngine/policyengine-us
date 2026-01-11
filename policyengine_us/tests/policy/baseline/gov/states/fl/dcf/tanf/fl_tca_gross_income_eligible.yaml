@@ -1,0 +1,81 @@
+# Tests Florida TCA gross income test (185% of FPL)
+# Formula: Total Gross Income (earned + unearned) < 185% FPL
+# Per DCF 2620.0109.01: NO disregards applied in gross test
+# Source: FAC 65A-4.220, DCF Policy Manual 2620.0109.01
+
+# 2024: 185% FPL for 2 people = $20,440 * 1.85 / 12 = $3,151.17/month
+
+- name: Case 1, zero income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_gross_income_eligible: true
+
+- name: Case 2, one dollar below threshold eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 37_800  # ~$3,150/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_gross_income_eligible: true
+
+- name: Case 3, at threshold ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 37_814  # ~$3,151.17/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_gross_income_eligible: false
+
+- name: Case 4, one dollar above threshold ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 37_826  # ~$3,152/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_gross_income_eligible: false
