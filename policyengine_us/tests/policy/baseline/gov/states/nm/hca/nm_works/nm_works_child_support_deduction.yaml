@@ -1,7 +1,7 @@
-# New Mexico TANF Child Support Deduction Unit Tests
+# New Mexico Works Child Support Deduction Unit Tests
 # Tests the child support deduction: $50 disregard + passthrough ($100 for 1 child, $200 for 2+ children)
 # Total deduction = min(child_support_received, disregard + passthrough)
-# Source: 8.102.520.10 NMAC
+# Source: 8.102.520.9(J) NMAC - Exempt Income
 
 - name: Case 1, zero child support results in zero deduction.
   period: 2024-01

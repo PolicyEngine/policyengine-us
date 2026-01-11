@@ -78,20 +78,20 @@
     # Max unit size: 19, payment standard: $2,355
     nm_works_maximum_benefit: 2_355
 
-- name: Case 10, unit size exceeds maximum caps at 19.
+- name: Case 10, unit size 20 uses additional person increment.
   period: 2024-01
   input:
     state_code: NM
     spm_unit_size: 20
   output:
-    # 20 > max(19), caps at payment standard for size 19: $2,355
-    nm_works_maximum_benefit: 2_355
+    # Size 19 base: $2,355 + 1 extra person * $111 = $2,466
+    nm_works_maximum_benefit: 2_466
 
-- name: Case 11, very large household caps at maximum.
+- name: Case 11, very large household uses additional person increment.
   period: 2024-01
   input:
     state_code: NM
     spm_unit_size: 25
   output:
-    # 25 > max(19), caps at payment standard for size 19: $2,355
-    nm_works_maximum_benefit: 2_355
+    # Size 19 base: $2,355 + 6 extra persons * $111 = $3,021
+    nm_works_maximum_benefit: 3_021

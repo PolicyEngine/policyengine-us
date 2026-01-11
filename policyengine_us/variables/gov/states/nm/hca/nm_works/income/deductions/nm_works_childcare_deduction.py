@@ -11,10 +11,12 @@ class nm_works_childcare_deduction(Variable):
     defined_for = StateCode.NM
 
     def formula(spm_unit, period, parameters):
-        # Per 8.102.520.12 NMAC, child care deduction varies by age:
+        # Per 8.102.520.12(D) NMAC, child care deduction varies by age:
         # Under age 2: up to $200
         # Age 2 or older: up to $175
-        p = parameters(period).gov.states.nm.hca.nm_works.income.deductions
+        p = parameters(
+            period
+        ).gov.states.nm.hca.nm_works.income.deductions.childcare
 
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
@@ -22,7 +24,7 @@ class nm_works_childcare_deduction(Variable):
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         # Max deduction per child based on age
-        childcare_max_per_child = p.childcare.amount.calc(age) * is_dependent
+        childcare_max_per_child = p.amount.calc(age) * is_dependent
         total_childcare_max = spm_unit.sum(childcare_max_per_child)
 
         return min_(childcare_expenses, total_childcare_max)

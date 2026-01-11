@@ -14,27 +14,17 @@ class nm_works_child_support_deduction(Variable):
     defined_for = StateCode.NM
 
     def formula(spm_unit, period, parameters):
-        # Per 8.102.520.10 NMAC:
+        # Per 8.102.520.9.J NMAC:
         # - $50 disregard on child support received
-        # - Passthrough: $100 for 1 child, $200 for 2+ children
-        p = parameters(period).gov.states.nm.hca.nm_works.income.deductions
+        # - Passthrough: $100 for 1 child, $200 for 2+ children (since Jan 2023)
+        p = parameters(
+            period
+        ).gov.states.nm.hca.nm_works.income.deductions.child_support
 
         child_support_received = add(
             spm_unit, period, ["child_support_received"]
         )
+        num_children = spm_unit("spm_unit_count_children", period.this_year)
 
-        # Count children in benefit group
-        person = spm_unit.members
-        age = person("age", period.this_year)
-        age_threshold = parameters(
-            period
-        ).gov.states.nm.hca.nm_works.age_threshold
-        is_child = age < age_threshold.minor_child
-        num_children = spm_unit.sum(is_child)
-
-        # Calculate disregard and passthrough
-        disregard = p.child_support.disregard
-        passthrough = p.child_support.passthrough.calc(num_children)
-        total_deduction = disregard + passthrough
-
+        total_deduction = p.disregard + p.passthrough.calc(num_children)
         return min_(child_support_received, total_deduction)

@@ -16,5 +16,7 @@ class nm_works_maximum_benefit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nm.hca.nm_works.payment_standard
         unit_size = spm_unit("spm_unit_size", period.this_year)
-        capped_size = min_(unit_size, p.max_unit_size)
-        return p.amount[capped_size]
+        capped_size = min_(unit_size, p.max_table_size)
+        base_amount = p.amount[capped_size]
+        extra_persons = max_(unit_size - p.max_table_size, 0)
+        return base_amount + extra_persons * p.additional_person

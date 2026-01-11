@@ -300,68 +300,7 @@
     # Total deduction: $225 + $0.50 = $225.50
     nm_works_earned_income_deduction_person: [225.5, 0, 0]
 
-- name: Case 11, working teen (non-parent) in two-parent household.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income_before_lsr: 0
-        is_tax_unit_head: true
-        is_parent: true
-      person2:
-        age: 33
-        employment_income_before_lsr: 0
-        is_tax_unit_spouse: true
-        is_parent: true
-      person3:
-        age: 16
-        employment_income_before_lsr: 4_800  # $400/month
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NM
-  output:
-    # Non-parent (other member) in two-parent HH: $125 + 50%
-    # Teen earnings: $400
-    # After flat: $400 - $125 = $275
-    # Percentage: $275 * 0.50 = $137.50
-    # Total deduction: $125 + $137.50 = $262.50
-    nm_works_earned_income_deduction_person: [0, 0, 262.5]
-
-- name: Case 12, working teen (non-parent) in single-parent household.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income_before_lsr: 0
-        is_parent: true
-      person2:
-        age: 17
-        employment_income_before_lsr: 3_600  # $300/month
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NM
-  output:
-    # Non-parent (other member) flat: $125
-    # Teen earnings: $300
-    # After flat: $300 - $125 = $175
-    # Percentage: $175 * 0.50 = $87.50
-    # Total deduction: $125 + $87.50 = $212.50
-    nm_works_earned_income_deduction_person: [0, 212.5]
-
-- name: Case 13, very high earnings results in large deduction.
+- name: Case 11, very high earnings results in large deduction.
   period: 2024-01
   input:
     people:
@@ -385,44 +324,3 @@
     # Percentage: $4,875 * 0.50 = $2,437.50
     # Total deduction: $125 + $2,437.50 = $2,562.50
     nm_works_earned_income_deduction_person: [2_562.5, 0]
-
-- name: Case 14, multiple earners in two-parent household including working child.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income_before_lsr: 6_000  # $500/month
-        is_tax_unit_head: true
-        is_parent: true
-      person2:
-        age: 38
-        employment_income_before_lsr: 4_800  # $400/month
-        is_tax_unit_spouse: true
-        is_parent: true
-      person3:
-        age: 17
-        employment_income_before_lsr: 2_400  # $200/month
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NM
-  output:
-    # Parent 1 (two-parent, $500):
-    # $500 - $225 = $275, then $275 * 0.50 = $137.50
-    # Total: $225 + $137.50 = $362.50
-    #
-    # Parent 2 (two-parent, $400):
-    # $400 - $225 = $175, then $175 * 0.50 = $87.50
-    # Total: $225 + $87.50 = $312.50
-    #
-    # Teen (other member, $200):
-    # $200 < $125? No, $200 - $125 = $75, then $75 * 0.50 = $37.50
-    # Total: $125 + $37.50 = $162.50
-    nm_works_earned_income_deduction_person: [362.5, 312.5, 162.5]

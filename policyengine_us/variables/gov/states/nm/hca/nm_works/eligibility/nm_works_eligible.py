@@ -10,12 +10,6 @@ class nm_works_eligible(Variable):
     defined_for = StateCode.NM
 
     def formula(spm_unit, period, parameters):
-        # Per 8.102 NMAC, eligibility requires:
-        # 1. Demographic eligibility (federal baseline)
-        # 2. Immigration eligibility (federal baseline)
-        # 3. Resources within limits (8.102.510)
-        # 4. Gross income under 85% FPL
-        # 5. Net income under standard of need
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
