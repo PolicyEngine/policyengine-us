@@ -11,14 +11,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_earnings_deduction: 400
-        md_tanf_childcare_deduction: 0
+        md_tca_earnings_deduction: 400
+        md_tca_childcare_deduction: 0
     households:
       household:
         state_code: MD
   output:
     # max($1,000 - $400 - $0, 0) + $0 = $600
-    md_tanf_net_countable_income: 600
+    md_tca_net_countable_income: 600
 
 - name: Case 2, earned and unearned income minus deductions.
   period: 2024-01
@@ -31,14 +31,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_earnings_deduction: 400
-        md_tanf_childcare_deduction: 100
+        md_tca_earnings_deduction: 400
+        md_tca_childcare_deduction: 100
     households:
       household:
         state_code: MD
   output:
     # max($1,000 - $400 - $100, 0) + $500 = $500 + $500 = $1,000
-    md_tanf_net_countable_income: 1_000
+    md_tca_net_countable_income: 1_000
 
 - name: Case 3, deductions exceed earned income.
   period: 2024-01
@@ -51,14 +51,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_earnings_deduction: 100
-        md_tanf_childcare_deduction: 200
+        md_tca_earnings_deduction: 100
+        md_tca_childcare_deduction: 200
     households:
       household:
         state_code: MD
   output:
     # max($200 - $100 - $200, 0) + $300 = $0 + $300 = $300
-    md_tanf_net_countable_income: 300
+    md_tca_net_countable_income: 300
 
 - name: Case 4, zero income.
   period: 2024-01
@@ -69,10 +69,10 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_earnings_deduction: 0
-        md_tanf_childcare_deduction: 0
+        md_tca_earnings_deduction: 0
+        md_tca_childcare_deduction: 0
     households:
       household:
         state_code: MD
   output:
-    md_tanf_net_countable_income: 0
+    md_tca_net_countable_income: 0

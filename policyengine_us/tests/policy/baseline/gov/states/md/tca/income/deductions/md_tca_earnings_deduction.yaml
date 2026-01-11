@@ -17,7 +17,7 @@
         state_code: MD
   output:
     # $12,000/12 = $1,000/month * 0.20 = $200
-    md_tanf_earnings_deduction: 200
+    md_tca_earnings_deduction: 200
 
 - name: Case 2, enrolled gets 40% deduction.
   period: 2024-01
@@ -35,7 +35,7 @@
         state_code: MD
   output:
     # $12,000/12 = $1,000/month * 0.40 = $400
-    md_tanf_earnings_deduction: 400
+    md_tca_earnings_deduction: 400
 
 - name: Case 3, zero income.
   period: 2024-01
@@ -51,4 +51,4 @@
       household:
         state_code: MD
   output:
-    md_tanf_earnings_deduction: 0
+    md_tca_earnings_deduction: 0

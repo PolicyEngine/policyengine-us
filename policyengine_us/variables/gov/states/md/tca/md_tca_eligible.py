@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_tanf_eligible(Variable):
+class md_tca_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Maryland TCA eligible"
@@ -17,7 +17,7 @@ class md_tanf_eligible(Variable):
         has_children = spm_unit("is_demographic_tanf_eligible", period)
 
         # Must meet income eligibility
-        income_eligible = spm_unit("md_tanf_income_eligible", period)
+        income_eligible = spm_unit("md_tca_income_eligible", period)
 
         # Must meet immigration status eligibility (citizen or qualified alien)
         # Per COMAR 07.03.17.09 and 8 USC 1641

@@ -18,7 +18,7 @@
       household:
         state_code: MD
   output:
-    md_tanf_childcare_deduction: 0
+    md_tca_childcare_deduction: 0
 
 - name: Case 2, has child with part-time work.
   period: 2024-01
@@ -37,7 +37,7 @@
         state_code: MD
   output:
     # Part-time (< 25 hrs) = $100
-    md_tanf_childcare_deduction: 100
+    md_tca_childcare_deduction: 100
 
 - name: Case 3, has child with full-time work.
   period: 2024-01
@@ -56,7 +56,7 @@
         state_code: MD
   output:
     # Full-time (>= 25 hrs) = $200
-    md_tanf_childcare_deduction: 200
+    md_tca_childcare_deduction: 200
 
 - name: Case 4, exactly 25 hours threshold.
   period: 2024-01
@@ -75,7 +75,7 @@
         state_code: MD
   output:
     # Exactly at threshold (>= 25 hrs) = full-time rate
-    md_tanf_childcare_deduction: 200
+    md_tca_childcare_deduction: 200
 
 - name: Case 5, at 24 hours below threshold.
   period: 2024-01
@@ -94,7 +94,7 @@
         state_code: MD
   output:
     # Below threshold (< 25 hrs) = part-time rate
-    md_tanf_childcare_deduction: 100
+    md_tca_childcare_deduction: 100
 
 - name: Case 6, has child but zero work hours.
   period: 2024-01
@@ -113,7 +113,7 @@
         state_code: MD
   output:
     # Zero hours = part-time rate
-    md_tanf_childcare_deduction: 100
+    md_tca_childcare_deduction: 100
 
 - name: Case 7, multiple adults with one full-time.
   period: 2024-01
@@ -135,4 +135,4 @@
         state_code: MD
   output:
     # Any member >= 25 hrs = full-time rate
-    md_tanf_childcare_deduction: 200
+    md_tca_childcare_deduction: 200

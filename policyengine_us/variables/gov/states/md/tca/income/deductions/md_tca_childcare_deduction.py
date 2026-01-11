@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_tanf_childcare_deduction(Variable):
+class md_tca_childcare_deduction(Variable):
     value_type = float
     entity = SPMUnit
     label = "Maryland TCA childcare deduction"
@@ -17,7 +17,7 @@ class md_tanf_childcare_deduction(Variable):
         has_children = spm_unit("is_demographic_tanf_eligible", period)
         person = spm_unit.members
         work_hours = person("weekly_hours_worked", period.this_year)
-        p = parameters(period).gov.states.md.tanf.income.deductions
+        p = parameters(period).gov.states.md.tca.income.deductions
         full_time = spm_unit.any(work_hours >= p.earned.fulltime_hours)
 
         deduction = where(

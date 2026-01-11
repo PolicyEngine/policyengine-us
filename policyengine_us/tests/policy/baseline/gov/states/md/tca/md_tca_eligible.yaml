@@ -1,4 +1,4 @@
-# Tests overall TANF eligibility (demographic + income + immigration)
+# Tests overall TCA eligibility (demographic + income + immigration)
 
 - name: Case 1, household with child is eligible.
   period: 2024-01
@@ -15,7 +15,7 @@
       household:
         state_code: MD
   output:
-    md_tanf_eligible: true
+    md_tca_eligible: true
 
 - name: Case 2, household with no children is not eligible.
   period: 2024-01
@@ -32,7 +32,7 @@
       household:
         state_code: MD
   output:
-    md_tanf_eligible: false
+    md_tca_eligible: false
 
 - name: Case 3, single adult is not eligible.
   period: 2024-01
@@ -47,7 +47,7 @@
       household:
         state_code: MD
   output:
-    md_tanf_eligible: false
+    md_tca_eligible: false
 
 - name: Case 4, 18 year old secondary school student is eligible.
   period: 2024-01
@@ -66,7 +66,7 @@
         state_code: MD
   output:
     # Per federal TANF rules, 18-year-olds in secondary school count as children
-    md_tanf_eligible: true
+    md_tca_eligible: true
 
 - name: Case 5, 19 year old is not eligible.
   period: 2024-01
@@ -85,4 +85,4 @@
         state_code: MD
   output:
     # Per federal TANF rules, 19-year-olds do not count as children
-    md_tanf_eligible: false
+    md_tca_eligible: false

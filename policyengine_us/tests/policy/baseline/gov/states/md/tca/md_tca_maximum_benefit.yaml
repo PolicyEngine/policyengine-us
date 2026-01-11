@@ -7,13 +7,13 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_eligible: true
+        md_tca_eligible: true
     households:
       household:
         state_code: MD
   output:
     # $328 per month
-    md_tanf_maximum_benefit: 328
+    md_tca_maximum_benefit: 328
 
 - name: Case 2, ten-person household.
   period: 2024-01
@@ -42,13 +42,13 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
-        md_tanf_eligible: true
+        md_tca_eligible: true
     households:
       household:
         state_code: MD
   output:
     # $1,372 (8-person max) + 2 * $136 = $1,644 per month
-    md_tanf_maximum_benefit: 1_644
+    md_tca_maximum_benefit: 1_644
 
 - name: Case 3, exactly at cap (8 persons).
   period: 2024-01
@@ -73,13 +73,13 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        md_tanf_eligible: true
+        md_tca_eligible: true
     households:
       household:
         state_code: MD
   output:
     # 8-person cap = $1,372 (no additional)
-    md_tanf_maximum_benefit: 1_372
+    md_tca_maximum_benefit: 1_372
 
 - name: Case 4, one above cap (9 persons).
   period: 2024-01
@@ -106,10 +106,10 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        md_tanf_eligible: true
+        md_tca_eligible: true
     households:
       household:
         state_code: MD
   output:
     # $1,372 (8-person) + $136 (1 additional) = $1,508
-    md_tanf_maximum_benefit: 1_508
+    md_tca_maximum_benefit: 1_508
