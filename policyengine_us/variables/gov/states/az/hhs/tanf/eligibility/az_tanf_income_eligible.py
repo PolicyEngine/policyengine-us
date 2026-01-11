@@ -11,12 +11,12 @@ class az_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         countable_income = spm_unit("az_tanf_countable_income", period)
-        monthly_fpg = spm_unit("spm_unit_fpg", period)
+        fpg = spm_unit("spm_unit_fpg", period)
         payment_standard = spm_unit("az_tanf_payment_standard", period)
 
         # Test 1: Needy family test (income <= FPG rate * FPG)
         fpg_rate = spm_unit("az_tanf_fpg_rate", period)
-        needy_family_test = countable_income <= fpg_rate * monthly_fpg
+        needy_family_test = countable_income <= fpg_rate * fpg
 
         # Test 2: Payment standard test (income <= payment standard)
         payment_standard_test = countable_income <= payment_standard

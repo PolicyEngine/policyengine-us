@@ -54,9 +54,9 @@
   output:
     # Countable earned: $300 - $90 = $210, * 0.70 = $147
     # Payment standard (A1 for family of 2): ~$276
-    # 2024 monthly FPG for 2: ~$1,703 (100% FPG for parent)
+    # 2024 annual FPG for 2: ~$20,440 (100% FPG for parent)
     # $147 < $276 (payment standard test passes)
-    # $147 < $1,703 (needy family test passes)
+    # $147 < $20,440 (needy family test passes)
     az_tanf_income_eligible: true
 
 - name: Case 3, income exceeds payment standard.
