@@ -1,0 +1,35 @@
+- name: Case 1, assets below combined limit.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 2_000
+  output:
+    # Combined limit: $1,500 + $2,000 = $3,500
+    # $2,000 <= $3,500 = true
+    nm_works_resources_eligible: true
+
+- name: Case 2, assets at combined limit.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 3_500
+  output:
+    # $3,500 <= $3,500 = true
+    nm_works_resources_eligible: true
+
+- name: Case 3, assets above combined limit.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 4_000
+  output:
+    # $4,000 > $3,500 = false
+    nm_works_resources_eligible: false
+
+- name: Case 4, zero assets.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 0
+  output:
+    nm_works_resources_eligible: true
