@@ -1,0 +1,21 @@
+description: Maryland caps the monthly childcare deduction at this amount per child under the Temporary Cash Assistance program.
+
+metadata:
+  threshold_unit: hour
+  amount_unit: currency-USD
+  period: month
+  type: single_amount
+  label: Maryland TCA childcare deduction cap
+  reference:
+    - title: COMAR 07.03.03.13.E(3)(c) - Childcare Deduction
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.13.aspx
+
+brackets:
+  - threshold:
+      2016-01-01: 0
+    amount:
+      2016-01-01: 100
+  - threshold:
+      2016-01-01: 100
+    amount:
+      2016-01-01: 200

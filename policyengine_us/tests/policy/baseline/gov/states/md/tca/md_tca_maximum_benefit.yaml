@@ -1,0 +1,45 @@
+- name: Case 1, one-person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: MD
+  output:
+    # $328 per month
+    md_tca_maximum_benefit: 328
+
+- name: Case 2, ten-person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    state_code: MD
+  output:
+    # $1,599 per month (explicit table value for 10-person household)
+    md_tca_maximum_benefit: 1_599
+
+- name: Case 3, eight-person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: MD
+  output:
+    # $1,372 per month
+    md_tca_maximum_benefit: 1_372
+
+- name: Case 4, nine-person household.
+  period: 2024-01
+  input:
+    spm_unit_size: 9
+    state_code: MD
+  output:
+    # $1,480 per month (explicit table value for 9-person household)
+    md_tca_maximum_benefit: 1_480
+
+- name: Case 5, 22-person household (beyond max table size).
+  period: 2024-01
+  input:
+    spm_unit_size: 22
+    state_code: MD
+  output:
+    # Max table size is 21, so use main[21] + additional * (22 - 21)
+    # 2_983 + 136 * 1 = 3_119
+    md_tca_maximum_benefit: 3_119

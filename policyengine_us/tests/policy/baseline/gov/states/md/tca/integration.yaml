@@ -1,0 +1,284 @@
+# Maryland TCA Integration Tests
+# COMAR 07.03.03 - Temporary Cash Assistance
+# Tests verify complete calculation pipeline with documented intermediate values
+
+- name: Case 1, single parent with child, enrolled, with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $200/child (120 hrs >= 100 = full-time) = $200 cap
+    # Expenses = $500/month, min($500, $200) = $200
+    md_tca_childcare_deduction: 200
+
+    # Countable earned income (enrolled = 60% kept)
+    # $1,000 * 0.6 - $200 = $400
+    md_tca_countable_earned_income: 400
+
+    # Countable income = $400 earned + $0 unearned = $400
+    md_tca_countable_income: 400
+
+    # Maximum benefit (2-person household)
+    md_tca_maximum_benefit: 575
+
+    # Income eligibility ($400 <= $575)
+    md_tca_income_eligible: true
+
+    md_tca_eligible: true
+
+    # max($575 - $400, 0) = $175
+    md_tca: 175
+
+- name: Case 2, single parent with child, not enrolled, with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $200/child (full-time) = $200 cap
+    # Expenses = $500/month, min($500, $200) = $200
+    md_tca_childcare_deduction: 200
+
+    # Countable earned income (not enrolled = 80% kept)
+    # $1,000 * 0.8 - $200 = $600
+    md_tca_countable_earned_income: 600
+
+    # Countable income = $600 earned + $0 unearned = $600
+    md_tca_countable_income: 600
+
+    # Maximum benefit
+    md_tca_maximum_benefit: 575
+
+    # Income eligibility ($600 > $575 = false)
+    md_tca_income_eligible: false
+
+    md_tca_eligible: false
+
+    md_tca: 0
+
+- name: Case 3, multiple earners with child, with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000
+        monthly_hours_worked: 160
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 35
+        employment_income_before_lsr: 12_000
+        monthly_hours_worked: 120
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # Person1: $24,000/12 = $2,000/month
+    # Person2: $12,000/12 = $1,000/month
+    # Total: $3,000/month
+
+    # 1 child * $200/child (160 hrs full-time) = $200 cap
+    # Expenses = $500/month, min($500, $200) = $200
+    md_tca_childcare_deduction: 200
+
+    # Countable earned income (enrolled = 60% kept)
+    # $3,000 * 0.6 - $200 = $1,600
+    md_tca_countable_earned_income: 1_600
+
+    # Countable income = $1,600 earned + $0 unearned = $1,600
+    md_tca_countable_income: 1_600
+
+    # 3-person household
+    md_tca_maximum_benefit: 727
+
+    # $1,600 > $727 = false
+    md_tca_income_eligible: false
+
+    md_tca_eligible: false
+
+    md_tca: 0
+
+- name: Case 4, large household at size cap, no childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        monthly_hours_worked: 0
+      person2:
+        age: 33
+        monthly_hours_worked: 0
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+      person8:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # No childcare expenses = $0 deduction
+    md_tca_childcare_deduction: 0
+
+    md_tca_countable_earned_income: 0
+
+    md_tca_countable_income: 0
+
+    # 8-person household = maximum in table
+    md_tca_maximum_benefit: 1_372
+
+    md_tca_income_eligible: true
+    md_tca_eligible: true
+
+    md_tca: 1_372
+
+- name: Case 5, zero income with childcare expenses receives full benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 0
+        pre_subsidy_childcare_expenses: 2_400
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $100/child (0 hrs < 100 = part-time) = $100 cap
+    # Expenses = $200/month, min($200, $100) = $100
+    md_tca_childcare_deduction: 100
+
+    # No earned income, so countable earned = max(0 - 100, 0) = 0
+    md_tca_countable_earned_income: 0
+
+    md_tca_countable_income: 0
+
+    md_tca_maximum_benefit: 575
+
+    md_tca_income_eligible: true
+    md_tca_eligible: true
+
+    md_tca: 575
+
+- name: Case 6, ineligible no children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_maximum_benefit: 575
+
+    md_tca_eligible: false
+
+    md_tca: 0
+
+- name: Case 7, 10 person household above size cap, with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # 8 children * $200/child (120 hrs full-time) = $1,600 cap
+    # Expenses = $500/month, min($500, $1,600) = $500
+    md_tca_childcare_deduction: 500
+
+    # No earned income
+    md_tca_countable_earned_income: 0
+
+    md_tca_countable_income: 0
+
+    # 10-person household = $1,599 (explicit table value)
+    md_tca_maximum_benefit: 1_599
+
+    md_tca_eligible: true
+
+    md_tca: 1_599
