@@ -1,97 +1,44 @@
-# New Mexico Works (TANF) Maximum Benefit Unit Tests
-# Tests the maximum benefit (payment standard) lookup by benefit group size
-# Source: 8.102.500.8 NMAC, 8.102.620 NMAC
-# Effective August 2023 (23% increase)
-
-- name: Case 1, benefit group size 1.
-  period: 2024-01
+- name: Case 1, 2017 period with budgetary adjustment.
+  period: 2017-01
   input:
     state_code: NM
-    spm_unit_size: 1
+    spm_unit_size: 3
   output:
-    nm_works_maximum_benefit: 327
+    # 2015-08-01 values (7.5% adjustment): size 3 = $409
+    nm_works_maximum_benefit: 409
 
-- name: Case 2, benefit group size 2.
-  period: 2024-01
+- name: Case 2, 2019 period after adjustment removed.
+  period: 2019-01
   input:
     state_code: NM
-    spm_unit_size: 2
+    spm_unit_size: 3
   output:
-    nm_works_maximum_benefit: 439
+    # 2018-11-01 values (no adjustment): size 3 = $447
+    nm_works_maximum_benefit: 447
 
-- name: Case 3, benefit group size 3.
+- name: Case 3, 2024 period with 23% increase.
   period: 2024-01
   input:
     state_code: NM
     spm_unit_size: 3
   output:
+    # 2023-08-01 values: size 3 = $549
     nm_works_maximum_benefit: 549
 
-- name: Case 4, benefit group size 4.
+- name: Case 4, size 9 uses additional person increment.
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_size: 4
+    spm_unit_size: 9
   output:
-    nm_works_maximum_benefit: 663
+    # Size 8: $1,134 + 1 * $111 = $1,245
+    nm_works_maximum_benefit: 1_245
 
-- name: Case 5, benefit group size 5.
+- name: Case 5, size 10 uses additional person increment.
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_size: 5
+    spm_unit_size: 10
   output:
-    nm_works_maximum_benefit: 775
-
-- name: Case 6, benefit group size 6.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 6
-  output:
-    nm_works_maximum_benefit: 887
-
-- name: Case 7, benefit group size 7.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 7
-  output:
-    nm_works_maximum_benefit: 999
-
-- name: Case 8, benefit group size 8.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 8
-  output:
-    nm_works_maximum_benefit: 1_134
-
-# Edge Cases: Maximum unit size and boundary conditions
-
-- name: Case 9, maximum unit size 19.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 19
-  output:
-    # Max unit size: 19, payment standard: $2,355
-    nm_works_maximum_benefit: 2_355
-
-- name: Case 10, unit size 20 uses additional person increment.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 20
-  output:
-    # Size 19 base: $2,355 + 1 extra person * $111 = $2,466
-    nm_works_maximum_benefit: 2_466
-
-- name: Case 11, very large household uses additional person increment.
-  period: 2024-01
-  input:
-    state_code: NM
-    spm_unit_size: 25
-  output:
-    # Size 19 base: $2,355 + 6 extra persons * $111 = $3,021
-    nm_works_maximum_benefit: 3_021
+    # Size 8: $1,134 + 2 * $111 = $1,356
+    nm_works_maximum_benefit: 1_356

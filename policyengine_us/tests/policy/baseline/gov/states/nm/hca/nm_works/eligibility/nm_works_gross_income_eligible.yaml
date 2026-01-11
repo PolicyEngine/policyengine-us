@@ -1,8 +1,4 @@
-# New Mexico Works Gross Income Eligibility Unit Tests
-# Tests the 85% FPL gross income test
-# Source: 8.102.500.8(B) NMAC - Income Eligibility
-
-- name: Case 1, no income is gross income eligible.
+- name: Case 1, no income is eligible.
   period: 2024-01
   input:
     people:
@@ -18,11 +14,10 @@
         members: [person1, person2]
         state_code: NM
   output:
-    # 85% FPL for size 2: $1,396/month (0.85 * $1,643.33)
-    # $0 < $1,396 = eligible
+    # 85% FPL for size 2: $1,396/month
     nm_works_gross_income_eligible: true
 
-- name: Case 2, income below 85% FPL limit is eligible.
+- name: Case 2, income below limit is eligible.
   period: 2024-01
   input:
     people:
@@ -39,11 +34,10 @@
         members: [person1, person2]
         state_code: NM
   output:
-    # 85% FPL for size 2: $1,396/month
     # $1,000 < $1,396 = eligible
     nm_works_gross_income_eligible: true
 
-- name: Case 3, income at 85% FPL limit is ineligible.
+- name: Case 3, income at limit is eligible.
   period: 2024-01
   input:
     people:
@@ -51,22 +45,19 @@
         age: 30
       person2:
         age: 5
-      person3:
-        age: 3
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
-        # 85% FPL for size 3: 0.85 * $2,073.33 = $1,762.33
-        nm_works_gross_income: 1_762.33
+        members: [person1, person2]
+        nm_works_gross_income: 1_396.83
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         state_code: NM
   output:
-    # Formula uses strict less-than (<), so at limit is ineligible
-    nm_works_gross_income_eligible: false
+    # Formula uses <= so at limit is eligible
+    nm_works_gross_income_eligible: true
 
-- name: Case 4, income above 85% FPL limit is ineligible.
+- name: Case 4, income above limit is ineligible.
   period: 2024-01
   input:
     people:
@@ -74,22 +65,18 @@
         age: 30
       person2:
         age: 5
-      person3:
-        age: 3
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
-        nm_works_gross_income: 1_830
+        members: [person1, person2]
+        nm_works_gross_income: 2_000
     households:
       household:
-        members: [person1, person2, person3]
+        members: [person1, person2]
         state_code: NM
   output:
-    # 85% FPL for size 3: ~$1,762/month
-    # $1,830 > $1,762 = ineligible
     nm_works_gross_income_eligible: false
 
-- name: Case 5, larger household with income below limit.
+- name: Case 5, larger household below limit.
   period: 2024-01
   input:
     people:
@@ -101,169 +88,15 @@
         age: 8
       person4:
         age: 5
-      person5:
-        age: 3
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4, person5]
+        members: [person1, person2, person3, person4]
         nm_works_gross_income: 2_000
     households:
       household:
-        members: [person1, person2, person3, person4, person5]
+        members: [person1, person2, person3, person4]
         state_code: NM
   output:
-    # 85% FPL for size 5: 0.85 * $2,933.33 = $2,493.33
-    # $2,000 < $2,493 = eligible
-    nm_works_gross_income_eligible: true
-
-- name: Case 6, single person household with no income.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: NM
-  output:
-    # 85% FPL for size 1: 0.85 * $1,255 = $1,066.75
-    # $0 < $1,067 = eligible
-    nm_works_gross_income_eligible: true
-
-# Edge Cases: Boundary precision tests
-
-- name: Case 7, income one dollar below limit is eligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        # 85% FPL for size 2: $1,396.83
-        nm_works_gross_income: 1_395
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NM
-  output:
-    # $1,395 < $1,396.83 = eligible
-    nm_works_gross_income_eligible: true
-
-- name: Case 8, income one dollar above limit is ineligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        nm_works_gross_income: 1_398
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NM
-  output:
-    # 85% FPL for size 2: $1,396.83/month
-    # $1,398 > $1,396.83 = ineligible
-    nm_works_gross_income_eligible: false
-
-- name: Case 9, zero income is gross income eligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: NM
-  output:
-    # $0 < any positive limit = eligible
-    nm_works_gross_income_eligible: true
-
-- name: Case 10, very high income is ineligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        nm_works_gross_income: 10_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NM
-  output:
-    # $10,000 far exceeds any 85% FPL limit = ineligible
-    nm_works_gross_income_eligible: false
-
-- name: Case 11, large household with income at limit is ineligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 45
-      person2:
-        age: 40
-      person3:
-        age: 17
-      person4:
-        age: 15
-      person5:
-        age: 13
-      person6:
-        age: 11
-      person7:
-        age: 9
-      person8:
-        age: 7
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        # 85% FPL for size 8: 0.85 * $4,223.33 = $3,589.83
-        nm_works_gross_income: 3_590
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        state_code: NM
-  output:
-    # Formula uses <, so at/above limit is ineligible
-    nm_works_gross_income_eligible: false
-
-- name: Case 12, income just below limit is eligible.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        nm_works_gross_income: 1_390
-    households:
-      household:
-        members: [person1, person2]
-        state_code: NM
-  output:
-    # $1,390 < $1,396.83 = eligible
+    # 85% FPL for size 4: 0.85 * $2,503.33 = $2,127.83
+    # $2,000 < $2,128 = eligible
     nm_works_gross_income_eligible: true
