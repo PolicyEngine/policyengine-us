@@ -1,45 +1,262 @@
-- name: Integration test, single parent with one child, part-time work.
+# Maryland TCA Integration Tests
+# COMAR 07.03.03 - Temporary Cash Assistance
+# Tests verify complete calculation pipeline with documented intermediate values
+
+- name: Case 1, single parent with child, enrolled.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 12_000
-        work_hours_per_week: 20
+        employment_income_before_lsr: 12_000
+        weekly_hours_worked: 30
       person2:
         age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         state_code: MD
   output:
-    md_tanf_is_child: [false, true]
-    md_tanf_count_children: 1
+    # Earnings deduction (enrolled = 40%)
+    # $1,000 * 0.40 = $400
+    md_tanf_earnings_deduction: 400
+
+    # Childcare deduction (30 hrs >= 25 = full-time = $200)
+    md_tanf_childcare_deduction: 200
+
+    # Net countable income
+    # max($1,000 - $400 - $200, 0) + $0 unearned = $400
+    md_tanf_net_countable_income: 400
+
+    # Maximum benefit (2-person household)
+    md_tanf_maximum_benefit: 575
+
+    # Income eligibility ($400 <= $575)
+    md_tanf_income_eligible: true
+
     md_tanf_eligible: true
 
-- name: Integration test, household with no children is ineligible.
+    # max($575 - $400, 0) = $175
+    md_tanf: 175
+
+- name: Case 2, single parent with child, not enrolled.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
+        weekly_hours_worked: 30
       person2:
-        age: 28
-        employment_income: 0
+        age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: false
     households:
       household:
         state_code: MD
   output:
-    md_tanf_is_child: [false, false]
-    md_tanf_count_children: 0
-    md_tanf_eligible: false
-    # md_tanf_maximum_benefit is based on household size, not eligibility
-    # 2-person household = $575 per COMAR 07.03.03.17
+    # Earnings deduction (not enrolled = 20%)
+    # $1,000 * 0.20 = $200
+    md_tanf_earnings_deduction: 200
+
+    # Childcare deduction (full-time)
+    md_tanf_childcare_deduction: 200
+
+    # Net countable income
+    # max($1,000 - $200 - $200, 0) = $600
+    md_tanf_net_countable_income: 600
+
+    # Maximum benefit
     md_tanf_maximum_benefit: 575
+
+    # Income eligibility ($600 > $575 = false)
+    md_tanf_income_eligible: false
+
+    md_tanf_eligible: false
+
     md_tanf: 0
+
+- name: Case 3, multiple earners with child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000
+        weekly_hours_worked: 40
+      person2:
+        age: 35
+        employment_income_before_lsr: 12_000
+        weekly_hours_worked: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # Person1: $24,000/12 = $2,000/month
+    # Person2: $12,000/12 = $1,000/month
+    # Total: $3,000/month
+
+    # 40% deduction: $3,000 * 0.40 = $1,200
+    md_tanf_earnings_deduction: 1_200
+
+    # Full-time (40 hrs)
+    md_tanf_childcare_deduction: 200
+
+    # max($3,000 - $1,200 - $200, 0) = $1,600
+    md_tanf_net_countable_income: 1_600
+
+    # 3-person household
+    md_tanf_maximum_benefit: 727
+
+    # $1,600 > $727 = false
+    md_tanf_income_eligible: false
+
+    md_tanf_eligible: false
+
+    md_tanf: 0
+
+- name: Case 4, large household at size cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 0
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+      person8:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_earnings_deduction: 0
+
+    # Part-time rate (no work hours)
+    md_tanf_childcare_deduction: 100
+
+    md_tanf_net_countable_income: 0
+
+    # 8-person household = maximum in table
+    md_tanf_maximum_benefit: 1_372
+
+    md_tanf_income_eligible: true
+    md_tanf_eligible: true
+
+    md_tanf: 1_372
+
+- name: Case 5, zero income receives full benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_earnings_deduction: 0
+    md_tanf_childcare_deduction: 100
+    md_tanf_net_countable_income: 0
+
+    md_tanf_maximum_benefit: 575
+
+    md_tanf_income_eligible: true
+    md_tanf_eligible: true
+
+    md_tanf: 575
+
+- name: Case 6, ineligible no children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_maximum_benefit: 575
+
+    md_tanf_eligible: false
+
+    md_tanf: 0
+
+- name: Case 7, 10 person household above size cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # 10-person household = $1,372 (8-person) + 2 * $136 = $1,644
+    md_tanf_maximum_benefit: 1_644
+
+    md_tanf_eligible: true
+
+    md_tanf: 1_644

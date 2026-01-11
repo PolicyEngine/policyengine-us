@@ -1,4 +1,6 @@
-- name: Case 1, eligible with income below maximum benefit.
+# Tests income eligibility: net_income <= grant_standard
+
+- name: Case 1, income below grant standard.
   period: 2024-01
   input:
     people:
@@ -7,17 +9,16 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_eligible: true
-        md_tanf_maximum_benefit: 727
-        md_tanf_net_countable_income: 200
+        md_tanf_net_countable_income: 300
+        md_tanf_maximum_benefit: 575
     households:
       household:
         state_code: MD
   output:
-    # Benefit = $727 - $200 = $527
-    md_tanf: 527
+    # $300 <= $575 = true
+    md_tanf_income_eligible: true
 
-- name: Case 2, eligible with zero income.
+- name: Case 2, income equals grant standard.
   period: 2024-01
   input:
     people:
@@ -26,17 +27,16 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_eligible: true
+        md_tanf_net_countable_income: 575
         md_tanf_maximum_benefit: 575
-        md_tanf_net_countable_income: 0
     households:
       household:
         state_code: MD
   output:
-    # Benefit = $575 - $0 = $575
-    md_tanf: 575
+    # $575 <= $575 = true
+    md_tanf_income_eligible: true
 
-- name: Case 3, income exceeds maximum benefit.
+- name: Case 3, income exceeds grant standard.
   period: 2024-01
   input:
     people:
@@ -45,17 +45,16 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_eligible: true
-        md_tanf_maximum_benefit: 575
         md_tanf_net_countable_income: 600
+        md_tanf_maximum_benefit: 575
     households:
       household:
         state_code: MD
   output:
-    # Benefit = max($575 - $600, 0) = $0
-    md_tanf: 0
+    # $600 <= $575 = false
+    md_tanf_income_eligible: false
 
-- name: Case 4, ineligible household receives zero.
+- name: Case 4, zero income.
   period: 2024-01
   input:
     people:
@@ -64,11 +63,10 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_eligible: false
-        md_tanf_maximum_benefit: 575
         md_tanf_net_countable_income: 0
+        md_tanf_maximum_benefit: 575
     households:
       household:
         state_code: MD
   output:
-    md_tanf: 0
+    md_tanf_income_eligible: true

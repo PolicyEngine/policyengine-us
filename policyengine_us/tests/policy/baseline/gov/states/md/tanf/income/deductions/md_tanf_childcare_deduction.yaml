@@ -1,89 +1,138 @@
-- name: Case 1, no children, no deduction.
-  period: 2023-01
+# Tests childcare deduction based on work hours and presence of children
+# Full-time (>= 25 hrs): $200, Part-time (< 25 hrs): $100, No children: $0
+
+- name: Case 1, no children gets no deduction.
+  period: 2024-01
   input:
     people:
       person1:
-        work_hours_per_week: 30
+        age: 30
+        weekly_hours_worked: 40
       person2:
-        work_hours_per_week: 40
+        age: 28
+        weekly_hours_worked: 30
     spm_units:
       spm_unit:
         members: [person1, person2]
-        md_tanf_count_children: 0
     households:
       household:
         state_code: MD
   output:
     md_tanf_childcare_deduction: 0
 
-- name: Case 2, has children, part-time work.
-  period: 2023-01
+- name: Case 2, has child with part-time work.
+  period: 2024-01
   input:
     people:
       person1:
-        work_hours_per_week: 20
+        age: 30
+        weekly_hours_worked: 20
       person2:
-        work_hours_per_week: 15
+        age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
-        md_tanf_count_children: 2
     households:
       household:
         state_code: MD
   output:
-    # Per-household deduction: $100/month (part-time)
+    # Part-time (< 25 hrs) = $100
     md_tanf_childcare_deduction: 100
 
-- name: Case 3, has children, full-time work.
-  period: 2023-01
+- name: Case 3, has child with full-time work.
+  period: 2024-01
   input:
     people:
       person1:
-        work_hours_per_week: 30
+        age: 30
+        weekly_hours_worked: 30
       person2:
-        work_hours_per_week: 20
+        age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
-        md_tanf_count_children: 2
     households:
       household:
         state_code: MD
   output:
-    # Per-household deduction: $200/month (full-time, any member >= 25 hours)
+    # Full-time (>= 25 hrs) = $200
     md_tanf_childcare_deduction: 200
 
-- name: Case 4, has children, at exactly 25 hours threshold.
-  period: 2023-01
+- name: Case 4, exactly 25 hours threshold.
+  period: 2024-01
   input:
     people:
       person1:
-        work_hours_per_week: 25
+        age: 30
+        weekly_hours_worked: 25
+      person2:
+        age: 10
     spm_units:
       spm_unit:
-        members: [person1]
-        md_tanf_count_children: 1
+        members: [person1, person2]
     households:
       household:
         state_code: MD
   output:
-    # Exactly at threshold (>= 25 hours) qualifies for full-time rate
+    # Exactly at threshold (>= 25 hrs) = full-time rate
     md_tanf_childcare_deduction: 200
 
-- name: Case 5, has children, at 24 hours (below threshold).
-  period: 2023-01
+- name: Case 5, at 24 hours below threshold.
+  period: 2024-01
   input:
     people:
       person1:
-        work_hours_per_week: 24
+        age: 30
+        weekly_hours_worked: 24
+      person2:
+        age: 10
     spm_units:
       spm_unit:
-        members: [person1]
-        md_tanf_count_children: 1
+        members: [person1, person2]
     households:
       household:
         state_code: MD
   output:
-    # Below threshold (< 25 hours) gets part-time rate
+    # Below threshold (< 25 hrs) = part-time rate
     md_tanf_childcare_deduction: 100
+
+- name: Case 6, has child but zero work hours.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Zero hours = part-time rate
+    md_tanf_childcare_deduction: 100
+
+- name: Case 7, multiple adults with one full-time.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 28
+        weekly_hours_worked: 10
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Any member >= 25 hrs = full-time rate
+    md_tanf_childcare_deduction: 200

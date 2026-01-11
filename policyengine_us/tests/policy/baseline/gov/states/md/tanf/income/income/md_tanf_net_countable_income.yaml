@@ -1,47 +1,67 @@
-- name: Case 1, earned income minus continuous deductions.
-  period: 2023-01
+# Tests net countable income calculation
+# Formula: max(gross_earned - earnings_deduction - childcare, 0) + unearned
+
+- name: Case 1, earned income minus deductions.
+  period: 2024-01
   input:
     people:
       person1:
         age: 30
+        employment_income_before_lsr: 12_000
     spm_units:
       spm_unit:
         members: [person1]
+        md_tanf_earnings_deduction: 400
         md_tanf_childcare_deduction: 0
-        md_tanf_continuous_earnings_deduction: 40
-        md_tanf_countable_gross_earned_income: 100
-        md_tanf_countable_gross_unearned_income: 0
     households:
       household:
         state_code: MD
   output:
-    # Countable earned = max($100 - $40 - $0, 0) = $60
-    # Total = $60 + $0 = $60
-    md_tanf_net_countable_income: 60
+    # max($1,000 - $400 - $0, 0) + $0 = $600
+    md_tanf_net_countable_income: 600
 
 - name: Case 2, earned and unearned income minus deductions.
-  period: 2023-01
+  period: 2024-01
   input:
     people:
       person1:
         age: 30
+        employment_income_before_lsr: 12_000
+        social_security: 6_000
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_childcare_deduction: 10
-        md_tanf_continuous_earnings_deduction: 40
-        md_tanf_countable_gross_earned_income: 100
-        md_tanf_countable_gross_unearned_income: 50
+        md_tanf_earnings_deduction: 400
+        md_tanf_childcare_deduction: 100
     households:
       household:
         state_code: MD
   output:
-    # Countable earned = max($100 - $40 - $10, 0) = $50
-    # Total = $50 + $50 = $100
-    md_tanf_net_countable_income: 100
+    # max($1,000 - $400 - $100, 0) + $500 = $500 + $500 = $1,000
+    md_tanf_net_countable_income: 1_000
 
-- name: Case 3, deductions exceed earned income, only unearned counted.
-  period: 2023-01
+- name: Case 3, deductions exceed earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400
+        social_security: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tanf_earnings_deduction: 100
+        md_tanf_childcare_deduction: 200
+    households:
+      household:
+        state_code: MD
+  output:
+    # max($200 - $100 - $200, 0) + $300 = $0 + $300 = $300
+    md_tanf_net_countable_income: 300
+
+- name: Case 4, zero income.
+  period: 2024-01
   input:
     people:
       person1:
@@ -49,14 +69,10 @@
     spm_units:
       spm_unit:
         members: [person1]
-        md_tanf_childcare_deduction: 50
-        md_tanf_continuous_earnings_deduction: 100
-        md_tanf_countable_gross_earned_income: 80
-        md_tanf_countable_gross_unearned_income: 20
+        md_tanf_earnings_deduction: 0
+        md_tanf_childcare_deduction: 0
     households:
       household:
         state_code: MD
   output:
-    # Countable earned = max($80 - $100 - $50, 0) = $0
-    # Total = $0 + $20 = $20
-    md_tanf_net_countable_income: 20
+    md_tanf_net_countable_income: 0

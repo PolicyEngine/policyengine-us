@@ -14,9 +14,9 @@ class md_tanf_childcare_deduction(Variable):
         # Per COMAR 07.03.03.13, childcare deduction is only available
         # for households with children. The deduction is based on the
         # employment hours of the assistance unit member.
-        has_children = spm_unit("md_tanf_count_children", period) > 0
+        has_children = spm_unit("is_demographic_tanf_eligible", period)
         person = spm_unit.members
-        work_hours = person("work_hours_per_week", period.this_year)
+        work_hours = person("weekly_hours_worked", period.this_year)
         p = parameters(period).gov.states.md.tanf.income.deductions
         full_time = spm_unit.any(work_hours >= p.earned.fulltime_hours)
 

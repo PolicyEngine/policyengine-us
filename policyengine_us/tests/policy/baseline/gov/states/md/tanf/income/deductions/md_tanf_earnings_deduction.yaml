@@ -1,0 +1,54 @@
+# Tests merged earnings deduction using is_tanf_enrolled
+# Not enrolled: 20% rate, Enrolled: 40% rate
+
+- name: Case 1, not enrolled gets 20% deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+    households:
+      household:
+        state_code: MD
+  output:
+    # $12,000/12 = $1,000/month * 0.20 = $200
+    md_tanf_earnings_deduction: 200
+
+- name: Case 2, enrolled gets 40% deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    # $12,000/12 = $1,000/month * 0.40 = $400
+    md_tanf_earnings_deduction: 400
+
+- name: Case 3, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_earnings_deduction: 0

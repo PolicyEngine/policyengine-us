@@ -7,9 +7,26 @@ class md_tanf_eligible(Variable):
     label = "Maryland TCA eligible"
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dsd.maryland.gov/regulations/Pages/07.03.03.03.aspx"
+    reference = (
+        "https://dsd.maryland.gov/regulations/Pages/07.03.03.03.aspx",
+        "https://dsd.maryland.gov/regulations/Pages/07.03.03.12.aspx",
+    )
 
     def formula(spm_unit, period, parameters):
-        has_children = spm_unit("md_tanf_count_children", period) > 0
-        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
-        return has_children & demographic_eligible
+        # Must have at least one eligible child (uses federal demographic rules)
+        has_children = spm_unit("is_demographic_tanf_eligible", period)
+
+        # Must meet income eligibility
+        income_eligible = spm_unit("md_tanf_income_eligible", period)
+
+        # Must meet immigration status eligibility (citizen or qualified alien)
+        # Per COMAR 07.03.17.09 and 8 USC 1641
+        person = spm_unit.members
+        immigration_eligible = spm_unit.any(
+            person("is_citizen_or_legal_immigrant", period.this_year)
+        )
+
+        # Note: Per COMAR 07.03.03.12, individual assets are EXCLUDED
+        # from TCA eligibility, so no resource test is required.
+
+        return has_children & income_eligible & immigration_eligible

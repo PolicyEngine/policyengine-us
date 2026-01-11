@@ -1,5 +1,7 @@
-- name: Case 1, household with children and demographic eligibility is eligible.
-  period: 2023-01
+# Tests overall TANF eligibility (demographic + income + immigration)
+
+- name: Case 1, household with child is eligible.
+  period: 2024-01
   input:
     people:
       person1:
@@ -16,7 +18,7 @@
     md_tanf_eligible: true
 
 - name: Case 2, household with no children is not eligible.
-  period: 2023-01
+  period: 2024-01
   input:
     people:
       person1:
@@ -32,8 +34,8 @@
   output:
     md_tanf_eligible: false
 
-- name: Case 3, single person with no children is not eligible.
-  period: 2023-01
+- name: Case 3, single adult is not eligible.
+  period: 2024-01
   input:
     people:
       person1:
@@ -47,8 +49,8 @@
   output:
     md_tanf_eligible: false
 
-- name: Case 4, household with 18 year old secondary school student is eligible.
-  period: 2023-01
+- name: Case 4, 18 year old secondary school student is eligible.
+  period: 2024-01
   input:
     people:
       person1:
@@ -56,7 +58,6 @@
       person2:
         age: 18
         is_in_secondary_school: true
-        is_in_k12_school: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -64,12 +65,11 @@
       household:
         state_code: MD
   output:
-    # Per COMAR 07.03.03.07, secondary school students under 19 count as children
-    # Note: Exact age 19 edge case requires Maryland-specific override of federal demographic check
+    # Per federal TANF rules, 18-year-olds in secondary school count as children
     md_tanf_eligible: true
 
-- name: Case 5, household with 19 year old college student is not eligible.
-  period: 2023-01
+- name: Case 5, 19 year old is not eligible.
+  period: 2024-01
   input:
     people:
       person1:
@@ -77,7 +77,6 @@
       person2:
         age: 19
         is_full_time_college_student: true
-        is_in_k12_school: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -85,5 +84,5 @@
       household:
         state_code: MD
   output:
-    # Per COMAR 07.03.03.07, college students do not count as children at age 19
+    # Per federal TANF rules, 19-year-olds do not count as children
     md_tanf_eligible: false
