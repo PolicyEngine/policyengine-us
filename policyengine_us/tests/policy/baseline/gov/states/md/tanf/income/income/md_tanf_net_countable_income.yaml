@@ -1,8 +1,12 @@
 - name: Case 1, earned income minus continuous deductions.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_childcare_deduction: 0
         md_tanf_continuous_earnings_deduction: 40
         md_tanf_countable_gross_earned_income: 100
@@ -18,8 +22,12 @@
 - name: Case 2, earned and unearned income minus deductions.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_childcare_deduction: 10
         md_tanf_continuous_earnings_deduction: 40
         md_tanf_countable_gross_earned_income: 100
@@ -35,8 +43,12 @@
 - name: Case 3, deductions exceed earned income, only unearned counted.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_childcare_deduction: 50
         md_tanf_continuous_earnings_deduction: 100
         md_tanf_countable_gross_earned_income: 80

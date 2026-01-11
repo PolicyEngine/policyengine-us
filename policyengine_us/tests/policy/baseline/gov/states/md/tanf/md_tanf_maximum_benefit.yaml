@@ -1,15 +1,51 @@
-- name: One-person household has a maximum benefit of $328 per month.
-  period: 2023
+- name: Case 1, one-person household.
+  period: 2023-01
   input:
-    md_tanf_eligible: true
-    spm_unit_size: 1
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tanf_eligible: true
+    households:
+      household:
+        state_code: MD
   output:
-    md_tanf_maximum_benefit: 328 * 12
+    # $328 per month
+    md_tanf_maximum_benefit: 328
 
-- name: Ten-person household has a maximum benefit of $1,372 (8-person) + 2 * $136 = $1,644 per month.
-  period: 2023
+- name: Case 2, ten-person household.
+  period: 2023-01
   input:
-    md_tanf_eligible: true
-    spm_unit_size: 10
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 6
+      person6:
+        age: 5
+      person7:
+        age: 4
+      person8:
+        age: 3
+      person9:
+        age: 2
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        md_tanf_eligible: true
+    households:
+      household:
+        state_code: MD
   output:
-    md_tanf_maximum_benefit: 1_644 * 12
+    # $1,372 (8-person max) + 2 * $136 = $1,644 per month
+    md_tanf_maximum_benefit: 1_644

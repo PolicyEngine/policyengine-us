@@ -19,7 +19,9 @@ class md_tanf_initial_earnings_deduction(Variable):
         self_employment_income = spm_unit(
             "md_tanf_self_employment_income", period
         )
-        non_self_employment_income = earned_income - self_employment_income
+        non_self_employment_income = max_(
+            earned_income - self_employment_income, 0
+        )
 
         return (self_employment_income * p.self_employed) + (
             non_self_employment_income * p.new

@@ -2,15 +2,15 @@
   period: 2024-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 12_000
         work_hours_per_week: 20
-      child:
+      person2:
         age: 5
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
         state_code: MD
@@ -23,15 +23,15 @@
   period: 2024-01
   input:
     people:
-      adult1:
+      person1:
         age: 30
         employment_income: 12_000
-      adult2:
+      person2:
         age: 28
         employment_income: 0
     spm_units:
       spm_unit:
-        members: [adult1, adult2]
+        members: [person1, person2]
     households:
       household:
         state_code: MD
@@ -39,5 +39,7 @@
     md_tanf_is_child: [false, false]
     md_tanf_count_children: 0
     md_tanf_eligible: false
-    md_tanf_maximum_benefit: 0
+    # md_tanf_maximum_benefit is based on household size, not eligibility
+    # 2-person household = $575 per COMAR 07.03.03.17
+    md_tanf_maximum_benefit: 575
     md_tanf: 0

@@ -1,8 +1,12 @@
 - name: Case 1, zero earned income, zero deduction.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_countable_gross_earned_income: 0
         md_tanf_self_employment_income: 0
     households:
@@ -14,8 +18,12 @@
 - name: Case 2, non-self-employed, 20% deduction.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_countable_gross_earned_income: 100
         md_tanf_self_employment_income: 0
     households:
@@ -28,8 +36,12 @@
 - name: Case 3, all self-employed, 50% deduction.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_countable_gross_earned_income: 100
         md_tanf_self_employment_income: 100
     households:
@@ -42,8 +54,12 @@
 - name: Case 4, partially self-employed, combined deduction.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_countable_gross_earned_income: 100
         md_tanf_self_employment_income: 80
     households:

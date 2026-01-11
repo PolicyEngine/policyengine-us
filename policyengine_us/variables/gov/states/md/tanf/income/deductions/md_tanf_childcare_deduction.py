@@ -16,7 +16,7 @@ class md_tanf_childcare_deduction(Variable):
         # employment hours of the assistance unit member.
         has_children = spm_unit("md_tanf_count_children", period) > 0
         person = spm_unit.members
-        work_hours = person("work_hours_per_week", period)
+        work_hours = person("work_hours_per_week", period.this_year)
         p = parameters(period).gov.states.md.tanf.income.deductions
         full_time = spm_unit.any(work_hours >= p.earned.fulltime_hours)
 

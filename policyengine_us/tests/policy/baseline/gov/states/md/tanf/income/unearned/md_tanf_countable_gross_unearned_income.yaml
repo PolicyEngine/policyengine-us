@@ -1,8 +1,12 @@
 - name: Case 1, gross unearned income passes through to countable.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_gross_unearned_income: 100
     households:
       household:
@@ -13,8 +17,12 @@
 - name: Case 2, zero gross unearned income.
   period: 2023-01
   input:
+    people:
+      person1:
+        age: 30
     spm_units:
       spm_unit:
+        members: [person1]
         md_tanf_gross_unearned_income: 0
     households:
       household:
