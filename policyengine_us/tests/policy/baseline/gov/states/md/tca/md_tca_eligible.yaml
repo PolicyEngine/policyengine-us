@@ -86,3 +86,23 @@
   output:
     # Per federal TANF rules, 19-year-olds do not count as children
     md_tca_eligible: false
+
+- name: Case 6, non-citizen household is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per COMAR 07.03.17.09 and 8 USC 1641, must be citizen or qualified alien
+    md_tca_eligible: false
