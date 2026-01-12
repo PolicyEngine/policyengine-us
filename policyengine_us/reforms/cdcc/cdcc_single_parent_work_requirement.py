@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_cdcc_single_parent_work_requirement() -> Reform:
@@ -57,9 +58,19 @@ def create_cdcc_single_parent_work_requirement_reform(
     if bypass:
         return create_cdcc_single_parent_work_requirement()
 
-    p = parameters(period).gov.contrib.cdcc.single_parent_work_requirement
+    p = parameters.gov.contrib.cdcc.single_parent_work_requirement
 
-    if p.in_effect:
+    # Check if reform is active in current period or next 5 years
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_cdcc_single_parent_work_requirement()
     else:
         return None
