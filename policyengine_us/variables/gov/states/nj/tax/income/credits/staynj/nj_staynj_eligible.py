@@ -13,7 +13,7 @@ class nj_staynj_eligible(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.nj.treasury.staynj
+        p = parameters(period).gov.states.nj.tax.income.credits.staynj
 
         # Age 65+ for head or spouse
         greater_age = tax_unit("greater_age_head_spouse", period)

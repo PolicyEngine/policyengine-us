@@ -14,7 +14,7 @@ class nj_staynj(Variable):
     defined_for = "nj_staynj_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.nj.treasury.staynj
+        p = parameters(period).gov.states.nj.tax.income.credits.staynj
 
         # Calculate 50% of property taxes paid
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])

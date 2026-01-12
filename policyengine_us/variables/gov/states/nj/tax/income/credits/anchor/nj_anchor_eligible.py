@@ -13,7 +13,7 @@ class nj_anchor_eligible(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.nj.treasury.anchor
+        p = parameters(period).gov.states.nj.tax.income.credits.anchor
 
         # Get gross income at tax unit level
         gross_income = add(tax_unit, period, ["nj_gross_income"])
