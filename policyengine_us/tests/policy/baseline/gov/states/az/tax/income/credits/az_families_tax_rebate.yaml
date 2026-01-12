@@ -9,8 +9,11 @@
 # Rebate Amounts:
 # - Dependent under age 17: $250
 # - Dependent age 17 or older: $100
-# - Maximum dependents counted: 3
 # - Young dependents are prioritized for counting
+#
+# Maximum by filing status:
+# - Single/HOH/MFS: 3 dependents, $750 max
+# - MFJ: 6 dependents, $1,500 max
 
 - name: 2021 - Single filer with tax liability and two young dependents
   period: 2021
@@ -141,6 +144,79 @@
   output:
     # No dependents = no rebate
     az_families_tax_rebate: 0
+
+- name: 2021 - MFJ with six young dependents - max $1,500 rebate
+  period: 2021
+  input:
+    people:
+      filer1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_dependent: false
+      filer2:
+        age: 38
+        is_tax_unit_dependent: false
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+      child3:
+        age: 7
+        is_tax_unit_dependent: true
+      child4:
+        age: 9
+        is_tax_unit_dependent: true
+      child5:
+        age: 11
+        is_tax_unit_dependent: true
+      child6:
+        age: 13
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer1, filer2, child1, child2, child3, child4, child5, child6]
+        filing_status: JOINT
+    households:
+      household:
+        members: [filer1, filer2, child1, child2, child3, child4, child5, child6]
+        state_code: AZ
+  output:
+    # MFJ can claim up to 6 dependents: 6 x $250 = $1,500
+    az_families_tax_rebate: 1_500
+
+- name: 2021 - Single filer with four dependents - capped at $750
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 70_000
+        is_tax_unit_dependent: false
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+      child4:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2, child3, child4]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child1, child2, child3, child4]
+        state_code: AZ
+  output:
+    # Single filers capped at 3 dependents: 3 x $250 = $750
+    az_families_tax_rebate: 750
 
 - name: Non-Arizona resident - no rebate
   period: 2021

@@ -8,8 +8,11 @@
 # Rebate Amounts:
 # - Dependent under age 17: $250
 # - Dependent age 17 or older: $100
-# - Maximum dependents counted: 3
 # - Young dependents are prioritized for counting
+#
+# Maximum by filing status:
+# - Single/HOH/MFS: 3 dependents, $750 max
+# - MFJ: 6 dependents, $1,500 max
 
 # 2021 test - eligibility year for the rebate
 - name: 2021 eligibility - single filer with two young dependents
@@ -163,7 +166,7 @@
     # Max 3 dependents, prioritizing young ones
     az_families_tax_rebate_subtraction: 600
 
-- name: Joint filer with four dependents - young prioritized
+- name: Joint filer with four dependents - all counted
   period: 2025
   input:
     people:
@@ -194,10 +197,9 @@
         members: [filer1, filer2, child1, child2, child3, child4]
         state_code: AZ
   output:
-    # 4 dependents but max 3 counted
-    # 2 young (2 x $250) + 1 older (17 years old = $100) = $600
-    # The 19-year-old is not counted (4th dependent)
-    az_families_tax_rebate_subtraction: 600
+    # MFJ can claim up to 6 dependents
+    # 2 young (2 x $250 = $500) + 2 older (2 x $100 = $200) = $700
+    az_families_tax_rebate_subtraction: 700
 
 - name: No dependents
   period: 2025

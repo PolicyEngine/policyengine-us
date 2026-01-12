@@ -34,7 +34,8 @@ class az_families_tax_rebate(Variable):
         young_count = tax_unit.sum(young_dependent)
         older_count = tax_unit.sum(older_dependent)
 
-        max_dependents = p.max_dependents
+        filing_status = tax_unit("filing_status", period)
+        max_dependents = p.max_dependents[filing_status]
 
         # Prioritize young dependents since they have higher value
         young_counted = min_(young_count, max_dependents)
