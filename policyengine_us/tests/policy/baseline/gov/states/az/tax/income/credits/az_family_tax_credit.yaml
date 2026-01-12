@@ -57,3 +57,79 @@
     tax_unit_size: 6
   output:
     az_family_tax_credit: 240
+
+# =============================================================================
+# 2025 Tax Year Tests
+# Family Tax Credit: $40 per person
+# Max: $240 for Joint/HOH, $120 for Single/Separate
+#
+# Income Limits (unchanged):
+# - Joint: $20,000 (0-1 deps), $23,600 (2 deps), $27,300 (3 deps), $31,000 (4+ deps)
+# - HOH: $20,000 (0-1 deps), $20,135 (2 deps), $23,800 (3 deps), $25,200 (4 deps), $26,575 (5+ deps)
+# - Single/Separate: $10,000
+# =============================================================================
+
+- name: 2025 - Joint filer with 2 dependents eligible
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_family_tax_credit_eligible: true
+    tax_unit_size: 4
+  output:
+    # 4 people * $40 = $160
+    az_family_tax_credit: 160
+
+- name: 2025 - Joint filer at max credit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_family_tax_credit_eligible: true
+    tax_unit_size: 8
+  output:
+    # 8 people * $40 = $320, but capped at $240 for joint
+    az_family_tax_credit: 240
+
+- name: 2025 - Single filer at max credit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    az_family_tax_credit_eligible: true
+    tax_unit_size: 4
+  output:
+    # 4 people * $40 = $160, but capped at $120 for single
+    az_family_tax_credit: 120
+
+- name: 2025 - HOH filer eligible
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_family_tax_credit_eligible: true
+    tax_unit_size: 4
+  output:
+    # 4 people * $40 = $160
+    az_family_tax_credit: 160
+
+- name: 2025 - Separate filer not eligible (over income)
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_family_tax_credit_eligible: false
+    tax_unit_size: 2
+  output:
+    az_family_tax_credit: 0
+
+- name: 2025 - Separate filer eligible
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_family_tax_credit_eligible: true
+    tax_unit_size: 1
+  output:
+    # 1 person * $40 = $40
+    az_family_tax_credit: 40

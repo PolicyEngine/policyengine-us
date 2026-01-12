@@ -2,21 +2,24 @@ description: Arizona increases the standard deduction by this fraction of charit
 metadata:
   label: Arizona increased standard deduction for charitable contributions rate
   period: year
-  unit: currency-USD
+  unit: /1
   reference:
+  - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions
+    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=21
+  - title: 2024 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=25
+  - title: 2023 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet
   - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
     href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=24
   - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
     href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=43
   - title: 43-1041. Optional standard deduction Line I
     href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm
-  - title: 2023 Arizona Form 140 Resident Personal Income Tax Booklet Page 3
-    href: https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet
-  - title: 2024 Arizona Form 140 Resident Personal Income Tax Booklet Page 25
-    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=25
 
 values:
   2019-01-01: 0.25
   2022-01-01: 0.27
   2023-01-01: 0.31
   2024-01-01: 0.33
+  2025-01-01: 0.34
