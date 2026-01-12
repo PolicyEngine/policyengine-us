@@ -141,10 +141,12 @@
     az_filing_status: HEAD_OF_HOUSEHOLD
     # AZ base standard deduction for HOH = $23,625
     az_base_standard_deduction: 23_625
-    # AZ taxable income = $75,000 - $23,625 = $51,375
-    az_taxable_income: 51_375
-    # AZ income tax = $51,375 * 2.5% = $1,284.375
-    az_income_tax_before_non_refundable_credits: 1_284.375
+    # AZ Families Tax Rebate subtraction: 1 child under 17 = $250
+    az_families_tax_rebate_subtraction: 250
+    # AZ taxable income = $75,000 - $250 subtraction - $23,625 = $51,125
+    az_taxable_income: 51_125
+    # AZ income tax = $51,125 * 2.5% = $1,278.125
+    az_income_tax_before_non_refundable_credits: 1_278.125
 
 # =============================================================================
 # SECTION 2: Charitable Contribution Deduction Tests (34% rate in 2025)
@@ -1005,7 +1007,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_able_account_contributions: 3_500
+    able_contributions: 3_500
   output:
     # Joint filers have $4,000 limit - $3,500 is under limit
     az_529a_able_account_subtraction: 3_500
@@ -1017,7 +1019,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    qualified_adoption_expenses: 40_000
+    qualified_adoption_assistance_expense: 40_000
   output:
     # Joint filers have same $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 40_000
@@ -1027,7 +1029,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    qualified_adoption_expenses: 25_000
+    qualified_adoption_assistance_expense: 25_000
   output:
     # All filing statuses have $40,000 limit for 2023-2025
     az_adoption_expense_subtraction: 25_000
