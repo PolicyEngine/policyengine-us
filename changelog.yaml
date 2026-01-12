@@ -12184,3 +12184,9 @@
     - Colorado OmniSalud program providing ACA marketplace subsidies for undocumented
       immigrants and DACA recipients.
   date: 2026-01-08 18:02:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove 51 invalid County enum entries (wrong state assignments, non-existent
+      county/state combinations). Validated against Census 2020 county reference data.
+  date: 2026-01-12 18:30:41
