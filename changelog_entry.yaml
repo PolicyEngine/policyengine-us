@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    changed:
+      - title: Update Hawaii income tax parameters with 2025 references
+        description: Added 2025 form references to Hawaii income tax parameters including tax rates, exemptions, standard deductions, itemized deductions, credits (CDCC, EITC, food excise tax, LIHRTC), and subtractions. Added integration tests for 2025 H.B. 2404 widened tax brackets across all filing statuses.
