@@ -1,15 +1,41 @@
 # Arizona Families Tax Rebate Subtraction Tests
 # Per A.R.S. 43-1022 and 2025 Form 140 Instructions (Line 36, Item U)
 #
-# Background: The Arizona Families Tax Rebate was a one-time payment.
-# The IRS determined it is subject to federal income tax, but Arizona
-# provides a subtraction to prevent state taxation.
+# Background: The Arizona Families Tax Rebate was a one-time payment
+# based on 2021 tax returns. The IRS determined it is subject to federal
+# income tax, but Arizona provides a subtraction to prevent state taxation.
 #
 # Rebate Amounts:
 # - Dependent under age 17: $250
 # - Dependent age 17 or older: $100
 # - Maximum dependents counted: 3
 # - Young dependents are prioritized for counting
+
+# 2021 test - eligibility year for the rebate
+- name: 2021 eligibility - single filer with two young dependents
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 35
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: AZ
+  output:
+    # Two dependents under 17 = $500
+    az_families_tax_rebate_subtraction: 500
 
 - name: Single filer with one young dependent
   period: 2025
