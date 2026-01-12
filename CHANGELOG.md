@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.498.1] - 2026-01-12 18:30:41
+
+### Fixed
+
+- Remove 51 invalid County enum entries (wrong state assignments, non-existent county/state combinations). Validated against Census 2020 county reference data.
+
 ## [1.498.0] - 2026-01-08 18:02:47
 
 ### Added
@@ -14241,6 +14247,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.498.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.0...1.498.1
 [1.498.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.1...1.498.0
 [1.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.0...1.497.1
 [1.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.2...1.497.0
