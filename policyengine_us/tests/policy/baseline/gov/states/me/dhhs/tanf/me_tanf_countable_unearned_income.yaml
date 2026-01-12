@@ -1,0 +1,174 @@
+# Maine TANF Countable Unearned Income Tests
+# Tests gross unearned income minus child support deduction
+# Source: 22 M.R.S. Section 3762(3)(B)(7-D)
+#
+# Note: tanf_gross_unearned_income is a MONTH variable
+
+- name: Case 1, zero unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_tanf_countable_unearned_income: 0
+
+- name: Case 2, unearned income without child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_000  # $250/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $250 unearned, no child support deduction
+    me_tanf_countable_unearned_income: 250
+
+- name: Case 3, child support below deduction limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Child support $30/month
+    # Deduction: min($30, $50) = $30 excluded
+    # Countable = $30 - $30 = $0
+    me_tanf_countable_unearned_income: 0
+
+- name: Case 4, child support at deduction limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Child support $50/month
+    # Deduction: min($50, $50) = $50 excluded
+    # Countable = $50 - $50 = $0
+    me_tanf_countable_unearned_income: 0
+
+- name: Case 5, child support above deduction limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Child support $100/month
+    # Deduction: min($100, $50) = $50 excluded
+    # Countable = $100 - $50 = $50
+    me_tanf_countable_unearned_income: 50
+
+- name: Case 6, mixed unearned income with child support.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month (YEAR variable)
+        social_security: 3_600  # $300/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Unearned total: $100 (child support) + $300 (SS) = $400
+    # Deduction: min($100, $50) = $50 excluded
+    # Countable = $400 - $50 = $350
+    me_tanf_countable_unearned_income: 350
+
+- name: Case 7, child support one dollar above deduction limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 612  # $51/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Child support $51/month
+    # Deduction: min($51, $50) = $50 excluded
+    # Countable = $51 - $50 = $1
+    me_tanf_countable_unearned_income: 1
+
+- name: Case 8, high unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12_000  # $1,000/month (YEAR variable)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $1,000 unearned, no child support
+    me_tanf_countable_unearned_income: 1_000

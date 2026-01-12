@@ -1,0 +1,25 @@
+- name: Case 1, income eligible single person below limit.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 36_000  # $3,000/month
+    social_security: 12_000  # $1,000/month
+  output:
+    il_hbwd_income_eligible: true
+
+- name: Case 2, income eligible at exactly 350% FPL for single.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 52_716  # $4,393/month
+  output:
+    il_hbwd_income_eligible: true
+
+- name: Case 3, income eligible after exemptions.
+  period: 2024-01
+  input:
+    state_code: IL
+    employment_income: 60_000  # $5,000/month
+  output:
+    il_hbwd_income_eligible: true
+    # Gross $5,000, after expenses and exemptions becomes eligible

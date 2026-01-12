@@ -1,0 +1,14 @@
+description: Illinois limits income to this share of the federal poverty level under the Health Benefits for Immigrant Seniors program.
+metadata:
+  unit: /1
+  period: year
+  label: Illinois HBIS income limit
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrants
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
+
+values:
+  # HBIS follows Aid to the Aged, Blind or Disabled criteria at 100% FPL
+  2020-12-01: 1.00

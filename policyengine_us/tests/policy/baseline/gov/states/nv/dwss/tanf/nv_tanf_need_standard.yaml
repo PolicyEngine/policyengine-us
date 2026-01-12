@@ -1,0 +1,35 @@
+# Unit tests for nv_tanf_need_standard
+# Tests the need standard lookup by household size
+
+- name: Size 1
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    state_code: NV
+  output:
+    nv_tanf_need_standard: 759
+
+- name: Size 3
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    state_code: NV
+  output:
+    nv_tanf_need_standard: 1_299
+
+- name: Size 8 (max explicit)
+  period: 2025-01
+  input:
+    spm_unit_size: 8
+    state_code: NV
+  output:
+    nv_tanf_need_standard: 2_649
+
+- name: Size 10 (uses increment formula)
+  period: 2025-01
+  input:
+    spm_unit_size: 10
+    state_code: NV
+  output:
+    # $2,649 + 2 x $270 = $3,189
+    nv_tanf_need_standard: 3_189

@@ -1,0 +1,78 @@
+# Tests for overall Colorado OmniSalud eligibility
+
+- name: Undocumented adult with low income eligible
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_eligible: true
+
+- name: Undocumented adult with income too high NOT eligible
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 2.0  # 200% FPL (above 150% limit)
+    state_code: CO
+  output:
+    co_omnisalud_eligible: false
+
+- name: DACA recipient with low income eligible in 2024
+  period: 2024
+  input:
+    age: 25
+    immigration_status: DACA
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_eligible: true
+
+- name: DACA recipient NOT eligible in 2025
+  period: 2025
+  input:
+    age: 25
+    immigration_status: DACA
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_eligible: false
+
+- name: US citizen NOT eligible regardless of income
+  period: 2024
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_eligible: false
+
+- name: Program not in effect before 2022
+  period: 2021
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_eligible: false
+
+- name: NOT eligible at exactly 150% FPL
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.5  # 150% FPL (at limit, not below)
+    state_code: CO
+  output:
+    co_omnisalud_eligible: false

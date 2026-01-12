@@ -1,0 +1,32 @@
+description: New Jersey counts the following sources as gross income.
+metadata:
+  unit: list
+  period: year
+  label: New Jersey gross income sources
+  reference:
+    - title: NJ Statute 54A:5-1 - Gross income defined
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Tax Form
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf
+values:
+  2021-01-01:
+    # Note: NJ uses W-2 Box 16 (state wages), not Box 1 (federal wages).
+    # NJ does not allow pre-tax deductions for 401k/403b that federal allows,
+    # so employment_income (gross wages) is correct, not irs_employment_income.
+    - employment_income  # Line 15: Wages, salaries, tips (Category a)
+    - taxable_interest_income  # Line 16a: Interest (Category e)
+    # Note: NJ Statute 54A:5-1(f) does not distinguish between qualified and
+    # non-qualified dividends. All dividends are taxed as ordinary income.
+    # dividend_income includes both qualified and non-qualified dividends.
+    - dividend_income  # Line 17: Dividends (Category f)
+    - self_employment_income  # Line 18: Net business profits (Category b)
+    - farm_income  # Line 18: Farm income (Category b)
+    - long_term_capital_gains  # Line 19: Long-term capital gains (Category c)
+    - short_term_capital_gains  # Line 19: Short-term capital gains (Category c)
+    - taxable_pension_income  # Line 20a: Pensions (Category j)
+    - taxable_ira_distributions  # Line 20a: IRA distributions (Category j)
+    - partnership_s_corp_income  # Lines 21-22: Partnership & S-corp (Categories k, p)
+    - rental_income  # Line 23: Rents, royalties (Category d)
+    - gambling_winnings  # Line 24: Gambling (Category g)
+    - alimony_income  # Line 25: Alimony received (Category n)
+    - miscellaneous_income  # Line 26: Other income

@@ -5,6 +5,764 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.499.0] - 2026-01-12 19:45:59
+
+### Added
+
+- CDCTC reform that makes families eligible if at least one parent works (instead of requiring both parents to work)
+
+## [1.498.1] - 2026-01-12 18:30:41
+
+### Fixed
+
+- Remove 51 invalid County enum entries (wrong state assignments, non-existent county/state combinations). Validated against Census 2020 county reference data.
+
+## [1.498.0] - 2026-01-08 18:02:47
+
+### Added
+
+- Colorado OmniSalud program providing ACA marketplace subsidies for undocumented immigrants and DACA recipients.
+
+## [1.497.1] - 2026-01-06 14:58:50
+
+### Changed
+
+- Updated uv.lock dependencies.
+
+## [1.497.0] - 2026-01-05 21:26:26
+
+### Added
+
+- Create reform to separate dependent children from Virginia personal exemption.
+
+## [1.496.2] - 2026-01-05 16:26:06
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.1] - 2026-01-05 15:41:57
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.0] - 2026-01-05 00:21:45
+
+### Added
+
+- Tennessee TANF (Families First) program implementation
+
+## [1.495.0] - 2026-01-05 00:20:33
+
+### Added
+
+- Nevada TANF (Temporary Assistance for Needy Families) program
+
+## [1.494.0] - 2026-01-05 00:18:02
+
+### Added
+
+- West Virginia Works program implementation
+
+## [1.493.0] - 2026-01-05 00:02:11
+
+### Added
+
+- Connecticut Temporary Family Assistance (TFA/TANF)
+
+## [1.492.0] - 2026-01-04 23:28:13
+
+### Added
+
+- Implement Rhode Island TANF (Rhode Island Works) program
+
+## [1.491.0] - 2026-01-04 22:56:53
+
+### Added
+
+- Add Delaware TANF (Temporary Assistance for Needy Families)
+
+## [1.490.0] - 2026-01-04 22:20:49
+
+### Added
+
+- South Dakota Temporary Assistance for Needy Families (TANF) program
+
+## [1.489.0] - 2026-01-04 22:11:59
+
+### Added
+
+- Implemented Maine TANF program
+
+## [1.488.0] - 2026-01-04 22:05:35
+
+### Added
+
+- Add New Hampshire FANF (Financial Assistance to Needy Families) program with eligibility determination, payment standard (60% FPG), earned income disregards, and benefit calculation.
+
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
+## [1.486.0] - 2026-01-04 20:46:59
+
+### Added
+
+- Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI thresholds (6% rate above $150k joint, $75k other).
+
+## [1.485.4] - 2026-01-02 21:22:24
+
+### Fixed
+
+- ACA required contribution percentage now correctly handles flat brackets (e.g., 0-133% FPL) per 26 USC 36B by separating thresholds, initial rates, and final rates into independent parameters.
+
+## [1.485.3] - 2026-01-02 19:33:52
+
+### Fixed
+
+- Remove non-existent labels from weekly uv.lock workflow PR creation.
+
+## [1.485.2] - 2026-01-02 19:06:03
+
+### Fixed
+
+- Weekly uv.lock workflow now targets main branch and uses native gh CLI for PR creation.
+
+## [1.485.1] - 2026-01-02 18:29:05
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates.
+
+## [1.485.0] - 2025-12-29 22:22:39
+
+### Fixed
+
+- Arizona Family Tax Credit now correctly uses Arizona AGI plus exemptions for income eligibility determination per ARS 43-1073.
+
+## [1.484.3] - 2025-12-29 21:31:29
+
+### Added
+
+- Updated SNAP BBCE gross income limits for New Mexico (200% FPL effective 2024-10-01) and Alaska (200% FPL effective 2025-07-01).
+- Added South Dakota to BBCE parameters as non-BBCE state.
+- Added and backdated Maryland SUA and LUA values.
+
+## [1.484.2] - 2025-12-29 20:01:21
+
+## [1.484.1] - 2025-12-29 19:18:44
+
+### Changed
+
+- Update Virginia 2025 income tax parameters with 2025 Form 760 references
+- Add rebate values for 2024 ($200/$400) and 2025 ($0)
+- Add 2025 tests for standard deduction, EITC, military benefit subtraction, age deduction, rebate, and exemptions
+
+## [1.484.0] - 2025-12-29 16:26:00
+
+### Added
+
+- Illinois Health Benefits for Immigrants (HBI) program covering All Kids, HBIA (adults 42-64), and HBIS (seniors 65+).
+
+## [1.483.0] - 2025-12-29 14:52:56
+
+### Added
+
+- Minnesota 2025 income tax parameter updates and new programs including K-12 Education Credit/Subtraction, 529 Contribution Subtraction, Military Pension Subtraction, and Active Duty Military Pay Subtraction.
+
+## [1.482.0] - 2025-12-29 13:39:35
+
+### Added
+
+- Idaho Temporary Assistance for Families in Idaho (TAFI) program, implementing income eligibility, resource limits, and benefit calculation (closes
+
+## [1.481.0] - 2025-12-29 02:02:32
+
+### Added
+
+- Michigan Family Independence Program (FIP/TANF)
+
+## [1.480.0] - 2025-12-29 02:00:46
+
+### Added
+
+- Georgia TANF program implementation
+
+## [1.479.0] - 2025-12-28 23:17:19
+
+### Added
+
+- Add Mississippi TANF program.
+
+## [1.478.0] - 2025-12-28 22:59:09
+
+### Added
+
+- Nebraska Aid to Dependent Children (ADC) program.
+
+## [1.477.0] - 2025-12-28 22:37:09
+
+### Added
+
+- Add Kansas TANF program.
+
+## [1.476.0] - 2025-12-28 22:18:45
+
+### Added
+
+- Implement Arkansas Transitional Employment Assistance (TEA/TANF) program
+
+## [1.475.0] - 2025-12-28 22:16:11
+
+### Added
+
+- Added Oklahoma TANF (Temporary Assistance for Needy Families) program
+
+## [1.474.0] - 2025-12-28 21:35:08
+
+### Added
+
+- Adds Utah Temporary Assistance for Needy Families (TANF) program.
+
+## [1.473.0] - 2025-12-28 21:23:14
+
+### Added
+
+- Minnesota Family Investment Program (MFIP).
+
+## [1.472.0] - 2025-12-28 21:07:30
+
+### Added
+
+- Add Kentucky TANF (K-TAP) program
+
+## [1.471.0] - 2025-12-26 20:04:36
+
+### Added
+
+- Add Emergency Medicaid eligibility for undocumented immigrants
+
+## [1.470.1] - 2025-12-23 14:23:08
+
+### Fixed
+
+- County variable now persists across periods when running over datasets, fixing incorrect fallback to first alphabetical county.
+
+## [1.470.0] - 2025-12-21 23:13:06
+
+### Added
+
+- Illinois Prevention Initiative (PI) program.
+
+## [1.469.0] - 2025-12-19 23:08:59
+
+### Added
+
+- Illinois Preschool For All (PFA) and Preschool For All Expansion (PFAE) programs with age (3-5), income (400% FPL), and weighted priority factor eligibility.
+- New input variables for IEP status, developmental delay, non-English speaking home, parent education level, born outside US, and no prior formal early learning.
+
+## [1.468.0] - 2025-12-19 20:53:46
+
+### Added
+
+- Ohio Works First (OWF) cash assistance program.
+
+## [1.467.0] - 2025-12-19 15:39:42
+
+### Added
+
+- Implement Oregon TANF (Temporary Assistance for Needy Families) program with income eligibility, resource limits, and benefit calculations.
+
+## [1.466.0] - 2025-12-19 15:31:15
+
+### Added
+
+- Indiana TANF program.
+
+## [1.465.5] - 2025-12-18 20:55:25
+
+### Fixed
+
+- Updates the thresholds and marginal tax rates rates for the Missouri individual income tax in `parameters/gov/states/mo/tax/income/rates.yaml`
+- Adds the variable `mo_capital_gains_subtraction.py` and the parameter `parameters/gov/states/mo/tax/income/subtractions/net_capital_gain/rate.yaml` for the 2025 inclusion a full deductibility of capital gains in calculating Missouri adjusted gross income.
+- Adds `agi_subtractions.yaml` list parameter with the two MO AGI subtractions for 2025, and creates a `mo_agi_subtractions.py` variable (Person-level), which is referenced in the `mo_adjusted_gross_income.py` calculation.
+- Adds `mo_capital_gains_subtraction_person.py` to allocate the capital gains subtraction proportionally to each person based on their share of long-term capital gains, preventing overcounting in multi-person tax units.
+- Updates the `parameters/gov/states/mo/tax/income/minimum_taxable_income.yaml` parameter with the new 2025 value.
+- Adds new legislative references
+
+## [1.465.4] - 2025-12-18 15:55:33
+
+### Changed
+
+- Rebalance CI test jobs by moving NY state tests to NonStructural-Other and CRFB structural tests to Structural-Heavy.
+
+## [1.465.3] - 2025-12-18 15:12:11
+
+### Added
+
+- Employer payroll tax revenue allocation variables (employer_ss_tax_income_tax_revenue and employer_medicare_tax_income_tax_revenue) for CRFB reform analysis.
+
+### Fixed
+
+- Trust fund revenue allocation now uses double-branching methodology per 42 U.S.C. 401 note Section 121(e), correctly splitting TOB between OASDI and Medicare HI.
+
+## [1.465.2] - 2025-12-17 04:59:37
+
+## [1.465.1] - 2025-12-17 04:17:16
+
+### Added
+
+- Add scheduled GitHub Action workflow for weekly uv.lock updates
+
+## [1.465.0] - 2025-12-16 15:06:15
+
+### Added
+
+- Missouri TANF program.
+
+## [1.464.2] - 2025-12-16 13:23:24
+
+### Fixed
+
+- Arizona property tax credit now uses correct income definition per ARS 43-1072 and ITR 12-1, excluding only Social Security (not pensions, capital gains, or exemptions)
+
+## [1.464.1] - 2025-12-16 04:11:35
+
+### Fixed
+
+- Iowa Child and Dependent Care Credit now uses taxable income instead of net income.
+
+## [1.464.0] - 2025-12-16 00:26:02
+
+### Added
+
+- Wisconsin Works (W-2) program with placement-based benefits and eligibility.
+
+## [1.463.0] - 2025-12-16 00:00:49
+
+### Added
+
+- Pennsylvania TANF.
+
+## [1.462.1] - 2025-12-15 23:24:43
+
+### Fixed
+
+- MA income tax now allows short-term capital losses to offset long-term capital gains in Part C
+
+## [1.462.0] - 2025-12-15 22:36:33
+
+### Fixed
+
+- Maine Dependent Exemption Credit now correctly includes Credit for Other Dependents (ODC) qualifying dependents age 17 and older, as required by Maine statute 36 M.R.S. Section 5219-SS which references IRC Section 24 (including both CTC and ODC).
+
+## [1.461.3] - 2025-12-15 22:10:21
+
+### Fixed
+
+- Fix DC Property Tax Credit incorrectly granting credit for negative AGI with zero rent/property taxes
+
+## [1.461.2] - 2025-12-15 21:42:35
+
+### Fixed
+
+- Montana income tax calculation with negative capital gains now correctly produces zero tax instead of phantom positive tax
+
+## [1.461.1] - 2025-12-15 21:03:17
+
+### Fixed
+
+- Hawaii Food/Excise Tax Credit now correctly handles negative AGI
+
+## [1.461.0] - 2025-12-15 19:02:39
+
+### Added
+
+- Trust fund revenue variables (tob_revenue_total, tob_revenue_oasdi, tob_revenue_medicare_hi) using exact branching methodology
+- Tier 1 and tier 2 taxable Social Security variables for proper OASDI vs Medicare HI allocation
+- LSR recursion guard to prevent infinite loops when branches calculate variables
+
+### Fixed
+
+- Labor supply behavioral response infinite recursion bug
+
+## [1.460.2] - 2025-12-15 18:31:12
+
+### Fixed
+
+- WV homestead excess property tax credit with negative income and zero property taxes
+
+## [1.460.1] - 2025-12-13 04:31:57
+
+### Fixed
+
+- Update uv.lock during version bump so contributors don't need to run uv lock --upgrade after pulling from master.
+- Change push workflow concurrency to queue runs instead of cancelling to ensure each merge completes.
+
+## [1.460.0] - 2025-12-12 23:16:34
+
+### Added
+
+- Medicare Savings Program (MSP) with federal structure supporting QMB, SLMB, and QI eligibility levels.
+- State-specific MSP asset test rules (AL, AZ, CA, CT, DE, DC, LA, MS, NM, NY, OR, VT have eliminated the asset test).
+
+## [1.459.2] - 2025-12-12 18:28:16
+
+### Fixed
+
+- Fix IL AABD non-financial eligibility to require SSI status eligibility per IDHS Policy Manual PM 11-01-00.
+- Remove retirement_distributions from IL AABD asset sources (incorrectly included income variable).
+
+## [1.459.1] - 2025-12-12 18:20:04
+
+### Fixed
+
+- Replace is_medicaid_eligible with receives_medicaid in il_fpp_eligible.
+- Fix IL HBWD disability eligibility to use medical definition without SGA test.
+
+## [1.459.0] - 2025-12-12 14:32:00
+
+### Added
+
+- ACA PTC 700% FPL cliff reform extending subsidies with 8.5% contribution cap to 600% FPL and phaseout to 9.25% at 700% FPL
+
+## [1.458.2] - 2025-12-12 14:10:11
+
+### Fixed
+
+- Floor only business and rental income sources in MI household resources per MI-1040CR form instructions.
+
+## [1.458.1] - 2025-12-12 04:32:17
+
+### Changed
+
+- Split structural YAML tests into parallel CI jobs for better memory management.
+- Add workflow concurrency to cancel in-progress CI runs when new commits are pushed to the same PR.
+
+## [1.458.0] - 2025-12-11 18:30:32
+
+### Added
+
+- Add spm_unit_tenure_type variable at SPM unit level for local area calibration.
+
+## [1.457.1] - 2025-12-11 00:31:16
+
+### Fixed
+
+- Replace is_medicaid_eligible with receives_medicaid in il_bcc_insurance_eligible.
+
+## [1.457.0] - 2025-12-10 18:16:05
+
+### Added
+
+- Create reform to separate dependent children from Delaware Personal Credit.
+
+## [1.456.2] - 2025-12-10 17:53:29
+
+### Fixed
+
+- Fix state_group enum usage in FPG parameter indexing for KY and WV tax credits
+
+## [1.456.1] - 2025-12-10 17:43:25
+
+### Added
+
+- CI check to enforce uv.lock freshness, ensuring tests use the same dependency versions users get.
+
+## [1.456.0] - 2025-12-10 15:49:56
+
+### Added
+
+- Add 20% qualified REIT/PTP income component.
+
+## [1.455.0] - 2025-12-10 11:48:36
+
+### Added
+
+- Illinois Supplementary Medical Insurance Benefit (SMIB) Buy-In Program.
+- SMIB eligibility based on categorical criteria (AABD, TANF, SSI recipients).
+- SMIB benefit covering Medicare Part B premiums for eligible individuals.
+
+## [1.454.1] - 2025-12-09 22:07:46
+
+### Fixed
+
+- Fix IL qualified noncitizen status parameters and TANF immigration eligibility.
+
+## [1.454.0] - 2025-12-09 18:51:53
+
+### Added
+
+- CA Medi-Cal continuous coverage for existing undocumented enrollees after 2026 enrollment freeze.
+- receives_medicaid input variable to indicate current Medicaid enrollment status.
+- medi_cal_enrollment_freeze parameter for CA.
+
+## [1.453.1] - 2025-12-09 15:58:42
+
+### Fixed
+
+- Apply the net income test to the New Jersey childless EITC.
+
+## [1.453.0] - 2025-12-08 23:40:59
+
+### Added
+
+- Add Utah Military Retirement Credit (code AJ).
+
+## [1.452.0] - 2025-12-05 22:06:02
+
+### Added
+
+- Illinois Family Planning Program (FPP).
+
+## [1.451.0] - 2025-12-05 21:40:25
+
+### Added
+
+- Illinois Medicaid Presumptive Eligibility (MPE).
+
+## [1.450.0] - 2025-12-05 21:39:43
+
+### Added
+
+- Illinois Health Benefits for Persons with Breast or Cervical Cancer (BCC) eligibility.
+- Shared Illinois HFS immigration status eligibility variable.
+- has_bcc_qualifying_coverage variable for creditable health coverage determination.
+
+## [1.449.8] - 2025-12-04 16:58:21
+
+### Changed
+
+- Bump policyengine-core to 3.23.0 (adds strict enum validation).
+
+### Fixed
+
+- IL TANF now correctly recognizes veterans as eligible regardless of immigration status per 89 Ill. Admin. Code 112.10.
+
+## [1.449.7] - 2025-12-04 10:32:18
+
+### Fixed
+
+- Fix New Jersey gross income computation.
+
+## [1.449.6] - 2025-12-03 22:50:04
+
+### Fixed
+
+- Fix invalid filing_status enum values in test files (lowercase 'single', numeric '0', typos 'WIDWO' and 'HEAD_OF_HOUSE_HOLD').
+
+## [1.449.5] - 2025-12-03 22:13:14
+
+### Added
+
+- WIC integration tests.
+
+### Fixed
+
+- WIC eligibility now requires valid demographic category per 42 U.S.C. § 1786(d)(1).
+
+## [1.449.4] - 2025-12-03 21:46:07
+
+### Fixed
+
+- Fix Filing Status Issues in Missouri Test Files.
+
+## [1.449.3] - 2025-12-03 13:07:31
+
+### Fixed
+
+- Fixed typo in Colorado state supplement directory name (state_suplement → state_supplement).
+
+## [1.449.2] - 2025-12-03 05:42:15
+
+### Changed
+
+- Parameterized Montana spouse allocation factor for itemized deductions (was hardcoded 0.5)
+
+## [1.449.1] - 2025-12-02 23:28:11
+
+### Fixed
+
+- StateGroup enum warnings for contiguous US states in state_group variable.
+
+## [1.449.0] - 2025-12-02 22:19:22
+
+### Added
+
+- Add Medicare Part A premiums (full, reduced, premium-free based on quarters of coverage).
+- Add Medicare Part B premiums with Income-Related Monthly Adjustment Amount (IRMAA).
+
+## [1.448.0] - 2025-12-02 15:33:28
+
+### Added
+
+- Washington TANF.
+
+## [1.447.0] - 2025-12-02 15:22:21
+
+### Added
+
+- Puerto Rico adjusted gross income calculation.
+
+## [1.446.1] - 2025-12-02 02:33:48
+
+### Fixed
+
+- Prevent negative subtractions from acting as additions under the Ohio joint filing credit.
+
+## [1.446.0] - 2025-12-02 02:31:25
+
+### Added
+
+- Puerto Rico net taxable income calculation.
+
+## [1.445.0] - 2025-12-02 00:29:05
+
+### Added
+
+- Puerto Rico regular tax before credits and gradual adjustment.
+
+## [1.444.1] - 2025-11-29 11:29:24
+
+### Fixed
+
+- Arkansas tax reduction thresholds.
+
+## [1.444.0] - 2025-11-27 11:14:24
+
+### Added
+
+- Mamdani Millionaire Income Tax.
+
+## [1.443.0] - 2025-11-26 18:22:22
+
+### Added
+
+- Illinois Health Benefits for Workers with Disabilities (HBWD) program.
+
+## [1.442.1] - 2025-11-26 17:50:37
+
+### Fixed
+
+- Utah EITC reform.
+
+## [1.442.0] - 2025-11-26 09:56:33
+
+### Added
+
+- Integrate California alternative minimum tax (AMT) into CA income tax calculation.
+
+## [1.441.3] - 2025-11-26 09:54:55
+
+### Added
+
+- Regression test for AMT calculation against TAXSIM35 (issue
+
+## [1.441.2] - 2025-11-26 09:48:01
+
+### Changed
+
+- Split AMT exemption calculation into separate `amt_exemption` variable from `amt_income_less_exemptions`.
+
+## [1.441.1] - 2025-11-25 20:18:51
+
+### Fixed
+
+- Add missing defined_for=StateCode.MA to ma_state_supplement, fixing bug where non-MA households received Massachusetts State Supplement.
+
+## [1.441.0] - 2025-11-25 11:22:31
+
+### Added
+
+- is_federal_work_study_participant.
+- is_part_time_college_student.
+
+### Changed
+
+- Refactor is_snap_ineligible_student to include part-time students and Federal Work Study exception.
+- Update snap_countable_earner to exclude Federal Work Study income.
+
+## [1.440.1] - 2025-11-25 11:02:51
+
+### Fixed
+
+- Adjust Colorado Care Worker credit parameter file names .
+
+## [1.440.0] - 2025-11-25 05:59:26
+
+### Added
+
+- Utah refundable EITC contributed reform.
+
+## [1.439.1] - 2025-11-24 01:28:19
+
+### Changed
+
+- Remove deprecated 'name' metadata field from 51 parameter files
+
+## [1.439.0] - 2025-11-24 00:10:07
+
+### Added
+
+- Added 2018 income limit for optional senior or disabled pathway, changed dates to match with given reference.
+
+## [1.438.1] - 2025-11-23 10:18:53
+
+### Fixed
+
+- Adjust the New Jersey CDCC to apply the actual federal CDCC instead of the potential.
+
+## [1.438.0] - 2025-11-23 09:45:04
+
+### Added
+
+- Puerto Rico income tax.
+
+## [1.437.0] - 2025-11-23 09:22:55
+
+### Added
+
+- Added 2026 base SLCSP values for all rating areas.
+
+## [1.436.0] - 2025-11-22 01:36:58
+
+### Added
+
+- Colorado Care Worker Tax Credit.
+
+## [1.435.1] - 2025-11-21 23:46:56
+
+### Fixed
+
+- Fix SSI spousal deeming to correctly use couple FBR instead of individual FBR.
+
+## [1.435.0] - 2025-11-17 23:19:37
+
+### Fixed
+
+- Restructure Tlaib package
+
+## [1.434.0] - 2025-11-17 16:29:28
+
+### Added
+
+- Rhode Island CTC young child boost.
+
+## [1.433.0] - 2025-11-13 23:38:52
+
+### Added
+
+- Working Pennsylvanians Tax Credit.
+
+## [1.432.9] - 2025-11-13 15:46:53
+
+### Fixed
+
+- Limit the Hawaii CDCC to households with at least one qualifying dependent .
+
 ## [1.432.8] - 2025-11-11 19:02:22
 
 ### Changed
@@ -13495,6 +14253,126 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.1...1.499.0
+[1.498.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.0...1.498.1
+[1.498.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.1...1.498.0
+[1.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.0...1.497.1
+[1.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.2...1.497.0
+[1.496.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.1...1.496.2
+[1.496.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.0...1.496.1
+[1.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.495.0...1.496.0
+[1.495.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.494.0...1.495.0
+[1.494.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.493.0...1.494.0
+[1.493.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.492.0...1.493.0
+[1.492.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.491.0...1.492.0
+[1.491.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.490.0...1.491.0
+[1.490.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.489.0...1.490.0
+[1.489.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.488.0...1.489.0
+[1.488.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.487.0...1.488.0
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
+[1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
+[1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
+[1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
+[1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
+[1.485.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.0...1.485.1
+[1.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.3...1.485.0
+[1.484.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.2...1.484.3
+[1.484.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.1...1.484.2
+[1.484.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.484.0...1.484.1
+[1.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.483.0...1.484.0
+[1.483.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.482.0...1.483.0
+[1.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.481.0...1.482.0
+[1.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.480.0...1.481.0
+[1.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.479.0...1.480.0
+[1.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.478.0...1.479.0
+[1.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.477.0...1.478.0
+[1.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.476.0...1.477.0
+[1.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.475.0...1.476.0
+[1.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.474.0...1.475.0
+[1.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.473.0...1.474.0
+[1.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.472.0...1.473.0
+[1.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.471.0...1.472.0
+[1.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.1...1.471.0
+[1.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.470.0...1.470.1
+[1.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.469.0...1.470.0
+[1.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.468.0...1.469.0
+[1.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.467.0...1.468.0
+[1.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.466.0...1.467.0
+[1.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.5...1.466.0
+[1.465.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.4...1.465.5
+[1.465.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.3...1.465.4
+[1.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.2...1.465.3
+[1.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.1...1.465.2
+[1.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.465.0...1.465.1
+[1.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.2...1.465.0
+[1.464.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.1...1.464.2
+[1.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.464.0...1.464.1
+[1.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.463.0...1.464.0
+[1.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.1...1.463.0
+[1.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.462.0...1.462.1
+[1.462.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.3...1.462.0
+[1.461.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.2...1.461.3
+[1.461.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.1...1.461.2
+[1.461.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.461.0...1.461.1
+[1.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.2...1.461.0
+[1.460.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.1...1.460.2
+[1.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.460.0...1.460.1
+[1.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.2...1.460.0
+[1.459.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.1...1.459.2
+[1.459.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.459.0...1.459.1
+[1.459.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.2...1.459.0
+[1.458.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.1...1.458.2
+[1.458.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.458.0...1.458.1
+[1.458.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.1...1.458.0
+[1.457.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.457.0...1.457.1
+[1.457.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.2...1.457.0
+[1.456.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.1...1.456.2
+[1.456.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.456.0...1.456.1
+[1.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.455.0...1.456.0
+[1.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.1...1.455.0
+[1.454.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.454.0...1.454.1
+[1.454.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.1...1.454.0
+[1.453.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.453.0...1.453.1
+[1.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.452.0...1.453.0
+[1.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.451.0...1.452.0
+[1.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.450.0...1.451.0
+[1.450.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.8...1.450.0
+[1.449.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.7...1.449.8
+[1.449.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.6...1.449.7
+[1.449.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.5...1.449.6
+[1.449.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.4...1.449.5
+[1.449.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.3...1.449.4
+[1.449.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.2...1.449.3
+[1.449.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.1...1.449.2
+[1.449.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.449.0...1.449.1
+[1.449.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.448.0...1.449.0
+[1.448.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.447.0...1.448.0
+[1.447.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.1...1.447.0
+[1.446.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.446.0...1.446.1
+[1.446.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.445.0...1.446.0
+[1.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.1...1.445.0
+[1.444.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.444.0...1.444.1
+[1.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.443.0...1.444.0
+[1.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.442.1...1.443.0
+[1.442.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.442.0...1.442.1
+[1.442.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.3...1.442.0
+[1.441.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.2...1.441.3
+[1.441.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.1...1.441.2
+[1.441.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.441.0...1.441.1
+[1.441.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.440.1...1.441.0
+[1.440.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.440.0...1.440.1
+[1.440.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.439.1...1.440.0
+[1.439.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.439.0...1.439.1
+[1.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.1...1.439.0
+[1.438.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.438.0...1.438.1
+[1.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.437.0...1.438.0
+[1.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.436.0...1.437.0
+[1.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.435.1...1.436.0
+[1.435.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.435.0...1.435.1
+[1.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.434.0...1.435.0
+[1.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.433.0...1.434.0
+[1.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.9...1.433.0
+[1.432.9]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.8...1.432.9
 [1.432.8]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.7...1.432.8
 [1.432.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.6...1.432.7
 [1.432.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.432.5...1.432.6

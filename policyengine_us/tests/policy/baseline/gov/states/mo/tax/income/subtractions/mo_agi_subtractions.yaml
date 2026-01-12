@@ -1,0 +1,176 @@
+- name: Pre capital gains subtraction law and qualified premiums, cap gains
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 0
+
+
+- name: Pre capital gains subtraction law and qualified premiums, health insurance
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_qualified_health_insurance_premiums: 12_000
+
+
+- name: Pre capital gains subtraction law and qualified premiums, subtractions
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_agi_subtractions: 12_000
+
+
+- name: Post capital gains subtraction law and qualified premiums, capital gains
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 1_000
+
+
+- name: Post capital gains subtraction law and qualified premiums, health insurance
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_qualified_health_insurance_premiums: 12_000
+
+
+- name: Post capital gains subtraction law and qualified premiums, subtractions
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 500
+        health_insurance_premiums: 12_000
+        medical_out_of_pocket_expenses: 12_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_agi_subtractions: 13_000
+
+
+- name: Married couple - capital gains allocated by person
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 6_000
+        short_term_capital_gains: 0
+        health_insurance_premiums: 6_000
+        medical_out_of_pocket_expenses: 6_000
+      person2:
+        long_term_capital_gains: 4_000
+        short_term_capital_gains: 0
+        health_insurance_premiums: 6_000
+        medical_out_of_pocket_expenses: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        medical_expense_deduction: 0
+        tax_unit_itemizes: false
+        taxable_income: 100_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person-level capital gains subtraction allocation: 60%/40% of 10_000
+    mo_capital_gains_subtraction_person: [6_000, 4_000]
+    # Person-level health insurance: 50%/50% of 12_000
+    mo_qualified_health_insurance_premiums: [6_000, 6_000]
+    # Total subtractions per person: 6_000+6_000=12_000 and 4_000+6_000=10_000
+    mo_agi_subtractions: [12_000, 10_000]

@@ -1,0 +1,207 @@
+# Unit tests for Rhode Island TANF countable earned income
+# 218-RICR-20-00-2.15: Earned income disregards
+# Formula per earner: Countable Earned = max((Gross Earned - $525), 0) * 0.5
+# https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_works_countable_earned_income: 0
+
+- name: Case 2, earned income below $525 fully disregarded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # max($400 - $525, 0) * 0.5 = $0
+    ri_works_countable_earned_income: 0
+
+- name: Case 3, earned income exactly at $525 threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_300  # $525/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # max($525 - $525, 0) * 0.5 = $0
+    ri_works_countable_earned_income: 0
+
+- name: Case 4, earned income above $525 threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # max($1,000 - $525, 0) * 0.5 = $237.50
+    ri_works_countable_earned_income: 237.5
+
+- name: Case 5, two earners one above one below threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Per-earner disregard:
+    # Person 1: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Person 2: max($500 - $525, 0) * 0.5 = $0
+    # Total: $237.50
+    ri_works_countable_earned_income: 237.5
+
+- name: Case 6, two earners both below $525 threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 3_600  # $300/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Per-earner disregard applies separately
+    # Person 1: max($400 - $525, 0) * 0.5 = $0
+    # Person 2: max($300 - $525, 0) * 0.5 = $0
+    # Total: $0 (NOT combined then disregarded)
+    ri_works_countable_earned_income: 0
+
+- name: Case 7, earned income with dependent care deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 4_800  # $400/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Earned after disregard: max($1,500 - $525, 0) * 0.5 = $487.50
+    # Dependent care (age 3): min($400, $175) = $175
+    # Countable: max($487.50 - $175, 0) = $312.50
+    ri_works_countable_earned_income: 312.5
+
+- name: Case 8, dependent care exceeds earned income floors at zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Earned after disregard: max($600 - $525, 0) * 0.5 = $37.50
+    # Dependent care: $200 (age 1) + $175 (age 3) = $375 max
+    # Deduction: min($500, $375) = $375
+    # Countable: max($37.50 - $375, 0) = $0
+    ri_works_countable_earned_income: 0
+
+- name: Case 9, self-employment loss.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income_before_lsr: -6_000  # -$500/month loss
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Negative SE income floors at 0
+    ri_works_countable_earned_income: 0

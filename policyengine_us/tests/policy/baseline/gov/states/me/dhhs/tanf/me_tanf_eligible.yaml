@@ -1,0 +1,102 @@
+# Maine TANF Eligibility Tests
+# Tests overall eligibility combining income, resources, and demographic eligibility
+# Source: 22 M.R.S. Section 3762
+
+- name: Case 1, fully eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_income_eligible: true
+    me_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    me_tanf_eligible: true
+
+- name: Case 2, income ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_income_eligible: false
+    me_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    me_tanf_eligible: false
+
+- name: Case 3, resources ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_income_eligible: true
+    me_tanf_resources_eligible: false
+    is_demographic_tanf_eligible: true
+  output:
+    me_tanf_eligible: false
+
+- name: Case 4, no demographically eligible member.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_income_eligible: true
+    me_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: false
+  output:
+    me_tanf_eligible: false
+
+- name: Case 5, all criteria ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_income_eligible: false
+    me_tanf_resources_eligible: false
+    is_demographic_tanf_eligible: false
+  output:
+    me_tanf_eligible: false
+
+- name: Case 6, no citizen or legal immigrant in household.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_income_eligible: true
+        me_tanf_resources_eligible: true
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Immigration eligibility requires at least one citizen or legal immigrant
+    # add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0 = false
+    me_tanf_eligible: false
+
+- name: Case 7, at least one citizen in mixed immigration household.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_tanf_income_eligible: true
+        me_tanf_resources_eligible: true
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # At least one citizen (child), so immigration eligible
+    me_tanf_eligible: true

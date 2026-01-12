@@ -1,0 +1,252 @@
+# TN Families First Integration Tests
+# For 2021+:
+# - CNS size 2: $1,370, SPA: $343
+# - CNS size 3: $1,549, SPA: $387
+# - CNS size 5: $1,885, SPA: $471
+# - Earned income disregard: $250
+# - Child care: $200 (under 2), $175 (2+)
+# - Minimum grant: $10
+# - GIS = CNS * 1.85
+
+- name: Case 1, no income receives SPA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Size 2, no income
+    # Payment standard: SPA = $343
+    # Deficit: CNS ($1,370) - countable ($0) = $1,370
+    # Benefit: min($343, $1,370) = $343
+    tn_ff: 343
+
+- name: Case 2, no income family of 3 receives SPA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Size 3, no income
+    # Payment standard: SPA = $387
+    tn_ff: 387
+
+- name: Case 3, earned income reduces benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 27
+        tanf_gross_earned_income: 500
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross earned: $500/month
+    # Countable earned: $500 - $250 = $250
+    # No child care claimed
+    # Countable: $250
+    # Payment standard: SPA = $343
+    # Deficit: $1,370 - $250 = $1,120
+    # Benefit: min($343, $1,120) = $343
+    tn_ff: 343
+
+- name: Case 4, income over GIS is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 3_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Gross: $3,000/month > GIS ($1,370 * 1.85 = $2,534.50)
+    # Ineligible
+    tn_ff: 0
+
+- name: Case 5, unearned income near CNS.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_unearned_income: 1_200
+      person2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Unearned: $1,200/month
+    # Gross: $1,200 < GIS ($2,534.50) - passes
+    # Countable (no disregard for unearned): $1,200 < CNS ($1,370) - passes
+    # Deficit: $1,370 - $1,200 = $170
+    # Benefit: min($343, $170) = $170 >= $10 minimum
+    tn_ff: 170
+
+- name: Case 6, large family with 4 children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 34
+      person2:
+        age: 2
+      person3:
+        age: 5
+      person4:
+        age: 8
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TN
+  output:
+    # Size 5, no income
+    # Payment standard: SPA = $471
+    tn_ff: 471
+
+- name: Case 7, resources over limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Assets: $10,000
+    # Countable resources: $10,000 - $4,600 = $5,400 > $2,000
+    # Ineligible
+    tn_ff: 0
+
+- name: Case 8, no qualifying child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # No child under 18
+    tn_ff: 0
+
+- name: Case 9, historical 2020 parameters (pre-2021 values).
+  period: 2020-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Pre-2021 values: CNS size 3 = $1,066, SPA = $185, disregard = $150
+    # GIS = $1,066 * 1.85 = $1,972.10
+    # Gross: $500 < $1,972.10 - passes
+    # Countable: $500 - $150 = $350 < $1,066 - passes
+    # Deficit: $1,066 - $350 = $716
+    # Benefit: min($185, $716) = $185
+    tn_ff: 185
+
+- name: Case 10, earned income with childcare deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 800
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Size 3: CNS = $1,549, SPA = $387
+    # GIS = $1,549 * 1.85 = $2,865.65
+    # Gross: $800 < $2,865.65 - passes
+    # Child care deduction: $200 (under 2) + $175 (age 4) = $375
+    # Countable earned: $800 - $250 (disregard) - $375 (childcare) = $175
+    # Countable: $175 < CNS ($1,549) - passes
+    # Deficit: $1,549 - $175 = $1,374
+    # Benefit: min($387, $1,374) = $387
+    tn_ff_child_care_deduction: 375
+    tn_ff_countable_earned_income: 175
+    tn_ff: 387
