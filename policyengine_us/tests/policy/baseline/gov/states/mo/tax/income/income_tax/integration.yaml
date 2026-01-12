@@ -67,3 +67,33 @@
         state_code: MO
   output:  # expected results from TAXSIM35
     mo_income_tax: 884.03
+
+- name: Single filer with $50,000 taxable income in 2025
+  # Tests 2025 tax brackets:
+  # $0-$1,313: $0 (0%)
+  # $1,313-$2,626: $26.26 (2% of $1,313)
+  # $2,626-$3,939: $32.83 (2.5% of $1,313)
+  # $3,939-$5,252: $39.39 (3% of $1,313)
+  # $5,252-$6,565: $45.96 (3.5% of $1,313)
+  # $6,565-$7,878: $52.52 (4% of $1,313)
+  # $7,878-$9,191: $59.09 (4.5% of $1,313)
+  # $9,191-$50,000: $1,918.02 (4.7% of $40,809)
+  # Total: $2,174.07 (rounded to $2,174)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        mo_taxable_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_income_tax: 2_174

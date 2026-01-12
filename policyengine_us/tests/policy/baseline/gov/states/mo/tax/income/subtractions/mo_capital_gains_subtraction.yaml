@@ -63,3 +63,26 @@
     mo_capital_gains_subtraction: 10_000
     # Person level subtraction should be allocated by LTCG share
     mo_capital_gains_subtraction_person: [6_000, 4_000]
+
+- name: 2025 capital gains subtraction - 100% of LTCG
+  # In 2025, 100% of long-term capital gains are subtractable
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 25_000
+        short_term_capital_gains: 5_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_itemizes: false
+        taxable_income: 150_000
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    # 100% of long-term capital gains ($25,000) subtracted
+    # Short-term capital gains are NOT eligible for subtraction
+    mo_capital_gains_subtraction: 25_000
