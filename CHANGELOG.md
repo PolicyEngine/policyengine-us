@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.500.0] - 2026-01-13 22:53:31
+
+### Added
+
+- Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income for IL AABD calculation.
+
 ## [1.499.1] - 2026-01-13 22:35:23
 
 ### Fixed
@@ -14260,6 +14266,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.1...1.500.0
 [1.499.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.0...1.499.1
 [1.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.1...1.499.0
 [1.498.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.0...1.498.1
