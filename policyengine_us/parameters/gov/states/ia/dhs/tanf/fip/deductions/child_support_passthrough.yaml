@@ -1,0 +1,13 @@
+description: Iowa FIP exempts up to this amount of monthly child support paid by a legally responsible person for a child in the FIP eligible group.
+values:
+  1996-01-01: 50
+metadata:
+  unit: currency-USD
+  label: Iowa FIP child support passthrough
+  period: month
+  reference:
+    - title: Iowa HHS FIP Income Manual Chapter 4-E
+      href: https://hhs.iowa.gov/media/3970
+    - title: Iowa Code Chapter 239B.6 - Assignment of support rights or benefits
+      href: https://www.legis.iowa.gov/docs/ico/chapter/239B.pdf
+  economy: false

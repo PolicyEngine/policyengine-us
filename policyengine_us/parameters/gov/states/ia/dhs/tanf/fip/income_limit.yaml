@@ -1,0 +1,25 @@
+description: Iowa FIP gross income limit by household size, equal to 185% of the Schedule of Living Costs. Families with countable income at or above this limit fail the Standard of Need test and are ineligible.
+values:
+  2025-07-01:
+    1: 675.25
+    2: 1_330.15
+    3: 1_570.65
+    4: 1_824.10
+    5: 2_020.20
+    6: 2_249.60
+    7: 2_469.75
+    8: 2_695.45
+    9: 2_915.60
+    10: 3_189.40
+metadata:
+  unit: currency-USD
+  label: Iowa FIP income limit (185% of living costs)
+  period: month
+  reference:
+    - title: Iowa Administrative Code 441-41.28 - Need Standards
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+      publication_date: 2025-07-01
+    - title: Iowa HHS FIP Income Manual Chapter 4-E
+      href: https://hhs.iowa.gov/media/3970
+  household: true
+  economy: false
