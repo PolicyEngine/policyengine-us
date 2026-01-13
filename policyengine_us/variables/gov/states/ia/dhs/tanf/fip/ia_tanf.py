@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ia_tanf_fip(Variable):
+class ia_tanf(Variable):
     value_type = float
     entity = SPMUnit
     label = "Iowa Family Investment Program (FIP/TANF)"
@@ -11,7 +11,7 @@ class ia_tanf_fip(Variable):
     documentation = (
         "https://hhs.iowa.gov/assistance-programs/cash-assistance/fip-tanf"
     )
-    defined_for = "ia_tanf_fip_eligible"
+    defined_for = "ia_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         # Get payment standard for family size

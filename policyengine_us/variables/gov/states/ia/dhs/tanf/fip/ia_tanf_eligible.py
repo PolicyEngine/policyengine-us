@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ia_tanf_fip_eligible(Variable):
+class ia_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Iowa FIP eligible"
