@@ -1,4 +1,4 @@
-- bump: minor
+- bump: patch
   changes:
-    added:
-      - Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income for IL AABD calculation.
+    changed:
+      - Remove concurrency block from push workflow to allow parallel CI runs.
