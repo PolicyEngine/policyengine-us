@@ -12203,3 +12203,9 @@
       in 0.
     - Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
   date: 2026-01-13 22:35:23
+- bump: minor
+  changes:
+    added:
+    - Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income
+      for IL AABD calculation.
+  date: 2026-01-13 22:53:31
