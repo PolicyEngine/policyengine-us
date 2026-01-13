@@ -1,0 +1,715 @@
+# Iowa Family Investment Program (FIP/TANF) - Integration Tests
+# Based on IAC 441-41.28 (Effective 7/1/2025)
+# Tests the complete benefit calculation pipeline
+
+- name: Family of 1 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Payment Standard for family of 1: $183
+    # No income → Maximum benefit
+    ia_tanf: 183
+
+- name: Family of 2 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Payment Standard for family of 2: $361
+    # No income → Maximum benefit
+    ia_tanf: 361
+
+- name: Family of 3 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Payment Standard for family of 3: $426
+    # No income → Maximum benefit
+    ia_tanf: 426
+
+- name: Family of 4 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: IA
+  output:
+    # Payment Standard for family of 4: $495
+    # No income → Maximum benefit
+    ia_tanf: 495
+
+- name: Family of 3 - Low earned income - Partial benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 800
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation (per documentation):
+    # Payment Standard: $426
+    # Gross earned income: $800
+    # Less 20% deduction: $800 × 0.80 = $640
+    # Test 2: $640 < $1,570.65 (Standard of Need) → Pass
+    # Less 50% work incentive: $640 × 0.50 = $320
+    # Countable net income: $320
+    # Benefit: $426 - $320 = $106
+    ia_tanf: 106
+
+- name: Family of 3 - Moderate earned income - Smaller benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 1_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $426
+    # Gross earned income: $1,000
+    # Less 20% deduction: $1,000 × 0.80 = $800
+    # Test 2: $800 < $1,570.65 (Standard of Need) → Pass
+    # Less 50% work incentive: $800 × 0.50 = $400
+    # Countable net income: $400
+    # Benefit: $426 - $400 = $26
+    ia_tanf: 26
+
+- name: Family of 3 - Income at payment standard - Zero benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 1_065
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $426
+    # Gross earned income: $1,065
+    # Less 20% deduction: $1,065 × 0.80 = $852
+    # Test 2: $852 < $1,570.65 (Standard of Need) → Pass
+    # Less 50% work incentive: $852 × 0.50 = $426
+    # Countable net income: $426
+    # Benefit: $426 - $426 = $0 (eligible but zero benefit)
+    ia_tanf: 0
+
+- name: Family of 3 - Income exceeds standard of need - Ineligible
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 2_000
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Gross earned income: $2,000
+    # Less 20% deduction: $2,000 × 0.80 = $1,600
+    # Test 2: $1,600 > $1,570.65 (Standard of Need) → Fail
+    # Family is INELIGIBLE (fails Standard of Need test)
+    ia_tanf: 0
+
+- name: Family of 3 - Income just below standard of need threshold
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 1_963
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Gross earned income: $1,963
+    # Less 20% deduction: $1,963 × 0.80 = $1,570.40
+    # Test 2: $1,570.40 < $1,570.65 (Standard of Need) → Pass (just under)
+    # Less 50% work incentive: $1,570.40 × 0.50 = $785.20
+    # Countable net income: $785.20
+    # Benefit: $426 - $785.20 = -$359.20 → $0 (negative becomes zero)
+    ia_tanf: 0
+
+- name: Family of 5 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: IA
+  output:
+    # Payment Standard for family of 5: $548
+    # No income → Maximum benefit
+    ia_tanf: 548
+
+- name: Family of 5 - Earned income - Partial benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 1_200
+      child1:
+        age: 10
+      child2:
+        age: 8
+      child3:
+        age: 6
+      child4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $548
+    # Gross earned income: $1,200
+    # Less 20% deduction: $1,200 × 0.80 = $960
+    # Test 2: $960 < $2,020.20 (Standard of Need) → Pass
+    # Less 50% work incentive: $960 × 0.50 = $480
+    # Countable net income: $480
+    # Benefit: $548 - $480 = $68
+    ia_tanf: 68
+
+- name: Family of 2 - Mixed income sources
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 600
+        social_security: 200
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $361
+    # Gross earned income: $600
+    # Less 20% deduction: $600 × 0.80 = $480
+    # Test 2: $480 < $1,330.15 (Standard of Need) → Pass
+    # Less 50% work incentive: $480 × 0.50 = $240
+    # Add unearned income: $200
+    # Countable net income: $240 + $200 = $440
+    # Benefit: $361 - $440 = -$79 → $0 (negative becomes zero)
+    ia_tanf: 0
+
+- name: Family of 2 - Only unearned income
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        social_security: 300
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $361
+    # No earned income → No 20% or 50% deductions
+    # Unearned income: $300
+    # Test 2: $300 < $1,330.15 (Standard of Need) → Pass
+    # Countable net income: $300
+    # Benefit: $361 - $300 = $61
+    ia_tanf: 61
+
+- name: Family of 4 - Two parents with income
+  period: 2025-07
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 800
+      parent2:
+        age: 28
+        employment_income: 400
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $495
+    # Total gross earned income: $800 + $400 = $1,200
+    # Less 20% deduction: $1,200 × 0.80 = $960
+    # Test 2: $960 < $1,824.10 (Standard of Need) → Pass
+    # Less 50% work incentive: $960 × 0.50 = $480
+    # Countable net income: $480
+    # Benefit: $495 - $480 = $15
+    ia_tanf: 15
+
+- name: Family of 6 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 12
+      child2:
+        age: 10
+      child3:
+        age: 8
+      child4:
+        age: 6
+      child5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: IA
+  output:
+    # Payment Standard for family of 6: $610
+    # No income → Maximum benefit
+    ia_tanf: 610
+
+- name: Family of 10 - No income - Maximum benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+      child9:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: IA
+  output:
+    # Payment Standard for family of 10: $865
+    # No income → Maximum benefit
+    ia_tanf: 865
+
+- name: Family of 11 - No income - Maximum benefit (10 plus 1)
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 17
+      child2:
+        age: 16
+      child3:
+        age: 14
+      child4:
+        age: 12
+      child5:
+        age: 10
+      child6:
+        age: 8
+      child7:
+        age: 6
+      child8:
+        age: 4
+      child9:
+        age: 2
+      child10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        state_code: IA
+  output:
+    # Payment Standard for family of 11: $865 + $87 = $952
+    # No income → Maximum benefit
+    ia_tanf: 952
+
+- name: Family of 3 - Self-employment income
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: 900
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $426
+    # Self-employment is earned income
+    # Gross earned income: $900
+    # Less 20% deduction: $900 × 0.80 = $720
+    # Test 2: $720 < $1,570.65 (Standard of Need) → Pass
+    # Less 50% work incentive: $720 × 0.50 = $360
+    # Countable net income: $360
+    # Benefit: $426 - $360 = $66
+    ia_tanf: 66
+
+- name: Family of 3 - Mixed earned income sources
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 500
+        self_employment_income: 300
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $426
+    # Total gross earned income: $500 + $300 = $800
+    # Less 20% deduction: $800 × 0.80 = $640
+    # Test 2: $640 < $1,570.65 (Standard of Need) → Pass
+    # Less 50% work incentive: $640 × 0.50 = $320
+    # Countable net income: $320
+    # Benefit: $426 - $320 = $106
+    ia_tanf: 106
+
+- name: Family of 1 - Income at threshold boundary
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 843
+    spm_units:
+      spm_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $183
+    # Gross earned income: $843
+    # Less 20% deduction: $843 × 0.80 = $674.40
+    # Test 2: $674.40 < $675.25 (Standard of Need) → Pass (just under)
+    # Less 50% work incentive: $674.40 × 0.50 = $337.20
+    # Countable net income: $337.20
+    # Benefit: $183 - $337.20 = -$154.20 → $0
+    ia_tanf: 0
+
+- name: Family of 1 - Income exceeds threshold
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 845
+    spm_units:
+      spm_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Calculation:
+    # Gross earned income: $845
+    # Less 20% deduction: $845 × 0.80 = $676
+    # Test 2: $676 > $675.25 (Standard of Need) → Fail
+    # Family is INELIGIBLE
+    ia_tanf: 0
+
+- name: Family of 4 - High earned income - Ineligible
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 2_500
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: IA
+  output:
+    # Calculation:
+    # Gross earned income: $2,500
+    # Less 20% deduction: $2,500 × 0.80 = $2,000
+    # Test 2: $2,000 > $1,824.10 (Standard of Need) → Fail
+    # Family is INELIGIBLE
+    ia_tanf: 0
+
+- name: Family of 2 - Small earned income - High benefit
+  period: 2025-07
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 100
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Calculation:
+    # Payment Standard: $361
+    # Gross earned income: $100
+    # Less 20% deduction: $100 × 0.80 = $80
+    # Test 2: $80 < $1,330.15 (Standard of Need) → Pass
+    # Less 50% work incentive: $80 × 0.50 = $40
+    # Countable net income: $40
+    # Benefit: $361 - $40 = $321
+    ia_tanf: 321
