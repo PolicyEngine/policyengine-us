@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixed:
+      - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+    added:
+      - Add is_blind to IL HBWD disability eligibility check.
