@@ -1,0 +1,25 @@
+description: Iowa Family Investment Program (FIP) monthly payment standard by household size. This represents the Schedule of Basic Needs, which is 50% of the Schedule of Living Costs.
+values:
+  2025-07-01:
+    1: 183
+    2: 361
+    3: 426
+    4: 495
+    5: 548
+    6: 610
+    7: 670
+    8: 731
+    9: 791
+    10: 865
+metadata:
+  unit: currency-USD
+  label: Iowa FIP payment standard
+  period: month
+  reference:
+    - title: Iowa Administrative Code 441-41.28 - Need Standards
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+      publication_date: 2025-07-01
+    - title: Iowa HHS FIP Income Manual Chapter 4-E
+      href: https://hhs.iowa.gov/media/3970
+  household: true
+  economy: false
