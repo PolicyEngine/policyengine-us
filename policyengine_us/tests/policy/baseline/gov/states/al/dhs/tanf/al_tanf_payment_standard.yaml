@@ -33,3 +33,11 @@
     state_code: AL
   output:
     al_tanf_payment_standard: 488
+
+- name: Case 5, family of 18.
+  period: 2024-01
+  input:
+    spm_unit_size: 18
+    state_code: AL
+  output:
+    al_tanf_payment_standard: 968

@@ -7,7 +7,7 @@ class al_tanf_countable_earned_income(Variable):
     unit = USD
     label = "Alabama TANF countable earned income"
     definition_period = MONTH
-    reference = "https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=30"
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37"
     defined_for = StateCode.AL
 
     def formula(spm_unit, period, parameters):
