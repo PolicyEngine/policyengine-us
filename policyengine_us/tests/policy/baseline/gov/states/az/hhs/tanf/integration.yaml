@@ -422,3 +422,152 @@
     az_tanf_payment_standard: 219
     # Benefit: $219 - $42 = $177
     az_tanf: 177
+
+- name: Scenario 10, historical period with 20% benefit cut (2023).
+  # Tests the reduced benefit rate during 2009-2023 period (0.288 instead of 0.36)
+  # Reference: Arizona implemented 20% cut during Great Recession (restored Dec 2023)
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+        housing_cost: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Demographics
+    is_person_demographic_tanf_eligible: [false, true, true]
+    # Income calculation - no income
+    az_tanf_countable_income: 0
+    # Eligibility
+    az_tanf_resources_eligible: true
+    az_tanf_income_eligible: true
+    az_tanf_eligible: true
+    # Family of 3, 1992 FPG: $11,570 annual
+    # Monthly: $11,570 / 12 = $964.17
+    # A1 rate in 2023: 28.8% (20% cut from 36%)
+    # Payment standard: $964.17 * 0.288 = $277.68
+    az_tanf_payment_standard: 277.68
+    # Benefit: $277.68 - $0 = $277.68
+    az_tanf: 277.68
+
+- name: Scenario 11, non-parent relative caretaker with income.
+  # Tests 130% FPG rate for non-parent relative (grandparent caring for grandchild)
+  # Reference: A.R.S. § 46-292 - non-parent relative cases have 130% FPG limit
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income_before_lsr: 3_600  # $300/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 0  # Not the parent
+      person2:
+        age: 8
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500
+        housing_cost: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Demographics
+    is_person_demographic_tanf_eligible: [false, true]
+    # Non-parent relative case: head has no own children, unit has children
+    az_tanf_fpg_rate: 1.3  # 130% FPG rate for non-parent relative
+    # Income calculation
+    # Person1: $300 - $90 = $210, * 0.70 = $147
+    az_tanf_earned_income_after_disregard_person: [147, 0]
+    az_tanf_countable_earned_income: 147
+    az_tanf_countable_income: 147
+    # Eligibility
+    az_tanf_resources_eligible: true
+    az_tanf_income_eligible: true
+    az_tanf_eligible: true
+    # Family of 2, 1992 FPG: $9,190 annual
+    # Monthly: $9,190 / 12 = $765.83
+    # A1 rate: 36%
+    # Payment standard: $765.83 * 0.36 = $275.70
+    az_tanf_payment_standard: 275.7
+    # Benefit: $275.70 - $147 = $128.70
+    az_tanf: 128.7
+
+- name: Scenario 12, large family of 6 members.
+  # Tests payment standard extrapolation for family size > 5
+  # 1992 FPG formula: $6,810 + (n-1) * $2,380
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 3_600  # $300/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 38
+        own_children_in_household: 1
+      person3:
+        age: 16
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        spm_unit_assets: 1_800
+        housing_cost: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AZ
+  output:
+    # Demographics - only children under 18 are demographically eligible
+    is_person_demographic_tanf_eligible: [false, false, true, true, true, true]
+    # Income calculation
+    # Person1: $300 - $90 = $210, * 0.70 = $147
+    az_tanf_earned_income_after_disregard_person: [147, 0, 0, 0, 0, 0]
+    az_tanf_countable_earned_income: 147
+    az_tanf_countable_income: 147
+    # Eligibility
+    az_tanf_resources_eligible: true
+    az_tanf_income_eligible: true
+    az_tanf_eligible: true
+    # Family of 6, 1992 FPG: $6,810 + 5*$2,380 = $18,710 annual
+    # Monthly: $18,710 / 12 = $1,559.17
+    # A1 rate: 36%
+    # Payment standard: $1,559.17 * 0.36 = $561.30
+    az_tanf_payment_standard: 561.3
+    # Benefit: $561.30 - $147 = $414.30
+    az_tanf: 414.3

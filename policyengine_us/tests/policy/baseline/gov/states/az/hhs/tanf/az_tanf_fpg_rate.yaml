@@ -3,7 +3,7 @@
 # Reference: https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Benefit_Determination.html
 
 - name: Case 1, parent caregiver.
-  period: 2024
+  period: 2024-01
   input:
     people:
       person1:
@@ -27,7 +27,7 @@
     az_tanf_fpg_rate: 1
 
 - name: Case 2, non-parent relative caregiver.
-  period: 2024
+  period: 2024-01
   input:
     people:
       person1:
@@ -51,7 +51,7 @@
     az_tanf_fpg_rate: 1.3
 
 - name: Case 3, two parents.
-  period: 2024
+  period: 2024-01
   input:
     people:
       person1:
