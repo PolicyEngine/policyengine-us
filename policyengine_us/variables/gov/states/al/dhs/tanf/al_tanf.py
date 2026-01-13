@@ -11,10 +11,6 @@ class al_tanf(Variable):
     defined_for = "al_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.al.dhs.tanf
-        unit_size = spm_unit("spm_unit_size", period)
-        capped_unit_size = min_(unit_size, p.max_unit_size)
-        payment_standard = p.payment_standard.calc(capped_unit_size)
+        payment_standard = spm_unit("al_tanf_payment_standard", period)
         countable_income = spm_unit("al_tanf_countable_income", period)
-
         return max_(payment_standard - countable_income, 0)

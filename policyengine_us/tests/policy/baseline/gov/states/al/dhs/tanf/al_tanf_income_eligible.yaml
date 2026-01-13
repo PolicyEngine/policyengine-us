@@ -1,5 +1,5 @@
 # Unit tests for Alabama TANF income eligibility
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2023/10/DHR-FAD-595-Oct.23.pdf#page=2
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
 # Income eligible if countable income <= payment standard
 # Payment standards: $264 (1 person), $304 (2), $344 (3), $392 (4), $440 (5)
 
@@ -9,7 +9,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       person2:
         age: 5
     spm_units:
@@ -31,7 +31,7 @@
     people:
       person1:
         age: 30
-        employment_income: 3_000  # $250/month
+        employment_income_before_lsr: 3_000  # $250/month
       person2:
         age: 5
     spm_units:
@@ -55,7 +55,7 @@
     people:
       person1:
         age: 30
-        employment_income: 4_560  # $380/month
+        employment_income_before_lsr: 4_560  # $380/month
       person2:
         age: 5
     spm_units:
@@ -79,7 +79,7 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month
+        employment_income_before_lsr: 6_000  # $500/month
       person2:
         age: 5
     spm_units:
@@ -103,7 +103,7 @@
     people:
       person1:
         age: 30
-        employment_income: 4_200  # $350/month
+        employment_income_before_lsr: 4_200  # $350/month
       person2:
         age: 5
       person3:
@@ -123,13 +123,13 @@
     # $280 <= $344, eligible
     al_tanf_income_eligible: true
 
-- name: Case 6, family of 4 with care expenses - eligible.
+- name: Case 6, family of 4 with childcare expenses - eligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 35
-        employment_income: 6_000  # $500/month
+        employment_income_before_lsr: 6_000  # $500/month
       person2:
         age: 32
       person3:
@@ -147,12 +147,11 @@
   output:
     # Monthly employment: $500
     # Work expense deduction (20%): $500 * 0.20 = $100
-    # Countable earned: $500 - $100 = $400
-    # Childcare: $300/month
-    # Care expense disregard (30%): $300 * 0.30 = $90
-    # Countable income: $400 - $90 = $310
+    # After work expense: $400
+    # Childcare deduction: $300
+    # Countable earned: max($400 - $300, 0) = $100
     # Payment standard (4 persons): $392
-    # $310 <= $392, eligible
+    # $100 <= $392, eligible
     al_tanf_income_eligible: true
 
 - name: Case 7, family of 5 with unearned income - ineligible.
@@ -161,7 +160,7 @@
     people:
       person1:
         age: 35
-        employment_income: 6_000  # $500/month
+        employment_income_before_lsr: 6_000  # $500/month
         child_support_received: 1_200  # $100/month
       person2:
         age: 32
@@ -194,7 +193,7 @@
     people:
       person1:
         age: 25
-        employment_income: 2_400  # $200/month
+        employment_income_before_lsr: 2_400  # $200/month
         is_pregnant: true
     spm_units:
       spm_unit:
@@ -216,8 +215,6 @@
 # ============================================================================
 
 - name: Edge Case 1, income one dollar over payment standard - ineligible.
-  # Tests the <= boundary behavior in income eligibility check
-  # Countable income of $305 is exactly one dollar over $304 threshold
   period: 2024-01
   input:
     people:
@@ -238,5 +235,4 @@
     # Monthly unearned income: $305 (no deductions on unearned)
     # Countable income: $305
     # $305 > $304, ineligible (tests > boundary, one dollar over)
-    # Note: This tests that the comparison uses <= not <
     al_tanf_income_eligible: false

@@ -1,24 +1,21 @@
 # Integration tests for Alabama TANF - full pipeline testing
 # Tests realistic family scenarios with complete eligibility and benefit calculations
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2023/10/DHR-FAD-595-Oct.23.pdf
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
 # Key rules:
 # - Work expense deduction: 20% of earned income
-# - Self-employment deduction: 40% of gross self-employment income
-# - Care expense disregard: 30% of childcare/care expenses
+# - Childcare is deducted directly from earned income
 # - No asset limit in Alabama
 
 - name: Scenario 1 - Single parent with 2 children, no income - full benefit.
-  # Family of 3, no income, receives full payment standard
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       person2:
         age: 5
-        is_in_k12_school: true
       person3:
         age: 3
     spm_units:
@@ -33,15 +30,11 @@
         state_code: AL
   output:
     # Family size: 3
-    # Gross earned income: $0
-    # Work expense deduction: $0
     # Countable earned income: $0
     # Countable income: $0
     # Payment standard (family of 3): $344
     # Benefit: $344 - $0 = $344
     is_person_demographic_tanf_eligible: [false, true, true]
-    al_tanf_gross_earned_income: 0
-    al_tanf_work_expense_deduction: 0
     al_tanf_countable_earned_income: 0
     al_tanf_countable_income: 0
     al_tanf_income_eligible: true
@@ -49,17 +42,15 @@
     al_tanf: 344
 
 - name: Scenario 2 - Family of 2 with $600 monthly employment earnings.
-  # Standard earned income calculation with 20% work expense deduction
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 28
-        employment_income: 7_200  # $600/month
+        employment_income_before_lsr: 7_200  # $600/month
       person2:
         age: 4
-        is_in_k12_school: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -80,8 +71,6 @@
     # Ineligible: $480 > $304
     # Benefit: $0
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_gross_earned_income: 600
-    al_tanf_work_expense_deduction: 120
     al_tanf_countable_earned_income: 480
     al_tanf_countable_income: 480
     al_tanf_income_eligible: false
@@ -89,17 +78,15 @@
     al_tanf: 0
 
 - name: Scenario 3 - Family of 3 with $400 monthly earnings - partial benefit.
-  # Lower income, receives partial benefit
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 32
-        employment_income: 4_800  # $400/month
+        employment_income_before_lsr: 4_800  # $400/month
       person2:
         age: 7
-        is_in_k12_school: true
       person3:
         age: 4
     spm_units:
@@ -122,8 +109,6 @@
     # $320 <= $344, eligible
     # Benefit: $344 - $320 = $24
     is_person_demographic_tanf_eligible: [false, true, true]
-    al_tanf_gross_earned_income: 400
-    al_tanf_work_expense_deduction: 80
     al_tanf_countable_earned_income: 320
     al_tanf_countable_income: 320
     al_tanf_income_eligible: true
@@ -131,22 +116,19 @@
     al_tanf: 24
 
 - name: Scenario 4 - Family of 4 with self-employment income.
-  # Tests 40% self-employment operating expense deduction + 20% work expense
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 38
-        self_employment_income: 9_600  # $800/month gross self-employment
+        self_employment_income_before_lsr: 4_800  # $400/month self-employment
       person2:
         age: 35
       person3:
         age: 12
-        is_in_k12_school: true
       person4:
         age: 8
-        is_in_k12_school: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -159,38 +141,31 @@
         state_code: AL
   output:
     # Family size: 4
-    # Monthly self-employment gross: $800
-    # Self-employment deduction (40%): $800 * 0.40 = $320
-    # Net self-employment: $800 - $320 = $480
-    # Gross earned income: $0 + $480 = $480
-    # Work expense deduction: $480 * 0.20 = $96
-    # Countable earned income: $480 - $96 = $384
-    # Countable income: $384
+    # Monthly self-employment: $400
+    # Work expense deduction: $400 * 0.20 = $80
+    # Countable earned income: $400 - $80 = $320
+    # Countable income: $320
     # Payment standard (family of 4): $392
-    # $384 <= $392, eligible
-    # Benefit: $392 - $384 = $8
+    # $320 <= $392, eligible
+    # Benefit: $392 - $320 = $72
     is_person_demographic_tanf_eligible: [false, false, true, true]
-    al_tanf_gross_earned_income: 480
-    al_tanf_work_expense_deduction: 96
-    al_tanf_countable_earned_income: 384
-    al_tanf_countable_income: 384
+    al_tanf_countable_earned_income: 320
+    al_tanf_countable_income: 320
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 8
+    al_tanf: 72
 
 - name: Scenario 5 - Family with combined earned and unearned income.
-  # Tests handling of both income types
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 29
-        employment_income: 3_600  # $300/month earned
+        employment_income_before_lsr: 3_600  # $300/month earned
         child_support_received: 600  # $50/month unearned
       person2:
         age: 4
-        is_in_k12_school: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -212,8 +187,6 @@
     # $290 <= $304, eligible
     # Benefit: $304 - $290 = $14
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_gross_earned_income: 300
-    al_tanf_work_expense_deduction: 60
     al_tanf_countable_earned_income: 240
     al_tanf_countable_income: 290
     al_tanf_income_eligible: true
@@ -221,28 +194,25 @@
     al_tanf: 14
 
 - name: Scenario 6 - Family of 5 with childcare expenses.
-  # Tests 30% care expense disregard
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 36
-        employment_income: 7_200  # $600/month
+        employment_income_before_lsr: 7_200  # $600/month
       person2:
         age: 34
       person3:
         age: 10
-        is_in_k12_school: true
       person4:
         age: 6
-        is_in_k12_school: true
       person5:
         age: 2
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        childcare_expenses: 6_000  # $500/month childcare
+        childcare_expenses: 2_400  # $200/month childcare
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -254,31 +224,28 @@
     # Family size: 5
     # Monthly gross earned income: $600
     # Work expense deduction: $600 * 0.20 = $120
-    # Countable earned: $600 - $120 = $480
-    # Childcare expenses: $500/month
-    # Care expense disregard (30%): $500 * 0.30 = $150
-    # Countable income: $480 - $150 = $330
+    # After work expense: $600 - $120 = $480
+    # Childcare: $200
+    # Countable earned: max($480 - $200, 0) = $280
+    # Countable income: $280
     # Payment standard (family of 5): $440
-    # $330 <= $440, eligible
-    # Benefit: $440 - $330 = $110
+    # $280 <= $440, eligible
+    # Benefit: $440 - $280 = $160
     is_person_demographic_tanf_eligible: [false, false, true, true, true]
-    al_tanf_gross_earned_income: 600
-    al_tanf_work_expense_deduction: 120
-    al_tanf_countable_earned_income: 480
-    al_tanf_countable_income: 330
+    al_tanf_countable_earned_income: 280
+    al_tanf_countable_income: 280
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 110
+    al_tanf: 160
 
 - name: Scenario 7 - Refugee family eligible.
-  # Tests immigration status for qualified noncitizen
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 28
-        employment_income: 2_400  # $200/month
+        employment_income_before_lsr: 2_400  # $200/month
         immigration_status: REFUGEE
       person2:
         age: 6
@@ -303,8 +270,6 @@
     # $160 <= $304, eligible
     # Benefit: $304 - $160 = $144
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_gross_earned_income: 200
-    al_tanf_work_expense_deduction: 40
     al_tanf_countable_earned_income: 160
     al_tanf_countable_income: 160
     al_tanf_income_eligible: true
@@ -315,116 +280,28 @@
 # Edge Case Tests
 # ============================================================================
 
-- name: Edge Case 1 - Family of 17, max_unit_size capping.
-  # Tests that family size caps at 16 for payment standard lookup
-  # Code: al_tanf.py:16 uses min_(unit_size, p.max_unit_size) where max is 16
-  period: 2024-01
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 0
-      person2:
-        age: 38
-      person3:
-        age: 17
-        is_in_k12_school: true
-      person4:
-        age: 16
-        is_in_k12_school: true
-      person5:
-        age: 15
-        is_in_k12_school: true
-      person6:
-        age: 14
-        is_in_k12_school: true
-      person7:
-        age: 13
-        is_in_k12_school: true
-      person8:
-        age: 12
-        is_in_k12_school: true
-      person9:
-        age: 11
-        is_in_k12_school: true
-      person10:
-        age: 10
-        is_in_k12_school: true
-      person11:
-        age: 9
-        is_in_k12_school: true
-      person12:
-        age: 8
-        is_in_k12_school: true
-      person13:
-        age: 7
-        is_in_k12_school: true
-      person14:
-        age: 6
-        is_in_k12_school: true
-      person15:
-        age: 5
-        is_in_k12_school: true
-      person16:
-        age: 4
-      person17:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17]
-        state_code: AL
-  output:
-    # Family size: 17 (but capped at 16 for payment standard lookup)
-    # Gross earned income: $0
-    # Countable income: $0
-    # Payment standard (capped at 16 persons): $968
-    # Benefit: $968 - $0 = $968
-    # Note: Without capping, there's no payment standard for 17 people
-    al_tanf_gross_earned_income: 0
-    al_tanf_work_expense_deduction: 0
-    al_tanf_countable_earned_income: 0
-    al_tanf_countable_income: 0
-    al_tanf_income_eligible: true
-    al_tanf_eligible: true
-    al_tanf: 968
-
-- name: Edge Case 2 - Family of 8 with partial benefit.
-  # Tests payment standard lookup for larger family size
-  # Payment standard for family of 8: $584
+- name: Edge Case 1 - Family of 8 with partial benefit.
   period: 2024-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
         age: 42
-        employment_income: 4_800  # $400/month
+        employment_income_before_lsr: 4_800  # $400/month
       person2:
         age: 40
       person3:
         age: 16
-        is_in_k12_school: true
       person4:
         age: 14
-        is_in_k12_school: true
       person5:
         age: 12
-        is_in_k12_school: true
       person6:
         age: 10
-        is_in_k12_school: true
       person7:
         age: 8
-        is_in_k12_school: true
       person8:
         age: 5
-        is_in_k12_school: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
@@ -445,10 +322,44 @@
     # $320 <= $584, eligible
     # Benefit: $584 - $320 = $264
     is_person_demographic_tanf_eligible: [false, false, true, true, true, true, true, true]
-    al_tanf_gross_earned_income: 400
-    al_tanf_work_expense_deduction: 80
     al_tanf_countable_earned_income: 320
     al_tanf_countable_income: 320
     al_tanf_income_eligible: true
     al_tanf_eligible: true
     al_tanf: 264
+
+- name: Edge Case 2 - Childcare exceeds after-work-expense income.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $300
+    # Work expense deduction: $300 * 0.20 = $60
+    # After work expense: $240
+    # Childcare: $300
+    # Countable earned: max($240 - $300, 0) = max(-$60, 0) = $0
+    # Payment standard (2 persons): $304
+    # Benefit: $304 - $0 = $304
+    is_person_demographic_tanf_eligible: [false, true]
+    al_tanf_countable_earned_income: 0
+    al_tanf_countable_income: 0
+    al_tanf_income_eligible: true
+    al_tanf_eligible: true
+    al_tanf: 304

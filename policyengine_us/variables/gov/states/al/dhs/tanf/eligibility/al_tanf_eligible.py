@@ -17,6 +17,6 @@ class al_tanf_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("al_tanf_income_eligible", period)
-        # NOTE: Alabama has NO asset limit for TANF
+        # Alabama has NO asset limit for TANF
 
         return demographic_eligible & immigration_eligible & income_eligible

@@ -1,6 +1,6 @@
 # Unit tests for Alabama TANF benefit amount
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2023/10/DHR-FAD-595-Oct.23.pdf#page=2
-# Benefit = payment_standard - countable_income (if eligible)
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Benefit = max(payment_standard - countable_income, 0)
 # Payment standards: $264 (1), $304 (2), $344 (3), $392 (4), $440 (5), $488 (6), etc.
 
 - name: Case 1, no income - full benefit.
@@ -9,7 +9,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       person2:
         age: 5
     spm_units:
@@ -31,7 +31,7 @@
     people:
       person1:
         age: 30
-        employment_income: 2_400  # $200/month
+        employment_income_before_lsr: 2_400  # $200/month
       person2:
         age: 5
     spm_units:
@@ -55,7 +55,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # $1,000/month
+        employment_income_before_lsr: 12_000  # $1,000/month
       person2:
         age: 5
     spm_units:
@@ -80,7 +80,7 @@
     people:
       person1:
         age: 30
-        employment_income: 3_000  # $250/month
+        employment_income_before_lsr: 3_000  # $250/month
       person2:
         age: 5
       person3:
@@ -131,7 +131,7 @@
     people:
       person1:
         age: 35
-        employment_income: 3_600  # $300/month
+        employment_income_before_lsr: 3_600  # $300/month
       person2:
         age: 32
       person3:
@@ -161,7 +161,7 @@
     people:
       person1:
         age: 30
-        self_employment_income: 6_000  # $500/month gross
+        self_employment_income_before_lsr: 3_600  # $300/month
       person2:
         age: 5
     spm_units:
@@ -172,9 +172,7 @@
         members: [person1, person2]
         state_code: AL
   output:
-    # Monthly self-employment gross: $500
-    # Self-employment deduction (40%): $500 * 0.40 = $200
-    # Net self-employment: $500 - $200 = $300
+    # Monthly self-employment: $300
     # Work expense deduction (20%): $300 * 0.20 = $60
     # Countable earned: $300 - $60 = $240
     # Payment standard (2 persons): $304
@@ -205,13 +203,13 @@
     # Benefit: $304 - $200 = $104
     al_tanf: 104
 
-- name: Case 9, childcare expense disregard.
+- name: Case 9, childcare expense deduction.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 6_000  # $500/month
+        employment_income_before_lsr: 6_000  # $500/month
       person2:
         age: 3
     spm_units:
@@ -225,14 +223,12 @@
   output:
     # Monthly employment: $500
     # Work expense deduction (20%): $500 * 0.20 = $100
-    # Countable earned: $500 - $100 = $400
-    # Childcare: $300/month
-    # Care expense disregard (30%): $300 * 0.30 = $90
-    # Countable income: $400 - $90 = $310
+    # After work expense: $400
+    # Childcare deduction: $300
+    # Countable earned: max($400 - $300, 0) = $100
     # Payment standard (2 persons): $304
-    # Ineligible: countable > payment standard
-    # Benefit: $0
-    al_tanf: 0
+    # Benefit: $304 - $100 = $204
+    al_tanf: 204
 
 - name: Case 10, single pregnant person full benefit.
   period: 2024-01
@@ -258,48 +254,40 @@
 # Edge Case Tests
 # ============================================================================
 
-- name: Edge Case 1, care disregard enabling eligibility.
-  # Family of 2 where childcare expenses make the difference between eligible/ineligible
-  # Without childcare: income would exceed threshold
-  # With childcare: 30% disregard brings income under threshold
+- name: Edge Case 1, childcare enabling larger benefit.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 5_400  # $450/month
+        employment_income_before_lsr: 5_400  # $450/month
       person2:
         age: 3
     spm_units:
       spm_unit:
         members: [person1, person2]
-        childcare_expenses: 2_400  # $200/month childcare
+        childcare_expenses: 2_400  # $200/month
     households:
       household:
         members: [person1, person2]
         state_code: AL
   output:
-    # Family of 2: payment standard = $304
     # Monthly employment: $450
     # Work expense deduction (20%): $450 * 0.20 = $90
-    # Countable earned: $450 - $90 = $360
-    # WITHOUT childcare: $360 > $304 (would be ineligible)
-    # Childcare expenses: $200/month
-    # Care expense disregard (30%): $200 * 0.30 = $60
-    # Countable income: $360 - $60 = $300
-    # $300 <= $304, eligible
-    # Benefit: $304 - $300 = $4
-    al_tanf: 4
+    # After work expense: $450 - $90 = $360
+    # Childcare deduction: $200
+    # Countable earned: max($360 - $200, 0) = $160
+    # Payment standard (2 persons): $304
+    # Benefit: $304 - $160 = $144
+    al_tanf: 144
 
 - name: Edge Case 2, eligible with zero benefit.
-  # Family of 2 with countable income exactly equal to payment standard
-  # Should be eligible (passes income test) but benefit = $0
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 4_560  # $380/month
+        employment_income_before_lsr: 4_560  # $380/month
       person2:
         age: 5
     spm_units:

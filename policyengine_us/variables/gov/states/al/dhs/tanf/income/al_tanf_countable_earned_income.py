@@ -11,6 +11,9 @@ class al_tanf_countable_earned_income(Variable):
     defined_for = StateCode.AL
 
     def formula(spm_unit, period, parameters):
-        gross_earned = spm_unit("al_tanf_gross_earned_income", period)
-        work_expense = spm_unit("al_tanf_work_expense_deduction", period)
-        return max_(gross_earned - work_expense, 0)
+        p = parameters(period).gov.states.al.dhs.tanf.income
+        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
+        work_expense = gross_earned * p.work_expense_rate
+        # Child care is deducted from earned income per Section 3115.B
+        childcare_expenses = spm_unit("childcare_expenses", period)
+        return max_(gross_earned - work_expense - childcare_expenses, 0)
