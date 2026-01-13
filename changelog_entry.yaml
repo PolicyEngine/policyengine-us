@@ -1,5 +1,0 @@
-- bump: patch
-  changes:
-    fixed:
-      - Fix test_batched.py incorrectly marking tests as passed when failure count ends in 0.
-      - Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
