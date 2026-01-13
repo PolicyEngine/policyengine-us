@@ -12214,3 +12214,11 @@
     changed:
     - Remove concurrency block from push workflow to allow parallel CI runs.
   date: 2026-01-13 23:22:39
+- bump: patch
+  changes:
+    fixed:
+    - Riverside County General Relief eligibility now correctly excludes units where
+      all persons are ineligible.
+    - Riverside County General Relief SSI check changed from unit-level to person-level,
+      so only the individual receiving SSI is excluded, not all household members.
+  date: 2026-01-13 23:26:02
