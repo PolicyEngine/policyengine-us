@@ -8,8 +8,8 @@ class az_tanf_payment_standard(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/"
-        "CA_Payment_Standard_(A1_2fA2).html#wwpID0E0WHB0FA"
+        "https://www.azleg.gov/ars/46/00207-01.htm",
+        "https://www.azleg.gov/ars/46/00207.htm",
     )
     defined_for = StateCode.AZ
 
@@ -18,15 +18,15 @@ class az_tanf_payment_standard(Variable):
         # az_tanf_fpg_baseline is YEAR, auto-converted to monthly when called from MONTH context
         monthly_fpg_baseline = spm_unit("az_tanf_fpg_baseline", period)
 
-        p = parameters(
-            period
-        ).gov.states.az.hhs.tanf.eligibility.payment_standard
+        p = parameters(period).gov.states.az.hhs.tanf.payment_standard
 
-        # A1 (high) if shelter costs > 0; A2 (low) otherwise
+        # Base payment standard (A1) per A.R.S. § 46-207.01
+        base_standard = p.rate * monthly_fpg_baseline
+
+        # A2 = A1 reduced by 37% for those without shelter costs per A.R.S. § 46-207
         shelter_cost = spm_unit("housing_cost", period)
         has_shelter_costs = shelter_cost > 0
 
-        high_threshold = p.high * monthly_fpg_baseline
-        low_threshold = p.low * monthly_fpg_baseline
+        reduced_standard = base_standard * (1 - p.reduction)
 
-        return where(has_shelter_costs, high_threshold, low_threshold)
+        return where(has_shelter_costs, base_standard, reduced_standard)

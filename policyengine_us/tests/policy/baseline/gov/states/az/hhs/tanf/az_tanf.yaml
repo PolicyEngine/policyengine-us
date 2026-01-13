@@ -11,7 +11,7 @@
         age: 30
         employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -42,7 +42,7 @@
         age: 30
         employment_income_before_lsr: 3_600  # $300/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -71,7 +71,7 @@
         age: 30
         employment_income_before_lsr: 24_000  # $2,000/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -99,7 +99,7 @@
         age: 30
         employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
       person3:
@@ -133,7 +133,7 @@
         employment_income_before_lsr: 0
         child_support_received: 1_200  # $100/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -163,7 +163,7 @@
         age: 30
         employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -180,10 +180,11 @@
         state_code: AZ
   output:
     # Family of 2, no shelter (A2)
-    # Payment standard: ~$176
+    # A2 = A1 × (1 - 37%) = 36% × 63% = 22.68%
+    # Payment standard: $765.83 * 0.2268 = ~$174
     # Countable income: $0
-    # Benefit: $176
-    az_tanf: 176
+    # Benefit: $174
+    az_tanf: 174
 
 - name: Case 7, eligible but zero benefit.
   period: 2024-01
@@ -194,7 +195,7 @@
         age: 30
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -211,7 +212,7 @@
         state_code: AZ
   output:
     # Countable earned: $500 - $90 = $410, * 0.70 = $287
-    # Payment standard (A2 for family of 2): ~$176
-    # $287 > $176 - income exceeds payment standard
-    # Benefit: max($176 - $287, 0) = $0
+    # Payment standard (A2 for family of 2): ~$174
+    # $287 > $174 - income exceeds payment standard
+    # Benefit: max($174 - $287, 0) = $0
     az_tanf: 0

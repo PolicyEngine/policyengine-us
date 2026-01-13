@@ -7,7 +7,7 @@ class az_tanf_earned_income_after_disregard_person(Variable):
     label = "Arizona TANF earned income after disregard per person"
     unit = USD
     definition_period = MONTH
-    reference = "https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Benefit_Determination.html#wwpID0E0NQB0FA"
+    reference = "https://www.azleg.gov/ars/46/00292.htm"
     defined_for = StateCode.AZ
 
     def formula(person, period, parameters):
@@ -15,7 +15,7 @@ class az_tanf_earned_income_after_disregard_person(Variable):
         gross_earned = person("tanf_gross_earned_income", period)
 
         # Step 2: Apply $90 flat disregard, then 30% percentage disregard
-        p = parameters(period).gov.states.az.hhs.tanf.eligibility.income.earned
+        p = parameters(period).gov.states.az.hhs.tanf.income.deductions
         after_flat = max_(gross_earned - p.flat, 0)
         after_percentage = after_flat * (1 - p.percentage)
 

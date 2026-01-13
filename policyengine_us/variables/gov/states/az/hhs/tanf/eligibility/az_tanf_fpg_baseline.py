@@ -7,7 +7,7 @@ class az_tanf_fpg_baseline(Variable):
     label = "Arizona TANF payment standard FPG baseline"
     unit = USD
     definition_period = YEAR
-    reference = "https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines"
+    reference = "https://www.azleg.gov/ars/46/00207-01.htm"
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):

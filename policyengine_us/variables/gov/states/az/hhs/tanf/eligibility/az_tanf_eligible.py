@@ -6,7 +6,7 @@ class az_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Arizona TANF"
     definition_period = MONTH
-    reference = "https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines"
+    reference = "https://www.azleg.gov/ars/46/00292.htm"
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):

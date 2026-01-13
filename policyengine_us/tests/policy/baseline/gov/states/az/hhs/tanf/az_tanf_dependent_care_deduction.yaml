@@ -1,7 +1,7 @@
 # Unit tests for Arizona TANF dependent care deduction
-# Child under 2: $200/month max, Child 2+: $175/month max, Disabled adult: $175/month max
-# Deduction capped at actual care expenses
-# Reference: https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/Dependent_Care_Amount_for_CA.html
+# Child under 2: $200/month max, Child 2+: $175/month max
+# Deduction capped at actual childcare expenses
+# Reference: https://www.azleg.gov/ars/46/00292.htm
 
 - name: Case 1, no childcare expenses.
   period: 2024-01
@@ -11,11 +11,14 @@
         age: 30
       person2:
         age: 1
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -31,11 +34,14 @@
         age: 30
       person2:
         age: 1
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600  # $300/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -53,11 +59,14 @@
         age: 30
       person2:
         age: 4
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600  # $300/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -75,11 +84,14 @@
         age: 30
       person2:
         age: 1
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 1_800  # $150/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -97,14 +109,17 @@
         age: 30
       person2:
         age: 1
-        is_child: true
+        is_tax_unit_dependent: true
       person3:
         age: 4
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 6_000  # $500/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
     households:
       household:
         members: [person1, person2, person3]
@@ -116,29 +131,7 @@
     # Expenses ($500/mo) > max ($375), so deduction = $375
     az_tanf_dependent_care_deduction: 375
 
-- name: Case 6, disabled adult care.
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        pre_subsidy_care_expenses: 200  # $200/month
-      person2:
-        age: 65
-        is_disabled: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AZ
-  output:
-    # Disabled adult: max $175/month
-    # Expenses ($200/mo) > max ($175), so deduction = $175
-    az_tanf_dependent_care_deduction: 175
-
-- name: Case 7, child exactly at age 2 boundary.
+- name: Case 6, child exactly at age 2 boundary.
   period: 2024-01
   input:
     people:
@@ -146,11 +139,14 @@
         age: 30
       person2:
         age: 2
-        is_child: true
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_000  # $250/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]

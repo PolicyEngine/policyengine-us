@@ -7,7 +7,7 @@ class az_tanf_countable_earned_income(Variable):
     label = "Arizona TANF countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Benefit_Determination.html#wwpID0E0NQB0FA"
+    reference = "https://www.azleg.gov/ars/46/00292.htm"
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):

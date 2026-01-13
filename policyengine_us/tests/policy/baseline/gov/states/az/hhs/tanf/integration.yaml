@@ -4,7 +4,7 @@
 #
 # Key Arizona TANF rules:
 # - Earned income disregard: $90 flat + 30% of remainder
-# - Payment standard: A1 (36% of 1992 FPG) with shelter, A2 (23%) without
+# - Payment standard: A1 (36% of 1992 FPG) with shelter, A2 (A1 reduced by 37%) without
 # - 1992 FPG (CONTIGUOUS_US): first_person = $6,810, additional = $2,380
 # - Resource limit: $2,000
 # - Needy family test: FPG rate * current FPG (100% for parents, 130% for non-parent relatives)
@@ -19,7 +19,7 @@
         age: 30
         employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
       person3:
@@ -65,7 +65,7 @@
         age: 28
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 4
       person3:
@@ -109,7 +109,7 @@
         age: 35
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 1
         is_child: true
@@ -159,7 +159,7 @@
         age: 32
         employment_income_before_lsr: 9_600  # $800/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 7
     spm_units:
@@ -199,7 +199,7 @@
         age: 30
         employment_income_before_lsr: 0
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -231,7 +231,7 @@
         employment_income_before_lsr: 4_800  # $400/month annual
         child_support_received: 1_200  # $100/month annual unearned
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 4
     spm_units:
@@ -275,10 +275,10 @@
         age: 38
         employment_income_before_lsr: 4_800  # $400/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 36
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person3:
         age: 14
       person4:
@@ -327,11 +327,11 @@
         age: 30
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 28
         employment_income_before_lsr: 4_800  # $400/month annual
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person3:
         age: 1
         is_child: true
@@ -386,7 +386,7 @@
         age: 30
         employment_income_before_lsr: 1_800  # $150/month annual
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
       person3:
@@ -417,8 +417,8 @@
     az_tanf_eligible: true
     # Family of 3, 1992 FPG: $11,570 annual
     # Monthly: $11,570 / 12 = $964.17
-    # A2 rate (no shelter): 23%
-    # Payment standard: $964.17 * 0.23 = $221.76 ~ $222
-    az_tanf_payment_standard: 222
-    # Benefit: $222 - $42 = $180
-    az_tanf: 180
+    # A2: A1 (36%) reduced by 37% = 36% × 63% = 22.68%
+    # Payment standard: $964.17 * 0.36 * 0.63 = $218.67 ~ $219
+    az_tanf_payment_standard: 219
+    # Benefit: $219 - $42 = $177
+    az_tanf: 177

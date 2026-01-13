@@ -9,7 +9,7 @@
       person1:
         age: 30
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
@@ -33,7 +33,7 @@
       person1:
         age: 50
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: false
+        own_children_in_household: 0
       person2:
         age: 10
     spm_units:
@@ -57,10 +57,10 @@
       person1:
         age: 35
         is_tax_unit_head: true
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person2:
         age: 33
-        is_parent_of_filer_or_spouse: true
+        own_children_in_household: 1
       person3:
         age: 8
     spm_units:
