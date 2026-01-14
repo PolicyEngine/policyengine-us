@@ -33,6 +33,33 @@ make test-yaml-no-structural
 make documentation
 ```
 
+## PolicyEngine Development Skills (MANDATORY)
+
+**BEFORE responding to any user message about variables, parameters, tests, or formulas, you MUST first ask:**
+
+"Would you like to load PolicyEngine development skills for this session?"
+
+**Trigger words that require this question:**
+- fix, edit, write, create, update, review, implement, refactor, add, change, modify
+- variable, parameter, test, formula, YAML, .py file
+
+**Options to present:**
+1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
+2. "No, skip" - Proceed without loading skills
+
+**If Option 1 selected, load ALL of these:**
+- /complete:policyengine-code-style
+- /complete:policyengine-parameter-patterns
+- /complete:policyengine-period-patterns
+- /complete:policyengine-testing-patterns
+- /complete:policyengine-variable-patterns
+
+**Skip ONLY when:**
+- User asks simple questions (e.g., "what does this variable do?")
+- User wants git operations (/commit, /review-pr, etc.)
+- User is only exploring/searching the codebase
+- Skills were already loaded this session
+
 ## GitHub Workflow
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
 - View PR list: `gh pr list`
@@ -105,26 +132,3 @@ make documentation
 
 - **SSI Spousal Deeming**:
   - Only applies when one spouse is eligible and the other is ineligible
-
-## PolicyEngine Development Skills
-
-When the user's first message involves writing, editing, or reviewing code (variables, parameters, tests, formulas), use AskUserQuestion to ask:
-
-**Question:** "Would you like to load PolicyEngine development skills for this session?"
-
-**Options:**
-1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
-2. "No, skip" - Proceed without loading skills
-
-**If Option 1 selected, load all:**
-- /complete:policyengine-code-style
-- /complete:policyengine-parameter-patterns
-- /complete:policyengine-period-patterns
-- /complete:policyengine-testing-patterns
-- /complete:policyengine-variable-patterns
-
-**Skip asking when:**
-- User asks simple questions (e.g., "what does this variable do?")
-- User wants git operations (/commit, /review-pr, etc.)
-- User is exploring/searching the codebase
-- Skills were already loaded this session
