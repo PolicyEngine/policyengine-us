@@ -1,6 +1,6 @@
 description: Alaska excludes this share of remaining earned income after the flat deduction under the Alaska Temporary Assistance Program.
-# NOTE: This is the Tier 1 rate (months 1-12). PolicyEngine cannot track tier progression,
-# so this most favorable rate is applied. Actual tiers: 33%/25%/20%/15%/10%/0%.
+# NOTE: Tier 1 rate applies to months 1-12 of participation. Subsequent tiers
+# (25%/20%/15%/10%/0%) span 12-month blocks beyond the first year.
 
 values:
   2005-01-01: 0.33
