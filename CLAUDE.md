@@ -49,7 +49,7 @@ make documentation
 - **Variable Naming**: Use snake_case for variable names and function names; use UPPER_CASE for constants
 - **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
 - **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
-- **Parameter Access**: Always use `p = parameters(period).gov.<program>` pattern and call parameters as `p.*` to make parameter tree origin clear
+- **Parameter Access**: Always use `p = parameters(period).gov.<program>` pattern and call parameters as `p.*` to make parameter tree origin clear. Do not assign parameters to intermediate Python variables (e.g., avoid `rate = p.rate`; instead use `p.rate` directly in expressions)
 - **Constants**: Use UPPERCASE only for constants defined in code, not for parameters from the parameter tree
 - **Income Combination**: Use `add(person, period, ["income1", "income2"])` instead of manual addition for combining income sources
 - **Negative Values**: Use `max_(value, 0)` to clip negative values to zero (prevents counterintuitive behavior in economic models)

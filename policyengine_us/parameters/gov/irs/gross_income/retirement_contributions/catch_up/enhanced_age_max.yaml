@@ -1,0 +1,11 @@
+description: Maximum age for enhanced 401(k) catch-up contributions under SECURE 2.0 (inclusive).
+values:
+  # Effective for taxable years beginning after December 31, 2024
+  2025-01-01: 63
+metadata:
+  unit: year
+  period: year
+  label: Enhanced catch-up maximum age
+  reference:
+    - title: IRC § 414(v)(2)(E)(ii) - Applicable age range
+      href: https://www.law.cornell.edu/uscode/text/26/414#v_2_E

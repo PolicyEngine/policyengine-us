@@ -1,0 +1,25 @@
+description: Enhanced 401(k) catch-up contribution limit for individuals aged 60-63, introduced by SECURE 2.0 Act.
+values:
+  # Before 2025, enhanced catch-up did not exist, so we use the standard limit
+  2018-01-01: 6_000
+  2020-01-01: 6_500
+  2023-01-01: 7_500
+  2024-01-01: 7_500
+  # SECURE 2.0 enhanced catch-up begins in 2025 (150% of standard base)
+  2025-01-01: 11_250
+metadata:
+  unit: currency-USD
+  period: year
+  label: 401(k) enhanced catch-up amount (ages 60-63)
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 500
+  reference:
+    - title: IRC § 414(v)(2)(E) - Increased catch-up contribution limit for individuals aged 60-63
+      href: https://www.law.cornell.edu/uscode/text/26/414#v_2_E
+    - title: IRS Announcement - 401(k) limit increases for 2025
+      href: https://www.irs.gov/newsroom/401k-limit-increases-to-23500-for-2025-ira-limit-remains-7000
+    - title: Federal Register - Catch-up Contributions Final Regulations
+      href: https://www.federalregister.gov/documents/2025/09/16/2025-17865/catch-up-contributions
