@@ -14,10 +14,18 @@ class ia_tanf_eligible(Variable):
     defined_for = StateCode.IA
 
     def formula(spm_unit, period, parameters):
-        non_financial_eligible = spm_unit(
-            "ia_tanf_fip_non_financial_eligible", period
+        has_eligible_child = spm_unit("ia_tanf_fip_has_eligible_child", period)
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+        immigration_eligible = (
+            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("ia_tanf_fip_income_eligible", period)
         resources_eligible = spm_unit("ia_tanf_fip_resources_eligible", period)
 
-        return non_financial_eligible & income_eligible & resources_eligible
+        return (
+            has_eligible_child
+            & demographic_eligible
+            & immigration_eligible
+            & income_eligible 
+            & resources_eligible
+        )

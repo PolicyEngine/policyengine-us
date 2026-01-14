@@ -6,7 +6,7 @@ class ia_tanf_fip_income_eligible(Variable):
     entity = SPMUnit
     label = "Iowa FIP income eligible"
     definition_period = MONTH
-    reference = "Iowa Administrative Code 441-41.27 and 441-41.28"
+    reference = "https://www.legis.iowa.gov/docs/iac/rule/05-14-2025.441.41.27.pdf#page=1"
     documentation = (
         "Families are income eligible if they pass both the Standard of "
         "Need test and the Payment Standard test."
@@ -14,7 +14,6 @@ class ia_tanf_fip_income_eligible(Variable):
     defined_for = StateCode.IA
 
     def formula(spm_unit, period, parameters):
-        # Must pass both tests to be income eligible
         passes_standard_of_need = spm_unit(
             "ia_tanf_fip_standard_of_need_test", period
         )

@@ -14,7 +14,6 @@ class ia_tanf_fip_non_financial_eligible(Variable):
     defined_for = StateCode.IA
 
     def formula(spm_unit, period, parameters):
-        # Check for eligible child in the household
         has_eligible_child = spm_unit("ia_tanf_fip_has_eligible_child", period)
 
         # Check state residency
@@ -29,4 +28,8 @@ class ia_tanf_fip_non_financial_eligible(Variable):
         is_citizen = person("is_us_citizen", period)
         has_citizen = spm_unit.any(is_citizen)
 
-        return has_eligible_child & is_iowa_resident & has_citizen
+        return (
+            has_eligible_child  
+            & is_iowa_resident  
+            & has_citizen 
+        )

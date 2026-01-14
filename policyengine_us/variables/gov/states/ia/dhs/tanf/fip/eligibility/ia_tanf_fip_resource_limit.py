@@ -17,11 +17,9 @@ class ia_tanf_fip_resource_limit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.dhs.tanf.fip.resources
 
-        # Check if family received FIP in prior month
         prior_month = period.last_month
         received_fip_prior_month = spm_unit("ia_tanf_fip", prior_month)
 
-        # Use recipient limit if received FIP last month, otherwise applicant limit
         return where(
             received_fip_prior_month > 0,
             p.limit_recipient,

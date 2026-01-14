@@ -20,7 +20,6 @@ class ia_tanf(Variable):
         # Get countable net income (after all deductions)
         countable_net = spm_unit("ia_tanf_fip_countable_net_income", period)
 
-        # Benefit = Payment Standard - Countable Net Income
         benefit = payment_standard - countable_net
 
         return max_(benefit, 0)

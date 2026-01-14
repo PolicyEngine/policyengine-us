@@ -8,15 +8,13 @@ class ia_tanf_fip_resources_eligible(Variable):
     definition_period = MONTH
     reference = "Iowa Administrative Code 441-41.26"
     documentation = (
-        "Families are resource eligible if countable resources are at or "
+        "Families are resource eligible if resources are at or "
         "below the applicable limit."
     )
     defined_for = StateCode.IA
 
     def formula(spm_unit, period, parameters):
-        countable_resources = spm_unit(
-            "ia_tanf_fip_countable_resources", period
-        )
+        assets = spm_unit("spm_unit_assets", period.this_year)
         resource_limit = spm_unit("ia_tanf_fip_resource_limit", period)
 
-        return countable_resources <= resource_limit
+        return assets <= resource_limit
