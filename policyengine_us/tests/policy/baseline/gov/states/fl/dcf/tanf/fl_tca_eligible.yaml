@@ -1,0 +1,159 @@
+# Tests Florida TCA overall eligibility
+# Eligible if: Gross income test AND Net income test pass
+# Source: Florida Statutes 414.095, FAC 65A-4.220
+
+- name: Case 1, zero income fully eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: true
+    # Gross test: 0 < 185% FPL -> Pass
+    # Net test: 0 < $241 payment standard -> Pass
+
+- name: Case 2, passes gross but fails net test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: false
+    # Gross test: $1,000 < 185% FPL ($3,151) -> Pass
+    # Net test: max(max(1000-90,0)-200,0)*0.5 = 355 > $241 -> Fail
+    # Must pass BOTH tests
+
+- name: Case 3, fails gross income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 48_000  # $4,000/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: false
+    # Gross test: $4,000 > 185% FPL ($3,151) -> Fail
+
+- name: Case 4, parent with one child eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: true
+    # Has dependent child (required for TANF)
+    # Gross test: 0 < 185% FPL ($3,151) -> Pass
+    # Net test: 0 < $241 payment standard -> Pass
+
+- name: Case 5, moderate income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: true
+    # Gross test: $500 < 185% FPL -> Pass
+    # Net test: max(max(500-90,0)-200,0)*0.5 = 105 < $241 -> Pass
+
+- name: Case 6, larger family with higher thresholds.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        rent: 12_000
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    fl_tca_eligible: true
+    # Size 4, >$50 shelter payment standard: $364
+    # Countable income: max(max(1000-90,0)-200,0)*0.5 = 355
+    # Net test: 355 < $364 -> Pass
+
+- name: Case 7, adult-only household ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_eligible: false
+    # No dependent child -> demographic ineligible
