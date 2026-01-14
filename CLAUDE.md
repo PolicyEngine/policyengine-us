@@ -48,11 +48,11 @@ make documentation
 2. "No, skip" - Proceed without loading skills
 
 **If Option 1 selected, load ALL of these:**
-- /complete:policyengine-code-style
-- /complete:policyengine-parameter-patterns
-- /complete:policyengine-period-patterns
-- /complete:policyengine-testing-patterns
-- /complete:policyengine-variable-patterns
+- /policyengine-code-style
+- /policyengine-parameter-patterns
+- /policyengine-period-patterns
+- /policyengine-testing-patterns
+- /policyengine-variable-patterns
 
 **Skip ONLY when:**
 - User asks simple questions (e.g., "what does this variable do?")
