@@ -1,0 +1,118 @@
+# Tests for Colorado OmniSalud immigration status eligibility
+
+# Undocumented adults are eligible
+- name: Undocumented adult eligible for OmniSalud
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: true
+
+# DACA recipients eligible before 2025
+- name: DACA recipient eligible in 2024
+  period: 2024
+  input:
+    age: 25
+    immigration_status: DACA
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: true
+
+- name: DACA recipient NOT eligible in 2025 (moves to regular ACA)
+  period: 2025
+  input:
+    age: 25
+    immigration_status: DACA
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: false
+
+# Undocumented children eligible before 2025
+- name: Undocumented child eligible in 2024
+  period: 2024
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: true
+
+- name: Undocumented child NOT eligible in 2025 (moves to Health First CO)
+  period: 2025
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: false
+
+# Undocumented pregnant individuals
+- name: Undocumented pregnant person eligible in 2024
+  period: 2024
+  input:
+    age: 25
+    immigration_status: UNDOCUMENTED
+    is_pregnant: true
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: true
+
+- name: Undocumented pregnant person NOT eligible in 2025 (moves to Health First CO)
+  period: 2025
+  input:
+    age: 25
+    immigration_status: UNDOCUMENTED
+    is_pregnant: true
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: false
+
+# Undocumented adults still eligible in 2025
+- name: Undocumented adult still eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: true
+
+# Citizens and LPRs should NOT be eligible (they use regular programs)
+- name: US citizen NOT eligible for OmniSalud
+  period: 2024
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: false
+
+- name: LPR NOT eligible for OmniSalud
+  period: 2024
+  input:
+    age: 30
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    is_pregnant: false
+    state_code: CO
+  output:
+    co_omnisalud_immigration_status_eligible: false
+
+# Non-CO residents not eligible
+- name: Undocumented person in TX not eligible
+  period: 2024
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    state_code: TX
+  output:
+    co_omnisalud_immigration_status_eligible: false

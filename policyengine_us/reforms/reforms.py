@@ -124,10 +124,16 @@ from .states.ri.exemption.ri_exemption_reform import (
 from .states.de.dependent_credit.de_dependent_credit_reform import (
     create_de_dependent_credit_reform_fn,
 )
+from .states.va.dependent_exemption.va_dependent_exemption_reform import (
+    create_va_dependent_exemption_reform_fn,
+)
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
     create_aca_ptc_700_fpl_cliff_reform,
+)
+from .cdcc import (
+    create_cdcc_single_parent_work_requirement_reform,
 )
 
 
@@ -283,6 +289,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     de_dependent_credit = create_de_dependent_credit_reform_fn(
         parameters, period
     )
+    va_dependent_exemption = create_va_dependent_exemption_reform_fn(
+        parameters, period
+    )
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
@@ -291,6 +300,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
         parameters, period
+    )
+    cdcc_single_parent_work_requirement = (
+        create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
 
     reforms = [
@@ -348,9 +360,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_ctc,
         ri_exemption,
         de_dependent_credit,
+        va_dependent_exemption,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
+        cdcc_single_parent_work_requirement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

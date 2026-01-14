@@ -5,6 +5,140 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.500.2] - 2026-01-13 23:26:02
+
+### Fixed
+
+- Riverside County General Relief eligibility now correctly excludes units where all persons are ineligible.
+- Riverside County General Relief SSI check changed from unit-level to person-level, so only the individual receiving SSI is excluded, not all household members.
+
+## [1.500.1] - 2026-01-13 23:22:39
+
+### Changed
+
+- Remove concurrency block from push workflow to allow parallel CI runs.
+
+## [1.500.0] - 2026-01-13 22:53:31
+
+### Added
+
+- Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income for IL AABD calculation.
+
+## [1.499.1] - 2026-01-13 22:35:23
+
+### Fixed
+
+- Fix test_batched.py incorrectly marking tests as passed when failure count ends in 0.
+- Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
+
+## [1.499.0] - 2026-01-12 19:45:59
+
+### Added
+
+- CDCTC reform that makes families eligible if at least one parent works (instead of requiring both parents to work)
+
+## [1.498.1] - 2026-01-12 18:30:41
+
+### Fixed
+
+- Remove 51 invalid County enum entries (wrong state assignments, non-existent county/state combinations). Validated against Census 2020 county reference data.
+
+## [1.498.0] - 2026-01-08 18:02:47
+
+### Added
+
+- Colorado OmniSalud program providing ACA marketplace subsidies for undocumented immigrants and DACA recipients.
+
+## [1.497.1] - 2026-01-06 14:58:50
+
+### Changed
+
+- Updated uv.lock dependencies.
+
+## [1.497.0] - 2026-01-05 21:26:26
+
+### Added
+
+- Create reform to separate dependent children from Virginia personal exemption.
+
+## [1.496.2] - 2026-01-05 16:26:06
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.1] - 2026-01-05 15:41:57
+
+### Changed
+
+- Updated weekly uv.lock workflow to include changelog entry.
+
+## [1.496.0] - 2026-01-05 00:21:45
+
+### Added
+
+- Tennessee TANF (Families First) program implementation
+
+## [1.495.0] - 2026-01-05 00:20:33
+
+### Added
+
+- Nevada TANF (Temporary Assistance for Needy Families) program
+
+## [1.494.0] - 2026-01-05 00:18:02
+
+### Added
+
+- West Virginia Works program implementation
+
+## [1.493.0] - 2026-01-05 00:02:11
+
+### Added
+
+- Connecticut Temporary Family Assistance (TFA/TANF)
+
+## [1.492.0] - 2026-01-04 23:28:13
+
+### Added
+
+- Implement Rhode Island TANF (Rhode Island Works) program
+
+## [1.491.0] - 2026-01-04 22:56:53
+
+### Added
+
+- Add Delaware TANF (Temporary Assistance for Needy Families)
+
+## [1.490.0] - 2026-01-04 22:20:49
+
+### Added
+
+- South Dakota Temporary Assistance for Needy Families (TANF) program
+
+## [1.489.0] - 2026-01-04 22:11:59
+
+### Added
+
+- Implemented Maine TANF program
+
+## [1.488.0] - 2026-01-04 22:05:35
+
+### Added
+
+- Add New Hampshire FANF (Financial Assistance to Needy Families) program with eligibility determination, payment standard (60% FPG), earned income disregards, and benefit calculation.
+
+## [1.487.0] - 2026-01-04 21:45:18
+
+### Added
+
+- Hawaii TANF (Temporary Assistance for Needy Families) program
+
+## [1.486.0] - 2026-01-04 20:46:59
+
+### Added
+
+- Add phase-out logic to CRFB Social Security nonrefundable credit based on AGI thresholds (6% rate above $150k joint, $75k other).
+
 ## [1.485.4] - 2026-01-02 21:22:24
 
 ### Fixed
@@ -14145,6 +14279,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.500.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.1...1.500.2
+[1.500.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.0...1.500.1
+[1.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.1...1.500.0
+[1.499.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.0...1.499.1
+[1.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.1...1.499.0
+[1.498.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.0...1.498.1
+[1.498.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.1...1.498.0
+[1.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.0...1.497.1
+[1.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.2...1.497.0
+[1.496.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.1...1.496.2
+[1.496.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.0...1.496.1
+[1.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.495.0...1.496.0
+[1.495.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.494.0...1.495.0
+[1.494.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.493.0...1.494.0
+[1.493.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.492.0...1.493.0
+[1.492.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.491.0...1.492.0
+[1.491.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.490.0...1.491.0
+[1.490.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.489.0...1.490.0
+[1.489.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.488.0...1.489.0
+[1.488.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.487.0...1.488.0
+[1.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.486.0...1.487.0
+[1.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.4...1.486.0
 [1.485.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.3...1.485.4
 [1.485.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.2...1.485.3
 [1.485.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.485.1...1.485.2
