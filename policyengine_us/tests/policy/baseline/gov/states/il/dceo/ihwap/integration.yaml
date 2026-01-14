@@ -1,0 +1,220 @@
+# Integration tests for Illinois IHWAP (Home Weatherization Assistance Program)
+# Tests realistic household scenarios with complete eligibility pathways
+
+- name: Case 1, senior citizen on SSI is categorically eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_disabled: true
+        ssi: 10_932
+        # SSI max benefit 2024: $943/month = $11,316/year
+        irs_gross_income: 10_932
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 1 person: $15,060
+    # 200% FPL = $30,120
+    # Income $10,932 <= $30,120 = income eligible
+
+    # Categorical: SSI $10,932 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 2, single parent with children on IL TANF.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 12_000
+        irs_gross_income: 12_000
+      person2:
+        age: 6
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 4_800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 3 people: $25,820
+    # 200% FPL = $51,640
+    # Income $12,000 <= $51,640 = income eligible
+
+    # Categorical: IL TANF $4,800 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 3, family in public housing with moderate income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 35_000
+        irs_gross_income: 35_000
+      person2:
+        age: 42
+        employment_income: 20_000
+        irs_gross_income: 20_000
+      person3:
+        age: 16
+      person4:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        housing_assistance: 8_400
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 4 people: $31,200
+    # 200% FPL = $62,400
+    # Income $55,000 <= $62,400 = income eligible
+
+    # Categorical: housing_assistance $8,400 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 4, low-income working family income eligible only.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 28_000
+        irs_gross_income: 28_000
+      person2:
+        age: 30
+        employment_income: 15_000
+        irs_gross_income: 15_000
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 3 people: $25,820
+    # 200% FPL = $51,640
+    # Income $43,000 <= $51,640 = income eligible
+
+    # Categorical: No qualifying programs = not categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: true
+
+- name: Case 5, high-income family without assistance is not eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 80_000
+        irs_gross_income: 80_000
+      person2:
+        age: 48
+        employment_income: 45_000
+        irs_gross_income: 45_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 4 people: $31,200
+    # 200% FPL = $62,400
+    # Income $125,000 > $62,400 = not income eligible
+
+    # Categorical: No qualifying programs = not categorically eligible
+    il_ihwap_income_eligible: false
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: false
+
+- name: Case 6, elderly couple receiving IL AABD.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        is_blind: true
+        social_security: 18_000
+        irs_gross_income: 18_000
+      person2:
+        age: 70
+        social_security: 15_000
+        irs_gross_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 2 people: $20,440
+    # 200% FPL = $40,880
+    # Income $33,000 <= $40,880 = income eligible
+
+    # Categorical: IL AABD $3,600 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 7, income at exact threshold boundary.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_120
+        irs_gross_income: 30_120
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income calculation
+    # 2024 FPL for 1 person: $15,060
+    # 200% FPL = $30,120
+    # Income $30,120 <= $30,120 = income eligible (boundary case)
+
+    # Categorical: No qualifying programs
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: true

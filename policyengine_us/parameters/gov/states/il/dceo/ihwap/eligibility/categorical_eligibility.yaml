@@ -1,0 +1,18 @@
+description: Illinois grants automatic income eligibility under the Home Weatherization Assistance Program to households participating in one of these programs.
+values:
+  2023-10-01:
+    - il_liheap
+    - ssi
+    - il_tanf
+    - il_aabd
+    - housing_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois IHWAP categorically eligible programs
+  reference:
+    - title: 42 U.S.C. 6862(7) - Definition of low-income
+      href: https://www.law.cornell.edu/uscode/text/42/6862#7
+    - title: Illinois DCEO Home Weatherization Assistance Program
+      href: https://dceo.illinois.gov/communityservices/homeweatherization.html

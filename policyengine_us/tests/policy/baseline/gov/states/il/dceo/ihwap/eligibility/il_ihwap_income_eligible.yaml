@@ -1,0 +1,93 @@
+# Unit tests for il_ihwap_income_eligible
+# Income eligibility: income <= 200% of Federal Poverty Level
+
+- name: Case 1, single person below 200% FPL is eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 25_000
+    # 2024 FPL for 1 person: $15,060 x 200% = $30,120
+    # $25,000 < $30,120 = eligible
+  output:
+    il_ihwap_income_eligible: true
+
+- name: Case 2, single person above 200% FPL is not eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 35_000
+    # 2024 FPL for 1 person: $15,060 x 200% = $30,120
+    # $35,000 > $30,120 = not eligible
+  output:
+    il_ihwap_income_eligible: false
+
+- name: Case 3, income exactly at 200% FPL threshold is eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 30_120
+    # 2024 FPL for 1 person: $15,060 x 200% = $30,120
+    # $30,120 <= $30,120 = eligible (uses <= comparison)
+  output:
+    il_ihwap_income_eligible: true
+
+- name: Case 4, family of 4 below threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        irs_gross_income: 30_000
+      person2:
+        age: 33
+        irs_gross_income: 20_000
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+    # 2024 FPL for 4 people: $31,200 x 200% = $62,400
+    # $50,000 < $62,400 = eligible
+  output:
+    il_ihwap_income_eligible: true
+
+- name: Case 5, family of 4 above threshold is not eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        irs_gross_income: 40_000
+      person2:
+        age: 38
+        irs_gross_income: 30_000
+      person3:
+        age: 12
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+    # 2024 FPL for 4 people: $31,200 x 200% = $62,400
+    # $70,000 > $62,400 = not eligible
+  output:
+    il_ihwap_income_eligible: false
+
+- name: Case 6, zero income is eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 0
+    # Zero income is below any threshold
+  output:
+    il_ihwap_income_eligible: true
