@@ -9,9 +9,18 @@ metadata:
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_Final_AdditionalTaxCreditforQualifiedIndividuals_FI.pdf
     - title: Arkansas Code of 1987 Title 26 Subtitle 5 Chapter 51 Subchapter 5 Section 26-51-501
       href: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-5/section-26-51-501/
+    # Uprating rules defined § 26-51-201
+    - title: 2019 Arkansas Code, § 26-51-201 (d)(1)
+      href: https://law.justia.com/codes/arkansas/2019/title-26/subtitle-5/chapter-51/subchapter-2/section-26-51-201-d-1/
   label: Arkansas additional tax credit for qualified individuals reduction start
   unit: currency-USD
   period: year
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
+
   # The adjustment is based on net available general revenue forecast provided to the Joint Committee on Economic and Tax Policy
   # see: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-5/section-26-51-501/ (f)
   
