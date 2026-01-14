@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 9) # size
+  breakdown_label:
+    - Assistance unit size
   label: New Jersey WFNJ monthly maximum benefit
   reference:
     - title: N.J.A.C. 10:90-3.3(b) Schedule II - Maximum Benefit Payment Levels
