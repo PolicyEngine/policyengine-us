@@ -12222,3 +12222,10 @@
     - Riverside County General Relief SSI check changed from unit-level to person-level,
       so only the individual receiving SSI is excluded, not all household members.
   date: 2026-01-13 23:26:02
+- bump: patch
+  changes:
+    added:
+    - Add is_blind to IL HBWD disability eligibility check.
+    fixed:
+    - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+  date: 2026-01-14 21:44:33
