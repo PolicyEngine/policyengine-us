@@ -1,5 +1,24 @@
 # PolicyEngine US - Development Guide
 
+## ⚠️ MANDATORY FIRST ACTION
+
+At the START of each session, ask the user:
+
+"Would you like to load PolicyEngine development skills for this session?"
+
+**Options to present:**
+1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
+2. "No, skip" - Proceed without loading skills
+
+**If Option 1 selected, load ALL of these:**
+- /policyengine-code-style
+- /policyengine-parameter-patterns
+- /policyengine-period-patterns
+- /policyengine-testing-patterns
+- /policyengine-variable-patterns
+
+---
+
 ## Build/Test/Lint Commands
 ```bash
 # Install dependencies
@@ -32,27 +51,6 @@ make test-yaml-no-structural
 # Generate documentation
 make documentation
 ```
-
-## PolicyEngine Development Skills (MANDATORY)
-
-**At the START of each session, ask the user:**
-
-"Would you like to load PolicyEngine development skills for this session?"
-
-**Options to present:**
-1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
-2. "No, skip" - Proceed without loading skills
-
-**If Option 1 selected, load ALL of these:**
-- /policyengine-code-style
-- /policyengine-parameter-patterns
-- /policyengine-period-patterns
-- /policyengine-testing-patterns
-- /policyengine-variable-patterns
-
-**Skip asking ONLY when:**
-- User explicitly starts with a git operation (/commit, /review-pr, etc.)
-- User is only exploring/searching the codebase (e.g., "what does this variable do?")
 
 ## GitHub Workflow
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
