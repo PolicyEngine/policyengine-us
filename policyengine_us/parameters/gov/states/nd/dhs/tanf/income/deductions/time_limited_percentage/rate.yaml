@@ -1,17 +1,33 @@
 description: North Dakota excludes this share of earned income as a time limited percentage disregard under the Temporary Assistance for Needy Families program.
+# NOTE: This uses calendar month as a proxy for participation months.
+# The disregard cycle resets each January (month 1).
+# In reality, TLP tracks cumulative participation months, but PolicyEngine
+# currently lacks the infrastructure to track state over time.
 
-values:
-  1997-07-01: 0.5
-# NOTE: TLP is actually a declining 12-month disregard cycle:
-#   - Months 1-6: 50%
-#   - Months 7-9: 35%
-#   - Months 10-12: 25%
-#   - Month 13+: 0%
-# This parameter uses 50% (the rate for months 1-6).
+brackets:
+  - threshold:
+      1997-07-01: 1
+    amount:
+      1997-07-01: 0.5    # Months 1-6: 50%
+  - threshold:
+      1997-07-01: 7
+    amount:
+      1997-07-01: 0.35   # Months 7-9: 35%
+  - threshold:
+      1997-07-01: 10
+    amount:
+      1997-07-01: 0.25   # Months 10-12: 25%
+  # NOTE: Threshold 13 commented out because calendar month proxy only goes 1-12.
+  # In actual ND TANF policy, TLP ends after 12 months of participation (0% disregard).
+  # - threshold:
+  #     1997-07-01: 13
+  #   amount:
+  #     1997-07-01: 0.0    # Months 13+: 0%
 
 metadata:
-  unit: /1
-  period: month
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
   label: North Dakota TANF time limited percentage rate
   reference:
     - title: North Dakota Policy Manual 400-19-105-25 Employment Disregards

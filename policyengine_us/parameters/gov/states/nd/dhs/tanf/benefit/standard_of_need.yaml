@@ -3,6 +3,12 @@ metadata:
   label: North Dakota TANF standard of need
   unit: currency-USD
   period: month
+  breakdown:
+    - range(1, 3)
+    - range(1, 11)
+  breakdown_label:
+    - Number of caretakers
+    - Number of children
   reference:
     - title: North Dakota Policy Manual 400-19-110-05 Standard of Need Chart
       href: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
@@ -15,8 +21,6 @@ metadata:
     - title: N.D. Admin Code 75-02-01.2-35(1) - Authority for Standard of Need
       href: https://www.law.cornell.edu/regulations/north-dakota/N-D-A-C-75-02-1.2-35
 
-# First level: number of caretakers (0, 1, 2)
-# Second level: number of children (0-10)
 0:
   0:
     2015-10-01: 0

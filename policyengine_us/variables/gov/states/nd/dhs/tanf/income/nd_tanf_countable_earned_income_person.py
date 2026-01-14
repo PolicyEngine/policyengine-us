@@ -26,8 +26,13 @@ class nd_tanf_countable_earned_income_person(Variable):
             0,
         )
 
-        # Time Limited Percentage: 50% of income after standard expense
+        # Time Limited Percentage (TLP): declining rate based on calendar month proxy
+        # Uses calendar month (1-12) as proxy for participation months.
+        # In reality, TLP tracks cumulative participation months and ends after 12.
+        # Months 1-6: 50%, Months 7-9: 35%, Months 10-12: 25%
         earned_after_expense = max_(gross_earned - standard_expense, 0)
-        tlp_deduction = earned_after_expense * p.time_limited_percentage.rate
+        month = period.start.month
+        tlp_rate = p.time_limited_percentage.rate.calc(month)
+        tlp_deduction = earned_after_expense * tlp_rate
 
         return max_(earned_after_expense - tlp_deduction, 0)
