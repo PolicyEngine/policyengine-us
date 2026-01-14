@@ -227,7 +227,7 @@
     il_aabd_person: 0
     il_aabd: 0
 
-- name: Integration 5, an eligible person, $800 monthly income. 
+- name: Integration 5, an eligible person, $800 monthly income.
   period: 2024-01
   absolute_error_margin: 0.2
   input:
@@ -235,14 +235,14 @@
       person1:
         age: 30
         is_blind: true
-        employment_income: 9_600 # $800 monthly 
-        ssi: 0 
+        employment_income: 9_600 # $800 monthly
+        ssi: 0
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
       spm_unit:
         members: [person1]
-        il_aabd_countable_assets: 0 
+        il_aabd_countable_assets: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -254,14 +254,177 @@
   output:
     il_aabd_child_care_expense_exemption: 0
     il_aabd_gross_earned_income: 800
-    il_aabd_countable_unearned_income: 0 
+    il_aabd_countable_unearned_income: 0
     il_aabd_earned_income_after_exemption_person: 306.12
     il_aabd_personal_allowance: 62.43
     il_aabd_grant_amount: 764.9
     il_aabd_need_standard_person: 827.33 # 764.9 + 62.43
     il_aabd_countable_income: 306.12
     il_aabd_non_financial_eligible_person: true
-    il_aabd_financial_eligible_person: true 
+    il_aabd_financial_eligible_person: true
     il_aabd_eligible_person: true
     il_aabd_person: 521.21
     il_aabd: 521.21
+
+- name: API partner use case - show both SSI entitlement and IL AABD eligibility
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 9_600  # $800 monthly
+        ssi_reported: 0  # Person not receiving federal SSI
+        il_aabd_use_reported_ssi: true  # Use reported SSI for AABD
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # Shows federal SSI entitlement (what they COULD get)
+    ssi: 585.5  # Calculated SSI - person could receive this
+    # Shows IL AABD (using ssi_reported: 0)
+    il_aabd_ssi_income: 0  # Uses reported value
+    il_aabd_countable_unearned_income: 0  # No SSI counted
+    il_aabd_countable_income: 306.12  # Only earned income
+    il_aabd_financial_eligible_person: true
+    il_aabd_eligible_person: true
+    il_aabd_person: 521.21
+    il_aabd: 521.21  # Person eligible for AABD
+
+- name: API partner use case 2 - partial SSI reported
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        employment_income: 9_600  # $800 monthly
+        ssi_reported: 3_600  # $300/month reported SSI
+        il_aabd_use_reported_ssi: true
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # Shows federal SSI entitlement
+    ssi: 585.5  # Calculated - what they could get
+    # Shows IL AABD with partial SSI
+    il_aabd_ssi_income: 300  # Uses reported $300/month
+    il_aabd_countable_unearned_income: 275  # 300 - 25 flat exemption
+    il_aabd_countable_income: 593.62  # earned (318.62) + unearned (275)
+    il_aabd_financial_eligible_person: true  # 593.62 < 827.33
+    il_aabd_eligible_person: true
+    il_aabd_person: 233.71  # 827.33 - 593.62
+    il_aabd: 233.71
+
+- name: API partner use case 3 - eligible parent with child
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      parent:
+        age: 35
+        is_blind: true
+        employment_income: 9_600  # $800 monthly
+        ssi_reported: 0  # Not receiving federal SSI
+        il_aabd_use_reported_ssi: true
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # Shows federal SSI entitlement for parent
+    ssi: [585.5, 0]  # Parent could get SSI, child not eligible
+    # Shows IL AABD (using ssi_reported: 0 for parent)
+    il_aabd_ssi_income: [0, 0]  # Uses reported value
+    il_aabd_countable_unearned_income: [0, 0]
+    il_aabd_non_financial_eligible_person: [true, false]  # Parent eligible, child not
+    il_aabd_eligible_person: [true, false]
+    il_aabd_person: [516.03, 0]  # Only parent gets AABD
+    il_aabd: 516.03
+
+- name: API partner use case 4 - two eligible adults (couple)
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 6_000  # $500 monthly
+        ssi_reported: 0
+        il_aabd_use_reported_ssi: true
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 66
+        is_blind: true
+        employment_income: 0
+        ssi_reported: 0
+        il_aabd_use_reported_ssi: true
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # Shows federal SSI entitlement for both (couple rate split)
+    ssi: [603.75, 603.75]  # Both get couple rate / 2
+    # Shows IL AABD (using ssi_reported: 0)
+    il_aabd_ssi_income: [0, 0]  # Uses reported value
+    il_aabd_non_financial_eligible_person: [true, true]  # Both aged/blind
+    il_aabd_eligible_person: [true, true]  # Both eligible for AABD
+    il_aabd_person: [441.45, 822.15]  # Both get AABD
+    il_aabd: 1_263.6  # Total household AABD
