@@ -1,6 +1,6 @@
 - bump: patch
   changes:
-    fixed:
-      - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
     added:
-      - Add is_blind to IL HBWD disability eligibility check.
+      - Add historical TANF parameter data for DE, MO, RI, SD (pre-2018 values).
+      - Add PA TANF Work Expense Reimbursement (WER) for 2009-2020 era.
+      - Add PA TANF work expense mechanism toggle (uses_deduction parameter).

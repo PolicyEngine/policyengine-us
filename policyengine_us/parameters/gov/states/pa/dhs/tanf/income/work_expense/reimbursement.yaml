@@ -1,0 +1,14 @@
+description: Pennsylvania provides this amount as a work expense reimbursement under the Temporary Assistance for Needy Families program.
+# Work Expense Reimbursement (WER) - flat bonus added to TANF grant
+# Active March 2009 to September 2020, then replaced by Work Expense Deduction (WED)
+
+values:
+  2009-04-01: 50
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania TANF work expense reimbursement amount
+  reference:
+    - title: PA DHS Cash Assistance Handbook Section 137.4, Work Expense Reimbursement
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/137_Cash_Initiatives/137.4_Work_Expense_Reimbursement.htm
