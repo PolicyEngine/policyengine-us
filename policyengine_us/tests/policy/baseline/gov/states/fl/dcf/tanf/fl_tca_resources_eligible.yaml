@@ -1,0 +1,71 @@
+# Tests Florida TCA resource eligibility
+# Asset limit: $2,000 in countable resources
+# Source: FAC 65A-1.716, Florida DCF TCA Page
+
+- name: Case 1, zero assets eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resources_eligible: true
+
+- name: Case 2, one dollar below limit eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_999
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resources_eligible: true
+
+- name: Case 3, at limit eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resources_eligible: true
+
+- name: Case 4, one dollar above limit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_001
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_resources_eligible: false

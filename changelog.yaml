@@ -12178,3 +12178,47 @@
     changed:
     - Updated uv.lock dependencies.
   date: 2026-01-06 14:58:50
+- bump: minor
+  changes:
+    added:
+    - Colorado OmniSalud program providing ACA marketplace subsidies for undocumented
+      immigrants and DACA recipients.
+  date: 2026-01-08 18:02:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove 51 invalid County enum entries (wrong state assignments, non-existent
+      county/state combinations). Validated against Census 2020 county reference data.
+  date: 2026-01-12 18:30:41
+- bump: minor
+  changes:
+    added:
+    - CDCTC reform that makes families eligible if at least one parent works (instead
+      of requiring both parents to work)
+  date: 2026-01-12 19:45:59
+- bump: patch
+  changes:
+    fixed:
+    - Fix test_batched.py incorrectly marking tests as passed when failure count ends
+      in 0.
+    - Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
+  date: 2026-01-13 22:35:23
+- bump: minor
+  changes:
+    added:
+    - Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income
+      for IL AABD calculation.
+  date: 2026-01-13 22:53:31
+- bump: patch
+  changes:
+    changed:
+    - Remove concurrency block from push workflow to allow parallel CI runs.
+  date: 2026-01-13 23:22:39
+- bump: patch
+  changes:
+    fixed:
+    - Riverside County General Relief eligibility now correctly excludes units where
+      all persons are ineligible.
+    - Riverside County General Relief SSI check changed from unit-level to person-level,
+      so only the individual receiving SSI is excluded, not all household members.
+  date: 2026-01-13 23:26:02
