@@ -1,0 +1,343 @@
+# Integration tests for Illinois Senior Citizens Real Estate Tax Deferral Program
+# Tests full eligibility and benefit calculation pipeline
+# Source: 320 ILCS 30/1 et seq., PIO-64
+
+- name: Case 1, eligible senior with low income in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 70 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 50,000 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 2, ineligible due to age in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 60 >= 65 = false
+    il_scretd_age_eligible: false
+    # Income check: 50,000 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: false & true = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+- name: Case 3, ineligible due to income in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 70 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 80,000 <= 65,000 = false
+    il_scretd_income_eligible: false
+    # Combined eligibility: true & false = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+- name: Case 4, eligible senior at 2025 income limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 65 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 75,000 <= 75,000 = true (2025 limit)
+    il_scretd_income_eligible: true
+    # Combined eligibility: true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 5, ineligible just over 2025 income limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 76_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 68 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 76,000 <= 75,000 = false
+    il_scretd_income_eligible: false
+    # Combined eligibility: true & false = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+- name: Case 6, eligible senior with 2027 income limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 79_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 72 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 79,000 <= 79,000 = true (2027+ limit)
+    il_scretd_income_eligible: true
+    # Combined eligibility: true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 7, ineligible just over 2027 income limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 75
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 75 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 80,000 <= 79,000 = false
+    il_scretd_income_eligible: false
+    # Combined eligibility: true & false = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+# Multi-person household edge cases
+# The program uses tax_unit.any() for age eligibility, so if ANY person in the
+# tax unit is age-eligible, the household qualifies for the age test.
+
+- name: Case 8, couple where one is 65 and one is 64 is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 30_000
+      person2:
+        age: 64
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Person-level age eligibility: [true, false]
+    # person1: 65 >= 65 = true
+    # person2: 64 >= 65 = false
+    il_scretd_age_eligible: [true, false]
+    # Tax unit income: 30,000 + 20,000 = 50,000
+    # Income check: 50,000 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: any([true, false]) & true = true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 9, couple where both are under 65 is not eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 30_000
+      person2:
+        age: 62
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Person-level age eligibility: [false, false]
+    # person1: 64 >= 65 = false
+    # person2: 62 >= 65 = false
+    il_scretd_age_eligible: [false, false]
+    # Tax unit income: 30,000 + 20,000 = 50,000
+    # Income check: 50,000 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: any([false, false]) & true = false & true = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+- name: Case 10, couple where both are 65 plus is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 30_000
+      person2:
+        age: 68
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Person-level age eligibility: [true, true]
+    # person1: 70 >= 65 = true
+    # person2: 68 >= 65 = true
+    il_scretd_age_eligible: [true, true]
+    # Tax unit income: 30,000 + 20,000 = 50,000
+    # Income check: 50,000 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: any([true, true]) & true = true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 11, couple with age-eligible member but income too high.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 40_000
+      person2:
+        age: 68
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Person-level age eligibility: [true, true]
+    il_scretd_age_eligible: [true, true]
+    # Tax unit income: 40,000 + 30,000 = 70,000
+    # Income check: 70,000 <= 65,000 = false
+    il_scretd_income_eligible: false
+    # Combined eligibility: any([true, true]) & false = true & false = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
+
+# Boundary edge cases
+
+- name: Case 12, zero income senior is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 65 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 0 <= 65,000 = true
+    il_scretd_income_eligible: true
+    # Combined eligibility: true & true = true
+    il_scretd_eligible: true
+    # Maximum deferral when eligible: $7,500
+    il_scretd_maximum_deferral: 7_500
+
+- name: Case 13, income exactly one dollar above limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 65_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 65 >= 65 = true
+    il_scretd_age_eligible: true
+    # Income check: 65,001 <= 65,000 = false
+    il_scretd_income_eligible: false
+    # Combined eligibility: true & false = false
+    il_scretd_eligible: false
+    # Maximum deferral when ineligible: $0
+    il_scretd_maximum_deferral: 0
