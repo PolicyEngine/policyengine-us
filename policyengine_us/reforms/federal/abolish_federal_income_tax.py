@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_abolish_federal_income_tax() -> Reform:
@@ -50,15 +51,14 @@ def create_abolish_federal_income_tax() -> Reform:
 def create_abolish_federal_income_tax_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_abolish_federal_income_tax()
-
-    p = parameters(period).gov.contrib.ubi_center.flat_tax
-
-    if p.abolish_federal_income_tax:
-        return create_abolish_federal_income_tax()
-    else:
-        return None
+    return create_reform_if_active(
+        parameters,
+        period,
+        "gov.contrib.ubi_center.flat_tax",
+        "abolish_federal_income_tax",
+        create_abolish_federal_income_tax,
+        bypass,
+    )
 
 
 abolish_federal_income_tax = create_abolish_federal_income_tax_reform(

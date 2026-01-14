@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
+from policyengine_us.reforms.utils import create_reform_threshold_check
+import operator
 
 
 def create_american_family_act_with_baby_bonus() -> Reform:
@@ -35,24 +36,16 @@ def create_american_family_act_with_baby_bonus() -> Reform:
 def create_american_family_act_with_baby_bonus_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_american_family_act_with_baby_bonus()
-
-    p = parameters.gov.contrib.congress.delauro.american_family_act
-
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).baby_bonus > 0:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_american_family_act_with_baby_bonus()
-    else:
-        return None
+    return create_reform_threshold_check(
+        reform_function=create_american_family_act_with_baby_bonus,
+        parameters=parameters,
+        period=period,
+        parameter_path="gov.contrib.congress.delauro.american_family_act",
+        comparison_parameter_path="baby_bonus",
+        comparison_operator=operator.gt,
+        threshold_check=0,
+        bypass=bypass,
+    )
 
 
 american_family_act = create_american_family_act_with_baby_bonus_reform(

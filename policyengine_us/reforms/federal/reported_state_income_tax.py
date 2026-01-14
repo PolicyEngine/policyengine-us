@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_reported_state_income_tax() -> Reform:
@@ -57,15 +58,14 @@ def create_reported_state_income_tax() -> Reform:
 def create_reported_state_income_tax_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_reported_state_income_tax()
-
-    p = parameters(period).simulation
-
-    if p.reported_state_income_tax:
-        return create_reported_state_income_tax()
-    else:
-        return None
+    return create_reform_if_active(
+        parameters,
+        period,
+        "simulation",
+        "reported_state_income_tax",
+        create_reported_state_income_tax,
+        bypass,
+    )
 
 
 reported_state_income_tax = create_reported_state_income_tax_reform(
