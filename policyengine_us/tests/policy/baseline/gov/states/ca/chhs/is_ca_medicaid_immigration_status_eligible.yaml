@@ -126,20 +126,9 @@
     # TPS holders are not affected by the enrollment freeze
     is_ca_medicaid_immigration_status_eligible: true
 
-- name: Case 12, DACA_TPS adult remains eligible in 2026 (not affected by freeze).
-  period: 2026
-  input:
-    age: 40
-    is_pregnant: false
-    immigration_status: DACA_TPS
-    receives_medicaid: false
-    state_code: CA
-  output:
-    is_ca_medicaid_immigration_status_eligible: true
-
 # Immigration statuses NOT covered by CA state-funded program
 
-- name: Case 13, citizen is not eligible for CA state-funded program.
+- name: Case 12, citizen is not eligible for CA state-funded program.
   period: 2024
   input:
     age: 35
@@ -150,7 +139,7 @@
     # Citizens use federal Medicaid, not CA state-funded
     is_ca_medicaid_immigration_status_eligible: false
 
-- name: Case 14, LPR is not eligible for CA state-funded program in 2024.
+- name: Case 13, LPR is not eligible for CA state-funded program in 2024.
   period: 2024
   input:
     age: 35
@@ -161,7 +150,7 @@
     # LPRs use federal Medicaid, not CA state-funded
     is_ca_medicaid_immigration_status_eligible: false
 
-- name: Case 15, refugee is not eligible for CA state-funded program in 2024.
+- name: Case 14, refugee is not eligible for CA state-funded program in 2024.
   period: 2024
   input:
     age: 35
