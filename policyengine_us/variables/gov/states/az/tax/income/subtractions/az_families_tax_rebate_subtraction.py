@@ -21,7 +21,9 @@ class az_families_tax_rebate_subtraction(Variable):
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
 
-        age_threshold = p.young_dependent_age_threshold
+        # Get counts by age group for max dependent limit prioritization
+        # Young dependents (higher value) are prioritized over older dependents
+        age_threshold = p.age_threshold
         young_dependent = dependent & (age < age_threshold)
         older_dependent = dependent & (age >= age_threshold)
 
@@ -36,7 +38,9 @@ class az_families_tax_rebate_subtraction(Variable):
         remaining_slots = max_(max_dependents - young_counted, 0)
         older_counted = min_(older_count, remaining_slots)
 
-        young_amount = young_counted * p.amount_per_young_dependent
-        older_amount = older_counted * p.amount_per_older_dependent
+        # Get amount per dependent by age using bracket calculation
+        # calc(0) returns young dependent amount, calc(17) returns older amount
+        young_amount = young_counted * p.amount.calc(0)
+        older_amount = older_counted * p.amount.calc(age_threshold)
 
         return young_amount + older_amount
