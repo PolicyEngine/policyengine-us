@@ -1,0 +1,163 @@
+# Test RI CTC range-based phaseout
+# When phaseout.end > phaseout.start, the rate is calculated as:
+# rate = max_credit / (end - start)
+
+- name: RI CTC range-based phaseout - full credit below threshold
+  period: 2026
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.phaseout.start: 100000
+    gov.contrib.states.ri.ctc.phaseout.end: 150000
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+        ri_agi: 80000
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 1000
+    ri_ctc_phaseout: 0
+    ri_total_ctc: 1000
+
+- name: RI CTC range-based phaseout - partial phaseout at midpoint
+  period: 2026
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.phaseout.start: 100000
+    gov.contrib.states.ri.ctc.phaseout.end: 150000
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+        ri_agi: 125000  # Midpoint: should have 50% phaseout
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 1000
+    ri_ctc_phaseout: 500  # 25000 excess * (1000/50000) = 500
+    ri_total_ctc: 500
+
+- name: RI CTC range-based phaseout - fully phased out at end
+  period: 2026
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.phaseout.start: 100000
+    gov.contrib.states.ri.ctc.phaseout.end: 150000
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+        ri_agi: 150000  # At end: should be fully phased out
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 1000
+    ri_ctc_phaseout: 1000
+    ri_total_ctc: 0
+
+- name: RI CTC range-based phaseout - two children scales correctly
+  period: 2026
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.phaseout.start: 100000
+    gov.contrib.states.ri.ctc.phaseout.end: 150000
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        ri_agi: 125000  # Midpoint
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 2000
+    ri_ctc_phaseout: 1000  # 25000 excess * (2000/50000) = 1000
+    ri_total_ctc: 1000
+
+- name: RI CTC rate-based phaseout still works (start and end = 0)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 1000
+    gov.contrib.states.ri.ctc.age_limit: 18
+    gov.contrib.states.ri.ctc.phaseout.threshold.JOINT: 100000
+    gov.contrib.states.ri.ctc.phaseout.rate: 0.05  # 5% per dollar
+    gov.contrib.states.ri.ctc.phaseout.start: 0  # Disabled
+    gov.contrib.states.ri.ctc.phaseout.end: 0  # Disabled
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+        ri_agi: 110000
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 1000
+    ri_ctc_phaseout: 500  # 10000 excess * 0.05 = 500
+    ri_total_ctc: 500
