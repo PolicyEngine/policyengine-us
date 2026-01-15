@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.502.0] - 2026-01-15 20:15:33
+
+### Added
+
+- Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end parameters.
+
+## [1.501.0] - 2026-01-15 20:02:12
+
+### Added
+
+- Adjust CLAUDE.md in US repo.
+
+## [1.500.4] - 2026-01-14 23:20:21
+
+### Changed
+
+- Updated uv.lock dependencies.
+
+## [1.500.3] - 2026-01-14 21:44:33
+
+### Added
+
+- Add is_blind to IL HBWD disability eligibility check.
+
+### Fixed
+
+- Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+
 ## [1.500.2] - 2026-01-13 23:26:02
 
 ### Fixed
@@ -14279,6 +14307,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.502.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.501.0...1.502.0
+[1.501.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.4...1.501.0
+[1.500.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.3...1.500.4
+[1.500.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.2...1.500.3
 [1.500.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.1...1.500.2
 [1.500.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.0...1.500.1
 [1.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.1...1.500.0
