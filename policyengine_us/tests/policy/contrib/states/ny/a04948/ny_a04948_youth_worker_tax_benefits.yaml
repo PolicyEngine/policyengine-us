@@ -1,0 +1,568 @@
+# NY A04948 Youth Worker Tax Benefits Tests
+# Tests the interaction of all three reform components:
+# 1. Youth EITC (ages 17-24, 130% of federal childless EITC)
+# 2. Youth Standard Deduction ($10,000 for ages 18-24 single filers)
+# 3. Student Loan Interest Deduction (up to $2,500 per IRC 221)
+
+# Youth EITC eligibility tests
+- name: Youth EITC - age 17 single non-dependent without children is eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+
+- name: Youth EITC - age 20 single non-dependent without children is eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+
+- name: Youth EITC - age 24 single non-dependent without children is eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+
+- name: Youth EITC - age 25 not eligible, too old
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [false]
+
+- name: Youth EITC - age 16 not eligible, too young
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 16
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [false]
+
+- name: Youth EITC - age 20 claimed as dependent not eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [false]
+
+# Youth EITC amount tests
+- name: Youth EITC amount - eligible youth with no earned income gets zero
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc: 0
+
+- name: Youth EITC amount - eligible youth with $5k earned income in phase-in
+  period: 2027
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Phase-in: $5,000 * 7.65% = $382.50 federal
+    # Youth credit: $382.50 * 1.3 = $497.25
+    ny_a04948_youth_eitc: 497
+
+- name: Youth EITC amount - ineligible age 25 gets zero
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc: 0
+
+- name: Youth EITC amount - age 17 with $3k earned income
+  period: 2027
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Phase-in: $3,000 * 7.65% = $229.50 federal
+    # Youth credit: $229.50 * 1.3 = $298.35
+    ny_a04948_youth_eitc: 298
+
+- name: Youth EITC amount - age 24 with $10k earned income at max
+  period: 2027
+  absolute_error_margin: 20
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Near or at maximum federal childless EITC
+    # Federal max ~$680 * 1.3 = ~$884
+    ny_a04948_youth_eitc: 884
+
+# Youth Standard Deduction eligibility tests
+- name: Youth Standard Deduction - age 20 single non-dependent is eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: true
+    ny_a04948_youth_standard_deduction: 10_000
+    ny_standard_deduction: 10_000
+
+- name: Youth Standard Deduction - age 17 not eligible, too young
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+
+- name: Youth Standard Deduction - age 25 not eligible, too old
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+
+- name: Youth Standard Deduction - married filing jointly not eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      person2:
+        age: 25
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+
+- name: Youth Standard Deduction - head of household not eligible
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+
+# Student Loan Interest Deduction tests
+- name: Student Loan Interest - NY resident with $2,000 interest
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 2_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Full $2,000 deduction (below cap, below phaseout)
+    ny_a04948_student_loan_interest_deduction: 2_000
+
+- name: Student Loan Interest - $3,000 interest capped at $2,500
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 3_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Capped at $2,500 maximum
+    ny_a04948_student_loan_interest_deduction: 2_500
+
+- name: Student Loan Interest - no interest
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 0
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_student_loan_interest_deduction: 0
+
+# Integration tests
+- name: Integration - age 20 gets youth EITC and enhanced standard deduction
+  period: 2027
+  absolute_error_margin: 20
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 15_000
+        student_loan_interest: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+    ny_a04948_youth_standard_deduction_eligible: true
+    ny_a04948_youth_standard_deduction: 10_000
+    ny_standard_deduction: 10_000
+    ny_a04948_student_loan_interest_deduction: 1_500
+    # Youth EITC based on $15,000 income in phaseout
+    ny_a04948_youth_eitc: 449
+
+- name: Integration - age 17 gets youth EITC but NOT standard deduction
+  period: 2027
+  absolute_error_margin: 15
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+    # Youth EITC: $8,000 * 7.65% = $612 federal * 1.3 = $796
+    ny_a04948_youth_eitc: 796
+
+- name: Integration - age 25 gets student loan deduction only
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 50_000
+        student_loan_interest: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [false]
+    ny_a04948_youth_eitc: 0
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+    ny_a04948_student_loan_interest_deduction: 2_000
+
+- name: Integration - age 20 parent not eligible for youth EITC
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 25_000
+        student_loan_interest: 1_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [false, false]
+    ny_a04948_youth_eitc: 0
+    ny_a04948_youth_standard_deduction_eligible: false
+    ny_a04948_youth_standard_deduction: 0
+    ny_a04948_student_loan_interest_deduction: 1_000
+
+- name: No reform applied before 2026
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: false
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Reform not in effect, should be zero
+    ny_a04948_youth_eitc: 0
+    ny_a04948_youth_standard_deduction: 0
+    ny_a04948_student_loan_interest_deduction: 0
