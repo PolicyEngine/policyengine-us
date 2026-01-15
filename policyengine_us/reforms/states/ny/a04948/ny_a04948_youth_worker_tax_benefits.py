@@ -204,7 +204,9 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             is_single = filing_status == filing_status.possible_values.SINGLE
             # Must be the filer
             is_filer = person("is_tax_unit_head_or_spouse", period)
-            return in_effect & age_eligible & not_dependent & is_single & is_filer
+            return (
+                in_effect & age_eligible & not_dependent & is_single & is_filer
+            )
 
     class ny_a04948_youth_standard_deduction(Variable):
         value_type = float
@@ -281,11 +283,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             # Cannot be married filing separately
             separate = filing_status == filing_status.possible_values.SEPARATE
             # Cannot be claimed as dependent
-            head = tax_unit("tax_unit_head", period)
-            head_dependent = person("is_tax_unit_dependent", period)
-            head_is_dependent = tax_unit.value_from_first_person(
-                head_dependent
-            )
+            head_is_dependent = tax_unit("head_is_dependent_elsewhere", period)
             eligible = ~separate & ~head_is_dependent
             # Apply phaseout based on MAGI
             agi = tax_unit("adjusted_gross_income", period)
