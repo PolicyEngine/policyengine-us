@@ -1,10 +1,8 @@
 # Illinois I-PASS Assist categorical eligibility tests
-# Categorical eligibility is granted to households receiving:
-# - SNAP (Supplemental Nutrition Assistance Program)
-# - TANF (Temporary Assistance for Needy Families)
-# - AABD (Aid to the Aged, Blind, and Disabled)
+# Categorical eligibility is granted to households receiving SNAP.
 #
-# Source: https://agency.illinoistollway.com/assist
+# Per IL DHS: "Customers getting SNAP may be eligible for I-PASS Assist"
+# Source: https://www.dhs.state.il.us/page.aspx?item=150431
 
 - name: Case 1, SNAP recipient is categorically eligible.
   period: 2025-01
@@ -23,50 +21,13 @@
   output:
     il_ipass_assist_categorical_eligible: true
 
-- name: Case 2, TANF recipient is categorically eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        il_tanf_eligible: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 3, AABD recipient is categorically eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 70
-        il_aabd_eligible_person: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 4, no benefit recipient is not categorically eligible.
-  # Income must be above SNAP limit (~$20,345 at 130% FPL) to have no SNAP benefit
+- name: Case 2, no SNAP means not categorically eligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 40
-        employment_income: 45_000  # Above both I-PASS (250% FPL) and SNAP (130% FPL) limits
+        employment_income: 45_000  # Above SNAP income limit
     spm_units:
       spm_unit:
         members: [person1]
@@ -77,69 +38,17 @@
   output:
     il_ipass_assist_categorical_eligible: false
 
-- name: Case 5, multiple benefits still categorically eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        il_aabd_eligible_person: false
-      person2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        is_snap_eligible: true
-        il_tanf_eligible: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    il_ipass_assist_categorical_eligible: true
-
-# ============================================================================
-# EDGE CASE TESTS
-# ============================================================================
-
-- name: Case 6, all three benefits simultaneously.
-  # Tests OR logic with all pathways active
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 75
-        il_aabd_eligible_person: true
-      person2:
-        age: 35
-      person3:
-        age: 10
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-        is_snap_eligible: true
-        il_tanf_eligible: true
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
-  output:
-    # SNAP=true OR TANF=true OR AABD=true -> all three true
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 7, minimal SNAP benefit amount.
+- name: Case 3, minimal SNAP benefit amount.
   # Tests boundary: snap > 0 with very small benefit
   period: 2025-01
   input:
     people:
       person1:
         age: 45
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1]
-        snap: 12  # Minimum SNAP benefit is typically small
-        il_tanf_eligible: false
+        snap: 12  # Minimum SNAP benefit
     households:
       household:
         members: [person1]
@@ -148,119 +57,33 @@
     # $12/year SNAP > 0 -> categorically eligible
     il_ipass_assist_categorical_eligible: true
 
-- name: Case 8, income above SNAP limit results in zero SNAP benefit.
-  # Tests that high income results in no SNAP benefit
-  # SNAP requires income <= 130% FPL (~$20,345 for 1 person)
+- name: Case 4, family with SNAP is categorically eligible.
   period: 2025-01
   input:
     people:
       person1:
-        age: 45
-        employment_income: 50_000  # Well above SNAP limit
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # Income $50,000 > 130% FPL -> no SNAP -> NOT categorically eligible
-    il_ipass_assist_categorical_eligible: false
-
-- name: Case 9, SNAP only in mixed household.
-  # Tests that only one benefit type is needed
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 50
-        il_aabd_eligible_person: false
+        age: 30
       person2:
-        age: 48
-        il_aabd_eligible_person: false
-      person3:
-        age: 22
-        il_aabd_eligible_person: false
-      person4:
-        age: 16
-        il_aabd_eligible_person: false
+        age: 8
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2]
         is_snap_eligible: true
-        il_tanf_eligible: false
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2]
         state_code: IL
   output:
-    # SNAP only -> categorically eligible
     il_ipass_assist_categorical_eligible: true
 
-- name: Case 10, AABD only pathway single person.
-  # Tests AABD as sole categorical pathway
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 68
-        il_aabd_eligible_person: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-        snap: 0
-        il_tanf_eligible: false
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # AABD only -> categorically eligible
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 11, large household with only TANF.
-  # Tests TANF as sole pathway with larger family
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 28
-        il_aabd_eligible_person: false
-      person2:
-        age: 9
-        il_aabd_eligible_person: false
-      person3:
-        age: 6
-        il_aabd_eligible_person: false
-      person4:
-        age: 3
-        il_aabd_eligible_person: false
-      person5:
-        age: 1
-        il_aabd_eligible_person: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
-        is_snap_eligible: false
-        il_tanf_eligible: true
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: IL
-  output:
-    # TANF only -> categorically eligible
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 12, large household with high income has no benefits.
-  # Tests that larger households with high income have no categorical eligibility
+- name: Case 5, large household with high income has no SNAP.
   # 6-person SNAP limit at 130% FPL is approximately $39,000
   period: 2025-01
   input:
     people:
       person1:
         age: 45
-        employment_income: 60_000  # High income
+        employment_income: 60_000
       person2:
         age: 43
         employment_income: 40_000
@@ -283,15 +106,13 @@
     # Total income $100,000 well above SNAP limit -> NOT categorically eligible
     il_ipass_assist_categorical_eligible: false
 
-- name: Case 13, elderly person with high income has no benefits.
-  # Tests that being elderly alone is not sufficient - need actual benefits
-  # High income means no SNAP, and not receiving AABD
+- name: Case 6, zero income household gets SNAP.
   period: 2025-01
   input:
     people:
       person1:
-        age: 85
-        social_security: 35_000  # High social security income
+        age: 30
+        employment_income: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -300,7 +121,5 @@
         members: [person1]
         state_code: IL
   output:
-    # Income $35,000 > SNAP limit -> no SNAP
-    # Not receiving AABD -> no AABD
-    # NOT categorically eligible
-    il_ipass_assist_categorical_eligible: false
+    # Zero income -> receives SNAP -> categorically eligible
+    il_ipass_assist_categorical_eligible: true

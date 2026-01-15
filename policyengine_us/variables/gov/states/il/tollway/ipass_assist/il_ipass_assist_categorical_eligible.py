@@ -13,8 +13,5 @@ class il_ipass_assist_categorical_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        # Check for actual benefit receipt (snap > 0, il_tanf > 0, il_aabd > 0)
-        snap_recipient = spm_unit("snap", period) > 0
-        tanf_recipient = spm_unit("il_tanf", period) > 0
-        aabd_recipient = spm_unit("il_aabd", period) > 0
-        return snap_recipient | tanf_recipient | aabd_recipient
+        # Per IL DHS: "Customers getting SNAP may be eligible for I-PASS Assist"
+        return spm_unit("snap", period) > 0

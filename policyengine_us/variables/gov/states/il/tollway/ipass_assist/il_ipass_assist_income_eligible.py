@@ -15,8 +15,6 @@ class il_ipass_assist_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.tollway.ipass_assist.eligibility
         fpg = spm_unit("spm_unit_fpg", period)
-        # Use gross income (market income + social security) for eligibility
-        market_income = spm_unit("spm_unit_market_income", period)
-        social_security = add(spm_unit, period, ["social_security"])
-        household_income = market_income + social_security
-        return household_income <= fpg * p.fpg_limit
+        # Income verified by Illinois Department of Revenue
+        gross_income = add(spm_unit, period, ["irs_gross_income"])
+        return gross_income <= fpg * p.fpg_limit

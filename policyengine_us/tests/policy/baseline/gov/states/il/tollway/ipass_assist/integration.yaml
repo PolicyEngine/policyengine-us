@@ -4,7 +4,7 @@
 # Eligibility criteria:
 # - Illinois residency required
 # - Income <= 250% of Federal Poverty Guidelines, OR
-# - Categorical eligibility: SNAP, TANF, or AABD recipient
+# - Categorical eligibility: SNAP recipient
 #
 # 2025 FPL thresholds at 250%:
 # - 1 person: $15,650 * 2.5 = $39,125
@@ -71,63 +71,55 @@
     il_ipass_assist_categorical_eligible: true
     il_ipass_assist_eligible: true
 
-- name: Case 3, senior citizen on AABD.
+- name: Case 3, senior citizen with low income gets SNAP.
   period: 2025-01
   input:
     people:
       person1:
         age: 72
-        social_security: 18_000
-        il_aabd_eligible_person: true
+        social_security: 12_000
     spm_units:
       spm_unit:
         members: [person1]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1]
         state_code: IL
   output:
-    # Income: $18,000/year (Social Security)
+    # Income: $12,000/year (Social Security)
     # 250% FPL for 1 person: $39,125
-    # $18,000 < $39,125 -> income eligible
-    # Also AABD eligible -> categorical eligible
+    # $12,000 < $39,125 -> income eligible
+    # $12,000 < SNAP limit -> SNAP benefits -> categorical eligible
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: true
     il_ipass_assist_eligible: true
 
-- name: Case 4, TANF family near income threshold.
+- name: Case 4, family near income threshold without SNAP.
   period: 2025-01
   input:
     people:
       person1:
         age: 28
-        employment_income: 30_000
-        il_aabd_eligible_person: false
+        employment_income: 50_000
       person2:
         age: 6
-        il_aabd_eligible_person: false
       person3:
         age: 3
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        is_snap_eligible: false
-        il_tanf_eligible: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: IL
   output:
     # Household size: 3
-    # Total income: $30,000/year
+    # Total income: $50,000/year
     # 250% FPL for 3 persons: $66,625
-    # $30,000 < $66,625 -> income eligible
-    # Also TANF eligible -> categorical eligible
+    # $50,000 < $66,625 -> income eligible
+    # $50,000 > SNAP limit (~$34,600) -> no SNAP -> NOT categorical eligible
     il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: true
+    il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: true
 
 - name: Case 5, middle-income couple just above threshold.
@@ -137,16 +129,12 @@
       person1:
         age: 45
         employment_income: 40_000
-        il_aabd_eligible_person: false
       person2:
         age: 42
         employment_income: 15_000
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1, person2]
@@ -156,7 +144,7 @@
     # Total income: $55,000/year
     # 250% FPL for 2 persons: $52,875
     # $55,000 > $52,875 -> NOT income eligible
-    # No categorical eligibility
+    # $55,000 > SNAP limit -> no SNAP -> NOT categorical eligible
     il_ipass_assist_income_eligible: false
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: false
@@ -199,12 +187,10 @@
       person1:
         age: 35
         employment_income: 20_000  # Would qualify on income
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1]
         is_snap_eligible: true  # Would qualify categorically
-        il_tanf_eligible: false
     households:
       household:
         members: [person1]
@@ -226,16 +212,12 @@
       person1:
         age: 50
         employment_income: 30_000
-        il_aabd_eligible_person: false
       person2:
         age: 48
         employment_income: 22_875  # Total = $52,875 exactly
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1, person2]
@@ -245,6 +227,7 @@
     # Total income: $30,000 + $22,875 = $52,875
     # 250% FPL for 2 persons: $52,875
     # $52,875 <= $52,875 -> income eligible (at boundary)
+    # $52,875 > SNAP limit -> no SNAP
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: true
@@ -257,16 +240,12 @@
       person1:
         age: 50
         employment_income: 30_000
-        il_aabd_eligible_person: false
       person2:
         age: 48
         employment_income: 22_876  # Total = $52,876 (one over)
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1, person2]
@@ -276,6 +255,7 @@
     # Total income: $30,000 + $22,876 = $52,876
     # 250% FPL for 2 persons: $52,875
     # $52,876 > $52,875 -> NOT income eligible
+    # $52,876 > SNAP limit -> no SNAP
     il_ipass_assist_income_eligible: false
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: false
@@ -288,34 +268,24 @@
       person1:
         age: 50
         employment_income: 70_000
-        il_aabd_eligible_person: false
       person2:
         age: 48
         employment_income: 51_625  # Total = $121,625
-        il_aabd_eligible_person: false
       person3:
         age: 22
-        il_aabd_eligible_person: false
       person4:
         age: 20
-        il_aabd_eligible_person: false
       person5:
         age: 17
-        il_aabd_eligible_person: false
       person6:
         age: 14
-        il_aabd_eligible_person: false
       person7:
         age: 10
-        il_aabd_eligible_person: false
       person8:
         age: 6
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
@@ -325,6 +295,7 @@
     # Total income: $70,000 + $51,625 = $121,625
     # 250% FPL for 8 persons: $48,650 * 2.5 = $121,625
     # $121,625 <= $121,625 -> income eligible
+    # High income -> no SNAP
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: true
@@ -395,16 +366,12 @@
         age: 65
         social_security: 20_000
         interest_income: 3_000
-        il_aabd_eligible_person: false
       person2:
         age: 63
         employment_income: 15_000
-        il_aabd_eligible_person: false
     spm_units:
       spm_unit:
         members: [person1, person2]
-        is_snap_eligible: false
-        il_tanf_eligible: false
     households:
       household:
         members: [person1, person2]
@@ -414,6 +381,7 @@
     # Total income: $20,000 + $3,000 + $15,000 = $38,000
     # 250% FPL for 2 persons: $52,875
     # $38,000 < $52,875 -> income eligible
+    # $38,000 > SNAP limit (~$27,400) -> no SNAP
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: true
