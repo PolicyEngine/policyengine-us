@@ -98,8 +98,12 @@ def create_ri_ctc() -> Reform:
             # Rate: calculate from range for range-based, use explicit rate otherwise
             maximum = tax_unit("ri_ctc_maximum", period)
             range_width = phaseout_end - phaseout_start
-            range_based_rate = where(range_based_active, maximum / range_width, 0)
-            effective_rate = where(range_based_active, range_based_rate, p.phaseout.rate)
+            range_based_rate = where(
+                range_based_active, maximum / range_width, 0
+            )
+            effective_rate = where(
+                range_based_active, range_based_rate, p.phaseout.rate
+            )
 
             return excess_income * effective_rate
 
