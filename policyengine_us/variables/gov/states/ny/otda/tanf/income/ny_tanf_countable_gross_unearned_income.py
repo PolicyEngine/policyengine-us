@@ -9,4 +9,4 @@ class ny_tanf_countable_gross_unearned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    adds = "gov.states.ny.otda.tanf.income.unearned"
+    adds = "gov.hhs.tanf.cash.income.sources.unearned"
