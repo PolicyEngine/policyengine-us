@@ -6,7 +6,7 @@ class ny_tanf(Variable):
     entity = SPMUnit
     label = "New York TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "ny_tanf_eligible"
 
     def formula(spm_unit, period, parameters):

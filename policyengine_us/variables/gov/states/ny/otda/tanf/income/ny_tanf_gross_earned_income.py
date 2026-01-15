@@ -6,7 +6,7 @@ class ny_tanf_gross_earned_income(Variable):
     entity = SPMUnit
     label = "New York TANF gross earned income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.NY
 
     adds = "gov.hhs.tanf.cash.income.sources.earned"

@@ -6,7 +6,7 @@ class ny_tanf_countable_gross_unearned_income(Variable):
     entity = SPMUnit
     label = "New York TANF countable gross unearned income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.NY
 
     adds = "gov.hhs.tanf.cash.income.sources.unearned"

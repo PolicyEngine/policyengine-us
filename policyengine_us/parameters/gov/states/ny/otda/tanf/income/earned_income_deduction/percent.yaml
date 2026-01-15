@@ -2,11 +2,15 @@ description: New York excludes this share of earned income under the Temporary A
 
 metadata:
   unit: /1
-  period: year
+  period: month
   label: New York TANF earned income disregard rate
   reference:
+    - title: 97-ADM-23 Family Assistance/Safety Net Assistance Changes
+      href: https://otda.ny.gov/policy/directives/1997/ADM/97_ADM-23.pdf
     - title: 22-ADM-11 Section IV(B) Earned Income Disregard
-      href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=6
+      href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=3
 
 values:
-  2022-10-01: 0.5
+  1997-08-20: 0.42
+  2022-06-01: 0.55
+  2022-10-01: 0.50

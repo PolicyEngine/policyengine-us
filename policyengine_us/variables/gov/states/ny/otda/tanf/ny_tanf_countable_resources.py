@@ -6,5 +6,5 @@ class ny_tanf_countable_resources(Variable):
     entity = SPMUnit
     label = "Countable resources for New York TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.NY

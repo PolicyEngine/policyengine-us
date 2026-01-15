@@ -1,0 +1,60 @@
+# Post-reform tests (2023-01): Gross income test eliminated
+# All households pass automatically
+
+- name: Case 1, post-reform always passes gross income test.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_gross_earned_income: 10_000
+    ny_tanf_countable_gross_unearned_income: 5_000
+  output:
+    ny_tanf_gross_income_eligible: true
+
+# Pre-reform tests (2022-01): 185% gross income test applies
+# Gross income <= Need Standard × 1.85
+
+- name: Case 2, pre-reform gross income below 185% threshold.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ny_tanf_gross_earned_income: 400
+        ny_tanf_countable_gross_unearned_income: 0
+  output:
+    # Need standard for 2 people = $252/month
+    # 185% threshold = $252 × 1.85 = $466.20
+    # Gross income = $400 <= $466.20 → passes
+    ny_tanf_gross_income_eligible: true
+
+- name: Case 3, pre-reform gross income above 185% threshold.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ny_tanf_gross_earned_income: 500
+        ny_tanf_countable_gross_unearned_income: 0
+  output:
+    # Need standard for 2 people = $252/month
+    # 185% threshold = $252 × 1.85 = $466.20
+    # Gross income = $500 > $466.20 → fails
+    ny_tanf_gross_income_eligible: false
