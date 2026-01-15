@@ -12,6 +12,6 @@ class il_scretd_income_eligible(Variable):
     reference = "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.il.tax.income.credits.scretd
-        income = tax_unit("adjusted_gross_income", period)
+        p = parameters(period).gov.states.il.idor.scretd
+        income = add(tax_unit, period, ["irs_gross_income"])
         return income <= p.income_limit

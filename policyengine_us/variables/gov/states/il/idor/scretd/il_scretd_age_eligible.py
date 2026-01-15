@@ -10,6 +10,6 @@ class il_scretd_age_eligible(Variable):
     reference = "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.tax.income.credits.scretd
+        p = parameters(period).gov.states.il.idor.scretd
         age = person("age", period)
         return age >= p.age_threshold
