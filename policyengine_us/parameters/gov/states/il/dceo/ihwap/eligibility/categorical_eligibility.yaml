@@ -4,8 +4,19 @@ values:
     - il_liheap
     - ssi
     - il_tanf
-    - il_aabd
+    - il_aabd  # Comparable state program per 42 U.S.C. 6862(7)(B)
     - housing_assistance
+    # Additional programs per IL DCEO/DOE WPN 22-5 (not yet modeled):
+    # - Community Development Block Grant (CDBG)
+    # - HOME Investment Partnerships Program
+    # - Lead Hazard Control
+    # - Public Housing
+    # - HUD-VASH (Veterans Affairs Supportive Housing)
+    # - Low-Income Housing Tax Credit (LIHTC)
+    # - USDA Section 521 Rural Rental Assistance
+    # - USDA Section 502 Direct Home Loan
+    # - USDA Section 533 Housing Preservation Grants
+    # - USDA Section 504 Home Repair Loans and Grants
 
 metadata:
   unit: list

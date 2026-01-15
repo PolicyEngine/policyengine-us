@@ -91,3 +91,56 @@
     # Zero income is below any threshold
   output:
     il_ihwap_income_eligible: true
+
+- name: Case 7, income one dollar above threshold is not eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: 30_121
+    # 2024 FPL for 1 person: $15,060 x 200% = $30,120
+    # $30,121 > $30,120 = not eligible (tests <= boundary)
+  output:
+    il_ihwap_income_eligible: false
+
+- name: Case 8, large family of 8 below threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        irs_gross_income: 40_000
+      person2:
+        age: 43
+        irs_gross_income: 30_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IL
+    # 2024 FPL for 8 people: $52,720 x 200% = $105,440
+    # $70,000 < $105,440 = eligible
+  output:
+    il_ihwap_income_eligible: true
+
+- name: Case 9, negative income is eligible.
+  period: 2024
+  input:
+    state_code: IL
+    irs_gross_income: -5_000
+    # Negative income (e.g., self-employment loss) is below any positive threshold
+  output:
+    il_ihwap_income_eligible: true
