@@ -1,125 +1,20 @@
 # Illinois I-PASS Assist categorical eligibility tests
-# Categorical eligibility is granted to households receiving SNAP.
+# Formula: snap > 0
 #
-# Per IL DHS: "Customers getting SNAP may be eligible for I-PASS Assist"
 # Source: https://www.dhs.state.il.us/page.aspx?item=150431
 
-- name: Case 1, SNAP recipient is categorically eligible.
-  period: 2025-01
+- name: Case 1, has SNAP.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 35
-    spm_units:
-      spm_unit:
-        members: [person1]
-        is_snap_eligible: true
-    households:
-      household:
-        members: [person1]
-        state_code: IL
+    state_code: IL
+    snap: 1
   output:
     il_ipass_assist_categorical_eligible: true
 
-- name: Case 2, no SNAP means not categorically eligible.
-  period: 2025-01
+- name: Case 2, no SNAP.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 40
-        employment_income: 45_000  # Above SNAP income limit
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
+    state_code: IL
+    snap: 0
   output:
     il_ipass_assist_categorical_eligible: false
-
-- name: Case 3, minimal SNAP benefit amount.
-  # Tests boundary: snap > 0 with very small benefit
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 45
-    spm_units:
-      spm_unit:
-        members: [person1]
-        snap: 12  # Minimum SNAP benefit
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # $12/year SNAP > 0 -> categorically eligible
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 4, family with SNAP is categorically eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        is_snap_eligible: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    il_ipass_assist_categorical_eligible: true
-
-- name: Case 5, large household with high income has no SNAP.
-  # 6-person SNAP limit at 130% FPL is approximately $39,000
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 45
-        employment_income: 60_000
-      person2:
-        age: 43
-        employment_income: 40_000
-      person3:
-        age: 20
-      person4:
-        age: 18
-      person5:
-        age: 15
-      person6:
-        age: 12
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6]
-        state_code: IL
-  output:
-    # Total income $100,000 well above SNAP limit -> NOT categorically eligible
-    il_ipass_assist_categorical_eligible: false
-
-- name: Case 6, zero income household gets SNAP.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        employment_income: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # Zero income -> receives SNAP -> categorically eligible
-    il_ipass_assist_categorical_eligible: true

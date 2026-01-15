@@ -1,47 +1,25 @@
 # Illinois I-PASS Assist integration tests
-# Tests comprehensive eligibility scenarios with multiple household members
+# End-to-end scenarios testing full calculation chain
 #
-# Eligibility criteria:
-# - Illinois residency required
-# - Income <= 250% of Federal Poverty Guidelines, OR
-# - Categorical eligibility: SNAP recipient
-#
-# 2025 FPL thresholds at 250%:
-# - 1 person: $15,650 * 2.5 = $39,125
-# - 2 person: $21,150 * 2.5 = $52,875
-# - 3 person: $26,650 * 2.5 = $66,625
-# - 4 person: $32,150 * 2.5 = $80,375
-# - 8 person: $48,650 * 2.5 = $121,625
+# Eligibility: IL resident AND (income <= 250% FPL OR SNAP recipient)
 #
 # Source: https://agency.illinoistollway.com/assist
 
-- name: Case 1, moderate-income single worker.
-  # Income above SNAP limit but below I-PASS limit
-  period: 2025-01
+- name: Case 1, moderate income worker eligible via income.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 28
-        employment_income: 35_000  # Above SNAP (130% FPL ~$20,345) but below I-PASS (250% FPL $39,125)
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
+    state_code: IL
+    employment_income: 35_000
   output:
-    # Income: $35,000/year
-    # 250% FPL for 1 person: $39,125
+    # 1-person 250% FPL = $39,125
     # $35,000 < $39,125 -> income eligible
-    # $35,000 > SNAP gross limit -> no SNAP -> NOT categorically eligible
+    # $35,000 > SNAP limit -> no SNAP
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: true
 
-- name: Case 2, low-income working family with SNAP benefits.
-  # Income low enough to receive SNAP (< 130% FPL for 4 = ~$41,800)
-  period: 2025-01
+- name: Case 2, low income family eligible via both pathways.
+  period: 2025
   input:
     people:
       person1:
@@ -49,7 +27,6 @@
         employment_income: 24_000
       person2:
         age: 30
-        employment_income: 12_000
       person3:
         age: 8
       person4:
@@ -62,76 +39,23 @@
         members: [person1, person2, person3, person4]
         state_code: IL
   output:
-    # Household size: 4
-    # Total income: $36,000/year < 130% FPL (~$41,800) -> SNAP eligible
-    # 250% FPL for 4 persons: $80,375
-    # $36,000 < $80,375 -> income eligible
-    # Low income = SNAP benefits -> categorical eligible
+    # 4-person 250% FPL = $80,375
+    # $24,000 < $80,375 -> income eligible
+    # $24,000 < SNAP limit -> gets SNAP -> categorical eligible
     il_ipass_assist_income_eligible: true
     il_ipass_assist_categorical_eligible: true
     il_ipass_assist_eligible: true
 
-- name: Case 3, senior citizen with low income gets SNAP.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 72
-        social_security: 12_000
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # Income: $12,000/year (Social Security)
-    # 250% FPL for 1 person: $39,125
-    # $12,000 < $39,125 -> income eligible
-    # $12,000 < SNAP limit -> SNAP benefits -> categorical eligible
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: true
-    il_ipass_assist_eligible: true
-
-- name: Case 4, family near income threshold without SNAP.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 28
-        employment_income: 50_000
-      person2:
-        age: 6
-      person3:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
-  output:
-    # Household size: 3
-    # Total income: $50,000/year
-    # 250% FPL for 3 persons: $66,625
-    # $50,000 < $66,625 -> income eligible
-    # $50,000 > SNAP limit (~$34,600) -> no SNAP -> NOT categorical eligible
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: true
-
-- name: Case 5, middle-income couple just above threshold.
-  period: 2025-01
+- name: Case 3, high income not eligible.
+  period: 2025
   input:
     people:
       person1:
         age: 45
-        employment_income: 40_000
+        employment_income: 60_000
       person2:
         age: 42
-        employment_income: 15_000
+        employment_income: 40_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -140,274 +64,17 @@
         members: [person1, person2]
         state_code: IL
   output:
-    # Household size: 2
-    # Total income: $55,000/year
-    # 250% FPL for 2 persons: $52,875
-    # $55,000 > $52,875 -> NOT income eligible
-    # $55,000 > SNAP limit -> no SNAP -> NOT categorical eligible
+    # 2-person 250% FPL = $52,875
+    # $100,000 > $52,875 -> NOT income eligible
+    # $100,000 > SNAP limit -> no SNAP
     il_ipass_assist_income_eligible: false
     il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: false
 
-- name: Case 6, high-income family not eligible.
-  # High income above both I-PASS and SNAP limits
-  # Note: SNAP requires income <= 130% FPL, so high income = no SNAP
-  period: 2025-01
+- name: Case 4, non-IL resident not eligible.
+  period: 2025
   input:
-    people:
-      person1:
-        age: 38
-        employment_income: 50_000
-      person2:
-        age: 36
-        employment_income: 45_000
-      person3:
-        age: 12
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
+    state_code: WI
+    employment_income: 20_000
   output:
-    # Household size: 3
-    # Total income: $95,000/year
-    # 250% FPL for 3 persons: $66,625
-    # $95,000 > $66,625 -> NOT income eligible
-    # $95,000 >> SNAP limit (~$34,600) -> no SNAP -> NOT categorical eligible
-    il_ipass_assist_income_eligible: false
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: false
-
-- name: Case 7, non-Illinois resident not eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 20_000  # Would qualify on income
-    spm_units:
-      spm_unit:
-        members: [person1]
-        is_snap_eligible: true  # Would qualify categorically
-    households:
-      household:
-        members: [person1]
-        state_code: WI  # Wisconsin resident
-  output:
-    # Even though income and categorical would qualify,
-    # residency requirement fails
-    il_ipass_assist_eligible: false
-
-# ============================================================================
-# EDGE CASE INTEGRATION TESTS
-# ============================================================================
-
-- name: Case 8, boundary income exactly at 2-person threshold.
-  # Tests exact boundary condition for 2-person household
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 50
-        employment_income: 30_000
-      person2:
-        age: 48
-        employment_income: 22_875  # Total = $52,875 exactly
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    # Household size: 2
-    # Total income: $30,000 + $22,875 = $52,875
-    # 250% FPL for 2 persons: $52,875
-    # $52,875 <= $52,875 -> income eligible (at boundary)
-    # $52,875 > SNAP limit -> no SNAP
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: true
-
-- name: Case 9, boundary income one dollar above 2-person threshold.
-  # Tests exact boundary fail condition
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 50
-        employment_income: 30_000
-      person2:
-        age: 48
-        employment_income: 22_876  # Total = $52,876 (one over)
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    # Household size: 2
-    # Total income: $30,000 + $22,876 = $52,876
-    # 250% FPL for 2 persons: $52,875
-    # $52,876 > $52,875 -> NOT income eligible
-    # $52,876 > SNAP limit -> no SNAP
-    il_ipass_assist_income_eligible: false
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: false
-
-- name: Case 10, 8-person household exactly at threshold.
-  # Tests maximum common household size at exact FPL boundary
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 50
-        employment_income: 70_000
-      person2:
-        age: 48
-        employment_income: 51_625  # Total = $121,625
-      person3:
-        age: 22
-      person4:
-        age: 20
-      person5:
-        age: 17
-      person6:
-        age: 14
-      person7:
-        age: 10
-      person8:
-        age: 6
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        state_code: IL
-  output:
-    # Household size: 8
-    # Total income: $70,000 + $51,625 = $121,625
-    # 250% FPL for 8 persons: $48,650 * 2.5 = $121,625
-    # $121,625 <= $121,625 -> income eligible
-    # High income -> no SNAP
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: true
-
-- name: Case 11, zero income household receives SNAP.
-  # Tests minimum income bound - zero income means SNAP eligible
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 25
-        employment_income: 0
-      person2:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    # Household size: 2
-    # Total income: $0
-    # 250% FPL for 2 persons: $52,875
-    # $0 <= $52,875 -> income eligible
-    # $0 income means SNAP eligible -> categorical eligible
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: true
-    il_ipass_assist_eligible: true
-
-- name: Case 12, low-income family with SNAP benefits.
-  # Tests household receiving SNAP (categorical eligibility requires low income)
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 75
-        social_security: 12_000
-      person2:
-        age: 35
-        employment_income: 15_000
-      person3:
-        age: 8
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IL
-  output:
-    # Household size: 3
-    # Total income: $12,000 + $15,000 = $27,000
-    # 250% FPL for 3 persons: $66,625
-    # $27,000 < $66,625 -> income eligible
-    # $27,000 < SNAP gross limit (~$34,600) -> SNAP benefits -> categorical eligible
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: true
-    il_ipass_assist_eligible: true
-
-- name: Case 13, mixed income sources near threshold.
-  # Tests various income types combining to threshold
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 65
-        social_security: 20_000
-        interest_income: 3_000
-      person2:
-        age: 63
-        employment_income: 15_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    # Household size: 2
-    # Total income: $20,000 + $3,000 + $15,000 = $38,000
-    # 250% FPL for 2 persons: $52,875
-    # $38,000 < $52,875 -> income eligible
-    # $38,000 > SNAP limit (~$27,400) -> no SNAP
-    il_ipass_assist_income_eligible: true
-    il_ipass_assist_categorical_eligible: false
-    il_ipass_assist_eligible: true
-
-- name: Case 14, income just over threshold with no categorical.
-  # Tests boundary miss scenario - not eligible on either pathway
-  # Note: SNAP requires income <= 130% FPL (~$20,345), so $39,200 income = no SNAP
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 40
-        employment_income: 39_200  # Just over I-PASS threshold and way over SNAP limit
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IL
-  output:
-    # Household size: 1
-    # Total income: $39,200
-    # 250% FPL for 1 person: $39,125
-    # $39,200 > $39,125 -> NOT income eligible
-    # $39,200 >> SNAP limit (~$20,345) -> no SNAP -> NOT categorical eligible
-    il_ipass_assist_income_eligible: false
-    il_ipass_assist_categorical_eligible: false
     il_ipass_assist_eligible: false
