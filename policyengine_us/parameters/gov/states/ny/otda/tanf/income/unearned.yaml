@@ -1,4 +1,5 @@
-description: New York TANF counts these income sources as unearned income.
+description: New York uses these income sources as unearned income under the Temporary Assistance for Needy Families program.
+
 values:
   1997-01-01:
     - veterans_benefits
@@ -12,8 +13,11 @@ values:
     - gi_cash_assistance
     - social_security
     - ssi
+
 metadata:
   unit: list
+  period: year
+  label: New York TANF unearned income sources
   reference:
-    title: 18 NYCRR 352.17 - Computation of available income
-    href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.17
+    - title: 18 NYCRR 352.17 - Computation of available income
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.17

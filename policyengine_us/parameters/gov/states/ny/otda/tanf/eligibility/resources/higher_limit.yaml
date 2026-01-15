@@ -1,10 +1,11 @@
-description: New York limits TANF to households with up to this resource amount if they have elderly or disabled members.
+description: New York limits resources to this amount for households with elderly or disabled members under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
-  label: New York TANF resource limit for households with elderly or disabled people
+  period: year
+  label: New York TANF resource limit for elderly or disabled households
   reference:
-    - title: 22-ADM-11 Public Assistance Policy Changes Included in the SFY 2022-23 New York State Budget
+    - title: 22-ADM-11 Section IV(A) Resource Limit Changes
       href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=5
 
 values:
