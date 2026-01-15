@@ -82,9 +82,30 @@ def create_ri_ctc() -> Reform:
             filing_status = tax_unit("filing_status", period)
             agi = tax_unit("ri_agi", period)
 
-            threshold = p.phaseout.threshold[filing_status]
+            # Range-based phaseout: when end > start, calculate rate dynamically
+            phaseout_start = p.phaseout.start
+            phaseout_end = p.phaseout.end
+            range_based_active = phaseout_end > phaseout_start
+
+            # Threshold: use start for range-based, filing-status threshold for rate-based
+            threshold = where(
+                range_based_active,
+                phaseout_start,
+                p.phaseout.threshold[filing_status],
+            )
             excess_income = max_(agi - threshold, 0)
-            return excess_income * p.phaseout.rate
+
+            # Rate: calculate from range for range-based, use explicit rate otherwise
+            maximum = tax_unit("ri_ctc_maximum", period)
+            range_width = phaseout_end - phaseout_start
+            range_based_rate = where(
+                range_based_active, maximum / range_width, 0
+            )
+            effective_rate = where(
+                range_based_active, range_based_rate, p.phaseout.rate
+            )
+
+            return excess_income * effective_rate
 
     class ri_total_ctc(Variable):
         value_type = float
