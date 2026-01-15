@@ -12222,3 +12222,46 @@
     - Riverside County General Relief SSI check changed from unit-level to person-level,
       so only the individual receiving SSI is excluded, not all household members.
   date: 2026-01-13 23:26:02
+- bump: patch
+  changes:
+    added:
+    - Add is_blind to IL HBWD disability eligibility check.
+    fixed:
+    - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+  date: 2026-01-14 21:44:33
+- bump: patch
+  changes:
+    changed:
+    - Updated uv.lock dependencies.
+  date: 2026-01-14 23:20:21
+- bump: minor
+  changes:
+    added:
+    - Adjust CLAUDE.md in US repo.
+  date: 2026-01-15 20:02:12
+- bump: minor
+  changes:
+    added:
+    - Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end
+      parameters.
+  date: 2026-01-15 20:15:33
+- bump: patch
+  changes:
+    added:
+    - Add parameter discovery documentation guide
+  date: 2026-01-15 22:15:03
+- bump: patch
+  changes:
+    added:
+    - Add Microsimulation API documentation covering calc/calculate methods, map_to
+      parameter, available datasets, subsampling, winners/losers analysis, and weight
+      sanity checks.
+  date: 2026-01-15 22:18:44
+- bump: patch
+  changes:
+    fixed:
+    - Fix CA Medi-Cal immigration eligibility for DACA/TPS holders in 2026. Previously,
+      DACA/TPS holders incorrectly lost eligibility after the January 2026 enrollment
+      freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and
+      can still newly enroll.
+  date: 2026-01-15 22:29:01
