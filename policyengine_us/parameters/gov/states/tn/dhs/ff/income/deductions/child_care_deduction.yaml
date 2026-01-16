@@ -1,0 +1,21 @@
+description: Tennessee deducts up to this amount per child for dependent care expenses under the Families First program, based on child age.
+
+brackets:
+  - threshold:
+      2008-11-01: 0
+    amount:
+      2008-11-01: 200
+  - threshold:
+      2008-11-01: 2
+    amount:
+      2008-11-01: 175
+
+metadata:
+  period: month
+  label: Tennessee Families First child care deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Tennessee Administrative Code § 1240-01-50-.16(1)(c)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=19

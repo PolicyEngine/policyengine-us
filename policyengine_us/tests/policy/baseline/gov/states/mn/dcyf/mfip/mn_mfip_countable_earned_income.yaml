@@ -1,0 +1,66 @@
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_mfip_countable_earned_income: 0
+
+- name: Case 2, single wage earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # $1,000/month gross
+    # 1 earner * $65 = $65 flat
+    # After flat: max(1000-65, 0) = $935
+    # After 50%: $467.50
+    mn_mfip_countable_earned_income: 467.5
+
+- name: Case 3, two wage earners.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # $1,500/month gross combined
+    # 2 earners * $65 = $130 flat
+    # After flat: max(1500-130, 0) = $1,370
+    # After 50%: $685
+    mn_mfip_countable_earned_income: 685

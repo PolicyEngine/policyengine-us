@@ -1,0 +1,252 @@
+# Idaho TAFI Integration Tests
+# Tests complete benefit calculation pipeline per IDAPA 16.03.08
+# Key rules:
+# - Maximum Grant: $309 (flat, regardless of family size)
+# - Earned Income: 60% of gross is subtracted from Work Incentive amount
+# - Unearned Income: 100% is subtracted
+# - Work Incentive Table used for families with earned income
+
+- name: Case 1, family of 3 with no income receives maximum grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    # SPM unit size
+    spm_unit_size: 3
+
+    # Income calculations
+    id_tafi_countable_earned_income: 0
+    id_tafi_countable_unearned_income: 0
+
+    # Work incentive table lookup
+    id_tafi_work_incentive_amount: 389
+    # Household size 3 -> $389
+
+    # Grant calculation (no income -> max grant)
+    id_tafi_grant_standard: 309
+
+    # Final benefit
+    id_tafi: 309
+
+- name: Case 2, family of 2 with moderate earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    spm_unit_size: 2
+
+    # Earned income: 60% counted
+    id_tafi_countable_earned_income: 120
+    # $200 * 0.60 = $120
+    id_tafi_countable_unearned_income: 0
+
+    # Work incentive (size 2)
+    id_tafi_work_incentive_amount: 309
+
+    # Grant = WI - countable_earned - countable_unearned
+    # = 309 - 120 - 0 = 189
+    id_tafi_grant_standard: 189
+
+    id_tafi: 189
+
+- name: Case 3, family of 3 with unearned income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_800  # $150/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    spm_unit_size: 3
+
+    # No earned income
+    id_tafi_countable_earned_income: 0
+    # Full unearned counted
+    id_tafi_countable_unearned_income: 150
+
+    # Work incentive (not used for unearned-only)
+    id_tafi_work_incentive_amount: 389
+
+    # Unearned only: Max Grant - Unearned = 309 - 150 = 159
+    id_tafi_grant_standard: 159
+
+    id_tafi: 159
+
+- name: Case 4, family of 4 with mixed earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 29
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    spm_unit_size: 4
+
+    # 60% of earned counted
+    id_tafi_countable_earned_income: 240
+    # $400 * 0.60 = $240
+    id_tafi_countable_unearned_income: 100
+
+    # Work incentive for size 4
+    id_tafi_work_incentive_amount: 469
+
+    # Grant = WI - countable_earned - countable_unearned
+    # = 469 - 240 - 100 = 129
+    id_tafi_grant_standard: 129
+
+    id_tafi: 129
+
+- name: Case 5, small benefit from high unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_624  # $302/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    spm_unit_size: 2
+
+    # Income
+    id_tafi_countable_earned_income: 0
+    id_tafi_countable_unearned_income: 302
+
+    # Work incentive
+    id_tafi_work_incentive_amount: 309
+
+    # Grant = 309 - 0 - 302 = 7
+    id_tafi_grant_standard: 7
+
+    id_tafi: 7
+
+- name: Case 6, large family with low income receives maximum benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+      person2:
+        age: 29
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ID
+  output:
+    spm_unit_size: 5
+
+    # Income: 60% of earned
+    id_tafi_countable_earned_income: 60
+    # $100 * 0.60 = $60
+    id_tafi_countable_unearned_income: 0
+
+    # Work incentive for size 5
+    id_tafi_work_incentive_amount: 547
+
+    # Grant = 547 - 60 - 0 = 487 (uncapped)
+    id_tafi_grant_standard: 487
+
+    # Capped at max $309 in id_tafi
+    id_tafi: 309
+
+- name: Case 7, high earner ineligible for benefits.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    spm_unit_size: 3
+
+    # Income: 60% of earned
+    id_tafi_countable_earned_income: 600
+    # $1,000 * 0.60 = $600
+    id_tafi_countable_unearned_income: 0
+
+    # Work incentive for size 3
+    id_tafi_work_incentive_amount: 389
+
+    # Grant = max(389 - 600 - 0, 0) = 0
+    id_tafi_grant_standard: 0
+
+    # Ineligible (grant_standard = 0)
+    id_tafi: 0

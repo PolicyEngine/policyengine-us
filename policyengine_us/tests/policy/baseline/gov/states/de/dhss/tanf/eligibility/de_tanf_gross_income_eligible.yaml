@@ -1,0 +1,107 @@
+# Unit tests for Delaware TANF gross income eligibility
+# 16 Del. Admin. Code SS 4000-4008: Gross income limit = 185% of Standard of Need
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+- name: Case 1, below limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Family size 3, limit ~$3,082/month
+    # $2,000 < $3,082 → eligible
+    de_tanf_gross_income_eligible: true
+
+- name: Case 2, above limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 40_000  # $3,333/month
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # $3,333 > $3,082 → ineligible
+    de_tanf_gross_income_eligible: false
+
+- name: Case 3, at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 36_972  # $3,081/month
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # $3,081 < $3,082 → eligible
+    de_tanf_gross_income_eligible: true
+
+- name: Case 4, large family size 10.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 90_000  # $7,500/month
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: DE
+  output:
+    # Family size 10, limit ~$7,530/month
+    # $7,500 < $7,530 → eligible
+    de_tanf_gross_income_eligible: true

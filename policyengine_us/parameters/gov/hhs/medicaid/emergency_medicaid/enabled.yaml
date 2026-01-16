@@ -1,0 +1,14 @@
+description: The United States provides Emergency Medicaid for individuals who meet Medicaid eligibility requirements but for their immigration status.
+values:
+  0001-01-01: false
+  1987-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Emergency Medicaid enabled
+  reference:
+    - title: 42 USC 1396b(v)(2) - Exception for Emergency Medical Services
+      href: https://www.law.cornell.edu/uscode/text/42/1396b#v
+    - title: 8 USC 1611(b)(1)(A) - Exception for Emergency Medical Care
+      href: https://www.law.cornell.edu/uscode/text/8/1611#b_1_A

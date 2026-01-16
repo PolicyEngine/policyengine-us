@@ -1,0 +1,55 @@
+description: Oklahoma sets this amount as the State Standard of Need under the Temporary Assistance for Needy Families program.
+
+metadata:
+  amount_unit: currency-USD
+  period: month
+  label: Oklahoma TANF State Standard of Need
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: OAC 340:10-3-27 - State Standard of Need
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-27
+    - title: OKDHS Appendix C-1 Schedule IX-A
+      href: https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
+
+# NOTE: Oklahoma has two need standard schedules:
+  # - "Adult only or adults and children" - IMPLEMENTED
+  # - "Children only" - NOT IMPLEMENTED
+  # This parameter uses the adult/adults+children schedule from Schedule IX-A.
+brackets:
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 398
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 499
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 645
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 798
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 933
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 1068
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 1203
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 1323
+  - threshold:
+      2021-01-01: 9
+    amount:
+      2021-01-01: 1436

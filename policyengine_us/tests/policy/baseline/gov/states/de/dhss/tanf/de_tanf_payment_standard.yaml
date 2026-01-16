@@ -1,0 +1,152 @@
+# Unit tests for Delaware TANF payment standard
+# 16 Del. Admin. Code SS 4000-4008: Payment standard by family size
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+# Payment standards by family size:
+# Size 1: $201, Size 2: $270, Size 3: $338, Size 4: $407, Size 5: $475
+# Size 6: $544, Size 7: $612, Size 8: $681, Size 9: $750, Size 10: $819
+# Max unit size: 8 (sizes > 8 use base + additional_person)
+
+- name: Case 1, family size 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 201
+
+- name: Case 2, family size 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 270
+
+- name: Case 3, family size 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 338
+
+- name: Case 4, family size 5.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 475
+
+- name: Case 5, family size 8.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+      person8:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: DE
+  output:
+    de_tanf_payment_standard: 681
+
+- name: Case 6, family size 10.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: DE
+  output:
+    # Base for size 8: $681
+    # Additional persons (10-8=2): 2 * $69 = $138
+    # Total: $681 + $138 = $819
+    de_tanf_payment_standard: 819

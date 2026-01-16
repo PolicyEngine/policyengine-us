@@ -1,0 +1,42 @@
+# Edge case tests for CT TFA resource eligibility
+# Resource limit: $6,000
+
+- name: Case 1, resources exactly at limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 6_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 2, resources one dollar above limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 6_001
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
+
+- name: Case 3, resources one dollar below limit.
+  period: 2024-01
+  input:
+    spm_unit_assets: 5_999
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 4, zero resources.
+  period: 2024-01
+  input:
+    spm_unit_assets: 0
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 5, very high resources.
+  period: 2024-01
+  input:
+    spm_unit_assets: 100_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
