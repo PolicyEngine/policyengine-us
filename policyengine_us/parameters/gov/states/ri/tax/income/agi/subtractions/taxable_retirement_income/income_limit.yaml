@@ -5,7 +5,9 @@ metadata:
   period: year
   unit: currency-USD
   breakdown:
-  - filing_status
+    - filing_status
+  breakdown_label:
+    - Filing status
   reference:
   - title: 2025 RI-1040 Instructions page I-10
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/2025%201040R%20Instructions_d.pdf#page=10
@@ -17,7 +19,7 @@ metadata:
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20NR%20Instructions_v4_w.pdf#page=11
   - title: Rhode Island 2021 RI-1040 Instructions
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-12/2021-1040r-instructions.pdf#page=8
-  # The law points to the secial security modification (c) (8) while the actual amounts differ
+  # The law points to the social security modification (c) (8) while the actual amounts differ
   # in the tax forms
   - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i)&(ii)
     href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
