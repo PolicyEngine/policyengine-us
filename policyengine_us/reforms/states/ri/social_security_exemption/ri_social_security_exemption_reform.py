@@ -16,50 +16,48 @@ def create_ri_social_security_exemption() -> Reform:
             p_reform = parameters(
                 period
             ).gov.contrib.states.ri.social_security_exemption
+            p_baseline = parameters(
+                period
+            ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
-            # If reform is in effect, use reform parameters
-            if p_reform.in_effect:
-                # Check if income limit is repealed (true for 2029+)
-                if p_reform.income_limit_applies:
-                    # Universal exemption - no age or income limit
-                    return True
+            # Get inputs
+            income = tax_unit("adjusted_gross_income", period)
+            filing_status = tax_unit("filing_status", period)
+            birth_year = tax_unit("older_spouse_birth_year", period)
 
-                # Check age eligibility (only if age requirement applies)
-                if p_reform.age_requirement_applies:
-                    birth_year = tax_unit("older_spouse_birth_year", period)
-                    p_baseline = parameters(
-                        period
-                    ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
-                    age_eligible = birth_year <= p_baseline.birth_year
-                else:
-                    # Age requirement removed
-                    age_eligible = True
+            # Baseline eligibility: age + income requirements
+            baseline_age_eligible = birth_year <= p_baseline.birth_year
+            baseline_income_limit = p_baseline.income[filing_status]
+            baseline_income_eligible = income < baseline_income_limit
+            baseline_eligible = (
+                baseline_age_eligible & baseline_income_eligible
+            )
 
-                # Check income eligibility using reform income limits
-                income = tax_unit("adjusted_gross_income", period)
-                filing_status = tax_unit("filing_status", period)
-                income_limit = p_reform.income_limit[filing_status]
-                income_eligible = income < income_limit
+            # Reform eligibility depends on which phase:
+            # - income_limit_applies=True: universal exemption (2029+)
+            # - age_requirement_applies=False: no age requirement (2027+)
+            reform_income_limit = p_reform.income_limit[filing_status]
+            reform_income_eligible = income < reform_income_limit
+            reform_age_eligible = where(
+                p_reform.age_requirement_applies,
+                birth_year <= p_baseline.birth_year,
+                True,
+            )
+            reform_eligible_with_limits = (
+                reform_age_eligible & reform_income_eligible
+            )
 
-                return age_eligible & income_eligible
-            else:
-                # Use baseline eligibility logic
-                income = tax_unit("adjusted_gross_income", period)
-                filing_status = tax_unit("filing_status", period)
-                birth_year = tax_unit("older_spouse_birth_year", period)
+            # Universal exemption when income limit is repealed
+            reform_eligible = where(
+                p_reform.income_limit_applies,
+                True,
+                reform_eligible_with_limits,
+            )
 
-                p = parameters(
-                    period
-                ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
-
-                # Age eligibility
-                age_eligible = birth_year <= p.birth_year
-
-                # Income eligibility
-                income_limit = p.income[filing_status]
-                income_eligible = income < income_limit
-
-                return age_eligible & income_eligible
+            # Select based on whether reform is in effect
+            return where(
+                p_reform.in_effect, reform_eligible, baseline_eligible
+            )
 
     class ri_social_security_modification(Variable):
         value_type = float
@@ -74,54 +72,48 @@ def create_ri_social_security_exemption() -> Reform:
             p_reform = parameters(
                 period
             ).gov.contrib.states.ri.social_security_exemption
+            p_baseline = parameters(
+                period
+            ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
             person = tax_unit.members
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            birth_year = person("birth_year", period)
+            taxable_social_security = person("taxable_social_security", period)
+            total_social_security = person("social_security", period)
 
-            # If reform is in effect and age requirement doesn't apply
-            # then all SS is exempt, not just the aged portion
-            if p_reform.in_effect and not p_reform.age_requirement_applies:
-                # All head/spouse taxable SS is exempt
-                taxable_social_security = person(
-                    "taxable_social_security", period
-                )
-                return tax_unit.sum(taxable_social_security * head_or_spouse)
-            else:
-                # Use baseline calculation - only aged SS is exempt
-                birth_year = person("birth_year", period)
-                p_baseline = parameters(
-                    period
-                ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
+            # Calculate total head/spouse taxable SS (used in reform)
+            head_or_spouse_taxable_ss = tax_unit.sum(
+                taxable_social_security * head_or_spouse
+            )
 
-                aged = birth_year <= p_baseline.birth_year
-                head_or_spouse_aged = head_or_spouse & aged
+            # Calculate aged portion (used in baseline and when age req applies)
+            aged = birth_year <= p_baseline.birth_year
+            head_or_spouse_aged = head_or_spouse & aged
 
-                total_social_security = person("social_security", period)
-                aged_head_or_spouse_ss = tax_unit.sum(
-                    total_social_security * head_or_spouse_aged
-                )
-                head_or_spouse_ss = tax_unit.sum(
-                    total_social_security * head_or_spouse
-                )
+            aged_head_or_spouse_ss = tax_unit.sum(
+                total_social_security * head_or_spouse_aged
+            )
+            head_or_spouse_ss = tax_unit.sum(
+                total_social_security * head_or_spouse
+            )
 
-                aged_ss_as_a_percentage_of_total_ss = np.zeros_like(
-                    head_or_spouse_ss
-                )
-                mask = head_or_spouse_ss != 0
-                aged_ss_as_a_percentage_of_total_ss[mask] = (
-                    aged_head_or_spouse_ss[mask] / head_or_spouse_ss[mask]
-                )
+            aged_ss_ratio = np.zeros_like(head_or_spouse_ss)
+            mask = head_or_spouse_ss != 0
+            aged_ss_ratio[mask] = (
+                aged_head_or_spouse_ss[mask] / head_or_spouse_ss[mask]
+            )
 
-                taxable_social_security = person(
-                    "taxable_social_security", period
-                )
-                head_or_spouse_taxable_ss = tax_unit.sum(
-                    taxable_social_security * head_or_spouse
-                )
-                return (
-                    head_or_spouse_taxable_ss
-                    * aged_ss_as_a_percentage_of_total_ss
-                )
+            baseline_amount = head_or_spouse_taxable_ss * aged_ss_ratio
+
+            # Reform amount: all taxable SS when age requirement removed
+            reform_amount = where(
+                p_reform.age_requirement_applies,
+                baseline_amount,
+                head_or_spouse_taxable_ss,
+            )
+
+            return where(p_reform.in_effect, reform_amount, baseline_amount)
 
     class reform(Reform):
         def apply(self):
