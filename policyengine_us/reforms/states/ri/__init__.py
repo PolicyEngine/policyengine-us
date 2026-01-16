@@ -4,4 +4,3 @@ from .high_earner_tax import create_ri_high_earner_tax_reform
 from .social_security_exemption import (
     create_ri_social_security_exemption_reform,
 )
-from .pension_exemption import create_ri_pension_exemption_reform
