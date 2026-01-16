@@ -1,0 +1,277 @@
+- name: Case 1, Stage 1 family currently on CalWORKs.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 500
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Currently receiving TANF = Stage 1 eligible
+    ca_calworks_child_care_eligible: true
+    # Stage 2/3/CAPP not eligible (currently on TANF or ever_received)
+    ca_calworks_stage_2_eligible: false
+    ca_calworks_stage_3_eligible: false
+    ca_capp_eligible: false
+    # Stage 1 payment (child only): RMR ceiling ~1,253
+    ca_calworks_child_care_payment: [0, 1_253.26]
+
+- name: Case 2, Stage 2 former CalWORKs within 24 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Former TANF within 24 months = Stage 2 eligible
+    ca_calworks_child_care_eligible: false
+    ca_calworks_stage_2_eligible: true
+    ca_calworks_stage_3_eligible: false
+    ca_capp_eligible: false
+    # Stage 2 payment (child only): RMR ceiling ~1,253
+    ca_calworks_stage_2_payment: [0, 1_253.26]
+    # Family fee: income 4,000/month, below 75% SMI = exempt
+    ca_child_care_family_fee: 0
+    # Final Stage 2: 1,253 - 0 = 1,253
+    ca_calworks_stage_2: 1_253.26
+
+- name: Case 3, Stage 3 former CalWORKs beyond 24 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Former TANF beyond 24 months = Stage 3 eligible
+    ca_calworks_child_care_eligible: false
+    ca_calworks_stage_2_eligible: false
+    ca_calworks_stage_3_eligible: true
+    ca_capp_eligible: false
+    # Stage 3 payment (child only): RMR ceiling ~1,253
+    ca_calworks_stage_3_payment: [0, 1_253.26]
+    # Family fee: income 4,000/month, below 75% SMI (4,712) = exempt
+    ca_child_care_family_fee: 0
+    # Final Stage 3: 1,253 - 0 = 1,253
+    ca_calworks_stage_3: 1_253.26
+
+- name: Case 4, CAPP never received CalWORKs.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Never received CalWORKs = CAPP eligible
+    ca_calworks_child_care_eligible: false
+    ca_calworks_stage_2_eligible: false
+    ca_calworks_stage_3_eligible: false
+    ca_capp_eligible: true
+    # CAPP payment (child only): RMR ceiling ~1,253
+    ca_capp_payment: [0, 1_253.26]
+    # Family fee: income 4,000/month, below 75% SMI = exempt
+    ca_child_care_family_fee: 0
+    # Final CAPP: 1,253 - 0 = 1,253
+    ca_capp: 1_253.26
+
+- name: Case 5, Stage 2 with family fee applied.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 60_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_calworks_stage_2_eligible: true
+    # Stage 2 payment (child only): RMR ceiling ~1,253
+    ca_calworks_stage_2_payment: [0, 1_253.26]
+    # Family fee: income 5,000/month, above 75% SMI (4,712)
+    # Fee = 5,000 * 0.01 = 50
+    ca_child_care_family_fee: 50
+    # Final Stage 2: 1,253 - 50 = 1,203
+    ca_calworks_stage_2: 1_203.26
+
+- name: Case 6, income too high for any program.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 150_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income above 85% SMI = not eligible for any program
+    ca_child_care_income_eligible: false
+    ca_calworks_stage_2_eligible: false
+    ca_calworks_stage_3_eligible: false
+    ca_capp_eligible: false
+
+- name: Case 7, two children, Stage 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 60_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 18
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_calworks_stage_2_eligible: true
+    # Payments for two children (RMR ceilings)
+    # person2 (3 yo, middle): 1,253.26, person3 (6 yo, older): 1,001.50
+    ca_calworks_stage_2_payment: [0, 1_253.26, 1_001.5]
+    # Family fee: income 5,000/month for 3-person, below 75% SMI (5,821) = exempt
+    ca_child_care_family_fee: 0
+    # Final Stage 2: 1,253.26 + 1,001.5 = 2,254.76
+    ca_calworks_stage_2: 2_254.76

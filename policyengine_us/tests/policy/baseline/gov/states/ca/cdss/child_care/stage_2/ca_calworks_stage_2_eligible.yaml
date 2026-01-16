@@ -1,0 +1,119 @@
+- name: Case 1, former CalWORKs recipient within 24 months, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_calworks_stage_2_eligible: true
+
+- name: Case 2, former CalWORKs recipient beyond 24 months, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Beyond 24 months = Stage 3, not Stage 2
+    ca_calworks_stage_2_eligible: false
+
+- name: Case 3, never received CalWORKs, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: false
+        months_since_calworks_cash_aid: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Never received CalWORKs = not eligible for Stage 2
+    ca_calworks_stage_2_eligible: false
+
+- name: Case 4, currently receiving CalWORKs, not eligible for Stage 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 0
+        ca_tanf: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Currently receiving TANF = Stage 1, not Stage 2
+    ca_calworks_stage_2_eligible: false
+
+- name: Case 5, income above 85 percent SMI, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 120_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ever_received_calworks: true
+        months_since_calworks_cash_aid: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income too high
+    ca_calworks_stage_2_eligible: false
