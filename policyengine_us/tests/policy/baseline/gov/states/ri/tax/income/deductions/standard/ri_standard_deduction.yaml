@@ -129,3 +129,14 @@
     # Joint 2025 value = $21,800
     # $21,800 * 0.6 = $13,080
     ri_standard_deduction: 13_080
+
+- name: 2025 - Surviving spouse with full deduction (no phaseout)
+  # Verifies SURVIVING_SPOUSE fix: should match JOINT value ($21,800), not SINGLE ($10,900)
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    filing_status: SURVIVING_SPOUSE
+    ri_standard_deduction_applicable_percentage: 1
+  output:
+    ri_standard_deduction: 21_800

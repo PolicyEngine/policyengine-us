@@ -54,7 +54,7 @@
   output:
     ri_social_security_modification_eligible: false
 
-- name: 2025 - Income not eligible for single filer (above $104,200)
+- name: 2025 - Income not eligible for single filer (above $107,000)
   absolute_error_margin: 2
   period: 2025
   input:
@@ -65,7 +65,7 @@
   output:
     ri_social_security_modification_eligible: false
 
-- name: 2025 - Joint filer eligible (income below $130,250)
+- name: 2025 - Joint filer eligible (income below $133,750)
   absolute_error_margin: 2
   period: 2025
   input:
@@ -76,7 +76,7 @@
   output:
     ri_social_security_modification_eligible: true
 
-- name: 2025 - Joint filer not eligible (income above $130,250)
+- name: 2025 - Joint filer not eligible (income above $133,750)
   absolute_error_margin: 2
   period: 2025
   input:
