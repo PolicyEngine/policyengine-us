@@ -8,12 +8,16 @@ class ct_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/Schedule-CT-EITC_1222.pdf"
-        "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704e"
+        "https://portal.ct.gov/-/media/drs/forms/2025/income/2025-ct-1040-instructions_1225.pdf#page=3",
+        "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704e",
     )
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ct.tax.income.credits.eitc
         federal_eitc = tax_unit("eitc", period)
-        rate = parameters(period).gov.states.ct.tax.income.credits.eitc.match
-        return federal_eitc * rate
+        base_credit = federal_eitc * p.match
+        # $250 bonus for taxpayers with at least one qualifying child
+        has_qualifying_child = tax_unit("eitc_child_count", period) > 0
+        qualifying_child_bonus = has_qualifying_child * p.qualifying_child_bonus
+        return base_credit + qualifying_child_bonus
