@@ -79,6 +79,7 @@
     ri_property_tax_credit: 300
 
 - name: 2025 - No credit for income above cutoff ($40,731)
+  # Income above $40,731 makes filer ineligible
   absolute_error_margin: 0.3
   period: 2025
   input:
@@ -87,6 +88,6 @@
     tax_unit_size: 1
     real_estate_taxes: 2_000
     rent: 0
-    ri_property_tax_credit_eligible: true
+    greater_age_head_spouse: 70
   output:
     ri_property_tax_credit: 0
