@@ -33,6 +33,8 @@ build-backend = "hatchling.build"
 
 [project.optional-dependencies]
 dev = [
+    "black",
+    "linecheck",
     "coverage>=7.9.2",
     "furo>=2024.8.6",
     "jupyter-book>=1.0.4.post1",
