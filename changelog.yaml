@@ -12277,3 +12277,8 @@
     - Added missing label metadata to breakdown parameters that had breakdown definitions
       but no labels.
   date: 2026-01-19 16:19:40
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to bracket/scale parameters that had no labels.
+  date: 2026-01-19 16:39:43
