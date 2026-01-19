@@ -1,0 +1,15 @@
+description: Iowa Family Investment Program (FIP) counts these income sources as unearned income.
+
+values:
+  2025-07-01:
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - alimony_income
+    - child_support_received
+
+metadata:
+  unit: list
+  reference:
+    - title: Iowa Administrative Code 441-41.27(239B) - Income
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
