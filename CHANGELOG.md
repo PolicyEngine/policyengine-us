@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.507.0] - 2026-01-19 19:54:16
+
+### Added
+
+- Add SC H.3492 partially refundable EITC reform.
+
 ## [1.506.0] - 2026-01-19 19:53:06
 
 ### Added
@@ -14367,6 +14373,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.507.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.506.0...1.507.0
 [1.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.505.0...1.506.0
 [1.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.504.0...1.505.0
 [1.504.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.3...1.504.0
