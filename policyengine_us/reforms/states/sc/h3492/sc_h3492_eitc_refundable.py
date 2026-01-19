@@ -12,7 +12,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
     Reference: https://www.scstatehouse.gov/sess126_2025-2026/bills/3492.htm
     """
 
-    class sc_h3492_eitc(Variable):
+    class sc_h3492_total_eitc(Variable):
         value_type = float
         entity = TaxUnit
         label = "SC H.3492 total EITC amount"
@@ -75,7 +75,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         defined_for = StateCode.SC
 
         def formula(tax_unit, period, parameters):
-            total_eitc = tax_unit("sc_h3492_eitc", period)
+            total_eitc = tax_unit("sc_h3492_total_eitc", period)
             tax_liability = tax_unit("sc_h3492_tax_liability_for_eitc", period)
             # Non-refundable portion is limited to tax liability
             return min_(total_eitc, tax_liability)
@@ -93,9 +93,9 @@ def create_sc_h3492_eitc_refundable() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.sc.h3492
-            total_eitc = tax_unit("sc_h3492_eitc", period)
+            total_eitc = tax_unit("sc_h3492_total_eitc", period)
             non_refundable = tax_unit("sc_h3492_eitc_non_refundable", period)
-            excess = total_eitc - non_refundable
+            excess = max_(0, total_eitc - non_refundable)
             return excess * p.refundable_excess_rate
 
     class sc_non_refundable_credits(Variable):
@@ -133,7 +133,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(sc_h3492_eitc)
+            self.update_variable(sc_h3492_total_eitc)
             self.update_variable(sc_h3492_other_non_refundable_credits)
             self.update_variable(sc_h3492_tax_liability_for_eitc)
             self.update_variable(sc_h3492_eitc_non_refundable)
