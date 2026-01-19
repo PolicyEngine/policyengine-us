@@ -106,7 +106,7 @@
     # Total ~1,422
     ut_taxpayer_credit: 1_422
 
-- name: HB 210 - Surviving spouse receives base credit plus $1,086 add-on
+- name: HB 210 - Surviving spouse receives no add-on (not a married claimant)
   absolute_error_margin: 1
   period: 2026
   reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
@@ -129,10 +129,10 @@
         state_code: UT
   output:
     # Base credit ~1,896 (partial after phaseout + dependent exemption)
-    # Surviving spouse is treated like joint filer per Utah Code 59-10-1018(1)(b)
-    # Plus $1,086 add-on
-    # Total ~2,982
-    ut_taxpayer_credit: 2_982
+    # Surviving spouse is NOT a married claimant per bill intent
+    # No add-on ($0)
+    # Total ~1,896
+    ut_taxpayer_credit: 1_896
 
 - name: HB 210 - Joint vs Single comparison shows add-on benefit
   absolute_error_margin: 1
