@@ -12265,3 +12265,9 @@
       freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and
       can still newly enroll.
   date: 2026-01-15 22:29:01
+- bump: minor
+  changes:
+    changed:
+    - Replaced .claude git submodule with policyengine-claude plugin auto-install
+      configuration.
+  date: 2026-01-19 16:08:41
