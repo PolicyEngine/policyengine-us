@@ -17,9 +17,10 @@ class ct_eitc(Variable):
         p = parameters(period).gov.states.ct.tax.income.credits.eitc
         federal_eitc = tax_unit("eitc", period)
         base_credit = federal_eitc * p.match
-        # Bonus amount for taxpayers with at least one qualifying child (effective 2025)
+        # Bonus amount for taxpayers eligible for CT EITC with at least one qualifying child (effective 2025)
         if p.qualifying_child_bonus.in_effect:
+            eitc_eligible = federal_eitc > 0
             has_qualifying_child = tax_unit("eitc_child_count", period) > 0
-            bonus = has_qualifying_child * p.qualifying_child_bonus.amount
+            bonus = eitc_eligible * has_qualifying_child * p.qualifying_child_bonus.amount
             return base_credit + bonus
         return base_credit

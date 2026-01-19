@@ -78,8 +78,8 @@
     eitc: 0
     eitc_child_count: 1
   output:
-    ct_eitc: 250
-    # 0 * 0.4 + 250 = 250 (bonus only)
+    ct_eitc: 0
+    # Must be eligible for CT EITC (i.e., have federal EITC) to receive $250 bonus
 
 - name: Case 10, 2025 federal EITC with multiple qualifying children.
   period: 2025
