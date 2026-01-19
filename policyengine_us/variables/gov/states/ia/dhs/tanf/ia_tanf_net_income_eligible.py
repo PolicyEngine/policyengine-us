@@ -14,6 +14,8 @@ class ia_tanf_net_income_eligible(Variable):
         gross_earned_income = spm_unit("ia_tanf_gross_earned_income", period)
         standard_of_need = spm_unit("ia_tanf_standard_of_need", period)
         p = parameters(period).gov.states.ia.dhs.tanf.income
-        earned_income_deduction = gross_earned_income * p.earned_income_deduction
+        earned_income_deduction = (
+            gross_earned_income * p.earned_income_deduction
+        )
         net_income = gross_income - earned_income_deduction
         return net_income < standard_of_need
