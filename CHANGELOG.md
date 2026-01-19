@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.503.2] - 2026-01-19 16:39:43
+
+### Fixed
+
+- Added missing label metadata to bracket/scale parameters that had no labels.
+
+## [1.503.1] - 2026-01-19 16:19:40
+
+### Fixed
+
+- Added missing label metadata to breakdown parameters that had breakdown definitions but no labels.
+
+## [1.503.0] - 2026-01-19 16:08:41
+
+### Changed
+
+- Replaced .claude git submodule with policyengine-claude plugin auto-install configuration.
+
 ## [1.502.3] - 2026-01-15 22:29:01
 
 ### Fixed
@@ -14325,6 +14343,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.503.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.1...1.503.2
+[1.503.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.0...1.503.1
+[1.503.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.3...1.503.0
 [1.502.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.2...1.502.3
 [1.502.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.1...1.502.2
 [1.502.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.0...1.502.1
