@@ -40,7 +40,7 @@
   output:
     is_emergency_medicaid_eligible: true
 
-- name: Case 4, DACA combined status with emergency condition.
+- name: Case 4, DACA combined status without emergency condition.
   period: 2025
   input:
     immigration_status: DACA
