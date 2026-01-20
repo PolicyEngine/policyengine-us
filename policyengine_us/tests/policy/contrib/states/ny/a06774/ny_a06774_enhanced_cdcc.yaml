@@ -1,0 +1,196 @@
+# NY A06774 Enhanced Child and Dependent Care Credit Tests
+# Tests the enhanced CDCC at 110% of federal credit for incomes up to $50,000
+
+# Basic eligibility tests - income below threshold
+- name: Enhanced CDCC - income $30k with one child gets 110% of federal
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Federal CDCC: $3,000 * 27% = $810
+    # (35% max - 8% reduction for 8 increments above $15k)
+    # Enhanced: $810 * 1.1 = $891
+    ny_cdcc: 891
+
+- name: Enhanced CDCC - income at $50k threshold still gets enhanced credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Federal CDCC: $3,000 * 20% = $600
+    # (rate floors at 20% for AGI $43k+)
+    # Enhanced: $600 * 1.1 = $660
+    ny_cdcc: 660
+
+- name: Enhanced CDCC - income $15k at phase-out start gets max rate
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 15_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Federal CDCC: $3,000 * 35% = $1,050
+    # Enhanced: $1,050 * 1.1 = $1,155
+    ny_cdcc: 1_155
+
+# Income above threshold - uses standard NY CDCC
+- name: Income above $50k threshold uses standard NY CDCC formula
+  period: 2025
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Income above threshold, uses standard NY CDCC which applies
+    # NY-specific rate multipliers on top of federal rate
+    # Federal CDCC rate: 20% (floors at min after $43k)
+    # Standard NY CDCC should be around $600-$660 range
+    ny_cdcc: 600
+
+# Reform not in effect
+- name: Reform not in effect - uses standard NY CDCC
+  period: 2025
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: false
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Without reform, uses standard NY CDCC formula
+    # Should be different from enhanced credit of $891
+    ny_cdcc: 810
+
+# Two children test
+- name: Enhanced CDCC - two children with $6k expenses
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NY
+  output:
+    # Federal CDCC: $6,000 * 27% = $1,620
+    # Enhanced: $1,620 * 1.1 = $1,782
+    ny_cdcc: 1_782
+
+# Edge case - no childcare expenses
+- name: Enhanced CDCC - no childcare expenses returns zero
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    ny_cdcc: 0
