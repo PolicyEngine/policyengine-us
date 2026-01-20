@@ -1,0 +1,32 @@
+description: Iowa sets these values as the standard of need amount, or the schedule of living costs, by family size under the Family Investment Program.
+
+1:
+  2025-07-01: 365
+2:
+  2025-07-01: 719
+3:
+  2025-07-01: 849
+4:
+  2025-07-01: 986
+5:
+  2025-07-01: 1_092
+6:
+  2025-07-01: 1_216
+7:
+  2025-07-01: 1_335
+8:
+  2025-07-01: 1_457
+9:
+  2025-07-01: 1_576
+10:
+  2025-07-01: 1_724
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: Iowa FIP standard of need
+  reference:
+    - title: Iowa Administrative Code 441-41.28(239B) - Need Standards, 41.28(2)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=31
