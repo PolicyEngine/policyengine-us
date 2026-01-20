@@ -1,14 +1,14 @@
 description: Ineligible immigration status for Premium Tax Credit. 
 values:
   2018-01-01:
-    - DACA_TPS #daca is eligible for PTC
+    - DACA
     - UNDOCUMENTED
-    - TPS 
+    - TPS
 
   2027-01-01:
-    - DACA_TPS #daca is eligible for PTC
+    - DACA
     - UNDOCUMENTED
-    - TPS 
+    - TPS
     - ASYLEE
     - DEPORTATION_WITHHELD
     - PAROLED_ONE_YEAR
@@ -20,6 +20,8 @@ metadata:
   unit: list
   reference:
     - title: 26 CFR § 1.36B-1 - Premium tax credit definitions.
-      href: https://www.law.cornell.edu/cfr/text/26/1.36B-1#(g)
-    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.law.cornell.edu/cfr/text/26/1.36B-1#g
+    - title: H.R.1 - One Big Beautiful Bill Act, Section 71301
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 90 FR 27220 - Marketplace Integrity and Affordability Final Rule
+      href: https://www.federalregister.gov/documents/2025/06/25/2025-11606/patient-protection-and-affordable-care-act-marketplace-integrity-and-affordability

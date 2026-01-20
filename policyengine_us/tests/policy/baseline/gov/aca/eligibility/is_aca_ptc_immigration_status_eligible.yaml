@@ -12,10 +12,17 @@
   output:
     is_aca_ptc_immigration_status_eligible: true
 
-- name: In 2022, Deferred Action for Childhood Arrivals or Temporary Protected Status is ineligible. 
+- name: In 2022, Deferred Action for Childhood Arrivals is ineligible. 
   period: 2022
   input:
-    immigration_status: DACA_TPS
+    immigration_status: DACA
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2022, Temporary Protected Status is ineligible. 
+  period: 2022
+  input:
+    immigration_status: TPS
   output:
     is_aca_ptc_immigration_status_eligible: false
 

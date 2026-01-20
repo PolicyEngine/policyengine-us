@@ -13,8 +13,9 @@ class la_general_relief_immigration_status_eligible_person(Variable):
     def formula(person, period, parameters):
         # Undocuemnted as well as DACA classified applicants/participants are ineligible for the GR
         istatus = person("immigration_status", period)
-        daca_tps = istatus == istatus.possible_values.DACA_TPS
+        daca = istatus == istatus.possible_values.DACA
+        tps = istatus == istatus.possible_values.TPS
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Assuming that the applicant's/participant's immigration status is recorded
-        return ~(daca_tps | undocumented) & head_or_spouse
+        return ~(daca | tps | undocumented) & head_or_spouse
