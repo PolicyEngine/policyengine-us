@@ -129,6 +129,9 @@ from .states.de.dependent_credit.de_dependent_credit_reform import (
 from .states.va.dependent_exemption.va_dependent_exemption_reform import (
     create_va_dependent_exemption_reform_fn,
 )
+from .states.va.hb979.va_hb979_reform import (
+    create_va_hb979_reform,
+)
 from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
@@ -299,6 +302,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     va_dependent_exemption = create_va_dependent_exemption_reform_fn(
         parameters, period
     )
+    va_hb979 = create_va_hb979_reform(parameters, period)
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
     )
@@ -370,6 +374,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_exemption,
         de_dependent_credit,
         va_dependent_exemption,
+        va_hb979,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
