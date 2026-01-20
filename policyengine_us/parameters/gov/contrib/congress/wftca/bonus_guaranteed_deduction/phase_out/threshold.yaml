@@ -25,9 +25,11 @@ SURVIVING_SPOUSE:
   metadata:
     label: WFTCA surviving spouse filer phase-out threshold
 metadata:
+  label: Bonus guaranteed deduction phase-out threshold
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
-  label: Bonus guaranteed deduction phase-out threshold
   reference:
     - title: Ways and Means Committee press release
       href: https://waysandmeans.house.gov/malliotakis-steel-lead-legislation-to-provide-tax-relief-to-working-families/

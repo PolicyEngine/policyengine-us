@@ -1,0 +1,133 @@
+# Test RI Social Security Exemption Expansion per §44-30-12(c)(8)
+
+- name: RI SS exemption - 2027 age requirement removed (younger filer eligible)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.social_security_exemption.ri_social_security_exemption_reform.ri_social_security_exemption
+  input:
+    gov.contrib.states.ri.social_security_exemption.in_effect: true
+    gov.contrib.states.ri.social_security_exemption.age_requirement_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit.SINGLE: 80000
+    people:
+      person1:
+        age: 62
+        social_security: 20000
+        taxable_social_security: 17000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 70000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+    ri_social_security_modification: 17000
+
+- name: RI SS exemption - 2028 higher income threshold
+  period: 2028
+  reforms: policyengine_us.reforms.states.ri.social_security_exemption.ri_social_security_exemption_reform.ri_social_security_exemption
+  input:
+    gov.contrib.states.ri.social_security_exemption.in_effect: true
+    gov.contrib.states.ri.social_security_exemption.age_requirement_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit.SINGLE: 165200
+    people:
+      person1:
+        age: 62
+        social_security: 25000
+        taxable_social_security: 21250
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 150000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+    ri_social_security_modification: 21250
+
+- name: RI SS exemption - 2029 universal exemption (income limit repealed)
+  period: 2029
+  reforms: policyengine_us.reforms.states.ri.social_security_exemption.ri_social_security_exemption_reform.ri_social_security_exemption
+  input:
+    gov.contrib.states.ri.social_security_exemption.in_effect: true
+    gov.contrib.states.ri.social_security_exemption.income_limit_applies: true
+    people:
+      person1:
+        age: 55
+        social_security: 30000
+        taxable_social_security: 25500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 500000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+    ri_social_security_modification: 25500
+
+- name: RI SS exemption - joint filers with higher 2028 threshold
+  period: 2028
+  reforms: policyengine_us.reforms.states.ri.social_security_exemption.ri_social_security_exemption_reform.ri_social_security_exemption
+  input:
+    gov.contrib.states.ri.social_security_exemption.in_effect: true
+    gov.contrib.states.ri.social_security_exemption.age_requirement_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit.JOINT: 206550
+    people:
+      person1:
+        age: 63
+        social_security: 20000
+        taxable_social_security: 17000
+      person2:
+        age: 61
+        social_security: 15000
+        taxable_social_security: 12750
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 180000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+    ri_social_security_modification: 29750
+
+- name: RI SS exemption - ineligible when over income limit
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.social_security_exemption.ri_social_security_exemption_reform.ri_social_security_exemption
+  input:
+    gov.contrib.states.ri.social_security_exemption.in_effect: true
+    gov.contrib.states.ri.social_security_exemption.age_requirement_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit_applies: false
+    gov.contrib.states.ri.social_security_exemption.income_limit.SINGLE: 80000
+    people:
+      person1:
+        age: 62
+        social_security: 20000
+        taxable_social_security: 17000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 90000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+    ri_social_security_modification: 0
