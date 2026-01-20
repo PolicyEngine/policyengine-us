@@ -5,6 +5,90 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.508.0] - 2026-01-19 22:07:57
+
+### Added
+
+- Update Rhode Island 2025 Individual Income Tax Model.
+
+## [1.507.0] - 2026-01-19 19:54:16
+
+### Added
+
+- Add SC H.3492 partially refundable EITC reform.
+
+## [1.506.0] - 2026-01-19 19:53:06
+
+### Added
+
+- Add Utah HB 210 (2026) structural reform implementing the taxpayer credit add-on for married filers ($543 MFS, $1,086 joint/surviving spouse) with phaseout.
+
+## [1.505.0] - 2026-01-19 18:32:47
+
+### Added
+
+- Model RI Governor Dan McKee's 2027 tax proposals including a new child tax credit, Social Security exemption expansion, new top income tax bracket, and pension/annuity exemption updates.
+
+## [1.504.0] - 2026-01-19 18:07:10
+
+### Fixed
+
+- Formatting.
+
+## [1.503.3] - 2026-01-19 17:30:20
+
+### Fixed
+
+- Added missing breakdown and label metadata to pseudo-breakdown parameters.
+
+## [1.503.2] - 2026-01-19 16:39:43
+
+### Fixed
+
+- Added missing label metadata to bracket/scale parameters that had no labels.
+
+## [1.503.1] - 2026-01-19 16:19:40
+
+### Fixed
+
+- Added missing label metadata to breakdown parameters that had breakdown definitions but no labels.
+
+## [1.503.0] - 2026-01-19 16:08:41
+
+### Changed
+
+- Replaced .claude git submodule with policyengine-claude plugin auto-install configuration.
+
+## [1.502.3] - 2026-01-15 22:29:01
+
+### Fixed
+
+- Fix CA Medi-Cal immigration eligibility for DACA/TPS holders in 2026. Previously, DACA/TPS holders incorrectly lost eligibility after the January 2026 enrollment freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and can still newly enroll.
+
+## [1.502.2] - 2026-01-15 22:18:44
+
+### Added
+
+- Add Microsimulation API documentation covering calc/calculate methods, map_to parameter, available datasets, subsampling, winners/losers analysis, and weight sanity checks.
+
+## [1.502.1] - 2026-01-15 22:15:03
+
+### Added
+
+- Add parameter discovery documentation guide
+
+## [1.502.0] - 2026-01-15 20:15:33
+
+### Added
+
+- Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end parameters.
+
+## [1.501.0] - 2026-01-15 20:02:12
+
+### Added
+
+- Adjust CLAUDE.md in US repo.
+
 ## [1.500.4] - 2026-01-14 23:20:21
 
 ### Changed
@@ -14295,6 +14379,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.508.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.507.0...1.508.0
+[1.507.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.506.0...1.507.0
+[1.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.505.0...1.506.0
+[1.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.504.0...1.505.0
+[1.504.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.3...1.504.0
+[1.503.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.2...1.503.3
+[1.503.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.1...1.503.2
+[1.503.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.0...1.503.1
+[1.503.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.3...1.503.0
+[1.502.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.2...1.502.3
+[1.502.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.1...1.502.2
+[1.502.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.0...1.502.1
+[1.502.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.501.0...1.502.0
+[1.501.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.4...1.501.0
 [1.500.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.3...1.500.4
 [1.500.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.2...1.500.3
 [1.500.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.1...1.500.2
