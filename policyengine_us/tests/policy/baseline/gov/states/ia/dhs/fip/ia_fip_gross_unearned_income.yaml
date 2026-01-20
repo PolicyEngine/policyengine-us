@@ -1,0 +1,192 @@
+# Unit tests for Iowa FIP gross unearned income
+# Unearned income includes: social_security, ssi, unemployment_compensation,
+#                          alimony_income, child_support_received
+# Reference: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf
+
+- name: Case 1, zero unearned income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 0
+
+- name: Case 2, social security income only.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 0
+        social_security: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 12_000
+
+- name: Case 3, SSI income only.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 9_600
+
+- name: Case 4, unemployment compensation.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        unemployment_compensation: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 6_000
+
+- name: Case 5, child support received.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        child_support_received: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 4_800
+
+- name: Case 6, alimony income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        alimony_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_gross_unearned_income: 6_000
+
+- name: Case 7, multiple unearned income sources.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        social_security: 3_600
+        child_support_received: 2_400
+        alimony_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # $3,600 + $2,400 + $1,200 = $7,200
+    ia_fip_gross_unearned_income: 7_200
+
+- name: Case 8, earned income does not count.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+        social_security: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Employment income is earned, only unearned counts
+    ia_fip_gross_unearned_income: 2_400
+
+- name: Case 9, multiple people with unearned income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        social_security: 8_000
+      person2:
+        age: 16
+        child_support_received: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # $8,000 + $2,400 = $10,400
+    ia_fip_gross_unearned_income: 10_400
+
+- name: Case 10, non-Iowa state gets zero.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        social_security: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # defined_for StateCode.IA, other states return 0
+    ia_fip_gross_unearned_income: 0
