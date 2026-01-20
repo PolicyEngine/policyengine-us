@@ -23,6 +23,7 @@ from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from .states.ny.a04948 import (
     create_ny_a04948_youth_worker_tax_benefits_reform,
 )
+from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -184,6 +185,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     ny_a04948 = create_ny_a04948_youth_worker_tax_benefits_reform(
         parameters, period
     )
+    sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
+        parameters, period
+    )
 
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
@@ -330,6 +334,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
         ny_a04948,
+        sc_h3492_eitc_refundable,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
