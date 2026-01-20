@@ -7,10 +7,10 @@ class co_omnisalud_immigration_status_eligible(Variable):
     label = "Has eligible immigration status for Colorado OmniSalud"
     definition_period = YEAR
     defined_for = StateCode.CO
-    reference = [
+    reference = (
         "https://connectforhealthco.com/get-started/omnisalud/",
-        "https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf",
-    ]
+        "https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf#page=1",
+    )
     documentation = """
     Colorado OmniSalud covers immigrants who are NOT eligible for federal
     ACA subsidies due to their immigration status. This includes:
