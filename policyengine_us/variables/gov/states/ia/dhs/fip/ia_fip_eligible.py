@@ -7,9 +7,12 @@ class ia_fip_eligible(Variable):
     label = "Iowa FIP eligible"
     definition_period = YEAR
     defined_for = StateCode.IA
-    reference = "https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27"
+    reference = (
+        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
+    )
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ia.dhs.fip.eligibility
         # Must have at least one eligible child (uses federal demographic rules)
         has_children = spm_unit("is_demographic_tanf_eligible", period)
         # Must meet immigration status eligibility (citizen or qualified alien)
@@ -17,9 +20,19 @@ class ia_fip_eligible(Variable):
         immigration_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
-        # Resource eligibility assumed for this simple implementation
-        # Actual resource checking would compare spm_unit resources against
-        # p.resource_limit_applicant ($2,000) or p.resource_limit_recipient ($5,000)
+        current_recipient = spm_unit("is_tanf_enrolled", period)
+        limit = where(
+            current_recipient,
+            p.resource_limit_recipient,
+            p.resource_limit_applicant,
+        )
+        resources = spm_unit("spm_unit_assets", period.this_year)
+        resource_eligible = resources <= limit
         income_eligible = spm_unit("ia_fip_income_eligible", period)
 
-        return has_children & immigration_eligible & income_eligible
+        return (
+            has_children
+            & immigration_eligible
+            & resource_eligible
+            & income_eligible
+        )
