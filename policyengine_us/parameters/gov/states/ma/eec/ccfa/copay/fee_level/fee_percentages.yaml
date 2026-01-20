@@ -5,6 +5,8 @@ metadata:
   label: Massachusetts CCFA fee percentage by fee level
   breakdown:
     - range(1,29)
+  breakdown_labels:
+    - Fee level
   reference:
     - title: EEC Financial Assistance Parent Fee Table FY2025
       href: https://www.mass.gov/doc/parent-fee-chart-fy2025

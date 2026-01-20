@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Family size
   label: Idaho TAFI work incentive table amount
   reference:
     - title: IDAPA 16.03.08.251 - Work Incentive Table
