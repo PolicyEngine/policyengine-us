@@ -8,7 +8,7 @@ class ia_fip_standard_of_need(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.IA
-    reference = "https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28"
+    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=31"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.dhs.fip

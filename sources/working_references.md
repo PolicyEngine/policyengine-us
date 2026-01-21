@@ -8,7 +8,7 @@
 **Abbreviation**: FIP
 **Source**: Iowa Code Section 239B
 
-**Variable Prefix**: `ia_tanf`
+**Variable Prefix**: `ia_fip`
 **Parameter Path**: `gov.states.ia.dhs.tanf`
 
 ---
@@ -367,15 +367,15 @@ documentation = "https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-
    - `gov/states/ia/hhs/tanf/eligibility/resource_limit_recipient.yaml` - $5,000
 
 2. **Variable Files Needed**:
-   - `ia_tanf.py` - Main benefit calculation
-   - `ia_tanf_eligible.py` - Overall eligibility
-   - `ia_tanf_gross_income_eligible.py` - Test 1
-   - `ia_tanf_net_income_eligible.py` - Test 2 (applicants)
-   - `ia_tanf_payment_standard_eligible.py` - Test 3
-   - `ia_tanf_countable_earned_income.py` - Earned income after deductions
-   - `ia_tanf_countable_unearned_income.py` - Unearned income
-   - `ia_tanf_payment_standard.py` - Payment standard by family size
-   - `ia_tanf_standard_of_need.py` - Standard of need by family size
+   - `ia_fip.py` - Main benefit calculation
+   - `ia_fip_eligible.py` - Overall eligibility
+   - `ia_fip_gross_income_eligible.py` - Test 1
+   - `ia_fip_net_income_eligible.py` - Test 2 (applicants)
+   - `ia_fip_payment_standard_eligible.py` - Test 3
+   - `ia_fip_countable_earned_income.py` - Earned income after deductions
+   - `ia_fip_countable_unearned_income.py` - Unearned income
+   - `ia_fip_payment_standard.py` - Payment standard by family size
+   - `ia_fip_standard_of_need.py` - Standard of need by family size
 
 3. **Entity**: SPMUnit (consistent with other state TANF implementations)
 
