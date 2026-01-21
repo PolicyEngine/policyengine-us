@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 12)
+  breakdown_labels:
+    - Family size
   label: Georgia TANF standard of need base amount
   reference:
     # These values have not changed since 1997 (and likely since 1990 under AFDC).
