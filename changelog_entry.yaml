@@ -1,0 +1,4 @@
+- bump: minor
+  changes:
+    fixed:
+      - Virginia spouse tax adjustment now correctly calculates eligibility by computing separate VAGI for each person instead of prorating combined VAGI
