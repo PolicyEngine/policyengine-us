@@ -186,6 +186,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
     ny_a04948 = create_ny_a04948_youth_worker_tax_benefits_reform(
         parameters, period
+    )
     ny_a04038_enhanced_escc_infants = (
         create_ny_a04038_enhanced_escc_infants_reform(parameters, period)
     )

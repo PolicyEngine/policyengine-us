@@ -18,10 +18,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         entity = Person
         label = "Eligible for NY A04948 youth EITC"
         definition_period = YEAR
-        reference = (
-            "https://www.nysenate.gov/legislation/bills/2025/A4948",
-            "https://www.nysenate.gov/legislation/laws/TAX/606",
-        )
+        reference = "https://www.nysenate.gov/legislation/bills/2025/A4948"
         defined_for = StateCode.NY
 
         def formula(person, period, parameters):
