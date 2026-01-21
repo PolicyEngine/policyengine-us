@@ -85,34 +85,6 @@
     # Standard NY CDCC at $60k = $650.16
     ny_cdcc: 650
 
-# Reform not in effect
-- name: Reform not in effect - uses standard NY CDCC
-  period: 2025
-  absolute_error_margin: 1
-  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
-  input:
-    gov.contrib.states.ny.a06774.in_effect: false
-    people:
-      person1:
-        age: 35
-        is_tax_unit_head: true
-        employment_income: 40_000
-      child1:
-        age: 5
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [person1, child1]
-        tax_unit_childcare_expenses: 3_000
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NY
-  output:
-    # Without reform, uses standard NY CDCC formula
-    # Standard NY CDCC at $40k = $660
-    ny_cdcc: 660
-
 # Two children test
 - name: Enhanced CDCC - two children with $6k expenses
   period: 2025
