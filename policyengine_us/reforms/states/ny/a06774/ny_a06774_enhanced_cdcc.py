@@ -25,14 +25,11 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ny.a06774
-            in_effect = p.in_effect
             ny_agi = tax_unit("ny_agi", period)
             income_threshold = p.income_threshold
-            match = p.match
-
             # Calculate the enhanced credit (110% of federal CDCC)
             federal_cdcc = tax_unit("cdcc", period)
-            enhanced_cdcc = federal_cdcc * match
+            enhanced_cdcc = federal_cdcc *  p.match
 
             # Calculate the standard NY CDCC
             cdcc_max = tax_unit("ny_cdcc_max", period)
@@ -45,7 +42,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
 
             # Use enhanced credit if reform is in effect and income is
             # at or below the threshold
-            eligible_for_enhanced = in_effect & (ny_agi <= income_threshold)
+            eligible_for_enhanced = ny_agi <= income_threshold
             return where(
                 eligible_for_enhanced, enhanced_cdcc, standard_ny_cdcc
             )
