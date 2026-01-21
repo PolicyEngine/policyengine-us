@@ -189,6 +189,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(
+        parameters, period
+    )
     ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
     )
