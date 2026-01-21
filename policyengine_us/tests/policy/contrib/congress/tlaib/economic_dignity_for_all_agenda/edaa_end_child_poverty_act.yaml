@@ -18,7 +18,7 @@
       household:
         members: [parent, child]
   output:
-    ecpa_child_benefit: [0, 5_630]
+    ecpa_child_benefit: [0, 5_680]
     ecpa_filer_credit: 700
 
 - name: ECPA adult dependent credit
@@ -75,7 +75,7 @@
         filing_status: SINGLE
         adjusted_gross_income: 30_000
   output:
-    ecpa_child_benefit: [0, 5_630, 5_630, 0]
+    ecpa_child_benefit: [0, 5_680, 5_680, 0]
     ecpa_adult_dependent_credit: [0, 0, 0, 700]
     ecpa_filer_credit: 200  # 700 - (10,000 * 0.05)
 
@@ -99,7 +99,7 @@
         filing_status: JOINT
         adjusted_gross_income: 45_000
   output:
-    ecpa_child_benefit: [0, 0, 5_630, 0]
+    ecpa_child_benefit: [0, 0, 5_680, 0]
     ecpa_adult_dependent_credit: [0, 0, 0, 700]
     ecpa_filer_credit: 1_150  # 1,400 - (5,000 * 0.05)
 
@@ -146,7 +146,7 @@
 
     # ECPA benefits
     ecpa_child_benefit:
-      2026: [0, 0, 5_630, 5_630, 0]
+      2026: [0, 0, 5_680, 5_680, 0]
     ecpa_adult_dependent_credit:
       2026: [0, 0, 0, 0, 700]
     ecpa_filer_credit:
@@ -189,7 +189,7 @@
 
     # ECPA benefits
     ecpa_child_benefit:
-      2026: [0, 5_630, 5_630]
+      2026: [0, 5_680, 5_680]
     ecpa_filer_credit:
       2026: 450  # $700 - ($25k - $20k) * 0.05
 
