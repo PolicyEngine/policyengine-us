@@ -26,6 +26,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: Indiana TANF standard of need amount
   reference:
     - title: 470 IAC 10.3-4-3(a)(1)

@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.510.0] - 2026-01-21 20:02:25
+
+### Added
+
+- NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns reform.
+
+## [1.509.0] - 2026-01-21 16:28:14
+
+### Added
+
+- NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+
+## [1.508.2] - 2026-01-21 15:19:45
+
+### Changed
+
+- Update 2026 federal poverty guidelines.
+
+## [1.508.1] - 2026-01-20 19:20:31
+
+### Added
+
+- Add breakdown_labels metadata to parameters with range() dimensions for semantic labelling.
+
 ## [1.508.0] - 2026-01-19 22:07:57
 
 ### Added
@@ -14379,6 +14403,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.510.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.509.0...1.510.0
+[1.509.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.2...1.509.0
+[1.508.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.1...1.508.2
+[1.508.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.0...1.508.1
 [1.508.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.507.0...1.508.0
 [1.507.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.506.0...1.507.0
 [1.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.505.0...1.506.0

@@ -7,6 +7,10 @@ metadata:
   - ma_state_living_arrangement
   - ssi_category
   - range(1, 3) # Number of eligible SSI recipients
+  breakdown_labels:
+  - Living arrangement
+  - SSI category
+  - Number of SSI recipients
   reference:
     - title: 106 CMR, § 327.330 - Payment Standards
       href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-330
