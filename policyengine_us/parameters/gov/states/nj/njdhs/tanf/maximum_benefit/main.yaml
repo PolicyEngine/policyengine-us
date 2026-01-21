@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 9)
+  breakdown_labels:
+    - Household size
   label: New Jersey TANF monthly maximum benefit
   reference:
     # Administrative code has old values, apparently without inflation adjustments.
