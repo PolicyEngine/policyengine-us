@@ -1,0 +1,11 @@
+description: Pennsylvania increases its TANF grant standard income threshold by this increment for each additional person in the first group.
+values: 
+  2022-01-01: 996  # 83 * 12
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Pennsylvania TANF first group income limit increase per additional person
+  reference:
+    - title: Pennsylvania State Cash Assistance for Each Additional Person
+      href: https://www.compass.state.pa.us/compass.web/menuitems/CashFAQ.aspx?Language=EN
