@@ -29,7 +29,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
             income_threshold = p.income_threshold
             # Calculate the enhanced credit (110% of federal CDCC)
             federal_cdcc = tax_unit("cdcc", period)
-            enhanced_cdcc = federal_cdcc *  p.match
+            enhanced_cdcc = federal_cdcc * p.match
 
             # Calculate the standard NY CDCC
             cdcc_max = tax_unit("ny_cdcc_max", period)
