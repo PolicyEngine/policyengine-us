@@ -83,31 +83,6 @@
     # Total: $2,500
     ny_ctc_post_2024_base: 2_500
 
-# Reform not in effect - standard credit
-- name: Reform not in effect uses standard credit
-  period: 2026
-  reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants
-  input:
-    gov.contrib.states.ny.a04038.in_effect: false
-    people:
-      person1:
-        age: 35
-        is_tax_unit_head: true
-        employment_income: 50_000
-      infant:
-        age: 0
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [person1, infant]
-    households:
-      household:
-        members: [person1, infant]
-        state_code: NY
-  output:
-    # Without reform, infant gets standard $1,000
-    ny_ctc_post_2024_base: 1_000
-
 # Two infants get doubled credits
 - name: Two infants both get doubled credits
   period: 2026

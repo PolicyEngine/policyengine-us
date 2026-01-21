@@ -39,12 +39,8 @@ def create_ny_a04038_enhanced_escc_infants() -> Reform:
             # Calculate base credit amount by age
             credit_by_age = p.post_2024.amount.calc(age)
 
-            # Apply infant multiplier if reform is in effect
-            multiplier = where(
-                p_reform.in_effect,
-                p_reform.multiplier.calc(age),
-                1,
-            )
+            # Apply infant multiplier
+            multiplier = p_reform.multiplier.calc(age)
 
             qualifying_credit = qualifies * credit_by_age * multiplier
 
