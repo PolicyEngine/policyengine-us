@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance group size
   label: West Virginia Works payment standard amount
   reference:
     - title: WV Income Maintenance Manual Appendix A Income Limit (2024)

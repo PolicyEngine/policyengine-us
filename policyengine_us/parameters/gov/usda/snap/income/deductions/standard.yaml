@@ -220,6 +220,9 @@ VI:
 metadata:
   unit: currency-USD
   label: SNAP standard deduction
+  breakdown_labels:
+    - State group
+    - Household size
   reference:
     - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Maximum Allotments and Deductions
       href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY24-Maximum-Allotments-and-Deductions.pdf#page=2

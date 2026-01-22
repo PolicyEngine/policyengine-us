@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 20)
+  breakdown_labels:
+    - Household size
   label: Rhode Island Works payment standard amount
   reference:
     - title: 218-RICR-20-00-2.18.1 Payment Standards

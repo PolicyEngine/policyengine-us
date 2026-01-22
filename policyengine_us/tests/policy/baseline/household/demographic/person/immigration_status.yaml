@@ -9,6 +9,8 @@
       person3:
         immigration_status_str: "CITIZEN"
       person4:
-        immigration_status_str: "DACA_TPS"
+        immigration_status_str: "DACA"
+      person5:
+        immigration_status_str: "TPS"
   output:
-    immigration_status: [UNDOCUMENTED, LEGAL_PERMANENT_RESIDENT, CITIZEN, DACA_TPS]
+    immigration_status: [UNDOCUMENTED, LEGAL_PERMANENT_RESIDENT, CITIZEN, DACA, TPS]
