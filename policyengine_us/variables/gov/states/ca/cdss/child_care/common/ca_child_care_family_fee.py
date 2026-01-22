@@ -8,9 +8,7 @@ class ca_child_care_family_fee(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.CA
-    reference = (
-        "https://reg.summaries.guide/2024/03/child-care-family-fees-changes/"
-    )
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10290.&lawCode=WIC"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.child_care

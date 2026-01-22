@@ -8,7 +8,7 @@ class ca_calworks_stage_2(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "ca_calworks_stage_2_eligible"
-    reference = "https://www.cdss.ca.gov/inforesources/calworks-child-care/program-eligibility"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10372.&lawCode=WIC"
 
     def formula(spm_unit, period, parameters):
         gross_payment = add(spm_unit, period, ["ca_calworks_stage_2_payment"])

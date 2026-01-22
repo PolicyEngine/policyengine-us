@@ -1,13 +1,5 @@
 description: California counts these income sources for child care subsidy eligibility.
 
-metadata:
-  unit: list
-  period: year
-  label: California child care countable income sources
-  reference:
-    - title: California Code of Regulations Title 5 Section 18078
-      href: https://www.law.cornell.edu/regulations/california/5-CCR-18078
-
 values:
   2000-01-01:
     # Earned income
@@ -30,3 +22,11 @@ values:
     - dividend_income
     - capital_gains
     - rental_income
+
+metadata:
+  unit: list
+  period: year
+  label: California child care countable income sources
+  reference:
+    - title: California Code of Regulations Title 5 Section 18078
+      href: https://www.law.cornell.edu/regulations/california/5-CCR-18078

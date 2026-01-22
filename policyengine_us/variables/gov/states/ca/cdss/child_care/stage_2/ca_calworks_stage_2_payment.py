@@ -8,7 +8,7 @@ class ca_calworks_stage_2_payment(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "ca_calworks_stage_2_eligible"
-    reference = "https://www.cdss.ca.gov/inforesources/calworks-child-care/program-eligibility"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10372.&lawCode=WIC"
 
     def formula(person, period, parameters):
         # Uses same RMR payment structure as Stage 1
