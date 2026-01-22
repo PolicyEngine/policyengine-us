@@ -1,25 +1,41 @@
-description: Ineligible immigration status for Premium Tax Credit. 
+description: The Affordable Care Act excludes these immigration statuses from Premium Tax Credit eligibility. 
 values:
   2018-01-01:
-    - DACA_TPS #daca is eligible for PTC
+    - DACA
     - UNDOCUMENTED
-    - TPS 
+
+  # Note: The Biden rule (89 FR 39392) was blocked by court in 19 states
+  # starting December 2024, so DACA eligibility during Nov 2024 - Aug 2025
+  # was only in effect in ~31 states.
+  2024-11-01:
+    - UNDOCUMENTED
+
+  2025-08-25:
+    - DACA
+    - UNDOCUMENTED
 
   2027-01-01:
-    - DACA_TPS #daca is eligible for PTC
+    - DACA
     - UNDOCUMENTED
-    - TPS 
+    - TPS
+    - REFUGEE
     - ASYLEE
     - DEPORTATION_WITHHELD
     - PAROLED_ONE_YEAR
 
 
 metadata:
-  label: Reconciliation Premium Tax Credit immigration status adjustment in effect
+  label: ACA Premium Tax Credit ineligible immigration statuses
   period: year
   unit: list
   reference:
-    - title: 26 CFR § 1.36B-1 - Premium tax credit definitions.
-      href: https://www.law.cornell.edu/cfr/text/26/1.36B-1#(g)
-    - title: H.R.1 - One Big Beautiful Bill Act
+    - title: 45 CFR § 155.20 - Lawfully present definition
+      href: https://www.law.cornell.edu/cfr/text/45/155.20
+    - title: 26 CFR § 1.36B-1 - Premium tax credit definitions
+      href: https://www.law.cornell.edu/cfr/text/26/1.36B-1#g
+    - title: 89 FR 39392 - DACA Recipients Eligibility Final Rule (2024-11-01)
+      href: https://www.federalregister.gov/documents/2024/05/08/2024-09661/clarifying-the-eligibility-of-deferred-action-for-childhood-arrivals-daca-recipients-and-certain
+    - title: 90 FR 27220 - Marketplace Integrity and Affordability Final Rule (2025-08-25)
+      href: https://www.federalregister.gov/documents/2025/06/25/2025-11606/patient-protection-and-affordable-care-act-marketplace-integrity-and-affordability
+    - title: H.R.1 - One Big Beautiful Bill Act, Section 71301 (2027-01-01)
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

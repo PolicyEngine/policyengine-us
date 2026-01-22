@@ -30,7 +30,6 @@ from .tools.default_uprating import add_default_uprating
 
 from typing import Annotated
 
-
 COUNTRY_DIR = Path(__file__).parent
 
 CURRENT_YEAR = 2024
