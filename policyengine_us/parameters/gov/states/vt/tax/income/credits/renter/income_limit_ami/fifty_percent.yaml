@@ -4,6 +4,8 @@ metadata:
   period: year
   breakdown:
   - list(range(1,8))
+  breakdown_labels:
+  - Household size
   label: Vermont partial renter credit income limit
   reference:
     # The table is derived from the official Vermont government website. The legal code refers to area median income.

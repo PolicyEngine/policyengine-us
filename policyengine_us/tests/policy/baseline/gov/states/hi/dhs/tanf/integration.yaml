@@ -1,0 +1,380 @@
+# Integration tests for Hawaii TANF
+# Tests the complete pipeline from gross income through benefit calculation
+#
+# Hawaii TANF Key Values:
+# - Standard of Need (SON): 100% of 2006 Hawaii FPL (frozen)
+# - Gross Income Limit: 185% of SON
+# - Standard of Assistance (SOA): 48% of SON
+#
+# Income Standards by Household Size:
+# | Size | SON    | Gross Limit (185%) | SOA (48%) |
+# |------|--------|-------------------|-----------|
+# | 1    | $939   | $1,737            | $450.72   |
+# | 2    | $1,265 | $2,340            | $607.20   |
+# | 3    | $1,590 | $2,941            | $763.20   |
+# | 4    | $1,916 | $3,544            | $919.68   |
+# | 5    | $2,242 | $4,147            | $1,076.16 |
+#
+# Earned Income Deductions (applied in order):
+# 1. 20% standard deduction from gross earned
+# 2. $200 flat rate deduction
+# 3. 55% earned income disregard
+#
+# Source: Hawaii TANF State Plan
+
+- name: Case 1, family of 2 with no income gets maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 0
+    hi_tanf_gross_income_eligible: true
+    hi_tanf_countable_earned_income: 0
+    hi_tanf_countable_income: 0
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
+    hi_tanf_eligible: true
+    hi_tanf: 607.2
+
+- name: Case 2, single parent with child, moderate earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 1_500
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Gross income = $1,500
+    hi_tanf_gross_income: 1_500
+    # Below gross limit of $2,340 for family of 2
+    hi_tanf_gross_income_eligible: true
+    # Earned income deductions for $1,500:
+    # Step 1: 20% = 1_500 * 0.20 = 300, After: 1_500 - 300 = 1_200
+    # Step 2: $200 flat, After: 1_200 - 200 = 1_000
+    # Step 3: 55% = 1_000 * 0.55 = 550, After: 1_000 - 550 = 450
+    hi_tanf_countable_earned_income: 450
+    hi_tanf_countable_income: 450
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
+    hi_tanf_eligible: true
+    # Benefit = 607.2 - 450 = 157.2
+    hi_tanf: 157.2
+
+- name: Case 3, family of 3 with income exceeding SOA.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        tanf_gross_earned_income: 2_500
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 32
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 2_500
+    # Under gross limit of $2,941.50 for family of 3
+    hi_tanf_gross_income_eligible: true
+    # Earned deductions for $2,500:
+    # Step 1: 20% = 500, After: 2_000
+    # Step 2: $200 flat, After: 1_800
+    # Step 3: 55% = 990, After: 810
+    hi_tanf_countable_earned_income: 810
+    hi_tanf_countable_income: 810
+    # 1590 × 0.48 = 763.2
+    hi_tanf_maximum_benefit: 763.2
+    hi_tanf_eligible: true
+    # Benefit = max(763.2 - 810, 0) = 0 (countable income exceeds SOA)
+    hi_tanf: 0
+
+- name: Case 4, family of 3 over gross income limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        tanf_gross_earned_income: 3_000
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 38
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 3_000
+    # Over gross limit of $2,941.50 for family of 3
+    hi_tanf_gross_income_eligible: false
+    hi_tanf_eligible: false
+    hi_tanf: 0
+
+- name: Case 5, family with unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 400
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 400
+    hi_tanf_gross_income_eligible: true
+    hi_tanf_countable_earned_income: 0
+    hi_tanf_countable_income: 400
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
+    hi_tanf_eligible: true
+    # Benefit = 607.2 - 400 = 207.2
+    hi_tanf: 207.2
+
+- name: Case 6, family with both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 33
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 300
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Gross = $1,000 + $300 = $1,300
+    hi_tanf_gross_income: 1_300
+    hi_tanf_gross_income_eligible: true
+    # Earned deductions for $1,000:
+    # Step 1: 20% = 200, After: 800
+    # Step 2: $200 flat, After: 600
+    # Step 3: 55% = 330, After: 270
+    hi_tanf_countable_earned_income: 270
+    # Total countable = 270 + 300 = 570
+    hi_tanf_countable_income: 570
+    # 1590 × 0.48 = 763.2
+    hi_tanf_maximum_benefit: 763.2
+    hi_tanf_eligible: true
+    # Benefit = 763.2 - 570 = 193.2
+    hi_tanf: 193.2
+
+- name: Case 7, family with dependent care deduction in full pipeline.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+        tanf_gross_unearned_income: 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $1,800/year = $150/month childcare
+        childcare_expenses: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 1_500
+    hi_tanf_gross_income_eligible: true
+    # Dependent care: min(150, 1 child × $175) = 150
+    hi_tanf_dependent_care_deduction: 150
+    # Earned deductions for $1,500:
+    # Step 1: 20% = 300, After: 1,200
+    # Step 2: $200 flat, After: 1,000
+    # Step 3: 55% = 550, After: 450
+    # After dependent care: max(450 - 150, 0) = 300
+    hi_tanf_countable_earned_income: 300
+    hi_tanf_countable_income: 300
+    # 1265 × 0.48 = 607.2
+    hi_tanf_maximum_benefit: 607.2
+    hi_tanf_eligible: true
+    # Benefit = 607.2 - 300 = 307.2
+    hi_tanf: 307.2
+
+- name: Case 8, single person with no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 0
+    hi_tanf_gross_income_eligible: true
+    hi_tanf_countable_earned_income: 0
+    hi_tanf_countable_income: 0
+    # 939 × 0.48 = 450.72
+    hi_tanf_maximum_benefit: 450.72
+    # Note: Demographic eligibility requires a minor child
+    hi_tanf_eligible: false
+    hi_tanf: 0
+
+- name: Case 9, family of 5 with moderate income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        tanf_gross_earned_income: 2_000
+        tanf_gross_unearned_income: 200
+      person2:
+        age: 33
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person4:
+        age: 9
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person5:
+        age: 5
+        is_tax_unit_dependent: true
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: HI
+  output:
+    # Gross = $2,000 + $200 = $2,200
+    hi_tanf_gross_income: 2_200
+    # Below gross limit of $4,147 for family of 5
+    hi_tanf_gross_income_eligible: true
+    # Earned deductions for $2,000:
+    # Step 1: 20% = 400, After: 1,600
+    # Step 2: $200 flat, After: 1,400
+    # Step 3: 55% = 770, After: 630
+    hi_tanf_countable_earned_income: 630
+    # Total countable = 630 + 200 = 830
+    hi_tanf_countable_income: 830
+    # 2242 × 0.48 = 1076.16
+    hi_tanf_maximum_benefit: 1_076.16
+    hi_tanf_eligible: true
+    # Benefit = 1076.16 - 830 = 246.16
+    hi_tanf: 246.16

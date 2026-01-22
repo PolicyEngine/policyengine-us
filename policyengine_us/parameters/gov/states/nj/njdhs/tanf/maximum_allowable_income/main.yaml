@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 9)
+  breakdown_labels:
+    - Household size
   label: New Jersey TANF monthly maximum allowable income
   reference:
     # Legal code provides 2003 law; state plan provides updated values.

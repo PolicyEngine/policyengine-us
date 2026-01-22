@@ -1,0 +1,40 @@
+# Unit tests for Rhode Island TANF income eligibility
+# 218-RICR-20-00-2.15: Net income test - countable income < payment standard
+# https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+
+- name: Case 1, no income, eligible.
+  period: 2025-01
+  input:
+    ri_works_countable_income: 0
+    ri_works_payment_standard: 865
+    state_code: RI
+  output:
+    ri_works_income_eligible: true
+
+- name: Case 2, income below payment standard, eligible.
+  period: 2025-01
+  input:
+    ri_works_countable_income: 500
+    ri_works_payment_standard: 865
+    state_code: RI
+  output:
+    ri_works_income_eligible: true
+
+- name: Case 3, income equals payment standard, ineligible.
+  period: 2025-01
+  input:
+    ri_works_countable_income: 865
+    ri_works_payment_standard: 865
+    state_code: RI
+  output:
+    # Must be strictly less than, not equal
+    ri_works_income_eligible: false
+
+- name: Case 4, income exceeds payment standard, ineligible.
+  period: 2025-01
+  input:
+    ri_works_countable_income: 1_000
+    ri_works_payment_standard: 865
+    state_code: RI
+  output:
+    ri_works_income_eligible: false

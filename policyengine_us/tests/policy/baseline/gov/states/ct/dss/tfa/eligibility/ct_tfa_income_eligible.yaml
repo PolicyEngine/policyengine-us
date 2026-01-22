@@ -1,0 +1,78 @@
+# Tests for CT TFA income eligibility
+# New applicants: countable income <= need standard (55% FPG)
+# Existing recipients 2024+: gross earned income <= 230% FPG
+# Existing recipients pre-2024: gross earned income <= 100% FPG
+
+- name: Case 1, new applicant, income below need standard.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: false
+    ct_tfa_countable_income_at_application: 1_100
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_need_standard: 1_139.42
+    ct_tfa_income_eligible: true
+
+- name: Case 2, new applicant, income above need standard.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: false
+    ct_tfa_countable_income_at_application: 1_200
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_need_standard: 1_139.42
+    ct_tfa_income_eligible: false
+
+- name: Case 3, existing recipient 2024, income below 230 percent FPG.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    tanf_gross_earned_income: 4_700
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_income_eligible: true
+
+- name: Case 4, existing recipient 2024, income above 230 percent FPG.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    tanf_gross_earned_income: 4_800
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_income_eligible: false
+
+- name: Case 5, existing recipient 2023, income below 100 percent FPG.
+  period: 2023-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_900
+    state_code: CT
+  output:
+    tanf_fpg: 1_919.17
+    ct_tfa_income_eligible: true
+
+- name: Case 6, existing recipient 2023, income above 100 percent FPG.
+  period: 2023-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_950
+    state_code: CT
+  output:
+    tanf_fpg: 1_919.17
+    ct_tfa_income_eligible: false

@@ -1,0 +1,42 @@
+# Tests for CT TFA countable unearned income
+# Child support deduction cap: $50/month
+
+- name: Case 1, child support greater than cap.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 70
+    child_support_received: 720  # $60/month
+    state_code: CT
+  output:
+    # 70 - min(60, 50) = 70 - 50 = 20
+    ct_tfa_countable_unearned_income: 20
+
+- name: Case 2, child support less than cap.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 70
+    child_support_received: 360  # $30/month
+    state_code: CT
+  output:
+    # 70 - min(30, 50) = 70 - 30 = 40
+    ct_tfa_countable_unearned_income: 40
+
+- name: Case 3, zero child support.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 100
+    child_support_received: 0
+    state_code: CT
+  output:
+    # 100 - 0 = 100
+    ct_tfa_countable_unearned_income: 100
+
+- name: Case 4, unearned income less than deduction, floored at zero.
+  period: 2024-01
+  input:
+    tanf_gross_unearned_income: 30
+    child_support_received: 600  # $50/month
+    state_code: CT
+  output:
+    # max(0, 30 - 50) = 0
+    ct_tfa_countable_unearned_income: 0
