@@ -117,3 +117,74 @@
   output:
     # Income too high
     ca_calworks_stage_2_eligible: false
+
+- name: Case 6, exactly 24 months since exit, still Stage 2 eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 24
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Exactly 24 months: uses <= 24, so still Stage 2
+    ca_calworks_stage_2_eligible: true
+
+- name: Case 7, zero months since exit with no current TANF, Stage 2 eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Just left CalWORKs this month (0 months), no current TANF = Stage 2
+    ca_calworks_stage_2_eligible: true
+
+- name: Case 8, TANF equals one cent, still Stage 1 not Stage 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        ca_tanf: 0.01
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Any positive TANF (even $0.01) means currently receiving = Stage 1
+    ca_calworks_stage_2_eligible: false

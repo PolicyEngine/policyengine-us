@@ -90,3 +90,46 @@
   output:
     # No age-eligible children (child is 16, threshold is typically 13)
     ca_capp_eligible: false
+
+- name: Case 5, adult only household, not eligible for CAPP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # No children at all = not eligible
+    ca_capp_eligible: false
+
+- name: Case 6, zero income fails work requirement, not CAPP eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Zero income fails work requirement (earned_income > 0)
+    ca_capp_eligible: false

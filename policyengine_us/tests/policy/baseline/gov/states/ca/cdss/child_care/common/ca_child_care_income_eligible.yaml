@@ -47,3 +47,67 @@
     # Monthly income: 100,000 / 12 = 8,333.33
     # 8,333.33 <= 6,597.30 = false
     ca_child_care_income_eligible: false
+
+- name: Case 3, zero income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Zero income <= any SMI threshold
+    ca_child_care_income_eligible: true
+
+- name: Case 4, income exactly at 85 percent SMI, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2-person SMI: 6,283.14/month, 85% = 5,340.67/month
+        # Annual: 5,340.67 * 12 = 64,088
+        employment_income: 64_088
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income exactly at 85% SMI: uses <=, so eligible
+    ca_child_care_income_eligible: true
+
+- name: Case 5, income one dollar above 85 percent SMI, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 85% SMI = 64,088, so 64,089 is $1 over
+        employment_income: 64_100
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income just above 85% SMI = not eligible
+    ca_child_care_income_eligible: false
