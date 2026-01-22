@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: Hawaii TANF Standard of Need amount
   reference:
     - title: Hawaii TANF State Plan 11.1 Income and Benefit Standards (Effective October 1, 2023)

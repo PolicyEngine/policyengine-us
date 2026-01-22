@@ -12265,3 +12265,85 @@
       freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and
       can still newly enroll.
   date: 2026-01-15 22:29:01
+- bump: minor
+  changes:
+    changed:
+    - Replaced .claude git submodule with policyengine-claude plugin auto-install
+      configuration.
+  date: 2026-01-19 16:08:41
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to breakdown parameters that had breakdown definitions
+      but no labels.
+  date: 2026-01-19 16:19:40
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to bracket/scale parameters that had no labels.
+  date: 2026-01-19 16:39:43
+- bump: patch
+  changes:
+    fixed:
+    - Added missing breakdown and label metadata to pseudo-breakdown parameters.
+  date: 2026-01-19 17:30:20
+- bump: minor
+  changes:
+    fixed:
+    - Formatting.
+  date: 2026-01-19 18:07:10
+- bump: minor
+  changes:
+    added:
+    - Model RI Governor Dan McKee's 2027 tax proposals including a new child tax credit,
+      Social Security exemption expansion, new top income tax bracket, and pension/annuity
+      exemption updates.
+  date: 2026-01-19 18:32:47
+- bump: minor
+  changes:
+    added:
+    - Add Utah HB 210 (2026) structural reform implementing the taxpayer credit add-on
+      for married filers ($543 MFS, $1,086 joint/surviving spouse) with phaseout.
+  date: 2026-01-19 19:53:06
+- bump: minor
+  changes:
+    added:
+    - Add SC H.3492 partially refundable EITC reform.
+  date: 2026-01-19 19:54:16
+- bump: minor
+  changes:
+    added:
+    - Update Rhode Island 2025 Individual Income Tax Model.
+  date: 2026-01-19 22:07:57
+- bump: patch
+  changes:
+    added:
+    - Add breakdown_labels metadata to parameters with range() dimensions for semantic
+      labelling.
+  date: 2026-01-20 19:20:31
+- bump: patch
+  changes:
+    changed:
+    - Update 2026 federal poverty guidelines.
+  date: 2026-01-21 15:19:45
+- bump: minor
+  changes:
+    added:
+    - NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+  date: 2026-01-21 16:28:14
+- bump: minor
+  changes:
+    added:
+    - NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns
+      reform.
+  date: 2026-01-21 20:02:25
+- bump: minor
+  changes:
+    added:
+    - NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+  date: 2026-01-21 20:53:40
+- bump: patch
+  changes:
+    fixed:
+    - Remove DACA_TPS from immigration_status.
+  date: 2026-01-21 21:46:53
