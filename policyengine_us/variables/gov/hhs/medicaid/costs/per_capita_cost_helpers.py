@@ -4,6 +4,7 @@ This module provides shared logic for calculating per capita costs that is
 used by:
 - medicaid_cost_if_enrolled (for federal Medicaid)
 - or_healthier_oregon_cost_if_enrolled (for Oregon Healthier Oregon)
+- wa_apple_health_cost_if_enrolled (for Washington Apple Health)
 - Other state Medicaid-like programs
 """
 
@@ -11,9 +12,18 @@ from policyengine_us.model_api import *
 
 
 def calculate_per_capita_cost(
-    person, period, parameters, group, MedicaidGroup
+    person,
+    period,
+    parameters,
+    group,
+    MedicaidGroup,
+    groups=None,
+    state=None,
 ):
-    """Calculate per capita Medicaid cost for a given eligibility group.
+    """Calculate per capita Medicaid cost for given eligibility groups.
+
+    Supports flexible group configurations - states can use all 4 groups
+    or a subset (e.g., Washington uses only CHILD and EXPANSION_ADULT).
 
     Args:
         person: The person entity
@@ -21,80 +31,70 @@ def calculate_per_capita_cost(
         parameters: The parameters object
         group: Array of MedicaidGroup values for each person
         MedicaidGroup: The MedicaidGroup enum class
+        groups: List of MedicaidGroup values to handle. If None, uses all 4:
+                [AGED_DISABLED, CHILD, EXPANSION_ADULT, NON_EXPANSION_ADULT].
+                For states with fewer groups, pass only the relevant ones,
+                e.g., [MedicaidGroup.CHILD, MedicaidGroup.EXPANSION_ADULT]
+        state: State code for state-specific data lookup. If None, uses
+               the person's household state code.
 
     Returns:
-        Array of per capita costs for each person based on their group
+        Array of per capita costs for each person based on their group.
+        Uses state-specific spending/enrollment when available, falling
+        back to national average when state enrollment is zero.
     """
-    state = person.household("state_code", period)
+    if state is None:
+        state = person.household("state_code", period)
+
+    if groups is None:
+        groups = [
+            MedicaidGroup.AGED_DISABLED,
+            MedicaidGroup.CHILD,
+            MedicaidGroup.EXPANSION_ADULT,
+            MedicaidGroup.NON_EXPANSION_ADULT,
+        ]
 
     p = parameters(period).calibration.gov.hhs.medicaid
 
-    # Get spending by eligibility group and state
-    aged_spend = p.spending.by_eligibility_group.aged[state]
-    disabled_spend = p.spending.by_eligibility_group.disabled[state]
-    child_spend = p.spending.by_eligibility_group.child[state]
-    expansion_adult_spend = p.spending.by_eligibility_group.expansion_adults[
-        state
-    ]
-    non_expansion_adult_spend = (
-        p.spending.by_eligibility_group.non_expansion_adults[state]
-    )
+    conditions = []
+    spend_values = []
+    enroll_values = []
 
-    # Get enrollment by eligibility group and state
-    aged_enroll = p.enrollment.aged[state]
-    disabled_enroll = p.enrollment.disabled[state]
-    child_enroll = p.enrollment.child[state]
-    expansion_adult_enroll = p.enrollment.expansion_adults[state]
-    non_expansion_adult_enroll = p.enrollment.non_expansion_adults[state]
+    for g in groups:
+        if g == MedicaidGroup.AGED_DISABLED:
+            # Combine aged and disabled data for AGED_DISABLED group
+            spend = (
+                p.spending.by_eligibility_group.aged[state]
+                + p.spending.by_eligibility_group.disabled[state]
+            )
+            enroll = p.enrollment.aged[state] + p.enrollment.disabled[state]
+        elif g == MedicaidGroup.CHILD:
+            spend = p.spending.by_eligibility_group.child[state]
+            enroll = p.enrollment.child[state]
+        elif g == MedicaidGroup.EXPANSION_ADULT:
+            spend = p.spending.by_eligibility_group.expansion_adults[state]
+            enroll = p.enrollment.expansion_adults[state]
+        elif g == MedicaidGroup.NON_EXPANSION_ADULT:
+            spend = p.spending.by_eligibility_group.non_expansion_adults[state]
+            enroll = p.enrollment.non_expansion_adults[state]
+        else:
+            # Skip unknown groups (e.g., NONE)
+            continue
 
-    # Combine aged and disabled for AGED_DISABLED group
-    aged_disabled_spend = aged_spend + disabled_spend
-    aged_disabled_enroll = aged_enroll + disabled_enroll
+        conditions.append(group == g)
+        spend_values.append(spend)
+        enroll_values.append(enroll)
 
-    # Determine group membership
-    is_aged_disabled = group == MedicaidGroup.AGED_DISABLED
-    is_child = group == MedicaidGroup.CHILD
-    is_expansion_adult = group == MedicaidGroup.EXPANSION_ADULT
-    is_non_expansion_adult = group == MedicaidGroup.NON_EXPANSION_ADULT
-
-    # Select spending based on group
-    spend = select(
-        [
-            is_aged_disabled,
-            is_child,
-            is_expansion_adult,
-            is_non_expansion_adult,
-        ],
-        [
-            aged_disabled_spend,
-            child_spend,
-            expansion_adult_spend,
-            non_expansion_adult_spend,
-        ],
-        default=0,
-    )
-
-    # Select enrollment based on group
-    enroll = select(
-        [
-            is_aged_disabled,
-            is_child,
-            is_expansion_adult,
-            is_non_expansion_adult,
-        ],
-        [
-            aged_disabled_enroll,
-            child_enroll,
-            expansion_adult_enroll,
-            non_expansion_adult_enroll,
-        ],
-        default=0,
-    )
+    spend = select(conditions, spend_values, default=0)
+    enroll = select(conditions, enroll_values, default=0)
 
     # Calculate per capita cost
-    # Use national average as fallback when enrollment is zero
+    # Use national average as fallback when state enrollment is zero
+    # Return 0 for NONE group (not eligible for any program)
+    is_none = group == MedicaidGroup.NONE
     per_capita = p.totals.per_capita[group].copy()
-    mask = enroll > 0
+    mask = (enroll > 0) & ~is_none
     per_capita[mask] = spend[mask] / enroll[mask]
+    per_capita[is_none] = 0
 
     return per_capita

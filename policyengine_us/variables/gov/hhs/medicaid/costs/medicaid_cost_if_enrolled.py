@@ -18,5 +18,15 @@ class medicaid_cost_if_enrolled(Variable):
     def formula(person, period, parameters):
         group = person("medicaid_group", period)
         return calculate_per_capita_cost(
-            person, period, parameters, group, MedicaidGroup
+            person,
+            period,
+            parameters,
+            group,
+            MedicaidGroup,
+            groups=[
+                MedicaidGroup.AGED_DISABLED,
+                MedicaidGroup.CHILD,
+                MedicaidGroup.EXPANSION_ADULT,
+                MedicaidGroup.NON_EXPANSION_ADULT,
+            ],
         )
