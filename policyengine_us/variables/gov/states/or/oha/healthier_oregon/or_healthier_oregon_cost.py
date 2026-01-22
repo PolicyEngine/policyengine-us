@@ -8,13 +8,9 @@ class or_healthier_oregon_cost(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "or_healthier_oregon_eligible"
-    reference = [
+    reference = (
         "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx",
-    ]
-    documentation = """
-    Oregon Healthier Oregon provides full OHP (Oregon Health Plan) benefits,
-    equivalent to Medicaid coverage. The cost is calculated using the same
-    per capita Medicaid costs by eligibility group.
-    """
+    )
 
+    # Cost is calculated using per capita Medicaid costs by eligibility group.
     adds = ["or_healthier_oregon_cost_if_enrolled"]

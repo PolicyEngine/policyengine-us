@@ -5,15 +5,6 @@ from policyengine_us.variables.gov.hhs.medicaid.costs.medicaid_group import (
 
 
 class or_healthier_oregon_group(Variable):
-    """Maps Oregon Healthier Oregon enrollees to Medicaid spending groups.
-
-    Precedence order (highest to lowest):
-    1. Aged/Disabled - SSI recipients or age 65+
-    2. Non-Expansion Adult - pregnant adults
-    3. Expansion Adult - other adults
-    4. Child - age < child_max_age parameter (under 19)
-    """
-
     value_type = Enum
     possible_values = MedicaidGroup
     default_value = MedicaidGroup.NONE

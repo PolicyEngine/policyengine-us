@@ -7,15 +7,10 @@ class or_healthier_oregon_income_eligible(Variable):
     label = "Meets Oregon Healthier Oregon income eligibility"
     definition_period = YEAR
     defined_for = StateCode.OR
-    reference = [
+    reference = (
         "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx",
         "https://www.opb.org/article/2023/07/10/oregon-expands-health-coverage-low-income-residents-immigrants/",
-    ]
-    documentation = """
-    Oregon Healthier Oregon has different income limits based on age:
-    - Adults (19+): Up to 138% FPL
-    - Children (0-18): Up to 305% FPL
-    """
+    )
 
     def formula(person, period, parameters):
         p = (

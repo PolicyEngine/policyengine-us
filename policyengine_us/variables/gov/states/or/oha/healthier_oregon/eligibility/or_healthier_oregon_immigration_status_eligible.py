@@ -8,16 +8,10 @@ class or_healthier_oregon_immigration_status_eligible(Variable):
     label = "Has eligible immigration status for Oregon Healthier Oregon"
     definition_period = YEAR
     defined_for = StateCode.OR
-    reference = [
+    reference = (
         "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx",
         "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/MeasureDocument/HB3352/Enrolled",
-    ]
-    documentation = """
-    Oregon's Healthier Oregon program (formerly Cover All People) provides
-    full OHP benefits to residents who are not eligible for federal Medicaid
-    due to their immigration status. This includes undocumented immigrants,
-    DACA recipients, and other non-qualifying immigration statuses.
-    """
+    )
 
     def formula(person, period, parameters):
         p = (

@@ -7,16 +7,10 @@ class or_healthier_oregon_eligible(Variable):
     label = "Eligible for Oregon Healthier Oregon"
     definition_period = YEAR
     defined_for = StateCode.OR
-    reference = [
+    reference = (
         "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx",
         "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/MeasureDocument/HB3352/Enrolled",
-    ]
-    documentation = """
-    Oregon's Healthier Oregon program (formerly Cover All People) provides
-    full Oregon Health Plan benefits to income-eligible residents who are
-    not eligible for federal Medicaid due to their immigration status.
-    Effective July 1, 2023 for all ages.
-    """
+    )
 
     def formula(person, period, parameters):
         p = (
