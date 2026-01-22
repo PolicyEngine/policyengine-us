@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid category precedence now follows covered.yaml order (pregnant/parent before expansion adult)

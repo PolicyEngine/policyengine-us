@@ -74,6 +74,8 @@
     medicaid_cost_if_enrolled: 7_054
 
 - name: Multiple people in recent expansion state
+  # person1 (age 25 with child) is categorized as PARENT (NON_EXPANSION_ADULT)
+  # not EXPANSION_ADULT because parent takes precedence per covered.yaml
   period: 2024
   absolute_error_margin: 0.1
   input:
@@ -87,5 +89,5 @@
         employment_income: 0
       person2:
         age: 2
-  output: 
-    medicaid_cost_if_enrolled: [7_054, 2_867.7]
+  output:
+    medicaid_cost_if_enrolled: [4_631.1, 2_867.8]
