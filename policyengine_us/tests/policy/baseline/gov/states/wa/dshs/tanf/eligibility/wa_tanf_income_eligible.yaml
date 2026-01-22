@@ -141,3 +141,26 @@
     # Income limit for family of 3 in 2018-01: $1,042
     # Gross earned: $1,043 > $1,042
     wa_tanf_income_eligible: false
+
+# Historical tests - verify 2021-07 income limits (15% increase)
+- name: Case 14, 2022-01 uses July 2021 income limits.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_308
+  output:
+    # Income limit for family of 3 in 2022-01: $1,308 (15% increase)
+    # Gross earned: $1,308 <= $1,308
+    wa_tanf_income_eligible: true
+
+- name: Case 15, 2022-01 over July 2021 limit.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_309
+  output:
+    # Income limit for family of 3 in 2022-01: $1,308
+    # Gross earned: $1,309 > $1,308
+    wa_tanf_income_eligible: false
