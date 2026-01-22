@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    added:
+      - Add Head Start and Early Head Start takeup variables for dataset-driven stochastic modeling
+    changed:
+      - Update head_start and early_head_start to use takeup in microsimulation (defaults to True in policy calculator)
