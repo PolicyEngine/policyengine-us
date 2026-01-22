@@ -23,8 +23,7 @@ class ca_calworks_stage_2_payment(Variable):
         )
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
 
-        gross_payment = min_(
+        return min_(
             payment_standard * time_coefficient * payment_factor,
             childcare_expenses,
         )
-        return gross_payment

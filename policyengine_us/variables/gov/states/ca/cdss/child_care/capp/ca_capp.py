@@ -8,7 +8,7 @@ class ca_capp(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "ca_capp_eligible"
-    reference = "https://cdrv.org/cdr-programs-and-services/california-work-opportunity-and-responsibility-to-kids-calworks-alternative-payment-programs/"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.&lawCode=WIC"
 
     def formula(spm_unit, period, parameters):
         gross_payment = add(spm_unit, period, ["ca_capp_payment"])

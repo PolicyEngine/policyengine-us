@@ -35,6 +35,8 @@
     ca_capp_eligible: false
     # Stage 1 payment (child only): RMR ceiling ~1,253
     ca_calworks_child_care_payment: [0, 1_253.26]
+    # Total subsidies: Stage 1 only = 1,253.26
+    ca_child_care_subsidies: 1_253.26
 
 - name: Case 2, Stage 2 former CalWORKs within 24 months.
   period: 2025-01
@@ -76,6 +78,8 @@
     ca_child_care_family_fee: 0
     # Final Stage 2: 1,253 - 0 = 1,253
     ca_calworks_stage_2: 1_253.26
+    # Total subsidies: Stage 2 only = 1,253.26
+    ca_child_care_subsidies: 1_253.26
 
 - name: Case 3, Stage 3 former CalWORKs beyond 24 months.
   period: 2025-01
@@ -117,6 +121,8 @@
     ca_child_care_family_fee: 0
     # Final Stage 3: 1,253 - 0 = 1,253
     ca_calworks_stage_3: 1_253.26
+    # Total subsidies: Stage 3 only = 1,253.26
+    ca_child_care_subsidies: 1_253.26
 
 - name: Case 4, CAPP never received CalWORKs.
   period: 2025-01
@@ -157,6 +163,8 @@
     ca_child_care_family_fee: 0
     # Final CAPP: 1,253 - 0 = 1,253
     ca_capp: 1_253.26
+    # Total subsidies: CAPP only = 1,253.26
+    ca_child_care_subsidies: 1_253.26
 
 - name: Case 5, Stage 2 with family fee applied.
   period: 2025-01
@@ -195,6 +203,8 @@
     ca_child_care_family_fee: 50
     # Final Stage 2: 1,253 - 50 = 1,203
     ca_calworks_stage_2: 1_203.26
+    # Total subsidies: Stage 2 only = 1,203.26
+    ca_child_care_subsidies: 1_203.26
 
 - name: Case 6, income too high for any program.
   period: 2025-01
@@ -229,6 +239,8 @@
     ca_calworks_stage_2_eligible: false
     ca_calworks_stage_3_eligible: false
     ca_capp_eligible: false
+    # Total subsidies: none eligible = 0
+    ca_child_care_subsidies: 0
 
 - name: Case 7, two children, Stage 2.
   period: 2025-01
@@ -274,6 +286,8 @@
     ca_child_care_family_fee: 0
     # Final Stage 2: 1,253.26 + 1,001.5 = 2,254.76
     ca_calworks_stage_2: 2_254.76
+    # Total subsidies: Stage 2 only = 2,254.76
+    ca_child_care_subsidies: 2_254.76
 
 - name: Case 8, YEAR period test for Stage 2.
   absolute_error_margin: 0.1
@@ -309,3 +323,5 @@
     ca_calworks_stage_2_eligible: true
     # Annual Stage 2 payment (child only): 1,253.26 * 12 = 15,039.12
     ca_calworks_stage_2: 15_039.12
+    # Total subsidies: Stage 2 only = 15,039.12
+    ca_child_care_subsidies: 15_039.12

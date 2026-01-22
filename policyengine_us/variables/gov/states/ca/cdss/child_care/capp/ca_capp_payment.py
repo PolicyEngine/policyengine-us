@@ -8,7 +8,7 @@ class ca_capp_payment(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "ca_capp_eligible"
-    reference = "https://cdrv.org/cdr-programs-and-services/california-work-opportunity-and-responsibility-to-kids-calworks-alternative-payment-programs/"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.&lawCode=WIC"
 
     def formula(person, period, parameters):
         # CAPP uses same RMR payment structure as CalWORKs child care
@@ -23,8 +23,7 @@ class ca_capp_payment(Variable):
         )
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
 
-        gross_payment = min_(
+        return min_(
             payment_standard * time_coefficient * payment_factor,
             childcare_expenses,
         )
-        return gross_payment
