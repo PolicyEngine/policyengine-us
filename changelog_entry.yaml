@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+      - Use uv lockfile in Quick Feedback CI job to prevent pandas 3.0 incompatibility.
+      - Improve selective test runner to only run tests for specific subfolders (states, congress, local) instead of entire parent directories.
