@@ -1,6 +1,0 @@
-- bump: patch
-  changes:
-    fixed:
-      - Use `uv sync --extra dev` in CI to correctly install optional dev dependencies including coverage.
-      - Improve selective test runner to only run tests for specific subfolders (states, congress, local) instead of entire parent directories.
-      - Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.

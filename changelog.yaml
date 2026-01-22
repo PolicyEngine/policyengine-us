@@ -12347,3 +12347,12 @@
     fixed:
     - Remove DACA_TPS from immigration_status.
   date: 2026-01-21 21:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Use `uv sync --extra dev` in CI to correctly install optional dev dependencies
+      including coverage.
+    - Improve selective test runner to only run tests for specific subfolders (states,
+      congress, local) instead of entire parent directories.
+    - Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+  date: 2026-01-22 23:38:46
