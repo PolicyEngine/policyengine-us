@@ -438,3 +438,209 @@
     wa_tanf_countable_income: 400
     wa_tanf_eligible: true
     wa_tanf: 559
+
+# Historical integration tests for 2018-01 period
+# (50% disregard only, no $500 flat deduction, $1,000 resource limit)
+
+- name: Case 13, 2018-01 single parent with 2 children, no income.
+  period: 2018-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # 2016-02-01 payment standard for family of 3: $521
+    wa_tanf_payment_standard: 521
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 521
+
+- name: Case 14, 2018-01 single parent with 2 children, low earned income.
+  period: 2018-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_tanf_payment_standard: 521
+    # Monthly income: $6,000 / 12 = $500
+    # Countable earned = $500 × 0.5 = $250 (no $500 flat disregard in 2018)
+    wa_tanf_countable_income: 250
+    wa_tanf_eligible: true
+    wa_tanf: 271
+
+- name: Case 15, 2018-01 single parent with 2 children, income at threshold.
+  period: 2018-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_504
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_tanf_payment_standard: 521
+    # Monthly income: $12,504 / 12 = $1,042 (at income limit)
+    # Countable earned = $1,042 × 0.5 = $521
+    wa_tanf_countable_income: 521
+    wa_tanf_eligible: true
+    wa_tanf: 0
+
+# Historical integration tests for 2024-01 period
+# (50% disregard only, no $500 flat deduction, $6,000 resource limit)
+
+- name: Case 16, 2024-01 single parent with 2 children, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # 2024-01-01 payment standard for family of 3: $706
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+    wa_tanf_eligible: true
+    wa_tanf: 706
+
+- name: Case 17, 2024-01 single parent with 2 children, low earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_tanf_payment_standard: 706
+    # Monthly income: $6,000 / 12 = $500
+    # Countable earned = $500 × 0.5 = $250 (no $500 flat disregard until Aug 2024)
+    wa_tanf_countable_income: 250
+    wa_tanf_eligible: true
+    wa_tanf: 456
+
+- name: Case 18, 2024-01 single parent with 2 children, income at threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 16_944
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_tanf_payment_standard: 706
+    # Monthly income: $16,944 / 12 = $1,412 (at income limit)
+    # Countable earned = $1,412 × 0.5 = $706
+    wa_tanf_countable_income: 706
+    wa_tanf_eligible: true
+    wa_tanf: 0
