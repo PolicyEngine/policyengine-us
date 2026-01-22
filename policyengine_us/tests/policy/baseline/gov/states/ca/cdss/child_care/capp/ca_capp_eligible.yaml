@@ -12,7 +12,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: false
+        was_calworks_recipient: false
     households:
       household:
         members: [person1, person2]
@@ -35,8 +35,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 12
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
     households:
       household:
         members: [person1, person2]
@@ -59,7 +59,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: false
+        was_calworks_recipient: false
     households:
       household:
         members: [person1, person2]
@@ -82,7 +82,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: false
+        was_calworks_recipient: false
     households:
       household:
         members: [person1, person2]

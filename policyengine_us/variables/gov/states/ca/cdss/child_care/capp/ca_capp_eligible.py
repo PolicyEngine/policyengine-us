@@ -14,8 +14,8 @@ class ca_capp_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # CAPP is for families who have NEVER received CalWORKs
-        ever_received = spm_unit("ever_received_calworks", period.this_year)
-        never_received_calworks = ~ever_received
+        ever_received = spm_unit("was_calworks_recipient", period.this_year)
+        nwas_calworks_recipient = ~ever_received
 
         # Income must be at or below 85% SMI
         income_eligible = spm_unit("ca_child_care_income_eligible", period)
@@ -31,7 +31,7 @@ class ca_capp_eligible(Variable):
         # NOTE: CAPP is subject to funding availability and waitlists,
         # which cannot be modeled in PolicyEngine. We assume enrollment.
         return (
-            never_received_calworks
+            nwas_calworks_recipient
             & income_eligible
             & need_eligible
             & age_eligible

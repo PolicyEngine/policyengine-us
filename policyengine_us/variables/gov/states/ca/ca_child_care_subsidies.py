@@ -8,6 +8,7 @@ class ca_child_care_subsidies(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
+    reference = "https://www.cdss.ca.gov/inforesources/calworks-child-care"
     adds = [
         "ca_calworks_child_care",
         "ca_calworks_stage_2",

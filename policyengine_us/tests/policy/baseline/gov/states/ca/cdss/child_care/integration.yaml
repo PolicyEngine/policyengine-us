@@ -21,8 +21,7 @@
       spm_unit:
         members: [person1, person2]
         ca_tanf: 500
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 0
+        was_calworks_recipient: true
     households:
       household:
         members: [person1, person2]
@@ -59,8 +58,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 12
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
     households:
       household:
         members: [person1, person2]
@@ -100,8 +99,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 30
+        was_calworks_recipient: true
+        months_since_calworks_exit: 30
     households:
       household:
         members: [person1, person2]
@@ -141,7 +140,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: false
+        was_calworks_recipient: false
     households:
       household:
         members: [person1, person2]
@@ -181,8 +180,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 12
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
     households:
       household:
         members: [person1, person2]
@@ -219,7 +218,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ever_received_calworks: false
+        was_calworks_recipient: false
     households:
       household:
         members: [person1, person2]
@@ -260,8 +259,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        ever_received_calworks: true
-        months_since_calworks_cash_aid: 18
+        was_calworks_recipient: true
+        months_since_calworks_exit: 18
     households:
       household:
         members: [person1, person2, person3]
@@ -275,3 +274,38 @@
     ca_child_care_family_fee: 0
     # Final Stage 2: 1,253.26 + 1,001.5 = 2,254.76
     ca_calworks_stage_2: 2_254.76
+
+- name: Case 8, YEAR period test for Stage 2.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Testing with YEAR period
+    ca_calworks_stage_2_eligible: true
+    # Annual Stage 2 payment (child only): 1,253.26 * 12 = 15,039.12
+    ca_calworks_stage_2: 15_039.12

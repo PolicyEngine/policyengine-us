@@ -12,5 +12,5 @@ class ca_child_care_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.child_care.smi
         smi = spm_unit("ca_child_care_smi", period)
-        income = spm_unit("spm_unit_market_income", period)
+        income = spm_unit("ca_child_care_countable_income", period)
         return income <= smi * p.income_limit

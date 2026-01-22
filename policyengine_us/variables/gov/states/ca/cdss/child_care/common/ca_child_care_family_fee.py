@@ -15,7 +15,7 @@ class ca_child_care_family_fee(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.child_care
         smi = spm_unit("ca_child_care_smi", period)
-        income = spm_unit("spm_unit_market_income", period)
+        income = spm_unit("ca_child_care_countable_income", period)
 
         # Families below 75% SMI are exempt from fees
         fee_exemption_threshold = smi * p.family_fees.exemption_threshold
