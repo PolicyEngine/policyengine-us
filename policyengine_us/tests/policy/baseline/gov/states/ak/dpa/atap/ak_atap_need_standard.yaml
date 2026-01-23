@@ -7,15 +7,30 @@
   period: 2026-01
   input:
     people:
-      adult:
+      person1:
         age: 30
     households:
       household:
-        members: [adult]
+        members: [person1]
         state_code: AK
   output:
     # Size 1 returns 0 (not eligible for adult-included)
     ak_atap_need_standard: 0
+
+- name: Family size 1 pregnant woman.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman need standard: $1,192 (from TA-Standards.pdf page 5)
+    ak_atap_need_standard: 1_192
 
 - name: Family size 2 (1 adult, 1 child)
   period: 2026-01

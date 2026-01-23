@@ -1,10 +1,10 @@
-description: Alaska ATAP need standard amount by assistance unit size.
+description: Alaska provides this amount as the need standard under the Alaska Temporary Assistance Program.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
-    - range(2, 9)
+    - range(1, 9)
   breakdown_label:
     - Assistance unit size
   label: Alaska ATAP need standard amount
@@ -17,6 +17,8 @@ metadata:
 # Note: Values from 2017-2022 are estimated by applying SSI COLA percentages
 # backwards from 2023 authoritative values. No official documentation exists
 # to verify these historical values.
+1:
+  2017-01-01: 0
 2:
   2017-01-01: 1_413
   2018-01-01: 1_441

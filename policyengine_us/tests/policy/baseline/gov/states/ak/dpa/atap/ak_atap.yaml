@@ -144,3 +144,47 @@
   output:
     # ($2,149 - $500) * ($821 / $1,908) = $1,649 * 0.4303 = $709.55
     ak_atap: 709.55
+
+- name: Pregnant woman with zero income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_192
+        ak_atap_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # ($1,192 - $0) * ($821 / $1,908) = $1,192 * 0.4303 = $512.94
+    ak_atap: 512.94
+
+- name: Pregnant woman with $500 countable income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_192
+        ak_atap_countable_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # ($1,192 - $500) * ($821 / $1,908) = $692 * 0.4303 = $297.77
+    ak_atap: 297.77

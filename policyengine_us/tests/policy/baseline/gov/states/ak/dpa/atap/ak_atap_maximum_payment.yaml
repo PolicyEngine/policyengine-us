@@ -7,15 +7,30 @@
   period: 2026-01
   input:
     people:
-      adult:
+      person1:
         age: 30
     households:
       household:
-        members: [adult]
+        members: [person1]
         state_code: AK
   output:
     # 0 dependents: not eligible for adult-included ATAP
     ak_atap_maximum_payment: 0
+
+- name: Family size 1 pregnant woman.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman max payment: $514 (7 AAC 45.523(a)(3))
+    ak_atap_maximum_payment: 514
 
 - name: Family size 2 (1 adult, 1 dependent)
   period: 2026-01
