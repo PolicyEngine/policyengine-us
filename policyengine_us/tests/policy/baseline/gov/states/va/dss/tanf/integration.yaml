@@ -326,7 +326,9 @@
     # Countable income: $0 + $100 = $100
     va_tanf_countable_income: 100
     #
-    # Income eligibility: Step 1: gross earned $500 + gross unearned $200 = $700 <= $1,017? YES
+    # Income eligibility:
+    #   Step 1: gross $700 (earned $500 + unearned $200) <= need $1,017? YES
+    #   Step 2: countable $100 <= grant $508? YES
     va_tanf_income_eligibility: true
     #
     # Benefit: $508 - $100 = $408
