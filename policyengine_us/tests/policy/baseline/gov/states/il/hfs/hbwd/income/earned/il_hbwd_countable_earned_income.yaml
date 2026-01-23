@@ -1,0 +1,292 @@
+# Test HBWD earned income exemption handling
+# Per § 120.510(i), exemptions apply only to disabled/blind persons.
+# Non-disabled/non-blind persons use gross income (no exemptions).
+# If spouse is disabled/blind, they also get exemptions.
+
+# Test 1: Disabled worker gets earned income exemptions
+- name: Case 1, disabled worker gets earned income exemptions.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    age: 49
+    is_disabled: true
+    is_blind: false
+    il_aabd_gross_earned_income: 125
+    il_aabd_expense_exemption_person: 0
+    il_aabd_gross_unearned_income: 0
+    state_code: IL
+  output:
+    # Disabled worker gets exemptions: 125 - 25(flat) - 20 - 30(50% of 60) = 50
+    il_hbwd_countable_earned_income: 50
+
+# Test 2: Non-disabled, non-blind person uses gross income (no exemptions)
+- name: Case 2, non-disabled person uses gross income.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    age: 47
+    is_disabled: false
+    is_blind: false
+    il_aabd_gross_earned_income: 125
+    il_aabd_expense_exemption_person: 0
+    il_aabd_gross_unearned_income: 0
+    state_code: IL
+  output:
+    # Non-disabled, non-blind person: uses il_hbwd_gross_earned_income (not set here, so 0)
+    # In real scenarios, employment_income flows to il_hbwd_gross_earned_income
+    il_hbwd_countable_earned_income: 0
+
+# Test 3: Scenario 15 - Married couple over income limit correctly shows ineligible
+# person1: Age 49, disabled, $4,500/month wages ($54,000/year)
+# person2: Age 47, NOT disabled/blind, $2,500/month wages ($30,000/year)
+# Combined gross income: $7,000/month
+# 350% FPL for 2 people = $6,168.75/month
+- name: Case 3, married couple over income limit correctly shows ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 49
+        is_disabled: true
+        employment_income: 54_000  # $4,500/month * 12
+      person2:
+        age: 47
+        is_disabled: false
+        employment_income: 30_000  # $2,500/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # person1 (disabled): gets exemptions
+    # person2 (not disabled/blind): uses gross income (no exemptions)
+    # Combined countable $6,323 > limit $6,168.75 → NOT eligible
+    il_hbwd_countable_income: 6_323
+    il_hbwd_income_eligible: [false, false]
+    il_hbwd_eligible: [false, false]
+    il_hbwd_person: [0, 0]
+
+# Test 4: Single disabled worker - eligible
+- name: Case 4, single disabled worker eligible.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+        employment_income: 24_000  # $2,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Single person: 350% FPL = $5,285/month (2025)
+    # Countable income after exemptions < limit → eligible
+    il_hbwd_income_eligible: [true]
+    il_hbwd_eligible: [true]
+
+# Test 5: Single disabled worker - over income limit
+- name: Case 5, single disabled worker over income limit.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 72_000  # $6,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Single person: 350% FPL = $5,285/month
+    # Countable income > limit → NOT eligible
+    il_hbwd_income_eligible: [false]
+    il_hbwd_eligible: [false]
+
+# Test 6: Blind worker (not disabled) - gets blind exemptions
+- name: Case 6, blind worker gets exemptions.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: false
+        is_blind: true
+        employment_income: 36_000  # $3,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Blind worker is disability eligible and gets more generous exemptions
+    il_hbwd_disability_eligible: [true]
+    il_hbwd_income_eligible: [true]
+    il_hbwd_eligible: [true]
+
+# Test 7: Married couple - both disabled - both get exemptions
+- name: Case 7, married couple both disabled.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        employment_income: 36_000  # $3,000/month * 12
+      person2:
+        age: 48
+        is_disabled: true
+        employment_income: 24_000  # $2,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Both disabled, both get exemptions
+    # Combined gross $5,000/month, after exemptions < limit
+    il_hbwd_income_eligible: [true, true]
+    il_hbwd_eligible: [true, true]
+
+# Test 8: Disabled worker under age 16 - not age eligible
+- name: Case 8, disabled worker under age 16.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        employment_income: 12_000  # $1,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Under 16 - not age eligible for HBWD
+    il_hbwd_age_eligible: [false]
+    il_hbwd_eligible: [false]
+
+# Test 9: Disabled worker over age 64 - not age eligible
+- name: Case 9, disabled worker over age 64.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        employment_income: 24_000  # $2,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Over 64 - not age eligible for HBWD
+    il_hbwd_age_eligible: [false]
+    il_hbwd_eligible: [false]
+
+# Test 10: Family with disabled parent and children
+- name: Case 10, disabled parent with two children.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 38
+        is_disabled: true
+        employment_income: 48_000  # $4,000/month * 12
+      person2:
+        age: 12
+        is_disabled: false
+      person3:
+        age: 8
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # 3-person household: 350% FPL = $7,455/month
+    # Only person1 (disabled parent) can be HBWD eligible
+    # Children not disabled, not age eligible
+    il_hbwd_eligible: [true, false, false]
+
+# Test 11: Non-disabled, non-blind worker - not eligible
+- name: Case 11, non-disabled worker not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_blind: false
+        employment_income: 24_000  # $2,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Not disabled or blind - not disability eligible
+    il_hbwd_disability_eligible: [false]
+    il_hbwd_eligible: [false]
+
+# Test 12: Married couple at income threshold
+- name: Case 12, married couple at income threshold.
+  period: 2025-01
+  absolute_error_margin: 0.3
+  input:
+    people:
+      person1:
+        age: 55
+        is_disabled: true
+        employment_income: 48_000  # $4,000/month * 12
+      person2:
+        age: 52
+        is_disabled: false
+        employment_income: 24_000  # $2,000/month * 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Combined gross $6,000/month
+    # person1 (disabled) gets exemptions, person2 (not disabled/blind) uses gross
+    # Combined countable should be just under limit
+    il_hbwd_income_eligible: [true, true]
+    il_hbwd_eligible: [true, false]  # person2 not disabled/blind

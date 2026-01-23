@@ -1,0 +1,45 @@
+# Tests for Rhode Island Section 179 expense add-back
+# This is an input variable for P.L. 119-21, H.R.1 (2025)
+# Rhode Island limits Section 179 depreciation to $25,000
+
+- name: 2025 - Section 179 add-back flows to ri_additions
+  period: 2025
+  input:
+    state_code: RI
+    ri_section_179_expense_add_back: 10_000
+    investment_in_529_plan: 0
+    tax_exempt_unemployment_compensation: 0
+  output:
+    ri_additions: 10_000
+
+- name: 2025 - No Section 179 add-back
+  period: 2025
+  input:
+    state_code: RI
+    ri_section_179_expense_add_back: 0
+    investment_in_529_plan: 0
+    tax_exempt_unemployment_compensation: 0
+  output:
+    ri_additions: 0
+
+- name: 2025 - Section 179 add-back combined with 529 contribution
+  period: 2025
+  input:
+    state_code: RI
+    ri_section_179_expense_add_back: 5_000
+    investment_in_529_plan: 2_000
+    tax_exempt_unemployment_compensation: 0
+  output:
+    ri_additions: 7_000
+
+- name: 2024 - Section 179 add-back not applicable (before 2025)
+  # Section 179 add-back was added to additions list starting 2025
+  period: 2024
+  input:
+    state_code: RI
+    ri_section_179_expense_add_back: 10_000
+    investment_in_529_plan: 1_000
+    tax_exempt_unemployment_compensation: 0
+  output:
+    # Only 529 contribution is added in 2024 (Section 179 not in additions list yet)
+    ri_additions: 1_000

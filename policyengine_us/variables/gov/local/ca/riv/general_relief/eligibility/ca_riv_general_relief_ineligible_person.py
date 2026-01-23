@@ -9,9 +9,11 @@ class ca_riv_general_relief_ineligible_person(Variable):
     defined_for = "in_riv"
 
     def formula(person, period, parameters):
-        receives_ssi_or_tanf = (
-            add(person.spm_unit, period, ["ssi", "ca_tanf"]) > 0
-        )
+        # SSI is person-level: only the individual receiving SSI is excluded
+        receives_ssi = person("ssi", period) > 0
+        # TANF (CalWORKs) is unit-level: if unit receives TANF, members are excluded
+        receives_tanf = person.spm_unit("ca_tanf", period) > 0
+        receives_ssi_or_tanf = receives_ssi | receives_tanf
         immigration_status_eligible = person(
             "ca_riv_general_relief_immigration_status_eligible", period
         )

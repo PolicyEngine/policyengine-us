@@ -12184,3 +12184,180 @@
     - Colorado OmniSalud program providing ACA marketplace subsidies for undocumented
       immigrants and DACA recipients.
   date: 2026-01-08 18:02:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove 51 invalid County enum entries (wrong state assignments, non-existent
+      county/state combinations). Validated against Census 2020 county reference data.
+  date: 2026-01-12 18:30:41
+- bump: minor
+  changes:
+    added:
+    - CDCTC reform that makes families eligible if at least one parent works (instead
+      of requiring both parents to work)
+  date: 2026-01-12 19:45:59
+- bump: patch
+  changes:
+    fixed:
+    - Fix test_batched.py incorrectly marking tests as passed when failure count ends
+      in 0.
+    - Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
+  date: 2026-01-13 22:35:23
+- bump: minor
+  changes:
+    added:
+    - Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income
+      for IL AABD calculation.
+  date: 2026-01-13 22:53:31
+- bump: patch
+  changes:
+    changed:
+    - Remove concurrency block from push workflow to allow parallel CI runs.
+  date: 2026-01-13 23:22:39
+- bump: patch
+  changes:
+    fixed:
+    - Riverside County General Relief eligibility now correctly excludes units where
+      all persons are ineligible.
+    - Riverside County General Relief SSI check changed from unit-level to person-level,
+      so only the individual receiving SSI is excluded, not all household members.
+  date: 2026-01-13 23:26:02
+- bump: patch
+  changes:
+    added:
+    - Add is_blind to IL HBWD disability eligibility check.
+    fixed:
+    - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+  date: 2026-01-14 21:44:33
+- bump: patch
+  changes:
+    changed:
+    - Updated uv.lock dependencies.
+  date: 2026-01-14 23:20:21
+- bump: minor
+  changes:
+    added:
+    - Adjust CLAUDE.md in US repo.
+  date: 2026-01-15 20:02:12
+- bump: minor
+  changes:
+    added:
+    - Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end
+      parameters.
+  date: 2026-01-15 20:15:33
+- bump: patch
+  changes:
+    added:
+    - Add parameter discovery documentation guide
+  date: 2026-01-15 22:15:03
+- bump: patch
+  changes:
+    added:
+    - Add Microsimulation API documentation covering calc/calculate methods, map_to
+      parameter, available datasets, subsampling, winners/losers analysis, and weight
+      sanity checks.
+  date: 2026-01-15 22:18:44
+- bump: patch
+  changes:
+    fixed:
+    - Fix CA Medi-Cal immigration eligibility for DACA/TPS holders in 2026. Previously,
+      DACA/TPS holders incorrectly lost eligibility after the January 2026 enrollment
+      freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and
+      can still newly enroll.
+  date: 2026-01-15 22:29:01
+- bump: minor
+  changes:
+    changed:
+    - Replaced .claude git submodule with policyengine-claude plugin auto-install
+      configuration.
+  date: 2026-01-19 16:08:41
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to breakdown parameters that had breakdown definitions
+      but no labels.
+  date: 2026-01-19 16:19:40
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to bracket/scale parameters that had no labels.
+  date: 2026-01-19 16:39:43
+- bump: patch
+  changes:
+    fixed:
+    - Added missing breakdown and label metadata to pseudo-breakdown parameters.
+  date: 2026-01-19 17:30:20
+- bump: minor
+  changes:
+    fixed:
+    - Formatting.
+  date: 2026-01-19 18:07:10
+- bump: minor
+  changes:
+    added:
+    - Model RI Governor Dan McKee's 2027 tax proposals including a new child tax credit,
+      Social Security exemption expansion, new top income tax bracket, and pension/annuity
+      exemption updates.
+  date: 2026-01-19 18:32:47
+- bump: minor
+  changes:
+    added:
+    - Add Utah HB 210 (2026) structural reform implementing the taxpayer credit add-on
+      for married filers ($543 MFS, $1,086 joint/surviving spouse) with phaseout.
+  date: 2026-01-19 19:53:06
+- bump: minor
+  changes:
+    added:
+    - Add SC H.3492 partially refundable EITC reform.
+  date: 2026-01-19 19:54:16
+- bump: minor
+  changes:
+    added:
+    - Update Rhode Island 2025 Individual Income Tax Model.
+  date: 2026-01-19 22:07:57
+- bump: patch
+  changes:
+    added:
+    - Add breakdown_labels metadata to parameters with range() dimensions for semantic
+      labelling.
+  date: 2026-01-20 19:20:31
+- bump: patch
+  changes:
+    changed:
+    - Update 2026 federal poverty guidelines.
+  date: 2026-01-21 15:19:45
+- bump: minor
+  changes:
+    added:
+    - NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+  date: 2026-01-21 16:28:14
+- bump: minor
+  changes:
+    added:
+    - NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns
+      reform.
+  date: 2026-01-21 20:02:25
+- bump: minor
+  changes:
+    added:
+    - NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+  date: 2026-01-21 20:53:40
+- bump: patch
+  changes:
+    fixed:
+    - Remove DACA_TPS from immigration_status.
+  date: 2026-01-21 21:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Use `uv sync --extra dev` in CI to correctly install optional dev dependencies
+      including coverage.
+    - Improve selective test runner to only run tests for specific subfolders (states,
+      congress, local) instead of entire parent directories.
+    - Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+  date: 2026-01-22 23:38:46
+- bump: minor
+  changes:
+    added:
+    - Add Wyoming POWER program
+  date: 2026-01-23 15:27:36

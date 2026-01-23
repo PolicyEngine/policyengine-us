@@ -5,6 +5,194 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.512.0] - 2026-01-23 15:27:36
+
+### Added
+
+- Add Wyoming POWER program
+
+## [1.511.2] - 2026-01-22 23:38:46
+
+### Fixed
+
+- Use `uv sync --extra dev` in CI to correctly install optional dev dependencies including coverage.
+- Improve selective test runner to only run tests for specific subfolders (states, congress, local) instead of entire parent directories.
+- Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+
+## [1.511.1] - 2026-01-21 21:46:53
+
+### Fixed
+
+- Remove DACA_TPS from immigration_status.
+
+## [1.511.0] - 2026-01-21 20:53:40
+
+### Added
+
+- NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+
+## [1.510.0] - 2026-01-21 20:02:25
+
+### Added
+
+- NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns reform.
+
+## [1.509.0] - 2026-01-21 16:28:14
+
+### Added
+
+- NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+
+## [1.508.2] - 2026-01-21 15:19:45
+
+### Changed
+
+- Update 2026 federal poverty guidelines.
+
+## [1.508.1] - 2026-01-20 19:20:31
+
+### Added
+
+- Add breakdown_labels metadata to parameters with range() dimensions for semantic labelling.
+
+## [1.508.0] - 2026-01-19 22:07:57
+
+### Added
+
+- Update Rhode Island 2025 Individual Income Tax Model.
+
+## [1.507.0] - 2026-01-19 19:54:16
+
+### Added
+
+- Add SC H.3492 partially refundable EITC reform.
+
+## [1.506.0] - 2026-01-19 19:53:06
+
+### Added
+
+- Add Utah HB 210 (2026) structural reform implementing the taxpayer credit add-on for married filers ($543 MFS, $1,086 joint/surviving spouse) with phaseout.
+
+## [1.505.0] - 2026-01-19 18:32:47
+
+### Added
+
+- Model RI Governor Dan McKee's 2027 tax proposals including a new child tax credit, Social Security exemption expansion, new top income tax bracket, and pension/annuity exemption updates.
+
+## [1.504.0] - 2026-01-19 18:07:10
+
+### Fixed
+
+- Formatting.
+
+## [1.503.3] - 2026-01-19 17:30:20
+
+### Fixed
+
+- Added missing breakdown and label metadata to pseudo-breakdown parameters.
+
+## [1.503.2] - 2026-01-19 16:39:43
+
+### Fixed
+
+- Added missing label metadata to bracket/scale parameters that had no labels.
+
+## [1.503.1] - 2026-01-19 16:19:40
+
+### Fixed
+
+- Added missing label metadata to breakdown parameters that had breakdown definitions but no labels.
+
+## [1.503.0] - 2026-01-19 16:08:41
+
+### Changed
+
+- Replaced .claude git submodule with policyengine-claude plugin auto-install configuration.
+
+## [1.502.3] - 2026-01-15 22:29:01
+
+### Fixed
+
+- Fix CA Medi-Cal immigration eligibility for DACA/TPS holders in 2026. Previously, DACA/TPS holders incorrectly lost eligibility after the January 2026 enrollment freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and can still newly enroll.
+
+## [1.502.2] - 2026-01-15 22:18:44
+
+### Added
+
+- Add Microsimulation API documentation covering calc/calculate methods, map_to parameter, available datasets, subsampling, winners/losers analysis, and weight sanity checks.
+
+## [1.502.1] - 2026-01-15 22:15:03
+
+### Added
+
+- Add parameter discovery documentation guide
+
+## [1.502.0] - 2026-01-15 20:15:33
+
+### Added
+
+- Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end parameters.
+
+## [1.501.0] - 2026-01-15 20:02:12
+
+### Added
+
+- Adjust CLAUDE.md in US repo.
+
+## [1.500.4] - 2026-01-14 23:20:21
+
+### Changed
+
+- Updated uv.lock dependencies.
+
+## [1.500.3] - 2026-01-14 21:44:33
+
+### Added
+
+- Add is_blind to IL HBWD disability eligibility check.
+
+### Fixed
+
+- Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+
+## [1.500.2] - 2026-01-13 23:26:02
+
+### Fixed
+
+- Riverside County General Relief eligibility now correctly excludes units where all persons are ineligible.
+- Riverside County General Relief SSI check changed from unit-level to person-level, so only the individual receiving SSI is excluded, not all household members.
+
+## [1.500.1] - 2026-01-13 23:22:39
+
+### Changed
+
+- Remove concurrency block from push workflow to allow parallel CI runs.
+
+## [1.500.0] - 2026-01-13 22:53:31
+
+### Added
+
+- Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income for IL AABD calculation.
+
+## [1.499.1] - 2026-01-13 22:35:23
+
+### Fixed
+
+- Fix test_batched.py incorrectly marking tests as passed when failure count ends in 0.
+- Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
+
+## [1.499.0] - 2026-01-12 19:45:59
+
+### Added
+
+- CDCTC reform that makes families eligible if at least one parent works (instead of requiring both parents to work)
+
+## [1.498.1] - 2026-01-12 18:30:41
+
+### Fixed
+
+- Remove 51 invalid County enum entries (wrong state assignments, non-existent county/state combinations). Validated against Census 2020 county reference data.
+
 ## [1.498.0] - 2026-01-08 18:02:47
 
 ### Added
@@ -14241,6 +14429,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.512.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.2...1.512.0
+[1.511.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.1...1.511.2
+[1.511.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.0...1.511.1
+[1.511.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.510.0...1.511.0
+[1.510.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.509.0...1.510.0
+[1.509.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.2...1.509.0
+[1.508.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.1...1.508.2
+[1.508.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.0...1.508.1
+[1.508.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.507.0...1.508.0
+[1.507.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.506.0...1.507.0
+[1.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.505.0...1.506.0
+[1.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.504.0...1.505.0
+[1.504.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.3...1.504.0
+[1.503.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.2...1.503.3
+[1.503.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.1...1.503.2
+[1.503.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.503.0...1.503.1
+[1.503.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.3...1.503.0
+[1.502.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.2...1.502.3
+[1.502.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.1...1.502.2
+[1.502.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.502.0...1.502.1
+[1.502.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.501.0...1.502.0
+[1.501.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.4...1.501.0
+[1.500.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.3...1.500.4
+[1.500.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.2...1.500.3
+[1.500.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.1...1.500.2
+[1.500.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.500.0...1.500.1
+[1.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.1...1.500.0
+[1.499.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.499.0...1.499.1
+[1.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.1...1.499.0
+[1.498.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.498.0...1.498.1
 [1.498.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.1...1.498.0
 [1.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.497.0...1.497.1
 [1.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.496.2...1.497.0
