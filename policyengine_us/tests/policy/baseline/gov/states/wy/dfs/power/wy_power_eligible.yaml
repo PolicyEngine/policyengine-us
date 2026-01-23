@@ -1,0 +1,69 @@
+# Wyoming POWER Overall Eligibility Tests
+# Must pass: demographic AND immigration AND income AND resources
+# Source: Wyoming DFS Policy Manual
+
+- name: Case 1, all criteria pass.
+  period: 2026-01
+  input:
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
+  output:
+    wy_power_eligible: true
+
+- name: Case 2, fails income.
+  period: 2026-01
+  input:
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: false
+    wy_power_resources_eligible: true
+  output:
+    wy_power_eligible: false
+
+- name: Case 3, fails resources.
+  period: 2026-01
+  input:
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: false
+  output:
+    wy_power_eligible: false
+
+- name: Case 4, fails demographic (no child, not pregnant).
+  period: 2026-01
+  input:
+    state_code: WY
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
+  output:
+    wy_power_eligible: false
+
+- name: Case 5, fails immigration (no citizens).
+  period: 2026-01
+  input:
+    state_code: WY
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
+  output:
+    wy_power_eligible: false
+
+- name: Case 6, non-Wyoming state.
+  period: 2026-01
+  input:
+    state_code: CO
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wy_power_income_eligible: true
+    wy_power_resources_eligible: true
+  output:
+    wy_power_eligible: false

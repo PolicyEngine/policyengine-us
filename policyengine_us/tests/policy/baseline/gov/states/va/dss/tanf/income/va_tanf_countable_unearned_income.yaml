@@ -1,0 +1,189 @@
+# VA TANF Countable Unearned Income Tests
+# Formula: gross_unearned - child_support_disregard
+# Child support disregard: min(child_support, $100/month)
+# tanf_gross_unearned_income includes: veterans_benefits, rental_income, child_support_received,
+#   alimony_income, dividend_income, interest_income, pension_income, unemployment_compensation,
+#   gi_cash_assistance, social_security (NOT ssi)
+
+- name: Case 1, no unearned income returns zero.
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 1_000
+    child_support_received: 0
+  output:
+    # SSI is NOT counted in tanf_gross_unearned_income
+    va_tanf_countable_unearned_income: 0
+
+- name: Case 2, mixed unearned income with child support below disregard cap.
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 100
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_000
+  output:
+    # Gross unearned = 200*8 + 100 + 1,000 = 2,700 annual
+    # Monthly: 2,700/12 = 225
+    # Child support: 1,000/12 = 83.33/month
+    # Disregard: min(83.33, 100) = 83.33
+    # Countable monthly: 225 - 83.33 = 141.67
+    # Annual: 141.67 * 12 = 1,700
+    va_tanf_countable_unearned_income: 1_700
+
+- name: Case 3, child support above disregard cap, not UP-TANF.
+  period: 2023
+  input:
+    state_code: VA
+    va_up_tanf_eligibility: false
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 150
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_500
+  output:
+    # Gross unearned = 200*8 + 150 + 1,500 = 3,250 annual
+    # Monthly: 3,250/12 = 270.83
+    # Child support: 1,500/12 = 125/month
+    # Disregard: min(125, 100) = 100 (capped)
+    # Countable monthly: 270.83 - 100 = 170.83
+    # Annual: 170.83 * 12 = 2,050
+    va_tanf_countable_unearned_income: 2_050
+
+- name: Case 4, UP-TANF eligible, same calculation as regular TANF.
+  period: 2023
+  input:
+    state_code: VA
+    veterans_benefits: 200
+    rental_income: 200
+    alimony_income: 200
+    dividend_income: 200
+    interest_income: 150
+    pension_income: 200
+    unemployment_compensation: 200
+    gi_cash_assistance: 200
+    social_security: 200
+    ssi: 0
+    child_support_received: 1_500
+  output:
+    # Gross unearned = 200*8 + 150 + 1,500 = 3,250 annual
+    # Monthly: 3,250/12 = 270.83
+    # Child support: 1,500/12 = 125/month
+    # Disregard: min(125, 100) = 100 (capped)
+    # Countable monthly: 270.83 - 100 = 170.83
+    # Annual: 170.83 * 12 = 2,050
+    va_tanf_countable_unearned_income: 2_050
+
+- name: Case 5, child support exactly at $100/month threshold.
+  period: 2023
+  input:
+    state_code: VA
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 0
+    child_support_received: 1_200
+  output:
+    # Gross unearned = $1,200/year = $100/month
+    # Child support: $100/month
+    # Disregard: min($100, $100) = $100 (full disregard)
+    # Countable: $100 - $100 = $0
+    va_tanf_countable_unearned_income: 0
+
+- name: Case 6, child support $1 below $100/month.
+  period: 2023
+  input:
+    state_code: VA
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 0
+    child_support_received: 1_188
+  output:
+    # Gross unearned = $1,188/year = $99/month
+    # Child support: $99/month
+    # Disregard: min($99, $100) = $99 (below cap, full amount)
+    # Countable: $99 - $99 = $0
+    va_tanf_countable_unearned_income: 0
+
+- name: Case 7, child support $1 above $100/month.
+  period: 2023
+  input:
+    state_code: VA
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 0
+    child_support_received: 1_212
+  output:
+    # Gross unearned = $1,212/year = $101/month
+    # Child support: $101/month
+    # Disregard: min($101, $100) = $100 (capped)
+    # Countable: $101 - $100 = $1/month = $12/year
+    va_tanf_countable_unearned_income: 12
+
+- name: Case 8, child support with other unearned income.
+  period: 2023
+  input:
+    state_code: VA
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 3_600
+    ssi: 0
+    child_support_received: 2_400
+  output:
+    # Gross unearned = $3,600 + $2,400 = $6,000/year = $500/month
+    # Child support: $2,400/12 = $200/month
+    # Disregard: min($200, $100) = $100 (capped)
+    # Countable monthly: $500 - $100 = $400
+    # Annual: $400 * 12 = $4,800
+    va_tanf_countable_unearned_income: 4_800
