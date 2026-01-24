@@ -1,4 +1,6 @@
 - bump: patch
   changes:
     added:
-      - Added pandas 3.0 compatibility tests to verify state parameter lookups and string variables work correctly
+      - Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype and StringArray handling
+    changed:
+      - Removed pandas <3.0 version cap to enable pandas 3.0 support

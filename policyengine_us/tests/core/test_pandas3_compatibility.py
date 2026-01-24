@@ -9,8 +9,89 @@ have the pandas 3 compatibility fixes.
 """
 
 import numpy as np
+import pandas as pd
 
 from policyengine_us import Simulation
+
+
+class TestCoreFilledArrayWithStringDtype:
+    """
+    Test policyengine-core's filled_array handles pandas StringDtype.
+
+    This directly tests the fix in policyengine-core that converts
+    pandas ExtensionDtype to object dtype before calling numpy.full().
+
+    This test WILL FAIL with policyengine-core < 3.9.1.
+    """
+
+    def test_filled_array_with_string_dtype(self):
+        """
+        Test that filled_array handles pandas StringDtype.
+
+        In pandas 3, numpy.full() cannot handle StringDtype, raising:
+        TypeError: Cannot interpret '<StringDtype>' as a data type
+        """
+        from policyengine_core.populations.population import Population
+        from policyengine_core.entities import Entity
+
+        entity = Entity(
+            key="person",
+            plural="people",
+            label="Person",
+            doc="Test entity",
+        )
+        population = Population(entity)
+        population.count = 5
+
+        # Explicitly use pandas StringDtype - this is what pandas 3 uses by default
+        string_dtype = pd.StringDtype()
+
+        # This will fail without the fix:
+        # TypeError: Cannot interpret '<StringDtype>' as a data type
+        result = population.filled_array("test_value", dtype=string_dtype)
+
+        assert len(result) == 5
+        assert all(v == "test_value" for v in result)
+
+
+class TestCoreVectorialParameterWithStringArray:
+    """
+    Test policyengine-core's VectorialParameterNodeAtInstant handles StringArray.
+
+    This directly tests the fix that converts pandas StringArray to numpy
+    before vectorial parameter lookup.
+
+    This test WILL FAIL with policyengine-core < 3.9.1.
+    """
+
+    def test_vectorial_parameter_with_string_array(self):
+        """
+        Test that vectorial parameter lookup handles pandas StringArray.
+
+        In pandas 3, string operations return StringArray. Parameter lookup
+        would fail with: TypeError: unhashable type: 'StringArray'
+        """
+        from policyengine_core.parameters.vectorial_parameter_node_at_instant import (
+            VectorialParameterNodeAtInstant,
+        )
+
+        # Create a simple vectorial node
+        vector = np.array(
+            [(1.0, 2.0)],
+            dtype=[("zone_1", "float"), ("zone_2", "float")],
+        ).view(np.recarray)
+
+        node = VectorialParameterNodeAtInstant("test", vector, "2024-01-01")
+
+        # Create a pandas StringArray - this is what pandas 3 returns for string ops
+        key = pd.array(["zone_1", "zone_2"], dtype="string")
+
+        # This will fail without the fix:
+        # TypeError: unhashable type: 'StringArray'
+        result = node[key]
+
+        assert len(result) == 2
+        np.testing.assert_array_equal(result, [1.0, 2.0])
 
 
 class TestStateParameterLookupWithPandas3:
