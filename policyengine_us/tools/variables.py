@@ -17,5 +17,4 @@ def print_variable_summary(variable_name: str):
         f"""
         ## {variable.name}
         This variable models a{add_n(variable.entity.label)}**{variable.entity.label}**'s **{variable.label}**.
-        """
-    )
+        """)
