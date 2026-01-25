@@ -12404,3 +12404,9 @@
     - partnership_se_income variable for general partners' SE income from Schedule
       K-1 Box 14, now included in taxable_self_employment_income per 26 USC 1402(a).
   date: 2026-01-25 17:15:31
+- bump: patch
+  changes:
+    changed:
+    - Use default argument to numpy.select instead of dummy True condition for ~10%
+      performance improvement.
+  date: 2026-01-25 17:33:26

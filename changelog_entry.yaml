@@ -1,4 +1,0 @@
-- bump: patch
-  changes:
-    changed:
-    - Use default argument to numpy.select instead of dummy True condition for ~10% performance improvement.
