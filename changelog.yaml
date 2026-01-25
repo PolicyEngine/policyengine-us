@@ -12422,3 +12422,9 @@
     - Update Iowa SNAP self-employment deduction effective date from 2021-10-01 to
       2012-08-01 based on USDA FNS State Options Report research.
   date: 2026-01-25 18:31:23
+- bump: patch
+  changes:
+    fixed:
+    - Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024
+      microsim runs.
+  date: 2026-01-25 19:35:47
