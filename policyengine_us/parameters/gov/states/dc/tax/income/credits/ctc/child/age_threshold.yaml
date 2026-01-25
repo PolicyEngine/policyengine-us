@@ -1,6 +1,6 @@
 description: DC provides a Child Tax Credit amount for children below this age.
 metadata:
-  unit: age
+  unit: year
   label: DC Child Tax Credit child age threshold
   period: year
   reference:
@@ -9,3 +9,4 @@ metadata:
 
 values:
   2025-01-01: 6
+  2026-01-01: 18

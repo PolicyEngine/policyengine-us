@@ -17,3 +17,70 @@
     state_code: DC
   output:
     dc_ctc: 800
+
+- name: 2026 single filer below threshold with 2 children
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    dc_ctc_capped_children: 2
+    state_code: DC
+  output:
+    dc_ctc: 2_000
+
+- name: 2026 single filer with phase-out
+  period: 2026
+  input:
+    adjusted_gross_income: 58_000
+    filing_status: SINGLE
+    dc_ctc_capped_children: 2
+    state_code: DC
+  output:
+    # $3,000 excess over $55,000 threshold = 3 increments * $50 = $150 phase-out
+    # $2,000 base - $150 = $1,850
+    dc_ctc: 1_850
+
+- name: 2026 joint filer below threshold with 3 children
+  period: 2026
+  input:
+    adjusted_gross_income: 65_000
+    filing_status: JOINT
+    dc_ctc_capped_children: 3
+    state_code: DC
+  output:
+    dc_ctc: 3_000
+
+- name: 2026 joint filer with phase-out
+  period: 2026
+  input:
+    adjusted_gross_income: 75_000
+    filing_status: JOINT
+    dc_ctc_capped_children: 2
+    state_code: DC
+  output:
+    # $5,000 excess over $70,000 threshold = 5 increments * $50 = $250 phase-out
+    # $2,000 base - $250 = $1,750
+    dc_ctc: 1_750
+
+- name: 2026 separate filer with phase-out
+  period: 2026
+  input:
+    adjusted_gross_income: 37_500
+    filing_status: SEPARATE
+    dc_ctc_capped_children: 1
+    state_code: DC
+  output:
+    # $2,500 excess over $35,000 threshold = 3 increments * $50 = $150 phase-out
+    # $1,000 base - $150 = $850
+    dc_ctc: 850
+
+- name: 2026 income fully phases out credit
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    dc_ctc_capped_children: 1
+    state_code: DC
+  output:
+    # $45,000 excess = 45 increments * $50 = $2,250 phase-out exceeds $1,000 base
+    dc_ctc: 0

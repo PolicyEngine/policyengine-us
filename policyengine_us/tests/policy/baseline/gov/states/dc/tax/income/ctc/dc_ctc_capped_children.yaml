@@ -41,7 +41,7 @@
   output:
     dc_ctc_capped_children: 2
 
-- name: Case 3, 2 dependent children, both age unqalify.  
+- name: Case 3, 2 dependent children, both age unqalify.
   period: 2025
   input:
     people:
@@ -62,3 +62,56 @@
         state_code: DC
   output:
     dc_ctc_capped_children: 0
+
+- name: 2026 no child cap with 5 qualifying children
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        age: 5
+      person3:
+        is_tax_unit_dependent: true
+        age: 8
+      person4:
+        is_tax_unit_dependent: true
+        age: 12
+      person5:
+        is_tax_unit_dependent: true
+        age: 15
+      person6:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DC
+  output:
+    dc_ctc_capped_children: 5
+
+- name: 2026 age threshold excludes 18 year old
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+      person3:
+        is_tax_unit_dependent: true
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ctc_capped_children: 1
