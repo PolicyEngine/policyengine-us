@@ -12416,3 +12416,9 @@
     - Simplify Pell Grant calculation method by removing enum indirection and using
       time-based formula.
   date: 2026-01-25 18:19:02
+- bump: patch
+  changes:
+    fixed:
+    - Update Iowa SNAP self-employment deduction effective date from 2021-10-01 to
+      2012-08-01 based on USDA FNS State Options Report research.
+  date: 2026-01-25 18:31:23
