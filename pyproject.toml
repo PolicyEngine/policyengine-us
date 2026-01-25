@@ -20,8 +20,8 @@ classifiers = [
 ]
 dependencies = [
     "microdf-python>=1.0.0",
-    "pandas>=2.0,<3.0",  # pandas 3.0 has StringDtype incompatibility with numpy
-    "policyengine-core>=3.23.0",
+    "pandas>=2.0",
+    "policyengine-core>=3.23.5",
     "tqdm>=4.67.1",
 ]
 
