@@ -12377,3 +12377,13 @@
     added:
     - AGI surtax reform.
   date: 2026-01-23 21:14:19
+- bump: patch
+  changes:
+    added:
+    - Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype
+      and StringArray handling
+    changed:
+    - Removed pandas <3.0 version cap to enable pandas 3.0 support
+    - Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility
+      (includes Enum.encode() fix)
+  date: 2026-01-25 13:03:30

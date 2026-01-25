@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.514.1] - 2026-01-25 13:03:30
+
+### Added
+
+- Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype and StringArray handling
+
+### Changed
+
+- Removed pandas <3.0 version cap to enable pandas 3.0 support
+- Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility (includes Enum.encode() fix)
+
 ## [1.514.0] - 2026-01-23 21:14:19
 
 ### Added
@@ -14447,6 +14458,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.514.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.514.0...1.514.1
 [1.514.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.513.1...1.514.0
 [1.513.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.513.0...1.513.1
 [1.513.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.512.0...1.513.0
