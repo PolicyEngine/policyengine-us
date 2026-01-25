@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024 microsim runs.
