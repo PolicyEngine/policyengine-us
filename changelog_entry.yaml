@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    added:
+      - Added select_filing_status_value utility function for cleaner filing status selection with SINGLE as default.
+    changed:
+      - Refactored MD, CA, NY, AL, GA income tax calculations to use select_filing_status_value utility.
