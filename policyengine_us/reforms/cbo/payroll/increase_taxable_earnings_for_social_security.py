@@ -12,7 +12,9 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
         def formula(person, period, parameters):
             earnings = person("payroll_tax_gross_wages", period)
             p = parameters(period).gov
-            base_taxable = min_(earnings, p.irs.payroll.social_security.cap)
+            base_taxable = min_(
+                earnings, p.ssa.social_security.contribution_and_benefit_base
+            )
             secondary_taxable = max_(
                 0,
                 earnings - p.contrib.cbo.payroll.secondary_earnings_threshold,

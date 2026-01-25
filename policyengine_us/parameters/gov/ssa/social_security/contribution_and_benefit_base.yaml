@@ -1,4 +1,4 @@
-description: Individual earnings below this amount are subjected to Social Security (OASDI) payroll tax. This parameter is indexed by the rate of growth in average wages, not by the price inflation rate.
+description: The contribution and benefit base (commonly called the Social Security wage base) is the maximum amount of earnings subject to Social Security tax. This applies to both FICA (payroll) and SECA (self-employment) taxes. Defined in the Social Security Act and indexed by the national average wage index.
 values:
   1937-01-01: 3_000
   1951-01-01: 3_600
@@ -72,7 +72,7 @@ values:
 metadata:
   unit: currency-USD
   period: year
-  label: Social Security earnings cap
+  label: Social Security contribution and benefit base
   uprating: gov.ssa.nawi
   reference:
     - title: 42 U.S.C. § 430(b)
@@ -81,7 +81,10 @@ metadata:
       # (b)(2) indexes based on the national average wage index relative to 1992
     - title: 26 U.S.C. § 3121(a)(1)
       href: https://www.law.cornell.edu/uscode/text/26/3121#a_1
-      # Defines wages for FICA tax purposes as amounts from the benefit base.
+      # Defines wages for FICA tax purposes as amounts up to the contribution and benefit base.
+    - title: 26 U.S.C. § 1402(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/1402#b_1
+      # Defines self-employment income for SECA tax purposes as amounts up to the contribution and benefit base.
     - title: Contribution And Benefit Base
       href: https://www.ssa.gov/oact/cola/cbb.html
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025

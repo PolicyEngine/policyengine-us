@@ -73,9 +73,8 @@ values:
   2021-01-01: 60_575.07 # NAWI(Y-2) for CBB(2023)
   2022-01-01: 63_795.13 # NAWI(Y-2) for CBB(2024)
   2023-01-01: 66_621.80 # NAWI(Y-2) for CBB(2025)
-  # Back out NAWI from CBO's forecast of the payroll tax cap, in
-  # parameters/gov/irs/payroll/social_security/cap.yaml
-  # Back out NAWI from CBO's forecast of the payroll tax cap.
+  # Back out NAWI from CBO's forecast of the contribution and benefit base, in
+  # parameters/gov/ssa/social_security/contribution_and_benefit_base.yaml
   # The formula to derive NAWI(Y-2) from CBB(Y) is:
   # NAWI(Y-2) approx = CBB(Y) * (NAWI_1992 / CBB_1994)
   # where NAWI_1992 = 22_935.42 and CBB_1994 = 60_600.
