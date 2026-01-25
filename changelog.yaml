@@ -12387,3 +12387,8 @@
     - Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility
       (includes Enum.encode() fix)
   date: 2026-01-25 13:03:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix Iowa SNAP self-employment simplified deduction rate from 0% to 40%.
+  date: 2026-01-25 13:30:04
