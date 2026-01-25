@@ -121,6 +121,7 @@ from .congress.hawley.awra import (
 from .crfb import (
     create_non_refundable_ss_credit_reform,
     create_senior_deduction_extension_reform,
+    create_agi_surtax_reform,
 )
 from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
@@ -271,6 +272,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     senior_deduction_extension = create_senior_deduction_extension_reform(
         parameters, period
     )
+    agi_surtax = create_agi_surtax_reform(parameters, period)
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -370,6 +372,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         afa_other_dependent_credit,
         non_refundable_ss_credit,
         senior_deduction_extension,
+        agi_surtax,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
