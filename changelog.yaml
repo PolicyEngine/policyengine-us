@@ -12428,3 +12428,10 @@
     - Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024
       microsim runs.
   date: 2026-01-25 19:35:47
+- bump: minor
+  changes:
+    added:
+    - Add expanded income base option for CRFB AGI surtax reform, including retirement
+      contributions, HSA contributions, student loan interest, tax-exempt Social Security,
+      foreign earned income exclusion, tax-exempt interest, and health insurance premiums.
+  date: 2026-01-25 20:55:20

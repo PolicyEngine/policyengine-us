@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.517.0] - 2026-01-25 20:55:20
+
+### Added
+
+- Add expanded income base option for CRFB AGI surtax reform, including retirement contributions, HSA contributions, student loan interest, tax-exempt Social Security, foreign earned income exclusion, tax-exempt interest, and health insurance premiums.
+
 ## [1.516.4] - 2026-01-25 19:35:47
 
 ### Fixed
@@ -14496,6 +14502,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.517.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.4...1.517.0
 [1.516.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.3...1.516.4
 [1.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.2...1.516.3
 [1.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.1...1.516.2
