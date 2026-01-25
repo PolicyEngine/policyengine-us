@@ -23,3 +23,15 @@
     self_employment_income: 399
   output:
     taxable_self_employment_income: 0
+
+- name: S-corp and partnership income is not subject to SE tax per 26 USC 1402.
+  period: 2024
+  input:
+    self_employment_income: 50_000
+    partnership_s_corp_income: 100_000
+  output:
+    # Only the $50k self-employment income is subject to SE tax.
+    # The $100k partnership/S-corp income passes through for income tax
+    # but is not self-employment income.
+    # 50_000 * (1 - 0.5 * 0.153) = 50_000 * 0.9235 = 46_175
+    taxable_self_employment_income: 46_175
