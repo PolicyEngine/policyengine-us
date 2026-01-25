@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.516.2] - 2026-01-25 18:19:02
+
+### Changed
+
+- Simplify Pell Grant calculation method by removing enum indirection and using time-based formula.
+
 ## [1.516.1] - 2026-01-25 17:33:26
 
 ### Changed
@@ -14478,6 +14484,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.1...1.516.2
 [1.516.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.0...1.516.1
 [1.516.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.515.0...1.516.0
 [1.515.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.514.2...1.515.0

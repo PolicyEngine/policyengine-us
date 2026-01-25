@@ -12410,3 +12410,9 @@
     - Use default argument to numpy.select instead of dummy True condition for ~10%
       performance improvement.
   date: 2026-01-25 17:33:26
+- bump: patch
+  changes:
+    changed:
+    - Simplify Pell Grant calculation method by removing enum indirection and using
+      time-based formula.
+  date: 2026-01-25 18:19:02
