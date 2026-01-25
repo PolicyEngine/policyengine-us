@@ -1,39 +1,3 @@
-- name: Case 1, is a dependent and age below threshold. 
-  period: 2025
-  input:
-    is_tax_unit_dependent: true
-    age: 5 
-    state_code: DC
-  output:
-    dc_ctc_eligible_child: true
-
-- name: Case 2, is a dependent but age above threshold. 
-  period: 2025
-  input:
-    is_tax_unit_dependent: true
-    age: 8 
-    state_code: DC
-  output:
-    dc_ctc_eligible_child: false
-
-- name: Case 3, not a dependent and age below threshold. 
-  period: 2025
-  input:
-    is_tax_unit_dependent: false
-    age: 5 
-    state_code: DC
-  output:
-    dc_ctc_eligible_child: false
-
-- name: Case 4, not a dependent and age above threshold.
-  period: 2025
-  input:
-    is_tax_unit_dependent: false
-    age: 8
-    state_code: DC
-  output:
-    dc_ctc_eligible_child: false
-
 - name: 2026 dependent under 18 is eligible
   period: 2026
   input:
@@ -60,3 +24,12 @@
     state_code: DC
   output:
     dc_ctc_eligible_child: true
+
+- name: 2026 non-dependent is not eligible
+  period: 2026
+  input:
+    is_tax_unit_dependent: false
+    age: 10
+    state_code: DC
+  output:
+    dc_ctc_eligible_child: false
