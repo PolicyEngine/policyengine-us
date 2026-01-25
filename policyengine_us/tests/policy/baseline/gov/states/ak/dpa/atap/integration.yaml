@@ -1,0 +1,326 @@
+# Integration tests for Alaska ATAP - full pipeline testing
+# Tests realistic family scenarios with complete eligibility and benefit calculations
+# 7 AAC 45: https://www.law.cornell.edu/regulations/alaska/title-7/part-3/chapter-45
+# Adult-included only (minimum family size 2)
+# Work incentive: $150 flat + 33% for continuing, $90 for new applicants
+# Child support passthrough: first $50 not counted
+# Benefit = (Need Standard - Countable Income) * (Size 2 Max / Size 2 Need)
+# Size 2 ratio for 2026: $821 / $1,908 = 0.4303
+
+- name: Single parent with 2 children, $800 earned income (continuing)
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult, child1, child2]
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # Family size 3: 185% limit = $3,975, need = $2,149
+    # Gross $800 < $3,975 ✓
+    # Earned deduction: $150 + ($800-$150)*0.33 = $150 + $214.50 = $364.50
+    # Countable earned: $800 - $364.50 = $435.50
+    # Countable < $2,149 ✓
+    # Benefit: ($2,149 - $435.50) * ($821 / $1,908) = $1,713.50 * 0.4303 = $737.28
+    ak_atap_gross_income_limit: 3_975
+    ak_atap_need_standard: 2_149
+    ak_atap_maximum_payment: 923
+    ak_atap_countable_earned_income: 435.50
+    ak_atap_gross_income_eligible: true
+    ak_atap_net_income_eligible: true
+    ak_atap_eligible: true
+    ak_atap: 737
+
+- name: Single parent with 1 child, over 185% limit
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 28
+        employment_income_before_lsr: 48_000  # $4,000/month
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+    tax_units:
+      tax_unit:
+        members: [adult, child1]
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Family size 2: 185% limit = $3,529
+    # Gross $4,000 > $3,529 = INELIGIBLE
+    ak_atap_gross_income_limit: 3_529
+    ak_atap_gross_income_eligible: false
+    ak_atap_eligible: false
+    ak_atap: 0
+
+- name: Single parent with 1 child, zero income
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 25
+        employment_income_before_lsr: 0
+      child1:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+    tax_units:
+      tax_unit:
+        members: [adult, child1]
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Family size 2: need = $1,908, max = $821
+    # Zero income = full benefit
+    # Benefit: ($1,908 - $0) * ($821 / $1,908) = $821
+    ak_atap_need_standard: 1_908
+    ak_atap_maximum_payment: 821
+    ak_atap_countable_income: 0
+    ak_atap_eligible: true
+    ak_atap: 821
+
+- name: Family with earned and child support income
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 29
+        employment_income_before_lsr: 4_800  # $400/month
+        child_support_received: 1_200  # $100/month
+      child1:
+        age: 6
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult, child1, child2]
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # Family size 3: need = $2,149
+    # Earned deduction: $150 + ($400-$150)*0.33 = $232.50
+    # Countable earned: $400 - $232.50 = $167.50
+    # Child support: $100 - $50 passthrough = $50 countable
+    # Total countable: $167.50 + $50 = $217.50
+    # Benefit: ($2,149 - $217.50) * ($821 / $1,908) = $1,931.50 * 0.4303 = $831.12
+    ak_atap_countable_earned_income: 167.50
+    ak_atap_countable_unearned_income: 50
+    ak_atap_countable_income: 217.50
+    ak_atap_eligible: true
+    ak_atap: 831
+
+- name: New applicant (lower deduction)
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        is_tanf_enrolled: false  # New applicant
+    tax_units:
+      tax_unit:
+        members: [adult, child1]
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Family size 2: need = $1,908
+    # New applicant: only $90 flat deduction
+    # Countable earned: $500 - $90 = $410
+    # Benefit: ($1,908 - $410) * ($821 / $1,908) = $1,498 * 0.4303 = $644.69
+    ak_atap_countable_earned_income: 410
+    ak_atap_eligible: true
+    ak_atap: 644
+
+- name: Large family (size 10)
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income_before_lsr: 0
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+      child9:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    tax_units:
+      tax_unit:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: AK
+  output:
+    # Family size 10: need = $3,835
+    # Benefit: ($3,835 - $0) * ($821 / $1,908) = $3,835 * 0.4303 = $1,650.17
+    ak_atap_need_standard: 3_835
+    ak_atap_maximum_payment: 1_637
+    ak_atap_eligible: true
+    ak_atap: 1_650
+
+- name: Gross income passes 185% test but net income fails need standard test
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult, child1]
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Family size 2: 185% limit = $3,529, need = $1,908
+    # Gross $3,000 < $3,529 ✓ (passes gross test)
+    # Earned deduction: $150 + ($3,000-$150)*0.33 = $150 + $940.50 = $1,090.50
+    # Countable earned: $3,000 - $1,090.50 = $1,909.50
+    # Countable $1,909.50 > $1,908 ✗ (fails net test)
+    ak_atap_gross_income_limit: 3_529
+    ak_atap_gross_income_eligible: true
+    ak_atap_countable_earned_income: 1_909.50
+    ak_atap_net_income_eligible: false
+    ak_atap_eligible: false
+    ak_atap: 0
+
+- name: Income at exact 185% gross threshold
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 42_348  # $3,529/month (exact 185% limit for size 2)
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult, child1]
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Family size 2: 185% limit = $3,529, need = $1,908
+    # Gross $3,529 <= $3,529 ✓ (passes gross test at exact boundary)
+    # Earned deduction: $150 + ($3,529-$150)*0.33 = $150 + $1,115.07 = $1,265.07
+    # Countable earned: $3,529 - $1,265.07 = $2,263.93
+    # Countable $2,263.93 > $1,908 ✗ (fails net test)
+    ak_atap_gross_income_limit: 3_529
+    ak_atap_gross_income_eligible: true
+    ak_atap_countable_earned_income: 2_263.93
+    ak_atap_net_income_eligible: false
+    ak_atap_eligible: false
+    ak_atap: 0
+
+- name: Two-parent household with both earners
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      adult1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+      adult2:
+        age: 33
+        employment_income_before_lsr: 2_400  # $200/month
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child1]
+    households:
+      household:
+        members: [adult1, adult2, child1]
+        state_code: AK
+  output:
+    # Family size 3: 185% limit = $3,975, need = $2,149
+    # Max payment: 1 dependent = $821 + (1-1)*$102 = $821
+    # Adult1 earned: $300, deduction = $150 + ($300-$150)*0.33 = $199.50, countable = $100.50
+    # Adult2 earned: $200, deduction = $150 + ($200-$150)*0.33 = $166.50, countable = $33.50
+    # Total countable earned: $100.50 + $33.50 = $134
+    # Gross $500 < $3,975 ✓
+    # Countable $134 < $2,149 ✓
+    # Benefit: ($2,149 - $134) * ($821 / $1,908) = $2,015 * 0.4303 = $867.05
+    ak_atap_gross_income_limit: 3_975
+    ak_atap_need_standard: 2_149
+    ak_atap_maximum_payment: 821
+    ak_atap_countable_earned_income: 134
+    ak_atap_gross_income_eligible: true
+    ak_atap_net_income_eligible: true
+    ak_atap_eligible: true
+    ak_atap: 867

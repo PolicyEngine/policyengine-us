@@ -1,0 +1,48 @@
+- name: Case 1, income at or below total deduction threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+      person2:
+        tanf_gross_earned_income: 100
+      person3:
+        tanf_gross_earned_income: 120
+      person4:
+        tanf_gross_earned_income: 500
+      person5:
+        tanf_gross_earned_income: 1_020
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: LA
+  output:
+    la_fitap_earned_income_after_disregard: [0, 0, 0, 0, 0]
+    # Person 1: $0 → $0
+    # Person 2: $100 (below standard $120) → $0
+    # Person 3: $120 (exactly at standard) → $0
+    # Person 4: $500 (between standard and total) → $0
+    # Person 5: $1,020 (exactly at total deduction) → $0
+
+- name: Case 2, income exceeding total deduction threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_021
+      person2:
+        tanf_gross_earned_income: 1_500
+      person3:
+        tanf_gross_earned_income: 3_000
+      person4:
+        tanf_gross_earned_income: 800
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    la_fitap_earned_income_after_disregard: [1, 480, 1_980, 0]
+    # Person 1: $1,021 → max(1021-120, 0)=901 → max(901-900, 0) = $1
+    # Person 2: $1,500 → max(1500-120, 0)=1380 → max(1380-900, 0) = $480
+    # Person 3: $3,000 → max(3000-120, 0)=2880 → max(2880-900, 0) = $1,980
+    # Person 4: $800 → max(800-120, 0)=680 → max(680-900, 0) = $0

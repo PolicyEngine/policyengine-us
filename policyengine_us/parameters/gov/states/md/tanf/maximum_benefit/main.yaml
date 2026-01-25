@@ -18,10 +18,13 @@ description: Maryland TANF grant standard by number of caretakers and children.
   2021-10-01: 1_372
 
 metadata:
+  label: Maryland TANF maximum benefit
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 9)
+  breakdown_labels:
+    - Household size
   reference:
     - title: Family Investment Programs Income Guidelines as of October 01, 2021
       href: https://dhs.maryland.gov/documents/Supplemental%20Nutrition%20Assistance%20Program%20(SNAP)/October-2020-Income-Guidelines-1-1.pdf

@@ -1,24 +1,10 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [[ \"$1\" == *\".claude/\"* ]]; then cd .claude && ./protect-submodule.sh; fi"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [[ \"$1\" == *\".claude/\"* ]]; then cd .claude && ./protect-submodule.sh; fi"
-          }
-        ]
-      }
+  "plugins": {
+    "marketplaces": [
+      "PolicyEngine/policyengine-claude"
+    ],
+    "auto_install": [
+      "country-models@policyengine-claude"
     ]
   }
 }

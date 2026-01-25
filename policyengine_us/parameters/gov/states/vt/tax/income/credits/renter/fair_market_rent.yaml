@@ -4,6 +4,8 @@ metadata:
   period: month
   breakdown:
   - list(range(1,9))
+  breakdown_labels:
+  - Household size
   label: Vermont fair market rent amount
   reference:
     # The values are derived from the renter credit computation tables which represent 10% of the 
