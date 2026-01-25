@@ -12392,3 +12392,9 @@
     fixed:
     - Fix Iowa SNAP self-employment simplified deduction rate from 0% to 40%.
   date: 2026-01-25 13:30:04
+- bump: minor
+  changes:
+    removed:
+    - s_corp_self_employment_income variable. S-corp distributions are not subject
+      to self-employment tax per 26 USC 1402(a).
+  date: 2026-01-25 16:54:14
