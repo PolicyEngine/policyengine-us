@@ -12398,3 +12398,9 @@
     - s_corp_self_employment_income variable. S-corp distributions are not subject
       to self-employment tax per 26 USC 1402(a).
   date: 2026-01-25 16:54:14
+- bump: minor
+  changes:
+    added:
+    - partnership_se_income variable for general partners' SE income from Schedule
+      K-1 Box 14, now included in taxable_self_employment_income per 26 USC 1402(a).
+  date: 2026-01-25 17:15:31
