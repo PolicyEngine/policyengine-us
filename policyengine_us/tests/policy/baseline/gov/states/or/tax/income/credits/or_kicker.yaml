@@ -5,3 +5,12 @@
     or_tax_before_credits_in_prior_year: 1
   output:
     or_kicker: 0.17341
+
+# 2025 kicker test - 9.863% rate for tax year 2025 based on 2024 surplus
+- name: In 2025, OR returns 9.863 percent of prior year tax as a kicker
+  period: 2025
+  input:
+    state_code: OR
+    or_tax_before_credits_in_prior_year: 1_000
+  output:
+    or_kicker: 98.63
