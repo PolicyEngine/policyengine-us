@@ -166,3 +166,36 @@ class congressional_district_geoid(Variable):
     Note: Leading zeros are not preserved in the integer storage (e.g., 0101 becomes 101),
     but the value remains unique and unambiguous since the format is always interpreted as SSDD."""
     default_value = 0
+
+
+class sldu(Variable):
+    value_type = str
+    label = "State Legislative District Upper"
+    entity = Household
+    definition_period = YEAR
+    documentation = """State Legislative District Upper (State Senate district).
+
+    This is a 3-character code from the Census Bureau's Block Assignment Files.
+    Examples: "001", "002", "030".
+
+    Empty string indicates the district is not assigned or unknown.
+
+    Used for state-level policy analysis by state senate district."""
+    default_value = ""
+
+
+class sldl(Variable):
+    value_type = str
+    label = "State Legislative District Lower"
+    entity = Household
+    definition_period = YEAR
+    documentation = """State Legislative District Lower (State Assembly/House district).
+
+    This is a 3-character code from the Census Bureau's Block Assignment Files.
+    Examples: "001", "002", "105".
+
+    Empty string indicates the district is not assigned or unknown.
+    Some states (e.g., Nebraska) have unicameral legislatures and lack SLDL.
+
+    Used for state-level policy analysis by state assembly/house district."""
+    default_value = ""

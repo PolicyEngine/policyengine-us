@@ -1,0 +1,25 @@
+- name: SLDU defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    sldu:
+      - ""
+
+- name: SLDU can be set
+  period: 2024
+  input:
+    state_fips: 36
+    sldu: "1"
+  output:
+    sldu:
+      - "1"
+
+- name: SLDU can be set with multi-char code
+  period: 2024
+  input:
+    state_fips: 41
+    sldu: "12"
+  output:
+    sldu:
+      - "12"

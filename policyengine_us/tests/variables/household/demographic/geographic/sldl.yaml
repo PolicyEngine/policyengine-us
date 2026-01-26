@@ -1,0 +1,25 @@
+- name: SLDL defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    sldl:
+      - ""
+
+- name: SLDL can be set
+  period: 2024
+  input:
+    state_fips: 36
+    sldl: "1"
+  output:
+    sldl:
+      - "1"
+
+- name: SLDL can be set with multi-char code
+  period: 2024
+  input:
+    state_fips: 41
+    sldl: "12"
+  output:
+    sldl:
+      - "12"
