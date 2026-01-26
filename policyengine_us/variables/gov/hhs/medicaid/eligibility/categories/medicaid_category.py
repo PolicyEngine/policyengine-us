@@ -53,7 +53,7 @@ class medicaid_category(Variable):
             [
                 person(variable, period)
                 for variable in variable_to_category.keys()
-            ]
-            + [True],
-            list(variable_to_category.values()) + [MedicaidCategory.NONE],
+            ],
+            list(variable_to_category.values()),
+            default=MedicaidCategory.NONE,
         )

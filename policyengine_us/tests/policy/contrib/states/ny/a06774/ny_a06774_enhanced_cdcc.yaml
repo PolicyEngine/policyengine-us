@@ -1,0 +1,141 @@
+# NY A06774 Enhanced Child and Dependent Care Credit Tests
+# Tests the enhanced CDCC at 110% of federal credit for incomes up to $50,000
+
+# Basic eligibility tests - income below threshold
+- name: Enhanced CDCC - income $40k with one child gets 110% of federal
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Federal CDCC: $3,000 * 22% = $660
+    # (rate is 22% for AGI around $40k)
+    # Enhanced: $660 * 1.1 = $726
+    ny_cdcc: 726
+
+- name: Enhanced CDCC - income at $50k threshold still gets enhanced credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Federal CDCC: $3,000 * 20% = $600
+    # (rate floors at 20% for AGI $43k+)
+    # Enhanced: $600 * 1.1 = $660
+    ny_cdcc: 660
+
+# Income above threshold - uses standard NY CDCC
+- name: Income above $50k threshold uses standard NY CDCC formula
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    # Income above threshold, uses standard NY CDCC which applies
+    # NY-specific rate multipliers on top of federal rate
+    # Standard NY CDCC at $60k = $650.16
+    ny_cdcc: 650
+
+# Two children test
+- name: Enhanced CDCC - two children with $6k expenses
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NY
+  output:
+    # Federal CDCC: $6,000 * 22% = $1,320
+    # Enhanced: $1,320 * 1.1 = $1,452
+    ny_cdcc: 1_452
+
+# Edge case - no childcare expenses
+- name: Enhanced CDCC - no childcare expenses returns zero
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.a06774.ny_a06774_enhanced_cdcc.ny_a06774_enhanced_cdcc
+  input:
+    gov.contrib.states.ny.a06774.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        tax_unit_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NY
+  output:
+    ny_cdcc: 0
