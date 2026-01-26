@@ -7,6 +7,9 @@ class ny_tanf_eligible(Variable):
     label = "New York TANF eligible"
     definition_period = MONTH
     defined_for = StateCode.NY
+    reference = (
+        "https://otda.ny.gov/policy/tanf/TANF-State-Plan-2024-2026.pdf#page=7"
+    )
 
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)

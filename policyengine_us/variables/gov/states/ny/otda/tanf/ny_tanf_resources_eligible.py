@@ -13,7 +13,7 @@ class ny_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        p = parameters(period).gov.states.ny.otda.tanf.eligibility.resources
+        p = parameters(period).gov.states.ny.otda.tanf.resources
         person_meets_higher_limit_age = (
             person("age", period.this_year)
             >= p.higher_resource_limit_age_threshold

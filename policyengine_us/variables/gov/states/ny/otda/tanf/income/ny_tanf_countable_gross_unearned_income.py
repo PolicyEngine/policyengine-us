@@ -8,5 +8,8 @@ class ny_tanf_countable_gross_unearned_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NY
+    reference = (
+        "https://otda.ny.gov/policy/directives/1997/ADM/97_ADM-23.pdf#page=3"
+    )
 
     adds = "gov.hhs.tanf.cash.income.sources.unearned"

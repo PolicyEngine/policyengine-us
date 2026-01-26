@@ -7,6 +7,10 @@ class ny_tanf_income_eligible(Variable):
     label = "New York TANF income eligible"
     definition_period = MONTH
     defined_for = StateCode.NY
+    reference = (
+        "https://otda.ny.gov/policy/directives/1997/ADM/97_ADM-23.pdf#page=3",
+        "https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=2",
+    )
 
     def formula(spm_unit, period, parameters):
         # Gross income test (only applies pre-Oct 2022)

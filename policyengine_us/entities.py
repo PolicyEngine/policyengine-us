@@ -1,6 +1,5 @@
 from policyengine_core.entities import build_entity
 
-
 Household = build_entity(
     key="household",
     plural="households",
