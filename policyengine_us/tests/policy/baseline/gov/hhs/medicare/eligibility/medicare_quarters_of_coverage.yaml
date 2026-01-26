@@ -1,0 +1,6 @@
+- name: Default Medicare quarters of coverage
+  period: 2025
+  input:
+    age: 65
+  output:
+    medicare_quarters_of_coverage: 40  # Default from parameter
