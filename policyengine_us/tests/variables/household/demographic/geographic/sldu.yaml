@@ -10,16 +10,16 @@
   period: 2024
   input:
     state_fips: 36
-    sldu: "1"
+    sldu: "001"
   output:
     sldu:
-      - "1"
+      - "001"
 
 - name: SLDU can be set with multi-char code
   period: 2024
   input:
     state_fips: 41
-    sldu: "12"
+    sldu: "012"
   output:
     sldu:
-      - "12"
+      - "012"

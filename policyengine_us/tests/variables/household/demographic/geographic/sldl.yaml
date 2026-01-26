@@ -10,16 +10,16 @@
   period: 2024
   input:
     state_fips: 36
-    sldl: "1"
+    sldl: "001"
   output:
     sldl:
-      - "1"
+      - "001"
 
 - name: SLDL can be set with multi-char code
   period: 2024
   input:
     state_fips: 41
-    sldl: "12"
+    sldl: "012"
   output:
     sldl:
-      - "12"
+      - "012"
