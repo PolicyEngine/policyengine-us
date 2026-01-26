@@ -31,7 +31,7 @@
 
 - name: Case 2, low earned income eligible.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -61,7 +61,7 @@
 
 - name: Case 3, income exceeds gross income limit (Test 1 fails).
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -89,7 +89,7 @@
 
 - name: Case 4, unearned income exceeds payment standard (Test 3 fails).
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -120,7 +120,7 @@
 
 - name: Case 5, larger family with mixed income eligible.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -156,7 +156,7 @@
 
 - name: Case 6, high mixed income fails Test 3.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -214,7 +214,7 @@
 
 - name: Case 8, family of 4 at income threshold.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -247,3 +247,105 @@
     # Test 2: $12,000 - ($12,000 * 0.20) = $9,600 < $11,832 - PASS
     # Test 3: $9,600 - ($9,600 * 0.58) = $4,032 < $5,940 - PASS
     ia_fip_income_eligible: true
+
+# Continuing eligibility tests per IAC 441-41.27(239B)
+# Initial eligibility uses 3 tests; continuing eligibility uses only 2
+# (skips the net income < standard of need test)
+
+- name: Case 9, initial applicant fails net income test (not enrolled).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_600
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $15,600/year earned income ($1,300/month)
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $15,600 <= $10,188 * 1.85 = $18,847.80 - PASS
+    # Test 2: $15,600 - ($15,600 * 0.20) = $12,480 >= $10,188 - FAIL
+    # Test 3: $15,600 * 0.80 * 0.42 = $5,241.60 >= $5,112 - FAIL
+    # Initial eligibility requires all 3 tests - FAIL
+    ia_fip_income_eligible: false
+
+- name: Case 10, continuing recipient passes with same income (enrolled).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 13_200
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $13,200/year earned income ($1,100/month)
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $13,200 <= $18,847.80 - PASS
+    # Test 2: $13,200 * 0.80 = $10,560 >= $10,188 - FAIL (but skipped for continuing)
+    # Test 3: $13,200 * 0.80 * 0.42 = $4,435.20 < $5,112 - PASS
+    # Continuing eligibility only requires tests 1 and 3 - PASS
+    ia_fip_income_eligible: true
+
+- name: Case 11, same income ineligible as initial applicant.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 13_200
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Same income as Case 10, but as initial applicant
+    # Test 2: $10,560 >= $10,188 - FAIL
+    # Initial eligibility requires all 3 tests - FAIL
+    ia_fip_income_eligible: false

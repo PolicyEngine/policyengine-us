@@ -52,7 +52,7 @@
 
 - name: Case 3, ineligible due to high income.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -180,7 +180,7 @@
 
 - name: Case 8, eligible family with moderate income.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

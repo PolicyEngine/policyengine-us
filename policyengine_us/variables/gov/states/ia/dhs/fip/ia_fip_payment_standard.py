@@ -6,7 +6,7 @@ class ia_fip_payment_standard(Variable):
     entity = SPMUnit
     label = "Iowa FIP payment standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.IA
     reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=31"
 
@@ -18,5 +18,4 @@ class ia_fip_payment_standard(Variable):
 
         base = p.payment_standard.main[capped_people]
         additional_amount = p.payment_standard.additional * additional_people
-        monthly = base + additional_amount
-        return monthly * MONTHS_IN_YEAR
+        return base + additional_amount

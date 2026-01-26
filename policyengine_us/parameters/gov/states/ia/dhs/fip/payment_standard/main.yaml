@@ -1,31 +1,33 @@
 description: Iowa sets these values as the payment standard, or the schedule of basic needs, by family size under the Family Investment Program.
 
 1:
-  2025-07-01: 183
+  2017-10-27: 183
 2:
-  2025-07-01: 361
+  2017-10-27: 361
 3:
-  2025-07-01: 426
+  2017-10-27: 426
 4:
-  2025-07-01: 495
+  2017-10-27: 495
 5:
-  2025-07-01: 548
+  2017-10-27: 548
 6:
-  2025-07-01: 610
+  2017-10-27: 610
 7:
-  2025-07-01: 670
+  2017-10-27: 670
 8:
-  2025-07-01: 731
+  2017-10-27: 731
 9:
-  2025-07-01: 791
+  2017-10-27: 791
 10:
-  2025-07-01: 865
+  2017-10-27: 865
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance unit size
   label: Iowa FIP payment standard
   reference:
     - title: Iowa Administrative Code 441-41.28(239B) - Need Standards, 41.28(2)

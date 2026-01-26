@@ -4,7 +4,7 @@
 
 - name: Case 1, family of 1.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -22,7 +22,7 @@
 
 - name: Case 2, family of 2.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -42,7 +42,7 @@
 
 - name: Case 3, family of 3.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -64,7 +64,7 @@
 
 - name: Case 4, family of 4.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -88,7 +88,7 @@
 
 - name: Case 5, family of 5.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -114,7 +114,7 @@
 
 - name: Case 6, family of 6.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -142,7 +142,7 @@
 
 - name: Case 7, family of 10 (max size in table).
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

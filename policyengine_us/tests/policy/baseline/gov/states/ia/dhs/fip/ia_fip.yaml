@@ -47,7 +47,7 @@
   # - Payment standard for 3: $426/month * 12 = $5,112/year
   # - Benefit: $5,112 - $3,225.60 = $1,886.40/year
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -75,7 +75,6 @@
   output:
     ia_fip_standard_of_need: 10_188
     ia_fip_payment_standard: 5_112
-    ia_fip_gross_earned_income: 9_600
     ia_fip_gross_income: 9_600
     ia_fip_countable_income: 3_225.60
     ia_fip_income_eligible: true
@@ -88,7 +87,7 @@
   # Gross income limit: $8,628 * 1.85 = $15,961.80/year
   # Gross income: $24,000/year > $15,961.80 - FAIL Test 1
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -122,7 +121,7 @@
   # Countable income: $0
   # Benefit: $4,332 - $0 = $4,332/year
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -146,8 +145,6 @@
   output:
     ia_fip_standard_of_need: 8_628
     ia_fip_payment_standard: 4_332
-    ia_fip_gross_earned_income: 0
-    ia_fip_gross_unearned_income: 0
     ia_fip_gross_income: 0
     ia_fip_countable_income: 0
     ia_fip_income_eligible: true
@@ -165,7 +162,7 @@
   # Countable income: $4,800 (no earned income deductions apply)
   # Countable income $4,800 > payment standard $4,332 - FAIL Test 3
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -190,8 +187,6 @@
   output:
     ia_fip_standard_of_need: 8_628
     ia_fip_payment_standard: 4_332
-    ia_fip_gross_earned_income: 0
-    ia_fip_gross_unearned_income: 4_800
     ia_fip_gross_income: 4_800
     ia_fip_countable_income: 4_800
     ia_fip_income_eligible: false
@@ -214,7 +209,7 @@
   # Countable income: $2,016 + $2,400 = $4,416 < $5,112 - PASS Test 3
   # Benefit: $5,112 - $4,416 = $696/year
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -243,8 +238,6 @@
   output:
     ia_fip_standard_of_need: 10_188
     ia_fip_payment_standard: 5_112
-    ia_fip_gross_earned_income: 6_000
-    ia_fip_gross_unearned_income: 2_400
     ia_fip_gross_income: 8_400
     ia_fip_countable_income: 4_416
     ia_fip_income_eligible: true
@@ -264,7 +257,7 @@
   # Countable income: $5,760 - $3,340.80 = $2,419.20 < $4,332 - PASS Test 3
   # Benefit: $4,332 - $2,419.20 = $1,912.80/year
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent:
@@ -288,7 +281,6 @@
   output:
     ia_fip_standard_of_need: 8_628
     ia_fip_payment_standard: 4_332
-    ia_fip_gross_earned_income: 7_200
     ia_fip_countable_income: 2_419.20
     ia_fip_income_eligible: true
     ia_fip_eligible: true
@@ -300,7 +292,7 @@
   # Additional per person: varies, let's check the additional parameter
   # Payment standard for 10: $865/month
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       parent1:

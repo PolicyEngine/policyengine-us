@@ -6,13 +6,13 @@ class ia_fip_gross_income(Variable):
     entity = SPMUnit
     label = "Iowa FIP gross income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.IA
     reference = (
         "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
     )
 
     adds = [
-        "ia_fip_gross_earned_income",
-        "ia_fip_gross_unearned_income",
+        "tanf_gross_earned_income",
+        "tanf_gross_unearned_income",
     ]

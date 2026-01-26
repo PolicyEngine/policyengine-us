@@ -6,7 +6,7 @@ class ia_fip(Variable):
     entity = SPMUnit
     label = "Iowa Family Investment Program (FIP)"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "ia_fip_eligible"
     reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=20"
 
