@@ -214,7 +214,7 @@ class block_geoid(Variable):
     - TTTTTT = Tract (6 digits)
     - BBBB = Block (4 digits)
 
-    Example: "360610001001000" is a block in Queens County, NY.
+    Example: "360610001001000" is a block in New York County (Manhattan), NY.
 
     All other geographic variables can be derived from block_geoid:
     - State FIPS: block_geoid[:2]
@@ -306,4 +306,21 @@ class puma(Variable):
     Example: "03201" is a PUMA in New York State.
 
     Empty string indicates PUMA is not assigned."""
+    default_value = ""
+
+
+class zcta(Variable):
+    value_type = str
+    label = "ZCTA (ZIP Code Tabulation Area)"
+    entity = Household
+    definition_period = YEAR
+    documentation = """5-digit ZIP Code Tabulation Area from Census Bureau.
+
+    ZCTAs are generalized areal representations of USPS ZIP Code service areas.
+    They are built from Census blocks and do not precisely align with ZIP Codes,
+    which are defined by mail delivery routes rather than geographic boundaries.
+
+    Example: "10001" is a ZCTA in Manhattan, NY.
+
+    Empty string indicates ZCTA is not assigned."""
     default_value = ""
