@@ -68,3 +68,121 @@
         filing_status: JOINT
   output:
     co_sales_tax_refund: 1_600
+
+# 2025 Tests - Sales Tax Refund brackets per Income Tax Topics: State Sales Tax Refund
+# Single filer brackets for 2025:
+#   $0-$52,000 -> $19
+#   $52,001-$105,000 -> $25
+#   $105,001-$168,000 -> $29
+#   $168,001-$233,000 -> $35
+#   $233,001-$299,000 -> $37
+#   $299,001+ -> $59
+
+- name: 2025 Single - lowest bracket ($0-$52,000)
+  period: 2025
+  input:
+    co_modified_agi: 30_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $30,000 falls in first bracket: $19
+    co_sales_tax_refund: 19
+
+- name: 2025 Single - at first threshold boundary
+  period: 2025
+  input:
+    co_modified_agi: 52_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI exactly $52,000 -> still in first bracket: $19
+    co_sales_tax_refund: 19
+
+- name: 2025 Single - second bracket ($52,001-$105,000)
+  period: 2025
+  input:
+    co_modified_agi: 75_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $75,000 falls in second bracket: $25
+    co_sales_tax_refund: 25
+
+- name: 2025 Single - third bracket ($105,001-$168,000)
+  period: 2025
+  input:
+    co_modified_agi: 130_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $130,000 falls in third bracket: $29
+    co_sales_tax_refund: 29
+
+- name: 2025 Single - fourth bracket ($168,001-$233,000)
+  period: 2025
+  input:
+    co_modified_agi: 200_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $200,000 falls in fourth bracket: $35
+    co_sales_tax_refund: 35
+
+- name: 2025 Single - fifth bracket ($233,001-$299,000)
+  period: 2025
+  input:
+    co_modified_agi: 260_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $260,000 falls in fifth bracket: $37
+    co_sales_tax_refund: 37
+
+- name: 2025 Single - highest bracket ($299,001+)
+  period: 2025
+  input:
+    co_modified_agi: 400_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    # AGI $400,000 falls in highest bracket: $59
+    co_sales_tax_refund: 59
+
+- name: 2025 Joint - lowest bracket (double single amount)
+  period: 2025
+  input:
+    co_modified_agi: 40_000
+    co_sales_tax_refund_eligible: true
+    filing_status: JOINT
+  output:
+    # AGI $40,000 in first bracket: $19 * 2 = $38
+    co_sales_tax_refund: 38
+
+- name: 2025 Joint - second bracket
+  period: 2025
+  input:
+    co_modified_agi: 80_000
+    co_sales_tax_refund_eligible: true
+    filing_status: JOINT
+  output:
+    # AGI $80,000 in second bracket: $25 * 2 = $50
+    co_sales_tax_refund: 50
+
+- name: 2025 Joint - highest bracket
+  period: 2025
+  input:
+    co_modified_agi: 500_000
+    co_sales_tax_refund_eligible: true
+    filing_status: JOINT
+  output:
+    # AGI $500,000 in highest bracket: $59 * 2 = $118
+    co_sales_tax_refund: 118
+
+- name: 2025 Ineligible - no refund regardless of income
+  period: 2025
+  input:
+    co_modified_agi: 50_000
+    co_sales_tax_refund_eligible: false
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 0
