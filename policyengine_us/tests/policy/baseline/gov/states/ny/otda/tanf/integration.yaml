@@ -195,3 +195,89 @@
 
     # No benefit
     ny_tanf: 0
+
+- name: Case 6, post-reform eligible despite gross income exceeding 185% threshold.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+  output:
+    # Gross income: $7,200/year = $600/month
+    tanf_gross_earned_income: [600, 0]
+
+    # Need standard (2 people): $252
+    # 185% threshold: $252 × 1.85 = $466.20
+    # Gross income $600 > $466.20 → would FAIL pre-reform!
+    ny_tanf_gross_income_eligible: false
+
+    # But post-reform EID: $600 × 0.50 = $300
+    # Then work expense: $300 - $150 = $150 countable
+    ny_tanf_countable_earned_income: [150, 0]
+    ny_tanf_countable_income: 150
+
+    # $150 < $252 need standard → PASSES needs test!
+    ny_tanf_income_eligible: true
+
+    # Overall eligible (reform eliminated gross income test)
+    ny_tanf_eligible: true
+
+    # Benefit: $252 - $150 = $102
+    ny_tanf: 102
+
+- name: Case 7, post-reform disabled non-elderly qualifies for higher resource limit.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income_before_lsr: 0
+        ssi: 10_200
+      person2:
+        age: 8
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+  output:
+    # No earned income
+    ny_tanf_countable_earned_income: [0, 0]
+
+    # SSI: $10,200/year = $850/month (excluded from TANF income)
+    # No countable unearned income
+    tanf_gross_unearned_income: [0, 0]
+    ny_tanf_countable_income: 0
+
+    # Need standard for 2 people = $252
+    ny_tanf_need_standard: 252
+
+    # Resources: $3,000
+    # Standard limit: $2,500 → would FAIL
+    # But disabled member qualifies for higher limit: $3,750
+    # $3,000 <= $3,750 → PASSES (post-reform disability qualifier)
+    ny_tanf_resources_eligible: true
+
+    # Income test: $0 < $252 → eligible
+    ny_tanf_income_eligible: true
+
+    # Overall eligible
+    ny_tanf_eligible: true
+
+    # Benefit: $252 - $0 = $252
+    ny_tanf: 252

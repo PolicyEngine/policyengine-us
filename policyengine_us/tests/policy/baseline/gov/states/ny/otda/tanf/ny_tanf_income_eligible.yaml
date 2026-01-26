@@ -88,3 +88,15 @@
   output:
     # $335 < $336 is true
     ny_tanf_income_eligible: true
+
+- name: Case 9, post-reform ignores gross income test failure.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_gross_income_eligible: false
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 100
+  output:
+    # Post-reform: gross income test is ignored
+    # Only needs test applies: $100 < $336 → passes
+    ny_tanf_income_eligible: true

@@ -1,4 +1,7 @@
-- bump: patch
+- bump: minor
   changes:
+    added:
+      - NY TANF pre-October 2022 gross income test and immigration eligibility check.
     changed:
-      - NY TANF parameters backfilled to 1997 and updated with October 2022 changes per 22-ADM-11.
+      - NY TANF parameters backfilled to 1998 with October 2022 reform rules per 22-ADM-11.
+      - NY TANF earned income deduction calculation order changes by reform date.

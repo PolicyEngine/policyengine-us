@@ -23,14 +23,14 @@ class ny_tanf_resources_eligible(Variable):
         has_elderly_member = spm_unit.any(person_meets_age_threshold)
 
         # Disability qualifier added by October 2022 reform
-        if p.reform_2022.in_effect:
-            person_is_disabled = person("is_disabled", period)
-            has_disabled_member = spm_unit.any(person_is_disabled)
-            qualifies_for_higher_limit = (
-                has_elderly_member | has_disabled_member
-            )
-        else:
-            qualifies_for_higher_limit = has_elderly_member
+        person_is_disabled = person("is_disabled", period)
+        has_disabled_member = spm_unit.any(person_is_disabled)
+
+        qualifies_for_higher_limit = where(
+            p.reform_2022.in_effect,
+            has_elderly_member | has_disabled_member,
+            has_elderly_member,
+        )
 
         resource_limit = where(
             qualifies_for_higher_limit,
