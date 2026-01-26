@@ -14,5 +14,5 @@ class count_days_postpartum(Variable):
         return select(
             [under_60_days, under_12_months],
             [0, 60],
-            default=np.inf,
+            default=np.inf,  # Not postpartum (more than 12 months since birth or never gave birth)
         )

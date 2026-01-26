@@ -20,17 +20,17 @@ class ne_income_tax_before_credits(Variable):
         p = parameters(period).gov.states.ne.tax.income.rates
         return select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.surviving_spouse.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(taxable_income),
         )

@@ -38,5 +38,6 @@ class az_filing_status(Variable):
                 ArizonaFilingStatus.SINGLE,
                 ArizonaFilingStatus.SEPARATE,
             ],
+            # Default covers HEAD_OF_HOUSEHOLD and SURVIVING_SPOUSE (both map to AZ HEAD_OF_HOUSEHOLD)
             default=ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
         )

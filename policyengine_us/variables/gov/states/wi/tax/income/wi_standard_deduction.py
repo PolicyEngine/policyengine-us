@@ -21,20 +21,18 @@ class wi_standard_deduction(Variable):
         deduction = parameters(period).gov.states.wi.tax.income.deductions
         max_amount = deduction.standard.max[fstatus]
         agi = tax_unit("wi_agi", period)
+        # Default covers JOINT and SURVIVING_SPOUSE (both use joint phase-out)
         phase_out_amount = select(
             [
                 fstatus == fstatus.possible_values.SINGLE,
-                fstatus == fstatus.possible_values.JOINT,
-                fstatus == fstatus.possible_values.SURVIVING_SPOUSE,
                 fstatus == fstatus.possible_values.SEPARATE,
                 fstatus == fstatus.possible_values.HEAD_OF_HOUSEHOLD,
             ],
             [
                 deduction.standard.phase_out.single.calc(agi),
-                deduction.standard.phase_out.joint.calc(agi),
-                deduction.standard.phase_out.joint.calc(agi),
                 deduction.standard.phase_out.separate.calc(agi),
                 deduction.standard.phase_out.head_of_household.calc(agi),
             ],
+            default=deduction.standard.phase_out.joint.calc(agi),
         )
         return max_(0, max_amount - phase_out_amount)

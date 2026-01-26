@@ -20,19 +20,19 @@ class hi_income_tax_before_non_refundable_credits(Variable):
 
         income_tax = select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.surviving_spouse.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
             ],
+            # Default covers SINGLE
+            default=p.single.calc(taxable_income),
         )
         alternative_tax = tax_unit(
             "hi_alternative_tax_on_capital_gains", period

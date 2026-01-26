@@ -20,7 +20,6 @@ class ny_supplemental_tax(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         statuses = [
-            status.SINGLE,
             status.JOINT,
             status.HEAD_OF_HOUSEHOLD,
             status.SURVIVING_SPOUSE,
@@ -34,7 +33,8 @@ class ny_supplemental_tax(Variable):
         hoh = rates.head_of_household
         surviving_spouse = rates.surviving_spouse
         separate = rates.separate
-        scales = [single, joint, hoh, surviving_spouse, separate]
+        # Scales list excludes single (used as default)
+        scales = [joint, hoh, surviving_spouse, separate]
 
         previous_agi_threshold = select(
             in_each_status,
@@ -42,6 +42,8 @@ class ny_supplemental_tax(Variable):
                 get_previous_threshold(ny_taxable_income, scale.thresholds)
                 for scale in scales
             ],
+            # Default covers SINGLE
+            default=get_previous_threshold(ny_taxable_income, single.thresholds),
         )
 
         applicable_amount = max_(
@@ -57,16 +59,19 @@ class ny_supplemental_tax(Variable):
         agi_limit = select(
             in_each_status,
             [
-                single.thresholds[-1],
                 joint.thresholds[-1],
                 hoh.thresholds[-1],
                 surviving_spouse.thresholds[-1],
                 separate.thresholds[-1],
             ],
+            # Default covers SINGLE
+            default=single.thresholds[-1],
         )
         high_agi_rate = select(
             in_each_status,
             [scale.marginal_rates(agi_limit + 1) for scale in scales],
+            # Default covers SINGLE
+            default=single.marginal_rates(agi_limit + 1),
         )
 
         supplemental_tax_high_agi = (
@@ -77,18 +82,18 @@ class ny_supplemental_tax(Variable):
             recapture_base = select(
                 in_each_status,
                 [
-                    p.recapture_base.single.calc(ny_taxable_income),
                     p.recapture_base.joint.calc(ny_taxable_income),
                     p.recapture_base.head_of_household.calc(ny_taxable_income),
                     p.recapture_base.surviving_spouse.calc(ny_taxable_income),
                     p.recapture_base.separate.calc(ny_taxable_income),
                 ],
+                # Default covers SINGLE
+                default=p.recapture_base.single.calc(ny_taxable_income),
             )
 
             incremental_benefit = select(
                 in_each_status,
                 [
-                    p.incremental_benefit.single.calc(ny_taxable_income),
                     p.incremental_benefit.joint.calc(ny_taxable_income),
                     p.incremental_benefit.head_of_household.calc(
                         ny_taxable_income
@@ -98,6 +103,8 @@ class ny_supplemental_tax(Variable):
                     ),
                     p.incremental_benefit.separate.calc(ny_taxable_income),
                 ],
+                # Default covers SINGLE
+                default=p.incremental_benefit.single.calc(ny_taxable_income),
             )
 
             supplemental_tax_general = (

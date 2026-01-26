@@ -24,19 +24,19 @@ class nj_taking_property_tax_deduction(Variable):
         )
         taxes_without_deduction = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.single.calc(taxable_income_before_deduction),
                 p.joint.calc(taxable_income_before_deduction),
                 p.head_of_household.calc(taxable_income_before_deduction),
                 p.surviving_spouse.calc(taxable_income_before_deduction),
                 p.separate.calc(taxable_income_before_deduction),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(taxable_income_before_deduction),
         )
 
         # calculate taxes with deduction
@@ -45,19 +45,19 @@ class nj_taking_property_tax_deduction(Variable):
         )
         taxes_with_deduction = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.single.calc(taxable_income_after_deduction),
                 p.joint.calc(taxable_income_after_deduction),
                 p.head_of_household.calc(taxable_income_after_deduction),
                 p.surviving_spouse.calc(taxable_income_after_deduction),
                 p.separate.calc(taxable_income_after_deduction),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(taxable_income_after_deduction),
         )
 
         # calculate credit amount

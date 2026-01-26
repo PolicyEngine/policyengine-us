@@ -71,18 +71,17 @@ class medicaid_group(Variable):
         # Core mapping, in precedence order:
         return select(
             [
-                ~eligible,
                 disabled | il_hbi_senior,
                 non_expansion_adult,
                 expansion_adult | il_hbi_adult,
                 child | il_hbi_child,
             ],
             [
-                MedicaidGroup.NONE,
                 MedicaidGroup.AGED_DISABLED,
                 MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.EXPANSION_ADULT,
                 MedicaidGroup.CHILD,
             ],
+            # Default covers ineligible persons (~eligible)
             default=MedicaidGroup.NONE,
         )

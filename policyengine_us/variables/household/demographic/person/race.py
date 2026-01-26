@@ -31,5 +31,5 @@ class race(Variable):
                 Race.WHITE,
                 Race.BLACK,
             ],
-            default=Race.OTHER,
+            default=Race.OTHER,  # All other races (non-White, non-Black, non-Hispanic)
         )

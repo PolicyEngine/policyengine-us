@@ -33,18 +33,18 @@ class nm_medical_care_expense_deduction(Variable):
         # Use `right=True` to reflect "over ... but not over ...".
         rate = select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.head_of_household.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
                 p.surviving_spouse.calc(agi, right=True),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(agi, right=True),
         )
         return expenses * rate

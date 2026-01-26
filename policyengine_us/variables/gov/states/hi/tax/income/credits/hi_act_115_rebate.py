@@ -18,15 +18,12 @@ class hi_act_115_rebate(Variable):
         return select(
             [
                 filing_status == statuses.JOINT,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == statuses.SEPARATE,
                 filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.joint.calc(federal_agi),
-                p.single.calc(federal_agi),
-                p.single.calc(federal_agi),
                 p.joint.calc(federal_agi),
             ],
+            # Default covers SINGLE, HEAD_OF_HOUSEHOLD, and SEPARATE
             default=p.single.calc(federal_agi),
         )

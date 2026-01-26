@@ -19,17 +19,17 @@ class md_personal_exemption(Variable):
         p = parameters(period).gov.states.md.tax.income.exemptions.personal
         return select(
             [
-                filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.head.calc(agi, right=True),
                 p.surviving_spouse.calc(agi, right=True),
             ],
+            # Default covers SINGLE filers
+            default=p.single.calc(agi, right=True),
         )

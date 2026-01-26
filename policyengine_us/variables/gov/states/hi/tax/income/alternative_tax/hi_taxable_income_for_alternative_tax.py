@@ -36,19 +36,19 @@ class hi_taxable_income_for_alternative_tax(Variable):
         statuses = filing_status.possible_values
         cap = select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                cap_single,
                 cap_joint,
                 cap_surviving_spouse,
                 cap_separate,
                 cap_hoh,
             ],
+            # Default covers SINGLE
+            default=cap_single,
         )
         capped_taxable_income = min_(taxable_income, cap)
         return max_(reduced_taxable_income, capped_taxable_income)

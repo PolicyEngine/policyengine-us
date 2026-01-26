@@ -36,5 +36,5 @@ class fsla_overtime_occupation_exemption_category(Variable):
                 OvertimeExemptionCategory.FARMER_FISHER,
                 OvertimeExemptionCategory.COMPUTER_SCIENTIST,
             ],
-            default=OvertimeExemptionCategory.NONE,
+            default=OvertimeExemptionCategory.NONE,  # No occupation-based exemption
         )

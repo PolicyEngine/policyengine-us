@@ -27,26 +27,24 @@ class income_adjusted_part_b_premium(Variable):
 
         # Build boolean masks for each status
         status = filing_status.possible_values
-        statuses = [
-            status.SINGLE,
-            status.JOINT,
-            status.HEAD_OF_HOUSEHOLD,
-            status.SURVIVING_SPOUSE,
-            status.SEPARATE,
-        ]
-        in_status = [filing_status == s for s in statuses]
 
         p = parameters(period).gov.hhs.medicare.part_b.irmaa
 
         irmaa_amount = select(
-            in_status,
             [
-                p.single.calc(magi),
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.SURVIVING_SPOUSE,
+                filing_status == status.SEPARATE,
+            ],
+            [
                 p.joint.calc(magi),
                 p.head_of_household.calc(magi),
                 p.surviving_spouse.calc(magi),
                 p.separate.calc(magi),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(magi),
         )
 
         # IRMAA amounts are monthly, multiply by MONTHS_IN_YEAR to get annual

@@ -18,21 +18,21 @@ class ia_standard_deduction_indiv(Variable):
     def formula(person, period, parameters):
         us_filing_status = person.tax_unit("filing_status", period)
         fsvals = us_filing_status.possible_values
+        # Default covers SINGLE (maps to itself)
         filing_status = select(
             [
                 us_filing_status == fsvals.JOINT,
-                us_filing_status == fsvals.SINGLE,
                 us_filing_status == fsvals.SEPARATE,
                 us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
                 us_filing_status == fsvals.SURVIVING_SPOUSE,
             ],
             [
                 fsvals.SEPARATE,  # couples are filing separately on Iowa form
-                fsvals.SINGLE,
                 fsvals.SEPARATE,
                 fsvals.HEAD_OF_HOUSEHOLD,
                 fsvals.SURVIVING_SPOUSE,
             ],
+            default=fsvals.SINGLE,
         )
         p = parameters(period).gov.states.ia.tax.income.deductions.standard
 

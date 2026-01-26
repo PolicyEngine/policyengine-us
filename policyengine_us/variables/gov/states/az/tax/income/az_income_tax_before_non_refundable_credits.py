@@ -16,15 +16,15 @@ class az_income_tax_before_non_refundable_credits(Variable):
         status = filing_status.possible_values
         return select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.single.calc(income),
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
                 p.separate.calc(income),
             ],
+            # Default covers SINGLE filing status
+            default=p.single.calc(income),
         )

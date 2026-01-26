@@ -18,5 +18,5 @@ class taxsim_state(Variable):
                 state_code_str == "WA",
             ],
             [21, 22, 33, 48],
-            default=0,
+            default=0,  # All other states (no state tax calculation)
         )

@@ -33,5 +33,5 @@ class filing_status(Variable):
                 FilingStatus.HEAD_OF_HOUSEHOLD,
                 FilingStatus.SEPARATE,
             ],
-            default=FilingStatus.SINGLE,
+            default=FilingStatus.SINGLE,  # Covers unmarried, non-HOH, non-surviving-spouse filers
         )

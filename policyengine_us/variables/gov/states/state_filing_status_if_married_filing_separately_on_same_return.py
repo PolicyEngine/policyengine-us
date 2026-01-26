@@ -23,10 +23,10 @@ class state_filing_status_if_married_filing_separately_on_same_return(
     def formula(tax_unit, period, parameters):
         us_filing_status = tax_unit("filing_status", period)
         fsvals = us_filing_status.possible_values
+        # Default covers SINGLE filing status
         return select(
             [
                 us_filing_status == fsvals.JOINT,
-                us_filing_status == fsvals.SINGLE,
                 us_filing_status == fsvals.SEPARATE,
                 us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
                 us_filing_status == fsvals.SURVIVING_SPOUSE,
@@ -34,9 +34,9 @@ class state_filing_status_if_married_filing_separately_on_same_return(
             [
                 # Simulate scenario where joint filers file separately on Arkansas return.
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SURVIVING_SPOUSE,
             ],
+            default=StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
         )

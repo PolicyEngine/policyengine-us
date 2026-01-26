@@ -35,14 +35,13 @@ class tx_tanf_caretaker_type(Variable):
         # Non-caretaker: No parents in certified group (child-only cases)
         # Caretaker without second: One parent in certified group
         # Caretaker with second: Two or more parents in certified group
-        non_caretaker = has_eligible_child & (parent_count == 0)
         caretaker_without_second = has_eligible_child & (parent_count == 1)
         caretaker_with_second = has_eligible_child & (parent_count >= 2)
 
+        # Default covers NON_CARETAKER (child-only cases with no parents)
         return select(
-            [non_caretaker, caretaker_without_second, caretaker_with_second],
+            [caretaker_without_second, caretaker_with_second],
             [
-                TxTanfCaretakerType.NON_CARETAKER,
                 TxTanfCaretakerType.CARETAKER_WITHOUT_SECOND_PARENT,
                 TxTanfCaretakerType.CARETAKER_WITH_SECOND_PARENT,
             ],

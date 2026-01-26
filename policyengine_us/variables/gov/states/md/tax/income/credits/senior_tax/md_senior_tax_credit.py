@@ -24,18 +24,18 @@ class md_senior_tax_credit(Variable):
 
         credit_amount = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.amount.single,
                 p.amount.joint[eligible_count],
                 p.amount.head_of_household,
                 p.amount.surviving_spouse,
                 p.amount.separate,
             ],
+            # Default covers SINGLE filers
+            default=p.amount.single,
         )
         return (eligible_count > 0) * credit_amount

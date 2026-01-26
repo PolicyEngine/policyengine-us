@@ -24,11 +24,11 @@ class ccdf_market_rate(Variable):
         hours_per_week = hours_per_day * days_per_week
         periods_per_week = select(
             [
-                duration_of_care == durations_of_care.WEEKLY,
                 duration_of_care == durations_of_care.DAILY,
                 duration_of_care == durations_of_care.PART_DAY,
                 duration_of_care == durations_of_care.HOURLY,
             ],
-            [1, days_per_week, days_per_week, hours_per_week],
+            [days_per_week, days_per_week, hours_per_week],
+            default=1,  # Covers WEEKLY duration of care
         )
         return rate_per_period * periods_per_week * WEEKS_IN_YEAR

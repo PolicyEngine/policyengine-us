@@ -54,6 +54,9 @@ class tx_ccs_workforce_board_region(Variable):
         results = []
 
         for region_enum in TXCCSWorkforceBoardRegion:
+            # Skip PANHANDLE as it's handled by the default
+            if region_enum == TXCCSWorkforceBoardRegion.PANHANDLE:
+                continue
             # Convert enum name to parameter name (PANHANDLE -> panhandle)
             param_name = region_enum.name.lower()
             region_param = getattr(p, param_name)
@@ -61,6 +64,7 @@ class tx_ccs_workforce_board_region(Variable):
             conditions.append(np.isin(county, region_param))
             results.append(region_enum)
 
+        # Default covers PANHANDLE region
         return select(
             conditions,
             results,

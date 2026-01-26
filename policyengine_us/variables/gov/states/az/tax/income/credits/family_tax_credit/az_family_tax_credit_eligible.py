@@ -23,16 +23,16 @@ class az_family_tax_credit_eligible(Variable):
         dependents = tax_unit("tax_unit_dependents", period)
         income_limit = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.income_limit.single,
                 p.income_limit.joint.calc(dependents),
                 p.income_limit.head_of_household.calc(dependents),
                 p.income_limit.separate,
             ],
+            # Default covers SINGLE filing status
+            default=p.income_limit.single,
         )
         return income <= income_limit

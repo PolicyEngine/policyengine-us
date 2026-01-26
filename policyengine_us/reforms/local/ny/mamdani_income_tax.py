@@ -29,21 +29,21 @@ def create_nyc_mamdani_income_tax() -> Reform:
             filing_status = tax_unit("filing_status", period)
             filing_statuses = filing_status.possible_values
             p = parameters(period).gov.local.ny.nyc.tax.income.rates
+            # Default covers SINGLE
             regular_tax = select(
                 [
-                    filing_status == filing_statuses.SINGLE,
                     filing_status == filing_statuses.JOINT,
                     filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
                     filing_status == filing_statuses.SURVIVING_SPOUSE,
                     filing_status == filing_statuses.SEPARATE,
                 ],
                 [
-                    p.single.calc(taxable_income),
                     p.joint.calc(taxable_income),
                     p.head_of_household.calc(taxable_income),
                     p.surviving_spouse.calc(taxable_income),
                     p.separate.calc(taxable_income),
                 ],
+                default=p.single.calc(taxable_income),
             )
             mamdani_tax = add(tax_unit, period, ["nyc_mamdani_income_tax"])
             return regular_tax + mamdani_tax

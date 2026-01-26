@@ -22,17 +22,17 @@ class nj_retirement_exclusion_fraction(Variable):
         ).gov.states.nj.tax.income.exclusions.retirement.pension
         return select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.percentage.single.calc(total_income, right=True),
                 p.percentage.joint.calc(total_income, right=True),
                 p.percentage.head_of_household.calc(total_income, right=True),
                 p.percentage.surviving_spouse.calc(total_income, right=True),
                 p.percentage.separate.calc(total_income, right=True),
             ],
+            # Default covers SINGLE filing status
+            default=p.percentage.single.calc(total_income, right=True),
         )

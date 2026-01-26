@@ -24,18 +24,18 @@ class la_income_tax_before_non_refundable_credits(Variable):
         exempt_income_tax = exemptions * bottom_tax_rate
         pre_exemption_tax_amount = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.SEPARATE,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.by_filing_status.single.calc(income),
                 p.by_filing_status.joint.calc(income),
                 p.by_filing_status.separate.calc(income),
                 p.by_filing_status.surviving_spouse.calc(income),
                 p.by_filing_status.head_of_household.calc(income),
             ],
+            # Default covers SINGLE filers
+            default=p.by_filing_status.single.calc(income),
         )
         return max_(pre_exemption_tax_amount - exempt_income_tax, 0)
