@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.523.1] - 2026-01-26 14:37:21
+
+## [1.523.0] - 2026-01-26 14:14:48
+
+### Changed
+
+- Pin New York itemized deductions to pre-TCJA rules per Tax Law § 615
+
 ## [1.522.0] - 2026-01-25 22:40:42
 
 ### Added
@@ -14532,6 +14540,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.523.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.523.0...1.523.1
+[1.523.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.522.0...1.523.0
 [1.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.521.0...1.522.0
 [1.521.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.520.0...1.521.0
 [1.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.519.0...1.520.0
