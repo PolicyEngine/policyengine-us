@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.524.0] - 2026-01-26 19:35:03
+
+### Added
+
+- Add census block-level geography variables (block_geoid, tract_geoid, cbsa_code, place_fips, vtd, puma, sldu, sldl, zcta) for granular geographic analysis
+
 ## [1.523.1] - 2026-01-26 14:37:21
 
 ## [1.523.0] - 2026-01-26 14:14:48
@@ -14540,6 +14546,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.524.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.523.1...1.524.0
 [1.523.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.523.0...1.523.1
 [1.523.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.522.0...1.523.0
 [1.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.521.0...1.522.0

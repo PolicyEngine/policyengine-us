@@ -12472,3 +12472,9 @@
     removed:
     - Revert NY pre-TCJA itemized deductions (will be re-submitted for proper review)
   date: 2026-01-26 14:37:21
+- bump: minor
+  changes:
+    added:
+    - Add census block-level geography variables (block_geoid, tract_geoid, cbsa_code,
+      place_fips, vtd, puma, sldu, sldl, zcta) for granular geographic analysis
+  date: 2026-01-26 19:35:03
