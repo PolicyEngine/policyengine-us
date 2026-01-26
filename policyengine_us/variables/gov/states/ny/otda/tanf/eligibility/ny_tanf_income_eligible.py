@@ -13,21 +13,20 @@ class ny_tanf_income_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # Gross income test (only applies pre-Oct 2022)
+        p = parameters(period).gov.states.ny.otda.tanf
+
+        # Needs test (always applies)
+        countable_income = spm_unit("ny_tanf_countable_income", period)
+        need_standard = spm_unit("ny_tanf_need_standard", period)
+        needs_test_eligible = countable_income < need_standard
+
+        # Gross income test (only applies pre-October 2022)
         gross_income_eligible = spm_unit(
             "ny_tanf_gross_income_eligible", period
         )
 
-        # Needs test (always applies)
-        income = add(
-            spm_unit,
-            period,
-            [
-                "ny_tanf_countable_earned_income",
-                "ny_tanf_countable_gross_unearned_income",
-            ],
+        return where(
+            p.reform_2022.in_effect,
+            needs_test_eligible,
+            gross_income_eligible & needs_test_eligible,
         )
-        need_standard = spm_unit("ny_tanf_need_standard", period)
-        needs_test_eligible = income < need_standard
-
-        return gross_income_eligible & needs_test_eligible

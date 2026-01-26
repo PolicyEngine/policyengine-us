@@ -13,12 +13,8 @@ class ny_tanf_need_standard(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        people = spm_unit("spm_unit_size", period.this_year)
-        p = parameters(period).gov.states.ny.otda.tanf
-        capped_people = min_(people, p.max_table_size).astype(int)
-        additional_people = people - capped_people
-        base = p.need_standard.main[capped_people]
-        additional_need_standard = (
-            p.need_standard.additional * additional_people
-        )
-        return base + additional_need_standard
+        size = spm_unit("spm_unit_size", period.this_year)
+        p = parameters(period).gov.states.ny.otda.tanf.need_standard
+        capped_size = min_(size, p.max_table_size)
+        additional_size = size - capped_size
+        return p.main[capped_size] + p.additional * additional_size
