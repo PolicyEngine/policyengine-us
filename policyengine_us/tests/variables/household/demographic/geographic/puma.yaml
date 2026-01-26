@@ -1,0 +1,15 @@
+- name: PUMA defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    puma:
+      - ""
+
+- name: PUMA can be set
+  period: 2024
+  input:
+    puma: "32014"
+  output:
+    puma:
+      - "32014"

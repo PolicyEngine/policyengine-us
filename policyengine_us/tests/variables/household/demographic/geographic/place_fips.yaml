@@ -1,0 +1,15 @@
+- name: Place FIPS defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    place_fips:
+      - ""
+
+- name: Place FIPS can be set
+  period: 2024
+  input:
+    place_fips: "51000"
+  output:
+    place_fips:
+      - "51000"

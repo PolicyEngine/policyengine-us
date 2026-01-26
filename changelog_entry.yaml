@@ -1,5 +1,4 @@
 - bump: minor
   changes:
     added:
-    - Add sldu (State Legislative District Upper) variable for state senate district assignment
-    - Add sldl (State Legislative District Lower) variable for state assembly/house district assignment
+    - Add census block-level geography variables (block_geoid, tract_geoid, cbsa_code, place_fips, vtd, puma, sldu, sldl) for granular geographic analysis

@@ -1,0 +1,15 @@
+- name: Tract GEOID defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    tract_geoid:
+      - ""
+
+- name: Tract GEOID can be set
+  period: 2024
+  input:
+    tract_geoid: "36061000100"
+  output:
+    tract_geoid:
+      - "36061000100"

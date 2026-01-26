@@ -1,0 +1,15 @@
+- name: CBSA code defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    cbsa_code:
+      - ""
+
+- name: CBSA code can be set for metro area
+  period: 2024
+  input:
+    cbsa_code: "35620"
+  output:
+    cbsa_code:
+      - "35620"
