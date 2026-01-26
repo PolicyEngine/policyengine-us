@@ -1,0 +1,26 @@
+- name: Case 1, income below flat grant is eligible
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_countable_income: 200
+    la_fitap_flat_grant: 376
+  output:
+    la_fitap_income_eligible: true
+
+- name: Case 2, income equal to flat grant is eligible
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_countable_income: 376
+    la_fitap_flat_grant: 376
+  output:
+    la_fitap_income_eligible: true
+
+- name: Case 3, income above flat grant is ineligible
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_countable_income: 377
+    la_fitap_flat_grant: 376
+  output:
+    la_fitap_income_eligible: false

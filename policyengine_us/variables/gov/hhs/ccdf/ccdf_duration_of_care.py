@@ -27,12 +27,11 @@ class ccdf_duration_of_care(Variable):
                 hours_per_week >= 30,
                 hours_per_day >= 6,
                 hours_per_day >= 3,
-                True,
             ],
             [
                 CCDFDurationOfCare.WEEKLY,
                 CCDFDurationOfCare.DAILY,
                 CCDFDurationOfCare.PART_DAY,
-                CCDFDurationOfCare.HOURLY,
             ],
+            default=CCDFDurationOfCare.HOURLY,
         )

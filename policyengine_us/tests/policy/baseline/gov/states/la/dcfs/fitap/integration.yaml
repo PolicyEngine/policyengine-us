@@ -1,0 +1,336 @@
+- name: Scenario 1 - Single parent with one child, no income, full benefit.
+  # Family of 2, no income, receives full flat grant
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Gross earned income: $0
+    # Countable earned income: $0
+    # Countable income: $0
+    # Flat grant (family of 2): $376
+    # Income limit: $376
+    # Benefit: $376 - $0 = $376
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [0, 0]
+    la_fitap_countable_income: 0
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 376
+
+- name: Scenario 2 - Single parent with one child, $1,200/month earnings, partial benefit.
+  # Earned income with full deductions applied
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Monthly gross earned: $1,200
+    # Deductions: $120 + $900 = $1,020 per employed member
+    # Countable earned: max($1,200 - $1,020, 0) = $180
+    # Countable income: $180 (no unearned)
+    # Flat grant (family of 2): $376
+    # Income limit: $376
+    # $180 <= $376 = income eligible
+    # Benefit: $376 - $180 = $196
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [180, 0]
+    la_fitap_countable_income: 180
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 196
+
+- name: Scenario 3 - Single parent with two children, earnings under deduction threshold.
+  # Earned income fully offset by deductions
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 10_800  # $900/month
+      person2:
+        age: 10
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Family size: 3
+    # Monthly gross earned: $900
+    # Deductions: $120 + $900 = $1,020
+    # Countable earned: max($900 - $1,020, 0) = $0
+    # Countable income: $0
+    # Flat grant (family of 3): $484
+    # Benefit: $484 - $0 = $484
+    la_fitap_flat_grant: 484
+    la_fitap_earned_income_after_disregard: [0, 0, 0]
+    la_fitap_countable_income: 0
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 484
+
+- name: Scenario 4 - Family with income above limit, ineligible.
+  # Countable income exceeds flat grant amount
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 21_600  # $1,800/month
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Monthly gross earned: $1,800
+    # Deductions: $120 + $900 = $1,020
+    # Countable earned: $1,800 - $1,020 = $780
+    # Countable income: $780
+    # Flat grant / Income limit (family of 2): $376
+    # $780 > $376 = income ineligible
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [780, 0]
+    la_fitap_countable_income: 780
+    la_fitap_income_eligible: false
+    la_fitap_eligible: false
+    la_fitap: 0
+
+- name: Scenario 5 - Family with unearned income only (no deductions).
+  # Unearned income has no deductions in LA FITAP
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security: 2_400  # $200/month
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Monthly unearned income: $200 (counted in full)
+    # Countable earned: $0
+    # Countable income: $200
+    # Flat grant (family of 2): $376
+    # $200 <= $376 = income eligible
+    # Benefit: $376 - $200 = $176
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [0, 0]
+    la_fitap_countable_income: 200
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 176
+
+- name: Scenario 6 - Two earners, combined income with deductions.
+  # Both employed members get deductions
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 15_600  # $1,300/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Family size: 3
+    # Person 1 monthly gross: $1,300
+    # Person 1 deductions: $1,020
+    # Person 1 countable earned: max($1,300 - $1,020, 0) = $280
+    # Person 2 monthly gross: $1,000
+    # Person 2 deductions: $1,020
+    # Person 2 countable earned: max($1,000 - $1,020, 0) = $0
+    # Total countable earned: $280
+    # Countable income: $280
+    # Flat grant (family of 3): $484
+    # $280 <= $484 = income eligible
+    # Benefit: $484 - $280 = $204
+    la_fitap_flat_grant: 484
+    la_fitap_earned_income_after_disregard: [280, 0, 0]
+    la_fitap_countable_income: 280
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 204
+
+- name: Scenario 7 - Mixed income (earned and unearned), eligible.
+  # Combination of earned income with deductions and unearned without
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 13_200  # $1,100/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 9
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Family size: 3
+    # Monthly gross earned: $1,100
+    # Earned income deductions: $1,020
+    # Countable earned: max($1,100 - $1,020, 0) = $80
+    # Monthly unearned: $100 (child support, no disregard)
+    # Countable income: $80 + $100 = $180
+    # Flat grant (family of 3): $484
+    # $180 <= $484 = income eligible
+    # Benefit: $484 - $180 = $304
+    la_fitap_flat_grant: 484
+    la_fitap_earned_income_after_disregard: [80, 0, 0]
+    la_fitap_countable_income: 180
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 304
+
+- name: Scenario 8 - Zero-benefit edge case (income exactly equals flat grant).
+  # Income eligible but zero benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 16_752  # $1,396/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Family size: 2
+    # Monthly gross earned: $1,396
+    # Deductions: $1,020
+    # Countable earned: $1,396 - $1,020 = $376
+    # Countable income: $376
+    # Flat grant (family of 2): $376
+    # $376 <= $376 = income eligible (at boundary)
+    # Benefit: $376 - $376 = $0
+    la_fitap_flat_grant: 376
+    la_fitap_earned_income_after_disregard: [376, 0]
+    la_fitap_countable_income: 376
+    la_fitap_income_eligible: true
+    la_fitap_eligible: true
+    la_fitap: 0
+
+- name: Scenario 9 - Two earners both above $1,020 threshold.
+  # Both employed members have positive countable earned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 15_600  # $1,300/month
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Family size: 3
+    # Person 1 monthly gross: $1,500
+    # Person 1 countable earned: max($1,500 - $1,020, 0) = $480
+    # Person 2 monthly gross: $1,300
+    # Person 2 countable earned: max($1,300 - $1,020, 0) = $280
+    # Total countable earned: $480 + $280 = $760
+    # Countable income: $760
+    # Flat grant (family of 3): $484
+    # $760 > $484 = income ineligible
+    la_fitap_flat_grant: 484
+    la_fitap_earned_income_after_disregard: [480, 280, 0]
+    la_fitap_countable_income: 760
+    la_fitap_income_eligible: false
+    la_fitap_eligible: false
+    la_fitap: 0
