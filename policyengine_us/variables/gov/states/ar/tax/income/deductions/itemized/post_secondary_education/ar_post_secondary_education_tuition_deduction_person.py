@@ -25,6 +25,7 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
                 p.weighted_average_tuition.technical_institutes,
                 p.weighted_average_tuition.four_year_college,
             ],
+            # Default covers two-year college students (and non-students)
             default=p.weighted_average_tuition.two_year_college,
         )
         return min_(uncapped, cap)

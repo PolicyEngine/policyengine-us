@@ -33,10 +33,11 @@ class az_filing_status(Variable):
                 us_filing_status == fsvals.SEPARATE,
             ],
             [
-                # In Arizona, surviving spouse filers are treated as heads of households.
                 ArizonaFilingStatus.JOINT,
                 ArizonaFilingStatus.SINGLE,
                 ArizonaFilingStatus.SEPARATE,
             ],
+            # Default covers HEAD_OF_HOUSEHOLD and SURVIVING_SPOUSE
+            # (in Arizona, surviving spouse filers are treated as heads of households)
             default=ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
         )

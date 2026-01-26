@@ -28,5 +28,6 @@ class ca_calworks_child_care_payment_factor(Variable):
                 p.exceptional_needs,
                 p.severely_disabled,
             ],
+            # Default covers regular child care (no special category/factor)
             default=1,
         )

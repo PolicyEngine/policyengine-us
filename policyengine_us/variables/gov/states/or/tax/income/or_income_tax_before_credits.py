@@ -20,17 +20,17 @@ class or_income_tax_before_credits(Variable):
         rates = parameters(period).gov.states["or"].tax.income.rates
         return select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
-                rates.single.calc(income),
                 rates.joint.calc(income),
                 rates.head_of_household.calc(income),
                 rates.separate.calc(income),
                 rates.surviving_spouse.calc(income),
             ],
+            # Default covers SINGLE
+            default=rates.single.calc(income),
         )

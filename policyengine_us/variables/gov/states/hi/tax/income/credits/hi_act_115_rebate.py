@@ -15,17 +15,14 @@ class hi_act_115_rebate(Variable):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         federal_agi = tax_unit("adjusted_gross_income", period)
+        # Default covers SINGLE, HEAD_OF_HOUSEHOLD, and SEPARATE (all use single rate)
         return select(
             [
                 filing_status == statuses.JOINT,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == statuses.SEPARATE,
                 filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.joint.calc(federal_agi),
-                p.single.calc(federal_agi),
-                p.single.calc(federal_agi),
                 p.joint.calc(federal_agi),
             ],
             default=p.single.calc(federal_agi),

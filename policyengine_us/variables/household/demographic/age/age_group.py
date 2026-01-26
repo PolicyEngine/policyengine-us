@@ -19,8 +19,9 @@ class age_group(Variable):
         return select(
             [
                 person("is_child", period),
-                person("is_wa_adult", period),
                 person("is_senior", period),
             ],
-            [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
+            [AgeGroup.CHILD, AgeGroup.SENIOR],
+            # Default covers WORKING_AGE (is_wa_adult)
+            default=AgeGroup.WORKING_AGE,
         )

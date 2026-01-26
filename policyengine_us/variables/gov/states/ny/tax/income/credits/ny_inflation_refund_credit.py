@@ -23,19 +23,19 @@ class ny_inflation_refund_credit(Variable):
 
         return select(
             [
-                filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.head_of_household.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
                 p.surviving_spouse.calc(agi, right=True),
             ],
+            # Default covers SINGLE
+            default=p.single.calc(agi, right=True),
         )
 
     def formula_2026(tax_unit, period, parameters):

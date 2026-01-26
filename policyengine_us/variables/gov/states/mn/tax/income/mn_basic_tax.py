@@ -18,19 +18,19 @@ class mn_basic_tax(Variable):
         statuses = filing_status.possible_values
         taxable_income = tax_unit("mn_taxable_income", period)
         p = parameters(period).gov.states.mn.tax.income.rates
+        # Default covers SINGLE filing status
         return select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.surviving_spouse.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
             ],
+            default=p.single.calc(taxable_income),
         )

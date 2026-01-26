@@ -16,20 +16,20 @@ class nc_ctc(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.nc.tax.income.credits.ctc
         status = filing_status.possible_values
+        # Default covers SINGLE filing status
         credit_amount = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                p.single.calc(income),
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
                 p.surviving_spouse.calc(income),
                 p.separate.calc(income),
             ],
+            default=p.single.calc(income),
         )
         return ctc_qualifying_children * credit_amount

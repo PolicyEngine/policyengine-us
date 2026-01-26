@@ -21,5 +21,6 @@ class ca_state_supplement_aged_disabled_amount(Variable):
         return select(
             [aged_disabled_count > 1, aged_disabled_count == 1],
             [p.married, p.single],
+            # Default covers aged_disabled_count == 0 (no supplement)
             default=0,
         )

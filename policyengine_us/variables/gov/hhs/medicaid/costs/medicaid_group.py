@@ -69,16 +69,15 @@ class medicaid_group(Variable):
         il_hbi_senior = il_hbi_eligible & (age >= p_hbi.senior.min_age)
 
         # Core mapping, in precedence order:
+        # Default covers: not eligible for Medicaid
         return select(
             [
-                ~eligible,
                 disabled | il_hbi_senior,
                 non_expansion_adult,
                 expansion_adult | il_hbi_adult,
                 child | il_hbi_child,
             ],
             [
-                MedicaidGroup.NONE,
                 MedicaidGroup.AGED_DISABLED,
                 MedicaidGroup.NON_EXPANSION_ADULT,
                 MedicaidGroup.EXPANSION_ADULT,

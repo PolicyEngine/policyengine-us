@@ -26,21 +26,21 @@ class co_ctc(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         if p.ctc_matched_federal_credit:
             federal_ctc = tax_unit("co_federal_ctc", period)
+            # Default covers SINGLE filing status
             rate = select(
                 [
-                    filing_status == statuses.SINGLE,
                     filing_status == statuses.JOINT,
                     filing_status == statuses.SEPARATE,
                     filing_status == statuses.SURVIVING_SPOUSE,
                     filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rate.single.calc(agi, right=True),
                     p.rate.joint.calc(agi, right=True),
                     p.rate.separate.calc(agi, right=True),
                     p.rate.surviving_spouse.calc(agi, right=True),
                     p.rate.head_of_household.calc(agi, right=True),
                 ],
+                default=p.rate.single.calc(agi, right=True),
             )
             return rate * federal_ctc
         else:
@@ -51,20 +51,20 @@ class co_ctc(Variable):
                 person("co_ctc_eligible_child", period) & child_age_eligible
             )
             eligible_children = tax_unit.sum(eligible_child)
+            # Default covers SINGLE filing status
             amount_per_child = select(
                 [
-                    filing_status == statuses.SINGLE,
                     filing_status == statuses.JOINT,
                     filing_status == statuses.SEPARATE,
                     filing_status == statuses.SURVIVING_SPOUSE,
                     filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.amount.single.calc(agi, right=True),
                     p.amount.joint.calc(agi, right=True),
                     p.amount.separate.calc(agi, right=True),
                     p.amount.surviving_spouse.calc(agi, right=True),
                     p.amount.head_of_household.calc(agi, right=True),
                 ],
+                default=p.amount.single.calc(agi, right=True),
             )
             return amount_per_child * eligible_children
