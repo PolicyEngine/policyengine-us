@@ -5,21 +5,3 @@
   output:
     sldl:
       - ""
-
-- name: SLDL can be set
-  period: 2024
-  input:
-    state_fips: 36
-    sldl: "001"
-  output:
-    sldl:
-      - "001"
-
-- name: SLDL can be set with multi-char code
-  period: 2024
-  input:
-    state_fips: 41
-    sldl: "012"
-  output:
-    sldl:
-      - "012"

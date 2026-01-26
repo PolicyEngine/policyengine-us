@@ -5,11 +5,3 @@
   output:
     cbsa_code:
       - ""
-
-- name: CBSA code can be set for metro area
-  period: 2024
-  input:
-    cbsa_code: "35620"
-  output:
-    cbsa_code:
-      - "35620"

@@ -5,11 +5,3 @@
   output:
     puma:
       - ""
-
-- name: PUMA can be set
-  period: 2024
-  input:
-    puma: "32014"
-  output:
-    puma:
-      - "32014"

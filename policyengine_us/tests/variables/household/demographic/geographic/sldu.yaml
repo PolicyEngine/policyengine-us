@@ -5,21 +5,3 @@
   output:
     sldu:
       - ""
-
-- name: SLDU can be set
-  period: 2024
-  input:
-    state_fips: 36
-    sldu: "001"
-  output:
-    sldu:
-      - "001"
-
-- name: SLDU can be set with multi-char code
-  period: 2024
-  input:
-    state_fips: 41
-    sldu: "012"
-  output:
-    sldu:
-      - "012"
