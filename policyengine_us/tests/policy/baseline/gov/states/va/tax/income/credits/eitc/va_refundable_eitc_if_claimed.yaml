@@ -13,3 +13,21 @@
     eitc: 0
   output:
     va_refundable_eitc_if_claimed: 0
+
+# 2025 tests - per 2025 Form 760 Instructions page 31
+- name: VA 2025 Refundable EITC at 20%
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 5_000
+  output:
+    # 2025: 20% of federal EITC
+    va_refundable_eitc_if_claimed: 1_000
+
+- name: VA 2025 Refundable EITC no federal credit
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 0
+  output:
+    va_refundable_eitc_if_claimed: 0

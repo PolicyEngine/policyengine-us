@@ -210,3 +210,42 @@
   output:
     # $0 since the individual has to be 55 or older to be eligible for the subtraction
     va_military_benefit_subtraction: 9_000
+
+# 2025 tests - per 2025 Form 760 Instructions page 27
+- name: VA 2025 military benefit subtraction at $40,000 limit
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 50_000
+        is_tax_unit_head: true
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 2025 limit is $40,000
+    va_military_benefit_subtraction: 40_000
+
+- name: VA 2025 military benefit subtraction under limit
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 35_000
+        is_tax_unit_head: true
+        age: 56
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Under $40,000 limit, full amount subtracted
+    va_military_benefit_subtraction: 35_000
