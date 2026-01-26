@@ -1,0 +1,183 @@
+# Unit tests for Alaska ATAP maximum payment
+# 7 AAC 45.523 - Maximum payment levels
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.523
+# Adult-included: $821 base + $102 per additional child
+
+- name: Family size 1 (1 adult, 0 dependents)
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 0 dependents: not eligible for adult-included ATAP
+    ak_atap_maximum_payment: 0
+
+- name: Family size 1 pregnant woman.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Pregnant woman max payment: $514 (7 AAC 45.523(a)(3))
+    ak_atap_maximum_payment: 514
+
+- name: Family size 2 (1 adult, 1 dependent)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # 1 dependent: $821 + max(1-1, 0) * $102 = $821
+    ak_atap_maximum_payment: 821
+
+- name: Family size 3 (1 adult, 2 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # 2 dependents: $821 + 1 * $102 = $923
+    ak_atap_maximum_payment: 923
+
+- name: Family size 4 (1 adult, 3 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 35
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    households:
+      household:
+        members: [adult, child1, child2, child3]
+        state_code: AK
+  output:
+    # 3 dependents: $821 + 2 * $102 = $1,025
+    ak_atap_maximum_payment: 1_025
+
+- name: Family size 9 (1 adult, 8 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: AK
+  output:
+    # 8 dependents: $821 + 7 * $102 = $1,535
+    ak_atap_maximum_payment: 1_535
+
+- name: Family size 10 (1 adult, 9 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+      child9:
+        age: 1
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: AK
+  output:
+    # 9 dependents: $821 + 8 * $102 = $1,637
+    ak_atap_maximum_payment: 1_637
+
+- name: Family size 11 (1 adult, 10 dependents)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+      child9:
+        age: 2
+      child10:
+        age: 1
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        state_code: AK
+  output:
+    # 10 dependents: $821 + 9 * $102 = $1,739
+    ak_atap_maximum_payment: 1_739

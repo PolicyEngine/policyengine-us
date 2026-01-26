@@ -1,0 +1,155 @@
+# Unit tests for Alaska ATAP gross income eligibility (185% test)
+# 7 AAC 45.470 - Income eligibility
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470
+# Gross income must not exceed the 185% standard
+
+- name: Case 1, zero gross income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_gross_income: 0
+        ak_atap_gross_income_limit: 1_522
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $0 <= $1,522 limit = eligible
+    ak_atap_gross_income_eligible: true
+
+- name: Case 2, gross income well under limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_gross_income: 800
+        ak_atap_gross_income_limit: 1_522
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $800 <= $1,522 limit = eligible
+    ak_atap_gross_income_eligible: true
+
+- name: Case 3, gross income exactly at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_gross_income: 1_522
+        ak_atap_gross_income_limit: 1_522
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $1,522 <= $1,522 limit = eligible
+    ak_atap_gross_income_eligible: true
+
+- name: Case 4, gross income exceeds limit by one dollar.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_gross_income: 1_523
+        ak_atap_gross_income_limit: 1_522
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $1,523 > $1,522 limit = ineligible
+    ak_atap_gross_income_eligible: false
+
+- name: Case 5, gross income significantly over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_gross_income: 2_000
+        ak_atap_gross_income_limit: 1_522
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $2,000 > $1,522 limit = ineligible
+    ak_atap_gross_income_eligible: false
+
+- name: Case 6, family of 3 under limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_gross_income: 1_500
+        ak_atap_gross_income_limit: 1_739
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # $1,500 <= $1,739 limit = eligible
+    ak_atap_gross_income_eligible: true
+
+- name: Case 7, family of 3 over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_gross_income: 1_800
+        ak_atap_gross_income_limit: 1_739
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # $1,800 > $1,739 limit = ineligible
+    ak_atap_gross_income_eligible: false

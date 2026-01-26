@@ -5,6 +5,141 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.522.0] - 2026-01-25 22:40:42
+
+### Added
+
+- Implement New Jersey WorkFirst (WFNJ).
+
+## [1.521.0] - 2026-01-25 21:40:34
+
+### Added
+
+- Louisiana Family Independence Temporary Assistance Program (FITAP).
+
+## [1.520.0] - 2026-01-25 21:25:01
+
+### Added
+
+- Add Alaska ATAP (Temporary Assistance Program) implementation with income eligibility tests, work incentive deductions, need standards, and benefit calculation based on 7 AAC 45.
+
+## [1.519.0] - 2026-01-25 21:17:46
+
+### Added
+
+- Implemented North Dakota Temporary Assistance for Needy Families (TANF) program
+
+## [1.518.0] - 2026-01-25 21:13:51
+
+### Added
+
+- Add New Mexico Works (NM Works) program
+
+## [1.517.0] - 2026-01-25 20:55:20
+
+### Added
+
+- Add expanded income base option for CRFB AGI surtax reform, including retirement contributions, HSA contributions, student loan interest, tax-exempt Social Security, foreign earned income exclusion, tax-exempt interest, and health insurance premiums.
+
+## [1.516.4] - 2026-01-25 19:35:47
+
+### Fixed
+
+- Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024 microsim runs.
+
+## [1.516.3] - 2026-01-25 18:31:23
+
+### Fixed
+
+- Update Iowa SNAP self-employment deduction effective date from 2021-10-01 to 2012-08-01 based on USDA FNS State Options Report research.
+
+## [1.516.2] - 2026-01-25 18:19:02
+
+### Changed
+
+- Simplify Pell Grant calculation method by removing enum indirection and using time-based formula.
+
+## [1.516.1] - 2026-01-25 17:33:26
+
+### Changed
+
+- Use default argument to numpy.select instead of dummy True condition for ~10% performance improvement.
+
+## [1.516.0] - 2026-01-25 17:15:31
+
+### Added
+
+- partnership_se_income variable for general partners' SE income from Schedule K-1 Box 14, now included in taxable_self_employment_income per 26 USC 1402(a).
+
+## [1.515.0] - 2026-01-25 16:54:14
+
+## [1.514.2] - 2026-01-25 13:30:04
+
+### Fixed
+
+- Fix Iowa SNAP self-employment simplified deduction rate from 0% to 40%.
+
+## [1.514.1] - 2026-01-25 13:03:30
+
+### Added
+
+- Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype and StringArray handling
+
+### Changed
+
+- Removed pandas <3.0 version cap to enable pandas 3.0 support
+- Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility (includes Enum.encode() fix)
+
+## [1.514.0] - 2026-01-23 21:14:19
+
+### Added
+
+- AGI surtax reform.
+
+## [1.513.1] - 2026-01-23 18:35:29
+
+### Fixed
+
+- Update SC H.3492 reform to use 5-year in_effect check pattern consistent with other contributed reforms.
+
+## [1.513.0] - 2026-01-23 16:04:44
+
+### Added
+
+- Implement Virginia TANF program.
+
+## [1.512.0] - 2026-01-23 15:27:36
+
+### Added
+
+- Add Wyoming POWER program
+
+## [1.511.2] - 2026-01-22 23:38:46
+
+### Fixed
+
+- Use `uv sync --extra dev` in CI to correctly install optional dev dependencies including coverage.
+- Improve selective test runner to only run tests for specific subfolders (states, congress, local) instead of entire parent directories.
+- Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+
+## [1.511.1] - 2026-01-21 21:46:53
+
+### Fixed
+
+- Remove DACA_TPS from immigration_status.
+
+## [1.511.0] - 2026-01-21 20:53:40
+
+### Added
+
+- NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+
+## [1.510.0] - 2026-01-21 20:02:25
+
+### Added
+
+- NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns reform.
+
 ## [1.509.0] - 2026-01-21 16:28:14
 
 ### Added
@@ -14397,6 +14532,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.521.0...1.522.0
+[1.521.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.520.0...1.521.0
+[1.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.519.0...1.520.0
+[1.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.518.0...1.519.0
+[1.518.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.517.0...1.518.0
+[1.517.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.4...1.517.0
+[1.516.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.3...1.516.4
+[1.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.2...1.516.3
+[1.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.1...1.516.2
+[1.516.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.516.0...1.516.1
+[1.516.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.515.0...1.516.0
+[1.515.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.514.2...1.515.0
+[1.514.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.514.1...1.514.2
+[1.514.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.514.0...1.514.1
+[1.514.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.513.1...1.514.0
+[1.513.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.513.0...1.513.1
+[1.513.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.512.0...1.513.0
+[1.512.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.2...1.512.0
+[1.511.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.1...1.511.2
+[1.511.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.511.0...1.511.1
+[1.511.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.510.0...1.511.0
+[1.510.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.509.0...1.510.0
 [1.509.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.2...1.509.0
 [1.508.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.1...1.508.2
 [1.508.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.508.0...1.508.1

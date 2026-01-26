@@ -1,0 +1,325 @@
+# New Mexico Works (TANF) Child Care Deduction Unit Tests
+# Tests the child care deduction calculation
+# Source: 8.102.520.12 NMAC
+# Limits: Under 2: $200/month, Age 2+: $175/month
+
+- name: Case 1, no child care expenses results in zero deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_works_childcare_deduction: 0
+
+- name: Case 2, child care for child under 2 at max limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Under 2 limit: $200/month
+    # Expense: $250/month, capped at $200
+    nm_works_childcare_deduction: 200
+
+- name: Case 3, child care for child age 2 or older at max limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Age 2+ limit: $175/month
+    # Expense: $200/month, capped at $175
+    nm_works_childcare_deduction: 175
+
+- name: Case 4, child care below limit is fully deductible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_200  # $100/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Age 2+ limit: $175/month
+    # Expense: $100/month < $175, so full $100
+    nm_works_childcare_deduction: 100
+
+- name: Case 5, multiple children with mixed ages.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 1  # Under 2
+      person3:
+        age: 4  # Age 2+
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month total
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Under 2 limit: $200
+    # Age 2+ limit: $175
+    # Total max: $200 + $175 = $375
+    # Expense: $500/month, capped at $375
+    nm_works_childcare_deduction: 375
+
+- name: Case 6, child care expenses allocated below limits.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_000  # $250/month total
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Under 2 limit: $200
+    # Age 2+ limit: $175
+    # Total expense: $250 < combined limit $375
+    # Full expense deductible: $250
+    nm_works_childcare_deduction: 250
+
+# Edge Cases: Age boundary and special scenarios
+
+- name: Case 7, child exactly at age 2 gets lower deduction limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2  # Exactly age 2 (boundary)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Age 2+ limit: $175/month (age 2 uses the $175 bracket)
+    # Expense: $250/month, capped at $175
+    nm_works_childcare_deduction: 175
+
+- name: Case 8, infant at age 0 gets higher deduction limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0  # Newborn
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Under 2 limit: $200/month (age 0 is under 2)
+    # Expense: $250/month, capped at $200
+    nm_works_childcare_deduction: 200
+
+- name: Case 9, non-dependent adult does not qualify for child care deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 20  # Adult, not a dependent
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Non-dependent (age 20) gets $0 toward childcare limit
+    # Total max: $0
+    # Expense capped at $0
+    nm_works_childcare_deduction: 0
+
+- name: Case 10, two children both under age 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 1
+      person3:
+        age: 0  # Newborn
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Both children under 2: $200 each
+    # Total max: $200 + $200 = $400
+    # Expense: $500/month, capped at $400
+    nm_works_childcare_deduction: 400
+
+- name: Case 11, two children both age 2 or older.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 3
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_800  # $400/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Both children age 2+: $175 each
+    # Total max: $175 + $175 = $350
+    # Expense: $400/month, capped at $350
+    nm_works_childcare_deduction: 350
+
+- name: Case 12, child care expenses exactly at combined limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1  # Under 2: $200
+      person3:
+        age: 4  # Age 2+: $175
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_500  # $375/month = exact limit
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Total max: $200 + $175 = $375
+    # Expense: $375/month = exact limit
+    nm_works_childcare_deduction: 375
+
+- name: Case 13, large family with many children of mixed ages.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0  # Under 2: $200
+      person3:
+        age: 1  # Under 2: $200
+      person4:
+        age: 3  # Age 2+: $175
+      person5:
+        age: 6  # Age 2+: $175
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        childcare_expenses: 12_000  # $1,000/month
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: NM
+  output:
+    # 2 under 2: $200 * 2 = $400
+    # 2 age 2+: $175 * 2 = $350
+    # Total max: $750
+    # Expense: $1,000/month, capped at $750
+    nm_works_childcare_deduction: 750
+
+- name: Case 14, child care expenses at zero with dependents.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # No expenses = no deduction regardless of eligible children
+    nm_works_childcare_deduction: 0
