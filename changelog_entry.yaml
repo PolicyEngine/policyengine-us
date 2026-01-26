@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    changed:
+      - Optimized select() statements by removing redundant conditions that match the default value, improving vectorized calculation performance.

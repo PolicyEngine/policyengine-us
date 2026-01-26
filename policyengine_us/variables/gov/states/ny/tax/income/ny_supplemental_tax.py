@@ -43,9 +43,7 @@ class ny_supplemental_tax(Variable):
             default=get_previous_threshold(ny_taxable_income, single.thresholds),
         )
 
-        applicable_amount = max_(
-            0, ny_agi - max_(previous_agi_threshold, p.min_agi)
-        )
+        applicable_amount = max_(0, ny_agi - max_(previous_agi_threshold, p.min_agi))
 
         phase_in_fraction = min_(
             1,
@@ -113,12 +111,8 @@ class ny_supplemental_tax(Variable):
                 ],
                 [
                     p.incremental_benefit.joint.calc(ny_taxable_income),
-                    p.incremental_benefit.head_of_household.calc(
-                        ny_taxable_income
-                    ),
-                    p.incremental_benefit.surviving_spouse.calc(
-                        ny_taxable_income
-                    ),
+                    p.incremental_benefit.head_of_household.calc(ny_taxable_income),
+                    p.incremental_benefit.surviving_spouse.calc(ny_taxable_income),
                     p.incremental_benefit.separate.calc(ny_taxable_income),
                 ],
                 # Default covers SINGLE
