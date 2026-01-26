@@ -52,15 +52,15 @@
     people:
       parent:
         age: 30
-        employment_income: 9_600
+        employment_income_before_lsr: 9_600
         is_tax_unit_head_or_spouse: true
       child1:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child2:
         age: 3
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -92,11 +92,11 @@
     people:
       parent:
         age: 30
-        employment_income: 24_000
+        employment_income_before_lsr: 24_000
         is_tax_unit_head_or_spouse: true
       child:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -126,11 +126,11 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head_or_spouse: true
       child:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -167,12 +167,12 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         social_security: 4_800
         is_tax_unit_head_or_spouse: true
       child:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -214,16 +214,16 @@
     people:
       parent:
         age: 30
-        employment_income: 6_000
+        employment_income_before_lsr: 6_000
         social_security: 2_400
         is_tax_unit_head_or_spouse: true
       child1:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child2:
         age: 3
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -262,11 +262,11 @@
     people:
       parent:
         age: 25
-        employment_income: 7_200
+        employment_income_before_lsr: 7_200
         is_tax_unit_head_or_spouse: true
       child:
         age: 2
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -297,47 +297,47 @@
     people:
       parent1:
         age: 35
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head_or_spouse: true
       parent2:
         age: 33
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head_or_spouse: true
       child1:
         age: 16
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child2:
         age: 14
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child3:
         age: 12
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child4:
         age: 10
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child5:
         age: 8
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child6:
         age: 6
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child7:
         age: 4
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child8:
         age: 2
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
       child9:
         age: 1
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -359,11 +359,11 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_head_or_spouse: true
       child:
         age: 5
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:

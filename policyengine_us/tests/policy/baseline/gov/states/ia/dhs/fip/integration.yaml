@@ -18,7 +18,7 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
       child2:
@@ -53,7 +53,7 @@
     people:
       parent:
         age: 28
-        employment_income: 9_600  # $800/month * 12
+        employment_income_before_lsr: 9_600  # $800/month * 12
       child1:
         age: 4
     spm_units:
@@ -93,7 +93,7 @@
     people:
       parent:
         age: 35
-        employment_income: 7_200  # $600/month * 12
+        employment_income_before_lsr: 7_200  # $600/month * 12
         social_security: 2_400  # $200/month * 12
       child1:
         age: 10
@@ -139,7 +139,7 @@
     people:
       parent:
         age: 32
-        employment_income: 18_000  # $1,500/month * 12
+        employment_income_before_lsr: 18_000  # $1,500/month * 12
       child1:
         age: 6
     spm_units:
@@ -171,7 +171,7 @@
     people:
       parent:
         age: 30
-        employment_income: 1_200  # $100/month * 12
+        employment_income_before_lsr: 1_200  # $100/month * 12
         social_security: 7_200  # $600/month * 12
       child1:
         age: 8
@@ -211,7 +211,7 @@
     people:
       person1:
         age: 25
-        employment_income: 0
+        employment_income_before_lsr: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -232,7 +232,7 @@
     people:
       parent:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
     spm_units:
@@ -256,10 +256,10 @@
     people:
       parent1:
         age: 35
-        employment_income: 6_000  # $500/month * 12
+        employment_income_before_lsr: 6_000  # $500/month * 12
       parent2:
         age: 33
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 12
       child2:

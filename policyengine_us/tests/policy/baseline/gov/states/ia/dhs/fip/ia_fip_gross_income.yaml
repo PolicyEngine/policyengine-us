@@ -8,7 +8,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -25,7 +25,7 @@
     people:
       person1:
         age: 30
-        employment_income: 9_600
+        employment_income_before_lsr: 9_600
     spm_units:
       spm_unit:
         members: [person1]
@@ -42,7 +42,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         social_security: 4_800
     spm_units:
       spm_unit:
@@ -60,7 +60,7 @@
     people:
       person1:
         age: 30
-        employment_income: 6_000
+        employment_income_before_lsr: 6_000
         social_security: 2_400
     spm_units:
       spm_unit:
@@ -79,11 +79,11 @@
     people:
       person1:
         age: 35
-        employment_income: 10_000
+        employment_income_before_lsr: 10_000
         social_security: 1_200
       person2:
         age: 33
-        employment_income: 2_000
+        employment_income_before_lsr: 2_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -103,7 +103,7 @@
     people:
       person1:
         age: 30
-        employment_income: 9_600
+        employment_income_before_lsr: 9_600
     spm_units:
       spm_unit:
         members: [person1]
