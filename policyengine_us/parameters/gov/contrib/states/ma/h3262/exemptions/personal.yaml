@@ -1,0 +1,27 @@
+description: MA H3262 personal exemption amounts by filing status. The bill increases exemptions from current law values.
+metadata:
+  unit: currency-USD
+  period: year
+  label: MA H3262 personal exemption
+  breakdown:
+    - filing_status
+  reference:
+    - title: Massachusetts House Bill H.3262 Sections 2-4
+      href: https://malegislature.gov/Bills/194/H3262
+    - title: Massachusetts General Laws Chapter 62 Section 3
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+SINGLE:
+  values:
+    2025-01-01: 6_600
+JOINT:
+  values:
+    2025-01-01: 13_200
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 10_200
+SEPARATE:
+  values:
+    2025-01-01: 6_600
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 13_200

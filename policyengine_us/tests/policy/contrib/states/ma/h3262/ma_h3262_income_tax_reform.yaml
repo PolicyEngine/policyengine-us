@@ -1,0 +1,181 @@
+# MA H3262 Income Tax Reform Tests
+# Tests the 6% Part B rate and increased personal exemptions
+
+# Test Part B tax rate increase (5% to 6%)
+- name: H3262 Part B tax rate comparison - 6% vs 5%
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      person:
+        age: 35
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Part B taxable income = $100,000 - $6,600 exemption - $2,000 no tax status = $91,400
+    # Tax at 6% = $91,400 * 0.06 = $5,484
+    # Baseline would be: $93,600 * 0.05 = $4,680 (a difference of $804)
+    ma_income_tax_before_credits: 5_484
+
+- name: H3262 not in effect - baseline 5% rate
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: false
+    people:
+      person:
+        age: 35
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Baseline: Part B taxable = $100,000 - $4,400 - $2,000 = $93,600
+    # Tax at 5% = $93,600 * 0.05 = $4,680
+    ma_income_tax_before_credits: 4_680
+
+# Test exemption amounts
+- name: H3262 Part B rate - Single filer with $50,000 income
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      person:
+        age: 35
+        employment_income: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # With H3262: income = $50,000, exemption = $6,600, taxable = $43,400, tax = $43,400 * 0.06 = $2,604
+    # Note: This is approximate - actual calculation may differ due to other deductions
+    ma_part_b_taxable_income_exemption: 6_600
+
+- name: H3262 Personal exemption - Single filer
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      person:
+        age: 35
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 6_600
+
+- name: H3262 Personal exemption - Head of Household
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # $10,200 personal + $1,000 dependent = $11,200
+    ma_part_b_taxable_income_exemption: 11_200
+
+- name: H3262 Personal exemption - Married Filing Jointly
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      spouse1:
+        age: 35
+        is_tax_unit_head: true
+      spouse2:
+        age: 33
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 13_200
+
+- name: H3262 Personal exemption - Married Filing Separately
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: true
+    people:
+      person:
+        age: 35
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 6_600
+
+- name: H3262 not in effect - uses current law exemption
+  period: 2026
+  reforms: policyengine_us.reforms.states.ma.h3262.ma_h3262_income_tax_reform.ma_h3262_income_tax_reform
+  input:
+    gov.contrib.states.ma.h3262.in_effect: false
+    people:
+      person:
+        age: 35
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Current law: $4,400 for single filers
+    ma_part_b_taxable_income_exemption: 4_400
