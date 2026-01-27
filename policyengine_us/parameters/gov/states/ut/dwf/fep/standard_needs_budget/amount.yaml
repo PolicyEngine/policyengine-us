@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 20)
+  breakdown_labels:
+    - Household size
   label: Utah FEP Standard Needs Budget (SNB)
   reference:
     - title: Utah Admin. Code R986-200-239(1)

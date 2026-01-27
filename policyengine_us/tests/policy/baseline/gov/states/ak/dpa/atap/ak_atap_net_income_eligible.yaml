@@ -1,0 +1,155 @@
+# Unit tests for Alaska ATAP net income eligibility (need standard test)
+# 7 AAC 45.470 - Income eligibility
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470
+# Countable income must not exceed the need standard
+
+- name: Case 1, zero countable income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_countable_income: 0
+        ak_atap_need_standard: 823
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $0 <= $823 need standard = eligible
+    ak_atap_net_income_eligible: true
+
+- name: Case 2, countable income well under need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_countable_income: 400
+        ak_atap_need_standard: 823
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $400 <= $823 need standard = eligible
+    ak_atap_net_income_eligible: true
+
+- name: Case 3, countable income exactly at need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_countable_income: 823
+        ak_atap_need_standard: 823
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $823 <= $823 need standard = eligible
+    ak_atap_net_income_eligible: true
+
+- name: Case 4, countable income exceeds need standard by one dollar.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_countable_income: 824
+        ak_atap_need_standard: 823
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $824 > $823 need standard = ineligible
+    ak_atap_net_income_eligible: false
+
+- name: Case 5, countable income significantly over need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_countable_income: 1_000
+        ak_atap_need_standard: 823
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $1,000 > $823 need standard = ineligible
+    ak_atap_net_income_eligible: false
+
+- name: Case 6, family of 3 under need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_countable_income: 700
+        ak_atap_need_standard: 940
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # $700 <= $940 need standard = eligible
+    ak_atap_net_income_eligible: true
+
+- name: Case 7, family of 3 over need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_countable_income: 950
+        ak_atap_need_standard: 940
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # $950 > $940 need standard = ineligible
+    ak_atap_net_income_eligible: false

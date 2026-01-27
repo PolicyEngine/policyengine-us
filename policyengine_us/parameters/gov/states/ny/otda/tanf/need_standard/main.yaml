@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 7)
+  breakdown_labels:
+    - Household size
   label: New York TANF monthly income limit
   reference:
     - title: New York State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families

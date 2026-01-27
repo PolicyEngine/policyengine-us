@@ -1,9 +1,0 @@
-description: Rhode Island CTC phaseout end point. When set above start, enables range-based phaseout where the credit phases out completely between start and end. The effective rate is calculated as max_credit / (end - start).
-
-values:
-  2025-01-01: 0
-
-metadata:
-  label: Rhode Island Child Tax Credit phaseout end
-  period: year
-  unit: currency-USD

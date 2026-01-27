@@ -1,0 +1,59 @@
+description: Rhode Island expanded Social Security exemption income limit by filing status.
+ 
+
+metadata:
+  label: Rhode Island expanded Social Security exemption income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+
+SINGLE:
+  values:
+    2027-01-01: 80_000
+    2028-01-01: 165_200
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2027-01-01: 80_000
+    2028-01-01: 165_200
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
+SEPARATE:
+  values:
+    2027-01-01: 80_000
+    2028-01-01: 165_200
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 25
+
+JOINT:
+  values:
+    2027-01-01: 100_000
+    2028-01-01: 206_550
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
+SURVIVING_SPOUSE:
+  values:
+    2027-01-01: 100_000
+    2028-01-01: 206_550
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

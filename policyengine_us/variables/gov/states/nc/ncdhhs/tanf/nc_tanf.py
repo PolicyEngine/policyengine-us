@@ -12,7 +12,7 @@ class nc_tanf(Variable):
     def formula(spm_unit, period, parameters):
         payment_percentage = parameters(
             period
-        ).gov.states.nc.ncdhhs.tanf.need_standard.payment_percentage
+        ).gov.states.nc.ncdhhs.tanf.benefit.payment_percentage
         reduced_need_standard = spm_unit(
             "nc_tanf_reduced_need_standard", period
         )
