@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(0, 10)
+  breakdown_labels:
+    - Household size
   label: Kansas TANF payment standard amount
   reference:
     - title: K.A.R. 30-4-100 - Payment Standards

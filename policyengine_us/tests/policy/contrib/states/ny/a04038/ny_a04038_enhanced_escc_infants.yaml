@@ -1,0 +1,112 @@
+# NY A04038 Enhanced Empire State Child Credit for Infants Act Tests
+# Tests the doubled CTC for children under age 1, effective 2026
+
+# Basic test - infant (age 0) gets doubled credit
+- name: Infant under age 1 gets doubled credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants
+  input:
+    gov.contrib.states.ny.a04038.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, infant]
+    households:
+      household:
+        members: [person1, infant]
+        state_code: NY
+  output:
+    # Base credit for ages 0-3 in 2026 is $1,000
+    # Doubled for infant: $1,000 * 2 = $2,000
+    ny_ctc_post_2024_base: 2_000
+
+# Child age 1 gets standard credit (no doubling)
+- name: Child age 1 gets standard credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants
+  input:
+    gov.contrib.states.ny.a04038.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: NY
+  output:
+    # Base credit for ages 0-3 in 2026 is $1,000
+    # Age 1 does not qualify for doubling: $1,000 * 1 = $1,000
+    ny_ctc_post_2024_base: 1_000
+
+# Mixed ages - infant and older child
+- name: Mixed ages - infant doubled, older child standard
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants
+  input:
+    gov.contrib.states.ny.a04038.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, infant, child]
+    households:
+      household:
+        members: [person1, infant, child]
+        state_code: NY
+  output:
+    # Infant (age 0): $1,000 * 2 = $2,000
+    # Child (age 5): $500 * 1 = $500 (ages 4-16 get $500 in 2026)
+    # Total: $2,500
+    ny_ctc_post_2024_base: 2_500
+
+# Two infants get doubled credits
+- name: Two infants both get doubled credits
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.a04038.ny_a04038_enhanced_escc_infants.ny_a04038_enhanced_escc_infants
+  input:
+    gov.contrib.states.ny.a04038.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      infant1:
+        age: 0
+        is_tax_unit_dependent: true
+      infant2:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, infant1, infant2]
+    households:
+      household:
+        members: [person1, infant1, infant2]
+        state_code: NY
+  output:
+    # Two infants: $1,000 * 2 * 2 = $4,000
+    ny_ctc_post_2024_base: 4_000

@@ -1,4 +1,4 @@
-- name: 2022 CT EITC, no matched credit and regular filing
+- name: Case 1, 2022 no federal EITC.
   period: 2022
   input:
     state_code: CT
@@ -6,15 +6,16 @@
   output:
     ct_eitc: 0
 
-- name: 2022 CT EITC, some matched credit and regular filing
+- name: Case 2, 2022 with federal EITC.
   period: 2022
   input:
     state_code: CT
     eitc: 2_000
   output:
     ct_eitc: 610
+    # 2,000 * 0.305 = 610
 
-- name: 2023 CT EITC, no matched credit and regular filing
+- name: Case 3, 2023 no federal EITC.
   period: 2023
   input:
     state_code: CT
@@ -22,10 +23,70 @@
   output:
     ct_eitc: 0
 
-- name: 2023 CT EITC, some matched credit and regular filing
+- name: Case 4, 2023 with federal EITC.
   period: 2023
   input:
     state_code: CT
     eitc: 2_000
   output:
     ct_eitc: 800
+    # 2,000 * 0.4 = 800
+
+- name: Case 5, 2024 no qualifying child bonus before 2025.
+  period: 2024
+  input:
+    state_code: CT
+    eitc: 2_000
+    eitc_child_count: 1
+  output:
+    ct_eitc: 800
+    # 2,000 * 0.4 = 800 (no bonus before 2025)
+
+- name: Case 6, 2025 no federal EITC and no children.
+  period: 2025
+  input:
+    state_code: CT
+    eitc: 0
+    eitc_child_count: 0
+  output:
+    ct_eitc: 0
+
+- name: Case 7, 2025 federal EITC with no qualifying children.
+  period: 2025
+  input:
+    state_code: CT
+    eitc: 2_000
+    eitc_child_count: 0
+  output:
+    ct_eitc: 800
+    # 2,000 * 0.4 = 800 (no bonus without qualifying child)
+
+- name: Case 8, 2025 federal EITC with one qualifying child.
+  period: 2025
+  input:
+    state_code: CT
+    eitc: 2_000
+    eitc_child_count: 1
+  output:
+    ct_eitc: 1_050
+    # 2,000 * 0.4 + 250 = 800 + 250 = 1,050
+
+- name: Case 9, 2025 no federal EITC but has qualifying child.
+  period: 2025
+  input:
+    state_code: CT
+    eitc: 0
+    eitc_child_count: 1
+  output:
+    ct_eitc: 0
+    # Must be eligible for CT EITC (i.e., have federal EITC) to receive $250 bonus
+
+- name: Case 10, 2025 federal EITC with multiple qualifying children.
+  period: 2025
+  input:
+    state_code: CT
+    eitc: 5_000
+    eitc_child_count: 3
+  output:
+    ct_eitc: 2_250
+    # 5,000 * 0.4 + 250 = 2,000 + 250 = 2,250 (bonus is flat $250)

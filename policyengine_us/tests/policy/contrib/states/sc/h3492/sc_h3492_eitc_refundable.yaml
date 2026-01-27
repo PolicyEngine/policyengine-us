@@ -1,0 +1,165 @@
+# SC H.3492 - Partially Refundable EITC Tests
+# If SC EITC exceeds state income tax liability, 25% of excess is refunded
+# SC EITC = 125% of federal EITC
+
+- name: Credit fully used against tax liability - no refund
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 1_000
+        sc_income_tax_before_non_refundable_credits: 2_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # SC EITC = 125% of $1,000 = $1,250
+    # Tax liability ($2,000) exceeds credit ($1,250)
+    # Non-refundable: $1,250 (full amount)
+    # Refundable: $0 (no excess)
+    sc_h3492_total_eitc: 1_250
+    sc_h3492_eitc_non_refundable: 1_250
+    sc_h3492_eitc_refundable: 0
+
+- name: Credit partially exceeds tax liability - partial refund
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 4_000
+        sc_income_tax_before_non_refundable_credits: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # SC EITC = 125% of $4,000 = $5,000
+    # Tax liability: $3,000
+    # Non-refundable: $3,000 (limited to tax liability)
+    # Excess: $5,000 - $3,000 = $2,000
+    # Refundable: 25% of $2,000 = $500
+    sc_h3492_total_eitc: 5_000
+    sc_h3492_eitc_non_refundable: 3_000
+    sc_h3492_eitc_refundable: 500
+
+- name: Zero tax liability - maximum refund
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 4_000
+        sc_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # SC EITC = 125% of $4,000 = $5,000
+    # Tax liability: $0
+    # Non-refundable: $0 (no tax to offset)
+    # Excess: $5,000 - $0 = $5,000
+    # Refundable: 25% of $5,000 = $1,250
+    sc_h3492_total_eitc: 5_000
+    sc_h3492_eitc_non_refundable: 0
+    sc_h3492_eitc_refundable: 1_250
+
+- name: With other non-refundable credits - EITC limited by remaining liability
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 4_000
+        sc_income_tax_before_non_refundable_credits: 5_000
+        sc_cdcc: 1_000
+        sc_two_wage_earner_credit: 500
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # SC EITC = 125% of $4,000 = $5,000
+    # Tax before credits: $5,000
+    # Other credits: $1,000 + $500 = $1,500
+    # Tax liability for EITC: $5,000 - $1,500 = $3,500
+    # Non-refundable: min($5,000, $3,500) = $3,500
+    # Excess: $5,000 - $3,500 = $1,500
+    # Refundable: 25% of $1,500 = $375
+    sc_h3492_total_eitc: 5_000
+    sc_h3492_other_non_refundable_credits: 1_500
+    sc_h3492_tax_liability_for_eitc: 3_500
+    sc_h3492_eitc_non_refundable: 3_500
+    sc_h3492_eitc_refundable: 375
+
+- name: No federal EITC - no state credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 0
+        sc_income_tax_before_non_refundable_credits: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # No federal EITC means no SC EITC
+    sc_h3492_total_eitc: 0
+    sc_h3492_eitc_non_refundable: 0
+    sc_h3492_eitc_refundable: 0
+
+- name: Small credit fully absorbed by tax
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.h3492.sc_h3492_eitc_refundable.sc_h3492_eitc_refundable
+  input:
+    gov.contrib.states.sc.h3492.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        eitc: 400
+        sc_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    # SC EITC = 125% of $400 = $500
+    # Tax liability: $1,000
+    # Non-refundable: $500 (full amount)
+    # Refundable: $0 (no excess)
+    sc_h3492_total_eitc: 500
+    sc_h3492_eitc_non_refundable: 500
+    sc_h3492_eitc_refundable: 0

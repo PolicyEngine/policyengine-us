@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(0, 9)
+  breakdown_labels:
+    - Household size
   label: Delaware TANF payment standard amount
   reference:
     - title: Delaware TANF State Plan 2017 - Payment Standard Table
