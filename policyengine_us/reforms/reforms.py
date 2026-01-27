@@ -20,7 +20,10 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
+from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
+from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
+from .states.ny.s04487 import create_ny_s04487_newborn_credit_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -118,6 +121,7 @@ from .congress.hawley.awra import (
 from .crfb import (
     create_non_refundable_ss_credit_reform,
     create_senior_deduction_extension_reform,
+    create_agi_surtax_reform,
 )
 from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
@@ -179,7 +183,16 @@ def create_structural_reforms_from_parameters(parameters, period):
         create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
+    ny_a04038_enhanced_escc_infants = (
+        create_ny_a04038_enhanced_escc_infants_reform(parameters, period)
+    )
     sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
+        parameters, period
+    )
+    ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(
+        parameters, period
+    )
+    ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
     )
 
@@ -259,6 +272,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     senior_deduction_extension = create_senior_deduction_extension_reform(
         parameters, period
     )
+    agi_surtax = create_agi_surtax_reform(parameters, period)
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -327,7 +341,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
+        ny_a04038_enhanced_escc_infants,
         sc_h3492_eitc_refundable,
+        ny_a06774_enhanced_cdcc,
+        ny_s04487_newborn_credit,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
@@ -355,6 +372,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         afa_other_dependent_credit,
         non_refundable_ss_credit,
         senior_deduction_extension,
+        agi_surtax,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,

@@ -1,0 +1,177 @@
+# Unit tests for Alaska ATAP eligibility determination
+# 7 AAC 45.470 - Income eligibility
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470
+# Eligibility requires: eligible child, gross income eligible, net income eligible, resource eligible
+
+- name: Case 1, fully eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: true
+        ak_atap_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_atap_eligible: true
+
+- name: Case 2, ineligible no eligible child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: true
+        ak_atap_net_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # No eligible child = ineligible
+    ak_atap_eligible: false
+
+- name: Case 3, ineligible gross income over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: false
+        ak_atap_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Fails 185% gross income test = ineligible
+    ak_atap_eligible: false
+
+- name: Case 4, ineligible net income over need standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: true
+        ak_atap_net_income_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Fails need standard test = ineligible
+    ak_atap_eligible: false
+
+- name: Case 5, ineligible fails both income tests.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: false
+        ak_atap_net_income_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Fails both income tests = ineligible
+    ak_atap_eligible: false
+
+- name: Case 6, ineligible fails all requirements.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_resources_eligible: false
+        ak_atap_gross_income_eligible: false
+        ak_atap_net_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # No child + fails all tests = ineligible
+    ak_atap_eligible: false
+
+- name: Case 7, multiple eligible children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+      person3:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ak_atap_resources_eligible: true
+        ak_atap_gross_income_eligible: true
+        ak_atap_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Has eligible children and passes all tests = eligible
+    ak_atap_eligible: true
+
+- name: Case 8, ineligible resources over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap_resources_eligible: false
+        ak_atap_gross_income_eligible: true
+        ak_atap_net_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Fails resource test = ineligible
+    ak_atap_eligible: false

@@ -1,10 +1,17 @@
 description: Rhode Island phases out this percentage of its standard deduction for each increment by which their income exceeds the threshold.
+
+values:
+  2021-01-01: 0.2
+
 metadata:
   unit: /1
-  label: Rhode Island standard deduction phase out rate 
+  period: year
+  label: Rhode Island standard deduction phase out rate
   reference:
     - title: R.I. Gen. Laws § 44-30-2.6 (c)(3)(B)(III)
       href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
+    - title: 2025 RI-1040 Instructions page I-4
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=4
     - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2024
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf
     - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2022 - page 1
@@ -13,5 +20,3 @@ metadata:
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf
     # Rhode Island tax form does not specify this rate
     # According to tax form 2021/2022, this rate can only be found in corresponding tax rate schedule and worksheets
-values:
-  2021-01-01: 0.2

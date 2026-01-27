@@ -108,5 +108,6 @@
         members: [person1]
         state_code: RI
   output:
-    # Uses baseline (uprated) brackets when reform not in effect
-    ri_income_tax_before_non_refundable_credits: 41967.48
+    # Uses baseline 2025 brackets: $0-$79,900 (3.75%), $79,900-$181,650 (4.75%), $181,650+ (5.99%)
+    # 79900*0.0375 + 101750*0.0475 + 568350*0.0599 = 2996.25 + 4833.125 + 34044.165
+    ri_income_tax_before_non_refundable_credits: 41873.54

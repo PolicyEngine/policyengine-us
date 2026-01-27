@@ -1,0 +1,24 @@
+description: New Mexico passes through this amount of child support to families under the New Mexico Works program.
+
+metadata:
+  period: month
+  label: New Mexico Works child support passthrough amount
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  reference:
+    - title: 8.102.520.9(J) NMAC - Exempt Income
+      href: https://www.srca.nm.gov/parts/title08/08.102.0520.html
+    - title: HCA - Child Support Passthrough Increase (Jan 2023)
+      href: https://www.hca.nm.gov/2023/01/10/human-services-department-to-pass-through-more-money-to-low-income-families/
+
+brackets:
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 100
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: 100
+      2023-01-01: 200

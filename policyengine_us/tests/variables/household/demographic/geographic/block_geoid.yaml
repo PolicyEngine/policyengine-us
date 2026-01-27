@@ -1,0 +1,7 @@
+- name: Block GEOID defaults to empty string
+  period: 2024
+  input:
+    state_fips: 36
+  output:
+    block_geoid:
+      - ""

@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.507.0"
+version = "1.526.2"
 description = "Add your description here."
 readme = "README.md"
 authors = [
@@ -20,7 +20,8 @@ classifiers = [
 ]
 dependencies = [
     "microdf-python>=1.0.0",
-    "policyengine-core>=3.23.0",
+    "pandas>=2.0",
+    "policyengine-core>=3.23.5",
     "tqdm>=4.67.1",
 ]
 

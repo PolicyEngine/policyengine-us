@@ -1,0 +1,22 @@
+description: New Mexico provides this additional amount per person for benefit groups larger than the maximum table size under the New Mexico Works program.
+
+# 2015-08-01: 7.5% budgetary adjustment applied (+$83)
+# 2018-11-01: Budgetary adjustment removed (+$91)
+# 2023-08-01: 23% increase (+$111)
+
+values:
+  2015-08-01: 83
+  2018-11-01: 91
+  2023-08-01: 111
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Mexico Works additional person payment standard amount
+  reference:
+    - title: 8.102.500.8(D) NMAC - Eligibility Policy
+      href: https://www.srca.nm.gov/parts/title08/08.102.0500.html
+    - title: NM Human Services Register Vol. 41 No. 17 - Removal of Budgetary Allowance
+      href: https://www.hca.nm.gov/wp-content/uploads/HSR-Vol-41-No-17-with-proposed-rule.pdf#page=1
+    - title: HCA - 23% Cash Assistance Increase Announcement (Sept 2023)
+      href: https://www.hca.nm.gov/2023/09/01/state-announces-a-23-percent-increase-in-cash-assistance-for-low-income-new-mexico-families/

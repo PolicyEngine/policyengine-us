@@ -1,0 +1,42 @@
+# Wyoming POWER Income Eligibility Tests
+# Formula: countable_income < payment_standard (strict less than)
+# Source: Wyoming DFS Policy Manual Section 1101
+
+- name: Case 1, countable below payment standard.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_countable_income: 400
+    wy_power_payment_standard: 847
+  output:
+    # $400 < $847 → eligible
+    wy_power_income_eligible: true
+
+- name: Case 2, countable equals payment standard.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_countable_income: 847
+    wy_power_payment_standard: 847
+  output:
+    # $847 < $847 is FALSE → not eligible (strict less than)
+    wy_power_income_eligible: false
+
+- name: Case 3, countable above payment standard.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_countable_income: 1_000
+    wy_power_payment_standard: 847
+  output:
+    # $1,000 < $847 is FALSE → not eligible
+    wy_power_income_eligible: false
+
+- name: Case 4, non-Wyoming state.
+  period: 2026-01
+  input:
+    state_code: CO
+    wy_power_countable_income: 0
+    wy_power_payment_standard: 847
+  output:
+    wy_power_income_eligible: false

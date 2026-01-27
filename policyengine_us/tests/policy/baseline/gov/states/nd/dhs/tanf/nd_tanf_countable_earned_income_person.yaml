@@ -1,0 +1,136 @@
+- name: Case 1, no earnings.
+  period: 2024-01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 0
+  output:
+    nd_tanf_countable_earned_income_person: 0
+
+- name: Case 2, low earnings where $180 minimum applies.
+  period: 2024-01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 500
+  output:
+    # Standard expense: max(500 * 0.27, 180) = max(135, 180) = 180
+    # Earned after expense: 500 - 180 = 320
+    # TLP deduction: 320 * 0.5 = 160
+    # Countable: 320 - 160 = 160
+    nd_tanf_countable_earned_income_person: 160
+
+- name: Case 3, high earnings where 27% exceeds $180.
+  period: 2024-01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 1_000
+  output:
+    # Standard expense: max(1000 * 0.27, 180) = max(270, 180) = 270
+    # Earned after expense: 1000 - 270 = 730
+    # TLP deduction: 730 * 0.5 = 365
+    # Countable: 730 - 365 = 365
+    nd_tanf_countable_earned_income_person: 365
+
+- name: Case 4, earnings at breakpoint where 27% equals $180.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    # Breakpoint: 180 / 0.27 = 666.67
+    tanf_gross_earned_income: 666.67
+  output:
+    # Standard expense: max(666.67 * 0.27, 180) = max(180, 180) = 180
+    # Earned after expense: 666.67 - 180 = 486.67
+    # TLP deduction: 486.67 * 0.5 = 243.335
+    # Countable: 486.67 - 243.335 = 243.335
+    nd_tanf_countable_earned_income_person: 243.34
+
+- name: Case 5, very small earnings where deductions exceed gross.
+  period: 2024-01
+  input:
+    state_code: ND
+    # $50/month - deductions will exceed gross
+    tanf_gross_earned_income: 50
+  output:
+    # SEE: max($50 * 0.27, $180) = max($13.50, $180) = $180
+    # After SEE: max($50 - $180, 0) = $0 (clipped to zero)
+    # TLP: $0 * 0.50 = $0
+    # Countable: $0
+    nd_tanf_countable_earned_income_person: 0
+
+- name: Case 6, one dollar of earnings.
+  period: 2024-01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 1
+  output:
+    # SEE: max($1 * 0.27, $180) = max($0.27, $180) = $180
+    # After SEE: max($1 - $180, 0) = $0 (clipped)
+    # TLP: $0 * 0.50 = $0
+    # Countable: $0
+    nd_tanf_countable_earned_income_person: 0
+
+# SEE Breakpoint boundary tests
+# Breakpoint where 27% equals $180: $180 / 0.27 = $666.67
+# Below breakpoint: $180 minimum applies
+# Above breakpoint: 27% applies
+
+- name: Case 7, just below SEE breakpoint ($665).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 665
+  output:
+    # SEE: max($665 * 0.27, $180) = max($179.55, $180) = $180
+    # After SEE: $665 - $180 = $485
+    # TLP: $485 * 0.50 = $242.50
+    # Countable: $485 - $242.50 = $242.50
+    nd_tanf_countable_earned_income_person: 242.50
+
+- name: Case 8, just above SEE breakpoint ($667).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 667
+  output:
+    # SEE: max($667 * 0.27, $180) = max($180.09, $180) = $180.09
+    # After SEE: $667 - $180.09 = $486.91
+    # TLP: $486.91 * 0.50 = $243.455
+    # Countable: $486.91 - $243.455 = $243.455
+    nd_tanf_countable_earned_income_person: 243.46
+
+- name: Case 9, well above SEE breakpoint ($700).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 700
+  output:
+    # SEE: max($700 * 0.27, $180) = max($189, $180) = $189
+    # After SEE: $700 - $189 = $511
+    # TLP: $511 * 0.50 = $255.50
+    # Countable: $511 - $255.50 = $255.50
+    nd_tanf_countable_earned_income_person: 255.50
+
+# NOTE: TLP declining rate tests (35% for Jul-Sep, 25% for Oct-Dec) cannot be
+# tested in YAML because only 2024-01 or 2024 periods are supported.
+# The bracket pattern is verified via Python simulation.
+# TLP rates: Months 1-6: 50%, Months 7-9: 35%, Months 10-12: 25%
+
+- name: Case 10, yearly period applies TLP rate per calendar month.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    tanf_gross_earned_income: 12_000  # $1,000/month
+  output:
+    # Per month: $1,000 gross
+    # SEE: max($1,000 * 0.27, $180) = $270
+    # After SEE: $1,000 - $270 = $730
+    # TLP rates applied per calendar month:
+    #   Jan-Jun (6 mo): 50% → $730 - $365 = $365/mo → $2,190
+    #   Jul-Sep (3 mo): 35% → $730 - $255.5 = $474.5/mo → $1,423.5
+    #   Oct-Dec (3 mo): 25% → $730 - $182.5 = $547.5/mo → $1,642.5
+    # Yearly total: $2,190 + $1,423.5 + $1,642.5 = $5,256
+    nd_tanf_countable_earned_income_person: 5_256

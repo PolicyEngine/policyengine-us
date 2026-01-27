@@ -12310,3 +12310,199 @@
     added:
     - Add SC H.3492 partially refundable EITC reform.
   date: 2026-01-19 19:54:16
+- bump: minor
+  changes:
+    added:
+    - Update Rhode Island 2025 Individual Income Tax Model.
+  date: 2026-01-19 22:07:57
+- bump: patch
+  changes:
+    added:
+    - Add breakdown_labels metadata to parameters with range() dimensions for semantic
+      labelling.
+  date: 2026-01-20 19:20:31
+- bump: patch
+  changes:
+    changed:
+    - Update 2026 federal poverty guidelines.
+  date: 2026-01-21 15:19:45
+- bump: minor
+  changes:
+    added:
+    - NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+  date: 2026-01-21 16:28:14
+- bump: minor
+  changes:
+    added:
+    - NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns
+      reform.
+  date: 2026-01-21 20:02:25
+- bump: minor
+  changes:
+    added:
+    - NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+  date: 2026-01-21 20:53:40
+- bump: patch
+  changes:
+    fixed:
+    - Remove DACA_TPS from immigration_status.
+  date: 2026-01-21 21:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Use `uv sync --extra dev` in CI to correctly install optional dev dependencies
+      including coverage.
+    - Improve selective test runner to only run tests for specific subfolders (states,
+      congress, local) instead of entire parent directories.
+    - Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+  date: 2026-01-22 23:38:46
+- bump: minor
+  changes:
+    added:
+    - Add Wyoming POWER program
+  date: 2026-01-23 15:27:36
+- bump: minor
+  changes:
+    added:
+    - Implement Virginia TANF program.
+  date: 2026-01-23 16:04:44
+- bump: patch
+  changes:
+    fixed:
+    - Update SC H.3492 reform to use 5-year in_effect check pattern consistent with
+      other contributed reforms.
+  date: 2026-01-23 18:35:29
+- bump: minor
+  changes:
+    added:
+    - AGI surtax reform.
+  date: 2026-01-23 21:14:19
+- bump: patch
+  changes:
+    added:
+    - Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype
+      and StringArray handling
+    changed:
+    - Removed pandas <3.0 version cap to enable pandas 3.0 support
+    - Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility
+      (includes Enum.encode() fix)
+  date: 2026-01-25 13:03:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix Iowa SNAP self-employment simplified deduction rate from 0% to 40%.
+  date: 2026-01-25 13:30:04
+- bump: minor
+  changes:
+    removed:
+    - s_corp_self_employment_income variable. S-corp distributions are not subject
+      to self-employment tax per 26 USC 1402(a).
+  date: 2026-01-25 16:54:14
+- bump: minor
+  changes:
+    added:
+    - partnership_se_income variable for general partners' SE income from Schedule
+      K-1 Box 14, now included in taxable_self_employment_income per 26 USC 1402(a).
+  date: 2026-01-25 17:15:31
+- bump: patch
+  changes:
+    changed:
+    - Use default argument to numpy.select instead of dummy True condition for ~10%
+      performance improvement.
+  date: 2026-01-25 17:33:26
+- bump: patch
+  changes:
+    changed:
+    - Simplify Pell Grant calculation method by removing enum indirection and using
+      time-based formula.
+  date: 2026-01-25 18:19:02
+- bump: patch
+  changes:
+    fixed:
+    - Update Iowa SNAP self-employment deduction effective date from 2021-10-01 to
+      2012-08-01 based on USDA FNS State Options Report research.
+  date: 2026-01-25 18:31:23
+- bump: patch
+  changes:
+    fixed:
+    - Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024
+      microsim runs.
+  date: 2026-01-25 19:35:47
+- bump: minor
+  changes:
+    added:
+    - Add expanded income base option for CRFB AGI surtax reform, including retirement
+      contributions, HSA contributions, student loan interest, tax-exempt Social Security,
+      foreign earned income exclusion, tax-exempt interest, and health insurance premiums.
+  date: 2026-01-25 20:55:20
+- bump: minor
+  changes:
+    added:
+    - Add New Mexico Works (NM Works) program
+  date: 2026-01-25 21:13:51
+- bump: minor
+  changes:
+    added:
+    - Implemented North Dakota Temporary Assistance for Needy Families (TANF) program
+  date: 2026-01-25 21:17:46
+- bump: minor
+  changes:
+    added:
+    - Add Alaska ATAP (Temporary Assistance Program) implementation with income eligibility
+      tests, work incentive deductions, need standards, and benefit calculation based
+      on 7 AAC 45.
+  date: 2026-01-25 21:25:01
+- bump: minor
+  changes:
+    added:
+    - Louisiana Family Independence Temporary Assistance Program (FITAP).
+  date: 2026-01-25 21:40:34
+- bump: minor
+  changes:
+    added:
+    - Implement New Jersey WorkFirst (WFNJ).
+  date: 2026-01-25 22:40:42
+- bump: minor
+  changes:
+    changed:
+    - "Pin New York itemized deductions to pre-TCJA rules per Tax Law \xA7 615"
+  date: 2026-01-26 14:14:48
+- bump: patch
+  changes:
+    removed:
+    - Revert NY pre-TCJA itemized deductions (will be re-submitted for proper review)
+  date: 2026-01-26 14:37:21
+- bump: minor
+  changes:
+    added:
+    - Add census block-level geography variables (block_geoid, tract_geoid, cbsa_code,
+      place_fips, vtd, puma, sldu, sldl, zcta) for granular geographic analysis
+  date: 2026-01-26 19:35:03
+- bump: patch
+  changes:
+    added:
+    - Update SSI federal benefit rates, student earned income exclusion, and SGA amounts
+      for 2026.
+  date: 2026-01-26 20:28:28
+- bump: minor
+  changes:
+    changed:
+    - Update Illinois income tax parameters for 2025 and add 2025 citations.
+  date: 2026-01-26 23:05:41
+- bump: minor
+  changes:
+    changed:
+    - Update DC Child Tax Credit for 2026+ based on new statute (DC Code 47-1806.17),
+      including increased credit amount ($1,000), expanded age eligibility (under
+      18), removed child cap, lower income thresholds, and higher phase-out rate.
+  date: 2026-01-27 03:13:11
+- bump: patch
+  changes:
+    changed:
+    - Backdate North Carolina TANF parameters to 1997.
+  date: 2026-01-27 03:18:40
+- bump: patch
+  changes:
+    changed:
+    - Add historical values to Minnesota MFIP parameters.
+  date: 2026-01-27 03:21:56

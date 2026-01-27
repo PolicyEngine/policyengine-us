@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(0, 20)
+  breakdown_labels:
+    - Household size
   label: DC TANF standard payment amount
   reference:
     - title: TANF for District Families
