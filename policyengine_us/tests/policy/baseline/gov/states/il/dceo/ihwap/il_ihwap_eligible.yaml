@@ -2,42 +2,42 @@
 # Eligible if income_eligible OR categorically_eligible
 
 - name: Case 1, income eligible only is eligible.
-  period: 2024
+  period: 2025
   input:
     state_code: IL
     irs_gross_income: 20_000
-    # Below 200% FPL ($30,120), no categorical programs
+    # Below 60% SMI threshold ($38,106), no categorical programs
   output:
     il_ihwap_income_eligible: true
     il_ihwap_categorically_eligible: false
     il_ihwap_eligible: true
 
 - name: Case 2, categorically eligible only with high income is eligible.
-  period: 2024
+  period: 2025
   input:
     state_code: IL
     irs_gross_income: 50_000
     il_liheap: 800
-    # Above 200% FPL ($30,120), but has IL LIHEAP
+    # Above 60% SMI ($38,106), but has IL LIHEAP
   output:
     il_ihwap_income_eligible: false
     il_ihwap_categorically_eligible: true
     il_ihwap_eligible: true
 
 - name: Case 3, both income and categorical eligible is eligible.
-  period: 2024
+  period: 2025
   input:
     state_code: IL
     irs_gross_income: 18_000
     ssi: 9_000
-    # Below 200% FPL and receiving SSI
+    # Below threshold and receiving SSI
   output:
     il_ihwap_income_eligible: true
     il_ihwap_categorically_eligible: true
     il_ihwap_eligible: true
 
 - name: Case 4, neither income nor categorical eligible is not eligible.
-  period: 2024
+  period: 2025
   input:
     state_code: IL
     irs_gross_income: 50_000
@@ -46,14 +46,14 @@
     il_tanf: 0
     il_aabd: 0
     housing_assistance: 0
-    # Above 200% FPL and no qualifying programs
+    # Above threshold and no qualifying programs
   output:
     il_ihwap_income_eligible: false
     il_ihwap_categorically_eligible: false
     il_ihwap_eligible: false
 
 - name: Case 5, non-IL resident is not eligible due to defined_for.
-  period: 2024
+  period: 2025
   input:
     state_code: CA
     irs_gross_income: 20_000
