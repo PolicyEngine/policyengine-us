@@ -2,7 +2,7 @@
 # Categorical eligibility: Receiving IL LIHEAP, SSI, IL TANF, IL AABD, or housing_assistance
 
 - name: Case 1, IL LIHEAP recipient is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     il_liheap: 500
@@ -10,7 +10,7 @@
     il_ihwap_categorically_eligible: true
 
 - name: Case 2, SSI recipient is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     ssi: 10_000
@@ -18,7 +18,7 @@
     il_ihwap_categorically_eligible: true
 
 - name: Case 3, IL TANF recipient is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     il_tanf: 3_600
@@ -26,7 +26,7 @@
     il_ihwap_categorically_eligible: true
 
 - name: Case 4, IL AABD recipient is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     il_aabd: 2_400
@@ -34,7 +34,7 @@
     il_ihwap_categorically_eligible: true
 
 - name: Case 5, housing assistance recipient is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     housing_assistance: 6_000
@@ -42,7 +42,7 @@
     il_ihwap_categorically_eligible: true
 
 - name: Case 6, no program benefits is not categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     il_liheap: 0
@@ -54,7 +54,7 @@
     il_ihwap_categorically_eligible: false
 
 - name: Case 7, multiple qualifying programs is categorically eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     ssi: 9_000

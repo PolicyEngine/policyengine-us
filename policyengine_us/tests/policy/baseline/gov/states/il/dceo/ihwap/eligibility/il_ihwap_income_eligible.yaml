@@ -1,45 +1,44 @@
 # Unit tests for il_ihwap_income_eligible
-# Income eligibility: income <= max(200% FPL, 60% SMI)
-# Note: period 2025 uses 2024-10-01 SMI value ($122,136 for IL)
+# Income eligibility:
+#   Sizes 1-7: income <= 200% FPL
+#   Sizes 8+: income <= max(200% FPL, 60% SMI)
+# Note: IL IHWAP PY N uses FPL/SMI from year N-1
+# period 2026 = PY2026 = FPL 2025-01-01 + SMI 2024-10-01
 
-- name: Case 1, single person below both thresholds is eligible.
-  period: 2025
+- name: Case 1, single person below 200% FPL is eligible.
+  period: 2026
   input:
     state_code: IL
     irs_gross_income: 25_000
-    # 2025 thresholds for 1 person:
+    # PY2026 threshold for 1 person (size <= 7, FPL only):
     # 200% FPL = $15,650 × 2 = $31,300
-    # 60% SMI = $122,136 × 0.52 × 0.6 = $38,106
-    # Limit = max($31,300, $38,106) = $38,106
-    # $25,000 < $38,106 = eligible
+    # $25,000 < $31,300 = eligible
   output:
     il_ihwap_income_eligible: true
 
-- name: Case 2, single person above 200% FPL but below 60% SMI is eligible.
-  period: 2025
+- name: Case 2, single person above 200% FPL is not eligible.
+  period: 2026
   input:
     state_code: IL
     irs_gross_income: 35_000
-    # 2025 thresholds for 1 person:
+    # PY2026 threshold for 1 person (size <= 7, FPL only):
     # 200% FPL = $31,300
-    # 60% SMI = $38,106
-    # $35,000 > $31,300 but < $38,106 = eligible (SMI is higher)
-  output:
-    il_ihwap_income_eligible: true
-
-- name: Case 3, single person above both thresholds is not eligible.
-  period: 2025
-  input:
-    state_code: IL
-    irs_gross_income: 40_000
-    # 2025 thresholds for 1 person:
-    # Limit = max($31,300, $38,106) = $38,106
-    # $40,000 > $38,106 = not eligible
+    # $35,000 > $31,300 = not eligible
   output:
     il_ihwap_income_eligible: false
 
+- name: Case 3, single person at exact 200% FPL threshold is eligible.
+  period: 2026
+  input:
+    state_code: IL
+    irs_gross_income: 31_300
+    # 200% FPL = $31,300
+    # $31,300 <= $31,300 = eligible
+  output:
+    il_ihwap_income_eligible: true
+
 - name: Case 4, family of 4 below threshold is eligible.
-  period: 2025
+  period: 2026
   input:
     people:
       person1:
@@ -59,16 +58,14 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: IL
-    # 2025 thresholds for 4 people:
-    # 200% FPL = $31,800 × 2 = $63,600
-    # 60% SMI = $122,136 × 1.0 × 0.6 = $73,282
-    # Limit = max($63,600, $73,282) = $73,282
-    # $50,000 < $73,282 = eligible
+    # PY2026 threshold for 4 people (size <= 7, FPL only):
+    # 200% FPL = $32,150 × 2 = $64,300
+    # $50,000 < $64,300 = eligible
   output:
     il_ihwap_income_eligible: true
 
-- name: Case 5, family of 4 above 200% FPL but below 60% SMI is eligible.
-  period: 2025
+- name: Case 5, family of 4 above 200% FPL is not eligible.
+  period: 2026
   input:
     people:
       person1:
@@ -88,26 +85,26 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: IL
-    # 2025 thresholds for 4 people:
-    # 200% FPL = $63,600, 60% SMI = $73,282
-    # $70,000 > $63,600 but < $73,282 = eligible (SMI is higher)
+    # PY2026 threshold for 4 people (size <= 7, FPL only):
+    # 200% FPL = $64,300
+    # $70,000 > $64,300 = not eligible
   output:
-    il_ihwap_income_eligible: true
+    il_ihwap_income_eligible: false
 
-- name: Case 6, family of 4 above both thresholds is not eligible.
-  period: 2025
+- name: Case 6, family of 4 at exact 200% FPL threshold is eligible.
+  period: 2026
   input:
     people:
       person1:
-        age: 40
-        irs_gross_income: 45_000
+        age: 35
+        irs_gross_income: 40_000
       person2:
-        age: 38
-        irs_gross_income: 35_000
+        age: 33
+        irs_gross_income: 24_300
       person3:
-        age: 12
-      person4:
         age: 10
+      person4:
+        age: 8
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -115,14 +112,14 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: IL
-    # 2025 thresholds for 4 people:
-    # Limit = max($63,600, $73,282) = $73,282
-    # $80,000 > $73,282 = not eligible
+    # PY2026 threshold for 4 people:
+    # 200% FPL = $64,300
+    # $64,300 <= $64,300 = eligible
   output:
-    il_ihwap_income_eligible: false
+    il_ihwap_income_eligible: true
 
 - name: Case 7, zero income is eligible.
-  period: 2025
+  period: 2026
   input:
     state_code: IL
     irs_gross_income: 0
@@ -130,7 +127,7 @@
     il_ihwap_income_eligible: true
 
 - name: Case 8, large family of 8 below threshold is eligible.
-  period: 2025
+  period: 2026
   input:
     people:
       person1:
@@ -158,87 +155,111 @@
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         state_code: IL
-    # 2025 thresholds for 8 people:
+    # PY2026 thresholds for 8 people (size > 7, uses max):
     # 200% FPL = $54,150 × 2 = $108,300
     # 60% SMI = $122,136 × 1.38 × 0.6 = $101,129
-    # Limit = max($108,300, $101,129) = $108,300 (FPL higher for large families)
+    # Limit = max($108,300, $101,129) = $108,300
     # $70,000 < $108,300 = eligible
   output:
     il_ihwap_income_eligible: true
 
-- name: Case 9, income at exact 60% SMI threshold for 1 person is eligible.
-  period: 2025
+- name: Case 9, large family of 8 above threshold is not eligible.
+  period: 2026
   input:
-    state_code: IL
-    irs_gross_income: 38_106
-    # 60% SMI threshold for 1 person = $122,136 × 0.52 × 0.6 = $38,106.43
-    # $38,106 <= $38,106.43 = eligible
-  output:
-    il_ihwap_income_eligible: true
-
-- name: Case 10, income above 60% SMI threshold is not eligible.
-  period: 2025
-  input:
-    state_code: IL
-    irs_gross_income: 38_110
-    # 60% SMI threshold for 1 person = $38,106.43
-    # $38,110 > $38,106.43 = not eligible
+    people:
+      person1:
+        age: 45
+        irs_gross_income: 60_000
+      person2:
+        age: 43
+        irs_gross_income: 55_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IL
+    # PY2026 threshold for 8 people:
+    # Limit = max($108,300, $101,129) = $108,300
+    # $115,000 > $108,300 = not eligible
   output:
     il_ihwap_income_eligible: false
 
-- name: Case 11, family of 4 at 200% FPL threshold is eligible.
-  period: 2025
+- name: Case 10, family of 7 uses FPL only threshold.
+  period: 2026
   input:
     people:
       person1:
-        age: 35
-        irs_gross_income: 40_000
+        age: 45
+        irs_gross_income: 50_000
       person2:
-        age: 33
-        irs_gross_income: 24_250
+        age: 43
+        irs_gross_income: 40_000
       person3:
-        age: 10
+        age: 17
       person4:
-        age: 8
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5, person6, person7]
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5, person6, person7]
         state_code: IL
-    # 2025 thresholds for 4 people (per IL DCEO table):
-    # 200% FPL = $64,300
-    # 60% SMI = $73,282
-    # Limit = max($64,300, $73,282) = $73,282
-    # $64,250 <= $73,282 = eligible
+    # PY2026 threshold for 7 people (size <= 7, FPL only):
+    # 200% FPL = $48,650 × 2 = $97,300
+    # $90,000 < $97,300 = eligible
   output:
     il_ihwap_income_eligible: true
 
-- name: Case 12, family of 4 above 200% FPL but below 60% SMI is eligible.
-  period: 2025
+- name: Case 11, family of 7 above FPL threshold is not eligible.
+  period: 2026
   input:
     people:
       person1:
-        age: 35
-        irs_gross_income: 40_000
+        age: 45
+        irs_gross_income: 55_000
       person2:
-        age: 33
-        irs_gross_income: 24_350
+        age: 43
+        irs_gross_income: 50_000
       person3:
-        age: 10
+        age: 17
       person4:
-        age: 8
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5, person6, person7]
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4, person5, person6, person7]
         state_code: IL
-    # 2025 thresholds for 4 people (per IL DCEO table):
-    # 200% FPL = $64,300
-    # 60% SMI = $73,282
-    # $64,350 > $64,300 but <= $73,282 = still eligible (SMI threshold applies)
+    # PY2026 threshold for 7 people (size <= 7, FPL only):
+    # 200% FPL = $97,300
+    # $105,000 > $97,300 = not eligible
   output:
-    il_ihwap_income_eligible: true
+    il_ihwap_income_eligible: false
