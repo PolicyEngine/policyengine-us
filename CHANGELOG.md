@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.527.0] - 2026-01-27 03:46:23
+
+### Added
+
+- Add Connecticut EITC $250 qualifying child bonus for tax year 2025.
+
+### Changed
+
+- Update Connecticut tax parameter references to 2025 CT-1040 Instructions.
+
 ## [1.526.2] - 2026-01-27 03:21:56
 
 ### Changed
@@ -14576,6 +14586,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.2...1.527.0
 [1.526.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.1...1.526.2
 [1.526.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.0...1.526.1
 [1.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.525.0...1.526.0
