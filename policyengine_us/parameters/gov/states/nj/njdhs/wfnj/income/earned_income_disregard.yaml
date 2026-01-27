@@ -1,0 +1,26 @@
+description: New Jersey excludes this share of earned income based on months of employment under the WorkFirst New Jersey program.
+
+brackets:
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 1       # 100% disregard for first month
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: 0.75    # 75% disregard for months 2-7
+  - threshold:
+      2015-01-01: 8
+    amount:
+      2015-01-01: 0.5     # 50% disregard for month 8+
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  label: New Jersey WFNJ earned income disregard rate by month (20+ hours/week)
+  reference:
+    - title: N.J.A.C. 10:90-3.8(c) - Tiered earned income disregards
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-8
+    - title: New Jersey State Plan for TANF FFY 2024-2026
+      href: https://www.nj.gov/humanservices/providers/grants/public/publicnoticefiles/Draft%20New%20Jersey%20State%20Plan%20for%20Temporary%20Assistance%20for%20Needy%20Families%20(TANF)%20FFY%202024%20-%20FFY%202026.pdf#page=22

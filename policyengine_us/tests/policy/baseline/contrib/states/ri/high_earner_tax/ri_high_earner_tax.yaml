@@ -1,0 +1,113 @@
+# Test RI High Earner Tax Reform §44-30-2.6(c)(3)(A)
+# For 2027+: new bracket thresholds ($55k, $125k, $648,398) with 8.99% top rate
+
+- name: RI high earner tax - income below threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 500000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 2027 brackets: $0-$55k (3.75%), $55k-$125k (4.75%), $125k-$648,398 (5.99%)
+    # 55000*0.0375 + 70000*0.0475 + 375000*0.0599 = 2062.50 + 3325 + 22462.50
+    ri_income_tax_before_non_refundable_credits: 27850
+
+- name: RI high earner tax - income at threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 648398
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 55000*0.0375 + 70000*0.0475 + 523398*0.0599 = 2062.50 + 3325 + 31351.54
+    ri_income_tax_before_non_refundable_credits: 36739.04
+
+- name: RI high earner tax - income above threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 750000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 55000*0.0375 + 70000*0.0475 + 523398*0.0599 + 101602*0.0899
+    # = 2062.50 + 3325 + 31351.54 + 9134.02 = 45873.06
+    ri_income_tax_before_non_refundable_credits: 45873.06
+
+- name: RI high earner tax - joint filers above threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ri_taxable_income: 800000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 55000*0.0375 + 70000*0.0475 + 523398*0.0599 + 151602*0.0899
+    # = 2062.50 + 3325 + 31351.54 + 13629.02 = 50368.06
+    ri_income_tax_before_non_refundable_credits: 50368.06
+
+- name: RI high earner tax - reform not in effect
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: false
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 750000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Uses baseline 2025 brackets: $0-$79,900 (3.75%), $79,900-$181,650 (4.75%), $181,650+ (5.99%)
+    # 79900*0.0375 + 101750*0.0475 + 568350*0.0599 = 2996.25 + 4833.125 + 34044.165
+    ri_income_tax_before_non_refundable_credits: 41873.54

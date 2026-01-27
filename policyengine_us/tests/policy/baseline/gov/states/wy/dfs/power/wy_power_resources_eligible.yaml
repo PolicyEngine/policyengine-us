@@ -1,0 +1,36 @@
+# Wyoming POWER Resources Eligibility Tests
+# Formula: spm_unit_assets <= $5,000 limit
+# Source: Wyoming DFS Policy Manual
+
+- name: Case 1, zero resources.
+  period: 2026-01
+  input:
+    state_code: WY
+    spm_unit_assets: 0
+  output:
+    wy_power_resources_eligible: true
+
+- name: Case 2, one dollar below limit.
+  period: 2026-01
+  input:
+    state_code: WY
+    spm_unit_assets: 4_999
+  output:
+    wy_power_resources_eligible: true
+
+- name: Case 3, exactly at limit.
+  period: 2026-01
+  input:
+    state_code: WY
+    spm_unit_assets: 5_000
+  output:
+    # Uses <= so at limit is eligible
+    wy_power_resources_eligible: true
+
+- name: Case 4, one dollar above limit.
+  period: 2026-01
+  input:
+    state_code: WY
+    spm_unit_assets: 5_001
+  output:
+    wy_power_resources_eligible: false

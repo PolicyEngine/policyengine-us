@@ -102,11 +102,15 @@ description: Colorado TANF grant standard by number of caretakers and children.
     2022-03-01: 1_538
     2024-07-01: 1_629
 metadata:
+  label: Colorado TANF grant standard
   unit: currency-USD
   period: month
   breakdown:
     - range(0, 3)
     - range(0, 11)
+  breakdown_labels:
+    - Number of caretakers
+    - Number of children
   reference:
     - title: CODE OF COLORADO REGULATIONS 9 CCR 2503-6 | Income Maintenance (Volume 3)
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=52

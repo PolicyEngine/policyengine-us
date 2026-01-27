@@ -6,6 +6,8 @@ rates:
     propagate_metadata_to_children: true
     breakdown:
       - range(1, 8)
+    breakdown_labels:
+      - Bracket
     label: Individual income tax rates
     reference:
       # TCJA adjustments applied in (j)
@@ -42,6 +44,9 @@ thresholds:
     breakdown:
       - range(1, 8)
       - filing_status
+    breakdown_labels:
+      - Bracket
+      - Filing status
     period: year
     propagate_metadata_to_children: true
     reference:

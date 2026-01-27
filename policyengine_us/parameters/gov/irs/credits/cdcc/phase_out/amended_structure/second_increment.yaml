@@ -1,8 +1,10 @@
 description: The IRS phases the Child and Dependent Care Credit rate out in increments of adjusted gross income above the second threshold, based on filing status.
 metadata:
+  label: CDCC amended phase-out second increment
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
-  label: CDCC amended phase-out second increment
   reference:
     - title: H.R.1 - One Big Beautiful Bill Act
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text

@@ -25,7 +25,7 @@
         members: [parent, child1, child2]
         state_name: RI
   output:
-    ri_exemptions: 15_200  # 1 personal (5_050) + 1 dependent (5_100) + 1 older dependent (5_050)
+    ri_exemptions: 15_300  # 1 personal (5_100) + 1 dependent (5_100) + 1 older dependent (5_100)
 
 - name: RI exemption reform - restrict to children under 13
   period: 2025
@@ -54,7 +54,7 @@
         members: [parent, child1, child2]
         state_name: RI
   output:
-    ri_exemptions: 15_200  # 1 personal (5_050) + 1 dependent (5_100) + 1 older dependent (5_050)
+    ri_exemptions: 15_300  # 1 personal (5_100) + 1 dependent (5_100) + 1 older dependent (5_100)
 
 - name: RI exemption reform - AGI phaseout
   period: 2025
@@ -80,12 +80,12 @@
         members: [parent, child1]
         state_name: RI
   output:
-    # Personal exemption: 5_050 (baseline)
+    # Personal exemption: 5_100 (baseline 2025)
     # Dependent exemption before phaseout: 5_100
     # Phaseout: (120_000 - 100_000) * 0.05 = 1_000 (only applies to dependent exemption)
     # Dependent exemption after phaseout: 5_100 - 1_000 = 4_100
-    # Final: 5_050 (personal) + 4_100 (dependent) = 9_150
-    ri_exemptions: 9_150
+    # Final: 5_100 (personal) + 4_100 (dependent) = 9_200
+    ri_exemptions: 9_200
 
 - name: RI exemption reform - high income personal exemption baseline phaseout
   period: 2024
