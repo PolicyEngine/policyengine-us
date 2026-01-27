@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.526.1] - 2026-01-27 03:18:40
+
+### Changed
+
+- Backdate North Carolina TANF parameters to 1997.
+
 ## [1.526.0] - 2026-01-27 03:13:11
 
 ### Changed
@@ -14564,6 +14570,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.526.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.0...1.526.1
 [1.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.525.0...1.526.0
 [1.525.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.524.1...1.525.0
 [1.524.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.524.0...1.524.1
