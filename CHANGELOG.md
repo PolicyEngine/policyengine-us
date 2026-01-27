@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.527.1] - 2026-01-27 21:30:41
+
+### Fixed
+
+- Medicare Savings Program (MSP) calculation now returns correct benefit values instead of null.
+
 ## [1.527.0] - 2026-01-27 03:46:23
 
 ### Added
@@ -14586,6 +14592,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.527.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.0...1.527.1
 [1.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.2...1.527.0
 [1.526.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.1...1.526.2
 [1.526.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.0...1.526.1

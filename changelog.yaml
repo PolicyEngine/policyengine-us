@@ -12513,3 +12513,9 @@
     changed:
     - Update Connecticut tax parameter references to 2025 CT-1040 Instructions.
   date: 2026-01-27 03:46:23
+- bump: patch
+  changes:
+    fixed:
+    - Medicare Savings Program (MSP) calculation now returns correct benefit values
+      instead of null.
+  date: 2026-01-27 21:30:41
