@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(0, 9)
+  breakdown_labels:
+    - Household size
   label: Connecticut TFA standard payment amount
   reference:
     - title: State of Connecticut TANF State Plan 2024-2026

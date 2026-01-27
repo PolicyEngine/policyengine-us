@@ -1,0 +1,108 @@
+- name: Case 1, no countable income is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_works_countable_income: 0
+        nm_works_maximum_benefit: 439
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $0 <= $439 = eligible
+    nm_works_net_income_eligible: true
+
+- name: Case 2, countable income below standard is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_works_countable_income: 300
+        nm_works_maximum_benefit: 439
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $300 <= $439 = eligible
+    nm_works_net_income_eligible: true
+
+- name: Case 3, countable income at standard is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_works_countable_income: 439
+        nm_works_maximum_benefit: 439
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $439 <= $439 = eligible (boundary)
+    nm_works_net_income_eligible: true
+
+- name: Case 4, countable income above standard is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_works_countable_income: 500
+        nm_works_maximum_benefit: 439
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $500 > $439 = ineligible
+    nm_works_net_income_eligible: false
+
+- name: Case 5, larger household below standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nm_works_countable_income: 500
+        nm_works_maximum_benefit: 663
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    # $500 <= $663 = eligible
+    nm_works_net_income_eligible: true

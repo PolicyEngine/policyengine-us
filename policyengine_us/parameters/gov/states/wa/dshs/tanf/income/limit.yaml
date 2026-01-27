@@ -10,6 +10,8 @@ metadata:
   label: Washington TANF maximum gross earned income limit
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance unit size
   reference:
     - title: WAC 388-478-0035 - Maximum earned income limits for TANF, SFA, PWA, and RCA
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035

@@ -1,0 +1,59 @@
+# Wyoming POWER Payment Standard Tests
+# Tests the payment standard lookup by household size and shelter status
+# Shelter Qualified: 1=$512, 2=$847, 3-4=$902, 5-6=$959, 7+=$1,015
+# Shelter Disqualified: 1=$298, 2=$541, 3-4=$620, 5-6=$702, 7+=$783
+# Source: Wyoming DFS Table II POWER Income Limits (July 1, 2025 - June 30, 2026)
+
+- name: Case 1, size 1 shelter qualified.
+  period: 2026-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 512
+
+- name: Case 2, size 3 shelter qualified.
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 902
+
+- name: Case 3, size 12 shelter qualified (capped at 8).
+  period: 2026-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 1_015
+
+- name: Case 4, size 2 shelter disqualified.
+  period: 2026-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 541
+
+- name: Case 5, size 4 shelter disqualified.
+  period: 2026-01
+  input:
+    spm_unit_size: 4
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 620
+
+- name: Case 6, size 14 shelter disqualified (capped at 8).
+  period: 2026-01
+  input:
+    spm_unit_size: 14
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 783
