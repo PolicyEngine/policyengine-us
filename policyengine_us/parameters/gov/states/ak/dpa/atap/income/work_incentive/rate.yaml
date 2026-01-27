@@ -1,0 +1,14 @@
+description: Alaska excludes this share of remaining earned income after the flat deduction under the Alaska Temporary Assistance Program.
+# NOTE: Tier 1 rate applies to months 1-12 of participation. Subsequent tiers
+# (25%/20%/15%/10%/0%) span 12-month blocks beyond the first year.
+
+values:
+  2005-01-01: 0.33
+
+metadata:
+  unit: /1
+  period: month
+  label: Alaska ATAP work incentive percentage rate
+  reference:
+    - title: 7 AAC 45.480(b) - Deductions from income
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-45.480

@@ -5,6 +5,9 @@ main:
     breakdown:
       - snap_region
       - range(1, 9)
+    breakdown_labels:
+      - SNAP region
+      - Household size
     label: SNAP max allotment
   CONTIGUOUS_US:
     0:

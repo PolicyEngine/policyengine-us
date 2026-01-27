@@ -1,8 +1,10 @@
 description: Maximum assets for an individual to qualify for Medicaid under the 'medically needy' pathway.
 metadata:
+  label: Medicaid medically needy pathway for individuals asset limit
+  breakdown:
+    - state_code
   unit: currency-USD
   period: month
-  label: Medicaid medically needy pathway for individuals asset limit
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/

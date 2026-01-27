@@ -2,10 +2,13 @@ description: Second Lowest Cost Silver Plan (SLCSP) premiums by rating area, nor
 metadata:
 
   period: month
-  unit: currency-USD 
+  unit: currency-USD
   breakdown:
      - state_code
      - range(1, 68) #max rating areas +1
+  breakdown_labels:
+     - State
+     - Rating area
   documentation: For NY and VT below is base adult premium
   label: Second Lowest Cost Silver Plan premiums by rating area
   uprating: gov.aca.benchmark_premium_uprating

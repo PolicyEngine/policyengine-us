@@ -1,0 +1,47 @@
+# NOTE: The earned income disregard is based on months of employment, not calendar
+# months. PolicyEngine cannot track employment duration, so we use calendar months
+# as a proxy. The tiered disregards are defined in a bracket parameter:
+#   - January (month 1): 100% disregard
+#   - February-July (months 2-7): 75% disregard
+#   - August-December (months 8-12): 50% disregard
+
+- name: Case 1, January with 100% disregard.
+  period: 2024-01
+  input:
+    state_code: NJ
+    employment_income_before_lsr: 12_000  # $1,000/month
+  output:
+    # January (month 1): 100% disregard
+    # 1_000 * (1 - 1.0) = 0
+    nj_wfnj_countable_earned_income_person: 0
+
+- name: Case 2, zero income.
+  period: 2024-01
+  input:
+    state_code: NJ
+    employment_income_before_lsr: 0
+  output:
+    nj_wfnj_countable_earned_income_person: 0
+
+- name: Case 3, high income with full disregard in January.
+  period: 2024-01
+  input:
+    state_code: NJ
+    employment_income_before_lsr: 60_000  # $5,000/month
+  output:
+    # January: 100% disregard
+    # 5_000 * (1 - 1.0) = 0
+    nj_wfnj_countable_earned_income_person: 0
+
+- name: Case 4, full year aggregation showing tiered disregards.
+  period: 2024
+  input:
+    state_code: NJ
+    employment_income_before_lsr: 12_000  # $1,000/month
+  output:
+    # Annual countable income aggregated across 12 months:
+    # - January (month 1): $1,000 * 0% = $0 (100% disregard)
+    # - Feb-Jul (months 2-7): $1,000 * 25% * 6 = $1,500 (75% disregard)
+    # - Aug-Dec (months 8-12): $1,000 * 50% * 5 = $2,500 (50% disregard)
+    # Total: $0 + $1,500 + $2,500 = $4,000
+    nj_wfnj_countable_earned_income_person: 4_000

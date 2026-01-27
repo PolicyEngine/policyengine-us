@@ -6,6 +6,8 @@ metadata:
   label: Washington TANF payment standard
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance unit size
   reference:
     - title: WAC 388-478-0020 - Payment standards for TANF, SFA, and RCA
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020

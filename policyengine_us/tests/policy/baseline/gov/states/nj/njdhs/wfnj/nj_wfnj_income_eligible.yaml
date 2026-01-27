@@ -1,0 +1,90 @@
+- name: Case 1, new applicant with no income is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    is_tanf_enrolled: false
+  output:
+    # New applicant: gross income $0 <= $321 max allowable
+    nj_wfnj_income_eligible: true
+
+- name: Case 2, new applicant with income below both limits is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 2_400  # $200/month
+    is_tanf_enrolled: false
+  output:
+    # New applicant: gross $200 <= $321, countable $200 < $214
+    nj_wfnj_income_eligible: true
+
+- name: Case 3, new applicant with income above max allowable is ineligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 4_800  # $400/month
+    is_tanf_enrolled: false
+  output:
+    # New applicant: gross income $400 > $321 max allowable
+    nj_wfnj_income_eligible: false
+
+- name: Case 4, enrolled with countable income below max benefit is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 2_400  # $200/month
+    is_tanf_enrolled: true
+  output:
+    # Enrolled: countable income $200 < $214 max benefit
+    nj_wfnj_income_eligible: true
+
+- name: Case 5, enrolled with countable income at max benefit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 2_568  # $214/month
+    is_tanf_enrolled: true
+  output:
+    # Enrolled: countable income $214 >= $214 max benefit
+    nj_wfnj_income_eligible: false
+
+- name: Case 6, enrolled with countable income $1 below max benefit is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 2_556  # $213/month
+    is_tanf_enrolled: true
+  output:
+    # Enrolled: countable income $213 < $214 max benefit
+    nj_wfnj_income_eligible: true
+
+- name: Case 7, new applicant with earned income in January (100% disregard).
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    employment_income_before_lsr: 3_600  # $300/month gross
+    is_tanf_enrolled: false
+  output:
+    # Gross income = $300, max allowable = $321: passes
+    # Countable = $0 (100% disregard in January), max benefit = $214: passes
+    nj_wfnj_income_eligible: true
+
+- name: Case 8, enrolled with gross above limit but countable below (skips gross test).
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 1_200  # $100/month unearned
+    employment_income_before_lsr: 3_600  # $300/month earned (disregarded in Jan)
+    is_tanf_enrolled: true
+  output:
+    # Gross = $400 > $321 (would fail gross test)
+    # Countable = $100 (earned disregarded) < $214: passes
+    # Enrolled uses countable test only
+    nj_wfnj_income_eligible: true
