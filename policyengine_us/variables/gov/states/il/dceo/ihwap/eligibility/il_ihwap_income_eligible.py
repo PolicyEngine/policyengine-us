@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class il_ihwap_income_eligible(Variable):
@@ -17,19 +18,19 @@ class il_ihwap_income_eligible(Variable):
         p_hhs = parameters(period).gov.hhs
         income = add(spm_unit, period, ["irs_gross_income"])
 
-        # IL IHWAP Program Year N uses FPL/SMI from year N-1
-        # e.g., PY2026 uses FPL 2025-01-01 + SMI 2024-10-01
+        # IL IHWAP Program Year N uses FPL from year N-1 and SMI from (N-1)-10-01
         prior_year = str(period.start.year - 1)
 
         # 200% FPL threshold (all funding sources)
-        fpg = spm_unit("spm_unit_fpg", prior_year)
-        fpg_limit = fpg * p.fpg_limit
+        size = spm_unit("spm_unit_size", period)
+        state_group = spm_unit.household("state_group_str", period)
+        fpg_amount = fpg(size, state_group, prior_year, parameters)
+        fpg_limit = fpg_amount * p.fpg_limit
 
         # 60% SMI threshold (State funds only) per HHS LIHEAP-IM-2025-02
         # Only applies to households larger than smi_threshold_size
-        smi = spm_unit("hhs_smi", prior_year)
+        smi = spm_unit("il_ihwap_hhs_smi", period)
         smi_limit = smi * p_hhs.liheap.smi_limit
-
         # Sizes 1-7: 200% FPL only
         # Sizes 8+: max(200% FPL, 60% SMI)
         size = spm_unit("spm_unit_size", period)
