@@ -325,3 +325,31 @@
     ca_calworks_stage_2: 15_039.12
     # Total subsidies: Stage 2 only = 15,039.12
     ca_child_care_subsidies: 15_039.12
+
+- name: Case 9, basic inputs with minimal child care variables.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_600  # $300/month
+      person2:
+        age: 3
+        pre_subsidy_childcare_expenses: 24_000
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        state_code: CA
+  output:
+    # Low income qualifies for TANF -> Stage 1 child care, not CAPP
+    ca_tanf_eligible: true
+    ca_calworks_child_care_eligible: true
+    ca_capp_eligible: false  # Not CAPP because currently TANF eligible
+    # Part-time rate (childcare_hours_per_week defaults to 0 -> full_time = false)
+    ca_calworks_child_care_full_time: [false, false]
+    # Payment standard: part-time rate for middle age group at child care center
+    ca_calworks_child_care_payment_standard: [0, 793.85]
+    # Stage 1 payment
+    ca_calworks_child_care_payment: [0, 793.85]
+    # Total subsidies: Stage 1 only (no double counting)
+    ca_child_care_subsidies: 793.85

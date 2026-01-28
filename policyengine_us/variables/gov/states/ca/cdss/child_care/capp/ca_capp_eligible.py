@@ -12,7 +12,11 @@ class ca_capp_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # CAPP is for families who have NEVER received CalWORKs
         ever_received = spm_unit("was_calworks_recipient", period.this_year)
-        not_calworks_recipient = ~ever_received
+
+        # Not currently receiving CalWORKs cash aid
+        currently_receiving = spm_unit("ca_tanf", period) > 0
+
+        not_calworks_recipient = ~ever_received & ~currently_receiving
 
         # Income must be at or below 85% SMI
         income_eligible = spm_unit("ca_child_care_income_eligible", period)
