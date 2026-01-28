@@ -3,8 +3,8 @@
 # Income threshold:
 #   Sizes 1-7: 200% FPL only
 #   Sizes 8+: max(200% FPL, 60% SMI)
-# Note: IL IHWAP PY N uses FPL/SMI from year N-1
-# period 2026 = PY2026 = FPL 2025-01-01 + SMI 2024-10-01
+# Note: IL IHWAP PY N uses FPL from year N-1 and SMI from (N-1)-10-01
+# period 2026 = PY2026 = FPL 2025-01-01 + SMI 2025-10-01
 
 - name: Case 1, senior citizen on SSI is categorically eligible.
   period: 2026
@@ -207,8 +207,8 @@
   output:
     # Income calculation for 8 people (size > 7, uses max):
     # 200% FPL = $54,150 × 2 = $108,300
-    # 60% SMI = $122,136 × 1.38 × 0.6 = $101,129
-    # Limit = max($108,300, $101,129) = $108,300
+    # 60% SMI = $176,833 × 0.6 = $106,100
+    # Limit = max($108,300, $106,100) = $108,300
     # Income $90,000 <= $108,300 = income eligible
     # Categorical: No qualifying programs
     il_ihwap_income_eligible: true
