@@ -12519,3 +12519,8 @@
     - Medicare Savings Program (MSP) calculation now returns correct benefit values
       instead of null.
   date: 2026-01-27 21:30:41
+- bump: patch
+  changes:
+    fixed:
+    - Exclude Medicaid recipients from QI (Qualifying Individual) eligibility.
+  date: 2026-01-28 16:04:08
