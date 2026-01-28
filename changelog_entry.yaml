@@ -1,4 +1,4 @@
 - bump: patch
   changes:
     fixed:
-    - Exclude Medicaid recipients from QI (Qualifying Individual) eligibility.
+    - Medicaid category assignment now correctly evaluates mandatory groups (parent, pregnant, SSI) before optional expansion groups, per federal eligibility rules.
