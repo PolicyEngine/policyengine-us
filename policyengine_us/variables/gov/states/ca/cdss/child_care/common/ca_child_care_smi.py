@@ -23,12 +23,12 @@ class ca_child_care_smi(Variable):
         state_code = spm_unit.household("state_code_str", period.this_year)
 
         p = parameters(instant_str).gov.hhs.smi
-        four_person_smi = p.amount[state_code]
-        adjustment = p.household_size_adjustment
         threshold = p.additional_person_threshold
         size_adjustment = (
-            adjustment.first_person
-            + adjustment.second_to_sixth_person * (min_(size, threshold) - 1)
-            + adjustment.additional_person * max_(size - threshold, 0)
+            p.household_size_adjustment.first_person
+            + p.household_size_adjustment.second_to_sixth_person
+            * (min_(size, threshold) - 1)
+            + p.household_size_adjustment.additional_person
+            * max_(size - threshold, 0)
         )
-        return four_person_smi * size_adjustment / MONTHS_IN_YEAR
+        return p.amount[state_code] * size_adjustment / MONTHS_IN_YEAR
