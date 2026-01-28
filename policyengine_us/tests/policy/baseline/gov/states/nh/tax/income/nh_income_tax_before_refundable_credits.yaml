@@ -1,4 +1,12 @@
-- name: 2023 rate 
+- name: 2020 rate
+  period: 2020
+  input:
+    state_code: NH
+    nh_taxable_income: 2_000
+  output:
+    nh_income_tax_before_refundable_credits: 100  # 5% rate
+
+- name: 2023 rate
   period: 2023
   input:
     state_code: NH
