@@ -43,6 +43,8 @@
     spm_unit_is_married: false
     base_part_a_premium: 0
     base_part_b_premium: 2_096.40
+    # QI requires not being eligible for other Medicaid
+    is_medicaid_eligible: false
   output:
     msp_benefit_value: 174.70
 
