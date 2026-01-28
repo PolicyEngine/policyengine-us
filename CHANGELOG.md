@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.530.0] - 2026-01-28 21:20:03
+
+### Added
+
+- Illinois Senior Citizens Real Estate Tax Deferral Program (il_scretd)
+
 ## [1.529.0] - 2026-01-28 21:12:25
 
 ### Added
@@ -14610,6 +14616,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.529.0...1.530.0
 [1.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.528.0...1.529.0
 [1.528.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.2...1.528.0
 [1.527.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.1...1.527.2
