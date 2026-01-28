@@ -24,6 +24,7 @@ class ca_calworks_child_care_payment_standard(Variable):
         age_group = select(
             [age < p.age_threshold.lower, age > p.age_threshold.higher],
             ["younger", "older"],
+            # Default covers children in the middle age range
             default="middle",
         )
         return p.standard[age_group][provider][time][is_full_time]

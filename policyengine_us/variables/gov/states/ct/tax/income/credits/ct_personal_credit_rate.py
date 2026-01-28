@@ -15,19 +15,19 @@ class ct_personal_credit_rate(Variable):
         status = filing_status.possible_values
         p = parameters(period).gov.states.ct.tax.income.agi
 
+        # Default covers SINGLE filing status
         return select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.SEPARATE,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
                 p.surviving_spouse.calc(agi, right=True),
                 p.head_of_household.calc(agi, right=True),
             ],
+            default=p.single.calc(agi, right=True),
         )

@@ -25,17 +25,17 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
         filing_statuses = filing_status.possible_values
         return select(
             [
-                filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.amount.single.calc(nyc_taxable_income),
                 p.amount.joint.calc(nyc_taxable_income),
                 p.amount.separate.calc(nyc_taxable_income),
                 p.amount.head_of_household.calc(nyc_taxable_income),
                 p.amount.surviving_spouse.calc(nyc_taxable_income),
             ],
+            # Default covers SINGLE
+            default=p.amount.single.calc(nyc_taxable_income),
         )

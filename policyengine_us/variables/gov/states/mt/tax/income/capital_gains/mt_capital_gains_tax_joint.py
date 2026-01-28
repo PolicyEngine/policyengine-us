@@ -36,37 +36,37 @@ class mt_capital_gains_tax_joint(Variable):
             )
             status = filing_status.possible_values
 
+            # Default covers SINGLE filing status
             lower_rate = select(
                 [
-                    filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
                     filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.single.amounts[0],
                     p.rates.separate.amounts[0],
                     p.rates.joint.amounts[0],
                     p.rates.surviving_spouse.amounts[0],
                     p.rates.head_of_household.amounts[0],
                 ],
+                default=p.rates.single.amounts[0],
             )
+            # Default covers SINGLE filing status
             higher_rate = select(
                 [
-                    filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
                     filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.single.amounts[-1],
                     p.rates.separate.amounts[-1],
                     p.rates.joint.amounts[-1],
                     p.rates.surviving_spouse.amounts[-1],
                     p.rates.head_of_household.amounts[-1],
                 ],
+                default=p.rates.single.amounts[-1],
             )
             # Line 6
             excess_over_threshold = max_(

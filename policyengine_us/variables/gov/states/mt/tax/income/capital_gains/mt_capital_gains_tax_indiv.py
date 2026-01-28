@@ -25,33 +25,33 @@ class mt_capital_gains_tax_indiv(Variable):
             )
             status = filing_status.possible_values
 
+            # Default covers SINGLE filing status
             lower_rate = select(
                 [
-                    filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.single.amounts[0],
                     p.rates.separate.amounts[0],
                     p.rates.surviving_spouse.amounts[0],
                     p.rates.head_of_household.amounts[0],
                 ],
+                default=p.rates.single.amounts[0],
             )
+            # Default covers SINGLE filing status
             higher_rate = select(
                 [
-                    filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.single.amounts[-1],
                     p.rates.separate.amounts[-1],
                     p.rates.surviving_spouse.amounts[-1],
                     p.rates.head_of_household.amounts[-1],
                 ],
+                default=p.rates.single.amounts[-1],
             )
             # Calculate taxes
             capital_gains_below_threshold = min_(

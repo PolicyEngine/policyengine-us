@@ -20,19 +20,19 @@ class wi_income_tax_before_credits(Variable):
         taxinc = tax_unit("wi_taxable_income", period)
         fstatus = tax_unit("filing_status", period)
         p = parameters(period).gov.states.wi.tax.income
+        # Default covers SINGLE filing status
         return select(
             [
-                fstatus == fstatus.possible_values.SINGLE,
                 fstatus == fstatus.possible_values.JOINT,
                 fstatus == fstatus.possible_values.SURVIVING_SPOUSE,
                 fstatus == fstatus.possible_values.SEPARATE,
                 fstatus == fstatus.possible_values.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.rates.single.calc(taxinc),
                 p.rates.joint.calc(taxinc),
                 p.rates.joint.calc(taxinc),
                 p.rates.separate.calc(taxinc),
                 p.rates.head_of_household.calc(taxinc),
             ],
+            default=p.rates.single.calc(taxinc),
         )

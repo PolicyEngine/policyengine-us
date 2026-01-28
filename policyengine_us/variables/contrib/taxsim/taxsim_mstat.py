@@ -12,17 +12,15 @@ class taxsim_mstat(Variable):
         fstatus = filing_status.possible_values
         return select(
             [
-                filing_status == fstatus.SINGLE,
-                filing_status == fstatus.HEAD_OF_HOUSEHOLD,
                 filing_status == fstatus.JOINT,
                 filing_status == fstatus.SEPARATE,
                 filing_status == fstatus.SURVIVING_SPOUSE,
             ],
             [
-                1,
-                1,
                 2,
                 6,
                 8,
             ],
+            # Default covers SINGLE and HEAD_OF_HOUSEHOLD (both map to 1)
+            default=1,
         )

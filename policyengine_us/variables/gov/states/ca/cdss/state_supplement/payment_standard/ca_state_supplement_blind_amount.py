@@ -24,6 +24,7 @@ class ca_state_supplement_blind_amount(Variable):
         blind_married_amount = select(
             [blind_count >= 2, blind_count == 1],
             [p.blind.married.two_blind, p.blind.married.one_blind],
+            # Default covers blind_count == 0 (no blind married amount)
             default=0,
         )
         total_amount_if_eligible = where(

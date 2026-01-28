@@ -18,7 +18,7 @@ class pell_grant_efc(Variable):
         zero_efc_max = parameters(period).gov.ed.pell_grant.efc.automatic_zero
         automatic_zero = head_income <= zero_efc_max
         return select(
-            [formula == "A", formula == "B", formula == "C"],
+            [formula == "A", formula == "B"],
             [
                 where(
                     automatic_zero,
@@ -26,6 +26,7 @@ class pell_grant_efc(Variable):
                     max_(0, head_contribution + dependent_contribution),
                 ),
                 max_(0, head_contribution),
-                where(automatic_zero, 0, max_(0, head_contribution)),
             ],
+            # Default covers formula == "C".
+            default=where(automatic_zero, 0, max_(0, head_contribution)),
         )

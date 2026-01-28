@@ -23,17 +23,17 @@ class ny_main_income_tax(Variable):
 
         return select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
-                single.calc(taxable_income),
                 joint.calc(taxable_income),
                 hoh.calc(taxable_income),
                 surviving_spouse.calc(taxable_income),
                 separate.calc(taxable_income),
             ],
+            # Default covers SINGLE
+            default=single.calc(taxable_income),
         )

@@ -60,5 +60,6 @@ class ar_low_income_tax_joint(Variable):
                     agi_attributed_to_head, right=True
                 ),
             ],
+            # Default covers any unmatched filing status combinations
             default=0,
         )

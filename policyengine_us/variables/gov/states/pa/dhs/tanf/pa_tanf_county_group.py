@@ -23,16 +23,15 @@ class pa_tanf_county_group(Variable):
         p = parameters(period).gov.states.pa.dhs.tanf.county_group
 
         group_1 = np.isin(county, p.group_1)
-        group_2 = np.isin(county, p.group_2)
         group_3 = np.isin(county, p.group_3)
         group_4 = np.isin(county, p.group_4)
 
-        conditions = [group_1, group_2, group_3, group_4]
+        conditions = [group_1, group_3, group_4]
         results = [
             PATANFCountyGroup.GROUP_1,
-            PATANFCountyGroup.GROUP_2,
             PATANFCountyGroup.GROUP_3,
             PATANFCountyGroup.GROUP_4,
         ]
 
+        # Default covers GROUP_2 counties and any unmatched counties
         return select(conditions, results, default=PATANFCountyGroup.GROUP_2)

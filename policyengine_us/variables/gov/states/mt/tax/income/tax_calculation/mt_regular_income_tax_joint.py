@@ -21,19 +21,19 @@ class mt_regular_income_tax_joint(Variable):
             # Negative capital gains should not create phantom taxable income
             capital_gains = max_(capital_gains, 0)
             taxable_income = max_(taxable_income - capital_gains, 0)
+        # Default covers SINGLE filing status
         return select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SEPARATE,
                 filing_status == status.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.surviving_spouse.calc(taxable_income),
             ],
+            default=p.single.calc(taxable_income),
         )

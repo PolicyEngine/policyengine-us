@@ -20,18 +20,18 @@ class mt_capital_gains_tax_applicable_threshold_indiv(Variable):
         )
         status = filing_status.possible_values
         non_qualified_income = max_(taxable_income - capital_gains, 0)
+        # Default covers SINGLE filing status
         rate_threshold = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.SEPARATE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SURVIVING_SPOUSE,
             ],
             [
-                p.rates.single.thresholds[-1],
                 p.rates.separate.thresholds[-1],
                 p.rates.head_of_household.thresholds[-1],
                 p.rates.surviving_spouse.thresholds[-1],
             ],
+            default=p.rates.single.thresholds[-1],
         )
         return max_(rate_threshold - non_qualified_income, 0)

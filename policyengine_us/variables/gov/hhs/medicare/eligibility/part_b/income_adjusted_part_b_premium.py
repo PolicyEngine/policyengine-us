@@ -38,15 +38,16 @@ class income_adjusted_part_b_premium(Variable):
 
         p = parameters(period).gov.hhs.medicare.part_b.irmaa
 
+        # Default covers: SEPARATE filing status
         irmaa_amount = select(
-            in_status,
+            in_status[:-1],  # Exclude SEPARATE (last element)
             [
                 p.single.calc(magi),
                 p.joint.calc(magi),
                 p.head_of_household.calc(magi),
                 p.surviving_spouse.calc(magi),
-                p.separate.calc(magi),
             ],
+            default=p.separate.calc(magi),
         )
 
         # IRMAA amounts are monthly, multiply by MONTHS_IN_YEAR to get annual

@@ -24,13 +24,13 @@ class pell_grant_household_type(Variable):
             [
                 dependent & ~joint,
                 dependent & joint,
-                ~dependent & ~joint,
                 ~dependent & joint,
             ],
             [
                 PellGrantHouseholdType.DEPENDENT_SINGLE,
                 PellGrantHouseholdType.DEPENDENT_NOT_SINGLE,
-                PellGrantHouseholdType.INDEPENDENT_SINGLE,
                 PellGrantHouseholdType.INDEPENDENT_NOT_SINGLE,
             ],
+            # Default covers ~dependent & ~joint (independent single).
+            default=PellGrantHouseholdType.INDEPENDENT_SINGLE,
         )

@@ -26,7 +26,7 @@ class il_aabd_area(Variable):
         county = household("county_str", period)
 
         p = parameters(period).gov.states.il.dhs.aabd.payment.area
-        area_1 = np.isin(county, p.area_1)
+        # Area 1 omitted - handled by default (covers Area 1 counties and unmatched counties)
         area_2 = np.isin(county, p.area_2)
         area_3 = np.isin(county, p.area_3)
         area_4 = np.isin(county, p.area_4)
@@ -36,7 +36,6 @@ class il_aabd_area(Variable):
         area_8 = np.isin(county, p.area_8)
 
         conditions = [
-            area_1,
             area_2,
             area_3,
             area_4,
@@ -46,7 +45,6 @@ class il_aabd_area(Variable):
             area_8,
         ]
         results = [
-            IllinoisAABDArea.AREA_1,
             IllinoisAABDArea.AREA_2,
             IllinoisAABDArea.AREA_3,
             IllinoisAABDArea.AREA_4,
@@ -59,5 +57,6 @@ class il_aabd_area(Variable):
         return select(
             conditions,
             results,
+            # Default covers Area 1 counties and any unmatched counties
             default=IllinoisAABDArea.AREA_1,
         )

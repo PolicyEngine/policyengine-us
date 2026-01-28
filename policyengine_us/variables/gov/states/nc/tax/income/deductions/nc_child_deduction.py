@@ -15,21 +15,21 @@ class nc_child_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         p = parameters(period).gov.states.nc.tax.income.deductions.child
+        # Default covers SINGLE filing status
         amount = select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(federal_agi, right=True),
                 p.separate.calc(federal_agi, right=True),
                 p.joint.calc(federal_agi, right=True),
                 p.surviving_spouse.calc(federal_agi, right=True),
                 p.head_of_household.calc(federal_agi, right=True),
             ],
+            default=p.single.calc(federal_agi, right=True),
         )
         # calculate number of eligible children
         children = tax_unit("ctc_qualifying_children", period)
