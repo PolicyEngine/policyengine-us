@@ -25,9 +25,13 @@
         state_code: MA
         is_in_public_housing: false
   output:
-    ma_tafdc: 506 * 12
+    # Payment standard for 2022 (1-person, private housing):
+    # - Jan-Sep 2022: 506 × 9 = 4554
+    # - Oct-Dec 2022: 553 × 3 = 1659
+    # - Total: 6213
+    ma_tafdc: 6213
     ma_tafdc_eligible: true
-    ma_tafdc_payment_standard: 506 * 12
+    ma_tafdc_payment_standard: 6213
     ma_tafdc_dependent_care_deduction: 0
     ma_tafdc_applicable_income_grant_amount: 0
 
@@ -69,15 +73,19 @@
     ma_tafdc_countable_earned_income: [1_768, 0]
     ma_tafdc_applicable_income_grant_amount: 1_768
     ma_tafdc_eligible: true
-    ma_tafdc_payment_standard: 629*12
+    # Payment standard for 2022 (2-person, private housing):
+    # - Jan-Sep 2022: 629 × 9 = 5661
+    # - Oct-Dec 2022: 688 × 3 = 2064
+    # - Total: 7725
+    ma_tafdc_payment_standard: 7725
     ma_tafdc_eligible_dependent: [False, True]
     ma_tafdc_dependent_care_deduction: 528
-    ma_tafdc: 6_230
     # 10000 - 2400 = 7600
     # 7600/2 = 3800 (first 6 months full disregard)
     # 50% disregard = 1900
     # 1900 - 44*12 = 1768
-    # 629*12 - 1768 + 450 = 6230
+    # 7725 - 1768 + 350 = 6307 (clothing allowance is 350 for 2022)
+    ma_tafdc: 6307
 
 - name: Case 3, applicant and his spouse has 1 dependent child.
   period: 2022
@@ -124,7 +132,11 @@
   output:
     ma_tcap_gross_earned_income: [30_000, 20_000, 0]
     ma_tafdc_eligible: false
-    ma_tafdc_payment_standard: 753*12
+    # Payment standard for 2022 (3-person, private housing):
+    # - Jan-Sep 2022: 753 × 9 = 6777
+    # - Oct-Dec 2022: 823 × 3 = 2469
+    # - Total: 9246
+    ma_tafdc_payment_standard: 9246
     ma_tafdc_eligible_dependent: [False, False, True]
     ma_tafdc_dependent_care_deduction: 528
     ma_tafdc: 0
