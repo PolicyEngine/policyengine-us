@@ -1,0 +1,34 @@
+description: California counts these income sources for child care subsidy eligibility.
+
+values:
+  2000-01-01:
+    # Earned income
+    - employment_income
+    - self_employment_income
+    # Public assistance
+    - ca_tanf
+    # Unemployment and disability
+    - unemployment_compensation
+    - workers_compensation
+    - ca_state_disability_insurance
+    # Social Security (excluding SSI)
+    - social_security
+    # Support payments
+    - child_support_received
+    - alimony_income
+    # Retirement and veterans
+    - pension_income
+    - veterans_benefits
+    # Investment income
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - rental_income
+
+metadata:
+  unit: list
+  period: year
+  label: California child care countable income sources
+  reference:
+    - title: California Code of Regulations Title 5 Section 18078(w)
+      href: https://www.law.cornell.edu/regulations/california/5-CCR-18078

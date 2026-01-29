@@ -1,0 +1,135 @@
+- name: Case 1, never received CalWORKs, income eligible, CAPP eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Never received CalWORKs + income eligible = CAPP eligible
+    ca_capp_eligible: true
+
+- name: Case 2, formerly received CalWORKs, not eligible for CAPP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Ever received CalWORKs = not eligible for CAPP (use Stage 2 or 3)
+    ca_capp_eligible: false
+
+- name: Case 3, income above 85 percent SMI, not eligible for CAPP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 120_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income too high
+    ca_capp_eligible: false
+
+- name: Case 4, no age-eligible children, not eligible for CAPP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 16
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # No age-eligible children (child is 16, threshold is typically 13)
+    ca_capp_eligible: false
+
+- name: Case 5, adult only household, not eligible for CAPP.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # No children at all = not eligible
+    ca_capp_eligible: false
+
+- name: Case 6, zero income fails work requirement, not CAPP eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Zero income fails work requirement (earned_income > 0)
+    ca_capp_eligible: false
