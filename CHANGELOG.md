@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.532.4] - 2026-01-29 23:19:08
+
+### Changed
+
+- Update Virginia 2025 income tax parameters with 2025 Form 760 references
+- Add rebate values for 2024 ($200/$400) and 2025 ($0)
+- Add 2025 tests for standard deduction, EITC, military benefit subtraction, age deduction, rebate, and exemptions
+
 ## [1.532.3] - 2026-01-29 21:06:35
 
 ### Fixed
@@ -14649,6 +14657,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.532.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.3...1.532.4
 [1.532.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.2...1.532.3
 [1.532.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.1...1.532.2
 [1.532.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.0...1.532.1

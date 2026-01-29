@@ -12571,3 +12571,11 @@
     - Medicaid category assignment now correctly evaluates mandatory groups (parent,
       pregnant, SSI) before optional expansion groups, per federal eligibility rules.
   date: 2026-01-29 21:06:35
+- bump: patch
+  changes:
+    changed:
+    - Update Virginia 2025 income tax parameters with 2025 Form 760 references
+    - Add rebate values for 2024 ($200/$400) and 2025 ($0)
+    - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
+      deduction, rebate, and exemptions
+  date: 2026-01-29 23:19:08
