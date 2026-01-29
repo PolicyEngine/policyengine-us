@@ -1,0 +1,13 @@
+description: The Social Security Administration sets this maximum percentage of Primary Insurance Amount as the ceiling for family maximum benefits under Social Security Disability Insurance.
+
+values:
+  1975-01-01: 1.5
+
+metadata:
+  rate_unit: /1
+  label: SSA SSDI family maximum maximum percentage of PIA
+  reference:
+    - title: Social Security Administration - Formula for Family Maximum Benefit
+      href: https://www.ssa.gov/oact/cola/familymax.html
+    - title: 42 U.S. Code § 403(a)(2)(A) - Family maximum benefit formula
+      href: https://www.law.cornell.edu/uscode/text/42/403#a_2_A
