@@ -28,20 +28,20 @@ class medicaid_category(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.covered
 
-        # Order matters: federal law requires mandatory categorically needy
-        # groups to be evaluated before optional groups. The ACA rules under
-        # 42 CFR 435.119 prohibit enrollment in the Adult expansion group if
-        # the individual is eligible for a different mandatory coverage group.
+        # Federal law requires mandatory categorically needy groups to be
+        # evaluated before optional groups. The ACA rules under 42 CFR 435.119
+        # prohibit enrollment in the Adult expansion group if the individual
+        # is eligible for a different mandatory coverage group.
         #
-        # Hierarchy based on:
-        # - 42 CFR Part 435 Subpart B (mandatory coverage)
-        # - California MAGI Hierarchy guidance (representative of federal rules)
+        # Hierarchy based on 42 CFR Part 435:
+        # - Subpart B: mandatory coverage groups
+        # - Section 435.119: adult expansion "not otherwise eligible" requirement
         #
         # References:
         # - https://www.law.cornell.edu/cfr/text/42/435.119
-        # - https://www.medicaid.gov/medicaid/eligibility-policy
+        # - https://www.law.cornell.edu/cfr/text/42/part-435/subpart-B
         variable_to_category = dict(
-            # 1. SSI recipients - "mega-mandatory" non-MAGI pathway
+            # 1. SSI recipients - non-MAGI pathway
             #    Automatic Medicaid eligibility in most states (42 CFR 435.120-138)
             is_ssi_recipient_for_medicaid=MedicaidCategory.SSI_RECIPIENT,
             # 2. Children - mandatory MAGI groups (42 CFR 435.118)
