@@ -1,0 +1,65 @@
+# Unit tests for il_ihwap_eligible
+# Eligible if income_eligible OR categorically_eligible
+# Note: Size 1-7 uses 200% FPL only; Size 8+ uses max(200% FPL, 60% SMI)
+
+- name: Case 1, income eligible only is eligible.
+  period: 2026
+  input:
+    state_code: IL
+    irs_gross_income: 20_000
+    # Size 1: 200% FPL = $31,300
+    # $20,000 < $31,300 = income eligible, no categorical programs
+  output:
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: true
+
+- name: Case 2, categorically eligible only with high income is eligible.
+  period: 2026
+  input:
+    state_code: IL
+    irs_gross_income: 50_000
+    il_liheap: 800
+    # Size 1: 200% FPL = $31,300
+    # $50,000 > $31,300 = not income eligible, but has IL LIHEAP
+  output:
+    il_ihwap_income_eligible: false
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 3, both income and categorical eligible is eligible.
+  period: 2026
+  input:
+    state_code: IL
+    irs_gross_income: 18_000
+    ssi: 9_000
+    # $18,000 < $31,300 = income eligible, and receiving SSI
+  output:
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 4, neither income nor categorical eligible is not eligible.
+  period: 2026
+  input:
+    state_code: IL
+    irs_gross_income: 50_000
+    il_liheap: 0
+    ssi: 0
+    il_tanf: 0
+    il_aabd: 0
+    housing_assistance: 0
+    # $50,000 > $31,300 = not income eligible, no categorical programs
+  output:
+    il_ihwap_income_eligible: false
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: false
+
+- name: Case 5, non-IL resident is not eligible due to defined_for.
+  period: 2026
+  input:
+    state_code: CA
+    irs_gross_income: 20_000
+    # Would be income eligible in IL, but not IL resident
+  output:
+    il_ihwap_eligible: false
