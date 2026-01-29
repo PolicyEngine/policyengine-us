@@ -1,0 +1,22 @@
+description: >-
+  Whether MinnesotaCare coverage for undocumented children is in effect.
+  The 2023 Minnesota Legislature expanded MinnesotaCare to include undocumented
+  individuals, with coverage beginning January 1, 2025. While coverage for
+  undocumented adults was later restricted effective June 15, 2025, children
+  under 19 continue to be eligible. Coverage is state-only funded and delivered
+  on a fee-for-service basis.
+metadata:
+  unit: bool
+  period: year
+  label: MinnesotaCare for undocumented children in effect
+  reference:
+    - title: Minnesota Statutes 256L.04 Subd. 10 - Eligibility for MinnesotaCare
+      href: https://www.revisor.mn.gov/statutes/cite/256L.04
+    - title: DHS Bulletin 24-21-10 - MinnesotaCare Eligibility Expansion
+      href: https://www.dhs.state.mn.us/main/groups/publications/documents/pub/mndhs-068276.pdf
+    - title: MinnesotaCare coverage changes for undocumented adults (June 2025)
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_FILE&RevisionSelectionMethod=LatestReleased&Rendition=Primary&allowInterrupt=1&dDocName=MNDHS-070570
+
+values:
+  2020-01-01: false
+  2025-01-01: true
