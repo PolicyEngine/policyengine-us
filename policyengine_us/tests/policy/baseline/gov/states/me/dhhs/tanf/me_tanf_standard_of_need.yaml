@@ -101,3 +101,24 @@
   output:
     # Non-Maine state returns 0
     me_tanf_standard_of_need: 0
+
+- name: Case 6, household size 3 in 2018.
+  period: 2018-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    # SON for size 3 (2017-10-01 value) = $717
+    me_tanf_standard_of_need: 717
