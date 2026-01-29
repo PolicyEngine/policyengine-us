@@ -1,0 +1,221 @@
+# Unit tests for Alabama TANF countable earned income
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Countable earned = max(gross_earned - work_expense - childcare, 0)
+# Work expense = gross_earned * 0.20
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_tanf_countable_earned_income: 0
+
+- name: Case 2, employment income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment income: $1,000
+    # Work expense deduction: $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    al_tanf_countable_earned_income: 800
+
+- name: Case 3, self-employment income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly self-employment income: $1,000
+    # Work expense deduction: $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    al_tanf_countable_earned_income: 800
+
+- name: Case 4, combined employment and self-employment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        self_employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly earned: $500 + $500 = $1,000
+    # Work expense deduction: $1,000 * 0.20 = $200
+    # Countable earned: $1,000 - $200 = $800
+    al_tanf_countable_earned_income: 800
+
+- name: Case 5, low income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 600  # $50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment income: $50
+    # Work expense deduction: $50 * 0.20 = $10
+    # Countable earned: $50 - $10 = $40
+    al_tanf_countable_earned_income: 40
+
+- name: Case 6, two earners in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # Person1: $1,000/month, Person2: $500/month
+    # Total earned: $1,500
+    # Work expense deduction: $1,500 * 0.20 = $300
+    # Countable earned: $1,500 - $300 = $1,200
+    al_tanf_countable_earned_income: 1_200
+
+- name: Case 7, with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction: $500 * 0.20 = $100
+    # After work expense: $500 - $100 = $400
+    # Childcare: $300/month
+    # Countable earned: max($400 - $300, 0) = $100
+    al_tanf_countable_earned_income: 100
+
+- name: Case 8, childcare exceeds earnings after work expense.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $200
+    # Work expense deduction: $200 * 0.20 = $40
+    # After work expense: $200 - $40 = $160
+    # Childcare: $300/month
+    # Countable earned: max($160 - $300, 0) = max(-$140, 0) = $0
+    al_tanf_countable_earned_income: 0
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1, two earners with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_000  # $250/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 2_400  # $200/month
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # Person1: $250/month, Person2: $200/month
+    # Total gross earned: $450
+    # Work expense deduction: $450 * 0.20 = $90
+    # After work expense: $450 - $90 = $360
+    # Childcare: $200/month
+    # Countable earned: max($360 - $200, 0) = $160
+    al_tanf_countable_earned_income: 160
