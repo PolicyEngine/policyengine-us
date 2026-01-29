@@ -14,9 +14,9 @@
         members: [parent, child]
         state_code: DC
   output:
-    dc_tanf: 545*12
+    dc_tanf: 521 * 9 + 545 * 3  # 6324
 
-- name: Case 2, applicant has an eligible child. 
+- name: Case 2, applicant has an eligible child.
   period: 2022
   input:
     people:
@@ -43,11 +43,11 @@
     dc_tanf_childcare_deduction: 200*12
     dc_tanf_earned_income_after_disregard_person: [2_080, 0]
     dc_tanf_countable_income: 0
-    dc_tanf_standard_payment: 545*12
-    dc_tanf_eligible: true 
-    dc_tanf: 545*12
+    dc_tanf_standard_payment: 521 * 9 + 545 * 3  # 6324
+    dc_tanf_eligible: true
+    dc_tanf: 521 * 9 + 545 * 3  # 6324
 
-- name: Case 3, applicant has an eligible child enrolled in TANF.  
+- name: Case 3, applicant has an eligible child enrolled in TANF.
   period: 2022
   input:
     people:
@@ -74,11 +74,11 @@
     dc_tanf_childcare_deduction: 0
     dc_tanf_earned_income_after_disregard_person: [693, 0]
     dc_tanf_countable_income: 693
-    dc_tanf_standard_payment: 545*12
-    dc_tanf_eligible: true 
-    dc_tanf: 5_847 # 545*12 - 693 = 5847
+    dc_tanf_standard_payment: 521 * 9 + 545 * 3  # 6324
+    dc_tanf_eligible: true
+    dc_tanf: 5_631  # (521*9 + 545*3) - 693 = 6324 - 693 = 5631
 
-- name: Case 4, applicant income ineligible for the program. 
+- name: Case 4, applicant income ineligible for the program.
   period: 2023
   input:
     people:
@@ -105,6 +105,6 @@
     dc_tanf_childcare_deduction: 1_200   # min(1200, 175*12)
     dc_tanf_earned_income_after_disregard_person: [34_080, 0]  # 36000 - 160*12 = 34080
     dc_tanf_countable_income: 32_880
-    dc_tanf_standard_payment: 6_585  # 545*9 + 560*3 because monthly payment values update in October 1
-    dc_tanf_eligible: false 
+    dc_tanf_standard_payment: 545 * 9 + 560 * 3  # 6585, because monthly payment values update in October 1
+    dc_tanf_eligible: false
     dc_tanf: 0
