@@ -384,3 +384,101 @@
     pa_tanf_maximum_benefit: 403
     pa_tanf_countable_income: 550
     pa_tanf: 0
+
+# Work Expense Reimbursement (WER) era integration tests - before Sept 2020
+# WER: $50 bonus added to benefit (not income deduction)
+# WED: $200 deducted from income (not bonus)
+
+- name: Case 14, WER era, family with earned income gets $50 bonus.
+  period: 2019-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_960
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month (same as 2024)
+    # Person1 monthly: $6,960/12 = $580
+    # WER era: Only 50% EID applied, no $200 WED
+    # $580 × 50% = $290 countable
+    # Base benefit: $403 - $290 = $113
+    # WER bonus: +$50 (family has earned income)
+    # Total benefit: $113 + $50 = $163
+    pa_tanf_maximum_benefit: 403
+    pa_tanf_countable_income: 290
+    pa_tanf: 163
+
+- name: Case 15, WER era vs WED era comparison, same family.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_960
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Same family as Case 14 but in WED era (2024)
+    # Family of 3: FSA = $403/month
+    # Person1 monthly: $6,960/12 = $580
+    # WED era: 50% EID + $200 WED deduction
+    # $580 × 50% = $290; $290 - $200 = $90 countable
+    # Benefit: $403 - $90 = $313
+    # No WER bonus in WED era
+    # WED era benefit ($313) > WER era benefit ($163) by $150
+    pa_tanf_maximum_benefit: 403
+    pa_tanf_countable_income: 90
+    pa_tanf: 313
+
+- name: Case 16, WER era, no earned income, no bonus.
+  period: 2019-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 0
+        social_security: 2_400
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Family of 3: FSA = $403/month
+    # No earned income, only unearned (SS)
+    # Unearned monthly: $2,400/12 = $200
+    # No EID/WED for unearned income
+    # Countable: $200
+    # Benefit: $403 - $200 = $203
+    # No WER bonus (no earned income)
+    pa_tanf_maximum_benefit: 403
+    pa_tanf_countable_income: 200
+    pa_tanf: 203
