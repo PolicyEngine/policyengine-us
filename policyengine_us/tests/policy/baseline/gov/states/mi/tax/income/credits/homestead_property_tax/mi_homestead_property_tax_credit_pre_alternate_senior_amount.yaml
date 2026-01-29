@@ -40,7 +40,7 @@
     mi_household_resources: 54_000
     mi_allowable_homestead_property_tax_credit: 1_600
     mi_homestead_property_tax_credit_eligible: true
-  output: 
+  output:
     mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600
 
 - name: 20% credit
@@ -61,3 +61,130 @@
     mi_homestead_property_tax_credit_eligible: true
   output: # 1215 * 0.1
     mi_homestead_property_tax_credit_pre_alternate_senior_amount: 121.5
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Income Reduction Threshold ($62,500)
+# Phase out: 10% reduction per $1,000 increment above $62,500
+# At $71,500+ (9 increments * 10% = 90% reduction) credit is fully phased out
+# ============================================================================
+
+# Edge case: Income exactly at reduction start threshold
+- name: Case 1, 2025 edge case income exactly at $62,500 reduction start.
+  period: 2025
+  input:
+    mi_household_resources: 62_500
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # At exactly $62,500 = 100% credit (0 increments above start)
+    # Phase out rate = max(1 - 0 * 0.1, 0) = 1.0
+    # Credit = $1,500 * 1.0 = $1,500
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_500
+
+# Edge case: Income one dollar below reduction start
+- name: Case 2, 2025 edge case income $62,499 just below reduction start.
+  period: 2025
+  input:
+    mi_household_resources: 62_499
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $62,499 < $62,500 = 100% credit
+    # Phase out rate = max(1 - 0 * 0.1, 0) = 1.0
+    # Credit = $1,500 * 1.0 = $1,500
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_500
+
+# Edge case: Income one dollar above reduction start (first increment)
+- name: Case 3, 2025 edge case income $62,501 just above reduction start.
+  period: 2025
+  input:
+    mi_household_resources: 62_501
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $62,501 = $62,500 + $1 = 1 increment above start
+    # Increments = ceil($1 / $1,000) = 1
+    # Phase out rate = max(1 - 1 * 0.1, 0) = 0.9
+    # Credit = $1,500 * 0.9 = $1,350
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_350
+
+# Edge case: Income at first full increment ($63,500)
+- name: Case 4, 2025 edge case income at $63,500 first full increment.
+  period: 2025
+  input:
+    mi_household_resources: 63_500
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $63,500 = $62,500 + $1,000 = 1 increment
+    # Increments = ceil($1,000 / $1,000) = 1
+    # Phase out rate = max(1 - 1 * 0.1, 0) = 0.9
+    # Credit = $1,500 * 0.9 = $1,350
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_350
+
+# Edge case: Income at 50% credit ($67,500 = 5 increments)
+- name: Case 5, 2025 edge case income at $67,500 for 50 percent credit.
+  period: 2025
+  input:
+    mi_household_resources: 67_500
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $67,500 = $62,500 + $5,000 = 5 increments
+    # Increments = ceil($5,000 / $1,000) = 5
+    # Phase out rate = max(1 - 5 * 0.1, 0) = 0.5
+    # Credit = $1,500 * 0.5 = $750
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 750
+
+# Edge case: Income at phase-out boundary ($71,500 = 9 increments, 10% credit)
+- name: Case 6, 2025 edge case income at $71,500 phase out boundary.
+  period: 2025
+  input:
+    mi_household_resources: 71_500
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $71,500 = $62,500 + $9,000 = 9 increments
+    # Increments = ceil($9,000 / $1,000) = 9
+    # Phase out rate = max(1 - 9 * 0.1, 0) = 0.1
+    # Credit = $1,500 * 0.1 = $150
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 150
+
+# Edge case: Income just above phase-out ($72,500 = 10 increments, 0% credit)
+- name: Case 7, 2025 edge case income at $72,500 fully phased out.
+  period: 2025
+  input:
+    mi_household_resources: 72_500
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $72,500 = $62,500 + $10,000 = 10 increments
+    # Increments = ceil($10,000 / $1,000) = 10
+    # Phase out rate = max(1 - 10 * 0.1, 0) = 0
+    # Credit = $1,500 * 0 = $0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+
+# Edge case: Very high income (stress test)
+- name: Case 8, 2025 edge case very high income $100,000.
+  period: 2025
+  input:
+    mi_household_resources: 100_000
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $100,000 = $62,500 + $37,500 = 38 increments
+    # Phase out rate = max(1 - 38 * 0.1, 0) = max(-2.8, 0) = 0
+    # Credit = $1,500 * 0 = $0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+
+# Edge case: Zero income
+- name: Case 9, 2025 edge case zero household resources.
+  period: 2025
+  input:
+    mi_household_resources: 0
+    mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $0 < $62,500 = 100% credit
+    # Credit = $1,500 * 1.0 = $1,500
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_500

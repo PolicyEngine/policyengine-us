@@ -21,7 +21,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_000
     mi_is_senior_for_tax: true
     mi_homestead_property_tax_credit_eligible: false
-  output: 
+  output:
     mi_allowable_homestead_property_tax_credit: 0
 
 - name: senior, 100% credit
@@ -31,9 +31,9 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 860
     mi_is_senior_for_tax: true
     mi_homestead_property_tax_credit_eligible: true
-  output: 
+  output:
     mi_allowable_homestead_property_tax_credit: 860
-  
+
 - name: senior, 84% credit
   period: 2022
   input:
@@ -50,7 +50,7 @@
     disabled_tax_unit_head_or_spouse: true
     mi_homestead_property_tax_credit_household_resource_exemption: 1_300
     mi_homestead_property_tax_credit_eligible: true
-  output: 
+  output:
     mi_allowable_homestead_property_tax_credit: 1_300
 
 - name: senior, disabled
@@ -60,9 +60,9 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_300
     mi_is_senior_for_tax: true
     mi_homestead_property_tax_credit_eligible: true
-  output: 
+  output:
     mi_allowable_homestead_property_tax_credit: 1_300
-   
+
 - name: larger than max
   period: 2022
   input:
@@ -70,3 +70,81 @@
     mi_homestead_property_tax_credit_eligible: true
   output: # 2800 * 0.6 > 1600
     mi_allowable_homestead_property_tax_credit: 1_600
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Credit Cap ($1,900)
+# ============================================================================
+
+# Edge case: Credit exactly at 2025 cap
+- name: Case 1, 2025 edge case credit exactly at $1,900 cap.
+  period: 2025
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 3_167
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Exemption * 0.6 = $3,167 * 0.6 = $1,900.2 -> capped at $1,900
+    mi_allowable_homestead_property_tax_credit: 1_900
+
+# Edge case: Credit one dollar below cap
+- name: Case 2, 2025 edge case credit $1,899 just below cap.
+  period: 2025
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 3_165
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Exemption * 0.6 = $3,165 * 0.6 = $1,899 (below cap)
+    mi_allowable_homestead_property_tax_credit: 1_899
+
+# Edge case: Credit would be well above cap
+- name: Case 3, 2025 edge case credit would exceed cap significantly.
+  period: 2025
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 5_000
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Exemption * 0.6 = $5,000 * 0.6 = $3,000 -> capped at $1,900
+    mi_allowable_homestead_property_tax_credit: 1_900
+
+# Edge case: Senior with exemption at cap
+- name: Case 4, 2025 edge case senior at credit cap.
+  period: 2025
+  input:
+    mi_household_resources: 20_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_500
+    mi_is_senior_for_tax: true
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Senior 100% rate at $20,000 income
+    # $2,500 exemption * 1.0 = $2,500 -> capped at $1,900
+    mi_allowable_homestead_property_tax_credit: 1_900
+
+# Edge case: Disabled head or spouse at cap
+- name: Case 5, 2025 edge case disabled at credit cap.
+  period: 2025
+  input:
+    disabled_tax_unit_head_or_spouse: true
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_500
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Disabled gets 100% of exemption, capped at $1,900
+    mi_allowable_homestead_property_tax_credit: 1_900
+
+# Edge case: Zero exemption
+- name: Case 6, 2025 edge case zero exemption.
+  period: 2025
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 0
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # Zero exemption = zero credit
+    mi_allowable_homestead_property_tax_credit: 0
+
+# Edge case: Small exemption
+- name: Case 7, 2025 edge case small exemption $100.
+  period: 2025
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 100
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    # $100 * 0.6 = $60 (well below cap)
+    mi_allowable_homestead_property_tax_credit: 60

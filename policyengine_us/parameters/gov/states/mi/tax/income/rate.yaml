@@ -4,17 +4,21 @@ values:
   2013-01-01: 0.0425
   2023-01-01: 0.0405
   2024-01-01: 0.0425
+  # 2025 rate remains at 4.25% per Michigan Treasury notice
+  2025-01-01: 0.0425
 metadata:
   period: year
   unit: /1
   label: Michigan income tax rate
   reference:
   - title: Michigan INCOME TAX ACT OF 1967 Chapter 2, 206.51, Sec. 51, (1)
-    href: http://www.legislature.mi.gov/documents/mcl/pdf/mcl-act-281-of-1967.pdf
+    href: http://www.legislature.mi.gov/documents/mcl/pdf/mcl-act-281-of-1967.pdf#page=60
   - title: Michigan 2023 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=3
-  - title: Michigan 2024 Indiviudal Income Tax Instructions
+  - title: Michigan 2024 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=3
-    # The 2024 adjustment is not reflected in the legal code  
+  # The 2024 adjustment is not reflected in the legal code
   - title: Michigan Income Tax Rate Change Overview
     href: https://www.michigan.gov/taxes/questions/tax-faqs/income-tax-rate-change/income-tax-rate-change-overview
+  - title: 2025 Tax Year Income Tax Rate for Individuals and Fiduciaries
+    href: https://www.michigan.gov/treasury/reference/taxpayer-notices/2025-tax-year-income-tax-rate-for-individuals-and-fiduciaries
