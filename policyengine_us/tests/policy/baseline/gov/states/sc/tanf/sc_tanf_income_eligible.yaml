@@ -1,0 +1,49 @@
+- name: Case 1, no income is eligible.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_gross_income: 0
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: true
+
+- name: Case 2, did not pass the gross income test.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 500
+    sc_tanf_gross_income: 2_000
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: false
+    # tanf_fpg for size 2 (2025-01) = 1703.33/month
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # gross_income_limit = 851.67 * 1.85 = 1575.58
+    # gross_income 2,000 > 1,575.58 -> not eligible
+
+- name: Case 3, pass gross income test but higher than need standard.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 900
+    sc_tanf_gross_income: 1_200
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: false
+    # need_standard = 851.67
+    # gross_income_limit = 1,575.58
+    # gross 1,200 < 1,575.58 -> passes gross test
+    # countable 900 >= 851.67 -> fails countable test
+
+- name: Case 4, pass both income tests.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 800
+    sc_tanf_gross_income: 1_000
+    spm_unit_size: 2
+  output:
+    sc_tanf_income_eligible: true
+    # gross 1,000 < 1,575.58 -> passes gross test
+    # countable 800 < 851.67 -> passes countable test

@@ -1,0 +1,224 @@
+- name: Case 1, single parent of 2 children with no income.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+        is_child_dependent: true
+      person3:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf: 435.28
+    # tanf_fpg for size 3 (2025-01, uses 2024-10 FPG) = 2151.67/month
+    # need_standard = 2151.67 * 0.5 = 1075.83
+    # benefit = 1075.83 * 0.4046 = 435.49
+
+- name: Case 2, single parent with earned income.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 10
+        is_child_dependent: true
+      person3:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf: 334.13
+    # monthly earned = 6,000/12 = 500
+    # January (month 1) uses 50% disregard
+    # countable_earned = 500 * 0.5 = 250
+    # countable_income = 250
+    # need_standard = 1075.83
+    # excess = 1075.83 - 250 = 825.83
+    # benefit = 825.83 * 0.4046 = 334.13
+
+- name: Case 3, income above gross limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 24_000
+      person2:
+        age: 10
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 0
+    # monthly earned = 24,000/12 = 2,000
+    # tanf_fpg for size 2 = 1703.33
+    # need_standard = 851.67
+    # gross_income_limit = 851.67 * 1.85 = 1575.58
+    # 2,000 > 1,575.58 -> not eligible
+
+- name: Case 4, single pregnant person with no income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_tanf: 253.89
+    # tanf_fpg for size 1 (2025-01) = 1255/month
+    # need_standard = 1255 * 0.5 = 627.50
+    # benefit = 627.50 * 0.4046 = 253.89
+
+- name: Case 5, unearned income only.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        taxable_social_security: 3_600
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 223.20
+    # monthly unearned = 3,600/12 = 300
+    # tanf_fpg for size 2 = 1703.33
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # countable_income = 0 (earned) + 300 (unearned) = 300
+    # excess = 851.67 - 300 = 551.67
+    # benefit = 551.67 * 0.4046 = 223.20
+
+- name: Case 6, historical payment rate (pre-Oct 2024).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+      person2:
+        age: 8
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 277.07
+    # tanf_fpg for size 2 (2024-01, uses 2023-10 FPG) = 1643.33/month
+    # need_standard = 1643.33 * 0.5 = 821.67
+    # benefit = 821.67 * 0.3372 = 277.07 (old rate)
+
+- name: Case 7, two-parent household with 4 children (family of 6).
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income_before_lsr: 0
+      parent2:
+        age: 33
+        employment_income_before_lsr: 0
+      child1:
+        age: 14
+        is_child_dependent: true
+      child2:
+        age: 12
+        is_child_dependent: true
+      child3:
+        age: 8
+        is_child_dependent: true
+      child4:
+        age: 5
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: SC
+  output:
+    sc_tanf: 707
+    # tanf_fpg for size 6 (2025-01) = 3496/month (from Section 8.15 table)
+    # need_standard = 3496 * 0.5 = 1748
+    # benefit = 1748 * 0.4046 = 707.24
+
+- name: Case 8, ineligible due to immigration status.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+        is_child_dependent: true
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf: 0
+    # Both members are undocumented, so no one qualifies as
+    # citizen or legal immigrant -> ineligible
