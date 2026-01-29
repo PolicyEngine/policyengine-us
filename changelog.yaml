@@ -12565,3 +12565,9 @@
     added:
     - Backdate New Hampshire interest and dividends tax parameters to 2020.
   date: 2026-01-29 05:35:07
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid category assignment now correctly evaluates mandatory groups (parent,
+      pregnant, SSI) before optional expansion groups, per federal eligibility rules.
+  date: 2026-01-29 21:06:35
