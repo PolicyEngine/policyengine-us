@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.532.0] - 2026-01-29 02:38:20
+
+### Added
+
+- California CalWORKs Stage 2 (C2AP) child care subsidy for former CalWORKs recipients within 24 months of leaving cash aid.
+- California CalWORKs Stage 3 (C3AP) child care subsidy for former CalWORKs recipients who exhausted Stage 2 eligibility.
+- California Alternative Payment Program (CAPP) child care subsidy for income-eligible families who never received CalWORKs.
+
 ## [1.531.0] - 2026-01-29 02:17:08
 
 ### Added
@@ -14623,6 +14631,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.532.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.531.0...1.532.0
 [1.531.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.530.0...1.531.0
 [1.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.529.0...1.530.0
 [1.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.528.0...1.529.0
