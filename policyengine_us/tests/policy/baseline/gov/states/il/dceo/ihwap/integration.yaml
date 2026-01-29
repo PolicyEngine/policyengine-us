@@ -1,0 +1,216 @@
+# Integration tests for Illinois IHWAP (Home Weatherization Assistance Program)
+# Tests realistic household scenarios with complete eligibility pathways
+# Income threshold:
+#   Sizes 1-7: 200% FPL only
+#   Sizes 8+: max(200% FPL, 60% SMI)
+# Note: IL IHWAP PY N uses FPL from year N-1 and SMI from (N-1)-10-01
+# period 2026 = PY2026 = FPL 2025-01-01 + SMI 2025-10-01
+
+- name: Case 1, senior citizen on SSI is categorically eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        is_disabled: true
+        ssi: 10_932
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income calculation for 1 person (size <= 7, FPL only):
+    # 200% FPL = $15,650 × 2 = $31,300
+    # Income $10,932 <= $31,300 = income eligible
+    # Categorical: SSI $10,932 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 2, single parent with children on IL TANF.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 12_000
+      person2:
+        age: 6
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 4_800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # Income calculation for 3 people (size <= 7, FPL only):
+    # 200% FPL = $26,650 × 2 = $53,300
+    # Income $12,000 <= $53,300 = income eligible
+    # Categorical: IL TANF $4,800 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 3, family in public housing with moderate income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 35_000
+      person2:
+        age: 42
+        employment_income: 20_000
+      person3:
+        age: 16
+      person4:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        housing_assistance: 8_400
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Income calculation for 4 people (size <= 7, FPL only):
+    # 200% FPL = $32,150 × 2 = $64,300
+    # Income $55,000 <= $64,300 = income eligible
+    # Categorical: housing_assistance $8,400 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 4, low-income working family income eligible only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 28_000
+      person2:
+        age: 30
+        employment_income: 15_000
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # Income calculation for 3 people (size <= 7, FPL only):
+    # 200% FPL = $53,300
+    # Income $43,000 <= $53,300 = income eligible
+    # Categorical: No qualifying programs = not categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: true
+
+- name: Case 5, high-income family without assistance is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 80_000
+      person2:
+        age: 48
+        employment_income: 45_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Income calculation for 4 people (size <= 7, FPL only):
+    # 200% FPL = $64,300
+    # Income $125,000 > $64,300 = not income eligible
+    # Categorical: No qualifying programs = not categorically eligible
+    il_ihwap_income_eligible: false
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: false
+
+- name: Case 6, elderly couple receiving IL AABD.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        is_blind: true
+        social_security: 18_000
+      person2:
+        age: 70
+        social_security: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Income calculation for 2 people (size <= 7, FPL only):
+    # 200% FPL = $21,150 × 2 = $42,300
+    # Income $33,000 <= $42,300 = income eligible
+    # Categorical: IL AABD $3,600 > 0 = categorically eligible
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: Case 7, large family of 8 uses max threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 43
+        employment_income: 40_000
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IL
+  output:
+    # Income calculation for 8 people (size > 7, uses max):
+    # 200% FPL = $54,150 × 2 = $108,300
+    # 60% SMI = $176,833 × 0.6 = $106,100
+    # Limit = max($108,300, $106,100) = $108,300
+    # Income $90,000 <= $108,300 = income eligible
+    # Categorical: No qualifying programs
+    il_ihwap_income_eligible: true
+    il_ihwap_categorically_eligible: false
+    il_ihwap_eligible: true
