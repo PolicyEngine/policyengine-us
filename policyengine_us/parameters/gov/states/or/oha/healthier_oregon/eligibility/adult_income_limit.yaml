@@ -1,0 +1,13 @@
+description: Oregon limits gross income to this share of the federal poverty level for adults under the Healthier Oregon program.
+metadata:
+  unit: /1
+  period: year
+  label: Oregon Healthier Oregon adult income limit (% FPL)
+  reference:
+    - title: ORS 414.231(4) - Coverage for noncitizens
+      href: https://oregon.public.law/statutes/ors_414.231
+    - title: Oregon Health Plan (OHP), Health Systems Division (HSD) Medical Programs - 2025 income thresholds
+      href: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/de5530.pdf#page=11
+
+values:
+  2023-07-01: 1.38  # 138% FPL for adults, includes 5% disregard

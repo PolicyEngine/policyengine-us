@@ -1,0 +1,79 @@
+# Tests for Oregon Healthier Oregon Medicaid spending group classification
+
+# Precedence: AGED_DISABLED > NON_EXPANSION_ADULT > EXPANSION_ADULT > CHILD
+
+- name: Case 1, child under 19.
+  period: 2024
+  input:
+    age: 10
+    state_code: OR
+  output:
+    or_healthier_oregon_group: CHILD
+
+- name: Case 2, adult age 30 expansion adult.
+  period: 2024
+  input:
+    age: 30
+    state_code: OR
+  output:
+    or_healthier_oregon_group: EXPANSION_ADULT
+
+- name: Case 3, aged adult 65 plus.
+  period: 2024
+  input:
+    age: 65
+    state_code: OR
+  output:
+    or_healthier_oregon_group: AGED_DISABLED
+
+- name: Case 4, disabled adult SSI recipient.
+  period: 2024
+  input:
+    age: 40
+    is_ssi_recipient_for_medicaid: true
+    state_code: OR
+  output:
+    or_healthier_oregon_group: AGED_DISABLED
+
+- name: Case 5, pregnant adult non expansion.
+  period: 2024
+  input:
+    age: 25
+    is_pregnant: true
+    state_code: OR
+  output:
+    or_healthier_oregon_group: NON_EXPANSION_ADULT
+
+- name: Case 6, age 18 still child.
+  period: 2024
+  input:
+    age: 18
+    state_code: OR
+  output:
+    or_healthier_oregon_group: CHILD
+
+- name: Case 7, age 19 expansion adult.
+  period: 2024
+  input:
+    age: 19
+    state_code: OR
+  output:
+    or_healthier_oregon_group: EXPANSION_ADULT
+
+- name: Case 8, age 64 just below aged.
+  period: 2024
+  input:
+    age: 64
+    state_code: OR
+  output:
+    or_healthier_oregon_group: EXPANSION_ADULT
+
+- name: Case 9, pregnant child stays child.
+  period: 2024
+  input:
+    age: 17
+    is_pregnant: true
+    state_code: OR
+  output:
+    # Child takes precedence over pregnant
+    or_healthier_oregon_group: CHILD
