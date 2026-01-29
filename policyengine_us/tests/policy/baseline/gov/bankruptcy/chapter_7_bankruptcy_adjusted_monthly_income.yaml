@@ -1,0 +1,17 @@
+- name: Case 1. 
+  period: 2024
+  input:
+    irs_employment_income: 100
+    alimony_income: 100
+    child_support_received: 100
+    partnership_s_corp_income: 100
+    farm_income: 100
+    farm_rent_income: 100
+    rental_income: 100
+    dividend_income: 100
+    interest_income: 100
+    unemployment_compensation: 100
+    pension_income: 100
+    retirement_distributions: 100
+  output:
+    chapter_7_bankruptcy_adjusted_monthly_income: 1_200
