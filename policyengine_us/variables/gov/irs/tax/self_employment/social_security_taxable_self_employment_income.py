@@ -10,10 +10,12 @@ class social_security_taxable_self_employment_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1402#b"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.payroll.social_security
+        ss_wage_base = parameters(
+            period
+        ).gov.ssa.social_security.contribution_and_benefit_base
         # This will not be negative, since
-        # taxable_earnings_for_social_security is capped at the cap.
-        cap_minus_earnings = p.cap - person(
+        # taxable_earnings_for_social_security is capped at the wage base.
+        cap_minus_earnings = ss_wage_base - person(
             "taxable_earnings_for_social_security", period
         )
         # Deduct SS payroll taxable wages and salaries.
