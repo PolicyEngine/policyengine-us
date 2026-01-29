@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.hhs_smi import smi
 
 
 class ca_child_care_smi(Variable):
@@ -20,15 +21,6 @@ class ca_child_care_smi(Variable):
             instant_str = f"{year - 1}-07-01"
 
         size = spm_unit("spm_unit_size", period.this_year)
-        state_code = spm_unit.household("state_code_str", period.this_year)
+        state = spm_unit.household("state_code_str", period.this_year)
 
-        p = parameters(instant_str).gov.hhs.smi
-        threshold = p.additional_person_threshold
-        size_adjustment = (
-            p.household_size_adjustment.first_person
-            + p.household_size_adjustment.second_to_sixth_person
-            * (min_(size, threshold) - 1)
-            + p.household_size_adjustment.additional_person
-            * max_(size - threshold, 0)
-        )
-        return p.amount[state_code] * size_adjustment / MONTHS_IN_YEAR
+        return smi(size, state, instant_str, parameters) / MONTHS_IN_YEAR

@@ -353,3 +353,65 @@
     ca_calworks_child_care_payment: [0, 793.85]
     # Total subsidies: Stage 1 only (no double counting)
     ca_child_care_subsidies: 793.85
+
+- name: Case 10, YEAR period test for Stage 3 (25 months since exit).
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 25
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Testing with YEAR period, 25 months since exit = Stage 3
+    ca_calworks_stage_2_eligible: false
+    ca_calworks_stage_3_eligible: true
+    # Annual Stage 3 payment (child only): 1,253.26 * 12 = 15,039.12
+    ca_calworks_stage_3: 15_039.12
+    # Total subsidies: Stage 3 only = 15,039.12
+    ca_child_care_subsidies: 15_039.12
+
+- name: Case 11, YEAR period test with minimal child care variables.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_600  # $300/month
+      person2:
+        age: 3
+        pre_subsidy_childcare_expenses: 24_000
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        state_code: CA
+  output:
+    # Low income qualifies for TANF -> Stage 1 child care, not CAPP
+    ca_tanf_eligible: true
+    ca_calworks_child_care_eligible: true
+    ca_capp_eligible: false
+    # Annual Stage 1 payment: 793.85 * 12 = 9,526.2
+    ca_calworks_child_care_payment: [0, 9_526.2]
+    # Total subsidies: Stage 1 only = 9,526.2
+    ca_child_care_subsidies: 9_526.2
