@@ -1,0 +1,351 @@
+# Unit tests for Iowa FIP income eligibility
+# Three-step income test:
+# 1. Gross income <= 185% of standard of need
+# 2. Net income (after 20% earned deduction) < standard of need
+# 3. Countable income (after 58% work incentive) < payment standard
+# Reference: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf
+
+- name: Case 1, zero income eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Zero income passes all three tests
+    ia_fip_income_eligible: true
+
+- name: Case 2, low earned income eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family of 2, $7,200/year earned income ($600/month)
+    # Standard of need: $8,628/year
+    # Payment standard: $4,332/year
+    # Test 1: $7,200 <= $8,628 * 1.85 = $15,961.80 - PASS
+    # Test 2: $7,200 - ($7,200 * 0.20) = $5,760 < $8,628 - PASS
+    # Test 3: $5,760 - ($5,760 * 0.58) = $2,419.20 < $4,332 - PASS
+    ia_fip_income_eligible: true
+
+- name: Case 3, income exceeds gross income limit (Test 1 fails).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family of 2, $24,000/year gross income ($2,000/month)
+    # Standard of need: $8,628/year
+    # Gross income limit: $8,628 * 1.85 = $15,961.80
+    # Test 1: $24,000 > $15,961.80 - FAIL
+    ia_fip_income_eligible: false
+
+- name: Case 4, unearned income exceeds payment standard (Test 3 fails).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        social_security: 4_800
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family of 2, $4,800/year unearned income ($400/month)
+    # Standard of need: $8,628/year
+    # Payment standard: $4,332/year
+    # Test 1: $4,800 <= $15,961.80 - PASS
+    # Test 2: $4,800 < $8,628 - PASS
+    # Test 3: $4,800 >= $4,332 - FAIL (no deductions for unearned income)
+    ia_fip_income_eligible: false
+
+- name: Case 5, larger family with mixed income eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+        social_security: 2_400
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $6,000 earned + $2,400 unearned = $8,400 gross
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $8,400 <= $10,188 * 1.85 = $18,847.80 - PASS
+    # Test 2: $8,400 - ($6,000 * 0.20) = $7,200 < $10,188 - PASS
+    # Remaining earned: $6,000 - $1,200 = $4,800
+    # Work incentive: $4,800 * 0.58 = $2,784
+    # Countable earned: $4,800 - $2,784 = $2,016
+    # Test 3: $2,016 + $2,400 = $4,416 < $5,112 - PASS
+    ia_fip_income_eligible: true
+
+- name: Case 6, high mixed income fails Test 3.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600
+        social_security: 3_600
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $9,600 earned + $3,600 unearned = $13,200 gross
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $13,200 <= $18,847.80 - PASS
+    # Test 2: $13,200 - ($9,600 * 0.20) = $11,280 >= $10,188 - FAIL
+    ia_fip_income_eligible: false
+
+- name: Case 7, single person household eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Single pregnant person with zero income
+    # Standard of need: $365 * 12 = $4,380/year
+    # Payment standard: $183 * 12 = $2,196/year
+    # All tests pass with zero income
+    ia_fip_income_eligible: true
+
+- name: Case 8, family of 4 at income threshold.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 33
+        employment_income_before_lsr: 2_000
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family of 4, $12,000/year gross earned income
+    # Standard of need: $986 * 12 = $11,832/year
+    # Payment standard: $495 * 12 = $5,940/year
+    # Test 1: $12,000 <= $11,832 * 1.85 = $21,889.20 - PASS
+    # Test 2: $12,000 - ($12,000 * 0.20) = $9,600 < $11,832 - PASS
+    # Test 3: $9,600 - ($9,600 * 0.58) = $4,032 < $5,940 - PASS
+    ia_fip_income_eligible: true
+
+# Continuing eligibility tests per IAC 441-41.27(239B)
+# Initial eligibility uses 3 tests; continuing eligibility uses only 2
+# (skips the net income < standard of need test)
+
+- name: Case 9, initial applicant fails net income test (not enrolled).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_600
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $15,600/year earned income ($1,300/month)
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $15,600 <= $10,188 * 1.85 = $18,847.80 - PASS
+    # Test 2: $15,600 - ($15,600 * 0.20) = $12,480 >= $10,188 - FAIL
+    # Test 3: $15,600 * 0.80 * 0.42 = $5,241.60 >= $5,112 - FAIL
+    # Initial eligibility requires all 3 tests - FAIL
+    ia_fip_income_eligible: false
+
+- name: Case 10, continuing recipient passes with same income (enrolled).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 13_200
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3, $13,200/year earned income ($1,100/month)
+    # Standard of need: $10,188/year
+    # Payment standard: $5,112/year
+    # Test 1: $13,200 <= $18,847.80 - PASS
+    # Test 2: $13,200 * 0.80 = $10,560 >= $10,188 - FAIL (but skipped for continuing)
+    # Test 3: $13,200 * 0.80 * 0.42 = $4,435.20 < $5,112 - PASS
+    # Continuing eligibility only requires tests 1 and 3 - PASS
+    ia_fip_income_eligible: true
+
+- name: Case 11, same income ineligible as initial applicant.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 13_200
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Same income as Case 10, but as initial applicant
+    # Test 2: $10,560 >= $10,188 - FAIL
+    # Initial eligibility requires all 3 tests - FAIL
+    ia_fip_income_eligible: false
