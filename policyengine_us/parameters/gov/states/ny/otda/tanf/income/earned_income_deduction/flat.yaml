@@ -1,12 +1,15 @@
-description: New York excludes this amount of earned income for the purposes of its TANF program, after the percentage deduction.
+description: New York deducts this amount as a work expense under the Temporary Assistance for Needy Families program.
 
 values:
-  2022-03-01: 150
+  1998-01-01: 90
+  2022-10-01: 150
 
 metadata:
   unit: currency-USD
   period: month
-  label: New York TANF flat earnings exclusion
+  label: New York TANF work expense disregard
   reference:
-    - title: New York State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families
-      href: https://otda.ny.gov/policy/gis/2022/22DC085.pdf#page=1
+    - title: 97-ADM-23 Family Assistance/Safety Net Assistance Changes
+      href: https://otda.ny.gov/policy/directives/1997/ADM/97_ADM-23.pdf#page=3
+    - title: 22-ADM-11 Section IV(B) Work Expense Disregard
+      href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=3

@@ -1,29 +1,64 @@
-- name: If ineligible, they get zero.
-  period: 2023
+- name: Case 1, ineligible household gets zero.
+  period: 2023-01
   input:
+    state_code: NY
     ny_tanf_eligible: false
-    ny_tanf_grant_standard: 100
-    ny_tanf_countable_earned_income: 0
-    ny_tanf_countable_gross_unearned_income: 0
+    ny_tanf_need_standard: 100
+    ny_tanf_countable_income: 0
   output:
     ny_tanf: 0
 
-- name: If eligible, they get difference between grant standard and countable income.
-  period: 2023
+- name: Case 2, eligible household gets grant minus income.
+  period: 2023-01
   input:
+    state_code: NY
     ny_tanf_eligible: true
-    ny_tanf_grant_standard: 100
-    ny_tanf_countable_earned_income: 0
-    ny_tanf_countable_gross_unearned_income: 0
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 100
   output:
-    ny_tanf: 100
+    # $336 - $100 = $236
+    ny_tanf: 236
 
-- name: If countable income exceeds grant standard they get 0.
-  period: 2023
+- name: Case 3, eligible household with no income gets full grant.
+  period: 2023-01
   input:
+    state_code: NY
     ny_tanf_eligible: true
-    ny_tanf_grant_standard: 100
-    ny_tanf_countable_earned_income: 90
-    ny_tanf_countable_gross_unearned_income: 11
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 0
   output:
+    ny_tanf: 336
+
+- name: Case 4, countable income exceeds grant floors at zero.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_eligible: true
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 400
+  output:
+    # $336 - $400 = -$64 → floors at $0
     ny_tanf: 0
+
+# Pre-reform tests (2022-01)
+
+- name: Case 5, pre-reform eligible household gets grant minus income.
+  period: 2022-01
+  input:
+    state_code: NY
+    ny_tanf_eligible: true
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 150
+  output:
+    # $336 - $150 = $186
+    ny_tanf: 186
+
+- name: Case 6, pre-reform eligible household with no income.
+  period: 2022-01
+  input:
+    state_code: NY
+    ny_tanf_eligible: true
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 0
+  output:
+    ny_tanf: 336

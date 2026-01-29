@@ -1,31 +1,102 @@
-- name: Household with no income is eligible. (0+0<1)
-  period: 2023
+# Post-reform tests (2023-01): Only needs test applies
+
+- name: Case 1, post-reform household with no income is eligible.
+  period: 2023-01
   input:
     state_code: NY
-    ny_tanf_need_standard: 1
+    ny_tanf_need_standard: 336
     ny_tanf_countable_earned_income: 0
-    ny_tanf_countable_gross_unearned_income: 0
+    tanf_gross_unearned_income: 0
   output:
     ny_tanf_income_eligible: true
 
-
-- name: Household with income exceeding need standard is ineligible. (1+1>1)
-  period: 2023
+- name: Case 2, post-reform household with income below need standard.
+  period: 2023-01
   input:
     state_code: NY
-    ny_tanf_need_standard: 1
-    ny_tanf_countable_earned_income: 1
-    ny_tanf_countable_gross_unearned_income: 1
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 100
+    tanf_gross_unearned_income: 100
+  output:
+    ny_tanf_income_eligible: true
+
+- name: Case 3, post-reform household with income exceeds need standard.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 200
+    tanf_gross_unearned_income: 200
   output:
     ny_tanf_income_eligible: false
 
+# Pre-reform tests (2022-01): Both gross income test and needs test apply
 
-- name: Household with income equals need standard is ineligible. (1+0=1)
-  period: 2023
+- name: Case 4, pre-reform passes both tests.
+  period: 2022-01
   input:
     state_code: NY
-    ny_tanf_need_standard: 1
-    ny_tanf_countable_earned_income: 1
-    ny_tanf_countable_gross_unearned_income: 0
+    ny_tanf_gross_income_eligible: true
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 100
+    tanf_gross_unearned_income: 100
+  output:
+    ny_tanf_income_eligible: true
+
+- name: Case 5, pre-reform fails gross income test.
+  period: 2022-01
+  input:
+    state_code: NY
+    ny_tanf_gross_income_eligible: false
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 100
+    tanf_gross_unearned_income: 100
   output:
     ny_tanf_income_eligible: false
+
+- name: Case 6, pre-reform fails needs test.
+  period: 2022-01
+  input:
+    state_code: NY
+    ny_tanf_gross_income_eligible: true
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 200
+    tanf_gross_unearned_income: 200
+  output:
+    ny_tanf_income_eligible: false
+
+# Boundary tests
+
+- name: Case 7, income exactly at need standard fails (strict less than).
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 336
+    tanf_gross_unearned_income: 0
+  output:
+    # income < need_standard (strict inequality), so $336 < $336 is false
+    ny_tanf_income_eligible: false
+
+- name: Case 8, income one dollar below need standard passes.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_earned_income: 335
+    tanf_gross_unearned_income: 0
+  output:
+    # $335 < $336 is true
+    ny_tanf_income_eligible: true
+
+- name: Case 9, post-reform ignores gross income test failure.
+  period: 2023-01
+  input:
+    state_code: NY
+    ny_tanf_gross_income_eligible: false
+    ny_tanf_need_standard: 336
+    ny_tanf_countable_income: 100
+  output:
+    # Post-reform: gross income test is ignored
+    # Only needs test applies: $100 < $336 → passes
+    ny_tanf_income_eligible: true
