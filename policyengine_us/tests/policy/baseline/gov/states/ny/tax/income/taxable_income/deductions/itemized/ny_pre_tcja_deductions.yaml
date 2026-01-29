@@ -1,0 +1,84 @@
+# Test NY pre-TCJA itemized deductions conformity
+# NY Tax Law § 615 requires using pre-TCJA federal rules
+
+- name: NY SALT deduction uses sales tax and real estate taxes (not income tax)
+  period: 2024
+  input:
+    state_code: NY
+    state_sales_tax: 2_000
+    local_sales_tax: 500
+    real_estate_taxes: 8_000
+    state_withheld_income_tax: 15_000  # Higher than sales, but not deductible for NY
+  output:
+    # NY should use sales tax (2,500) + real estate (8,000) = 10,500
+    # NOT income tax which is higher
+    ny_salt_deduction: 10_500
+
+- name: NY SALT deduction is uncapped (no $10,000 limit)
+  period: 2024
+  input:
+    state_code: NY
+    state_sales_tax: 5_000
+    local_sales_tax: 0
+    real_estate_taxes: 20_000
+  output:
+    # NY has no cap: 5,000 + 0 + 20,000 = 25,000
+    ny_salt_deduction: 25_000
+
+- name: NY allows miscellaneous deductions with 2% floor (not suspended like federal)
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 100_000
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 500
+  output:
+    # Total misc: 5,500
+    # AGI floor (2%): 100,000 * 0.02 = 2,000
+    # Deduction: 5,500 - 2,000 = 3,500
+    ny_misc_deduction: 3_500
+
+- name: NY misc deduction is zero when below floor
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 100_000
+    unreimbursed_business_employee_expenses: 1_500
+  output:
+    # Total misc: 1,500
+    # AGI floor (2%): 100,000 * 0.02 = 2,000
+    # Deduction: max(0, 1,500 - 2,000) = 0
+    ny_misc_deduction: 0
+
+- name: NY allows casualty loss deduction (not limited to federal disasters)
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 100_000
+    casualty_loss: 15_000
+  output:
+    # Casualty loss: 15,000
+    # AGI floor (10%): 100,000 * 0.10 = 10,000
+    # Deduction: 15,000 - 10,000 = 5,000
+    ny_casualty_loss_deduction: 5_000
+
+- name: NY itemized deductions max includes all pre-TCJA components
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 100_000
+    charitable_cash_donations: 5_000
+    real_estate_taxes: 12_000
+    state_sales_tax: 3_000
+    local_sales_tax: 0
+    medical_out_of_pocket_expenses: 10_000
+    unreimbursed_business_employee_expenses: 4_000
+    casualty_loss: 15_000
+  output:
+    # Charitable: 5,000
+    # Medical: 10,000 - (100,000 * 0.075) = 2,500
+    # NY SALT: 3,000 + 0 + 12,000 = 15,000 (uncapped)
+    # NY Misc: 4,000 - (100,000 * 0.02) = 2,000
+    # NY Casualty: 15,000 - (100,000 * 0.10) = 5,000
+    # Total: 5,000 + 2,500 + 15,000 + 2,000 + 5,000 = 29,500
+    ny_itemized_deductions_max: 29_500

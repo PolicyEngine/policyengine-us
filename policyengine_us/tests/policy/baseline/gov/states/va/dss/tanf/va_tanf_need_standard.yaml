@@ -1,0 +1,87 @@
+# Tests use 2021-01 period to validate base values (multiplier = 1.0)
+# Parameter tables contain July 2020 values; multiplier adjusts for later periods
+
+- name: If one person and lives in Arlington, need standard is $631/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_need_standard: 631
+
+- name: If ten person and lives in Fairfax, need standard is $2,171/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
+  output:
+    va_tanf_need_standard: 2_171
+
+- name: If twelve person and lives in Montgomery, need standard is $2,495/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
+  output:
+    va_tanf_need_standard: 2_495
+
+- name: If one person and lives in Bedford, need standard is $453/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_need_standard: 453
+
+- name: If ten person and lives in Frederick, need standard is $1,950/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
+  output:
+    va_tanf_need_standard: 1_950
+
+- name: If twelve person and lives in Pittsylvania, need standard is $2,274/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf_need_standard: 2_274
+
+- name: Only calculate for VA.
+  period: 2021-01
+  input:
+    state_code: FL
+    spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
+  output:
+    va_tanf_need_standard: 0
+
+# Test multiplier effect for 2023 period (multiplier = 1.155)
+- name: Need standard in 2023 reflects 15.5% increase from base.
+  # Base $631 * 1.155 = $728.805/month
+  period: 2023-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_need_standard: 728.805
+
+# Test multiplier effect for 2018 period (multiplier = 0.8282)
+- name: Need standard in 2018-01 for size 3 in Group III locality.
+  # Base $1,017 * 0.8282 = $842.2794/month
+  period: 2018-01
+  input:
+    state_code: VA
+    spm_unit_size: 3
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_need_standard: 842.2794

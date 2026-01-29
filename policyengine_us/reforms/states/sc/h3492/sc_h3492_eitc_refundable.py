@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_sc_h3492_eitc_refundable() -> Reform:
@@ -150,9 +151,18 @@ def create_sc_h3492_eitc_refundable_reform(
     if bypass:
         return create_sc_h3492_eitc_refundable()
 
-    p = parameters(period).gov.contrib.states.sc.h3492
+    p = parameters.gov.contrib.states.sc.h3492
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_sc_h3492_eitc_refundable()
     else:
         return None

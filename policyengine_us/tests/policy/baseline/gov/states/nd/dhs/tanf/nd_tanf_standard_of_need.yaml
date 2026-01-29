@@ -1,0 +1,342 @@
+# North Dakota TANF Standard of Need Unit Tests
+#
+# The Standard of Need is determined by a 2D table lookup based on:
+# - Number of caretakers (adults aged 18+)
+# - Number of children (under 18)
+#
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
+
+- name: Case 1, single adult no children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1 caretaker, 0 children → $523
+    nd_tanf_standard_of_need: 523
+
+- name: Case 2, one adult with one child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 1 caretaker, 1 child → $739
+    nd_tanf_standard_of_need: 739
+
+- name: Case 3, one adult with two children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    # 1 caretaker, 2 children → $962
+    nd_tanf_standard_of_need: 962
+
+- name: Case 4, two adults with two children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # 2 caretakers, 2 children → $1,175
+    nd_tanf_standard_of_need: 1_175
+
+- name: Case 5, two adults with three children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 14
+      person4:
+        age: 11
+      person5:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ND
+  output:
+    # 2 caretakers, 3 children → $1,393
+    nd_tanf_standard_of_need: 1_393
+
+- name: Case 6, two adults with four children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 16
+      person4:
+        age: 13
+      person5:
+        age: 10
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ND
+  output:
+    # 2 caretakers, 4 children → $1,612
+    nd_tanf_standard_of_need: 1_612
+
+- name: Case 7, two adults with six children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 9
+      person7:
+        age: 6
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: ND
+  output:
+    # 2 caretakers, 6 children → $2,049
+    nd_tanf_standard_of_need: 2_049
+
+- name: Case 8, child-only case no caretakers.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 0 caretakers, 2 children → $536
+    nd_tanf_standard_of_need: 536
+
+# Age boundary tests at 17/18
+
+- name: Case 9, person exactly at age 18 counted as caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 18 >= 18 = true, so person1 is caretaker
+    # 1 caretaker, 1 child → $739
+    nd_tanf_standard_of_need: 739
+
+- name: Case 10, person at age 17 counted as child not caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 17 >= 18 = false, so person1 is child
+    # 0 caretakers, 2 children → $536
+    nd_tanf_standard_of_need: 536
+
+# Zero caretaker edge cases
+
+- name: Case 11, zero caretakers with one child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 0 caretakers, 1 child → $366
+    nd_tanf_standard_of_need: 366
+
+- name: Case 12, zero caretakers with ten children at max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+      person2:
+        age: 16
+      person3:
+        age: 15
+      person4:
+        age: 14
+      person5:
+        age: 13
+      person6:
+        age: 12
+      person7:
+        age: 11
+      person8:
+        age: 10
+      person9:
+        age: 9
+      person10:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: ND
+  output:
+    # 0 caretakers, 10 children → max in caretakers_0 table = $1,859
+    nd_tanf_standard_of_need: 1_859
+
+- name: Case 13, three caretakers and eleven children both cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 48
+      person3:
+        age: 25
+      person4:
+        age: 17
+      person5:
+        age: 16
+      person6:
+        age: 15
+      person7:
+        age: 14
+      person8:
+        age: 13
+      person9:
+        age: 12
+      person10:
+        age: 11
+      person11:
+        age: 10
+      person12:
+        age: 9
+      person13:
+        age: 8
+      person14:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: ND
+  output:
+    # 3 caretakers capped at 2, 11 children capped at 10
+    # 2 caretakers (capped), 10 children (capped) → $2,922
+    nd_tanf_standard_of_need: 2_922

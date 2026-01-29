@@ -1,0 +1,77 @@
+description: Louisiana provides this amount as the flat grant under the Family Independence Temporary Assistance Program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 19)
+  breakdown_label:
+    - Assistance unit size
+  label: Louisiana FITAP flat grant amount
+  reference:
+    # 2000-07-01 values (unchanged until 2022):
+    - title: Louisiana DCFS 2014 TANF State Plan Renewal - Appendix B-911-2
+      href: https://www.dcfs.louisiana.gov/assets/docs/searchable/EconomicStability/TANF/2014TANFRenewal.pdf#page=16
+    # 2022-01-01 values (doubled from 2000 amounts):
+    - title: Louisiana Administrative Code Title 67, Part III, Section 1229(D)
+      href: https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229
+    # NOTE: Payment standards were set in July 2000 and remained unchanged for over 21 years.
+    # In January 2022, benefits were doubled for the first time since 2000.
+    # Per DCFS: "Inflation has increased 61% since these benefit amounts were last increased in July 2000."
+    - title: Louisiana DCFS FITAP Benefits Increase Announcement (January 2022)
+      href: https://www.dcfs.louisiana.gov/news/louisiana-to-increase-tanf-cash-assistance-benefits-beginning-january-2022
+
+1:
+  2000-07-01: 122
+  2022-01-01: 244
+2:
+  2000-07-01: 188
+  2022-01-01: 376
+3:
+  2000-07-01: 240
+  2022-01-01: 484
+4:
+  2000-07-01: 284
+  2022-01-01: 568
+5:
+  2000-07-01: 327
+  2022-01-01: 654
+6:
+  2000-07-01: 366
+  2022-01-01: 732
+7:
+  2000-07-01: 402
+  2022-01-01: 804
+8:
+  2000-07-01: 441
+  2022-01-01: 882
+9:
+  2000-07-01: 477
+  2022-01-01: 954
+10:
+  2000-07-01: 512
+  2022-01-01: 1_024
+11:
+  2000-07-01: 551
+  2022-01-01: 1_102
+12:
+  2000-07-01: 590
+  2022-01-01: 1_180
+13:
+  2000-07-01: 630
+  2022-01-01: 1_260
+14:
+  2000-07-01: 670
+  2022-01-01: 1_340
+15:
+  2000-07-01: 712
+  2022-01-01: 1_424
+16:
+  2000-07-01: 757
+  2022-01-01: 1_514
+17:
+  2000-07-01: 791
+  2022-01-01: 1_582
+18:
+  2000-07-01: 839
+  2022-01-01: 1_678
