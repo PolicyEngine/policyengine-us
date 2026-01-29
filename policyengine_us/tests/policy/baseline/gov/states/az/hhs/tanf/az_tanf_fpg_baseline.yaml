@@ -1,0 +1,109 @@
+# Unit tests for Arizona TANF 1992 FPG baseline
+# Arizona uses 1992 FPG values for payment standard calculations
+# 1992 FPG (CONTIGUOUS_US): first_person = $6,810, additional = $2,380
+# Reference: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+
+- name: Case 1, family of 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 1 person: $6,810
+    az_tanf_fpg_baseline: 6_810
+
+- name: Case 2, family of 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 2 persons: $6,810 + $2,380 = $9,190
+    az_tanf_fpg_baseline: 9_190
+
+- name: Case 3, family of 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 3 persons: $6,810 + 2*$2,380 = $11,570
+    az_tanf_fpg_baseline: 11_570
+
+- name: Case 4, family of 4.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+      person4:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # 4 persons: $6,810 + 3*$2,380 = $13,950
+    az_tanf_fpg_baseline: 13_950
+
+- name: Case 5, family of 5.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    # 5 persons: $6,810 + 4*$2,380 = $16,330
+    az_tanf_fpg_baseline: 16_330
