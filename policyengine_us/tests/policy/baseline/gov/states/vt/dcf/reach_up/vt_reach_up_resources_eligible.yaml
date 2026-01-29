@@ -1,0 +1,75 @@
+# Vermont TANF Resource Eligibility
+# Resource limit: $9,000
+# Source: 33 V.S.A. Section 1103(a)(1)
+
+- name: Case 1, zero assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $0 <= $9,000 limit
+    vt_reach_up_resources_eligible: true
+
+- name: Case 2, one dollar below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 8_999
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $8,999 <= $9,000 limit
+    vt_reach_up_resources_eligible: true
+
+- name: Case 3, assets at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $9,000 = $9,000 limit
+    vt_reach_up_resources_eligible: true
+
+- name: Case 4, one dollar above limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 9_001
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Assets: $9,001 > $9,000 limit
+    vt_reach_up_resources_eligible: false

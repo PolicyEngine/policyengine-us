@@ -1,0 +1,53 @@
+# Vermont TANF Basic Needs Allowance
+# Sizes 1-8 use lookup table, 9+ adds $236/additional person
+# Source: Code Vt. R. 13-170-220-X Rule 2244.1
+
+- name: Size 1 (minimum from table)
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: VT
+  output:
+    vt_reach_up_basic_needs_allowance: 644
+
+- name: Size 2
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: VT
+  output:
+    vt_reach_up_basic_needs_allowance: 942
+
+- name: Size 3
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: VT
+  output:
+    vt_reach_up_basic_needs_allowance: 1_236
+
+- name: Size 8 (maximum from table)
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: VT
+  output:
+    vt_reach_up_basic_needs_allowance: 2_458
+
+- name: Size 9 (one beyond table)
+  period: 2024-01
+  input:
+    spm_unit_size: 9
+    state_code: VT
+  output:
+    # $2,458 + 1 * $236 = $2,694
+    vt_reach_up_basic_needs_allowance: 2_694
+
+- name: Size 10 (two beyond table)
+  period: 2024-01
+  input:
+    spm_unit_size: 10
+    state_code: VT
+  output:
+    # $2,458 + 2 * $236 = $2,930
+    vt_reach_up_basic_needs_allowance: 2_930

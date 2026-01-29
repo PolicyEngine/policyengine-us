@@ -1,0 +1,123 @@
+# Vermont TANF Income Eligibility
+# Eligible if countable income < payment standard
+# Source: 33 V.S.A. Section 1103
+
+- name: Case 1, no income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_countable_income: 0
+        vt_reach_up_payment_standard: 709
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Countable: $0 < Payment Standard: $709
+    vt_reach_up_income_eligible: true
+
+- name: Case 2, income below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_countable_income: 500
+        vt_reach_up_payment_standard: 709
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Countable: $500 < Payment Standard: $709
+    vt_reach_up_income_eligible: true
+
+- name: Case 3, income at payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_countable_income: 709
+        vt_reach_up_payment_standard: 709
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Countable: $709 = Payment Standard: $709 (not less than)
+    vt_reach_up_income_eligible: false
+
+- name: Case 4, income above payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_countable_income: 800
+        vt_reach_up_payment_standard: 709
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Countable: $800 > Payment Standard: $709
+    vt_reach_up_income_eligible: false
+
+- name: Case 5, income one dollar below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_countable_income: 708
+        vt_reach_up_payment_standard: 709
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Countable: $708 < Payment Standard: $709
+    vt_reach_up_income_eligible: true
+
+- name: Case 6, larger family with higher payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        vt_reach_up_countable_income: 600
+        vt_reach_up_payment_standard: 774
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    # Countable: $600 < Payment Standard: $774
+    vt_reach_up_income_eligible: true

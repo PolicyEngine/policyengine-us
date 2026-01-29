@@ -1,0 +1,96 @@
+# Vermont Reach Up Countable Earned Income (Person-level)
+# Formula: max_(gross_earned - flat_disregard, 0) * (1 - rate_disregard)
+# For 2024: flat = $350/month, rate = 25%
+# Source: 33 V.S.A. Section 1103(a)(3)
+
+- name: Case 1, zero and below flat disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 35
+        employment_income_before_lsr: 2_400  # $200/month, below $350
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person1: $0 -> $0
+    # person2: max_($200 - $350, 0) * 0.75 = $0
+    vt_reach_up_countable_earned_income_person: [0, 0]
+
+- name: Case 2, at and above flat disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_200  # $350/month, at threshold
+      person2:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person1: max_($350 - $350, 0) * 0.75 = $0
+    # person2: max_($1,000 - $350, 0) * 0.75 = $650 * 0.75 = $487.50
+    vt_reach_up_countable_earned_income_person: [0, 487.5]
+
+- name: Case 3, boundary conditions around threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_188  # $349/month, one below
+      person2:
+        age: 35
+        employment_income_before_lsr: 4_212  # $351/month, one above
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person1: max_($349 - $350, 0) * 0.75 = $0
+    # person2: max_($351 - $350, 0) * 0.75 = $1 * 0.75 = $0.75
+    vt_reach_up_countable_earned_income_person: [0, 0.75]
+
+- name: Case 4, three earners with varying income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 17
+        employment_income_before_lsr: 2_400  # $200/month (below threshold)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # person1: max_($800 - $350, 0) * 0.75 = $450 * 0.75 = $337.50
+    # person2: max_($500 - $350, 0) * 0.75 = $150 * 0.75 = $112.50
+    # person3: max_($200 - $350, 0) * 0.75 = $0
+    vt_reach_up_countable_earned_income_person: [337.5, 112.5, 0]
