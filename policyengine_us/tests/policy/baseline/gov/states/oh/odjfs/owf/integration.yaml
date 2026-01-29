@@ -1,5 +1,6 @@
 - name: Single parent with two children and moderate earned income receives benefit
   period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
       parent:
@@ -25,16 +26,17 @@
     # $800 - $250 = $550; $550 × 50% = $275 disregarded
     # Countable income: $550 - $275 = $275/month
     #
-    # Payment standard for 3: $623/month
-    # Benefit: $623 - $275 = $348/month
+    # Payment standard for 3: $622.88/month (2017 base × 1.3141 COLA)
+    # Benefit: $622.88 - $275 = $347.88/month
     oh_owf_countable_income: 275
-    oh_owf_payment_standard: 623
+    oh_owf_payment_standard: 622.88
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 348
+    oh_owf: 347.88
 
 - name: Single parent with one child and no income receives maximum benefit
   period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
       parent:
@@ -52,15 +54,16 @@
   output:
     # No income means no disregard needed
     # Countable income: $0
-    # Payment standard for 2: $507/month (January 2025 COLA increase)
+    # Payment standard for 2: $508.56/month (2017 base × 1.3141 COLA)
     oh_owf_countable_income: 0
-    oh_owf_payment_standard: 507
+    oh_owf_payment_standard: 508.56
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 507
+    oh_owf: 508.56
 
 - name: Single parent with earned and unearned income receives reduced benefit
   period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
       parent:
@@ -88,16 +91,17 @@
     # Unearned: $4,800/year = $400/month (no disregard)
     # Total countable: $125 + $400 = $525/month
     #
-    # Payment standard for 3: $623/month
-    # Benefit: $623 - $525 = $98/month
+    # Payment standard for 3: $622.88/month (2017 base × 1.3141 COLA)
+    # Benefit: $622.88 - $525 = $97.88/month
     oh_owf_countable_income: 525
-    oh_owf_payment_standard: 623
+    oh_owf_payment_standard: 622.88
     oh_owf_income_eligible: true
     oh_owf_eligible: true
-    oh_owf: 98
+    oh_owf: 97.88
 
 - name: Family with income above payment standard receives no benefit
   period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
       parent:
@@ -121,14 +125,48 @@
     # Disregard: $1,500 - $250 = $1,250; $1,250 × 50% = $625
     # Countable: $1,250 - $625 = $625/month
     #
-    # Payment standard for 3: $623/month
-    # Countable income ($625) >= payment standard ($623)
+    # Payment standard for 3: $622.88/month (2017 base × 1.3141 COLA)
+    # Countable income ($625) >= payment standard ($622.88)
     # Not income eligible, no benefit
     oh_owf_countable_income: 625
-    oh_owf_payment_standard: 623
+    oh_owf_payment_standard: 622.88
     oh_owf_income_eligible: false
     oh_owf_eligible: false
     oh_owf: 0
+
+- name: Single parent with two children in 2018
+  period: 2018-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 4_800
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # Earned: $4,800/year = $400/month
+    # Disregard: $400 - $250 = $150; $150 × 50% = $75
+    # Countable: $150 - $75 = $75/month
+    #
+    # Payment standard for 3: $474 × 1.02 = $483.48
+    # Benefit: $483.48 - $75 = $408.48
+    oh_owf_countable_income: 75
+    oh_owf_payment_standard: 483.48
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true
+    oh_owf: 408.48
 
 - name: Two adults with no children are not eligible
   period: 2025-01
