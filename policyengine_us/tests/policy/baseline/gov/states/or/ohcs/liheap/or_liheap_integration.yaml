@@ -1,0 +1,150 @@
+- name: Single parent with a child, expense greater than payout
+  period: 2024
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        irs_gross_income: 25_000
+      person2:
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_heating_type: NATURAL_GAS
+        natural_gas_expense: 600
+        heat_in_rent: false
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+        county_str: CURRY_COUNTY_OR
+  output:
+    hhs_smi: 72_852 # 107_136*(0.52+0.16)
+    or_liheap_income_threshold: 43_711 # 72_852*0.6
+    or_liheap_in_region_one: true
+    or_liheap_eligibility: true
+    or_liheap_benefit_level: 3
+    or_liheap_payout: 495 
+
+- name: Individual living alone, expense greater than payout
+  period: 2022
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        irs_gross_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        or_heating_type: ELECTRICITY
+        electricity_expense: 900
+        heat_in_rent: false
+        housing_assistance: 0
+        or_liheap_electricity_type: HEATING_AND_COOLING
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+        county_str: BENTON_COUNTY_OR #region one
+  output:
+    hhs_smi: 48_906 # 94_050*(0.52)
+    or_liheap_income_threshold: 29_343 # 48_906*0.6
+    or_liheap_in_region_one: true
+    or_liheap_eligibility: true
+    or_liheap_benefit_level: 3
+    or_liheap_payout: 530
+
+- name: Family of four in subsidized housing, expense greater than payout
+  period: 2023
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        irs_gross_income: 22_000
+      person2:
+        irs_gross_income: 18_000
+      person3:
+        irs_gross_income: 0
+      person4:
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        or_heating_type: NATURAL_GAS
+        natural_gas_expense: 600
+        heat_in_rent: false
+        housing_assistance: 100
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OR
+        county_str: CROOK_COUNTY_OR # region 2
+  output:
+    hhs_smi: 100_210
+    or_liheap_income_threshold: 60_126 #110_210*0.6
+    or_liheap_in_region_one: false
+    or_liheap_eligibility: true
+    or_liheap_benefit_level: 3
+    or_liheap_payout: 500
+
+- name: Family of four in subsidized housing, expense less than payout
+  period: 2023
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        irs_gross_income: 22_000
+      person2:
+        irs_gross_income: 18_000
+      person3:
+        irs_gross_income: 0
+      person4:
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        or_heating_type: NATURAL_GAS
+        natural_gas_expense: 200
+        heat_in_rent: false
+        housing_assistance: 100
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OR
+        county_str: CROOK_COUNTY_OR # region 2
+  output:
+    hhs_smi: 100_210
+    or_liheap_income_threshold: 60_126 #110_210*0.6
+    or_liheap_in_region_one: false
+    or_liheap_eligibility: true
+    or_liheap_benefit_level: 3
+    or_liheap_payout: 200
+
+- name: Working couple with no kids, heat in rent
+  period: 2024
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        irs_gross_income: 30_000
+      person2:
+        irs_gross_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_heating_type: ELECTRICITY
+        heat_in_rent: true
+        housing_assistance: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+        county_str: CLACKAMAS_COUNTY_OR # region 1
+  output:
+    hhs_smi: 72_852 # 107_136*(.52+.16)
+    or_liheap_income_threshold: 43_712 # 72_852*0.6
+    or_liheap_in_region_one: true
+    or_liheap_eligibility: false
+    or_liheap_benefit_level: 4
+    or_liheap_payout: 0
