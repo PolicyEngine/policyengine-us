@@ -5,7 +5,7 @@ SINGLE:
 SEPARATE:
   2021-01-01: 1_500
 SURVIVING_SPOUSE:
-  2021-01-01: 1_500
+  2021-01-01: 3_000
 JOINT:
   2021-01-01: 3_000
 HEAD_OF_HOUSEHOLD: 
@@ -15,16 +15,20 @@ metadata:
   period: year
   unit: currency-USD
   breakdown:
-  - filing_status
+    - filing_status
+  breakdown_label:
+    - Filing status
   label: Alabama personal exemption amount
   reference:
-  - title: 2024 Alabama Income Tax Instructions
-    href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=6
-  - title: 2023 Form 40 Alabama Income Tax Return
-    href: https://www.taxformfinder.org/forms/2023/2023-alabama-form-40.pdf#page=1
+  - title: The Code of Alabama 1975 Section 40-18-19 (a)(8)
+    href: https://law.justia.com/codes/alabama/title-40/chapter-18/article-1/section-40-18-19/
+  - title: 2021 Alabama Department of Revenue
+    href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=6
   - title: 2022 Form 40 Alabama Income Tax Return
     href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/02/22f40.pdf#page=2
-  - title: 2021 Alabama Department of Revenue 
-    href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=6
-  - title: The Code of Alabama 1975 Section 40-18-19 (a)(8)
-    href: https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation/chapter-18-income-taxes/article-1-general-provisions/section-40-18-19-exemptions-generally
+  - title: 2023 Form 40 Alabama Income Tax Return
+    href: https://www.taxformfinder.org/forms/2023/2023-alabama-form-40.pdf#page=1
+  - title: 2024 Alabama Income Tax Instructions
+    href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=6
+  - title: 2025 Alabama Income Tax Instructions
+    href: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=6
