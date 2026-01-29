@@ -87,5 +87,7 @@
         employment_income: 0
       person2:
         age: 2
-  output: 
-    medicaid_cost_if_enrolled: [7_054, 2_867.7]
+  output:
+    # person1 is assigned to PARENT category (mandatory group) before ADULT
+    # (expansion), so uses NON_EXPANSION_ADULT per-capita cost
+    medicaid_cost_if_enrolled: [4_631.1, 2_867.8]
