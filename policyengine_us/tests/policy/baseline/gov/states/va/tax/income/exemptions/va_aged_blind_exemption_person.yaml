@@ -33,3 +33,13 @@
     is_blind: false
   output:
     va_aged_blind_exemption_person: 0
+
+# 2025 test - per 2025 Form 760 Instructions page 15
+- name: VA 2025 aged exemption unchanged
+  period: 2025
+  input:
+    state_code: VA
+    is_irs_aged: true
+    is_blind: false
+  output:
+    va_aged_blind_exemption_person: 800

@@ -12,6 +12,7 @@ JOINT:
     2022-01-01: 343_950
     2023-01-01: 368_900
     2024-01-01: 388_400
+    2025-01-01: 399_200
 SINGLE:
   values:
     2013-01-01: 250_000
@@ -25,6 +26,7 @@ SINGLE:
     2022-01-01: 286_600
     2023-01-01: 307_400
     2024-01-01: 323_650
+    2025-01-01: 332_700
 SEPARATE:
   values:
     2013-01-01: 150_000
@@ -38,6 +40,7 @@ SEPARATE:
     2022-01-01: 171_975
     2023-01-01: 184_450
     2024-01-01: 194_200
+    2025-01-01: 199_600
 HEAD_OF_HOUSEHOLD:
   values:
     2013-01-01: 275_000
@@ -51,6 +54,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 315_300
     2023-01-01: 338_150
     2024-01-01: 356_000
+    2025-01-01: 365_950
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 300_000
@@ -64,6 +68,7 @@ SURVIVING_SPOUSE:
     2022-01-01: 343_950
     2023-01-01: 368_900
     2024-01-01: 388_400
+    2025-01-01: 399_200
 metadata:
   label: Virginia itemized deduction applicable amount
   period: year
@@ -78,11 +83,13 @@ metadata:
       interval: 50
   reference:
     # Virginia's limit conforms with the federal limit. The federal limit increases with inflation; thus, so does Virginia's.
-    # VA code § 58.1-301(B)(5) says to ignore the federal suspension of the Pease limitation. 
+    # VA code § 58.1-301(B)(5) says to ignore the federal suspension of the Pease limitation.
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/68#b_1
     - title: Applicable to taxable years beginning on or after January 1, 2022, but before January 1, 2023) Conformity to Internal Revenue Code.
       href: https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-301/
+    - title: 2025 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2025/schedule-2025.pdf#page=1
     - title: 2024 Virginia Schedule A Itemized Deductions, Line 17
       href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2024/schedule-2024.pdf#page=1
     - title: 2023 Virginia Schedule A Itemized Deductions

@@ -10,10 +10,15 @@ class taxable_self_employment_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1402#a"
 
     def formula(person, period, parameters):
+        # Per 26 USC 1402(a), SE income includes:
+        # - Schedule C net profit (self_employment_income)
+        # - Schedule F net profit (farm_income)
+        # - General partners' distributive share (partnership_se_income from K-1 Box 14)
+        # S-corp distributions are NOT subject to SE tax.
         SEI_SOURCES = [
             "self_employment_income",
             "farm_income",
-            "s_corp_self_employment_income",
+            "partnership_se_income",
         ]
         gross_sei = add(person, period, SEI_SOURCES)
         p = parameters(period).gov.irs

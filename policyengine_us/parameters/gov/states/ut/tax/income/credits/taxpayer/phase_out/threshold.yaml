@@ -30,11 +30,13 @@ SURVIVING_SPOUSE:
   2024-01-01: 35_304
   2025-01-01: 36_426
 metadata:
+  label: Utah taxpayer credit phase-out threshold
+  breakdown:
+    - filing_status
   unit: currency-USD
   uprating: gov.irs.uprating
   propagate_metadata_to_children: true
   period: year
-  label: Utah taxpayer credit phase-out threshold
   reference:
     - title: Utah Code §59-10-1018 (4) # Effective 2018-07-21; Superseded 2021-05-05
       href: https://le.utah.gov/xcode/historical.html?date=2/7/2025&oc=/xcode/Title59/Chapter10/C59-10-S1018_2018051620180721.html

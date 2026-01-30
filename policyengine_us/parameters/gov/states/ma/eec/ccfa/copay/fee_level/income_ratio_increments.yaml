@@ -5,6 +5,8 @@ metadata:
   label: Massachusetts CCFA income ratio increments by household size
   breakdown:
     - range(1,13)
+  breakdown_labels:
+    - Household size
   reference:
     - title: EEC Financial Assistance Parent Fee Table FY2025
       href: https://www.mass.gov/doc/parent-fee-chart-fy2025

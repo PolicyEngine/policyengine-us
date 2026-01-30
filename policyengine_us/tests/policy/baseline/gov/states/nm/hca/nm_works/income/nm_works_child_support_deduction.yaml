@@ -1,0 +1,253 @@
+# New Mexico Works Child Support Deduction Unit Tests
+# Tests the child support deduction: $50 disregard + passthrough ($100 for 1 child, $200 for 2+ children)
+# Total deduction = min(child_support_received, disregard + passthrough)
+# Source: 8.102.520.9(J) NMAC - Exempt Income
+
+- name: Case 1, zero child support results in zero deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # No child support received, no deduction
+    nm_works_child_support_deduction: 0
+
+- name: Case 2, small child support with one child caps at amount received.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month (annual input)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $50/month
+    # 1 child: disregard $50 + passthrough $100 = $150 max deduction
+    # Deduction = min($50, $150) = $50
+    nm_works_child_support_deduction: 50
+
+- name: Case 3, child support at disregard only with zero children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month (annual input)
+      person2:
+        age: 25  # Adult, not a child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $50/month
+    # 0 children: disregard $50 + passthrough $0 = $50 max deduction
+    # Deduction = min($50, $50) = $50
+    nm_works_child_support_deduction: 50
+
+- name: Case 4, child support exactly at max deduction for one child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month (annual input)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $150/month
+    # 1 child: disregard $50 + passthrough $100 = $150 max deduction
+    # Deduction = min($150, $150) = $150
+    nm_works_child_support_deduction: 150
+
+- name: Case 5, child support exceeds max deduction for one child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month (annual input)
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 1 child: disregard $50 + passthrough $100 = $150 max deduction
+    # Deduction = min($300, $150) = $150 (capped)
+    nm_works_child_support_deduction: 150
+
+- name: Case 6, child support exactly at max deduction for two children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_000  # $250/month (annual input)
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $250/month
+    # 2 children: disregard $50 + passthrough $200 = $250 max deduction
+    # Deduction = min($250, $250) = $250
+    nm_works_child_support_deduction: 250
+
+- name: Case 7, child support exceeds max deduction for two plus children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 4_800  # $400/month (annual input)
+      person2:
+        age: 12
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $400/month
+    # 2+ children: disregard $50 + passthrough $200 = $250 max deduction
+    # Deduction = min($400, $250) = $250 (capped)
+    nm_works_child_support_deduction: 250
+
+- name: Case 8, child at age 17 counts as child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 3_600  # $300/month (annual input)
+      person2:
+        age: 17  # Under 18, counts as child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 1 child (age 17 < 18): disregard $50 + passthrough $100 = $150 max deduction
+    # Deduction = min($300, $150) = $150
+    nm_works_child_support_deduction: 150
+
+- name: Case 9, person at age 18 does not count as child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 3_600  # $300/month (annual input)
+      person2:
+        age: 18  # Not under 18, not a child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # 0 children (age 18 >= 18): disregard $50 + passthrough $0 = $50 max deduction
+    # Deduction = min($300, $50) = $50
+    nm_works_child_support_deduction: 50
+
+- name: Case 10, three children still get 200 dollar passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        child_support_received: 4_800  # $400/month (annual input)
+      person2:
+        age: 14
+      person3:
+        age: 11
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    # Child support: $400/month
+    # 3 children (2+ rule): disregard $50 + passthrough $200 = $250 max deduction
+    # Deduction = min($400, $250) = $250
+    nm_works_child_support_deduction: 250
+
+- name: Case 11, pre-2023 two children get 100 dollar passthrough.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month (annual input)
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child support: $300/month
+    # Before Jan 2023: 2+ children: disregard $50 + passthrough $100 = $150 max deduction
+    # Deduction = min($300, $150) = $150 (capped)
+    nm_works_child_support_deduction: 150

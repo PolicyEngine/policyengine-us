@@ -9,6 +9,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance group size
   label: Tennessee Families First Standard Payment Amount
   reference:
     - title: Tennessee Administrative Code § 1240-01-50-.20 (2008)

@@ -1,0 +1,202 @@
+# New Mexico Works Countable Earned Income Unit Tests
+# Tests the countable earned income after work incentive and childcare deductions
+# Formula: max(gross_earned - earned_deduction - childcare_deduction, 0)
+# Source: 8.102.520.12 NMAC
+
+- name: Case 1, no earnings results in zero countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_parent: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_works_countable_earned_income: 0
+
+- name: Case 2, single parent with moderate earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        is_parent: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Single parent deduction: $125 + 50% of remainder
+    # Gross: $1,000
+    # After flat: $1,000 - $125 = $875
+    # After percentage: $875 * 0.50 = $437.50
+    # Childcare deduction: $0 (no childcare expenses)
+    # Countable earned: $437.50
+    nm_works_countable_earned_income: 437.5
+
+- name: Case 3, single parent with earnings below flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+        is_parent: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Gross: $100
+    # Flat deduction $125 > gross, so after work incentive = $0
+    # Childcare deduction: $0
+    # Countable = max($0 - $0, 0) = $0
+    nm_works_countable_earned_income: 0
+
+- name: Case 4, two-parent household with both working.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head: true
+        is_parent: true
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_spouse: true
+        is_parent: true
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Two-parent: $225 + 50% each
+    #
+    # Parent 1: $800
+    # After flat: $800 - $225 = $575
+    # After percentage: $575 * 0.50 = $287.50
+    #
+    # Parent 2: $500
+    # After flat: $500 - $225 = $275
+    # After percentage: $275 * 0.50 = $137.50
+    #
+    # Total after work incentive: $287.50 + $137.50 = $425
+    # Childcare deduction: $0
+    # Countable earned: $425
+    nm_works_countable_earned_income: 425
+
+- name: Case 5, self-employment income is treated as earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income_before_lsr: 9_600  # $800/month
+        is_parent: true
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Single parent: $125 + 50% of remainder
+    # Gross: $800
+    # After flat: $800 - $125 = $675
+    # After percentage: $675 * 0.50 = $337.50
+    # Childcare deduction: $0
+    # Countable earned: $337.50
+    nm_works_countable_earned_income: 337.5
+
+- name: Case 6, earnings with childcare expenses deducted.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        is_parent: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_500  # $125/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Gross: $1,000
+    # Work incentive deduction: $125 + ($875 * 0.50) = $562.50
+    # After work incentive: $1,000 - $562.50 = $437.50
+    # Childcare deduction: min($125, $175) = $125 (age 3 max is $175)
+    # Countable earned: max($437.50 - $125, 0) = $312.50
+    nm_works_countable_earned_income: 312.5
+
+- name: Case 7, childcare deduction cannot exceed countable earned after work incentive.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        is_parent: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Gross: $300
+    # Work incentive deduction: $125 + ($175 * 0.50) = $212.50
+    # After work incentive: $300 - $212.50 = $87.50
+    # Childcare deduction: min($500, $200) = $200 (age 1 max is $200)
+    # Countable earned: max($87.50 - $200, 0) = $0 (floored at 0)
+    nm_works_countable_earned_income: 0

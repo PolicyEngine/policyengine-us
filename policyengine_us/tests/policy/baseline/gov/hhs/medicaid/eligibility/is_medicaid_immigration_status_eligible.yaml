@@ -29,7 +29,7 @@
 - name: Ineligible immigration status - DACA in non-covering state
   period: 2024
   input:
-    immigration_status: DACA_TPS
+    immigration_status: DACA
     state_code: FL
   output:
     is_medicaid_immigration_status_eligible: false

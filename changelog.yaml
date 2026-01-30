@@ -12184,3 +12184,398 @@
     - Colorado OmniSalud program providing ACA marketplace subsidies for undocumented
       immigrants and DACA recipients.
   date: 2026-01-08 18:02:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove 51 invalid County enum entries (wrong state assignments, non-existent
+      county/state combinations). Validated against Census 2020 county reference data.
+  date: 2026-01-12 18:30:41
+- bump: minor
+  changes:
+    added:
+    - CDCTC reform that makes families eligible if at least one parent works (instead
+      of requiring both parents to work)
+  date: 2026-01-12 19:45:59
+- bump: patch
+  changes:
+    fixed:
+    - Fix test_batched.py incorrectly marking tests as passed when failure count ends
+      in 0.
+    - Fix push.yaml concurrency to queue runs instead of cancelling versioning jobs.
+  date: 2026-01-13 22:35:23
+- bump: minor
+  changes:
+    added:
+    - Add il_aabd_use_reported_ssi flag to allow API partners to override SSI income
+      for IL AABD calculation.
+  date: 2026-01-13 22:53:31
+- bump: patch
+  changes:
+    changed:
+    - Remove concurrency block from push workflow to allow parallel CI runs.
+  date: 2026-01-13 23:22:39
+- bump: patch
+  changes:
+    fixed:
+    - Riverside County General Relief eligibility now correctly excludes units where
+      all persons are ineligible.
+    - Riverside County General Relief SSI check changed from unit-level to person-level,
+      so only the individual receiving SSI is excluded, not all household members.
+  date: 2026-01-13 23:26:02
+- bump: patch
+  changes:
+    added:
+    - Add is_blind to IL HBWD disability eligibility check.
+    fixed:
+    - Fix IL HBWD earned income exemptions to apply only to disabled/blind persons.
+  date: 2026-01-14 21:44:33
+- bump: patch
+  changes:
+    changed:
+    - Updated uv.lock dependencies.
+  date: 2026-01-14 23:20:21
+- bump: minor
+  changes:
+    added:
+    - Adjust CLAUDE.md in US repo.
+  date: 2026-01-15 20:02:12
+- bump: minor
+  changes:
+    added:
+    - Add range-based phaseout option for RI CTC with phaseout.start and phaseout.end
+      parameters.
+  date: 2026-01-15 20:15:33
+- bump: patch
+  changes:
+    added:
+    - Add parameter discovery documentation guide
+  date: 2026-01-15 22:15:03
+- bump: patch
+  changes:
+    added:
+    - Add Microsimulation API documentation covering calc/calculate methods, map_to
+      parameter, available datasets, subsampling, winners/losers analysis, and weight
+      sanity checks.
+  date: 2026-01-15 22:18:44
+- bump: patch
+  changes:
+    fixed:
+    - Fix CA Medi-Cal immigration eligibility for DACA/TPS holders in 2026. Previously,
+      DACA/TPS holders incorrectly lost eligibility after the January 2026 enrollment
+      freeze. Per WCLP guidance, DACA/TPS holders are not affected by the freeze and
+      can still newly enroll.
+  date: 2026-01-15 22:29:01
+- bump: minor
+  changes:
+    changed:
+    - Replaced .claude git submodule with policyengine-claude plugin auto-install
+      configuration.
+  date: 2026-01-19 16:08:41
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to breakdown parameters that had breakdown definitions
+      but no labels.
+  date: 2026-01-19 16:19:40
+- bump: patch
+  changes:
+    fixed:
+    - Added missing label metadata to bracket/scale parameters that had no labels.
+  date: 2026-01-19 16:39:43
+- bump: patch
+  changes:
+    fixed:
+    - Added missing breakdown and label metadata to pseudo-breakdown parameters.
+  date: 2026-01-19 17:30:20
+- bump: minor
+  changes:
+    fixed:
+    - Formatting.
+  date: 2026-01-19 18:07:10
+- bump: minor
+  changes:
+    added:
+    - Model RI Governor Dan McKee's 2027 tax proposals including a new child tax credit,
+      Social Security exemption expansion, new top income tax bracket, and pension/annuity
+      exemption updates.
+  date: 2026-01-19 18:32:47
+- bump: minor
+  changes:
+    added:
+    - Add Utah HB 210 (2026) structural reform implementing the taxpayer credit add-on
+      for married filers ($543 MFS, $1,086 joint/surviving spouse) with phaseout.
+  date: 2026-01-19 19:53:06
+- bump: minor
+  changes:
+    added:
+    - Add SC H.3492 partially refundable EITC reform.
+  date: 2026-01-19 19:54:16
+- bump: minor
+  changes:
+    added:
+    - Update Rhode Island 2025 Individual Income Tax Model.
+  date: 2026-01-19 22:07:57
+- bump: patch
+  changes:
+    added:
+    - Add breakdown_labels metadata to parameters with range() dimensions for semantic
+      labelling.
+  date: 2026-01-20 19:20:31
+- bump: patch
+  changes:
+    changed:
+    - Update 2026 federal poverty guidelines.
+  date: 2026-01-21 15:19:45
+- bump: minor
+  changes:
+    added:
+    - NY A04038 Enhanced Empire State Child Credit for Infants Act reform.
+  date: 2026-01-21 16:28:14
+- bump: minor
+  changes:
+    added:
+    - NY Senate Bill S04487 Supplemental Empire State Child Tax Credit for Newborns
+      reform.
+  date: 2026-01-21 20:02:25
+- bump: minor
+  changes:
+    added:
+    - NY Assembly Bill A06774 Enhanced Child and Dependent Care Credit reform.
+  date: 2026-01-21 20:53:40
+- bump: patch
+  changes:
+    fixed:
+    - Remove DACA_TPS from immigration_status.
+  date: 2026-01-21 21:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Use `uv sync --extra dev` in CI to correctly install optional dev dependencies
+      including coverage.
+    - Improve selective test runner to only run tests for specific subfolders (states,
+      congress, local) instead of entire parent directories.
+    - Pin pandas to <3.0 to prevent StringDtype incompatibility with numpy.
+  date: 2026-01-22 23:38:46
+- bump: minor
+  changes:
+    added:
+    - Add Wyoming POWER program
+  date: 2026-01-23 15:27:36
+- bump: minor
+  changes:
+    added:
+    - Implement Virginia TANF program.
+  date: 2026-01-23 16:04:44
+- bump: patch
+  changes:
+    fixed:
+    - Update SC H.3492 reform to use 5-year in_effect check pattern consistent with
+      other contributed reforms.
+  date: 2026-01-23 18:35:29
+- bump: minor
+  changes:
+    added:
+    - AGI surtax reform.
+  date: 2026-01-23 21:14:19
+- bump: patch
+  changes:
+    added:
+    - Added pandas 3.0 compatibility tests to verify policyengine-core fixes for StringDtype
+      and StringArray handling
+    changed:
+    - Removed pandas <3.0 version cap to enable pandas 3.0 support
+    - Bumped policyengine-core minimum version to 3.23.5 for pandas 3 compatibility
+      (includes Enum.encode() fix)
+  date: 2026-01-25 13:03:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix Iowa SNAP self-employment simplified deduction rate from 0% to 40%.
+  date: 2026-01-25 13:30:04
+- bump: minor
+  changes:
+    removed:
+    - s_corp_self_employment_income variable. S-corp distributions are not subject
+      to self-employment tax per 26 USC 1402(a).
+  date: 2026-01-25 16:54:14
+- bump: minor
+  changes:
+    added:
+    - partnership_se_income variable for general partners' SE income from Schedule
+      K-1 Box 14, now included in taxable_self_employment_income per 26 USC 1402(a).
+  date: 2026-01-25 17:15:31
+- bump: patch
+  changes:
+    changed:
+    - Use default argument to numpy.select instead of dummy True condition for ~10%
+      performance improvement.
+  date: 2026-01-25 17:33:26
+- bump: patch
+  changes:
+    changed:
+    - Simplify Pell Grant calculation method by removing enum indirection and using
+      time-based formula.
+  date: 2026-01-25 18:19:02
+- bump: patch
+  changes:
+    fixed:
+    - Update Iowa SNAP self-employment deduction effective date from 2021-10-01 to
+      2012-08-01 based on USDA FNS State Options Report research.
+  date: 2026-01-25 18:31:23
+- bump: patch
+  changes:
+    fixed:
+    - Add safety catch in aca_ptc to return zero before 2025 to prevent breaking 2024
+      microsim runs.
+  date: 2026-01-25 19:35:47
+- bump: minor
+  changes:
+    added:
+    - Add expanded income base option for CRFB AGI surtax reform, including retirement
+      contributions, HSA contributions, student loan interest, tax-exempt Social Security,
+      foreign earned income exclusion, tax-exempt interest, and health insurance premiums.
+  date: 2026-01-25 20:55:20
+- bump: minor
+  changes:
+    added:
+    - Add New Mexico Works (NM Works) program
+  date: 2026-01-25 21:13:51
+- bump: minor
+  changes:
+    added:
+    - Implemented North Dakota Temporary Assistance for Needy Families (TANF) program
+  date: 2026-01-25 21:17:46
+- bump: minor
+  changes:
+    added:
+    - Add Alaska ATAP (Temporary Assistance Program) implementation with income eligibility
+      tests, work incentive deductions, need standards, and benefit calculation based
+      on 7 AAC 45.
+  date: 2026-01-25 21:25:01
+- bump: minor
+  changes:
+    added:
+    - Louisiana Family Independence Temporary Assistance Program (FITAP).
+  date: 2026-01-25 21:40:34
+- bump: minor
+  changes:
+    added:
+    - Implement New Jersey WorkFirst (WFNJ).
+  date: 2026-01-25 22:40:42
+- bump: minor
+  changes:
+    changed:
+    - "Pin New York itemized deductions to pre-TCJA rules per Tax Law \xA7 615"
+  date: 2026-01-26 14:14:48
+- bump: patch
+  changes:
+    removed:
+    - Revert NY pre-TCJA itemized deductions (will be re-submitted for proper review)
+  date: 2026-01-26 14:37:21
+- bump: minor
+  changes:
+    added:
+    - Add census block-level geography variables (block_geoid, tract_geoid, cbsa_code,
+      place_fips, vtd, puma, sldu, sldl, zcta) for granular geographic analysis
+  date: 2026-01-26 19:35:03
+- bump: patch
+  changes:
+    added:
+    - Update SSI federal benefit rates, student earned income exclusion, and SGA amounts
+      for 2026.
+  date: 2026-01-26 20:28:28
+- bump: minor
+  changes:
+    changed:
+    - Update Illinois income tax parameters for 2025 and add 2025 citations.
+  date: 2026-01-26 23:05:41
+- bump: minor
+  changes:
+    changed:
+    - Update DC Child Tax Credit for 2026+ based on new statute (DC Code 47-1806.17),
+      including increased credit amount ($1,000), expanded age eligibility (under
+      18), removed child cap, lower income thresholds, and higher phase-out rate.
+  date: 2026-01-27 03:13:11
+- bump: patch
+  changes:
+    changed:
+    - Backdate North Carolina TANF parameters to 1997.
+  date: 2026-01-27 03:18:40
+- bump: patch
+  changes:
+    changed:
+    - Add historical values to Minnesota MFIP parameters.
+  date: 2026-01-27 03:21:56
+- bump: minor
+  changes:
+    added:
+    - Add Connecticut EITC $250 qualifying child bonus for tax year 2025.
+    changed:
+    - Update Connecticut tax parameter references to 2025 CT-1040 Instructions.
+  date: 2026-01-27 03:46:23
+- bump: patch
+  changes:
+    fixed:
+    - Medicare Savings Program (MSP) calculation now returns correct benefit values
+      instead of null.
+  date: 2026-01-27 21:30:41
+- bump: patch
+  changes:
+    fixed:
+    - Exclude Medicaid recipients from QI (Qualifying Individual) eligibility.
+  date: 2026-01-28 16:04:08
+- bump: minor
+  changes:
+    changed:
+    - "Pin New York itemized deductions to pre-TCJA rules per Tax Law \xA7 615"
+  date: 2026-01-28 21:05:51
+- bump: minor
+  changes:
+    added:
+    - Illinois I-PASS Assist program eligibility.
+  date: 2026-01-28 21:12:25
+- bump: minor
+  changes:
+    added:
+    - Illinois Senior Citizens Real Estate Tax Deferral Program (il_scretd)
+  date: 2026-01-28 21:20:03
+- bump: minor
+  changes:
+    added:
+    - Illinois Home Weatherization Assistance Program (IHWAP) eligibility.
+    - Reusable SMI (State Median Income) function.
+  date: 2026-01-29 02:17:08
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs Stage 2 (C2AP) child care subsidy for former CalWORKs recipients
+      within 24 months of leaving cash aid.
+    - California CalWORKs Stage 3 (C3AP) child care subsidy for former CalWORKs recipients
+      who exhausted Stage 2 eligibility.
+    - California Alternative Payment Program (CAPP) child care subsidy for income-eligible
+      families who never received CalWORKs.
+  date: 2026-01-29 02:38:20
+- bump: patch
+  changes:
+    changed:
+    - Updated uv.lock dependencies.
+  date: 2026-01-29 03:57:29
+- bump: patch
+  changes:
+    added:
+    - Backdate New Hampshire interest and dividends tax parameters to 2020.
+  date: 2026-01-29 05:35:07
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid category assignment now correctly evaluates mandatory groups (parent,
+      pregnant, SSI) before optional expansion groups, per federal eligibility rules.
+  date: 2026-01-29 21:06:35
+- bump: patch
+  changes:
+    changed:
+    - Update Virginia 2025 income tax parameters with 2025 Form 760 references
+    - Add rebate values for 2024 ($200/$400) and 2025 ($0)
+    - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
+      deduction, rebate, and exemptions
+  date: 2026-01-29 23:19:08
