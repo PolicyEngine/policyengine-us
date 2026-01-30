@@ -1,0 +1,16 @@
+description: Montana allows a deduction for federal income taxes paid as an itemized deduction, if this is true.
+metadata:
+  label: Montana federal income tax deduction applies
+  period: year
+  unit: bool
+  reference:
+    - title: Montana Tax Reform Update (2024)
+      href: https://mtrevenue.gov/montana-tax-simplification-resource-hub/
+    - title: Montana State Senate Bill 399 (2021)
+      href: https://archive.legmt.gov/bills/2021/sesslaws/ch0503.pdf
+    - title: 2024 Montana Form 2 Instructions (Line 2)
+      href: https://taxsim.nber.org/historical_state_tax_forms/MT/2024/Form_2_2024_Instrux.pdf
+
+values:
+  2021-01-01: true
+  2024-01-01: false
