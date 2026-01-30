@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: California CalWORKs monthly income limit for region 1
   reference:
     - title: Los Angeles Department of Public Social Services E-Policy | CalWORKs Minimum Basic Standard of Adequate Care

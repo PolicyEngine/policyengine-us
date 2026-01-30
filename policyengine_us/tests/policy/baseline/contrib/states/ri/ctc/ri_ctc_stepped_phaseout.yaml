@@ -1,0 +1,98 @@
+# Test RI CTC stepped phaseout
+# 20 percentage points reduction per $7,450 increment over threshold
+
+- name: RI CTC stepped phaseout - full credit below threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 320
+    gov.contrib.states.ri.ctc.age_limit: 19
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    people:
+      parent1:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: SINGLE
+        ri_agi: 200000
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 320
+    ri_ctc_phaseout: 0
+    ri_total_ctc: 320
+
+- name: RI CTC stepped phaseout - one step (80% credit)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 320
+    gov.contrib.states.ri.ctc.age_limit: 19
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    people:
+      parent1:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: SINGLE
+        ri_agi: 265000  # $4000 over threshold = 1 step
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: RI
+  output:
+    ri_ctc_maximum: 320
+    ri_ctc_phaseout: 64  # 320 * 0.20 = 64
+    ri_total_ctc: 256  # 320 * 0.80 = 256
+
+- name: RI CTC Governor McKee proposal - family with 2 children at threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 320
+    gov.contrib.states.ri.ctc.age_limit: 19
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        ri_agi: 261000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc_maximum: 640  # 2 * 320
+    ri_ctc_phaseout: 0
+    ri_total_ctc: 640

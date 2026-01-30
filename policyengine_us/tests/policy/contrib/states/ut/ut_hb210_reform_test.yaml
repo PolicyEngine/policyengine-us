@@ -1,0 +1,222 @@
+# Utah HB 210 (2026) - Taxpayer credit add-on for married filers
+# Per Section 59-10-1018(3):
+# - $543 for married filing separately
+# - $1,086 for joint filing status (including surviving spouse)
+# - $0 for single, head of household
+
+- name: HB 210 - Joint filers receive base credit plus $1,086 add-on
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 38
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Base credit ~1932 (6% of standard deduction ~32,200)
+    # Plus $1,086 add-on for joint filers
+    # Total ~3,018
+    ut_taxpayer_credit: 3_018
+
+- name: HB 210 - Married filing separately receives base credit plus $543 add-on
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Base credit ~818 (partial after phaseout)
+    # Plus $543 add-on for married filing separately
+    # Total ~1,361
+    ut_taxpayer_credit: 1_361
+
+- name: HB 210 - Single filers receive base credit with no add-on
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Base credit ~818 (partial after phaseout)
+    # Single filers get no add-on ($0)
+    # Total ~818
+    ut_taxpayer_credit: 818
+
+- name: HB 210 - Head of household receives base credit with no add-on
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Base credit ~1,422 (partial after phaseout + dependent exemption)
+    # Head of household filers get no add-on ($0)
+    # Total ~1,422
+    ut_taxpayer_credit: 1_422
+
+- name: HB 210 - Surviving spouse receives no add-on (not a married claimant)
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 50
+        employment_income: 50_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Base credit ~1,896 (partial after phaseout + dependent exemption)
+    # Surviving spouse is NOT a married claimant per bill intent
+    # No add-on ($0)
+    # Total ~1,896
+    ut_taxpayer_credit: 1_896
+
+- name: HB 210 - Joint vs Single comparison shows add-on benefit
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+      person2:
+        age: 28
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Base credit = 6% * standard deduction (~32,200) = ~1,932
+    # Income $15,000 is below $36,426 threshold, so no phaseout
+    # Plus $1,086 add-on for joint filers
+    # Total ~3,018
+    ut_taxpayer_credit: 3_018
+
+- name: HB 210 - Phaseout reduces add-on at high income (joint)
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+      person2:
+        age: 38
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # High income ($250k) is well above $36,426 threshold
+    # Income excess = $250,000 - $36,426 = $213,574
+    # Phaseout = $213,574 * 0.013 = $2,776.46
+    # Base max = ~$1,932 + add-on $1,086 = ~$3,018
+    # Final = max($3,018 - $2,776, 0) = ~$242
+    # Both base and add-on are reduced by phaseout
+    ut_taxpayer_credit: 252
+
+- name: HB 210 - Phaseout fully eliminates credit at very high income
+  absolute_error_margin: 1
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210.ut_hb210
+  input:
+    gov.contrib.states.ut.hb210.in_effect: true
+    people:
+      person1:
+        age: 45
+        employment_income: 300_000
+      person2:
+        age: 43
+        employment_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Very high income ($500k) fully phases out credit
+    # Income excess = $500,000 - $36,426 = $463,574
+    # Phaseout = $463,574 * 0.013 = $6,026
+    # Total max = ~$3,018
+    # Final = max($3,018 - $6,026, 0) = $0
+    ut_taxpayer_credit: 0

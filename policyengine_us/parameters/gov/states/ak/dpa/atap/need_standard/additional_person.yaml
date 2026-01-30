@@ -1,0 +1,26 @@
+description: Alaska provides this amount for each person beyond size 8 under the Alaska Temporary Assistance Program.
+
+# Note: Values from 2017-2022 are estimated by applying SSI COLA percentages
+# backwards from 2023 authoritative values. No official documentation exists
+# to verify these historical values.
+values:
+  2017-01-01: 179
+  2018-01-01: 183
+  2019-01-01: 188
+  2020-01-01: 191
+  2021-01-01: 193
+  2022-01-01: 204
+  2023-01-01: 222
+  2024-01-01: 229
+  2025-01-01: 235
+  2026-01-01: 242
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Alaska ATAP need standard additional person amount
+  reference:
+    - title: 7 AAC 45.520(a)(1) - Qualifying standards
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+    - title: Temporary Assistance Need and Maximum Payment Standards
+      href: http://dpaweb.hss.state.ak.us/POLICY/PDF/TA-Standards.pdf#page=1

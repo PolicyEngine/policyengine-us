@@ -18,4 +18,4 @@ class mn_mfip_transitional_standard(Variable):
         capped_size = min_(size, p.max_unit_size)
         base_amount = p.amount[capped_size]
         additional_persons = max_(size - p.max_unit_size, 0)
-        return base_amount + additional_persons * p.additional_person_increment
+        return base_amount + additional_persons * p.additional_person

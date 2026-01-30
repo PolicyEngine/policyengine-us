@@ -4,3 +4,11 @@
     state_code: VA
   output:
     va_personal_exemption_person: 930
+
+# 2025 test - per 2025 Form 760 Instructions page 15
+- name: VA 2025 Personal exemption unchanged
+  period: 2025
+  input:
+    state_code: VA
+  output:
+    va_personal_exemption_person: 930

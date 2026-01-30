@@ -41,6 +41,8 @@
     ssi_unearned_income: 19_440
     spm_unit_cash_assets: 5_000
     spm_unit_is_married: false
+    # QI requires not being eligible for other Medicaid
+    is_medicaid_eligible: false
   output:
     msp_category: QI
 
