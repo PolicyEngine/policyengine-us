@@ -19,9 +19,11 @@ SEPARATE:
 
 
 metadata:
+  label: Kansas personal exemption by filing status amount
+  breakdown:
+    - filing_status
   period: year
   unit: currency-USD
-  label: Kansas personal exemption by filing status amount
   reference:
     - title: 2023 Form K-40 instructions
       href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=2

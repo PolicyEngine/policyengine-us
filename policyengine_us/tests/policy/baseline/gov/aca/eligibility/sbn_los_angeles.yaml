@@ -199,7 +199,7 @@
     people:
       person1:
         age: 33
-        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        employment_income: 24_000  # above 100% FPL, so is ACA income eligible
         is_aca_eshi_eligible: true  # is eligible for plan at work
     tax_units:
       tax_unit:
@@ -252,9 +252,9 @@
     people:
       person1:
         age: 33
-        immigration_status: DACA_TPS
+        immigration_status: DACA
         has_itin: true
-        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        employment_income: 24_000  # above 100% FPL, so is ACA income eligible
         is_aca_eshi_eligible: false
     tax_units:
       tax_unit:
@@ -272,9 +272,9 @@
     people:
       person1:
         age: 33
-        immigration_status: DACA_TPS #daca is eligible for PTC in CA, tps not anymore
+        immigration_status: DACA #daca is eligible for PTC in CA, tps not anymore
         has_itin: false
-        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        employment_income: 24_000  # above 100% FPL, so is ACA income eligible
         is_aca_eshi_eligible: false
     tax_units:
       tax_unit:
@@ -294,7 +294,7 @@
         age: 33
         immigration_status: UNDOCUMENTED
         has_itin: true
-        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        employment_income: 24_000  # above 100% FPL, so is ACA income eligible
         is_aca_eshi_eligible: false
     tax_units:
       tax_unit:
@@ -314,7 +314,7 @@
         age: 33
         immigration_status: UNDOCUMENTED
         has_itin: false
-        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        employment_income: 24_000  # above 100% FPL, so is ACA income eligible
         is_aca_eshi_eligible: false
     tax_units:
       tax_unit:

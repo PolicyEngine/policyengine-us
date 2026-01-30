@@ -1,0 +1,84 @@
+# Unit tests for wv_works_income_eligible
+# Tests gross income against 100% Standard of Need (SON)
+# Income limits by household size:
+#   Size 1=$581, 2=$786, 3=$991, 4=$1,196, 5=$1,401
+#   Size 6=$1,606, 7=$1,811, 8=$2,016, 9=$2,221, 10=$2,426
+# Source: WV Income Maintenance Manual Chapter 10, Appendix A
+
+- name: Case 1, no income is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $0
+    # Limit for size 2: $786
+    # 0 <= 786 = eligible
+    wv_works_income_eligible: true
+
+- name: Case 2, income below limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $500 + $200 = $700
+    # Limit for size 3: $991
+    # 700 <= 991 = eligible
+    wv_works_income_eligible: true
+
+- name: Case 3, income at exact limit is eligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 786
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $786
+    # Limit for size 2: $786
+    # 786 <= 786 = eligible (at threshold)
+    wv_works_income_eligible: true
+
+- name: Case 4, income above limit is ineligible.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 2
+    tanf_gross_earned_income: 800
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $800
+    # Limit for size 2: $786
+    # 800 > 786 = ineligible
+    wv_works_income_eligible: false
+
+- name: Case 5, size 10 uses max income limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 10
+    tanf_gross_earned_income: 2_426
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross income: $2,426
+    # Limit for size 10: $2,426
+    # 2,426 <= 2,426 = eligible
+    wv_works_income_eligible: true
+
+- name: Case 6, mixed income exactly at limit.
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_size: 4
+    tanf_gross_earned_income: 996
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross income: $996 + $200 = $1,196
+    # Limit for size 4: $1,196
+    # 1,196 <= 1,196 = eligible
+    wv_works_income_eligible: true

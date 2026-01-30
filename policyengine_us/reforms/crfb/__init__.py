@@ -24,3 +24,6 @@ from .non_refundable_ss_credit import (
 from .senior_deduction_extension import (
     create_senior_deduction_extension_reform,
 )
+from .agi_surtax import (
+    create_agi_surtax_reform,
+)

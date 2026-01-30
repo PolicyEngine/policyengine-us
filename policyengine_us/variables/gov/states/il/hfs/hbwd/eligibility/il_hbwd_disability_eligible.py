@@ -18,7 +18,9 @@ class il_hbwd_disability_eligible(Variable):
         # rules related to earned income do not apply" - so we use is_disabled
         # (medical definition) instead of is_ssi_disabled (which includes SGA test).
         # See: https://il.db101.org/il/programs/health_coverage/how_health/program2b.htm
+        # SSA recognizes blindness as a category of disability (SSI has Aged, Blind, Disabled).
         is_disabled = person("is_disabled", period.this_year)
+        is_blind = person("is_blind", period)
         # Or currently receiving SSDI
         receives_ssdi = person("social_security_disability", period) > 0
-        return is_disabled | receives_ssdi
+        return is_disabled | is_blind | receives_ssdi

@@ -1,0 +1,39 @@
+# Tests for NH FANF income eligibility
+# Formula: Net Countable Income <= Payment Standard (60% FPG)
+# Source: RSA 167:77-g; FAM 601 Table B
+
+- name: Case 1, zero income is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_countable_income: 0
+    nh_fanf_payment_standard: 753
+  output:
+    nh_fanf_income_eligible: true
+
+- name: Case 2, income below payment standard is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_countable_income: 500
+    nh_fanf_payment_standard: 753
+  output:
+    nh_fanf_income_eligible: true
+
+- name: Case 3, income equal to payment standard is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_countable_income: 753
+    nh_fanf_payment_standard: 753
+  output:
+    nh_fanf_income_eligible: true
+
+- name: Case 4, income above payment standard is ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_countable_income: 754
+    nh_fanf_payment_standard: 753
+  output:
+    nh_fanf_income_eligible: false

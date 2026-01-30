@@ -27,7 +27,7 @@ class school_meal_tier(Variable):
             [
                 (fpg_ratio <= p_income_limit.FREE) | categorical_eligibility,
                 fpg_ratio <= p_income_limit.REDUCED,
-                True,
             ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.PAID],
+            [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
+            default=SchoolMealTier.PAID,
         )

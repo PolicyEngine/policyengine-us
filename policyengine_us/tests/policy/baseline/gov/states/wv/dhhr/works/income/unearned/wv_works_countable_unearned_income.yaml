@@ -1,0 +1,107 @@
+# Unit tests for wv_works_countable_unearned_income
+# Formula: max(gross_unearned - child_support_disregard, 0)
+# Child support disregard: $100 for 1 child, $200 for 2+ children
+# Note: tanf_gross_unearned_income already includes child_support_received
+# Note: child_support_received is YEAR-defined, auto-converts to monthly (÷12)
+# Source: WV Income Maintenance Manual Section 4.5.2
+
+- name: Case 1, no children receives no child support disregard.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 0
+    child_support_received: 3_600  # $300/month
+    tanf_gross_unearned_income: 500  # includes the $300/month child support
+  output:
+    # No children = $0 max disregard
+    # Disregard = min(0, 300) = $0
+    # Countable = 500 - 0 = $500
+    wv_works_countable_unearned_income: 500
+
+- name: Case 2, one child with support below cap.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 1
+    child_support_received: 900  # $75/month
+    tanf_gross_unearned_income: 275  # includes $75 child support + $200 other
+  output:
+    # 1 child = $100 max disregard
+    # Actual support = $75/month
+    # Disregard = min(100, 75) = $75
+    # Countable = 275 - 75 = $200
+    wv_works_countable_unearned_income: 200
+
+- name: Case 3, one child with support above cap.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 1
+    child_support_received: 3_000  # $250/month
+    tanf_gross_unearned_income: 450  # includes $250 child support + $200 other
+  output:
+    # 1 child = $100 max disregard
+    # Actual support = $250/month
+    # Disregard = min(100, 250) = $100
+    # Countable = 450 - 100 = $350
+    wv_works_countable_unearned_income: 350
+
+- name: Case 4, two children with support above cap.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 2
+    child_support_received: 4_800  # $400/month
+    tanf_gross_unearned_income: 600  # includes $400 child support + $200 other
+  output:
+    # 2+ children = $200 max disregard
+    # Actual support = $400/month
+    # Disregard = min(200, 400) = $200
+    # Countable = 600 - 200 = $400
+    wv_works_countable_unearned_income: 400
+
+- name: Case 5, three children still uses $200 cap.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 3
+    child_support_received: 3_600  # $300/month
+    tanf_gross_unearned_income: 500  # includes $300 child support + $200 other
+  output:
+    # 3 children = $200 max disregard (same as 2+)
+    # Disregard = min(200, 300) = $200
+    # Countable = 500 - 200 = $300
+    wv_works_countable_unearned_income: 300
+
+- name: Case 6, one child support exactly equals cap.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 1
+    child_support_received: 1_200  # $100/month
+    tanf_gross_unearned_income: 300  # includes $100 child support + $200 other
+  output:
+    # 1 child = $100 max disregard
+    # Disregard = min(100, 100) = $100
+    # Countable = 300 - 100 = $200
+    wv_works_countable_unearned_income: 200
+
+- name: Case 7, disregard exceeds unearned floors at zero.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: WV
+    spm_unit_count_children: 2
+    child_support_received: 600  # $50/month
+    tanf_gross_unearned_income: 50  # only child support, no other unearned
+  output:
+    # 2+ children = $200 max disregard
+    # Disregard = min(200, 50) = $50
+    # Countable = 50 - 50 = $0
+    wv_works_countable_unearned_income: 0

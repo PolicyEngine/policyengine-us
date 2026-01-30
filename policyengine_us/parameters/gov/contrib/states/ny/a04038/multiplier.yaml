@@ -1,0 +1,20 @@
+description: New York multiplies the Empire State Child Credit by this amount based on the child's age under the Enhanced Empire State Child Credit for Infants Act.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  label: NY A04038 infant child credit multiplier
+  period: year
+  reference:
+    - title: NY Assembly Bill 2025-A04038
+      href: https://assembly.state.ny.us/leg/?default_fld=&bn=A04038&term=2025&Summary=Y&Actions=Y&Text=Y
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 2  # Double for children under age 1
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 1  # Standard credit for children age 1+

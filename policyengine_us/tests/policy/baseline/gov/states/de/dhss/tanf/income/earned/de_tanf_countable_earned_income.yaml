@@ -1,0 +1,89 @@
+# Unit tests for Delaware TANF countable earned income (SPMUnit level)
+# Sum of person-level countable earned minus childcare deduction
+
+- name: Case 1, no earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_countable_earned_income: 0
+
+- name: Case 2, earnings without childcare.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Person1 countable: $254.6 (from person-level test)
+    # No childcare deduction
+    de_tanf_countable_earned_income: 254.6
+
+- name: Case 3, earnings with childcare deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Person1 countable: $254.6
+    # Childcare: $175/month (child age 3, limit is $175)
+    # Countable: $254.6 - $175 = $79.6
+    de_tanf_countable_earned_income: 79.6
+
+- name: Case 4, childcare exceeds earned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_800  # $150/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Gross: $150
+    # After $90: $60
+    # After $30: $30
+    # 0.33 disregard: $9.9
+    # Person1 countable: $20.1
+    # Childcare: $175 > $20.1
+    # Countable: max($20.1 - $175, 0) = $0
+    de_tanf_countable_earned_income: 0

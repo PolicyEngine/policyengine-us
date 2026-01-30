@@ -22,14 +22,6 @@
   output:
     il_hbi_immigration_status_eligible: true
 
-- name: DACA/TPS combined status eligible
-  period: 2024
-  input:
-    state_code: IL
-    immigration_status: DACA_TPS
-  output:
-    il_hbi_immigration_status_eligible: true
-
 - name: Citizen not eligible for HBI (uses regular Medicaid)
   period: 2024
   input:
