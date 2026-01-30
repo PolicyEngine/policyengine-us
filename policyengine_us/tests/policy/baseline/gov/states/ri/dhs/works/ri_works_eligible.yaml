@@ -1,0 +1,63 @@
+# Unit tests for Rhode Island TANF eligibility
+# 218-RICR-20-00-2: Eligibility requires demographic, income, and resource eligibility
+# https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+
+- name: Case 1, eligible with all criteria.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: true
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    state_code: RI
+  output:
+    ri_works_eligible: true
+
+- name: Case 2, ineligible due to no demographic eligibility.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: false
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    state_code: RI
+  output:
+    ri_works_eligible: false
+
+- name: Case 3, ineligible due to income.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: true
+    ri_works_income_eligible: false
+    ri_works_resource_eligible: true
+    state_code: RI
+  output:
+    ri_works_eligible: false
+
+- name: Case 4, ineligible due to resources.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: true
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: false
+    state_code: RI
+  output:
+    ri_works_eligible: false
+
+- name: Case 5, ineligible due to income and resources.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: true
+    ri_works_income_eligible: false
+    ri_works_resource_eligible: false
+    state_code: RI
+  output:
+    ri_works_eligible: false
+
+- name: Case 6, ineligible due to all criteria.
+  period: 2025-01
+  input:
+    is_demographic_tanf_eligible: false
+    ri_works_income_eligible: false
+    ri_works_resource_eligible: false
+    state_code: RI
+  output:
+    ri_works_eligible: false

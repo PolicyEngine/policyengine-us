@@ -1,0 +1,15 @@
+description: Virginia excludes this amount of monthly child support when computing unearned income under the Temporary Assistance for Needy Families program.
+
+values:
+  2008-10-01: 50
+  2016-07-01: 100
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia TANF child support exclusion
+  reference:
+    - title: Virginia TANF Manual Section 302 - Child Support Disregard
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=57
+    - title: 22 VAC 40-295-50 - Income Eligibility (historical $50 value)
+      href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter295/section50/

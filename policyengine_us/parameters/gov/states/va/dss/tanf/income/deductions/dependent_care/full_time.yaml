@@ -1,0 +1,25 @@
+description: Virginia deducts anticipated expenses for care of each dependent child or incapacitated adult for full-time employed applicants under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia TANF monthly care expenses per child/disabled adult for full-time employment
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Virginia TANF Manual Section 302 - Care Expenses
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=51
+
+# $175 per month, for care of each child, age 2 and older/incapacitated adult. 
+# $200 per month, for care of each child under 2.
+
+brackets:
+  - amount:
+      2016-01-01: 200
+    threshold:
+      2016-01-01: 0
+  - amount:
+      2016-01-01: 175
+    threshold:
+      2016-01-01: 2

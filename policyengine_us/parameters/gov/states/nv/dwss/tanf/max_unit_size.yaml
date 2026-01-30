@@ -1,0 +1,17 @@
+description: Nevada provides explicit benefit amounts for households up to this size under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: person
+  period: year
+  label: Nevada TANF max explicit household size
+  reference:
+    - title: TANF Need Standards Chart (2025)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2018)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/Eligibility_and_Payments/Chapter%20C_140.pdf
+    - title: TANF Need Standards Chart (2017)
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/EP_Man_C-0140.pdf
+
+
+values:
+  2018-04-01: 8

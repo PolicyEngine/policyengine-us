@@ -1,0 +1,47 @@
+# Tests for CT TFA need standard
+# Need standard = 55% of Federal Poverty Guidelines (FPG)
+
+- name: Case 1, household size 1.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 1
+    state_code: CT
+  output:
+    # 1,215 * 0.55 = 668.25
+    tanf_fpg: 1_215
+    ct_tfa_need_standard: 668.25
+
+- name: Case 2, household size 3.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # 2,071.67 * 0.55 = 1,139.42
+    tanf_fpg: 2_071.67
+    ct_tfa_need_standard: 1_139.42
+
+- name: Case 3, household size 8.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 8
+    state_code: CT
+  output:
+    # 4,213.33 * 0.55 = 2,317.33
+    tanf_fpg: 4_213.33
+    ct_tfa_need_standard: 2_317.33
+
+- name: Case 4, household size 10, FPG continues for large households.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 10
+    state_code: CT
+  output:
+    # FPG for size 10 = 14,580 + (10-1)*5,140 = 60,840 / 12 = 5,070
+    # 5,070 * 0.55 = 2,788.50
+    tanf_fpg: 5_070
+    ct_tfa_need_standard: 2_788.5

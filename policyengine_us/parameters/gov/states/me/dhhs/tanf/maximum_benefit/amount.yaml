@@ -1,0 +1,64 @@
+description: Maine provides up to this maximum benefit amount under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  breakdown_labels:
+    - Household size
+  label: Maine TANF maximum benefit amount
+  reference:
+    - title: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-331-app-Charts
+    - title: 10-144 C.M.R. Chapter 331, TANF 121A Rule Pages
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2024-09/TANF%20121A%20Rule%20Pages%20%28Clean%29.pdf#page=2
+
+1:
+  2020-10-01: 294
+  2021-10-01: 298
+  2022-10-01: 315
+  2023-10-01: 343
+  2024-10-01: 425
+2:
+  2020-10-01: 463
+  2021-10-01: 469
+  2022-10-01: 497
+  2023-10-01: 540
+  2024-10-01: 669
+3:
+  2020-10-01: 620
+  2021-10-01: 628
+  2022-10-01: 665
+  2023-10-01: 723
+  2024-10-01: 895
+4:
+  2020-10-01: 781
+  2021-10-01: 791
+  2022-10-01: 837
+  2023-10-01: 910
+  2024-10-01: 1_127
+5:
+  2020-10-01: 936
+  2021-10-01: 948
+  2022-10-01: 1_004
+  2023-10-01: 1_092
+  2024-10-01: 1_352
+6:
+  2020-10-01: 1_094
+  2021-10-01: 1_108
+  2022-10-01: 1_174
+  2023-10-01: 1_276
+  2024-10-01: 1_580
+7:
+  2020-10-01: 1_254
+  2021-10-01: 1_270
+  2022-10-01: 1_345
+  2023-10-01: 1_462
+  2024-10-01: 1_811
+8:
+  2020-10-01: 1_413
+  2021-10-01: 1_431
+  2022-10-01: 1_515
+  2023-10-01: 1_647
+  2024-10-01: 2_040

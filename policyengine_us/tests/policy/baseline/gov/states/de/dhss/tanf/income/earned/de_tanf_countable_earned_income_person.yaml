@@ -1,0 +1,69 @@
+# Unit tests for Delaware TANF countable earned income per person
+# 16 Del. Admin. Code SS 4000-4008: $90 work expense + $30 flat + 1/3 disregard
+# Formula: max(0, gross - $90 - $30) * (1 - 0.33)
+
+- name: Case 1, various earning levels.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0  # $0/month
+      person2:
+        age: 30
+        employment_income_before_lsr: 600  # $50/month - below $90
+      person3:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month - between $90-$120
+      person4:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month - full disregards
+      person5:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month - higher earnings
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DE
+  output:
+    # person1: $0 → $0
+    # person2: $50 - $90 = $0 (absorbed by work expense)
+    # person3: $100 - $90 = $10, $10 - $30 = $0 (absorbed by flat)
+    # person4: $500 - $90 - $30 = $380, $380 * 0.67 = $254.6
+    # person5: $1,000 - $90 - $30 = $880, $880 * 0.67 = $589.6
+    de_tanf_countable_earned_income_person: [0, 0, 0, 254.6, 589.6]
+
+- name: Case 2, boundary earnings at $90 and $120.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_080  # $90/month - exactly at work expense
+      person2:
+        age: 30
+        employment_income_before_lsr: 1_440  # $120/month - exactly at $90+$30
+      person3:
+        age: 30
+        employment_income_before_lsr: 1_452  # $121/month - 1/3 disregard starts
+      person4:
+        age: 30
+        employment_income_before_lsr: 1_800  # $150/month - above disregard zone
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # person1: $90 - $90 = $0
+    # person2: $120 - $90 - $30 = $0
+    # person3: $121 - $90 - $30 = $1, $1 * 0.67 = $0.67
+    # person4: $150 - $90 - $30 = $30, $30 * 0.67 = $20.1
+    de_tanf_countable_earned_income_person: [0, 0, 0.67, 20.1]

@@ -1,0 +1,21 @@
+description: Alaska excludes up to this amount of child care expenses per child from countable income under the Alaska Temporary Assistance Program.
+
+metadata:
+  period: month
+  label: Alaska ATAP childcare deduction amount
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 7 AAC 45.485(a)(2) - Incapacitated-parent and child care disregard
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-45.485
+
+brackets:
+  - threshold:
+      2005-01-01: 0
+    amount:
+      2005-01-01: 200
+  - threshold:
+      2005-01-01: 2
+    amount:
+      2005-01-01: 175
