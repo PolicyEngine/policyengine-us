@@ -41,3 +41,188 @@
     state_code: MI
   output:
     mi_disabled_exemption_eligible_person: true
+
+# 2025 test cases - disabled exemption is $3,400
+- name: 2025 disabled eligible, permanently disabled
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 65
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: true
+
+- name: 2025 blind eligible
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: false
+    is_permanently_and_totally_disabled: false
+    age: 50
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: true
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Disabled Exemption Eligibility
+# Age limit for permanently disabled: 66 (must be under 66)
+# Blind and deaf have no age restriction
+# ============================================================================
+
+# Edge case: Age exactly at boundary (65 - just under limit)
+- name: Case 1, 2025 edge case age 65 permanently disabled eligible.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 65
+    state_code: MI
+  output:
+    # Age 65 < 66 limit = eligible
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Age exactly at limit (66 - at limit)
+- name: Case 2, 2025 edge case age 66 permanently disabled ineligible.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 66
+    state_code: MI
+  output:
+    # Age 66 >= 66 limit = ineligible (uses < comparison)
+    mi_disabled_exemption_eligible_person: false
+
+# Edge case: Age 67 (above limit)
+- name: Case 3, 2025 edge case age 67 permanently disabled ineligible.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 67
+    state_code: MI
+  output:
+    # Age 67 > 66 limit = ineligible
+    mi_disabled_exemption_eligible_person: false
+
+# Edge case: Young disabled person (age 0)
+- name: Case 4, 2025 edge case age 0 permanently disabled eligible.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 0
+    state_code: MI
+  output:
+    # Age 0 < 66 = eligible
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Blind person above age limit (blind has no age limit)
+- name: Case 5, 2025 edge case blind person age 80 eligible.
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: false
+    is_permanently_and_totally_disabled: false
+    age: 80
+    state_code: MI
+  output:
+    # Blind has no age restriction = eligible at any age
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Deaf person above age limit (deaf has no age limit)
+- name: Case 6, 2025 edge case deaf person age 75 eligible.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: true
+    is_permanently_and_totally_disabled: false
+    age: 75
+    state_code: MI
+  output:
+    # Deaf has no age restriction = eligible at any age
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Not disabled in any way
+- name: Case 7, 2025 edge case not disabled at all.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: false
+    age: 50
+    state_code: MI
+  output:
+    # Not disabled = ineligible
+    mi_disabled_exemption_eligible_person: false
+
+# Edge case: Multiple disability conditions (blind AND deaf)
+- name: Case 8, 2025 edge case both blind and deaf.
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: true
+    is_permanently_and_totally_disabled: false
+    age: 70
+    state_code: MI
+  output:
+    # Either blind OR deaf qualifies = eligible
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: All three disability conditions
+- name: Case 9, 2025 edge case all disability conditions.
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: true
+    is_permanently_and_totally_disabled: true
+    age: 50
+    state_code: MI
+  output:
+    # Any one condition qualifies = eligible
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Permanently disabled but not blind/deaf, at age limit
+- name: Case 10, 2025 edge case disabled but at age limit.
+  period: 2025
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 66
+    state_code: MI
+  output:
+    # Age 66 >= 66 limit AND only permanently disabled = ineligible
+    mi_disabled_exemption_eligible_person: false
+
+# Edge case: Over age limit but also blind (blind overrides age limit)
+- name: Case 11, 2025 edge case over age limit but blind.
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 70
+    state_code: MI
+  output:
+    # Blind has no age limit, so eligible despite age > 66
+    mi_disabled_exemption_eligible_person: true
+
+# Edge case: Very young child who is blind
+- name: Case 12, 2025 edge case young blind child.
+  period: 2025
+  input:
+    is_blind: true
+    is_deaf: false
+    is_permanently_and_totally_disabled: false
+    age: 5
+    state_code: MI
+  output:
+    # Blind child = eligible
+    mi_disabled_exemption_eligible_person: true
