@@ -13,6 +13,10 @@ class nj_agi_subtractions(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.tax.income
-        total_subtractions = add(person, period, p.subtractions)
+        subtractions_list = p.subtractions
+        # Handle empty subtractions list
+        if not subtractions_list:
+            return 0
+        total_subtractions = add(person, period, subtractions_list)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)
