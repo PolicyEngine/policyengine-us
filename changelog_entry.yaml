@@ -1,0 +1,10 @@
+- bump: minor
+  changes:
+    changed:
+      - title: Update Georgia 2025 individual income tax model
+        description: |
+          Updates Georgia income tax parameters for 2025 tax year based on the IT-511 Instructions Booklet:
+          - Corrects 2025 tax rate to 5.19% (from incorrectly projected 5.29%)
+          - Adds 2025 IT-511 references to all income tax parameters
+          - Verifies CDCC credit rate at 50% of federal credit for 2025
+          - Confirms standard deductions, dependent exemption, retirement exclusions, military retirement exclusions, and itemizer credit values
