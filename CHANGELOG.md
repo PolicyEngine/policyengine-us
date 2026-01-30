@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.534.0] - 2026-01-30 20:44:48
+
+### Added
+
+- Add Virginia HB979 income tax reform with new 8% and 10% brackets for high earners.
+
 ## [1.533.0] - 2026-01-30 15:33:22
 
 ### Changed
@@ -14663,6 +14669,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.534.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.533.0...1.534.0
 [1.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.4...1.533.0
 [1.532.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.3...1.532.4
 [1.532.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.2...1.532.3
