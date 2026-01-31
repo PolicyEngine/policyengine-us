@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.534.4] - 2026-01-31 19:46:35
+
+### Changed
+
+- Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for consistent formatting.
+
 ## [1.534.3] - 2026-01-31 16:52:24
 
 ### Added
@@ -14687,6 +14693,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.534.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.3...1.534.4
 [1.534.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.2...1.534.3
 [1.534.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.1...1.534.2
 [1.534.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.0...1.534.1
