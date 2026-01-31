@@ -1,37 +1,34 @@
-- name: Multiple noncountable sources
+- name: Multiple unconditional noncountable sources
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 10_200  # YEAR -> 850/mo
-        wic: 50  # MONTH
+        wic: 50  # MONTH, (F)
     spm_units:
       spm_unit:
         members: [person1]
-        snap: 200  # MONTH
-        spm_unit_capped_housing_subsidy: 6_000  # YEAR -> 500/mo
-        ma_liheap: 1_200  # YEAR -> 100/mo
-        spm_unit_school_lunch_subsidy: 1_200  # YEAR -> 100/mo
-        spm_unit_pell_grant: 6_000  # YEAR -> 500/mo
+        snap: 200  # MONTH, (C)
+        spm_unit_capped_housing_subsidy: 6_000  # YEAR -> 500/mo, (S)
+        ma_liheap: 1_200  # YEAR -> 100/mo, (BB)
+        spm_unit_school_lunch_subsidy: 1_200  # YEAR -> 100/mo, (D)/(F)
+        spm_unit_pell_grant: 6_000  # YEAR -> 500/mo, (J)
     tax_units:
       tax_unit:
         members: [person1]
-        eitc: 3_600  # YEAR -> 300/mo
     households:
       household:
         members: [person1]
         state_code: MA
   output:
-    # 850 + 50 + 200 + 500 + 100 + 100 + 500 + 300 = 2600
-    ma_tafdc_noncountable_income: 2_600
+    # 50 + 200 + 500 + 100 + 100 + 500 = 1450
+    ma_tafdc_noncountable_income: 1_450
 
 - name: Only SNAP
   period: 2024-01
   input:
     people:
       person1:
-        ssi: 0
         wic: 0
     spm_units:
       spm_unit:
@@ -44,7 +41,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        eitc: 0
     households:
       household:
         members: [person1]
@@ -57,7 +53,6 @@
   input:
     people:
       person1:
-        ssi: 0
         wic: 0
     spm_units:
       spm_unit:
@@ -70,7 +65,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        eitc: 0
     households:
       household:
         members: [person1]
