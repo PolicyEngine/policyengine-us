@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class loss_limited_capital_gains_person(Variable):
+class loss_limited_net_capital_gains_person(Variable):
     value_type = float
     entity = Person
     label = "Loss-limited capital gains (person)"
