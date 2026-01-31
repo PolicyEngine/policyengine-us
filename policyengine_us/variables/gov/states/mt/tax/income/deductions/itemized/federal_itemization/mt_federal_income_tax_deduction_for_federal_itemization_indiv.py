@@ -11,7 +11,7 @@ class mt_federal_income_tax_deduction_for_federal_itemization_indiv(Variable):
         # MT Code § 15-30-2131 (2021) (1)(b)
     )
     unit = USD
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         unit_deds = person.tax_unit(
