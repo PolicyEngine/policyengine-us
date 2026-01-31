@@ -1,3 +1,6 @@
+# Tests for Missouri Social Security/SSDI Deduction (Section C of Form MO-A)
+# Per MO-A 2024: SS deduction requires age 62+ by Dec 31; SSDI has no age limit.
+
 - name: No Values
   period: 2021
   absolute_error_margin: 0
@@ -6,10 +9,11 @@
     taxable_social_security: 0
     filing_status: SINGLE
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
-- name: AGI below threshold, private pension income, taxable social security income, single
+- name: AGI below threshold, taxable social security income, single, age 65
   period: 2021
   absolute_error_margin: 0
   input:
@@ -17,10 +21,11 @@
     taxable_social_security: 5_000
     filing_status: SINGLE
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
-- name: AGI below threshold, private pension income, without taxable social security income, single
+- name: AGI below threshold, without taxable social security income, single, age 65
   period: 2021
   absolute_error_margin: 30_000
   input:
@@ -28,10 +33,11 @@
     taxable_social_security: 0
     filing_status: SINGLE
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
-- name: AGI above threshold, private pension income, taxable social security income, single
+- name: AGI above threshold, taxable social security income, single, age 65
   period: 2021
   absolute_error_margin: 0
   input:
@@ -39,10 +45,11 @@
     taxable_social_security: 15_000
     filing_status: SINGLE
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
-- name: AGI above threshold, private pension income, without taxable social security income, single
+- name: AGI above threshold, without taxable social security income, single, age 65
   period: 2021
   absolute_error_margin: 0
   input:
@@ -50,10 +57,11 @@
     taxable_social_security: 0
     filing_status: SINGLE
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
-- name: AGI above threshold, private pension income, taxable social security income, joint
+- name: AGI above threshold, taxable social security income, joint, age 65
   period: 2021
   absolute_error_margin: 0
   input:
@@ -61,10 +69,11 @@
     taxable_social_security: 10_000
     filing_status: JOINT
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
-- name: AGI above threshold, private pension income, without taxable social security income, joint
+- name: AGI above threshold, without taxable social security income, joint, age 65
   period: 2021
   absolute_error_margin: 0
   input:
@@ -72,82 +81,74 @@
     taxable_social_security: 0
     filing_status: JOINT
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
-- name: AGI below threshold, private pension income, taxable social security income, single
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 30_000
-    taxable_social_security: 5_000 
-    filing_status: SINGLE
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
-
-- name: AGI below threshold, private pension income, without taxable social security income, single
-  period: 2021
-  absolute_error_margin: 30_000
-  input:
-    mo_adjusted_gross_income: 30_000
-    taxable_social_security: 0 
-    filing_status: SINGLE
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
-
-- name: AGI above threshold, private pension income, taxable social security income, single
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 95_000
-    taxable_social_security: 15_000 
-    filing_status: SINGLE
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
-
-- name: AGI above threshold, private pension income, without taxable social security income, single
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 95_000
-    taxable_social_security: 0 
-    filing_status: SINGLE
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
-
-- name: AGI above threshold, private pension income, taxable social security income, joint
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 105_000
-    taxable_social_security: 10_000 
-    filing_status: JOINT
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
-
-- name: AGI above threshold, private pension income, without taxable social security income, joint
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    mo_adjusted_gross_income: 105_000
-    taxable_social_security: 0 
-    filing_status: JOINT
-    state_code: MO
-  output:
-    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
-
-- name: 2024 No Income Threshold Applies
+- name: 2024 No Income Threshold Applies, age 65
   period: 2024
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 105_000
-    taxable_social_security: 10_000 
+    taxable_social_security: 10_000
     filing_status: JOINT
     state_code: MO
+    age: 65
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 10_000
+
+# Age requirement tests - SS requires age 62+, SSDI has no age limit
+
+- name: Age 61 with regular SS - no deduction (under age threshold)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 50_000
+    social_security_retirement: 20_000
+    taxable_social_security: 10_000
+    filing_status: SINGLE
+    state_code: MO
+    age: 61
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: Age 62 with regular SS - full deduction (meets age threshold)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 50_000
+    social_security_retirement: 20_000
+    taxable_social_security: 10_000
+    filing_status: SINGLE
+    state_code: MO
+    age: 62
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 10_000
+
+- name: Age 61 with SSDI - full deduction (no age limit for disability)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 50_000
+    social_security_disability: 20_000
+    taxable_social_security: 10_000
+    filing_status: SINGLE
+    state_code: MO
+    age: 61
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 10_000
+
+- name: Age 55 with mixed SS and SSDI - only SSDI portion deductible
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    mo_adjusted_gross_income: 50_000
+    social_security_retirement: 10_000
+    social_security_disability: 10_000
+    taxable_social_security: 10_000
+    filing_status: SINGLE
+    state_code: MO
+    age: 55
+  output:
+    # 50% of SS is SSDI, so 50% of taxable SS is deductible
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
