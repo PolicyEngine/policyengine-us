@@ -32,9 +32,17 @@ class mo_adjusted_gross_income(Variable):
         is_married = filing_status == filing_status.possible_values.JOINT
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
+        # Allocate remaining ALDs proportionally based on gross income
+        # to avoid losing deductions when one spouse has no income
+        unit_gross_income = tax_unit.sum(gross_income)
+        allocation_share = where(
+            unit_gross_income > 0,
+            gross_income / unit_gross_income,
+            where(is_head, 1.0, 0.0),  # Default to head if no gross income
+        )
         allocated_alds = where(
             is_head | is_spouse,
-            unit_remaining_alds / where(is_married, 2, 1),
+            unit_remaining_alds * allocation_share,
             0,
         )
         fed_agi = gross_income - ind_total_personal_alds - allocated_alds

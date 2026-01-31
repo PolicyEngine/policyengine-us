@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Missouri income tax now correctly allocates above-the-line deductions proportionally by gross income, ensuring capital loss deductions are not lost when one spouse has no income.
